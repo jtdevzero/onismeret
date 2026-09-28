@@ -90,6 +90,7 @@ Minden oldal önálló: inline CSS és JS, külső szerverhez nem fordul. A bet�
   - `ips-responses-v1`, `ders-sf-responses-v1`, `scs-sf-responses-v1`, `tfeq-r18-responses-v1`
   - `onismeret-meta-v1` — az utolsó válasz ideje tesztenként (ebből lesz a kitöltés dátuma)
   - `onismeret-settings-v1` — pl. az újramérési emlékeztető (ki / 90 / 180 / 365 nap)
+  - `onismeret-notes-v1` — saját jegyzetek, címkék és kitöltési körülmények kitöltésenként
   - `onismeret-undo-v1` — az utolsó visszaállítás előtti állapot (7 napig)
   - `onismeret-partner-v1` — a párod betöltött összesített eredményei (a nyers válaszai nem)
   - `ysq_autosave`, `ysq_snapshots`, `ysq_log` stb. (YSQ)
@@ -226,6 +227,19 @@ Minden kérdőív magyar nyelvre lett adaptálva egyeztetett szakmai fordításs
 
 ---
 
+## Eredmények felépítése
+
+Minden teszt eredménye ugyanabban a rendben jelenik meg (`assets/results-plus.js`):
+
+1. **Röviden:** a fő eredmény egy mondatban és a legfontosabb skálák.
+2. **Értelmezési korlát:** mit nem mond meg ez a mérés.
+3. **Kérdés magadnak:** önreflexiós kérdés.
+4. **Egy lehetséges következő lépés:** kapcsolódó teszt vagy az összegzés.
+5. **A saját tapasztalatod:** „Ez illik rám” / „Ez nem jellemző rám” / „Ezt szeretném megérteni”, **kitöltési körülmények** (fáradt, stresszes nap, siettem…) és saját jegyzet. Kitöltésenként tárolódik, a pontszámot nem módosítja, és megjelenik az összegzésben, kérésre a terapeuta-PDF-ben is.
+6. **Részletes elemzés:** lenyitható. A választás megmarad (`onismeret-settings-v1.detailOpen`).
+
+**Tesztadatlap** minden kérdőív fölött (`assets/tests-data.js`): mit vizsgál, kinek szól, milyen időszakra kérdez, időigény, változat, mire nem alkalmas.
+
 ## Arculat
 
 - **Két téma:** világos (alapértelmezett) és sötét. A jobb alsó ☾/☀ gombbal váltható, a választás minden oldalon megmarad (`onismeret-settings-v1.theme`).
@@ -239,6 +253,8 @@ Minden kérdőív magyar nyelvre lett adaptálva egyeztetett szakmai fordításs
 src/                 A motoros hub-oldalak forrása (engine.js, stílusok, hubs/*.hub.html + *.tests.js)
 assets/oni-core.js   Közös mag minden oldalon: téma, eredménytár, kitöltési alkalmak, verziók, kitöltés-segéd, mentési visszajelzés
 assets/theme.css     Egységes arculat: világos/sötét téma minden oldalcsaládra
+assets/tests-data.js Tesztadatlapok (31 kérdőív)
+assets/results-plus.js Röviden-kártya, adatlap, saját jegyzetek
 tools/build.py       Hubok generálása + a közös mag bekötése minden oldalba
 tests/run.js         Automatikus ellenőrzés (Playwright)
 ```

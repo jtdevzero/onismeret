@@ -43,6 +43,7 @@ h2 em{font-style:italic;color:var(--gold)}
 .action{font-size:14px;color:var(--ink);background:rgba(251,191,36,0.06);border:1px dashed var(--gold-soft);border-radius:12px;padding:10px 14px}
 .action b{color:var(--gold);font-weight:600}
 .refl{font-size:14px;color:var(--ink)!important;font-style:italic}
+.note{margin-top:6px}.note .ncond{font-size:12.5px;color:var(--ink-mute)}.note .ntext{font-style:italic;margin-top:4px;font-size:13.5px}
 .refl b{font-style:normal;color:var(--sapphire);font-weight:600}
 .locked{color:var(--ink-mute);font-size:14px;padding:16px 20px;border:1px dashed var(--line);border-radius:14px}
 .locked a{color:var(--sapphire)}
@@ -110,12 +111,15 @@ h2 em{font-style:italic;color:var(--gold)}
   body.rep-mode #report .rt td{padding:1pt 4pt 1pt 0;vertical-align:top}
   body.rep-mode #report .rt td.v{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;width:1%}
   body.rep-mode #report .rt td.r{color:#94a3b8;white-space:nowrap;width:1%;padding-left:6pt}
+  body.rep-mode #report .rnote{margin:2pt 0 3pt;padding:3pt 5pt;background:#f1f5f9;border-left:2pt solid #b8912e;font-size:8.5pt;color:#334155}
   body.rep-mode #report .tag{font-size:8pt;color:#9a3412;font-weight:600}
   body.rep-mode #report .rfoot{margin-top:12pt;padding-top:5pt;border-top:0.75pt solid #cbd5e1;color:#64748b;font-size:8.5pt}
   body.rep-mode #report .cols{columns:2;column-gap:10pt}
 }
 </style>
 <script src="assets/oni-core.js"></script>
+<script src="assets/tests-data.js" defer></script>
+<script src="assets/results-plus.js" defer></script>
 <link rel="stylesheet" href="assets/theme.css">
 </head>
 <body>
@@ -131,7 +135,7 @@ h2 em{font-style:italic;color:var(--gold)}
     <p>Egy tömör, világos hátterű, nyomtatható összefoglaló a kiválasztott tesztekről és a visszatérő mintákról. A nyomtatási ablakban válaszd a <em>Mentés PDF-ként</em> lehetőséget. Az érzékeny témák alapból ki vannak kapcsolva, te döntöd el, mi kerül bele.</p>
     <div class="rep-row"><input type="text" id="rep-name" placeholder="Név a riporton (nem kötelező)" maxlength="60"><button type="button" class="rep-btn" id="rep-print">Nyomtatás / PDF mentése</button></div>
     <div class="rep-grid" id="rep-grid"></div>
-    <div class="rep-row"><label style="font-size:13.5px;color:var(--ink-soft);display:flex;gap:8px;align-items:center"><input type="checkbox" id="rep-pat" checked> Visszatérő minták (csak a kiválasztott tesztekből)</label><button type="button" class="rep-link" id="rep-all">mindet kijelöl</button><button type="button" class="rep-link" id="rep-none">egyiket sem</button></div>
+    <div class="rep-row"><label style="font-size:13.5px;color:var(--ink-soft);display:flex;gap:8px;align-items:center"><input type="checkbox" id="rep-pat" checked> Visszatérő minták (csak a kiválasztott tesztekből)</label><label style="font-size:13.5px;color:var(--ink-soft);display:flex;gap:8px;align-items:center"><input type="checkbox" id="rep-notes"> Saját jegyzeteim és a kitöltési körülmények</label><button type="button" class="rep-link" id="rep-all">mindet kijelöl</button><button type="button" class="rep-link" id="rep-none">egyiket sem</button></div>
   </div>
   <div id="report"></div>
   <p class="note">A minták <strong>heurisztikák</strong>: egy minta akkor jelenik meg, ha legalább két független teszt ugyanabba az irányba mutat. A küszöbök tájékoztató jellegűek, nem klinikai határértékek. A „saját itemek” jelölésű tesztek (konfliktusmódok, Gottman, Fisher, Négy tendencia, Cselekvési módok) nem validált mérések. Egy minta kérdést vet fel, nem diagnózist mond ki. Az újramérést 90 nap után jelzi.</p>
@@ -183,6 +187,10 @@ const store=(window.ONI&&ONI.all())||{};
 if(!store.kotodes){const a=read('attachment_assessment_v1');if(a&&a.result){store.kotodes=[{t:a.result.date||new Date().toISOString(),n:'Kötődési mélytérkép',h:a.result.style,d:{anxiety:['Szorongás',a.result.anxiety,0,100],avoidance:['Elkerülés',a.result.avoidance,0,100],earned:['Szerzett biztonság',a.result.earned,0,100]}}];}}
 const last=id=>{const h=store[id];return h&&h.length?h[h.length-1]:null};
 const when=r=>r.done||r.t;
+const NOTES=(()=>{try{return JSON.parse(localStorage.getItem('onismeret-notes-v1'))||{}}catch(e){return {}}})();
+const FITL={fits:'Ez illik rám',not:'Ez nem jellemző rám',explore:'Ezt szeretném megérteni'},CONDL={calm:'nyugodt voltam',tired:'fáradt voltam',stress:'stresszes napom volt',rush:'siettem',interrupted:'megszakítva töltöttem ki'};
+const noteOf=(id,r)=>{const n=(NOTES[id]||{})[r.sid||'_'];return n&&((n.fit&&n.fit.length)||(n.cond&&n.cond.length)||n.text)?n:null};
+const noteHTML=n=>`<div class="hl note">${(n.fit||[]).map(k=>`<span class="badge fresh">${FITL[k]||k}</span>`).join(' ')}${n.cond&&n.cond.length?` <span class="ncond">Körülmények: ${n.cond.map(k=>CONDL[k]||k).join(', ')}</span>`:''}${n.text?`<div class="ntext">„${esc(n.text)}”</div>`:''}</div>`;
 const prev=id=>{const h=store[id];return h&&h.length>1?h[h.length-2]:null};
 const val=(id,k)=>{const r=last(id);return r&&r.d&&r.d[k]?r.d[k][1]:null};
 const avgAll=id=>{const r=last(id);if(!r||!r.d)return null;const v=Object.values(r.d).map(x=>x[1]).filter(x=>typeof x==='number');return v.length?v.reduce((a,b)=>a+b,0)/v.length:null};
@@ -345,6 +353,7 @@ function render(){
       <div class="meta" title="Kitöltés ideje (utolsó válasz). Kérdéssor v${r.qv||1}, pontozás v${r.sv||1}">${fmt(when(r))} · ${dd===0?'ma':dd+' napja'}</div>${!cmp?`<div class="pending">Az előző kitöltés egy korábbi kérdéssor- vagy pontozásverzióval készült, ezért nem hasonlítom össze vele.</div>`:''}
       ${r.h?`<div class="hl"><strong>${esc(r.h)}</strong></div>`:''}
       ${r.x&&r.x.need?`<div class="hl">Kielégítetlen szükségletek: ${r.x.need.map(esc).join(' · ')}</div>`:''}
+      ${noteOf(id,r)?noteHTML(noteOf(id,r)):''}
       ${entries.length?`<div class="dims">${shown.map(([k,d])=>dimHTML(id,d,p&&p.d&&p.d[k],acc,k)).join('')}</div>`:''}
       ${rest.length?`<button class="more" data-id="${id}">+ további ${rest.length} skála</button><div class="dims" id="more-${id}" hidden>${rest.map(([k,d])=>dimHTML(id,d,p&&p.d&&p.d[k],acc,k)).join('')}</div>`:''}
     </div>`;
@@ -374,11 +383,11 @@ function buildRepUI(){
   document.getElementById('rep-print').onclick=()=>{
     const ids=[...grid.querySelectorAll('input:checked')].map(i=>i.dataset.id);
     if(!ids.length){alert('Válassz ki legalább egy tesztet.');return;}
-    buildReport(ids,document.getElementById('rep-pat').checked,document.getElementById('rep-name').value.trim());
+    buildReport(ids,document.getElementById('rep-pat').checked,document.getElementById('rep-notes').checked,document.getElementById('rep-name').value.trim());
     document.body.classList.add('rep-mode');setTimeout(()=>window.print(),80);
   };
 }
-function buildReport(ids,withPat,nm){
+function buildReport(ids,withPat,withNotes,nm){
   const inc=new Set(ids);let h=`<h1>Önismereti összefoglaló${nm?' — '+esc(nm):''}</h1><div class="rsub">Készült: ${fmt(new Date().toISOString())} · ${ids.length} teszt · önbevallásos kérdőívek, nem diagnózis</div>`;
   if(withPat){
     const fired=[];RULES.forEach(r=>{const avail=r.sig.filter(x=>inc.has(x.test)&&last(x.test));const hits=avail.filter(x=>{try{return !!x.fn()}catch(e){return false}});if(new Set(hits.map(x=>x.test)).size>=r.min)fired.push({r,hits});});
@@ -387,7 +396,7 @@ function buildReport(ids,withPat,nm){
   h+=`<h2>Eredmények tesztenként</h2><div class="cols">`;
   REG.filter(r=>inc.has(r[1])&&last(r[1])).forEach(([cat,id,name])=>{const r=last(id),p=prev(id);
     const rows=Object.values(r.d||{}).map((d,i)=>{const k=Object.keys(r.d)[i];const pv=p&&(p.sv||1)===(r.sv||1)&&(p.qv||1)===(r.qv||1)&&p.d&&p.d[k]?p.d[k][1]:null;return `<tr><td>${esc(d[0])}</td><td class="v">${d[1]}${pv!==null&&pv!==d[1]?` <span style="color:#64748b">(előző: ${pv})</span>`:''}</td><td class="r">${d[2]}–${d[3]}</td></tr>`}).join('');
-    h+=`<div class="rt"><div class="rh"><span class="rn">${esc(name)}${MODEL.has(id)?' <span class="tag">saját itemek / nem validált</span>':''}</span><span class="rd">${fmt(when(r))} · kérdéssor v${r.qv||1} · pontozás v${r.sv||1}</span></div>${r.h?`<div class="rhl">${esc(r.h)}</div>`:''}${r.x&&r.x.need?`<div>Kielégítetlen szükségletek: ${r.x.need.map(esc).join('; ')}</div>`:''}${rows?`<table>${rows}</table>`:''}</div>`;});
+    h+=`<div class="rt"><div class="rh"><span class="rn">${esc(name)}${MODEL.has(id)?' <span class="tag">saját itemek / nem validált</span>':''}</span><span class="rd">${fmt(when(r))} · kérdéssor v${r.qv||1} · pontozás v${r.sv||1}</span></div>${r.h?`<div class="rhl">${esc(r.h)}</div>`:''}${r.x&&r.x.need?`<div>Kielégítetlen szükségletek: ${r.x.need.map(esc).join('; ')}</div>`:''}${withNotes&&noteOf(id,r)?(n=>`<div class="rnote">${(n.fit||[]).map(k=>FITL[k]||k).join(' · ')}${n.cond&&n.cond.length?(n.fit&&n.fit.length?' · ':'')+'Körülmények: '+n.cond.map(k=>CONDL[k]||k).join(', '):''}${n.text?'<br><i>„'+esc(n.text)+'”</i>':''}</div>`)(noteOf(id,r)):''}${rows?`<table>${rows}</table>`:''}</div>`;});
   h+=`</div><div class="rfoot">Forrás: Önismereti térképek (jtdevzero.github.io/onismeret). A pontszámok nyers vagy átlagolt skálaértékek, a jobb oldali oszlop a skála terjedelmét mutatja. A minták heurisztikák: legalább két teszt egybehangzó jelzése, nem klinikai küszöbök. A „saját itemek” jelölésű eszközök modell-alapú, nem validált kérdőívek.</div>`;
   document.getElementById('report').innerHTML=h;
 }

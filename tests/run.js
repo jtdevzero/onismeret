@@ -166,6 +166,31 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     await ctx.close();
   }
 
+  console.log('\n10. Egységes eredményfelépítés: adatlap, Röviden-kártya, jegyzetek');
+  {
+    const ctx = await newCtx(); const p = await pageIn(ctx);
+    const ids = ['ecr','smi','tas','iief','pedt','sdi','des','ssss','nsss','saq','love','apo','imago','bf','via','las','tki','gott','fti','pvq','ft','kolbe','meq','ips','ders','scs','tfeq'];
+    const pages = { kapcsolat:['las','tki','gott','fti'], cselekves:['pvq','ft','kolbe','meq'], szabalyozas:['ips','ders','scs','tfeq'], terkepek:['ecr','smi','tas'], funkcio:['iief','pedt','sdi','des'], attitudok:['ssss','nsss','saq'], nyelvek:['love','apo','imago'], szemelyiseg:['bf','via'] };
+    for (const [pg, list] of Object.entries(pages)) { await p.goto(R + pg + '.html'); await p.waitForTimeout(150);
+      for (const id of list) ok(await p.evaluate(id => !!document.querySelector('#test-' + id + ' .oni-sheet'), id), `${id}: tesztadatlap a kérdések fölött`); }
+    for (const f of ['maia2', 'sis-ses']) { await p.goto(R + f + '.html'); await p.waitForTimeout(150); ok(await p.evaluate(() => !!document.querySelector('.oni-sheet')), `${f}: tesztadatlap`); }
+    ok(await p.evaluate(() => Object.keys(window.ONI_DATA).length) === 31, 'mind a 31 teszthez van adatlap');
+    for (const [pg, id] of [['szabalyozas', 'ips'], ['terkepek', 'tas'], ['nyelvek', 'love']]) {
+      await p.goto(R + pg + '.html#test-' + id); await p.waitForTimeout(150);
+      await p.evaluate(id => { const g = {}; document.querySelectorAll('#test-' + id + ' button[data-n]').forEach(x => (g[x.dataset.n] = g[x.dataset.n] || []).push(x)); Object.values(g).forEach(a => a[0].click()); const b = document.querySelector('#test-' + id + ' button[id$=showResults], #' + id + '-show'); b.click(); }, id);
+      await p.waitForTimeout(700);
+      const r = await p.evaluate(id => { const res = document.getElementById(id + '-results'); return { brief: !!res.querySelector(':scope > .oni-brief'), det: !!res.querySelector(':scope > details.oni-detail'), closed: !res.querySelector(':scope > details.oni-detail').open }; }, id);
+      ok(r.brief && r.det && r.closed, `${id}: Röviden-kártya elöl, részletes elemzés lenyitható`, r);
+    }
+    await p.click('#love-results .oni-chip[data-v=explore]'); await p.fill('#love-results textarea', 'teszt jegyzet'); await p.waitForTimeout(700);
+    const n = await p.evaluate(() => JSON.parse(localStorage.getItem('onismeret-notes-v1')).love);
+    ok(n && Object.values(n)[0].fit.includes('explore') && Object.values(n)[0].text === 'teszt jegyzet', 'jegyzet és címke mentve a kitöltéshez kötve');
+    const sc = await p.evaluate(() => { const h = ONI.all().love; return h[h.length - 1].d; });
+    await p.goto(R + 'osszegzes.html');
+    ok(await p.evaluate(() => document.body.innerText.includes('teszt jegyzet')), 'jegyzet megjelenik az összegzésben');
+    await ctx.close();
+  }
+
   await browser.close();
   console.log(`\n${pass} rendben, ${fail} hiba`);
   process.exit(fail ? 1 : 0);
