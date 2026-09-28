@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Önismereti térképek — JT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-deep:#050d1e;
+  --bg-mid:#0a1930;
+  --bg-card:#0f2038;
+  --bg-card-hi:#152845;
+  --ink:#e6ecf5;
+  --ink-soft:#a3b3c8;
+  --ink-mute:#6b7c94;
+  --line:#1e3255;
+  --line-soft:#152845;
+  --gold:#fbbf24;
+  --gold-soft:#78551a;
+  --sapphire:#60a5fa;
+  --indigo:#818cf8;
+  --teal:#2dd4bf;
+  --rose:#fb7185;
+  --emerald:#34d399;
+  --violet:#a78bfa;
+  --amber:#fde047;
+  --font-serif:'Fraunces','Cardo',Georgia,serif;
+  --font-sans:'Manrope','Inter','Helvetica Neue',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg-deep);color:var(--ink);font-family:var(--font-sans);font-size:16px;line-height:1.6;min-height:100vh}
+body{
+  background:
+    radial-gradient(ellipse at 20% 10%, rgba(96,165,250,0.06) 0%, transparent 40%),
+    radial-gradient(ellipse at 80% 20%, rgba(167,139,250,0.05) 0%, transparent 40%),
+    radial-gradient(ellipse at 50% 90%, rgba(45,212,191,0.04) 0%, transparent 40%),
+    var(--bg-deep);
+  background-attachment:fixed;
+  position:relative;
+  overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, rgba(251,191,36,0.5), transparent),
+    radial-gradient(1px 1px at 60% 70%, rgba(251,191,36,0.4), transparent),
+    radial-gradient(1px 1px at 80% 15%, rgba(255,255,255,0.5), transparent),
+    radial-gradient(1px 1px at 30% 80%, rgba(255,255,255,0.3), transparent),
+    radial-gradient(2px 2px at 90% 45%, rgba(251,191,36,0.6), transparent),
+    radial-gradient(1px 1px at 15% 55%, rgba(255,255,255,0.4), transparent),
+    radial-gradient(1px 1px at 70% 92%, rgba(251,191,36,0.4), transparent),
+    radial-gradient(1px 1px at 45% 20%, rgba(255,255,255,0.3), transparent);
+  background-size:600px 600px, 800px 800px, 500px 500px, 700px 700px, 900px 900px, 550px 550px, 750px 750px, 650px 650px;
+  opacity:0.6;
+}
+.wrap{max-width:1080px;margin:0 auto;padding:56px 24px 96px;position:relative;z-index:1}
+
+/* HEADER */
+.hero{text-align:center;padding:40px 0 48px}
+.hero .kicker{
+  display:inline-block;font-size:11px;letter-spacing:0.24em;text-transform:uppercase;
+  color:var(--gold);font-weight:600;margin-bottom:20px;
+  padding:6px 16px;border:1px solid var(--gold-soft);border-radius:99px;
+  background:rgba(251,191,36,0.05);
+}
+.hero h1{
+  font-family:var(--font-serif);font-weight:400;font-size:56px;line-height:1.05;
+  letter-spacing:-0.02em;margin-bottom:20px;
+  background:linear-gradient(180deg,#f5eddb 0%,#c4a76a 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+.hero h1 em{font-style:italic;font-weight:400;color:#c4a76a}
+.hero .lead{font-size:19px;color:var(--ink-soft);max-width:640px;margin:0 auto 32px;line-height:1.55}
+.hero .meta{display:flex;justify-content:center;gap:36px;flex-wrap:wrap;font-size:13px;color:var(--ink-mute);letter-spacing:0.02em}
+.hero .meta span strong{color:var(--gold);font-weight:600;margin-right:6px}
+
+/* INTRO CARD */
+.intro{
+  background:linear-gradient(180deg,var(--bg-card) 0%,var(--bg-card-hi) 100%);
+  border:1px solid var(--line);border-radius:16px;padding:32px 36px;
+  margin:0 0 48px;
+  box-shadow:0 4px 40px rgba(0,0,0,0.4),0 0 60px rgba(96,165,250,0.03) inset;
+}
+.intro h2{font-family:var(--font-serif);font-size:24px;font-weight:500;margin-bottom:16px;color:var(--gold)}
+.intro p{color:var(--ink-soft);margin-bottom:14px;font-size:15.5px}
+.intro p:last-child{margin-bottom:0}
+.intro strong{color:var(--ink);font-weight:600}
+.intro .list{margin-top:12px;padding-left:0;list-style:none}
+.intro .list li{padding:6px 0 6px 22px;position:relative;color:var(--ink-soft);font-size:14.5px}
+.intro .list li::before{content:'◆';position:absolute;left:0;color:var(--gold);font-size:10px;top:8px}
+
+/* CATEGORY SECTION */
+.cat{margin-bottom:56px}
+.cat-head{display:flex;align-items:baseline;gap:16px;margin-bottom:24px;padding-bottom:12px;border-bottom:1px solid var(--line-soft)}
+.cat-num{
+  font-family:var(--font-serif);font-size:20px;font-weight:400;font-style:italic;
+  color:var(--gold);opacity:0.7;min-width:32px
+}
+.cat-title{
+  font-family:var(--font-serif);font-size:26px;font-weight:500;letter-spacing:-0.01em;
+  color:var(--ink);flex:1
+}
+.cat-sub{font-size:13px;color:var(--ink-mute);letter-spacing:0.02em}
+
+/* CARDS GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px}
+.card{
+  background:linear-gradient(180deg,var(--bg-card) 0%,rgba(15,32,56,0.7) 100%);
+  border:1px solid var(--line);border-radius:14px;padding:24px 24px 22px;
+  text-decoration:none;color:inherit;display:block;position:relative;overflow:hidden;
+  transition:transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--accent, var(--sapphire));opacity:0.7;
+}
+.card:hover{
+  transform:translateY(-3px);
+  border-color:var(--accent, var(--sapphire));
+  box-shadow:0 8px 40px rgba(0,0,0,0.5), 0 0 30px color-mix(in srgb, var(--accent, var(--sapphire)) 15%, transparent);
+}
+.card-tag{
+  display:inline-block;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--accent, var(--sapphire));font-weight:600;margin-bottom:10px;opacity:0.9;
+}
+.card h3{font-family:var(--font-serif);font-size:22px;font-weight:500;line-height:1.2;margin-bottom:8px;color:var(--ink)}
+.card h3 em{font-style:italic;color:var(--ink-soft);font-size:16px;font-weight:400;display:block;margin-top:4px}
+.card .desc{font-size:14px;color:var(--ink-soft);margin-bottom:18px;min-height:60px}
+.card .tests{list-style:none;padding:0;margin:0 0 14px}
+.card .tests li{
+  font-size:13px;color:var(--ink-mute);padding:5px 0;border-top:1px dashed var(--line-soft);
+  display:flex;justify-content:space-between;align-items:baseline;
+}
+.card .tests li:first-child{border-top:none}
+.card .tests li .name{color:var(--ink);font-weight:500}
+.card .tests li .cnt{font-size:11px;color:var(--ink-mute);letter-spacing:0.04em;white-space:nowrap;margin-left:12px}
+.card .open{
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:12px;color:var(--accent, var(--sapphire));font-weight:600;
+  letter-spacing:0.06em;text-transform:uppercase;
+  padding-top:14px;border-top:1px solid var(--line);
+}
+.card .open .arrow{font-family:var(--font-serif);font-size:18px;transition:transform 0.2s ease}
+.card:hover .open .arrow{transform:translateX(4px)}
+
+/* FOOTER */
+.footer{
+  margin-top:64px;padding:32px;border-top:1px solid var(--line-soft);
+  text-align:center;color:var(--ink-mute);font-size:13px;line-height:1.7;
+}
+.footer strong{color:var(--gold);font-weight:600}
+.footer p{margin-bottom:8px}
+.footer .disclaimer{
+  margin-top:20px;padding:16px 20px;background:rgba(251,113,133,0.05);
+  border:1px solid rgba(251,113,133,0.2);border-radius:10px;
+  color:var(--ink-soft);font-size:12.5px;text-align:left;max-width:640px;margin-left:auto;margin-right:auto
+}
+.footer .disclaimer strong{color:var(--rose)}
+
+/* RESPONSIVE */
+@media (max-width:640px){
+  .wrap{padding:36px 16px 64px}
+  .hero{padding:20px 0 32px}
+  .hero h1{font-size:38px}
+  .hero .lead{font-size:16px}
+  .hero .meta{gap:20px;font-size:12px}
+  .intro{padding:24px 20px}
+  .cat-title{font-size:22px}
+  .grid{grid-template-columns:1fr;gap:16px}
+  .card{padding:20px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">Önismereti térképek</span>
+    <h1>Klinikai <em>térképek</em> egy embernek</h1>
+    <p class="lead">
+      Tizenhét kutatás-alapú kérdőív magyarul, egy helyen. Kötődés, szex, test-tudatosság, sémák, karakter-erők — mindegyik lokálisan a böngészőben fut, semmi adat nem hagyja el a gépet.
+    </p>
+    <div class="meta">
+      <span><strong>17</strong> teszt</span>
+      <span><strong>~830</strong> item</span>
+      <span><strong>6</strong> témakör</span>
+      <span><strong>0</strong> szerver-küldés</span>
+    </div>
+  </header>
+
+  <section class="intro">
+    <h2>Mire jó ez</h2>
+    <p>
+      Ez nem <strong>diagnózis</strong>, és nem <strong>terápia</strong>. Ez egy <strong>térkép-készítő</strong>: kutatás-alapú kérdőívekkel próbál láthatóvá tenni azt, ami egyébként ki-be villog a hétköznapokban — kötődési stílust, szexuális válaszkészséget, séma-módokat, test-tudatosságot, karakter-erőket, imágót.
+    </p>
+    <p>Amit adnak:</p>
+    <ul class="list">
+      <li><strong>Nyers pontszámok + normákkal összehasonlított értelmezés</strong> — hol állsz a validált mintához képest.</li>
+      <li><strong>Radar / oszlop-diagramok</strong> — vizuálisan is látszik, min van a hangsúly.</li>
+      <li><strong>Teljes körű kiértékelés</strong> — magyarázat + gyakorlati lépések, nem csak számok.</li>
+      <li><strong>Válaszok automatikus mentése</strong> — böngésző-lokálisan, folytathatod, ahol abbahagytad.</li>
+      <li><strong>JSON export</strong> — ha meg akarod mutatni terapeutának.</li>
+    </ul>
+    <p style="margin-top:16px;font-size:14px;color:var(--ink-mute);">
+      Használati javaslat: egy tesztet egy ülésben, nem többet. Utána pihenj, aludj rá egyet, aztán olvasd újra a kiértékelést. A <em>találkozás</em> az adattal fontosabb, mint a szám.
+    </p>
+  </section>
+
+  <!-- KATEGÓRIA 1: TEST-TUDATOSSÁG -->
+  <section class="cat">
+    <div class="cat-head">
+      <span class="cat-num">I.</span>
+      <h2 class="cat-title">Test-tudatosság &amp; disszociáció</h2>
+      <span class="cat-sub">3 teszt · ~80 item</span>
+    </div>
+    <div class="grid">
+      <a class="card" href="maia2.html" style="--accent:#2dd4bf">
+        <span class="card-tag">Interocepció</span>
+        <h3>MAIA-2 <em>Multidimenzionális testi tudatosság</em></h3>
+        <p class="desc">Nyolc dimenzió: észreveszed-e a testi jeleket, megbízol-e bennük, hogyan reagálsz rájuk. Alapja mindennek: ha nem érzed magad, semmit nem érzel.</p>
+        <ul class="tests">
+          <li><span class="name">MAIA-2</span><span class="cnt">32 item · 8 skála</span></li>
+        </ul>
+        <div class="open">Nyisd meg <span class="arrow">›</span></div>
+      </a>
+
+      <a class="card" href="terkepek.html#test-tas" style="--accent:#818cf8">
+        <span class="card-tag">Alexitímia</span>
+        <h3>TAS-20 <em>Érzelem-azonosítás</em></h3>
+        <p class="desc">Meg tudod-e különböztetni az érzelmeidet a testi érzésektől és a gondolatoktól, meg tudod-e nevezni őket, ki tudod-e beszélni.</p>
+        <ul class="tests">
+          <li><span class="name">TAS-20</span><span class="cnt">20 item · 3 alskála</span></li>
+        </ul>
+        <div class="open">Nyisd meg <span class="arrow">›</span></div>
+      </a>
+
+      <a class="card" href="funkcio.html#test-des" style="--accent:#a78bfa">
+        <span class="card-tag">Disszociáció</span>
+        <h3>DES-II <em>Disszociatív élmények</em></h3>
+        <p class="desc">Amnézia, deperszonalizáció, derealizáció, elmerülés — mennyire szakadsz el a testtől, jelentől, önmagadtól. Trauma-vonzatok mérőeszköze.</p>
+        <ul class="tests">
+          <li><span class="name">DES-II</span><span class="cnt">28 item · 3 alskála</span></li>
+        </ul>
+        <div class="open">Nyisd meg <span class="arrow">›</span></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- KATEGÓRIA 2: KÖTŐDÉS + SÉMA -->
+  <section class="cat">
+    <div class="cat-head">
+      <span class="cat-num">II.</span>
+      <h2 class="cat-title">Kötődés, séma, önkép</h2>
+      <span class="cat-sub">3 teszt · ~200 item</span>
+    </div>
+    <div class="grid">
+      <a class="card" href="terkepek.html#test-ecr" style="--accent:#60a5fa">
+        <span class="card-tag">Kötődés</span>
+        <h3>ECR-R <em>Párkapcsolati kötődés</em></h3>
+        <p class="desc">Két tengely: <strong>szorongás</strong> (elhagyatástól való félelem) + <strong>elkerülés</strong> (közelségtől való visszahúzódás). A négy stílus térképe.</p>
+        <ul class="tests">
+          <li><span class="name">ECR-R</span><span class="cnt">36 item · 2 tengely</span></li>
+        </ul>
+        <div class="open">Nyisd meg <span class="arrow">›</span></div>
+      </a>
+
+      <a class="card" href="terkepek.html#test-smi" style="--accent:#fb7185">
+        <span class="card-tag">Séma-módok</span>
+        <h3>SMI <em>Young séma-módusz</em></h3>
+        <p class="desc">13 belső &quot;alak&quot;: sebesült gyerek, dühös gyerek, büntető szülő, elkerülő védekező, egészséges felnőtt. Melyik uralkodik el, mikor.</p>
+        <ul class="tests">
+          <li><span class="name">SMI</span><span class="cnt">65 item · 13 mode</span></li>
+        </ul>
+        <div class="open">Nyisd meg <span class="arrow">›</span></div>
+      </a>
+
+      <a class="card" href="attitudok.html#test-ssss" style="--accent:#fbbf24">
+        <span class="card-tag">Szex-önkép</span>
+        <h3>SSSS <em>Szexuális self-schema</em></h3>
+        <p class="desc">Hogyan látod magad szexuális lényként. 100 melléknév-választás, 5 alskála: érzelmi, szenvedélyes, nyitott, tartózkodó, félénk.</p>
+        <ul class="tests">
+          <li><span class="name">SSSS</span><span class="cnt">100 item · 5 skála</span></li>
+        </ul>
+        <div class="open">Nyisd meg <span class="arrow">›</span></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- KATEGÓRIA 3: SZEXUÁLIS FUNKCIÓ -->
+  <section class="cat">
+    <div class="cat-head">
+      <span class="cat-num">III.</span>
+      <h2 class="cat-title">Szex-válaszkészség &amp; funkció</h2>
+      <span class="cat-sub">4 teszt · ~80 item</span>
+    </div>
+    <div class="grid">
+      <a class="card" href="sis-ses.html" style="--accent:#fb7185">
+        <span class="card-tag">Duál kontroll</span>
+        <h3>SIS/SES <em>Gátlás &amp; serkentés</em></h3>
+        <p class="desc">Bancroft &amp; Janssen modellje: erős fék + erős gáz vagy gyenge mindkettő? Három faktor (SES, SIS1, SIS2) magyarázza a szex-válaszkészséget.</p>
+        <ul class="tests">
+          <li><span class="name">SIS/SES</span><span class="cnt">45 item · 3 faktor</span></li>
+        </ul>
+        <div class="open">Nyisd meg <span class="arrow">›</span></div>
+      </a>
+
+      <a class="card" href="funkcio.html#test-iief" style="--accent:#60a5fa">
+        <span class="card-tag">Férfi funkció</span>
+        <h3>IIEF-15 <em>Nemzetközi erekció-index</em></h3>
+        <p class="desc">5 domén: erekció-funkció, orgazmus, vágy, közösülési elégedettség, általános elégedettség. Az urológia arany-standard szűrése.</p>
+        <ul class="tests">
+          <li><span class="name">IIEF-15</span><span class="cnt">15 item · 5 domén</span></li>
+        </ul>
+        <div class="open">Nyisd meg <span class="arrow">›</span></div>
+      </a>
+
+      <a class="card" href="funkcio.html#test-pedt" style="--accent:#fb7185">
+        <span class="card-tag">Ejakuláció</span>
+        <h3>PEDT <em>Idő előtti magömlés dg.</em></h3>
+        <p class="desc">Rövid szűrés: kontroll, gyakoriság, minimum stimuláció, distressz, kapcsolati nehézség. 5 item, 3 szint (nincs / valószínű / van).</p>
+        <ul class="tests">
+          <li><span class="name">PEDT</span><span class="cnt">5 item · 3 szint</span></li>
+        </ul>
+        <div class="open">Nyisd meg <span class="arrow">›</span></div>
+      </a>
+
+      <a class="card" href="funkcio.html#test-sdi" style="--accent:#a78bfa">
+        <span class="card-tag">Vágy</span>
+        <h3>SDI-2 <em>Szex-vágy két tengelye</em></h3>
+        <p class="desc">Diadikus (partner-irányú) és szoliter (egyedüli) vágy külön mérve. Fontos, mert a kettő független — az egyik lehet magas, a másik alacsony.</p>
+        <ul class="tests">
+          <li><span class="name">SDI-2</span><span class="cnt">14 item · 2 alskála</span></li>
+        </ul>
+        <div class="open">Nyisd meg <span class="arrow">›</span></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- KATEGÓRIA 4: SZEX-ATTITŰDÖK -->
+  <section class="cat">
+    <div class="cat-head">
+      <span class="cat-num">IV.</span>
+      <h2 class="cat-title">Szex-attitűdök &amp; elégedettség</h2>
+      <span class="cat-sub">2 teszt · 56 item</span>
+    </div>
+    <div class="grid">
+      <a class="card" href="attitudok.html#test-nsss" style="--accent:#2dd4bf">
+        <span class="card-tag">Elégedettség</span>
+        <h3>NSSS <em>Új szex-elégedettség</em></h3>
+        <p class="desc">Két dimenzió: ego-központú (saját érzések, testi élmény) + partner/aktus-központú (mit ad a másik, mit ad az aktus).</p>
+        <ul class="tests">
+          <li><span class="name">NSSS</span><span class="cnt">20 item · 2 dimenzió</span></li>
+        </ul>
+        <div class="open">Nyisd meg <span class="arrow">›</span></div>
+      </a>
+
+      <a class="card" href="attitudok.html#test-saq" style="--accent:#a78bfa">
+        <span class="card-tag">Attitűd</span>
+        <h3>SAQ <em>Szex-attitűd kérdőív</em></h3>
+        <p class="desc">Hendrick &amp; Hendrick 4 dimenziója: engedékenység, közösülés-orientáció, közösség-eszme, eszközszerű nézet. Milyen belső szabályok szerint viszonyulsz.</p>
+        <ul class="tests">
+          <li><span class="name">SAQ</span><span class="cnt">36 item · 4 alskála</span></li>
+        </ul>
+        <div class="open">Nyisd meg <span class="arrow">›</span></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- KATEGÓRIA 5: KAPCSOLATI NYELVEK -->
+  <section class="cat">
+    <div class="cat-head">
+      <span class="cat-num">V.</span>
+      <h2 class="cat-title">Kapcsolati nyelvek &amp; imágó</h2>
+      <span class="cat-sub">3 teszt · 107 item</span>
+    </div>
+    <div class="grid">
+      <a class="card" href="nyelvek.html#test-love" style="--accent:#fb7185">
+        <span class="card-tag">Szeretet-nyelv</span>
+        <h3>Love Languages <em>Chapman 5 nyelve</em></h3>
+        <p class="desc">Kényszer-választásos párok. 5 nyelv: elismerő szavak, minőségi idő, ajándék, szolgáló tettek, testi közelség — mit veszel <em>szeretetnek</em>.</p>
+        <ul class="tests">
+          <li><span class="name">Love Languages</span><span class="cnt">30 pár · 5 nyelv</span></li>
+        </ul>
+        <div class="open">Nyisd meg <span class="arrow">›</span></div>
+      </a>
+
+      <a class="card" href="nyelvek.html#test-apo" style="--accent:#fbbf24">
+        <span class="card-tag">Bocsánat-nyelv</span>
+        <h3>Apology Languages <em>Chapman 5 nyelve</em></h3>
+        <p class="desc">Mit hallasz <em>igazi bocsánatkérésnek</em>: kimondott sajnálom, felelősség-vállalás, jóvátétel, őszinte megbánás, kérés a megbocsátásra.</p>
+        <ul class="tests">
+          <li><span class="name">Apology Languages</span><span class="cnt">20 pár · 5 nyelv</span></li>
+        </ul>
+        <div class="open">Nyisd meg <span class="arrow">›</span></div>
+      </a>
+
+      <a class="card" href="nyelvek.html#test-imago" style="--accent:#818cf8">
+        <span class="card-tag">Imágó</span>
+        <h3>Imago <em>Kit vonzunk, kit taszítunk</em></h3>
+        <p class="desc">Harville Hendrix imágó-modellje: a gyerekkori gondozók pozitív + negatív vonásainak összeolvadása egy belső képpé, amit a párkapcsolatokban keresel.</p>
+        <ul class="tests">
+          <li><span class="name">Imago</span><span class="cnt">57 item · 4 rész</span></li>
+        </ul>
+        <div class="open">Nyisd meg <span class="arrow">›</span></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- KATEGÓRIA 6: SZEMÉLYISÉG + ERŐK -->
+  <section class="cat">
+    <div class="cat-head">
+      <span class="cat-num">VI.</span>
+      <h2 class="cat-title">Személyiség &amp; karakter-erők</h2>
+      <span class="cat-sub">2 teszt · 132 item</span>
+    </div>
+    <div class="grid">
+      <a class="card" href="szemelyiseg.html#test-bf" style="--accent:#818cf8">
+        <span class="card-tag">Big Five</span>
+        <h3>IPIP-NEO-60 <em>5 domén × 6 facet</em></h3>
+        <p class="desc">A tudományos konszenzus személyiség-modellje: nyitottság, lelkiismeretesség, extraverzió, együttműködés, neuroticitás — mind 6 alfacetre lebontva.</p>
+        <ul class="tests">
+          <li><span class="name">IPIP-NEO-60</span><span class="cnt">60 item · 5×6 facet</span></li>
+        </ul>
+        <div class="open">Nyisd meg <span class="arrow">›</span></div>
+      </a>
+
+      <a class="card" href="szemelyiseg.html#test-via" style="--accent:#fbbf24">
+        <span class="card-tag">Karakter-erők</span>
+        <h3>VIA-72 <em>24 karakter-erősség</em></h3>
+        <p class="desc">Peterson &amp; Seligman pozitív pszichológiai modellje. 6 erény, 24 karakter-erő — melyek a &quot;signature strength&quot;-jeid, amik életre keltenek.</p>
+        <ul class="tests">
+          <li><span class="name">VIA-72</span><span class="cnt">72 item · 24 erősség</span></li>
+        </ul>
+        <div class="open">Nyisd meg <span class="arrow">›</span></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p><strong>Készítő:</strong> JT · Budapest · 2025–2026</p>
+    <p>Minden teszt validált klinikai vagy kutatási eszköz, magyar nyelvre adaptálva. A kiértékelések tájékoztató jellegűek.</p>
+    <div class="disclaimer">
+      <strong>Nem diagnosztikai eszköz.</strong> Ez a felület önismereti térkép-készítés, nem klinikai szűrés vagy terápia. Ha bármelyik eredmény aggodalmat kelt (különösen a disszociáció, séma-módok, szex-diszfunkció területén), keresd meg a saját terapeutád vagy szakembert. Az eredmények egy adott pillanat állapotát tükrözik.
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>

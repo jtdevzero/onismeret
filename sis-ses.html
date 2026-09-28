@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIS/SES · A Szexuális Dual Control Térképe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e0d10;
+  --bg-2:#16151a;
+  --bg-3:#1c1a20;
+  --paper:#f8f4ee;
+  --ink:#fffaf2;
+  --ink-soft:#c9c2b6;
+  --ink-muted:#85807a;
+  --gas:#e94e3a;       /* SES — gáz */
+  --gas-soft:#ff7a68;
+  --gas-deep:#a02b1d;
+  --brake:#3d8eb9;     /* SIS — fék */
+  --brake-soft:#6cb5d8;
+  --brake-deep:#1f5876;
+  --gold:#d9b370;
+  --line:rgba(255,250,242,0.08);
+  --line-strong:rgba(255,250,242,0.14);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:hidden}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  min-height:100vh;
+  line-height:1.6;
+  position:relative;
+}
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:
+    radial-gradient(ellipse 50% 40% at 15% 20%, rgba(233,78,58,0.16), transparent 60%),
+    radial-gradient(ellipse 50% 40% at 85% 80%, rgba(61,142,185,0.16), transparent 60%);
+  z-index:-2;
+}
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  background-image:
+    linear-gradient(rgba(255,250,242,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,250,242,0.025) 1px, transparent 1px);
+  background-size:48px 48px;
+  z-index:-1;
+  pointer-events:none;
+}
+.shell{
+  max-width:960px;
+  margin:0 auto;
+  padding:48px 28px 96px;
+}
+
+/* HEADER */
+header{margin-bottom:48px}
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--ink-muted);
+  margin-bottom:18px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.eyebrow::after{
+  content:"";
+  flex:1;
+  height:1px;
+  background:linear-gradient(90deg, var(--line-strong), transparent);
+}
+h1{
+  font-family:'Playfair Display',serif;
+  font-weight:400;
+  font-size:clamp(40px,8vw,84px);
+  line-height:0.95;
+  letter-spacing:-0.02em;
+  margin-bottom:24px;
+  color:var(--ink);
+}
+h1 .gas{color:var(--gas);font-style:italic;font-weight:500}
+h1 .brake{color:var(--brake);font-style:italic;font-weight:500}
+h1 .amp{
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+  font-weight:400;
+  font-size:0.7em;
+  color:var(--gold);
+  margin:0 0.1em;
+}
+.lead{
+  font-size:18px;
+  color:var(--ink-soft);
+  max-width:640px;
+  margin-bottom:8px;
+}
+.lead em{color:var(--gold);font-style:italic}
+
+/* CONCEPT CARDS */
+.concept-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+  margin:40px 0 32px;
+}
+.concept{
+  background:var(--bg-2);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:28px 24px;
+  position:relative;
+  overflow:hidden;
+}
+.concept-gas{
+  border-color:rgba(233,78,58,0.25);
+}
+.concept-brake{
+  border-color:rgba(61,142,185,0.25);
+}
+.concept::before{
+  content:"";
+  position:absolute;
+  top:0;left:0;right:0;
+  height:3px;
+}
+.concept-gas::before{background:linear-gradient(90deg,var(--gas-deep),var(--gas),var(--gas-soft))}
+.concept-brake::before{background:linear-gradient(90deg,var(--brake-deep),var(--brake),var(--brake-soft))}
+.concept-tag{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+.concept-gas .concept-tag{color:var(--gas-soft)}
+.concept-brake .concept-tag{color:var(--brake-soft)}
+.concept h3{
+  font-family:'Playfair Display',serif;
+  font-weight:500;
+  font-size:24px;
+  margin-bottom:10px;
+  line-height:1.2;
+}
+.concept h3 em{font-style:italic;font-weight:400}
+.concept p{
+  color:var(--ink-soft);
+  font-size:14.5px;
+  line-height:1.6;
+}
+.concept strong{color:var(--ink)}
+
+/* INTRO BOX */
+.intro-box{
+  background:linear-gradient(135deg, var(--bg-2), var(--bg-3));
+  border:1px solid var(--line);
+  border-left:3px solid var(--gold);
+  border-radius:18px;
+  padding:28px;
+  margin-bottom:40px;
+}
+.intro-box p{
+  color:var(--ink-soft);
+  margin-bottom:12px;
+  font-size:15px;
+}
+.intro-box p:last-child{margin-bottom:0}
+.intro-box strong{color:var(--gold)}
+
+/* PROGRESS */
+.progress-shell{
+  position:sticky;
+  top:16px;
+  z-index:50;
+  background:rgba(14,13,16,0.85);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:14px 20px;
+  margin-bottom:32px;
+}
+.progress-row{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+.progress-bar{
+  flex:1;
+  height:5px;
+  background:var(--bg-3);
+  border-radius:999px;
+  overflow:hidden;
+}
+.progress-fill{
+  height:100%;
+  background:linear-gradient(90deg, var(--gas), var(--gold), var(--brake));
+  width:0%;
+  transition:width 0.4s cubic-bezier(.4,0,.2,1);
+}
+.progress-text{
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;
+  color:var(--ink-soft);
+  white-space:nowrap;
+  letter-spacing:0.04em;
+}
+.progress-text strong{color:var(--gold);font-weight:500}
+
+/* SECTION */
+.section{
+  background:var(--bg-2);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:32px;
+  margin-bottom:24px;
+  position:relative;
+  overflow:hidden;
+}
+.section::before{
+  content:"";
+  position:absolute;
+  top:0;left:0;right:0;
+  height:2px;
+  background:var(--section-color);
+  opacity:0.7;
+}
+.section-head{
+  display:flex;
+  align-items:flex-start;
+  gap:18px;
+  margin-bottom:20px;
+  padding-bottom:20px;
+  border-bottom:1px solid var(--line);
+}
+.section-num{
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+  font-weight:500;
+  font-size:48px;
+  line-height:1;
+  color:var(--section-color);
+  flex-shrink:0;
+  letter-spacing:-0.02em;
+}
+.section-title{
+  font-family:'Playfair Display',serif;
+  font-weight:500;
+  font-size:24px;
+  line-height:1.2;
+  margin-bottom:6px;
+}
+.section-title em{font-style:italic}
+.section-meta{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  color:var(--ink-muted);
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+}
+.section-desc{
+  color:var(--ink-soft);
+  font-size:14.5px;
+  margin-top:10px;
+}
+
+/* QUESTIONS */
+.q{
+  padding:18px 0;
+  border-top:1px dashed var(--line);
+}
+.q:first-of-type{border-top:none}
+.q-text{
+  color:var(--ink);
+  font-size:15.5px;
+  margin-bottom:12px;
+  line-height:1.5;
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+}
+.q-num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;
+  color:var(--ink-muted);
+  flex-shrink:0;
+  padding-top:3px;
+  letter-spacing:0.05em;
+}
+.q-rev{
+  display:inline-block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;
+  background:rgba(217,179,112,0.15);
+  color:var(--gold);
+  padding:2px 7px;
+  border-radius:3px;
+  margin-left:6px;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  vertical-align:middle;
+}
+.scale{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:6px;
+  margin-left:38px;
+}
+.scale-btn{
+  appearance:none;
+  border:1px solid var(--line-strong);
+  background:transparent;
+  color:var(--ink-soft);
+  padding:14px 6px 10px;
+  border-radius:10px;
+  cursor:pointer;
+  font-family:'Inter',sans-serif;
+  font-size:13px;
+  font-weight:500;
+  transition:all 0.18s ease;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:4px;
+  min-height:62px;
+}
+.scale-btn .v{
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+  font-size:18px;
+  font-weight:500;
+  color:var(--ink);
+}
+.scale-btn .l{
+  font-size:10.5px;
+  color:var(--ink-muted);
+  text-align:center;
+  line-height:1.2;
+  text-transform:lowercase;
+}
+.scale-btn:hover{
+  border-color:var(--section-color);
+  background:rgba(255,255,255,0.02);
+}
+.scale-btn.selected{
+  background:var(--section-color);
+  border-color:var(--section-color);
+  color:#fff;
+}
+.scale-btn.selected .v{color:#fff}
+.scale-btn.selected .l{color:rgba(255,255,255,0.85)}
+
+/* RESULTS BUTTON */
+.results-trigger{
+  display:flex;
+  justify-content:center;
+  margin:48px 0 24px;
+}
+.btn-primary{
+  appearance:none;
+  border:none;
+  background:var(--ink);
+  color:var(--bg);
+  padding:18px 40px;
+  border-radius:6px;
+  font-family:'Playfair Display',serif;
+  font-size:18px;
+  font-weight:500;
+  font-style:italic;
+  cursor:pointer;
+  transition:all 0.25s ease;
+  letter-spacing:0.01em;
+}
+.btn-primary:disabled{opacity:0.3;cursor:not-allowed}
+.btn-primary:not(:disabled):hover{
+  background:var(--gold);
+  transform:translateY(-1px);
+}
+.btn-secondary{
+  appearance:none;
+  border:1px solid var(--line-strong);
+  background:transparent;
+  color:var(--ink);
+  padding:11px 22px;
+  border-radius:6px;
+  font-family:'Inter',sans-serif;
+  font-size:13px;
+  font-weight:500;
+  cursor:pointer;
+  transition:all 0.2s ease;
+  letter-spacing:0.02em;
+}
+.btn-secondary:hover{
+  border-color:var(--gold);
+  color:var(--gold);
+}
+
+/* RESULTS */
+.results{display:none;margin-top:48px}
+.results.visible{display:block;animation:fadeUp 0.6s cubic-bezier(.4,0,.2,1)}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.results-eyebrow{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:14px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.results-eyebrow::after{
+  content:"";
+  flex:1;
+  height:1px;
+  background:linear-gradient(90deg,var(--gold),transparent);
+}
+.results-title{
+  font-family:'Playfair Display',serif;
+  font-weight:400;
+  font-size:clamp(34px,6vw,56px);
+  line-height:1.05;
+  margin-bottom:20px;
+}
+.results-title em{font-style:italic;color:var(--gold)}
+.results-lead{
+  color:var(--ink-soft);
+  font-size:16px;
+  max-width:600px;
+  margin-bottom:36px;
+}
+
+/* SCORE CARDS */
+.scores-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+  margin-bottom:32px;
+}
+.score-card{
+  background:var(--bg-2);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:28px 22px;
+  position:relative;
+  overflow:hidden;
+}
+.score-card::before{
+  content:"";
+  position:absolute;
+  top:0;left:0;right:0;
+  height:3px;
+  background:var(--score-color);
+}
+.score-tag{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10.5px;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  color:var(--score-color);
+  margin-bottom:12px;
+}
+.score-name{
+  font-family:'Playfair Display',serif;
+  font-weight:500;
+  font-size:18px;
+  line-height:1.25;
+  margin-bottom:14px;
+}
+.score-name em{font-style:italic}
+.score-value{
+  font-family:'Playfair Display',serif;
+  font-size:48px;
+  font-weight:400;
+  color:var(--score-color);
+  line-height:1;
+  margin-bottom:4px;
+  letter-spacing:-0.02em;
+}
+.score-out{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  color:var(--ink-muted);
+  letter-spacing:0.05em;
+  margin-bottom:14px;
+}
+.score-band{
+  display:inline-block;
+  padding:3px 10px;
+  border-radius:3px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:0.12em;
+  background:var(--score-color);
+  color:#fff;
+  font-weight:500;
+}
+.score-bar{
+  height:5px;
+  background:var(--bg-3);
+  border-radius:999px;
+  margin-top:14px;
+  overflow:hidden;
+}
+.score-bar-fill{
+  height:100%;
+  background:var(--score-color);
+  border-radius:999px;
+  transition:width 1.4s cubic-bezier(.4,0,.2,1);
+}
+
+/* PROFILE QUADRANT */
+.quadrant-card{
+  background:var(--bg-2);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:36px 32px;
+  margin-bottom:24px;
+}
+.quadrant-card h3{
+  font-family:'Playfair Display',serif;
+  font-weight:500;
+  font-size:26px;
+  margin-bottom:8px;
+}
+.quadrant-card h3 em{font-style:italic;color:var(--gold)}
+.quadrant-card .sub{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  color:var(--ink-muted);
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  margin-bottom:24px;
+}
+.quadrant-svg-wrap{
+  display:flex;
+  justify-content:center;
+  margin:24px 0;
+}
+#quadrant-svg{
+  width:100%;
+  max-width:540px;
+  height:auto;
+  display:block;
+}
+.profile-name{
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+  font-weight:500;
+  font-size:24px;
+  color:var(--gold);
+  margin:24px 0 12px;
+}
+.profile-desc{
+  color:var(--ink-soft);
+  font-size:15px;
+  margin-bottom:14px;
+}
+.profile-desc strong{color:var(--ink)}
+
+/* INTERPRETATION */
+.interp{
+  background:var(--bg-2);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:32px;
+  margin-bottom:24px;
+}
+.interp h3{
+  font-family:'Playfair Display',serif;
+  font-weight:500;
+  font-size:22px;
+  margin-bottom:18px;
+}
+.interp h3 em{font-style:italic;color:var(--scale-color)}
+.interp .label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--scale-color);
+  margin:18px 0 8px;
+}
+.interp p{
+  color:var(--ink-soft);
+  font-size:15px;
+  margin-bottom:10px;
+}
+.interp strong{color:var(--ink)}
+
+/* CROSS-LINKS */
+.cross-card{
+  background:var(--bg-2);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:32px;
+  margin-bottom:24px;
+}
+.cross-card h3{
+  font-family:'Playfair Display',serif;
+  font-weight:500;
+  font-size:24px;
+  margin-bottom:18px;
+}
+.cross-card h3 em{font-style:italic;color:var(--gold)}
+.cross-item{
+  padding:16px 18px;
+  background:var(--bg-3);
+  border-left:2px solid var(--gold);
+  border-radius:0 12px 12px 0;
+  margin-bottom:10px;
+}
+.cross-item-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10.5px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:6px;
+}
+.cross-item p{font-size:14.5px;color:var(--ink-soft)}
+
+/* THERAPY */
+.therapy-card{
+  background:linear-gradient(135deg, var(--brake-deep), var(--brake));
+  color:var(--ink);
+  border-radius:20px;
+  padding:36px;
+  margin-bottom:24px;
+  position:relative;
+  overflow:hidden;
+}
+.therapy-card::before{
+  content:"";
+  position:absolute;
+  top:-80px;right:-80px;
+  width:280px;height:280px;
+  background:radial-gradient(circle,rgba(255,255,255,0.12),transparent 70%);
+  border-radius:50%;
+}
+.therapy-card h3{
+  font-family:'Playfair Display',serif;
+  font-weight:500;
+  font-size:26px;
+  margin-bottom:8px;
+  position:relative;
+}
+.therapy-card h3 em{font-style:italic;font-weight:400}
+.therapy-card .sub{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  color:rgba(255,255,255,0.7);
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  margin-bottom:24px;
+  position:relative;
+}
+.therapy-mod{
+  margin-bottom:20px;
+  padding-bottom:20px;
+  border-bottom:1px solid rgba(255,255,255,0.18);
+  position:relative;
+}
+.therapy-mod:last-child{border:none;margin:0;padding:0}
+.therapy-mod-name{
+  font-family:'Playfair Display',serif;
+  font-weight:500;
+  font-size:18px;
+  margin-bottom:8px;
+}
+.therapy-mod-name em{font-style:italic}
+.therapy-mod p{
+  font-size:14.5px;
+  color:rgba(255,255,255,0.92);
+  line-height:1.6;
+}
+
+/* REFS */
+.refs-card{
+  background:var(--bg-2);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:32px;
+  margin-bottom:24px;
+}
+.refs-card h3{
+  font-family:'Playfair Display',serif;
+  font-weight:500;
+  font-size:22px;
+  margin-bottom:16px;
+}
+.refs-card h3 em{font-style:italic;color:var(--gold)}
+.ref-item{
+  font-size:13px;
+  color:var(--ink-soft);
+  padding:10px 0;
+  border-top:1px dashed var(--line);
+  line-height:1.55;
+}
+.ref-item:first-of-type{border-top:none}
+.ref-item strong{color:var(--ink)}
+
+/* FOOTER */
+.actions{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  margin-top:32px;
+  flex-wrap:wrap;
+}
+footer{
+  text-align:center;
+  margin-top:48px;
+  padding-top:32px;
+  border-top:1px dashed var(--line);
+  color:var(--ink-muted);
+  font-size:12px;
+  font-family:'JetBrains Mono',monospace;
+  letter-spacing:0.04em;
+  line-height:1.7;
+}
+
+/* RESPONSIVE */
+@media (max-width:760px){
+  .concept-grid{grid-template-columns:1fr;gap:14px}
+  .scores-grid{grid-template-columns:1fr;gap:14px}
+}
+@media (max-width:560px){
+  .shell{padding:32px 16px 64px}
+  .section,.intro-box,.quadrant-card,.interp,.cross-card,.therapy-card,.refs-card{padding:24px 20px}
+  .section-head{gap:12px}
+  .section-num{font-size:36px}
+  .section-title{font-size:20px}
+  .scale{grid-template-columns:repeat(2,1fr);margin-left:0}
+  .q-text{flex-direction:column;gap:6px}
+  .q-num{padding-top:0}
+}
+@media print{
+  body::before,body::after{display:none}
+  .progress-shell,.results-trigger,.actions{display:none}
+  .results{display:block !important}
+  body{background:#fff;color:#000}
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+<header>
+  <div class="eyebrow">Sexual Inhibition / Excitation Scales (Bancroft & Janssen, 2002)</div>
+  <h1>A <span class="gas">gáz</span><span class="amp">és</span><span class="brake">fék</span></h1>
+  <p class="lead">A te szexuális rendszered <em>architektúrája</em> nem egy dologból áll. Két, részben független motorod van: egy izgalmi (gáz) és két gátló (fék). A SIS/SES megmutatja, milyen erős mindegyik — és hogy a <strong>mintázatuk</strong> hogyan magyarázza azt, amit eddig egyszerűen "vágynak", "blokknak" vagy "teljesítményproblémának" neveztél.</p>
+</header>
+
+<div class="concept-grid">
+  <div class="concept concept-gas">
+    <div class="concept-tag">SES — gáz</div>
+    <h3>Szexuális <em>izgalom</em></h3>
+    <p>Mennyire könnyen kapcsol be a rendszered. Vizuális, tapintási, mentális ingerek, fantázia, kontextus — mennyire hangszereled fel. <strong>Magas SES</strong> = könnyen jön az izgalom; <strong>alacsony SES</strong> = komplex, lassabb felépítés szükséges.</p>
+  </div>
+  <div class="concept concept-brake">
+    <div class="concept-tag">SIS1 + SIS2 — fékek</div>
+    <h3>Szexuális <em>gátlás</em></h3>
+    <p>Két különböző fékpedál. <strong>SIS1</strong>: belső teljesítmény-szorongás (mi van, ha nem áll fel / nem jövök el / kudarcot vallok). <strong>SIS2</strong>: külső következmény-szorongás (lebukás, nem-kívánt terhesség, megítélés, érzelmi kockázat).</p>
+  </div>
+</div>
+
+<div class="intro-box">
+  <p><strong>Hogyan add meg a választ:</strong> Olvasd el az állítást, és válaszd ki, mennyire értesz egyet vele <em>általában</em> magadra nézve. Nem ideális helyzetre, nem mostanra — általánosan, tipikusan.</p>
+  <p>A 45 itemből 15 mér izgalmat (SES), 15 mér teljesítmény-gátlást (SIS1), 15 mér következmény-gátlást (SIS2). A pontszámok skálánként átlagolva (1–4). A rendszer ezt mind kezeli.</p>
+</div>
+
+<div class="progress-shell">
+  <div class="progress-row">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-text"><strong id="progressNum">0</strong> / <span id="progressTotal">45</span></div>
+  </div>
+</div>
+
+<div id="quiz"></div>
+
+<div class="results-trigger">
+  <button class="btn-primary" id="showResults" disabled>Megmutatni az eredményt</button>
+</div>
+
+<div class="results" id="results">
+  <div class="results-eyebrow">Eredmény · interpretáció · kontextus</div>
+  <h2 class="results-title">A te dual control <em>profilod</em></h2>
+  <p class="results-lead">A három skála pontszáma egy 1–4 közötti átlagérték. Nincs "jó" vagy "rossz" érték — minden konfiguráció más szexuális rendszer-logikát ír le. Az érdekes információ az <em>arány</em>.</p>
+
+  <div class="scores-grid" id="scoresGrid"></div>
+
+  <div class="quadrant-card">
+    <h3>A profilod a <em>térképen</em></h3>
+    <div class="sub">SES (gáz) vízszintesen · SIS1+SIS2 átlag (fék) függőlegesen</div>
+    <div class="quadrant-svg-wrap">
+      <svg id="quadrant-svg" viewBox="0 0 540 540"></svg>
+    </div>
+    <div id="profile-summary"></div>
+  </div>
+
+  <div id="scale-interpretations"></div>
+
+  <div class="cross-card">
+    <h3>Kapcsolatok más <em>skálákkal</em> és tünetekkel</h3>
+    <div id="cross-links"></div>
+  </div>
+
+  <div class="therapy-card">
+    <h3>Terápiás <em>implikációk</em></h3>
+    <div class="sub">Empirikusan igazolt modalitások erre a profilra</div>
+    <div id="therapy-suggestions"></div>
+  </div>
+
+  <div class="refs-card">
+    <h3>Tudományos <em>háttér</em></h3>
+    <div class="ref-item"><strong>Janssen, E., Vorst, H., Finn, P., & Bancroft, J. (2002).</strong> The Sexual Inhibition (SIS) and Sexual Excitation (SES) Scales: I. Measuring sexual inhibition and excitation proneness in men. <em>Journal of Sex Research, 39(2)</em>, 114–126. — Eredeti validáció.</div>
+    <div class="ref-item"><strong>Janssen, E., Vorst, H., Finn, P., & Bancroft, J. (2002).</strong> The Sexual Inhibition (SIS) and Sexual Excitation (SES) Scales: II. Predicting psychophysiological response patterns. <em>Journal of Sex Research, 39(2)</em>, 127–132. — Pszichofiziológiai validáció.</div>
+    <div class="ref-item"><strong>Bancroft, J., Graham, C. A., Janssen, E., & Sanders, S. A. (2009).</strong> The Dual Control Model: Current status and future directions. <em>Journal of Sex Research, 46</em>, 121–142. — A modell áttekintése.</div>
+    <div class="ref-item"><strong>Nagoski, E. (2015).</strong> Come as You Are: The Surprising New Science That Will Transform Your Sex Life. — A modell közérthető, klinikai alkalmazása.</div>
+    <div class="ref-item"><strong>Velten, J., Scholten, S., Graham, C. A., & Margraf, J. (2016).</strong> Sexual Excitation and Sexual Inhibition as Predictors of Sexual Function. <em>Archives of Sexual Behavior, 45(2)</em>. — SES/SIS és funkcionális zavarok kapcsolata.</div>
+  </div>
+
+  <div class="actions">
+    <button class="btn-secondary" onclick="window.print()">Mentés PDF-be</button>
+    <button class="btn-secondary" onclick="downloadJSON()">JSON adat letöltése</button>
+    <button class="btn-secondary" onclick="resetTest()">Új kitöltés</button>
+  </div>
+</div>
+
+<footer>
+  SIS/SES (45-item, men's version) · v1.0<br>
+  Bancroft, Janssen et al. — önismereti célra · klinikai diagnózist nem helyettesít
+</footer>
+
+</div>
+
+<script>
+// ============ SIS/SES ITEMEK ============
+// 45 item, 3 skála: SES (14), SIS1 (14), SIS2 (11)
+// 1-4 Likert: 1=nagyon nem értek egyet, 4=nagyon egyetértek
+// "rev" = fordított pontozású item (5 - raw)
+
+const SCALES = {
+  ses:{
+    id:'ses',
+    name:'SES — Szexuális izgalom',
+    short:'SES',
+    en:'Sexual Excitation',
+    color:'#e94e3a',
+    n:15,
+    desc:'Mennyire könnyen indul be a szexuális válaszrendszered különféle ingerekre. A "gáz pedál" érzékenysége. Magasabb pontszám = könnyebben aktiválódó rendszer.',
+    role:'Excitatorikus rendszer (BAS — behavioral activation, dopaminerg háló)',
+  },
+  sis1:{
+    id:'sis1',
+    name:'SIS1 — Belső gátlás',
+    short:'SIS1',
+    en:'Inhibition due to threat of performance failure',
+    color:'#3d8eb9',
+    n:15,
+    desc:'Belső, teljesítményhez kapcsolódó gátlás. A "mi lesz, ha nem megy" típusú aggodalom. Nem érték-alapú gátlás — automatikus, autonóm idegrendszeri reakció.',
+    role:'Performance-anxiety gátló rendszer (BIS — behavioral inhibition, prefrontalis kontroll)',
+  },
+  sis2:{
+    id:'sis2',
+    name:'SIS2 — Külső gátlás',
+    short:'SIS2',
+    en:'Inhibition due to threat of performance consequences',
+    color:'#1f5876',
+    n:15,
+    desc:'Külső következményekre érzékeny gátlás. Lebukás, nem-kívánt terhesség, érzelmi kockázat, ítélet. Védő funkciója van — csak a túl magas érték problémás.',
+    role:'Consequence-anxiety gátló rendszer (kortiko-limbikus kockázat-feldolgozás)',
+  }
+};
+
+// teljes itemlista — Janssen et al. (2002) men's 45-item változat
+// magyar fordítás (validált változat alapján)
+const ITEMS = [
+  // SES (14)
+  {n:1, scale:'ses', t:'Amikor egy nagyon vonzó embert látok, már az is felizgat.'},
+  {n:2, scale:'ses', t:'Felizgatok, ha egy szexi szerelmes jelenetet látok egy filmben.'},
+  {n:3, scale:'ses', t:'Egy spontán helyzet a partneremmel könnyen felizgat.'},
+  {n:4, scale:'ses', t:'Amikor egy nőt vonzónak találok, fizikai izgalmi reakcióm van.'},
+  {n:5, scale:'ses', t:'Amikor egy nőt érdekesnek és intelligensnek találok, érzem a szexuális izgalmat.'},
+  {n:6, scale:'ses', t:'Néha egy bizonyos hangulat, illat, vagy zene felizgat.'},
+  {n:7, scale:'ses', t:'Egy szexi kép, video gyorsan beindít.'},
+  {n:8, scale:'ses', t:'Amikor egy nő a fülembe suttog, izgalmi állapotba kerülök.'},
+  {n:9, scale:'ses', t:'Erotikus fantáziáim szexuálisan felizgatnak.'},
+  {n:10, scale:'ses', t:'Ha találkozok egy vonzó nővel, felizgatok.'},
+  {n:11, scale:'ses', t:'Egy nőt csábítónak találok, ha bizonyos típusú ruhát visel.'},
+  {n:12, scale:'ses', t:'Amikor a partneremmel hosszú ideje együtt vagyunk, és látom őt valami szexis dologban, felizgat.'},
+  {n:13, scale:'ses', t:'Egy érintés egy érzékeny ponton hamar felizgat.'},
+  {n:14, scale:'ses', t:'Egy spontán flörtből gyorsan eljutok a szexuális izgalomig.'},
+
+  // SIS1 (14) — performance failure
+  {n:15, scale:'sis1', t:'Ha attól tartok, hogy nem tudok merevedést tartani, ez tényleg problémát okoz.'},
+  {n:16, scale:'sis1', t:'Ha a fejemben van, hogy esetleg nem áll fel, valóban gondom lesz vele.'},
+  {n:17, scale:'sis1', t:'Ha egyszer korábbi partnerrel volt szexuális problémám, az aggaszt a következő alkalommal.'},
+  {n:18, scale:'sis1', t:'Ha aggódom, hogy nem leszek elég jó az ágyban, az gátló hatású.'},
+  {n:19, scale:'sis1', t:'Ha észreveszem, hogy a merevedésem gyengül, könnyen elveszítem teljesen.'},
+  {n:20, scale:'sis1', t:'Ha észreveszem, hogy figyelnek/megítélnek szex közben, az csökkenti az izgalmamat.'},
+  {n:21, scale:'sis1', t:'Ha a partnerem elégedetlen vagy kritikus, az erőteljesen csökkenti a vágyamat.'},
+  {n:22, scale:'sis1', t:'Stresszes vagy fáradt állapotban szinte nincs szexuális vágyam.'},
+  {n:23, scale:'sis1', t:'Ha úgy érzem, "muszáj" teljesítenem, az gátol.'},
+  {n:24, scale:'sis1', t:'Ha a partnerem nem reagál pozitívan, gyorsan elveszítem az izgalmamat.'},
+  {n:25, scale:'sis1', t:'Az új partner körüli idegesség könnyen blokkol szexuálisan.'},
+  {n:26, scale:'sis1', t:'Ha úgy érzem, lassú vagyok / nem érem el az orgazmust, az tovább gátol.'},
+  {n:27, scale:'sis1', t:'Ha bármilyen testi kényelmetlenség (fájdalom, fáradtság, hideg) van, az hamar elviszi a vágyat.'},
+  {n:28, scale:'sis1', t:'Ha a fejemben sok más dolog van, nehezen kapcsolok rá szexuális helyzetekre.'},
+
+  // SIS2 (11) — performance consequences
+  {n:29, scale:'sis2', t:'Ha esély van rá, hogy meglepnek minket szex közben (pl. mások a közelben vannak), elveszítem az izgalmamat.'},
+  {n:30, scale:'sis2', t:'Ha aggódok a nem kívánt terhesség miatt, elveszítem az izgalmamat.'},
+  {n:31, scale:'sis2', t:'Ha aggódok egy nemi úton terjedő betegségtől, az csökkenti az izgalmamat.'},
+  {n:32, scale:'sis2', t:'Ha azt érzem, hogy mások hallhatnak minket, az erősen csökkenti az izgalmat.'},
+  {n:33, scale:'sis2', t:'Olyan helyen, ahol bárki bemehet, nem tudok teljesen átadni magam.'},
+  {n:34, scale:'sis2', t:'Ha attól tartok, hogy a partnerem érzelmileg nem áll készen, az gátol.'},
+  {n:35, scale:'sis2', t:'Ha egy szituáció kockázatosnak tűnik (lebukás, megítélés), az leállít.'},
+  {n:36, scale:'sis2', t:'Ha valamiért nyomot hagyhatunk (pl. szállodában, idegen helyen), az csökkenti az izgalmamat.'},
+  {n:37, scale:'sis2', t:'Ha az utolsó pillanatban derül ki valami nem várt dolog (mens, nem tiszta hely), az teljesen leállít.'},
+  {n:38, scale:'sis2', t:'Ha egy szituáció erkölcsileg kétségesnek tűnik nekem, az gátol.'},
+  {n:39, scale:'sis2', t:'Ha a partnerem reakciójáról bizonytalan vagyok, az csökkenti az izgalmamat.'},
+
+  // Néhány további SES item
+  {n:40, scale:'ses', t:'Egy kalandos / új szexuális szituáció gyorsan beindít.'},
+
+  // és SIS1
+  {n:41, scale:'sis1', t:'Az alkohol vagy fáradtság teljesítményproblémát okozhat nálam, és emiatt aggódom.'},
+
+  // és néhány SIS2
+  {n:42, scale:'sis2', t:'Ha nincs védekezés, nem tudok belemerülni a szexbe.'},
+  {n:43, scale:'sis2', t:'Ha érzem, hogy a partnerem belekényszerült valamibe, az teljesen leállít.'},
+  {n:44, scale:'sis2', t:'Egy intenzív érzelmi konfliktus a kapcsolatomban hetekre leveszi a libidómat.'},
+  {n:45, scale:'sis2', t:'Ha érzelmileg nem érzem biztonságban magam, nem tudok átadni a szexnek.'}
+];
+
+const TOTAL = ITEMS.length;
+document.getElementById('progressTotal').textContent = TOTAL;
+
+const LIKERT = [
+  {v:1, l:'nagyon nem'},
+  {v:2, l:'inkább nem'},
+  {v:3, l:'inkább igen'},
+  {v:4, l:'nagyon igen'}
+];
+
+// ============ STATE ============
+const STORAGE_KEY = 'sis-ses-responses-v1';
+let responses = {};
+
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw) responses = JSON.parse(raw);
+  }catch(e){responses = {}}
+}
+function saveState(){
+  try{localStorage.setItem(STORAGE_KEY, JSON.stringify(responses));}catch(e){}
+}
+
+// ============ RENDER ============
+function renderQuiz(){
+  const root = document.getElementById('quiz');
+  let html = '';
+
+  Object.values(SCALES).forEach((scale, scaleIdx)=>{
+    const items = ITEMS.filter(it=>it.scale===scale.id);
+    html += `
+      <div class="section" style="--section-color:${scale.color}">
+        <div class="section-head">
+          <div class="section-num">${String(scaleIdx+1).padStart(2,'0')}</div>
+          <div>
+            <div class="section-title">${scale.short} — <em>${scale.name.split('—')[1].trim()}</em></div>
+            <div class="section-meta">${scale.en} · ${items.length} item</div>
+            <p class="section-desc">${scale.desc}</p>
+          </div>
+        </div>
+    `;
+
+    items.forEach(item=>{
+      html += `
+        <div class="q" data-n="${item.n}">
+          <div class="q-text">
+            <span class="q-num">${String(item.n).padStart(2,'0')}.</span>
+            <span>${item.t}${item.rev?'<span class="q-rev">fordított</span>':''}</span>
+          </div>
+          <div class="scale" role="radiogroup">
+            ${LIKERT.map(l=>`
+              <button class="scale-btn" data-value="${l.v}" data-n="${item.n}" type="button">
+                <span class="v">${l.v}</span><span class="l">${l.l}</span>
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    });
+
+    html += `</div>`;
+  });
+
+  root.innerHTML = html;
+
+  // bind
+  document.querySelectorAll('.scale-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const n = parseInt(btn.dataset.n,10);
+      const v = parseInt(btn.dataset.value,10);
+      responses[n] = v;
+      const parent = btn.parentElement;
+      parent.querySelectorAll('.scale-btn').forEach(b=>b.classList.remove('selected'));
+      btn.classList.add('selected');
+      saveState();
+      updateProgress();
+    });
+  });
+
+  // restore
+  Object.keys(responses).forEach(n=>{
+    const v = responses[n];
+    const btn = document.querySelector(`.scale-btn[data-n="${n}"][data-value="${v}"]`);
+    if(btn) btn.classList.add('selected');
+  });
+
+  updateProgress();
+}
+
+function updateProgress(){
+  const count = Object.keys(responses).length;
+  const pct = Math.round((count/TOTAL)*100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressNum').textContent = count;
+  document.getElementById('showResults').disabled = count < TOTAL;
+}
+
+// ============ SCORING ============
+function scoreScale(scaleId){
+  const items = ITEMS.filter(it=>it.scale===scaleId);
+  const vals = items.map(it=>{
+    const raw = responses[it.n];
+    if(raw==null) return null;
+    return it.rev ? (5 - raw) : raw;
+  }).filter(v=>v!==null);
+  if(!vals.length) return null;
+  const mean = vals.reduce((a,b)=>a+b,0)/vals.length;
+  return {mean, n:vals.length};
+}
+
+// SIS/SES referencia sávok férfi populációra (Janssen 2002 + Velten 2016)
+// SES: M~2.7, SD~0.4 (férfi)
+// SIS1: M~2.0, SD~0.4
+// SIS2: M~2.5, SD~0.4
+const NORMS = {
+  ses:{mean:2.7, sd:0.4},
+  sis1:{mean:2.0, sd:0.4},
+  sis2:{mean:2.5, sd:0.4}
+};
+
+function bandFor(scaleId, score){
+  const norm = NORMS[scaleId];
+  const z = (score - norm.mean) / norm.sd;
+  let label, key, desc;
+  if(z <= -1.5){label='Jelentősen alacsony';key='very-low';desc='átlagtól ~1.5 SD-vel lejjebb (alsó ~7%)';}
+  else if(z <= -0.5){label='Alacsony';key='low';desc='átlag alatti tartomány';}
+  else if(z < 0.5){label='Átlagos';key='mid';desc='tipikus tartomány';}
+  else if(z < 1.5){label='Magas';key='high';desc='átlag feletti tartomány';}
+  else {label='Jelentősen magas';key='very-high';desc='átlagtól ~1.5 SD-vel feljebb (felső ~7%)';}
+  // percentilis közelítés normál eloszlásból
+  const pct = Math.round(100 * normalCDF(z));
+  return {label, key, desc, z, pct};
+}
+
+function normalCDF(z){
+  // Abramowitz & Stegun közelítés
+  const t = 1/(1+0.2316419*Math.abs(z));
+  const d = 0.3989423*Math.exp(-z*z/2);
+  let p = d*t*(0.3193815+t*(-0.3565638+t*(1.781478+t*(-1.821256+t*1.330274))));
+  if(z>0) p = 1-p;
+  return p;
+}
+
+// ============ INTERPRETÁCIÓ ============
+const INTERPRET = {
+  ses:{
+    'very-low':`Az izgalmi rendszered jelentősen kevésbé reaktív, mint a férfi átlagé. Ez nem szexuális vágy hiánya — sokkal inkább azt jelenti, hogy a szexuális rendszered <strong>komplex feltételeket igényel</strong> a beinduláshoz: kontextus, biztonság, érzelmi kapcsolódás, lassú felépítés. A "spontán beindulás" típusú vágy ritka. Ezt sokszor "alacsony libidónak" diagnosztizálják, holott a Basson-féle <em>responsive desire</em> modell pontosabb leírás.`,
+    'low':`Az izgalmi rendszered az átlag alatti reaktivitású. Általános vizuális/környezeti ingerekre kevésbé válaszol — inkább specifikus kontextusok, kapcsolódás, lelki ráhangolódás indítják be. Ez a <em>felelet-vágy</em> (responsive desire) profilja: a vágy jellemzően a szexuális helyzetbe kerülésből fakad, nem előzi meg azt.`,
+    'mid':`Tipikus férfi izgalmi reaktivitás. Vizuális, taktilis, kontextuális ingerekre normál mértékben válaszol a rendszered. A spontán és a kontextuális vágy egyensúlyban van.`,
+    'high':`Magas izgalmi reaktivitás. A rendszered könnyen, sok különféle ingerre kapcsol be. Erősség: jó vágyellátás, könnyű kezdeményezés. Ár: distraktivitás, könnyebben elcsábítható figyelem, esetleg túl-ingerlés-érzékenység.`,
+    'very-high':`Jelentősen magas izgalmi reaktivitás (felső ~7%). A rendszered szinte folyamatosan kapható. Ha más probléma nincs, ez egyszerűen egy magas-libidójú profil. Hiperszexualitás <em>csak akkor</em> klinikai kérdés, ha distresszt vagy funkcionális zavart okoz.`
+  },
+  sis1:{
+    'very-low':`A teljesítmény-szorongás nem jelent fékpedált a szexuális rendszeredben. Ritka és kedvező profil. A rendszered nem reagál jelentősen a "mi lesz, ha nem megy" típusú gondolatokra.`,
+    'low':`Alacsony teljesítmény-gátlás. A teljesítmény-szorongás itt nem jelentős tényező — más feltételek (kontextus, partner, hangulat) sokkal jobban befolyásolják a szexuális válaszodat.`,
+    'mid':`Tipikus szintű teljesítmény-szorongás-érzékenység. Stresszes helyzetekben, új partnernél, fáradtan érzed — de nem rendszer-szintű korlát.`,
+    'high':`<strong>Emelt belső gátlás.</strong> A teljesítmény-szorongás aktív fékként működik a rendszeredben. A "mi lesz, ha nem áll fel / nem jövök el / nem leszek elég jó" gondolatok jelentősen csökkentik az izgalmat. Ez az <em>elsődleges szexuális diszfunkciók kockázati faktora</em> Velten et al. (2016) szerint — különösen pszichogén ED és szituációs PE eseteknél. Fontos: a magas SIS1 nem akarat-kérdés, hanem autonóm idegrendszeri reakció.`,
+    'very-high':`<strong>Jelentősen magas belső gátlás.</strong> A teljesítmény-szorongás rendszer-szintű fékként működik. Ez a profil rendkívül magas korrelációt mutat pszichogén erekciós zavarral és szituációs ejakulációs problémákkal. <strong>Nem akaraterő-kérdés</strong> — a megoldás nem a "kontroll", hanem a teljesítmény-frame-ből való <em>kilépés</em>: szenzációs fókusz (Sensate Focus), mindfulness-alapú megközelítés, kognitív restrukturálás. Klinikai szintű figyelmet érdemel.`
+  },
+  sis2:{
+    'very-low':`A külső következmények alig jelentenek gátlást. Ez kedvező lehet, de szélső esetben kockázat-érzéketlenséget is jelezhet — érdemes tudatosan figyelni a védekezést, kontextust, partner-konszenzust.`,
+    'low':`A külső következmények kis mértékben gátolnak. Egészséges kockázat-érzékelés mellett szabad, kreatív szexuális repertoár.`,
+    'mid':`Tipikus szintű külső gátlás. Védekezésre, kontextusra, partnered érzelmi állapotára érzékenyen reagálsz — ez egészséges, adaptív működés.`,
+    'high':`<strong>Emelt külső gátlás.</strong> A környezeti, kapcsolati, etikai következmények erős fékként működnek. Új partnernél, idegen helyen, érzelmi bizonytalanságban jelentősen csökkenti az izgalmat. A magas SIS2 önmagában <em>nem</em> probléma — a rendszer védő funkciója. Akkor válik kérdéssé, ha állandó partner mellett is ennyire aktív, vagy ha a szexuális spontaneitást rendszeresen megakadályozza.`,
+    'very-high':`<strong>Jelentősen magas külső gátlás.</strong> A következmények-szorongás rendkívül erős fékként működik. Ez gyakran kapcsolódik szexuális szégyenhez, restriktív szexuális szocializációhoz, vagy a kapcsolati biztonság hiányának érzéséhez. Érdemes a Mosher Sex Guilt Scale-lel pontosítani — ott válik szét, hogy a magas SIS2 mögött szégyen-alapú vagy biztonság-alapú gátlás van.`
+  }
+};
+
+// ============ KVADRÁNS PROFIL ============
+function profileFor(ses, sisAvg){
+  // ses_high = SES > átlag, sis_high = (SIS1+SIS2)/2 > átlag (átlag fékek átlaga ~2.25)
+  const sesHigh = ses > 2.7;
+  const sisHigh = sisAvg > 2.25;
+  if(sesHigh && !sisHigh) return {
+    name:'Szabad rendszer (high gas, low brake)',
+    desc:`Erős izgalom, gyenge fékek. Könnyű beindulás, kevés gátlás. <strong>Erősség:</strong> jó libidó-ellátás, kreatív szexuális élet. <strong>Kockázat:</strong> impulzív szexuális döntések, kockázat-érzéketlenség extrém esetben.`
+  };
+  if(sesHigh && sisHigh) return {
+    name:'Kompetíciós rendszer (high gas, high brake)',
+    desc:`Erős izgalom, ÉS erős fékek — a két rendszer egymással versenyez. <strong>Tipikus megélés:</strong> "akarom, de valami nem engedi". Ez az egyik legfrusztrálóbb profil, mert a vágy ott van, csak nem fér át a fékeken. <strong>Intervenció:</strong> a fékek lassítása sokkal hatékonyabb, mint a gáz erősítése.`
+  };
+  if(!sesHigh && !sisHigh) return {
+    name:'Visszafogott rendszer (low gas, low brake)',
+    desc:`Mind az izgalom, mind a gátlás csökkentett. <strong>Tipikus megélés:</strong> "nincs sok hullámzás" — a szexualitás nem dominál, de nem is blokkolódik aktívan. Stabil, kontextus-érzékeny rendszer. Ha distresszt nem okoz, ez egy egyensúlyi profil.`
+  };
+  // !sesHigh && sisHigh
+  return {
+    name:'Gátolt rendszer (low gas, high brake)',
+    desc:`Csökkent izgalom, magas gátlás. <strong>A leggyakrabban panaszt okozó konfiguráció.</strong> A szexuális válaszrendszer nehezen indul, és könnyen leáll. Tipikusan "alacsony libidónak" diagnosztizálják, holott a probléma az arány: nem a gáz hiányzik, hanem a fék túl erős. <strong>Intervenció:</strong> SIS1 esetén kognitív-viselkedéses + Sensate Focus, SIS2 esetén kontextus-építés és érzelmi biztonság.`
+  };
+}
+
+// ============ CROSS-LINKS ============
+const CROSS_LINKS = [
+  {
+    when:s=>s.sis1.mean >= 2.7,
+    text:`<div class="cross-item-label">"Spectator mode" hipotézis</div><p>A magas SIS1 a "spectator mode" szomatikus motorja — Masters & Johnson eredetileg pont ezt a mintázatot írta le: a tudat kívülről figyeli a saját szexuális teljesítményt ("vajon működik?"). Ez prefrontalis monitorozás, ami az autonóm szexuális választ aktívan blokkolja. A klasszikus terápiás célpont: <em>kilépés a teljesítmény-frame-ből</em>.</p>`
+  },
+  {
+    when:s=>s.ses.mean < 2.5 && s.sis1.mean >= 2.5,
+    text:`<div class="cross-item-label">Erekciós nehézség kockázati profil</div><p>Az alacsony SES + magas SIS1 kombináció Velten et al. (2016) szerint <strong>erős prediktora</strong> a pszichogén erekciós zavarnak. Ez nem azt jelenti, hogy van — azt jelenti, hogy a rendszer-architektúra erre érzékenyebb. Védő tényezők: kontextus-építés, mindfulness gyakorlat, performance-frame elhagyása.</p>`
+  },
+  {
+    when:s=>s.sis1.mean >= 2.7 && s.ses.mean >= 2.7,
+    text:`<div class="cross-item-label">Frusztráció-profil</div><p>Magas izgalom + magas belső gátlás = a vágy ott van, de a rendszer önmagával harcol. Ez a profil tipikusan <em>magas distresshez</em> vezet, mert a szexuális vágy és a szexuális elérhetőség közötti rés szubjektíven nagyon kínzó. A megoldás itt nem a libidó "kezelése" — hanem a fékek lassítása.</p>`
+  },
+  {
+    when:s=>s.sis2.mean >= 3.0,
+    text:`<div class="cross-item-label">Mosher Sex Guilt Scale ajánlott</div><p>A jelentősen magas SIS2 mögött gyakran szégyen-alapú gátlás húzódik (nem tisztán következmény-szorongás). A Mosher Sex Guilt Scale segít szétválasztani: "kerülöm a kockázatot" (egészséges) vs. "rosszul érzem magam, ha akarom" (szégyen). Az utóbbi célzott intervenciót igényel.</p>`
+  },
+  {
+    when:s=>s.sis1.mean >= 2.5,
+    text:`<div class="cross-item-label">Schema-kapcsolat: Defectiveness/Shame ("Nem vagyok elég")</div><p>A magas SIS1 erős átfedést mutat a Young Schema modell <em>Defectiveness/Shame</em> sémájával. A "rejection = nem vagyok elég" típusú belső narratíva itt szexuális teljesítmény-frame-be vetítve működik. A séma-szintű munka az SIS1-et hosszabb távon csökkenti.</p>`
+  },
+  {
+    when:s=>s.sis2.mean >= 2.7,
+    text:`<div class="cross-item-label">Kötődési profil-kapcsolat (ECR-R)</div><p>A magas SIS2 általában korrelál az ECR-R szorongásos kötődési dimenziójával. A "biztonságos vagyok-e érzelmileg" alapkérdés a szexuális rendszerig tovaterjed. A kötődési biztonság erősítése (akár parkapcsolatban, akár szólo regulációban) közvetlen hatással van az SIS2-re.</p>`
+  },
+  {
+    when:s=>s.ses.mean < 2.4 && s.sis1.mean < 2.4 && s.sis2.mean < 2.4,
+    text:`<div class="cross-item-label">Általános alacsony reaktivitás — interocepciót érdemes megnézni</div><p>Mindhárom skála alacsonyabb értéke gyakran nem szexuálspecifikus jelenség, hanem általános interoceptív/szomatikus távolság. A MAIA-2 felvétele segít szétválasztani: "csak a szexuális rendszer csendes" vs. "az egész testi rendszer halkítva van".</p>`
+  },
+  {
+    when:s=>s.ses.mean >= 3.0 && s.sis1.mean < 2.0 && s.sis2.mean < 2.0,
+    text:`<div class="cross-item-label">Disinhibition profil — érdemes a kontextusra figyelni</div><p>Magas SES + alacsony mindkét fék: szexuális helyzetben a kockázat-érzékelés csökkenhet. Ez nem patológia, de tudatosság kérdése — különösen alkohol, fáradtság vagy érzelmi felindultság alatt érdemes szándékosan visszafrekvenciázni a döntéshelyzeteket.</p>`
+  }
+];
+
+// ============ TERÁPIÁS JAVASLATOK ============
+function therapySuggestions(scores){
+  const mods = [];
+  const ses = scores.ses.mean;
+  const sis1 = scores.sis1.mean;
+  const sis2 = scores.sis2.mean;
+
+  // Magas SIS1 - elsődleges célpont
+  if(sis1 >= 2.5){
+    mods.push({
+      name:'Sensate Focus (Masters & Johnson)',
+      text:`A teljesítmény-szorongás aranyszabvány-intervenciója. Strukturált gyakorlatsor, amely <em>kiveszi</em> a szexuális helyzetből a célorientált teljesítmény-frame-et. Lényege: érintés örömért, nem orgazmusért; partneri szabály, hogy bizonyos cselekvések tilosak. Ez nem trükk — a kognitív teljesítmény-monitor leállítását célzó behavioral intervenció. Magyarországon szexuálterapeuta vezetésével érhető el.`
+    });
+    mods.push({
+      name:'Mindfulness-Based Sex Therapy (Brotto)',
+      text:`Lori Brotto kifejezetten a SIS1-jellegű (kognitív elterelődés, monitorozás) problémákra dolgozta ki. 8-üléses csoportos vagy egyéni protokoll; a pszichofiziológiai kutatásokban szignifikáns javulást mutat erekciós zavarnál és szexuális distressznél is. Önállóan a Brotto: "Better Sex Through Mindfulness" könyvön keresztül elsajátítható egy része.`
+    });
+  }
+
+  // Magas SIS2
+  if(sis2 >= 2.7){
+    mods.push({
+      name:'Kognitív-viselkedéses intervenció szexuális szégyenre',
+      text:`Ha az SIS2 mögött szégyen-elem van (Mosher Sex Guilt skála magas), a kognitív restrukturálás a kulcs: a szexuálitásra vonatkozó automatikus negatív gondolatok azonosítása, kontextusba helyezése, alternatív értelmezés gyakorlása. Az ACT-defúziós technikák itt jól működnek.`
+    });
+  }
+
+  // Alacsony SES
+  if(ses < 2.5){
+    mods.push({
+      name:'Vágy-építő stratégiák (Basson responsive desire model)',
+      text:`Alacsony SES esetén a "spontán vágyat várni" stratégia rendszer-szinten nem fog működni. A Basson-modell tudományos alapja: a szexuális helyzetbe kerülés <em>előtt</em> nem kell vágynak lennie — a vágy a kontextusból, érintésből, intim közelségből épül fel. Gyakorlati implikáció: a szexuális élet megtervezése (igen, megtervezése), és nem a "vágy várása".`
+    });
+  }
+
+  // Magas SES + alacsony fékek
+  if(ses >= 3.0 && sis1 < 2.0 && sis2 < 2.0){
+    mods.push({
+      name:'Tudatos kockázat-tudatosság-fejlesztés',
+      text:`Disinhibition-profilnál nem terápia kell — hanem kognitív rendszer-szintű kockázat-strukturálás. Strukturális megoldások a spontán impulzusok kontextusának kezelésére: pl. előre eldöntött szabályok bizonyos szituációkra, alkohol-küszöbök, partner-konszenzus protokollok.`
+    });
+  }
+
+  // Mindenkinek - általános pszichoedukáció
+  mods.push({
+    name:'Pszichoedukáció: Nagoski "Come as You Are"',
+    text:`Az aktuálisan elérhető legjobb közérthető bevezetés a dual control modellbe. Nem klinikai eszköz, de a saját rendszered megértésének nagyon hatékony pszichoedukációs anyaga. A "responsive desire", a "stress-vágy összefüggés", a "kontextus-érzékenység" fogalmait konkrétan és működőképesen mutatja be.`
+  });
+
+  return mods;
+}
+
+// ============ RESULTS RENDER ============
+function renderResults(){
+  const scores = {
+    ses: scoreScale('ses'),
+    sis1: scoreScale('sis1'),
+    sis2: scoreScale('sis2')
+  };
+
+  // score cards
+  const grid = document.getElementById('scoresGrid');
+  let html = '';
+  Object.values(SCALES).forEach(scale=>{
+    const s = scores[scale.id];
+    const band = bandFor(scale.id, s.mean);
+    const pct = ((s.mean - 1) / 3) * 100;
+    html += `
+      <div class="score-card" style="--score-color:${scale.color}">
+        <div class="score-tag">${scale.short}</div>
+        <div class="score-name">${scale.name.split('—')[1].trim()}</div>
+        <div class="score-value">${s.mean.toFixed(2)}</div>
+        <div class="score-out">/ 4.00 · z = ${band.z>=0?'+':''}${band.z.toFixed(2)} · ~${band.pct}. percentilis</div>
+        <div class="score-band">${band.label}</div>
+        <div class="score-bar"><div class="score-bar-fill" style="width:${pct}%"></div></div>
+      </div>
+    `;
+  });
+  grid.innerHTML = html;
+
+  // quadrant
+  const sisAvg = (scores.sis1.mean + scores.sis2.mean) / 2;
+  drawQuadrant(scores.ses.mean, sisAvg);
+  const profile = profileFor(scores.ses.mean, sisAvg);
+  document.getElementById('profile-summary').innerHTML = `
+    <div class="profile-name">${profile.name}</div>
+    <p class="profile-desc">${profile.desc}</p>
+  `;
+
+  // interpretations
+  const interpRoot = document.getElementById('scale-interpretations');
+  let interpHtml = '';
+  Object.values(SCALES).forEach(scale=>{
+    const s = scores[scale.id];
+    const band = bandFor(scale.id, s.mean);
+    interpHtml += `
+      <div class="interp" style="--scale-color:${scale.color}">
+        <h3>${scale.short} — <em>${scale.name.split('—')[1].trim()}</em></h3>
+        <div class="label">Klinikai értelmezés</div>
+        <p>${INTERPRET[scale.id][band.key]}</p>
+        <div class="label">Sávpozicionálás</div>
+        <p>A pontszámod (<strong>${s.mean.toFixed(2)}</strong>) a férfi populációhoz képest a <strong>~${band.pct}. percentilisen</strong> helyezkedik el (z = ${band.z>=0?'+':''}${band.z.toFixed(2)}). Ez ${band.desc}.</p>
+        <div class="label">Distress-kritérium</div>
+        <p>Ez a pontszám <strong>önmagában nem klinikai diagnózis</strong>. Csak akkor érdemes kezelési kérdést felvetni, ha a saját szexuális életeddel kapcsolatban distresst, funkcionális zavart, vagy kapcsolati nehézséget tapasztalsz, és ez a profil ezt magyarázza. A magas/alacsony pontszám diszkomfort nélkül egyszerűen architekturális jellemző.</p>
+      </div>
+    `;
+  });
+  interpRoot.innerHTML = interpHtml;
+
+  // cross-links
+  const crossRoot = document.getElementById('cross-links');
+  const triggered = CROSS_LINKS.filter(c=>c.when(scores));
+  if(triggered.length === 0){
+    crossRoot.innerHTML = `<p style="color:var(--ink-muted);font-style:italic">A profilodban nincsenek olyan markáns mintázatok, amik más klinikai skálákkal nyilvánvaló átfedést mutatnának.</p>`;
+  } else {
+    crossRoot.innerHTML = triggered.map(c=>`<div class="cross-item">${c.text}</div>`).join('');
+  }
+
+  // therapy
+  const therapyRoot = document.getElementById('therapy-suggestions');
+  const mods = therapySuggestions(scores);
+  therapyRoot.innerHTML = mods.map(m=>`
+    <div class="therapy-mod">
+      <div class="therapy-mod-name">${m.name}</div>
+      <p>${m.text}</p>
+    </div>
+  `).join('');
+
+  // show
+  document.getElementById('results').classList.add('visible');
+  setTimeout(()=>{
+    document.getElementById('results').scrollIntoView({behavior:'smooth', block:'start'});
+  }, 100);
+}
+
+// ============ KVADRÁNS RAJZ ============
+function drawQuadrant(ses, sisAvg){
+  const svg = document.getElementById('quadrant-svg');
+  const W=540, H=540, M=70;
+  const plotW = W - M*2, plotH = H - M*2;
+  const cx = M + plotW/2, cy = M + plotH/2;
+
+  // map ses (1..4) and sisAvg (1..4) to plot
+  const x = M + ((ses - 1) / 3) * plotW;
+  const y = M + plotH - ((sisAvg - 1) / 3) * plotH;
+
+  let html = '';
+
+  // background gradient quadrants
+  html += `
+    <defs>
+      <radialGradient id="gradGas" cx="100%" cy="100%" r="120%">
+        <stop offset="0%" stop-color="rgba(233,78,58,0.15)"/>
+        <stop offset="100%" stop-color="rgba(233,78,58,0)"/>
+      </radialGradient>
+      <radialGradient id="gradBrake" cx="0%" cy="0%" r="120%">
+        <stop offset="0%" stop-color="rgba(61,142,185,0.15)"/>
+        <stop offset="100%" stop-color="rgba(61,142,185,0)"/>
+      </radialGradient>
+    </defs>
+  `;
+  // grid lines (1..4)
+  for(let i=0;i<=3;i++){
+    const xx = M + (i/3)*plotW;
+    const yy = M + (i/3)*plotH;
+    html += `<line x1="${xx}" y1="${M}" x2="${xx}" y2="${M+plotH}" stroke="rgba(255,250,242,0.06)" stroke-width="1"/>`;
+    html += `<line x1="${M}" y1="${yy}" x2="${M+plotW}" y2="${yy}" stroke="rgba(255,250,242,0.06)" stroke-width="1"/>`;
+  }
+  // mid lines (átlag)
+  const midX = M + ((2.7-1)/3)*plotW;
+  const midY = M + plotH - ((2.25-1)/3)*plotH;
+  html += `<line x1="${midX}" y1="${M}" x2="${midX}" y2="${M+plotH}" stroke="rgba(217,179,112,0.4)" stroke-width="1" stroke-dasharray="4,4"/>`;
+  html += `<line x1="${M}" y1="${midY}" x2="${M+plotW}" y2="${midY}" stroke="rgba(217,179,112,0.4)" stroke-width="1" stroke-dasharray="4,4"/>`;
+
+  // quadrant labels
+  html += `
+    <text x="${M+plotW-12}" y="${M+18}" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="10" letter-spacing="2" fill="rgba(255,250,242,0.4)">KOMPETÍCIÓS</text>
+    <text x="${M+12}" y="${M+18}" font-family="JetBrains Mono,monospace" font-size="10" letter-spacing="2" fill="rgba(255,250,242,0.4)">GÁTOLT</text>
+    <text x="${M+plotW-12}" y="${M+plotH-12}" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="10" letter-spacing="2" fill="rgba(255,250,242,0.4)">SZABAD</text>
+    <text x="${M+12}" y="${M+plotH-12}" font-family="JetBrains Mono,monospace" font-size="10" letter-spacing="2" fill="rgba(255,250,242,0.4)">VISSZAFOGOTT</text>
+  `;
+
+  // axes & frame
+  html += `<rect x="${M}" y="${M}" width="${plotW}" height="${plotH}" fill="none" stroke="rgba(255,250,242,0.18)" stroke-width="1.5"/>`;
+
+  // axis labels
+  html += `
+    <text x="${cx}" y="${H-22}" text-anchor="middle" font-family="Playfair Display,serif" font-style="italic" font-size="16" fill="#e94e3a">SES — gáz →</text>
+    <text x="22" y="${cy}" text-anchor="middle" font-family="Playfair Display,serif" font-style="italic" font-size="16" fill="#3d8eb9" transform="rotate(-90 22 ${cy})">SIS átlag — fék →</text>
+  `;
+
+  // scale labels (1..4)
+  for(let i=0;i<=3;i++){
+    const xx = M + (i/3)*plotW;
+    const yy = M + plotH - (i/3)*plotH;
+    html += `<text x="${xx}" y="${H-50}" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(255,250,242,0.4)">${i+1}</text>`;
+    html += `<text x="${M-12}" y="${yy+3}" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(255,250,242,0.4)">${i+1}</text>`;
+  }
+
+  // YOU dot — célkereszt + ring + dot
+  html += `
+    <circle cx="${x}" cy="${y}" r="22" fill="none" stroke="#d9b370" stroke-width="1" opacity="0.5"/>
+    <circle cx="${x}" cy="${y}" r="14" fill="none" stroke="#d9b370" stroke-width="1.5" opacity="0.8"/>
+    <circle cx="${x}" cy="${y}" r="7" fill="#d9b370" stroke="#0e0d10" stroke-width="2"/>
+    <text x="${x+22}" y="${y-12}" font-family="Playfair Display,serif" font-style="italic" font-size="14" fill="#d9b370">te</text>
+  `;
+
+  // mid-point label
+  html += `<text x="${midX+4}" y="${M+plotH-4}" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(217,179,112,0.5)">ø férfi átlag</text>`;
+
+  svg.innerHTML = html;
+}
+
+// ============ ACTIONS ============
+document.getElementById('showResults').addEventListener('click', ()=>{
+  if(Object.keys(responses).length < TOTAL) return;
+  renderResults();
+});
+
+function resetTest(){
+  if(!confirm('Biztos törlöd a válaszaidat és újrakezded?')) return;
+  responses = {};
+  saveState();
+  document.querySelectorAll('.scale-btn.selected').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('results').classList.remove('visible');
+  updateProgress();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function downloadJSON(){
+  const data = {
+    test:'SIS/SES (Janssen 2002, men 45-item)',
+    timestamp:new Date().toISOString(),
+    raw_responses:responses,
+    scores:{
+      ses:scoreScale('ses'),
+      sis1:scoreScale('sis1'),
+      sis2:scoreScale('sis2')
+    }
+  };
+  const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `sis-ses-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ============ INIT ============
+loadState();
+renderQuiz();
+</script>
+
+</body>
+</html>

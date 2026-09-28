@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MAIA-2 · Interoceptív Tudatosság Térképe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-1:#fdf6ee;
+  --bg-2:#f5e9dc;
+  --bg-3:#e8dcc9;
+  --ink:#2b2018;
+  --ink-soft:#5a4a3a;
+  --ink-muted:#8b7a68;
+  --accent-rose:#d68a8a;
+  --accent-clay:#c97a4a;
+  --accent-sage:#7a9b7e;
+  --accent-ocean:#6b8e9e;
+  --accent-sun:#d4a04a;
+  --accent-plum:#9a7090;
+  --accent-rust:#b46343;
+  --accent-moss:#8b9a5b;
+  --paper:#fffbf4;
+  --line:rgba(60,40,20,0.12);
+  --shadow:0 1px 2px rgba(60,40,20,0.04), 0 8px 24px rgba(60,40,20,0.06);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:hidden}
+body{
+  font-family:'Nunito',system-ui,sans-serif;
+  background:var(--bg-1);
+  color:var(--ink);
+  min-height:100vh;
+  line-height:1.6;
+  position:relative;
+}
+/* lélegző háttér */
+body::before{
+  content:"";
+  position:fixed;
+  inset:-20%;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 20%, rgba(214,138,138,0.18), transparent 50%),
+    radial-gradient(ellipse 50% 40% at 80% 30%, rgba(122,155,126,0.16), transparent 50%),
+    radial-gradient(ellipse 70% 50% at 50% 80%, rgba(212,160,74,0.12), transparent 50%),
+    radial-gradient(ellipse 40% 30% at 90% 90%, rgba(154,112,144,0.14), transparent 50%);
+  z-index:-2;
+  animation:breathe 18s ease-in-out infinite;
+}
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(60,40,20,0.04) 1px, transparent 0);
+  background-size:24px 24px;
+  z-index:-1;
+  pointer-events:none;
+}
+@keyframes breathe{
+  0%,100%{transform:scale(1) rotate(0deg);opacity:0.9}
+  50%{transform:scale(1.08) rotate(2deg);opacity:1}
+}
+.shell{
+  max-width:920px;
+  margin:0 auto;
+  padding:48px 28px 96px;
+}
+
+/* HEADER */
+header{
+  text-align:center;
+  margin-bottom:48px;
+  position:relative;
+}
+.eyebrow{
+  font-family:'Fraunces',serif;
+  font-style:italic;
+  font-size:14px;
+  color:var(--ink-muted);
+  letter-spacing:0.08em;
+  margin-bottom:12px;
+}
+h1{
+  font-family:'Fraunces',serif;
+  font-weight:400;
+  font-size:clamp(38px,7vw,68px);
+  line-height:1.05;
+  letter-spacing:-0.02em;
+  color:var(--ink);
+  margin-bottom:16px;
+}
+h1 em{
+  font-style:italic;
+  font-weight:300;
+  color:var(--accent-clay);
+}
+.subtitle{
+  font-size:17px;
+  color:var(--ink-soft);
+  max-width:580px;
+  margin:0 auto;
+}
+.divider{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+  margin:32px auto;
+  color:var(--ink-muted);
+  font-family:'Fraunces',serif;
+  font-style:italic;
+  font-size:13px;
+}
+.divider::before,.divider::after{
+  content:"";
+  height:1px;
+  width:60px;
+  background:var(--line);
+}
+
+/* INTRO CARD */
+.intro{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:36px 32px;
+  box-shadow:var(--shadow);
+  margin-bottom:40px;
+  position:relative;
+  overflow:hidden;
+}
+.intro::before{
+  content:"";
+  position:absolute;
+  top:-40px;right:-40px;
+  width:160px;height:160px;
+  background:radial-gradient(circle,rgba(122,155,126,0.25),transparent 70%);
+  border-radius:50%;
+}
+.intro h2{
+  font-family:'Fraunces',serif;
+  font-size:26px;
+  font-weight:500;
+  margin-bottom:16px;
+  color:var(--ink);
+  position:relative;
+}
+.intro p{
+  color:var(--ink-soft);
+  margin-bottom:14px;
+  position:relative;
+}
+.intro p:last-child{margin-bottom:0}
+.intro strong{color:var(--accent-clay);font-weight:600}
+.scale-info{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:12px;
+  margin-top:24px;
+  padding-top:24px;
+  border-top:1px dashed var(--line);
+}
+.scale-info-item{
+  text-align:center;
+}
+.scale-info-item .num{
+  font-family:'Fraunces',serif;
+  font-size:32px;
+  font-weight:500;
+  color:var(--accent-clay);
+  display:block;
+  line-height:1;
+}
+.scale-info-item .lbl{
+  font-size:12px;
+  color:var(--ink-muted);
+  text-transform:uppercase;
+  letter-spacing:0.06em;
+  margin-top:6px;
+  display:block;
+}
+
+/* DOMAIN INTRO */
+.domain-card{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:32px;
+  box-shadow:var(--shadow);
+  margin-bottom:24px;
+  position:relative;
+  overflow:hidden;
+}
+.domain-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,var(--domain-color,#d68a8a) 0%,transparent 30%);
+  opacity:0.08;
+  pointer-events:none;
+}
+.domain-header{
+  display:flex;
+  align-items:center;
+  gap:18px;
+  margin-bottom:20px;
+}
+.domain-icon{
+  width:52px;height:52px;
+  border-radius:50%;
+  background:var(--domain-color);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Fraunces',serif;
+  font-style:italic;
+  font-size:24px;
+  color:var(--paper);
+  flex-shrink:0;
+  box-shadow:0 4px 12px color-mix(in srgb, var(--domain-color) 40%, transparent);
+}
+.domain-title{
+  font-family:'Fraunces',serif;
+  font-size:24px;
+  font-weight:500;
+  color:var(--ink);
+  line-height:1.2;
+}
+.domain-subtitle{
+  font-size:13px;
+  color:var(--ink-muted);
+  font-style:italic;
+  margin-top:2px;
+}
+.domain-desc{
+  font-size:15px;
+  color:var(--ink-soft);
+  margin-bottom:8px;
+}
+
+/* QUESTIONS */
+.q{
+  padding:20px 0;
+  border-top:1px dashed var(--line);
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:18px;
+  align-items:start;
+}
+.q-num{
+  font-family:'Fraunces',serif;
+  font-style:italic;
+  color:var(--ink-muted);
+  font-size:15px;
+  padding-top:2px;
+  white-space:nowrap;
+}
+.q-text{
+  color:var(--ink);
+  font-size:15.5px;
+  margin-bottom:14px;
+  line-height:1.5;
+}
+.q-reverse-tag{
+  display:inline-block;
+  font-size:10px;
+  background:var(--bg-3);
+  color:var(--ink-muted);
+  padding:1px 7px;
+  border-radius:999px;
+  margin-left:6px;
+  font-family:'Nunito',sans-serif;
+  letter-spacing:0.04em;
+  vertical-align:middle;
+  font-style:normal;
+}
+.scale{
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:6px;
+  margin-top:12px;
+}
+.scale-btn{
+  appearance:none;
+  border:1.5px solid var(--line);
+  background:var(--bg-1);
+  color:var(--ink-soft);
+  padding:14px 4px 8px;
+  border-radius:12px;
+  cursor:pointer;
+  font-family:'Nunito',sans-serif;
+  font-size:13px;
+  font-weight:600;
+  transition:all 0.18s cubic-bezier(.4,0,.2,1);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:4px;
+  min-height:62px;
+}
+.scale-btn .v{
+  font-family:'Fraunces',serif;
+  font-style:italic;
+  font-size:18px;
+  font-weight:500;
+}
+.scale-btn .l{
+  font-size:10px;
+  font-weight:400;
+  color:var(--ink-muted);
+  text-align:center;
+  line-height:1.2;
+}
+.scale-btn:hover{
+  border-color:var(--domain-color,var(--accent-clay));
+  transform:translateY(-1px);
+}
+.scale-btn.selected{
+  background:var(--domain-color,var(--accent-clay));
+  border-color:var(--domain-color,var(--accent-clay));
+  color:var(--paper);
+  box-shadow:0 4px 14px color-mix(in srgb, var(--domain-color,var(--accent-clay)) 35%, transparent);
+}
+.scale-btn.selected .l{color:rgba(255,251,244,0.85)}
+.scale-btn.selected .v{color:var(--paper)}
+
+/* PROGRESS */
+.progress-shell{
+  position:sticky;
+  top:16px;
+  z-index:50;
+  background:rgba(253,246,238,0.85);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:10px 18px;
+  margin-bottom:32px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  box-shadow:var(--shadow);
+}
+.progress-bar{
+  flex:1;
+  height:6px;
+  background:var(--bg-3);
+  border-radius:999px;
+  overflow:hidden;
+}
+.progress-fill{
+  height:100%;
+  background:linear-gradient(90deg,var(--accent-clay),var(--accent-sun),var(--accent-sage));
+  width:0%;
+  transition:width 0.4s cubic-bezier(.4,0,.2,1);
+  border-radius:999px;
+}
+.progress-text{
+  font-family:'Fraunces',serif;
+  font-size:14px;
+  color:var(--ink-soft);
+  white-space:nowrap;
+}
+.progress-text strong{font-weight:500;color:var(--accent-clay)}
+
+/* RESULTS BUTTON */
+.results-trigger{
+  display:flex;
+  justify-content:center;
+  margin:48px 0 24px;
+}
+.btn-primary{
+  appearance:none;
+  border:none;
+  background:var(--ink);
+  color:var(--paper);
+  padding:18px 36px;
+  border-radius:999px;
+  font-family:'Fraunces',serif;
+  font-size:17px;
+  font-weight:400;
+  cursor:pointer;
+  transition:all 0.25s ease;
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  box-shadow:0 6px 24px rgba(43,32,24,0.25);
+}
+.btn-primary:disabled{
+  opacity:0.4;
+  cursor:not-allowed;
+}
+.btn-primary:not(:disabled):hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 30px rgba(43,32,24,0.35);
+}
+.btn-primary em{
+  font-style:italic;
+  font-weight:300;
+}
+.btn-secondary{
+  appearance:none;
+  border:1.5px solid var(--ink);
+  background:transparent;
+  color:var(--ink);
+  padding:12px 24px;
+  border-radius:999px;
+  font-family:'Nunito',sans-serif;
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+  transition:all 0.2s ease;
+}
+.btn-secondary:hover{
+  background:var(--ink);color:var(--paper);
+}
+
+/* RESULTS */
+.results{
+  display:none;
+  margin-top:48px;
+  animation:fadeUp 0.6s cubic-bezier(.4,0,.2,1);
+}
+.results.visible{display:block}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.results-header{
+  text-align:center;
+  margin-bottom:40px;
+}
+.results-header h2{
+  font-family:'Fraunces',serif;
+  font-weight:400;
+  font-size:clamp(32px,5vw,48px);
+  line-height:1.1;
+  margin-bottom:12px;
+}
+.results-header h2 em{
+  font-style:italic;color:var(--accent-clay);font-weight:300;
+}
+.results-header p{
+  color:var(--ink-soft);
+  max-width:600px;
+  margin:0 auto;
+}
+
+/* RADAR */
+.radar-card{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:32px 24px;
+  margin-bottom:32px;
+  box-shadow:var(--shadow);
+}
+.radar-card h3{
+  font-family:'Fraunces',serif;
+  font-weight:500;
+  font-size:22px;
+  text-align:center;
+  margin-bottom:8px;
+}
+.radar-card .sub{
+  text-align:center;
+  font-size:13px;
+  color:var(--ink-muted);
+  margin-bottom:24px;
+  font-style:italic;
+}
+#radar-svg{
+  display:block;
+  margin:0 auto;
+  width:100%;
+  max-width:520px;
+  height:auto;
+}
+
+/* DOMAIN RESULTS */
+.domain-result{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:28px;
+  margin-bottom:20px;
+  box-shadow:var(--shadow);
+  position:relative;
+  overflow:hidden;
+}
+.domain-result::before{
+  content:"";
+  position:absolute;
+  top:0;left:0;right:0;
+  height:4px;
+  background:var(--domain-color);
+}
+.dr-head{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:16px;
+  align-items:flex-start;
+  margin-bottom:18px;
+  padding-bottom:18px;
+  border-bottom:1px dashed var(--line);
+}
+.dr-title-block{}
+.dr-title{
+  font-family:'Fraunces',serif;
+  font-size:22px;
+  font-weight:500;
+  color:var(--ink);
+  margin-bottom:4px;
+}
+.dr-title-en{
+  font-size:12px;
+  color:var(--ink-muted);
+  font-style:italic;
+}
+.dr-score-block{
+  text-align:right;
+  flex-shrink:0;
+}
+.dr-score{
+  font-family:'Fraunces',serif;
+  font-size:44px;
+  font-weight:400;
+  color:var(--domain-color);
+  line-height:1;
+}
+.dr-score-out{
+  font-size:13px;
+  color:var(--ink-muted);
+  margin-top:2px;
+}
+.dr-band{
+  display:inline-block;
+  margin-top:6px;
+  padding:3px 12px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.06em;
+  background:var(--domain-color);
+  color:var(--paper);
+}
+.dr-bar{
+  height:10px;
+  background:var(--bg-3);
+  border-radius:999px;
+  overflow:hidden;
+  margin-bottom:18px;
+}
+.dr-bar-fill{
+  height:100%;
+  background:var(--domain-color);
+  border-radius:999px;
+  transition:width 1.2s cubic-bezier(.4,0,.2,1);
+}
+.dr-section{
+  margin-top:16px;
+  padding-top:16px;
+  border-top:1px dashed var(--line);
+}
+.dr-section:first-child{border-top:none;padding-top:0;margin-top:0}
+.dr-section-label{
+  font-family:'Fraunces',serif;
+  font-style:italic;
+  font-size:13px;
+  color:var(--domain-color);
+  margin-bottom:8px;
+  letter-spacing:0.04em;
+}
+.dr-section p{
+  color:var(--ink-soft);
+  font-size:14.5px;
+  margin-bottom:8px;
+}
+.dr-section p:last-child{margin-bottom:0}
+.dr-section ul{
+  margin-left:20px;
+  color:var(--ink-soft);
+  font-size:14.5px;
+}
+.dr-section li{margin-bottom:6px}
+
+/* CROSS-LINKS */
+.cross-card{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:32px;
+  margin-bottom:24px;
+  box-shadow:var(--shadow);
+}
+.cross-card h3{
+  font-family:'Fraunces',serif;
+  font-weight:500;
+  font-size:24px;
+  margin-bottom:18px;
+  color:var(--ink);
+}
+.cross-card h3 em{font-style:italic;color:var(--accent-plum)}
+.cross-item{
+  padding:14px 16px;
+  background:var(--bg-1);
+  border-left:3px solid var(--accent-plum);
+  border-radius:0 12px 12px 0;
+  margin-bottom:10px;
+}
+.cross-item-label{
+  font-family:'Fraunces',serif;
+  font-style:italic;
+  font-size:13px;
+  color:var(--accent-plum);
+  margin-bottom:4px;
+}
+.cross-item p{
+  font-size:14.5px;
+  color:var(--ink-soft);
+}
+
+/* THERAPY */
+.therapy-card{
+  background:linear-gradient(135deg,#7a9b7e 0%,#9eb084 100%);
+  color:var(--paper);
+  border-radius:24px;
+  padding:36px;
+  margin-bottom:24px;
+  position:relative;
+  overflow:hidden;
+}
+.therapy-card::before{
+  content:"";
+  position:absolute;
+  top:-60px;right:-60px;
+  width:240px;height:240px;
+  background:radial-gradient(circle,rgba(255,251,244,0.3),transparent 70%);
+  border-radius:50%;
+}
+.therapy-card h3{
+  font-family:'Fraunces',serif;
+  font-weight:500;
+  font-size:26px;
+  margin-bottom:18px;
+  position:relative;
+}
+.therapy-card h3 em{font-style:italic;font-weight:300}
+.therapy-mod{
+  margin-bottom:16px;
+  padding-bottom:16px;
+  border-bottom:1px solid rgba(255,251,244,0.25);
+  position:relative;
+}
+.therapy-mod:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.therapy-mod-name{
+  font-family:'Fraunces',serif;
+  font-weight:500;
+  font-size:18px;
+  margin-bottom:6px;
+}
+.therapy-mod p{
+  font-size:14.5px;
+  opacity:0.9;
+  line-height:1.55;
+}
+
+/* REFERENCES */
+.refs-card{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:28px;
+  margin-bottom:24px;
+  box-shadow:var(--shadow);
+}
+.refs-card h3{
+  font-family:'Fraunces',serif;
+  font-weight:500;
+  font-size:20px;
+  margin-bottom:14px;
+}
+.refs-card h3 em{font-style:italic;color:var(--accent-ocean)}
+.ref-item{
+  font-size:13px;
+  color:var(--ink-soft);
+  padding:8px 0;
+  border-top:1px dashed var(--line);
+  line-height:1.5;
+}
+.ref-item:first-of-type{border-top:none}
+.ref-item strong{color:var(--ink)}
+
+/* FOOTER */
+footer{
+  text-align:center;
+  margin-top:48px;
+  padding-top:32px;
+  border-top:1px dashed var(--line);
+  color:var(--ink-muted);
+  font-size:12px;
+  font-style:italic;
+  font-family:'Fraunces',serif;
+}
+.actions{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  margin-top:24px;
+  flex-wrap:wrap;
+}
+
+/* RESPONSIVE */
+@media (max-width:640px){
+  .shell{padding:32px 16px 64px}
+  .intro,.domain-card,.domain-result,.cross-card,.therapy-card,.refs-card{padding:24px 20px}
+  .scale{grid-template-columns:repeat(3,1fr)}
+  .dr-head{grid-template-columns:1fr}
+  .dr-score-block{text-align:left}
+  .domain-header{gap:14px}
+  .domain-icon{width:44px;height:44px;font-size:20px}
+  .domain-title{font-size:20px}
+}
+
+/* PRINT */
+@media print{
+  body::before,body::after{display:none}
+  .progress-shell,.results-trigger,.actions{display:none}
+  .results{display:block !important}
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+<header>
+  <div class="eyebrow">— Multidimensional Assessment of Interoceptive Awareness —</div>
+  <h1>A test belső <em>térképe</em></h1>
+  <p class="subtitle">A MAIA-2 nyolc dimenzióban méri, hogyan figyelsz, érzékelsz és viszonyulsz a saját testedhez. Egy önismereti műszer, ami nem ítél — csak megmutatja, hol szakad meg, és hol tart a vezeték a tested és a tudatod között.</p>
+  <div class="divider">~ 37 állítás · 6-10 perc ~</div>
+</header>
+
+<div class="intro">
+  <h2>Mielőtt elkezded</h2>
+  <p>Olvasd el minden állítást nyugodtan, és válaszd ki azt a számot, ami leginkább leírja, <strong>általában</strong> hogyan jellemző rád. Nem most. Nem ideális helyzetben. Általában.</p>
+  <p>Nincs jó vagy rossz válasz. Az érdekes adat <em>te</em> vagy.</p>
+  <div class="scale-info">
+    <div class="scale-info-item"><span class="num">0</span><span class="lbl">soha</span></div>
+    <div class="scale-info-item"><span class="num">1</span><span class="lbl">ritkán</span></div>
+    <div class="scale-info-item"><span class="num">2</span><span class="lbl">néha</span></div>
+    <div class="scale-info-item"><span class="num">3</span><span class="lbl">gyakran</span></div>
+    <div class="scale-info-item"><span class="num">4</span><span class="lbl">többnyire</span></div>
+    <div class="scale-info-item"><span class="num">5</span><span class="lbl">mindig</span></div>
+  </div>
+</div>
+
+<div class="progress-shell">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-text"><strong id="progressNum">0</strong> / 37</div>
+</div>
+
+<div id="quiz"></div>
+
+<div class="results-trigger">
+  <button class="btn-primary" id="showResults" disabled>
+    <em>Megmutatni</em> az eredményt
+  </button>
+</div>
+
+<div class="results" id="results">
+  <div class="results-header">
+    <h2>A te interoceptív <em>térképed</em></h2>
+    <p>Az alábbi profil a saját tested-tudatod állapotát mutatja meg pillanatnyilag. Kezeld baseline-ként — érdemes 8–12 hét múlva újra felvenni, hogy lásd, mi mozdult.</p>
+  </div>
+
+  <div class="radar-card">
+    <h3>Nyolc dimenzió, egy ábrán</h3>
+    <div class="sub">Minden tengely 0–5 között skálázódik · belül = alacsonyabb, kívül = magasabb</div>
+    <svg id="radar-svg" viewBox="0 0 520 520"></svg>
+  </div>
+
+  <div id="domain-results"></div>
+
+  <div class="cross-card">
+    <h3>Kapcsolatok más <em>skálákkal</em></h3>
+    <div id="cross-links"></div>
+  </div>
+
+  <div class="therapy-card">
+    <h3>Mit kezdj <em>vele</em>? — terápiás implikációk</h3>
+    <div id="therapy-suggestions"></div>
+  </div>
+
+  <div class="refs-card">
+    <h3>Tudományos <em>háttér</em></h3>
+    <div class="ref-item"><strong>Mehling, W. E. et al. (2018).</strong> The Multidimensional Assessment of Interoceptive Awareness, Version 2 (MAIA-2). <em>PLoS ONE, 13(12)</em>, e0208034. — A teszt validációs tanulmánya.</div>
+    <div class="ref-item"><strong>Mehling, W. E. et al. (2012).</strong> The Multidimensional Assessment of Interoceptive Awareness (MAIA). <em>PLoS ONE, 7(11)</em>, e48230. — Eredeti változat.</div>
+    <div class="ref-item"><strong>Khalsa, S. S. et al. (2018).</strong> Interoception and mental health: a roadmap. <em>Biological Psychiatry: Cognitive Neuroscience and Neuroimaging, 3(6)</em>, 501–513. — Az interocepció szerepe a mentális egészségben.</div>
+    <div class="ref-item"><strong>Price, C. J. & Hooven, C. (2018).</strong> Interoceptive Awareness Skills for Emotion Regulation: Theory and Approach of Mindful Awareness in Body-Oriented Therapy (MABT). <em>Frontiers in Psychology, 9</em>, 798. — Klinikai alkalmazás.</div>
+    <div class="ref-item"><strong>Trevisan, D. A. et al. (2021).</strong> Interoceptive abilities and emotional dysregulation in autistic adults. <em>Autism, 25(8)</em>. — Autizmus és interocepció kapcsolata.</div>
+  </div>
+
+  <div class="actions">
+    <button class="btn-secondary" onclick="window.print()">Mentés PDF-be</button>
+    <button class="btn-secondary" onclick="downloadJSON()">JSON adat letöltése</button>
+    <button class="btn-secondary" onclick="resetTest()">Új kitöltés</button>
+  </div>
+</div>
+
+<footer>
+  MAIA-2 Magyar adaptáció · önismereti célra · nem helyettesít klinikai diagnózist<br>
+  Mehling et al. (2018) alapján · v1.0
+</footer>
+
+</div>
+
+<script>
+// ============ MAIA-2 ITEMEK ============
+// 8 doménre bontva, 37 itemmel
+// "reverse" = fordított pontozású (5-x)
+const DOMAINS = [
+  {
+    id:'noticing',
+    name:'Észrevevés',
+    en:'Noticing',
+    color:'#d68a8a',
+    icon:'I',
+    desc:'Mennyire veszed észre a kellemes, semleges és kellemetlen testi érzeteket. Az interocepció alapszintje — a kapu maga.',
+    items:[
+      {n:1, t:'Amikor feszült vagyok, észreveszem, hol van a feszültség a testemben.'},
+      {n:2, t:'Észreveszem, ha kényelmetlenül érzem magam a testemben.'},
+      {n:3, t:'Észreveszem, ha valami megváltozik a testemben (pl. ha könnyebbé vagy lassabbá válik a légzésem).'},
+      {n:4, t:'Észreveszem a kellemes érzéseket a testemben.'}
+    ]
+  },
+  {
+    id:'not-distract',
+    name:'Nem-elterelődés',
+    en:'Not-Distracting',
+    color:'#c97a4a',
+    icon:'II',
+    desc:'Mennyire jellemző, hogy NEM tereled el magad a kényelmetlen testi érzéseket. A magasabb pontszám azt mutatja, képes vagy bent maradni a kellemetlennel.',
+    items:[
+      {n:5, t:'Nem veszem észre (vagy figyelmen kívül hagyom) a fizikai feszültséget vagy kényelmetlenséget, amíg az komolyabbá nem válik.', reverse:true},
+      {n:6, t:'Eltereltem magam az érzésektől.', reverse:true},
+      {n:7, t:'Amikor fájdalmat vagy kényelmetlenséget érzek, megpróbálom kitörölni a tudatomból.', reverse:true},
+      {n:8, t:'Amikor fájdalmat érzek, megpróbálok másra gondolni.', reverse:true},
+      {n:9, t:'Amikor zavaró testi érzéseket veszek észre, mást keresek, ami eltereli a figyelmemet.', reverse:true},
+      {n:10, t:'Amikor szorongok, megpróbálok mással foglalkozni.', reverse:true}
+    ]
+  },
+  {
+    id:'not-worry',
+    name:'Nem-aggódás',
+    en:'Not-Worrying',
+    color:'#d4a04a',
+    icon:'III',
+    desc:'Mennyire jellemző, hogy NEM aggódsz vagy szorongsz a testi érzések miatt. A magasabb érték érzelmi nyugalmat jelez a testi élményekkel kapcsolatban.',
+    items:[
+      {n:11, t:'Felzaklat, ha fájdalmat érzek.', reverse:true},
+      {n:12, t:'Aggódom, ha valami nincs rendben a testemben.', reverse:true},
+      {n:13, t:'Észrevehetem a kényelmetlen testi érzést, anélkül hogy emiatt aggódnék.'},
+      {n:36, t:'Tudok figyelni a kellemetlen testi érzésre úgy, hogy közben nyugodt maradok.'},
+      {n:37, t:'Amikor diszkomfortot érzek a testemben, képes vagyok meglátogatni anélkül, hogy elragadjon.'}
+    ]
+  },
+  {
+    id:'attention',
+    name:'Figyelem-szabályozás',
+    en:'Attention Regulation',
+    color:'#7a9b7e',
+    icon:'IV',
+    desc:'Mennyire vagy képes fenntartani és irányítani a figyelmet a testi érzéseken. Ez egy aktív, megtanulható készség — a meditáció és szomatikus gyakorlatok közvetlen célja.',
+    items:[
+      {n:14, t:'Figyelhetek a légzésemre anélkül, hogy elterelődnék az engem körülvevő dolgoktól.'},
+      {n:15, t:'Tudom magamra irányítani a figyelmet a testem belső érzéseire.'},
+      {n:16, t:'Egy szűk területen is fenn tudom tartani a testi érzések tudatosságát.'},
+      {n:17, t:'Eltudom mozdítani a figyelmemet egyik testi érzéstől a másikig.'},
+      {n:18, t:'A teljes testem felett képes vagyok fenntartani a tudatosságot, még akkor is, ha annak egy részében fájdalom vagy kényelmetlenség van.'},
+      {n:19, t:'Akarat szerint képes vagyok a teljes testemre figyelni.'},
+      {n:20, t:'Észreveszem, hogyan változik a testem, amikor mérges vagyok.'}
+    ]
+  },
+  {
+    id:'emotional-aware',
+    name:'Érzelmi tudatosság',
+    en:'Emotional Awareness',
+    color:'#b46343',
+    icon:'V',
+    desc:'Mennyire vagy tudatában az érzelmek és testi érzetek kapcsolatának. Ez az alexitímia ellentéte — a "test mint érzelmi térkép" képessége.',
+    items:[
+      {n:21, t:'Amikor valami nincs rendben az életemben, érzem azt a testemben.'},
+      {n:22, t:'Tudatában vagyok, hogyan kapcsolódnak a testem és az érzelmek.'},
+      {n:23, t:'Tudatában vagyok, hogyan változik a testem, amikor boldog/elégedett vagyok.'},
+      {n:24, t:'Amikor valami szépet/kellemeset élek meg, érzem azt a testemben.'},
+      {n:25, t:'Megnyugtató testi érzetekre figyelve nyugtatom magam, amikor szorongok.'}
+    ]
+  },
+  {
+    id:'self-reg',
+    name:'Önszabályozás',
+    en:'Self-Regulation',
+    color:'#6b8e9e',
+    icon:'VI',
+    desc:'Mennyire vagy képes a testi tudatosság révén szabályozni a belső állapotodat. Az önszabályozás itt nem akaratlagos kontrolt jelent, hanem a testtel való együttműködést.',
+    items:[
+      {n:26, t:'Amikor zaklatott vagyok, sok időre van szükségem, hogy újra rendben érezzem magam a testemben.', reverse:true},
+      {n:27, t:'Az érzelmi nyugalmat a légzéssel/testtudatossággal találom meg.'},
+      {n:28, t:'Amikor megfeszülök valahol, képes vagyok aktívan ellazulni.'},
+      {n:29, t:'A testemre figyelve képes vagyok sok mindenből kihozni magamat, ami stresszel.'}
+    ]
+  },
+  {
+    id:'body-listen',
+    name:'Test-hallgatás',
+    en:'Body Listening',
+    color:'#9a7090',
+    icon:'VII',
+    desc:'Aktívan hallgatod-e a tested üzeneteit, és bízol-e abban, amit "mond". Ez a test mint információforrás elismerése — fontos jelzéseket küld, ha hallgatod.',
+    items:[
+      {n:30, t:'A testemre hallgatok, hogy megértsem, mi a teendő.'},
+      {n:31, t:'Hallgatok arra, amit a testem üzen az érzelmi állapotomról.'},
+      {n:32, t:'Amikor szomorú vagy ideges vagyok, ülök egy ideig és hallgatom a testem érzéseit.'}
+    ]
+  },
+  {
+    id:'trusting',
+    name:'Bizalom',
+    en:'Trusting',
+    color:'#8b9a5b',
+    icon:'VIII',
+    desc:'Mennyire bízol a tested és tartod barátságos, biztonságos helynek. Ez a legmagasabb szintű interoceptív dimenzió — sokszor ez sérül legkorábban traumánál.',
+    items:[
+      {n:33, t:'Otthon érzem magam a testemben.'},
+      {n:34, t:'Biztonságosnak érzem a testemet.'},
+      {n:35, t:'Bízom a testi érzéseimben.'}
+    ]
+  }
+];
+
+// Lapos itemlistát csinálunk
+const ITEMS = [];
+DOMAINS.forEach(d=>{
+  d.items.forEach(it=>{
+    ITEMS.push({...it, domain:d.id, domainName:d.name, color:d.color, reverse:!!it.reverse});
+  });
+});
+const TOTAL = ITEMS.length;
+
+// LIKERT skála címkék
+const LIKERT = [
+  {v:0,l:'soha'},
+  {v:1,l:'ritkán'},
+  {v:2,l:'néha'},
+  {v:3,l:'gyakran'},
+  {v:4,l:'többnyire'},
+  {v:5,l:'mindig'}
+];
+
+// ============ STATE ============
+const STORAGE_KEY = 'maia2-responses-v1';
+let responses = {};
+
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw) responses = JSON.parse(raw);
+  }catch(e){responses = {}}
+}
+function saveState(){
+  try{localStorage.setItem(STORAGE_KEY, JSON.stringify(responses));}catch(e){}
+}
+
+// ============ RENDER ============
+function renderQuiz(){
+  const root = document.getElementById('quiz');
+  let html = '';
+
+  DOMAINS.forEach(d=>{
+    html += `
+      <div class="domain-card" style="--domain-color:${d.color}">
+        <div class="domain-header">
+          <div class="domain-icon">${d.icon}</div>
+          <div>
+            <div class="domain-title">${d.name}</div>
+            <div class="domain-subtitle">${d.en}</div>
+          </div>
+        </div>
+        <p class="domain-desc">${d.desc}</p>
+    `;
+
+    d.items.forEach(item=>{
+      const isReverse = !!item.reverse;
+      html += `
+        <div class="q" data-domain="${d.id}" data-n="${item.n}" data-reverse="${isReverse}">
+          <div class="q-num">${String(item.n).padStart(2,'0')}.</div>
+          <div>
+            <div class="q-text">
+              ${item.t}
+              ${isReverse ? '<span class="q-reverse-tag">fordított</span>' : ''}
+            </div>
+            <div class="scale" role="radiogroup">
+              ${LIKERT.map(l=>`
+                <button class="scale-btn" data-value="${l.v}" data-n="${item.n}" type="button" aria-label="${l.v} - ${l.l}">
+                  <span class="v">${l.v}</span><span class="l">${l.l}</span>
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+    });
+
+    html += `</div>`;
+  });
+
+  root.innerHTML = html;
+
+  // bind clicks
+  document.querySelectorAll('.scale-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const n = parseInt(btn.dataset.n,10);
+      const v = parseInt(btn.dataset.value,10);
+      responses[n] = v;
+      // toggle UI in this question's scale group
+      const parent = btn.parentElement;
+      parent.querySelectorAll('.scale-btn').forEach(b=>b.classList.remove('selected'));
+      btn.classList.add('selected');
+      saveState();
+      updateProgress();
+    });
+  });
+
+  // restore selections from storage
+  Object.keys(responses).forEach(n=>{
+    const v = responses[n];
+    const btn = document.querySelector(`.scale-btn[data-n="${n}"][data-value="${v}"]`);
+    if(btn) btn.classList.add('selected');
+  });
+
+  updateProgress();
+}
+
+function updateProgress(){
+  const count = Object.keys(responses).length;
+  const pct = Math.round((count/TOTAL)*100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressNum').textContent = count;
+  document.getElementById('showResults').disabled = count < TOTAL;
+}
+
+// ============ SCORING ============
+function scoreDomain(domainId){
+  const d = DOMAINS.find(x=>x.id===domainId);
+  if(!d) return null;
+  const vals = d.items.map(it=>{
+    const raw = responses[it.n];
+    if(raw==null) return null;
+    return it.reverse ? (5 - raw) : raw;
+  }).filter(v=>v!==null);
+
+  if(vals.length===0) return null;
+  const mean = vals.reduce((a,b)=>a+b,0) / vals.length;
+  return {mean, raw:vals};
+}
+
+// MAIA-2 referencia tartományok (nem klinikai populáció)
+// Mehling 2018 + általánosabb sávok
+function bandFor(score){
+  if(score < 1.5) return {key:'low', label:'Alacsony', desc:'jelentősen elmarad a tipikus értéktől'};
+  if(score < 2.5) return {key:'reduced', label:'Csökkent', desc:'enyhén az átlag alatt'};
+  if(score < 3.5) return {key:'mid', label:'Átlagos', desc:'tipikus tartomány'};
+  if(score < 4.3) return {key:'good', label:'Magas', desc:'átlag feletti, fejlett'};
+  return {key:'high', label:'Kiemelkedő', desc:'jól fejlett kapacitás'};
+}
+
+// klinikai interpretációk doménenként
+const INTERPRET = {
+  'noticing':{
+    low:'Az alapszintű testi figyelem gyengén működik. A test "háttérzaj" — a jelek csak akkor jutnak el a tudatig, ha már nagyon erősek. Ez jellemző AuDHD spektrumon, krónikus stressznél, vagy disszociatív túlélési minta után. Nem deficit — egy alkalmazkodás, ami valamikor védett.',
+    reduced:'A testi szignál-érzékelés csökkent érzékenységű. Néha észreveszed, néha lemarad. Tipikusan a "túl későn veszem észre, hogy fáradt/éhes/szomjas vagyok" mintázat.',
+    mid:'Tipikus alaptérképezés. Érzed a fontosabb testi jelzéseket, de a finomabb árnyalatok kicsúszhatnak.',
+    good:'Aktív testi figyelem. Hamar észreveszed a változásokat — energia, feszültség, érzelem korai jelei.',
+    high:'Magas alapérzékenység a testi szignálokra. Egyaránt erősség és teher: érzékenyebb is vagy a nyugalomra és a diszkomfortra.'
+  },
+  'not-distract':{
+    low:'Erős figyelemelterelő minta. Kényelmetlen testi érzéseket azonnal "ki a fejből" próbálsz tenni. Jellemző coping: kanapé, képernyő, evés, túltervezés. Kapcsolódik az emocionális evéshez és a tervezés-tétovázás körhöz.',
+    reduced:'Részleges elterelődés. Bizonyos érzéseket meg tudsz tartani, mások (pl. szomorúság, erős feszültség) automatikusan elterelődnek.',
+    mid:'Kiegyensúlyozott. Néha ott maradsz a kényelmetlennel, néha eltereled — ami kontextusfüggő.',
+    good:'Képes vagy bent maradni a kényelmetlen testi érzésekkel anélkül, hogy menekülnél tőlük. Ez egy fejlett képesség.',
+    high:'Magas tolerancia a testi diszkomfort iránt. Szomatikus érettség jele.'
+  },
+  'not-worry':{
+    low:'A testi érzések szorongást, aggodalmat indítanak el. Ez egy "rendszer-szintű hibajelzés": minden testi szignál veszélyként kódolódik. Jellemző egészségszorongásra, korai bántalmazás-történetre, vagy magas alapszintű autonóm aktivációra.',
+    reduced:'Bizonyos testi érzéseknél bekapcsol a szorongás. Megjósolható minta, sokszor bizonyos zónákhoz vagy szituációkhoz kötve.',
+    mid:'Kiegyensúlyozott viszony. Néha aggódsz, néha nem — és ez függ a kontextustól és az érzés intenzitásától.',
+    good:'A testi érzéseket képes vagy szorongás nélkül tudomásul venni. Mentális szabadságot ad.',
+    high:'Magas érzelmi nyugalom a testi élményekkel kapcsolatban. Stabil belső tér.'
+  },
+  'attention':{
+    low:'A testi figyelem szándékos irányítása nehezen működik. A figyelem "fent ragad" a fejben, gondolatokban. A test mintha "ott lenne valahol, de nem itt". Ez gyakran a planning-stalling kör fizikai aspektusa.',
+    reduced:'Részleges kapacitás — meditációban vagy specifikus gyakorlatban tudod, de spontán ritkán fordul elő.',
+    mid:'Alapszintű képesség jelen van. Gyakorlással bővíthető.',
+    good:'Aktív, irányítható testi figyelem. Ez a meditáció, mindfulness, szomatikus gyakorlatok eredménye vagy alapja.',
+    high:'Erős figyelmi kontroll a testi érzések felett. Nagy szabadság — bárhova tudod irányítani a figyelmet a testen belül.'
+  },
+  'emotional-aware':{
+    low:'Az érzelmek és testi érzések közötti kapcsolat zavart. Az érzelmeket "fejből" észleled (gondolatként, magyarázatként), nem a testből. Ez az alexitímia testi vetülete — gyakori AuDHD spektrumon. Az érzelmeket le tudod írni, de "nem érzed".',
+    reduced:'Részleges kapcsolat — bizonyos érzelmeket (pl. düh, idegesség) érzed a testben, másokat (pl. szomorúság, vágy, öröm) inkább kognitív szinten regisztrálsz.',
+    mid:'Tipikus érzelmi-testi reflexivitás. Az erősebb érzelmek testi nyomot hagynak, a finomabbak nehezebben.',
+    good:'Az érzelmek és testi érzetek között jó vezeték. Az érzelmi tájékozódás működik a testen keresztül.',
+    high:'A test mint pontos érzelmi térkép. Ritkán fordul elő igazán mély gyakorlat nélkül.'
+  },
+  'self-reg':{
+    low:'A test nem segít az önszabályozásban — sokszor inkább rontja. Stresszre a test feszül, és nincs belső eszköz a feloldásra. Tipikus jellemző: "tudom hogy lenne mit csinálni, de a testem nem reagál rá".',
+    reduced:'Részleges önszabályozási képesség testi szinten. Ismersz technikákat, de inkonzisztensen működnek.',
+    mid:'Alapvető önszabályozási kapacitás. Egyszerű helyzetekben működik, magas stressz alatt elcsúszik.',
+    good:'Aktív testi önszabályozás. Légzés, jelenlét, mozgás belső eszközök.',
+    high:'Erős testi önszabályozási repertoár. A test mint stabilizáló rendszer.'
+  },
+  'body-listen':{
+    low:'A test "információforrásként" nincs jelen. A döntéseket, érzelmi állapotokat fejből magyarázod, a test nem szól bele — vagy ha igen, nem hallgatod meg.',
+    reduced:'Részleges hallgatási képesség — időnként megkérdezed a tested, de nem szisztematikusan.',
+    mid:'A test mint egyik információforrás van jelen. Néha hallgatod, néha figyelmen kívül hagyod.',
+    good:'Aktív test-hallgatás. A testi szignálokat valós inputnak veszed döntéseidben.',
+    high:'A test mint elsődleges referenciapont. Erős szomatikus intuíció.'
+  },
+  'trusting':{
+    low:'A test mint "nem-biztonságos hely". Ez nem feltétlenül tudatos — a test mintha idegen, kontrollálandó, vagy ellenséges lenne. Korai trauma, fizikai bántalmazás, vagy mély disszociáció utáni jellemző mintázat. Nem hiba — egy védekezés.',
+    reduced:'Vegyes viszony a testtel. Bizonyos területek/állapotok biztonságosak, mások nem.',
+    mid:'Általában otthon vagy a testedben, néha kevésbé. Tipikus tartomány.',
+    good:'A test mint biztonságos otthon. Jelen tudsz lenni benne. Ez egy mély, alapozó kapacitás.',
+    high:'A testi bizalom mély szintje. Ritka — sokak életében soha nem alakul ki.'
+  }
+};
+
+// JT-specifikus kontextuális megjegyzések magas/alacsony értékeknél
+const CROSS_LINKS = [
+  {
+    when:(scores)=>scores['noticing']?.mean < 3.0 && scores['attention']?.mean < 3.0,
+    text:`<div class="cross-item-label">Spectator mode jelölő</div><p>Az alacsony Észrevevés + alacsony Figyelem-szabályozás kombináció pontosan az a profil, ami a "spectator mode" (kívülről szemlélés intim helyzetekben) szomatikus alapját adja. A figyelem nem tud bennmaradni a testben — a tudatosság folyamatosan kifelé csúszik (vagy fejbe, narratívába, kontrollba).</p>`
+  },
+  {
+    when:(scores)=>scores['emotional-aware']?.mean < 3.0,
+    text:`<div class="cross-item-label">TAS-20 (alexitímia) kapcsolat</div><p>A csökkent Érzelmi tudatosság jellemzően korrelál az alexitímia "Difficulty Identifying Feelings" (DIF) faktorával. Érdemes a TAS-20 kitöltésével pontosítani — ott válik szét, hogy az érzelem-felismerési vagy érzelem-leírási dimenzió a gyengébb-e.</p>`
+  },
+  {
+    when:(scores)=>scores['trusting']?.mean < 2.5,
+    text:`<div class="cross-item-label">Korai bántalmazás / CTQ-SF jelölő</div><p>A jelentősen alacsony Bizalom-skála a Childhood Trauma Questionnaire (CTQ-SF) "Physical Abuse" és "Emotional Neglect" alskáláival mutat erős negatív korrelációt a kutatásokban. A test mint nem-biztonságos hely élménye gyakran a kora gyermekkori test-élmény közvetlen lenyomata.</p>`
+  },
+  {
+    when:(scores)=>scores['not-distract']?.mean < 2.5,
+    text:`<div class="cross-item-label">Coping minta — érzelmi evés / képernyő-menekülés</div><p>Az alacsony "Nem-elterelődés" pontszám közvetlenül jelzi azokat a coping mintákat, amik az érzelmi evésben, a képernyő-szokásokban, a túltervezésben (planning loop) manifesztálódnak. Ezek mind elterelő mechanizmusok a testi diszkomfort elől.</p>`
+  },
+  {
+    when:(scores)=>scores['self-reg']?.mean < 3.0 && scores['attention']?.mean < 3.0,
+    text:`<div class="cross-item-label">DERS (érzelemszabályozás) kapcsolat</div><p>Az alacsony Önszabályozás + alacsony Figyelem-szabályozás kombináció erős korrelációt mutat a DERS (Difficulties in Emotion Regulation Scale) "Limited Access to Strategies" alskálájával. Az érzelmi kontroll hiánya itt nem akarat-kérdés — szomatikus eszköztár-hiány.</p>`
+  },
+  {
+    when:(scores)=>scores['noticing']?.mean >= 3.5 && scores['not-worry']?.mean < 2.5,
+    text:`<div class="cross-item-label">Hipervigilancia mintázat</div><p>A magas Észrevevés + alacsony Nem-aggódás konfiguráció hipervigilanciát jelez: észreveszed a testi szignálokat, de azok azonnal szorongást indítanak. Egészségszorongásra, panikspektrumra hajlamosító alap. Az intervenció itt nem MORE figyelem, hanem a relációs viszony újrahangolása az érzésekkel (mindfulness-alapú elfogadás).</p>`
+  },
+  {
+    when:(scores)=>scores['emotional-aware']?.mean < 2.8 && scores['body-listen']?.mean < 2.8,
+    text:`<div class="cross-item-label">AuDHD interoceptív profil</div><p>Az érzelmi tudatosság és a test-hallgatás együttes csökkenése egy klasszikus AuDHD interoceptív mintázat. Trevisan et al. (2021) autista felnőtteknél ezt a kombinációt találta jellemzőnek, és összekötötte az érzelemszabályozási nehézségekkel. Nem deficit — egy másik feldolgozási stílus, ami specifikus eszközökkel jól kompenzálható.</p>`
+  }
+];
+
+// terápiás javaslatok az átlag-profil alapján
+function therapySuggestions(scores){
+  const overall = Object.values(scores).reduce((a,b)=>a+b.mean,0) / Object.values(scores).length;
+  const lowest = Object.entries(scores).sort((a,b)=>a[1].mean-b[1].mean)[0];
+  const lowestId = lowest[0];
+
+  const mods = [];
+
+  // mindenkinek releváns ha overall < 3.5
+  if(overall < 3.5){
+    mods.push({
+      name:'MABT — Mindful Awareness in Body-Oriented Therapy',
+      text:'Cynthia Price módszere kifejezetten a MAIA-2 dimenziók fejlesztésére lett kidolgozva. 8-üléses protokoll: 1) testi tudatosság, 2) figyelmi készségek, 3) érzelmi-testi integráció. Klinikai tanulmányokban szignifikáns javulást mutatott a Trusting és Body Listening skálákon.'
+    });
+  }
+
+  // domain-specifikus
+  if(['noticing','attention'].includes(lowestId) || scores['attention']?.mean < 3.0){
+    mods.push({
+      name:'Body Scan meditáció (MBSR-protokoll)',
+      text:'A Jon Kabat-Zinn-féle 45 perces body scan közvetlenül az Észrevevés és Figyelem-szabályozás skálákat erősíti. 8 hét napi gyakorlás esetén a MAIA pontszámok mérhető javulást mutatnak.'
+    });
+  }
+
+  if(scores['trusting']?.mean < 3.0){
+    mods.push({
+      name:'Szomatikus Experiencing (Levine) vagy Sensorimotor Psychotherapy (Ogden)',
+      text:'Ha a Bizalom-skála alacsony, a felülről lefelé (kognitív) megközelítések önmagukban nem elegendőek. A trauma-informált szomatikus terápiák a test-tudat újraépítését célozzák, nem a testi élmények racionalizálását. Magyarországon korlátozott, de elérhető modalitás.'
+    });
+  }
+
+  if(scores['emotional-aware']?.mean < 3.0){
+    mods.push({
+      name:'Focusing (Gendlin)',
+      text:'A "felt sense" megtanulása: az érzelmek testi jelenlétére való ráhangolódás strukturált gyakorlata. Önállóan is gyakorolható, de tanult kísérővel mélyebb. Az érzelmi tudatosság és test-hallgatás dimenziókat egyszerre fejleszti.'
+    });
+  }
+
+  if(scores['self-reg']?.mean < 3.0){
+    mods.push({
+      name:'Polyvagal-informált légzésmunka',
+      text:'A vagus tónus szabályozása — meghosszabbított kilégzés (4-7-8 vagy doboz-légzés), pszichológiai sóhaj, jeges arc-merítés. Ezek nem "trükkök" — közvetlenül a paraszimpatikus rendszert aktiválják, és a test-szinten szabályozzák az érzelmi állapotot.'
+    });
+  }
+
+  if(scores['not-distract']?.mean < 2.8){
+    mods.push({
+      name:'ACT (Acceptance and Commitment Therapy) — defúziós gyakorlatok',
+      text:'Ha a kényelmetlen érzések elől folyamatos elterelődés van, az ACT defúziós gyakorlatai segítenek a "jelen lenni az érzéssel anélkül, hogy beleolvadnál" készség kialakításában. Ez nem ugyanaz, mint az elviselés — ez egy aktív, választott elfogadás.'
+    });
+  }
+
+  if(mods.length===0){
+    mods.push({
+      name:'Folytatás és finomítás',
+      text:'A profilod fejlett interoceptív kapacitásokat mutat. Itt már nem a fejlesztés a feladat, hanem a fenntartás és a finomítás — pl. mélyebb meditációs gyakorlatok, advanced szomatikus képzés, vagy azoknak a területeknek a megtartása, ahol már magas a pontszám.'
+    });
+  }
+
+  return mods;
+}
+
+// ============ RESULTS RENDER ============
+function renderResults(){
+  const scores = {};
+  DOMAINS.forEach(d=>{
+    scores[d.id] = scoreDomain(d.id);
+  });
+
+  // domain results
+  const root = document.getElementById('domain-results');
+  let html = '';
+  DOMAINS.forEach(d=>{
+    const s = scores[d.id];
+    const band = bandFor(s.mean);
+    const pct = (s.mean / 5) * 100;
+    const interpretation = INTERPRET[d.id][band.key] || '';
+
+    html += `
+      <div class="domain-result" style="--domain-color:${d.color}">
+        <div class="dr-head">
+          <div class="dr-title-block">
+            <div class="dr-title">${d.icon}. ${d.name}</div>
+            <div class="dr-title-en">${d.en}</div>
+          </div>
+          <div class="dr-score-block">
+            <div class="dr-score">${s.mean.toFixed(2)}</div>
+            <div class="dr-score-out">/ 5.00</div>
+            <span class="dr-band">${band.label}</span>
+          </div>
+        </div>
+        <div class="dr-bar"><div class="dr-bar-fill" style="width:${pct}%"></div></div>
+
+        <div class="dr-section">
+          <div class="dr-section-label">Mit jelent</div>
+          <p>${interpretation}</p>
+        </div>
+
+        <div class="dr-section">
+          <div class="dr-section-label">Sáv-pozicionálás</div>
+          <p>A pontszámod ${band.desc} az általános populációhoz képest. ${band.key==='low' || band.key==='reduced' ? 'Ez nem deficit — sokszor egy korábban védő alkalmazkodás, ami most már nem szolgál.' : band.key==='high' || band.key==='good' ? 'Ez egy erősség, amire építeni lehet más, gyengébb dimenziókban.' : 'Tipikus tartomány — fejleszthető, de nem prioritás.'}</p>
+        </div>
+      </div>
+    `;
+  });
+  root.innerHTML = html;
+
+  // cross-links
+  const crossRoot = document.getElementById('cross-links');
+  const triggered = CROSS_LINKS.filter(c=>c.when(scores));
+  if(triggered.length === 0){
+    crossRoot.innerHTML = `<p style="color:var(--ink-muted);font-style:italic">A profilodban nincsenek olyan markáns mintázatok, amik más klinikai skálákkal nyilvánvaló átfedést mutatnának. Ez egy kiegyensúlyozott interoceptív profil jele.</p>`;
+  } else {
+    crossRoot.innerHTML = triggered.map(c=>`<div class="cross-item">${c.text}</div>`).join('');
+  }
+
+  // therapy
+  const therapyRoot = document.getElementById('therapy-suggestions');
+  const mods = therapySuggestions(scores);
+  therapyRoot.innerHTML = mods.map(m=>`
+    <div class="therapy-mod">
+      <div class="therapy-mod-name">${m.name}</div>
+      <p>${m.text}</p>
+    </div>
+  `).join('');
+
+  // radar
+  drawRadar(scores);
+
+  // show
+  document.getElementById('results').classList.add('visible');
+  setTimeout(()=>{
+    document.getElementById('results').scrollIntoView({behavior:'smooth', block:'start'});
+  }, 100);
+}
+
+// ============ RADAR ============
+function drawRadar(scores){
+  const svg = document.getElementById('radar-svg');
+  const cx=260, cy=260, R=180;
+  const n = DOMAINS.length;
+  const angleStep = (2*Math.PI) / n;
+
+  let html = '';
+
+  // grid (concentric circles 1..5)
+  for(let i=1;i<=5;i++){
+    html += `<circle cx="${cx}" cy="${cy}" r="${R*i/5}" fill="none" stroke="rgba(60,40,20,0.08)" stroke-width="1" stroke-dasharray="${i===5?'':'2,3'}"/>`;
+  }
+  // axes
+  DOMAINS.forEach((d,i)=>{
+    const angle = -Math.PI/2 + i*angleStep;
+    const x = cx + R*Math.cos(angle);
+    const y = cy + R*Math.sin(angle);
+    html += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="rgba(60,40,20,0.08)" stroke-width="1"/>`;
+  });
+
+  // polygon
+  let poly = '';
+  let dots = '';
+  DOMAINS.forEach((d,i)=>{
+    const s = scores[d.id]?.mean || 0;
+    const r = (s/5) * R;
+    const angle = -Math.PI/2 + i*angleStep;
+    const x = cx + r*Math.cos(angle);
+    const y = cy + r*Math.sin(angle);
+    poly += `${x},${y} `;
+    dots += `<circle cx="${x}" cy="${y}" r="5" fill="${d.color}" stroke="${'#fffbf4'}" stroke-width="2"/>`;
+  });
+  html += `<polygon points="${poly.trim()}" fill="rgba(201,122,74,0.18)" stroke="#c97a4a" stroke-width="2" stroke-linejoin="round"/>`;
+  html += dots;
+
+  // labels
+  DOMAINS.forEach((d,i)=>{
+    const angle = -Math.PI/2 + i*angleStep;
+    const lr = R + 28;
+    const x = cx + lr*Math.cos(angle);
+    const y = cy + lr*Math.sin(angle);
+    const score = scores[d.id]?.mean.toFixed(1) || '–';
+    let anchor = 'middle';
+    if(Math.cos(angle) > 0.3) anchor = 'start';
+    else if(Math.cos(angle) < -0.3) anchor = 'end';
+    html += `
+      <text x="${x}" y="${y-4}" text-anchor="${anchor}" font-family="Fraunces,serif" font-size="14" font-weight="500" fill="#2b2018">${d.name}</text>
+      <text x="${x}" y="${y+12}" text-anchor="${anchor}" font-family="Nunito,sans-serif" font-size="12" fill="${d.color}" font-weight="700">${score}</text>
+    `;
+  });
+
+  // scale labels (1..5 on top axis)
+  for(let i=1;i<=5;i++){
+    html += `<text x="${cx+4}" y="${cy - R*i/5 - 2}" font-family="Nunito,sans-serif" font-size="9" fill="rgba(60,40,20,0.4)">${i}</text>`;
+  }
+
+  svg.innerHTML = html;
+}
+
+// ============ ACTIONS ============
+document.getElementById('showResults').addEventListener('click', ()=>{
+  if(Object.keys(responses).length < TOTAL) return;
+  renderResults();
+});
+
+function resetTest(){
+  if(!confirm('Biztos törlöd a válaszaidat és újrakezded?')) return;
+  responses = {};
+  saveState();
+  document.querySelectorAll('.scale-btn.selected').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('results').classList.remove('visible');
+  updateProgress();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function downloadJSON(){
+  const data = {
+    test:'MAIA-2',
+    timestamp:new Date().toISOString(),
+    raw_responses:responses,
+    domain_scores:{}
+  };
+  DOMAINS.forEach(d=>{
+    data.domain_scores[d.id] = scoreDomain(d.id);
+  });
+  const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `maia2-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ============ INIT ============
+loadState();
+renderQuiz();
+</script>
+
+</body>
+</html>

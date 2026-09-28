@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Négy szexuális és disszociatív térkép — IIEF-15 · PEDT · SDI-2 · DES-II</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-1:#f8fafc; --bg-2:#f1f5f9; --bg-3:#e2e8f0;
+  --ink:#0f172a; --ink-2:#1e293b; --ink-soft:#334155; --ink-muted:#64748b; --ink-quiet:#94a3b8;
+  --line:#cbd5e1; --line-soft:#e2e8f0; --paper:#ffffff;
+  --emerald:#065f46; --emerald-2:#059669; --emerald-soft:#d1fae5;
+  --sapphire:#1e3a8a; --sapphire-2:#2563eb; --sapphire-3:#3b82f6; --sapphire-soft:#dbeafe;
+  --gold:#b8912e; --gold-2:#d4a941; --gold-soft:#fef3c7;
+  --burgundy:#7c2d3c; --burgundy-2:#9f1239; --burgundy-soft:#fecdd3;
+  --shadow-sm:0 1px 2px rgba(15,23,42,0.04);
+  --shadow:0 1px 3px rgba(15,23,42,0.06), 0 10px 30px rgba(15,23,42,0.08);
+  --shadow-lg:0 4px 6px rgba(15,23,42,0.05), 0 20px 50px rgba(15,23,42,0.12);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:hidden}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg-1);color:var(--ink);min-height:100vh;line-height:1.6}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellipse 50% 40% at 15% 5%, rgba(30,58,138,0.05), transparent 60%),radial-gradient(ellipse 50% 40% at 85% 100%, rgba(6,95,70,0.04), transparent 60%);z-index:-2}
+
+/* HUB */
+.hub-shell{max-width:960px;margin:0 auto;padding:52px 28px 20px}
+.hub-header{margin-bottom:36px}
+.hub-eyebrow{font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:20px;font-weight:600;display:flex;align-items:center;gap:14px}
+.hub-eyebrow::before{content:"";width:36px;height:1px;background:var(--ink-muted)}
+.hub-header h1{font-family:'Cardo',serif;font-weight:400;font-size:clamp(40px,7vw,68px);line-height:1.02;letter-spacing:-0.015em;margin-bottom:20px}
+.hub-header h1 em{font-style:italic;color:var(--sapphire)}
+.hub-header .lead{font-size:17px;color:var(--ink-soft);max-width:680px;line-height:1.65;font-weight:300}
+.hub-header .lead strong{color:var(--ink);font-weight:600}
+.hub-header .lead em{color:var(--gold);font-style:italic;font-weight:500}
+.hub-caveat{background:var(--gold-soft);border:1px solid var(--gold);border-radius:12px;padding:14px 18px;margin-top:18px;color:var(--burgundy);font-size:13px;line-height:1.55;font-weight:500}
+.hub-caveat strong{color:var(--burgundy-2);font-weight:700}
+
+.hub-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:10px;background:rgba(255,255,255,0.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line-soft);border-radius:18px;position:sticky;top:12px;z-index:100;box-shadow:var(--shadow-sm);margin-top:16px}
+.hub-tab{padding:12px 14px;border-radius:12px;background:transparent;border:1px solid transparent;cursor:pointer;text-align:left;transition:all 0.22s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;gap:2px;font-family:inherit;position:relative;overflow:hidden}
+.hub-tab:hover:not(.active){background:var(--bg-2);transform:translateY(-1px)}
+.hub-tab .num{font-family:'Cardo',serif;font-style:italic;font-size:13px;color:var(--ink-muted);letter-spacing:0.06em;font-weight:400}
+.hub-tab .name{font-family:'Cardo',serif;font-size:17px;font-weight:600;color:var(--ink);line-height:1.15;margin-top:2px}
+.hub-tab .name em{font-style:italic;font-weight:400}
+.hub-tab .sub{font-size:10px;color:var(--ink-muted);letter-spacing:0.1em;text-transform:uppercase;margin-top:5px;font-weight:600;font-family:'Inter',sans-serif}
+.hub-tab .check{position:absolute;top:10px;right:12px;width:8px;height:8px;border-radius:50%;background:var(--emerald);opacity:0;transition:opacity 0.2s}
+.hub-tab.has-progress .check{opacity:1}
+.hub-tab.active{background:var(--tab-color);color:#fff;box-shadow:0 6px 18px color-mix(in srgb, var(--tab-color) 30%, transparent)}
+.hub-tab.active .num{color:rgba(255,255,255,0.7)}
+.hub-tab.active .name{color:#fff}
+.hub-tab.active .sub{color:rgba(255,255,255,0.75)}
+.hub-tab.active .check{background:var(--gold-2)}
+.hub-tab.iief{--tab-color:var(--sapphire)}
+.hub-tab.pedt{--tab-color:var(--burgundy)}
+.hub-tab.sdi{--tab-color:var(--gold)}
+.hub-tab.des{--tab-color:var(--emerald)}
+
+.test-panel{display:none}
+.test-panel.active{display:block;animation:fadeSwitch 0.35s cubic-bezier(.4,0,.2,1)}
+@keyframes fadeSwitch{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* SHARED test-panel styles */
+.test-panel .shell{max-width:900px;margin:0 auto;padding:32px 28px 72px}
+.test-panel header{margin-bottom:34px}
+.test-panel .eyebrow{font-size:11px;letter-spacing:0.22em;text-transform:uppercase;margin-bottom:16px;font-weight:600;display:flex;align-items:center;gap:14px}
+.test-panel .eyebrow::before{content:"";width:36px;height:1px;background:currentColor}
+.test-panel header h2{font-family:'Cardo',serif;font-weight:400;font-size:clamp(34px,6vw,54px);line-height:1.02;letter-spacing:-0.01em;margin-bottom:18px}
+.test-panel header h2 em{font-style:italic}
+.test-panel .lead{font-size:17px;color:var(--ink-soft);max-width:660px;line-height:1.6}
+.test-panel .lead em{font-style:italic;font-weight:500}
+.test-panel .lead strong{color:var(--ink);font-weight:600}
+.test-panel .medical-note{background:var(--gold-soft);border:1px solid var(--gold);border-radius:12px;padding:16px 20px;margin-top:20px;color:var(--burgundy);font-size:14px;line-height:1.6}
+.test-panel .medical-note strong{color:var(--burgundy-2);font-weight:700}
+.test-panel .intro-box{background:var(--paper);border:1px solid var(--line-soft);border-radius:14px;padding:24px 26px;margin:28px 0 30px;box-shadow:var(--shadow-sm)}
+.test-panel .intro-box p{color:var(--ink-soft);margin-bottom:10px;font-size:14.5px}
+.test-panel .intro-box p:last-child{margin-bottom:0}
+.test-panel .progress-shell{background:var(--paper);border:1px solid var(--line-soft);border-radius:999px;padding:12px 20px;margin-bottom:28px;display:flex;align-items:center;gap:14px;box-shadow:var(--shadow-sm)}
+.test-panel .progress-bar{flex:1;height:5px;background:var(--bg-3);border-radius:999px;overflow:hidden}
+.test-panel .progress-fill{height:100%;width:0%;transition:width 0.4s cubic-bezier(.4,0,.2,1);border-radius:999px}
+.test-panel .progress-text{font-family:'Cardo',serif;font-size:14px;color:var(--ink-soft);white-space:nowrap}
+.test-panel .progress-text strong{font-weight:700}
+.test-panel .q{background:var(--paper);border:1px solid var(--line-soft);border-radius:14px;padding:22px 24px;margin-bottom:12px;box-shadow:var(--shadow-sm);transition:border-color 0.2s}
+.test-panel .q:hover{border-color:var(--line)}
+.test-panel .q-num{font-family:'Cardo',serif;font-style:italic;font-size:14px;letter-spacing:0.04em;margin-bottom:6px;display:block;font-weight:700}
+.test-panel .q-text{color:var(--ink);font-size:16px;line-height:1.5;margin-bottom:16px;font-weight:400}
+.test-panel .q-context{font-size:13px;color:var(--ink-muted);margin-bottom:12px;font-style:italic;line-height:1.5}
+.test-panel .scale{display:grid;gap:6px}
+.test-panel .scale-btn{appearance:none;border:1.5px solid var(--line);background:var(--bg-1);color:var(--ink-soft);padding:12px 8px;border-radius:10px;cursor:pointer;transition:all 0.18s ease;display:flex;flex-direction:column;align-items:center;gap:2px;min-height:56px;text-align:center}
+.test-panel .scale-btn .v{font-family:'Cardo',serif;font-size:17px;font-weight:700;color:var(--ink)}
+.test-panel .scale-btn .l{font-size:10.5px;color:var(--ink-muted);text-align:center;line-height:1.2;font-weight:500}
+.test-panel .scale-btn:hover{transform:translateY(-1px)}
+.test-panel .scale-btn.selected .v,.test-panel .scale-btn.selected .l{color:#fff}
+.test-panel .scale-btn.selected .l{color:rgba(255,255,255,0.85)}
+.test-panel .results-trigger{display:flex;justify-content:center;margin:40px 0 22px}
+.test-panel .btn-primary{appearance:none;border:none;color:#fff;padding:16px 36px;border-radius:999px;font-family:'Cardo',serif;font-size:17px;cursor:pointer;transition:all 0.25s ease;font-weight:400}
+.test-panel .btn-primary em{font-style:italic}
+.test-panel .btn-primary:disabled{opacity:0.3;cursor:not-allowed;box-shadow:none}
+.test-panel .btn-primary:not(:disabled):hover{transform:translateY(-2px)}
+.test-panel .btn-secondary{appearance:none;background:transparent;padding:10px 20px;border-radius:999px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s ease}
+.test-panel .results{display:none;margin-top:44px}
+.test-panel .results.visible{display:block;animation:fadeRes 0.6s cubic-bezier(.4,0,.2,1)}
+@keyframes fadeRes{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.test-panel .res-eyebrow{font-size:11px;letter-spacing:0.22em;text-transform:uppercase;margin-bottom:14px;font-weight:600;display:flex;align-items:center;gap:14px}
+.test-panel .res-eyebrow::before{content:"";width:36px;height:1px;background:currentColor}
+.test-panel .res-title{font-family:'Cardo',serif;font-weight:400;font-size:clamp(32px,5vw,48px);line-height:1.05;margin-bottom:16px}
+.test-panel .res-title em{font-style:italic}
+.test-panel .res-lead{color:var(--ink-soft);font-size:16px;max-width:640px;margin-bottom:28px}
+.test-panel .total-card{background:var(--paper);border:1px solid var(--line-soft);border-radius:20px;padding:36px 32px;margin-bottom:24px;text-align:center;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.test-panel .total-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px}
+.test-panel .total-label{font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:14px;font-weight:600}
+.test-panel .total-value{font-family:'Cardo',serif;font-weight:400;line-height:1;letter-spacing:-0.03em;margin-bottom:6px}
+.test-panel .total-out{font-size:13px;color:var(--ink-muted);margin-bottom:18px;font-weight:500;letter-spacing:0.03em}
+.test-panel .total-band{display:inline-block;padding:6px 18px;border-radius:999px;font-size:12px;text-transform:uppercase;letter-spacing:0.14em;color:#fff;font-weight:600}
+.test-panel .scores-grid{display:grid;gap:14px;margin-bottom:26px}
+.test-panel .score-card{background:var(--paper);border:1px solid var(--line-soft);border-radius:16px;padding:22px 20px;position:relative;overflow:hidden;box-shadow:var(--shadow-sm)}
+.test-panel .score-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--sc)}
+.test-panel .score-card .abbr{font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--sc);margin-bottom:6px;font-weight:700}
+.test-panel .score-card h4{font-family:'Cardo',serif;font-weight:500;font-size:17px;line-height:1.2;margin-bottom:12px}
+.test-panel .score-card h4 em{font-style:italic}
+.test-panel .score-card .val{font-family:'Cardo',serif;font-size:32px;font-weight:400;color:var(--sc);line-height:1;letter-spacing:-0.02em;margin-bottom:4px}
+.test-panel .score-card .out{font-size:11px;color:var(--ink-muted);font-weight:500;letter-spacing:0.03em;margin-bottom:8px}
+.test-panel .score-card .band{display:inline-block;padding:3px 10px;border-radius:999px;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;background:var(--sc);color:#fff;font-weight:600}
+.test-panel .score-card .bar{height:3px;background:var(--bg-3);border-radius:999px;margin-top:12px;overflow:hidden}
+.test-panel .score-card .bar-fill{height:100%;background:var(--sc);transition:width 1.4s cubic-bezier(.4,0,.2,1)}
+.test-panel .interp-card{background:var(--paper);border:1px solid var(--line-soft);border-radius:18px;padding:32px;margin-bottom:22px;box-shadow:var(--shadow)}
+.test-panel .interp-card h3{font-family:'Cardo',serif;font-weight:400;font-size:24px;margin-bottom:16px;line-height:1.15}
+.test-panel .interp-card h3 em{font-style:italic}
+.test-panel .interp-section{margin-bottom:22px;padding-bottom:22px;border-bottom:1px dashed var(--line-soft)}
+.test-panel .interp-section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.test-panel .interp-section h4{font-family:'Cardo',serif;font-style:italic;font-size:16px;font-weight:400;margin-bottom:10px}
+.test-panel .interp-section p{color:var(--ink-soft);font-size:14.5px;line-height:1.7;margin-bottom:8px}
+.test-panel .interp-section strong{color:var(--ink);font-weight:600}
+.test-panel .cross-card{background:var(--paper);border:1px solid var(--line-soft);border-radius:18px;padding:28px;margin-bottom:22px;box-shadow:var(--shadow)}
+.test-panel .cross-card h3{font-family:'Cardo',serif;font-weight:400;font-size:24px;margin-bottom:16px}
+.test-panel .cross-card h3 em{font-style:italic;color:var(--gold)}
+.test-panel .cross-item{padding:14px 16px;background:var(--bg-2);border-left:3px solid var(--gold);border-radius:0 12px 12px 0;margin-bottom:10px}
+.test-panel .cross-item-label{font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--burgundy);margin-bottom:6px;font-weight:700}
+.test-panel .cross-item p{font-size:14px;color:var(--ink-soft);line-height:1.6}
+.test-panel .cross-item strong{color:var(--ink);font-weight:600}
+.test-panel .therapy-card{color:#fff;border-radius:20px;padding:34px;margin-bottom:22px;position:relative;overflow:hidden;box-shadow:var(--shadow-lg)}
+.test-panel .therapy-card::before{content:"";position:absolute;top:-80px;right:-80px;width:280px;height:280px;background:radial-gradient(circle,rgba(255,255,255,0.15),transparent 70%);border-radius:50%}
+.test-panel .therapy-card::after{content:"";position:absolute;bottom:-40px;left:-40px;width:180px;height:180px;background:radial-gradient(circle,rgba(212,169,65,0.2),transparent 70%);border-radius:50%}
+.test-panel .therapy-card h3{font-family:'Cardo',serif;font-weight:400;font-size:26px;margin-bottom:6px;position:relative}
+.test-panel .therapy-card h3 em{font-style:italic;color:var(--gold-2)}
+.test-panel .therapy-card .sub{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.75);margin-bottom:22px;position:relative;font-weight:600}
+.test-panel .therapy-mod{margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.18);position:relative}
+.test-panel .therapy-mod:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.test-panel .therapy-mod-name{font-family:'Cardo',serif;font-weight:700;font-size:18px;margin-bottom:8px;color:var(--gold-2)}
+.test-panel .therapy-mod-name em{font-style:italic;font-weight:400;color:#fff}
+.test-panel .therapy-mod p{font-size:14px;line-height:1.65;color:rgba(255,255,255,0.94)}
+.test-panel .refs-card{background:var(--paper);border:1px solid var(--line-soft);border-radius:18px;padding:26px;margin-bottom:22px;box-shadow:var(--shadow)}
+.test-panel .refs-card h3{font-family:'Cardo',serif;font-weight:400;font-size:20px;margin-bottom:12px}
+.test-panel .refs-card h3 em{font-style:italic}
+.test-panel .ref-item{font-size:12.5px;color:var(--ink-soft);padding:8px 0;border-top:1px dashed var(--line);line-height:1.55}
+.test-panel .ref-item:first-of-type{border-top:none}
+.test-panel .ref-item strong{color:var(--ink);font-weight:600}
+.test-panel .actions{display:flex;gap:12px;justify-content:center;margin-top:26px;flex-wrap:wrap}
+
+/* Test-specific accent applications */
+#test-iief .eyebrow,#test-iief .res-eyebrow{color:var(--sapphire)}
+#test-iief .res-eyebrow{color:var(--gold)}
+#test-iief header h2 em,#test-iief .res-title em{color:var(--sapphire)}
+#test-iief .intro-box{border-left:3px solid var(--sapphire)}
+#test-iief .progress-fill{background:linear-gradient(90deg,var(--sapphire),var(--sapphire-3),var(--gold))}
+#test-iief .progress-text strong{color:var(--sapphire)}
+#test-iief .q-num{color:var(--sapphire)}
+#test-iief .scale-btn:hover{border-color:var(--sapphire)}
+#test-iief .scale-btn.selected{background:var(--sapphire);border-color:var(--sapphire)}
+#test-iief .btn-primary{background:var(--sapphire);box-shadow:0 8px 24px rgba(30,58,138,0.25)}
+#test-iief .btn-primary:not(:disabled):hover{background:var(--sapphire-2)}
+#test-iief .btn-secondary{border:1.5px solid var(--sapphire);color:var(--sapphire)}
+#test-iief .btn-secondary:hover{background:var(--sapphire);color:#fff}
+#test-iief .interp-section h4{color:var(--sc,var(--sapphire))}
+#test-iief .therapy-card{background:linear-gradient(135deg,var(--sapphire),var(--sapphire-2))}
+#test-iief .refs-card h3 em{color:var(--sapphire)}
+
+#test-pedt .eyebrow{color:var(--burgundy)}
+#test-pedt .res-eyebrow{color:var(--gold)}
+#test-pedt header h2 em,#test-pedt .res-title em{color:var(--burgundy)}
+#test-pedt .intro-box{border-left:3px solid var(--burgundy)}
+#test-pedt .progress-fill{background:linear-gradient(90deg,var(--burgundy),var(--burgundy-2),var(--gold))}
+#test-pedt .progress-text strong{color:var(--burgundy)}
+#test-pedt .q-num{color:var(--burgundy)}
+#test-pedt .scale-btn:hover{border-color:var(--burgundy)}
+#test-pedt .scale-btn.selected{background:var(--burgundy);border-color:var(--burgundy)}
+#test-pedt .btn-primary{background:var(--burgundy);box-shadow:0 8px 24px rgba(124,45,60,0.25)}
+#test-pedt .btn-primary:not(:disabled):hover{background:var(--burgundy-2)}
+#test-pedt .btn-secondary{border:1.5px solid var(--burgundy);color:var(--burgundy)}
+#test-pedt .btn-secondary:hover{background:var(--burgundy);color:#fff}
+#test-pedt .interp-section h4{color:var(--sc,var(--burgundy))}
+#test-pedt .therapy-card{background:linear-gradient(135deg,var(--burgundy),var(--burgundy-2))}
+#test-pedt .refs-card h3 em{color:var(--burgundy)}
+
+#test-sdi .eyebrow{color:var(--gold)}
+#test-sdi .res-eyebrow{color:var(--sapphire)}
+#test-sdi header h2 em,#test-sdi .res-title em{color:var(--gold)}
+#test-sdi .intro-box{border-left:3px solid var(--gold)}
+#test-sdi .progress-fill{background:linear-gradient(90deg,var(--gold),var(--gold-2),var(--sapphire))}
+#test-sdi .progress-text strong{color:var(--gold)}
+#test-sdi .q-num{color:var(--gold)}
+#test-sdi .scale-btn:hover{border-color:var(--gold)}
+#test-sdi .scale-btn.selected{background:var(--gold);border-color:var(--gold)}
+#test-sdi .btn-primary{background:var(--gold);box-shadow:0 8px 24px rgba(184,145,46,0.25);color:#fff}
+#test-sdi .btn-primary:not(:disabled):hover{background:var(--gold-2)}
+#test-sdi .btn-secondary{border:1.5px solid var(--gold);color:var(--gold)}
+#test-sdi .btn-secondary:hover{background:var(--gold);color:#fff}
+#test-sdi .interp-section h4{color:var(--sc,var(--gold))}
+#test-sdi .therapy-card{background:linear-gradient(135deg,var(--gold),var(--gold-2))}
+#test-sdi .therapy-card .therapy-mod-name{color:#fff}
+#test-sdi .therapy-card .therapy-mod-name em{color:rgba(255,255,255,0.85)}
+#test-sdi .refs-card h3 em{color:var(--gold)}
+
+#test-des .eyebrow{color:var(--emerald)}
+#test-des .res-eyebrow{color:var(--gold)}
+#test-des header h2 em,#test-des .res-title em{color:var(--emerald)}
+#test-des .intro-box{border-left:3px solid var(--emerald)}
+#test-des .progress-fill{background:linear-gradient(90deg,var(--emerald),var(--emerald-2),var(--gold))}
+#test-des .progress-text strong{color:var(--emerald)}
+#test-des .q-num{color:var(--emerald)}
+#test-des .scale-btn:hover{border-color:var(--emerald)}
+#test-des .scale-btn.selected{background:var(--emerald);border-color:var(--emerald)}
+#test-des .btn-primary{background:var(--emerald);box-shadow:0 8px 24px rgba(6,95,70,0.25)}
+#test-des .btn-primary:not(:disabled):hover{background:var(--emerald-2)}
+#test-des .btn-secondary{border:1.5px solid var(--emerald);color:var(--emerald)}
+#test-des .btn-secondary:hover{background:var(--emerald);color:#fff}
+#test-des .interp-section h4{color:var(--sc,var(--emerald))}
+#test-des .therapy-card{background:linear-gradient(135deg,var(--emerald),var(--emerald-2))}
+#test-des .refs-card h3 em{color:var(--emerald)}
+
+/* IIEF specific */
+#test-iief .scale{grid-template-columns:repeat(6,1fr)}
+#test-iief .total-card::before{background:var(--sapphire)}
+#test-iief .total-value{font-size:56px;color:var(--sapphire)}
+#test-iief .total-band{background:var(--band-color,var(--sapphire))}
+#test-iief .scores-grid{grid-template-columns:repeat(3,1fr)}
+
+/* PEDT specific */
+#test-pedt .scale{grid-template-columns:repeat(5,1fr)}
+#test-pedt .total-card::before{background:var(--tc,var(--burgundy))}
+#test-pedt .total-value{font-size:72px;color:var(--tc,var(--burgundy))}
+#test-pedt .total-band{background:var(--tc,var(--burgundy))}
+
+/* SDI-2 specific */
+#test-sdi .scale{grid-template-columns:repeat(9,1fr);gap:4px}
+#test-sdi .scale-btn{padding:10px 3px 7px;min-height:52px}
+#test-sdi .scale-btn .v{font-size:15px}
+#test-sdi .scale-btn .l{font-size:9px}
+#test-sdi .scores-grid{grid-template-columns:repeat(2,1fr)}
+#test-sdi .total-value{font-size:48px;color:var(--gold)}
+
+/* DES-II specific */
+#test-des .scale{grid-template-columns:repeat(11,1fr);gap:3px}
+#test-des .scale-btn{padding:10px 2px 7px;min-height:52px}
+#test-des .scale-btn .v{font-size:14px}
+#test-des .scale-btn .l{font-size:9px;display:none}
+#test-des .total-card::before{background:var(--tc,var(--emerald))}
+#test-des .total-value{font-size:72px;color:var(--tc,var(--emerald))}
+#test-des .total-band{background:var(--tc,var(--emerald))}
+#test-des .scores-grid{grid-template-columns:repeat(3,1fr)}
+
+.hub-footer{max-width:920px;margin:32px auto 0;padding:32px 28px 48px;text-align:center;border-top:1px dashed var(--line);color:var(--ink-muted);font-size:12px;font-style:italic;font-family:'Cardo',serif;line-height:1.7}
+
+@media (max-width:820px){
+  .hub-tabs{grid-template-columns:repeat(2,1fr);gap:8px}
+  #test-iief .scores-grid,#test-sdi .scores-grid,#test-des .scores-grid{grid-template-columns:1fr}
+  #test-iief .scale{grid-template-columns:repeat(3,1fr)}
+  #test-pedt .scale{grid-template-columns:repeat(5,1fr)}
+  #test-sdi .scale{grid-template-columns:repeat(5,1fr)}
+  #test-des .scale{grid-template-columns:repeat(6,1fr)}
+}
+@media (max-width:560px){
+  .hub-shell{padding:36px 16px 16px}
+  .hub-tabs{grid-template-columns:1fr;gap:6px}
+  .test-panel .shell{padding:24px 16px 56px}
+  .test-panel .intro-box,.test-panel .q,.test-panel .total-card,.test-panel .score-card,.test-panel .interp-card,.test-panel .cross-card,.test-panel .therapy-card,.test-panel .refs-card{padding:20px 16px}
+  #test-iief .scale{grid-template-columns:repeat(3,1fr)}
+  #test-pedt .scale{grid-template-columns:repeat(5,1fr)}
+  #test-sdi .scale{grid-template-columns:repeat(3,1fr)}
+  #test-des .scale{grid-template-columns:repeat(6,1fr)}
+}
+@media print{
+  body::before{display:none}
+  .hub-tabs,.test-panel .progress-shell,.test-panel .results-trigger,.test-panel .actions{display:none}
+  .test-panel .results{display:block !important}
+  .test-panel{display:block !important}
+  body{background:#fff}
+}
+</style>
+</head>
+<body>
+
+<div class="hub-shell">
+  <div class="hub-header">
+    <div class="hub-eyebrow">Négy klinikailag validált mérőműszer · szexuális funkció + disszociáció</div>
+    <h1>Négy <em>funkcionális</em> térkép</h1>
+    <p class="lead"><strong>IIEF-15</strong> (erekciós funkció) · <strong>PEDT</strong> (időzítés-kontroll) · <strong>SDI-2</strong> (vágy-térkép) · <strong>DES-II</strong> (disszociatív élmények). A négy teszt együtt teljesebb képet ad, mint bármelyik egyedül: hogyan működik a szexuális rendszered <em>fiziológiai</em>, <em>időzítési</em>, <em>motivációs</em> és <em>tudati</em> szinten.</p>
+    <div class="hub-caveat"><strong>Fontos:</strong> Ezek önismereti szűrőeszközök, nem diagnosztikai instrumentumok. Erekciós vagy ejakulációs zavart jelző értékek esetén <strong>orvosi kivizsgálás</strong> is szükséges (érrendszeri, hormonális, gyógyszer-mellékhatás). Disszociatív skálán magas pontszám <strong>szakmai konzultációt</strong> indikál.</p>
+  </div>
+  <nav class="hub-tabs" role="tablist">
+    <button class="hub-tab iief active" data-target="test-iief" role="tab" aria-selected="true"><span class="check"></span><span class="num">I.</span><span class="name">Erekciós funkció</span><span class="sub">IIEF-15 · 15 item</span></button>
+    <button class="hub-tab pedt" data-target="test-pedt" role="tab" aria-selected="false"><span class="check"></span><span class="num">II.</span><span class="name">Időzítés</span><span class="sub">PEDT · 5 item</span></button>
+    <button class="hub-tab sdi" data-target="test-sdi" role="tab" aria-selected="false"><span class="check"></span><span class="num">III.</span><span class="name">Vágy-térkép</span><span class="sub">SDI-2 · 14 item</span></button>
+    <button class="hub-tab des" data-target="test-des" role="tab" aria-selected="false"><span class="check"></span><span class="num">IV.</span><span class="name">Disszociáció</span><span class="sub">DES-II · 28 item</span></button>
+  </nav>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     TEST 1 — IIEF-15
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="test-iief" class="test-panel active" role="tabpanel">
+  <div class="shell">
+    <header>
+      <div class="eyebrow">International Index of Erectile Function · Rosen et al. (1997)</div>
+      <h2>Erekciós <em>funkció</em></h2>
+      <p class="lead">Az IIEF-15 a férfi szexuális válaszrendszer 5 dimenzióját méri: <em>erekció</em>, <em>orgazmus</em>, <em>vágy</em>, <em>közösülési elégedettség</em>, <em>általános elégedettség</em>. Az elmúlt 4 hetes időszakra kérdez rá. A klinikai gyakorlatban ez a legelterjedtebb önbevallott szexuális funkcionális műszer.</p>
+      <div class="medical-note"><strong>Klinikai kontextus:</strong> Az IIEF eredménye szűrőeszköz. Az erekciós zavar hátterében <strong>szinte mindig van élettani komponens is</strong> (érrendszeri, hormonális, cukorbetegség, gyógyszer-mellékhatás — SSRI, béta-blokkoló, stb.), amit orvosi kivizsgálás tár fel. A pszichoszociális tényezők (stressz, kapcsolati distressz, teljesítmény-szorongás) általában <em>társulnak</em>, nem ok-okozati kizárólag magukban.</p>
+    </header>
+    <div class="intro-box"><p><strong>Kitöltés:</strong> Válaszaid az <em>elmúlt 4 hét</em> tapasztalataira vonatkozzanak. A skálák tételenként változnak — figyeld a válaszlehetőségek szövegét.</p></div>
+    <div class="progress-shell"><div class="progress-bar"><div class="progress-fill" id="iief-progressFill"></div></div><div class="progress-text"><strong id="iief-progressNum">0</strong> / 15</div></div>
+    <div id="iief-quiz"></div>
+    <div class="results-trigger"><button class="btn-primary" id="iief-showResults" disabled><em>Megmutatni</em> az eredményt</button></div>
+    <div class="results" id="iief-results">
+      <div class="res-eyebrow">Eredmény · IIEF-15 profil · Klinikai kontextus</div>
+      <h2 class="res-title">A te <em>erekciós profilod</em></h2>
+      <p class="res-lead">Az öt domén pontszáma külön-külön értékelendő. A klinikailag legjobban validált küszöb az Erekciós Funkció (EF) skálára van — az orgazmus, vágy, elégedettség kiegészítő információt ad.</p>
+      <div class="total-card" id="iief-totalCard"></div>
+      <div class="scores-grid" id="iief-scoresGrid"></div>
+      <div class="interp-card" id="iief-interpCard"></div>
+      <div class="cross-card"><h3>Kapcsolatok más <em>területekkel</em></h3><div id="iief-cross-links"></div></div>
+      <div class="therapy-card"><h3>Klinikai <em>következő lépések</em></h3><div class="sub">Orvosi + pszichológiai kombinációk</div><div id="iief-therapy-suggestions"></div></div>
+      <div class="refs-card"><h3>Tudományos <em>háttér</em></h3>
+        <div class="ref-item"><strong>Rosen, R. C., Riley, A., Wagner, G., et al. (1997).</strong> The international index of erectile function (IIEF): a multidimensional scale for assessment of erectile dysfunction. <em>Urology, 49(6)</em>, 822–830.</div>
+        <div class="ref-item"><strong>Cappelleri, J. C., Rosen, R. C., Smith, M. D., et al. (1999).</strong> Diagnostic evaluation of the erectile function domain of the International Index of Erectile Function. <em>Urology, 54(2)</em>, 346–351.</div>
+        <div class="ref-item"><strong>Salonia, A., Bettocchi, C., Boeri, L., et al. (2021).</strong> European Association of Urology Guidelines on Sexual and Reproductive Health.</div>
+      </div>
+      <div class="actions">
+        <button class="btn-secondary" onclick="window.print()">Mentés PDF-be</button>
+        <button class="btn-secondary" onclick="IIEF.downloadJSON()">JSON</button>
+        <button class="btn-secondary" onclick="IIEF.reset()">Új kitöltés</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     TEST 2 — PEDT
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="test-pedt" class="test-panel" role="tabpanel">
+  <div class="shell">
+    <header>
+      <div class="eyebrow">Premature Ejaculation Diagnostic Tool · Symonds et al. (2007)</div>
+      <h2>Ejakuláció <em>időzítése</em></h2>
+      <p class="lead">A PEDT egy 5 tételes gyors szűrőeszköz a korai magömlésre. Nem a "hány perc" a kérdés — hanem a <em>kontroll</em>, a <em>frusztráció</em>, az <em>ingerküszöb</em> és a <em>distressz</em>. A gyors idő magában nem probléma, ha kontroll van; és a hosszú idő is lehet probléma, ha a kontroll hiányzik.</p>
+      <div class="medical-note"><strong>Fontos árnyalás:</strong> A PE két típusú: <em>lifelong</em> (életen át tartó, gyakran biológiai/neurológiai) és <em>acquired</em> (későbbi kialakulású, gyakran pszichogén, kapcsolati, vagy társult zavarral pl. erekciós). A DSM-5 diagnosztikai kritériuma <strong>~1 perc</strong> alatti intravaginális ejakulációs latencia + distressz + kontroll-hiány. A PEDT ezt közelíti önbevallásból.</p>
+    </header>
+    <div class="intro-box"><p><strong>Kitöltés:</strong> Az utóbbi hónapok szexuális tapasztalataira gondolj. A partneri szex, nem az önkielégítés a fókusz.</p></div>
+    <div class="progress-shell"><div class="progress-bar"><div class="progress-fill" id="pedt-progressFill"></div></div><div class="progress-text"><strong id="pedt-progressNum">0</strong> / 5</div></div>
+    <div id="pedt-quiz"></div>
+    <div class="results-trigger"><button class="btn-primary" id="pedt-showResults" disabled><em>Megmutatni</em> az eredményt</button></div>
+    <div class="results" id="pedt-results">
+      <div class="res-eyebrow">Eredmény · PEDT · Szűrési kategória</div>
+      <h2 class="res-title">Az időzítési <em>profilod</em></h2>
+      <p class="res-lead">Az összpontszám 0 és 20 között skálázódik. Cut-offok: ≤8 = nincs PE, 9–10 = valószínű PE, ≥11 = PE. Ez szűrés, nem diagnózis.</p>
+      <div class="total-card" id="pedt-totalCard"></div>
+      <div class="interp-card" id="pedt-interpCard"></div>
+      <div class="cross-card"><h3>Kapcsolatok más <em>területekkel</em></h3><div id="pedt-cross-links"></div></div>
+      <div class="therapy-card"><h3>Klinikai <em>következő lépések</em></h3><div class="sub">Viselkedéses + farmakológiai kombinációk</div><div id="pedt-therapy-suggestions"></div></div>
+      <div class="refs-card"><h3>Tudományos <em>háttér</em></h3>
+        <div class="ref-item"><strong>Symonds, T., Perelman, M. A., Althof, S., et al. (2007).</strong> Development and validation of a premature ejaculation diagnostic tool. <em>European Urology, 52(2)</em>, 565–573.</div>
+        <div class="ref-item"><strong>Serefoglu, E. C., McMahon, C. G., Waldinger, M. D., et al. (2014).</strong> An evidence-based unified definition of lifelong and acquired premature ejaculation. <em>Sexual Medicine, 2(2)</em>, 41–59.</div>
+        <div class="ref-item"><strong>Althof, S. E., McMahon, C. G., Waldinger, M. D., et al. (2014).</strong> An update of the International Society of Sexual Medicine's guidelines for the diagnosis and treatment of premature ejaculation.</div>
+      </div>
+      <div class="actions">
+        <button class="btn-secondary" onclick="window.print()">Mentés PDF-be</button>
+        <button class="btn-secondary" onclick="PEDT.downloadJSON()">JSON</button>
+        <button class="btn-secondary" onclick="PEDT.reset()">Új kitöltés</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     TEST 3 — SDI-2
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="test-sdi" class="test-panel" role="tabpanel">
+  <div class="shell">
+    <header>
+      <div class="eyebrow">Sexual Desire Inventory — 2 · Spector, Carey & Steinberg (1996)</div>
+      <h2>Vágy <em>térképe</em></h2>
+      <p class="lead">Az SDI-2 két, <strong>egymástól független</strong> vágy-dimenziót mér: <em>dyadic</em> (partneri, együttes) és <em>solitary</em> (szólo, önmagára irányuló) szexuális vágyat. A kettő gyakran <em>eltér</em> — nem hibás profil, hanem információ arról, hogy a rendszered milyen kontextusban aktivizálódik.</p>
+    </header>
+    <div class="intro-box"><p><strong>Kitöltés:</strong> A frekvencia-kérdéseknél gondolj az utóbbi hónapra. Ha "nem érzel vágyat", az legitim válasz — nem elvárás, hogy gyakori legyen.</p></div>
+    <div class="progress-shell"><div class="progress-bar"><div class="progress-fill" id="sdi-progressFill"></div></div><div class="progress-text"><strong id="sdi-progressNum">0</strong> / 14</div></div>
+    <div id="sdi-quiz"></div>
+    <div class="results-trigger"><button class="btn-primary" id="sdi-showResults" disabled><em>Megmutatni</em> a térképet</button></div>
+    <div class="results" id="sdi-results">
+      <div class="res-eyebrow">Eredmény · Vágy-térkép · Klinikai értelmezés</div>
+      <h2 class="res-title">A te vágy-<em>térképed</em></h2>
+      <p class="res-lead">Két pontszámot kapsz — egyet a partneri, egyet a szólo vágyra. A "normális" tartomány nagyon széles. Nem az abszolút érték számít, hanem a <em>saját magad-hoz</em> viszonyított és a <em>két érték közötti arány</em>.</p>
+      <div class="scores-grid" id="sdi-scoresGrid"></div>
+      <div class="interp-card" id="sdi-interpCard"></div>
+      <div class="cross-card"><h3>Kapcsolatok más <em>területekkel</em></h3><div id="sdi-cross-links"></div></div>
+      <div class="therapy-card"><h3>Terápiás <em>implikációk</em></h3><div class="sub">Ha vágy-nehézség vagy vágy-eltérés a probléma</div><div id="sdi-therapy-suggestions"></div></div>
+      <div class="refs-card"><h3>Tudományos <em>háttér</em></h3>
+        <div class="ref-item"><strong>Spector, I. P., Carey, M. P., & Steinberg, L. (1996).</strong> The Sexual Desire Inventory: Development, factor structure, and evidence of reliability. <em>Journal of Sex & Marital Therapy, 22(3)</em>, 175–190.</div>
+        <div class="ref-item"><strong>Moyano, N., Vallejo-Medina, P., & Sierra, J. C. (2017).</strong> Sexual Desire Inventory: Two or three dimensions? <em>Journal of Sex Research, 54(1)</em>, 105–116.</div>
+        <div class="ref-item"><strong>Basson, R. (2001).</strong> Human sex-response cycles. <em>Journal of Sex & Marital Therapy, 27(1)</em>, 33–43. — A "responsive desire" modell alapja.</div>
+      </div>
+      <div class="actions">
+        <button class="btn-secondary" onclick="window.print()">Mentés PDF-be</button>
+        <button class="btn-secondary" onclick="SDI.downloadJSON()">JSON</button>
+        <button class="btn-secondary" onclick="SDI.reset()">Új kitöltés</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     TEST 4 — DES-II
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="test-des" class="test-panel" role="tabpanel">
+  <div class="shell">
+    <header>
+      <div class="eyebrow">Dissociative Experiences Scale II · Carlson & Putnam (1993)</div>
+      <h2>Disszociatív <em>élmények</em></h2>
+      <p class="lead">A DES-II 28 típusú disszociatív élményt mér: <em>amnézia</em> (memóriakiesések), <em>depersonalizáció/derealizáció</em> (magadtól vagy a világtól való elszakadás érzése), és <em>abszorpció</em> (belemerülés, "elveszés"). A skála <strong>0-100%</strong>: az idő hány százalékában tapasztalod az adott élményt.</p>
+      <div class="medical-note"><strong>Fontos:</strong> Enyhe disszociatív élmények (pl. autópályán vezetés közben "elveszés a gondolatokban") <em>normálisak</em>. A DES-II akkor mutat klinikai jelentőségű mintázatot, ha az átlagpontszám magas ÉS ez distresszt vagy funkcionális zavart okoz. Magas összpontszám (≥30) esetén szakmai konzultáció ajánlott — a DES-II <strong>DID/PTSD/trauma-kapcsolt zavarok szűrőeszköze</strong>.</p>
+    </header>
+    <div class="intro-box"><p><strong>Kitöltés:</strong> Minden állításnál válaszd ki azt a százalékot, amilyen gyakorisággal a leírt élmény megtörténik veled — kizárva az alkohol vagy drog hatása alatti időszakokat. 0% = soha, 100% = mindig.</p></div>
+    <div class="progress-shell"><div class="progress-bar"><div class="progress-fill" id="des-progressFill"></div></div><div class="progress-text"><strong id="des-progressNum">0</strong> / 28</div></div>
+    <div id="des-quiz"></div>
+    <div class="results-trigger"><button class="btn-primary" id="des-showResults" disabled><em>Megmutatni</em> az eredményt</button></div>
+    <div class="results" id="des-results">
+      <div class="res-eyebrow">Eredmény · DES-II átlag + 3 alskála · Klinikai kontextus</div>
+      <h2 class="res-title">A te disszociatív <em>profilod</em></h2>
+      <p class="res-lead">A DES-II átlagpontszám (0-100) az általános disszociativitás mértéke. Cut-offok: ≤15 tipikus, 15-30 emelt, ≥30 klinikailag jelentős. A három alskála (amnézia, depersonalizáció/derealizáció, abszorpció) árnyalja a képet.</p>
+      <div class="total-card" id="des-totalCard"></div>
+      <div class="scores-grid" id="des-scoresGrid"></div>
+      <div class="interp-card" id="des-interpCard"></div>
+      <div class="cross-card"><h3>Kapcsolatok más <em>területekkel</em></h3><div id="des-cross-links"></div></div>
+      <div class="therapy-card"><h3>Klinikai <em>következő lépések</em></h3><div class="sub">Trauma-informált megközelítések</div><div id="des-therapy-suggestions"></div></div>
+      <div class="refs-card"><h3>Tudományos <em>háttér</em></h3>
+        <div class="ref-item"><strong>Carlson, E. B., & Putnam, F. W. (1993).</strong> An update on the Dissociative Experiences Scale. <em>Dissociation, 6(1)</em>, 16–27.</div>
+        <div class="ref-item"><strong>Bernstein, E. M., & Putnam, F. W. (1986).</strong> Development, reliability, and validity of a dissociation scale. <em>Journal of Nervous and Mental Disease, 174(12)</em>, 727–735.</div>
+        <div class="ref-item"><strong>van IJzendoorn, M. H., & Schuengel, C. (1996).</strong> The measurement of dissociation in normal and clinical populations: Meta-analytic validation of the DES. <em>Clinical Psychology Review, 16(5)</em>, 365–382.</div>
+        <div class="ref-item"><strong>Dalenberg, C. J., Brand, B. L., Gleaves, D. H., et al. (2012).</strong> Evaluation of the evidence for the trauma and fantasy models of dissociation. <em>Psychological Bulletin, 138(3)</em>, 550–588.</div>
+      </div>
+      <div class="actions">
+        <button class="btn-secondary" onclick="window.print()">Mentés PDF-be</button>
+        <button class="btn-secondary" onclick="DES.downloadJSON()">JSON</button>
+        <button class="btn-secondary" onclick="DES.reset()">Új kitöltés</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="hub-footer">
+  IIEF-15 · PEDT · SDI-2 · DES-II — magyar adaptáció · v1.0<br>
+  önismereti célra · klinikai diagnózist nem helyettesítenek · orvosi/pszichológiai konzultáció ajánlott
+</footer>
+
+<script>
+/* HUB */
+(function(){
+  const tabs = document.querySelectorAll('.hub-tab');
+  const panels = document.querySelectorAll('.test-panel');
+  tabs.forEach(tab=>{
+    tab.addEventListener('click', ()=>{
+      const target = tab.dataset.target;
+      tabs.forEach(t=>{t.classList.remove('active');t.setAttribute('aria-selected','false')});
+      panels.forEach(p=>p.classList.remove('active'));
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected','true');
+      document.getElementById(target).classList.add('active');
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+  });
+  function checkProgress(){
+    ['iief-responses-v1','pedt-responses-v1','sdi-2-responses-v1','des-2-responses-v1'].forEach((key,i)=>{
+      try{
+        const raw = localStorage.getItem(key);
+        if(raw){
+          const parsed = JSON.parse(raw);
+          if(Object.keys(parsed).length>0) tabs[i].classList.add('has-progress');
+        }
+      }catch(e){}
+    });
+  }
+  checkProgress();
+  window.hubCheckProgress = checkProgress;
+})();
+
+/* ═══════════════════════════════════════════════════════════════
+   IIEF-15
+   ═══════════════════════════════════════════════════════════════ */
+window.IIEF = (function(){
+// Skálák tételenként
+const SCALES = {
+  freq5:[{v:0,l:'nem próbáltam'},{v:1,l:'szinte soha'},{v:2,l:'ritkán'},{v:3,l:'körülbelül fele'},{v:4,l:'többször'},{v:5,l:'majdnem mindig'}],
+  diff5:[{v:0,l:'nem próbáltam'},{v:1,l:'rendkívül nehéz'},{v:2,l:'nagyon nehéz'},{v:3,l:'nehéz'},{v:4,l:'kissé nehéz'},{v:5,l:'nem nehéz'}],
+  conf5:[{v:1,l:'nagyon alacsony'},{v:2,l:'alacsony'},{v:3,l:'közepes'},{v:4,l:'magas'},{v:5,l:'nagyon magas'}],
+  attempt:[{v:0,l:'nem próbáltam'},{v:1,l:'1–2 alkalom'},{v:2,l:'3–4 alkalom'},{v:3,l:'5–6 alkalom'},{v:4,l:'7–10 alkalom'},{v:5,l:'11+ alkalom'}],
+  satis5:[{v:0,l:'nem próbáltam'},{v:1,l:'szinte soha'},{v:2,l:'néha'},{v:3,l:'körülbelül fele'},{v:4,l:'többször'},{v:5,l:'majdnem mindig'}],
+  enjoy5:[{v:0,l:'nem volt közösülés'},{v:1,l:'nem élveztem'},{v:2,l:'nem élveztem különösebben'},{v:3,l:'közepesen'},{v:4,l:'nagyon élveztem'},{v:5,l:'rendkívül élveztem'}],
+  desirefreq5:[{v:1,l:'szinte soha'},{v:2,l:'ritkán'},{v:3,l:'körülbelül fele'},{v:4,l:'többször'},{v:5,l:'majdnem mindig'}],
+  desirelevel5:[{v:1,l:'nagyon alacsony'},{v:2,l:'alacsony'},{v:3,l:'közepes'},{v:4,l:'magas'},{v:5,l:'nagyon magas'}],
+  satisov5:[{v:1,l:'nagyon elégedetlen'},{v:2,l:'elégedetlen'},{v:3,l:'közepesen elégedett'},{v:4,l:'elégedett'},{v:5,l:'nagyon elégedett'}]
+};
+// 15 item
+const ITEMS = [
+  {n:1, dom:'EF', scale:'freq5', context:'Az elmúlt 4 hétben...', t:'Milyen gyakran tudtál merevedést elérni szexuális aktivitás közben?'},
+  {n:2, dom:'EF', scale:'freq5', context:'Az elmúlt 4 hétben szexuális stimuláció esetén...', t:'Merevedéseid milyen gyakran voltak elegendőek a behatoláshoz?'},
+  {n:3, dom:'EF', scale:'freq5', context:'Az elmúlt 4 hétben, amikor behatolást próbáltál...', t:'Milyen gyakran tudtál behatolni?'},
+  {n:4, dom:'EF', scale:'freq5', context:'Az elmúlt 4 hétben közösülés közben...', t:'Milyen gyakran tudtad fenntartani a merevedést a behatolás után?'},
+  {n:5, dom:'EF', scale:'diff5', context:'Az elmúlt 4 hétben közösülés közben...', t:'Mennyire volt nehéz fenntartani a merevedést a közösülés befejezéséig?'},
+  {n:6, dom:'IS', scale:'attempt', context:'Az elmúlt 4 hétben...', t:'Hányszor kíséreltél meg szexuális közösülést?'},
+  {n:7, dom:'IS', scale:'satis5', context:'Az elmúlt 4 hétben, amikor közösülést próbáltál...', t:'Milyen gyakran volt kielégítő számodra?'},
+  {n:8, dom:'IS', scale:'enjoy5', context:'Az elmúlt 4 hétben...', t:'Mennyire élvezted a szexuális közösülést?'},
+  {n:9, dom:'OF', scale:'freq5', context:'Az elmúlt 4 hétben szexuális stimuláció vagy közösülés közben...', t:'Milyen gyakran ejakuláltál?'},
+  {n:10, dom:'OF', scale:'freq5', context:'Az elmúlt 4 hétben szexuális stimuláció vagy közösülés közben...', t:'Milyen gyakran volt orgazmusod (ejakulációval vagy anélkül)?'},
+  {n:11, dom:'SD', scale:'desirefreq5', context:'Az elmúlt 4 hétben...', t:'Milyen gyakran éreztél szexuális vágyat?'},
+  {n:12, dom:'SD', scale:'desirelevel5', context:'Az elmúlt 4 hétben...', t:'Hogyan jellemeznéd a szexuális vágyad szintjét?'},
+  {n:13, dom:'OS', scale:'satisov5', context:'Az elmúlt 4 hétben...', t:'Mennyire voltál elégedett a szexuális életeddel összességében?'},
+  {n:14, dom:'OS', scale:'satisov5', context:'Az elmúlt 4 hétben...', t:'Mennyire voltál elégedett a partneri szexuális kapcsolatoddal?'},
+  {n:15, dom:'EF', scale:'conf5', context:'Az elmúlt 4 hétben...', t:'Mennyire voltál biztos abban, hogy meg tudod szerezni és fenntartani a merevedést?'}
+];
+const TOTAL = ITEMS.length;
+const STORAGE_KEY = 'iief-responses-v1';
+let responses = {};
+function loadState(){try{const r=localStorage.getItem(STORAGE_KEY);if(r)responses=JSON.parse(r);}catch(e){responses={}}}
+function saveState(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(responses));}catch(e){}window.hubCheckProgress&&window.hubCheckProgress();}
+function renderQuiz(){
+  const root=document.getElementById('iief-quiz');
+  let html='';
+  ITEMS.forEach(item=>{
+    const scale = SCALES[item.scale];
+    html+=`<div class="q" data-n="${item.n}"><span class="q-num">${String(item.n).padStart(2,'0')}. · ${item.dom}</span><div class="q-context">${item.context}</div><div class="q-text">${item.t}</div><div class="scale" role="radiogroup">${scale.map(l=>`<button class="scale-btn" data-value="${l.v}" data-n="${item.n}" type="button" aria-label="${l.v} - ${l.l}"><span class="v">${l.v}</span><span class="l">${l.l}</span></button>`).join('')}</div></div>`;
+  });
+  root.innerHTML=html;
+  root.querySelectorAll('.scale-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const n=parseInt(btn.dataset.n,10), v=parseInt(btn.dataset.value,10);
+      responses[n]=v;
+      btn.parentElement.querySelectorAll('.scale-btn').forEach(b=>b.classList.remove('selected'));
+      btn.classList.add('selected');
+      saveState();updateProgress();
+    });
+  });
+  Object.keys(responses).forEach(n=>{
+    const btn=root.querySelector(`.scale-btn[data-n="${n}"][data-value="${responses[n]}"]`);
+    if(btn)btn.classList.add('selected');
+  });
+  updateProgress();
+}
+function updateProgress(){
+  const c=Object.keys(responses).length;
+  document.getElementById('iief-progressFill').style.width=(c/TOTAL*100)+'%';
+  document.getElementById('iief-progressNum').textContent=c;
+  document.getElementById('iief-showResults').disabled=c<TOTAL;
+}
+function scoreDomain(dom){return ITEMS.filter(it=>it.dom===dom).reduce((s,it)=>s+(responses[it.n]||0),0);}
+const DOMAINS = {
+  EF:{name:'Erekciós Funkció',en:'Erectile Function',max:30,items:6},
+  OF:{name:'Orgazmusfunkció',en:'Orgasmic Function',max:10,items:2},
+  SD:{name:'Szexuális Vágy',en:'Sexual Desire',max:10,items:2},
+  IS:{name:'Közösülési Elégedettség',en:'Intercourse Satisfaction',max:15,items:3},
+  OS:{name:'Általános Elégedettség',en:'Overall Satisfaction',max:10,items:2}
+};
+// EF classification (Cappelleri 1999)
+function efBand(score){
+  if(score>=26)return{key:'none',label:'Nincs ED',color:'#065f46',desc:'26–30 · Erekciós funkció normál tartományban'};
+  if(score>=22)return{key:'mild',label:'Enyhe ED',color:'#84cc16',desc:'22–25 · Enyhe erekciós zavar'};
+  if(score>=17)return{key:'mildmod',label:'Enyhe-közepes ED',color:'#b8912e',desc:'17–21 · Enyhe-közepes erekciós zavar'};
+  if(score>=11)return{key:'mod',label:'Közepes ED',color:'#c97a4a',desc:'11–16 · Közepes erekciós zavar'};
+  return{key:'severe',label:'Súlyos ED',color:'#7c2d3c',desc:'6–10 · Súlyos erekciós zavar'};
+}
+function subBand(dom, score){
+  const meta = DOMAINS[dom], pct = score/meta.max;
+  if(pct>=0.8)return{key:'high',label:'Magas',color:'#065f46'};
+  if(pct>=0.6)return{key:'good',label:'Jó',color:'#84cc16'};
+  if(pct>=0.4)return{key:'mid',label:'Közepes',color:'#b8912e'};
+  if(pct>=0.2)return{key:'low',label:'Alacsony',color:'#c97a4a'};
+  return{key:'verylow',label:'Nagyon alacsony',color:'#7c2d3c'};
+}
+const INTERP = {
+  EF:{
+    none:`Az erekciós funkciód a normál tartományban. Ha jelen van valamilyen distressz vagy specifikus szituációs nehézség (pl. új partner, teljesítmény-szorongás), az inkább szituációs, mint funkcionális.`,
+    mild:`Enyhe erekciós zavar tartomány. Ez a leggyakoribb kategória felnőtt férfiaknál — nem klinikai vészjelzés. <strong>Első lépés:</strong> orvosi alap-check (koleszterin, vércukor, tesztoszteron, gyógyszer-lista áttekintés) — az érrendszeri és metabolikus tényezők itt gyakran korrigálhatók.`,
+    mildmod:`Enyhe-közepes erekciós zavar. Klinikai relevancia. <strong>Orvosi kivizsgálás indokolt</strong> (urológia + belgyógyászat: kardiovaszkuláris rizikó, endokrin panel). A pszichoszociális tényezők (teljesítmény-szorongás, kapcsolati distressz, spectator mode) többnyire <em>társulnak</em> — az elsődleges kezelés kombinált (organikus + pszichogén).`,
+    mod:`Közepes súlyosságú erekciós zavar. <strong>Orvosi kivizsgálás szükséges.</strong> Az érrendszeri kockázat itt már statisztikailag jelentős — az ED gyakran <em>korai jelzője</em> a koronária-betegségeknek (5–10 évvel megelőzheti). Kezelési opciók: PDE5-inhibitorok (Viagra/Cialis) hatásosak lehetnek, kombinálva a háttér-tényezők kezelésével.`,
+    severe:`Súlyos erekciós zavar. <strong>Sürgős orvosi konzultáció javasolt.</strong> Az érrendszeri kivizsgálás nem halasztható. A pszichogén (situational) és organikus (mindig-jelen) elkülönítése kulcs — reggeli erekciók jelenléte pszichogén profilra utal, hiánya organikusra. A kezelési paletta széles: gyógyszeres, injekciós, vákumpumpa, protézis; a legtöbb esetben jelentős javulás elérhető.`
+  }
+};
+function getCrossLinks(scores){
+  const ef=scores.EF, sd=scores.SD, os=scores.OS, is=scores.IS;
+  const links=[];
+  if(ef<22 && sd>=7){
+    links.push({label:'Van vágy, de nincs erekció — pszichogén profil valószínűbb',text:`Magas SD + alacsony EF gyakran <em>pszichogén</em> vagy szituációs profil jelzője (a rendszered akar, de nem tud "átkapcsolni"). Ez SIS/SES-en <strong>magas SIS1</strong> (teljesítmény-gátlás) képében jelenik meg. Reggeli erekciók jelenléte + önkielégítéskor működő funkció megerősíti ezt.`});
+  }
+  if(ef<22 && sd<=5){
+    links.push({label:'Alacsony vágy + alacsony erekció — endokrin/depresszió is szóba jön',text:`Az együttes csökkenés <strong>tesztoszteron-hiány</strong>, hipogonadizmus, vagy súlyosabb depresszió jelzője lehet. Hormonpanel (össz-teszt, szabad-teszt, SHBG, prolaktin) érdemes.`});
+  }
+  if(is<8 && ef>=22){
+    links.push({label:'Funkció rendben, elégedettség alacsony — pszichológiai/relációs',text:`Ha az EF megfelelő, de az IS és OS alacsony, a kérdés nem az erekció, hanem a <em>szex minősége és kontextusa</em>. Sensate Focus, párterápia, ECR-R felvétele érdemes.`});
+  }
+  if(ef<22 && os<=4){
+    links.push({label:'ECR-R felvétele — kötődési biztonság ellenőrzése',text:`Alacsony EF + alacsony összelégedettség profilnál érdemes a kötődési profilt is megnézni (Build 2 · ECR-R): a kapcsolati distresz és a szexuális működés között kétirányú összefüggés van.`});
+  }
+  links.push({label:'SIS/SES kapcsolat',text:`Ha még nem töltötted ki, a SIS/SES (Build 1) árnyaltabb képet ad: milyen a "fék" (SIS1/SIS2) versus "gáz" (SES) arányod. Ez különösen fontos pszichogén ED gyanújánál.`});
+  return links;
+}
+function therapySuggestions(scores){
+  const ef=scores.EF;
+  const mods=[];
+  if(ef<22){
+    mods.push({name:'Urológiai kivizsgálás — <em>első lépés</em>',text:`Vaszkuláris állapotfelmérés (Doppler UH ha indokolt), hormonpanel, gyógyszerlista áttekintése. Az ED gyakran <strong>korai kardiovaszkuláris jelzés</strong> — a szűrés önmagában is életmentő lehet.`});
+  }
+  if(ef<22){
+    mods.push({name:'PDE5-inhibitor próba (Viagra/Cialis) — <em>orvosi javaslatra</em>',text:`Az EF domén 22 alatti értékénél a farmakoterápia gyakran gyors első segítség — a "sikerélmény" újraindítja a rendszert. NEM helyettesíti a háttér-vizsgálatot. Nitráttal vagy adott alfa-blokkolóval kombinálva ellenjavallt — orvos írja fel.`});
+  }
+  if(ef>=17){
+    mods.push({name:'Sensate Focus (Masters & Johnson)',text:`Ha van pszichogén komponens, a Sensate Focus a nemzetközileg legjobban dokumentált viselkedéses intervenció. Strukturált érintkezéses gyakorlatok, kifejezetten a teljesítmény-frame kiiktatására. Párkapcsolati vagy önállóan is végezhető.`});
+    mods.push({name:'Mindfulness-Based Sex Therapy — <em>Brotto</em>',text:`Kognitív elterelődés ("spectator mode") csökkentésére. Különösen hatékony, ha a "figyelem az izgalomtól elszakad" tapasztalatod van szex közben.`});
+  }
+  if(ef<11){
+    mods.push({name:'Multidiszciplináris megközelítés',text:`Súlyos ED-nél optimális az urológia + endokrin + pszichológia együttes bevonása. A modern klinikai algoritmusok kombinált terápiát alkalmaznak.`});
+  }
+  mods.push({name:'Életmód-tényezők',text:`Aerob mozgás (heti 3× 30 perc), alvás minőség, alkohol- és nikotinfogyasztás csökkentése bizonyítottan javít az EF-en. Nem "csak jó tanács" — direkt vaszkuláris hatás.`});
+  return mods;
+}
+function renderResults(){
+  const scores={};
+  ['EF','OF','SD','IS','OS'].forEach(d=>{scores[d]=scoreDomain(d);});
+  const efB=efBand(scores.EF);
+  const tc=document.getElementById('iief-totalCard');
+  tc.style.setProperty('--band-color', efB.color);
+  tc.innerHTML=`<div class="total-label">Erekciós Funkció domén · elsődleges pontszám</div><div class="total-value">${scores.EF}</div><div class="total-out">/ 30 · Cappelleri (1999) kategorizálás</div><div class="total-band" style="background:${efB.color}">${efB.label}</div><p style="color:var(--ink-soft);font-size:14px;margin-top:16px;line-height:1.6">${efB.desc}</p>`;
+  let scHtml='';
+  ['EF','OF','SD','IS','OS'].forEach(d=>{
+    const meta=DOMAINS[d], s=scores[d], band=subBand(d,s), pct=(s/meta.max)*100;
+    scHtml+=`<div class="score-card" style="--sc:${band.color}"><div class="abbr">${d} · ${meta.en}</div><h4><em>${meta.name}</em></h4><div class="val">${s}</div><div class="out">/ ${meta.max}</div><div class="band">${band.label}</div><div class="bar"><div class="bar-fill" style="width:${pct}%"></div></div></div>`;
+  });
+  document.getElementById('iief-scoresGrid').innerHTML=scHtml;
+  let interp=`<h3>Klinikai <em>értelmezés</em></h3><div class="interp-section" style="--sc:${efB.color}"><h4>Erekciós Funkció — ${efB.label}</h4><p>${INTERP.EF[efB.key]}</p></div>`;
+  document.getElementById('iief-interpCard').innerHTML=interp;
+  const links=getCrossLinks(scores);
+  document.getElementById('iief-cross-links').innerHTML=links.map(l=>`<div class="cross-item"><div class="cross-item-label">${l.label}</div><p>${l.text}</p></div>`).join('');
+  const mods=therapySuggestions(scores);
+  document.getElementById('iief-therapy-suggestions').innerHTML=mods.map(m=>`<div class="therapy-mod"><div class="therapy-mod-name">${m.name}</div><p>${m.text}</p></div>`).join('');
+  document.getElementById('iief-results').classList.add('visible');
+  setTimeout(()=>{document.getElementById('iief-results').scrollIntoView({behavior:'smooth',block:'start'});},100);
+}
+document.getElementById('iief-showResults').addEventListener('click',()=>{if(Object.keys(responses).length<TOTAL)return;renderResults();});
+function reset(){if(!confirm('Biztos törlöd az IIEF-15 válaszaidat?'))return;responses={};saveState();document.querySelectorAll('#test-iief .scale-btn.selected').forEach(b=>b.classList.remove('selected'));document.getElementById('iief-results').classList.remove('visible');updateProgress();window.scrollTo({top:0,behavior:'smooth'});}
+function downloadJSON(){
+  const scores={};
+  ['EF','OF','SD','IS','OS'].forEach(d=>{scores[d]=scoreDomain(d);});
+  const data={test:'IIEF-15',timestamp:new Date().toISOString(),raw_responses:responses,domain_scores:scores,ef_band:efBand(scores.EF).label};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`iief-15-${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(url);
+}
+loadState();renderQuiz();
+return {reset,downloadJSON};
+})();
+
+/* ═══════════════════════════════════════════════════════════════
+   PEDT
+   ═══════════════════════════════════════════════════════════════ */
+window.PEDT = (function(){
+const LIKERT = [{v:0,l:'egyáltalán nem'},{v:1,l:'kissé'},{v:2,l:'közepesen'},{v:3,l:'nagyon'},{v:4,l:'rendkívül'}];
+const ITEMS = [
+  {n:1, t:'Nehéznek találod-e késleltetni az ejakulációt?'},
+  {n:2, t:'Előbb ejakulálsz, mint szeretnéd?'},
+  {n:3, t:'Nagyon kis stimulációra ejakulálsz?'},
+  {n:4, t:'Frusztráltnak érzed magad az ejakuláció időzítése miatt?'},
+  {n:5, t:'Mennyire aggódsz amiatt, hogy a partneredet nem elégíted ki szexuálisan, mert túl gyorsan ejakulálsz?'}
+];
+const TOTAL=ITEMS.length;
+const STORAGE_KEY='pedt-responses-v1';
+let responses={};
+function loadState(){try{const r=localStorage.getItem(STORAGE_KEY);if(r)responses=JSON.parse(r);}catch(e){responses={}}}
+function saveState(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(responses));}catch(e){}window.hubCheckProgress&&window.hubCheckProgress();}
+function renderQuiz(){
+  const root=document.getElementById('pedt-quiz');
+  let html='';
+  ITEMS.forEach(item=>{
+    html+=`<div class="q" data-n="${item.n}"><span class="q-num">${String(item.n).padStart(2,'0')}.</span><div class="q-text">${item.t}</div><div class="scale" role="radiogroup">${LIKERT.map(l=>`<button class="scale-btn" data-value="${l.v}" data-n="${item.n}" type="button"><span class="v">${l.v}</span><span class="l">${l.l}</span></button>`).join('')}</div></div>`;
+  });
+  root.innerHTML=html;
+  root.querySelectorAll('.scale-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const n=parseInt(btn.dataset.n,10),v=parseInt(btn.dataset.value,10);
+      responses[n]=v;
+      btn.parentElement.querySelectorAll('.scale-btn').forEach(b=>b.classList.remove('selected'));
+      btn.classList.add('selected');
+      saveState();updateProgress();
+    });
+  });
+  Object.keys(responses).forEach(n=>{
+    const btn=root.querySelector(`.scale-btn[data-n="${n}"][data-value="${responses[n]}"]`);
+    if(btn)btn.classList.add('selected');
+  });
+  updateProgress();
+}
+function updateProgress(){
+  const c=Object.keys(responses).length;
+  document.getElementById('pedt-progressFill').style.width=(c/TOTAL*100)+'%';
+  document.getElementById('pedt-progressNum').textContent=c;
+  document.getElementById('pedt-showResults').disabled=c<TOTAL;
+}
+function scoreTotal(){return ITEMS.reduce((s,it)=>s+(responses[it.n]||0),0);}
+function band(score){
+  if(score<=8)return{key:'none',label:'Nincs PE',color:'#065f46',desc:'Nem PE tartomány'};
+  if(score<=10)return{key:'possible',label:'Valószínű PE',color:'#b8912e',desc:'Határmenti — érdemes klinikai konzultáció'};
+  return{key:'yes',label:'PE',color:'#7c2d3c',desc:'PE-tartomány — klinikai jelentőség'};
+}
+const INTERP = {
+  none:`A PEDT nem jelez korai magömlést. Ha van distressz vagy időzítési aggodalmad, az inkább <em>észlelési</em> vagy szituációs, nem funkcionális. A <strong>2 perc alatti intravaginális latencia</strong> önmagában nem PE — a kontroll és a distressz együtt kell.`,
+  possible:`Határmenti pontszám. Nem klinikai küszöb, de vannak jelek. Két lehetőség: (1) <em>lifelong</em> mintázat, ami mindig ilyen volt — biológiai/neurológiai; (2) <em>acquired</em>, ami az elmúlt hónapokban alakult ki — gyakran pszichogén, gyógyszer-mellékhatás, vagy társult ED. Érdemes urológust vagy szexuálterapeutát felkeresni.`,
+  yes:`<strong>PE tartomány.</strong> A DSM-5 kritériumai a PEDT-vel közel esnek: ~1 perc alatti latencia + kontroll-hiány + distressz. Két típus különítendő el: <em>lifelong</em> (mindig ilyen, gyakran biológiai — serotoninerg tónus, penile hyperszenzitivitás) és <em>acquired</em> (későbbi kialakulású, gyakran ED-vel társult, teljesítmény-szorongás, kapcsolati distressz). <strong>A kezelés kombinált</strong>: farmakológia (SSRI, dapoxetin, lokális anesztetikum) + viselkedéses (start-stop, squeeze) + kapcsolati intervenciók.`
+};
+function getCrossLinks(scores){
+  const s=scoreTotal();
+  const links=[];
+  if(s>=9){
+    links.push({label:'IIEF-15 kombinált értékelés (I. tab)',text:`PE gyakran társul ED-vel: az ED-vel élő férfiak azt kompenzálva sietősen fejezik be. Nézd meg az EF domént az I. tabon — ha az is 22 alatt, kombinált (két problémás) kezelés indokolt.`});
+    links.push({label:'SIS/SES: magas SIS1 valószínű',text:`A PE gyakran együtt jár magas <em>SIS1</em> (teljesítmény-gátlás) pontszámmal a Bancroft-modellben. A "mi lesz, ha túl gyorsan..." aggodalom önmagában felgyorsítja az ejakulációt. Ez terápiásan a Sensate Focus fő célpontja.`});
+    links.push({label:'ECR-R: szorongásos kötődés hozzájáruló',text:`Anxiously-preoccupied kötődési profilnál a "vajon elég vagyok" folyamatos monitorozása szomatikusan időzítés-problémaként manifesztálódhat. A kötődési munka indirekt PE-csökkentő hatású.`});
+  }
+  return links;
+}
+function therapySuggestions(scores){
+  const s=scoreTotal();
+  const mods=[];
+  if(s<=8){
+    mods.push({name:'Nincs specifikus intervenciós javaslat',text:`A PEDT nem jelez klinikailag jelentős PE-t. Ha van szubjektív időzítési aggodalmad, érdemes a <em>partneri kommunikációt</em> és a <em>tempó-tudatosságot</em> megnézni, nem a "gyógyítást".`});
+    return mods;
+  }
+  mods.push({name:'Start-stop és squeeze technikák — <em>viselkedéses alapok</em>',text:`Semans (1956) és Masters & Johnson módszerei. Strukturált gyakorlás: a stimuláció leállítása "point of no return" közelében, majd folytatás. Néhány hét alatt jelentős latencia-növelést hozhat. Partneri gyakorlás előnyben, de szólo is elkezdhető.`});
+  mods.push({name:'Lokális anesztetikum spray — <em>orvosi javaslatra</em>',text:`Lidokain/prilokain sprayk (pl. Fortacin) hatásosak, a szenzoros bemenetet csökkentik. Kondommal ajánlott — enélkül a partneri szenzáció is csökkenhet.`});
+  if(s>=11){
+    mods.push({name:'Dapoxetin (Priligy) — <em>engedélyezett SSRI PE-re</em>',text:`Rövid hatású, kifejezetten "on demand" ejakulációs késleltetésre engedélyezett szer. Klinikailag validált (~2-3× latencia-növelés). Csak orvosi felírásra.`});
+    mods.push({name:'Cognitive-behavioral sex therapy',text:`Ha a "acquired" típus valószínű (nem mindig volt ilyen), a kognitív komponens (elvárások, katasztrofizálás, spectator mode) kezelése kulcs. Sensate Focus + kognitív restrukturálás kombináció.`});
+  }
+  mods.push({name:'Urológiai + szexuálterapeuta kombinált konzultáció',text:`A klinikai gyakorlatban ez a kombinált (biológiai + pszichológiai) megközelítés hozza a legjobb eredményt. Magyarországon szexuálterapeuta hálózat elérhető (magyarszexualterapia.hu vagy hasonló).`});
+  return mods;
+}
+function renderResults(){
+  const s=scoreTotal();
+  const b=band(s);
+  const tc=document.getElementById('pedt-totalCard');
+  tc.style.setProperty('--tc',b.color);
+  tc.innerHTML=`<div class="total-label">PEDT összpontszám</div><div class="total-value">${s}</div><div class="total-out">/ 20 · cut-off: ≤8 · 9–10 · ≥11</div><div class="total-band">${b.label}</div><p style="color:var(--ink-soft);font-size:14px;margin-top:16px;line-height:1.6">${b.desc}</p>`;
+  document.getElementById('pedt-interpCard').innerHTML=`<h3>Klinikai <em>értelmezés</em></h3><div class="interp-section" style="--sc:${b.color}"><h4>${b.label}</h4><p>${INTERP[b.key]}</p></div>`;
+  const links=getCrossLinks();
+  document.getElementById('pedt-cross-links').innerHTML=links.length?links.map(l=>`<div class="cross-item"><div class="cross-item-label">${l.label}</div><p>${l.text}</p></div>`).join(''):`<p style="color:var(--ink-muted);font-style:italic">Nincs jelenlegi klinikai kereszthivatkozás.</p>`;
+  const mods=therapySuggestions();
+  document.getElementById('pedt-therapy-suggestions').innerHTML=mods.map(m=>`<div class="therapy-mod"><div class="therapy-mod-name">${m.name}</div><p>${m.text}</p></div>`).join('');
+  document.getElementById('pedt-results').classList.add('visible');
+  setTimeout(()=>{document.getElementById('pedt-results').scrollIntoView({behavior:'smooth',block:'start'});},100);
+}
+document.getElementById('pedt-showResults').addEventListener('click',()=>{if(Object.keys(responses).length<TOTAL)return;renderResults();});
+function reset(){if(!confirm('Biztos törlöd a PEDT válaszaidat?'))return;responses={};saveState();document.querySelectorAll('#test-pedt .scale-btn.selected').forEach(b=>b.classList.remove('selected'));document.getElementById('pedt-results').classList.remove('visible');updateProgress();window.scrollTo({top:0,behavior:'smooth'});}
+function downloadJSON(){
+  const s=scoreTotal(),b=band(s);
+  const data={test:'PEDT',timestamp:new Date().toISOString(),raw_responses:responses,total:s,band:b.label};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`pedt-${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(url);
+}
+loadState();renderQuiz();
+return {reset,downloadJSON};
+})();
+
+/* ═══════════════════════════════════════════════════════════════
+   SDI-2
+   ═══════════════════════════════════════════════════════════════ */
+window.SDI = (function(){
+// SDI-2: 14 item, két alskála
+// Dyadic (1-8): partneri vágy
+// Solitary (9-14): szólo vágy
+// Skálák változnak: frekvencia (0-8) és intenzitás (0-8)
+const FREQ = [{v:0,l:'nincs'},{v:1,l:'havi 1'},{v:2,l:'havi 2'},{v:3,l:'heti 1'},{v:4,l:'heti 2'},{v:5,l:'heti 3-4'},{v:6,l:'heti 5-6'},{v:7,l:'napi 1'},{v:8,l:'napi több'}];
+const INTEN = [{v:0,l:'nincs'},{v:1,l:'nagyon gyenge'},{v:2,l:'gyenge'},{v:3,l:'kissé gyenge'},{v:4,l:'közepes'},{v:5,l:'kissé erős'},{v:6,l:'erős'},{v:7,l:'nagyon erős'},{v:8,l:'rendkívül'}];
+const ITEMS = [
+  // Dyadic (partneri)
+  {n:1, sub:'D', scale:FREQ, t:'Az elmúlt hónapban milyen gyakran szerettél volna partneri szexuális aktivitásba kezdeni (pl. csók, érintés, közösülés)?'},
+  {n:2, sub:'D', scale:FREQ, t:'Az elmúlt hónapban milyen gyakran volt szexuális vágyad, ha vonzó személyt láttál?'},
+  {n:3, sub:'D', scale:FREQ, t:'Amikor egy szexuálisan vonzó személlyel beszélgetsz, milyen gyakran érzel vágyat?'},
+  {n:4, sub:'D', scale:FREQ, t:'Milyen gyakran fantáziálsz partneri szexuális helyzetről?'},
+  {n:5, sub:'D', scale:FREQ, t:'Milyen gyakran érzel vágyat, hogy egy partnerrel szexuális aktivitásba kezdj?'},
+  {n:6, sub:'D', scale:FREQ, t:'Milyen gyakran érzel vágyat egy vonzó személyre?'},
+  {n:7, sub:'D', scale:FREQ, t:'Milyen gyakran ébred fel benned szexuális vágy, ha egy partneri kapcsolatra gondolsz?'},
+  {n:8, sub:'D', scale:INTEN, t:'Amikor először találkozol egy vonzó személlyel, mennyire erős szexuális vágyat érzel?'},
+  // Solitary (szólo)
+  {n:9, sub:'S', scale:FREQ, t:'Milyen gyakran szerettél volna önkielégítéssel szexuális örömöt szerezni?'},
+  {n:10, sub:'S', scale:FREQ, t:'Milyen gyakran volt szexuális vágyad partner nélkül?'},
+  {n:11, sub:'S', scale:FREQ, t:'Milyen gyakran szerettél volna egyedül szexuálisan aktív lenni?'},
+  {n:12, sub:'S', scale:FREQ, t:'Milyen gyakran fantáziálsz önkielégítésről?'},
+  {n:13, sub:'S', scale:FREQ, t:'Milyen gyakran gondolsz szexuális örömre a nap folyamán, amikor senki nincs veled?'},
+  {n:14, sub:'S', scale:INTEN, t:'Amikor egyedül vagy, mennyire erős szexuális vágyat érzel átlagosan?'}
+];
+const TOTAL=ITEMS.length;
+const STORAGE_KEY='sdi-2-responses-v1';
+let responses={};
+function loadState(){try{const r=localStorage.getItem(STORAGE_KEY);if(r)responses=JSON.parse(r);}catch(e){responses={}}}
+function saveState(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(responses));}catch(e){}window.hubCheckProgress&&window.hubCheckProgress();}
+function renderQuiz(){
+  const root=document.getElementById('sdi-quiz');
+  let html='';
+  ITEMS.forEach(item=>{
+    html+=`<div class="q" data-n="${item.n}"><span class="q-num">${String(item.n).padStart(2,'0')}. · ${item.sub==='D'?'partneri':'szólo'}</span><div class="q-text">${item.t}</div><div class="scale" role="radiogroup">${item.scale.map(l=>`<button class="scale-btn" data-value="${l.v}" data-n="${item.n}" type="button"><span class="v">${l.v}</span><span class="l">${l.l}</span></button>`).join('')}</div></div>`;
+  });
+  root.innerHTML=html;
+  root.querySelectorAll('.scale-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const n=parseInt(btn.dataset.n,10),v=parseInt(btn.dataset.value,10);
+      responses[n]=v;
+      btn.parentElement.querySelectorAll('.scale-btn').forEach(b=>b.classList.remove('selected'));
+      btn.classList.add('selected');
+      saveState();updateProgress();
+    });
+  });
+  Object.keys(responses).forEach(n=>{
+    const btn=root.querySelector(`.scale-btn[data-n="${n}"][data-value="${responses[n]}"]`);
+    if(btn)btn.classList.add('selected');
+  });
+  updateProgress();
+}
+function updateProgress(){
+  const c=Object.keys(responses).length;
+  document.getElementById('sdi-progressFill').style.width=(c/TOTAL*100)+'%';
+  document.getElementById('sdi-progressNum').textContent=c;
+  document.getElementById('sdi-showResults').disabled=c<TOTAL;
+}
+function scoreSub(sub){return ITEMS.filter(it=>it.sub===sub).reduce((s,it)=>s+(responses[it.n]||0),0);}
+// Male norms (Spector 1996): Dyadic mean ~40-45, SD ~12; Solitary mean ~20-25, SD ~12
+const NORMS = {D:{max:64,mean:42,sd:12},S:{max:48,mean:22,sd:12}};
+function band(sub, score){
+  const norm=NORMS[sub];
+  const z=(score-norm.mean)/norm.sd;
+  if(z<=-1.5)return{key:'verylow',label:'Nagyon alacsony',color:'#7c2d3c',desc:'jóval átlag alatti'};
+  if(z<=-0.5)return{key:'low',label:'Alacsony',color:'#c97a4a',desc:'átlag alatti'};
+  if(z<0.5)return{key:'mid',label:'Átlagos',color:'#b8912e',desc:'tipikus tartomány'};
+  if(z<1.5)return{key:'high',label:'Magas',color:'#84cc16',desc:'átlag feletti'};
+  return{key:'veryhigh',label:'Nagyon magas',color:'#065f46',desc:'jóval átlag feletti'};
+}
+const INTERP = {
+  D:{
+    verylow:`A partneri vágy nagyon alacsony. Ez lehet: (1) rendszerszintű alacsony reaktivitás (magára az embereire nem "kapcsol"), (2) <em>responsive desire</em> profil (nem spontán, csak stimuláció után jön), (3) átmeneti állapot (stressz, kapcsolati distressz, gyógyszer, hormonális). Nem "hiba" — de érdemes a kontextust megnézni.`,
+    low:`Alacsony partneri vágy. A "spontán" vágy ritka. A responsive desire modell (Basson) itt fontos: a vágy nem előzi meg a szexet — a szex vagy annak előjátéka <em>indítja el</em>. Kapcsolatban ez félreértéseket okozhat.`,
+    mid:`Tipikus partneri vágy-szint. A férfi populációs átlaghoz közel.`,
+    high:`Magas partneri vágy. Rendszered könnyen aktivizálódik partneri kontextusban. Ha a partneri vágyak nem szinkronban vannak, kapcsolati distressz forrása lehet.`,
+    veryhigh:`Nagyon magas partneri vágy. Kiemelkedően reaktív rendszer. Ha ez distresszt okoz vagy funkcionális zavart, érdemes szakmai konzultáció; egyébként egyszerűen egy magas-libidójú profil.`
+  },
+  S:{
+    verylow:`A szólo vágy nagyon alacsony. Ha a partneri vágy is alacsony, ez általános alacsony reaktivitás. Ha a partneri magasabb — akkor a vágy szigorúan partneri (nem is a saját testeddel akarsz kapcsolatot).`,
+    low:`Alacsony szólo vágy.`,
+    mid:`Tipikus szólo vágy-szint.`,
+    high:`Magas szólo vágy. A rendszered erősen aktivizálódik partner nélkül is.`,
+    veryhigh:`Nagyon magas szólo vágy.`
+  }
+};
+function crossPattern(d, s){
+  const links=[];
+  const dz=(d-NORMS.D.mean)/NORMS.D.sd, sz=(s-NORMS.S.mean)/NORMS.S.sd;
+  if(dz<-1.0 && sz>0.5){
+    links.push({label:'Magas szólo + alacsony partneri — kontextuális ok valószínű',text:`A rendszered működik (magas szólo), csak partneri kontextusban nem "kapcsol". Okok lehetnek: kapcsolati distressz, teljesítmény-szorongás, kötődési biztonság hiánya, spectator mode. <strong>Nem alacsony libidó</strong> — hanem kontextus-érzékeny válaszrendszer.`});
+  }
+  if(dz>0.5 && sz<-1.0){
+    links.push({label:'Magas partneri + alacsony szólo — a vágy relációs',text:`A vágyad partnerhez kötött. Nem tipikus férfi profil, de nem is problematikus. Egyedül nem indul be szexuálisan a rendszer — ez elmondható a "responsive desire" egyik formájának.`});
+  }
+  if(dz<-1.0 && sz<-1.0){
+    links.push({label:'Általánosan alacsony vágy — több lehetséges ok',text:`Mindkét dimenzió jelentősen alacsony. Ez lehet: (1) átmeneti (stressz, depresszió, gyógyszer), (2) hormonális (alacsony tesztoszteron), (3) egyszerűen alacsony baseline. Ha distresszt okoz, orvosi + pszichológiai kivizsgálás érdemes.`});
+  }
+  if(dz>1.0 && sz>1.0){
+    links.push({label:'Általánosan magas vágy',text:`Mindkét dimenzió magas — kiemelkedően reaktív libidó. Csak akkor klinikai kérdés, ha distresszt vagy funkcionális zavart okoz.`});
+  }
+  links.push({label:'SIS/SES kapcsolat (Build 1)',text:`A vágy önmagában csak fél a képnek — a SIS/SES megmutatja a "gáz és fék" arányodat. Magas vágy + magas SIS1 (teljesítmény-gátlás) = frusztráló profil; alacsony vágy + alacsony SIS = "csendes" rendszer.`});
+  if(d<25){
+    links.push({label:'Post-breakup fázis — kontextus',text:`Friss kapcsolati veszteség után a partneri vágy átmenetileg alacsonyabb lehet — nem strukturális. Érdemes 3-6 hónap múlva újra felvenni.`});
+  }
+  return links;
+}
+function therapySuggestions(scores){
+  const mods=[];
+  const dz=(scores.D-NORMS.D.mean)/NORMS.D.sd, sz=(scores.S-NORMS.S.mean)/NORMS.S.sd;
+  if(dz<-1.0 && sz>=0){
+    mods.push({name:'Sensate Focus + kontextus-építés',text:`Ha szólo működik, partnerivel nem — a probléma nem a libidó, hanem a kontextus. Sensate Focus és partner-kommunikáció a Nagoski "Come as You Are" modell szerint.`});
+    mods.push({name:'Responsive desire pszichoedukáció',text:`A Basson-modell megismerése önmagában nagy segítség: nem "várni a spontán vágyra", hanem tudatosan a szexuális helyzetbe belépni (érintés, közelség), ahonnan a vágy MÁR ott van, csak nem előzte meg.`});
+  }
+  if(dz<-1.0 && sz<-1.0){
+    mods.push({name:'Orvosi kivizsgálás — tesztoszteron, egészségi állapot',text:`Általános alacsony vágy: hormonpanel (össz-teszt, szabad-teszt, SHBG, prolaktin, TSH), gyógyszerlista áttekintés (SSRI, béta-blokkoló, sok gyógyszer csökkenti). Depresszió-szűrés is indokolt.`});
+  }
+  if(dz>=0 && sz>=0){
+    mods.push({name:'Nincs vágy-oldali probléma',text:`A vágy-skálád a normál vagy magas tartományban. Ha valamilyen distresszt élsz meg, az valószínűleg NEM vágy-oldali. Nézd meg az IIEF-15 (I. tab), PEDT (II. tab), vagy Build 1 SIS/SES tabot.`});
+  }
+  mods.push({name:'Kapcsolati kommunikáció — vágy-eltérés esetén',text:`A partneri vágy-eltérés nagyon gyakori. Ez nem "hibás profil" — hanem különbség, ami kommunikációval kezelhető. Emily Nagoski "Come As You Are" könyve közérthető keret.`});
+  return mods;
+}
+function renderResults(){
+  const scores={D:scoreSub('D'),S:scoreSub('S')};
+  let scHtml='';
+  [{k:'D',n:'Partneri vágy',en:'Dyadic Sexual Desire',max:64},{k:'S',n:'Szólo vágy',en:'Solitary Sexual Desire',max:48}].forEach(dim=>{
+    const s=scores[dim.k], b=band(dim.k,s), pct=(s/dim.max)*100;
+    scHtml+=`<div class="score-card" style="--sc:${b.color}"><div class="abbr">${dim.en}</div><h4><em>${dim.n}</em></h4><div class="val">${s}</div><div class="out">/ ${dim.max}</div><div class="band">${b.label}</div><div class="bar"><div class="bar-fill" style="width:${pct}%"></div></div></div>`;
+  });
+  document.getElementById('sdi-scoresGrid').innerHTML=scHtml;
+  let interp=`<h3>Klinikai <em>értelmezés</em></h3>`;
+  [{k:'D',n:'Partneri vágy'},{k:'S',n:'Szólo vágy'}].forEach(dim=>{
+    const s=scores[dim.k], b=band(dim.k,s);
+    interp+=`<div class="interp-section" style="--sc:${b.color}"><h4>${dim.n} — ${b.label}</h4><p>${INTERP[dim.k][b.key]}</p></div>`;
+  });
+  document.getElementById('sdi-interpCard').innerHTML=interp;
+  const links=crossPattern(scores.D, scores.S);
+  document.getElementById('sdi-cross-links').innerHTML=links.map(l=>`<div class="cross-item"><div class="cross-item-label">${l.label}</div><p>${l.text}</p></div>`).join('');
+  const mods=therapySuggestions(scores);
+  document.getElementById('sdi-therapy-suggestions').innerHTML=mods.map(m=>`<div class="therapy-mod"><div class="therapy-mod-name">${m.name}</div><p>${m.text}</p></div>`).join('');
+  document.getElementById('sdi-results').classList.add('visible');
+  setTimeout(()=>{document.getElementById('sdi-results').scrollIntoView({behavior:'smooth',block:'start'});},100);
+}
+document.getElementById('sdi-showResults').addEventListener('click',()=>{if(Object.keys(responses).length<TOTAL)return;renderResults();});
+function reset(){if(!confirm('Biztos törlöd az SDI-2 válaszaidat?'))return;responses={};saveState();document.querySelectorAll('#test-sdi .scale-btn.selected').forEach(b=>b.classList.remove('selected'));document.getElementById('sdi-results').classList.remove('visible');updateProgress();window.scrollTo({top:0,behavior:'smooth'});}
+function downloadJSON(){
+  const scores={D:scoreSub('D'),S:scoreSub('S')};
+  const data={test:'SDI-2',timestamp:new Date().toISOString(),raw_responses:responses,scores};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`sdi-2-${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(url);
+}
+loadState();renderQuiz();
+return {reset,downloadJSON};
+})();
+
+/* ═══════════════════════════════════════════════════════════════
+   DES-II
+   ═══════════════════════════════════════════════════════════════ */
+window.DES = (function(){
+// DES-II: 28 item, 0-100 skálán 10-es lépésekben
+const SCALE = [0,10,20,30,40,50,60,70,80,90,100].map(v=>({v,l:v+'%'}));
+// Subscale assignments (Carlson & Putnam 1993):
+// Absorption: items 2,14,15,16,17,18,20,21,23 (9)
+// Amnesia: 3,4,5,6,8,10,25,26 (8)
+// Depersonalization/Derealization: 7,11,12,13,22,27 (6)
+// Nem-besorolt (total-only): 1,9,19,24,28
+const ITEMS = [
+  {n:1, t:'Néha úgy vezetsz autót, hogy közben rájössz, nem emlékszel arra, hogy hova mentél éppen (kirekesztve az alkohol vagy drog hatását).'},
+  {n:2, sub:'ABS', t:'Néha, amikor valakit hallgatsz beszélni, hirtelen rájössz, hogy nem hallottad, mit mondott, vagy annak egy részét.'},
+  {n:3, sub:'AMN', t:'Néha az az érzésed, hogy egy helyen vagy, de nem emlékszel, hogyan kerültél oda.'},
+  {n:4, sub:'AMN', t:'Néha olyan ruhákat találsz magadon, amelyekre nem emlékszel, hogy felvetted volna.'},
+  {n:5, sub:'AMN', t:'Néha új tárgyakat találsz a holmid között, amelyeket nem emlékszel, hogy megvettél volna.'},
+  {n:6, sub:'AMN', t:'Néha idegenek találkoznak veled, és úgy szólítanak, mintha ismernék, és más néven, vagy azt mondják, hogy már láttak korábban.'},
+  {n:7, sub:'DPD', t:'Néha úgy érzed, hogy a testeden kívülről állsz és nézed magadat, mintha egy másik személyt figyelnél.'},
+  {n:8, sub:'AMN', t:'Néha azt mondják neked, hogy nem ismersz fel barátokat vagy családtagokat.'},
+  {n:9, t:'Néha nem tudsz visszaemlékezni fontos életeseményekre (pl. esküvő, érettségi).'},
+  {n:10, sub:'AMN', t:'Néha valamit hazudtál, és nem vagy biztos benne, hogy hazudtál-e, vagy valóban megtörtént.'},
+  {n:11, sub:'DPD', t:'Néha úgy nézel a tükörbe, és nem ismersz magadra.'},
+  {n:12, sub:'DPD', t:'Néha az az érzésed, hogy a körülötted lévő emberek, tárgyak és a világ nem valóságosak.'},
+  {n:13, sub:'DPD', t:'Néha az az érzésed, hogy a testeded nem hozzád tartozik.'},
+  {n:14, sub:'ABS', t:'Néha eszedbe jut egy múltbeli esemény, olyan élénken, mintha most történne veled.'},
+  {n:15, sub:'ABS', t:'Néha nem tudod eldönteni, hogy egy emléked ténylegesen megtörtént, vagy csak álmodtad.'},
+  {n:16, sub:'ABS', t:'Néha egy ismerős helyen vagy, és mégis szokatlannak és idegennek tűnik.'},
+  {n:17, sub:'ABS', t:'Néha annyira belemerülsz egy tévéműsor vagy filmbe, hogy nem veszed észre, mi történik körülötted.'},
+  {n:18, sub:'ABS', t:'Néha annyira belemerülsz egy fantáziába vagy álmodozásba, hogy úgy érzed, valóban átéled.'},
+  {n:19, t:'Néha észreveszed, hogy nem érzed a fájdalmat.'},
+  {n:20, sub:'ABS', t:'Néha úgy ülsz és bámulsz a semmibe, és semmit sem gondolsz, mert az idő elrepül és nem tudod, mennyi idő telt el.'},
+  {n:21, sub:'ABS', t:'Néha egyedül vagy és úgy beszélsz magaddal, mintha egy másik személy lennél.'},
+  {n:22, sub:'DPD', t:'Néha úgy találod, hogy egy adott szituációban valami olyat csinálsz, mintha valaki más lennél — és nem tudod, miért.'},
+  {n:23, sub:'ABS', t:'Néha olyan dolgokat, amelyek általában nehezek, olyan könnyen csinálod, mintha nem is te tennéd.'},
+  {n:24, t:'Néha nem tudsz visszaemlékezni arra, hogy megcsináltál-e valamit, vagy csak elgondoltad, hogy megcsinálod (pl. lezártad-e az ajtót, elküldtél-e egy levelet).'},
+  {n:25, sub:'AMN', t:'Néha bizonyítékot találsz arra, hogy valamit megcsináltál, de nem emlékszel rá.'},
+  {n:26, sub:'AMN', t:'Néha jegyzeteket vagy rajzokat találsz a holmid között, amelyekről nem emlékszel, hogy csináltad volna őket.'},
+  {n:27, sub:'DPD', t:'Néha hangokat hallasz a fejedben, amelyek azt mondják, mit tegyél, vagy megjegyzéseket tesznek arra, amit teszel.'},
+  {n:28, t:'Néha úgy érzed, hogy egy köd, függöny, vagy üvegtábla van közted és a világ között.'}
+];
+const TOTAL=ITEMS.length;
+const STORAGE_KEY='des-2-responses-v1';
+let responses={};
+function loadState(){try{const r=localStorage.getItem(STORAGE_KEY);if(r)responses=JSON.parse(r);}catch(e){responses={}}}
+function saveState(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(responses));}catch(e){}window.hubCheckProgress&&window.hubCheckProgress();}
+function renderQuiz(){
+  const root=document.getElementById('des-quiz');
+  let html='';
+  ITEMS.forEach(item=>{
+    const sub = item.sub ? ` · ${item.sub}` : '';
+    html+=`<div class="q" data-n="${item.n}"><span class="q-num">${String(item.n).padStart(2,'0')}.${sub}</span><div class="q-text">${item.t}</div><div class="scale" role="radiogroup">${SCALE.map(l=>`<button class="scale-btn" data-value="${l.v}" data-n="${item.n}" type="button"><span class="v">${l.v}</span></button>`).join('')}</div></div>`;
+  });
+  root.innerHTML=html;
+  root.querySelectorAll('.scale-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const n=parseInt(btn.dataset.n,10),v=parseInt(btn.dataset.value,10);
+      responses[n]=v;
+      btn.parentElement.querySelectorAll('.scale-btn').forEach(b=>b.classList.remove('selected'));
+      btn.classList.add('selected');
+      saveState();updateProgress();
+    });
+  });
+  Object.keys(responses).forEach(n=>{
+    const btn=root.querySelector(`.scale-btn[data-n="${n}"][data-value="${responses[n]}"]`);
+    if(btn)btn.classList.add('selected');
+  });
+  updateProgress();
+}
+function updateProgress(){
+  const c=Object.keys(responses).length;
+  document.getElementById('des-progressFill').style.width=(c/TOTAL*100)+'%';
+  document.getElementById('des-progressNum').textContent=c;
+  document.getElementById('des-showResults').disabled=c<TOTAL;
+}
+function scoreTotal(){
+  const vals=Object.values(responses);
+  if(!vals.length)return 0;
+  return vals.reduce((a,b)=>a+b,0)/vals.length;
+}
+function scoreSub(sub){
+  const items=ITEMS.filter(it=>it.sub===sub);
+  const vals=items.map(it=>responses[it.n]).filter(v=>v!=null);
+  if(!vals.length)return 0;
+  return vals.reduce((a,b)=>a+b,0)/vals.length;
+}
+function totalBand(score){
+  if(score<15)return{key:'typical',label:'Tipikus',color:'#065f46',desc:'Nem klinikai tartomány — enyhe disszociatív élmények normálisak'};
+  if(score<30)return{key:'elevated',label:'Emelt',color:'#b8912e',desc:'Emelt tartomány — érdemes megfigyelni, ha distresszt okoz'};
+  return{key:'clinical',label:'Klinikailag jelentős',color:'#7c2d3c',desc:'Klinikai küszöb felett — szakmai konzultáció ajánlott'};
+}
+function subBand(score){
+  if(score<15)return{key:'low',label:'Alacsony',color:'#065f46'};
+  if(score<30)return{key:'mid',label:'Közepes',color:'#b8912e'};
+  return{key:'high',label:'Magas',color:'#7c2d3c'};
+}
+const SUB_META = {
+  ABS:{name:'Abszorpció',en:'Absorption / Imaginative Involvement',items:9,desc:'Belemerülés, "elveszés" fantáziában, filmben, gondolatban. A legenyhébb és legelterjedtebb disszociáció-forma; sokszor együtt jár kreativitással.'},
+  AMN:{name:'Amnézia',en:'Dissociative Amnesia',items:8,desc:'Memóriakiesések a mindennapi élet eseményeire (nem betegségre visszavezethető). Ez a legspecifikusabb trauma-kapcsolt tünet.'},
+  DPD:{name:'Depersonalizáció / Derealizáció',en:'Depersonalization / Derealization',items:6,desc:'Kívülről szemlélni magad, vagy a világ "nem valóságos" élménye. Szorongáshoz és trauma-történethez gyakran társul.'}
+};
+const INTERP = {
+  overall:{
+    typical:`Az általános disszociativitásod a tipikus tartományban van. Enyhe disszociatív élmények — pl. film közben "elveszés", ismerős útvonalon "automatikus" vezetés — normálisak, sőt gyakran adaptívak. Nincs klinikai jelzés.`,
+    elevated:`Emelt tartomány. A rendszered időnként "elszakad" — nem klinikai kategória, de érdemes megfigyelni. Kérdés: <strong>okoz-e distresszt vagy funkcionális zavart?</strong> Ha igen, érdemes szakmai konzultáció; ha nem, ez lehet egyszerűen egy magasabb baseline, vagy stressz-válasz.`,
+    clinical:`<strong>Klinikai küszöb felett (≥30).</strong> A DES-II ezt a küszöböt disszociatív zavarok (DID, DDD, PTSD, komplex trauma) szűrésére használja. <strong>Ez nem diagnózis — csak szűrés.</strong> Van magas hamis-pozitív arány (fantázia-hajlam, szuggeszibilitás is emelheti). <strong>Szakmai (trauma-informált pszichológus) konzultáció ajánlott</strong> a pontos értékeléshez — Dissociative Disorders Interview Schedule (DDIS) vagy Structured Clinical Interview for DSM-5 Dissociative Disorders (SCID-D-5) a következő lépés.`
+  },
+  ABS:{
+    low:`Alacsony abszorpció — a figyelmed jól irányítható és rögzíthető.`,
+    mid:`Közepes abszorpció. Néha "elveszel" fantáziában, filmben, gondolatban.`,
+    high:`Magas abszorpció. Erős képesség a belemerülésre — sok kreatív ember, meditálók magas értéket adnak. Nem trauma-specifikus, de a többi alskála értékeivel együtt értékelendő.`
+  },
+  AMN:{
+    low:`Alacsony amnesztikus disszociáció — a folyamatos memóriád intakt.`,
+    mid:`Közepes szintű memória-diszkontinuitás. Néhány kiesés a napi életben.`,
+    high:`<strong>Magas amnesztikus szintű disszociáció.</strong> Ez a legspecifikusabb trauma-kapcsolt disszociatív tünet. Ha ez magas és distresszt vagy funkcionális zavart okoz, <strong>szakmai konzultáció trauma-informált pszichológussal indokolt</strong>.`
+  },
+  DPD:{
+    low:`Alacsony depersonalizáció/derealizáció.`,
+    mid:`Közepes szintű élmény. Néha van "kívülről" magad-nézése vagy a világ "nem valóságos" érzése.`,
+    high:`<strong>Magas depersonalizáció/derealizáció.</strong> A "saját testeden kívülről nézed magad", "a világ nem valóságos" élmények gyakoriak. Ez gyakran társul szorongással, PTSD-vel, vagy különálló Depersonalization-Derealization Disorder-rel. Szakmai értékelés indokolt.`
+  }
+};
+function getCrossLinks(total){
+  const links=[];
+  if(total>=30){
+    links.push({label:'ECR-R: fearful-avoidant korreláció (Build 2)',text:`Magas DES gyakran együtt jár a fearful-avoidant (magas szorongás + magas elkerülés) kötődési profillal — mindkettő komplex trauma-történet tipikus markere.`});
+    links.push({label:'MAIA-2: Trusting és Not-Distracting alacsony (Build 1)',text:`Magas disszociáció mellett a testi bizalom és a "bent maradás a diszkomforttal" képessége szinte mindig csökkent.`});
+    links.push({label:'SMI: Detached Protector magas valószínűséggel (Build 2)',text:`A disszociáció mode-szinten a Detached Protector koping-mode-jaként jelenik meg. Ha felvetted az SMI-t, nézd meg.`});
+  }
+  if(total>=15 && total<30){
+    links.push({label:'Enyhe disszociatív mintázat',text:`Nem klinikai, de az MAIA-2 Trusting alskála értékét érdemes ellenőrizni. Az enyhe disszociáció gyakran fokozódik stressz alatt.`});
+  }
+  links.push({label:'Post-traumatic stress felmérés',text:`Ha a DES magas és van trauma-történet, érdemes egy PTSD-szűrőt (PCL-5) is felvenni. A trauma-informált szakértői értékelés a következő lépés — nem az önismereti tesztek.`});
+  return links;
+}
+function therapySuggestions(total, subs){
+  const mods=[];
+  if(total>=30){
+    mods.push({name:'Trauma-informált szakmai konzultáció — <em>első lépés</em>',text:`A DES magas pontszám nem "önmagában" kezelendő — a hátterében szinte mindig van trauma-történet. Egy trauma-informált pszichológus/pszichiáter felmérése szükséges (SCID-D-5 vagy DDIS). Nem sürgős krízis, de érdemes időpontot foglalni.`});
+    mods.push({name:'EMDR — <em>Shapiro</em>',text:`Az Eye Movement Desensitization and Reprocessing a leginkább validált trauma-kezelés. Disszociatív zavaroknál speciális adaptáció (Fine, Mosquera) — nem minden EMDR-terapeuta végzi ezt; érdemes komplex trauma-képzésű terapeutát keresni.`});
+    mods.push({name:'Szomatikus Experiencing / Sensorimotor Psychotherapy',text:`Levine és Ogden módszerei — testi tudatosságon alapuló trauma-kezelés. Kifejezetten disszociatív klienseknél hatékonyak, mert a "top-down" (beszélgetéses) megközelítés a disszociációt fenntarthatja.`});
+  } else if(total>=15){
+    mods.push({name:'Mindfulness + testi tudatosság — <em>MABT</em>',text:`Enyhe disszociatív mintázatnál a testi tudatosság gyakorlása "földelő" hatású. A MAIA-2-alapú munka jó belépési pont — a test újrakapcsolása a jelenbe.`});
+    mods.push({name:'Grounding technikák',text:`Ha disszociatív pillanatot érzel: 5-4-3-2-1 (5 dolog amit látsz, 4 amit hallasz, 3 amit érintesz, 2 amit szagolsz, 1 amit ízlelsz). Egyszerű, hatékony jelenbe-hozás.`});
+  } else {
+    mods.push({name:'Nincs specifikus intervenció',text:`A profilod tipikus tartományban. Ha időnként "elveszel" fantáziában vagy filmben, ez normális és sokszor adaptív — nem kell "gyógyítani".`});
+  }
+  if(subs.AMN>=30){
+    mods.push({name:'Amnesztikus jelekre — <em>strukturált napló</em>',text:`Ha a memória-kiesések zavaróak, egy napló (mit tettem, mikor) segít külső referenciapontot adni. Ez nem terápia — csak funkcionális support. A háttér-munka szakemberrel.`});
+  }
+  return mods;
+}
+function renderResults(){
+  const total=scoreTotal();
+  const subs={ABS:scoreSub('ABS'),AMN:scoreSub('AMN'),DPD:scoreSub('DPD')};
+  const tB=totalBand(total);
+  const tc=document.getElementById('des-totalCard');
+  tc.style.setProperty('--tc',tB.color);
+  tc.innerHTML=`<div class="total-label">DES-II átlagpontszám</div><div class="total-value">${total.toFixed(1)}</div><div class="total-out">/ 100 · cut-offs: <15 · 15–30 · ≥30</div><div class="total-band">${tB.label}</div><p style="color:var(--ink-soft);font-size:14px;margin-top:16px;line-height:1.6">${tB.desc}</p>`;
+  let scHtml='';
+  ['ABS','AMN','DPD'].forEach(sub=>{
+    const s=subs[sub], meta=SUB_META[sub], b=subBand(s), pct=(s/100)*100;
+    scHtml+=`<div class="score-card" style="--sc:${b.color}"><div class="abbr">${sub} · ${meta.en}</div><h4><em>${meta.name}</em></h4><div class="val">${s.toFixed(1)}</div><div class="out">/ 100 · ${meta.items} item</div><div class="band">${b.label}</div><div class="bar"><div class="bar-fill" style="width:${pct}%"></div></div></div>`;
+  });
+  document.getElementById('des-scoresGrid').innerHTML=scHtml;
+  let interp=`<h3>Klinikai <em>értelmezés</em></h3><div class="interp-section" style="--sc:${tB.color}"><h4>Összkép — ${tB.label}</h4><p>${INTERP.overall[tB.key]}</p></div>`;
+  ['ABS','AMN','DPD'].forEach(sub=>{
+    const s=subs[sub], meta=SUB_META[sub], b=subBand(s);
+    interp+=`<div class="interp-section" style="--sc:${b.color}"><h4>${meta.name} — ${b.label} (${s.toFixed(1)})</h4><p style="font-size:13.5px;color:var(--ink-muted);margin-bottom:8px;font-style:italic">${meta.desc}</p><p>${INTERP[sub][b.key]}</p></div>`;
+  });
+  document.getElementById('des-interpCard').innerHTML=interp;
+  const links=getCrossLinks(total);
+  document.getElementById('des-cross-links').innerHTML=links.map(l=>`<div class="cross-item"><div class="cross-item-label">${l.label}</div><p>${l.text}</p></div>`).join('');
+  const mods=therapySuggestions(total, subs);
+  document.getElementById('des-therapy-suggestions').innerHTML=mods.map(m=>`<div class="therapy-mod"><div class="therapy-mod-name">${m.name}</div><p>${m.text}</p></div>`).join('');
+  document.getElementById('des-results').classList.add('visible');
+  setTimeout(()=>{document.getElementById('des-results').scrollIntoView({behavior:'smooth',block:'start'});},100);
+}
+document.getElementById('des-showResults').addEventListener('click',()=>{if(Object.keys(responses).length<TOTAL)return;renderResults();});
+function reset(){if(!confirm('Biztos törlöd a DES-II válaszaidat?'))return;responses={};saveState();document.querySelectorAll('#test-des .scale-btn.selected').forEach(b=>b.classList.remove('selected'));document.getElementById('des-results').classList.remove('visible');updateProgress();window.scrollTo({top:0,behavior:'smooth'});}
+function downloadJSON(){
+  const total=scoreTotal();
+  const subs={ABS:scoreSub('ABS'),AMN:scoreSub('AMN'),DPD:scoreSub('DPD')};
+  const data={test:'DES-II',timestamp:new Date().toISOString(),raw_responses:responses,total_mean:total,subscale_means:subs,total_band:totalBand(total).label};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`des-2-${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(url);
+}
+loadState();renderQuiz();
+return {reset,downloadJSON};
+})();
+</script>
+
+</body>
+</html>

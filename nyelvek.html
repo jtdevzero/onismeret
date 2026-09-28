@@ -1,0 +1,1937 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Három kapcsolati térkép — Love · Apology · Imago</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Manrope:wght@300;400;500;600;700&family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-1:#f8fafc; --bg-2:#f1f5f9; --bg-3:#e2e8f0;
+  --ink:#0f172a; --ink-2:#1e293b; --ink-soft:#334155; --ink-muted:#64748b; --ink-quiet:#94a3b8;
+  --line:#cbd5e1; --line-soft:#e2e8f0; --paper:#ffffff;
+  --emerald:#065f46; --emerald-2:#059669; --emerald-soft:#d1fae5;
+  --sapphire:#1e3a8a; --sapphire-2:#2563eb; --sapphire-3:#3b82f6;
+  --gold:#b8912e; --gold-2:#d4a941; --gold-soft:#fef3c7;
+  --burgundy:#7c2d3c; --burgundy-2:#9f1239; --burgundy-soft:#fecdd3;
+  --shadow-sm:0 1px 2px rgba(15,23,42,0.04);
+  --shadow:0 1px 3px rgba(15,23,42,0.06), 0 10px 30px rgba(15,23,42,0.08);
+  --shadow-lg:0 4px 6px rgba(15,23,42,0.05), 0 20px 50px rgba(15,23,42,0.12);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:hidden}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg-1);color:var(--ink);min-height:100vh;line-height:1.6}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellipse 50% 40% at 15% 5%, rgba(184,145,46,0.05), transparent 60%),radial-gradient(ellipse 50% 40% at 85% 100%, rgba(124,45,60,0.05), transparent 60%);z-index:-2}
+.hub-shell{max-width:960px;margin:0 auto;padding:52px 28px 20px}
+.hub-header{margin-bottom:36px}
+.hub-eyebrow{font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:20px;font-weight:600;display:flex;align-items:center;gap:14px}
+.hub-eyebrow::before{content:"";width:36px;height:1px;background:var(--ink-muted)}
+.hub-header h1{font-family:'Cardo',serif;font-weight:400;font-size:clamp(40px,7vw,68px);line-height:1.02;letter-spacing:-0.015em;margin-bottom:20px}
+.hub-header h1 em{font-style:italic;color:var(--burgundy)}
+.hub-header .lead{font-size:17px;color:var(--ink-soft);max-width:680px;line-height:1.65;font-weight:300}
+.hub-header .lead strong{color:var(--ink);font-weight:600}
+.hub-header .lead em{color:var(--gold);font-style:italic;font-weight:500}
+.hub-caveat{background:var(--gold-soft);border:1px solid var(--gold);border-radius:12px;padding:14px 18px;margin-top:18px;color:var(--burgundy);font-size:13px;line-height:1.55;font-weight:500}
+.hub-caveat strong{color:var(--burgundy-2);font-weight:700}
+.hub-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:10px;background:rgba(255,255,255,0.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line-soft);border-radius:18px;position:sticky;top:12px;z-index:100;box-shadow:var(--shadow-sm);margin-top:16px}
+.hub-tab{padding:14px 16px;border-radius:12px;background:transparent;border:1px solid transparent;cursor:pointer;text-align:left;transition:all 0.22s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;gap:2px;font-family:inherit;position:relative;overflow:hidden}
+.hub-tab:hover:not(.active){background:var(--bg-2);transform:translateY(-1px)}
+.hub-tab .num{font-family:'Cardo',serif;font-style:italic;font-size:14px;color:var(--ink-muted);letter-spacing:0.06em;font-weight:400}
+.hub-tab .name{font-family:'Cardo',serif;font-size:19px;font-weight:600;color:var(--ink);line-height:1.15;margin-top:2px}
+.hub-tab .name em{font-style:italic;font-weight:400}
+.hub-tab .sub{font-size:10.5px;color:var(--ink-muted);letter-spacing:0.12em;text-transform:uppercase;margin-top:6px;font-weight:600;font-family:'Inter',sans-serif}
+.hub-tab .check{position:absolute;top:10px;right:12px;width:8px;height:8px;border-radius:50%;background:var(--emerald);opacity:0;transition:opacity 0.2s}
+.hub-tab.has-progress .check{opacity:1}
+.hub-tab.active{background:var(--tab-color);color:#fff;box-shadow:0 6px 18px color-mix(in srgb, var(--tab-color) 30%, transparent)}
+.hub-tab.active .num{color:rgba(255,255,255,0.7)}
+.hub-tab.active .name{color:#fff}
+.hub-tab.active .sub{color:rgba(255,255,255,0.75)}
+.hub-tab.active .check{background:var(--gold-2)}
+.hub-tab.love{--tab-color:var(--gold)}
+.hub-tab.apo{--tab-color:var(--emerald)}
+.hub-tab.imago{--tab-color:var(--burgundy)}
+
+.test-panel{display:none}
+.test-panel.active{display:block;animation:fadeSwitch 0.35s cubic-bezier(.4,0,.2,1)}
+@keyframes fadeSwitch{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.test-panel .shell{max-width:900px;margin:0 auto;padding:32px 28px 72px}
+.test-panel header{margin-bottom:34px}
+.test-panel .eyebrow{font-size:11px;letter-spacing:0.22em;text-transform:uppercase;margin-bottom:16px;font-weight:600;display:flex;align-items:center;gap:14px}
+.test-panel .eyebrow::before{content:"";width:36px;height:1px;background:currentColor}
+.test-panel header h2{font-family:'Cardo',serif;font-weight:400;font-size:clamp(34px,6vw,54px);line-height:1.02;letter-spacing:-0.01em;margin-bottom:18px}
+.test-panel header h2 em{font-style:italic}
+.test-panel .lead{font-size:17px;color:var(--ink-soft);max-width:660px;line-height:1.6}
+.test-panel .lead em{font-style:italic;font-weight:500}
+.test-panel .lead strong{color:var(--ink);font-weight:600}
+.test-panel .caveat{background:var(--gold-soft);border:1px solid var(--gold);border-radius:12px;padding:14px 18px;margin-top:20px;color:var(--burgundy);font-size:14px;line-height:1.55;font-weight:500}
+.test-panel .caveat strong{color:var(--burgundy-2);font-weight:700}
+.test-panel .intro-box{background:var(--paper);border:1px solid var(--line-soft);border-radius:14px;padding:24px 26px;margin:28px 0 30px;box-shadow:var(--shadow-sm)}
+.test-panel .intro-box p{color:var(--ink-soft);margin-bottom:10px;font-size:14.5px}
+.test-panel .intro-box p:last-child{margin-bottom:0}
+.test-panel .progress-shell{background:var(--paper);border:1px solid var(--line-soft);border-radius:999px;padding:12px 20px;margin-bottom:28px;display:flex;align-items:center;gap:14px;box-shadow:var(--shadow-sm)}
+.test-panel .progress-bar{flex:1;height:5px;background:var(--bg-3);border-radius:999px;overflow:hidden}
+.test-panel .progress-fill{height:100%;width:0%;transition:width 0.4s cubic-bezier(.4,0,.2,1);border-radius:999px}
+.test-panel .progress-text{font-family:'Cardo',serif;font-size:14px;color:var(--ink-soft);white-space:nowrap}
+.test-panel .progress-text strong{font-weight:700}
+
+/* Forced-choice pair (Love, Apology) */
+.test-panel .fc{background:var(--paper);border:1px solid var(--line-soft);border-radius:14px;padding:22px 24px;margin-bottom:14px;box-shadow:var(--shadow-sm)}
+.test-panel .fc-num{font-family:'Cardo',serif;font-style:italic;font-size:14px;letter-spacing:0.04em;margin-bottom:14px;display:block;font-weight:700}
+.test-panel .fc-lead{font-size:13px;color:var(--ink-muted);margin-bottom:14px;font-style:italic;font-weight:400}
+.test-panel .fc-pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.test-panel .fc-btn{appearance:none;border:1.5px solid var(--line);background:var(--bg-1);color:var(--ink);padding:16px 18px;border-radius:12px;cursor:pointer;transition:all 0.18s ease;text-align:left;font-size:14.5px;line-height:1.5;font-family:inherit;min-height:72px;display:flex;align-items:center}
+.test-panel .fc-btn:hover{transform:translateY(-1px)}
+.test-panel .fc-btn.selected{color:#fff}
+
+/* Likert (Imago) */
+.test-panel .q{background:var(--paper);border:1px solid var(--line-soft);border-radius:14px;padding:16px 20px;margin-bottom:8px;box-shadow:var(--shadow-sm)}
+.test-panel .q-num{font-family:'Cardo',serif;font-style:italic;font-size:12px;letter-spacing:0.04em;margin-bottom:4px;display:block;font-weight:700}
+.test-panel .q-text{color:var(--ink);font-size:15px;line-height:1.4;margin-bottom:12px;font-weight:400}
+.test-panel .q-text strong{color:var(--burgundy);font-weight:700}
+.test-panel .scale{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.test-panel .scale-btn{appearance:none;border:1.5px solid var(--line);background:var(--bg-1);color:var(--ink-soft);padding:10px 6px 7px;border-radius:8px;cursor:pointer;transition:all 0.18s ease;display:flex;flex-direction:column;align-items:center;gap:2px;min-height:52px}
+.test-panel .scale-btn .v{font-family:'Cardo',serif;font-size:16px;font-weight:700;color:var(--ink)}
+.test-panel .scale-btn .l{font-size:10px;color:var(--ink-muted);text-align:center;line-height:1.15;font-weight:500}
+.test-panel .scale-btn:hover{transform:translateY(-1px)}
+.test-panel .scale-btn.selected .v,.test-panel .scale-btn.selected .l{color:#fff}
+.test-panel .scale-btn.selected .l{color:rgba(255,255,255,0.85)}
+
+/* Section headers within Imago */
+.test-panel .section-head{margin:32px 0 16px;padding:20px 22px;background:var(--paper);border:1px solid var(--line-soft);border-radius:12px;border-left:4px solid var(--burgundy)}
+.test-panel .section-head:first-child{margin-top:0}
+.test-panel .section-head h3{font-family:'Cardo',serif;font-weight:500;font-size:20px;margin-bottom:6px;color:var(--ink)}
+.test-panel .section-head h3 em{font-style:italic;color:var(--burgundy)}
+.test-panel .section-head p{color:var(--ink-soft);font-size:13.5px;line-height:1.55;font-style:italic;margin-bottom:0}
+
+.test-panel .results-trigger{display:flex;justify-content:center;margin:40px 0 22px}
+.test-panel .btn-primary{appearance:none;border:none;color:#fff;padding:16px 36px;border-radius:999px;font-family:'Cardo',serif;font-size:17px;cursor:pointer;transition:all 0.25s ease;font-weight:400}
+.test-panel .btn-primary em{font-style:italic}
+.test-panel .btn-primary:disabled{opacity:0.3;cursor:not-allowed;box-shadow:none}
+.test-panel .btn-primary:not(:disabled):hover{transform:translateY(-2px)}
+.test-panel .btn-secondary{appearance:none;background:transparent;padding:10px 20px;border-radius:999px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s ease}
+.test-panel .results{display:none;margin-top:44px}
+.test-panel .results.visible{display:block;animation:fadeRes 0.6s cubic-bezier(.4,0,.2,1)}
+@keyframes fadeRes{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.test-panel .res-eyebrow{font-size:11px;letter-spacing:0.22em;text-transform:uppercase;margin-bottom:14px;font-weight:600;display:flex;align-items:center;gap:14px}
+.test-panel .res-eyebrow::before{content:"";width:36px;height:1px;background:currentColor}
+.test-panel .res-title{font-family:'Cardo',serif;font-weight:400;font-size:clamp(32px,5vw,48px);line-height:1.05;margin-bottom:16px}
+.test-panel .res-title em{font-style:italic}
+.test-panel .res-lead{color:var(--ink-soft);font-size:16px;max-width:640px;margin-bottom:28px}
+
+.test-panel .rank-list{background:var(--paper);border:1px solid var(--line-soft);border-radius:18px;padding:28px;margin-bottom:22px;box-shadow:var(--shadow)}
+.test-panel .rank-list h3{font-family:'Cardo',serif;font-weight:400;font-size:24px;margin-bottom:18px;line-height:1.15}
+.test-panel .rank-list h3 em{font-style:italic}
+.test-panel .rank-item{display:grid;grid-template-columns:60px 1fr auto;gap:16px;align-items:center;padding:16px 0;border-top:1px dashed var(--line-soft)}
+.test-panel .rank-item:first-of-type{border-top:none}
+.test-panel .rank-pos{font-family:'Cardo',serif;font-style:italic;font-weight:400;font-size:28px;color:var(--rc,var(--ink-muted));line-height:1;letter-spacing:-0.02em}
+.test-panel .rank-name{font-family:'Cardo',serif;font-size:18px;font-weight:500;color:var(--ink)}
+.test-panel .rank-name em{font-style:italic}
+.test-panel .rank-desc{color:var(--ink-soft);font-size:13.5px;margin-top:4px;line-height:1.55}
+.test-panel .rank-score{font-family:'Cardo',serif;font-size:28px;font-weight:400;color:var(--rc,var(--ink));letter-spacing:-0.02em;text-align:right;line-height:1}
+.test-panel .rank-score .out{font-size:11px;color:var(--ink-muted);display:block;font-family:'Inter',sans-serif;margin-top:2px;font-weight:500}
+.test-panel .rank-item.top .rank-pos{color:var(--top-color)}
+.test-panel .rank-item.top .rank-score{color:var(--top-color)}
+
+.test-panel .interp-card{background:var(--paper);border:1px solid var(--line-soft);border-radius:18px;padding:32px;margin-bottom:22px;box-shadow:var(--shadow)}
+.test-panel .interp-card h3{font-family:'Cardo',serif;font-weight:400;font-size:24px;margin-bottom:16px;line-height:1.15}
+.test-panel .interp-card h3 em{font-style:italic}
+.test-panel .interp-section{margin-bottom:22px;padding-bottom:22px;border-bottom:1px dashed var(--line-soft)}
+.test-panel .interp-section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.test-panel .interp-section h4{font-family:'Cardo',serif;font-style:italic;font-size:16px;font-weight:400;margin-bottom:10px}
+.test-panel .interp-section p{color:var(--ink-soft);font-size:14.5px;line-height:1.7;margin-bottom:8px}
+.test-panel .interp-section strong{color:var(--ink);font-weight:600}
+
+.test-panel .imago-portrait{background:linear-gradient(135deg,var(--burgundy),var(--burgundy-2));color:#fff;border-radius:20px;padding:38px;margin-bottom:22px;position:relative;overflow:hidden;box-shadow:var(--shadow-lg)}
+.test-panel .imago-portrait::before{content:"";position:absolute;top:-80px;right:-80px;width:280px;height:280px;background:radial-gradient(circle,rgba(255,255,255,0.15),transparent 70%);border-radius:50%}
+.test-panel .imago-portrait::after{content:"";position:absolute;bottom:-40px;left:-40px;width:180px;height:180px;background:radial-gradient(circle,rgba(212,169,65,0.22),transparent 70%);border-radius:50%}
+.test-panel .imago-portrait h3{font-family:'Cardo',serif;font-weight:400;font-size:28px;margin-bottom:6px;position:relative}
+.test-panel .imago-portrait h3 em{font-style:italic;color:var(--gold-2)}
+.test-panel .imago-portrait .sub{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.75);margin-bottom:22px;position:relative;font-weight:600}
+.test-panel .imago-portrait .portrait-text{color:rgba(255,255,255,0.94);font-size:15.5px;line-height:1.75;position:relative}
+.test-panel .imago-portrait .portrait-text strong{color:var(--gold-2);font-weight:700}
+.test-panel .imago-portrait .portrait-text em{font-style:italic;color:#fff}
+.test-panel .imago-portrait .portrait-text p{margin-bottom:12px}
+.test-panel .imago-portrait .portrait-text p:last-child{margin-bottom:0}
+
+.test-panel .cross-card{background:var(--paper);border:1px solid var(--line-soft);border-radius:18px;padding:28px;margin-bottom:22px;box-shadow:var(--shadow)}
+.test-panel .cross-card h3{font-family:'Cardo',serif;font-weight:400;font-size:24px;margin-bottom:16px}
+.test-panel .cross-card h3 em{font-style:italic;color:var(--gold)}
+.test-panel .cross-item{padding:14px 16px;background:var(--bg-2);border-left:3px solid var(--gold);border-radius:0 12px 12px 0;margin-bottom:10px}
+.test-panel .cross-item-label{font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--burgundy);margin-bottom:6px;font-weight:700}
+.test-panel .cross-item p{font-size:14px;color:var(--ink-soft);line-height:1.6}
+.test-panel .cross-item strong{color:var(--ink);font-weight:600}
+.test-panel .refs-card{background:var(--paper);border:1px solid var(--line-soft);border-radius:18px;padding:26px;margin-bottom:22px;box-shadow:var(--shadow)}
+.test-panel .refs-card h3{font-family:'Cardo',serif;font-weight:400;font-size:20px;margin-bottom:12px}
+.test-panel .refs-card h3 em{font-style:italic}
+.test-panel .ref-item{font-size:12.5px;color:var(--ink-soft);padding:8px 0;border-top:1px dashed var(--line);line-height:1.55}
+.test-panel .ref-item:first-of-type{border-top:none}
+.test-panel .ref-item strong{color:var(--ink);font-weight:600}
+.test-panel .actions{display:flex;gap:12px;justify-content:center;margin-top:26px;flex-wrap:wrap}
+
+/* LOVE: gold */
+#test-love .eyebrow{color:var(--gold)}
+#test-love .res-eyebrow{color:var(--burgundy)}
+#test-love header h2 em,#test-love .res-title em{color:var(--gold)}
+#test-love .intro-box{border-left:3px solid var(--gold)}
+#test-love .progress-fill{background:linear-gradient(90deg,var(--gold),var(--gold-2),var(--burgundy))}
+#test-love .progress-text strong{color:var(--gold)}
+#test-love .fc-num{color:var(--gold)}
+#test-love .fc-btn:hover{border-color:var(--gold)}
+#test-love .fc-btn.selected{background:var(--gold);border-color:var(--gold)}
+#test-love .btn-primary{background:var(--gold);color:#fff;box-shadow:0 8px 24px rgba(184,145,46,0.25)}
+#test-love .btn-primary:not(:disabled):hover{background:var(--gold-2)}
+#test-love .btn-secondary{border:1.5px solid var(--gold);color:var(--gold)}
+#test-love .btn-secondary:hover{background:var(--gold);color:#fff}
+#test-love .rank-list h3 em,#test-love .interp-card h3 em,#test-love .refs-card h3 em{color:var(--gold)}
+#test-love .section-head{border-left-color:var(--gold)}
+#test-love .section-head h3 em{color:var(--gold)}
+
+/* APOLOGY: emerald */
+#test-apo .eyebrow{color:var(--emerald)}
+#test-apo .res-eyebrow{color:var(--gold)}
+#test-apo header h2 em,#test-apo .res-title em{color:var(--emerald)}
+#test-apo .intro-box{border-left:3px solid var(--emerald)}
+#test-apo .progress-fill{background:linear-gradient(90deg,var(--emerald),var(--emerald-2),var(--gold))}
+#test-apo .progress-text strong{color:var(--emerald)}
+#test-apo .fc-num{color:var(--emerald)}
+#test-apo .fc-btn:hover{border-color:var(--emerald)}
+#test-apo .fc-btn.selected{background:var(--emerald);border-color:var(--emerald)}
+#test-apo .btn-primary{background:var(--emerald);box-shadow:0 8px 24px rgba(6,95,70,0.25)}
+#test-apo .btn-primary:not(:disabled):hover{background:var(--emerald-2)}
+#test-apo .btn-secondary{border:1.5px solid var(--emerald);color:var(--emerald)}
+#test-apo .btn-secondary:hover{background:var(--emerald);color:#fff}
+#test-apo .rank-list h3 em,#test-apo .interp-card h3 em,#test-apo .refs-card h3 em{color:var(--emerald)}
+#test-apo .section-head{border-left-color:var(--emerald)}
+#test-apo .section-head h3 em{color:var(--emerald)}
+
+/* IMAGO: burgundy */
+#test-imago .eyebrow{color:var(--burgundy)}
+#test-imago .res-eyebrow{color:var(--gold)}
+#test-imago header h2 em,#test-imago .res-title em{color:var(--burgundy)}
+#test-imago .intro-box{border-left:3px solid var(--burgundy)}
+#test-imago .progress-fill{background:linear-gradient(90deg,var(--burgundy),var(--burgundy-2),var(--gold))}
+#test-imago .progress-text strong{color:var(--burgundy)}
+#test-imago .q-num{color:var(--burgundy)}
+#test-imago .scale-btn:hover{border-color:var(--burgundy)}
+#test-imago .scale-btn.selected{background:var(--burgundy);border-color:var(--burgundy)}
+#test-imago .btn-primary{background:var(--burgundy);box-shadow:0 8px 24px rgba(124,45,60,0.25)}
+#test-imago .btn-primary:not(:disabled):hover{background:var(--burgundy-2)}
+#test-imago .btn-secondary{border:1.5px solid var(--burgundy);color:var(--burgundy)}
+#test-imago .btn-secondary:hover{background:var(--burgundy);color:#fff}
+#test-imago .interp-card h3 em,#test-imago .rank-list h3 em,#test-imago .refs-card h3 em{color:var(--burgundy)}
+
+.hub-footer{max-width:920px;margin:32px auto 0;padding:32px 28px 48px;text-align:center;border-top:1px dashed var(--line);color:var(--ink-muted);font-size:12px;font-style:italic;font-family:'Cardo',serif;line-height:1.7}
+
+@media (max-width:820px){
+  .hub-tabs{grid-template-columns:1fr;gap:8px}
+  .test-panel .fc-pair{grid-template-columns:1fr}
+  .test-panel .rank-item{grid-template-columns:44px 1fr auto;gap:12px}
+  .test-panel .rank-pos{font-size:22px}
+  .test-panel .rank-score{font-size:22px}
+}
+@media (max-width:560px){
+  .hub-shell{padding:36px 16px 16px}
+  .test-panel .shell{padding:24px 16px 56px}
+  .test-panel .intro-box,.test-panel .fc,.test-panel .q,.test-panel .rank-list,.test-panel .interp-card,.test-panel .cross-card,.test-panel .refs-card,.test-panel .imago-portrait{padding:20px 16px}
+}
+@media print{
+  body::before{display:none}
+  .hub-tabs,.test-panel .progress-shell,.test-panel .results-trigger,.test-panel .actions{display:none}
+  .test-panel .results{display:block !important}
+  .test-panel{display:block !important}
+  body{background:#fff}
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SÖTÉT PLANETÁRIUM OVERRIDE — navy + arany csillagok + diagramok
+   ═══════════════════════════════════════════════════════════════ */
+:root{
+  --font-display:'Fraunces','Cardo',serif;
+  --font-body:'Manrope','Inter',system-ui,sans-serif;
+  /* Sötét paletta */
+  --bg-deep:#050d1e;
+  --bg-mid:#0c1e3f;
+  --bg-card:#132848;
+  --bg-card-2:#1a3357;
+  --line-dark:rgba(147,197,253,0.14);
+  --line-dark-soft:rgba(147,197,253,0.08);
+  --line-glow:rgba(147,197,253,0.25);
+  /* Világos szöveg */
+  --ink-lite:#f1f5f9;
+  --ink-lite-2:#e2e8f0;
+  --ink-lite-soft:#cbd5e1;
+  --ink-lite-muted:#94a3b8;
+  --ink-lite-quiet:#64748b;
+  /* Fényes accents */
+  --sap-bright:#60a5fa;
+  --sap-brighter:#93c5fd;
+  --sap-pastel:#dbeafe;
+  --indigo-bright:#818cf8;
+  --violet-bright:#a78bfa;
+  --teal-bright:#2dd4bf;
+  --gold-bright:#fbbf24;
+  --gold-brighter:#fde047;
+  --rose-bright:#fb7185;
+}
+body{font-family:var(--font-body) !important;line-height:1.65 !important;background:var(--bg-deep) !important;color:var(--ink-lite) !important}
+
+/* Sötét planetárium háttér — deep navy glow + fényes arany csillagok */
+body::before{
+  background:
+    radial-gradient(ellipse 40% 32% at 8% 4%, rgba(129,140,248,0.14), transparent 62%),
+    radial-gradient(ellipse 36% 28% at 92% 8%, rgba(96,165,250,0.16), transparent 62%),
+    radial-gradient(ellipse 38% 30% at 90% 88%, rgba(45,212,191,0.1), transparent 62%),
+    radial-gradient(ellipse 32% 26% at 6% 82%, rgba(167,139,250,0.12), transparent 62%),
+    radial-gradient(ellipse 34% 28% at 50% 50%, rgba(96,165,250,0.08), transparent 72%),
+    radial-gradient(ellipse 100% 60% at 50% 0%, rgba(30,58,138,0.35), transparent 80%) !important;
+}
+body::after{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260' viewBox='0 0 260 260'%3E%3Cg%3E%3Cpath d='M40 50 L41.8 55 L47 55 L42.8 58 L44.5 63 L40 60 L35.5 63 L37.2 58 L33 55 L38.2 55 Z' fill='rgba(251,191,36,0.55)'/%3E%3Cpath d='M180 140 L181.5 144 L185.5 144 L182.3 146.4 L183.5 150.5 L180 148 L176.5 150.5 L177.7 146.4 L174.5 144 L178.5 144 Z' fill='rgba(253,224,71,0.5)'/%3E%3Cpath d='M120 210 L121.2 213 L124.2 213 L121.8 214.8 L122.8 217.8 L120 216 L117.2 217.8 L118.2 214.8 L115.8 213 L118.8 213 Z' fill='rgba(251,191,36,0.45)'/%3E%3Cpath d='M215 75 L216 77.5 L218.5 77.5 L216.5 79 L217.2 81.5 L215 80 L212.8 81.5 L213.5 79 L211.5 77.5 L214 77.5 Z' fill='rgba(251,191,36,0.4)'/%3E%3Cpath d='M65 180 L66 182.5 L68.5 182.5 L66.5 184 L67.2 186.5 L65 185 L62.8 186.5 L63.5 184 L61.5 182.5 L64 182.5 Z' fill='rgba(253,224,71,0.42)'/%3E%3Cpath d='M235 220 L235.8 222 L237.8 222 L236.3 223.4 L236.8 225.4 L235 224.2 L233.2 225.4 L233.7 223.4 L232.2 222 L234.2 222 Z' fill='rgba(251,191,36,0.35)'/%3E%3Cpath d='M18 140 L18.8 142 L20.8 142 L19.3 143.4 L19.8 145.4 L18 144.2 L16.2 145.4 L16.7 143.4 L15.2 142 L17.2 142 Z' fill='rgba(251,191,36,0.35)'/%3E%3Cpath d='M140 32 L140.8 34 L142.8 34 L141.3 35.4 L141.8 37.4 L140 36.2 L138.2 37.4 L138.7 35.4 L137.2 34 L139.2 34 Z' fill='rgba(253,224,71,0.38)'/%3E%3Ccircle cx='95' cy='95' r='1.3' fill='rgba(147,197,253,0.7)'/%3E%3Ccircle cx='195' cy='45' r='1.1' fill='rgba(147,197,253,0.6)'/%3E%3Ccircle cx='32' cy='215' r='1.2' fill='rgba(147,197,253,0.6)'/%3E%3Ccircle cx='215' cy='165' r='1' fill='rgba(147,197,253,0.5)'/%3E%3Ccircle cx='160' cy='225' r='1' fill='rgba(147,197,253,0.55)'/%3E%3Ccircle cx='75' cy='115' r='0.8' fill='rgba(251,191,36,0.5)'/%3E%3Ccircle cx='250' cy='95' r='0.8' fill='rgba(147,197,253,0.5)'/%3E%3Ccircle cx='105' cy='250' r='0.8' fill='rgba(147,197,253,0.5)'/%3E%3C/g%3E%3C/svg%3E") !important;
+  background-size:260px 260px !important;
+  opacity:1 !important;
+}
+
+/* Warmer, playful typography — headers */
+.hub-header h1{
+  font-family:var(--font-display) !important;
+  font-weight:400 !important;
+  letter-spacing:-0.02em !important;
+}
+.hub-header h1 em{font-style:italic !important;font-weight:500 !important}
+.test-panel header h2,
+.test-panel .res-title{
+  font-family:var(--font-display) !important;
+  font-weight:400 !important;
+  letter-spacing:-0.02em !important;
+}
+.test-panel header h2 em,
+.test-panel .res-title em{font-style:italic !important;font-weight:500 !important}
+.hub-tab .name,
+.test-panel .fc-num,
+.test-panel .q-num,
+.test-panel .rank-name,
+.test-panel .interp-card h3,
+.test-panel .cross-card h3,
+.test-panel .rank-list h3,
+.test-panel .refs-card h3,
+.test-panel .imago-portrait h3,
+.test-panel .section-head h3,
+.test-panel .interp-section h4{
+  font-family:var(--font-display) !important;
+}
+.test-panel .btn-primary,
+.hub-header .lead em,
+.test-panel .lead em{font-family:var(--font-display) !important}
+
+/* Pastel akcent a hub-header körül */
+.hub-header{position:relative}
+.hub-header::before{
+  content:"";
+  position:absolute;
+  top:-30px;right:-40px;
+  width:220px;height:220px;
+  background:radial-gradient(circle,rgba(252,231,243,0.5),transparent 70%);
+  border-radius:50%;
+  z-index:-1;
+  pointer-events:none;
+}
+.hub-header::after{
+  content:"";
+  position:absolute;
+  bottom:-20px;left:-50px;
+  width:180px;height:180px;
+  background:radial-gradient(circle,rgba(254,243,199,0.45),transparent 70%);
+  border-radius:50%;
+  z-index:-1;
+  pointer-events:none;
+}
+
+/* Sokkal lekerekítettebb, barátságosabb tabs */
+.hub-tabs{
+  border-radius:26px !important;
+  padding:12px !important;
+  gap:10px !important;
+  border:1px solid rgba(203,213,225,0.4) !important;
+  background:rgba(255,255,255,0.78) !important;
+  backdrop-filter:blur(20px) !important;
+  -webkit-backdrop-filter:blur(20px) !important;
+  box-shadow:0 4px 24px rgba(15,23,42,0.05) !important;
+}
+.hub-tab{
+  border-radius:20px !important;
+  padding:16px 18px !important;
+  transition:all 0.25s cubic-bezier(.4,0,.2,1) !important;
+}
+.hub-tab:hover:not(.active){transform:translateY(-2px) !important}
+.hub-tab.active{transform:translateY(-1px) !important;box-shadow:0 8px 24px color-mix(in srgb, var(--tab-color) 32%, transparent) !important}
+
+/* Cards lekerekítettebbek + softer shadows */
+.test-panel .intro-box,
+.test-panel .fc,
+.test-panel .q,
+.test-panel .total-card,
+.test-panel .score-card,
+.test-panel .rank-list,
+.test-panel .interp-card,
+.test-panel .cross-card,
+.test-panel .refs-card,
+.test-panel .imago-portrait,
+.test-panel .section-head{
+  border-radius:24px !important;
+  border:1px solid rgba(203,213,225,0.45) !important;
+}
+.test-panel .total-card,
+.test-panel .interp-card,
+.test-panel .rank-list,
+.test-panel .cross-card,
+.test-panel .refs-card{
+  box-shadow:0 4px 24px rgba(15,23,42,0.05), 0 1px 3px rgba(15,23,42,0.03) !important;
+}
+.test-panel .imago-portrait{
+  border-radius:28px !important;
+  box-shadow:0 12px 40px rgba(124,45,60,0.2), 0 4px 12px rgba(124,45,60,0.08) !important;
+}
+.test-panel .caveat,
+.hub-caveat{border-radius:20px !important;padding:16px 22px !important}
+
+/* Progress bar — pill, glassy */
+.test-panel .progress-shell{
+  border-radius:999px !important;
+  border:1px solid rgba(203,213,225,0.4) !important;
+  background:rgba(255,255,255,0.85) !important;
+  backdrop-filter:blur(14px) !important;
+  -webkit-backdrop-filter:blur(14px) !important;
+  padding:14px 24px !important;
+  box-shadow:0 2px 12px rgba(15,23,42,0.04) !important;
+}
+
+/* Buttons */
+.test-panel .btn-primary{
+  border-radius:999px !important;
+  padding:18px 42px !important;
+  font-style:italic !important;
+  font-size:18px !important;
+  letter-spacing:0.005em !important;
+  transition:all 0.25s cubic-bezier(.4,0,.2,1) !important;
+}
+.test-panel .btn-primary:not(:disabled):hover{transform:translateY(-3px) !important}
+.test-panel .btn-secondary{
+  border-radius:999px !important;
+  padding:11px 24px !important;
+  font-weight:500 !important;
+}
+
+/* Forced-choice buttons — pastel-tinted, lekerekített */
+.test-panel .fc-btn{
+  border-radius:18px !important;
+  padding:18px 20px !important;
+  border-width:2px !important;
+  transition:all 0.2s cubic-bezier(.4,0,.2,1) !important;
+}
+.test-panel .fc-btn:hover:not(.selected){transform:translateY(-2px) !important}
+#test-love .fc-btn:not(.selected){background:linear-gradient(135deg, rgba(254,243,199,0.35), rgba(255,255,255,0.9)) !important}
+#test-love .fc-btn.selected{background:linear-gradient(135deg, #d4a941, #b8912e) !important;box-shadow:0 6px 20px rgba(184,145,46,0.3) !important}
+#test-apo .fc-btn:not(.selected){background:linear-gradient(135deg, rgba(220,252,231,0.35), rgba(255,255,255,0.9)) !important}
+#test-apo .fc-btn.selected{background:linear-gradient(135deg, #10b981, #059669) !important;box-shadow:0 6px 20px rgba(6,95,70,0.3) !important}
+
+/* Likert scale (Imago) — pastel-tinted */
+.test-panel .scale-btn{
+  border-radius:14px !important;
+  border-width:2px !important;
+}
+#test-imago .scale-btn:not(.selected){background:linear-gradient(135deg, rgba(252,231,243,0.3), rgba(255,255,255,0.95)) !important}
+#test-imago .scale-btn.selected{background:linear-gradient(135deg, #e11d48, #9f1239) !important;box-shadow:0 4px 14px rgba(159,18,72,0.3) !important}
+
+/* Section-head lekerekített + top-border stílus */
+.test-panel .section-head{
+  border-left:none !important;
+  border-top:4px solid var(--burgundy) !important;
+  padding:24px 26px 20px !important;
+  background:linear-gradient(180deg, rgba(252,231,243,0.25), rgba(255,255,255,0.85)) !important;
+}
+.test-panel .section-head h3{font-family:var(--font-display) !important;font-weight:500 !important}
+
+/* Rank list — barátságosabb sorok */
+.test-panel .rank-item{padding:18px 0 !important}
+.test-panel .rank-pos{
+  font-family:var(--font-display) !important;
+  font-style:italic !important;
+  font-size:32px !important;
+}
+.test-panel .rank-score{
+  font-family:var(--font-display) !important;
+  font-size:32px !important;
+}
+
+/* Imago-portrait warmer, csillagosabb */
+.test-panel .imago-portrait::before{
+  background:radial-gradient(circle,rgba(252,231,243,0.35),transparent 70%) !important;
+}
+
+/* Interp-cards — belső dekoratív pastel csík */
+.test-panel .interp-card h3,
+.test-panel .cross-card h3,
+.test-panel .rank-list h3{
+  font-weight:500 !important;
+}
+
+/* Cross-item — barátságosabb */
+.test-panel .cross-item{
+  border-radius:16px !important;
+  padding:16px 20px !important;
+  background:linear-gradient(135deg, rgba(254,243,199,0.35), var(--bg-2)) !important;
+}
+
+/* Score-card — pastel akcentek */
+.test-panel .score-card{
+  padding:24px 22px !important;
+}
+
+/* Refs-card — kevésbé formális */
+.test-panel .refs-card{
+  background:linear-gradient(180deg, rgba(255,255,255,0.9), rgba(248,250,252,0.7)) !important;
+}
+
+/* Kis csillag-dekoráció a headerek mellett */
+.test-panel header h2::after{
+  content:" ✦";
+  color:var(--gold-2);
+  font-size:0.6em;
+  opacity:0.6;
+  margin-left:0.1em;
+}
+.test-panel .res-title::after{
+  content:" ✦";
+  color:var(--gold-2);
+  font-size:0.6em;
+  opacity:0.6;
+  margin-left:0.1em;
+}
+
+/* Hub-tab hover kis csillag jelzővel */
+.hub-tab .num::after{
+  content:" ✦";
+  color:var(--gold-2);
+  opacity:0.4;
+  font-size:0.7em;
+}
+.hub-tab.active .num::after{color:rgba(255,255,255,0.5)}
+
+/* Body warmer selection */
+::selection{background:rgba(37,99,235,0.25);color:var(--ink)}
+
+/* ═══ KÉK TAB SZÍNEK — override ═══ */
+.hub-tab.love{--tab-color:var(--indigo-2) !important}
+.hub-tab.apo{--tab-color:var(--teal-1) !important}
+.hub-tab.imago{--tab-color:var(--sky-deep) !important}
+.hub-tab.active{box-shadow:0 8px 26px color-mix(in srgb, var(--tab-color) 40%, transparent) !important}
+
+/* Header h1 em → sapphire */
+.hub-header h1 em{color:var(--sap-2) !important}
+.hub-header .lead em{color:var(--gold-2) !important}
+
+/* Tab-panel headers → kék variánsok */
+#test-love .eyebrow{color:var(--indigo-2) !important}
+#test-love header h2 em,#test-love .res-title em{color:var(--indigo-2) !important}
+#test-love .intro-box{border-left-color:var(--indigo-2) !important}
+#test-love .progress-fill{background:linear-gradient(90deg,var(--indigo-2),var(--indigo-3),var(--gold-2)) !important}
+#test-love .progress-text strong{color:var(--indigo-2) !important}
+#test-love .fc-num{color:var(--indigo-2) !important}
+#test-love .fc-btn:hover{border-color:var(--indigo-2) !important}
+#test-love .fc-btn:not(.selected){background:linear-gradient(135deg,rgba(224,231,255,0.55),rgba(255,255,255,0.9)) !important}
+#test-love .fc-btn.selected{background:linear-gradient(135deg,var(--indigo-2),var(--indigo-3)) !important;box-shadow:0 6px 22px rgba(67,56,202,0.35) !important;border-color:var(--indigo-2) !important;color:#fff !important}
+#test-love .btn-primary{background:var(--indigo-2) !important;box-shadow:0 8px 24px rgba(67,56,202,0.3) !important}
+#test-love .btn-primary:not(:disabled):hover{background:var(--indigo-1) !important}
+#test-love .btn-secondary{border-color:var(--indigo-2) !important;color:var(--indigo-2) !important}
+#test-love .btn-secondary:hover{background:var(--indigo-2) !important;color:#fff !important}
+#test-love .rank-list h3 em,#test-love .interp-card h3 em,#test-love .refs-card h3 em{color:var(--indigo-2) !important}
+#test-love .res-eyebrow{color:var(--gold-2) !important}
+#test-love .res-eyebrow::before{background:var(--gold-2) !important}
+
+#test-apo .eyebrow{color:var(--teal-1) !important}
+#test-apo header h2 em,#test-apo .res-title em{color:var(--teal-1) !important}
+#test-apo .intro-box{border-left-color:var(--teal-1) !important}
+#test-apo .progress-fill{background:linear-gradient(90deg,var(--teal-1),var(--teal-2),var(--gold-2)) !important}
+#test-apo .progress-text strong{color:var(--teal-1) !important}
+#test-apo .fc-num{color:var(--teal-1) !important}
+#test-apo .fc-btn:hover{border-color:var(--teal-1) !important}
+#test-apo .fc-btn:not(.selected){background:linear-gradient(135deg,rgba(204,251,241,0.55),rgba(255,255,255,0.9)) !important}
+#test-apo .fc-btn.selected{background:linear-gradient(135deg,var(--teal-1),var(--teal-2)) !important;box-shadow:0 6px 22px rgba(15,118,110,0.35) !important;border-color:var(--teal-1) !important;color:#fff !important}
+#test-apo .btn-primary{background:var(--teal-1) !important;box-shadow:0 8px 24px rgba(15,118,110,0.3) !important}
+#test-apo .btn-primary:not(:disabled):hover{background:#0d5a54 !important}
+#test-apo .btn-secondary{border-color:var(--teal-1) !important;color:var(--teal-1) !important}
+#test-apo .btn-secondary:hover{background:var(--teal-1) !important;color:#fff !important}
+#test-apo .rank-list h3 em,#test-apo .interp-card h3 em,#test-apo .refs-card h3 em{color:var(--teal-1) !important}
+#test-apo .res-eyebrow{color:var(--gold-2) !important}
+#test-apo .res-eyebrow::before{background:var(--gold-2) !important}
+
+#test-imago .eyebrow{color:var(--sky-deep) !important}
+#test-imago header h2 em,#test-imago .res-title em{color:var(--sky-deep) !important}
+#test-imago .intro-box{border-left-color:var(--sky-deep) !important}
+#test-imago .progress-fill{background:linear-gradient(90deg,var(--sky-deep),var(--sap-1),var(--gold-2)) !important}
+#test-imago .progress-text strong{color:var(--sky-deep) !important}
+#test-imago .q-num{color:var(--sky-deep) !important}
+#test-imago .scale-btn:hover{border-color:var(--sky-deep) !important}
+#test-imago .scale-btn:not(.selected){background:linear-gradient(135deg,rgba(219,234,254,0.4),rgba(255,255,255,0.95)) !important}
+#test-imago .scale-btn.selected{background:linear-gradient(135deg,var(--sky-deep),var(--sap-1)) !important;box-shadow:0 4px 16px rgba(12,30,63,0.35) !important;border-color:var(--sky-deep) !important;color:#fff !important}
+#test-imago .btn-primary{background:var(--sky-deep) !important;box-shadow:0 8px 24px rgba(12,30,63,0.35) !important}
+#test-imago .btn-primary:not(:disabled):hover{background:var(--sap-1) !important}
+#test-imago .btn-secondary{border-color:var(--sky-deep) !important;color:var(--sky-deep) !important}
+#test-imago .btn-secondary:hover{background:var(--sky-deep) !important;color:#fff !important}
+#test-imago .rank-list h3 em,#test-imago .interp-card h3 em,#test-imago .refs-card h3 em{color:var(--sky-deep) !important}
+#test-imago .section-head{border-top-color:var(--sky-deep) !important;background:linear-gradient(180deg,rgba(219,234,254,0.35),rgba(255,255,255,0.85)) !important}
+#test-imago .imago-portrait{background:linear-gradient(135deg,var(--sky-deep),var(--sap-1)) !important;box-shadow:0 12px 40px rgba(12,30,63,0.3), 0 4px 12px rgba(12,30,63,0.15) !important}
+#test-imago .res-eyebrow{color:var(--gold-2) !important}
+#test-imago .res-eyebrow::before{background:var(--gold-2) !important}
+
+/* Cross-item — mindenhol kékes tint */
+.test-panel .cross-item{
+  background:linear-gradient(135deg,rgba(219,234,254,0.5),rgba(255,255,255,0.85)) !important;
+  border-left-color:var(--sap-2) !important;
+}
+.test-panel .cross-item-label{color:var(--indigo-2) !important}
+
+/* ═══ CHART / DIAGRAM STYLING ═══ */
+.chart-card{
+  background:linear-gradient(180deg,rgba(255,255,255,0.95),rgba(239,246,255,0.6)) !important;
+  border:1px solid rgba(147,197,253,0.5) !important;
+  border-radius:24px !important;
+  padding:32px 28px !important;
+  margin-bottom:22px !important;
+  box-shadow:0 6px 28px rgba(30,58,138,0.08), 0 1px 3px rgba(30,58,138,0.05) !important;
+  position:relative !important;
+  overflow:hidden !important;
+}
+.chart-card::before{
+  content:"";
+  position:absolute;
+  top:-40px;right:-40px;
+  width:160px;height:160px;
+  background:radial-gradient(circle,rgba(147,197,253,0.25),transparent 70%);
+  border-radius:50%;
+  pointer-events:none;
+}
+.chart-card h3{
+  font-family:var(--font-display) !important;
+  font-weight:500 !important;
+  font-size:22px !important;
+  margin-bottom:6px !important;
+  position:relative;
+}
+.chart-card h3 em{font-style:italic;color:var(--sap-2)}
+.chart-card .chart-sub{
+  font-size:12px !important;
+  letter-spacing:0.1em !important;
+  text-transform:uppercase !important;
+  color:var(--ink-muted) !important;
+  margin-bottom:22px !important;
+  font-weight:600 !important;
+  position:relative;
+}
+.chart-svg{
+  display:block;
+  margin:0 auto;
+  width:100%;
+  max-width:520px;
+  height:auto;
+}
+.chart-legend{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:8px;
+  margin-top:20px;
+  padding-top:20px;
+  border-top:1px dashed rgba(147,197,253,0.5);
+}
+.chart-legend-item{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:12.5px;
+  color:var(--ink-soft);
+}
+.chart-legend-swatch{
+  width:14px;height:14px;
+  border-radius:4px;
+  flex-shrink:0;
+}
+.chart-legend-item strong{
+  color:var(--ink);
+  font-weight:600;
+  font-family:var(--font-display);
+  font-style:italic;
+}
+
+/* Bar chart rows (Imago) */
+.bar-row{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:12px;
+  align-items:center;
+  padding:10px 0;
+  font-size:14px;
+}
+.bar-row-name{color:var(--ink-lite);font-weight:500}
+.bar-row-track{
+  grid-column:1/-1;
+  height:8px;
+  background:rgba(147,197,253,0.15);
+  border-radius:999px;
+  overflow:hidden;
+  margin-top:6px;
+}
+.bar-row-fill{
+  height:100%;
+  border-radius:999px;
+  transition:width 1.2s cubic-bezier(.4,0,.2,1);
+  box-shadow:0 0 12px currentColor;
+}
+.bar-group{margin-bottom:24px}
+.bar-group:last-child{margin-bottom:0}
+.bar-group h4{
+  font-family:var(--font-display) !important;
+  font-style:italic;
+  font-size:15px;
+  font-weight:500;
+  margin-bottom:8px;
+  padding-bottom:6px;
+  border-bottom:1px solid rgba(147,197,253,0.25);
+  color:var(--ink-lite);
+}
+
+/* ═══ SÖTÉT MOD — kártyák és szövegek ═══ */
+.hub-shell,.hub-header,.hub-footer{color:var(--ink-lite) !important}
+.hub-header h1{color:var(--ink-lite) !important}
+.hub-header .lead{color:var(--ink-lite-soft) !important}
+.hub-header .lead strong{color:var(--ink-lite) !important}
+.hub-eyebrow{color:var(--ink-lite-muted) !important}
+.hub-eyebrow::before{background:var(--ink-lite-muted) !important}
+.hub-caveat{
+  background:rgba(251,191,36,0.1) !important;
+  border:1px solid rgba(251,191,36,0.35) !important;
+  color:var(--gold-brighter) !important;
+}
+.hub-caveat strong{color:var(--gold-brighter) !important}
+
+/* Tabs — sötét, glow-os */
+.hub-tabs{
+  background:rgba(19,40,72,0.7) !important;
+  border:1px solid var(--line-dark) !important;
+  backdrop-filter:blur(24px) !important;
+  -webkit-backdrop-filter:blur(24px) !important;
+  box-shadow:0 8px 32px rgba(5,13,30,0.5), 0 0 0 1px rgba(147,197,253,0.05) !important;
+}
+.hub-tab{color:var(--ink-lite) !important}
+.hub-tab:hover:not(.active){background:rgba(147,197,253,0.08) !important}
+.hub-tab .num{color:var(--ink-lite-muted) !important}
+.hub-tab .name{color:var(--ink-lite) !important}
+.hub-tab .sub{color:var(--ink-lite-muted) !important}
+.hub-tab.love{--tab-color:var(--indigo-bright) !important}
+.hub-tab.apo{--tab-color:var(--teal-bright) !important}
+.hub-tab.imago{--tab-color:var(--sap-bright) !important}
+.hub-tab.active{
+  color:#fff !important;
+  box-shadow:0 8px 26px color-mix(in srgb, var(--tab-color) 45%, transparent), 0 0 0 1px color-mix(in srgb, var(--tab-color) 60%, transparent) inset !important;
+}
+.hub-tab.active .num{color:rgba(255,255,255,0.75) !important}
+.hub-tab.active .name{color:#fff !important}
+.hub-tab.active .sub{color:rgba(255,255,255,0.8) !important}
+
+/* Kártyák — sötét glossy panelek */
+.test-panel .intro-box,
+.test-panel .fc,
+.test-panel .q,
+.test-panel .total-card,
+.test-panel .score-card,
+.test-panel .rank-list,
+.test-panel .interp-card,
+.test-panel .cross-card,
+.test-panel .refs-card,
+.test-panel .section-head,
+.chart-card{
+  background:linear-gradient(180deg,rgba(19,40,72,0.85),rgba(12,30,63,0.7)) !important;
+  border:1px solid var(--line-dark) !important;
+  color:var(--ink-lite) !important;
+  box-shadow:0 4px 20px rgba(5,13,30,0.4), 0 0 0 1px rgba(147,197,253,0.03) !important;
+}
+.test-panel .fc:hover,.test-panel .q:hover{border-color:var(--line-glow) !important}
+.chart-card{
+  background:linear-gradient(180deg,rgba(19,40,72,0.9),rgba(12,30,63,0.75)) !important;
+  border:1px solid var(--line-glow) !important;
+  box-shadow:0 8px 40px rgba(5,13,30,0.5), 0 0 0 1px rgba(147,197,253,0.08) inset !important;
+}
+.chart-card::before{background:radial-gradient(circle,rgba(147,197,253,0.15),transparent 70%) !important}
+.chart-card h3{color:var(--ink-lite) !important}
+.chart-card h3 em{color:var(--sap-bright) !important}
+.chart-card .chart-sub{color:var(--ink-lite-muted) !important;border-bottom:none !important}
+.chart-legend{border-top-color:rgba(147,197,253,0.15) !important}
+.chart-legend-item{color:var(--ink-lite-soft) !important}
+.chart-legend-item strong{color:var(--ink-lite) !important}
+
+/* Test-panel typography → light */
+.test-panel header h2,.test-panel .res-title,.test-panel .res-lead{color:var(--ink-lite) !important}
+.test-panel .lead{color:var(--ink-lite-soft) !important}
+.test-panel .lead strong{color:var(--ink-lite) !important}
+.test-panel .intro-box p{color:var(--ink-lite-soft) !important}
+.test-panel .caveat{
+  background:rgba(251,191,36,0.1) !important;
+  border:1px solid rgba(251,191,36,0.35) !important;
+  color:var(--gold-brighter) !important;
+}
+.test-panel .caveat strong{color:var(--gold-brighter) !important}
+.test-panel .q-text,.test-panel .q-text strong{color:var(--ink-lite) !important}
+.test-panel .q-context{color:var(--ink-lite-muted) !important}
+.test-panel .fc-lead{color:var(--ink-lite-muted) !important}
+
+/* Progress shell — sötét glass */
+.test-panel .progress-shell{
+  background:rgba(19,40,72,0.7) !important;
+  border:1px solid var(--line-dark) !important;
+}
+.test-panel .progress-bar{background:rgba(147,197,253,0.1) !important}
+.test-panel .progress-text{color:var(--ink-lite-soft) !important}
+
+/* Forced-choice buttons */
+.test-panel .fc-btn:not(.selected){
+  background:rgba(12,30,63,0.5) !important;
+  border:1.5px solid var(--line-dark) !important;
+  color:var(--ink-lite) !important;
+}
+.test-panel .fc-btn:hover:not(.selected){
+  background:rgba(147,197,253,0.08) !important;
+  border-color:var(--line-glow) !important;
+}
+#test-love .fc-btn:not(.selected){background:linear-gradient(135deg,rgba(129,140,248,0.08),rgba(12,30,63,0.6)) !important}
+#test-love .fc-btn.selected{
+  background:linear-gradient(135deg,var(--indigo-bright),var(--violet-bright)) !important;
+  border-color:var(--indigo-bright) !important;
+  color:#fff !important;
+  box-shadow:0 4px 20px rgba(129,140,248,0.45), 0 0 0 1px rgba(255,255,255,0.15) inset !important;
+}
+#test-apo .fc-btn:not(.selected){background:linear-gradient(135deg,rgba(45,212,191,0.08),rgba(12,30,63,0.6)) !important}
+#test-apo .fc-btn.selected{
+  background:linear-gradient(135deg,var(--teal-bright),var(--sap-bright)) !important;
+  border-color:var(--teal-bright) !important;
+  color:#fff !important;
+  box-shadow:0 4px 20px rgba(45,212,191,0.45), 0 0 0 1px rgba(255,255,255,0.15) inset !important;
+}
+
+/* Likert scale */
+.test-panel .scale-btn:not(.selected){
+  background:rgba(12,30,63,0.5) !important;
+  border:1.5px solid var(--line-dark) !important;
+  color:var(--ink-lite) !important;
+}
+.test-panel .scale-btn:not(.selected) .v{color:var(--ink-lite) !important}
+.test-panel .scale-btn:not(.selected) .l{color:var(--ink-lite-muted) !important}
+.test-panel .scale-btn:hover:not(.selected){border-color:var(--line-glow) !important;background:rgba(147,197,253,0.08) !important}
+#test-imago .scale-btn:not(.selected){background:linear-gradient(135deg,rgba(96,165,250,0.06),rgba(12,30,63,0.6)) !important}
+#test-imago .scale-btn.selected{
+  background:linear-gradient(135deg,var(--sap-bright),var(--indigo-bright)) !important;
+  border-color:var(--sap-bright) !important;
+  color:#fff !important;
+  box-shadow:0 4px 18px rgba(96,165,250,0.5) !important;
+}
+#test-imago .scale-btn.selected .v,#test-imago .scale-btn.selected .l{color:#fff !important}
+
+/* Buttons — accent brighter, glow */
+#test-love .btn-primary{
+  background:linear-gradient(135deg,var(--indigo-bright),var(--violet-bright)) !important;
+  box-shadow:0 8px 28px rgba(129,140,248,0.5), 0 0 0 1px rgba(255,255,255,0.15) inset !important;
+}
+#test-apo .btn-primary{
+  background:linear-gradient(135deg,var(--teal-bright),var(--sap-bright)) !important;
+  box-shadow:0 8px 28px rgba(45,212,191,0.5), 0 0 0 1px rgba(255,255,255,0.15) inset !important;
+}
+#test-imago .btn-primary{
+  background:linear-gradient(135deg,var(--sap-bright),var(--indigo-bright)) !important;
+  box-shadow:0 8px 28px rgba(96,165,250,0.5), 0 0 0 1px rgba(255,255,255,0.15) inset !important;
+}
+.test-panel .btn-secondary{
+  border:1.5px solid var(--line-glow) !important;
+  color:var(--ink-lite) !important;
+  background:rgba(19,40,72,0.5) !important;
+}
+.test-panel .btn-secondary:hover{background:rgba(147,197,253,0.15) !important;border-color:var(--sap-bright) !important;color:var(--ink-lite) !important}
+
+/* Ranks, interps → light text */
+.test-panel .rank-name,.test-panel .interp-card h3,.test-panel .cross-card h3,.test-panel .rank-list h3,.test-panel .refs-card h3,.test-panel .imago-portrait h3,.test-panel .section-head h3,.test-panel .interp-section h4,.test-panel .fc-num,.test-panel .q-num,.test-panel .rank-pos,.test-panel .rank-score{color:var(--ink-lite) !important}
+.test-panel .rank-desc,.test-panel .interp-section p,.test-panel .refs-card .ref-item,.test-panel .section-head p{color:var(--ink-lite-soft) !important}
+.test-panel .interp-section strong,.test-panel .ref-item strong{color:var(--ink-lite) !important}
+.test-panel .rank-list h3 em,.test-panel .interp-card h3 em,.test-panel .cross-card h3 em,.test-panel .refs-card h3 em,.test-panel .section-head h3 em{color:var(--gold-bright) !important}
+
+/* Rank item borders */
+.test-panel .rank-item{border-top:1px dashed rgba(147,197,253,0.15) !important}
+
+/* Interp sections */
+.test-panel .interp-section{border-bottom:1px dashed rgba(147,197,253,0.15) !important}
+
+/* Cross-items — dark tint */
+.test-panel .cross-item{
+  background:linear-gradient(135deg,rgba(129,140,248,0.1),rgba(19,40,72,0.6)) !important;
+  border-left:3px solid var(--indigo-bright) !important;
+}
+.test-panel .cross-item-label{color:var(--sap-brighter) !important}
+.test-panel .cross-item p{color:var(--ink-lite-soft) !important}
+.test-panel .cross-item strong{color:var(--ink-lite) !important}
+
+/* Imago portrait — deep space glow */
+.test-panel .imago-portrait{
+  background:linear-gradient(135deg,var(--bg-deep),var(--bg-mid)) !important;
+  border:1px solid var(--line-glow) !important;
+  box-shadow:0 12px 48px rgba(5,13,30,0.7), 0 0 0 1px rgba(147,197,253,0.1) inset !important;
+}
+.test-panel .imago-portrait::before{background:radial-gradient(circle,rgba(147,197,253,0.25),transparent 70%) !important}
+.test-panel .imago-portrait::after{background:radial-gradient(circle,rgba(251,191,36,0.2),transparent 70%) !important}
+
+/* Ref items */
+.test-panel .ref-item{border-top-color:rgba(147,197,253,0.15) !important;color:var(--ink-lite-soft) !important}
+
+/* Section head — imago sections (dark override, magasabb specificity) */
+.test-panel .section-head,
+#test-imago .section-head{
+  border-top:4px solid var(--sap-bright) !important;
+  border-left:none !important;
+  background:linear-gradient(180deg,rgba(96,165,250,0.12),rgba(19,40,72,0.85)) !important;
+  color:var(--ink-lite) !important;
+}
+.test-panel .section-head h3,
+#test-imago .section-head h3{color:var(--ink-lite) !important}
+.test-panel .section-head h3 em,
+#test-imago .section-head h3 em{color:var(--sap-brighter) !important}
+.test-panel .section-head p,
+#test-imago .section-head p{color:var(--ink-lite-soft) !important;font-style:italic;opacity:1 !important}
+
+/* Footer */
+.hub-footer{color:var(--ink-lite-muted) !important;border-top-color:rgba(147,197,253,0.15) !important}
+
+/* Scrollbar dark */
+*::-webkit-scrollbar{width:10px;height:10px}
+*::-webkit-scrollbar-track{background:var(--bg-mid)}
+*::-webkit-scrollbar-thumb{background:rgba(96,165,250,0.3);border-radius:10px}
+*::-webkit-scrollbar-thumb:hover{background:rgba(96,165,250,0.5)}
+
+/* Selection */
+::selection{background:rgba(96,165,250,0.4);color:#fff}
+
+/* Kék bloboknak fényesebb ivelekek */
+.hub-header::before{background:radial-gradient(circle,rgba(129,140,248,0.2),transparent 70%) !important}
+.hub-header::after{background:radial-gradient(circle,rgba(251,191,36,0.15),transparent 70%) !important}
+
+/* Placeholder overrides — score cards, ranks */
+.test-panel .score-card .abbr{color:var(--sap-brighter) !important}
+.test-panel .score-card h4{color:var(--ink-lite) !important}
+.test-panel .score-card .val{color:var(--sap-bright) !important}
+.test-panel .score-card .out{color:var(--ink-lite-muted) !important}
+.test-panel .score-card .bar{background:rgba(147,197,253,0.15) !important}
+</style>
+</head>
+<body>
+
+<div class="hub-shell">
+  <div class="hub-header">
+    <div class="hub-eyebrow">Három kapcsolati-önismereti térkép</div>
+    <h1>Három kapcsolati <em>tükör</em></h1>
+    <p class="lead"><strong>Love Languages</strong> (hogyan érzed magad szeretettnek) · <strong>Apology Languages</strong> (mitől érzed őszintének a bocsánatkérést) · <strong>Imago</strong> (kik voltak a gyermekkori gondozóid, és hogyan aktivizálják ezt partnereid). Ez a hármas a párkapcsolati dinamika három rétegét mérí — a szeretet-nyelvet, a konfliktus-utáni javítást, és a gyermekkori tükröt.</p>
+    <div class="hub-caveat"><strong>Fontos árnyalás:</strong> Ez a három eszköz <strong>nem klinikai</strong> értelemben validált skála. A Chapman-féle Love/Apology Languages pop-pszichológia (bár érvényes klinikai kutatások vannak róluk); az Imago Hendrix pár-terápiás modelljének <em>műhely-gyakorlata</em>. Jó önreflexiós eszközök — de nem tudományos súlyúak, mint az IIEF, TAS-20 vagy DES-II.</p>
+  </div>
+  <nav class="hub-tabs" role="tablist">
+    <button class="hub-tab love active" data-target="test-love" role="tab" aria-selected="true"><span class="check"></span><span class="num">I.</span><span class="name">Szeretet-nyelv</span><span class="sub">Love · 30 páros</span></button>
+    <button class="hub-tab apo" data-target="test-apo" role="tab" aria-selected="false"><span class="check"></span><span class="num">II.</span><span class="name">Bocsánat-nyelv</span><span class="sub">Apology · 20 páros</span></button>
+    <button class="hub-tab imago" data-target="test-imago" role="tab" aria-selected="false"><span class="check"></span><span class="num">III.</span><span class="name">Imago-portré</span><span class="sub">Hendrix · 57 item</span></button>
+  </nav>
+</div>
+
+<!-- ═══ LOVE LANGUAGES ═══ -->
+<section id="test-love" class="test-panel active" role="tabpanel">
+  <div class="shell">
+    <header>
+      <div class="eyebrow">The 5 Love Languages · Gary Chapman (1992)</div>
+      <h2>A te szeretet-<em>nyelvedː</em></h2>
+      <p class="lead">Chapman öt kategóriát ír le, ahogyan az emberek a szeretetet elsődlegesen <em>kapják</em> és megélik: elismerő szavak, minőségi idő, ajándék elfogadása, szolgálat és fizikai érintés. A saját elsődleges nyelved gyakran eltér a partneredétől — a párkapcsolati félreértések nagy része innen származik: mindketten "adjátok a szeretetet", csak épp más nyelven, mint amit a másik ért.</p>
+      <div class="caveat"><strong>Klinikai kontextus:</strong> A Chapman-modellt eredeti formájában nem faktoranalízissel dolgozták ki, hanem klinikai megfigyelésekből. Az utóbbi évtizedben empirikus kutatások (Egbert & Polk 2006, Bland & McQueen 2018) részben validálták, részben árnyalták — a modell gyakorlatban működik, de nem 100% pszichometrikus objektum.</p>
+    </header>
+    <div class="intro-box">
+      <p><strong>Kitöltési útmutató:</strong> 30 páros. Mindegyiknél <em>válaszd ki azt az egyetlen opciót</em>, amelyet inkább szeretnél. Nem "melyik igaz" — melyiket kívánnád. Ha mindkettőt akarod, válaszd azt, amelyik erősebben szól hozzád.</p>
+      <p>Ne gondolkodj sokat — az első reakció a leghitelesebb.</p>
+    </div>
+    <div class="progress-shell"><div class="progress-bar"><div class="progress-fill" id="love-progressFill"></div></div><div class="progress-text"><strong id="love-progressNum">0</strong> / 30</div></div>
+    <div id="love-quiz"></div>
+    <div class="results-trigger"><button class="btn-primary" id="love-showResults" disabled><em>Megmutatni</em> a nyelvet</button></div>
+    <div class="results" id="love-results">
+      <div class="res-eyebrow">Eredmény · 5 nyelv rangsora · Klinikai értelmezés</div>
+      <h2 class="res-title">A te szeretet-<em>nyelved</em></h2>
+      <p class="res-lead">Öt pontszám — az elsődleges nyelved a legmagasabb pontszámú kategória. Sok embernek van egy tiszta domináns nyelv, másoknak kettő megosztott, néhánynak mind az öt közel egyforma. Nincs "helyes" profil.</p>
+      <div class="chart-card">
+        <h3>A szeretet-<em>térképed</em></h3>
+        <div class="chart-sub">Öt tengely · min 0 · max 12</div>
+        <svg class="chart-svg" id="love-radar"></svg>
+        <div class="chart-legend" id="love-legend"></div>
+      </div>
+      <div class="rank-list" id="love-rankList"></div>
+      <div class="interp-card" id="love-interpCard"></div>
+      <div class="cross-card"><h3>Kapcsolatok más <em>területekkel</em></h3><div id="love-cross-links"></div></div>
+      <div class="refs-card">
+        <h3>Tudományos <em>háttér</em></h3>
+        <div class="ref-item"><strong>Chapman, G. (1992/2015).</strong> The 5 Love Languages: The Secret to Love that Lasts. Northfield Publishing.</div>
+        <div class="ref-item"><strong>Egbert, N., & Polk, D. (2006).</strong> Speaking the language of relational maintenance: A validity test of Chapman's five love languages. <em>Communication Research Reports, 23(1)</em>, 19–26.</div>
+        <div class="ref-item"><strong>Bland, A. M., & McQueen, K. S. (2018).</strong> The distribution of Chapman's love languages in couples: An exploratory cluster analysis. <em>Couple and Family Psychology, 7(2)</em>, 103–126.</div>
+        <div class="ref-item"><strong>Hughes, J. L., & Camden, A. A. (2020).</strong> Using Chapman's five love languages theory to predict love and relationship satisfaction. <em>Psi Chi Journal of Psychological Research, 25(3)</em>.</div>
+      </div>
+      <div class="actions">
+        <button class="btn-secondary" onclick="window.print()">Mentés PDF-be</button>
+        <button class="btn-secondary" onclick="LOVE.downloadJSON()">JSON</button>
+        <button class="btn-secondary" onclick="LOVE.reset()">Új kitöltés</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ APOLOGY LANGUAGES ═══ -->
+<section id="test-apo" class="test-panel" role="tabpanel">
+  <div class="shell">
+    <header>
+      <div class="eyebrow">The 5 Languages of Apology · Chapman & Thomas (2006)</div>
+      <h2>A te bocsánat-<em>nyelved</em></h2>
+      <p class="lead">Amikor valaki megbántott, mi kell ahhoz, hogy a bocsánatkérése <em>őszintének</em> hangozzon? Chapman és Thomas öt kategóriát ír le: sajnálat kifejezése, felelősség vállalása, jóvátétel, őszinte megbánás, bocsánat kérése. Egy "sajnálom" különböző emberek számára különböző dolgot jelent — és ha a partnered nem a te nyelveden bocsánatot kér, még ha jó szándékkal is, a konfliktus nem oldódik meg.</p>
+      <div class="caveat"><strong>Praktikus tétel:</strong> Ez a nyelv ismerete <strong>nem</strong> arra való, hogy "ha nem így bocsánatot kér, nem őszinte". Arra való, hogy megértsd magad — és <em>elmondd</em> a partnerednek, mi kell neked. A partner nem olvassa a gondolataidat; az együttműködés a kommunikációval kezdődik.</p>
+    </header>
+    <div class="intro-box">
+      <p><strong>Kitöltési útmutató:</strong> 20 páros — mindegyiknél a bocsánatkérés két lehetséges formáját olvasod. <em>Válaszd ki azt, amelyik számodra jobban hitelesen hangzik</em> — amelyiktől úgy éreznéd, valóban rendbe akarja tenni a dolgot.</p>
+    </div>
+    <div class="progress-shell"><div class="progress-bar"><div class="progress-fill" id="apo-progressFill"></div></div><div class="progress-text"><strong id="apo-progressNum">0</strong> / 20</div></div>
+    <div id="apo-quiz"></div>
+    <div class="results-trigger"><button class="btn-primary" id="apo-showResults" disabled><em>Megmutatni</em> az eredményt</button></div>
+    <div class="results" id="apo-results">
+      <div class="res-eyebrow">Eredmény · 5 bocsánat-nyelv rangsora</div>
+      <h2 class="res-title">A te bocsánat-<em>nyelved</em></h2>
+      <p class="res-lead">Öt pontszám — az elsődleges bocsánat-nyelved a legmagasabb. Ez az, amit ha megkapsz, elhiszed, hogy a másik komolyan gondolja.</p>
+      <div class="chart-card">
+        <h3>A bocsánat-<em>térképed</em></h3>
+        <div class="chart-sub">Öt tengely · min 0 · max 8</div>
+        <svg class="chart-svg" id="apo-radar"></svg>
+        <div class="chart-legend" id="apo-legend"></div>
+      </div>
+      <div class="rank-list" id="apo-rankList"></div>
+      <div class="interp-card" id="apo-interpCard"></div>
+      <div class="cross-card"><h3>Kapcsolatok más <em>területekkel</em></h3><div id="apo-cross-links"></div></div>
+      <div class="refs-card">
+        <h3>Tudományos <em>háttér</em></h3>
+        <div class="ref-item"><strong>Chapman, G., & Thomas, J. (2006/2013).</strong> The Five Languages of Apology / When Sorry Isn't Enough. Northfield Publishing.</div>
+        <div class="ref-item"><strong>Lewicki, R. J., Polin, B., & Lount, R. B. (2016).</strong> An exploration of the structure of effective apologies. <em>Negotiation and Conflict Management Research, 9(2)</em>, 177–196. — Independent empirikus validáció hasonló komponensekre.</div>
+        <div class="ref-item"><strong>Fehr, R., & Gelfand, M. J. (2010).</strong> When apologies work: How matching apology components to victims' self-construals facilitates forgiveness. <em>Organizational Behavior and Human Decision Processes, 113(1)</em>, 37–50.</div>
+      </div>
+      <div class="actions">
+        <button class="btn-secondary" onclick="window.print()">Mentés PDF-be</button>
+        <button class="btn-secondary" onclick="APO.downloadJSON()">JSON</button>
+        <button class="btn-secondary" onclick="APO.reset()">Új kitöltés</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ IMAGO ═══ -->
+<section id="test-imago" class="test-panel" role="tabpanel">
+  <div class="shell">
+    <header>
+      <div class="eyebrow">Imago Self-Assessment · Harville Hendrix (Getting the Love You Want, 1988)</div>
+      <h2>Az <em>imagód</em></h2>
+      <p class="lead">Az <em>imago</em> (Hendrix fogalma) az a belső "profil", amit a rendszered a gyermekkori gondozóid tulajdonságaiból, sebeidből és kielégítetlen szükségleteidből épített fel — és amit <strong>felnőttként partnerekben keres</strong>, hogy meggyógyítsa. Paradox: pont azt a fájdalom-mintázatot vonzod, amit gyógyítani szeretnél. Ez nem hiba a rendszerben — ez a rendszer.</p>
+      <div class="caveat"><strong>Érzelmileg intenzív gyakorlat:</strong> Ez a teszt gyermekkori sebekre kérdez rá. Ha éppen krízisben vagy, vagy nincs pszichológiai támogatásod, érdemes lehet halasztani. <strong>Nem</strong> egy klinikai eszköz — egy műhely-gyakorlat pár-terápia kontextusban, önreflexiós célra átdolgozva. A "gondozók" alatt azokat érted, akik a gyermekkorodban a legfontosabb figyelmet és gondoskodást (vagy annak hiányát) jelentették — szülők, nagyszülők, más jelentős felnőttek.</p>
+    </header>
+    <div class="intro-box">
+      <p><strong>Kitöltési útmutató:</strong> 4 szakaszon vezet végig, összesen 57 item. Mindegyiknél 0–3 skálán értékeld, mennyire jellemző volt / jellemző rád. Végül automatikusan generál egy <em>imago-portrét</em> — mit "keres" a rendszered anélkül, hogy tudná.</p>
+    </div>
+    <div class="progress-shell"><div class="progress-bar"><div class="progress-fill" id="imago-progressFill"></div></div><div class="progress-text"><strong id="imago-progressNum">0</strong> / 57</div></div>
+    <div id="imago-quiz"></div>
+    <div class="results-trigger"><button class="btn-primary" id="imago-showResults" disabled><em>Megmutatni</em> az imago-portrét</button></div>
+    <div class="results" id="imago-results">
+      <div class="res-eyebrow">Eredmény · Imago-portré · Klinikai értelmezés</div>
+      <h2 class="res-title">A te <em>imago-portréd</em></h2>
+      <p class="res-lead">A portré nem "értékel" — leír. Ez egy tükör, ami megmutatja, mit hordozol be a rendszered a párkapcsolatokba. A tudatosság az első lépés — a Hendrix-féle munkában a portré ismerete önmagában elkezdi lassítani a paradoxális partnerválasztási mintát.</p>
+      <div class="imago-portrait" id="imago-portraitCard"></div>
+      <div class="chart-card">
+        <h3>A négy <em>dimenzió</em> — top 5 mindegyikben</h3>
+        <div class="chart-sub">Csoportosított összefoglaló bar chart</div>
+        <div id="imago-barChart"></div>
+      </div>
+      <div class="rank-list" id="imago-negTop"></div>
+      <div class="rank-list" id="imago-posTop"></div>
+      <div class="rank-list" id="imago-woundsTop"></div>
+      <div class="rank-list" id="imago-needsTop"></div>
+      <div class="interp-card" id="imago-interpCard"></div>
+      <div class="cross-card"><h3>Kapcsolatok más <em>területekkel</em></h3><div id="imago-cross-links"></div></div>
+      <div class="refs-card">
+        <h3>Tudományos <em>háttér</em></h3>
+        <div class="ref-item"><strong>Hendrix, H. (1988/2007).</strong> Getting the Love You Want: A Guide for Couples. St. Martin's Griffin.</div>
+        <div class="ref-item"><strong>Hendrix, H., & Hunt, H. L. (2013).</strong> Making Marriage Simple: 10 Truths for Changing the Relationship You Have into the One You Want.</div>
+        <div class="ref-item"><strong>Muro, L., Holliman, R., & Luquet, W. (2016).</strong> Imago Relationship Therapy and accurate empathy development. <em>Journal of Couple & Relationship Therapy, 15(3)</em>, 232–246.</div>
+        <div class="ref-item"><strong>Schmidt, C. D., Luquet, W., & Gehlert, N. C. (2015).</strong> Evaluating the impact of the "Getting the Love You Want" couples workshop. <em>Journal of Couple & Relationship Therapy, 14(1)</em>, 1–18.</div>
+      </div>
+      <div class="actions">
+        <button class="btn-secondary" onclick="window.print()">Mentés PDF-be</button>
+        <button class="btn-secondary" onclick="IMAGO.downloadJSON()">JSON</button>
+        <button class="btn-secondary" onclick="IMAGO.reset()">Új kitöltés</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="hub-footer">
+  Love Languages (Chapman) · Apology Languages (Chapman & Thomas) · Imago (Hendrix) · v1.0<br>
+  önismereti célra · nem klinikai diagnosztikai eszközök
+</footer>
+
+<script>
+/* ═══ CHART UTILITIES — közös diagram-rajzolók ═══ */
+window.CHARTS = (function(){
+  // Radar chart (pentagon 5-axis, hexagon 6-axis, stb.)
+  function radar(svgEl, data, opts){
+    const W=480, H=480, cx=W/2, cy=H/2;
+    const R=170;  // outer radius
+    const n = data.length;
+    const angleStep = (2*Math.PI)/n;
+    const startAngle = -Math.PI/2;  // start at top
+    const maxVal = opts.max || Math.max(...data.map(d=>d.value));
+    const gridLevels = opts.gridLevels || 4;
+    const color = opts.color || '#2563eb';
+    const fillColor = opts.fillColor || 'rgba(37,99,235,0.18)';
+    const strokeColor = opts.strokeColor || color;
+
+    let html = '';
+    // Grid — concentric polygons (dark bg, light grid)
+    for(let g=1; g<=gridLevels; g++){
+      const gr = (R*g)/gridLevels;
+      let pts = '';
+      for(let i=0; i<n; i++){
+        const angle = startAngle + i*angleStep;
+        const x = cx + gr*Math.cos(angle);
+        const y = cy + gr*Math.sin(angle);
+        pts += `${x},${y} `;
+      }
+      html += `<polygon points="${pts.trim()}" fill="none" stroke="rgba(147,197,253,0.18)" stroke-width="${g===gridLevels?1.5:1}" stroke-dasharray="${g===gridLevels?'':'3,4'}"/>`;
+    }
+    // Axes
+    for(let i=0; i<n; i++){
+      const angle = startAngle + i*angleStep;
+      const x = cx + R*Math.cos(angle);
+      const y = cy + R*Math.sin(angle);
+      html += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="rgba(147,197,253,0.18)" stroke-width="1"/>`;
+    }
+    // Data polygon
+    let dataPts = '';
+    const dotSpec = [];
+    for(let i=0; i<n; i++){
+      const angle = startAngle + i*angleStep;
+      const r = (data[i].value/maxVal)*R;
+      const x = cx + r*Math.cos(angle);
+      const y = cy + r*Math.sin(angle);
+      dataPts += `${x},${y} `;
+      dotSpec.push({x,y,val:data[i].value});
+    }
+    html += `<polygon points="${dataPts.trim()}" fill="${fillColor}" stroke="${strokeColor}" stroke-width="2.5" stroke-linejoin="round"/>`;
+    // Data dots + value labels
+    dotSpec.forEach(d=>{
+      html += `<circle cx="${d.x}" cy="${d.y}" r="6" fill="${strokeColor}" stroke="#fff" stroke-width="2"/>`;
+    });
+    // Labels around
+    for(let i=0; i<n; i++){
+      const angle = startAngle + i*angleStep;
+      const lr = R + 32;
+      const x = cx + lr*Math.cos(angle);
+      const y = cy + lr*Math.sin(angle);
+      let anchor='middle';
+      if(Math.cos(angle) > 0.3) anchor='start';
+      else if(Math.cos(angle) < -0.3) anchor='end';
+      const dyLine1 = -4;
+      const dyLine2 = 14;
+      html += `<text x="${x}" y="${y+dyLine1}" text-anchor="${anchor}" font-family="Fraunces,Cardo,serif" font-size="14" font-weight="500" fill="#f1f5f9">${data[i].label}</text>`;
+      html += `<text x="${x}" y="${y+dyLine2}" text-anchor="${anchor}" font-family="Manrope,Inter,sans-serif" font-size="13" font-weight="700" fill="${strokeColor}">${data[i].value}<tspan font-size="10" fill="rgba(203,213,225,0.6)" font-weight="500">/${maxVal}</tspan></text>`;
+    }
+    // Csillag akcent középen
+    html += `<circle cx="${cx}" cy="${cy}" r="3" fill="${strokeColor}"/>`;
+    // Scale numbers on top axis
+    for(let g=1; g<=gridLevels; g++){
+      const y = cy - (R*g)/gridLevels;
+      const val = Math.round((maxVal*g)/gridLevels);
+      html += `<text x="${cx+5}" y="${y-3}" font-family="Manrope,sans-serif" font-size="9" fill="rgba(147,197,253,0.45)" font-weight="500">${val}</text>`;
+    }
+    svgEl.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    svgEl.innerHTML = html;
+  }
+
+  // Horizontal bar chart — items with score
+  function barGroup(container, groups){
+    let html = '';
+    groups.forEach(group=>{
+      html += `<div class="bar-group"><h4 style="color:${group.color}">${group.title}</h4>`;
+      group.items.forEach(item=>{
+        const pct = Math.round((item.value/group.max)*100);
+        html += `<div class="bar-row"><div class="bar-row-name">${item.label}</div><div class="bar-row-value" style="font-family:'Fraunces',serif;font-style:italic;color:${group.color};font-weight:600;font-size:15px">${item.value}<span style="font-size:11px;color:rgba(15,23,42,0.45);font-weight:500">/${group.max}</span></div><div class="bar-row-track"><div class="bar-row-fill" style="width:${pct}%;background:linear-gradient(90deg,${group.color},${group.colorLight||group.color})"></div></div></div>`;
+      });
+      html += `</div>`;
+    });
+    container.innerHTML = html;
+  }
+
+  return { radar, barGroup };
+})();
+
+/* HUB */
+(function(){
+  const tabs=document.querySelectorAll('.hub-tab');
+  const panels=document.querySelectorAll('.test-panel');
+  tabs.forEach(tab=>{
+    tab.addEventListener('click',()=>{
+      const target=tab.dataset.target;
+      tabs.forEach(t=>{t.classList.remove('active');t.setAttribute('aria-selected','false')});
+      panels.forEach(p=>p.classList.remove('active'));
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected','true');
+      document.getElementById(target).classList.add('active');
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+  });
+  function checkProgress(){
+    ['love-responses-v1','apo-responses-v1','imago-responses-v1'].forEach((key,i)=>{
+      try{
+        const raw=localStorage.getItem(key);
+        if(raw){const parsed=JSON.parse(raw);if(Object.keys(parsed).length>0)tabs[i].classList.add('has-progress');}
+      }catch(e){}
+    });
+  }
+  checkProgress();
+  window.hubCheckProgress=checkProgress;
+})();
+
+/* ═══ LOVE LANGUAGES ═══ */
+window.LOVE = (function(){
+// 5 kategória:
+// A = Words of Affirmation (elismerő szavak)
+// B = Quality Time (minőségi idő)
+// C = Receiving Gifts (ajándék)
+// D = Acts of Service (szolgálat)
+// E = Physical Touch (érintés)
+// 30 pair × 2 option = 60 items, mindegyik kategória 12-szer szerepel
+const PAIRS = [
+  {n:1,  a:{c:'A',t:'Szeretem, ha a partnerem kedves szavakkal fejezi ki, hogy értékel.'}, b:{c:'E',t:'Szeretem, ha a partnerem megérint, például átölel vagy megfog kézen.'}},
+  {n:2,  a:{c:'B',t:'Szeretem, ha csak együtt vagyunk, minden más nélkül.'},        b:{c:'D',t:'Szeretem, ha a partnerem segít nekem egy feladatban.'}},
+  {n:3,  a:{c:'C',t:'Szeretem, ha a partnerem egy kis meglepetéssel lep meg.'},     b:{c:'B',t:'Szeretem, ha valóban meghallgat, amikor beszélek hozzá.'}},
+  {n:4,  a:{c:'D',t:'Szeretem, ha a partnerem elvégez valamit, amit én is megtehetnék.'}, b:{c:'C',t:'Szeretem, ha a partnerem gondolt rám és hozott valamit.'}},
+  {n:5,  a:{c:'E',t:'Szeretem, ha a partnerem megsimogatja a hátamat vagy kezembe fogja a kezem.'}, b:{c:'A',t:'Szeretem, ha kimondja, hogy szeret.'}},
+  {n:6,  a:{c:'A',t:'Szeretem, ha kifejezetten dicsér valamiért, amit tettem.'}, b:{c:'B',t:'Szeretem, ha együtt csinálunk valamit, csak mi ketten.'}},
+  {n:7,  a:{c:'C',t:'A megfontolt ajándék többet jelent nekem, mint sok más gesztus.'}, b:{c:'E',t:'A gyengéd érintés többet jelent nekem, mint sok más gesztus.'}},
+  {n:8,  a:{c:'D',t:'Amikor a partnerem elvégez helyettem egy háztartási feladatot, szeretve érzem magam.'}, b:{c:'A',t:'Amikor bókol, szeretve érzem magam.'}},
+  {n:9,  a:{c:'B',t:'Szeretem, amikor félreteszi a telefonját, és csak rám figyel.'}, b:{c:'C',t:'Szeretem, amikor egy apró ajándékkal kifejezi, hogy gondolt rám.'}},
+  {n:10, a:{c:'A',t:'Az elismerő szavak, hogy jól végeztem valamit, sokat jelentenek nekem.'}, b:{c:'D',t:'Amikor a partnerem tesz értem valamit, amitől megkönnyíti a napom, sokat jelent.'}},
+  {n:11, a:{c:'B',t:'Szeretek hosszan beszélgetni a partneremmel.'}, b:{c:'E',t:'Szeretem, ha a partnerem közel ül hozzám, és fizikai kapcsolatban vagyunk.'}},
+  {n:12, a:{c:'E',t:'A gyengéd érintés a nap folyamán megerősít.'}, b:{c:'A',t:'A partnerem kedves szavai a nap folyamán megerősítenek.'}},
+  {n:13, a:{c:'C',t:'Fontos nekem, hogy a partnerem megünnepeljen születésnapokat vagy évfordulókat egy ajándékkal.'}, b:{c:'D',t:'Fontos nekem, hogy a partnerem segítsen a heti terheim csökkentésében.'}},
+  {n:14, a:{c:'A',t:'Szeretem hallani, hogy szép vagyok / jó vagyok / a partnerem büszke rám.'}, b:{c:'B',t:'Szeretem, ha egy egész estét együtt tölthetünk, csak mi ketten.'}},
+  {n:15, a:{c:'D',t:'Ha a partnerem elvégez valamit, ami rám vár, felesleg nélkül érzem, hogy törődik.'}, b:{c:'C',t:'Ha egy váratlan, gondos ajándékot kapok, érzem, hogy törődik.'}},
+  {n:16, a:{c:'E',t:'A csók, ölelés, hozzáérés hitelesíti, hogy szeret.'}, b:{c:'B',t:'A megosztott idő és a jelenlét hitelesíti, hogy szeret.'}},
+  {n:17, a:{c:'C',t:'Egy ajándékkor a "gondoltál rám" számít igazán.'}, b:{c:'A',t:'Egy elismerő mondat, hogy "látom, mit teszel", számít igazán.'}},
+  {n:18, a:{c:'A',t:'A dicséret és bátorítás energiát ad.'}, b:{c:'D',t:'Amikor a partnerem levesz rólam egy feladatot, energiát kapok.'}},
+  {n:19, a:{c:'D',t:'A partnerem a szeretetét megmutatja azzal, hogy segít nekem konkrét dolgokban.'}, b:{c:'E',t:'A partnerem a szeretetét megmutatja azzal, hogy fizikailag közel van hozzám.'}},
+  {n:20, a:{c:'B',t:'Az együtt töltött, megosztott idő az elsődleges szeretet-forrás.'}, b:{c:'A',t:'A kimondott elismerő szavak az elsődleges szeretet-forrás.'}},
+  {n:21, a:{c:'E',t:'A rendszeres fizikai kontaktus (pl. napi ölelés) fontos nekem.'}, b:{c:'C',t:'A rendszeres apró figyelmességek (pl. hozott kávé) fontosak nekem.'}},
+  {n:22, a:{c:'C',t:'Egy ajándékot, amit a partnerem gondosan kiválasztott, sokáig őrzök.'}, b:{c:'B',t:'Egy közös élményt, amit együtt éltünk át, sokáig őrzök.'}},
+  {n:23, a:{c:'D',t:'Ha a partnerem elvégez egy szívességet nekem, ez fontos szeretet-jel.'}, b:{c:'B',t:'Ha a partnerem félreteszi a napját, hogy velem legyen, ez fontos szeretet-jel.'}},
+  {n:24, a:{c:'C',t:'A partnerem apró figyelmességei (egy virág, egy kártya) hitelesítik a szeretetét.'}, b:{c:'D',t:'A partnerem gyakorlati segítsége (elvégzett feladat) hitelesíti a szeretetét.'}},
+  {n:25, a:{c:'B',t:'A megosztott csendben ülés is szeretet-forma.'}, b:{c:'E',t:'A gyengéd érintés csend közben szeretet-forma.'}},
+  {n:26, a:{c:'A',t:'Egy szeretem-üzenet írásban is sokat jelent.'}, b:{c:'C',t:'Egy meglepetés-tárgy vagy virág sokat jelent.'}},
+  {n:27, a:{c:'E',t:'Amikor a partnerem hozzám bújik, elhiszem, hogy szeret.'}, b:{c:'D',t:'Amikor a partnerem tesz valamit értem, elhiszem, hogy szeret.'}},
+  {n:28, a:{c:'A',t:'A szavak — ha őszinték — legmélyebbre hatnak.'}, b:{c:'E',t:'Az érintés — ha gyengéd — legmélyebbre hat.'}},
+  {n:29, a:{c:'B',t:'Fontosabb nekem, hogy jelen legyünk együtt, mint hogy sokat beszéljünk.'}, b:{c:'C',t:'Fontosabb nekem, hogy a partnerem konkrétan mutassa a szeretetét tárgyakkal.'}},
+  {n:30, a:{c:'D',t:'A "tettek beszélnek hangosabban a szavaknál" — nekem pont ez igaz.'}, b:{c:'E',t:'A test emlékezik — nekem a fizikai közelség beszél a leghangosabban.'}}
+];
+const TOTAL=PAIRS.length;
+const STORAGE_KEY='love-responses-v1';
+let responses={};
+function loadState(){try{const r=localStorage.getItem(STORAGE_KEY);if(r)responses=JSON.parse(r);}catch(e){responses={}}}
+function saveState(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(responses));}catch(e){}window.hubCheckProgress&&window.hubCheckProgress();}
+function renderQuiz(){
+  const root=document.getElementById('love-quiz');
+  let html='';
+  PAIRS.forEach(pair=>{
+    html+=`<div class="fc" data-n="${pair.n}"><span class="fc-num">${String(pair.n).padStart(2,'0')}. — Melyik szólít meg jobban?</span><div class="fc-pair"><button class="fc-btn" data-choice="a" data-n="${pair.n}" data-code="${pair.a.c}" type="button">${pair.a.t}</button><button class="fc-btn" data-choice="b" data-n="${pair.n}" data-code="${pair.b.c}" type="button">${pair.b.t}</button></div></div>`;
+  });
+  root.innerHTML=html;
+  root.querySelectorAll('.fc-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const n=parseInt(btn.dataset.n,10);
+      responses[n]=btn.dataset.code;
+      btn.parentElement.querySelectorAll('.fc-btn').forEach(b=>b.classList.remove('selected'));
+      btn.classList.add('selected');
+      saveState();updateProgress();
+    });
+  });
+  Object.keys(responses).forEach(n=>{
+    const code=responses[n];
+    const btn=root.querySelector(`.fc-btn[data-n="${n}"][data-code="${code}"]`);
+    if(btn)btn.classList.add('selected');
+  });
+  updateProgress();
+}
+function updateProgress(){
+  const c=Object.keys(responses).length;
+  document.getElementById('love-progressFill').style.width=(c/TOTAL*100)+'%';
+  document.getElementById('love-progressNum').textContent=c;
+  document.getElementById('love-showResults').disabled=c<TOTAL;
+}
+function scores(){
+  const s={A:0,B:0,C:0,D:0,E:0};
+  Object.values(responses).forEach(code=>{if(s[code]!==undefined)s[code]++;});
+  return s;
+}
+const CATEGORIES = {
+  A:{name:'Elismerő szavak',en:'Words of Affirmation',color:'#b8912e',desc:'A szeretet szavakkal — dicséret, bátorítás, "szeretlek", elismerés. Egy őszinte "büszke vagyok rád" több nálad, mint egy órányi együttlét szavak nélkül.'},
+  B:{name:'Minőségi idő',en:'Quality Time',color:'#7c2d3c',desc:'Az osztatlan, jelenléttel töltött együttlét. A telefon félretéve, figyelem rád fókuszálva. Fontos: nem a mennyiség — a minőség.'},
+  C:{name:'Ajándék elfogadása',en:'Receiving Gifts',color:'#065f46',desc:'Nem az ajándék értéke, hanem az, hogy a másik <em>gondolt rád</em>. Egy szedett virág, egy megjegyzett kedvenc dolgod. A tárgy a szeretet szimbóluma.'},
+  D:{name:'Szolgálat',en:'Acts of Service',color:'#1e3a8a',desc:'"Tettek beszélnek hangosabban a szavaknál." A partner elvégez valamit, amivel megkönnyíti a napodat — mos, főz, elintéz. Ez a szeretet gyakorlati jele.'},
+  E:{name:'Fizikai érintés',en:'Physical Touch',color:'#9f1239',desc:'A gyengéd kontaktus — ölelés, kézfogás, simogatás, csók. Nem szexuális elsősorban — jelenlét-érintés. A test emlékezik.'}
+};
+const INTERP = {
+  A:{
+    primary:`Elsődleges nyelved az <strong>elismerő szavak</strong>. Amikor a partnered kimondja, hogy értékel, dicséret, bátorít — akkor érzed magad szeretve. Ha ez hiányzik, gyakran feltételezed, hogy nem szeret, akkor is, ha más gesztusaival mutatja. <em>Amit kérj</em>: rendszeres verbális elismerés, "látlak" üzenetek, kimondott érzelmek. <em>Vigyázz</em>: a kritika ezen a nyelven kettős fájdalom — sokkal jobban megsebez, mint másokat.`,
+    strong:`A második vagy harmadik erős nyelved az elismerő szavak.`,
+    weak:`Az elismerő szavak nem elsődleges nyelved. Ez nem azt jelenti, hogy ne örülnél nekik — csak azt, hogy nem <em>ez</em> az, amiből szeretve érzed magad elsősorban.`
+  },
+  B:{
+    primary:`Elsődleges nyelved a <strong>minőségi idő</strong>. A jelenlét, az osztatlan figyelem, a közös élmény — ez tölt fel. Egy sms-váltás nem helyettesíti a személyes találkozást; egy ajándék nem helyettesíti az együtt töltött időt. <em>Amit kérj</em>: rendszeres, telefontól mentes együttlét, tervezett randi-idő. <em>Vigyázz</em>: ha a partnered "veled van, de nem veled", az különösen fáj — jelenléthiány = szeretethiány érzés.`,
+    strong:`Erős másodlagos nyelved a minőségi idő.`,
+    weak:`Nem a minőségi idő a fő nyelved. Az egyedüli időt tolerálod (vagy értékeled), és a szeretetet más csatornákon jobban érzed.`
+  },
+  C:{
+    primary:`Elsődleges nyelved az <strong>ajándék elfogadása</strong>. Nem a materializmusról van szó — az ajándék jelképe annak, hogy a partnered <em>gondolt rád</em>. Egy virág az utcáról, egy megjegyzett kedvenc könyv, egy váratlan meglepetés. A tárgy a szeretet fizikai lenyomata. <em>Vigyázz</em>: az "elfelejtett" évforduló, névnap, születésnap különösen sebez — nem az ajándék hiányzik, hanem a "nem gondoltál rám" üzenet.`,
+    strong:`Erős másodlagos nyelved az ajándék.`,
+    weak:`Nem az ajándék a fő nyelved. Örülhetsz nekik, de nem ezen keresztül érzed a szeretetet elsősorban.`
+  },
+  D:{
+    primary:`Elsődleges nyelved a <strong>szolgálat</strong>. Amikor a partnered tesz érted valamit — elmossa a bögrét, elintéz egy hivatalos ügyet, főz, amikor fáradt vagy — ez a szeretet gyakorlati jele. "Tettek beszélnek hangosabban a szavaknál." <em>Amit kérj</em>: konkrét gyakorlati segítség, felajánlott feladatátvétel. <em>Vigyázz</em>: az "ígérete, de nem csinálja meg" nálad kettős csalódás — nemcsak a feladat marad, hanem a "nem is szeretsz eléggé" üzenet is.`,
+    strong:`Erős másodlagos nyelved a szolgálat.`,
+    weak:`Nem a szolgálat a fő nyelved. Örülsz, ha a partnered segít, de nem ezen keresztül érzed a szeretetet elsősorban.`
+  },
+  E:{
+    primary:`Elsődleges nyelved a <strong>fizikai érintés</strong>. Az ölelés, kézfogás, simogatás, közelség — ezek adják a "szeretve vagyok" élményt. Ez nem szexuális elsősorban: az érintés maga a szeretet. <em>Amit kérj</em>: rendszeres, nem-szexuális fizikai kontaktus (napi ölelés, kézfogás, közelség séta közben). <em>Vigyázz</em>: a fizikai távolság — akár csak órákra — hidegnek élheted meg, akkor is, ha a partner szóban vagy tettekben szeret.`,
+    strong:`Erős másodlagos nyelved a fizikai érintés.`,
+    weak:`Nem a fizikai érintés a fő nyelved. Örülsz neki, de nem ezen keresztül érzed elsősorban a szeretetet.`
+  }
+};
+function crossLinks(scores){
+  const links=[];
+  const sorted=Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+  const primary=sorted[0][0];
+  const weak=sorted[4][0];
+  links.push({label:'Partner-egyeztetés',text:`Az elsődleges nyelved az egyik legfontosabb információ egy partnerről: ha nem tudja, nem tud "rád találni", akkor is, ha szeret. <strong>Mondd el neki</strong>. A partneri kommunikáció itt kezdődik — nem a "találja ki magától".`});
+  if(scores[weak]<=2){
+    const wm=CATEGORIES[weak];
+    links.push({label:`Nagyon gyenge nyelv: ${wm.name}`,text:`Ez a nyelv szinte hiányzik nálad. Ha a jelenlegi partnered elsődleges nyelve ez, komoly félreértés potenciál — <em>ő adja</em>, te <em>nem érzed</em>. Érdemes tudnia.`});
+  }
+  if(primary==='E'){
+    links.push({label:'MAIA-2 Trusting kapcsolat',text:`A fizikai érintés-elsődleges nyelvhez erős testi biztonság-érzet szükséges. Ha a MAIA-2 Trusting alacsony, az érintés-igény együtt járhat testi konfliktussal is. Nézd meg.`});
+  }
+  if(primary==='B'){
+    links.push({label:'ECR-R szorongásos kötődés potenciálisan',text:`A minőségi idő-elsődleges nyelv gyakran korrelál a szorongásos kötődéssel — a "jelen légy velem" alapélmény. Nem szükségszerű, de érdemes megnézni.`});
+  }
+  if(primary==='A'){
+    links.push({label:'SMI Vulnerable Child kapcsolat',text:`Az elismerő szavak-elsődleges nyelv gyakran együtt jár egy "nem vagyok elég" alapszkémával — a külső validáció fontossága ebből fakadhat. Ha SMI Punitive Parent magas, ez különösen fontos.`});
+  }
+  return links;
+}
+function renderResults(){
+  const s=scores();
+  const sorted=Object.entries(s).sort((a,b)=>b[1]-a[1]);
+  let rankHtml='<h3>A te <em>nyelv-rangsorod</em></h3>';
+  sorted.forEach((entry,i)=>{
+    const [code,score]=entry;
+    const cat=CATEGORIES[code];
+    const isTop=i===0;
+    rankHtml+=`<div class="rank-item ${isTop?'top':''}" style="--rc:${cat.color};--top-color:${cat.color}"><div class="rank-pos">${i+1}.</div><div><div class="rank-name"><em>${cat.name}</em> · ${cat.en}</div><div class="rank-desc">${cat.desc}</div></div><div class="rank-score">${score}<span class="out">/ 12</span></div></div>`;
+  });
+  document.getElementById('love-rankList').innerHTML=rankHtml;
+  // Radar diagram
+  const radarData = ['A','B','C','D','E'].map(code=>({label:CATEGORIES[code].name.split(' ')[0], value:s[code], color:CATEGORIES[code].color}));
+  window.CHARTS.radar(document.getElementById('love-radar'), radarData, {max:12, color:'#818cf8', fillColor:'rgba(129,140,248,0.28)', strokeColor:'#818cf8'});
+  // Legend
+  document.getElementById('love-legend').innerHTML = ['A','B','C','D','E'].map(code=>{
+    const cat=CATEGORIES[code];
+    return `<div class="chart-legend-item"><span class="chart-legend-swatch" style="background:${cat.color}"></span><span><strong>${cat.name}</strong> · ${s[code]}/12</span></div>`;
+  }).join('');
+  let interp=`<h3>Klinikai <em>értelmezés</em></h3>`;
+  const primary=sorted[0][0], secondary=sorted[1][0], weakest=sorted[4][0];
+  // Profil-forma
+  const balance=sorted[0][1]-sorted[4][1];
+  interp+=`<div class="interp-section"><h4>Profil-forma</h4>`;
+  if(balance>=8){
+    interp+=`<p><strong>Erősen fókuszált profil.</strong> Egy nyelv dominál a többi felett (${sorted[0][1]}/12 vs ${sorted[4][1]}/12). Ez tiszta iránymutatás — de figyelmeztetés is: az egyoldalúság sebezhetőbb, mert csak egy csatornán érkezik meg a szeretet-üzenet. Ha a partnered nem ezen a nyelven "adja", <em>nem érzed</em>, akkor sem, ha objektíven szeret.</p>`;
+  } else if(balance>=5){
+    interp+=`<p><strong>Világos profil.</strong> Van egy elsődleges nyelv (${sorted[0][1]}/12), de más nyelvek is elérnek (${sorted[4][1]}/12 a leggyengébb). Ez a leggyakoribb és legrugalmasabb profil — a partneri "hibák" bizonyos csatornákon nem zúzzák össze a kapcsolatot, mert más csatornákon még mindig érkezik.</p>`;
+  } else {
+    interp+=`<p><strong>Kiegyenlített profil.</strong> Nincs egyértelmű elsődleges nyelv (${sorted[0][1]} vs ${sorted[4][1]}). Ez a "többnyelvű" profil — sok csatornán érzed a szeretetet, de egyik sem elég önmagában. A partneri kommunikáció itt különösen fontos, mert a partner nem tudja "eltalálni" egyetlen fókusszal.</p>`;
+  }
+  interp+=`</div>`;
+  // Minden 5 nyelvhez külön szakasz — rangsor szerinti sorrendben
+  sorted.forEach((entry, idx)=>{
+    const [code, score] = entry;
+    const cat = CATEGORIES[code];
+    const rank = idx===0?'Elsődleges':idx===1?'Másodlagos':idx===2?'Harmadlagos':idx===3?'Alacsony':'Legalacsonyabb';
+    let text;
+    if(idx===0) text = INTERP[code].primary;
+    else if(idx===1 && score>=6) text = INTERP[code].strong;
+    else if(idx>=3) text = INTERP[code].weak;
+    else text = `Közepes tartományban (${score}/12). Van bizonyos szeretet-érték számodra ezen a csatornán, de nem meghatározó. Ha a partnered ezt <em>hangsúlyosan</em> adja, örülsz neki, de nem ezen keresztül épül az alapkötelék.`;
+    interp+=`<div class="interp-section"><h4>${idx+1}. ${rank} — ${cat.name} (${score}/12)</h4><p style="font-size:13px;color:var(--ink-lite-muted);margin-bottom:8px;font-style:italic">${cat.desc}</p><p>${text}</p></div>`;
+  });
+  // Kombinált mintázatok
+  const s1=sorted[0][0], s2=sorted[1][0];
+  const pair = [s1,s2].sort().join('-');
+  const combos = {
+    'A-B': `<strong>Elismerő szavak + Minőségi idő</strong> — a "látott és hallott" profil. Nem az számít, hogy mit tesz a partnered, hanem hogy <em>figyel</em> rád és <em>szavakba öntsd</em> azt, amit lát. Ez erősen kötődés-fókuszú kombináció.`,
+    'A-E': `<strong>Elismerő szavak + Fizikai érintés</strong> — a "verbális és testi jelenlét" profil. A szex, ölelés és a kimondott dicséret együtt táplál. Bármelyik csatorna hiánya érzelmi éhezéshez vezet.`,
+    'B-E': `<strong>Minőségi idő + Fizikai érintés</strong> — a "test-jelenlét" profil. A közös, jelenléttel töltött idő + a testi kontakt együtt. Sokszor introvertált-orientált profil, ahol kevesebb, mélyebb kapcsolat kell.`,
+    'C-D': `<strong>Ajándék + Szolgálat</strong> — a "gesztus" profil. A partner cselekedetei (adás és segítés) számít. Ez pragmatikus, "tettek beszélnek" alapállás.`,
+    'A-C': `<strong>Elismerő szavak + Ajándék</strong> — a "megjelölés" profil. Fontos, hogy a partnered explicit módon (szóban vagy tárggyal) <em>megjelölje</em>, hogy gondol rád.`,
+    'A-D': `<strong>Elismerő szavak + Szolgálat</strong> — a "látott munka" profil. Fontos, hogy a partnered lássa és elismerje amit teszel, ÉS ő is konkrétan segítsen. A hallgatólagos tolerancia számodra elutasításként érkezik.`,
+    'B-C': `<strong>Minőségi idő + Ajándék</strong> — a "gondolt rám" profil. A közös idő és a gondolt gesztusok együtt táplálnak.`,
+    'B-D': `<strong>Minőségi idő + Szolgálat</strong> — a "partnerség" profil. A közös élet strukturális támogatása (időben és tettekben) számít elsősorban.`,
+    'C-E': `<strong>Ajándék + Fizikai érintés</strong> — a "tárgyi jelenlét" profil. A partner gesztusai és a testi közelség együtt teremtik a biztonságot.`,
+    'D-E': `<strong>Szolgálat + Fizikai érintés</strong> — a "cselekvő és testi" profil. A partner segít, és fizikailag közel van. Verbális dimenzió kevésbé fontos.`
+  };
+  if(combos[pair] && sorted[1][1]>=6){
+    interp+=`<div class="interp-section"><h4>Kombinált mintázat — top 2 nyelved együtt</h4><p>${combos[pair]}</p></div>`;
+  }
+  // Partneri implikációk
+  interp+=`<div class="interp-section"><h4>Partneri implikáció — mit kell tudnia rólad</h4><p><strong>Mondd el a partnerednek:</strong> "Én elsősorban <em>${CATEGORIES[primary].name.toLowerCase()}</em>-en keresztül érzem a szeretetet. Amikor te adsz nekem <em>${CATEGORIES[weakest].name.toLowerCase()}</em>-t, örülök — de nem ez az, amiből építek. Ha egyszer megkérdezhetlek: adnál nekem heti szinten <em>${CATEGORIES[primary].name.toLowerCase()}</em>-t?"</p><p>A partnered valószínűleg <strong>a saját</strong> elsődleges nyelvén ad — az emberek úgy szeretnek, ahogyan saját maguknak kellene. Ha ez eltér a te profiledtől, kettőtök szeretete "eltéved a fordításban".</p></div>`;
+  // Kockázati mintázatok
+  if(scores.E>=8){
+    interp+=`<div class="interp-section"><h4>Kockázati kontextus — magas Physical Touch</h4><p>Magas fizikai érintés-nyelv esetén különösen fontos, hogy a szex NE keveredjen a szeretetigénnyel — a testi jelenlét mint szeretet-forma NEM azonos a szexszel. Ha csak szex-alapú érintésed van, "üresen maradsz" a nem-szexuális testi közelség hiányában.</p></div>`;
+  }
+  if(scores.C<=2 && scores.D<=2){
+    interp+=`<div class="interp-section"><h4>Kockázati kontextus — gesztus-vak profil</h4><p>Alacsony ajándék és szolgálat-nyelv esetén könnyen "észre sem veszed" ha a partnered ezekkel próbál szeretetet mutatni. Érdemes tudatosan megjelölni magadnak: "most a partnerem hozott nekem valamit — ez az ő szeretet-jele, függetlenül attól, hogy én ezt nem így érezném".</p></div>`;
+  }
+  document.getElementById('love-interpCard').innerHTML=interp;
+  const links=crossLinks(s);
+  document.getElementById('love-cross-links').innerHTML=links.map(l=>`<div class="cross-item"><div class="cross-item-label">${l.label}</div><p>${l.text}</p></div>`).join('');
+  document.getElementById('love-results').classList.add('visible');
+  setTimeout(()=>{document.getElementById('love-results').scrollIntoView({behavior:'smooth',block:'start'});},100);
+}
+document.getElementById('love-showResults').addEventListener('click',()=>{if(Object.keys(responses).length<TOTAL)return;renderResults();});
+function reset(){if(!confirm('Biztos törlöd a Love Languages válaszaidat?'))return;responses={};saveState();document.querySelectorAll('#test-love .fc-btn.selected').forEach(b=>b.classList.remove('selected'));document.getElementById('love-results').classList.remove('visible');updateProgress();window.scrollTo({top:0,behavior:'smooth'});}
+function downloadJSON(){
+  const s=scores();
+  const sorted=Object.entries(s).sort((a,b)=>b[1]-a[1]);
+  const data={test:'Love Languages',timestamp:new Date().toISOString(),raw_responses:responses,scores:s,primary:CATEGORIES[sorted[0][0]].name};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`love-languages-${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(url);
+}
+loadState();renderQuiz();
+return {reset,downloadJSON};
+})();
+
+/* ═══ APOLOGY LANGUAGES ═══ */
+window.APO = (function(){
+// 5 kategória:
+// R = Expressing Regret (sajnálat kifejezése)
+// A = Accepting Responsibility (felelősség vállalása)
+// M = Making Restitution (jóvátétel)
+// P = Genuinely Repenting (őszinte megbánás — nem-ismétlés)
+// F = Requesting Forgiveness (bocsánat kérése)
+// 20 pair × 2 = 40 items, 8 minden kategóriában
+const PAIRS = [
+  {n:1, a:{c:'R',t:'"Sajnálom, hogy megbántottalak — látom, hogy fáj."'}, b:{c:'A',t:'"Igazad volt, hibáztam, nem kellett volna."'}},
+  {n:2, a:{c:'M',t:'"Mit tehetek, hogy jóvátegyem?"'}, b:{c:'P',t:'"Ígérem, dolgozom rajta, hogy ez ne ismétlődjön."'}},
+  {n:3, a:{c:'F',t:'"Kérlek, bocsáss meg."'}, b:{c:'R',t:'"Nagyon sajnálom, hogy ez történt."'}},
+  {n:4, a:{c:'A',t:'"Elismerem: én tettem rosszul."'}, b:{c:'M',t:'"Szeretném helyrehozni — mondd, mit tegyek."'}},
+  {n:5, a:{c:'P',t:'"Nem így akartam viselkedni; ez nem az én értékrendem."'}, b:{c:'F',t:'"Elfogadnád a bocsánatkérésemet?"'}},
+  {n:6, a:{c:'R',t:'A "sajnálom" — ha érzelemmel mondja — sokat jelent nekem.'}, b:{c:'A',t:'A "hibáztam" — ha nyíltan kimondja — sokat jelent nekem.'}},
+  {n:7, a:{c:'M',t:'Számomra a konkrét jóvátétel — egy tett — a bocsánatkérés lényege.'}, b:{c:'P',t:'Számomra az "nem fog újra megtörténni" ígéret — és a betartása — a bocsánatkérés lényege.'}},
+  {n:8, a:{c:'F',t:'Akkor tudom lezárni, ha a partnerem konkrétan kéri, hogy bocsássak meg.'}, b:{c:'R',t:'Akkor tudom lezárni, ha érzem, hogy tényleg sajnálja.'}},
+  {n:9, a:{c:'A',t:'A felelősség-elhárítás ("igen, de te is...") nálam megsemmisíti a bocsánatkérést.'}, b:{c:'M',t:'A gyakorlati jóvátétel hiánya ("csak sajnálom, de nem csinálok semmit") nálam megsemmisíti a bocsánatkérést.'}},
+  {n:10, a:{c:'P',t:'A ismétlődés — ha újra megcsinálja — nálam megsemmisíti a bocsánatkérést.'}, b:{c:'F',t:'A "kérlek, bocsáss meg" hiánya nálam megsemmisíti a bocsánatkérést.'}},
+  {n:11, a:{c:'R',t:'Az érzelmi őszinteség — a "látom, mit tettem veled" — kulcs.'}, b:{c:'A',t:'A tulajdonosság — az "én voltam a hibás, nem a körülmény" — kulcs.'}},
+  {n:12, a:{c:'M',t:'A cselekvő javítás — "mit tegyek?" — kulcs.'}, b:{c:'F',t:'A tényleges kérés — "megbocsátasz?" — kulcs.'}},
+  {n:13, a:{c:'P',t:'A rendszer-szintű változás — "megnézem, mit tanulok belőle" — kulcs.'}, b:{c:'R',t:'A puszta megbánás-kifejezés — "annyira sajnálom" — kulcs.'}},
+  {n:14, a:{c:'A',t:'Az "elismerem, hogy tévedtem" mondat átbillenti a helyzetet.'}, b:{c:'M',t:'A "megcsinálom, amit lehet" cselekvés átbillenti a helyzetet.'}},
+  {n:15, a:{c:'F',t:'Csak a formális bocsánatkérés (a "kérlek, bocsáss meg" verbális aktus) zárja le a fejezetet.'}, b:{c:'P',t:'Csak az idő-alapú bizonyíték ("nem történt meg újra 3 hónapig") zárja le a fejezetet.'}},
+  {n:16, a:{c:'R',t:'Amikor sír vagy megrendül, elhiszem, hogy fáj neki, amit tett.'}, b:{c:'A',t:'Amikor tisztán kimondja "hibás voltam", elhiszem, hogy elismerte.'}},
+  {n:17, a:{c:'M',t:'A jóvátétel-tett többet ér, mint száz "sajnálom".'}, b:{c:'F',t:'A kérés — hogy megbocsássak — többet ér, mint száz "sajnálom".'}},
+  {n:18, a:{c:'P',t:'Egy hosszan tartó viselkedés-változás — az igazi bocsánatkérés.'}, b:{c:'R',t:'Egy őszinte könnyes-szemű pillanat — az igazi bocsánatkérés.'}},
+  {n:19, a:{c:'F',t:'"Megbocsátasz?" — ez az egyik legnehezebb és legfontosabb kérdés.'}, b:{c:'M',t:'"Mit csináljak?" — ez az egyik legnehezebb és legfontosabb kérdés.'}},
+  {n:20, a:{c:'A',t:'Az önkritika — "látom, mit rontottam el" — a bocsánatkérés magja.'}, b:{c:'P',t:'A jövőre irányuló szándék — "megváltozom" — a bocsánatkérés magja.'}}
+];
+const TOTAL=PAIRS.length;
+const STORAGE_KEY='apo-responses-v1';
+let responses={};
+function loadState(){try{const r=localStorage.getItem(STORAGE_KEY);if(r)responses=JSON.parse(r);}catch(e){responses={}}}
+function saveState(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(responses));}catch(e){}window.hubCheckProgress&&window.hubCheckProgress();}
+function renderQuiz(){
+  const root=document.getElementById('apo-quiz');
+  let html='';
+  PAIRS.forEach(pair=>{
+    html+=`<div class="fc" data-n="${pair.n}"><span class="fc-num">${String(pair.n).padStart(2,'0')}. — Melyik hitelesebb bocsánatkérés számodra?</span><div class="fc-pair"><button class="fc-btn" data-choice="a" data-n="${pair.n}" data-code="${pair.a.c}" type="button">${pair.a.t}</button><button class="fc-btn" data-choice="b" data-n="${pair.n}" data-code="${pair.b.c}" type="button">${pair.b.t}</button></div></div>`;
+  });
+  root.innerHTML=html;
+  root.querySelectorAll('.fc-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const n=parseInt(btn.dataset.n,10);
+      responses[n]=btn.dataset.code;
+      btn.parentElement.querySelectorAll('.fc-btn').forEach(b=>b.classList.remove('selected'));
+      btn.classList.add('selected');
+      saveState();updateProgress();
+    });
+  });
+  Object.keys(responses).forEach(n=>{
+    const code=responses[n];
+    const btn=root.querySelector(`.fc-btn[data-n="${n}"][data-code="${code}"]`);
+    if(btn)btn.classList.add('selected');
+  });
+  updateProgress();
+}
+function updateProgress(){
+  const c=Object.keys(responses).length;
+  document.getElementById('apo-progressFill').style.width=(c/TOTAL*100)+'%';
+  document.getElementById('apo-progressNum').textContent=c;
+  document.getElementById('apo-showResults').disabled=c<TOTAL;
+}
+function scores(){
+  const s={R:0,A:0,M:0,P:0,F:0};
+  Object.values(responses).forEach(code=>{if(s[code]!==undefined)s[code]++;});
+  return s;
+}
+const APO_CATS = {
+  R:{name:'Sajnálat kifejezése',en:'Expressing Regret',color:'#7c2d3c',desc:'"Sajnálom, hogy fájdalmat okoztam." Az érzelmi kifejezés — a másik fájdalmának elismerése — a bocsánatkérés lényege. Számít, hogy meg is látja, mit tett.'},
+  A:{name:'Felelősség vállalása',en:'Accepting Responsibility',color:'#b8912e',desc:'"Én tettem rosszul." Nincs mentegetőzés, nincs "de te is...". A tiszta önelismerés — hogy én voltam a hibás — a bocsánatkérés lényege.'},
+  M:{name:'Jóvátétel',en:'Making Restitution',color:'#065f46',desc:'"Mit tehetek?" A gyakorlati javítás — egy konkrét tett — kell ahhoz, hogy elhiggyem: komolyan gondolja. A szó önmagában kevés.'},
+  P:{name:'Őszinte megbánás',en:'Genuinely Repenting',color:'#1e3a8a',desc:'"Nem fog újra megtörténni." A jövőre irányuló szándék — és a betartása — teszi hitelessé. Az ismétlődés megsemmisíti a bocsánatkérést.'},
+  F:{name:'Bocsánat kérése',en:'Requesting Forgiveness',color:'#9f1239',desc:'"Kérlek, bocsáss meg." A tényleges kérdés — a formális aktus — kell ahhoz, hogy le lehessen zárni. A kimondás számít.'}
+};
+const APO_INTERP = {
+  R:{primary:`Elsődleges bocsánat-nyelved a <strong>sajnálat kifejezése</strong>. Ahhoz, hogy hidd, hogy a partnered komolyan gondolja: <em>látnia kell a fájdalmadat</em>, és érzelmileg reagálnia rá. A puszta "hibáztam" (racionális elismerés) nem elég — az érzelmi jelenlét kell. <em>Amit mondj el a partnerednek</em>: "Nekem az kell, hogy lássam, hogy tényleg fáj neked, hogy fáj nekem."`, weak:`Nem elsődleges, de fontos.`},
+  A:{primary:`Elsődleges bocsánat-nyelved a <strong>felelősség vállalása</strong>. Neked a tiszta "hibáztam, nincs mentség" kell. Ha a partnered akárhogy is megpróbálja megmagyarázni ("de te is..."), a bocsánatkérés semmissé válik. <em>Amit mondj el</em>: "Először vállald a felelősséget, csak utána tudom hallgatni a kontextust."`, weak:`Nem elsődleges, de fontos.`},
+  M:{primary:`Elsődleges bocsánat-nyelved a <strong>jóvátétel</strong>. Az érzelem és a szó nem elég — <em>tett</em> kell. Amíg nincs konkrét cselekvés, a bocsánatkérés csak jószándék. <em>Amit mondj el</em>: "Mondd el, mit fogsz csinálni, hogy helyrehozd — az kell, hogy elhiggyem."`, weak:`Nem elsődleges, de fontos.`},
+  P:{primary:`Elsődleges bocsánat-nyelved az <strong>őszinte megbánás</strong> — a jövőre irányuló változás. A "sajnálom" pillanat számodra kevés, ha ugyanaz újra megtörténik. Neked az idő beszél: <em>3 hónap után</em> derül ki, hogy a bocsánatkérés valódi volt-e. <em>Amit mondj el</em>: "Nekem az idő és a viselkedés-változás számít; a szavak addig üresek, amíg nem látom a tettet."`, weak:`Nem elsődleges, de fontos.`},
+  F:{primary:`Elsődleges bocsánat-nyelved a <strong>bocsánat kérése</strong>. Neked a formális aktus — a "kérlek, bocsáss meg" konkrét kimondása — kell, hogy le tudd zárni. Nem "sejtett" bocsánat, nem "gondolt" bocsánat: a mondat kimondása. <em>Amit mondj el</em>: "Konkrétan kérned kell a bocsánatot, hogy tudjam megbocsátani."`, weak:`Nem elsődleges, de fontos.`}
+};
+function renderResults(){
+  const s=scores();
+  const sorted=Object.entries(s).sort((a,b)=>b[1]-a[1]);
+  let rankHtml='<h3>A te <em>bocsánat-nyelv rangsorod</em></h3>';
+  sorted.forEach((entry,i)=>{
+    const [code,score]=entry;
+    const cat=APO_CATS[code];
+    const isTop=i===0;
+    rankHtml+=`<div class="rank-item ${isTop?'top':''}" style="--rc:${cat.color};--top-color:${cat.color}"><div class="rank-pos">${i+1}.</div><div><div class="rank-name"><em>${cat.name}</em> · ${cat.en}</div><div class="rank-desc">${cat.desc}</div></div><div class="rank-score">${score}<span class="out">/ 8</span></div></div>`;
+  });
+  document.getElementById('apo-rankList').innerHTML=rankHtml;
+  // Radar
+  const radarData = ['R','A','M','P','F'].map(code=>({label:APO_CATS[code].name.split(' ')[0], value:s[code], color:APO_CATS[code].color}));
+  window.CHARTS.radar(document.getElementById('apo-radar'), radarData, {max:8, color:'#2dd4bf', fillColor:'rgba(45,212,191,0.28)', strokeColor:'#2dd4bf'});
+  document.getElementById('apo-legend').innerHTML = ['R','A','M','P','F'].map(code=>{
+    const cat=APO_CATS[code];
+    return `<div class="chart-legend-item"><span class="chart-legend-swatch" style="background:${cat.color}"></span><span><strong>${cat.name}</strong> · ${s[code]}/8</span></div>`;
+  }).join('');
+  const primary=sorted[0][0], weakest=sorted[4][0];
+  let interp=`<h3>Klinikai <em>értelmezés</em></h3>`;
+  // Profil-forma
+  const balance = sorted[0][1] - sorted[4][1];
+  interp+=`<div class="interp-section"><h4>Profil-forma</h4>`;
+  if(balance>=5){
+    interp+=`<p><strong>Erősen fókuszált bocsánat-nyelv.</strong> Egy nyelv dominál (${sorted[0][1]}/8 vs ${sorted[4][1]}/8). Ha a partnered ezt <em>nem</em> adja, akkor bármit is mondjon, számodra "nem elég a bocsánatkérés" érzés marad — akkor is, ha ő őszintén próbálja.</p>`;
+  } else if(balance>=3){
+    interp+=`<p><strong>Világos profil.</strong> Van egy vezető nyelv, de más csatornák is elérnek. Rugalmasabb feldolgozás konfliktus után.</p>`;
+  } else {
+    interp+=`<p><strong>Kiegyenlített profil.</strong> Több csatorna is közel hasonló pontszámmal. Ez azt jelenti: a partneri bocsánatkérés akkor "teljes", ha több elemet együtt tartalmaz — pl. sajnálat + felelősség + jóvátétel egyben. Egyetlen elem önmagában kevesebb.</p>`;
+  }
+  interp+=`</div>`;
+  // Minden 5 nyelvhez interp
+  sorted.forEach((entry, idx)=>{
+    const [code, score] = entry;
+    const cat = APO_CATS[code];
+    const rank = idx===0?'Elsődleges':idx===1?'Másodlagos':idx===2?'Harmadlagos':idx===3?'Alacsony':'Legalacsonyabb';
+    let text;
+    if(idx===0) text = APO_INTERP[code].primary;
+    else if(idx>=3) text = `Alacsony fontosságú számodra (${score}/8). Ha a partnered ezt adja, elfogadod, de nem ezen keresztül dolgozod fel a konfliktust. Nem ez a "hitelesítő" jel.`;
+    else text = `Közepesen fontos (${score}/8). Ha ez jelen van a partneri bocsánatkérésben, kiegészíti az elsődleges nyelvedet — de önmagában nem elég.`;
+    interp+=`<div class="interp-section"><h4>${idx+1}. ${rank} — ${cat.name} (${score}/8)</h4><p style="font-size:13px;color:var(--ink-lite-muted);margin-bottom:8px;font-style:italic">${cat.desc}</p><p>${text}</p></div>`;
+  });
+  // Konfliktus-szcenariók
+  const scenarios = {
+    R: `<strong>Konfliktus-forgatókönyv számodra:</strong> a partnered <em>érzelmi jelenléttel</em> jön el hozzád (visszafogott hang, "látom, mit tettem veled", esetleg könnyek). Ha ő pragmatikusan mondja "hát oké, hibáztam", te nem érzed őszintének — pedig lehet, hogy ő komolyan gondolja.`,
+    A: `<strong>Konfliktus-forgatókönyv számodra:</strong> a partnered <em>tiszta felelősségvállalással</em> jön ("én rontottam el, punktum, nincs mentség"). Ha ő "de te is..." pozíciót vesz fel, számodra semmissé válik a bocsánatkérés.`,
+    M: `<strong>Konfliktus-forgatókönyv számodra:</strong> a partnered <em>konkrét tettel</em> jön ("mit tegyek most, hogy helyrehozzam?"). A puszta szó (akár érzelmes is) nem elég — cselekvés kell.`,
+    P: `<strong>Konfliktus-forgatókönyv számodra:</strong> a partnered <em>idő + változás</em> révén "bizonyít". Az azonnali szavak keveset érnek — 3-6 hónap múlva látod, hogy tényleg más volt-e. Ha a probléma megismétlődik, a bocsánatkérés retroaktívan semmissé válik.`,
+    F: `<strong>Konfliktus-forgatókönyv számodra:</strong> szükséged van a <em>formális aktusra</em> ("kérlek, bocsáss meg"). A kimondott kérdés az, ami lezárja a fejezetet — enélkül nyitva marad a helyzet, akkor is, ha érzelmi kiegyenlítődés van.`
+  };
+  interp+=`<div class="interp-section"><h4>Konfliktus-forgatókönyv</h4><p>${scenarios[primary]}</p></div>`;
+  // Kockázati mintázatok
+  interp+=`<div class="interp-section"><h4>Kockázat — leggyengébb nyelv</h4><p>A legalacsonyabb pontszámod: <strong>${APO_CATS[weakest].name}</strong> (${sorted[4][1]}/8). Ha a partnered <em>éppen ezen keresztül</em> próbál bocsánatot kérni (mert neki ez a saját elsődleges nyelve), számodra "átsiklik" — nem érzed hitelesnek. <strong>Ezt kell tudnia rólad.</strong> Nem kritika a partnered felé — csak a te szótárad más.</p></div>`;
+  // Gyakorlati partneri implikáció
+  interp+=`<div class="interp-section"><h4>Praktikus partneri implikáció</h4><p><strong>Ne várd, hogy a partnered magától rájöjjön.</strong> Az emberek általában úgy kérnek bocsánatot, ahogyan <em>saját maguknak</em> kellene — nem úgy, ahogy neked. Ha ez eltér, a jószándékú bocsánatkérése is elveszik a "nem ez volt, amit kellett" fordításban.</p><p><strong>Explicit script neked:</strong> "Amikor konfliktus van, nekem az a fontos, hogy ${primary==='R'?'lássam, tényleg fáj neked, ami történt':primary==='A'?'tisztán elismerd, hogy te hibáztál (a "de" nélkül)':primary==='M'?'konkrétan mondd meg, mit fogsz csinálni, hogy helyrehozd':primary==='P'?'ígérd meg — és tartsd is be — hogy változtatsz':'kérj bocsánatot direkten, konkrétan kimondva "kérlek, bocsáss meg"'}. Ez nekem többet ér, mint bármi más."</p></div>`;
+  document.getElementById('apo-interpCard').innerHTML=interp;
+  const links=[];
+  links.push({label:'Kapcsolat a Love Languages-szel',text:`Sokszor (de nem mindig) az elsődleges bocsánat-nyelv rezonál az elsődleges szeretet-nyelvvel. Pl. Words of Affirmation → Expressing Regret; Acts of Service → Making Restitution. Nézd meg, van-e ilyen mintázat.`});
+  links.push({label:'Konfliktus-utáni javítás — Gottman-modell',text:`John Gottman kutatásában a párkapcsolati stabilitás legerősebb prediktora nem a konfliktus elkerülése, hanem a <em>repair attempts</em> — a "javítási kísérletek" sikeressége. A bocsánat-nyelv ismerete pontosan ezt szolgálja.`});
+  if(primary==='P'){
+    links.push({label:'SMI Punitive Parent kapcsolat',text:`A "változást akarok látni, nem szavakat" elsődleges nyelv gyakran kapcsolódik a magas Punitive Parent mode-hoz — nehéz megbocsátani, mert a belső hang is folyamatosan ítélkezik. Érdemes megnézni.`});
+  }
+  if(primary==='M'){
+    links.push({label:'SMI Demanding Parent kapcsolat',text:`A "tettek beszélnek" bocsánat-nyelv néha együtt jár a magas Demanding Parent mode-dal — a szó nem elég, a teljesítmény kell. Érdemes megnézni.`});
+  }
+  document.getElementById('apo-cross-links').innerHTML=links.map(l=>`<div class="cross-item"><div class="cross-item-label">${l.label}</div><p>${l.text}</p></div>`).join('');
+  document.getElementById('apo-results').classList.add('visible');
+  setTimeout(()=>{document.getElementById('apo-results').scrollIntoView({behavior:'smooth',block:'start'});},100);
+}
+document.getElementById('apo-showResults').addEventListener('click',()=>{if(Object.keys(responses).length<TOTAL)return;renderResults();});
+function reset(){if(!confirm('Biztos törlöd az Apology Languages válaszaidat?'))return;responses={};saveState();document.querySelectorAll('#test-apo .fc-btn.selected').forEach(b=>b.classList.remove('selected'));document.getElementById('apo-results').classList.remove('visible');updateProgress();window.scrollTo({top:0,behavior:'smooth'});}
+function downloadJSON(){
+  const s=scores();
+  const sorted=Object.entries(s).sort((a,b)=>b[1]-a[1]);
+  const data={test:'Apology Languages',timestamp:new Date().toISOString(),raw_responses:responses,scores:s,primary:APO_CATS[sorted[0][0]].name};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`apology-languages-${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(url);
+}
+loadState();renderQuiz();
+return {reset,downloadJSON};
+})();
+
+/* ═══ IMAGO ═══ */
+window.IMAGO = (function(){
+// 4 szakasz, 57 item, 0-3 skála
+const ITEMS = [
+  // Part A: 20 negatív gondozó-vonás
+  {n:1,  s:'NEG', t:'kritikus'},
+  {n:2,  s:'NEG', t:'elutasító'},
+  {n:3,  s:'NEG', t:'kontrolláló'},
+  {n:4,  s:'NEG', t:'hideg / érzelmileg távoli'},
+  {n:5,  s:'NEG', t:'kiszámíthatatlan'},
+  {n:6,  s:'NEG', t:'ítélkező'},
+  {n:7,  s:'NEG', t:'érzelmileg elérhetetlen'},
+  {n:8,  s:'NEG', t:'domináns / erőszakos'},
+  {n:9,  s:'NEG', t:'gyakran mérges'},
+  {n:10, s:'NEG', t:'túlaggódó / szorongó'},
+  {n:11, s:'NEG', t:'szigorú / merev'},
+  {n:12, s:'NEG', t:'túl megengedő / határok nélkül'},
+  {n:13, s:'NEG', t:'elhanyagoló'},
+  {n:14, s:'NEG', t:'verbálisan bántó'},
+  {n:15, s:'NEG', t:'manipulatív'},
+  {n:16, s:'NEG', t:'közömbös / érdektelen'},
+  {n:17, s:'NEG', t:'versengő velem'},
+  {n:18, s:'NEG', t:'önös / saját magával foglalkozó'},
+  {n:19, s:'NEG', t:'perfekcionista velem szemben'},
+  {n:20, s:'NEG', t:'megszégyenítő'},
+  // Part B: 12 pozitív gondozó-vonás
+  {n:21, s:'POS', t:'szerető'},
+  {n:22, s:'POS', t:'támogató'},
+  {n:23, s:'POS', t:'érzelmileg jelenlévő'},
+  {n:24, s:'POS', t:'védelmező'},
+  {n:25, s:'POS', t:'elfogadó (feltétel nélkül)'},
+  {n:26, s:'POS', t:'meleg / érintős'},
+  {n:27, s:'POS', t:'játékos / humoros'},
+  {n:28, s:'POS', t:'megbízható / kiszámítható'},
+  {n:29, s:'POS', t:'bátorító / önbizalom-adó'},
+  {n:30, s:'POS', t:'konzisztens / stabil'},
+  {n:31, s:'POS', t:'együttérző'},
+  {n:32, s:'POS', t:'érdeklődő irántam'},
+  // Part C: 15 gyermekkori sérülés / frusztráció
+  {n:33, s:'WND', t:'Elhagyatottnak / magányosnak éreztem magam.'},
+  {n:34, s:'WND', t:'Nem éreztem, hogy elég vagyok — akármit is teszek.'},
+  {n:35, s:'WND', t:'Túl sokat kritizáltak.'},
+  {n:36, s:'WND', t:'Nem hallgattak meg, ha próbáltam elmondani, mit érzek.'},
+  {n:37, s:'WND', t:'Túl sok elvárás volt rajtam — teljesítmény, jó viselkedés.'},
+  {n:38, s:'WND', t:'Ítélkeztek felettem — sokszor mielőtt meghallgattak volna.'},
+  {n:39, s:'WND', t:'Kontroll alatt tartottak — nem volt tér nekem magamnak.'},
+  {n:40, s:'WND', t:'Nem éreztem biztonságban magam — érzelmileg vagy fizikailag.'},
+  {n:41, s:'WND', t:'Érzelmi távolság volt köztem és a gondozóim között.'},
+  {n:42, s:'WND', t:'Verbális bántalmazás — kiabálás, megszégyenítés, sértegetés — volt jelen.'},
+  {n:43, s:'WND', t:'Alultámogatva éreztem magam a fejlődésemben.'},
+  {n:44, s:'WND', t:'Nem érdekelte őket, mit érzek — csak a viselkedésem.'},
+  {n:45, s:'WND', t:'Túl sokat kellett teljesítenem, hogy szeretve érezzem magam.'},
+  {n:46, s:'WND', t:'Ott voltak fizikailag, de nem érzelmileg — "üres jelenlét".'},
+  {n:47, s:'WND', t:'Egymással veszekedtek, én lettem a néma tanú vagy közvetítő.'},
+  // Part D: 10 kielégítetlen szükséglet
+  {n:48, s:'NEED', t:'Biztonság-érzet — a "minden rendben van" alapélmény.'},
+  {n:49, s:'NEED', t:'Feltétel nélküli szeretet — akkor is szeretnek, ha "rossz vagyok".'},
+  {n:50, s:'NEED', t:'Elfogadás — pontosan úgy, ahogy vagyok, változtatás-igény nélkül.'},
+  {n:51, s:'NEED', t:'Meghallgatás — valóban, figyelemmel, ítélet nélkül.'},
+  {n:52, s:'NEED', t:'Autonómia — hely és tér, hogy saját döntéseket hozzak.'},
+  {n:53, s:'NEED', t:'Játékosság-tér — nem kellett mindig komolynak / hasznosnak lenni.'},
+  {n:54, s:'NEED', t:'Érzelmi közelség — nyíltan megélt kapcsolódás.'},
+  {n:55, s:'NEED', t:'Fizikai érintés — ölelés, közelség, testi biztonság.'},
+  {n:56, s:'NEED', t:'Elismerés — látták és értékelték, amit tettem.'},
+  {n:57, s:'NEED', t:'Vezetés — érezhetően felnőtt jelenlét, aki tudja a dolgát.'}
+];
+const TOTAL=ITEMS.length;
+const SCALE=[{v:0,l:'nem'},{v:1,l:'kissé'},{v:2,l:'közepesen'},{v:3,l:'nagyon'}];
+const STORAGE_KEY='imago-responses-v1';
+let responses={};
+function loadState(){try{const r=localStorage.getItem(STORAGE_KEY);if(r)responses=JSON.parse(r);}catch(e){responses={}}}
+function saveState(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(responses));}catch(e){}window.hubCheckProgress&&window.hubCheckProgress();}
+const SECTIONS = {
+  NEG:{title:'I. rész — Negatív gondozó-vonások',desc:'Mennyire jellemezték a fő gondozó(i)dat ezek a vonások, amikor gyermek voltál? 0 = egyáltalán nem · 3 = erősen jellemző.'},
+  POS:{title:'II. rész — Pozitív gondozó-vonások',desc:'Mennyire jellemezték a fő gondozó(i)dat ezek a vonások?'},
+  WND:{title:'III. rész — Gyermekkori sérülések',desc:'Mennyire élted át ezt gyermekkorodban? 0 = egyáltalán nem · 3 = erősen.'},
+  NEED:{title:'IV. rész — Kielégítetlen szükségletek',desc:'Mennyire maradt <em>kielégítetlen</em> ez az igényed gyermekkorodban? 0 = megkaptad · 3 = teljesen hiányzott.'}
+};
+function renderQuiz(){
+  const root=document.getElementById('imago-quiz');
+  let html='';
+  let currentSection=null;
+  ITEMS.forEach(item=>{
+    if(item.s!==currentSection){
+      currentSection=item.s;
+      const sec=SECTIONS[currentSection];
+      html+=`<div class="section-head"><h3>${sec.title}</h3><p>${sec.desc}</p></div>`;
+    }
+    const isTrait=item.s==='NEG'||item.s==='POS';
+    const label=isTrait?`Mennyire volt jellemző: <strong>${item.t}</strong>`:item.t;
+    html+=`<div class="q" data-n="${item.n}"><span class="q-num">${String(item.n).padStart(2,'0')}.</span><div class="q-text">${label}</div><div class="scale" role="radiogroup">${SCALE.map(l=>`<button class="scale-btn" data-value="${l.v}" data-n="${item.n}" type="button"><span class="v">${l.v}</span><span class="l">${l.l}</span></button>`).join('')}</div></div>`;
+  });
+  root.innerHTML=html;
+  root.querySelectorAll('.scale-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const n=parseInt(btn.dataset.n,10),v=parseInt(btn.dataset.value,10);
+      responses[n]=v;
+      btn.parentElement.querySelectorAll('.scale-btn').forEach(b=>b.classList.remove('selected'));
+      btn.classList.add('selected');
+      saveState();updateProgress();
+    });
+  });
+  Object.keys(responses).forEach(n=>{
+    const btn=root.querySelector(`.scale-btn[data-n="${n}"][data-value="${responses[n]}"]`);
+    if(btn)btn.classList.add('selected');
+  });
+  updateProgress();
+}
+function updateProgress(){
+  const c=Object.keys(responses).length;
+  document.getElementById('imago-progressFill').style.width=(c/TOTAL*100)+'%';
+  document.getElementById('imago-progressNum').textContent=c;
+  document.getElementById('imago-showResults').disabled=c<TOTAL;
+}
+function topN(sub, n){
+  return ITEMS.filter(it=>it.s===sub).map(it=>({t:it.t,v:responses[it.n]||0,n:it.n})).sort((a,b)=>b.v-a.v).slice(0,n);
+}
+function renderList(rootId, title, items, max, color){
+  let html=`<h3>${title}</h3>`;
+  items.forEach((item,i)=>{
+    html+=`<div class="rank-item ${i===0?'top':''}" style="--rc:${color};--top-color:${color}"><div class="rank-pos">${i+1}.</div><div><div class="rank-name">${item.t}</div></div><div class="rank-score">${item.v}<span class="out">/ ${max}</span></div></div>`;
+  });
+  document.getElementById(rootId).innerHTML=html;
+}
+function generatePortrait(topNeg, topPos, topWnd, topNeed){
+  const negList = topNeg.filter(x=>x.v>=2).map(x=>x.t).slice(0,4);
+  const posList = topPos.filter(x=>x.v>=2).map(x=>x.t).slice(0,3);
+  const wndList = topWnd.filter(x=>x.v>=2).map(x=>x.t.replace(/\.$/,'').toLowerCase()).slice(0,3);
+  const needList = topNeed.filter(x=>x.v>=2).map(x=>x.t.split('—')[0].trim().toLowerCase()).slice(0,3);
+
+  let html='';
+  html+=`<h3>A te <em>imago-portréd</em></h3>`;
+  html+=`<div class="sub">Az összefoglaló, amit a rendszered partnerkeresésbe visz — anélkül, hogy tudná</div>`;
+  html+=`<div class="portrait-text">`;
+
+  if(negList.length){
+    html+=`<p>A gyermekkori gondozó(i)d — akiktől a legmélyebb kapcsolódási mintát tanultad — <strong>${negList.join(' · ')}</strong> voltak. Ez a lista nem "vádemelés" — csak a mintázat, ami belé eddett a rendszeredbe.</p>`;
+  } else {
+    html+=`<p>Nem jelöltél be markáns negatív gondozó-vonást — vagy a gyermekkori gondozók valóban egészségesek voltak, vagy a védekező rendszer még nem enged hozzáférést a nehezebb emlékekhez. Mindkettő lehet.</p>`;
+  }
+
+  if(posList.length){
+    html+=`<p>A pozitív oldalon: a gondozó(i)d ugyanakkor <strong>${posList.join(' · ')}</strong> is voltak. Ez a "biztonságos alap", amit belülre vittél magaddal.</p>`;
+  }
+
+  if(wndList.length){
+    html+=`<p>A leginkább jelenlévő gyermekkori seb(ek): <em>${wndList.join(' · ')}</em>. Egy közeli, romantikus kapcsolat <strong>automatikusan újra-aktiválja</strong> ezeket a sebeket — nem "rontja el" a partnered, hanem a mélység közelsége hozza vissza őket.</p>`;
+  }
+
+  if(needList.length){
+    html+=`<p>A leginkább kielégítetlen szükségletek: <em>${needList.join(' · ')}</em>. Ezt <strong>keresi</strong> a rendszered a partnerekben — pontosan ezt, amit nem kapott meg.</p>`;
+  }
+
+  // A Hendrix-paradoxon
+  if(negList.length>=2 && needList.length>=1){
+    html+=`<p><strong>A Hendrix-paradoxon:</strong> a rendszered olyan partnert vonz, aki egyszerre <em>emlékeztet</em> a gyermekkori sebek forrására, ÉS ígérete, hogy <em>most más lesz</em> — most megkapod, amit akkor nem. Ez a "szerelem első pillanata" biológiája: nem a rossz döntés, hanem a rendszer gyógyítási kísérlete. Az imago-tudatosság az első lépés ahhoz, hogy tudatosan válassz — nem az imago ellen, hanem vele együtt.</p>`;
+  }
+
+  html+=`</div>`;
+  return html;
+}
+function renderResults(){
+  const topNeg=topN('NEG',5);
+  const topPos=topN('POS',5);
+  const topWnd=topN('WND',5);
+  const topNeed=topN('NEED',5);
+  document.getElementById('imago-portraitCard').innerHTML=generatePortrait(topNeg,topPos,topWnd,topNeed);
+  // Bar chart — 4 kategória top 5 mindben
+  window.CHARTS.barGroup(document.getElementById('imago-barChart'), [
+    {title:'I. Negatív gondozó-vonások', color:'#fb7185', colorLight:'#f43f5e', max:3, items:topNeg.map(x=>({label:x.t, value:x.v}))},
+    {title:'II. Pozitív gondozó-vonások', color:'#2dd4bf', colorLight:'#14b8a6', max:3, items:topPos.map(x=>({label:x.t, value:x.v}))},
+    {title:'III. Gyermekkori sebek', color:'#a78bfa', colorLight:'#8b5cf6', max:3, items:topWnd.map(x=>({label:x.t.replace(/\.$/,''), value:x.v}))},
+    {title:'IV. Kielégítetlen szükségletek', color:'#fbbf24', colorLight:'#fde047', max:3, items:topNeed.map(x=>({label:x.t.split('—')[0].trim(), value:x.v}))}
+  ]);
+  renderList('imago-negTop','I. Top negatív gondozó-<em>vonások</em>',topNeg,3,'#1e3a8a');
+  renderList('imago-posTop','II. Top pozitív gondozó-<em>vonások</em>',topPos,3,'#0f766e');
+  renderList('imago-woundsTop','III. Top <em>sebek</em>',topWnd,3,'#4338ca');
+  renderList('imago-needsTop','IV. Top kielégítetlen <em>szükségletek</em>',topNeed,3,'#b8912e');
+
+  // Interpretáció
+  const negSum=ITEMS.filter(it=>it.s==='NEG').reduce((s,it)=>s+(responses[it.n]||0),0);
+  const posSum=ITEMS.filter(it=>it.s==='POS').reduce((s,it)=>s+(responses[it.n]||0),0);
+  const wndSum=ITEMS.filter(it=>it.s==='WND').reduce((s,it)=>s+(responses[it.n]||0),0);
+  const needSum=ITEMS.filter(it=>it.s==='NEED').reduce((s,it)=>s+(responses[it.n]||0),0);
+  let interp=`<h3>Klinikai <em>értelmezés</em></h3>`;
+
+  interp+=`<div class="interp-section"><h4>Negatív-pozitív egyensúly</h4>`;
+  if(negSum>posSum*2){
+    interp+=`<p>A negatív vonások jelentősen dominánsak (${negSum} vs ${posSum} pozitív). Ez erős — valószínűleg nehéz gyermekkorra utaló mintázat. Az imago-alapú vonzalom ilyenkor különösen erős: a rendszered <em>nagyon</em> keresi a gyógyulást a partnerekben. Trauma-informált terápiás munka jelentős erőforrás.</p>`;
+  } else if(negSum>posSum){
+    interp+=`<p>A negatív vonások enyhén dominánsak (${negSum} vs ${posSum}). Ez tipikus tartomány — a legtöbb ember gyermekkori gondozói kombinációja pozitív és negatív vonások. Az imago-mintázat működik, de nem extrém.</p>`;
+  } else {
+    interp+=`<p>A pozitív vonások dominánsak vagy egyensúlyban (${posSum} pozitív vs ${negSum} negatív). Ez kedvező — a gyermekkori "biztonságos alap" jelen van. Az imago-alapú partnerválasztás itt is működik, de az újra-aktiválódások szelídebbek.</p>`;
+  }
+  interp+=`</div>`;
+
+  interp+=`<div class="interp-section"><h4>Seb-intenzitás</h4>`;
+  if(wndSum>=25){
+    interp+=`<p><strong>Magas seb-intenzitás.</strong> Erős gyermekkori érzelmi sebek jelenlétét mutatod. Ez nem "hiba" — a gyógyulás terápiában elérhető. Trauma-fókuszú megközelítések (EMDR, Schema Therapy, IFS, AEDP) különösen relevánsak.</p>`;
+  } else if(wndSum>=15){
+    interp+=`<p>Közepes seb-intenzitás. Vannak érzelmi mintázatok, amik a közeli kapcsolatokban aktiválódnak. A tudatosság önmagában sokat segít.</p>`;
+  } else {
+    interp+=`<p>Alacsony seb-intenzitás. A gyermekkori kötődési tapasztalatok többnyire pozitívak vagy semlegesek voltak. A partneri kapcsolatokban kevesebb "aktiválódási csapda".</p>`;
+  }
+  interp+=`</div>`;
+
+  // 4 dimenzió külön részletes interp
+  interp+=`<div class="interp-section"><h4>I. Negatív gondozó-vonások — részletes olvasat</h4>`;
+  if(topNeg[0].v>=2){
+    interp+=`<p>A legerősebb negatív vonás: <strong>"${topNeg[0].t}"</strong> (${topNeg[0].v}/3). Ez azt jelenti: felnőttként <em>szinte automatikusan reagálsz</em>, amikor egy partnernél ezt a vonást észleled — vagy erős vonzalommal (a rendszer gyógyítani akar), vagy erős taszítással (védekező oldal). Mindkettő ugyanabból a mintázatból jön: a gyermekkori élményből, hogy ezt a vonást kellene "másképp" megélni.</p>`;
+    if(topNeg.filter(x=>x.v>=2).length>=3){
+      interp+=`<p>Több markáns negatív vonás egyszerre: ez összetett, több-rétegű imago. A partnereidnél nem egy-egy tulajdonságra, hanem egész <em>karakter-mintázatra</em> reagálsz. Ez sok "furán ismerős" élmény forrása lehet, még akkor is, ha egyes tulajdonságok nem egyeznek.</p>`;
+    }
+  } else {
+    interp+=`<p>A negatív vonások összességében alacsonyak. Vagy egészséges gyermekkori környezetre utal, vagy — figyelmeztetés — a védekező rendszer még nem enged hozzáférést a nehezebb emlékekhez. Ha úgy érzed, az utóbbi lehet, ez terápiában biztonságosan feltárható.</p>`;
+  }
+  interp+=`</div>`;
+
+  interp+=`<div class="interp-section"><h4>II. Pozitív gondozó-vonások — részletes olvasat</h4>`;
+  if(topPos[0].v>=2){
+    interp+=`<p>A legerősebb pozitív vonás: <strong>"${topPos[0].t}"</strong> (${topPos[0].v}/3). Ez az, amit belülre <em>vittél magaddal</em> — a "belső jó szülő" alapanyaga. Amikor egy partnerben ezt a vonást találod, "otthon" érzed magad — de vigyázz: az önmagában nem elég, ha a negatív oldal is aktiválódik.</p>`;
+  } else {
+    interp+=`<p>A pozitív vonások alacsonyak. Ez gyakori a nehéz gyermekkori kontextusban, de figyelemre méltó: a belső "biztonságos alap" nélkülé nehezebb egy egészséges felnőtt kapcsolatot megtartani. Ez terápiásan pótolható — az "earned security" (megszerzett biztonság) fogalma erre vonatkozik.</p>`;
+  }
+  interp+=`</div>`;
+
+  interp+=`<div class="interp-section"><h4>III. Gyermekkori sebek — részletes olvasat</h4>`;
+  if(topWnd[0].v>=2){
+    const woundText = topWnd[0].t.replace(/\.$/,'');
+    interp+=`<p>A legerősebb seb: <strong>"${woundText}"</strong> (${topWnd[0].v}/3). Egy közeli, romantikus kapcsolat <em>automatikusan újra-aktiválja</em> ezt a sebet — nem a partnered "rontja el", hanem a közelség maga hozza vissza. Amikor ez a seb aktív, a rendszered a gyermekkori védekezéseket használja (nem a felnőtt eszközöket) — pl. visszahúzódik, támad, disszociál, kompenzál.</p>`;
+    if(topWnd.filter(x=>x.v>=2).length>=3){
+      interp+=`<p><strong>Több markáns seb egyszerre</strong> — ez összetett sebzési mintázat. A jó hír: mindegyik <em>ugyanabból a talajból</em> jött, és a gyógyulás nem seb-onként, hanem alapállás-szinten történik (az egyik legerősebb terápiás elv: nem tüneteket kezelünk, hanem a rendszert, ami termeli őket).</p>`;
+    }
+  } else {
+    interp+=`<p>A sebek intenzitása alacsony. Ez kedvező alap. Ha valamilyen kapcsolati distresszt élsz meg most, az inkább szituációs, nem strukturális.</p>`;
+  }
+  interp+=`</div>`;
+
+  interp+=`<div class="interp-section"><h4>IV. Kielégítetlen szükségletek — részletes olvasat</h4>`;
+  if(topNeed[0].v>=2){
+    const needText = topNeed[0].t.split('—')[0].trim();
+    interp+=`<p>A leginkább kielégítetlen szükséglet: <strong>"${needText}"</strong> (${topNeed[0].v}/3). <em>Ezt keresi</em> a rendszered a partnerekben — akár tudatosan, akár nem. A "szerelem első pillanata" élmény egy részének <em>ez</em> a magja: valaki, aki ígéri, hogy ezt most megkaphatod.</p>`;
+    interp+=`<p><strong>A csapda:</strong> nem tudod megkapni egy partnertől, amit nem kaptál meg gyerekként. A partnered lehet szerető, jelenlévő, támogató — de nem tudja "visszaadni" a hiányzó gyermekkori tapasztalatot. Egy fokig kompenzál — de ha ezt teszed a partneri kapcsolat elsődleges feladatává, gyakorlatilag lehetetlen elvárást teszel.</p>`;
+    interp+=`<p><strong>A megoldás Hendrix szerint:</strong> a szükségletet <em>magadnak</em> kell megadnod (self-parenting), miközben a partner egy támogató társ ebben — nem a "javítás forrása".</p>`;
+  } else {
+    interp+=`<p>A kielégítetlen szükségletek listája alacsony. Kedvező profilelem — a párkapcsolati elvárásaid reálisak, nem kompenzációs alapon.</p>`;
+  }
+  interp+=`</div>`;
+
+  // Partnermintázati előrejelzés
+  if(topNeg[0].v>=2 && topWnd[0].v>=2){
+    interp+=`<div class="interp-section"><h4>Előrejelezhető partneri mintázat</h4>`;
+    interp+=`<p>Az imago-portréd alapján a rendszered valószínűbben vonz olyan partnereket, akiknél:</p>`;
+    interp+=`<ul style="color:var(--ink-lite-soft);font-size:14.5px;line-height:1.65;margin-left:20px;margin-top:8px">`;
+    topNeg.filter(x=>x.v>=2).slice(0,3).forEach(t=>{
+      interp+=`<li style="margin-bottom:6px">Van bennük valami <em>"${t.t}"</em> jellegű — akár enyhén.</li>`;
+    });
+    interp+=`</ul>`;
+    interp+=`<p style="margin-top:10px">Ez <strong>nem determinisztikus</strong> — csak valószínűségi mintázat. A tudatosság maga csökkenti a "vak" vonzódást. Amikor legközelebb erős vonzalmat érzel, tedd fel magadnak a kérdést: <em>mennyire fed át ez a partner az én imago-portrémmal?</em> Ha nagyon — a rendszered "kattant", nem feltétlenül a szíved.</p>`;
+    interp+=`</div>`;
+  }
+
+  // Terápiás javaslatok
+  interp+=`<div class="interp-section"><h4>Terápiás út — mit tehetsz</h4>`;
+  if(wndSum>=25){
+    interp+=`<p><strong>Trauma-fókuszú terápia javasolt.</strong> A magas seb-intenzitás mellett az önismereti munka önmagában nem elég. Modalitások, amik erre a mintázatra épültek:</p>`;
+    interp+=`<ul style="color:var(--ink-lite-soft);font-size:14.5px;line-height:1.7;margin-left:20px;margin-top:8px">`;
+    interp+=`<li style="margin-bottom:6px"><strong>Imago Relationship Therapy (Hendrix)</strong> — az itt kirajzolódó portrét kifejezetten kezeli, párban vagy egyénileg.</li>`;
+    interp+=`<li style="margin-bottom:6px"><strong>Schema Therapy (Young)</strong> — a séma-mintázatok (Abandonment, Defectiveness, Mistrust) direkt kezelése.</li>`;
+    interp+=`<li style="margin-bottom:6px"><strong>Internal Family Systems (IFS)</strong> — a "sebesült gyermek" és "védekező rész" különválasztása, integráció.</li>`;
+    interp+=`<li style="margin-bottom:6px"><strong>EMDR</strong> — konkrét gyermekkori emlékek deszenzitizálása.</li>`;
+    interp+=`</ul>`;
+  } else if(wndSum>=15){
+    interp+=`<p><strong>Önismereti munka + esetleges terápia.</strong> A közepes seb-intenzitás melletti tudatosság-építés (könyvek, workshopok, journaling) sokat segíthet. Ha kapcsolati distresszt élsz meg, terápia is indokolt.</p>`;
+    interp+=`<ul style="color:var(--ink-lite-soft);font-size:14.5px;line-height:1.7;margin-left:20px;margin-top:8px">`;
+    interp+=`<li style="margin-bottom:6px">Hendrix könyv: <em>Getting the Love You Want</em> — a portré önismereti feldolgozása.</li>`;
+    interp+=`<li style="margin-bottom:6px">Séma-írás (journaling) — a napi partneri és kapcsolati reakcióid megfigyelése az imago-mintázat tükrében.</li>`;
+    interp+=`<li style="margin-bottom:6px">Imago-workshop (weekend intensive) — 2-3 napos strukturált munka párral vagy egyénileg.</li>`;
+    interp+=`</ul>`;
+  } else {
+    interp+=`<p><strong>Nem szükséges intenzív terápiás munka.</strong> Alacsony seb-intenzitás mellett a portré megismerése önmagában értékes — de nem "kezelendő" jelenség.</p>`;
+  }
+  interp+=`</div>`;
+
+  // Post-breakup kontextus
+  interp+=`<div class="interp-section"><h4>Post-breakup kontextus</h4><p>Ha friss szakítás után vagy, két dolog fontos: (1) az imago-portré <em>most</em> különösen aktív — a fájdalom közel van, a mintázatok élénkek. (2) <strong>Ne dönts most partnerről.</strong> A rendszered épp a régi mintázatot próbálja "meggyógyítani" — és pontosan ilyenkor húz be legerősebben egy hasonló mintázatba, csak "jobb változatban". A 6-12 hónapos "single reset" időszak nem véletlen ajánlás — az imago-rendszernek időre van szüksége <em>lelassulni</em>, mielőtt új partnert integrálni tud.</p></div>`;
+
+  // Praktikus napi lépések
+  interp+=`<div class="interp-section"><h4>Praktikus napi lépések</h4>`;
+  interp+=`<p><strong>1. Ismerd fel a mintát.</strong> Amikor egy partnernél erős vonzalmat érzel (különösen ha "furán ismerős"), nézd meg: mennyire fed át az imago-portréddal?</p>`;
+  interp+=`<p><strong>2. Ne az imago ellen — vele együtt.</strong> A cél nem az, hogy "egészen más" partnert válassz — hanem hogy tudatosan válaszd meg, mennyi az újra-aktiválódási csapda és mennyi a gyógyulás lehetősége. Egy partner, akinél <em>egyáltalán semmi</em> imago-átfedés nincs, gyakran nem is vonzó.</p>`;
+  interp+=`<p><strong>3. Self-parenting gyakorlat.</strong> A napi 5 perces "belső gyermek check-in" — mit érzek most a legmélyebb szinten, és mi kellene most az én <em>kicsi részemnek</em>? Ezt tudod te magadnak megadni, még mielőtt bármely partner megjelenne.</p>`;
+  interp+=`<p><strong>4. Terápia vagy pár-munka.</strong> Az imago-tudatosság önmagában nem gyógyít — csak lehetőséget teremt. A Hendrix-féle Imago Relationship Therapy pontosan erre a mintázatra épült.</p>`;
+  interp+=`</div>`;
+
+  document.getElementById('imago-interpCard').innerHTML=interp;
+
+  // Cross-links
+  const links=[];
+  if(wndSum>=20){
+    links.push({label:'ECR-R (kötődés) korreláció',text:`Magas seb-intenzitás gyakran együtt jár a fearful-avoidant vagy anxious-preoccupied kötődési profilokkal. Ha nem töltötted még ki az ECR-R-t (Build 2 · I.), most különösen releváns.`});
+    links.push({label:'SMI Vulnerable Child + Punitive Parent',text:`A magas gyermekkori sebek majdnem mindig együtt járnak magas Vulnerable Child + Punitive Parent mode-okkal. Ha az SMI-t (Build 2 · II.) még nem töltötted, komplex kép ott lesz.`});
+    links.push({label:'CTQ (Childhood Trauma Questionnaire) — következő lépés',text:`Ha az imago-portré nehéz vagy fájdalmas volt, a CTQ (Childhood Trauma Questionnaire — Bernstein) strukturáltabb szűrés a gyermekkori trauma-történetre. Terápiás munka része lehet.`});
+  }
+  if(topWnd.filter(x=>x.v>=2).some(x=>x.t.includes('kritikus')||x.t.includes('elég'))){
+    links.push({label:'"Nem vagyok elég" alap-séma',text:`A "kritika" és a "nem elég" sebek erős korrelációt mutatnak a Defectiveness/Shame sémával (Young). Ez felnőttként gyakran teljesítmény-túlkompenzálásban jelenik meg.`});
+  }
+  if(negSum>=25 && posSum>=15){
+    links.push({label:'Ambivalens gyermekkori kép',text:`Együttesen erős negatív ÉS pozitív gondozói vonások az ambivalens kötődés lenyomata — "közel és távol egyszerre". Ez a fearful-avoidant kötődés tipikus felnőttkori profilja.`});
+  }
+  document.getElementById('imago-cross-links').innerHTML=links.length?links.map(l=>`<div class="cross-item"><div class="cross-item-label">${l.label}</div><p>${l.text}</p></div>`).join(''):`<p style="color:var(--ink-muted);font-style:italic">Nincs jelenlegi markáns keresztmintázat.</p>`;
+
+  document.getElementById('imago-results').classList.add('visible');
+  setTimeout(()=>{document.getElementById('imago-results').scrollIntoView({behavior:'smooth',block:'start'});},100);
+}
+document.getElementById('imago-showResults').addEventListener('click',()=>{if(Object.keys(responses).length<TOTAL)return;renderResults();});
+function reset(){if(!confirm('Biztos törlöd az Imago válaszaidat?'))return;responses={};saveState();document.querySelectorAll('#test-imago .scale-btn.selected').forEach(b=>b.classList.remove('selected'));document.getElementById('imago-results').classList.remove('visible');updateProgress();window.scrollTo({top:0,behavior:'smooth'});}
+function downloadJSON(){
+  const data={
+    test:'Imago Self-Assessment',
+    timestamp:new Date().toISOString(),
+    raw_responses:responses,
+    top_negative:topN('NEG',5),
+    top_positive:topN('POS',5),
+    top_wounds:topN('WND',5),
+    top_unmet_needs:topN('NEED',5)
+  };
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`imago-${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(url);
+}
+loadState();renderQuiz();
+return {reset,downloadJSON};
+})();
+</script>
+
+</body>
+</html>
