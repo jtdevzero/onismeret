@@ -23,7 +23,7 @@ Harmincegy önismereti kérdőív magyarul, statikus HTML fájlok, GitHub Pages-
 | | PEDT (ejakuláció) | 5 | `funkcio.html#test-pedt` |
 | | SDI-2 (szex-vágy) | 14 | `funkcio.html#test-sdi` |
 | **IV. Szex-attitűd** | NSSS (elégedettség) | 20 | `attitudok.html#test-nsss` |
-| | SAQ (attitűd) | 36 | `attitudok.html#test-saq` |
+| | SAQ (szexuális tudatosság, Snell) | 36 | `attitudok.html#test-saq` |
 | **V. Kapcsolati nyelvek** | Love Languages | 30 pár | `nyelvek.html#test-love` |
 | | Apology Languages | 20 pár | `nyelvek.html#test-apo` |
 | | Imago | 57 | `nyelvek.html#test-imago` |
@@ -75,10 +75,10 @@ Minden oldal önálló: inline CSS és JS, külső szerverhez nem fordul. A bet�
 
 ## Adatkezelés
 
-- **Semmi adat nem hagyja el a böngészőt.** Nincs analytics, nincs cookie, nincs külső kérés (a betűtípusok is helyben vannak).
+- **Válasz és eredmény nem hagyja el a böngészőt.** Nincs analytics, nincs cookie, nincs külső kérés (a betűtípusok is helyben vannak). Az oldal betöltése viszont hálózati kérés: a GitHub Pages a látogatók IP-címét biztonsági célból naplózhatja.
 - **Automatikus mentés `localStorage`-ba.** Ha félbehagyod és később visszatérsz, ott folytatod.
-- **Storage kulcsok** (haladtás esetére):
-  - `maia2-responses-v1`
+- **Storage kulcsok** (haladóknak):
+  - `maia2-responses-v2` (2026-09: a tételkészlet az eredeti MAIA-2-höz igazítva, a korábbi v1 válaszok nem kompatibilisek)
   - `sis-ses-responses-v1`
   - `ecr-r-responses-v1`, `smi-responses-v1`, `tas-20-responses-v1`
   - `iief-responses-v1`, `pedt-responses-v1`, `sdi-2-responses-v1`, `des-2-responses-v1`
@@ -88,6 +88,8 @@ Minden oldal önálló: inline CSS és JS, külső szerverhez nem fordul. A bet�
   - `las-responses-v1`, `conflict-responses-v1`, `gottman-responses-v1`, `fisher-responses-v1`
   - `pvq21-responses-v1`, `four-tendencies-responses-v1`, `action-modes-responses-v1`, `meq-responses-v1`
   - `ips-responses-v1`, `ders-sf-responses-v1`, `scs-sf-responses-v1`, `tfeq-r18-responses-v1`
+  - `onismeret-meta-v1` — az utolsó válasz ideje tesztenként (ebből lesz a kitöltés dátuma)
+  - `onismeret-settings-v1` — pl. az újramérési emlékeztető (ki / 90 / 180 / 365 nap)
   - `onismeret-partner-v1` — a párod betöltött összesített eredményei (a nyers válaszai nem)
   - `ysq_autosave`, `ysq_snapshots`, `ysq_log` stb. (YSQ)
   - `attachment_assessment_v1` (Kötődési mélytérkép)
@@ -102,6 +104,13 @@ Minden oldal önálló: inline CSS és JS, külső szerverhez nem fordul. A bet�
 - **Újramérés:** 90 nap után a főoldalon és az összegzésben is jelez.
 - **Idővonal** az összes kiértékelésről.
 - **Terapeuta-összefoglaló (PDF):** világos, nyomtatható riport a kiválasztott tesztekről és mintákról. Az érzékeny témák (szexuális tesztek, DES-II, TFEQ) alapból ki vannak kapcsolva.
+
+## Kitöltést segítő funkciók (minden oldalon)
+
+- **Folytatás:** ha egy tesztet félbehagytál, bal alul „Folytatás: N. kérdés ›” gomb visz az első megválaszolatlanhoz.
+- **Fókusz mód:** egyszerre egy kérdés, válasz után automatikus továbblépés, billentyűzettel is (1–9 = válasz, ←/→ = lapozás, Esc = kilépés). A végén a kihagyott kérdésekhez ugrik, utána az eredménygombhoz.
+- **Mentési visszajelzés:** „Mentve ezen az eszközön ✓”. Ha a mentés nem sikerül (tele a tárhely, privát ablak), látható figyelmeztetést ad.
+- **Eredménytörténet:** a dátum a tényleges kitöltés ideje, minden eredmény mellett ott a pontozási verzió, és egy eredmény puszta újranyitása nem számít új kitöltésnek.
 
 ## Kezdő útvonal
 
@@ -192,7 +201,7 @@ Elérhető pár perc múlva: `https://jtdevzero.github.io/onismereti-terkepek/`
 - **SDI-2** — Spector, Carey, Steinberg, 1996. Vágy diadikus/szoliter szeparálva.
 - **SSSS** — Andersen & Cyranowski, 1994. Sexual Self-Schema.
 - **NSSS** — Štulhofer, Buško, Brouillard, 2010.
-- **SAQ** — Hendrick & Hendrick, 1987.
+- **SAQ** — Sexual Awareness Questionnaire, Snell, Fisher & Miller, 1991. 4 alskála.
 - **Love / Apology Languages** — Chapman, 1992, 2006. Nem tudományos, de népszerű keret.
 - **Imago** — Hendrix, 1988. Klinikai gyakorlatban használt önreflexiós keret.
 - **IPIP-NEO-60** — Goldberg et al., IPIP.ori.org. NEO-PI-R open-source változat.

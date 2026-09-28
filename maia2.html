@@ -731,7 +731,7 @@ footer{
 }
 </style>
 <script>
-/* ONI-CORE v2 — közös eredménytár + kezdő útvonal. Minden adat csak ebben a böngészőben marad. */
+/* ONI-CORE v3 — közös eredménytár + kezdő útvonal. Minden adat csak ebben a böngészőben marad. */
 window.ONI=window.ONI||(function(){
   var K='onismeret-results-v1';
   var PATH=[
@@ -743,12 +743,22 @@ window.ONI=window.ONI||(function(){
   ];
   function all(){try{return JSON.parse(localStorage.getItem(K))||{}}catch(e){return {}}}
   function r(x){return Math.round(x*100)/100}
-  function save(id,rec){
+  var META='onismeret-meta-v1';
+  var IDKEY={maia2:'maia2-responses-v2',tas:'tas-20-responses-v1',des:'des-2-responses-v1',ecr:'ecr-r-responses-v1',kotodes:'attachment_assessment_v1',ysq:'ysq_autosave',smi:'smi-responses-v1',ssss:'ssss-responses-v1',sisses:'sis-ses-responses-v1',iief:'iief-responses-v1',pedt:'pedt-responses-v1',sdi:'sdi-2-responses-v1',nsss:'nsss-responses-v1',saq:'saq-responses-v1',love:'love-responses-v1',apo:'apo-responses-v1',imago:'imago-responses-v1',bf:'bf-responses-v1',via:'via-responses-v1',las:'las-responses-v1',tki:'conflict-responses-v1',gott:'gottman-responses-v1',fti:'fisher-responses-v1',pvq:'pvq21-responses-v1',ft:'four-tendencies-responses-v1',kolbe:'action-modes-responses-v1',meq:'meq-responses-v1',ips:'ips-responses-v1',ders:'ders-sf-responses-v1',scs:'scs-sf-responses-v1',tfeq:'tfeq-r18-responses-v1'};
+  function meta(){try{return JSON.parse(localStorage.getItem(META))||{}}catch(e){return {}}}
+  function sig(rec){return JSON.stringify(rec.d||{})+'|'+(rec.h||'');}
+  function save(id,rec,opts){
     try{
-      var a=all(),h=a[id]||[];
+      opts=opts||{};
+      var a=all(),h=a[id]||[],m=meta();
       rec.t=new Date().toISOString();
+      rec.sv=opts.sv||rec.sv||1;
+      var key=opts.key||IDKEY[id];
+      rec.done=(key&&m.ans&&m.ans[key])||rec.t;
       if(rec.d)Object.keys(rec.d).forEach(function(k){var v=rec.d[k];if(v&&typeof v[1]==='number')v[1]=r(v[1]);});
-      if(h.length&&h[h.length-1].t.slice(0,10)===rec.t.slice(0,10))h[h.length-1]=rec;else h.push(rec);
+      var prev=h[h.length-1];
+      if(prev&&sig(prev)===sig(rec)&&(prev.sv||1)===rec.sv){ /* ugyanaz az eredmény újra megnyitva: nem új kitöltés */ }
+      else if(prev&&(prev.done||prev.t).slice(0,10)===rec.done.slice(0,10))h[h.length-1]=rec;else h.push(rec);
       a[id]=h.slice(-24);
       localStorage.setItem(K,JSON.stringify(a));
     }catch(e){}
@@ -771,6 +781,118 @@ window.ONI=window.ONI||(function(){
     document.body.appendChild(el);
     if(next&&location.href.indexOf(next.href.split('#')[0])>-1){var a=el.querySelector('a');a.addEventListener('click',function(){setTimeout(function(){el.remove()},50)});}
   }
+
+  /* ── Válaszidő rögzítése + látható mentési visszajelzés ── */
+  (function(){
+    try{
+      var proto=Storage.prototype,orig=proto.setItem,lastToast=0;
+      proto.setItem=function(k,v){
+        try{orig.call(this,k,v);}
+        catch(e){toast('A mentés nem sikerült ezen az eszközön (tele a tárhely vagy privát ablak?). Exportáld a válaszaidat a főoldalon.',true);throw e;}
+        if(this===window.localStorage&&/-responses-v\d+$|^ysq_autosave$|^attachment_assessment_v1$/.test(k)){
+          try{var m=JSON.parse(localStorage.getItem(META))||{};m.ans=m.ans||{};m.ans[k]=new Date().toISOString();orig.call(this,META,JSON.stringify(m));}catch(x){}
+          var now=Date.now();if(now-lastToast>6000){lastToast=now;toast('Mentve ezen az eszközön ✓');}
+        }
+      };
+    }catch(e){}
+    function toast(t,bad){
+      if(!document.body)return;
+      var el=document.getElementById('oni-toast');if(!el){el=document.createElement('div');el.id='oni-toast';document.body.appendChild(el);}
+      el.setAttribute('style','position:fixed;right:16px;top:16px;z-index:10000;max-width:320px;padding:9px 14px;border-radius:12px;font:500 12.5px/1.4 Manrope,Inter,system-ui,sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.35);transition:opacity .4s;opacity:1;'+(bad?'background:#4c0519;color:#fecdd3;border:1px solid #fb7185':'background:rgba(6,40,30,.92);color:#a7f3d0;border:1px solid rgba(52,211,153,.5)'));
+      el.textContent=t;clearTimeout(el._t);el._t=setTimeout(function(){el.style.opacity='0'},bad?9000:1800);
+    }
+    window.ONI_TOAST=toast;
+  })();
+
+  /* ── Kitöltés-segéd: folytatás az első megválaszolatlannál + fókusz mód ── */
+  (function(){
+    var focus=false,cur=0,units=[],bar=null,pill=null;
+    function scope(){return document.querySelector('.test-panel.active')||document.body;}
+    function scan(){
+      units=[].slice.call(scope().querySelectorAll('.q, .fc')).filter(function(u){return u.querySelector('button[data-n]')&&!u.parentElement.closest('.q, .fc');});
+      units.forEach(function(u){u.classList.add('oni-unit')});
+      return units.length>=5;
+    }
+    function answered(u){var g={};[].forEach.call(u.querySelectorAll('button[data-n]'),function(b){var n=b.getAttribute('data-n');g[n]=g[n]||b.classList.contains('selected')||b.classList.contains('active')||b.getAttribute('aria-checked')==='true';});return Object.keys(g).every(function(k){return g[k]});}
+    function firstOpen(){for(var i=0;i<units.length;i++)if(!answered(units[i]))return i;return -1;}
+    function css(){
+      if(document.getElementById('oni-fill-css'))return;
+      var st=document.createElement('style');st.id='oni-fill-css';
+      st.textContent='body.oni-focus .oni-unit:not(.oni-cur){display:none!important}body.oni-focus .test-panel.active .section-head,body.oni-focus .test-panel.active .intro-box{display:none}'+
+      'body.oni-focus .oni-unit.oni-cur{margin-top:18vh;transform:scale(1.02);box-shadow:0 0 0 2px rgba(251,191,36,.55),0 16px 48px rgba(0,0,0,.35)}'+
+      '.oni-unit.oni-flash{animation:oniFlash 1.6s ease}@keyframes oniFlash{0%,60%{box-shadow:0 0 0 3px rgba(251,191,36,.8)}100%{box-shadow:none}}'+
+      '.oni-btn{appearance:none;cursor:pointer;border:1px solid rgba(148,163,184,.35);background:rgba(10,20,40,.92);color:#e6ecf5;font:600 12.5px/1 Manrope,Inter,system-ui,sans-serif;padding:10px 14px;border-radius:99px;backdrop-filter:blur(8px)}'+
+      '.oni-btn:hover{border-color:#fbbf24}.oni-btn.pri{background:#fbbf24;color:#0a1428;border-color:#fbbf24}'+
+      '@media print{#oni-pill,#oni-focusbar,#oni-toast{display:none!important}}';
+      document.head.appendChild(st);
+    }
+    function mkPill(){
+      if(!pill){pill=document.createElement('div');pill.id='oni-pill';pill.setAttribute('style','position:fixed;left:14px;bottom:14px;z-index:9998;display:flex;gap:8px;flex-wrap:wrap;max-width:calc(100% - 28px)');document.body.appendChild(pill);}
+      if(focus||!scan()){pill.style.display='none';return;}
+      var i=firstOpen(),n=units.length,done=units.filter(answered).length;
+      pill.style.display='flex';
+      pill.innerHTML=(i>=0&&done>0?'<button class="oni-btn pri" id="oni-cont">Folytatás: '+(i+1)+'. kérdés ›</button>':'')+(i>=0?'<button class="oni-btn" id="oni-focus-on" title="Egyszerre egy kérdés, automatikus továbblépés, billentyűzettel is (1–9, ←/→)">Fókusz mód</button>':'');
+      var c=document.getElementById('oni-cont');if(c)c.onclick=function(){go(firstOpen(),true)};
+      var f=document.getElementById('oni-focus-on');if(f)f.onclick=function(){enter()};
+    }
+    function go(i,flash){if(i<0||!units[i])return;units[i].scrollIntoView({behavior:'smooth',block:'center'});if(flash){units[i].classList.remove('oni-flash');void units[i].offsetWidth;units[i].classList.add('oni-flash');}}
+    function show(i){
+      cur=Math.max(0,Math.min(units.length-1,i));
+      units.forEach(function(u,k){u.classList.toggle('oni-cur',k===cur)});
+      if(bar){var d=units.filter(answered).length;bar.querySelector('#oni-pos').textContent=(cur+1)+' / '+units.length+(d<units.length?' · '+(units.length-d)+' hiányzik':' · kész');}
+      window.scrollTo({top:units[cur].getBoundingClientRect().top+window.scrollY-window.innerHeight*0.18,behavior:'smooth'});
+    }
+    function enter(){
+      if(!scan())return;focus=true;document.body.classList.add('oni-focus');
+      bar=document.createElement('div');bar.id='oni-focusbar';
+      bar.setAttribute('style','position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:9999;display:flex;gap:8px;align-items:center;padding:8px;border-radius:99px;background:rgba(10,20,40,.94);border:1px solid rgba(251,191,36,.45);box-shadow:0 12px 40px rgba(0,0,0,.45)');
+      bar.innerHTML='<button class="oni-btn" id="oni-prev">‹ Előző</button><span id="oni-pos" style="color:#cbd5e1;font:600 12.5px Manrope,Inter,sans-serif;padding:0 8px;white-space:nowrap"></span><button class="oni-btn" id="oni-next">Következő ›</button><button class="oni-btn" id="oni-exit" title="Vissza a listanézethez">Lista</button>';
+      document.body.appendChild(bar);
+      bar.querySelector('#oni-prev').onclick=function(){show(cur-1)};
+      bar.querySelector('#oni-next').onclick=function(){next()};
+      bar.querySelector('#oni-exit').onclick=function(){exit()};
+      mkPill();var i=firstOpen();show(i<0?0:i);
+    }
+    function exit(scrollToEnd){
+      focus=false;document.body.classList.remove('oni-focus');units.forEach(function(u){u.classList.remove('oni-cur')});
+      if(bar){bar.remove();bar=null;}mkPill();
+      if(scrollToEnd){var sb=scope().querySelector('button[id$=show], button[id$=showResults], .results-trigger button');if(sb)sb.scrollIntoView({behavior:'smooth',block:'center'});}
+      else if(units[cur])go(cur);
+    }
+    function next(){
+      var open=firstOpen();
+      if(cur<units.length-1)show(cur+1);
+      else if(open>=0)show(open);
+      else exit(true);
+    }
+    document.addEventListener('click',function(e){
+      var t=e.target.closest&&e.target.closest('button[data-n]');
+      if(!t)return;
+      setTimeout(function(){
+        if(focus&&units[cur]&&units[cur].contains(t)&&answered(units[cur])){
+          var open=firstOpen();
+          if(open<0)exit(true);else if(cur<units.length-1)show(cur+1);else show(open);
+        } else if(!focus)mkPill();
+      },260);
+    },true);
+    document.addEventListener('keydown',function(e){
+      if(!focus||e.metaKey||e.ctrlKey||e.altKey||/input|textarea|select/i.test((e.target.tagName||'')))return;
+      if(e.key==='ArrowRight'){e.preventDefault();next();}
+      else if(e.key==='ArrowLeft'){e.preventDefault();show(cur-1);}
+      else if(e.key==='Escape'){exit();}
+      else if(/^[1-9]$/.test(e.key)){
+        var u=units[cur];if(!u)return;var btns=[].slice.call(u.querySelectorAll('button[data-n]'));
+        var groups={};btns.forEach(function(b){var n=b.getAttribute('data-n');(groups[n]=groups[n]||[]).push(b)});
+        var g=Object.keys(groups).map(function(k){return groups[k]}).filter(function(x){return !x.some(function(b){return b.classList.contains('selected')})})[0]||groups[Object.keys(groups)[0]];
+        var b=g[+e.key-1];if(b){e.preventDefault();b.click();}
+      }
+    });
+    function boot(){css();setTimeout(mkPill,600);}
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+    window.addEventListener('hashchange',function(){if(focus)exit();setTimeout(mkPill,300)});
+    document.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('.hub-tab')){if(focus)exit();setTimeout(mkPill,300);}});
+  })();
+
   window.addEventListener('oni:saved',function(e){setTimeout(function(){banner(e.detail.id)},900);});
   return {K:K,all:all,save:save,r:r,PATH:PATH,pathState:pathState};
 })();
@@ -875,10 +997,10 @@ const DOMAINS = [
     icon:'I',
     desc:'Mennyire veszed észre a kellemes, semleges és kellemetlen testi érzeteket. Az interocepció alapszintje — a kapu maga.',
     items:[
-      {n:1, t:'Amikor feszült vagyok, észreveszem, hol van a feszültség a testemben.'},
-      {n:2, t:'Észreveszem, ha kényelmetlenül érzem magam a testemben.'},
-      {n:3, t:'Észreveszem, ha valami megváltozik a testemben (pl. ha könnyebbé vagy lassabbá válik a légzésem).'},
-      {n:4, t:'Észreveszem a kellemes érzéseket a testemben.'}
+      {n:1, t:'Amikor feszült vagyok, észreveszem, hol helyezkedik el a feszültség a testemben.'},
+      {n:2, t:'Észreveszem, amikor kényelmetlenül érzem magam a testemben.'},
+      {n:3, t:'Észreveszem, a testem mely részén érzem magam kényelmesen.'},
+      {n:4, t:'Észreveszem a légzésem változásait, például hogy lelassul vagy felgyorsul.'}
     ]
   },
   {
@@ -889,12 +1011,12 @@ const DOMAINS = [
     icon:'II',
     desc:'Mennyire jellemző, hogy NEM tereled el magad a kényelmetlen testi érzéseket. A magasabb pontszám azt mutatja, képes vagy bent maradni a kellemetlennel.',
     items:[
-      {n:5, t:'Nem veszem észre (vagy figyelmen kívül hagyom) a fizikai feszültséget vagy kényelmetlenséget, amíg az komolyabbá nem válik.', reverse:true},
-      {n:6, t:'Eltereltem magam az érzésektől.', reverse:true},
-      {n:7, t:'Amikor fájdalmat vagy kényelmetlenséget érzek, megpróbálom kitörölni a tudatomból.', reverse:true},
-      {n:8, t:'Amikor fájdalmat érzek, megpróbálok másra gondolni.', reverse:true},
-      {n:9, t:'Amikor zavaró testi érzéseket veszek észre, mást keresek, ami eltereli a figyelmemet.', reverse:true},
-      {n:10, t:'Amikor szorongok, megpróbálok mással foglalkozni.', reverse:true}
+      {n:5, t:'Nem veszek tudomást a fizikai feszültségről vagy kényelmetlenségről, amíg súlyosabbá nem válik.', reverse:true},
+      {n:6, t:'Elterelem a figyelmemet a kényelmetlen érzésekről.', reverse:true},
+      {n:7, t:'Amikor fájdalmat vagy kényelmetlenséget érzek, igyekszem erőből túllépni rajta.', reverse:true},
+      {n:8, t:'Igyekszem nem tudomást venni a fájdalomról.', reverse:true},
+      {n:9, t:'Úgy hessegetem el a kényelmetlen érzéseket, hogy valami másra összpontosítok.', reverse:true},
+      {n:10, t:'Amikor kellemetlen testi érzéseim vannak, valami mással foglalom le magam, hogy ne kelljen érezni őket.', reverse:true}
     ]
   },
   {
@@ -905,11 +1027,11 @@ const DOMAINS = [
     icon:'III',
     desc:'Mennyire jellemző, hogy NEM aggódsz vagy szorongsz a testi érzések miatt. A magasabb érték érzelmi nyugalmat jelez a testi élményekkel kapcsolatban.',
     items:[
-      {n:11, t:'Felzaklat, ha fájdalmat érzek.', reverse:true},
-      {n:12, t:'Aggódom, ha valami nincs rendben a testemben.', reverse:true},
-      {n:13, t:'Észrevehetem a kényelmetlen testi érzést, anélkül hogy emiatt aggódnék.'},
-      {n:36, t:'Tudok figyelni a kellemetlen testi érzésre úgy, hogy közben nyugodt maradok.'},
-      {n:37, t:'Amikor diszkomfortot érzek a testemben, képes vagyok meglátogatni anélkül, hogy elragadjon.'}
+      {n:11, t:'Amikor fizikai fájdalmat érzek, felzaklatom magam.', reverse:true},
+      {n:12, t:'Aggódni kezdek, hogy valami baj van, ha bármilyen kényelmetlenséget érzek.', reverse:true},
+      {n:13, t:'Képes vagyok észrevenni egy kellemetlen testi érzést anélkül, hogy aggódnék miatta.'},
+      {n:14, t:'Nyugodt tudok maradni és nem aggódom, amikor kényelmetlenséget vagy fájdalmat érzek.'},
+      {n:15, t:'Amikor kényelmetlenséget vagy fájdalmat érzek, nem tudom kiverni a fejemből.', reverse:true}
     ]
   },
   {
@@ -920,13 +1042,13 @@ const DOMAINS = [
     icon:'IV',
     desc:'Mennyire vagy képes fenntartani és irányítani a figyelmet a testi érzéseken. Ez egy aktív, megtanulható készség — a meditáció és szomatikus gyakorlatok közvetlen célja.',
     items:[
-      {n:14, t:'Figyelhetek a légzésemre anélkül, hogy elterelődnék az engem körülvevő dolgoktól.'},
-      {n:15, t:'Tudom magamra irányítani a figyelmet a testem belső érzéseire.'},
-      {n:16, t:'Egy szűk területen is fenn tudom tartani a testi érzések tudatosságát.'},
-      {n:17, t:'Eltudom mozdítani a figyelmemet egyik testi érzéstől a másikig.'},
-      {n:18, t:'A teljes testem felett képes vagyok fenntartani a tudatosságot, még akkor is, ha annak egy részében fájdalom vagy kényelmetlenség van.'},
-      {n:19, t:'Akarat szerint képes vagyok a teljes testemre figyelni.'},
-      {n:20, t:'Észreveszem, hogyan változik a testem, amikor mérges vagyok.'}
+      {n:16, t:'Figyelni tudok a légzésemre anélkül, hogy a körülöttem zajló dolgok elterelnék a figyelmemet.'},
+      {n:17, t:'Akkor is tudatában tudok maradni a belső testi érzeteimnek, ha sok minden történik körülöttem.'},
+      {n:18, t:'Amikor valakivel beszélgetek, figyelni tudok a testtartásomra.'},
+      {n:19, t:'Ha elkalandozik a figyelmem, vissza tudom terelni a testemre.'},
+      {n:20, t:'Át tudom irányítani a figyelmemet a gondolkodásról a testem érzékelésére.'},
+      {n:21, t:'A testem egészére figyelni tudok akkor is, ha valamelyik részében fájdalmat vagy kényelmetlenséget érzek.'},
+      {n:22, t:'Képes vagyok tudatosan a testem egészére összpontosítani.'}
     ]
   },
   {
@@ -937,11 +1059,11 @@ const DOMAINS = [
     icon:'V',
     desc:'Mennyire vagy tudatában az érzelmek és testi érzetek kapcsolatának. Ez az alexitímia ellentéte — a "test mint érzelmi térkép" képessége.',
     items:[
-      {n:21, t:'Amikor valami nincs rendben az életemben, érzem azt a testemben.'},
-      {n:22, t:'Tudatában vagyok, hogyan kapcsolódnak a testem és az érzelmek.'},
-      {n:23, t:'Tudatában vagyok, hogyan változik a testem, amikor boldog/elégedett vagyok.'},
-      {n:24, t:'Amikor valami szépet/kellemeset élek meg, érzem azt a testemben.'},
-      {n:25, t:'Megnyugtató testi érzetekre figyelve nyugtatom magam, amikor szorongok.'}
+      {n:23, t:'Észreveszem, hogyan változik a testem, amikor dühös vagyok.'},
+      {n:24, t:'Amikor valami nincs rendben az életemben, azt érzem a testemben.'},
+      {n:25, t:'Észreveszem, hogy egy békés élmény után másképp érzem a testemet.'},
+      {n:26, t:'Észreveszem, hogy a légzésem szabaddá és könnyeddé válik, amikor jól érzem magam.'},
+      {n:27, t:'Észreveszem, hogyan változik a testem, amikor boldog vagy örömteli vagyok.'}
     ]
   },
   {
@@ -952,10 +1074,10 @@ const DOMAINS = [
     icon:'VI',
     desc:'Mennyire vagy képes a testi tudatosság révén szabályozni a belső állapotodat. Az önszabályozás itt nem akaratlagos kontrolt jelent, hanem a testtel való együttműködést.',
     items:[
-      {n:26, t:'Amikor zaklatott vagyok, sok időre van szükségem, hogy újra rendben érezzem magam a testemben.', reverse:true},
-      {n:27, t:'Az érzelmi nyugalmat a légzéssel/testtudatossággal találom meg.'},
-      {n:28, t:'Amikor megfeszülök valahol, képes vagyok aktívan ellazulni.'},
-      {n:29, t:'A testemre figyelve képes vagyok sok mindenből kihozni magamat, ami stresszel.'}
+      {n:28, t:'Amikor túlterheltnek érzem magam, megtalálom magamban a nyugodt pontot.'},
+      {n:29, t:'Amikor a testemre irányítom a figyelmemet, nyugalmat érzek.'},
+      {n:30, t:'A légzésemmel csökkenteni tudom a feszültséget.'},
+      {n:31, t:'Amikor elmerülök a gondolataimban, meg tudom nyugtatni az elmémet azzal, hogy a testemre vagy a légzésemre összpontosítok.'}
     ]
   },
   {
@@ -966,9 +1088,9 @@ const DOMAINS = [
     icon:'VII',
     desc:'Aktívan hallgatod-e a tested üzeneteit, és bízol-e abban, amit "mond". Ez a test mint információforrás elismerése — fontos jelzéseket küld, ha hallgatod.',
     items:[
-      {n:30, t:'A testemre hallgatok, hogy megértsem, mi a teendő.'},
-      {n:31, t:'Hallgatok arra, amit a testem üzen az érzelmi állapotomról.'},
-      {n:32, t:'Amikor szomorú vagy ideges vagyok, ülök egy ideig és hallgatom a testem érzéseit.'}
+      {n:32, t:'Figyelek arra, milyen információt ad a testem az érzelmi állapotomról.'},
+      {n:33, t:'Amikor zaklatott vagyok, időt szánok arra, hogy megvizsgáljam, hogyan érzi magát a testem.'},
+      {n:34, t:'Hallgatok a testemre, hogy segítsen eldönteni, mit tegyek.'}
     ]
   },
   {
@@ -979,9 +1101,9 @@ const DOMAINS = [
     icon:'VIII',
     desc:'Mennyire bízol a tested és tartod barátságos, biztonságos helynek. Ez a legmagasabb szintű interoceptív dimenzió — sokszor ez sérül legkorábban traumánál.',
     items:[
-      {n:33, t:'Otthon érzem magam a testemben.'},
-      {n:34, t:'Biztonságosnak érzem a testemet.'},
-      {n:35, t:'Bízom a testi érzéseimben.'}
+      {n:35, t:'Otthon érzem magam a testemben.'},
+      {n:36, t:'Úgy érzem, a testem biztonságos hely.'},
+      {n:37, t:'Megbízom a testi érzeteimben.'}
     ]
   }
 ];
@@ -1006,7 +1128,7 @@ const LIKERT = [
 ];
 
 // ============ STATE ============
-const STORAGE_KEY = 'maia2-responses-v1';
+const STORAGE_KEY = 'maia2-responses-v2'; // v2: tételkészlet az eredeti MAIA-2-höz igazítva (2026-09)
 let responses = {};
 
 function loadState(){
@@ -1045,7 +1167,7 @@ function renderQuiz(){
           <div>
             <div class="q-text">
               ${item.t}
-              ${isReverse ? '<span class="q-reverse-tag">fordított</span>' : ''}
+              
             </div>
             <div class="scale" role="radiogroup">
               ${LIKERT.map(l=>`
@@ -1198,7 +1320,7 @@ const CROSS_LINKS = [
   },
   {
     when:(scores)=>scores['not-distract']?.mean < 2.5,
-    text:`<div class="cross-item-label">Coping minta — érzelmi evés / képernyő-menekülés</div><p>Az alacsony "Nem-elterelődés" pontszám közvetlenül jelzi azokat a coping mintákat, amik az érzelmi evésben, a képernyő-szokásokban, a túltervezésben (planning loop) manifesztálódnak. Ezek mind elterelő mechanizmusok a testi diszkomfort elől.</p>`
+    text:`<div class="cross-item-label">Coping minta — érzelmi evés / képernyő-menekülés</div><p>Az alacsony „Nem-elterelődés” pontszám arra utalhat, hogy a kellemetlen testi érzések elől gyakran elterelő tevékenységbe menekülsz. Ez lehet evés, képernyő, munka vagy tervezés. Hogy nálad melyik, azt a pontszám nem mondja meg, ezt érdemes megfigyelni.</p>`
   },
   {
     when:(scores)=>scores['self-reg']?.mean < 3.0 && scores['attention']?.mean < 3.0,
