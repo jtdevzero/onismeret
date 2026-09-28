@@ -1553,5 +1553,9 @@ return {reset,downloadJSON};
 })();
 </script>
 
+<script>
+/* Deep link: a #test-xxx hash a megfelelő fület nyitja meg (a főoldal kártyáiról érkezve). */
+(function(){function go(){var h=location.hash.slice(1);if(!h)return;var t=document.querySelector('.hub-tab[data-target="'+h+'"]');if(t&&!t.classList.contains('active'))t.click();}go();window.addEventListener('hashchange',go);})();
+</script>
 </body>
 </html>

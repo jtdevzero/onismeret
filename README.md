@@ -100,7 +100,7 @@ cp -R /path/to/self-knowledge-suite/* .
 
 # 3. Commit + push
 git add .
-git commit -m "Initial upload: 17-test self-knowledge suite"
+git commit -m "Initial upload: self-knowledge suite"
 git push origin main
 ```
 
