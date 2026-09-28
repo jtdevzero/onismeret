@@ -10,14 +10,14 @@ Tizenkilenc önismereti kérdőív magyarul, statikus HTML fájlok, GitHub Pages
 
 | Kategória | Teszt | Item | Fájl |
 |---|---|---|---|
-| **I. Test-tudatosság** | MAIA-2 (interocepció) | 32 | `maia2.html` |
+| **I. Test-tudatosság** | MAIA-2 (interocepció) | 37 | `maia2.html` |
 | | TAS-20 (alexitímia) | 20 | `terkepek.html#test-tas` |
 | | DES-II (disszociáció) | 28 | `funkcio.html#test-des` |
 | **II. Kötődés + séma** | ECR-R (párkapcsolati kötődés) | 36 | `terkepek.html#test-ecr` |
 | | Kötődési mélytérkép (saját, nem validált) | 60 | `kotodes-melyterkep.html` |
 | | YSQ-L (Young séma-kérdőív) | 244 | `ysq.html` |
 | | SMI (Young séma-módusz) | 65 | `terkepek.html#test-smi` |
-| | SSSS (szex-önkép) | 100 | `attitudok.html#test-ssss` |
+| | SSSS (szex-önkép, férfi) | 27 | `attitudok.html#test-ssss` |
 | **III. Szex-funkció** | SIS/SES (gátlás/serkentés) | 45 | `sis-ses.html` |
 | | IIEF-15 (férfi funkció) | 15 | `funkcio.html#test-iief` |
 | | PEDT (ejakuláció) | 5 | `funkcio.html#test-pedt` |
@@ -30,7 +30,7 @@ Tizenkilenc önismereti kérdőív magyarul, statikus HTML fájlok, GitHub Pages
 | **VI. Személyiség + erők** | IPIP-NEO-60 (Big Five) | 60 | `szemelyiseg.html#test-bf` |
 | | VIA-72 (karakter-erők) | 72 | `szemelyiseg.html#test-via` |
 
-**Összesen: 19 teszt, ~1130 item, 6 témakör.**
+**Összesen: 19 teszt, 891 kérdés, 6 témakör.**
 
 ---
 
@@ -38,7 +38,7 @@ Tizenkilenc önismereti kérdőív magyarul, statikus HTML fájlok, GitHub Pages
 
 ```
 self-knowledge-suite/
-├── index.html          Landing page — kategorizált kártyás nézet
+├── index.html          Landing page — haladásjelző, témakör-navigáció, kártyák
 ├── README.md           Ez a fájl
 ├── maia2.html          MAIA-2 (standalone)
 ├── sis-ses.html        SIS/SES (standalone)
@@ -62,8 +62,8 @@ Minden fájl **teljesen önálló** — inline CSS, JS, semmi external asset a G
 - **Storage kulcsok** (haladtás esetére):
   - `maia2-responses-v1`
   - `sis-ses-responses-v1`
-  - `ecr-r-responses-v1`, `smi-responses-v1`, `tas20-responses-v1`
-  - `iief-responses-v1`, `pedt-responses-v1`, `sdi-responses-v1`, `des-responses-v1`
+  - `ecr-r-responses-v1`, `smi-responses-v1`, `tas-20-responses-v1`
+  - `iief-responses-v1`, `pedt-responses-v1`, `sdi-2-responses-v1`, `des-2-responses-v1`
   - `ssss-responses-v1`, `nsss-responses-v1`, `saq-responses-v1`
   - `love-responses-v1`, `apo-responses-v1`, `imago-responses-v1`
   - `bf-responses-v1`, `via-responses-v1`
@@ -138,7 +138,7 @@ Elérhető pár perc múlva: `https://jtdevzero.github.io/onismereti-terkepek/`
 
 ## Klinikai háttér (rövid)
 
-- **MAIA-2** — Mehling et al., 2018. 8 dimenzió × 32 item. Használva testtudatosság + trauma + krónikus fájdalom kutatásokban.
+- **MAIA-2** — Mehling et al., 2018. 8 dimenzió × 37 item. Használva testtudatosság + trauma + krónikus fájdalom kutatásokban.
 - **TAS-20** — Bagby, Parker, Taylor, 1994. Alexitímia arany-standard.
 - **DES-II** — Carlson & Putnam, 1993. Disszociatív élmények szűrése.
 - **ECR-R** — Fraley, Waller, Brennan, 2000. Attachment researchre a legelterjedtebb.
