@@ -251,173 +251,7 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
   body{background:#fff}
 }
 </style>
-<script>
-/* ONI-CORE v3 — közös eredménytár + kezdő útvonal. Minden adat csak ebben a böngészőben marad. */
-window.ONI=window.ONI||(function(){
-  var K='onismeret-results-v1';
-  var PATH=[
-    {id:'ft',n:'Négy tendencia',href:'cselekves.html#test-ft',min:5,why:'hogyan reagálsz az elvárásokra'},
-    {id:'kolbe',n:'Cselekvési módok',href:'cselekves.html#test-kolbe',min:7,why:'hogyan fogsz neki egy feladatnak'},
-    {id:'ecr',n:'ECR-R · Kötődés',href:'terkepek.html#test-ecr',min:10,why:'közelség és távolság a kapcsolatokban'},
-    {id:'bf',n:'Big Five',href:'szemelyiseg.html#test-bf',min:12,why:'az öt alapvonás'},
-    {id:'pvq',n:'PVQ-21 · Értékek',href:'cselekves.html#test-pvq',min:6,why:'mi hajt valójában'}
-  ];
-  function all(){try{return JSON.parse(localStorage.getItem(K))||{}}catch(e){return {}}}
-  function r(x){return Math.round(x*100)/100}
-  var META='onismeret-meta-v1';
-  var IDKEY={maia2:'maia2-responses-v2',tas:'tas-20-responses-v1',des:'des-2-responses-v1',ecr:'ecr-r-responses-v1',kotodes:'attachment_assessment_v1',ysq:'ysq_autosave',smi:'smi-responses-v1',ssss:'ssss-responses-v1',sisses:'sis-ses-responses-v1',iief:'iief-responses-v1',pedt:'pedt-responses-v1',sdi:'sdi-2-responses-v1',nsss:'nsss-responses-v1',saq:'saq-responses-v1',love:'love-responses-v1',apo:'apo-responses-v1',imago:'imago-responses-v1',bf:'bf-responses-v1',via:'via-responses-v1',las:'las-responses-v1',tki:'conflict-responses-v1',gott:'gottman-responses-v1',fti:'fisher-responses-v1',pvq:'pvq21-responses-v1',ft:'four-tendencies-responses-v1',kolbe:'action-modes-responses-v1',meq:'meq-responses-v1',ips:'ips-responses-v1',ders:'ders-sf-responses-v1',scs:'scs-sf-responses-v1',tfeq:'tfeq-r18-responses-v1'};
-  function meta(){try{return JSON.parse(localStorage.getItem(META))||{}}catch(e){return {}}}
-  function sig(rec){return JSON.stringify(rec.d||{})+'|'+(rec.h||'');}
-  function save(id,rec,opts){
-    try{
-      opts=opts||{};
-      var a=all(),h=a[id]||[],m=meta();
-      rec.t=new Date().toISOString();
-      rec.sv=opts.sv||rec.sv||1;
-      var key=opts.key||IDKEY[id];
-      rec.done=(key&&m.ans&&m.ans[key])||rec.t;
-      if(rec.d)Object.keys(rec.d).forEach(function(k){var v=rec.d[k];if(v&&typeof v[1]==='number')v[1]=r(v[1]);});
-      var prev=h[h.length-1];
-      if(prev&&sig(prev)===sig(rec)&&(prev.sv||1)===rec.sv){ /* ugyanaz az eredmény újra megnyitva: nem új kitöltés */ }
-      else if(prev&&(prev.done||prev.t).slice(0,10)===rec.done.slice(0,10))h[h.length-1]=rec;else h.push(rec);
-      a[id]=h.slice(-24);
-      localStorage.setItem(K,JSON.stringify(a));
-    }catch(e){}
-    try{window.dispatchEvent(new CustomEvent('oni:saved',{detail:{id:id}}));}catch(e){}
-  }
-  function pathState(){var a=all();return PATH.map(function(p){return {id:p.id,n:p.n,href:p.href,min:p.min,why:p.why,done:!!(a[p.id]&&a[p.id].length)}});}
-  function banner(savedId){
-    var st=pathState(),inPath=st.some(function(p){return p.id===savedId});
-    if(!inPath)return;
-    var done=st.filter(function(p){return p.done}).length,next=st.filter(function(p){return !p.done})[0];
-    var old=document.getElementById('oni-path-banner');if(old)old.remove();
-    var el=document.createElement('div');el.id='oni-path-banner';
-    el.setAttribute('style','position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:9999;max-width:calc(100% - 24px);width:560px;display:flex;align-items:center;gap:14px;padding:14px 16px 14px 20px;border-radius:16px;background:rgba(10,20,40,.94);color:#e6ecf5;border:1px solid rgba(251,191,36,.55);box-shadow:0 12px 40px rgba(0,0,0,.45);font:500 14px/1.4 Manrope,Inter,system-ui,sans-serif;backdrop-filter:blur(10px)');
-    var dots=st.map(function(p){return '<span style="width:9px;height:9px;border-radius:50%;display:inline-block;background:'+(p.done?'#fbbf24':'rgba(148,163,184,.35)')+'"></span>'}).join('');
-    var body=next
-      ? '<div style="flex:1;min-width:0"><div style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#fbbf24;font-weight:700;display:flex;gap:6px;align-items:center">Kezdő útvonal · '+done+'/5 '+dots+'</div><div style="margin-top:3px">Következő: <strong>'+next.n+'</strong> <span style="color:#a3b3c8">(~'+next.min+' perc)</span></div></div><a href="'+next.href+'" style="flex:none;padding:10px 16px;border-radius:99px;background:#fbbf24;color:#0a1428;text-decoration:none;font-weight:700">Tovább ›</a>'
-      : '<div style="flex:1;min-width:0"><div style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#34d399;font-weight:700">Kezdő útvonal kész · 5/5</div><div style="margin-top:3px">Most már az összegzés valódi adatokból dolgozik.</div></div><a href="osszegzes.html" style="flex:none;padding:10px 16px;border-radius:99px;background:#34d399;color:#0a1428;text-decoration:none;font-weight:700">Összegzés ›</a>';
-    el.innerHTML=body+'<button type="button" aria-label="Bezár" style="flex:none;background:none;border:none;color:#6b7c94;font-size:20px;cursor:pointer;padding:0 2px">×</button>';
-    el.querySelector('button').onclick=function(){el.remove()};
-    document.body.appendChild(el);
-    if(next&&location.href.indexOf(next.href.split('#')[0])>-1){var a=el.querySelector('a');a.addEventListener('click',function(){setTimeout(function(){el.remove()},50)});}
-  }
-
-  /* ── Válaszidő rögzítése + látható mentési visszajelzés ── */
-  (function(){
-    try{
-      var proto=Storage.prototype,orig=proto.setItem,lastToast=0;
-      proto.setItem=function(k,v){
-        try{orig.call(this,k,v);}
-        catch(e){toast('A mentés nem sikerült ezen az eszközön (tele a tárhely vagy privát ablak?). Exportáld a válaszaidat a főoldalon.',true);throw e;}
-        if(this===window.localStorage&&/-responses-v\d+$|^ysq_autosave$|^attachment_assessment_v1$/.test(k)){
-          try{var m=JSON.parse(localStorage.getItem(META))||{};m.ans=m.ans||{};m.ans[k]=new Date().toISOString();orig.call(this,META,JSON.stringify(m));}catch(x){}
-          var now=Date.now();if(now-lastToast>6000){lastToast=now;toast('Mentve ezen az eszközön ✓');}
-        }
-      };
-    }catch(e){}
-    function toast(t,bad){
-      if(!document.body)return;
-      var el=document.getElementById('oni-toast');if(!el){el=document.createElement('div');el.id='oni-toast';document.body.appendChild(el);}
-      el.setAttribute('style','position:fixed;right:16px;top:16px;z-index:10000;max-width:320px;padding:9px 14px;border-radius:12px;font:500 12.5px/1.4 Manrope,Inter,system-ui,sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.35);transition:opacity .4s;opacity:1;'+(bad?'background:#4c0519;color:#fecdd3;border:1px solid #fb7185':'background:rgba(6,40,30,.92);color:#a7f3d0;border:1px solid rgba(52,211,153,.5)'));
-      el.textContent=t;clearTimeout(el._t);el._t=setTimeout(function(){el.style.opacity='0'},bad?9000:1800);
-    }
-    window.ONI_TOAST=toast;
-  })();
-
-  /* ── Kitöltés-segéd: folytatás az első megválaszolatlannál + fókusz mód ── */
-  (function(){
-    var focus=false,cur=0,units=[],bar=null,pill=null;
-    function scope(){return document.querySelector('.test-panel.active')||document.body;}
-    function scan(){
-      units=[].slice.call(scope().querySelectorAll('.q, .fc')).filter(function(u){return u.querySelector('button[data-n]')&&!u.parentElement.closest('.q, .fc');});
-      units.forEach(function(u){u.classList.add('oni-unit')});
-      return units.length>=5;
-    }
-    function answered(u){var g={};[].forEach.call(u.querySelectorAll('button[data-n]'),function(b){var n=b.getAttribute('data-n');g[n]=g[n]||b.classList.contains('selected')||b.classList.contains('active')||b.getAttribute('aria-checked')==='true';});return Object.keys(g).every(function(k){return g[k]});}
-    function firstOpen(){for(var i=0;i<units.length;i++)if(!answered(units[i]))return i;return -1;}
-    function css(){
-      if(document.getElementById('oni-fill-css'))return;
-      var st=document.createElement('style');st.id='oni-fill-css';
-      st.textContent='body.oni-focus .oni-unit:not(.oni-cur){display:none!important}body.oni-focus .test-panel.active .section-head,body.oni-focus .test-panel.active .intro-box{display:none}'+
-      'body.oni-focus .oni-unit.oni-cur{margin-top:18vh;transform:scale(1.02);box-shadow:0 0 0 2px rgba(251,191,36,.55),0 16px 48px rgba(0,0,0,.35)}'+
-      '.oni-unit.oni-flash{animation:oniFlash 1.6s ease}@keyframes oniFlash{0%,60%{box-shadow:0 0 0 3px rgba(251,191,36,.8)}100%{box-shadow:none}}'+
-      '.oni-btn{appearance:none;cursor:pointer;border:1px solid rgba(148,163,184,.35);background:rgba(10,20,40,.92);color:#e6ecf5;font:600 12.5px/1 Manrope,Inter,system-ui,sans-serif;padding:10px 14px;border-radius:99px;backdrop-filter:blur(8px)}'+
-      '.oni-btn:hover{border-color:#fbbf24}.oni-btn.pri{background:#fbbf24;color:#0a1428;border-color:#fbbf24}'+
-      '@media print{#oni-pill,#oni-focusbar,#oni-toast{display:none!important}}';
-      document.head.appendChild(st);
-    }
-    function mkPill(){
-      if(!pill){pill=document.createElement('div');pill.id='oni-pill';pill.setAttribute('style','position:fixed;left:14px;bottom:14px;z-index:9998;display:flex;gap:8px;flex-wrap:wrap;max-width:calc(100% - 28px)');document.body.appendChild(pill);}
-      if(focus||!scan()){pill.style.display='none';return;}
-      var i=firstOpen(),n=units.length,done=units.filter(answered).length;
-      pill.style.display='flex';
-      pill.innerHTML=(i>=0&&done>0?'<button class="oni-btn pri" id="oni-cont">Folytatás: '+(i+1)+'. kérdés ›</button>':'')+(i>=0?'<button class="oni-btn" id="oni-focus-on" title="Egyszerre egy kérdés, automatikus továbblépés, billentyűzettel is (1–9, ←/→)">Fókusz mód</button>':'');
-      var c=document.getElementById('oni-cont');if(c)c.onclick=function(){go(firstOpen(),true)};
-      var f=document.getElementById('oni-focus-on');if(f)f.onclick=function(){enter()};
-    }
-    function go(i,flash){if(i<0||!units[i])return;units[i].scrollIntoView({behavior:'smooth',block:'center'});if(flash){units[i].classList.remove('oni-flash');void units[i].offsetWidth;units[i].classList.add('oni-flash');}}
-    function show(i){
-      cur=Math.max(0,Math.min(units.length-1,i));
-      units.forEach(function(u,k){u.classList.toggle('oni-cur',k===cur)});
-      if(bar){var d=units.filter(answered).length;bar.querySelector('#oni-pos').textContent=(cur+1)+' / '+units.length+(d<units.length?' · '+(units.length-d)+' hiányzik':' · kész');}
-      window.scrollTo({top:units[cur].getBoundingClientRect().top+window.scrollY-window.innerHeight*0.18,behavior:'smooth'});
-    }
-    function enter(){
-      if(!scan())return;focus=true;document.body.classList.add('oni-focus');
-      bar=document.createElement('div');bar.id='oni-focusbar';
-      bar.setAttribute('style','position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:9999;display:flex;gap:8px;align-items:center;padding:8px;border-radius:99px;background:rgba(10,20,40,.94);border:1px solid rgba(251,191,36,.45);box-shadow:0 12px 40px rgba(0,0,0,.45)');
-      bar.innerHTML='<button class="oni-btn" id="oni-prev">‹ Előző</button><span id="oni-pos" style="color:#cbd5e1;font:600 12.5px Manrope,Inter,sans-serif;padding:0 8px;white-space:nowrap"></span><button class="oni-btn" id="oni-next">Következő ›</button><button class="oni-btn" id="oni-exit" title="Vissza a listanézethez">Lista</button>';
-      document.body.appendChild(bar);
-      bar.querySelector('#oni-prev').onclick=function(){show(cur-1)};
-      bar.querySelector('#oni-next').onclick=function(){next()};
-      bar.querySelector('#oni-exit').onclick=function(){exit()};
-      mkPill();var i=firstOpen();show(i<0?0:i);
-    }
-    function exit(scrollToEnd){
-      focus=false;document.body.classList.remove('oni-focus');units.forEach(function(u){u.classList.remove('oni-cur')});
-      if(bar){bar.remove();bar=null;}mkPill();
-      if(scrollToEnd){var sb=scope().querySelector('button[id$=show], button[id$=showResults], .results-trigger button');if(sb)sb.scrollIntoView({behavior:'smooth',block:'center'});}
-      else if(units[cur])go(cur);
-    }
-    function next(){
-      var open=firstOpen();
-      if(cur<units.length-1)show(cur+1);
-      else if(open>=0)show(open);
-      else exit(true);
-    }
-    document.addEventListener('click',function(e){
-      var t=e.target.closest&&e.target.closest('button[data-n]');
-      if(!t)return;
-      setTimeout(function(){
-        if(focus&&units[cur]&&units[cur].contains(t)&&answered(units[cur])){
-          var open=firstOpen();
-          if(open<0)exit(true);else if(cur<units.length-1)show(cur+1);else show(open);
-        } else if(!focus)mkPill();
-      },260);
-    },true);
-    document.addEventListener('keydown',function(e){
-      if(!focus||e.metaKey||e.ctrlKey||e.altKey||/input|textarea|select/i.test((e.target.tagName||'')))return;
-      if(e.key==='ArrowRight'){e.preventDefault();next();}
-      else if(e.key==='ArrowLeft'){e.preventDefault();show(cur-1);}
-      else if(e.key==='Escape'){exit();}
-      else if(/^[1-9]$/.test(e.key)){
-        var u=units[cur];if(!u)return;var btns=[].slice.call(u.querySelectorAll('button[data-n]'));
-        var groups={};btns.forEach(function(b){var n=b.getAttribute('data-n');(groups[n]=groups[n]||[]).push(b)});
-        var g=Object.keys(groups).map(function(k){return groups[k]}).filter(function(x){return !x.some(function(b){return b.classList.contains('selected')})})[0]||groups[Object.keys(groups)[0]];
-        var b=g[+e.key-1];if(b){e.preventDefault();b.click();}
-      }
-    });
-    function boot(){css();setTimeout(mkPill,600);}
-    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
-    window.addEventListener('hashchange',function(){if(focus)exit();setTimeout(mkPill,300)});
-    document.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('.hub-tab')){if(focus)exit();setTimeout(mkPill,300);}});
-  })();
-
-  window.addEventListener('oni:saved',function(e){setTimeout(function(){banner(e.detail.id)},900);});
-  return {K:K,all:all,save:save,r:r,PATH:PATH,pathState:pathState};
-})();
-</script>
+<script src="assets/oni-core.js"></script>
 </head>
 <body>
 
@@ -491,7 +325,7 @@ window.ONI=window.ONI||(function(){
       <p class="lead">Az NSSS két, egymástól független elégedettség-forrást mér: <em>Ego-fókuszú</em> elégedettség (a saját tapasztalataid a szex során — érzelmek, testi reakciók, orgazmus minősége) és <em>Partner/Aktivitás-fókuszú</em> elégedettség (a partner viselkedése, a szexuális repertoár, a kapcsolati dinamika). A kettő <em>nem</em> feltétlenül szinkronban van — és ez fontos információ.</p>
     </header>
     <div class="intro-box">
-      <p><strong>Kitöltési útmutató:</strong> Gondolj az <em>elmúlt 6 hónap</em> szexuális tapasztalataira. Ha jelenleg nincs partneri szexuális életed, gondolj az utolsó jelentős kapcsolatra, vagy hagyd üresen a partner-kérdéseket.</p>
+      <p><strong>Kitöltési útmutató:</strong> Gondolj az <em>elmúlt 6 hónap</em> szexuális tapasztalataira. Ha jelenleg nincs partneri szexuális életed, gondolj az utolsó jelentős kapcsolatra, vagy hagyd üresen a partner-kérdéseket. Ilyenkor csak a saját tapasztalat alskála kap eredményt, a partner-alskála és az összpontszám nem.</p>
       <p>Skála: <strong>1</strong> = nagyon elégedetlen → <strong>5</strong> = nagyon elégedett.</p>
       <div class="likert-info">
         <div class="likert-info-item"><span class="num">1</span><span class="lbl">nagyon elégedetlen</span></div>
@@ -501,7 +335,8 @@ window.ONI=window.ONI||(function(){
         <div class="likert-info-item"><span class="num">5</span><span class="lbl">nagyon elégedett</span></div>
       </div>
     </div>
-    <div class="progress-shell"><div class="progress-bar"><div class="progress-fill" id="nsss-progressFill"></div></div><div class="progress-text"><strong id="nsss-progressNum">0</strong> / 20</div></div>
+    <p id="nsss-partial" hidden style="font-size:13px;color:var(--gold-bright,#fbbf24);margin:0 0 10px">A saját tapasztalat kérdései megvannak. Az eredmény most már megnyitható, a partner-kérdések nélkül csak ezt az alskálát értékeljük.</p>
+<div class="progress-shell"><div class="progress-bar"><div class="progress-fill" id="nsss-progressFill"></div></div><div class="progress-text"><strong id="nsss-progressNum">0</strong> / 20</div></div>
     <div id="nsss-quiz"></div>
     <div class="results-trigger"><button class="btn-primary" id="nsss-showResults" disabled><em>Megmutatni</em> az eredményt</button></div>
     <div class="results" id="nsss-results">
@@ -712,10 +547,10 @@ function getCrossLinks(scores){
   const links=[];
   const pl=scores.PL/FACTORS.PL.max, pi=scores.PI/FACTORS.PI.max, od=scores.OD/FACTORS.OD.max;
   if(pl<0.4 && pi>=0.6){
-    links.push({label:'Alacsony PL + magas PI — kompenzáló minta lehet',text:`Gyenge érzelmi-romantikus önkép magas domináns-magabiztos önképpel együtt gyakran <em>kompenzáló struktúra</em>: az érzelmi sebezhetőség helyét a "power" tölti be. Érdemes az SMI Self-Aggrandizer és Vulnerable Child arányát megnézni (Build 2 · II. tab).`});
+    links.push({label:'Alacsony PL + magas PI — kompenzáló minta lehet',text:`Gyenge érzelmi-romantikus önkép magas domináns-magabiztos önképpel együtt gyakran <em>kompenzáló struktúra</em>: az érzelmi sebezhetőség helyét a "power" tölti be. Érdemes az SMI Self-Aggrandizer és Vulnerable Child arányát megnézni.`});
   }
   if(pl<0.4 && od<0.4){
-    links.push({label:'Alacsony PL + alacsony OD — érzelmi távolság',text:`Kombinált gyenge intimitás + gyenge nyitottság gyakran együtt jár elkerülő kötődéssel (ECR-R Avoidance magas · Build 2 · I. tab) és alexitímiával (TAS-20 · Build 2 · III. tab).`});
+    links.push({label:'Alacsony PL + alacsony OD — érzelmi távolság',text:`Kombinált gyenge intimitás + gyenge nyitottság gyakran együtt jár elkerülő kötődéssel (ECR-R elkerülés magas) és alexitímiával (TAS-20).`});
   }
   if(od<0.3){
     links.push({label:'Nagyon alacsony OD → SIS2 magas valószínűleg',text:`A zárt, gátolt szexuális önkép szinte mindig együtt jár magas SIS2 (külső gátlás) pontszámmal a Bancroft-modellben. Ha nem töltötted még ki, érdemes a SIS/SES-t is (előző hub).`});
@@ -841,8 +676,13 @@ function updateProgress(){
   const c=Object.keys(responses).length;
   document.getElementById('nsss-progressFill').style.width=(c/TOTAL*100)+'%';
   document.getElementById('nsss-progressNum').textContent=c;
-  document.getElementById('nsss-showResults').disabled=c<TOTAL;
+  document.getElementById('nsss-showResults').disabled=!egoDone();
+  const note=document.getElementById('nsss-partial');if(note)note.hidden=!(egoDone()&&!paDone());
 }
+/* Dokumentált szabály: az ego-alskála mind a 10 válasza kell. Ha a partner-alskála hiányos, azt és az összpontszámot nem számoljuk. */
+function subDone(s){return ITEMS.filter(it=>it.sub===s).every(it=>responses[it.n]!=null);}
+function egoDone(){return subDone('EGO');}
+function paDone(){return subDone('PA');}
 function scoreSub(s){return ITEMS.filter(it=>it.sub===s).reduce((sum,it)=>sum+(responses[it.n]||0),0);}
 function scoreTotal(){return ITEMS.reduce((sum,it)=>sum+(responses[it.n]||0),0);}
 // Male norms (Štulhofer 2010): total mean ~72-75, SD ~15. Cutoff for satisfaction: >60 satisfied
@@ -874,17 +714,17 @@ const INTERP = {
   PA:{
     high:`Erősen elégedett vagy a partneri/aktivitási dimenzióval — partner kezdeményez, kreatív, elérhető, orgazmus-képes; a szex változatos és kiegyensúlyozott.`,
     mid:`Közepesen elégedett vagy a partner-oldallal. Bizonyos aspektusok jól működnek, mások nem.`,
-    low:`Alacsony partneri/aktivitási elégedettség. Ha ez markánsan alacsonyabb, mint az EGO-oldal, a probléma <strong>a kapcsolatban</strong> van — vágy-eltérés, partner szexuális elérhetetlensége, kreativitás-hiány, egyensúly-hiány. Kommunikációs vagy párterápiás munka indokolt lehet.`
+    low:`Alacsony partneri/aktivitási elégedettség. Ha ez markánsan alacsonyabb, mint az EGO-oldal, a nehézség inkább <strong>a kapcsolati oldalon</strong> jelenhet meg — vágy-eltérés, partner szexuális elérhetetlensége, kreativitás-hiány, egyensúly-hiány. Kommunikációs vagy párterápiás munka indokolt lehet.`
   }
 };
 function getCrossLinks(scores){
   const links=[];
   const ego=scores.EGO, pa=scores.PA;
   if(ego<pa-10){
-    links.push({label:'EGO << PA — a saját élmény felől érdemes kérdezni',text:`A saját elégedettséged markánsan alacsonyabb a partner-oldalinál. Ez arra utalhat, hogy a nehézség inkább a saját élményedben (nyomás, figyelem, test) jelenik meg, mint a kapcsolatban. Nézd meg: IIEF-15 EF domén (Build 3 · I.), SAQ Sexual Monitoring (III. tab), TAS-20 (Build 2 · III.).`});
+    links.push({label:'EGO << PA — a saját élmény felől érdemes kérdezni',text:`A saját elégedettséged markánsan alacsonyabb a partner-oldalinál. Ez arra utalhat, hogy a nehézség inkább a saját élményedben (nyomás, figyelem, test) jelenik meg, mint a kapcsolatban. Nézd meg: IIEF-15 EF domén, SAQ Sexual Monitoring (III. tab), TAS-20.`});
   }
   if(pa<ego-10){
-    links.push({label:'PA << EGO — a probléma a kapcsolatban van',text:`A partneri/aktivitási oldal markánsan alacsonyabb, mint a saját. Neked megvan a "belső gépezet", csak a kapcsolati kontextus nem szolgál. Kérdés: vágy-eltérés, kommunikáció, partner szexuális elérhetetlensége — párterápia hasznos lehet.`});
+    links.push({label:'PA << EGO — a kapcsolati oldal felől érdemes kérdezni',text:`A partneri/aktivitási oldal markánsan alacsonyabb, mint a saját. Ez arra utalhat, hogy a nehézség inkább a kapcsolati kontextusban jelenik meg. Neked megvan a "belső gépezet", csak a kapcsolati kontextus nem szolgál. Kérdés: vágy-eltérés, kommunikáció, partner szexuális elérhetetlensége — párterápia hasznos lehet.`});
   }
   if(ego<30 && pa<30){
     links.push({label:'Mindkettő alacsony — átfogó szexuális distressz',text:`Mind a saját, mind a partneri oldal alacsony elégedettséget mutat. Ez lehet: kapcsolati krízis, funkcionális probléma (nézd meg IIEF/PEDT), vagy súlyosabb depressziós/burnout állapot. Szakmai konzultáció ajánlott.`});
@@ -913,6 +753,7 @@ function therapySuggestions(scores){
   return mods;
 }
 function renderResults(){
+  if(!paDone())return renderEgoOnly();
   const scores={EGO:scoreSub('EGO'),PA:scoreSub('PA'),total:scoreTotal()};
   try{ONI.save('nsss',{n:'NSSS',h:totalBand(scores.total).label,d:{total:['Szexuális elégedettség',scores.total,20,100],EGO:['Ego-fókuszú',scores.EGO,10,50],PA:['Partner- és aktivitásfókuszú',scores.PA,10,50]}});}catch(e){console.warn('ONI',e)}
   const tB=totalBand(scores.total);
@@ -938,7 +779,19 @@ function renderResults(){
   document.getElementById('nsss-results').classList.add('visible');
   setTimeout(()=>{document.getElementById('nsss-results').scrollIntoView({behavior:'smooth',block:'start'});},100);
 }
-document.getElementById('nsss-showResults').addEventListener('click',()=>{if(Object.keys(responses).length<TOTAL)return;renderResults();});
+function renderEgoOnly(){
+  const ego=scoreSub('EGO'),b=subBand(ego);
+  try{ONI.save('nsss',{n:'NSSS',h:'Csak az ego-alskála: '+b.label,d:{EGO:['Ego-fókuszú',ego,10,50]},x:{partial:true}});}catch(e){console.warn('ONI',e)}
+  const tc=document.getElementById('nsss-totalCard');tc.style.setProperty('--tc',b.color);
+  tc.innerHTML=`<div class="total-label">NSSS · csak a saját tapasztalat alskála</div><div class="total-value">${ego}</div><div class="total-out">/ 50</div><div class="total-band" style="background:${b.color}">${b.label}</div><p style="color:var(--ink-soft);font-size:14px;margin-top:16px;line-height:1.6">A partner- és aktivitásfókuszú kérdések nem mind kaptak választ, ezért azt az alskálát és az összpontszámot nem számoljuk. A saját tapasztalat alskála önmagában is értelmezhető.</p>`;
+  document.getElementById('nsss-scoresGrid').innerHTML=`<div class="score-card" style="--sc:${b.color}"><div class="abbr">Ego-Centered</div><h4><em>Saját tapasztalat</em></h4><div class="val">${ego}</div><div class="out">/ 50</div><div class="band">${b.label}</div><div class="bar"><div class="bar-fill" style="width:${ego/50*100}%"></div></div></div>`;
+  document.getElementById('nsss-interpCard').innerHTML=`<h3>Lehetséges <em>értelmezés</em></h3><div class="interp-section" style="--sc:${b.color}"><h4>Saját tapasztalat-elégedettség — ${b.label} (${ego}/50)</h4><p>${INTERP.EGO[b.key]}</p></div>`;
+  document.getElementById('nsss-cross-links').innerHTML='<p style="color:var(--ink-muted);font-style:italic">Keresztmintázat csak mindkét alskálával számolható.</p>';
+  document.getElementById('nsss-therapy-suggestions').innerHTML='';
+  document.getElementById('nsss-results').classList.add('visible');
+  setTimeout(()=>{document.getElementById('nsss-results').scrollIntoView({behavior:'smooth',block:'start'});},100);
+}
+document.getElementById('nsss-showResults').addEventListener('click',()=>{if(!egoDone())return;renderResults();});
 function reset(){if(!confirm('Biztos törlöd az NSSS válaszaidat?'))return;responses={};saveState();document.querySelectorAll('#test-nsss .scale-btn.selected').forEach(b=>b.classList.remove('selected'));document.getElementById('nsss-results').classList.remove('visible');updateProgress();window.scrollTo({top:0,behavior:'smooth'});}
 function downloadJSON(){
   const scores={EGO:scoreSub('EGO'),PA:scoreSub('PA'),total:scoreTotal()};
@@ -1078,8 +931,8 @@ const INTERP = {
 function getCrossLinks(scores){
   const links=[];
   if(scores.SM>=32){
-    links.push({label:'Magas Monitoring → IIEF-15 EF-domén megnézése',text:`Aktív spectator mode klinikailag korrelál pszichogén erekciós zavarral. Ha nem töltötted még ki az IIEF-15-öt (Build 3 · I.), most érdemes.`});
-    links.push({label:'SIS/SES: magas SIS1 valószínűleg',text:`A Sexual Monitoring és a SIS1 (Sexual Inhibition — teljesítmény-fenyegetés) szinte azonos jelenséget mérnek különböző szögből. Ha felvetted a SIS/SES-t (Build 1), az SIS1 pontszám valószínűleg magas.`});
+    links.push({label:'Magas Monitoring → IIEF-15 EF-domén megnézése',text:`Aktív spectator mode klinikailag korrelál pszichogén erekciós zavarral. Ha nem töltötted még ki az IIEF-15-öt, most érdemes.`});
+    links.push({label:'SIS/SES: magas SIS1 valószínűleg',text:`A Sexual Monitoring és a SIS1 (Sexual Inhibition — teljesítmény-fenyegetés) szinte azonos jelenséget mérnek különböző szögből. Ha felvetted a SIS/SES-t, az SIS1 pontszám valószínűleg magas.`});
   }
   if(scores.AS<=18 && scores.SM>=27){
     links.push({label:'Alacsony asszertivitás + magas monitorozás — compliant szexuális profil',text:`Nem meged kifejezni a vágyaidat + folyamatos aggodalom, hogyan látnak — ez klasszikus <em>people-pleaser</em> szexuális minta. SMI-n Compliant Surrenderer valószínűleg magas.`});
@@ -1088,10 +941,10 @@ function getCrossLinks(scores){
     links.push({label:'Egészséges introspektív profil',text:`Magas tudatosság + alacsony monitorozás = reflektálsz magadra, de nem szorongsz mások értékelése miatt. A legegészségesebb konfiguráció.`});
   }
   if(scores.SC<=18){
-    links.push({label:'TAS-20 megnézése — alexitímia szűrés',text:`Alacsony szexuális tudatosság gyakran együtt jár általános alexitímiával. Nézd meg a TAS-20-at (Build 2 · III.), különösen a DIF alskálát.`});
+    links.push({label:'TAS-20 megnézése — alexitímia szűrés',text:`Alacsony szexuális tudatosság gyakran együtt jár általános alexitímiával. Nézd meg a TAS-20-at, különösen a DIF alskálát.`});
   }
   if(scores.AS<=18){
-    links.push({label:'Kötődési profil — ECR-R',text:`Alacsony szexuális asszertivitás gyakori szorongásos kötődésnél (fear of losing partner if I ask) és elkerülő kötődésnél (nem szoktam kérni semmit). Nézd meg az ECR-R-t (Build 2 · I.).`});
+    links.push({label:'Kötődési profil — ECR-R',text:`Alacsony szexuális asszertivitás gyakori szorongásos kötődésnél (fear of losing partner if I ask) és elkerülő kötődésnél (nem szoktam kérni semmit). Nézd meg az ECR-R-t.`});
   }
   return links;
 }

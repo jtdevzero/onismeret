@@ -102,173 +102,7 @@ b.me,.pv.me{color:var(--gold)}b.pa,.pv.pa{color:var(--sapphire)}
 @media (max-width:560px){.pr{grid-template-columns:1fr 38px 1fr 38px}.pl{grid-column:1/-1}}
 </style>
 
-<script>
-/* ONI-CORE v3 — közös eredménytár + kezdő útvonal. Minden adat csak ebben a böngészőben marad. */
-window.ONI=window.ONI||(function(){
-  var K='onismeret-results-v1';
-  var PATH=[
-    {id:'ft',n:'Négy tendencia',href:'cselekves.html#test-ft',min:5,why:'hogyan reagálsz az elvárásokra'},
-    {id:'kolbe',n:'Cselekvési módok',href:'cselekves.html#test-kolbe',min:7,why:'hogyan fogsz neki egy feladatnak'},
-    {id:'ecr',n:'ECR-R · Kötődés',href:'terkepek.html#test-ecr',min:10,why:'közelség és távolság a kapcsolatokban'},
-    {id:'bf',n:'Big Five',href:'szemelyiseg.html#test-bf',min:12,why:'az öt alapvonás'},
-    {id:'pvq',n:'PVQ-21 · Értékek',href:'cselekves.html#test-pvq',min:6,why:'mi hajt valójában'}
-  ];
-  function all(){try{return JSON.parse(localStorage.getItem(K))||{}}catch(e){return {}}}
-  function r(x){return Math.round(x*100)/100}
-  var META='onismeret-meta-v1';
-  var IDKEY={maia2:'maia2-responses-v2',tas:'tas-20-responses-v1',des:'des-2-responses-v1',ecr:'ecr-r-responses-v1',kotodes:'attachment_assessment_v1',ysq:'ysq_autosave',smi:'smi-responses-v1',ssss:'ssss-responses-v1',sisses:'sis-ses-responses-v1',iief:'iief-responses-v1',pedt:'pedt-responses-v1',sdi:'sdi-2-responses-v1',nsss:'nsss-responses-v1',saq:'saq-responses-v1',love:'love-responses-v1',apo:'apo-responses-v1',imago:'imago-responses-v1',bf:'bf-responses-v1',via:'via-responses-v1',las:'las-responses-v1',tki:'conflict-responses-v1',gott:'gottman-responses-v1',fti:'fisher-responses-v1',pvq:'pvq21-responses-v1',ft:'four-tendencies-responses-v1',kolbe:'action-modes-responses-v1',meq:'meq-responses-v1',ips:'ips-responses-v1',ders:'ders-sf-responses-v1',scs:'scs-sf-responses-v1',tfeq:'tfeq-r18-responses-v1'};
-  function meta(){try{return JSON.parse(localStorage.getItem(META))||{}}catch(e){return {}}}
-  function sig(rec){return JSON.stringify(rec.d||{})+'|'+(rec.h||'');}
-  function save(id,rec,opts){
-    try{
-      opts=opts||{};
-      var a=all(),h=a[id]||[],m=meta();
-      rec.t=new Date().toISOString();
-      rec.sv=opts.sv||rec.sv||1;
-      var key=opts.key||IDKEY[id];
-      rec.done=(key&&m.ans&&m.ans[key])||rec.t;
-      if(rec.d)Object.keys(rec.d).forEach(function(k){var v=rec.d[k];if(v&&typeof v[1]==='number')v[1]=r(v[1]);});
-      var prev=h[h.length-1];
-      if(prev&&sig(prev)===sig(rec)&&(prev.sv||1)===rec.sv){ /* ugyanaz az eredmény újra megnyitva: nem új kitöltés */ }
-      else if(prev&&(prev.done||prev.t).slice(0,10)===rec.done.slice(0,10))h[h.length-1]=rec;else h.push(rec);
-      a[id]=h.slice(-24);
-      localStorage.setItem(K,JSON.stringify(a));
-    }catch(e){}
-    try{window.dispatchEvent(new CustomEvent('oni:saved',{detail:{id:id}}));}catch(e){}
-  }
-  function pathState(){var a=all();return PATH.map(function(p){return {id:p.id,n:p.n,href:p.href,min:p.min,why:p.why,done:!!(a[p.id]&&a[p.id].length)}});}
-  function banner(savedId){
-    var st=pathState(),inPath=st.some(function(p){return p.id===savedId});
-    if(!inPath)return;
-    var done=st.filter(function(p){return p.done}).length,next=st.filter(function(p){return !p.done})[0];
-    var old=document.getElementById('oni-path-banner');if(old)old.remove();
-    var el=document.createElement('div');el.id='oni-path-banner';
-    el.setAttribute('style','position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:9999;max-width:calc(100% - 24px);width:560px;display:flex;align-items:center;gap:14px;padding:14px 16px 14px 20px;border-radius:16px;background:rgba(10,20,40,.94);color:#e6ecf5;border:1px solid rgba(251,191,36,.55);box-shadow:0 12px 40px rgba(0,0,0,.45);font:500 14px/1.4 Manrope,Inter,system-ui,sans-serif;backdrop-filter:blur(10px)');
-    var dots=st.map(function(p){return '<span style="width:9px;height:9px;border-radius:50%;display:inline-block;background:'+(p.done?'#fbbf24':'rgba(148,163,184,.35)')+'"></span>'}).join('');
-    var body=next
-      ? '<div style="flex:1;min-width:0"><div style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#fbbf24;font-weight:700;display:flex;gap:6px;align-items:center">Kezdő útvonal · '+done+'/5 '+dots+'</div><div style="margin-top:3px">Következő: <strong>'+next.n+'</strong> <span style="color:#a3b3c8">(~'+next.min+' perc)</span></div></div><a href="'+next.href+'" style="flex:none;padding:10px 16px;border-radius:99px;background:#fbbf24;color:#0a1428;text-decoration:none;font-weight:700">Tovább ›</a>'
-      : '<div style="flex:1;min-width:0"><div style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#34d399;font-weight:700">Kezdő útvonal kész · 5/5</div><div style="margin-top:3px">Most már az összegzés valódi adatokból dolgozik.</div></div><a href="osszegzes.html" style="flex:none;padding:10px 16px;border-radius:99px;background:#34d399;color:#0a1428;text-decoration:none;font-weight:700">Összegzés ›</a>';
-    el.innerHTML=body+'<button type="button" aria-label="Bezár" style="flex:none;background:none;border:none;color:#6b7c94;font-size:20px;cursor:pointer;padding:0 2px">×</button>';
-    el.querySelector('button').onclick=function(){el.remove()};
-    document.body.appendChild(el);
-    if(next&&location.href.indexOf(next.href.split('#')[0])>-1){var a=el.querySelector('a');a.addEventListener('click',function(){setTimeout(function(){el.remove()},50)});}
-  }
-
-  /* ── Válaszidő rögzítése + látható mentési visszajelzés ── */
-  (function(){
-    try{
-      var proto=Storage.prototype,orig=proto.setItem,lastToast=0;
-      proto.setItem=function(k,v){
-        try{orig.call(this,k,v);}
-        catch(e){toast('A mentés nem sikerült ezen az eszközön (tele a tárhely vagy privát ablak?). Exportáld a válaszaidat a főoldalon.',true);throw e;}
-        if(this===window.localStorage&&/-responses-v\d+$|^ysq_autosave$|^attachment_assessment_v1$/.test(k)){
-          try{var m=JSON.parse(localStorage.getItem(META))||{};m.ans=m.ans||{};m.ans[k]=new Date().toISOString();orig.call(this,META,JSON.stringify(m));}catch(x){}
-          var now=Date.now();if(now-lastToast>6000){lastToast=now;toast('Mentve ezen az eszközön ✓');}
-        }
-      };
-    }catch(e){}
-    function toast(t,bad){
-      if(!document.body)return;
-      var el=document.getElementById('oni-toast');if(!el){el=document.createElement('div');el.id='oni-toast';document.body.appendChild(el);}
-      el.setAttribute('style','position:fixed;right:16px;top:16px;z-index:10000;max-width:320px;padding:9px 14px;border-radius:12px;font:500 12.5px/1.4 Manrope,Inter,system-ui,sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.35);transition:opacity .4s;opacity:1;'+(bad?'background:#4c0519;color:#fecdd3;border:1px solid #fb7185':'background:rgba(6,40,30,.92);color:#a7f3d0;border:1px solid rgba(52,211,153,.5)'));
-      el.textContent=t;clearTimeout(el._t);el._t=setTimeout(function(){el.style.opacity='0'},bad?9000:1800);
-    }
-    window.ONI_TOAST=toast;
-  })();
-
-  /* ── Kitöltés-segéd: folytatás az első megválaszolatlannál + fókusz mód ── */
-  (function(){
-    var focus=false,cur=0,units=[],bar=null,pill=null;
-    function scope(){return document.querySelector('.test-panel.active')||document.body;}
-    function scan(){
-      units=[].slice.call(scope().querySelectorAll('.q, .fc')).filter(function(u){return u.querySelector('button[data-n]')&&!u.parentElement.closest('.q, .fc');});
-      units.forEach(function(u){u.classList.add('oni-unit')});
-      return units.length>=5;
-    }
-    function answered(u){var g={};[].forEach.call(u.querySelectorAll('button[data-n]'),function(b){var n=b.getAttribute('data-n');g[n]=g[n]||b.classList.contains('selected')||b.classList.contains('active')||b.getAttribute('aria-checked')==='true';});return Object.keys(g).every(function(k){return g[k]});}
-    function firstOpen(){for(var i=0;i<units.length;i++)if(!answered(units[i]))return i;return -1;}
-    function css(){
-      if(document.getElementById('oni-fill-css'))return;
-      var st=document.createElement('style');st.id='oni-fill-css';
-      st.textContent='body.oni-focus .oni-unit:not(.oni-cur){display:none!important}body.oni-focus .test-panel.active .section-head,body.oni-focus .test-panel.active .intro-box{display:none}'+
-      'body.oni-focus .oni-unit.oni-cur{margin-top:18vh;transform:scale(1.02);box-shadow:0 0 0 2px rgba(251,191,36,.55),0 16px 48px rgba(0,0,0,.35)}'+
-      '.oni-unit.oni-flash{animation:oniFlash 1.6s ease}@keyframes oniFlash{0%,60%{box-shadow:0 0 0 3px rgba(251,191,36,.8)}100%{box-shadow:none}}'+
-      '.oni-btn{appearance:none;cursor:pointer;border:1px solid rgba(148,163,184,.35);background:rgba(10,20,40,.92);color:#e6ecf5;font:600 12.5px/1 Manrope,Inter,system-ui,sans-serif;padding:10px 14px;border-radius:99px;backdrop-filter:blur(8px)}'+
-      '.oni-btn:hover{border-color:#fbbf24}.oni-btn.pri{background:#fbbf24;color:#0a1428;border-color:#fbbf24}'+
-      '@media print{#oni-pill,#oni-focusbar,#oni-toast{display:none!important}}';
-      document.head.appendChild(st);
-    }
-    function mkPill(){
-      if(!pill){pill=document.createElement('div');pill.id='oni-pill';pill.setAttribute('style','position:fixed;left:14px;bottom:14px;z-index:9998;display:flex;gap:8px;flex-wrap:wrap;max-width:calc(100% - 28px)');document.body.appendChild(pill);}
-      if(focus||!scan()){pill.style.display='none';return;}
-      var i=firstOpen(),n=units.length,done=units.filter(answered).length;
-      pill.style.display='flex';
-      pill.innerHTML=(i>=0&&done>0?'<button class="oni-btn pri" id="oni-cont">Folytatás: '+(i+1)+'. kérdés ›</button>':'')+(i>=0?'<button class="oni-btn" id="oni-focus-on" title="Egyszerre egy kérdés, automatikus továbblépés, billentyűzettel is (1–9, ←/→)">Fókusz mód</button>':'');
-      var c=document.getElementById('oni-cont');if(c)c.onclick=function(){go(firstOpen(),true)};
-      var f=document.getElementById('oni-focus-on');if(f)f.onclick=function(){enter()};
-    }
-    function go(i,flash){if(i<0||!units[i])return;units[i].scrollIntoView({behavior:'smooth',block:'center'});if(flash){units[i].classList.remove('oni-flash');void units[i].offsetWidth;units[i].classList.add('oni-flash');}}
-    function show(i){
-      cur=Math.max(0,Math.min(units.length-1,i));
-      units.forEach(function(u,k){u.classList.toggle('oni-cur',k===cur)});
-      if(bar){var d=units.filter(answered).length;bar.querySelector('#oni-pos').textContent=(cur+1)+' / '+units.length+(d<units.length?' · '+(units.length-d)+' hiányzik':' · kész');}
-      window.scrollTo({top:units[cur].getBoundingClientRect().top+window.scrollY-window.innerHeight*0.18,behavior:'smooth'});
-    }
-    function enter(){
-      if(!scan())return;focus=true;document.body.classList.add('oni-focus');
-      bar=document.createElement('div');bar.id='oni-focusbar';
-      bar.setAttribute('style','position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:9999;display:flex;gap:8px;align-items:center;padding:8px;border-radius:99px;background:rgba(10,20,40,.94);border:1px solid rgba(251,191,36,.45);box-shadow:0 12px 40px rgba(0,0,0,.45)');
-      bar.innerHTML='<button class="oni-btn" id="oni-prev">‹ Előző</button><span id="oni-pos" style="color:#cbd5e1;font:600 12.5px Manrope,Inter,sans-serif;padding:0 8px;white-space:nowrap"></span><button class="oni-btn" id="oni-next">Következő ›</button><button class="oni-btn" id="oni-exit" title="Vissza a listanézethez">Lista</button>';
-      document.body.appendChild(bar);
-      bar.querySelector('#oni-prev').onclick=function(){show(cur-1)};
-      bar.querySelector('#oni-next').onclick=function(){next()};
-      bar.querySelector('#oni-exit').onclick=function(){exit()};
-      mkPill();var i=firstOpen();show(i<0?0:i);
-    }
-    function exit(scrollToEnd){
-      focus=false;document.body.classList.remove('oni-focus');units.forEach(function(u){u.classList.remove('oni-cur')});
-      if(bar){bar.remove();bar=null;}mkPill();
-      if(scrollToEnd){var sb=scope().querySelector('button[id$=show], button[id$=showResults], .results-trigger button');if(sb)sb.scrollIntoView({behavior:'smooth',block:'center'});}
-      else if(units[cur])go(cur);
-    }
-    function next(){
-      var open=firstOpen();
-      if(cur<units.length-1)show(cur+1);
-      else if(open>=0)show(open);
-      else exit(true);
-    }
-    document.addEventListener('click',function(e){
-      var t=e.target.closest&&e.target.closest('button[data-n]');
-      if(!t)return;
-      setTimeout(function(){
-        if(focus&&units[cur]&&units[cur].contains(t)&&answered(units[cur])){
-          var open=firstOpen();
-          if(open<0)exit(true);else if(cur<units.length-1)show(cur+1);else show(open);
-        } else if(!focus)mkPill();
-      },260);
-    },true);
-    document.addEventListener('keydown',function(e){
-      if(!focus||e.metaKey||e.ctrlKey||e.altKey||/input|textarea|select/i.test((e.target.tagName||'')))return;
-      if(e.key==='ArrowRight'){e.preventDefault();next();}
-      else if(e.key==='ArrowLeft'){e.preventDefault();show(cur-1);}
-      else if(e.key==='Escape'){exit();}
-      else if(/^[1-9]$/.test(e.key)){
-        var u=units[cur];if(!u)return;var btns=[].slice.call(u.querySelectorAll('button[data-n]'));
-        var groups={};btns.forEach(function(b){var n=b.getAttribute('data-n');(groups[n]=groups[n]||[]).push(b)});
-        var g=Object.keys(groups).map(function(k){return groups[k]}).filter(function(x){return !x.some(function(b){return b.classList.contains('selected')})})[0]||groups[Object.keys(groups)[0]];
-        var b=g[+e.key-1];if(b){e.preventDefault();b.click();}
-      }
-    });
-    function boot(){css();setTimeout(mkPill,600);}
-    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
-    window.addEventListener('hashchange',function(){if(focus)exit();setTimeout(mkPill,300)});
-    document.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('.hub-tab')){if(focus)exit();setTimeout(mkPill,300);}});
-  })();
-
-  window.addEventListener('oni:saved',function(e){setTimeout(function(){banner(e.detail.id)},900);});
-  return {K:K,all:all,save:save,r:r,PATH:PATH,pathState:pathState};
-})();
-</script>
+<script src="assets/oni-core.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -281,13 +115,14 @@ window.ONI=window.ONI||(function(){
     <h3>Hogyan működik</h3>
     <ol>
       <li>A párod a <strong>saját eszközén</strong> megnyitja ugyanezt az oldalt, és kitölti az alábbi párteszteket (legalább kettőt).</li>
-      <li>A főoldalon a <em>Mentés fájlba</em> gombbal elmenti az adatait, és elküldi neked a fájlt.</li>
+      <li>Ezen az oldalon a <em>Párexport</em> gombbal elmenti <strong>csak a párteszt-eredményeit</strong>, és elküldi neked a fájlt. (A főoldali teljes mentésfájl is működik, de abban minden adata benne van, a szexuális tesztek nyers válaszai is.)</li>
       <li>Itt betöltöd. Csak az <strong>összesített eredményei</strong> kerülnek be, a nyers válaszai nem. Az adat ebben a böngészőben marad, és bármikor törölheted.</li>
     </ol>
     <div class="loadrow">
       <input type="text" id="pname" placeholder="A párod neve (nem kötelező)" maxlength="40">
       <label class="btn" for="pfile">Párom mentésfájljának betöltése</label><input type="file" id="pfile" accept="application/json,.json" hidden>
       <button type="button" class="btn ghost" id="pclear" hidden>Pár adatainak törlése</button>
+      <button type="button" class="btn ghost" id="pexport" title="Csak a lenti pártesztek összesített eredményei, nyers válaszok nélkül">Párexport: a saját párteszt-eredményeim</button>
     </div>
     <p class="msg" id="pmsg" hidden></p>
   </div>
@@ -342,6 +177,14 @@ document.getElementById('pfile').addEventListener('change',ev=>{
   };r.readAsText(f);ev.target.value='';
 });
 document.getElementById('pname').addEventListener('change',e=>{if(P){P.name=e.target.value.trim();try{localStorage.setItem(PK,JSON.stringify(P))}catch(x){}render();}});
+document.getElementById('pexport').addEventListener('click',()=>{
+  const keep={};TESTS.forEach(([id])=>{if(ME[id])keep[id]=ME[id].map(r=>({t:r.t,done:r.done,h:r.h,d:r.d,x:r.x&&{primary:r.x.primary,secondary:r.x.secondary},qv:r.qv,sv:r.sv}))});
+  const n=Object.keys(keep).length;if(!n){msg('Még nincs kiértékelt párteszted, amit megoszthatnál.',true);return;}
+  if(!confirm(n+' párteszt összesített eredménye kerül a fájlba: '+TESTS.filter(([id])=>keep[id]).map(t=>t[1]).join(', ')+'. Nyers válaszok és más tesztek nem. Mehet?'))return;
+  const blob=new Blob([JSON.stringify({app:'onismeret',v:1,kind:'partner',exported:new Date().toISOString(),data:{'onismeret-results-v1':JSON.stringify(keep)}},null,1)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='onismeret-parexport-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();
+  msg(n+' párteszt eredménye elmentve. Ezt a fájlt küldd el a párodnak.');
+});
 document.getElementById('pclear').addEventListener('click',()=>{if(!confirm('Törlöd a párod betöltött eredményeit ebből a böngészőből?'))return;localStorage.removeItem(PK);P=null;msg('Törölve.');render();});
 
 /* ── Párdinamikai jelzések ── */

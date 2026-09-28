@@ -115,173 +115,7 @@ h2 em{font-style:italic;color:var(--gold)}
   body.rep-mode #report .cols{columns:2;column-gap:10pt}
 }
 </style>
-<script>
-/* ONI-CORE v3 — közös eredménytár + kezdő útvonal. Minden adat csak ebben a böngészőben marad. */
-window.ONI=window.ONI||(function(){
-  var K='onismeret-results-v1';
-  var PATH=[
-    {id:'ft',n:'Négy tendencia',href:'cselekves.html#test-ft',min:5,why:'hogyan reagálsz az elvárásokra'},
-    {id:'kolbe',n:'Cselekvési módok',href:'cselekves.html#test-kolbe',min:7,why:'hogyan fogsz neki egy feladatnak'},
-    {id:'ecr',n:'ECR-R · Kötődés',href:'terkepek.html#test-ecr',min:10,why:'közelség és távolság a kapcsolatokban'},
-    {id:'bf',n:'Big Five',href:'szemelyiseg.html#test-bf',min:12,why:'az öt alapvonás'},
-    {id:'pvq',n:'PVQ-21 · Értékek',href:'cselekves.html#test-pvq',min:6,why:'mi hajt valójában'}
-  ];
-  function all(){try{return JSON.parse(localStorage.getItem(K))||{}}catch(e){return {}}}
-  function r(x){return Math.round(x*100)/100}
-  var META='onismeret-meta-v1';
-  var IDKEY={maia2:'maia2-responses-v2',tas:'tas-20-responses-v1',des:'des-2-responses-v1',ecr:'ecr-r-responses-v1',kotodes:'attachment_assessment_v1',ysq:'ysq_autosave',smi:'smi-responses-v1',ssss:'ssss-responses-v1',sisses:'sis-ses-responses-v1',iief:'iief-responses-v1',pedt:'pedt-responses-v1',sdi:'sdi-2-responses-v1',nsss:'nsss-responses-v1',saq:'saq-responses-v1',love:'love-responses-v1',apo:'apo-responses-v1',imago:'imago-responses-v1',bf:'bf-responses-v1',via:'via-responses-v1',las:'las-responses-v1',tki:'conflict-responses-v1',gott:'gottman-responses-v1',fti:'fisher-responses-v1',pvq:'pvq21-responses-v1',ft:'four-tendencies-responses-v1',kolbe:'action-modes-responses-v1',meq:'meq-responses-v1',ips:'ips-responses-v1',ders:'ders-sf-responses-v1',scs:'scs-sf-responses-v1',tfeq:'tfeq-r18-responses-v1'};
-  function meta(){try{return JSON.parse(localStorage.getItem(META))||{}}catch(e){return {}}}
-  function sig(rec){return JSON.stringify(rec.d||{})+'|'+(rec.h||'');}
-  function save(id,rec,opts){
-    try{
-      opts=opts||{};
-      var a=all(),h=a[id]||[],m=meta();
-      rec.t=new Date().toISOString();
-      rec.sv=opts.sv||rec.sv||1;
-      var key=opts.key||IDKEY[id];
-      rec.done=(key&&m.ans&&m.ans[key])||rec.t;
-      if(rec.d)Object.keys(rec.d).forEach(function(k){var v=rec.d[k];if(v&&typeof v[1]==='number')v[1]=r(v[1]);});
-      var prev=h[h.length-1];
-      if(prev&&sig(prev)===sig(rec)&&(prev.sv||1)===rec.sv){ /* ugyanaz az eredmény újra megnyitva: nem új kitöltés */ }
-      else if(prev&&(prev.done||prev.t).slice(0,10)===rec.done.slice(0,10))h[h.length-1]=rec;else h.push(rec);
-      a[id]=h.slice(-24);
-      localStorage.setItem(K,JSON.stringify(a));
-    }catch(e){}
-    try{window.dispatchEvent(new CustomEvent('oni:saved',{detail:{id:id}}));}catch(e){}
-  }
-  function pathState(){var a=all();return PATH.map(function(p){return {id:p.id,n:p.n,href:p.href,min:p.min,why:p.why,done:!!(a[p.id]&&a[p.id].length)}});}
-  function banner(savedId){
-    var st=pathState(),inPath=st.some(function(p){return p.id===savedId});
-    if(!inPath)return;
-    var done=st.filter(function(p){return p.done}).length,next=st.filter(function(p){return !p.done})[0];
-    var old=document.getElementById('oni-path-banner');if(old)old.remove();
-    var el=document.createElement('div');el.id='oni-path-banner';
-    el.setAttribute('style','position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:9999;max-width:calc(100% - 24px);width:560px;display:flex;align-items:center;gap:14px;padding:14px 16px 14px 20px;border-radius:16px;background:rgba(10,20,40,.94);color:#e6ecf5;border:1px solid rgba(251,191,36,.55);box-shadow:0 12px 40px rgba(0,0,0,.45);font:500 14px/1.4 Manrope,Inter,system-ui,sans-serif;backdrop-filter:blur(10px)');
-    var dots=st.map(function(p){return '<span style="width:9px;height:9px;border-radius:50%;display:inline-block;background:'+(p.done?'#fbbf24':'rgba(148,163,184,.35)')+'"></span>'}).join('');
-    var body=next
-      ? '<div style="flex:1;min-width:0"><div style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#fbbf24;font-weight:700;display:flex;gap:6px;align-items:center">Kezdő útvonal · '+done+'/5 '+dots+'</div><div style="margin-top:3px">Következő: <strong>'+next.n+'</strong> <span style="color:#a3b3c8">(~'+next.min+' perc)</span></div></div><a href="'+next.href+'" style="flex:none;padding:10px 16px;border-radius:99px;background:#fbbf24;color:#0a1428;text-decoration:none;font-weight:700">Tovább ›</a>'
-      : '<div style="flex:1;min-width:0"><div style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#34d399;font-weight:700">Kezdő útvonal kész · 5/5</div><div style="margin-top:3px">Most már az összegzés valódi adatokból dolgozik.</div></div><a href="osszegzes.html" style="flex:none;padding:10px 16px;border-radius:99px;background:#34d399;color:#0a1428;text-decoration:none;font-weight:700">Összegzés ›</a>';
-    el.innerHTML=body+'<button type="button" aria-label="Bezár" style="flex:none;background:none;border:none;color:#6b7c94;font-size:20px;cursor:pointer;padding:0 2px">×</button>';
-    el.querySelector('button').onclick=function(){el.remove()};
-    document.body.appendChild(el);
-    if(next&&location.href.indexOf(next.href.split('#')[0])>-1){var a=el.querySelector('a');a.addEventListener('click',function(){setTimeout(function(){el.remove()},50)});}
-  }
-
-  /* ── Válaszidő rögzítése + látható mentési visszajelzés ── */
-  (function(){
-    try{
-      var proto=Storage.prototype,orig=proto.setItem,lastToast=0;
-      proto.setItem=function(k,v){
-        try{orig.call(this,k,v);}
-        catch(e){toast('A mentés nem sikerült ezen az eszközön (tele a tárhely vagy privát ablak?). Exportáld a válaszaidat a főoldalon.',true);throw e;}
-        if(this===window.localStorage&&/-responses-v\d+$|^ysq_autosave$|^attachment_assessment_v1$/.test(k)){
-          try{var m=JSON.parse(localStorage.getItem(META))||{};m.ans=m.ans||{};m.ans[k]=new Date().toISOString();orig.call(this,META,JSON.stringify(m));}catch(x){}
-          var now=Date.now();if(now-lastToast>6000){lastToast=now;toast('Mentve ezen az eszközön ✓');}
-        }
-      };
-    }catch(e){}
-    function toast(t,bad){
-      if(!document.body)return;
-      var el=document.getElementById('oni-toast');if(!el){el=document.createElement('div');el.id='oni-toast';document.body.appendChild(el);}
-      el.setAttribute('style','position:fixed;right:16px;top:16px;z-index:10000;max-width:320px;padding:9px 14px;border-radius:12px;font:500 12.5px/1.4 Manrope,Inter,system-ui,sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.35);transition:opacity .4s;opacity:1;'+(bad?'background:#4c0519;color:#fecdd3;border:1px solid #fb7185':'background:rgba(6,40,30,.92);color:#a7f3d0;border:1px solid rgba(52,211,153,.5)'));
-      el.textContent=t;clearTimeout(el._t);el._t=setTimeout(function(){el.style.opacity='0'},bad?9000:1800);
-    }
-    window.ONI_TOAST=toast;
-  })();
-
-  /* ── Kitöltés-segéd: folytatás az első megválaszolatlannál + fókusz mód ── */
-  (function(){
-    var focus=false,cur=0,units=[],bar=null,pill=null;
-    function scope(){return document.querySelector('.test-panel.active')||document.body;}
-    function scan(){
-      units=[].slice.call(scope().querySelectorAll('.q, .fc')).filter(function(u){return u.querySelector('button[data-n]')&&!u.parentElement.closest('.q, .fc');});
-      units.forEach(function(u){u.classList.add('oni-unit')});
-      return units.length>=5;
-    }
-    function answered(u){var g={};[].forEach.call(u.querySelectorAll('button[data-n]'),function(b){var n=b.getAttribute('data-n');g[n]=g[n]||b.classList.contains('selected')||b.classList.contains('active')||b.getAttribute('aria-checked')==='true';});return Object.keys(g).every(function(k){return g[k]});}
-    function firstOpen(){for(var i=0;i<units.length;i++)if(!answered(units[i]))return i;return -1;}
-    function css(){
-      if(document.getElementById('oni-fill-css'))return;
-      var st=document.createElement('style');st.id='oni-fill-css';
-      st.textContent='body.oni-focus .oni-unit:not(.oni-cur){display:none!important}body.oni-focus .test-panel.active .section-head,body.oni-focus .test-panel.active .intro-box{display:none}'+
-      'body.oni-focus .oni-unit.oni-cur{margin-top:18vh;transform:scale(1.02);box-shadow:0 0 0 2px rgba(251,191,36,.55),0 16px 48px rgba(0,0,0,.35)}'+
-      '.oni-unit.oni-flash{animation:oniFlash 1.6s ease}@keyframes oniFlash{0%,60%{box-shadow:0 0 0 3px rgba(251,191,36,.8)}100%{box-shadow:none}}'+
-      '.oni-btn{appearance:none;cursor:pointer;border:1px solid rgba(148,163,184,.35);background:rgba(10,20,40,.92);color:#e6ecf5;font:600 12.5px/1 Manrope,Inter,system-ui,sans-serif;padding:10px 14px;border-radius:99px;backdrop-filter:blur(8px)}'+
-      '.oni-btn:hover{border-color:#fbbf24}.oni-btn.pri{background:#fbbf24;color:#0a1428;border-color:#fbbf24}'+
-      '@media print{#oni-pill,#oni-focusbar,#oni-toast{display:none!important}}';
-      document.head.appendChild(st);
-    }
-    function mkPill(){
-      if(!pill){pill=document.createElement('div');pill.id='oni-pill';pill.setAttribute('style','position:fixed;left:14px;bottom:14px;z-index:9998;display:flex;gap:8px;flex-wrap:wrap;max-width:calc(100% - 28px)');document.body.appendChild(pill);}
-      if(focus||!scan()){pill.style.display='none';return;}
-      var i=firstOpen(),n=units.length,done=units.filter(answered).length;
-      pill.style.display='flex';
-      pill.innerHTML=(i>=0&&done>0?'<button class="oni-btn pri" id="oni-cont">Folytatás: '+(i+1)+'. kérdés ›</button>':'')+(i>=0?'<button class="oni-btn" id="oni-focus-on" title="Egyszerre egy kérdés, automatikus továbblépés, billentyűzettel is (1–9, ←/→)">Fókusz mód</button>':'');
-      var c=document.getElementById('oni-cont');if(c)c.onclick=function(){go(firstOpen(),true)};
-      var f=document.getElementById('oni-focus-on');if(f)f.onclick=function(){enter()};
-    }
-    function go(i,flash){if(i<0||!units[i])return;units[i].scrollIntoView({behavior:'smooth',block:'center'});if(flash){units[i].classList.remove('oni-flash');void units[i].offsetWidth;units[i].classList.add('oni-flash');}}
-    function show(i){
-      cur=Math.max(0,Math.min(units.length-1,i));
-      units.forEach(function(u,k){u.classList.toggle('oni-cur',k===cur)});
-      if(bar){var d=units.filter(answered).length;bar.querySelector('#oni-pos').textContent=(cur+1)+' / '+units.length+(d<units.length?' · '+(units.length-d)+' hiányzik':' · kész');}
-      window.scrollTo({top:units[cur].getBoundingClientRect().top+window.scrollY-window.innerHeight*0.18,behavior:'smooth'});
-    }
-    function enter(){
-      if(!scan())return;focus=true;document.body.classList.add('oni-focus');
-      bar=document.createElement('div');bar.id='oni-focusbar';
-      bar.setAttribute('style','position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:9999;display:flex;gap:8px;align-items:center;padding:8px;border-radius:99px;background:rgba(10,20,40,.94);border:1px solid rgba(251,191,36,.45);box-shadow:0 12px 40px rgba(0,0,0,.45)');
-      bar.innerHTML='<button class="oni-btn" id="oni-prev">‹ Előző</button><span id="oni-pos" style="color:#cbd5e1;font:600 12.5px Manrope,Inter,sans-serif;padding:0 8px;white-space:nowrap"></span><button class="oni-btn" id="oni-next">Következő ›</button><button class="oni-btn" id="oni-exit" title="Vissza a listanézethez">Lista</button>';
-      document.body.appendChild(bar);
-      bar.querySelector('#oni-prev').onclick=function(){show(cur-1)};
-      bar.querySelector('#oni-next').onclick=function(){next()};
-      bar.querySelector('#oni-exit').onclick=function(){exit()};
-      mkPill();var i=firstOpen();show(i<0?0:i);
-    }
-    function exit(scrollToEnd){
-      focus=false;document.body.classList.remove('oni-focus');units.forEach(function(u){u.classList.remove('oni-cur')});
-      if(bar){bar.remove();bar=null;}mkPill();
-      if(scrollToEnd){var sb=scope().querySelector('button[id$=show], button[id$=showResults], .results-trigger button');if(sb)sb.scrollIntoView({behavior:'smooth',block:'center'});}
-      else if(units[cur])go(cur);
-    }
-    function next(){
-      var open=firstOpen();
-      if(cur<units.length-1)show(cur+1);
-      else if(open>=0)show(open);
-      else exit(true);
-    }
-    document.addEventListener('click',function(e){
-      var t=e.target.closest&&e.target.closest('button[data-n]');
-      if(!t)return;
-      setTimeout(function(){
-        if(focus&&units[cur]&&units[cur].contains(t)&&answered(units[cur])){
-          var open=firstOpen();
-          if(open<0)exit(true);else if(cur<units.length-1)show(cur+1);else show(open);
-        } else if(!focus)mkPill();
-      },260);
-    },true);
-    document.addEventListener('keydown',function(e){
-      if(!focus||e.metaKey||e.ctrlKey||e.altKey||/input|textarea|select/i.test((e.target.tagName||'')))return;
-      if(e.key==='ArrowRight'){e.preventDefault();next();}
-      else if(e.key==='ArrowLeft'){e.preventDefault();show(cur-1);}
-      else if(e.key==='Escape'){exit();}
-      else if(/^[1-9]$/.test(e.key)){
-        var u=units[cur];if(!u)return;var btns=[].slice.call(u.querySelectorAll('button[data-n]'));
-        var groups={};btns.forEach(function(b){var n=b.getAttribute('data-n');(groups[n]=groups[n]||[]).push(b)});
-        var g=Object.keys(groups).map(function(k){return groups[k]}).filter(function(x){return !x.some(function(b){return b.classList.contains('selected')})})[0]||groups[Object.keys(groups)[0]];
-        var b=g[+e.key-1];if(b){e.preventDefault();b.click();}
-      }
-    });
-    function boot(){css();setTimeout(mkPill,600);}
-    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
-    window.addEventListener('hashchange',function(){if(focus)exit();setTimeout(mkPill,300)});
-    document.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('.hub-tab')){if(focus)exit();setTimeout(mkPill,300);}});
-  })();
-
-  window.addEventListener('oni:saved',function(e){setTimeout(function(){banner(e.detail.id)},900);});
-  return {K:K,all:all,save:save,r:r,PATH:PATH,pathState:pathState};
-})();
-</script>
+<script src="assets/oni-core.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -473,7 +307,7 @@ function render(){
   const pendingIds=REG.filter(r=>!last(r[1])&&hasResponses(r[4])).map(r=>r[1]);
   const dueIds=DUE_DAYS?doneIds.filter(id=>days(when(last(id)))>=DUE_DAYS):[];
   const retaken=doneIds.filter(id=>(store[id]||[]).length>1);
-  document.getElementById('statbar').innerHTML=`<span><strong>${doneIds.length}</strong>/ 31 teszt kiértékelve</span><span><strong>${retaken.length}</strong>többször kitöltve</span><span><strong>${dueIds.length}</strong>újramérhető</span><label class="rset">Újramérési emlékeztető: <select id="rset"><option value="0">ki</option><option value="90">90 nap</option><option value="180">180 nap</option><option value="365">1 év</option></select></label>`;
+  document.getElementById('statbar').innerHTML=`<span><strong>${doneIds.length}</strong>/ ${REG.length} teszt kiértékelve</span><span><strong>${retaken.length}</strong>többször kitöltve</span><span><strong>${dueIds.length}</strong>újramérhető</span><label class="rset">Újramérési emlékeztető: <select id="rset"><option value="0">ki</option><option value="90">90 nap</option><option value="180">180 nap</option><option value="365">1 év</option></select></label>`;
   const rs=document.getElementById('rset');rs.value=String(DUE_DAYS);rs.onchange=()=>{SET.retake=+rs.value;try{localStorage.setItem('onismeret-settings-v1',JSON.stringify(SET))}catch(e){}location.reload();};
   const root=document.getElementById('root');
   if(!doneIds.length){
@@ -501,13 +335,13 @@ function render(){
     if(!r&&!pend)return;
     if(cat!==curCat){h+=`<div class="cat-title">${cat}</div>`;curCat=cat;}
     if(!r){h+=`<div class="card test" style="--acc:var(--ink-mute)"><div class="nm"><a href="${link}">${name}</a></div><div class="meta">nincs kiértékelve</div><div class="pending">Van mentett válaszod, de az eredményt még nem nyitottad meg ezzel a verzióval. <a href="${link}">Nyisd meg, és kattints az eredményre</a>, akkor ide is bekerül.</div></div>`;return;}
-    const p=prev(id),dd=days(when(r)),due=!!DUE_DAYS&&dd>=DUE_DAYS;
+    const p0=prev(id),cmp=!p0||((p0.sv||1)===(r.sv||1)&&(p0.qv||1)===(r.qv||1)),p=cmp?p0:null,dd=days(when(r)),due=!!DUE_DAYS&&dd>=DUE_DAYS;
     const entries=Object.entries(r.d||{});
     const sorted=entries.length>8?entries.slice().sort((a,b)=>{const na=(a[1][1]-a[1][2])/((a[1][3]-a[1][2])||1),nb=(b[1][1]-b[1][2])/((b[1][3]-b[1][2])||1);return nb-na}):entries;
     const shown=sorted.slice(0,8),rest=sorted.slice(8);
     const acc=due?'#fb7185':'var(--gold)';
     h+=`<div class="card test" style="--acc:${acc}"><div class="nm"><a href="${link}">${name}</a>${due?`<span class="badge due">Újramérhető</span>`:(store[id].length>1?`<span class="badge fresh">${store[id].length}× kitöltve</span>`:'')}</div>
-      <div class="meta" title="Kitöltés ideje (utolsó válasz). Pontozási verzió: v${r.sv||1}">${fmt(when(r))} · ${dd===0?'ma':dd+' napja'}</div>
+      <div class="meta" title="Kitöltés ideje (utolsó válasz). Kérdéssor v${r.qv||1}, pontozás v${r.sv||1}">${fmt(when(r))} · ${dd===0?'ma':dd+' napja'}</div>${!cmp?`<div class="pending">Az előző kitöltés egy korábbi kérdéssor- vagy pontozásverzióval készült, ezért nem hasonlítom össze vele.</div>`:''}
       ${r.h?`<div class="hl"><strong>${esc(r.h)}</strong></div>`:''}
       ${r.x&&r.x.need?`<div class="hl">Kielégítetlen szükségletek: ${r.x.need.map(esc).join(' · ')}</div>`:''}
       ${entries.length?`<div class="dims">${shown.map(([k,d])=>dimHTML(id,d,p&&p.d&&p.d[k],acc,k)).join('')}</div>`:''}
@@ -518,7 +352,7 @@ function render(){
   const tl=[];Object.entries(store).forEach(([id,hist])=>hist.forEach(e=>tl.push({id,e})));
   tl.sort((a,b)=>when(b.e).localeCompare(when(a.e)));
   if(tl.length){
-    h+=`<h2><em>Idővonal</em></h2><p class="h2sub">Minden kiértékelés dátum szerint. A dátum a tényleges kitöltés (utolsó válasz) ideje. Egy napon belül ugyanannak a tesztnek csak az utolsó eredménye marad meg, és egy eredmény puszta újranyitása nem számít új kitöltésnek.</p><ul class="tl">${tl.slice(0,40).map(({id,e})=>`<li><span class="d">${fmt(when(e))}</span><strong>${esc(NAME[id]||e.n||id)}</strong>${e.h?' · '+esc(e.h):''}</li>`).join('')}</ul>`;
+    h+=`<h2><em>Idővonal</em></h2><p class="h2sub">Minden kiértékelés dátum szerint. A dátum a tényleges kitöltés (utolsó válasz) ideje. Egy napon belül ugyanannak a tesztnek csak az utolsó eredménye marad meg, és egy eredmény puszta újranyitása nem számít új kitöltésnek.</p><ul class="tl">${tl.slice(0,40).map(({id,e})=>`<li><span class="d">${fmt(when(e))}${(e.qv||1)<(last(id).qv||1)?' · korábbi kérdéssor-változat':''}${e.corrected?' · javított':''}</span><strong>${esc(NAME[id]||e.n||id)}</strong>${e.h?' · '+esc(e.h):''}</li>`).join('')}</ul>`;
   }
   root.innerHTML=h;
   root.querySelectorAll('.more').forEach(b=>{const orig=b.textContent;b.addEventListener('click',()=>{const el=document.getElementById('more-'+b.dataset.id);el.hidden=!el.hidden;b.textContent=el.hidden?orig:'− kevesebb';});});
@@ -551,8 +385,8 @@ function buildReport(ids,withPat,nm){
   }
   h+=`<h2>Eredmények tesztenként</h2><div class="cols">`;
   REG.filter(r=>inc.has(r[1])&&last(r[1])).forEach(([cat,id,name])=>{const r=last(id),p=prev(id);
-    const rows=Object.values(r.d||{}).map((d,i)=>{const k=Object.keys(r.d)[i];const pv=p&&p.d&&p.d[k]?p.d[k][1]:null;return `<tr><td>${esc(d[0])}</td><td class="v">${d[1]}${pv!==null&&pv!==d[1]?` <span style="color:#64748b">(előző: ${pv})</span>`:''}</td><td class="r">${d[2]}–${d[3]}</td></tr>`}).join('');
-    h+=`<div class="rt"><div class="rh"><span class="rn">${esc(name)}${MODEL.has(id)?' <span class="tag">saját itemek / nem validált</span>':''}</span><span class="rd">${fmt(when(r))} · v${r.sv||1}</span></div>${r.h?`<div class="rhl">${esc(r.h)}</div>`:''}${r.x&&r.x.need?`<div>Kielégítetlen szükségletek: ${r.x.need.map(esc).join('; ')}</div>`:''}${rows?`<table>${rows}</table>`:''}</div>`;});
+    const rows=Object.values(r.d||{}).map((d,i)=>{const k=Object.keys(r.d)[i];const pv=p&&(p.sv||1)===(r.sv||1)&&(p.qv||1)===(r.qv||1)&&p.d&&p.d[k]?p.d[k][1]:null;return `<tr><td>${esc(d[0])}</td><td class="v">${d[1]}${pv!==null&&pv!==d[1]?` <span style="color:#64748b">(előző: ${pv})</span>`:''}</td><td class="r">${d[2]}–${d[3]}</td></tr>`}).join('');
+    h+=`<div class="rt"><div class="rh"><span class="rn">${esc(name)}${MODEL.has(id)?' <span class="tag">saját itemek / nem validált</span>':''}</span><span class="rd">${fmt(when(r))} · kérdéssor v${r.qv||1} · pontozás v${r.sv||1}</span></div>${r.h?`<div class="rhl">${esc(r.h)}</div>`:''}${r.x&&r.x.need?`<div>Kielégítetlen szükségletek: ${r.x.need.map(esc).join('; ')}</div>`:''}${rows?`<table>${rows}</table>`:''}</div>`;});
   h+=`</div><div class="rfoot">Forrás: Önismereti térképek (jtdevzero.github.io/onismeret). A pontszámok nyers vagy átlagolt skálaértékek, a jobb oldali oszlop a skála terjedelmét mutatja. A minták heurisztikák: legalább két teszt egybehangzó jelzése, nem klinikai küszöbök. A „saját itemek” jelölésű eszközök modell-alapú, nem validált kérdőívek.</div>`;
   document.getElementById('report').innerHTML=h;
 }

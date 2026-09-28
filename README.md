@@ -90,6 +90,7 @@ Minden oldal önálló: inline CSS és JS, külső szerverhez nem fordul. A bet�
   - `ips-responses-v1`, `ders-sf-responses-v1`, `scs-sf-responses-v1`, `tfeq-r18-responses-v1`
   - `onismeret-meta-v1` — az utolsó válasz ideje tesztenként (ebből lesz a kitöltés dátuma)
   - `onismeret-settings-v1` — pl. az újramérési emlékeztető (ki / 90 / 180 / 365 nap)
+  - `onismeret-undo-v1` — az utolsó visszaállítás előtti állapot (7 napig)
   - `onismeret-partner-v1` — a párod betöltött összesített eredményei (a nyers válaszai nem)
   - `ysq_autosave`, `ysq_snapshots`, `ysq_log` stb. (YSQ)
   - `attachment_assessment_v1` (Kötődési mélytérkép)
@@ -220,6 +221,31 @@ Elérhető pár perc múlva: `https://jtdevzero.github.io/onismereti-terkepek/`
 - **TFEQ-R18** — Karlsson et al., 2000. Érzelmi evés, kontrollálatlan evés, kognitív visszafogás, 0–100. Validált. Nem étkezési zavar szűrése.
 
 Minden kérdőív magyar nyelvre lett adaptálva egyeztetett szakmai fordítással.
+
+---
+
+---
+
+## Fejlesztés
+
+```
+src/                 A motoros hub-oldalak forrása (engine.js, stílusok, hubs/*.hub.html + *.tests.js)
+assets/oni-core.js   Közös mag minden oldalon: eredménytár, kitöltési alkalmak, verziók, kitöltés-segéd, mentési visszajelzés
+tools/build.py       Hubok generálása + a közös mag bekötése minden oldalba
+tests/run.js         Automatikus ellenőrzés (Playwright)
+```
+
+- **Build:** `python3 tools/build.py`. A `kapcsolat.html`, `cselekves.html` és `szabalyozas.html` generált fájl, ezeket a `src/` mappában szerkeszd.
+- **Tesztek:** `npm i --no-save playwright && npx playwright install chromium && node tests/run.js`. Ellenőrzi az oldalak betöltését (JS-hiba, külső kérés), a mélylinkeket és a darabszámokat, a pontozási szélsőértékeket és a fordított tételeket, a kitöltési alkalmakat (újranyitás, javítás, azonos pontszámú újramérés, verzióváltás), az NSSS hiányos kitöltését, a mintaszabályokat, valamint az importot, a visszavonást és a párexportot. GitHub Actions minden feltöltéskor lefuttatja.
+- **Verziók:** ha egy teszt tételei vagy pontozása változik, emeld a verzióját az `assets/oni-core.js` `VERS` táblájában. Az eltérő verziójú eredményeket az összegzés nem hasonlítja össze.
+
+## Eredménykezelés
+
+- **Kitöltési alkalom:** minden kitöltés saját azonosítót kap. A dátuma az utolsó válasz ideje. Egy eredmény újranyitása nem új mérés, és nem változtatja a dátumot. Egy másik napon, azonos pontszámmal végzett újramérés viszont új bejegyzés. Az ugyanazon a napon módosított válaszok javításnak számítanak.
+- **Verzió:** minden eredmény mellett ott a kérdéssor- és a pontozásverzió, az exportban és a terapeuta-riportban is.
+- **NSSS:** ha a partner-kérdésekre nem mind válaszolsz, csak a saját tapasztalat alskála kap eredményt, a partner-alskála és az összpontszám nem.
+- **Visszaállítás:** tartalmi ellenőrzés tesztenként (kérdésazonosítók, értékek, dátumok, eredményszerkezet). Előtte automatikus visszavonási pont készül, amely 7 napig egy gombbal visszaállítható.
+- **Párexport** (Párban oldal): csak a párteszt-eredmények, nyers válaszok nélkül.
 
 ---
 
