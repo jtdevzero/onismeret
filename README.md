@@ -188,7 +188,7 @@ Elérhető pár perc múlva: `https://jtdevzero.github.io/onismereti-terkepek/`
 
 ## Klinikai háttér (rövid)
 
-- **MAIA-2** — Mehling et al., 2018. 8 dimenzió × 37 item. Használva testtudatosság + trauma + krónikus fájdalom kutatásokban.
+- **MAIA-2** — Mehling et al., 2018. 8 skála, 37 tétel, 0–5. 2026-09-ben tételenként az eredetihez igazítva (skálák, fordított tételek).
 - **TAS-20** — Bagby, Parker, Taylor, 1994. Alexitímia arany-standard.
 - **DES-II** — Carlson & Putnam, 1993. Disszociatív élmények szűrése.
 - **ECR-R** — Fraley, Waller, Brennan, 2000. Attachment researchre a legelterjedtebb.
