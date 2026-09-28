@@ -1,6 +1,6 @@
 # Önismereti térképek
 
-Huszonhét önismereti kérdőív magyarul, statikus HTML fájlok, GitHub Pages-en futtatható.
+Harmincegy önismereti kérdőív magyarul, statikus HTML fájlok, GitHub Pages-en futtatható.
 
 **Live:** [`https://jtdevzero.github.io/onismeret/`](https://jtdevzero.github.io/onismeret/) (miután a GitHub Pages be van kapcsolva: Settings → Pages → Branch: main → / (root))
 
@@ -37,8 +37,12 @@ Huszonhét önismereti kérdőív magyarul, statikus HTML fájlok, GitHub Pages-
 | | Négy tendencia (Rubin-modell, saját helyzetek) | 12 | `cselekves.html#test-ft` |
 | | Cselekvési módok (Kolbe-modell, saját itemek) | 24 | `cselekves.html#test-kolbe` |
 | | MEQ (kronotípus) | 19 | `cselekves.html#test-meq` |
+| **IX. Szabályozás és végrehajtás** | IPS (halogatás) | 9 | `szabalyozas.html#test-ips` |
+| | DERS-SF (érzelemszabályozás) | 18 | `szabalyozas.html#test-ders` |
+| | SCS-SF (önegyüttérzés) | 12 | `szabalyozas.html#test-scs` |
+| | TFEQ-R18 (evési viselkedés) | 18 | `szabalyozas.html#test-tfeq` |
 
-**Összesen: 27 teszt, 1088 kérdés, 8 témakör.**
+**Összesen: 31 teszt, 1145 kérdés, 9 témakör.**
 
 ---
 
@@ -60,7 +64,9 @@ self-knowledge-suite/
 ├── nyelvek.html        Love + Apology + Imago (hub, 3 fül)
 ├── szemelyiseg.html    Big Five + VIA (hub, 2 fül)
 ├── kapcsolat.html      LAS + Konfliktus + Gottman + Fisher (hub, 4 fül)
-└── cselekves.html      PVQ-21 + Négy tendencia + Cselekvési módok + MEQ (hub, 4 fül)
+├── cselekves.html      PVQ-21 + Négy tendencia + Cselekvési módok + MEQ (hub, 4 fül)
+├── szabalyozas.html    IPS + DERS-SF + SCS-SF + TFEQ-R18 (hub, 4 fül)
+└── par.html            Párkapcsolati mód: két profil egymás mellett
 ```
 
 Minden oldal önálló: inline CSS és JS, külső szerverhez nem fordul. A betűtípusok a `fonts/` mappából töltődnek. Ha egyetlen HTML-fájlt küldesz el valakinek, az mappa nélkül is működik, csak rendszerbetűkkel jelenik meg.
@@ -81,6 +87,8 @@ Minden oldal önálló: inline CSS és JS, külső szerverhez nem fordul. A bet�
   - `bf-responses-v1`, `via-responses-v1`
   - `las-responses-v1`, `conflict-responses-v1`, `gottman-responses-v1`, `fisher-responses-v1`
   - `pvq21-responses-v1`, `four-tendencies-responses-v1`, `action-modes-responses-v1`, `meq-responses-v1`
+  - `ips-responses-v1`, `ders-sf-responses-v1`, `scs-sf-responses-v1`, `tfeq-r18-responses-v1`
+  - `onismeret-partner-v1` — a párod betöltött összesített eredményei (a nyers válaszai nem)
   - `ysq_autosave`, `ysq_snapshots`, `ysq_log` stb. (YSQ)
   - `attachment_assessment_v1` (Kötődési mélytérkép)
   - `onismeret-results-v1` — közös eredménytár: minden teszt a kiértékeléskor ide menti a fő pontszámait dátummal (tesztenként legfeljebb 24 kitöltés, naponta egy). Ebből dolgozik az összegzés és az újramérés-jelzés.
@@ -89,10 +97,19 @@ Minden oldal önálló: inline CSS és JS, külső szerverhez nem fordul. A bet�
 
 ## Összegzés (`osszegzes.html`)
 
-- **Visszatérő minták:** 14 szabály, például szorongó vagy elkerülő kötődés, „indít, de nem zár le”, elemzési bénultság, teljesítmény-hajtás vagy önfeláldozó minta. Egy minta csak akkor jelenik meg, ha legalább két teszt ugyanabba az irányba mutat. A küszöbök heurisztikák, nem klinikai határértékek.
+- **Visszatérő minták:** 16 szabály, például szorongó vagy elkerülő kötődés, „indít, de nem zár le”, elemzési bénultság, teljesítmény-hajtás vagy önfeláldozó minta. Egy minta csak akkor jelenik meg, ha legalább két teszt ugyanabba az irányba mutat. A küszöbök heurisztikák, nem klinikai határértékek.
 - **Profil tesztenként** a legutóbbi eredménnyel, ▲▼ változással az előző kitöltéshez képest.
 - **Újramérés:** 90 nap után a főoldalon és az összegzésben is jelez.
 - **Idővonal** az összes kiértékelésről.
+- **Terapeuta-összefoglaló (PDF):** világos, nyomtatható riport a kiválasztott tesztekről és mintákról. Az érzékeny témák (szexuális tesztek, DES-II, TFEQ) alapból ki vannak kapcsolva.
+
+## Kezdő útvonal
+
+Öt teszt (Négy tendencia → Cselekvési módok → ECR-R → Big Five → PVQ-21, kb. 40 perc), amelyek az összegzés mintáinak alapját adják. A főoldalon panel mutatja az állást. Minden teszt kiértékelése után lent megjelenik a „Következő lépés” sáv.
+
+## Párban (`par.html`)
+
+A párod a saját eszközén kitölti a párteszteket (szeretet- és bocsánatkérési nyelvek, LAS, Gottman, konfliktusmódok, kötődés, Fisher, értékek, Négy tendencia, MEQ, Big Five), és elküldi a mentésfájlját. Betöltve csak az összesített eredményei kerülnek be. Az oldal egymás mellé teszi a két profilt, kiemeli a nagy eltéréseket, és párdinamikai jelzéseket ad (pl. szorongó–elkerülő csapda, eltérő szeretetnyelv, konfliktusmód-kombinációk, értékeltérések, kronotípus).
 - A régebben kitöltött teszteknél (a közös eredménytár előttről) az eredményt egyszer újra meg kell nyitni, hogy bekerüljön.
 
 ---
@@ -188,6 +205,10 @@ Elérhető pár perc múlva: `https://jtdevzero.github.io/onismereti-terkepek/`
 - **Négy tendencia** — Rubin, 2017. Saját helyzetkérdőív. A keretrendszer maga sem validált.
 - **Cselekvési módok** — Kolbe, 1990 modellje. A Kolbe A Index fizetős és jogvédett, ezért saját itemek, 1–10 skálára vetítve. Nem validált.
 - **MEQ** — Horne & Östberg, 1976. Kronotípus, 16–86 pont, 5 kategória. Validált.
+- **IPS** — Steel, 2010. Irracionális halogatás, 9–45. Validált.
+- **DERS-SF** — Kaufman et al., 2016 (Gratz & Roemer, 2004 alapján). 6 terület × 3 tétel. Validált.
+- **SCS-SF** — Raes et al., 2011 (Neff, 2003). Önegyüttérzés, 12 tétel. Validált.
+- **TFEQ-R18** — Karlsson et al., 2000. Érzelmi evés, kontrollálatlan evés, kognitív visszafogás, 0–100. Validált. Nem étkezési zavar szűrése.
 
 Minden kérdőív magyar nyelvre lett adaptálva egyeztetett szakmai fordítással.
 

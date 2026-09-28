@@ -75,11 +75,54 @@ h2 em{font-style:italic;color:var(--gold)}
 .note{font-size:12.5px;color:var(--ink-mute);margin-top:40px;line-height:1.7;border-top:1px dashed var(--line);padding-top:20px}
 @media (max-width:560px){.wrap{padding:28px 16px 64px}.card{padding:18px 16px}.test{grid-template-columns:1fr}.test .meta{text-align:left}.dims{grid-template-columns:1fr}}
 @media print{.back,.more{display:none}body{background:#fff;color:#000}.card{break-inside:avoid}}
+.rep h3{font-family:var(--font-serif);font-weight:500;font-size:21px;margin-bottom:6px}
+.rep p{color:var(--ink-soft);font-size:14px;margin-bottom:12px}
+.rep-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:4px 16px;margin:10px 0 14px}
+.rep-grid label{font-size:13.5px;color:var(--ink-soft);display:flex;gap:8px;align-items:center;cursor:pointer}
+.rep-grid label.sens span::after{content:' · érzékeny';color:#fda4af;font-size:11px}
+.rep-grid .rc{grid-column:1/-1;font-family:var(--font-serif);font-style:italic;color:var(--gold);font-size:14px;margin-top:8px}
+.rep-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.rep-row input[type=text]{flex:1 1 220px;background:rgba(5,13,30,.6);border:1px solid var(--line);border-radius:10px;padding:10px 14px;color:var(--ink);font:inherit;font-size:14px}
+.rep-btn{appearance:none;cursor:pointer;font:inherit;font-size:13.5px;font-weight:700;padding:10px 18px;border-radius:99px;border:none;background:var(--gold);color:#0a1428}
+.rep-link{appearance:none;background:none;border:none;color:var(--sapphire);cursor:pointer;font:inherit;font-size:12.5px}
+#report{display:none}
+@media print{
+  @page{size:A4;margin:14mm}
+  body.rep-mode{background:#fff!important}
+  body.rep-mode .wrap{padding:0!important;max-width:none}
+  body.rep-mode .wrap > *:not(#report){display:none!important}
+  body.rep-mode #report{display:block!important;width:100%;color:#0f172a;font-family:'Inter','Manrope',Helvetica,sans-serif;font-size:10.5pt;line-height:1.45}
+  body.rep-mode #report h1{font-family:'Cardo','Fraunces',Georgia,serif;font-size:20pt;font-weight:700;margin:0 0 2pt;color:#0f172a;letter-spacing:0}
+  body.rep-mode #report .rsub{color:#475569;font-size:9.5pt;margin-bottom:10pt}
+  body.rep-mode #report h2{font-family:'Cardo','Fraunces',Georgia,serif;font-size:13pt;margin:12pt 0 5pt;padding-bottom:2pt;border-bottom:1.5pt solid #0f172a;color:#0f172a}
+  body.rep-mode #report .rp{margin:0 0 6pt;break-inside:avoid}
+  body.rep-mode #report .rp b{color:#0f172a}
+  body.rep-mode #report .rp .ev{color:#475569;font-size:9pt}
+  body.rep-mode #report .rt{break-inside:avoid;margin:0 0 7pt;padding:5pt 7pt;border:0.75pt solid #cbd5e1;border-radius:3pt}
+  body.rep-mode #report .rt .rh{display:flex;justify-content:space-between;gap:8pt}
+  body.rep-mode #report .rt .rn{font-weight:700}
+  body.rep-mode #report .rt .rd{color:#64748b;font-size:8.5pt;white-space:nowrap}
+  body.rep-mode #report .rt .rhl{color:#1e3a8a;font-weight:600;margin:1pt 0 3pt}
+  body.rep-mode #report .rt table{width:100%;border-collapse:collapse;font-size:9pt}
+  body.rep-mode #report .rt td{padding:1pt 4pt 1pt 0;vertical-align:top}
+  body.rep-mode #report .rt td.v{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;width:1%}
+  body.rep-mode #report .rt td.r{color:#94a3b8;white-space:nowrap;width:1%;padding-left:6pt}
+  body.rep-mode #report .tag{font-size:8pt;color:#9a3412;font-weight:600}
+  body.rep-mode #report .rfoot{margin-top:12pt;padding-top:5pt;border-top:0.75pt solid #cbd5e1;color:#64748b;font-size:8.5pt}
+  body.rep-mode #report .cols{columns:2;column-gap:10pt}
+}
 </style>
 <script>
-/* ONI-CORE v1 — közös eredménytár: minden teszt ide menti a fő pontszámait (csak ebben a böngészőben). */
+/* ONI-CORE v2 — közös eredménytár + kezdő útvonal. Minden adat csak ebben a böngészőben marad. */
 window.ONI=window.ONI||(function(){
   var K='onismeret-results-v1';
+  var PATH=[
+    {id:'ft',n:'Négy tendencia',href:'cselekves.html#test-ft',min:5,why:'hogyan reagálsz az elvárásokra'},
+    {id:'kolbe',n:'Cselekvési módok',href:'cselekves.html#test-kolbe',min:7,why:'hogyan fogsz neki egy feladatnak'},
+    {id:'ecr',n:'ECR-R · Kötődés',href:'terkepek.html#test-ecr',min:10,why:'közelség és távolság a kapcsolatokban'},
+    {id:'bf',n:'Big Five',href:'szemelyiseg.html#test-bf',min:12,why:'az öt alapvonás'},
+    {id:'pvq',n:'PVQ-21 · Értékek',href:'cselekves.html#test-pvq',min:6,why:'mi hajt valójában'}
+  ];
   function all(){try{return JSON.parse(localStorage.getItem(K))||{}}catch(e){return {}}}
   function r(x){return Math.round(x*100)/100}
   function save(id,rec){
@@ -91,8 +134,27 @@ window.ONI=window.ONI||(function(){
       a[id]=h.slice(-24);
       localStorage.setItem(K,JSON.stringify(a));
     }catch(e){}
+    try{window.dispatchEvent(new CustomEvent('oni:saved',{detail:{id:id}}));}catch(e){}
   }
-  return {K:K,all:all,save:save,r:r};
+  function pathState(){var a=all();return PATH.map(function(p){return {id:p.id,n:p.n,href:p.href,min:p.min,why:p.why,done:!!(a[p.id]&&a[p.id].length)}});}
+  function banner(savedId){
+    var st=pathState(),inPath=st.some(function(p){return p.id===savedId});
+    if(!inPath)return;
+    var done=st.filter(function(p){return p.done}).length,next=st.filter(function(p){return !p.done})[0];
+    var old=document.getElementById('oni-path-banner');if(old)old.remove();
+    var el=document.createElement('div');el.id='oni-path-banner';
+    el.setAttribute('style','position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:9999;max-width:calc(100% - 24px);width:560px;display:flex;align-items:center;gap:14px;padding:14px 16px 14px 20px;border-radius:16px;background:rgba(10,20,40,.94);color:#e6ecf5;border:1px solid rgba(251,191,36,.55);box-shadow:0 12px 40px rgba(0,0,0,.45);font:500 14px/1.4 Manrope,Inter,system-ui,sans-serif;backdrop-filter:blur(10px)');
+    var dots=st.map(function(p){return '<span style="width:9px;height:9px;border-radius:50%;display:inline-block;background:'+(p.done?'#fbbf24':'rgba(148,163,184,.35)')+'"></span>'}).join('');
+    var body=next
+      ? '<div style="flex:1;min-width:0"><div style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#fbbf24;font-weight:700;display:flex;gap:6px;align-items:center">Kezdő útvonal · '+done+'/5 '+dots+'</div><div style="margin-top:3px">Következő: <strong>'+next.n+'</strong> <span style="color:#a3b3c8">(~'+next.min+' perc)</span></div></div><a href="'+next.href+'" style="flex:none;padding:10px 16px;border-radius:99px;background:#fbbf24;color:#0a1428;text-decoration:none;font-weight:700">Tovább ›</a>'
+      : '<div style="flex:1;min-width:0"><div style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#34d399;font-weight:700">Kezdő útvonal kész · 5/5</div><div style="margin-top:3px">Most már az összegzés valódi adatokból dolgozik.</div></div><a href="osszegzes.html" style="flex:none;padding:10px 16px;border-radius:99px;background:#34d399;color:#0a1428;text-decoration:none;font-weight:700">Összegzés ›</a>';
+    el.innerHTML=body+'<button type="button" aria-label="Bezár" style="flex:none;background:none;border:none;color:#6b7c94;font-size:20px;cursor:pointer;padding:0 2px">×</button>';
+    el.querySelector('button').onclick=function(){el.remove()};
+    document.body.appendChild(el);
+    if(next&&location.href.indexOf(next.href.split('#')[0])>-1){var a=el.querySelector('a');a.addEventListener('click',function(){setTimeout(function(){el.remove()},50)});}
+  }
+  window.addEventListener('oni:saved',function(e){setTimeout(function(){banner(e.detail.id)},900);});
+  return {K:K,all:all,save:save,r:r,PATH:PATH,pathState:pathState};
 })();
 </script>
 </head>
@@ -104,6 +166,14 @@ window.ONI=window.ONI||(function(){
   <p class="lead">Itt jelennek meg egymás mellett a kitöltött tesztek eredményei: a visszatérő minták, amelyeket több teszt is jelez, a változás az előző kitöltéshez képest, és hogy mit érdemes újramérni. Minden adat csak ebben a böngészőben van.</p>
   <div class="statbar" id="statbar"></div>
   <div id="root"></div>
+  <div class="card rep" id="rep-ui" style="--acc:var(--sapphire);margin-top:44px">
+    <h3>Terapeuta-összefoglaló (PDF)</h3>
+    <p>Egy tömör, világos hátterű, nyomtatható összefoglaló a kiválasztott tesztekről és a visszatérő mintákról. A nyomtatási ablakban válaszd a <em>Mentés PDF-ként</em> lehetőséget. Az érzékeny témák alapból ki vannak kapcsolva, te döntöd el, mi kerül bele.</p>
+    <div class="rep-row"><input type="text" id="rep-name" placeholder="Név a riporton (nem kötelező)" maxlength="60"><button type="button" class="rep-btn" id="rep-print">Nyomtatás / PDF mentése</button></div>
+    <div class="rep-grid" id="rep-grid"></div>
+    <div class="rep-row"><label style="font-size:13.5px;color:var(--ink-soft);display:flex;gap:8px;align-items:center"><input type="checkbox" id="rep-pat" checked> Visszatérő minták (csak a kiválasztott tesztekből)</label><button type="button" class="rep-link" id="rep-all">mindet kijelöl</button><button type="button" class="rep-link" id="rep-none">egyiket sem</button></div>
+  </div>
+  <div id="report"></div>
   <p class="note">A minták <strong>heurisztikák</strong>: egy minta akkor jelenik meg, ha legalább két független teszt ugyanabba az irányba mutat. A küszöbök tájékoztató jellegűek, nem klinikai határértékek. A „saját itemek” jelölésű tesztek (konfliktusmódok, Gottman, Fisher, Négy tendencia, Cselekvési módok) nem validált mérések. Egy minta kérdést vet fel, nem diagnózist mond ki. Az újramérést 90 nap után jelzi.</p>
 </div>
 <script>
@@ -136,7 +206,11 @@ const REG=[
   ['Értékek, cselekvés, ritmus','pvq','PVQ-21 · Értékek','cselekves.html#test-pvq','pvq21-responses-v1'],
   ['Értékek, cselekvés, ritmus','ft','Négy tendencia','cselekves.html#test-ft','four-tendencies-responses-v1'],
   ['Értékek, cselekvés, ritmus','kolbe','Cselekvési módok','cselekves.html#test-kolbe','action-modes-responses-v1'],
-  ['Értékek, cselekvés, ritmus','meq','MEQ · Kronotípus','cselekves.html#test-meq','meq-responses-v1']
+  ['Értékek, cselekvés, ritmus','meq','MEQ · Kronotípus','cselekves.html#test-meq','meq-responses-v1'],
+  ['Szabályozás és végrehajtás','ips','IPS · Halogatás','szabalyozas.html#test-ips','ips-responses-v1'],
+  ['Szabályozás és végrehajtás','ders','DERS-SF · Érzelemszabályozás','szabalyozas.html#test-ders','ders-sf-responses-v1'],
+  ['Szabályozás és végrehajtás','scs','SCS-SF · Önegyüttérzés','szabalyozas.html#test-scs','scs-sf-responses-v1'],
+  ['Szabályozás és végrehajtás','tfeq','TFEQ-R18 · Evési viselkedés','szabalyozas.html#test-tfeq','tfeq-r18-responses-v1']
 ];
 const NAME=Object.fromEntries(REG.map(r=>[r[1],r[2]]));
 const LINK=Object.fromEntries(REG.map(r=>[r[1],r[3]]));
@@ -170,11 +244,11 @@ const RULES=[
   text:'Feszült helyzetben lekapcsolsz vagy kilépsz. Ez gyakran nem döntés, hanem túlterhelődés (elárasztás). A másik oldal viszont ezt elutasításként éli meg, és jellemzően erősebben nyomul, ami tovább erősíti a kivonulást.',
   action:'Vezess be egy <b>bejelentett szünetet</b>: „Most túl sok, 20 perc múlva visszajövök.” A kivonulás így nem büntetésnek, hanem szabályozásnak látszik.'},
  {id:'finish',title:'Indít, de nem zár le',acc:'#fbbf24',min:2,
-  sig:[S('kolbe','Gyorsindító ≥ 7',()=>val('kolbe','qs')>=7),S('kolbe','Rendszerező ≤ 4',()=>val('kolbe','ft')!==null&&val('kolbe','ft')<=4),S('bf','Lelkiismeretesség ≤ 36/60',()=>val('bf','C')!==null&&val('bf','C')<=36),S('ft','Kötelességtudó vagy Lázadó tendencia',()=>{const r=last('ft');return r&&r.x&&(r.x.primary==='O'||r.x.primary==='R')}),S('ysq','Elégtelen önkontroll séma ≥ 4,5',()=>val('ysq','is')>=4.5),S('fti','Felfedező temperamentum ≥ 38',()=>val('fti','exp')>=38)],
+  sig:[S('kolbe','Gyorsindító ≥ 7',()=>val('kolbe','qs')>=7),S('kolbe','Rendszerező ≤ 4',()=>val('kolbe','ft')!==null&&val('kolbe','ft')<=4),S('bf','Lelkiismeretesség ≤ 36/60',()=>val('bf','C')!==null&&val('bf','C')<=36),S('ft','Kötelességtudó vagy Lázadó tendencia',()=>{const r=last('ft');return r&&r.x&&(r.x.primary==='O'||r.x.primary==='R')}),S('ysq','Elégtelen önkontroll séma ≥ 4,5',()=>val('ysq','is')>=4.5),S('fti','Felfedező temperamentum ≥ 38',()=>val('fti','exp')>=38),S('ips','IPS halogatás ≥ 28',()=>val('ips','total')>=28)],
   text:'Az indítás energiája erős, a befejezéshez szükséges struktúra gyenge. Új ötletnél megugrik a motiváció, a lezárás fázisában elfogy. Ilyenkor a több tervezés nem segít: a tervezés maga is indítás, amely ugyanúgy jutalmaz.',
   action:'A befejezést ne akaraterőre bízd: <b>külső lezárási pont</b> kell (határidő valakinek, fizetett vállalás, heti beszámoló), vagy egy Rendszerező alkatú partner. Új projekt csak egy régi lezárása után.'},
  {id:'paralysis',title:'Elemzési bénultság',acc:'#818cf8',min:2,
-  sig:[S('kolbe','Tényfeltáró ≥ 7',()=>val('kolbe','ff')>=7),S('kolbe','Gyorsindító ≤ 4',()=>val('kolbe','qs')!==null&&val('kolbe','qs')<=4),S('ft','Kérdező tendencia',()=>{const r=last('ft');return r&&r.x&&r.x.primary==='Q'}),S('ysq','Könyörtelen mércék ≥ 4,5',()=>val('ysq','us')>=4.5)],
+  sig:[S('kolbe','Tényfeltáró ≥ 7',()=>val('kolbe','ff')>=7),S('kolbe','Gyorsindító ≤ 4',()=>val('kolbe','qs')!==null&&val('kolbe','qs')<=4),S('ft','Kérdező tendencia',()=>{const r=last('ft');return r&&r.x&&r.x.primary==='Q'}),S('ysq','Könyörtelen mércék ≥ 4,5',()=>val('ysq','us')>=4.5),S('ips','IPS halogatás ≥ 28',()=>val('ips','total')>=28)],
   text:'A döntés előtti információgyűjtés nálad biztonságot ad, de könnyen a döntés helyettesítőjévé válik. Mindig van még egy szempont, egy adat, egy jobb megoldás.',
   action:'Minden döntésnél írd fel előre: <b>meddig gyűjtök, és milyen információ változtatná meg a döntést?</b> Ha a határidő lejárt, a legjobb elérhető opció mellett döntesz.'},
  {id:'autonomy',title:'Autonómia a motor',acc:'#a78bfa',min:2,
@@ -182,19 +256,19 @@ const RULES=[
   text:'A saját döntés, a választás szabadsága és a saját út nálad nem preferencia, hanem energiaforrás. A kívülről ráerőltetett keretek (szabály, beosztás, „így szokás”) kifejezetten lemerítenek, akkor is, ha észszerűek.',
   action:'A szükséges struktúrát <b>saját választásként</b> építsd fel: te döntöd el a szabályt, a határidőt, a formát. Munkában ott teremts értéket, ahol te határozod meg a hogyant.'},
  {id:'drive',title:'Teljesítmény-hajtás',acc:'#f59e0b',min:2,
-  sig:[S('pvq','Teljesítmény érték (centrált ≥ 0,5)',()=>val('pvq','AC')>=0.5),S('ysq','Könyörtelen mércék ≥ 4,5',()=>val('ysq','us')>=4.5),S('smi','Követelő szülő mód ≥ 4',()=>val('smi','demanding')>=4),S('bf','Lelkiismeretesség ≥ 44/60',()=>val('bf','C')>=44),S('tki','Versengő konfliktusmód ≥ 3,5',()=>val('tki','comp')>=3.5)],
+  sig:[S('pvq','Teljesítmény érték (centrált ≥ 0,5)',()=>val('pvq','AC')>=0.5),S('ysq','Könyörtelen mércék ≥ 4,5',()=>val('ysq','us')>=4.5),S('smi','Követelő szülő mód ≥ 4',()=>val('smi','demanding')>=4),S('bf','Lelkiismeretesség ≥ 44/60',()=>val('bf','C')>=44),S('tki','Versengő konfliktusmód ≥ 3,5',()=>val('tki','comp')>=3.5),S('scs','Önítélkezés ≥ 3,5',()=>val('scs','SJ')>=3.5)],
   text:'A siker, a teljesítmény és a mérce nálad központi. Ez hajtóerő, de ha a belső követelő hang túl erős, az eredmény soha nem elég, és a pihenés bűntudattal jár.',
   action:'Tegyél különbséget <b>vágy és kényszer</b> között: „Ezt azért csinálom, mert akarom, vagy mert különben nem vagyok elég?” Ahol a második, ott a mérce nem motivál, hanem büntet.'},
  {id:'emo',title:'Erős érzelmi reaktivitás',acc:'#fb7185',min:2,
-  sig:[S('bf','Neuroticizmus ≥ 40/60',()=>val('bf','N')>=40),S('smi','Sebezhető gyermek ≥ 4',()=>val('smi','vuln')>=4),S('smi','Dühös gyermek ≥ 4',()=>val('smi','angry')>=4),S('ecr','ECR-R szorongás ≥ 4,5',()=>val('ecr','anx')>=4.5),S('gott','Elárasztás/falazás ≥ 3,5',()=>val('gott','stone')>=3.5)],
+  sig:[S('bf','Neuroticizmus ≥ 40/60',()=>val('bf','N')>=40),S('smi','Sebezhető gyermek ≥ 4',()=>val('smi','vuln')>=4),S('smi','Dühös gyermek ≥ 4',()=>val('smi','angry')>=4),S('ecr','ECR-R szorongás ≥ 4,5',()=>val('ecr','anx')>=4.5),S('gott','Elárasztás/falazás ≥ 3,5',()=>val('gott','stone')>=3.5),S('ders','DERS-SF összpontszám ≥ 54',()=>val('ders','total')>=54),S('ders','DERS impulzuskontroll ≥ 10',()=>val('ders','impulse')>=10)],
   text:'Az érzelmek nálad gyorsan és erősen jönnek, és nehezebben csillapodnak. Ez nem jellemhiba, hanem idegrendszeri érzékenység, amely szabályozással jól kezelhető.',
   action:'A kulcs a <b>szabályozás a reakció előtt</b>: légzés, mozgás, szünet. Érdemes egy légzéstechnikát addig gyakorolni, amíg automatikus nem lesz.'},
  {id:'soothe',title:'Öncsillapító megküzdés',acc:'#2dd4bf',min:2,
-  sig:[S('smi','Elterelő öncsillapító mód ≥ 4',()=>val('smi','soother')>=4),S('ysq','Elégtelen önkontroll ≥ 4,5',()=>val('ysq','is')>=4.5),S('smi','Impulzív gyermek ≥ 4',()=>val('smi','impulsive')>=4),S('bf','Neuroticizmus ≥ 40/60',()=>val('bf','N')>=40)],
+  sig:[S('smi','Elterelő öncsillapító mód ≥ 4',()=>val('smi','soother')>=4),S('ysq','Elégtelen önkontroll ≥ 4,5',()=>val('ysq','is')>=4.5),S('smi','Impulzív gyermek ≥ 4',()=>val('smi','impulsive')>=4),S('bf','Neuroticizmus ≥ 40/60',()=>val('bf','N')>=40),S('tfeq','Érzelmi evés ≥ 50/100',()=>val('tfeq','EE')>=50),S('ders','DERS korlátozott stratégiák ≥ 10',()=>val('ders','strat')>=10)],
   text:'Feszültség alatt gyors csillapításhoz nyúlsz (evés, görgetés, munka, stimuláció), ami rövid távon működik, de nem oldja meg azt, ami a feszültséget okozta.',
   action:'Nem tiltás kell, hanem <b>köztes lépés</b>: mielőtt a megszokott csillapítóhoz nyúlsz, 2 perc: „Mit érzek most, és mire lenne valójában szükségem?”'},
  {id:'access',title:'Nehéz hozzáférés az érzésekhez',acc:'#818cf8',min:2,
-  sig:[S('tas','TAS-20 ≥ 61',()=>val('tas','total')>=61),S('maia2','MAIA-2 átlag ≤ 2,5',()=>{const a=avgAll('maia2');return a!==null&&a<=2.5}),S('ysq','Érzelmi gátoltság ≥ 4,5',()=>val('ysq','ei')>=4.5),S('smi','Elszakadó védő ≥ 4',()=>val('smi','detached')>=4)],
+  sig:[S('tas','TAS-20 ≥ 61',()=>val('tas','total')>=61),S('maia2','MAIA-2 átlag ≤ 2,5',()=>{const a=avgAll('maia2');return a!==null&&a<=2.5}),S('ysq','Érzelmi gátoltság ≥ 4,5',()=>val('ysq','ei')>=4.5),S('smi','Elszakadó védő ≥ 4',()=>val('smi','detached')>=4),S('ders','DERS tisztánlátás ≥ 10',()=>val('ders','clarity')>=10),S('ders','DERS tudatosság ≥ 10',()=>val('ders','aware')>=10)],
   text:'Az érzések felismerése és megnevezése, illetve a testi jelzések észlelése nehezebben megy. Ilyenkor az érzelmek „csak történnek”: feszültségként, fáradtságként, ingerültségként jelennek meg.',
   action:'Napi 2×1 perc <b>testi check-in</b>: hol érzel feszültséget, milyen a légzésed, milyen szó írja le. Az interocepció edzhető.'},
  {id:'giver',title:'Önfeláldozó minta',acc:'#34d399',min:2,
@@ -209,6 +283,14 @@ const RULES=[
   sig:[S('gott','Kritika ≥ 3,5',()=>val('gott','crit')>=3.5),S('gott','Megvetés ≥ 3',()=>val('gott','cont')>=3),S('tki','Versengő konfliktusmód ≥ 3,5',()=>val('tki','comp')>=3.5),S('smi','Támadó mód ≥ 4',()=>val('smi','bully')>=4)],
   text:'Vitában a hangod élesebb, mint amit valószínűleg szánsz: a konkrét viselkedés helyett a személyt minősíted, vagy fölényből beszélsz. Gottman adatai szerint ez a kapcsolati romlás legerősebb előrejelzője.',
   action:'<b>Szelíd indítás</b>: „Én ___ érzek, amikor ___ történik. Azt szeretném, ha ___.” Egy hétig minden panaszt így fogalmazz meg.'},
+ {id:'shame',title:'Büntető belső hang',acc:'#fb7185',min:2,
+  sig:[S('scs','Önegyüttérzés ≤ 2,5',()=>val('scs','total')!==null&&val('scs','total')<=2.5),S('ysq','Büntető készenlét séma ≥ 4,5',()=>val('ysq','pu')>=4.5),S('smi','Büntető szülő mód ≥ 4',()=>val('smi','punitive')>=4),S('ders','Érzelmek el nem fogadása ≥ 10',()=>val('ders','nonacc')>=10),S('scs','Önítélkezés ≥ 3,5',()=>val('scs','SJ')>=3.5)],
+  text:'Hibázás vagy nehéz érzés után a belső hangod büntet: szégyen, ítélkezés, „nem kellene így éreznem”. Ez nem motivál jobban, hanem a kudarctól való félelmet erősíti, ami az elkerülést és a halogatást táplálja.',
+  action:'Kudarc után <b>három mondat</b>: „Ez most nehéz. Ezt más is átéli. Mit mondanék egy barátomnak?” Az önegyüttérzés a kutatásokban több újrapróbálkozással jár, nem kevesebbel.'},
+ {id:'emoproc',title:'Érzelmi halogatás',acc:'#f59e0b',min:2,
+  sig:[S('ips','IPS halogatás ≥ 28',()=>val('ips','total')>=28),S('ders','DERS célirányos működés ≥ 10',()=>val('ders','goals')>=10),S('ders','DERS korlátozott stratégiák ≥ 10',()=>val('ders','strat')>=10),S('scs','Túlazonosulás ≥ 3,5',()=>val('scs','OI')>=3.5)],
+  text:'A halogatás nálad valószínűleg nem időbeosztási, hanem érzelmi probléma: a feladat kellemetlen érzést kelt (unalom, kudarctól való félelem, bizonytalanság), és az elkerülés azonnal csillapít. Ilyenkor a jobb naptár nem segít.',
+  action:'A feladat előtt nevezd meg az érzést, amit kelt, és tedd <b>nevetségesen kicsivé</b> az első lépést (2 perc, egy mondat, egy fájl megnyitása). Az érzés a kezdés után szinte mindig gyengül.'},
  {id:'bids',title:'Minőségi idő-igény, gyenge felé fordulás',acc:'#fbbf24',min:2,
   sig:[S('love','Első szeretetnyelv: Minőségi idő',()=>{const r=last('love');if(!r)return false;const top=Object.entries(r.d).sort((a,b)=>b[1][1]-a[1][1])[0];return top&&top[0]==='B'}),S('gott','Egymás felé fordulás ≤ 3',()=>val('gott','turn')!==null&&val('gott','turn')<=3)],
   text:'A figyelem és a közös jelenlét a legfontosabb szeretetnyelved, miközben a kapcsolatban az apró kapcsolódási kísérletekre adott válasz gyenge. Ez a hiányérzet egyik legközvetlenebb forrása.',
@@ -240,7 +322,7 @@ function render(){
   const pendingIds=REG.filter(r=>!last(r[1])&&hasResponses(r[4])).map(r=>r[1]);
   const dueIds=doneIds.filter(id=>days(last(id).t)>=DUE_DAYS);
   const retaken=doneIds.filter(id=>(store[id]||[]).length>1);
-  document.getElementById('statbar').innerHTML=`<span><strong>${doneIds.length}</strong>/ 27 teszt kiértékelve</span><span><strong>${retaken.length}</strong>többször kitöltve</span><span><strong>${dueIds.length}</strong>újramérés esedékes</span>`;
+  document.getElementById('statbar').innerHTML=`<span><strong>${doneIds.length}</strong>/ 31 teszt kiértékelve</span><span><strong>${retaken.length}</strong>többször kitöltve</span><span><strong>${dueIds.length}</strong>újramérés esedékes</span>`;
   const root=document.getElementById('root');
   if(!doneIds.length){
     root.innerHTML=`<div class="empty"><p style="font-family:var(--font-serif);font-size:22px;color:var(--ink);margin-bottom:10px">Még nincs kiértékelt teszt.</p><p>Az összegzés akkor kezd dolgozni, ha legalább két teszted van. A legtöbb mintához a <a href="cselekves.html#test-ft">Négy tendencia</a>, a <a href="cselekves.html#test-kolbe">Cselekvési módok</a>, a <a href="terkepek.html#test-ecr">ECR-R</a> és a <a href="szemelyiseg.html#test-bf">Big Five</a> ad adatot.</p>${pendingIds.length?`<p style="margin-top:14px">Van ${pendingIds.length} teszt, amelyet elkezdtél vagy kitöltöttél, de még nem nyitottad meg az eredményét: ${pendingIds.map(id=>`<a href="${LINK[id]}">${NAME[id]}</a>`).join(', ')}.</p>`:''}</div>`;
@@ -290,7 +372,42 @@ function render(){
   root.innerHTML=h;
   root.querySelectorAll('.more').forEach(b=>{const orig=b.textContent;b.addEventListener('click',()=>{const el=document.getElementById('more-'+b.dataset.id);el.hidden=!el.hidden;b.textContent=el.hidden?orig:'− kevesebb';});});
 }
+
+/* ── Terapeuta-összefoglaló ── */
+const SENS=new Set(['ssss','sisses','iief','pedt','sdi','nsss','saq','des','tfeq']);
+const MODEL=new Set(['tki','gott','fti','ft','kolbe','kotodes']);
+function buildRepUI(){
+  const grid=document.getElementById('rep-grid');const avail=REG.filter(r=>last(r[1]));
+  if(!avail.length){document.getElementById('rep-ui').style.display='none';return;}
+  let cur='',h='';
+  avail.forEach(([cat,id,name])=>{if(cat!==cur){h+=`<div class="rc">${cat}</div>`;cur=cat;}
+    h+=`<label class="${SENS.has(id)?'sens':''}"><input type="checkbox" data-id="${id}" ${SENS.has(id)?'':'checked'}><span>${esc(name)}</span></label>`;});
+  grid.innerHTML=h;
+  document.getElementById('rep-all').onclick=()=>grid.querySelectorAll('input').forEach(i=>i.checked=true);
+  document.getElementById('rep-none').onclick=()=>grid.querySelectorAll('input').forEach(i=>i.checked=false);
+  document.getElementById('rep-print').onclick=()=>{
+    const ids=[...grid.querySelectorAll('input:checked')].map(i=>i.dataset.id);
+    if(!ids.length){alert('Válassz ki legalább egy tesztet.');return;}
+    buildReport(ids,document.getElementById('rep-pat').checked,document.getElementById('rep-name').value.trim());
+    document.body.classList.add('rep-mode');setTimeout(()=>window.print(),80);
+  };
+}
+function buildReport(ids,withPat,nm){
+  const inc=new Set(ids);let h=`<h1>Önismereti összefoglaló${nm?' — '+esc(nm):''}</h1><div class="rsub">Készült: ${fmt(new Date().toISOString())} · ${ids.length} teszt · önbevallásos kérdőívek, nem diagnózis</div>`;
+  if(withPat){
+    const fired=[];RULES.forEach(r=>{const avail=r.sig.filter(x=>inc.has(x.test)&&last(x.test));const hits=avail.filter(x=>{try{return !!x.fn()}catch(e){return false}});if(hits.length>=r.min)fired.push({r,hits});});
+    h+=`<h2>Visszatérő minták</h2>`+(fired.length?fired.map(({r,hits})=>`<div class="rp"><b>${r.title}</b> — ${r.text.replace(/<[^>]+>/g,'')}<div class="ev">Jelzések: ${hits.map(x=>esc(x.label)).join(' · ')}</div></div>`).join(''):'<div class="rp">A kiválasztott tesztek alapján egyik minta sem teljesül két független jelzéssel.</div>');
+  }
+  h+=`<h2>Eredmények tesztenként</h2><div class="cols">`;
+  REG.filter(r=>inc.has(r[1])&&last(r[1])).forEach(([cat,id,name])=>{const r=last(id),p=prev(id);
+    const rows=Object.values(r.d||{}).map((d,i)=>{const k=Object.keys(r.d)[i];const pv=p&&p.d&&p.d[k]?p.d[k][1]:null;return `<tr><td>${esc(d[0])}</td><td class="v">${d[1]}${pv!==null&&pv!==d[1]?` <span style="color:#64748b">(előző: ${pv})</span>`:''}</td><td class="r">${d[2]}–${d[3]}</td></tr>`}).join('');
+    h+=`<div class="rt"><div class="rh"><span class="rn">${esc(name)}${MODEL.has(id)?' <span class="tag">saját itemek / nem validált</span>':''}</span><span class="rd">${fmt(r.t)}</span></div>${r.h?`<div class="rhl">${esc(r.h)}</div>`:''}${r.x&&r.x.need?`<div>Kielégítetlen szükségletek: ${r.x.need.map(esc).join('; ')}</div>`:''}${rows?`<table>${rows}</table>`:''}</div>`;});
+  h+=`</div><div class="rfoot">Forrás: Önismereti térképek (jtdevzero.github.io/onismeret). A pontszámok nyers vagy átlagolt skálaértékek, a jobb oldali oszlop a skála terjedelmét mutatja. A minták heurisztikák: legalább két teszt egybehangzó jelzése, nem klinikai küszöbök. A „saját itemek” jelölésű eszközök modell-alapú, nem validált kérdőívek.</div>`;
+  document.getElementById('report').innerHTML=h;
+}
 render();
+buildRepUI();
+window.addEventListener('afterprint',()=>document.body.classList.remove('rep-mode'));
 })();
 </script>
 </body>

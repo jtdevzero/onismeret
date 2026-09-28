@@ -203,6 +203,19 @@ body::before{
 .pp-msg{font-size:12.5px;color:var(--emerald);width:100%}
 .status[data-state="due"] .st-lbl{color:#fda4af}
 .status[data-state="due"] .st-fill{background:#fb7185}
+.path-panel{border-color:rgba(251,191,36,.35)}
+.path-lead{color:var(--ink-soft);font-size:14.5px;margin:4px 0 16px;max-width:720px}
+.path-steps{list-style:none;display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px;counter-reset:ps}
+.path-steps li{counter-increment:ps;border:1px solid var(--line);border-radius:12px;padding:12px 12px 10px;background:rgba(5,13,30,.35);position:relative}
+.path-steps li a{text-decoration:none;color:inherit;display:block}
+.path-steps li::before{content:counter(ps);font-family:var(--font-serif);font-style:italic;color:var(--gold);font-size:14px}
+.path-steps li .pn{display:block;font-family:var(--font-serif);font-size:15px;line-height:1.2;margin-top:2px;color:var(--ink)}
+.path-steps li .pw{display:block;font-size:11.5px;color:var(--ink-mute);margin-top:4px;line-height:1.35}
+.path-steps li.done{border-color:rgba(52,211,153,.45);background:rgba(52,211,153,.06)}
+.path-steps li.done::after{content:'✓';position:absolute;top:10px;right:12px;color:var(--emerald);font-weight:700}
+.path-steps li.next{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold-soft) inset}
+@media (max-width:820px){.path-steps{grid-template-columns:1fr 1fr}}
+@media (max-width:480px){.path-steps{grid-template-columns:1fr}}
 
 /* COLLAPSIBLE INTRO */
 details.intro summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:baseline;gap:12px}
@@ -245,9 +258,16 @@ details.intro:not([open]){padding-top:20px;padding-bottom:20px}
 }
 </style>
 <script>
-/* ONI-CORE v1 — közös eredménytár: minden teszt ide menti a fő pontszámait (csak ebben a böngészőben). */
+/* ONI-CORE v2 — közös eredménytár + kezdő útvonal. Minden adat csak ebben a böngészőben marad. */
 window.ONI=window.ONI||(function(){
   var K='onismeret-results-v1';
+  var PATH=[
+    {id:'ft',n:'Négy tendencia',href:'cselekves.html#test-ft',min:5,why:'hogyan reagálsz az elvárásokra'},
+    {id:'kolbe',n:'Cselekvési módok',href:'cselekves.html#test-kolbe',min:7,why:'hogyan fogsz neki egy feladatnak'},
+    {id:'ecr',n:'ECR-R · Kötődés',href:'terkepek.html#test-ecr',min:10,why:'közelség és távolság a kapcsolatokban'},
+    {id:'bf',n:'Big Five',href:'szemelyiseg.html#test-bf',min:12,why:'az öt alapvonás'},
+    {id:'pvq',n:'PVQ-21 · Értékek',href:'cselekves.html#test-pvq',min:6,why:'mi hajt valójában'}
+  ];
   function all(){try{return JSON.parse(localStorage.getItem(K))||{}}catch(e){return {}}}
   function r(x){return Math.round(x*100)/100}
   function save(id,rec){
@@ -259,8 +279,27 @@ window.ONI=window.ONI||(function(){
       a[id]=h.slice(-24);
       localStorage.setItem(K,JSON.stringify(a));
     }catch(e){}
+    try{window.dispatchEvent(new CustomEvent('oni:saved',{detail:{id:id}}));}catch(e){}
   }
-  return {K:K,all:all,save:save,r:r};
+  function pathState(){var a=all();return PATH.map(function(p){return {id:p.id,n:p.n,href:p.href,min:p.min,why:p.why,done:!!(a[p.id]&&a[p.id].length)}});}
+  function banner(savedId){
+    var st=pathState(),inPath=st.some(function(p){return p.id===savedId});
+    if(!inPath)return;
+    var done=st.filter(function(p){return p.done}).length,next=st.filter(function(p){return !p.done})[0];
+    var old=document.getElementById('oni-path-banner');if(old)old.remove();
+    var el=document.createElement('div');el.id='oni-path-banner';
+    el.setAttribute('style','position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:9999;max-width:calc(100% - 24px);width:560px;display:flex;align-items:center;gap:14px;padding:14px 16px 14px 20px;border-radius:16px;background:rgba(10,20,40,.94);color:#e6ecf5;border:1px solid rgba(251,191,36,.55);box-shadow:0 12px 40px rgba(0,0,0,.45);font:500 14px/1.4 Manrope,Inter,system-ui,sans-serif;backdrop-filter:blur(10px)');
+    var dots=st.map(function(p){return '<span style="width:9px;height:9px;border-radius:50%;display:inline-block;background:'+(p.done?'#fbbf24':'rgba(148,163,184,.35)')+'"></span>'}).join('');
+    var body=next
+      ? '<div style="flex:1;min-width:0"><div style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#fbbf24;font-weight:700;display:flex;gap:6px;align-items:center">Kezdő útvonal · '+done+'/5 '+dots+'</div><div style="margin-top:3px">Következő: <strong>'+next.n+'</strong> <span style="color:#a3b3c8">(~'+next.min+' perc)</span></div></div><a href="'+next.href+'" style="flex:none;padding:10px 16px;border-radius:99px;background:#fbbf24;color:#0a1428;text-decoration:none;font-weight:700">Tovább ›</a>'
+      : '<div style="flex:1;min-width:0"><div style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#34d399;font-weight:700">Kezdő útvonal kész · 5/5</div><div style="margin-top:3px">Most már az összegzés valódi adatokból dolgozik.</div></div><a href="osszegzes.html" style="flex:none;padding:10px 16px;border-radius:99px;background:#34d399;color:#0a1428;text-decoration:none;font-weight:700">Összegzés ›</a>';
+    el.innerHTML=body+'<button type="button" aria-label="Bezár" style="flex:none;background:none;border:none;color:#6b7c94;font-size:20px;cursor:pointer;padding:0 2px">×</button>';
+    el.querySelector('button').onclick=function(){el.remove()};
+    document.body.appendChild(el);
+    if(next&&location.href.indexOf(next.href.split('#')[0])>-1){var a=el.querySelector('a');a.addEventListener('click',function(){setTimeout(function(){el.remove()},50)});}
+  }
+  window.addEventListener('oni:saved',function(e){setTimeout(function(){banner(e.detail.id)},900);});
+  return {K:K,all:all,save:save,r:r,PATH:PATH,pathState:pathState};
 })();
 </script>
 </head>
@@ -271,27 +310,41 @@ window.ONI=window.ONI||(function(){
     <span class="kicker">Önismereti térképek</span>
     <h1>Önismereti <em>térképek</em> egy embernek</h1>
     <p class="lead">
-      Huszonhét kérdőív magyarul, egy helyen. Kötődés, szex, test-tudatosság, sémák, karakter-erők, kapcsolati dinamika, értékek, cselekvés — mindegyik lokálisan a böngészőben fut, semmi adat nem hagyja el a gépet.
+      Harmincegy kérdőív magyarul, egy helyen. Kötődés, szex, test-tudatosság, sémák, karakter-erők, kapcsolati dinamika, értékek, cselekvés, szabályozás — mindegyik lokálisan a böngészőben fut, semmi adat nem hagyja el a gépet.
     </p>
     <div class="meta">
-      <span><strong>27</strong> teszt</span><span><strong id="hero-done">0</strong> kész</span>
-      <span><strong>~1090</strong> kérdés</span>
+      <span><strong>31</strong> teszt</span><span><strong id="hero-done">0</strong> kész</span>
+      <span><strong>~1150</strong> kérdés</span>
             <span><strong>0</strong> szerver-küldés</span>
     </div>
   </header>
 
 
+  <section class="progress-panel path-panel" id="path">
+    <div class="pp-head">
+      <h2>Kezdő útvonal</h2>
+      <span class="pp-sum"><strong id="path-done">0</strong> / 5 · kb. 40 perc</span>
+    </div>
+    <p class="path-lead" id="path-lead">Ha nem tudod, hol kezdd: ez az öt teszt adja az összegzés mintáinak alapját. Végrehajtás, kötődés, személyiség, értékek. Mehet egy ülésben, vagy öt napra bontva, naponta egy.</p>
+    <ol class="path-steps" id="path-steps"></ol>
+    <a class="pp-next" id="path-go" href="cselekves.html#test-ft">
+      <span class="pp-next-lbl" id="path-go-lbl">Kezdd itt</span>
+      <span class="pp-next-name" id="path-go-name">Négy tendencia</span>
+      <span class="arrow">›</span>
+    </a>
+  </section>
+
   <section class="progress-panel" id="progress">
     <div class="pp-head">
       <h2>Hol tartasz</h2>
-      <span class="pp-sum"><strong id="pp-done">0</strong> / 27 kész</span>
+      <span class="pp-sum"><strong id="pp-done">0</strong> / 31 kész</span>
     </div>
     <div class="pp-bar" aria-hidden="true"><div class="pp-fill" id="pp-fill"></div></div>
     <div class="pp-stats">
       <span><i class="dot done"></i><strong id="pp-n-done">0</strong> kész</span>
       <span><i class="dot prog"></i><strong id="pp-n-prog">0</strong> folyamatban</span>
-      <span><i class="dot none"></i><strong id="pp-n-none">27</strong> nincs elkezdve</span>
-      <span class="pp-q"><strong id="pp-answered">0</strong> / 1088 kérdés megválaszolva</span>
+      <span><i class="dot none"></i><strong id="pp-n-none">31</strong> nincs elkezdve</span>
+      <span class="pp-q"><strong id="pp-answered">0</strong> / 1145 kérdés megválaszolva</span>
     </div>
     <a class="pp-next" id="pp-next" href="maia2.html">
       <span class="pp-next-lbl" id="pp-next-lbl">Kezdd itt</span>
@@ -300,6 +353,7 @@ window.ONI=window.ONI||(function(){
     </a>
     <div class="pp-tools">
       <a class="pp-sumlink" href="osszegzes.html"><span>Összegzés, minták, változás</span><span class="arrow">›</span></a>
+      <a class="pp-sumlink" href="par.html" style="flex:0 1 200px"><span>Párban</span><span class="arrow">›</span></a>
       <button type="button" class="pp-btn" id="pp-export">Mentés fájlba</button>
       <label class="pp-btn" for="pp-import">Visszaállítás fájlból</label><input type="file" id="pp-import" accept="application/json,.json" hidden>
       <span class="pp-msg" id="pp-msg" hidden></span>
@@ -310,7 +364,7 @@ window.ONI=window.ONI||(function(){
   <details class="intro" id="intro" open>
     <summary><h2>Mire jó ez</h2><span class="sum-hint">kinyit / összecsuk</span></summary>
     <p>
-      Ez nem <strong>diagnózis</strong>, és nem <strong>terápia</strong>. Ez egy <strong>térkép-készítő</strong>: kutatás-alapú kérdőívekkel próbál láthatóvá tenni azt, ami egyébként ki-be villog a hétköznapokban — kötődési stílust, sémákat, szexuális válaszkészséget, test-tudatosságot, személyiséget és karakter-erőket, azt, hogyan szeretsz és vitázol, mit tartasz fontosnak, hogyan fogsz neki a dolgoknak, és mikor vagy a csúcson. Klinikai eszközök mellett kutatási skálák és néhány, modellre épülő saját kérdőív is van köztük.
+      Ez nem <strong>diagnózis</strong>, és nem <strong>terápia</strong>. Ez egy <strong>térkép-készítő</strong>: kutatás-alapú kérdőívekkel próbál láthatóvá tenni azt, ami egyébként ki-be villog a hétköznapokban — kötődési stílust, sémákat, szexuális válaszkészséget, test-tudatosságot, személyiséget és karakter-erőket, azt, hogyan szeretsz és vitázol, mit tartasz fontosnak, hogyan fogsz neki a dolgoknak, mikor vagy a csúcson, és mi történik benned, amikor halogatsz vagy feszült vagy. Klinikai eszközök mellett kutatási skálák és néhány, modellre épülő saját kérdőív is van köztük.
     </p>
     <p>Amit adnak:</p>
     <ul class="list">
@@ -325,7 +379,7 @@ window.ONI=window.ONI||(function(){
     </p>
   </details>
 
-<nav class="jump" aria-label="Témakörök"><a href="#cat-1" data-jump="1"><span class="jn">I.</span>Test<span class="jc" id="jc-1"></span></a><a href="#cat-2" data-jump="2"><span class="jn">II.</span>Kötődés · séma<span class="jc" id="jc-2"></span></a><a href="#cat-3" data-jump="3"><span class="jn">III.</span>Szex-funkció<span class="jc" id="jc-3"></span></a><a href="#cat-4" data-jump="4"><span class="jn">IV.</span>Attitűdök<span class="jc" id="jc-4"></span></a><a href="#cat-5" data-jump="5"><span class="jn">V.</span>Kapcsolati nyelvek<span class="jc" id="jc-5"></span></a><a href="#cat-6" data-jump="6"><span class="jn">VI.</span>Személyiség<span class="jc" id="jc-6"></span></a><a href="#cat-7" data-jump="7"><span class="jn">VII.</span>Kapcsolati dinamika<span class="jc" id="jc-7"></span></a><a href="#cat-8" data-jump="8"><span class="jn">VIII.</span>Értékek · cselekvés<span class="jc" id="jc-8"></span></a></nav>
+<nav class="jump" aria-label="Témakörök"><a href="#cat-1" data-jump="1"><span class="jn">I.</span>Test<span class="jc" id="jc-1"></span></a><a href="#cat-2" data-jump="2"><span class="jn">II.</span>Kötődés · séma<span class="jc" id="jc-2"></span></a><a href="#cat-3" data-jump="3"><span class="jn">III.</span>Szex-funkció<span class="jc" id="jc-3"></span></a><a href="#cat-4" data-jump="4"><span class="jn">IV.</span>Attitűdök<span class="jc" id="jc-4"></span></a><a href="#cat-5" data-jump="5"><span class="jn">V.</span>Kapcsolati nyelvek<span class="jc" id="jc-5"></span></a><a href="#cat-6" data-jump="6"><span class="jn">VI.</span>Személyiség<span class="jc" id="jc-6"></span></a><a href="#cat-7" data-jump="7"><span class="jn">VII.</span>Kapcsolati dinamika<span class="jc" id="jc-7"></span></a><a href="#cat-8" data-jump="8"><span class="jn">VIII.</span>Értékek · cselekvés<span class="jc" id="jc-8"></span></a><a href="#cat-9" data-jump="9"><span class="jn">IX.</span>Szabályozás<span class="jc" id="jc-9"></span></a></nav>
   <!-- KATEGÓRIA 1: TEST-TUDATOSSÁG -->
   <section class="cat" id="cat-1" data-cat="1">
     <div class="cat-head">
@@ -703,10 +757,64 @@ window.ONI=window.ONI||(function(){
     </div>
   </section>
 
+  <!-- KATEGÓRIA 9: SZABÁLYOZÁS ÉS VÉGREHAJTÁS -->
+  <section class="cat" id="cat-9" data-cat="9">
+    <div class="cat-head">
+      <span class="cat-num">IX.</span>
+      <h2 class="cat-title">Szabályozás és végrehajtás</h2>
+      <span class="cat-sub">4 teszt · 57 kérdés</span>
+    </div>
+    <div class="grid">
+      <a class="card" href="szabalyozas.html#test-ips" data-key="ips-responses-v1" data-total="9" data-name="IPS · Halogatás" style="--accent:#fbbf24">
+        <span class="card-tag">Halogatás</span>
+        <h3>IPS <em>Irracionális halogatás</em></h3>
+        <p class="desc">Steel rövid skálája arról, mennyire halasztod a dolgokat annak ellenére, hogy tudod: rosszabbul jársz vele.</p>
+        <ul class="tests">
+          <li><span class="name">IPS · validált</span><span class="cnt">9 item</span></li>
+        </ul>
+        <div class="status" data-state="none"><span class="st-lbl">Nincs elkezdve</span><span class="st-bar"><span class="st-fill"></span></span></div>
+        <div class="open"><span class="open-lbl">Nyisd meg</span> <span class="arrow">›</span></div>
+      </a>
+
+      <a class="card" href="szabalyozas.html#test-ders" data-key="ders-sf-responses-v1" data-total="18" data-name="DERS-SF · Érzelemszabályozás" style="--accent:#fb7185">
+        <span class="card-tag">Érzelemszabályozás</span>
+        <h3>DERS-SF <em>Hol akad el a szabályozás</em></h3>
+        <p class="desc">Hat terület: tudatosság, tisztánlátás, elfogadás, impulzuskontroll, célirányos működés és stratégiák feszültség alatt.</p>
+        <ul class="tests">
+          <li><span class="name">DERS-SF · validált</span><span class="cnt">18 item · 6 terület</span></li>
+        </ul>
+        <div class="status" data-state="none"><span class="st-lbl">Nincs elkezdve</span><span class="st-bar"><span class="st-fill"></span></span></div>
+        <div class="open"><span class="open-lbl">Nyisd meg</span> <span class="arrow">›</span></div>
+      </a>
+
+      <a class="card" href="szabalyozas.html#test-scs" data-key="scs-sf-responses-v1" data-total="12" data-name="SCS-SF · Önegyüttérzés" style="--accent:#34d399">
+        <span class="card-tag">Önegyüttérzés</span>
+        <h3>SCS-SF <em>Hogyan bánsz magaddal</em></h3>
+        <p class="desc">Neff három ellentétpárja: önkedvesség vagy önítélkezés, közös emberi tapasztalat vagy elszigeteltség, jelenlét vagy túlazonosulás.</p>
+        <ul class="tests">
+          <li><span class="name">SCS-SF · validált</span><span class="cnt">12 item · 3 pár</span></li>
+        </ul>
+        <div class="status" data-state="none"><span class="st-lbl">Nincs elkezdve</span><span class="st-bar"><span class="st-fill"></span></span></div>
+        <div class="open"><span class="open-lbl">Nyisd meg</span> <span class="arrow">›</span></div>
+      </a>
+
+      <a class="card" href="szabalyozas.html#test-tfeq" data-key="tfeq-r18-responses-v1" data-total="18" data-name="TFEQ-R18 · Evési viselkedés" style="--accent:#2dd4bf">
+        <span class="card-tag">Evés és feszültség</span>
+        <h3>TFEQ-R18 <em>Érzelmi evés</em></h3>
+        <p class="desc">Érzelmi evés, kontrollálatlan evés és kognitív visszafogás. Arról szól, milyen szerepet kap az evés a feszültségszabályozásban.</p>
+        <ul class="tests">
+          <li><span class="name">TFEQ-R18 · validált</span><span class="cnt">18 item · 3 skála</span></li>
+        </ul>
+        <div class="status" data-state="none"><span class="st-lbl">Nincs elkezdve</span><span class="st-bar"><span class="st-fill"></span></span></div>
+        <div class="open"><span class="open-lbl">Nyisd meg</span> <span class="arrow">›</span></div>
+      </a>
+    </div>
+  </section>
+
   <!-- FOOTER -->
   <footer class="footer">
     <p><strong>Készítő:</strong> JT · Budapest · 2025–2026</p>
-    <p>A Kötődési mélytérkép kivételével minden teszt publikált, validált klinikai vagy kutatási eszközre épül. A magyar szövegek nem feltétlenül egyeznek a hivatalos, validált magyar változatokkal, ezért a normákkal való összevetés tájékoztató jellegű. A mélytérkép saját fejlesztésű kiegészítés. A VII–VIII. témakörben a LAS-SF, a PVQ-21 és a MEQ validált eszköz. A konfliktusmódok, a Gottman-térkép, a Fisher-temperamentum, a Négy tendencia és a Cselekvési módok saját, modell-alapú itemkészletek, mert az eredeti kérdőívek szerzői jogvédettek. Ezt minden teszt fejléce jelzi.</p>
+    <p>A Kötődési mélytérkép kivételével minden teszt publikált, validált klinikai vagy kutatási eszközre épül. A magyar szövegek nem feltétlenül egyeznek a hivatalos, validált magyar változatokkal, ezért a normákkal való összevetés tájékoztató jellegű. A mélytérkép saját fejlesztésű kiegészítés. A VII–VIII. témakörben a LAS-SF, a PVQ-21 és a MEQ validált eszköz. A konfliktusmódok, a Gottman-térkép, a Fisher-temperamentum, a Négy tendencia és a Cselekvési módok saját, modell-alapú itemkészletek, mert az eredeti kérdőívek szerzői jogvédettek. Ezt minden teszt fejléce jelzi. A IX. témakör mind a négy tesztje validált eszköz.</p>
     <div class="disclaimer">
       <strong>Nem diagnosztikai eszköz.</strong> Ez a felület önismereti térkép-készítés, nem klinikai szűrés vagy terápia. Ha bármelyik eredmény aggodalmat kelt (különösen a disszociáció, séma-módok, szex-diszfunkció területén), keresd meg a saját terapeutád vagy szakembert. Az eredmények egy adott pillanat állapotát tükrözik.
     </div>
@@ -728,7 +836,7 @@ window.ONI=window.ONI||(function(){
   }
   var cards=[].slice.call(document.querySelectorAll('.card[data-key]'));
   var nDone=0,nProg=0,nDue=0,answered=0,firstProg=null,firstNone=null,perCat={};
-  var ONI_ID={'maia2-responses-v1':'maia2','tas-20-responses-v1':'tas','des-2-responses-v1':'des','ecr-r-responses-v1':'ecr','@kotodes':'kotodes','@ysq':'ysq','smi-responses-v1':'smi','ssss-responses-v1':'ssss','sis-ses-responses-v1':'sisses','iief-responses-v1':'iief','pedt-responses-v1':'pedt','sdi-2-responses-v1':'sdi','nsss-responses-v1':'nsss','saq-responses-v1':'saq','love-responses-v1':'love','apo-responses-v1':'apo','imago-responses-v1':'imago','bf-responses-v1':'bf','via-responses-v1':'via','las-responses-v1':'las','conflict-responses-v1':'tki','gottman-responses-v1':'gott','fisher-responses-v1':'fti','pvq21-responses-v1':'pvq','four-tendencies-responses-v1':'ft','action-modes-responses-v1':'kolbe','meq-responses-v1':'meq'};
+  var ONI_ID={'maia2-responses-v1':'maia2','tas-20-responses-v1':'tas','des-2-responses-v1':'des','ecr-r-responses-v1':'ecr','@kotodes':'kotodes','@ysq':'ysq','smi-responses-v1':'smi','ssss-responses-v1':'ssss','sis-ses-responses-v1':'sisses','iief-responses-v1':'iief','pedt-responses-v1':'pedt','sdi-2-responses-v1':'sdi','nsss-responses-v1':'nsss','saq-responses-v1':'saq','love-responses-v1':'love','apo-responses-v1':'apo','imago-responses-v1':'imago','bf-responses-v1':'bf','via-responses-v1':'via','las-responses-v1':'las','conflict-responses-v1':'tki','gottman-responses-v1':'gott','fisher-responses-v1':'fti','pvq21-responses-v1':'pvq','four-tendencies-responses-v1':'ft','action-modes-responses-v1':'kolbe','meq-responses-v1':'meq','ips-responses-v1':'ips','ders-sf-responses-v1':'ders','scs-sf-responses-v1':'scs','tfeq-r18-responses-v1':'tfeq'};
   var RES=(window.ONI&&ONI.all())||{};
   function lastRec(key){var h=RES[ONI_ID[key]];if(h&&h.length)return h[h.length-1];if(key==='@kotodes'){var a=read('attachment_assessment_v1');if(a&&a.result&&a.result.date)return {t:a.result.date};}return null;}
   cards.forEach(function(c){
@@ -748,7 +856,7 @@ window.ONI=window.ONI||(function(){
   Object.keys(perCat).forEach(function(k){var e=document.getElementById('jc-'+k);if(e){e.textContent=perCat[k].d+'/'+perCat[k].t;if(perCat[k].d===perCat[k].t)e.classList.add('full');}});
   var next=firstProg||firstNone,a=document.getElementById('pp-next');
   if(next){a.href=next.getAttribute('href');set('pp-next-name',next.dataset.name);set('pp-next-lbl',firstProg?'Folytasd':(nDone?'Következő':'Kezdd itt'));next.classList.add('is-next');}
-  else{a.href='#cat-1';set('pp-next-lbl','Mind kész');set('pp-next-name','Mind a 27 teszt kitöltve. Olvasd újra a kiértékeléseket.');}
+  else{a.href='#cat-1';set('pp-next-lbl','Mind kész');set('pp-next-name','Mind a 31 teszt kitöltve. Olvasd újra a kiértékeléseket.');}
   if(nDone+nProg>0){document.getElementById('intro').removeAttribute('open');}
   // active chip while scrolling
   var links=[].slice.call(document.querySelectorAll('.jump a'));
@@ -785,6 +893,21 @@ window.ONI=window.ONI||(function(){
     };
     r.readAsText(f);ev.target.value='';
   });
+})();
+
+/* ── Kezdő útvonal ── */
+(function(){
+  if(!window.ONI||!ONI.pathState)return;
+  var st=ONI.pathState();
+  var cardDone={};[].slice.call(document.querySelectorAll('.card.is-done')).forEach(function(c){cardDone[c.getAttribute('href')]=true});
+  st.forEach(function(p){if(cardDone[p.href])p.done=true});
+  var done=st.filter(function(p){return p.done}).length,next=st.filter(function(p){return !p.done})[0];
+  document.getElementById('path-done').textContent=done;
+  document.getElementById('path-steps').innerHTML=st.map(function(p){return '<li class="'+(p.done?'done':(next&&p.id===next.id?'next':''))+'"><a href="'+p.href+'"><span class="pn">'+p.n+'</span><span class="pw">'+p.why+' · ~'+p.min+' perc</span></a></li>'}).join('');
+  var go=document.getElementById('path-go');
+  if(next){go.href=next.href;document.getElementById('path-go-lbl').textContent=done?'Folytasd':'Kezdd itt';document.getElementById('path-go-name').textContent=next.n+' · ~'+next.min+' perc';
+    var pn=document.getElementById('pp-next');if(pn){pn.href=next.href;document.getElementById('pp-next-lbl').textContent='Útvonal';document.getElementById('pp-next-name').textContent=next.n;}}
+  else{go.href='osszegzes.html';document.getElementById('path-go-lbl').textContent='Kész';document.getElementById('path-go-name').textContent='Mind az 5 megvan: nyisd meg az összegzést';document.getElementById('path-lead').textContent='A kezdő útvonal kész. Innen bármelyik témakörrel folytathatod, az összegzés minden új teszttel pontosabb lesz.';}
 })();
 </script>
 </body>

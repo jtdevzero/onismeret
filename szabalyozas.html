@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Értékek, cselekvés, ritmus — PVQ-21 · Négy tendencia · Cselekvési módok · MEQ</title>
+<title>Szabályozás és végrehajtás — halogatás · érzelemszabályozás · önegyüttérzés · evés</title>
 <link rel="stylesheet" href="fonts/fonts.css">
 <style>
 :root{
@@ -306,9 +306,9 @@ window.ONI=window.ONI||(function(){
 <div class="hub-shell">
   <a class="hub-back" href="index.html">‹ Önismereti térképek</a>
   <div class="hub-header">
-    <div class="hub-eyebrow">VIII. — Értékek, cselekvés, ritmus · 4 térkép</div>
-    <h1>Mi <em>mozgat</em>, és hogyan <em>cselekszel</em></h1>
-    <p class="lead">A személyiségtesztek azt írják le, <em>milyen vagy</em>. Ez a négy azt, <strong>mi hajt</strong> (Schwartz-értékek), <strong>hogyan reagálsz az elvárásokra</strong> (négy tendencia), <strong>hogyan kezdesz neki egy feladatnak</strong> (cselekvési módok) és <strong>mikor vagy a csúcson</strong> (kronotípus). Ez a végrehajtás térképe.</p>
+    <div class="hub-eyebrow">IX. — Szabályozás és végrehajtás · 4 térkép</div>
+    <h1>Mi történik, amikor <em>nehéz</em></h1>
+    <p class="lead">Négy rövid, validált skála arról a pontról, ahol a szándék és a tett elválik: <strong>halogatás</strong> (IPS), <strong>érzelemszabályozás</strong> (DERS-SF), <strong>önegyüttérzés</strong> (SCS-SF) és <strong>evési viselkedés feszültség alatt</strong> (TFEQ-R18). Együtt kitöltve azt mutatják meg, <em>milyen mechanizmuson</em> akad el a végrehajtás.</p>
   </div>
   <nav class="hub-tabs four" id="hub-tabs" role="tablist"></nav>
 </div>
@@ -521,331 +521,230 @@ function bootHub(order){
 }
 
 const SCALE5=[{v:1,l:'egyáltalán nem'},{v:2,l:'inkább nem'},{v:3,l:'részben'},{v:4,l:'inkább igen'},{v:5,l:'teljesen'}];
+const FREQ5=[{v:1,l:'szinte soha'},{v:2,l:'ritkán'},{v:3,l:'az esetek felében'},{v:4,l:'gyakran'},{v:5,l:'szinte mindig'}];
 
-/* ═══════════ 1. SCHWARTZ PVQ-21 ═══════════ */
+/* ═══════════ 1. IPS — IRRACIONÁLIS HALOGATÁS ═══════════ */
 (function(){
-const V={
-  SD:{name:'Önirányítás',en:'Self-Direction',color:'#a78bfa',ho:'OC',desc:'Független gondolkodás és cselekvés, választás, alkotás, felfedezés.'},
-  ST:{name:'Stimuláció',en:'Stimulation',color:'#f472b6',ho:'OC',desc:'Izgalom, újdonság, kihívás az életben.'},
-  HE:{name:'Hedonizmus',en:'Hedonism',color:'#fb7185',ho:'OC',desc:'Öröm, élvezet, érzéki kielégülés.'},
-  AC:{name:'Teljesítmény',en:'Achievement',color:'#fbbf24',ho:'SE',desc:'Személyes siker, a kompetencia bizonyítása a társas mércék szerint.'},
-  PO:{name:'Hatalom',en:'Power',color:'#f97316',ho:'SE',desc:'Társas státusz, presztízs, kontroll emberek és erőforrások felett.'},
-  SE:{name:'Biztonság',en:'Security',color:'#60a5fa',ho:'CO',desc:'A társadalom, a kapcsolatok és az én biztonsága, harmóniája, stabilitása.'},
-  CO:{name:'Konformitás',en:'Conformity',color:'#818cf8',ho:'CO',desc:'Olyan cselekvések kerülése, amelyek másokat felzaklatnak vagy normát sértenek.'},
-  TR:{name:'Hagyomány',en:'Tradition',color:'#94a3b8',ho:'CO',desc:'A kultúra, a vallás vagy a család szokásainak tisztelete és vállalása.'},
-  BE:{name:'Jóindulat',en:'Benevolence',color:'#34d399',ho:'ST',desc:'A közeli emberek jóllétének megőrzése és növelése.'},
-  UN:{name:'Univerzalizmus',en:'Universalism',color:'#2dd4bf',ho:'ST',desc:'Megértés, tolerancia, minden ember és a természet jólléte.'}
-};
-const HO={
-  OC:{name:'Nyitottság a változásra',color:'#a78bfa',keys:['SD','ST','HE']},
-  SE:{name:'Önérvényesítés',color:'#fbbf24',keys:['AC','PO']},
-  CO:{name:'Megőrzés',color:'#60a5fa',keys:['SE','CO','TR']},
-  ST:{name:'Önmeghaladás',color:'#34d399',keys:['BE','UN']}
-};
-const PVQ_SCALE=[{v:1,l:'egyáltalán nem hasonlít'},{v:2,l:'nem hasonlít'},{v:3,l:'kicsit hasonlít'},{v:4,l:'valamennyire'},{v:5,l:'hasonlít'},{v:6,l:'nagyon hasonlít'}];
+const bandIPS=t=>t>=37?{l:'Nagyon erős halogatás',c:'#fb7185'}:t>=28?{l:'Erős halogatás',c:'#f97316'}:t>=19?{l:'Mérsékelt halogatás',c:'#fbbf24'}:{l:'Alacsony halogatás',c:'#34d399'};
 makeTest({
-  id:'pvq',key:'pvq21-responses-v1',name:'Schwartz-értékek (PVQ-21)',c1:'#fbbf24',c2:'#f59e0b',
-  tab:'Értékek',tabSub:'Schwartz PVQ-21 · 21 item',scale:PVQ_SCALE,
-  header:{status:'valid',statusText:'Validált skála · European Social Survey-változat',
-    eyebrow:'Portrait Values Questionnaire · Schwartz (1992, 2003) · ESS',
-    title:'Mit tartasz <em style="color:#fbbf24">valóban fontosnak</em>',
-    lead:'Shalom Schwartz értékelmélete a legszélesebb körben tesztelt értékmodell: 80+ országban igazolták, hogy <strong>10 alapérték</strong> kör alakban rendeződik. A szomszédos értékek összeférnek, a szemközti értékek feszülnek egymásnak. Nem azt méri, mit <em>mondasz</em> fontosnak, hanem hogy mennyire hasonlítasz olyan emberekre, akiknek ezek fontosak.',
-    intro:'<p><strong>Kitöltés:</strong> minden állítás egy embert ír le. Döntsd el, <strong>mennyire hasonlít rád ez a személy</strong>. 1 = egyáltalán nem hasonlít · 6 = nagyon hasonlít.</p><p><strong>Pontozás:</strong> a válaszokat a saját átlagodhoz viszonyítva (centrálva) értékeljük, mert az értékek <em>egymáshoz képesti</em> sorrendje számít, nem az, hogy általában magasra vagy alacsonyra pontozol.</p>'},
-  sections:[{title:'Mennyire hasonlít rád ez a személy?',desc:'21 portré.',items:[
-    {s:'SD',t:'Fontos számára, hogy új ötletekkel álljon elő és kreatív legyen. Szereti a dolgokat a saját, eredeti módján csinálni.'},
-    {s:'PO',t:'Fontos számára, hogy gazdag legyen. Sok pénzt és drága dolgokat szeretne.'},
-    {s:'UN',t:'Fontosnak tartja, hogy a világon minden embert egyenlően kezeljenek. Úgy gondolja, mindenkinek egyenlő esélyt kell kapnia az életben.'},
-    {s:'AC',t:'Nagyon fontos számára, hogy megmutassa a képességeit. Azt szeretné, hogy az emberek csodálják azt, amit csinál.'},
-    {s:'SE',t:'Fontos számára, hogy biztonságos környezetben éljen. Kerül mindent, ami veszélyeztetheti a biztonságát.'},
-    {s:'ST',t:'Szereti a meglepetéseket, és mindig új dolgokat keres, amiket csinálhat. Fontosnak tartja, hogy sokféle dolgot kipróbáljon az életben.'},
-    {s:'CO',t:'Úgy gondolja, az embereknek azt kell tenniük, amit mondanak nekik. Szerinte mindig be kell tartani a szabályokat, akkor is, ha senki sem figyel.'},
-    {s:'UN',t:'Fontos számára, hogy meghallgassa a tőle különböző embereket. Akkor is meg akarja érteni őket, ha nem ért velük egyet.'},
-    {s:'TR',t:'Fontos számára, hogy alázatos és szerény legyen. Igyekszik nem magára vonni a figyelmet.'},
-    {s:'HE',t:'Fontos számára, hogy jól érezze magát. Szereti kényeztetni magát.'},
-    {s:'SD',t:'Fontos számára, hogy maga döntsön arról, mit csinál. Szeret szabad lenni, és nem függeni másoktól.'},
-    {s:'BE',t:'Nagyon fontos számára, hogy segítsen a körülötte élőknek. Törődni akar a jóllétükkel.'},
-    {s:'AC',t:'Fontos számára, hogy nagyon sikeres legyen. Reméli, hogy az emberek elismerik az eredményeit.'},
-    {s:'SE',t:'Fontos számára, hogy az állam minden fenyegetéssel szemben garantálja a biztonságát. Azt akarja, hogy az állam erős legyen, és meg tudja védeni a polgárait.'},
-    {s:'ST',t:'Kalandokat keres, és szeret kockázatot vállalni. Izgalmas életet szeretne.'},
-    {s:'CO',t:'Fontos számára, hogy mindig helyesen viselkedjen. El akarja kerülni, hogy bármit tegyen, amit mások helytelennek tartanának.'},
-    {s:'PO',t:'Fontos számára, hogy mások tiszteljék. Azt akarja, hogy az emberek azt tegyék, amit mond.'},
-    {s:'BE',t:'Fontos számára, hogy hűséges legyen a barátaihoz. Oda akarja adni magát a hozzá közel állóknak.'},
-    {s:'UN',t:'Erősen hiszi, hogy az embereknek vigyázniuk kell a természetre. Fontos számára a környezet védelme.'},
-    {s:'TR',t:'Fontos számára a hagyomány. Igyekszik követni a vallása vagy a családja által átadott szokásokat.'},
-    {s:'HE',t:'Minden alkalmat megragad, hogy jól szórakozzon. Fontos számára, hogy olyan dolgokat csináljon, amelyek örömet okoznak neki.'}]}],
-  score(R){
-    const mrat=R.allMean();const o={mrat:H.r2(mrat),raw:{},c:{},ho:{}};
-    Object.keys(V).forEach(k=>{o.raw[k]=H.r2(R.mean(k));o.c[k]=H.r2(R.mean(k)-mrat);});
-    Object.keys(HO).forEach(k=>{const vals=R.items.filter(i=>HO[k].keys.includes(i.s)).map(i=>i.v);o.ho[k]=H.r2(H.mean(vals)-mrat);});
-    return o;},
-  sum(s){const k=Object.keys(V).sort((a,b)=>s.c[b]-s.c[a]);const d=Object.fromEntries(Object.keys(V).map(x=>[x,[V[x].name,s.c[x],-3,3]]));Object.keys(HO).forEach(x=>d['ho_'+x]=[HO[x].name,s.ho[x],-3,3]);return {h:k.slice(0,3).map(x=>V[x].name).join(', '),d};},
+  id:'ips',key:'ips-responses-v1',name:'Halogatás (IPS)',c1:'#fbbf24',c2:'#f97316',
+  tab:'Halogatás',tabSub:'IPS · 9 item',scale:SCALE5,
+  header:{status:'valid',statusText:'Validált skála · Steel (2010)',
+    eyebrow:'Irrational Procrastination Scale · Piers Steel (2010)',
+    title:'Mennyit <em style="color:#fbbf24">halogatsz</em>',
+    lead:'Steel definíciója szerint a halogatás <strong>önkéntes késleltetés annak ellenére, hogy tudod: rosszabbul jársz vele</strong>. Nem a tervezett várakozás vagy a stratégiai prioritizálás, hanem az irracionális halasztás. Az IPS ennek a legrövidebb, jól validált mérőeszköze.',
+    intro:'<p><strong>Kitöltés:</strong> mennyire igazak rád az állítások általában, az elmúlt hónapokat nézve? 1 = egyáltalán nem igaz · 5 = teljesen igaz. Három tétel fordított pontozású.</p><p>Összpontszám: 9–45. A sávhatárok tájékoztató jellegűek, nem klinikai küszöbök.</p>'},
+  sections:[{title:'9 állítás',desc:'',items:[
+    {s:'p',t:'Olyan sokáig halogatom a dolgokat, hogy a jóllétem vagy a hatékonyságom feleslegesen kárt szenved.'},
+    {s:'p',t:'Ha valamit meg kell csinálnom, előbb azzal foglalkozom, és csak utána a kevésbé fontos dolgokkal.',r:true},
+    {s:'p',t:'Jobb lenne az életem, ha bizonyos feladatokat korábban elintéznék.'},
+    {s:'p',t:'Amikor valamit csinálnom kellene, gyakran valami mást csinálok helyette.'},
+    {s:'p',t:'A nap végén tudom, hogy jobban is eltölthettem volna az időmet.'},
+    {s:'p',t:'Bölcsen bánok az időmmel.',r:true},
+    {s:'p',t:'Az észszerűnél tovább halogatom a feladatokat.'},
+    {s:'p',t:'Halogatok.'},
+    {s:'p',t:'Mindent akkor csinálok meg, amikor úgy gondolom, hogy meg kell csinálni.',r:true}]}],
+  score(R){const t=R.sum('p');return {total:t,band:bandIPS(t).l};},
+  sum(s){return {h:s.band,d:{total:['IPS összpontszám',s.total,9,45]}};},
   render(R,s){
-    const order=['SD','ST','HE','AC','PO','SE','CO','TR','BE','UN'];
-    const sorted=[...order].sort((a,b)=>s.c[b]-s.c[a]);
-    const top3=sorted.slice(0,3),bot2=sorted.slice(-2);
-    const maxAbs=Math.max(1.5,...order.map(k=>Math.abs(s.c[k])));
-    const dv=`<div class="diverge">${order.map(k=>{const v=s.c[k],w=Math.abs(v)/maxAbs*50;
-      return `<div class="dv-row"><div class="dv-name">${V[k].name}<small>${V[k].en}</small></div>
-      <div class="dv-track"><div class="dv-fill" style="${v>=0?`left:50%`:`left:${50-w}%`};width:${w}%;background:${V[k].color}"></div></div>
-      <div class="dv-val" style="color:${V[k].color}">${v>0?'+':''}${v.toFixed(2)}</div></div>`;}).join('')}</div>`;
-    const tensions=[];
-    const opp=[['SD','CO','Önirányítás','Konformitás'],['ST','SE','Stimuláció','Biztonság'],['AC','BE','Teljesítmény','Jóindulat'],['PO','UN','Hatalom','Univerzalizmus'],['HE','TR','Hedonizmus','Hagyomány']];
-    opp.forEach(([a,b,na,nb])=>{if(s.c[a]>0.3&&s.c[b]>0.3)tensions.push(`<p><strong>${na} ↔ ${nb}:</strong> mindkettő fontos neked, pedig a körön szemközt állnak. Ez belső feszültségforrás, mert a döntéseid gyakran az egyiket a másik rovására szolgálják. Érdemes tudatosan kijelölni, melyik terület melyiket kapja.</p>`);});
-    if(!tensions.length)tensions.push('<p>Nincs erős belső értékütközés: a legfontosabb értékeid a kör egy oldalán, egymás szomszédságában vannak. Ez koherens, könnyen követhető értékrendet jelez.</p>');
-    return `<div class="res-eyebrow">Eredmény · Értékprofil (centrált)</div>
-      <h2 class="res-title">Az <em>értékrended</em></h2>
-      <p class="res-lead">Legfontosabb értékeid: <strong>${top3.map(k=>V[k].name).join(', ')}</strong>. Legkevésbé fontos: <strong>${bot2.map(k=>V[k].name).join(', ')}</strong>. A pozitív érték az átlagodnál fontosabbat, a negatív kevésbé fontosat jelent. A személyes átlagod (MRAT): ${s.mrat}.</p>
-      ${H.chart('A <em>Schwartz-kör</em>, kiterítve','Körsorrendben · centrált pontszám',dv)}
-      ${H.cards(Object.keys(HO).map(k=>({abbr:'Magasabb rendű érték',name:HO[k].name,val:(s.ho[k]>0?'+':'')+s.ho[k].toFixed(2),out:HO[k].keys.map(x=>V[x].name).join(' · '),pct:50+s.ho[k]/maxAbs*50,color:HO[k].color})))}
+    const b=bandIPS(s.total);
+    const worst=R.items.filter(i=>!i.r).sort((a,b)=>b.v-a.v).slice(0,3);
+    const g=H.gauge({name:'Halogatás',sub:b.l,val:s.total,unit:'/ 45',min:9,max:45,color:b.c,zones:[{from:9,to:18.5,color:'rgba(52,211,153,0.2)'},{from:18.5,to:27.5,color:'rgba(251,191,36,0.18)'},{from:27.5,to:36.5,color:'rgba(249,115,22,0.2)'},{from:36.5,to:45,color:'rgba(251,113,133,0.25)'}],labels:['9','alacsony','mérsékelt','erős','45']});
+    return `<div class="res-eyebrow">Eredmény · Halogatás</div>
+      <h2 class="res-title"><em>${b.l}</em></h2>
+      <p class="res-lead">IPS-összpontszám: <strong>${s.total}</strong> / 45.</p>
+      ${H.chart('Halogatási <em>skála</em>','9–45 · tájékoztató sávok','<div>'+g+'</div>')}
       ${H.interp('Mit <em>jelent</em>',[
-        {h:'A három vezérérték',color:V[top3[0]].color,html:top3.map(k=>`<p><strong>${V[k].name}:</strong> ${V[k].desc}</p>`).join('')},
-        {h:'Belső feszültségek',html:tensions.join('')},
-        {h:'Hogyan használd',html:'<p>Ha egy döntés vagy életszakasz a három vezérértékedet szolgálja, energiát ad. Ha tartósan a legalsó értékeid szerint kell működnöd (pl. alacsony Konformitással merev szabályrendszerben dolgozni), az kimerít, akkor is, ha „jól megy”. Nézd meg a jelenlegi projektjeidet ezen a szűrőn.</p>'}
+        {h:'A legerősebb állításaid',color:b.c,html:worst.map(i=>`<p>„${i.t}” — <strong>${i.v}/5</strong></p>`).join('')},
+        {h:'A halogatás egyenlete (Steel)',html:'<p>Steel ideiglenes motivációelmélete szerint a motiváció ≈ <strong>(elvárás × érték) / (impulzivitás × késleltetés)</strong>. A halogatás tehát nem lustaság. Akkor nő, ha nem hiszel a sikerben, ha a feladat nem jutalmaz, ha az impulzivitásod magas, és ha a jutalom messze van.</p><p>Ebből négy beavatkozási pont következik: <strong>kis, biztosan sikerülő első lépés</strong> (elvárás), a feladat összekötése valami számodra értékessel (érték), a zavaró ingerek fizikai eltávolítása (impulzivitás), és <strong>közeli, külső határidők</strong> (késleltetés).</p>'},
+        {h:'Kapcsolódó térképek',html:'<p>A <a href="cselekves.html#test-kolbe" style="color:#fde047">Cselekvési módok</a> (magas Gyorsindító, alacsony Rendszerező) és a <a href="cselekves.html#test-ft" style="color:#fde047">Négy tendencia</a> (Kötelességtudó, Lázadó) megmutatja, <em>milyen típusú</em> külső struktúra működik nálad. A <a href="#test-ders" style="color:#fde047">DERS-SF</a> azt, hogy a halogatás mögött érzelemszabályozási elakadás áll-e: sokszor a kellemetlen érzés kerülése a valódi motor.</p>'}
       ])}
-      ${H.refs(['<strong>Schwartz, S. H. (1992).</strong> Universals in the content and structure of values. <em>Advances in Experimental Social Psychology, 25</em>, 1–65.',
-        '<strong>Schwartz, S. H. (2003).</strong> A proposal for measuring value orientations across nations. <em>Questionnaire Development Report of the European Social Survey</em>, Ch. 7.',
-        '<strong>Schwartz, S. H. (2012).</strong> An overview of the Schwartz theory of basic values. <em>Online Readings in Psychology and Culture, 2</em>(1).',
-        '<strong>Davidov, E., Schmidt, P., & Schwartz, S. H. (2008).</strong> Bringing values back in: The adequacy of the European Social Survey to measure values in 20 countries. <em>Public Opinion Quarterly, 72</em>(3), 420–445.'])}`;
+      ${H.refs(['<strong>Steel, P. (2010).</strong> Arousal, avoidant and decisional procrastinators: Do they exist? <em>Personality and Individual Differences, 48</em>(8), 926–934.',
+        '<strong>Steel, P. (2007).</strong> The nature of procrastination: A meta-analytic and theoretical review of quintessential self-regulatory failure. <em>Psychological Bulletin, 133</em>(1), 65–94.',
+        '<strong>Svartdal, F., & Steel, P. (2017).</strong> Irrational delay revisited: Examining five procrastination scales in a global sample. <em>Frontiers in Psychology, 8</em>, 1927.'])}`;
   }
 });
 })();
 
-/* ═══════════ 2. NÉGY TENDENCIA (Rubin-modell) ═══════════ */
+/* ═══════════ 2. DERS-SF — ÉRZELEMSZABÁLYOZÁSI NEHÉZSÉGEK ═══════════ */
 (function(){
-const T={
-  U:{name:'Megfelelő',en:'Upholder',color:'#34d399',rule:'Teljesíti a külső és a belső elvárásokat is.',
-    desc:'Tudja, mit várnak tőle, és teljesíti, a saját magának tett ígéreteket is. Fegyelmezett, megbízható, önjáró.',
-    risk:'Merevség, szorongás, ha szabályt szeg (akár értelmetlent is), és türelmetlenség a „nem teljesítőkkel”.',
-    strat:['Tiszta, leírt szabályok és ütemterv: nálad a kimondott szabály maga a motor.','Tervezz be tudatosan „szabálytalan” időt, különben a rutin rabja leszel.','Kérdezd meg: ezt a szabályt azért tartom, mert jó, vagy csak azért, mert szabály?']},
-  Q:{name:'Kérdező',en:'Questioner',color:'#60a5fa',rule:'Minden elvárást megkérdőjelez, és csak azt teljesíti, amit megindokoltnak tart. Így minden elvárásból belső elvárás lesz.',
-    desc:'A logika, a hatékonyság és az igazolás hajtja. Ha meggyőződött, rendíthetetlen, ha nem, semmi nem mozdítja.',
-    risk:'Elemzési bénultság: a tökéletes információ keresése helyettesíti a döntést. Mások szemében nehézkes lehet.',
-    strat:['Minden célnál írd le a MIÉRT-et: nálad ez a motor.','Adj magadnak kutatási határidőt („péntekig gyűjtök, utána döntök”).','Ha elakadsz, kérdezd meg: a hiányzó információ tényleg megváltoztatná a döntést?']},
-  O:{name:'Kötelességtudó',en:'Obliger',color:'#fbbf24',rule:'A külső elvárásokat könnyen teljesíti, a belsőket (saját magának tett ígéreteket) nehezen.',
-    desc:'Ha más számít rá, szinte mindig teljesít. Ha csak saját magának ígérte, a terv hamar elhal. Ez a leggyakoribb tendencia.',
-    risk:'Kiégés és „kötelességtudó lázadás”: sok évnyi mások kiszolgálása után hirtelen, látszólag ok nélkül megtagad valamit.',
-    strat:['<strong>Külső elszámoltathatóság</strong> minden saját célhoz: edzőtárs, coach, nyilvános vállalás, fizetett határidő.','Keretezd át: „nem magamért csinálom, hanem hogy példát mutassak / hogy ne hagyjam cserben azokat, akik rám számítanak”.','Figyeld a lázadás előjeleit: a neheztelés jelzi, hogy túl sokat adsz.']},
-  R:{name:'Lázadó',en:'Rebel',color:'#fb7185',rule:'Ellenáll a külső és a belső elvárásoknak is. Azt teszi, amit most akar, a maga módján.',
-    desc:'A szabadság, a választás és az identitás hajtja. Ha megmondják, mit tegyen, pont azt nem akarja, akkor sem, ha saját magának mondta.',
-    risk:'A hosszú távú célok, rutinok és határidők tartós nehézséget jelentenek. Környezete kiszámíthatatlannak láthatja.',
-    strat:['Identitáskeretezés: nem „edzenem kell”, hanem „olyan ember vagyok, aki mozog”.','Választás, nem kötelesség: adj magadnak több opciót, és döntsd el a pillanatban.','Kihívásként fogalmazd meg: „Szerintük nem tudom megcsinálni. Majd meglátjuk.”']}
+const D={
+  strat:{name:'Korlátozott stratégiák',en:'Strategies',color:'#fb7185',desc:'Az a hit, hogy ha egyszer rosszul vagy, nem tudsz ezen változtatni.',tip:'Építs <strong>előre megírt listát</strong> 3–5 bevált szabályozó lépésről (mozgás, légzés, egy ember felhívása, zuhany). Feszültségben nem kell kitalálni, csak választani.'},
+  nonacc:{name:'Érzelmek el nem fogadása',en:'Non-acceptance',color:'#a78bfa',desc:'Szégyen, bűntudat vagy zavar amiatt, hogy egyáltalán ilyen érzésed van.',tip:'A „nem kéne így éreznem” második réteg fájdalmat tesz az elsőre. Gyakorlat: nevezd meg az érzést, és tedd hozzá: <strong>„érthető, hogy így érzek”</strong>.'},
+  impulse:{name:'Impulzuskontroll',en:'Impulse',color:'#f97316',desc:'Feszült állapotban nehéz uralni a viselkedést.',tip:'Iktass be <strong>késleltetést</strong> a késztetés és a tett közé (10 perc, 10 lélegzet). A késztetés hulláma általában 10–20 perc alatt lecseng.'},
+  goals:{name:'Célirányos működés',en:'Goals',color:'#fbbf24',desc:'Felzaklatott állapotban nehéz koncentrálni és dolgozni.',tip:'Ha fel vagy zaklatva, <strong>először szabályozz, utána dolgozz</strong>. 5 perc szabályozás gyorsabb, mint egy óra szétesett munka. Tarts egy „rossz napos” feladatlistát, amihez nem kell mély fókusz.'},
+  aware:{name:'Érzelmi tudatosság hiánya',en:'Awareness',color:'#60a5fa',desc:'Nem figyelsz oda, mit érzel, és nem ismered el az érzéseidet.',tip:'Napi 2–3 <strong>érzelmi check-in</strong> (reggel, délben, este): mit érzek, hol érzem a testemben, mekkora (1–10)?'},
+  clarity:{name:'Érzelmi tisztánlátás hiánya',en:'Clarity',color:'#2dd4bf',desc:'Nehéz megkülönböztetni és megnevezni, pontosan mit érzel.',tip:'Használj <strong>érzelemkereket</strong>, és a „rossz” helyett keress pontosabb szót (csalódott, megszégyenült, túlterhelt). A pontos megnevezés már önmagában csökkenti az intenzitást.'}
 };
-const Q=[
-  ['Újévi fogadalmat teszel. Mi történik általában?',{U:'Ha elhatároztam, tartom. Tulajdonképpen fogadalom nélkül is tartanám.',Q:'Csak akkor vállalok, ha értelmét látom. A január 1. amúgy is önkényes dátum.',O:'Lelkesen kezdem, de ha senki nem számít rám, lassan elhal.',R:'Nem szeretem a fogadalmakat: megkötnek, és épp ettől nem akarom.'}],
-  ['Egy ügyfél vagy a főnököd határidőt ad egy feladatra.',{U:'Határidőre megcsinálom, gond nélkül.',Q:'Megcsinálom, ha látom, miért pont akkor kell. Ha nem, rákérdezek.',O:'Megcsinálom, sőt, a külső határidő a legjobb motivációm.',R:'Ha kötelezőnek érzem, ellenállok. Akkor csinálom meg, amikor én akarom.'}],
-  ['Saját magadnak tűzöl ki egy célt (pl. heti 3 edzés), és senki nem ellenőriz.',{U:'Tartom, mert megígértem magamnak.',Q:'Tartom, ha meggyőztem magam, hogy ez a legjobb terv.',O:'Nehezen tartom. Kell egy edzőtárs, vagy valaki, aki számon kér.',R:'Akkor edzek, ha kedvem van. A „heti 3” nekem már teher.'}],
-  ['Valaki azt mondja: „Ezt így szokás csinálni.”',{U:'Rendben, ha ez a szabály, követem.',Q:'Miért? Ha nincs jó indok, a saját módomon csinálom.',O:'Követem, főleg ha zavarna másokat, ha nem tenném.',R:'Pont ettől lesz kedvem máshogy csinálni.'}],
-  ['Mi fáraszt ki leginkább?',{U:'Ha mások nem tartják be a megállapodást vagy a szabályokat.',Q:'Az önkényes, megindokolatlan döntések és a pazarlás.',O:'Hogy mindig másoknak teszek eleget, és magamra nem marad időm.',R:'Ha megmondják, mit csináljak és mikor.'}],
-  ['Mit mondanak rólad a közeli ismerőseid?',{U:'Megbízható, fegyelmezett, néha kicsit merev.',Q:'Sokat kérdez, mindennek alaposan utánanéz.',O:'Mindig lehet rá számítani, de magát elhanyagolja.',R:'Szabad szellem, nem lehet rá semmit ráerőltetni.'}],
-  ['A csapatban egy új szoftvert kell bevezetni.',{U:'A bevezetési terv szerint megtanulom.',Q:'Előbb utánanézek: tényleg ez a legjobb eszköz?',O:'Megtanulom, mert a csapat számít rám.',R:'Ha rám erőltetik, a régi módszernél maradok, ameddig lehet.'}],
-  ['Hogyan viszonyulsz a teendőlistákhoz?',{U:'Imádom, a kipipálás a legjobb érzés.',Q:'Csak akkor használom, ha tényleg hatékonyabbá tesz.',O:'Akkor működik, ha valakinek be is kell számolnom róla.',R:'Ha leírom, onnantól már nem akarom megcsinálni.'}],
-  ['Az orvosod életmódváltást javasol.',{U:'Követem a javaslatot.',Q:'Elolvasom a kutatásokat, és ha meggyőznek, csinálom.',O:'Nekem az segít, ha a családom vagy egy csoport is benne van.',R:'Ha én döntöm el, hogy akarom, megy. Ha előírják, nem.'}],
-  ['Mi a legerősebb motivátorod?',{U:'A kötelesség és a saját mércém.',Q:'A logika és az indoklás.',O:'Az elszámoltathatóság és mások elvárásai.',R:'A szabadság, a választás és az, hogy ki vagyok.'}],
-  ['Ha megszegsz egy megállapodást, annak oka leginkább…',{U:'Ritkán szegem meg. Ha mégis, erős bűntudatom van.',Q:'Menet közben rájöttem, hogy nincs értelme.',O:'Mások dolga előrébb került.',R:'Nem volt kedvem, és nekem ez elég ok.'}],
-  ['Egy kolléga önkényesen előír egy új folyamatot.',{U:'Betartom, ha hivatalos.',Q:'Addig kérdezek, amíg nem kapok meggyőző választ.',O:'Betartom, hogy ne legyen konfliktus, de bosszant.',R:'Keresek egy kerülő utat.'}]
-];
-const codes=['U','Q','O','R'];
+const bandM=m=>m>=3.5?'jelentős nehézség':m>=2.5?'mérsékelt nehézség':'kevés nehézség';
 makeTest({
-  id:'ft',key:'four-tendencies-responses-v1',name:'Négy tendencia',c1:'#60a5fa',c2:'#818cf8',
-  tab:'Négy tendencia',tabSub:'Rubin-modell · 12 helyzet',
-  header:{status:'model',statusText:'Modell-alapú saját helyzetkérdőív · nem Rubin hivatalos kvíze',
-    eyebrow:'The Four Tendencies · Gretchen Rubin (2017)',
-    title:'Hogyan reagálsz az <em style="color:#60a5fa">elvárásokra</em>',
-    lead:'Rubin keretrendszere egyetlen kérdésre épít: hogyan reagálsz a <strong>külső elvárásokra</strong> (határidő, kérés, szabály) és a <strong>belső elvárásokra</strong> (saját magadnak tett ígéretek)? A két igen/nem válasz négy tendenciát ad. Ez az egyik leggyakorlatiasabb eszköz arra, <em>miért nem tartod be a saját terveidet</em>.',
-    intro:'<p><strong>Fontos:</strong> a keretrendszer nem tudományosan validált, pszichometriai kutatás alig van róla. Hasznos önmegfigyelési modell. Rubin hivatalos kvíze szerzői jogvédett, ez <strong>saját, 12 helyzetből álló változat</strong>.</p><p><strong>Kitöltés:</strong> mindegyik helyzetnél válaszd azt, ami <em>ténylegesen</em> történni szokott, ne azt, amit szeretnél.</p>'},
-  sections:[{title:'12 helyzet',desc:'Egy válasz helyzetenként.',items:Q.map(([t,o],i)=>{
-    const rot=codes.slice(i%4).concat(codes.slice(0,i%4));
-    return {t,opts:rot.map(c=>({t:o[c],s:c}))};})}],
-  score(R){const c={U:0,Q:0,O:0,R:0};R.picks.forEach(p=>c[p.opt.s]++);
-    const sorted=codes.slice().sort((a,b)=>c[b]-c[a]);
-    return {counts:c,primary:sorted[0],secondary:sorted[1],outer:c.U+c.O,inner:c.U+c.Q};},
-  sum(s){return {h:T[s.primary].name+' ('+T[s.primary].en+')',d:Object.fromEntries(codes.map(x=>[x,[T[x].name,s.counts[x],0,12]])),x:{primary:s.primary,secondary:s.secondary}};},
+  id:'ders',key:'ders-sf-responses-v1',name:'Érzelemszabályozás (DERS-SF)',c1:'#fb7185',c2:'#a78bfa',
+  tab:'Érzelemszabályozás',tabSub:'DERS-SF · 18 item',scale:FREQ5,
+  header:{status:'valid',statusText:'Validált skála · Kaufman és mtsai (2016)',
+    eyebrow:'Difficulties in Emotion Regulation Scale – Short Form · Gratz & Roemer (2004), Kaufman et al. (2016)',
+    title:'Hol akad el az <em style="color:#fb7185">érzelemszabályozás</em>',
+    lead:'A DERS a legszélesebb körben használt mérőeszköz arra, <strong>milyen ponton</strong> nehéz szabályozni az érzelmeket: észrevenni őket, elfogadni, megérteni, vagy felzaklatott állapotban is célirányosan működni. A rövid forma 6 területet mér, területenként 3 tétellel.',
+    intro:'<p><strong>Kitöltés:</strong> milyen gyakran igazak rád az állítások? 1 = szinte soha · 5 = szinte mindig. Az első blokk tételei fordított pontozásúak (a rendszer kezeli).</p><p>Magasabb pontszám = <strong>nagyobb nehézség</strong>. Terület: 3–15, összpontszám: 18–90.</p>'},
+  sections:[
+    {title:'I. rész — <em>Figyelem az érzésekre</em>',desc:'',items:[
+      {s:'aware',t:'Odafigyelek arra, hogyan érzem magam.',r:true},
+      {s:'clarity',t:'Fogalmam sincs, hogyan érzem magam.'},
+      {s:'clarity',t:'Nehezen tudok eligazodni az érzéseimen.'},
+      {s:'aware',t:'Figyelmes vagyok az érzéseimre.',r:true},
+      {s:'clarity',t:'Össze vagyok zavarodva azzal kapcsolatban, mit érzek.'},
+      {s:'aware',t:'Amikor feldúlt vagyok, elismerem az érzéseimet.',r:true}]},
+    {title:'II. rész — <em>Amikor feldúlt vagyok…</em>',desc:'Feldúlt = ideges, szomorú, dühös, szorongó, bármilyen erős kellemetlen állapot.',items:[
+      {s:'nonacc',t:'…zavarba jövök amiatt, hogy így érzek.'},
+      {s:'goals',t:'…nehezen tudom elvégezni a munkámat.'},
+      {s:'impulse',t:'…elveszítem az irányítást.'},
+      {s:'strat',t:'…úgy hiszem, sokáig így is maradok.'},
+      {s:'strat',t:'…úgy hiszem, a végén nagyon levert leszek.'},
+      {s:'goals',t:'…nehezen tudok másra összpontosítani.'},
+      {s:'nonacc',t:'…szégyellem magam, amiért így érzek.'},
+      {s:'nonacc',t:'…bűntudatom van, amiért így érzek.'},
+      {s:'goals',t:'…nehezen tudok koncentrálni.'},
+      {s:'impulse',t:'…nehezen tudom kontrollálni a viselkedésemet.'},
+      {s:'strat',t:'…úgy hiszem, csak dagonyázni tudok benne.'},
+      {s:'impulse',t:'…elveszítem a kontrollt a viselkedésem felett.'}]}],
+  score(R){const o={total:R.sum('strat')+R.sum('nonacc')+R.sum('impulse')+R.sum('goals')+R.sum('aware')+R.sum('clarity')};Object.keys(D).forEach(k=>o[k]=R.sum(k));o.mean=H.r2(o.total/18);return o;},
+  sum(s){const top=Object.keys(D).sort((a,b)=>s[b]-s[a])[0];return {h:'Fő elakadás: '+D[top].name+' ('+bandM(s.mean)+')',d:Object.assign({total:['DERS-SF összpontszám',s.total,18,90]},Object.fromEntries(Object.keys(D).map(k=>[k,[D[k].name,s[k],3,15]])))};},
   render(R,s){
-    const c=s.counts,p=s.primary,q=s.secondary,max=Math.max(...Object.values(c));
-    const cell=(k)=>{const a=c[k]/12;return `<div class="cell" style="background:color-mix(in srgb,${T[k].color} ${Math.round(8+a*55)}%,transparent);border-color:${k===p?T[k].color:'var(--line-dark)'};${k===p?'box-shadow:0 0 24px '+T[k].color+'55':''}"><span class="t">${T[k].name}</span><span class="n" style="color:${k===p?'#fff':T[k].color}">${c[k]}</span><span class="s">${T[k].en}</span></div>`;};
-    const quad=`<div class="quad">
-      <div class="ax v">teljesíti a belsőt</div>${cell('U')}${cell('Q')}
-      <div class="ax v">ellenáll a belsőnek</div>${cell('O')}${cell('R')}
-      <div></div><div class="ax">teljesíti a külsőt</div><div class="ax">ellenáll a külsőnek</div></div>`;
-    const tie=c[p]===c[q];
-    const mixNote=tie?`<p>Holtverseny van <strong>${T[p].name}</strong> és <strong>${T[q].name}</strong> között. Rubin szerint mindenkinek egy tendenciája van, a második csak „színezi”. Nézd meg a leírásokat: melyik okoz neked <em>valódi</em> problémát?</p>`:
-      `<p>A második tendenciád, a <strong>${T[q].name}</strong>, színezi az elsődlegest. ${({
-        'OQ':'Rubin szerint gyakori átfedés: magadnak is megindoklod, miért kell teljesítened, és ettől könnyebben tartod a saját céljaidat.',
-        'QO':'Rubin szerint gyakori átfedés: az indoklás mellett a külső elszámoltathatóság is segít, főleg ha a „miért” már megvan.',
-        'OR':'Ez a lázadásba hajló kötelességtudó mintázata: sokáig teljesítesz, majd hirtelen „elég volt”. Figyeld a neheztelést, mert ez a korai jelzés.',
-        'RO':'Lázadó alap kötelességtudó vonással: a mások iránti elköteleződés akkor működik, ha azt saját választásként éled meg.',
-        'UQ':'Szabálytartó, de az értelmetlen szabályokat megkérdőjelező kombináció.',
-        'QU':'Ha meggyőzted magad, megfelelőként tartod a tervet. Az indoklás a belépő.',
-        'QR':'Erős belső autonómia: a külső elvárásokkal szemben szkeptikus és ellenálló vagy. Az indoklás és a választás szabadsága egyaránt kell.',
-        'RQ':'Erős belső autonómia: a külső elvárásokkal szemben szkeptikus és ellenálló vagy. Az indoklás és a választás szabadsága egyaránt kell.'
-      })[p+q]||'Ez a két tendencia ritkábban párosul, ezért érdemes megnézni, melyik helyzetekben jelenik meg a második.'}</p>`;
-    return `<div class="res-eyebrow">Eredmény · Tendencia</div>
-      <h2 class="res-title">Tendenciád: <em>${T[p].name}</em></h2>
-      <p class="res-lead">${T[p].rule}</p>
-      ${H.chart('A négy <em>tendencia</em>','Találatok száma a 12 helyzetből',quad)}
-      ${H.interp('Mit <em>jelent</em>',[
-        {h:T[p].name+' ('+T[p].en+')',color:T[p].color,html:`<p>${T[p].desc}</p><p><strong>Kockázat:</strong> ${T[p].risk}</p>`},
-        {h:'Stratégiák, amik nálad működnek',color:T[p].color,html:`<ul style="padding-left:18px;color:var(--ink-lite-soft);font-size:14.5px;line-height:1.7">${T[p].strat.map(x=>`<li>${x}</li>`).join('')}</ul>`},
-        {h:'A második tendencia',color:T[q].color,html:mixNote},
-        {h:'Miért fontos ez a tervezés szempontjából',html:'<p>A legtöbb produktivitási tanács a Megfelelőknek szól („tűzz ki célt és tartsd”). Ha nem Megfelelő vagy, a több tervezés nem segít. A <strong>tendenciádhoz illő végrehajtási mechanizmus</strong> segít: Kérdezőnek indoklás, Kötelességtudónak külső elszámoltathatóság, Lázadónak választás és identitás.</p>'}
-      ])}
-      ${H.refs(['<strong>Rubin, G. (2017).</strong> <em>The Four Tendencies: The Indispensable Personality Profiles That Reveal How to Make Your Life Better.</em> Harmony Books.',
-        '<em>Empirikus háttér: a keretrendszert független pszichometriai kutatásban nem validálták. Önmegfigyelési modell, nem mérőeszköz.</em>'])}`;
+    const keys=Object.keys(D),sorted=[...keys].sort((a,b)=>s[b]-s[a]);
+    const radar=H.radar(keys.map(k=>({label:D[k].name.split(' ')[0]+(D[k].name.split(' ')[1]?' '+D[k].name.split(' ')[1]:''),value:s[k],shown:s[k]+'/15',color:D[k].color})),{min:3,max:15,stroke:'#fb7185',fill:'rgba(251,113,133,0.22)'});
+    return `<div class="res-eyebrow">Eredmény · Érzelemszabályozás</div>
+      <h2 class="res-title">Fő elakadás: <em>${D[sorted[0]].name}</em></h2>
+      <p class="res-lead">Összpontszám: <strong>${s.total}</strong> / 90 (tételátlag ${s.mean}, ${bandM(s.mean)}). Magasabb = nagyobb nehézség.</p>
+      ${H.chart('Hat <em>terület</em>','3–15 · magasabb = nehezebb',radar)}
+      ${H.rank('Területek <em>a legnehezebbtől</em>',sorted.map((k,i)=>({name:D[k].name,sub:D[k].en,desc:D[k].desc,score:s[k],unit:'/ 15',color:D[k].color,top:i===0})))}
+      ${H.interp('Hol <em>érdemes kezdeni</em>',sorted.slice(0,2).map(k=>({h:D[k].name,color:D[k].color,html:`<p>${D[k].tip}</p>`})).concat([{h:'Szabályozás és végrehajtás',html:'<p>Ha a <strong>Célirányos működés</strong> vagy a <strong>Korlátozott stratégiák</strong> terület magas, a halogatás gyakran nem időbeosztási, hanem érzelmi probléma: a feladat kellemetlen érzést kelt, és az elkerülés azonnal csillapít. Ilyenkor a jobb naptár nem segít. Az segít, ha a kellemetlen érzést kisebbé teszed (kisebb első lépés), vagy előbb szabályozol.</p>'}]))}
+      ${H.refs(['<strong>Gratz, K. L., & Roemer, L. (2004).</strong> Multidimensional assessment of emotion regulation and dysregulation. <em>Journal of Psychopathology and Behavioral Assessment, 26</em>(1), 41–54.',
+        '<strong>Kaufman, E. A., Xia, M., Fosco, G., Yaptangco, M., Skidmore, C. R., & Crowell, S. E. (2016).</strong> The Difficulties in Emotion Regulation Scale Short Form (DERS-SF): Validation and replication in adolescent and adult samples. <em>Journal of Psychopathology and Behavioral Assessment, 38</em>(3), 443–455.'])}`;
   }
 });
 })();
 
-/* ═══════════ 3. CSELEKVÉSI MÓDOK (Kolbe-modell) ═══════════ */
+/* ═══════════ 3. SCS-SF — ÖNEGYÜTTÉRZÉS ═══════════ */
 (function(){
-const M={
-  ff:{name:'Tényfeltáró',en:'Fact Finder',color:'#60a5fa',
-    init:'Kezdeményező: információgyűjtéssel indítasz. Adatok, háttér, precedens, pontos definíció nélkül nem mozdulsz.',
-    acc:'Rugalmas: annyi információt gyűjtesz, amennyi a helyzethez kell, se többet, se kevesebbet.',
-    prev:'Ellenálló: egyszerűsítesz, a lényegre ugrasz, a részletek elvesznek. Mások túlkomplikáltnak látják a kérdéseidet.'},
-  ft:{name:'Rendszerező',en:'Follow Thru',color:'#34d399',
-    init:'Kezdeményező: struktúrát, rendszert, sorrendet építesz. Egy dolgot végigviszel, mielőtt a következőbe kezdesz.',
-    acc:'Rugalmas: alkalmazkodsz a meglévő rendszerekhez, és szükség esetén szervezel.',
-    prev:'Ellenálló: a rendszerek megkötnek, egyszerre sok szálon futsz, nem sorrendben. Gyakori ára: sok elkezdett, kevés lezárt dolog.'},
-  qs:{name:'Gyorsindító',en:'Quick Start',color:'#fbbf24',
-    init:'Kezdeményező: kísérletezel, improvizálsz, kockázatot vállalsz, határidő-nyomás alatt pörögsz. Sok indítás.',
-    acc:'Rugalmas: nyitott vagy a változásra, de nem kergeted.',
-    prev:'Ellenálló: stabilizálsz, a kockázatot csökkented, és a rögtönzést kerülöd. Kell a terv, mielőtt lépsz.'},
-  im:{name:'Megvalósító',en:'Implementor',color:'#fb7185',
-    init:'Kezdeményező: kézzel, fizikailag, térben gondolkodsz. Prototípus, modell, tárgy kell ahhoz, hogy megérts valamit.',
-    acc:'Rugalmas: ha kell, fizikailag is dolgozol, de nem ez a fő csatornád.',
-    prev:'Ellenálló: fejben, fogalmakban, digitálisan dolgozol. A kézzelfogható megvalósítást inkább delegálod.'}
+const C={
+  SK:{name:'Önkedvesség',en:'Self-Kindness',color:'#34d399',pos:true},
+  SJ:{name:'Önítélkezés',en:'Self-Judgment',color:'#fb7185',pos:false},
+  CH:{name:'Közös emberi tapasztalat',en:'Common Humanity',color:'#60a5fa',pos:true},
+  IS:{name:'Elszigeteltség',en:'Isolation',color:'#f97316',pos:false},
+  MI:{name:'Tudatos jelenlét',en:'Mindfulness',color:'#2dd4bf',pos:true},
+  OI:{name:'Túlazonosulás',en:'Over-Identification',color:'#a78bfa',pos:false}
+};
+const band=m=>m>=3.51?{l:'Magas önegyüttérzés',c:'#34d399'}:m>=2.5?{l:'Közepes önegyüttérzés',c:'#fbbf24'}:{l:'Alacsony önegyüttérzés',c:'#fb7185'};
+makeTest({
+  id:'scs',key:'scs-sf-responses-v1',name:'Önegyüttérzés (SCS-SF)',c1:'#34d399',c2:'#2dd4bf',
+  tab:'Önegyüttérzés',tabSub:'SCS-SF · 12 item',scale:FREQ5,
+  header:{status:'valid',statusText:'Validált skála · Raes és mtsai (2011)',
+    eyebrow:'Self-Compassion Scale – Short Form · Neff (2003), Raes et al. (2011)',
+    title:'Hogyan bánsz magaddal, <em style="color:#34d399">amikor elbuksz</em>',
+    lead:'Kristin Neff modellje szerint az önegyüttérzés három pár ellentétből áll: <strong>önkedvesség vagy önítélkezés</strong>, <strong>közös emberi tapasztalat vagy elszigeteltség</strong>, <strong>tudatos jelenlét vagy túlazonosulás</strong>. A kutatások szerint nem a gyengeség jele: a magas önegyüttérzés több kitartással és kevesebb halogatással jár, mint a kemény önkritika.',
+    intro:'<p><strong>Kitöltés:</strong> milyen gyakran viselkedsz így magaddal nehéz helyzetben? 1 = szinte soha · 5 = szinte mindig. A negatív tételek fordított pontozásúak.</p><p>Összpontszám: 1–5 átlag. 1–2,49 alacsony · 2,5–3,5 közepes · 3,51–5 magas (Neff sávjai).</p>'},
+  sections:[{title:'12 állítás',desc:'',items:[
+    {s:'OI',t:'Amikor valami fontosban kudarcot vallok, elborít az elégtelenség érzése.',r:true},
+    {s:'SK',t:'Igyekszem megértő és türelmes lenni a személyiségem azon részeivel, amelyeket nem szeretek.'},
+    {s:'MI',t:'Amikor valami fájdalmas történik, igyekszem kiegyensúlyozottan látni a helyzetet.'},
+    {s:'IS',t:'Amikor le vagyok törve, hajlamos vagyok úgy érezni, hogy a legtöbb ember valószínűleg boldogabb nálam.',r:true},
+    {s:'CH',t:'Igyekszem a hibáimat az emberi lét részeként látni.'},
+    {s:'SK',t:'Amikor nagyon nehéz időszakon megyek át, megadom magamnak azt a törődést és gyengédséget, amire szükségem van.'},
+    {s:'MI',t:'Amikor valami felzaklat, igyekszem egyensúlyban tartani az érzelmeimet.'},
+    {s:'IS',t:'Amikor valami fontosban kudarcot vallok, hajlamos vagyok egyedül érezni magam a kudarcommal.',r:true},
+    {s:'OI',t:'Amikor le vagyok törve, hajlamos vagyok rágódni és ráfixálódni mindarra, ami rossz.',r:true},
+    {s:'CH',t:'Amikor valamiben elégtelennek érzem magam, igyekszem emlékeztetni magam, hogy ezt az érzést a legtöbb ember ismeri.'},
+    {s:'SJ',t:'Elutasító és ítélkező vagyok a saját hibáimmal és hiányosságaimmal szemben.',r:true},
+    {s:'SJ',t:'Türelmetlen és intoleráns vagyok a személyiségem azon részeivel, amelyeket nem szeretek.',r:true}]}],
+  score(R){const o={total:H.r2(R.allMean())};Object.keys(C).forEach(k=>{const m=R.mean(k);o[k]=H.r2(C[k].pos?m:6-m);});return o;},
+  sum(s){return {h:band(s.total).l,d:Object.assign({total:['Önegyüttérzés (átlag)',s.total,1,5]},Object.fromEntries(Object.keys(C).map(k=>[k,[C[k].name+(C[k].pos?'':' (nyers)'),s[k],1,5]])))};},
+  render(R,s){
+    const b=band(s.total);
+    const pairs=[['SK','SJ'],['CH','IS'],['MI','OI']];
+    const bars=H.bars('Három <em>ellentétpár</em>',pairs.map(([p,n])=>({title:C[p].name+' ↔ '+C[n].name,color:C[p].color,rows:[
+      {name:C[p].name+' <span style="color:var(--ink-lite-muted);font-size:12px">· magasabb = jobb</span>',val:s[p].toFixed(1),unit:'/5',pct:(s[p]-1)/4*100,color:C[p].color},
+      {name:C[n].name+' <span style="color:var(--ink-lite-muted);font-size:12px">· magasabb = erősebb</span>',val:s[n].toFixed(1),unit:'/5',pct:(s[n]-1)/4*100,color:C[n].color}]})));
+    const weakest=pairs.map(([p,n])=>({p,n,gap:s[n]-s[p]})).sort((a,b)=>b.gap-a.gap)[0];
+    const TIPS={SK:'<strong>A barát-teszt:</strong> amikor elrontasz valamit, írd le, mit mondanál egy jó barátodnak ugyanebben a helyzetben, és mondd ezt magadnak.',CH:'<strong>„Ez emberi”:</strong> kudarc után mondd ki: „ez most nehéz, és ezt más is átéli”. Az elszigeteltség érzése a szégyen fő erősítője.',MI:'<strong>Címkézés rágódás helyett:</strong> „most azt a gondolatot gondolom, hogy…”. Távolságot teremt a gondolat és közted.'};
+    return `<div class="res-eyebrow">Eredmény · Önegyüttérzés</div>
+      <h2 class="res-title"><em>${b.l}</em></h2>
+      <p class="res-lead">Átlag: <strong>${s.total.toFixed(2)}</strong> / 5.</p>
+      ${bars}
+      ${H.interp('Mit <em>jelent</em>',[
+        {h:'A leggyengébb pár: '+C[weakest.p].name+' ↔ '+C[weakest.n].name,color:C[weakest.p].color,html:`<p>${TIPS[weakest.p]}</p>`},
+        {h:'Önkritika és teljesítmény',html:'<p>Gyakori félelem, hogy ha kedvesebb vagy magaddal, elengeded a mércét. A kutatás ennek az ellenkezőjét mutatja: az önegyüttérző emberek kudarc után <strong>hamarabb próbálkoznak újra</strong>, és kevésbé halogatnak (Breines & Chen, 2012; Sirois, 2014). A kemény önkritika a kudarctól való félelmet erősíti, ami pont az elkerülést táplálja.</p>'},
+        {h:'Kapcsolódó térképek',html:'<p>Az alacsony önegyüttérzés gyakran a YSQ <em>Könyörtelen mércék</em> és <em>Büntető készenlét</em> sémáival, illetve az SMI <em>Követelő / Büntető szülő</em> módjával jár együtt. Az összegzés oldal ezeket egymás mellé teszi.</p>'}
+      ])}
+      ${H.refs(['<strong>Neff, K. D. (2003).</strong> The development and validation of a scale to measure self-compassion. <em>Self and Identity, 2</em>(3), 223–250.',
+        '<strong>Raes, F., Pommier, E., Neff, K. D., & Van Gucht, D. (2011).</strong> Construction and factorial validation of a short form of the Self-Compassion Scale. <em>Clinical Psychology & Psychotherapy, 18</em>(3), 250–255.',
+        '<strong>Breines, J. G., & Chen, S. (2012).</strong> Self-compassion increases self-improvement motivation. <em>Personality and Social Psychology Bulletin, 38</em>(9), 1133–1143.',
+        '<strong>Sirois, F. M. (2014).</strong> Procrastination and stress: Exploring the role of self-compassion. <em>Self and Identity, 13</em>(2), 128–145.'])}`;
+  }
+});
+})();
+
+/* ═══════════ 4. TFEQ-R18 — EVÉSI VISELKEDÉS ═══════════ */
+(function(){
+const TF=[{t:'Teljesen igaz',v:4},{t:'Inkább igaz',v:3},{t:'Inkább nem igaz',v:2},{t:'Egyáltalán nem igaz',v:1}];
+const it=(s,t)=>({s,t,opts:TF});
+const S={
+  EE:{name:'Érzelmi evés',en:'Emotional Eating',color:'#fb7185',n:3,desc:'Evés negatív érzelmekre (szorongás, lehangoltság, magány) válaszul.'},
+  UE:{name:'Kontrollálatlan evés',en:'Uncontrolled Eating',color:'#fbbf24',n:9,desc:'A kontroll elvesztésének érzése evés közben, erős éhség- és ingerérzékenység.'},
+  CR:{name:'Kognitív visszafogás',en:'Cognitive Restraint',color:'#60a5fa',n:6,desc:'Tudatos visszafogás a testsúly vagy az alak befolyásolására.'}
 };
 makeTest({
-  id:'kolbe',key:'action-modes-responses-v1',name:'Cselekvési módok',c1:'#fbbf24',c2:'#fb7185',
-  tab:'Cselekvési módok',tabSub:'Kolbe-modell · 24 item',scale:SCALE5,
-  header:{status:'model',statusText:'Modell-alapú saját itemkészlet · nem a hivatalos Kolbe A Index',
-    eyebrow:'Konatív cselekvési módok · Kathy Kolbe (1990) modellje alapján',
-    title:'Hogyan <em style="color:#fbbf24">kezdesz neki</em>',
-    lead:'Kolbe a gondolkodás (kogníció) és az érzelmek (affektus) mellett a <strong>konációt</strong> méri: az ösztönös cselekvési módot, azt, <em>ahogyan</em> nekiállsz valaminek, ha szabad kezet kapsz. Négy mód van, mindegyikben lehetsz <strong>kezdeményező</strong> (7–10), <strong>rugalmas</strong> (4–6) vagy <strong>ellenálló</strong> (1–3). Egyik sem jobb a másiknál.',
-    intro:'<p><strong>Fontos:</strong> a hivatalos Kolbe A Index fizetős, kényszerválasztós, szerzői jogvédett eszköz (kolbe.com). Ez <strong>saját, a négy módra írt 24 tételes Likert-változat</strong>, az 1–10-es skálára vetítve. Tájékoztató profil, nem Kolbe-eredmény.</p><p><strong>Kitöltés:</strong> arra gondolj, hogyan cselekszel, amikor <em>szabadon</em> csinálhatod a magad módján, ne arra, hogyan „kell” a munkahelyen. 1 = egyáltalán nem · 5 = teljesen.</p>'},
-  sections:[{title:'Amikor szabad kezet kapok…',desc:'24 állítás, négy móddal keverve. Néhány fordított pontozású.',items:[
-    {s:'ff',t:'Döntés előtt alaposan utánajárok minden részletnek.'},
-    {s:'ft',t:'Rendszereket, sablonokat, folyamatokat építek.'},
-    {s:'qs',t:'Szívesen belevágok új dolgokba akkor is, ha még nem látom a végét.'},
-    {s:'im',t:'Szívesen dolgozom a kezemmel, fizikai tárgyakkal.'},
-    {s:'ff',t:'Szeretek adatokat, hátteret, korábbi példákat gyűjteni.'},
-    {s:'ft',t:'Egy dolgot végigviszek, mielőtt a következőbe kezdek.'},
-    {s:'qs',t:'Improvizálok, menet közben találom ki a megoldást.'},
-    {s:'im',t:'Modellt vagy prototípust építek, hogy megértsek valamit.'},
-    {s:'ff',t:'Inkább a lényeg érdekel, a részletek untatnak.',r:true},
-    {s:'ft',t:'A rendszerek és beosztások megkötnek.',r:true},
-    {s:'qs',t:'Határidő-nyomás alatt dolgozom a legjobban.'},
-    {s:'im',t:'Tartós, kézzelfogható eredményt akarok létrehozni.'},
-    {s:'ff',t:'Kevés információ alapján is gyorsan döntök.',r:true},
-    {s:'ft',t:'Egyszerre sok dolgot csinálok, nem sorban.',r:true},
-    {s:'qs',t:'Kísérletezem és kockázatot vállalok, hogy kiderüljön, mi működik.'},
-    {s:'im',t:'Inkább fejben vagy digitálisan dolgozom, mint fizikailag.',r:true},
-    {s:'ff',t:'Összehasonlítom az opciókat, mielőtt választok.'},
-    {s:'ft',t:'Ütemtervet készítek, és a lépések logikus sorrendjére figyelek.'},
-    {s:'qs',t:'Nem szeretek rögtönözni, kell a terv, mielőtt lépek.',r:true},
-    {s:'im',t:'Nem vagyok ügyes a kézzel végzett feladatokban.',r:true},
-    {s:'ff',t:'Pontosan, precízen fogalmazok, és ezt másoktól is elvárom.'},
-    {s:'ft',t:'Zavar, ha a dolgok nincsenek a helyükön.'},
-    {s:'qs',t:'A bizonytalanság megterhel, stabilitást keresek.',r:true},
-    {s:'im',t:'A tér, a mozgás, az anyagok és a szerszámok érdekelnek.'}]}],
-  score(R){const o={};Object.keys(M).forEach(k=>{const m=R.mean(k);o[k]=Math.round((m-1)/4*9+1);});return o;},
-  sum(s){return {h:'Profil: '+Object.keys(M).map(k=>s[k]).join('–'),d:Object.fromEntries(Object.keys(M).map(k=>[k,[M[k].name,s[k],1,10]]))};},
+  id:'tfeq',key:'tfeq-r18-responses-v1',name:'Evési viselkedés (TFEQ-R18)',c1:'#2dd4bf',c2:'#60a5fa',
+  tab:'Evési viselkedés',tabSub:'TFEQ-R18 · 18 item',
+  header:{status:'valid',statusText:'Validált skála · Karlsson és mtsai (2000)',
+    eyebrow:'Three-Factor Eating Questionnaire – R18 · Stunkard & Messick (1985), Karlsson et al. (2000)',
+    title:'Mit csinál az evés, <em style="color:#2dd4bf">amikor feszült vagy</em>',
+    lead:'A TFEQ-R18 három evési mintát mér: <strong>érzelmi evés</strong> (evés érzelmekre válaszul), <strong>kontrollálatlan evés</strong> (a kontroll elvesztésének érzése) és <strong>kognitív visszafogás</strong> (tudatos korlátozás). Itt nem a diéta a kérdés, hanem az, hogy az evés milyen szerepet kap a feszültségszabályozásban.',
+    intro:'<p><strong>Kitöltés:</strong> válaszd ki, mennyire igaz rád az állítás általában. Az utolsó néhány kérdésnek saját válaszlehetőségei vannak.</p><p>Minden skála 0–100-ra van átszámolva. Magasabb = az adott minta erősebb. Nincsenek „jó” vagy „rossz” értékek, és ez nem étkezési zavar szűrése.</p>'},
+  sections:[
+    {title:'I. rész — <em>Állítások</em>',desc:'',items:[
+      it('UE','Ha érzem egy sercegő steak vagy egy ínycsiklandó étel illatát, nagyon nehéz megállnom, hogy ne egyek, még akkor is, ha épp most fejeztem be egy étkezést.'),
+      it('CR','Szándékosan kis adagokat szedek, hogy kontrolláljam a testsúlyomat.'),
+      it('EE','Amikor szorongok, azon kapom magam, hogy eszem.'),
+      it('UE','Néha, ha elkezdek enni, egyszerűen nem tudom abbahagyni.'),
+      it('UE','Ha valakivel vagyok, aki eszik, gyakran annyira megéhezem, hogy én is enni kezdek.'),
+      it('EE','Amikor le vagyok hangolva, gyakran túleszem magam.'),
+      it('UE','Ha egy igazi finomságot látok, gyakran annyira megéhezem, hogy azonnal ennem kell.'),
+      it('UE','Olyan éhes szoktam lenni, hogy a gyomrom feneketlen kútnak tűnik.'),
+      it('UE','Mindig éhes vagyok, ezért nehezen hagyom abba az evést, mielőtt kiürül a tányérom.'),
+      it('EE','Amikor magányos vagyok, evéssel vigasztalom magam.'),
+      it('CR','Étkezéskor tudatosan visszafogom magam, hogy ne hízzak.'),
+      it('CR','Bizonyos ételeket nem eszem meg, mert hizlalnak.'),
+      it('UE','Bármikor elég éhes vagyok ahhoz, hogy egyek.')]},
+    {title:'II. rész — <em>Gyakoriság és mérték</em>',desc:'',items:[
+      {s:'UE',t:'Milyen gyakran érzed magad éhesnek?',opts:[{t:'Csak étkezéskor',v:1},{t:'Néha étkezések között',v:2},{t:'Gyakran étkezések között',v:3},{t:'Szinte mindig',v:4}]},
+      {s:'CR',t:'Milyen gyakran kerülöd, hogy csábító ételeket halmozz fel otthon?',opts:[{t:'Szinte soha',v:1},{t:'Ritkán',v:2},{t:'Általában',v:3},{t:'Szinte mindig',v:4}]},
+      {s:'CR',t:'Mennyire valószínű, hogy tudatosan kevesebbet eszel, mint amennyit szeretnél?',opts:[{t:'Valószínűtlen',v:1},{t:'Kissé valószínű',v:2},{t:'Közepesen valószínű',v:3},{t:'Nagyon valószínű',v:4}]},
+      {s:'UE',t:'Előfordul, hogy falási rohamod van, pedig nem vagy éhes?',opts:[{t:'Soha',v:1},{t:'Ritkán',v:2},{t:'Néha',v:3},{t:'Legalább hetente egyszer',v:4}]},
+      {s:'CR',t:'Egy 1-től 8-ig terjedő skálán, ahol az 1 azt jelenti, hogy egyáltalán nem fogod vissza magad az evésben (azt eszel, amit akarsz, amikor akarod), a 8 pedig a teljes visszafogást (folyamatosan korlátozod a bevitelt, és soha nem „engedsz”), hányast adnál magadnak?',opts:[{t:'1',v:1},{t:'2',v:1},{t:'3',v:2},{t:'4',v:2},{t:'5',v:3},{t:'6',v:3},{t:'7',v:4},{t:'8',v:4}]}]}
+  ],
+  score(R){const raw={EE:0,UE:0,CR:0};R.picks.forEach(p=>raw[p.item.s]+=p.opt.v);const o={};Object.keys(S).forEach(k=>o[k]=Math.round((raw[k]-S[k].n)/(3*S[k].n)*100));o.binge=(R.picks.find(p=>/falási rohamod/.test(p.item.t))||{opt:{v:1}}).opt.v;return o;},
+  sum(s){const top=Object.keys(S).sort((a,b)=>s[b]-s[a])[0];return {h:'Legerősebb minta: '+S[top].name+' ('+s[top]+'/100)',d:Object.fromEntries(Object.keys(S).map(k=>[k,[S[k].name,s[k],0,100]]))};},
   render(R,s){
-    const zone=v=>v>=7?'init':v>=4?'acc':'prev';
-    const zname={init:'kezdeményező',acc:'rugalmas',prev:'ellenálló'};
-    const zones=[{from:1,to:3.5,color:'rgba(148,163,184,0.18)'},{from:3.5,to:6.5,color:'rgba(147,197,253,0.14)'},{from:6.5,to:10,color:'rgba(251,191,36,0.16)'}];
-    const g=Object.keys(M).map(k=>H.gauge({name:M[k].name,sub:M[k].en+' · '+zname[zone(s[k])],val:s[k],unit:'/10',min:1,max:10,color:M[k].color,zones,labels:['1 · ellenálló','rugalmas','kezdeményező · 10'],desc:M[k][zone(s[k])]})).join('');
-    const combos=[];
-    if(s.qs>=7&&s.ft<=4)combos.push('<p><strong>Magas Gyorsindító + alacsony Rendszerező:</strong> sok indítás, kevés lezárás. Az ötlet és a lendület megvan, a befejezéshez hiányzik a struktúra. Kolbe megoldása nem az, hogy „legyél rendszerezettebb”, hanem hogy a lezárást egy Rendszerező partnerre, eszközre vagy külső folyamatra bízd.</p>');
-    if(s.ff>=7&&s.qs<=4)combos.push('<p><strong>Magas Tényfeltáró + alacsony Gyorsindító:</strong> az elemzési bénultság klasszikus profilja. Mindig lehet még egy adatot gyűjteni, és a döntés csúszik. Adj a kutatásnak kemény határidőt.</p>');
-    if(s.ff>=7&&s.qs>=7)combos.push('<p><strong>Magas Tényfeltáró + magas Gyorsindító:</strong> belső húzóerő: az egyik rész kutatni akar, a másik azonnal indulni. Gyakran úgy jelenik meg, hogy gyorsan nekiugrasz, majd megakadsz, mert „még utána kell nézni”. Szétválaszthatod: előbb időkorlátos kutatás, utána kísérlet.</p>');
-    if(s.ft>=7&&s.qs<=3)combos.push('<p><strong>Magas Rendszerező + alacsony Gyorsindító:</strong> kiváló megvalósító és karbantartó. A változás, az új indítás energiaigényes. Ilyenkor érdemes egy Gyorsindítóval párba állni.</p>');
-    if(!combos.length)combos.push('<p>Nincs szélsőséges feszültség a módjaid között. A profilod kiegyensúlyozott: a helyzethez igazodva tudsz váltani.</p>');
-    const initCount=Object.keys(M).filter(k=>zone(s[k])==='init').length;
-    return `<div class="res-eyebrow">Eredmény · Cselekvési profil</div>
-      <h2 class="res-title">A te <em>konatív profilod</em>: ${Object.keys(M).map(k=>s[k]).join(' – ')}</h2>
-      <p class="res-lead">Sorrend: Tényfeltáró – Rendszerező – Gyorsindító – Megvalósító. ${initCount?`${initCount} módban vagy kezdeményező. Ezeken keresztül lépsz a legtermészetesebben cselekvésbe.`:'Egyik módban sem vagy kifejezetten kezdeményező. Ez rugalmas, „közvetítő” profilt jelez.'}</p>
-      ${H.chart('Négy <em>cselekvési mód</em>','1–10 skála · három zóna','<div>'+g+'</div>')}
-      ${H.interp('Mit <em>jelent</em>',[
-        {h:'Belső dinamika',html:combos.join('')},
-        {h:'A konatív feszültség',html:'<p>Kolbe szerint a stressz egyik fő forrása, ha tartósan a természetes módoddal <em>ellentétesen</em> kell dolgoznod: egy ellenálló Rendszerezőnek adminisztrálnia kell, egy ellenálló Tényfeltárónak részletes jelentést kell írnia. Ez nem lustaság vagy gyenge akarat, hanem energiapazarlás. A megoldás a feladat átszervezése, delegálása vagy eszközzel kiváltása, nem a „jobban kéne akarni”.</p>'},
-        {h:'Hogyan használd',html:'<p>Nézd meg, melyik módban vagy <strong>ellenálló</strong>. Ott ne akarj „fejlődni”: azt delegáld, automatizáld, vagy keress hozzá partnert. A kezdeményező módjaidban viszont ne fogd vissza magad: ott vagy a leghatékonyabb.</p>'}
-      ])}
-      ${H.refs(['<strong>Kolbe, K. (1990).</strong> <em>The Conative Connection: Acting on Instinct.</em> Addison-Wesley.',
-        '<strong>Kolbe, K. (2004).</strong> <em>Powered by Instinct: 5 Rules for Trusting Your Guts.</em> Monumentus Press.',
-        '<em>A hivatalos Kolbe A Index a Kolbe Corp. terméke (kolbe.com). Ez a változat saját itemkészlet, és a pontszámai nem összevethetők a hivatalos eredménnyel. A konáció-modell független pszichometriai validálása korlátozott.</em>'])}`;
+    const keys=Object.keys(S);
+    const bars=H.bars('Három <em>evési minta</em>',[{title:'0–100 · magasabb = erősebb minta',color:'#2dd4bf',rows:keys.map(k=>({name:S[k].name+' <span style="color:var(--ink-lite-muted);font-size:12px">· '+S[k].en+'</span>',val:s[k],unit:'/100',pct:s[k],color:S[k].color}))}]);
+    const notes=[];
+    if(s.EE>=50)notes.push('<p><strong>Az érzelmi evés erős.</strong> Az evés itt szabályozó funkciót kap: gyorsan és megbízhatóan csillapítja a szorongást, a lehangoltságot vagy a magányt. Ez nem akaratgyengeség. Az idegrendszer a legközelebbi, legbiztosabb megnyugtató eszközhöz nyúl. A fenntartható változás ezért nem a tiltásból jön, hanem abból, hogy <strong>legyen más szabályozó eszköz is</strong>, ami a feszültség első perceiben elérhető.</p><p>Gyakorlati lépés: amikor érzed a késztetést, iktass be 2 percet. <em>Mit érzek most? Éhes vagyok, vagy feszült, fáradt, magányos?</em> Ha nem éhség, egy dolgot próbálj ki előbb a <a href="#test-ders" style="color:#99f6e4">DERS-SF</a> stratégiái közül. Ha utána is enni akarsz, egyél, de tudatosan.</p>');
+    if(s.CR>=60&&(s.UE>=50||s.EE>=50))notes.push('<p><strong>Erős visszafogás és erős kontrollvesztés együtt.</strong> A kutatásokban gyakori ciklus: a merev korlátozás növeli a kontrollvesztés esélyét, ami újabb korlátozáshoz vezet. A megszakítás kulcsa általában a rugalmasabb, kevésbé „mindent vagy semmit” jellegű étkezési keret.</p>');
+    if(s.binge>=4||(s.UE>=67&&s.EE>=67))notes.push(H.callout('<strong>Ha az evés rendszeresen kontrollálhatatlannak tűnik, vagy utána erős szégyen vagy kompenzálás (koplalás, túledzés) következik,</strong> érdemes szakemberrel (pszichológussal, dietetikussal) átbeszélni. Ez gyakori, jól kezelhető, és nem kell egyedül megoldani.','#fb7185'));
+    if(!notes.length)notes.push('<p>Egyik minta sem kiugró. Az evés nálad jelenleg nem tűnik fő feszültségszabályozó eszköznek.</p>');
+    return `<div class="res-eyebrow">Eredmény · Evési viselkedés</div>
+      <h2 class="res-title">Érzelmi evés: <em>${s.EE}</em>/100</h2>
+      <p class="res-lead">Kontrollálatlan evés: <strong>${s.UE}</strong> · Kognitív visszafogás: <strong>${s.CR}</strong> (mind 0–100).</p>
+      ${bars}
+      ${H.interp('Mit <em>jelent</em>',[{h:'Értelmezés',color:'#2dd4bf',html:notes.join('')},
+        {h:'Kapcsolódó térképek',html:'<p>Az érzelmi evés a legtöbbet a <strong>DERS-SF</strong> (milyen ponton akad el a szabályozás) és az SMI <em>Elterelő öncsillapító</em> módja mellett mond. Az összegzés oldal az „Öncsillapító megküzdés” mintában köti össze őket.</p>'}])}
+      ${H.refs(['<strong>Stunkard, A. J., & Messick, S. (1985).</strong> The three-factor eating questionnaire to measure dietary restraint, disinhibition and hunger. <em>Journal of Psychosomatic Research, 29</em>(1), 71–83.',
+        '<strong>Karlsson, J., Persson, L. O., Sjöström, L., & Sullivan, M. (2000).</strong> Psychometric properties and factor structure of the Three-Factor Eating Questionnaire (TFEQ) in obese men and women. <em>International Journal of Obesity, 24</em>(12), 1715–1725.',
+        '<strong>de Lauzon, B., et al. (2004).</strong> The Three-Factor Eating Questionnaire-R18 is able to distinguish among different eating patterns in a general population. <em>Journal of Nutrition, 134</em>(9), 2372–2380.'])}`;
   }
 });
 })();
 
-/* ═══════════ 4. MEQ — REGGELI/ESTI KRONOTÍPUS ═══════════ */
-(function(){
-const o=(t,v)=>({t,v});
-const ITEMS=[
-  {t:'Ha teljesen szabadon tervezhetnéd a napod, mikor kelnél fel?',opts:[o('5:00 – 6:30',5),o('6:30 – 7:45',4),o('7:45 – 9:45',3),o('9:45 – 11:00',2),o('11:00 – 12:00 (vagy később)',1)]},
-  {t:'Ha teljesen szabadon tervezhetnéd az estéd, mikor feküdnél le?',opts:[o('20:00 – 21:00',5),o('21:00 – 22:15',4),o('22:15 – 0:30',3),o('0:30 – 1:45',2),o('1:45 – 3:00 (vagy később)',1)]},
-  {t:'Ha reggel adott időpontban kell kelned, mennyire függsz az ébresztőórától?',opts:[o('Egyáltalán nem',4),o('Kicsit',3),o('Eléggé',2),o('Nagyon',1)]},
-  {t:'Mennyire könnyű reggel felkelned (ha nem váratlanul ébresztenek)?',opts:[o('Egyáltalán nem könnyű',1),o('Nem túl könnyű',2),o('Elég könnyű',3),o('Nagyon könnyű',4)]},
-  {t:'Mennyire vagy éber az ébredés utáni első fél órában?',opts:[o('Egyáltalán nem',1),o('Kicsit',2),o('Elég éber',3),o('Nagyon éber',4)]},
-  {t:'Mennyire vagy éhes az ébredés utáni első fél órában?',opts:[o('Egyáltalán nem',1),o('Kicsit',2),o('Elég éhes',3),o('Nagyon éhes',4)]},
-  {t:'Hogyan érzed magad az ébredés utáni első fél órában?',opts:[o('Nagyon fáradt',1),o('Elég fáradt',2),o('Elég friss',3),o('Nagyon friss',4)]},
-  {t:'Ha másnap nincs semmi dolgod, a szokásoshoz képest mikor fekszel le?',opts:[o('Ritkán vagy soha nem később',4),o('Kevesebb mint 1 órával később',3),o('1–2 órával később',2),o('Több mint 2 órával később',1)]},
-  {t:'Egy barátod heti kétszer reggel 7 és 8 között edzést javasol. Milyen formában lennél?',opts:[o('Jó formában',4),o('Elfogadható formában',3),o('Nehezen menne',2),o('Nagyon nehezen menne',1)]},
-  {t:'Este hány órakor érzed magad fáradtnak, alvásra késznek?',opts:[o('20:00 – 21:00',5),o('21:00 – 22:15',4),o('22:15 – 0:45',3),o('0:45 – 2:00',2),o('2:00 – 3:00',1)]},
-  {t:'Egy 2 órás, szellemileg megterhelő vizsgán akarsz a csúcson lenni. Melyik idősávot választod?',opts:[o('8:00 – 10:00',6),o('11:00 – 13:00',4),o('15:00 – 17:00',2),o('19:00 – 21:00',0)]},
-  {t:'Ha este 23:00-kor feküdnél le, mennyire lennél fáradt?',opts:[o('Egyáltalán nem',0),o('Kicsit',2),o('Elég fáradt',3),o('Nagyon fáradt',5)]},
-  {t:'Egy alkalommal a szokásosnál több órával később fekszel le, de másnap nem kell adott időben kelned. Mi a legvalószínűbb?',opts:[o('A szokott időben ébredek, és nem alszom vissza',4),o('A szokott időben ébredek, utána szundikálok',3),o('A szokott időben ébredek, de visszaalszom',2),o('Csak a szokásosnál később ébredek',1)]},
-  {t:'Egy éjjel hajnali 4 és 6 között ébren kell lenned (pl. ügyelet). Másnap nincs dolgod. Mit csinálsz?',opts:[o('Csak az ügyelet után fekszem le',1),o('Előtte szundítok, utána alszom',2),o('Előtte jól kialszom magam, utána szundítok',3),o('Csak előtte alszom',4)]},
-  {t:'2 óra nehéz fizikai munkát kell végezned. Melyik idősávot választanád?',opts:[o('8:00 – 10:00',4),o('11:00 – 13:00',3),o('15:00 – 17:00',2),o('19:00 – 21:00',1)]},
-  {t:'Heti kétszer 22:00 és 23:00 között kellene edzened. Milyen formában lennél?',opts:[o('Jó formában',1),o('Elfogadható formában',2),o('Nehezen menne',3),o('Nagyon nehezen menne',4)]},
-  {t:'Szabadon választhatod meg az 5 órás munkaidőd kezdetét (a munka érdekes, teljesítmény szerint fizetnek). Mikor kezdenéd?',opts:[o('4:00 és 8:00 között',5),o('8:00 és 9:00 között',4),o('9:00 és 14:00 között',3),o('14:00 és 17:00 között',2),o('17:00 és 4:00 között',1)]},
-  {t:'Szerinted a nap melyik szakaszában érzed magad a legjobban?',opts:[o('5:00 – 8:00',5),o('8:00 – 10:00',4),o('10:00 – 17:00',3),o('17:00 – 22:00',2),o('22:00 – 5:00',1)]},
-  {t:'Az emberek „reggeli” és „esti” típusúak. Te melyiknek tartod magad?',opts:[o('Egyértelműen reggeli típus',6),o('Inkább reggeli, mint esti',4),o('Inkább esti, mint reggeli',2),o('Egyértelműen esti típus',0)]}
-];
-const CAT=[
-  {min:70,name:'Határozottan reggeli típus',en:'Definite morning',color:'#fbbf24',peak:'kb. 6:00–10:00',
-    desc:'A tested korán ébred, és a délelőtti órákban vagy a csúcson. Este korán fáradsz, a késői programok sokba kerülnek.'},
-  {min:59,name:'Mérsékelten reggeli típus',en:'Moderate morning',color:'#f59e0b',peak:'kb. 7:30–11:30',
-    desc:'Reggel viszonylag könnyen indulsz, a délelőtt a legjobb szellemi idősávod. Rugalmas vagy, de a korai ritmus a természetes.'},
-  {min:42,name:'Köztes típus',en:'Intermediate',color:'#34d399',peak:'kb. 9:30–13:30',
-    desc:'Nincs szélsőséges preferenciád, így ez a legrugalmasabb kronotípus. A csúcsod jellemzően késő délelőtt van.'},
-  {min:31,name:'Mérsékelten esti típus',en:'Moderate evening',color:'#818cf8',peak:'kb. 11:00–14:00 és késő délután',
-    desc:'Reggel lassan indulsz, a délután és a kora este erősebb. A korai kötelezettségek tartós alvásadósságot okozhatnak.'},
-  {min:0,name:'Határozottan esti típus',en:'Definite evening',color:'#a78bfa',peak:'kb. 16:00–22:00',
-    desc:'A belső órád jelentősen késik. A 9–5-ös ritmus számodra folyamatos „társas jet-lag”: a biológiai és a társadalmi idő eltérése.'}
-];
-makeTest({
-  id:'meq',key:'meq-responses-v1',name:'Kronotípus (MEQ)',c1:'#818cf8',c2:'#a78bfa',
-  tab:'Kronotípus',tabSub:'MEQ · 19 item',
-  header:{status:'valid',statusText:'Validált skála · Horne & Östberg (1976)',
-    eyebrow:'Morningness–Eveningness Questionnaire · Horne & Östberg (1976)',
-    title:'Mikor vagy a <em style="color:#818cf8">csúcson</em>',
-    lead:'A MEQ a kronobiológia legtöbbet használt önkitöltős eszköze. Megmutatja, hová esik a <strong>belső órád</strong> a reggeli–esti skálán. A kronotípus erősen genetikai: nem akarat kérdése, hanem biológiai adottság, amihez a munkarendet érdemes igazítani, nem fordítva.',
-    intro:'<p><strong>Kitöltés:</strong> arra gondolj, hogyan érezted magad <strong>az elmúlt néhány hétben</strong>, és hogyan döntenél, ha teljesen szabad lennél. Ne a jelenlegi kötelező napirended alapján válaszolj.</p><p>Összpontszám: 16–86. A magasabb érték reggelibb típust jelez.</p>'},
-  sections:[{title:'19 kérdés',desc:'Egy válasz kérdésenként.',items:ITEMS}],
-  score(R){const total=H.sum(R.picks.map(p=>p.opt.v));const cat=CAT.find(c=>total>=c.min);return {total,cat:cat.name};},
-  sum(s){return {h:s.cat,d:{total:['MEQ-pontszám',s.total,16,86]}};},
-  render(R,s){
-    const cat=CAT.find(c=>s.total>=c.min);
-    const zones=[{from:16,to:30.5,color:'rgba(167,139,250,0.25)'},{from:30.5,to:41.5,color:'rgba(129,140,248,0.2)'},{from:41.5,to:58.5,color:'rgba(52,211,153,0.18)'},{from:58.5,to:69.5,color:'rgba(245,158,11,0.2)'},{from:69.5,to:86,color:'rgba(251,191,36,0.25)'}];
-    const g=H.gauge({name:'MEQ-pontszám',sub:cat.en,val:s.total,unit:'/ 86',min:16,max:86,color:cat.color,zones,labels:['16 · esti','31','42','59','70','reggeli · 86']});
-    return `<div class="res-eyebrow">Eredmény · Kronotípus</div>
-      <h2 class="res-title"><em>${cat.name}</em></h2>
-      <p class="res-lead">MEQ-pontszám: <strong>${s.total}</strong> (16–86). ${cat.desc}</p>
-      ${H.chart('Reggeli–esti <em>skála</em>','Horne–Östberg kategóriahatárok','<div>'+g+'</div>')}
-      ${H.interp('Hogyan <em>használd</em>',[
-        {h:'A becsült csúcsidősávod: '+cat.peak,color:cat.color,html:'<p>Ide tedd a <strong>mély munkát</strong>: stratégiát, írást, komplex elemzést, fontos döntéseket. Ezek az órák a legértékesebbek, ne menjenek el e-mailre és meetingekre.</p><p>A csúcs utáni mélypont (jellemzően kora délután) adminisztrációra, rutinfeladatokra jó. A második, kisebb csúcs a kreatív, asszociatív munkának kedvez.</p>'},
-        {h:'Társas jet-lag',html:'<p>Ha hétvégén az alvásod közepe több mint 1–2 órával később van, mint hétköznap, a biológiai és a társadalmi időd tartósan eltér. Ez a kutatások szerint összefügg a rosszabb hangulattal, a fokozott nassolással és az alacsonyabb teljesítménnyel (Roenneberg és mtsai, 2012). A rendszeres reggeli fényexpozíció (10–20 perc kint, ébredés után) a legerősebb eszköz a belső óra előbbre hozására.</p>'},
-        {h:'Korlát',html:'<p>A MEQ a preferenciát méri, nem a pontos belső órát (azt a melatoninszint-mérés, DLMO adja). A kronotípus az életkorral is változik: a húszas években késik a legjobban, utána fokozatosan korábbra tolódik.</p>'}
-      ])}
-      ${H.refs(['<strong>Horne, J. A., & Östberg, O. (1976).</strong> A self-assessment questionnaire to determine morningness–eveningness in human circadian rhythms. <em>International Journal of Chronobiology, 4</em>(2), 97–110.',
-        '<strong>Roenneberg, T., Allebrandt, K. V., Merrow, M., & Vetter, C. (2012).</strong> Social jetlag and obesity. <em>Current Biology, 22</em>(10), 939–943.',
-        '<strong>Adan, A., Archer, S. N., Hidalgo, M. P., Di Milia, L., Natale, V., & Randler, C. (2012).</strong> Circadian typology: A comprehensive review. <em>Chronobiology International, 29</em>(9), 1153–1175.'])}`;
-  }
-});
-})();
-
-bootHub(['pvq','ft','kolbe','meq']);
+bootHub(['ips','ders','scs','tfeq']);
 </script>
 </body>
 </html>

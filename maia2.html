@@ -731,9 +731,16 @@ footer{
 }
 </style>
 <script>
-/* ONI-CORE v1 — közös eredménytár: minden teszt ide menti a fő pontszámait (csak ebben a böngészőben). */
+/* ONI-CORE v2 — közös eredménytár + kezdő útvonal. Minden adat csak ebben a böngészőben marad. */
 window.ONI=window.ONI||(function(){
   var K='onismeret-results-v1';
+  var PATH=[
+    {id:'ft',n:'Négy tendencia',href:'cselekves.html#test-ft',min:5,why:'hogyan reagálsz az elvárásokra'},
+    {id:'kolbe',n:'Cselekvési módok',href:'cselekves.html#test-kolbe',min:7,why:'hogyan fogsz neki egy feladatnak'},
+    {id:'ecr',n:'ECR-R · Kötődés',href:'terkepek.html#test-ecr',min:10,why:'közelség és távolság a kapcsolatokban'},
+    {id:'bf',n:'Big Five',href:'szemelyiseg.html#test-bf',min:12,why:'az öt alapvonás'},
+    {id:'pvq',n:'PVQ-21 · Értékek',href:'cselekves.html#test-pvq',min:6,why:'mi hajt valójában'}
+  ];
   function all(){try{return JSON.parse(localStorage.getItem(K))||{}}catch(e){return {}}}
   function r(x){return Math.round(x*100)/100}
   function save(id,rec){
@@ -745,8 +752,27 @@ window.ONI=window.ONI||(function(){
       a[id]=h.slice(-24);
       localStorage.setItem(K,JSON.stringify(a));
     }catch(e){}
+    try{window.dispatchEvent(new CustomEvent('oni:saved',{detail:{id:id}}));}catch(e){}
   }
-  return {K:K,all:all,save:save,r:r};
+  function pathState(){var a=all();return PATH.map(function(p){return {id:p.id,n:p.n,href:p.href,min:p.min,why:p.why,done:!!(a[p.id]&&a[p.id].length)}});}
+  function banner(savedId){
+    var st=pathState(),inPath=st.some(function(p){return p.id===savedId});
+    if(!inPath)return;
+    var done=st.filter(function(p){return p.done}).length,next=st.filter(function(p){return !p.done})[0];
+    var old=document.getElementById('oni-path-banner');if(old)old.remove();
+    var el=document.createElement('div');el.id='oni-path-banner';
+    el.setAttribute('style','position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:9999;max-width:calc(100% - 24px);width:560px;display:flex;align-items:center;gap:14px;padding:14px 16px 14px 20px;border-radius:16px;background:rgba(10,20,40,.94);color:#e6ecf5;border:1px solid rgba(251,191,36,.55);box-shadow:0 12px 40px rgba(0,0,0,.45);font:500 14px/1.4 Manrope,Inter,system-ui,sans-serif;backdrop-filter:blur(10px)');
+    var dots=st.map(function(p){return '<span style="width:9px;height:9px;border-radius:50%;display:inline-block;background:'+(p.done?'#fbbf24':'rgba(148,163,184,.35)')+'"></span>'}).join('');
+    var body=next
+      ? '<div style="flex:1;min-width:0"><div style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#fbbf24;font-weight:700;display:flex;gap:6px;align-items:center">Kezdő útvonal · '+done+'/5 '+dots+'</div><div style="margin-top:3px">Következő: <strong>'+next.n+'</strong> <span style="color:#a3b3c8">(~'+next.min+' perc)</span></div></div><a href="'+next.href+'" style="flex:none;padding:10px 16px;border-radius:99px;background:#fbbf24;color:#0a1428;text-decoration:none;font-weight:700">Tovább ›</a>'
+      : '<div style="flex:1;min-width:0"><div style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#34d399;font-weight:700">Kezdő útvonal kész · 5/5</div><div style="margin-top:3px">Most már az összegzés valódi adatokból dolgozik.</div></div><a href="osszegzes.html" style="flex:none;padding:10px 16px;border-radius:99px;background:#34d399;color:#0a1428;text-decoration:none;font-weight:700">Összegzés ›</a>';
+    el.innerHTML=body+'<button type="button" aria-label="Bezár" style="flex:none;background:none;border:none;color:#6b7c94;font-size:20px;cursor:pointer;padding:0 2px">×</button>';
+    el.querySelector('button').onclick=function(){el.remove()};
+    document.body.appendChild(el);
+    if(next&&location.href.indexOf(next.href.split('#')[0])>-1){var a=el.querySelector('a');a.addEventListener('click',function(){setTimeout(function(){el.remove()},50)});}
+  }
+  window.addEventListener('oni:saved',function(e){setTimeout(function(){banner(e.detail.id)},900);});
+  return {K:K,all:all,save:save,r:r,PATH:PATH,pathState:pathState};
 })();
 </script>
 </head>
