@@ -1,0 +1,2090 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kötődés — teljes profil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200..900;1,9..144,200..900&family=Manrope:wght@200;300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-0: #0b0c0e;
+    --bg-1: #131519;
+    --bg-2: #1a1d22;
+    --bg-3: #24282f;
+    --bg-4: #2e333b;
+    --line: rgba(255, 255, 255, 0.07);
+    --line-mid: rgba(255, 255, 255, 0.13);
+    --line-strong: rgba(255, 255, 255, 0.2);
+    --ink-0: #ece7db;
+    --ink-1: #b6b1a4;
+    --ink-2: #767369;
+    --ink-3: #454239;
+    --ink-4: #2a2822;
+    --accent: #c9683a;
+    --accent-hi: #e08a5b;
+    --accent-soft: rgba(201, 104, 58, 0.1);
+    --accent-line: rgba(201, 104, 58, 0.35);
+    --rose: #b8576a;
+    --sage: #839670;
+    --indigo: #6a7aa8;
+    --amber: #c8a052;
+    --teal: #5b8e8e;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg-0);
+    color: var(--ink-0);
+    font-family: 'Manrope', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    letter-spacing: 0.005em;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.04;
+    z-index: 100;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ─── LAYOUT ─── */
+  .page {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 48px 40px 96px;
+    position: relative;
+  }
+  @media (max-width: 720px) { .page { padding: 28px 18px 64px; } }
+
+  .view { display: none; }
+  .view.active { display: block; animation: fadeIn 0.5s ease-out; }
+  @keyframes fadeIn { from {opacity:0} to {opacity:1} }
+  @keyframes fadeUp { from {opacity:0;transform:translateY(14px)} to {opacity:1;transform:translateY(0)} }
+
+  /* ─── TOPBAR ─── */
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 24px;
+    margin-bottom: 48px;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+  .topbar::after {
+    content: ''; position: absolute; bottom: -1px; left: 0;
+    width: 120px; height: 1px; background: var(--accent);
+  }
+  .tb-mark {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; font-weight: 500;
+    letter-spacing: 0.22em;
+    color: var(--ink-2);
+    text-transform: uppercase;
+    padding: 7px 11px;
+    border: 1px solid var(--line-mid);
+  }
+  .tb-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-2);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .tb-meta span { color: var(--ink-0); }
+
+  /* ═══════════════════════════════════════════════
+     INTRO VIEW
+     ═══════════════════════════════════════════════ */
+  .intro-hero {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+    margin-bottom: 64px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--line);
+    max-width: 960px;
+  }
+  .intro-kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .intro-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 200;
+    font-size: clamp(48px, 7vw, 96px);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    font-variation-settings: "opsz" 144;
+  }
+  .intro-title em { font-style: italic; color: var(--accent); font-weight: 300; }
+  .intro-lede {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: clamp(19px, 2.2vw, 24px);
+    line-height: 1.55;
+    color: var(--ink-1);
+    max-width: 720px;
+    letter-spacing: -0.005em;
+    font-variation-settings: "opsz" 72;
+  }
+  .intro-lede em { font-style: italic; color: var(--ink-0); }
+  .intro-lede strong { font-weight: 400; color: var(--accent); }
+
+  .intro-what {
+    max-width: 840px;
+    margin-bottom: 64px;
+  }
+  .intro-what p {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    color: var(--ink-1);
+    line-height: 1.75;
+    margin-bottom: 18px;
+    max-width: 720px;
+  }
+  .intro-what p strong {
+    font-weight: 400;
+    color: var(--ink-0);
+  }
+
+  /* Section-preview cards */
+  .intro-sections {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    margin-bottom: 64px;
+  }
+  .is-card {
+    background: var(--bg-1);
+    padding: 28px 24px 24px;
+    display: flex;
+    flex-direction: column;
+    min-height: 180px;
+  }
+  .is-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    margin-bottom: 12px;
+  }
+  .is-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 22px;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    margin-bottom: 10px;
+  }
+  .is-title em { font-style: italic; color: var(--accent); }
+  .is-desc {
+    font-size: 13px;
+    color: var(--ink-1);
+    line-height: 1.55;
+    flex: 1;
+  }
+  .is-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-3);
+    letter-spacing: 0.12em;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+    text-transform: uppercase;
+  }
+
+  .intro-guidance {
+    max-width: 840px;
+    padding: 32px 32px 32px 36px;
+    border-left: 2px solid var(--accent);
+    background: var(--bg-1);
+    margin-bottom: 48px;
+    position: relative;
+  }
+  .intro-guidance-h {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 20px;
+    color: var(--ink-0);
+    margin-bottom: 14px;
+    letter-spacing: -0.01em;
+  }
+  .intro-guidance p {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 300;
+    font-size: 14.5px;
+    color: var(--ink-1);
+    line-height: 1.7;
+  }
+
+  .intro-disclaimer {
+    max-width: 840px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    color: var(--ink-3);
+    letter-spacing: 0.08em;
+    line-height: 1.7;
+    margin-bottom: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    text-transform: uppercase;
+  }
+
+  .intro-cta {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 18px 32px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+  }
+  .btn-primary:hover { background: var(--accent-hi); }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-primary:disabled {
+    background: var(--bg-3);
+    color: var(--ink-3);
+    cursor: not-allowed;
+    transform: none;
+  }
+  .btn-ghost {
+    background: none;
+    border: 1px solid var(--line-strong);
+    color: var(--ink-1);
+    padding: 18px 26px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  .resume-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--amber);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border: 1px solid rgba(200, 160, 82, 0.4);
+    margin-left: 8px;
+  }
+
+  /* ═══════════════════════════════════════════════
+     TEST VIEW
+     ═══════════════════════════════════════════════ */
+  .prog-bar-w {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 40px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--line);
+    position: sticky;
+    top: 0;
+    background: var(--bg-0);
+    z-index: 50;
+    padding-top: 16px;
+  }
+  .prog-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-2);
+    letter-spacing: 0.1em;
+    min-width: 70px;
+  }
+  .prog-count span { color: var(--ink-0); }
+  .prog-bar {
+    flex: 1;
+    height: 1px;
+    background: var(--line-mid);
+    position: relative;
+  }
+  .prog-fill {
+    position: absolute;
+    left: 0; top: 0; height: 100%;
+    background: var(--accent);
+    transition: width 0.4s;
+  }
+  .prog-section {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-align: right;
+    min-width: 220px;
+  }
+  @media (max-width: 720px) {
+    .prog-section { min-width: auto; font-size: 9px; }
+  }
+
+  .ts-head {
+    margin: 32px 0 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--line);
+  }
+  .ts-head:first-of-type { margin-top: 0; }
+  .ts-head-n {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .ts-head-t {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: clamp(26px, 3vw, 34px);
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+  }
+  .ts-head-t em { font-style: italic; color: var(--accent); }
+  .ts-head-d {
+    font-family: 'Manrope', sans-serif;
+    font-size: 14px;
+    color: var(--ink-2);
+    margin-top: 10px;
+    line-height: 1.6;
+    max-width: 720px;
+  }
+
+  .q {
+    padding: 22px 0 24px;
+    border-bottom: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 42px 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+  .q-n {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-3);
+    letter-spacing: 0.1em;
+    padding-top: 4px;
+  }
+  .q-body { display: flex; flex-direction: column; gap: 16px; }
+  .q-text {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 17.5px;
+    line-height: 1.5;
+    color: var(--ink-0);
+    letter-spacing: -0.005em;
+    font-variation-settings: "opsz" 72;
+  }
+  .q-text em { font-style: italic; color: var(--ink-1); }
+
+  /* Likert 7 */
+  .likert {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .l-opt {
+    background: var(--bg-1);
+    border: none;
+    padding: 12px 4px;
+    cursor: pointer;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--ink-2);
+    transition: background 0.2s, color 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    min-height: 56px;
+    justify-content: center;
+  }
+  .l-opt-n {
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .l-opt-lbl {
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    color: var(--ink-3);
+    text-transform: uppercase;
+    line-height: 1.1;
+    text-align: center;
+  }
+  .l-opt:hover { background: var(--bg-2); color: var(--ink-0); }
+  .l-opt.selected { background: var(--accent); color: white; }
+  .l-opt.selected .l-opt-lbl { color: rgba(255,255,255,0.75); }
+
+  /* Action bar */
+  .action-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px 0 24px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .action-left, .action-right {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .autosave-note {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-3);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* ═══════════════════════════════════════════════
+     RESULT VIEW
+     ═══════════════════════════════════════════════ */
+  .result-hero {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 32px 0 56px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 56px;
+  }
+  .result-kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+  .result-style {
+    font-family: 'Fraunces', serif;
+    font-weight: 200;
+    font-size: clamp(52px, 9vw, 112px);
+    line-height: 0.92;
+    letter-spacing: -0.035em;
+    font-variation-settings: "opsz" 144;
+  }
+  .result-style em { font-style: italic; color: var(--accent); font-weight: 300; }
+  .result-lede {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: clamp(19px, 2vw, 22px);
+    line-height: 1.55;
+    color: var(--ink-1);
+    max-width: 720px;
+    margin-top: 16px;
+    letter-spacing: -0.005em;
+    font-variation-settings: "opsz" 72;
+  }
+
+  /* ─── DIMENSION GRID ─── */
+  .dims {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    margin-bottom: 48px;
+  }
+  .dim {
+    background: var(--bg-1);
+    padding: 26px 24px 22px;
+  }
+  .dim-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 14px;
+  }
+  .dim-lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-2);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .dim-pct {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--ink-0);
+    letter-spacing: -0.015em;
+  }
+  .dim-pct em { font-style: italic; color: var(--accent); }
+  .dim-bar {
+    height: 2px;
+    background: var(--bg-3);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .dim-bar-fill {
+    position: absolute;
+    left: 0; top: 0; height: 100%;
+    background: var(--accent);
+    transition: width 0.8s ease-out;
+  }
+  .dim-desc {
+    font-family: 'Manrope', sans-serif;
+    font-size: 12.5px;
+    color: var(--ink-1);
+    line-height: 1.55;
+  }
+
+  /* ─── MAP (2D quadrant with flex/stability as third axis via opacity/halo) ─── */
+  .map-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 64px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--line);
+    align-items: start;
+  }
+  @media (max-width: 760px) {
+    .map-section { grid-template-columns: 1fr; gap: 40px; }
+  }
+  .map-wrap {
+    position: relative;
+    padding: 32px 44px 44px;
+  }
+  .map-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-2);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .att-map {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    max-width: 420px;
+    margin: 0 auto;
+    border: 1px solid var(--line-mid);
+    background:
+      linear-gradient(to right, var(--line) 1px, transparent 1px) 50% 0 / 50% 100%,
+      linear-gradient(to bottom, var(--line) 1px, transparent 1px) 0 50% / 100% 50%;
+  }
+  .att-map::before, .att-map::after {
+    content: '';
+    position: absolute;
+    background: var(--ink-3);
+  }
+  .att-map::before {
+    top: 50%; left: 0; width: 100%; height: 1px;
+  }
+  .att-map::after {
+    left: 50%; top: 0; width: 1px; height: 100%;
+  }
+  .att-quad-label {
+    position: absolute;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--ink-2);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .att-q-tl { top: 10px; left: 14px; }
+  .att-q-tr { top: 10px; right: 14px; text-align: right; }
+  .att-q-bl { bottom: 10px; left: 14px; }
+  .att-q-br { bottom: 10px; right: 14px; text-align: right; }
+  .att-axis-label {
+    position: absolute;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--ink-3);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .att-axis-x {
+    bottom: -26px; left: 50%; transform: translateX(-50%);
+  }
+  .att-axis-y {
+    left: -38px; top: 50%;
+    transform: translateY(-50%) rotate(-90deg);
+    transform-origin: center;
+  }
+  .att-dot {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--accent);
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 0 4px var(--bg-0);
+    z-index: 3;
+  }
+  .att-dot::after {
+    content: '';
+    position: absolute;
+    inset: -10px;
+    border: 1px solid var(--accent-line);
+    border-radius: 50%;
+    animation: pulse 2.5s ease-out infinite;
+  }
+  @keyframes pulse {
+    0% { transform: scale(1); opacity: 0.7; }
+    100% { transform: scale(1.6); opacity: 0; }
+  }
+
+  .map-readout {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    padding-top: 32px;
+  }
+  .mr-kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+  .mr-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 30px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  .mr-title em { font-style: italic; color: var(--accent); }
+  .mr-body {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 300;
+    font-size: 15px;
+    color: var(--ink-1);
+    line-height: 1.7;
+  }
+  .mr-body p { margin-bottom: 12px; }
+  .mr-body strong { font-weight: 400; color: var(--ink-0); }
+
+  /* Population reference */
+  .pop-ref {
+    margin-top: 24px;
+    padding: 16px 20px;
+    border: 1px dashed var(--line-mid);
+  }
+  .pop-ref-lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--ink-3);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .pop-ref-body {
+    font-family: 'Manrope', sans-serif;
+    font-size: 12.5px;
+    color: var(--ink-1);
+    line-height: 1.6;
+  }
+  .pop-ref-body em { font-style: italic; color: var(--ink-0); }
+
+  /* ─── READING BLOCKS ─── */
+  .reading {
+    max-width: 820px;
+    margin: 0 auto 64px;
+  }
+  .reading-block {
+    margin-bottom: 52px;
+    padding-bottom: 44px;
+    border-bottom: 1px solid var(--line);
+  }
+  .reading-block:last-child { border-bottom: none; }
+  .reading-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .reading-h {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: clamp(26px, 3vw, 32px);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 22px;
+  }
+  .reading-h em { font-style: italic; color: var(--accent); }
+  .reading p {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 300;
+    font-size: 15.5px;
+    color: var(--ink-1);
+    line-height: 1.75;
+    margin-bottom: 16px;
+    max-width: 720px;
+  }
+  .reading p strong {
+    color: var(--ink-0);
+    font-weight: 500;
+  }
+  .reading p em {
+    font-style: italic;
+    color: var(--ink-0);
+  }
+  .reading ul {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0 20px;
+  }
+  .reading li {
+    padding: 12px 0 12px 30px;
+    position: relative;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 300;
+    font-size: 14.5px;
+    color: var(--ink-1);
+    line-height: 1.65;
+    border-bottom: 1px solid var(--line);
+  }
+  .reading li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .reading li strong { color: var(--ink-0); font-weight: 500; }
+  .reading li:last-child { border-bottom: none; }
+
+  /* Pull-quote style */
+  .pull-quote {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(19px, 2.2vw, 24px);
+    line-height: 1.5;
+    color: var(--ink-0);
+    padding: 28px 0 28px 32px;
+    border-left: 2px solid var(--accent);
+    margin: 24px 0;
+    letter-spacing: -0.01em;
+    font-variation-settings: "opsz" 72;
+  }
+  .pull-quote-attr {
+    display: block;
+    margin-top: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-2);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-style: normal;
+  }
+
+  /* ─── ROADMAP (priority tracks) ─── */
+  .roadmap {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    margin: 24px 0 16px;
+  }
+  .rm {
+    background: var(--bg-1);
+    padding: 28px 24px 26px;
+    display: flex;
+    flex-direction: column;
+  }
+  .rm-n {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.22em;
+    margin-bottom: 12px;
+  }
+  .rm-t {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 20px;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    margin-bottom: 12px;
+  }
+  .rm-t em { font-style: italic; color: var(--accent); }
+  .rm-d {
+    font-family: 'Manrope', sans-serif;
+    font-size: 13px;
+    color: var(--ink-1);
+    line-height: 1.6;
+    flex: 1;
+  }
+  .rm-cadence {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--ink-3);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+  }
+
+  /* ─── FOOTER / EXPORT ─── */
+  .result-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 32px 0 24px;
+    border-top: 1px solid var(--line);
+    margin-top: 48px;
+  }
+  .ra-group {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  /* Timeline of retakes */
+  .retakes {
+    margin-top: 48px;
+    padding-top: 32px;
+    border-top: 1px solid var(--line);
+  }
+  .retakes-h {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-2);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .retake-row {
+    display: grid;
+    grid-template-columns: 130px 1fr auto;
+    gap: 24px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+    align-items: baseline;
+  }
+  .retake-row:last-child { border-bottom: none; }
+  .retake-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-2);
+    letter-spacing: 0.1em;
+  }
+  .retake-body {
+    font-family: 'Fraunces', serif;
+    font-size: 14.5px;
+    font-weight: 300;
+    color: var(--ink-0);
+    letter-spacing: -0.005em;
+    line-height: 1.5;
+  }
+  .retake-body em { font-style: italic; color: var(--accent); }
+  .retake-delta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-2);
+    letter-spacing: 0.12em;
+  }
+  .retake-delta.up { color: var(--amber); }
+  .retake-delta.down { color: var(--sage); }
+
+  /* Decorative element */
+  .mark-deco {
+    position: absolute;
+    top: 48px; right: 40px;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 200;
+    font-size: 120px;
+    line-height: 1;
+    color: var(--bg-2);
+    pointer-events: none;
+    z-index: -1;
+    letter-spacing: -0.05em;
+  }
+  @media (max-width: 720px) { .mark-deco { display: none; } }
+
+  input[type="file"] { display: none; }
+
+  /* Print styles for result */
+  @media print {
+    body { background: white; color: black; }
+    .topbar, .action-bar, .result-actions, .retakes { display: none; }
+    .view:not(.active) { display: none; }
+    .reading p, .reading li, .dim-desc, .mr-body, .result-lede { color: #333; }
+    .ts-head-t, .reading-h, .result-style, .mr-title, .dim-pct em, .result-style em {
+      color: #c9683a;
+    }
+  }
+</style>
+</head>
+<body>
+<a href="index.html" id="onismeret-back" style="position:fixed;left:16px;bottom:16px;z-index:9999;padding:8px 14px;border-radius:999px;background:rgba(5,13,30,.88);color:#fbbf24;border:1px solid #78551a;font:600 13px/1.2 'Manrope','Helvetica Neue',sans-serif;text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.25)">‹ Önismereti térképek</a>
+
+
+<!-- ═══════════════════════════════════════════════
+     INTRO VIEW
+     ═══════════════════════════════════════════════ -->
+<div class="view active" id="view-intro">
+  <div class="page">
+
+    <div class="topbar">
+      <div class="tb-mark">Felmérés · Kötődés</div>
+      <div class="tb-meta">v1.0 · <span>standalone</span></div>
+    </div>
+
+    <section class="intro-hero">
+      <div class="intro-kicker">Kötődési profil</div>
+      <h1 class="intro-title">A kapcsolataid <em>nyelvtana</em></h1>
+      <p class="intro-lede">Ez a felmérés nem egy címkéért van. Azért, hogy <em>lásd</em>, mit csinál a rendszered közelségben és távolságban, mikor triggerelődik, és hol mozdultál már a <strong>biztonság felé</strong>.</p>
+    </section>
+
+    <section class="intro-what">
+      <p>A kötődési stílus az a <strong>belső munkamodell</strong>, amit gyermekkorban építettél arról, hogy a közeli emberek mennyire megbízhatók, érzelmileg elérhetők, és mennyire érdemes rájuk támaszkodnod. Ez a modell felnőttként nem eltűnik — újra aktiválódik a romantikus, baráti, sőt szakmai kapcsolataidban is.</p>
+      <p>A felmérés az <strong>ECR-R</strong> (Experiences in Close Relationships — Revised) kutatásra épül, és kiterjeszti azt négy további dimenzióra, amiket a klinikai szakirodalom az <em>earned security</em> — a szerzett biztonság — előfeltételeinek tart. Az eredmény nem egy statikus személyiségjegy: <strong>visszatérő ön-ellenőrzésre</strong> készült, hogy lásd, merre mozog a rendszered az idő alatt.</p>
+    </section>
+
+    <section class="intro-sections">
+      <div class="is-card">
+        <div class="is-num">§ 01</div>
+        <div class="is-title">Szorongás-<em>tengely</em></div>
+        <div class="is-desc">Mennyire figyelsz a másik érzelmi elérhetőségére, és milyen gyorsan aktiválódik az elhagyás-félelem.</div>
+        <div class="is-meta">10 item</div>
+      </div>
+      <div class="is-card">
+        <div class="is-num">§ 02</div>
+        <div class="is-title">Elkerülés-<em>tengely</em></div>
+        <div class="is-desc">Mennyire komfortos neked az érzelmi közelség, és milyen stratégiákkal tartasz távolságot.</div>
+        <div class="is-meta">10 item</div>
+      </div>
+      <div class="is-card">
+        <div class="is-num">§ 03</div>
+        <div class="is-title">Kontextus-<em>térkép</em></div>
+        <div class="is-desc">Ugyanaz a minta nem aktív minden kapcsolatban egyformán — hol erősebb, hol enyhébb.</div>
+        <div class="is-meta">10 item</div>
+      </div>
+      <div class="is-card">
+        <div class="is-num">§ 04</div>
+        <div class="is-title">Aktivációs <em>stratégiák</em></div>
+        <div class="is-desc">Amikor triggerelődik a mintád, mit csinál a rendszered — hiperaktivál vagy deaktivál.</div>
+        <div class="is-meta">10 item</div>
+      </div>
+      <div class="is-card">
+        <div class="is-num">§ 05</div>
+        <div class="is-title">Mentalizáció és <em>test</em></div>
+        <div class="is-desc">Reflektív funkció — mennyire látod magad és a másikat egyszerre. Testi tudatosság a kötődéshez.</div>
+        <div class="is-meta">10 item</div>
+      </div>
+      <div class="is-card">
+        <div class="is-num">§ 06</div>
+        <div class="is-title">Earned <em>security</em></div>
+        <div class="is-desc">Rupture-repair képesség, tolerancia a kapcsolati bizonytalanságra, és a biztonsági kapcsolati horgony megléte.</div>
+        <div class="is-meta">10 item</div>
+      </div>
+    </section>
+
+    <aside class="intro-guidance">
+      <div class="intro-guidance-h">Hogyan töltsd ki</div>
+      <p>Válaszolj a <strong>jelenlegi</strong> felnőtt kapcsolataidra gondolva — nem gyerekkori, nem egy konkrét ex-partnerrel. Ha egy állítás egyszerre igaznak és nem-igaznak tűnik különböző kapcsolatokban, gondolj a romantikus / legközelebbi kapcsolataidra mint referenciára. A 3-as és 4-es közép nem „nem tudom" — a 3 enyhe nem-egyetértés, a 4 semleges. Ha elakadsz, válaszd az első intuíciót, ne gondolj rá többet. A piszkozat automatikusan mentődik.</p>
+    </aside>
+
+    <p class="intro-disclaimer">
+      Ez a felmérés önismereti eszköz, nem klinikai diagnózis. Nem helyettesíti a pszichológus vagy pszichoterapeuta munkáját. Az adatok kizárólag a te eszközödön, a böngésződ lokális tárolójában maradnak — semmi nem kerül fel szerverre. Export és import lehetőséggel biztonsági mentést tudsz készíteni.
+    </p>
+
+    <div class="intro-cta">
+      <button class="btn-primary" onclick="startTest()">
+        Felmérés indítása
+      </button>
+      <button class="btn-ghost" onclick="document.getElementById('import-input').click()">
+        Korábbi eredmény importálása
+      </button>
+      <span id="resume-badge" style="display:none" class="resume-badge">Folytatható piszkozat</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     TEST VIEW
+     ═══════════════════════════════════════════════ -->
+<div class="view" id="view-test">
+  <div class="page">
+
+    <div class="topbar">
+      <div class="tb-mark">Felmérés · Kötődés</div>
+      <div class="tb-meta">
+        <button onclick="if(confirm('Megszakítod a felmérést? A piszkozatod megmarad.')) goTo('intro')" style="background:none;border:none;color:var(--ink-2);font:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer">← Mégsem</button>
+      </div>
+    </div>
+
+    <div class="prog-bar-w">
+      <span class="prog-count"><span id="prog-current">0</span> / 60</span>
+      <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+      <span class="prog-section" id="prog-section">§ 01 · Szorongás</span>
+    </div>
+
+    <div id="test-body"></div>
+
+    <div class="action-bar">
+      <div class="action-left">
+        <span class="autosave-note">Automatikus mentés aktív</span>
+      </div>
+      <div class="action-right">
+        <button class="btn-ghost" onclick="saveDraftAndClose()">Kilépés mentéssel</button>
+        <button class="btn-primary" id="submit-btn" onclick="submitTest()" disabled>
+          Eredmény kiszámítása
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     RESULT VIEW
+     ═══════════════════════════════════════════════ -->
+<div class="view" id="view-result">
+  <div class="page">
+
+    <div class="topbar">
+      <div class="tb-mark">Eredmény · Kötődés</div>
+      <div class="tb-meta" id="result-date">—</div>
+    </div>
+
+    <div id="result-body"></div>
+
+    <div id="retakes-section"></div>
+
+    <div class="result-actions">
+      <div class="ra-group">
+        <button class="btn-ghost" onclick="goTo('intro')">← Kezdőoldal</button>
+        <button class="btn-ghost" onclick="startRetake()">Újra kitöltés</button>
+      </div>
+      <div class="ra-group">
+        <button class="btn-ghost" onclick="window.print()">Nyomtatás / PDF</button>
+        <button class="btn-ghost" onclick="exportData()">Export JSON</button>
+        <button class="btn-primary" onclick="exportForHub()">Export a Hubhoz</button>
+      </div>
+    </div>
+
+    <div class="mark-deco" id="mark-deco">01</div>
+
+  </div>
+</div>
+
+<input type="file" id="import-input" accept=".json">
+
+<script>
+// ═══════════════════════════════════════════════════
+// STATE MANAGEMENT
+// ═══════════════════════════════════════════════════
+const STORAGE_KEY = 'attachment_assessment_v1';
+
+function loadState() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+  catch(e) { return {}; }
+}
+function saveState(s) { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); }
+
+// ═══════════════════════════════════════════════════
+// ROUTER
+// ═══════════════════════════════════════════════════
+function goTo(view) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + view).classList.add('active');
+  window.scrollTo(0, 0);
+  if (view === 'intro') checkResume();
+}
+
+function checkResume() {
+  const s = loadState();
+  const badge = document.getElementById('resume-badge');
+  if (s.draft && Object.keys(s.draft).length > 0 && !s.result) {
+    badge.style.display = 'inline-block';
+    badge.textContent = `Folytatható — ${Object.keys(s.draft).length} / 60 válasz mentve`;
+  } else {
+    badge.style.display = 'none';
+  }
+  // If there's a past result, also show it
+  if (s.result) {
+    badge.style.display = 'inline-block';
+    badge.textContent = `Korábbi eredmény elérhető — ${formatDate(s.result.date)}`;
+    badge.style.cursor = 'pointer';
+    badge.onclick = () => {
+      renderResult(s.result, s.history || []);
+      goTo('result');
+    };
+  }
+}
+
+// ═══════════════════════════════════════════════════
+// TEST DATA — 60 items, 6 sections of 10
+// ═══════════════════════════════════════════════════
+const SECTIONS = [
+  {
+    id: 'anxiety',
+    num: '§ 01',
+    title: 'Szorongás-tengely',
+    titleEm: 'tengely',
+    desc: 'Hogyan viselkedik a rendszered, amikor számon tartod a másik érzelmi elérhetőségét. Passzív (rumináció, aggódás) és aktív (tesztelés, ellenőrzés) szorongás külön mérve.',
+    items: [
+      { text: 'Aggódom, hogy a partnerem nem szeret annyira, mint én őt.', r: false, sub: 'passive' },
+      { text: 'Gyakran gondolok rá, hogy a fontos emberek elhagynak.', r: false, sub: 'passive' },
+      { text: 'Ha a partnerem nem válaszol időben, nehezen tudom letenni a gondolatot.', r: false, sub: 'active' },
+      { text: 'Előfordul, hogy olyasmit mondok vagy teszek, aminek a valódi célja a partnerem reakciójának tesztelése.', r: false, sub: 'active' },
+      { text: 'Ha a partnerem távolságtartó egy napon, feltételezem, hogy valamit rosszul csináltam.', r: false, sub: 'passive' },
+      { text: 'Nehezen bízom meg abban, hogy a partnerem valóban ott lesz, amikor szükségem van rá.', r: false, sub: 'passive' },
+      { text: 'A kapcsolataimon többet gondolkodom, mint szeretnék.', r: false, sub: 'passive' },
+      { text: 'Amikor szorongok, nehéz nem intenzívebb kontaktust keresnem (írni, hívni, találkozni).', r: false, sub: 'active' },
+      { text: 'Fontos nekem, hogy a partnerem érzelmileg gyorsan reagáljon, ha rosszul vagyok.', r: false, sub: 'passive' },
+      { text: 'A partnerem viselkedésében apró jelekre figyelek, amelyek elutasításra utalhatnak.', r: false, sub: 'active' }
+    ]
+  },
+  {
+    id: 'avoidance',
+    num: '§ 02',
+    title: 'Elkerülés-tengely',
+    titleEm: 'tengely',
+    desc: 'Mennyire komfortos számodra a közelség, és milyen stratégiákkal tartasz távolságot — dismissing (érzelmi lefojtás) vagy fearful (félelem-alapú visszahúzódás).',
+    items: [
+      { text: 'Nem szeretem megosztani a legbelsőbb gondolataimat a partneremmel.', r: false, sub: 'dismissing' },
+      { text: 'Kényelmetlen nekem, ha érzelmileg túl közel kerülök valakihez.', r: false, sub: 'fearful' },
+      { text: 'Jobban számítok magamra, mint másokra — ezt elvből is fontosnak tartom.', r: false, sub: 'dismissing' },
+      { text: 'Ha a partnerem érzelmileg szükséget szenved, ösztönösen visszahúzódom.', r: false, sub: 'dismissing' },
+      { text: 'Könnyen kinyílok a partneremnek a fontos dolgaimról.', r: true, sub: 'open' },
+      { text: 'Ha valaki érzelmileg vezet engem, inkább kivonom magam.', r: false, sub: 'fearful' },
+      { text: 'Nehezen kérek segítséget vagy vigasztalást, akkor is, ha szükségem van rá.', r: false, sub: 'dismissing' },
+      { text: 'Kényelmes, ha másokra támaszkodhatom.', r: true, sub: 'open' },
+      { text: 'Amikor érzelmileg megterhelő egy helyzet, inkább intellektualizálom — megmagyarázom magamnak.', r: false, sub: 'dismissing' },
+      { text: 'Jobban szeretem, ha egy kapcsolatban nagyobb tér és magány van, mint folyamatos közelség.', r: false, sub: 'dismissing' }
+    ]
+  },
+  {
+    id: 'context',
+    num: '§ 03',
+    title: 'Kontextus-térkép',
+    titleEm: 'térkép',
+    desc: 'A mintázatod nem minden kapcsolattípusban egyformán aktív. Itt megnézzük, hol erősebb és hol van már biztonság a rendszeredben.',
+    items: [
+      { text: 'A szorongó minta leginkább a romantikus kapcsolataimban aktív.', r: false, ctx: 'anx_rom' },
+      { text: 'A szorongó minta a családi kapcsolataimban is erős.', r: false, ctx: 'anx_fam' },
+      { text: 'A szorongó minta a közeli baráti kapcsolataimban is jelen van.', r: false, ctx: 'anx_fri' },
+      { text: 'A szorongó minta a szakmai kapcsolataimban (vezetővel, kollégával) is megjelenik.', r: false, ctx: 'anx_wrk' },
+      { text: 'Az elkerülő minta leginkább romantikus kapcsolatokban aktív.', r: false, ctx: 'avo_rom' },
+      { text: 'Az elkerülő minta a családi kapcsolataimban is erős.', r: false, ctx: 'avo_fam' },
+      { text: 'Az elkerülő minta a közeli baráti kapcsolataimban is jelen van.', r: false, ctx: 'avo_fri' },
+      { text: 'Biztonságosan tudok kötődni a barátaimhoz, akkor is, ha a romantikus kapcsolatokban nem.', r: false, ctx: 'sec_fri' },
+      { text: 'Biztonságosan tudok kötődni a szakmai kapcsolatokban, akkor is, ha a személyesekben nem.', r: false, ctx: 'sec_wrk' },
+      { text: 'Van legalább egy ember, akinél teljes biztonságban érzem magam érzelmileg.', r: false, ctx: 'anchor' }
+    ]
+  },
+  {
+    id: 'activation',
+    num: '§ 04',
+    title: 'Aktivációs stratégiák',
+    titleEm: 'stratégiák',
+    desc: 'Amikor triggerelődik a mintád, milyen automatikus viselkedésekkel reagál a rendszered — hiperaktivál (közeledik, ellenőriz) vagy deaktivál (távolít, kritizál).',
+    items: [
+      { text: 'Amikor szorongóvá válok, nehezen állítom le magam az ellenőrzéstől (üzenetek, közösségi média).', r: false, strat: 'hyper' },
+      { text: 'Amikor szorongóvá válok, belsőleg forgatom, hogy mit kellene mondanom vagy tennem.', r: false, strat: 'hyper' },
+      { text: 'Amikor szorongóvá válok, szükségem van közvetlen, azonnali megerősítésre a partneremtől.', r: false, strat: 'hyper' },
+      { text: 'Amikor elkerülővé válok, belsőleg kritizálom a másikat („túl sok", „követelőző", „nem stabil").', r: false, strat: 'deact' },
+      { text: 'Amikor elkerülővé válok, inkább munkába, edzésbe, vagy egyéb feladatba menekülök.', r: false, strat: 'deact' },
+      { text: 'Amikor elkerülővé válok, az elfoglaltság racionális magyarázatát keresem a visszahúzódásra.', r: false, strat: 'deact' },
+      { text: 'Konfliktus előtt vagy után gyakran passzív-agresszív módon reagálok (hallgatás, csípős megjegyzések).', r: false, strat: 'mixed' },
+      { text: 'Kapcsolati feszültségben a testemben jelentkezik először valami (feszültség, gyomor, szorítás).', r: false, strat: 'soma' },
+      { text: 'Ha a partnerem kezdeményez egy nehéz beszélgetést, az első reakcióm gyakran a védekezés.', r: false, strat: 'defense' },
+      { text: 'Ha a partnerem kezdeményez egy nehéz beszélgetést, az első reakcióm gyakran a visszavonulás.', r: false, strat: 'withdrawal' }
+    ]
+  },
+  {
+    id: 'mental',
+    num: '§ 05',
+    title: 'Mentalizáció és test',
+    titleEm: 'test',
+    desc: 'Reflektív funkció — mennyire tudod egyszerre látni magadat és a másikat mint különálló, belső világgal rendelkező lényeket. Plusz testi tudatosság.',
+    items: [
+      { text: 'Amikor konfliktus van, képes vagyok elképzelni, hogy a partnerem szemszögéből hogyan néz ki a helyzet.', r: true, sub: 'other_mind' },
+      { text: 'Észreveszem, ha a saját érzésem elhomályosítja, hogy mit érez valójában a másik.', r: true, sub: 'self_mind' },
+      { text: 'Tudom, hogy a mostani reakcióm legtöbbször régebbi mintából jön, nem a jelenből.', r: true, sub: 'temporal' },
+      { text: 'Amikor erős érzésem van, meg tudom nevezni pontosan, hogy mit érzek (nem csak „rossz" vagy „jó").', r: true, sub: 'granularity' },
+      { text: 'Érzem a testemben, mikor aktiválódik egy régi minta — a gondolat előtt már tudom, hogy valami történik.', r: true, sub: 'interoception' },
+      { text: 'Szorongásban a légzésem gyorsul vagy felszínesebb lesz, és ezt észreveszem.', r: true, sub: 'interoception' },
+      { text: 'El tudom képzelni, hogy a partnerem viselkedése mögött saját történet van, ami nem rólam szól.', r: true, sub: 'other_mind' },
+      { text: 'Ha erős érzelmi reakcióm támad, tudok egy percet adni magamnak, mielőtt reagálok.', r: true, sub: 'pause' },
+      { text: 'A testem jelzéseit (feszültség, laza vagy szorító érzés) érzelmi információként használom.', r: true, sub: 'interoception' },
+      { text: 'Tudok különbséget tenni érzelem és tény között („úgy érzem, hogy..." nem ugyanaz, mint „ez történik").', r: true, sub: 'differentiation' }
+    ]
+  },
+  {
+    id: 'earned',
+    num: '§ 06',
+    title: 'Earned security',
+    titleEm: 'security',
+    desc: 'A szerzett biztonság jelzői — rupture-repair képesség, bizonytalanság-tolerancia, múltra való reflexió, és hogy van-e biztonságos horgony-kapcsolatod.',
+    items: [
+      { text: 'A múltbeli kötődési mintáimra reflektálva megértem, honnan jönnek — még ha fájdalmas is.', r: true, sub: 'reflection' },
+      { text: 'Ha aktiválódik a régi minta, képes vagyok megállítani magam — nem mindig, de gyakrabban, mint régen.', r: true, sub: 'pause' },
+      { text: 'Ki tudom mondani a szükségleteimet a partneremnek anélkül, hogy menekülnék vagy támadnék.', r: true, sub: 'need_expression' },
+      { text: 'Tudom önállóan szabályozni az érzelmeimet, nem csak külső megerősítésre támaszkodva.', r: true, sub: 'self_regulation' },
+      { text: 'Már tudom tolerálni a kapcsolati bizonytalanságot anélkül, hogy eltűnjek vagy ráugornék a másikra.', r: true, sub: 'tolerance' },
+      { text: 'Konfliktus után képes vagyok visszatalálni a másikhoz — akár én kérek bocsánatot, akár ő.', r: true, sub: 'repair' },
+      { text: 'Tudok úgy közel maradni egy konfliktusban, hogy nem menekülök el és nem is támadok.', r: true, sub: 'staying' },
+      { text: 'Van legalább egy ember, akivel a legnehezebb pillanatokban is vissza tudunk találni egymáshoz.', r: true, sub: 'secure_base' },
+      { text: 'A visszatalálás (repair) után nem maradnak bennem napokig emésztő érzések.', r: true, sub: 'repair' },
+      { text: 'Érzelmileg nehéz időszakokban van belső erőforrásom, amit a múltbeli tapasztalataimból tudok meríteni.', r: true, sub: 'resilience' }
+    ]
+  }
+];
+
+const LIKERT_LABELS = [
+  'Egyáltalán nem',     // 1
+  'Nagyon ritkán',      // 2
+  'Ritkán',             // 3
+  'Közepesen',          // 4
+  'Gyakran',            // 5
+  'Nagyon gyakran',     // 6
+  'Teljesen'            // 7
+];
+
+let answers = {};
+
+// ═══════════════════════════════════════════════════
+// TEST RENDER
+// ═══════════════════════════════════════════════════
+function startTest() {
+  const s = loadState();
+  answers = s.draft || {};
+  renderTest();
+  goTo('test');
+}
+
+function startRetake() {
+  if (!confirm('Újrakezded a felmérést? A korábbi eredményed a történetben megmarad.')) return;
+  answers = {};
+  const s = loadState();
+  delete s.draft;
+  saveState(s);
+  renderTest();
+  goTo('test');
+}
+
+function renderTest() {
+  const body = document.getElementById('test-body');
+  let html = '';
+  let globalIdx = 0;
+
+  SECTIONS.forEach(section => {
+    html += `
+      <div class="ts-head" id="ts-head-${section.id}">
+        <div class="ts-head-n">${section.num}</div>
+        <div class="ts-head-t">${section.title.replace(section.titleEm, `<em>${section.titleEm}</em>`)}</div>
+        <div class="ts-head-d">${section.desc}</div>
+      </div>
+    `;
+
+    section.items.forEach((item, ii) => {
+      globalIdx++;
+      const key = `${section.id}_${ii}`;
+      const selected = answers[key];
+      html += `<div class="q" data-section="${section.id}">
+        <div class="q-n">${String(globalIdx).padStart(2, '0')}</div>
+        <div class="q-body">
+          <div class="q-text">${item.text}</div>
+          <div class="likert">`;
+      for (let v = 1; v <= 7; v++) {
+        const lblIdx = [1, 4, 7].indexOf(v);
+        const label = lblIdx >= 0 ? LIKERT_LABELS[v-1] : '';
+        html += `<button class="l-opt ${selected === v ? 'selected' : ''}" onclick="setAnswer('${key}', ${v}, this)">
+          <span class="l-opt-n">${v}</span>
+          <span class="l-opt-lbl">${label}</span>
+        </button>`;
+      }
+      html += `</div></div></div>`;
+    });
+  });
+
+  body.innerHTML = html;
+  updateProgress();
+  window.addEventListener('scroll', updateSectionLabel);
+}
+
+function setAnswer(key, val, btn) {
+  answers[key] = val;
+  const likert = btn.parentElement;
+  likert.querySelectorAll('.l-opt').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  updateProgress();
+  // Autosave
+  const s = loadState();
+  s.draft = answers;
+  saveState(s);
+}
+
+function updateProgress() {
+  const total = 60;
+  const answered = Object.keys(answers).length;
+  const pct = Math.round(answered / total * 100);
+  document.getElementById('prog-current').textContent = answered;
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('submit-btn').disabled = answered < total;
+}
+
+function updateSectionLabel() {
+  const scrollY = window.scrollY + 220;
+  let current = SECTIONS[0];
+  SECTIONS.forEach(s => {
+    const el = document.getElementById('ts-head-' + s.id);
+    if (el && el.offsetTop < scrollY) current = s;
+  });
+  document.getElementById('prog-section').textContent = current.num + ' · ' + current.title;
+}
+
+function saveDraftAndClose() {
+  const s = loadState();
+  s.draft = answers;
+  saveState(s);
+  alert(`Piszkozat mentve. ${Object.keys(answers).length} / 60 válasz.`);
+  goTo('intro');
+}
+
+// ═══════════════════════════════════════════════════
+// SCORING
+// ═══════════════════════════════════════════════════
+function normalize(val, min=1, max=7) {
+  return Math.round(((val - min) / (max - min)) * 100);
+}
+
+function scoreTest(answers) {
+  // Helper: average a section with reverse-coding
+  function sectionAvg(sectionId) {
+    const section = SECTIONS.find(s => s.id === sectionId);
+    const vals = section.items.map((item, i) => {
+      const v = answers[`${sectionId}_${i}`];
+      if (v === undefined) return null;
+      return item.r ? (8 - v) : v;
+    }).filter(v => v !== null);
+    if (!vals.length) return 0;
+    return vals.reduce((a, b) => a + b, 0) / vals.length;
+  }
+
+  // Sub-scale within a section
+  function subScore(sectionId, subKey, subVal) {
+    const section = SECTIONS.find(s => s.id === sectionId);
+    const vals = section.items.map((item, i) => {
+      if (item[subKey] !== subVal) return null;
+      const v = answers[`${sectionId}_${i}`];
+      if (v === undefined) return null;
+      return item.r ? (8 - v) : v;
+    }).filter(v => v !== null);
+    if (!vals.length) return 0;
+    return normalize(vals.reduce((a,b) => a+b, 0) / vals.length);
+  }
+
+  const anxiety = normalize(sectionAvg('anxiety'));
+  const avoidance = normalize(sectionAvg('avoidance'));
+
+  // Sub-dimensions
+  const anxPassive = subScore('anxiety', 'sub', 'passive');
+  const anxActive = subScore('anxiety', 'sub', 'active');
+  const avoDismissing = subScore('avoidance', 'sub', 'dismissing');
+  const avoFearful = subScore('avoidance', 'sub', 'fearful');
+
+  // Context map
+  const ctx = {};
+  SECTIONS[2].items.forEach((item, i) => {
+    ctx[item.ctx] = answers[`context_${i}`] || 0;
+  });
+  const contextMap = {
+    anxRomantic: ctx.anx_rom >= 5,
+    anxFamily: ctx.anx_fam >= 5,
+    anxFriends: ctx.anx_fri >= 5,
+    anxWork: ctx.anx_wrk >= 5,
+    avoRomantic: ctx.avo_rom >= 5,
+    avoFamily: ctx.avo_fam >= 5,
+    avoFriends: ctx.avo_fri >= 5,
+    secureFriends: ctx.sec_fri >= 5,
+    secureWork: ctx.sec_wrk >= 5,
+    secureAnchor: ctx.anchor >= 5,
+    contextualFlex: (ctx.sec_fri >= 5 || ctx.sec_wrk >= 5) && (ctx.anx_rom >= 5 || ctx.avo_rom >= 5)
+  };
+
+  // Activation strategies
+  const act = {};
+  SECTIONS[3].items.forEach((item, i) => {
+    const v = answers[`activation_${i}`] || 0;
+    if (!act[item.strat]) act[item.strat] = [];
+    act[item.strat].push(v);
+  });
+  const hyperScore = act.hyper ? normalize(act.hyper.reduce((a,b)=>a+b,0) / act.hyper.length) : 0;
+  const deactScore = act.deact ? normalize(act.deact.reduce((a,b)=>a+b,0) / act.deact.length) : 0;
+  const somaAware = act.soma ? normalize(act.soma.reduce((a,b)=>a+b,0) / act.soma.length) : 0;
+
+  // Mentalization
+  const mental = normalize(sectionAvg('mental'));
+  const interoception = subScore('mental', 'sub', 'interoception');
+  const otherMind = subScore('mental', 'sub', 'other_mind');
+
+  // Earned security (composite)
+  const earned = normalize(sectionAvg('earned'));
+  const repairScore = subScore('earned', 'sub', 'repair');
+
+  // Determine primary style
+  let style, styleEm, kicker, lede;
+  if (anxiety < 40 && avoidance < 40) {
+    style = 'Biztonságos'; styleEm = 'Biztonságos';
+    kicker = 'Primer stílus · secure';
+    lede = 'A kötődési rendszered alapvetően nyugodt. Közelség és autonómia nem vagylagosak — mindkettő működik benned, és nem érzed úgy, hogy választanod kellene.';
+  } else if (anxiety >= 40 && avoidance < 40) {
+    style = 'Szorongó'; styleEm = 'Szorongó';
+    kicker = 'Primer stílus · anxious-preoccupied';
+    lede = 'A kötődési rendszered érzékeny a másik érzelmi jelenlétére. A közelség igénye erős és valódi — az elérhetetlenség gyors, intenzív belső választ ad.';
+  } else if (anxiety < 40 && avoidance >= 40) {
+    style = 'Elkerülő'; styleEm = 'Elkerülő';
+    kicker = 'Primer stílus · dismissing-avoidant';
+    lede = 'A kötődési rendszered a távolságban keresi a biztonságot. Az autonómia nemcsak preferencia — védelmi funkció, ami a túl közeli érzelmi nyomás ellen véd.';
+  } else {
+    style = 'Szorongó–elkerülő'; styleEm = 'elkerülő';
+    kicker = 'Komplex profil · fearful-avoidant · disorganized';
+    lede = 'A kötődési rendszered egyszerre hordozza a közelség vágyát és a közelség félelmét. Ez nem hiba a rendszerben — két, egyszerre aktív munkamodell, amelyek váltakozva vagy párhuzamosan működnek.';
+  }
+
+  return {
+    date: new Date().toISOString(),
+    style, styleEm, kicker, lede,
+    anxiety, avoidance,
+    anxPassive, anxActive,
+    avoDismissing, avoFearful,
+    contextMap, ctx,
+    hyperScore, deactScore, somaAware,
+    mental, interoception, otherMind,
+    earned, repairScore
+  };
+}
+
+function submitTest() {
+  const result = scoreTest(answers);
+  const s = loadState();
+  const prevResult = s.result;
+  if (!s.history) s.history = [];
+  if (prevResult) {
+    s.history.push({
+      date: prevResult.date,
+      anxiety: prevResult.anxiety,
+      avoidance: prevResult.avoidance,
+      earned: prevResult.earned,
+      style: prevResult.style
+    });
+  }
+  s.result = result;
+  delete s.draft;
+  saveState(s);
+  renderResult(result, s.history);
+  goTo('result');
+}
+
+// ═══════════════════════════════════════════════════
+// RESULT RENDER
+// ═══════════════════════════════════════════════════
+function formatDate(iso) {
+  const d = new Date(iso);
+  const months = ['jan', 'feb', 'már', 'ápr', 'máj', 'jún', 'júl', 'aug', 'szept', 'okt', 'nov', 'dec'];
+  return `${d.getFullYear()} / ${months[d.getMonth()]} ${String(d.getDate()).padStart(2, '0')}`;
+}
+
+function renderResult(r, history) {
+  document.getElementById('result-date').innerHTML = `<span>${formatDate(r.date)}</span>`;
+
+  const body = document.getElementById('result-body');
+
+  body.innerHTML = `
+    <section class="result-hero">
+      <div class="result-kicker">${r.kicker}</div>
+      <h1 class="result-style">${r.style.replace(r.styleEm, `<em>${r.styleEm}</em>`)}</h1>
+      <p class="result-lede">${r.lede}</p>
+    </section>
+
+    <section class="dims">
+      <div class="dim">
+        <div class="dim-head"><span class="dim-lbl">Szorongás</span><span class="dim-pct"><em>${r.anxiety}</em></span></div>
+        <div class="dim-bar"><div class="dim-bar-fill" style="width:${r.anxiety}%"></div></div>
+        <div class="dim-desc">${getDimDesc('anxiety', r.anxiety)}</div>
+      </div>
+      <div class="dim">
+        <div class="dim-head"><span class="dim-lbl">Elkerülés</span><span class="dim-pct"><em>${r.avoidance}</em></span></div>
+        <div class="dim-bar"><div class="dim-bar-fill" style="width:${r.avoidance}%"></div></div>
+        <div class="dim-desc">${getDimDesc('avoidance', r.avoidance)}</div>
+      </div>
+      <div class="dim">
+        <div class="dim-head"><span class="dim-lbl">Mentalizáció</span><span class="dim-pct"><em>${r.mental}</em></span></div>
+        <div class="dim-bar"><div class="dim-bar-fill" style="width:${r.mental}%"></div></div>
+        <div class="dim-desc">${getDimDesc('mental', r.mental)}</div>
+      </div>
+      <div class="dim">
+        <div class="dim-head"><span class="dim-lbl">Earned security</span><span class="dim-pct"><em>${r.earned}</em></span></div>
+        <div class="dim-bar"><div class="dim-bar-fill" style="width:${r.earned}%"></div></div>
+        <div class="dim-desc">${getDimDesc('earned', r.earned)}</div>
+      </div>
+    </section>
+
+    <section class="map-section">
+      <div class="map-wrap">
+        <div class="map-title">Pozíció a kötődési térképen</div>
+        <div class="att-map">
+          <span class="att-quad-label att-q-tl">Szorongó</span>
+          <span class="att-quad-label att-q-tr">Dezorganizált</span>
+          <span class="att-quad-label att-q-bl">Biztonságos</span>
+          <span class="att-quad-label att-q-br">Elkerülő</span>
+          <span class="att-axis-label att-axis-x">Elkerülés →</span>
+          <span class="att-axis-label att-axis-y">Szorongás →</span>
+          <div class="att-dot" style="left:${r.avoidance}%; top:${100 - r.anxiety}%"></div>
+        </div>
+      </div>
+      <div class="map-readout">
+        <div class="mr-kicker">Olvasat</div>
+        <h2 class="mr-title">Hol áll a <em>pont</em></h2>
+        <div class="mr-body">
+          ${getMapReading(r)}
+        </div>
+        <div class="pop-ref">
+          <div class="pop-ref-lbl">Populációs referencia</div>
+          <div class="pop-ref-body">${getPopReference(r)}</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="reading">
+
+      <div class="reading-block">
+        <div class="reading-tag">01 · Profil-olvasat</div>
+        <h2 class="reading-h">Mit jelent ez a <em>mintázat</em></h2>
+        ${getProfileReading(r)}
+      </div>
+
+      <div class="reading-block">
+        <div class="reading-tag">02 · Sub-dimenziók</div>
+        <h2 class="reading-h">A minta <em>szerkezete</em></h2>
+        ${getSubdimReading(r)}
+      </div>
+
+      <div class="reading-block">
+        <div class="reading-tag">03 · Kontextus</div>
+        <h2 class="reading-h">Hol <em>aktív</em> a mintád</h2>
+        ${getContextReading(r)}
+      </div>
+
+      <div class="reading-block">
+        <div class="reading-tag">04 · Aktiváció</div>
+        <h2 class="reading-h">Amikor <em>triggerelődik</em></h2>
+        ${getActivationReading(r)}
+      </div>
+
+      <div class="reading-block">
+        <div class="reading-tag">05 · Mentalizáció</div>
+        <h2 class="reading-h">Reflektív funkció és <em>test</em></h2>
+        ${getMentalReading(r)}
+      </div>
+
+      <div class="reading-block">
+        <div class="reading-tag">06 · Earned security</div>
+        <h2 class="reading-h">A szerzett <em>biztonság</em> szintjei</h2>
+        ${getEarnedReading(r)}
+      </div>
+
+      <div class="reading-block">
+        <div class="reading-tag">07 · Következő lépések</div>
+        <h2 class="reading-h">Három <em>fejlesztési</em> irány</h2>
+        <p>A profilod alapján ezek a legrelevánsabb növekedési területek. Ne próbálj mindhárommal egyszerre dolgozni — válassz egyet, adj neki 6-8 hetet, és utána vedd újra a felmérést.</p>
+        ${getRoadmap(r)}
+      </div>
+
+    </div>
+  `;
+
+  renderRetakes(history);
+}
+
+function renderRetakes(history) {
+  const el = document.getElementById('retakes-section');
+  if (!history || history.length === 0) {
+    el.innerHTML = '';
+    return;
+  }
+  const currentResult = loadState().result;
+  let html = '<div class="retakes"><div class="retakes-h">Korábbi kitöltések — idővonal</div>';
+
+  history.slice().reverse().forEach((h, i) => {
+    const prev = i < history.length - 1 ? history.slice().reverse()[i + 1] : null;
+    const cmp = prev || h;
+    const deltaAnx = currentResult.anxiety - h.anxiety;
+    const deltaAvo = currentResult.avoidance - h.avoidance;
+    const deltaEarn = currentResult.earned - (h.earned || 0);
+    const deltaClass = (deltaAnx < 0 && deltaAvo < 0) || deltaEarn > 5 ? 'down' : (deltaAnx > 5 || deltaAvo > 5) ? 'up' : '';
+
+    html += `<div class="retake-row">
+      <div class="retake-date">${formatDate(h.date)}</div>
+      <div class="retake-body">Stílus: <em>${h.style}</em> — szorongás ${h.anxiety} · elkerülés ${h.avoidance}${h.earned !== undefined ? ' · earned ' + h.earned : ''}</div>
+      <div class="retake-delta ${deltaClass}">
+        Δ szor ${deltaAnx > 0 ? '+' : ''}${deltaAnx} · elk ${deltaAvo > 0 ? '+' : ''}${deltaAvo}${h.earned !== undefined ? ' · earn ' + (deltaEarn > 0 ? '+' : '') + deltaEarn : ''}
+      </div>
+    </div>`;
+  });
+
+  html += '</div>';
+  el.innerHTML = html;
+}
+
+// ═══════════════════════════════════════════════════
+// READING GENERATORS
+// ═══════════════════════════════════════════════════
+function getDimDesc(dim, v) {
+  if (dim === 'anxiety') {
+    if (v < 30) return 'Alacsony — a kötődési riasztó ritkán aktiválódik.';
+    if (v < 50) return 'Mérsékelt — néha jelen, de nem dominál.';
+    if (v < 70) return 'Emelkedett — érzékeny rendszer, gyakran aktív.';
+    return 'Magas — gyors és intenzív aktiváció.';
+  }
+  if (dim === 'avoidance') {
+    if (v < 30) return 'Alacsony — komfortos érzelmi közelségben.';
+    if (v < 50) return 'Mérsékelt — időnként igényel távolságot.';
+    if (v < 70) return 'Emelkedett — autonómia-preferencia dominál.';
+    return 'Magas — közelség nehezen elviselhető.';
+  }
+  if (dim === 'mental') {
+    if (v < 40) return 'A reflektív funkció még nehezen hívható elő a feszültségben.';
+    if (v < 60) return 'Reflexió megvan nyugalmi állapotban, konfliktusban elvész.';
+    if (v < 75) return 'Reflektív funkció stabilan elérhető — jelentős készség.';
+    return 'Erős reflektív képesség — önmagadról és a másikról egyszerre.';
+  }
+  if (dim === 'earned') {
+    if (v < 35) return 'A régi minta még nagyrészt automatikusan fut.';
+    if (v < 55) return 'Tudatosság megvan, eszközök épülőben.';
+    if (v < 75) return 'Jelentős mozgás a biztonságos kötődés felé.';
+    return 'Erős earned security — tudod, mi történik, és van eszköztárad.';
+  }
+  return '';
+}
+
+function getMapReading(r) {
+  let html = '';
+  const q = getQuadrant(r.anxiety, r.avoidance);
+  html += `<p>A pozíciód a <strong>${q.name}</strong> kvadránsban van. ${q.body}</p>`;
+  if (r.anxiety > 60 && r.avoidance > 60) {
+    html += `<p>Mivel mindkét tengelyen emelkedett vagy, a stíluskategória csak a kiindulópont — a <em>belső dinamika</em> érdekesebb: mikor billensz a szorongó és mikor az elkerülő oldalra, milyen trigger mellett.</p>`;
+  }
+  return html;
+}
+
+function getQuadrant(anx, avo) {
+  if (anx < 40 && avo < 40) return {
+    name: 'biztonságos',
+    body: 'A kötődési rendszered alapvetően nyugodt. Képes vagy a közelségre és az autonómiára egyszerre.'
+  };
+  if (anx >= 40 && avo < 40) return {
+    name: 'szorongó',
+    body: 'A közelség jó neked, de a rendszered figyeli a másik érzelmi állapotát — és gyorsan aktiválódik, ha az nem egyértelmű.'
+  };
+  if (anx < 40 && avo >= 40) return {
+    name: 'elkerülő',
+    body: 'Az autonómia az elsődleges erőforrásod — a rendszered a távolságban érzi biztonságban magát.'
+  };
+  return {
+    name: 'dezorganizált',
+    body: 'A két rendszer együtt aktív. Ez a legkomplexebb minta, de egyben a legnagyobb plaszticitású is — a rendszered már ismer mindkét választ.'
+  };
+}
+
+function getPopReference(r) {
+  // Approximate ECR-R Hungarian adult population norms
+  let html = '';
+  const pctRank = (val, mean, sd) => {
+    const z = (val - mean) / sd;
+    // approximate normal CDF
+    const p = 0.5 * (1 + Math.tanh(z * 0.79788));
+    return Math.round(p * 100);
+  };
+  // ECR-R norms (approximate from validation studies): anxiety mean ~50 sd 20, avoidance mean ~42 sd 19
+  const anxPct = pctRank(r.anxiety, 50, 20);
+  const avoPct = pctRank(r.avoidance, 42, 19);
+  html += `A szorongás-skálán a felnőtt populáció <em>${anxPct}%-ánál</em> magasabb vagy. Az elkerülés-skálán <em>${avoPct}%-ánál</em> magasabb. `;
+  html += `A populációban kb. 55-60% secure, 20% anxious, 15% avoidant, és 5-10% fearful-avoidant / disorganized — a tapasztalatnyi normák ECR-R validálások alapján.`;
+  return html;
+}
+
+function getProfileReading(r) {
+  if (r.style === 'Szorongó–elkerülő') {
+    return `
+      <p>A <strong>szorongó–elkerülő</strong> (fearful-avoidant, klinikai szóhasználatban gyakran <em>disorganized</em>) profil azt jelenti, hogy a kötődési rendszered mindkét munkamodellt egyszerre futtatja. Közelséget akarsz, de amikor a közelség ténylegesen megérkezik, elkezdesz elhúzódni. Aztán a távolság megint fáj, és megint közeledsz. Ez nem inkonzisztencia — <em>mindkét minta válasz ugyanarra a korai kérdésre:</em> „biztonságban vagyok-e ezzel az emberrel?"</p>
+      <p>Bowlby és Main kutatása szerint a dezorganizált minta általában <strong>kiszámíthatatlan gondozói tapasztalatból</strong> jön — a gondozó néha elérhető volt, néha nem, néha vigasztaló, néha ijesztő, és a gyerek nem tudta előre jelezni, melyik verzióval találkozik. A rendszered emiatt két párhuzamos stratégiát épített: egyet a közelségre (hátha ez a helyes válasz), egyet a védelemre (ha a közelség veszélyes).</p>
+      <p class="pull-quote">A dezorganizált kötődés a legnagyobb plaszticitású — pontosan azért, mert a rendszered már ismer mindkét választ. A munka nem új választ építeni, hanem megtanulni <em>mikor melyik indokolt</em>.<span class="pull-quote-attr">klinikai konszenzus — Fonagy, Allen, Bateman</span></p>
+      <p>A te konkrét pontszámaid: szorongás <strong>${r.anxiety}</strong>, elkerülés <strong>${r.avoidance}</strong>. ${r.anxiety > r.avoidance + 10 ? 'A szorongó oldal dominál — ez a „default mód", és az elkerülés inkább védekezés, amikor a szorongás már túl sok.' : r.avoidance > r.anxiety + 10 ? 'Az elkerülő oldal dominál — de a szorongás ott van a háttérben, és néha áttöri a páncélt.' : 'A két oldal közel egyforma erővel jelen van — ilyenkor a trigger típusa határozza meg, melyik aktiválódik.'}</p>
+    `;
+  } else if (r.style === 'Szorongó') {
+    return `
+      <p>A <strong>szorongó</strong> (preoccupied) profil egy érzékeny, reagáló rendszert ír le. A közelség neked jó — nem zárod el magad, nem fojtod le az érzéseidet. <em>De a rendszered folyamatosan számon tartja, hogy a másik érzelmileg elérhető-e</em>, és amikor nem — amikor késik a válasz, amikor távolabb érződik — a kötődési riasztó gyorsan bekapcsol.</p>
+      <p>Szorongás-szinted <strong>${r.anxiety}</strong>, ami ${r.anxiety > 75 ? 'magas tartomány — a rendszered gyakran aktivált, és ez kimerítő lehet' : r.anxiety > 55 ? 'emelkedett, de nem folyamatosan aktivált — specifikus triggerek mellett erősebb' : 'jelen van, de nem ez határozza meg a mindennapjaidat'}. Elkerülés-szinted <strong>${r.avoidance}</strong>, ami ${r.avoidance < 30 ? 'nagyon alacsony — vagyis teljesen nyitott vagy a közelségre, nem védekezel ellene' : 'mérsékelt — részben megvan benned a távolságtartás is, ha túl sok a nyomás'}.</p>
+      <p class="pull-quote">A szorongó kötődés mögött gyakran egy régi kérdés van: <em>„elég vagyok ahhoz, hogy maradjon?"</em> Ez a kérdés nem a mostani partnerednek szól — hanem egy régi gondozónak, akiről nem lehetett biztosan tudni, hogy érzelmileg elérhető lesz-e.<span class="pull-quote-attr">attachment research · Ainsworth, Main</span></p>
+      <p>A jó hír: a szorongó profil <strong>nagyon jól reagál</strong> a biztonságos kapcsolati tapasztalatokra. Ha egy partner konzisztens, érzelmileg elérhető, és nem büntet a szükségleteidért, a rendszered idővel megtanul lenyugodni. Ez az úgynevezett <em>earned security</em> útja.</p>
+    `;
+  } else if (r.style === 'Elkerülő') {
+    return `
+      <p>Az <strong>elkerülő</strong> (dismissing-avoidant) profil egy olyan rendszert ír le, amely a <em>távolságban találta meg a biztonságot</em>. Ez nem hidegség — ez egy védelmi stratégia, amit a rendszered gyermekkorban épített arra az esetre, ha a közelség megbízhatatlan vagy veszélyes.</p>
+      <p>Elkerülés-szinted <strong>${r.avoidance}</strong>, ami ${r.avoidance > 75 ? 'erős preferenciát mutat a függetlenség iránt' : 'jelen, de nem extrém'}. Szorongás-szinted <strong>${r.anxiety}</strong>, ami ${r.anxiety < 30 ? 'nagyon alacsony — vagyis nem félsz az elhagyástól; sokkal inkább a függéstől félsz' : r.anxiety < 50 ? 'mérsékelt — vagyis a rendszered nem teljesen immunis az elhagyás-félelemre, csak elnyomja' : 'nem elhanyagolható — a szorongó oldal is aktív, csak a védekezés erősebb'}.</p>
+      <p class="pull-quote">Az elkerülő kötődés mögött gyakran egy régi tanulás van: <em>„ha másra támaszkodom, csalódni fogok."</em> A gyerek megtanulta lefojtani a szükségleteit, mert a kifejezésük nem hozott választ — vagy elutasító választ hozott.<span class="pull-quote-attr">Bowlby · Main · van der Kolk</span></p>
+      <p>Az elkerülő profil egyik kihívása, hogy <strong>a rendszered jól működik</strong> — amíg nincs kapcsolat. A munka nem az, hogy „meg kell tanulnod szeretni", hanem hogy <em>a védekezés felengedjen azoknál, akiknél már biztonságos lehet</em>. Ez nem tömeges nyitás — ez egy fokozatos, szándékos folyamat, ami sokszor először a <strong>testi szinten</strong> kezdődik.</p>
+    `;
+  } else {
+    return `
+      <p>A <strong>biztonságos</strong> profil egy olyan kötődési rendszert ír le, amely alapvetően nyugalomban van. Képes vagy közelséget kérni és adni; nem félsz az elhagyástól, és nem félsz a függéstől sem. Az autonómia és az intimitás nálad nem ellentétek.</p>
+      <p>Szorongás-szinted <strong>${r.anxiety}</strong>, elkerülés-szinted <strong>${r.avoidance}</strong> — mindkettő alacsony. Ez azt jelenti, hogy a rendszered alapállapota a <em>bizalom és hozzáférhetőség</em>, nem a védekezés.</p>
+      <p>Fontos: a biztonságos kötődés nem azt jelenti, hogy nincsenek érzékeny pontjaid, vagy hogy soha nem szorongsz egy kapcsolatban. Azt jelenti, hogy ezek a pillanatok <em>nem dominálják</em> a kapcsolati élményedet, és hogy van eszköztárad a visszatéréshez.</p>
+      <p class="pull-quote">A biztonságos kötődésnek nem az a jele, hogy nincs benned félelem — hanem hogy a félelem nem veszi át az irányítást.<span class="pull-quote-attr">klinikai megfigyelés</span></p>
+    `;
+  }
+}
+
+function getSubdimReading(r) {
+  let html = '<p>A két fő tengely mögött finomabb struktúra van. Ezek a sub-dimenziók mutatják, hogy <em>milyen módon</em> jelenik meg a mintád — nem csak azt, hogy jelen van-e.</p>';
+  html += '<p><strong>Szorongás · passzív vs. aktív:</strong></p><ul>';
+  html += `<li><strong>Passzív szorongás</strong> (rumináció, aggódás, kétely): <em>${r.anxPassive}</em>. ${r.anxPassive > 60 ? 'A rendszered belül sokat dolgozik — a gondolatok az érzés elől mennek előre.' : r.anxPassive > 40 ? 'Mérsékelten jelen — néha elindul, néha nem.' : 'Alacsony — a rendszered nem időzik a szorongó gondolatoknál.'}</li>`;
+  html += `<li><strong>Aktív szorongás</strong> (tesztelés, ellenőrzés, protest behavior): <em>${r.anxActive}</em>. ${r.anxActive > 60 ? 'A belső feszültség cselekvéssé válik — üzenetek, hívások, közvetett jelzések.' : r.anxActive > 40 ? 'Mérsékelten jelen — időnként aktivizálódik.' : 'Alacsony — a szorongás nem fordul át cselekvésbe.'}</li>`;
+  html += '</ul>';
+  html += `<p>${r.anxPassive > r.anxActive + 15 ? 'A <em>passzív</em> oldal dominál — többet dolgozol belül, mint külsőleg. Ez nehezebben látható kívülről, de ugyanúgy kimerítő.' : r.anxActive > r.anxPassive + 15 ? 'Az <em>aktív</em> oldal dominál — a szorongásod gyorsabban fordul át viselkedésbe. Könnyebb észrevenni, de a partnernek is megterhelő lehet.' : 'A két oldal közel egyforma — rugalmasan váltasz rumináció és cselekvés között.'}</p>`;
+
+  html += '<p><strong>Elkerülés · dismissing vs. fearful:</strong></p><ul>';
+  html += `<li><strong>Dismissing</strong> (érzelmi lefojtás, racionalizáció): <em>${r.avoDismissing}</em>. ${r.avoDismissing > 60 ? 'A fő stratégia: „nincs szükségem rá, meg tudom oldani egyedül".' : r.avoDismissing > 40 ? 'Részben jelen — bizonyos területeken lefojtasz, máshol nyitott vagy.' : 'Alacsony — nem a lefojtás a védekezésed.'}</li>`;
+  html += `<li><strong>Fearful</strong> (félelem-alapú visszahúzódás): <em>${r.avoFearful}</em>. ${r.avoFearful > 60 ? 'A fő stratégia: „ha közel engedem, sérülni fogok".' : r.avoFearful > 40 ? 'Részben jelen — sérülékeny pillanatokban aktiválódik.' : 'Alacsony — nem ez a domináns elkerülés-típus.'}</li>`;
+  html += '</ul>';
+  html += `<p>${r.avoDismissing > r.avoFearful + 15 ? 'A <em>dismissing</em> stratégia dominál — ez klasszikus elkerülő minta, a függetlenség idealizálásával.' : r.avoFearful > r.avoDismissing + 15 ? 'A <em>fearful</em> stratégia dominál — ez gyakran együtt jár szorongással is, és utalhat korábbi kapcsolati sérülésre.' : 'Mindkét stratégiát használja a rendszered — rugalmas védekezés.'}</p>`;
+
+  return html;
+}
+
+function getContextReading(r) {
+  const m = r.contextMap;
+  let html = '<p>A kötődési mintázat <strong>nem minden kapcsolatban egyformán aktív</strong>. Ez azért fontos, mert megmutatja, hol már biztonságos a rendszered, és hol van még dolgod. A kontextus-specifikus biztonság a változás legerősebb előrejelzője.</p>';
+  html += '<p><strong>A te térképed szerint:</strong></p><ul>';
+
+  const anxCtx = [];
+  const avoCtx = [];
+  if (m.anxRomantic) anxCtx.push('romantikus');
+  if (m.anxFamily) anxCtx.push('családi');
+  if (m.anxFriends) anxCtx.push('baráti');
+  if (m.anxWork) anxCtx.push('szakmai');
+  if (m.avoRomantic) avoCtx.push('romantikus');
+  if (m.avoFamily) avoCtx.push('családi');
+  if (m.avoFriends) avoCtx.push('baráti');
+
+  if (anxCtx.length) html += `<li><strong>Szorongó minta</strong> aktív: ${anxCtx.join(', ')} kapcsolatokban.</li>`;
+  if (avoCtx.length) html += `<li><strong>Elkerülő minta</strong> aktív: ${avoCtx.join(', ')} kapcsolatokban.</li>`;
+  if (m.secureFriends) html += `<li><strong>Barátságokban már biztonságos</strong> a kötődés — még ha a mélyebb kapcsolatokban nem is.</li>`;
+  if (m.secureWork) html += `<li><strong>Szakmai kapcsolatokban biztonságos</strong> — a rendszered már tudja, hogyan működik a biztonságos kötődés, csak még nem minden kontextusban aktív.</li>`;
+  if (m.secureAnchor) html += `<li><strong>Van legalább egy ember</strong>, akinél teljes érzelmi biztonságban érzed magad. Ez védőfaktor.</li>`;
+  if (m.contextualFlex) html += `<li><strong>Kontextuális rugalmasság jele</strong>: eltérő kapcsolattípusokban eltérő mintád van. Ez nem inkonzisztencia — ez adaptív kapacitás.</li>`;
+  if (anxCtx.length === 0 && avoCtx.length === 0 && !m.secureAnchor) {
+    html += '<li>A mintázat nem lokalizálódott erősen egyik kapcsolattípusban sem. Ez jelentheti, hogy egyenletesen jelen van — vagy hogy a kategóriák nem illeszkednek pontosan az életedhez.</li>';
+  }
+  html += '</ul>';
+
+  if (m.secureFriends || m.secureWork || m.secureAnchor) {
+    html += '<p>A <em>biztonságos kapcsolataid</em> nemcsak védőfaktorok — hanem <strong>élő laboratórium</strong>. A testednek már van tapasztalata arról, milyen egy nyugalmi kötődés. A munka nem új képesség építése, hanem annak <em>átvitele</em> a kevésbé biztonságos kontextusokba.</p>';
+  } else {
+    html += '<p>Jelenleg még nincs kapcsolattípus, amelyben teljes biztonságod lenne. Ez nem hiány — ez a következő növekedési terület. <strong>Egyetlen</strong> biztonságos horgony-kapcsolat építése (nem feltétlenül romantikus) nagyságrendekkel gyorsítja az earned security felépítését.</p>';
+  }
+
+  return html;
+}
+
+function getActivationReading(r) {
+  let html = '<p>Amikor triggerelődik a mintád, a rendszered bizonyos automatizmusokkal válaszol. Ezek két fő kategóriába esnek: <em>hiperaktivációs</em> stratégiák (a kötődési rendszert felerősítik) és <em>deaktivációs</em> stratégiák (a kötődési rendszert lezárják).</p>';
+
+  html += `<p><strong>Hiperaktiváció-szint: ${r.hyperScore}</strong>`;
+  if (r.hyperScore > 60) {
+    html += ' — erős hiperaktivációs hajlam. A rendszered felgyorsul, keresi a kontaktust, belül sokat dolgozol.';
+  } else if (r.hyperScore > 40) {
+    html += ' — mérsékelt hiperaktiváció, specifikus helyzetekben.';
+  } else {
+    html += ' — alacsony hiperaktiváció, a rendszered nem erőlteti a közeledést.';
+  }
+  html += '</p>';
+
+  html += `<p><strong>Deaktiváció-szint: ${r.deactScore}</strong>`;
+  if (r.deactScore > 60) {
+    html += ' — erős deaktivációs hajlam. Konfliktusban, nyomás alatt a rendszered lezár, racionalizál, feladatba menekül.';
+  } else if (r.deactScore > 40) {
+    html += ' — mérsékelt deaktiváció, bizonyos helyzetekben.';
+  } else {
+    html += ' — alacsony deaktiváció, nem fojtod le a rendszert.';
+  }
+  html += '</p>';
+
+  html += `<p><strong>Szomatikus tudatosság: ${r.somaAware}</strong>`;
+  if (r.somaAware > 60) {
+    html += ' — jól észleled a testi jeleket. Ez kritikus erőforrás, mert a test korábban tudja a választ, mint a gondolat.';
+  } else if (r.somaAware > 40) {
+    html += ' — részben elérhető a testi jel. Érdemes gyakorolni.';
+  } else {
+    html += ' — a testi jeleket még nem veszed észre rendszeresen. Ez az egyik legkönnyebben fejleszthető terület.';
+  }
+  html += '</p>';
+
+  if (r.hyperScore > 60 && r.deactScore > 60) {
+    html += '<p class="pull-quote">Mindkét stratégiát magas szinten használod — ez a dezorganizált minta aláírása. A rendszered <em>gyorsan vált</em> a két pólus között, és ez kimerítő mind neked, mind a kapcsolataidnak.<span class="pull-quote-attr">klinikai megfigyelés</span></p>';
+  }
+
+  html += '<p>A tudatosítás első lépése: <em>felismerni</em>, hogy egy stratégia elindult. Nem leállítani — csak észrevenni, megnevezni. „Most hiperaktiválódik a rendszerem." „Most deaktiválódik." A névadás már lelassítja. A változás ebből a szünetből kezdődik.</p>';
+
+  return html;
+}
+
+function getMentalReading(r) {
+  let html = `<p>A <strong>mentalizáció</strong> — vagy reflektív funkció — az a képesség, hogy egyszerre tudod látni <em>magadat</em> és a <em>másikat</em> mint belső világgal rendelkező lényeket. Fonagy Péter kutatásai szerint ez az egyik legerősebb előrejelzője a kapcsolati sikernek és a pszichoterápiás változásnak.</p>`;
+
+  html += `<p>A te mentalizáció-pontszámod: <strong>${r.mental}</strong>. `;
+  if (r.mental > 70) html += 'Erős reflektív kapacitás — nehéz helyzetekben is képes vagy visszafogni az automatikus reakciót, és meglátni a komplexitást.';
+  else if (r.mental > 50) html += 'Jó reflektív kapacitás nyugalomban — feszültség alatt néha elvész, de a készség megvan.';
+  else if (r.mental > 35) html += 'A reflektív funkció ingadozó — néha jól elérhető, máskor nem.';
+  else html += 'A reflektív funkció még nehezen hívható elő, különösen érzelmi feszültségben.';
+  html += '</p>';
+
+  html += '<p><strong>Sub-dimenziók:</strong></p><ul>';
+  html += `<li><strong>A másik elméje</strong> (<em>${r.otherMind}</em>) — mennyire látod, hogy a partnerednek saját belső története van, ami nem rólad szól. ${r.otherMind > 60 ? 'Jó szint — nem tekinted magadra vonatkoztatva minden reakcióját.' : 'Fejleszthető — a partnerek viselkedése gyakran több, mint személyes üzenet rólad.'}</li>`;
+  html += `<li><strong>Interocepció</strong> (<em>${r.interoception}</em>) — a testi jelek felismerése. ${r.interoception > 60 ? 'Jól elérhető — a test korábban tudja a választ, mint a gondolat, és te ezt használod.' : r.interoception > 40 ? 'Részben elérhető — érdemes gyakorolni testi scan-ekkel.' : 'Még nehezen elérhető — ez egy olyan képesség, amit testi gyakorlatokkal (yoga, meditáció, somatic experiencing) fejleszthetsz.'}</li>`;
+  html += '</ul>';
+
+  html += '<p>A mentalizáció <em>nem intelligencia kérdése</em> — sokszor a legokosabb emberek a leggyengébbek benne, mert túl gyorsan ugranak a magyarázatra és a megoldásra. A mentalizáció lassúság. Egy pici szünet a trigger és a reakció között.</p>';
+
+  return html;
+}
+
+function getEarnedReading(r) {
+  let html = `<p>Az <strong>earned security</strong> — szerzett biztonság — egy klinikailag dokumentált jelenség: olyan emberek, akik nem biztonságos kötődési háttérből jöttek, de az életük során <em>biztonságos kötődési mintázatot fejlesztettek ki</em>. Ez nem azt jelenti, hogy a régi minta eltűnik — azt jelenti, hogy már tudod, mi az, és van válaszod rá.</p>`;
+
+  html += `<p>A te earned security pontszámod: <strong>${r.earned}</strong>. `;
+  if (r.earned > 70) {
+    html += 'Erős jelenlét. A régi minta már nem determinálja a viselkedésedet — van rálátás, van eszköz, van repair-kapacitás. A következő szint: a regulációt <em>bevinni a legnehezebb pillanatokba</em>, nem csak reflexióban alkalmazni.';
+  } else if (r.earned > 50) {
+    html += 'Jó alap. A tudatosság megvan, kezdeti eszközök is. A következő szint: <em>tágítani az ablakot</em> a trigger és a reakció között. Amikor már érzed, hogy elindul a minta, de még nem cselekedtél — ez az ablak az, ahol a változás történik.';
+  } else if (r.earned > 35) {
+    html += 'Elindult a folyamat. A mintázat nagyrészt még automatikus, de már érzed, hogy nem vagy vele azonos. Ez a kiindulási pont — a következő lépés a testi felismerés stabilizálása.';
+  } else {
+    html += 'A régi minta még nagyrészt automatikusan fut. Ez nem hiba — ez a valós kiindulás. A munka nem gyorsabb, ha eltagadjuk, hol vagyunk.';
+  }
+  html += '</p>';
+
+  html += `<p><strong>Rupture-repair képesség: ${r.repairScore}.</strong> `;
+  if (r.repairScore > 60) {
+    html += 'Erős. Konfliktus után vissza tudsz találni — akár te kezdeményezel, akár a másik. Ez az egyik legjelentősebb earned security indikátor.';
+  } else if (r.repairScore > 40) {
+    html += 'Mérsékelt. Néha sikerül visszatalálni, néha napokig/hetekig elhúzódik. Érdemes erre konkrétan fókuszálni.';
+  } else {
+    html += 'Alacsony. A konfliktus utáni visszatalálás nehéz — hosszan tart, vagy elmarad. Ez az egyik legfontosabb fejlesztési terület, mert a párkapcsolati stabilitás döntően ezen múlik.';
+  }
+  html += '</p>';
+
+  html += '<p class="pull-quote">A párkapcsolat nem a konfliktus-mentesség — hanem a <em>visszatalálás</em> minősége. Minden jó kapcsolatnak vannak rupture-pillanatai; a kérdés, hogy a repair megtörténik-e.<span class="pull-quote-attr">John Gottman · Sue Johnson</span></p>';
+
+  return html;
+}
+
+function getRoadmap(r) {
+  const tracks = [];
+
+  // Priority 1: based on dominant pattern
+  if (r.anxiety > 60 && r.anxActive > 60) {
+    tracks.push({
+      num: '01',
+      title: 'Aktív szorongás <em>lassítása</em>',
+      desc: 'A hiperaktivációs stratégiák (ellenőrzés, tesztelés, intenzív kontaktus-keresés) felismerése és lelassítása. Gyakorlati eszközök: 20 perces „pause-rule" mielőtt üzenetet küldesz triggerelt állapotban; érzelem-regulációs technikák (légzés 4-7-8, földeltségi gyakorlatok).',
+      cadence: '6-8 hét · napi gyakorlat'
+    });
+  } else if (r.anxiety > 60) {
+    tracks.push({
+      num: '01',
+      title: 'Szorongás-regulációs <em>bázis</em>',
+      desc: 'A passzív szorongás (rumináció, aggódás) kezelésére eszköztár építése. Kognitív reframing, érzelem-naplózás, és testi földeltségi gyakorlatok. A cél: ne a külső megerősítés nyugtasson le, hanem a belső készség.',
+      cadence: '8 hét · napi 10-15 perc'
+    });
+  } else if (r.avoidance > 60 && r.avoDismissing > 60) {
+    tracks.push({
+      num: '01',
+      title: 'Mikro-<em>sérülékenység</em>',
+      desc: 'Nem nagyot nyitni — csak egy fokkal többet, mint eddig. Heti 1 konkrét sérülékenység-gyakorlat egy biztonságos emberrel (egy érzés kimondása ítélet nélkül, egy szükséglet megnevezése, egy segítség-kérés). A lezárás felengedésének legbiztonságosabb útja.',
+      cadence: '8 hét · heti 1 gyakorlat'
+    });
+  } else if (r.avoidance > 60) {
+    tracks.push({
+      num: '01',
+      title: 'Testi <em>jelen lévés</em>',
+      desc: 'Az elkerülő rendszer a testből lép ki először (érzelmek lefojtása = testi jelek ignorálása). Testi scan gyakorlat, érzelem-nevezés, és a fizikai közelség fokozatos tolerálása. A test adja vissza azt, amit a gondolat már nem enged.',
+      cadence: '10 hét · napi 5 perc'
+    });
+  } else {
+    tracks.push({
+      num: '01',
+      title: 'Fenntartó <em>gyakorlat</em>',
+      desc: 'A stabil profil fenntartásához heti érzelem-regulációs check-in (mi volt a legnagyobb kapcsolati trigger, hogyan válaszoltam, mit tennék másként).',
+      cadence: 'heti 15 perc'
+    });
+  }
+
+  // Priority 2: based on secondary dimension
+  if (r.mental < 50) {
+    tracks.push({
+      num: '02',
+      title: 'Reflektív <em>funkció</em>',
+      desc: 'A mentalizáció gyakorlása konfliktus után: mit gondolhatott a másik, mi volt az ő érzése, hogyan látta a helyzetet. Nem abból, hogy kitaláljam helyesen — abból, hogy elképzelhetővé váljon. A legerősebb készség a kapcsolati stabilitáshoz.',
+      cadence: '12 hét · minden konfliktus után 10 perc írott reflexió'
+    });
+  } else if (!r.contextMap.secureAnchor) {
+    tracks.push({
+      num: '02',
+      title: 'Biztonságos <em>horgony</em>',
+      desc: 'Egy konkrét ember kiválasztása (nem feltétlenül romantikus), akivel szándékosan gyakorolod a biztonságos kötődést: konzisztens kontaktus, rupture után repair, szükségletek megnevezése. Az earned security nem magányosan épül — egy élő kapcsolati kontextus kell hozzá.',
+      cadence: '3-6 hónap · heti kontaktus'
+    });
+  } else {
+    tracks.push({
+      num: '02',
+      title: 'Rupture-repair <em>gyakorlás</em>',
+      desc: 'Konfliktus utáni visszatalálás tudatos gyakorlása. Nem a konfliktus elkerülése — a visszatalálás sebességének és minőségének javítása. Kimondott kérés: „erre kellenek percek." Kimondott bocsánatkérés. Kimondott elismerés a másiknak.',
+      cadence: '8 hét · minden konfliktus kezdeményezett repair-rel'
+    });
+  }
+
+  // Priority 3: always growth / metacognitive
+  tracks.push({
+    num: '03',
+    title: 'Visszatérő ön-<em>ellenőrzés</em>',
+    desc: 'Ez a felmérés 3 havonta újra kitölthető. A trend fontosabb, mint a pillanatfelvétel. Ha a szorongás-szint csökken vagy az earned security nő, tudni fogod, hogy a munka hat. Ha nem változik, érdemes más irányba fordulni vagy szakember támogatását bevonni.',
+    cadence: '3 havonta · 20 perc'
+  });
+
+  let html = '<div class="roadmap">';
+  tracks.forEach(t => {
+    html += `<div class="rm">
+      <div class="rm-n">TRACK ${t.num}</div>
+      <div class="rm-t">${t.title}</div>
+      <div class="rm-d">${t.desc}</div>
+      <div class="rm-cadence">${t.cadence}</div>
+    </div>`;
+  });
+  html += '</div>';
+
+  html += '<p style="margin-top:20px;font-size:14px;color:var(--ink-2);font-style:italic;font-family:Fraunces,serif;">A felmérés nem helyettesíti a szakember munkáját. Ha bármelyik tengely tartósan magas tartományban marad, vagy a pontszámok erős szenvedést jeleznek, érdemes attachment-alapú terápiát keresni (EFT, mentalizáció-alapú terápia, vagy sématerápia).</p>';
+
+  return html;
+}
+
+// ═══════════════════════════════════════════════════
+// EXPORT / IMPORT
+// ═══════════════════════════════════════════════════
+function exportData() {
+  const data = loadState();
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `attachment-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function exportForHub() {
+  const s = loadState();
+  if (!s.result) { alert('Nincs eredmény exportálható formában.'); return; }
+  const r = s.result;
+  // Hub-compatible minimal format
+  const hubExport = {
+    attachment: {
+      style: r.style,
+      styleEm: r.styleEm,
+      kicker: r.kicker,
+      lede: r.lede,
+      anxiety: r.anxiety,
+      avoidance: r.avoidance,
+      earnedPct: r.earned,
+      secureAnchor: r.contextMap.secureAnchor,
+      anxiousInRomantic: r.contextMap.anxRomantic,
+      avoidantInRomantic: r.contextMap.avoRomantic,
+      secureInFriendships: r.contextMap.secureFriends,
+      date: r.date
+    },
+    attachmentHistory: (s.history || []).concat([{
+      anxiety: r.anxiety,
+      avoidance: r.avoidance,
+      date: r.date
+    }])
+  };
+  const blob = new Blob([JSON.stringify(hubExport, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `attachment-for-hub-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  alert('Hub-kompatibilis JSON letöltve. A Hub Import funkciójával tudod betölteni.');
+}
+
+document.getElementById('import-input').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      saveState(data);
+      if (data.result) {
+        renderResult(data.result, data.history || []);
+        goTo('result');
+      } else {
+        checkResume();
+        alert('Import sikeres.');
+      }
+    } catch(err) { alert('Hibás fájl.'); }
+  };
+  reader.readAsText(file);
+});
+
+// ═══════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════
+checkResume();
+</script>
+
+</body>
+</html>

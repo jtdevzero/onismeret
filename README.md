@@ -1,8 +1,8 @@
 # Önismereti térképek
 
-Tizenhét kutatás-alapú önismereti kérdőív magyarul, statikus HTML fájlok, GitHub Pages-en futtatható.
+Tizenkilenc önismereti kérdőív magyarul, statikus HTML fájlok, GitHub Pages-en futtatható.
 
-**Live:** [`https://jtdevzero.github.io`](https://jtdevzero.github.io) (ha ide deployolod)
+**Live:** [`https://jtdevzero.github.io/onismeret/`](https://jtdevzero.github.io/onismeret/) (miután a GitHub Pages be van kapcsolva: Settings → Pages → Branch: main → / (root))
 
 ---
 
@@ -14,6 +14,8 @@ Tizenhét kutatás-alapú önismereti kérdőív magyarul, statikus HTML fájlok
 | | TAS-20 (alexitímia) | 20 | `terkepek.html#test-tas` |
 | | DES-II (disszociáció) | 28 | `funkcio.html#test-des` |
 | **II. Kötődés + séma** | ECR-R (párkapcsolati kötődés) | 36 | `terkepek.html#test-ecr` |
+| | Kötődési mélytérkép (saját, nem validált) | 60 | `kotodes-melyterkep.html` |
+| | YSQ-L (Young séma-kérdőív) | 244 | `ysq.html` |
 | | SMI (Young séma-módusz) | 65 | `terkepek.html#test-smi` |
 | | SSSS (szex-önkép) | 100 | `attitudok.html#test-ssss` |
 | **III. Szex-funkció** | SIS/SES (gátlás/serkentés) | 45 | `sis-ses.html` |
@@ -28,7 +30,7 @@ Tizenhét kutatás-alapú önismereti kérdőív magyarul, statikus HTML fájlok
 | **VI. Személyiség + erők** | IPIP-NEO-60 (Big Five) | 60 | `szemelyiseg.html#test-bf` |
 | | VIA-72 (karakter-erők) | 72 | `szemelyiseg.html#test-via` |
 
-**Összesen: 17 teszt, ~830 item, 6 témakör.**
+**Összesen: 19 teszt, ~1130 item, 6 témakör.**
 
 ---
 
@@ -40,6 +42,8 @@ self-knowledge-suite/
 ├── README.md           Ez a fájl
 ├── maia2.html          MAIA-2 (standalone)
 ├── sis-ses.html        SIS/SES (standalone)
+├── ysq.html            YSQ-L (standalone)
+├── kotodes-melyterkep.html  Kötődési mélytérkép (standalone)
 ├── terkepek.html       ECR-R + SMI + TAS-20 (hub, 3 fül)
 ├── funkcio.html        IIEF-15 + PEDT + SDI-2 + DES-II (hub, 4 fül)
 ├── attitudok.html      SSSS + NSSS + SAQ (hub, 3 fül)
@@ -63,6 +67,8 @@ Minden fájl **teljesen önálló** — inline CSS, JS, semmi external asset a G
   - `ssss-responses-v1`, `nsss-responses-v1`, `saq-responses-v1`
   - `love-responses-v1`, `apo-responses-v1`, `imago-responses-v1`
   - `bf-responses-v1`, `via-responses-v1`
+  - `ysq_autosave`, `ysq_snapshots`, `ysq_log` stb. (YSQ)
+  - `attachment_assessment_v1` (Kötődési mélytérkép)
 - **JSON export** minden tesztnél — ha meg akarod mutatni terapeutának.
 
 ---
@@ -136,6 +142,8 @@ Elérhető pár perc múlva: `https://jtdevzero.github.io/onismereti-terkepek/`
 - **TAS-20** — Bagby, Parker, Taylor, 1994. Alexitímia arany-standard.
 - **DES-II** — Carlson & Putnam, 1993. Disszociatív élmények szűrése.
 - **ECR-R** — Fraley, Waller, Brennan, 2000. Attachment researchre a legelterjedtebb.
+- **YSQ-L** — Young & Brown. Korai maladaptív sémák, 19 séma × 5 domén.
+- **Kötődési mélytérkép** — saját fejlesztés. Az ECR-R szorongás/elkerülés tengelyeire épít, és kontextus-, aktivációs stratégia-, mentalizáció- és earned security-modullal bővíti. Nem validált.
 - **SMI** — Young et al., 2007. Schema-Focused Therapy módszertani alapja.
 - **SIS/SES** — Bancroft & Janssen, 2002. Dual-control model empirikus mérése.
 - **IIEF-15** — Rosen et al., 1997. Urológiai arany-standard.
