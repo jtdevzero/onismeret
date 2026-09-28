@@ -11,6 +11,7 @@ import re, pathlib
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SRC = ROOT / 'src'
 CORE_TAG = '<script src="assets/oni-core.js"></script>'
+THEME_TAG = '<link rel="stylesheet" href="assets/theme.css">'
 FONTS = '<link rel="stylesheet" href="fonts/fonts.css">'
 FOOTER = ('<footer class="hub-footer">Önismereti térkép, nem diagnózis. A válaszaid csak ebben a böngészőben tárolódnak '
           '(localStorage), válasz vagy eredmény nem megy szerverre.<br><a href="index.html" style="color:inherit">← Vissza az összes teszthez</a></footer>')
@@ -38,6 +39,8 @@ def link_core():
         s2 = re.sub(r'<script>\n/\* ONI-CORE v\d.*?</script>\n', '', s, flags=re.S)
         if CORE_TAG not in s2:
             s2 = s2.replace('</head>', CORE_TAG + '\n</head>', 1)
+        s2 = s2.replace(THEME_TAG + '\n', '')
+        s2 = s2.replace('</head>', THEME_TAG + '\n</head>', 1)   # a témafájl mindig utolsó a fejlécben
         if s2.count(CORE_TAG) != 1:
             raise SystemExit(f'{p.name}: core tag count {s2.count(CORE_TAG)}')
         if s2 != s:

@@ -226,11 +226,19 @@ Minden kérdőív magyar nyelvre lett adaptálva egyeztetett szakmai fordításs
 
 ---
 
+## Arculat
+
+- **Két téma:** világos (alapértelmezett) és sötét. A jobb alsó ☾/☀ gombbal váltható, a választás minden oldalon megmarad (`onismeret-settings-v1.theme`).
+- **Világos:** hűvös palaszürke háttér (#f8fafc / #f1f5f9 / #e2e8f0), sötét palaszöveg, mély smaragd, zafír és burgundi kiemelés, arany akcentus. **Sötét:** sötétkék háttér ugyanezekkel az ékszerszínekkel, élénkebb árnyalatban.
+- **Tipográfia:** címek Lora, szöveg Inter, minden oldalon. A régi családnevek (Fraunces, Cardo, Playfair, DM Serif, Manrope, Nunito, DM Sans) a `fonts/fonts.css`-ben álnévként ugyanezekre a fájlokra mutatnak.
+- **Megvalósítás:** `assets/theme.css`, az utolsó stíluslap minden oldal fejlécében. A különböző oldalcsaládok (pala-hubok, sötétkék hubok, főoldal/összegzés/pár, MAIA-2, SIS/SES, Kötődési mélytérkép, YSQ) saját színváltozóit képezi le a két közös palettára. A YSQ saját sötét módja a közös beállítást követi.
+
 ## Fejlesztés
 
 ```
 src/                 A motoros hub-oldalak forrása (engine.js, stílusok, hubs/*.hub.html + *.tests.js)
-assets/oni-core.js   Közös mag minden oldalon: eredménytár, kitöltési alkalmak, verziók, kitöltés-segéd, mentési visszajelzés
+assets/oni-core.js   Közös mag minden oldalon: téma, eredménytár, kitöltési alkalmak, verziók, kitöltés-segéd, mentési visszajelzés
+assets/theme.css     Egységes arculat: világos/sötét téma minden oldalcsaládra
 tools/build.py       Hubok generálása + a közös mag bekötése minden oldalba
 tests/run.js         Automatikus ellenőrzés (Playwright)
 ```

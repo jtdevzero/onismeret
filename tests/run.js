@@ -148,6 +148,24 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     await ctx.close();
   }
 
+  console.log('\n9. Arculat: világos alap, sötét kapcsoló, megmarad oldalváltáskor');
+  {
+    const ctx = await newCtx(); const p = await pageIn(ctx);
+    for (const f of fs.readdirSync(ROOT).filter(x => x.endsWith('.html'))) {
+      await p.goto(R + f);
+      const t = await p.evaluate(() => [document.documentElement.dataset.theme, !!document.getElementById('oni-theme'), !!document.querySelector('link[href="assets/theme.css"]')]);
+      ok(t[0] === 'light' && t[1] && t[2], `${f}: világos alap, kapcsoló, témafájl`, t);
+    }
+    await p.goto(R + 'index.html'); await p.click('#oni-theme');
+    const bg = await p.evaluate(() => getComputedStyle(document.body).backgroundColor);
+    await p.goto(R + 'maia2.html');
+    ok(await p.evaluate(() => document.documentElement.dataset.theme) === 'dark', 'sötét téma megmarad oldalváltás után');
+    await p.goto(R + 'ysq.html'); await p.waitForTimeout(200);
+    ok(await p.evaluate(() => document.documentElement.dataset.theme) === 'dark', 'a YSQ a közös témát követi');
+    ok(/rgb\(5, 13, 30\)|rgba?\(5, 13, 30/.test(bg), 'sötét háttér a főoldalon', bg);
+    await ctx.close();
+  }
+
   await browser.close();
   console.log(`\n${pass} rendben, ${fail} hiba`);
   process.exit(fail ? 1 : 0);

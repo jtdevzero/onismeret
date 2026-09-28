@@ -1,4 +1,22 @@
-/* ONI-CORE v4 — közös eredménytár + kezdő útvonal. Minden adat csak ebben a böngészőben marad. */
+/* ONI-CORE v5 — közös eredménytár + kezdő útvonal. Minden adat csak ebben a böngészőben marad. */
+/* Téma: világos (alap) vagy sötét; azonnal beállítva, hogy ne villanjon. */
+(function(){
+  var d=document.documentElement,st={};
+  try{st=JSON.parse(localStorage.getItem('onismeret-settings-v1'))||{}}catch(e){}
+  d.setAttribute('data-theme',st.theme==='dark'?'dark':'light');
+  var pg=(location.pathname.split('/').pop()||'index.html').replace(/\.html$/,'')||'index';
+  d.setAttribute('data-page',pg);
+  function btn(){
+    if(document.getElementById('oni-theme'))return;
+    var b=document.createElement('button');b.id='oni-theme';b.type='button';
+    function lbl(){var dark=d.getAttribute('data-theme')==='dark';b.textContent=dark?'☀':'☾';b.setAttribute('aria-label',dark?'Váltás világos témára':'Váltás sötét témára');b.title=b.getAttribute('aria-label');}
+    lbl();
+    b.onclick=function(){var t=d.getAttribute('data-theme')==='dark'?'light':'dark';d.setAttribute('data-theme',t);lbl();
+      try{var s=JSON.parse(localStorage.getItem('onismeret-settings-v1'))||{};s.theme=t;localStorage.setItem('onismeret-settings-v1',JSON.stringify(s))}catch(e){}};
+    document.body.appendChild(b);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',btn);else btn();
+})();
 window.ONI=window.ONI||(function(){
   var K='onismeret-results-v1';
   var PATH=[
@@ -113,7 +131,7 @@ window.ONI=window.ONI||(function(){
       if(focus||!scan()){pill.style.display='none';return;}
       var i=firstOpen(),n=units.length,done=units.filter(answered).length;
       pill.style.display='flex';
-      var sb=showBtn(),resVisible=!!scope().querySelector('.results.visible, .results[style*="block"]');
+      var sb=showBtn(),resVisible=!!scope().querySelector('.results.visible, .results[style*="block"], #results.visible, .results-wrap.visible');
       pill.innerHTML=(i>=0&&done>0?'<button class="oni-btn pri" id="oni-cont">Folytatás: '+(i+1)+'. kérdés ›</button>':'')
         +(i>=0&&done>0?'<span class="oni-btn" style="cursor:default;opacity:.85">'+(n-done)+' kérdés hiányzik</span>':'')
         +(i>=0?'<button class="oni-btn" id="oni-focus-on" title="Egyszerre egy kérdés, billentyűzettel is (1–9, ←/→)">Fókusz mód</button>':'')
@@ -179,7 +197,7 @@ window.ONI=window.ONI||(function(){
     function boot(){css();setTimeout(mkPill,600);}
     if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
     window.addEventListener('hashchange',function(){if(focus)exit();setTimeout(mkPill,300)});
-    document.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('.hub-tab')){if(focus)exit();setTimeout(mkPill,300);}});
+    document.addEventListener('click',function(e){if(!e.target.closest)return;if(e.target.closest('.hub-tab')){if(focus)exit();setTimeout(mkPill,300);}else if(e.target.closest('button[id$=showResults], button[id$=-show], #showResults, #oni-res')){setTimeout(mkPill,600);}});
   })();
 
   window.addEventListener('oni:saved',function(e){setTimeout(function(){banner(e.detail.id)},900);});

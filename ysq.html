@@ -1049,6 +1049,7 @@ body {
 
 </style>
 <script src="assets/oni-core.js"></script>
+<link rel="stylesheet" href="assets/theme.css">
 </head>
 <body>
 <a href="index.html" id="onismeret-back" style="position:fixed;left:16px;bottom:16px;z-index:9999;padding:8px 14px;border-radius:999px;background:rgba(5,13,30,.88);color:#fbbf24;border:1px solid #78551a;font:600 13px/1.2 'Manrope','Helvetica Neue',sans-serif;text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.25)">‹ Önismereti térképek</a>
@@ -1890,14 +1891,14 @@ function toggleRec(kod) {
 // ═══════════════════════════════════════════════════════════════
 // DARK MODE
 // ═══════════════════════════════════════════════════════════════
-let darkMode = localStorage.getItem('ysq_dark') === '1';
+let darkMode = (function(){try{return (JSON.parse(localStorage.getItem('onismeret-settings-v1'))||{}).theme==='dark'}catch(e){return false}})(); // közös téma (onismeret-settings-v1)
 function applyTheme() {
   document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light');
-  document.getElementById('themeToggle').textContent = darkMode ? '☀️ Világos' : '🌙 Sötét';
+  var tt=document.getElementById('themeToggle');if(tt)tt.textContent = darkMode ? '☀️ Világos' : '🌙 Sötét';
 }
 function toggleTheme() {
   darkMode = !darkMode;
-  localStorage.setItem('ysq_dark', darkMode ? '1' : '0');
+  try{var st=JSON.parse(localStorage.getItem('onismeret-settings-v1'))||{};st.theme=darkMode?'dark':'light';localStorage.setItem('onismeret-settings-v1',JSON.stringify(st));}catch(e){}
   applyTheme();
 }
 applyTheme();
