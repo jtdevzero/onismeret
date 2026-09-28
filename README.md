@@ -1,6 +1,6 @@
 # Önismereti térképek
 
-Tizenkilenc önismereti kérdőív magyarul, statikus HTML fájlok, GitHub Pages-en futtatható.
+Huszonhét önismereti kérdőív magyarul, statikus HTML fájlok, GitHub Pages-en futtatható.
 
 **Live:** [`https://jtdevzero.github.io/onismeret/`](https://jtdevzero.github.io/onismeret/) (miután a GitHub Pages be van kapcsolva: Settings → Pages → Branch: main → / (root))
 
@@ -29,8 +29,16 @@ Tizenkilenc önismereti kérdőív magyarul, statikus HTML fájlok, GitHub Pages
 | | Imago | 57 | `nyelvek.html#test-imago` |
 | **VI. Személyiség + erők** | IPIP-NEO-60 (Big Five) | 60 | `szemelyiseg.html#test-bf` |
 | | VIA-72 (karakter-erők) | 72 | `szemelyiseg.html#test-via` |
+| **VII. Kapcsolati dinamika** | LAS-SF (szeretetstílus) | 24 | `kapcsolat.html#test-las` |
+| | Konfliktusmódok (Thomas–Kilmann-modell, saját itemek) | 25 | `kapcsolat.html#test-tki` |
+| | Gottman-térkép (saját itemek) | 32 | `kapcsolat.html#test-gott` |
+| | Fisher-temperamentum (saját itemek) | 40 | `kapcsolat.html#test-fti` |
+| **VIII. Értékek, cselekvés, ritmus** | Schwartz PVQ-21 (értékek) | 21 | `cselekves.html#test-pvq` |
+| | Négy tendencia (Rubin-modell, saját helyzetek) | 12 | `cselekves.html#test-ft` |
+| | Cselekvési módok (Kolbe-modell, saját itemek) | 24 | `cselekves.html#test-kolbe` |
+| | MEQ (kronotípus) | 19 | `cselekves.html#test-meq` |
 
-**Összesen: 19 teszt, 891 kérdés, 6 témakör.**
+**Összesen: 27 teszt, 1088 kérdés, 8 témakör.**
 
 ---
 
@@ -48,7 +56,9 @@ self-knowledge-suite/
 ├── funkcio.html        IIEF-15 + PEDT + SDI-2 + DES-II (hub, 4 fül)
 ├── attitudok.html      SSSS + NSSS + SAQ (hub, 3 fül)
 ├── nyelvek.html        Love + Apology + Imago (hub, 3 fül)
-└── szemelyiseg.html    Big Five + VIA (hub, 2 fül)
+├── szemelyiseg.html    Big Five + VIA (hub, 2 fül)
+├── kapcsolat.html      LAS + Konfliktus + Gottman + Fisher (hub, 4 fül)
+└── cselekves.html      PVQ-21 + Négy tendencia + Cselekvési módok + MEQ (hub, 4 fül)
 ```
 
 Minden fájl **teljesen önálló** — inline CSS, JS, semmi external asset a Google Fonts kivételével. Ez azt jelenti, hogy ha csak egy fájlt küldesz el valakinek, működik.
@@ -67,6 +77,8 @@ Minden fájl **teljesen önálló** — inline CSS, JS, semmi external asset a G
   - `ssss-responses-v1`, `nsss-responses-v1`, `saq-responses-v1`
   - `love-responses-v1`, `apo-responses-v1`, `imago-responses-v1`
   - `bf-responses-v1`, `via-responses-v1`
+  - `las-responses-v1`, `conflict-responses-v1`, `gottman-responses-v1`, `fisher-responses-v1`
+  - `pvq21-responses-v1`, `four-tendencies-responses-v1`, `action-modes-responses-v1`, `meq-responses-v1`
   - `ysq_autosave`, `ysq_snapshots`, `ysq_log` stb. (YSQ)
   - `attachment_assessment_v1` (Kötődési mélytérkép)
 - **JSON export** minden tesztnél — ha meg akarod mutatni terapeutának.
@@ -156,6 +168,14 @@ Elérhető pár perc múlva: `https://jtdevzero.github.io/onismereti-terkepek/`
 - **Imago** — Hendrix, 1988. Klinikai gyakorlatban használt önreflexiós keret.
 - **IPIP-NEO-60** — Goldberg et al., IPIP.ori.org. NEO-PI-R open-source változat.
 - **VIA-72** — Peterson & Seligman, 2004. VIA Institute char strengths.
+- **LAS-SF** — Hendrick, Hendrick & Dicke, 1998. Lee szeretetstílusai, 6 × 4 item. Validált.
+- **Konfliktusmódok** — Thomas & Kilmann, 1974 modellje. A TKI jogvédett, ezért saját Likert-itemkészlet. Nem validált.
+- **Gottman-térkép** — Gottman, 1994, 1999 (Sound Relationship House, négy lovas). Saját itemek. Nem validált.
+- **Fisher-temperamentum** — Fisher et al., 2015. Az FTI jogvédett, ezért saját itemek. Nem validált.
+- **PVQ-21** — Schwartz, 2003 (European Social Survey). Centrált (MRAT) pontozás. Validált.
+- **Négy tendencia** — Rubin, 2017. Saját helyzetkérdőív. A keretrendszer maga sem validált.
+- **Cselekvési módok** — Kolbe, 1990 modellje. A Kolbe A Index fizetős és jogvédett, ezért saját itemek, 1–10 skálára vetítve. Nem validált.
+- **MEQ** — Horne & Östberg, 1976. Kronotípus, 16–86 pont, 5 kategória. Validált.
 
 Minden kérdőív magyar nyelvre lett adaptálva egyeztetett szakmai fordítással.
 

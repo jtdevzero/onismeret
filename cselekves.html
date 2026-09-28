@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Értékek, cselekvés, ritmus — PVQ-21 · Négy tendencia · Cselekvési módok · MEQ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --font-display:'Fraunces','Cardo',serif;
+  --font-body:'Manrope','Inter',system-ui,sans-serif;
+  --bg-deep:#050d1e;
+  --bg-mid:#0c1e3f;
+  --bg-card:#132848;
+  --bg-card-2:#1a3357;
+  --line-dark:rgba(147,197,253,0.14);
+  --line-glow:rgba(147,197,253,0.25);
+  --ink-lite:#f1f5f9;
+  --ink-lite-2:#e2e8f0;
+  --ink-lite-soft:#cbd5e1;
+  --ink-lite-muted:#94a3b8;
+  --sap-bright:#60a5fa;
+  --sap-brighter:#93c5fd;
+  --indigo-bright:#818cf8;
+  --violet-bright:#a78bfa;
+  --teal-bright:#2dd4bf;
+  --gold-bright:#fbbf24;
+  --gold-brighter:#fde047;
+  --rose-bright:#fb7185;
+  --emerald-bright:#34d399;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:hidden}
+body{font-family:var(--font-body);background:var(--bg-deep);color:var(--ink-lite);min-height:100vh;line-height:1.65}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellipse 40% 32% at 8% 4%, rgba(129,140,248,0.14), transparent 62%),radial-gradient(ellipse 36% 28% at 92% 8%, rgba(96,165,250,0.16), transparent 62%),radial-gradient(ellipse 38% 30% at 90% 88%, rgba(45,212,191,0.1), transparent 62%),radial-gradient(ellipse 32% 26% at 6% 82%, rgba(167,139,250,0.12), transparent 62%),radial-gradient(ellipse 100% 60% at 50% 0%, rgba(30,58,138,0.35), transparent 80%);z-index:-2}
+body::after{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260' viewBox='0 0 260 260'%3E%3Cg%3E%3Cpath d='M40 50 L41.8 55 L47 55 L42.8 58 L44.5 63 L40 60 L35.5 63 L37.2 58 L33 55 L38.2 55 Z' fill='rgba(251,191,36,0.55)'/%3E%3Cpath d='M180 140 L181.5 144 L185.5 144 L182.3 146.4 L183.5 150.5 L180 148 L176.5 150.5 L177.7 146.4 L174.5 144 L178.5 144 Z' fill='rgba(253,224,71,0.5)'/%3E%3Cpath d='M120 210 L121.2 213 L124.2 213 L121.8 214.8 L122.8 217.8 L120 216 L117.2 217.8 L118.2 214.8 L115.8 213 L118.8 213 Z' fill='rgba(251,191,36,0.45)'/%3E%3Cpath d='M215 75 L216 77.5 L218.5 77.5 L216.5 79 L217.2 81.5 L215 80 L212.8 81.5 L213.5 79 L211.5 77.5 L214 77.5 Z' fill='rgba(251,191,36,0.4)'/%3E%3Cpath d='M65 180 L66 182.5 L68.5 182.5 L66.5 184 L67.2 186.5 L65 185 L62.8 186.5 L63.5 184 L61.5 182.5 L64 182.5 Z' fill='rgba(253,224,71,0.42)'/%3E%3Ccircle cx='95' cy='95' r='1.3' fill='rgba(147,197,253,0.7)'/%3E%3Ccircle cx='195' cy='45' r='1.1' fill='rgba(147,197,253,0.6)'/%3E%3Ccircle cx='32' cy='215' r='1.2' fill='rgba(147,197,253,0.6)'/%3E%3Ccircle cx='215' cy='165' r='1' fill='rgba(147,197,253,0.5)'/%3E%3C/g%3E%3C/svg%3E");background-size:260px 260px;z-index:-1;pointer-events:none;opacity:1}
+
+.hub-shell{max-width:960px;margin:0 auto;padding:52px 28px 20px}
+.hub-header{margin-bottom:36px;position:relative}
+.hub-header::before{content:"";position:absolute;top:-30px;right:-40px;width:220px;height:220px;background:radial-gradient(circle,rgba(129,140,248,0.2),transparent 70%);border-radius:50%;z-index:-1;pointer-events:none}
+.hub-eyebrow{font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:var(--ink-lite-muted);margin-bottom:20px;font-weight:600;display:flex;align-items:center;gap:14px}
+.hub-eyebrow::before{content:"";width:36px;height:1px;background:var(--ink-lite-muted)}
+.hub-header h1{font-family:var(--font-display);font-weight:400;font-size:clamp(40px,7vw,68px);line-height:1.02;letter-spacing:-0.02em;margin-bottom:20px}
+.hub-header h1 em{font-style:italic;color:var(--sap-bright)}
+.hub-header .lead{font-size:17px;color:var(--ink-lite-soft);max-width:680px;line-height:1.65;font-weight:300}
+.hub-header .lead strong{color:var(--ink-lite);font-weight:600}
+.hub-header .lead em{color:var(--gold-bright);font-style:italic;font-weight:500}
+
+.hub-tabs{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:10px;background:rgba(19,40,72,0.7);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--line-dark);border-radius:26px;position:sticky;top:12px;z-index:100;box-shadow:0 8px 32px rgba(5,13,30,0.5);margin-top:16px}
+.hub-tab{padding:16px 18px;border-radius:20px;background:transparent;border:1px solid transparent;cursor:pointer;text-align:left;transition:all 0.22s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;gap:2px;font-family:inherit;position:relative;overflow:hidden;color:var(--ink-lite)}
+.hub-tab:hover:not(.active){background:rgba(147,197,253,0.08);transform:translateY(-1px)}
+.hub-tab .num{font-family:var(--font-display);font-style:italic;font-size:14px;color:var(--ink-lite-muted);letter-spacing:0.06em;font-weight:400}
+.hub-tab .name{font-family:var(--font-display);font-size:19px;font-weight:600;color:var(--ink-lite);line-height:1.15;margin-top:2px}
+.hub-tab .name em{font-style:italic;font-weight:400}
+.hub-tab .sub{font-size:10.5px;color:var(--ink-lite-muted);letter-spacing:0.12em;text-transform:uppercase;margin-top:6px;font-weight:600}
+.hub-tab .check{position:absolute;top:10px;right:12px;width:8px;height:8px;border-radius:50%;background:var(--emerald-bright);opacity:0;transition:opacity 0.2s}
+.hub-tab.has-progress .check{opacity:1}
+.hub-tab.active{color:#fff;box-shadow:0 8px 26px color-mix(in srgb, var(--tab-color) 45%, transparent), 0 0 0 1px color-mix(in srgb, var(--tab-color) 60%, transparent) inset}
+.hub-tab.active .num{color:rgba(255,255,255,0.75)}
+.hub-tab.active .name{color:#fff}
+.hub-tab.active .sub{color:rgba(255,255,255,0.8)}
+
+.test-panel{display:none}
+.test-panel.active{display:block;animation:fadeSwitch 0.35s cubic-bezier(.4,0,.2,1)}
+@keyframes fadeSwitch{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.test-panel .shell{max-width:900px;margin:0 auto;padding:32px 28px 72px}
+.test-panel header{margin-bottom:34px}
+.test-panel .eyebrow{font-size:11px;letter-spacing:0.22em;text-transform:uppercase;margin-bottom:16px;font-weight:600;display:flex;align-items:center;gap:14px}
+.test-panel .eyebrow::before{content:"";width:36px;height:1px;background:currentColor}
+.test-panel header h2{font-family:var(--font-display);font-weight:400;font-size:clamp(34px,6vw,54px);line-height:1.02;letter-spacing:-0.02em;margin-bottom:18px;color:var(--ink-lite)}
+.test-panel header h2 em{font-style:italic}
+.test-panel .lead{font-size:17px;color:var(--ink-lite-soft);max-width:660px;line-height:1.6}
+.test-panel .lead em{font-style:italic;font-weight:500}
+.test-panel .lead strong{color:var(--ink-lite);font-weight:600}
+
+.test-panel .intro-box{background:linear-gradient(180deg,rgba(19,40,72,0.85),rgba(12,30,63,0.7));border:1px solid var(--line-dark);border-radius:24px;padding:24px 26px;margin:28px 0 30px;box-shadow:0 4px 20px rgba(5,13,30,0.4)}
+.test-panel .intro-box p{color:var(--ink-lite-soft);margin-bottom:10px;font-size:14.5px}
+.test-panel .intro-box p:last-child{margin-bottom:0}
+.test-panel .intro-box strong{color:var(--ink-lite);font-weight:600}
+
+.test-panel .progress-shell{background:rgba(19,40,72,0.7);backdrop-filter:blur(14px);border:1px solid var(--line-dark);border-radius:999px;padding:14px 24px;margin-bottom:28px;display:flex;align-items:center;gap:14px;box-shadow:0 2px 12px rgba(5,13,30,0.4)}
+.test-panel .progress-bar{flex:1;height:5px;background:rgba(147,197,253,0.15);border-radius:999px;overflow:hidden}
+.test-panel .progress-fill{height:100%;width:0%;transition:width 0.4s cubic-bezier(.4,0,.2,1);border-radius:999px}
+.test-panel .progress-text{font-family:var(--font-display);font-size:14px;color:var(--ink-lite-soft);white-space:nowrap}
+.test-panel .progress-text strong{font-weight:700;color:var(--ink-lite)}
+
+.section-head{margin:32px 0 16px;padding:20px 24px 18px;background:linear-gradient(180deg,rgba(96,165,250,0.12),rgba(19,40,72,0.85));border:1px solid var(--line-dark);border-left:4px solid var(--section-color,var(--sap-bright));border-radius:20px}
+.section-head:first-child{margin-top:0}
+.section-head h3{font-family:var(--font-display);font-weight:500;font-size:20px;line-height:1.2;margin-bottom:6px;color:var(--ink-lite)}
+.section-head h3 em{font-style:italic;color:var(--section-color,var(--sap-brighter))}
+.section-head p{color:var(--ink-lite-soft);font-size:13.5px;line-height:1.55;font-style:italic}
+
+.q{background:linear-gradient(180deg,rgba(19,40,72,0.85),rgba(12,30,63,0.7));border:1px solid var(--line-dark);border-radius:14px;padding:18px 22px;margin-bottom:10px;transition:border-color 0.2s;box-shadow:0 4px 20px rgba(5,13,30,0.4)}
+.q:hover{border-color:var(--line-glow)}
+.q-head{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px}
+.q-num{font-family:var(--font-display);font-style:italic;font-size:14px;color:var(--sap-brighter);font-weight:700;flex-shrink:0;padding-top:2px;min-width:30px}
+.q-text{color:var(--ink-lite);font-size:15px;line-height:1.5;flex:1}
+.q-tag{display:inline-block;font-size:10px;background:rgba(251,191,36,0.15);color:var(--gold-brighter);padding:2px 8px;border-radius:999px;margin-left:6px;font-weight:600;letter-spacing:0.05em;vertical-align:middle;text-transform:uppercase}
+.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}
+.scale-btn{appearance:none;border:1.5px solid var(--line-dark);background:rgba(12,30,63,0.5);color:var(--ink-lite);padding:11px 4px 8px;border-radius:10px;cursor:pointer;transition:all 0.18s ease;display:flex;flex-direction:column;align-items:center;gap:2px;min-height:52px}
+.scale-btn .v{font-family:var(--font-display);font-size:15px;font-weight:700;color:var(--ink-lite)}
+.scale-btn .l{font-size:9.5px;color:var(--ink-lite-muted);text-align:center;line-height:1.15;font-weight:500}
+.scale-btn:hover:not(.selected){border-color:var(--line-glow);background:rgba(147,197,253,0.08);transform:translateY(-1px)}
+.scale-btn.selected{color:#fff}
+.scale-btn.selected .v,.scale-btn.selected .l{color:#fff}
+.scale-btn.selected .l{color:rgba(255,255,255,0.85)}
+
+
+.results-trigger{display:flex;justify-content:center;margin:40px 0 22px}
+.btn-primary{appearance:none;border:none;color:#fff;padding:16px 36px;border-radius:999px;font-family:var(--font-display);font-size:17px;font-style:italic;cursor:pointer;transition:all 0.25s ease;font-weight:400}
+.btn-primary:disabled{opacity:0.3;cursor:not-allowed;box-shadow:none}
+.btn-primary:not(:disabled):hover{transform:translateY(-2px)}
+.btn-secondary{appearance:none;background:rgba(19,40,72,0.5);padding:10px 20px;border-radius:999px;font-size:13px;font-weight:500;cursor:pointer;transition:all 0.2s ease;color:var(--ink-lite);border:1.5px solid var(--line-glow)}
+.btn-secondary:hover{background:rgba(147,197,253,0.15);border-color:var(--sap-bright)}
+
+.results{display:none;margin-top:44px}
+.results.visible{display:block;animation:fadeRes 0.6s cubic-bezier(.4,0,.2,1)}
+@keyframes fadeRes{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.res-eyebrow{font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold-bright);margin-bottom:14px;font-weight:600;display:flex;align-items:center;gap:14px}
+.res-eyebrow::before{content:"";width:36px;height:1px;background:var(--gold-bright)}
+.res-title{font-family:var(--font-display);font-weight:400;font-size:clamp(32px,5vw,48px);line-height:1.05;margin-bottom:16px;color:var(--ink-lite)}
+.res-title em{font-style:italic;color:var(--sap-bright)}
+.res-lead{color:var(--ink-lite-soft);font-size:16px;max-width:640px;margin-bottom:28px}
+
+.chart-card{background:linear-gradient(180deg,rgba(19,40,72,0.9),rgba(12,30,63,0.75));border:1px solid var(--line-glow);border-radius:24px;padding:32px 28px;margin-bottom:22px;box-shadow:0 8px 40px rgba(5,13,30,0.5), 0 0 0 1px rgba(147,197,253,0.08) inset;position:relative;overflow:hidden}
+.chart-card::before{content:"";position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:radial-gradient(circle,rgba(147,197,253,0.15),transparent 70%);border-radius:50%;pointer-events:none}
+.chart-card h3{font-family:var(--font-display);font-weight:500;font-size:22px;margin-bottom:6px;color:var(--ink-lite);position:relative}
+.chart-card h3 em{font-style:italic;color:var(--sap-bright)}
+.chart-card .chart-sub{font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-lite-muted);margin-bottom:22px;font-weight:600;position:relative}
+.chart-svg{display:block;margin:0 auto;width:100%;max-width:520px;height:auto}
+.chart-legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-top:20px;padding-top:20px;border-top:1px dashed rgba(147,197,253,0.15)}
+.chart-legend-item{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-lite-soft)}
+.chart-legend-swatch{width:14px;height:14px;border-radius:4px;flex-shrink:0}
+.chart-legend-item strong{color:var(--ink-lite);font-weight:600;font-family:var(--font-display);font-style:italic}
+
+.score-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:26px}
+.score-card{background:linear-gradient(180deg,rgba(19,40,72,0.85),rgba(12,30,63,0.7));border:1px solid var(--line-dark);border-radius:16px;padding:22px 20px;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(5,13,30,0.4)}
+.score-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--sc)}
+.score-card .abbr{font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--sc);margin-bottom:6px;font-weight:700}
+.score-card h4{font-family:var(--font-display);font-weight:500;font-size:17px;line-height:1.2;margin-bottom:12px;color:var(--ink-lite)}
+.score-card h4 em{font-style:italic}
+.score-card .val{font-family:var(--font-display);font-size:34px;font-weight:400;color:var(--sc);line-height:1;letter-spacing:-0.02em;margin-bottom:4px}
+.score-card .out{font-size:11px;color:var(--ink-lite-muted);font-weight:500;letter-spacing:0.03em;margin-bottom:8px}
+.score-card .band{display:inline-block;padding:3px 10px;border-radius:999px;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;background:var(--sc);color:#fff;font-weight:600}
+.score-card .bar{height:3px;background:rgba(147,197,253,0.15);border-radius:999px;margin-top:12px;overflow:hidden}
+.score-card .bar-fill{height:100%;background:var(--sc);transition:width 1.4s cubic-bezier(.4,0,.2,1);box-shadow:0 0 12px currentColor}
+
+.facet-list{background:linear-gradient(180deg,rgba(19,40,72,0.85),rgba(12,30,63,0.7));border:1px solid var(--line-dark);border-radius:20px;padding:26px;margin-bottom:22px;box-shadow:0 4px 20px rgba(5,13,30,0.4)}
+.facet-list h3{font-family:var(--font-display);font-weight:500;font-size:22px;margin-bottom:16px;color:var(--ink-lite)}
+.facet-list h3 em{font-style:italic;color:var(--sap-bright)}
+.facet-group{margin-bottom:22px}
+.facet-group:last-child{margin-bottom:0}
+.facet-group-head{display:flex;align-items:baseline;gap:10px;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid rgba(147,197,253,0.15)}
+.facet-group-head h4{font-family:var(--font-display);font-style:italic;font-size:15px;font-weight:500;color:var(--fg-color,var(--sap-bright))}
+.facet-row{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:8px 0;font-size:14px}
+.facet-row-name{color:var(--ink-lite)}
+.facet-row-val{font-family:var(--font-display);font-style:italic;color:var(--fg-color,var(--sap-bright));font-weight:600;font-size:15px}
+.facet-row-val span{font-size:11px;color:var(--ink-lite-muted);font-weight:500;margin-left:2px}
+.facet-row-track{grid-column:1/-1;height:6px;background:rgba(147,197,253,0.15);border-radius:999px;overflow:hidden;margin-top:4px}
+.facet-row-fill{height:100%;border-radius:999px;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+
+.rank-list{background:linear-gradient(180deg,rgba(19,40,72,0.85),rgba(12,30,63,0.7));border:1px solid var(--line-dark);border-radius:20px;padding:28px;margin-bottom:22px;box-shadow:0 4px 20px rgba(5,13,30,0.4)}
+.rank-list h3{font-family:var(--font-display);font-weight:500;font-size:24px;margin-bottom:18px;color:var(--ink-lite)}
+.rank-list h3 em{font-style:italic;color:var(--gold-bright)}
+.rank-item{display:grid;grid-template-columns:56px 1fr auto;gap:14px;align-items:center;padding:14px 0;border-top:1px dashed rgba(147,197,253,0.15)}
+.rank-item:first-of-type{border-top:none}
+.rank-pos{font-family:var(--font-display);font-style:italic;font-weight:400;font-size:26px;color:var(--rc,var(--ink-lite-muted));line-height:1;letter-spacing:-0.02em}
+.rank-name{font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink-lite)}
+.rank-name em{font-style:italic;color:var(--ink-lite-muted);font-weight:400}
+.rank-desc{color:var(--ink-lite-soft);font-size:13px;margin-top:3px;line-height:1.5}
+.rank-score{font-family:var(--font-display);font-size:26px;font-weight:400;color:var(--rc,var(--ink-lite));letter-spacing:-0.02em;text-align:right;line-height:1}
+.rank-score span{font-size:11px;color:var(--ink-lite-muted);display:block;font-family:var(--font-body);margin-top:2px;font-weight:500}
+.rank-item.top{background:linear-gradient(90deg,rgba(251,191,36,0.08),transparent);border-radius:12px;padding-left:12px}
+.rank-item.top .rank-pos,.rank-item.top .rank-score{color:var(--top-color,var(--gold-bright))}
+
+.interp-card{background:linear-gradient(180deg,rgba(19,40,72,0.85),rgba(12,30,63,0.7));border:1px solid var(--line-dark);border-radius:20px;padding:32px;margin-bottom:22px;box-shadow:0 4px 20px rgba(5,13,30,0.4)}
+.interp-card h3{font-family:var(--font-display);font-weight:400;font-size:24px;margin-bottom:16px;line-height:1.15;color:var(--ink-lite)}
+.interp-card h3 em{font-style:italic;color:var(--sap-bright)}
+.interp-section{margin-bottom:22px;padding-bottom:22px;border-bottom:1px dashed rgba(147,197,253,0.15)}
+.interp-section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.interp-section h4{font-family:var(--font-display);font-style:italic;font-size:16px;font-weight:400;color:var(--sc,var(--sap-bright));margin-bottom:10px}
+.interp-section p{color:var(--ink-lite-soft);font-size:14.5px;line-height:1.7;margin-bottom:8px}
+.interp-section strong{color:var(--ink-lite);font-weight:600}
+
+.refs-card{background:linear-gradient(180deg,rgba(19,40,72,0.85),rgba(12,30,63,0.7));border:1px solid var(--line-dark);border-radius:20px;padding:26px;margin-bottom:22px;box-shadow:0 4px 20px rgba(5,13,30,0.4)}
+.refs-card h3{font-family:var(--font-display);font-weight:400;font-size:20px;margin-bottom:12px;color:var(--ink-lite)}
+.refs-card h3 em{font-style:italic;color:var(--sap-bright)}
+.ref-item{font-size:12.5px;color:var(--ink-lite-soft);padding:8px 0;border-top:1px dashed rgba(147,197,253,0.15);line-height:1.55}
+.ref-item:first-of-type{border-top:none}
+.ref-item strong{color:var(--ink-lite);font-weight:600}
+
+.actions{display:flex;gap:12px;justify-content:center;margin-top:26px;flex-wrap:wrap}
+
+.hub-footer{max-width:920px;margin:32px auto 0;padding:32px 28px 48px;text-align:center;border-top:1px dashed rgba(147,197,253,0.15);color:var(--ink-lite-muted);font-size:12px;font-style:italic;font-family:var(--font-display);line-height:1.7}
+
+@media (max-width:820px){.hub-tabs{grid-template-columns:1fr}.score-grid{grid-template-columns:1fr}}
+@media (max-width:560px){.hub-shell{padding:36px 16px 16px}.test-panel .shell{padding:24px 16px 56px}.q,.intro-box,.chart-card,.score-card,.facet-list,.rank-list,.interp-card,.refs-card,.section-head{padding:20px 16px}.scale{grid-template-columns:repeat(5,1fr)}}
+@media print{body::before,body::after{display:none}.hub-tabs,.progress-shell,.results-trigger,.actions{display:none}.results{display:block !important}.test-panel{display:block !important}body{background:#fff;color:#000}}
+
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:var(--bg-mid)}
+::-webkit-scrollbar-thumb{background:rgba(96,165,250,0.3);border-radius:10px}
+::selection{background:rgba(96,165,250,0.4);color:#fff}
+
+/* ═══ engine additions (kapcsolat / cselekves hubs) ═══ */
+.hub-tabs.four{grid-template-columns:repeat(4,1fr)}
+.hub-tab .name{font-size:17px}
+.test-panel .scale-btn.selected{background:linear-gradient(135deg,var(--c1),var(--c2));border-color:var(--c1);box-shadow:0 4px 16px color-mix(in srgb,var(--c1) 40%,transparent)}
+.test-panel .btn-primary{background:linear-gradient(135deg,var(--c1),var(--c2));box-shadow:0 8px 28px color-mix(in srgb,var(--c1) 45%,transparent)}
+.test-panel .q-num{color:var(--c1)}
+.test-panel .section-head{--section-color:var(--c1)}
+.scale.s4{grid-template-columns:repeat(4,1fr)}
+.scale.s6{grid-template-columns:repeat(6,1fr)}
+.opts{display:flex;flex-direction:column;gap:7px}
+.opt-btn{appearance:none;text-align:left;border:1.5px solid var(--line-dark);background:rgba(12,30,63,0.5);color:var(--ink-lite);padding:12px 16px;border-radius:12px;cursor:pointer;font:inherit;font-size:14px;line-height:1.45;transition:all .18s ease}
+.opt-btn:hover:not(.selected){border-color:var(--line-glow);background:rgba(147,197,253,0.08);transform:translateX(2px)}
+.opt-btn.selected{background:linear-gradient(135deg,var(--c1),var(--c2));border-color:var(--c1);color:#fff;box-shadow:0 4px 16px color-mix(in srgb,var(--c1) 35%,transparent)}
+.status-badge{display:inline-flex;align-items:center;gap:8px;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:6px 13px;border-radius:999px;margin-bottom:18px}
+.status-badge::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.status-badge.valid{background:rgba(52,211,153,0.12);color:#6ee7b7;border:1px solid rgba(52,211,153,.35)}
+.status-badge.model{background:rgba(251,191,36,0.10);color:#fde047;border:1px solid rgba(251,191,36,.35)}
+.callout{background:rgba(19,40,72,0.7);border:1px solid var(--line-dark);border-left:3px solid var(--cc,var(--gold-bright));border-radius:14px;padding:16px 20px;margin:0 0 22px;color:var(--ink-lite-soft);font-size:14px;line-height:1.65}
+.callout strong{color:var(--ink-lite)}
+.test-panel .res-title em{color:var(--c1)}
+.test-panel .chart-card h3 em,.test-panel .interp-card h3 em,.test-panel .facet-list h3 em,.test-panel .refs-card h3 em{color:var(--c1)}
+.zone-track{position:relative;height:10px;border-radius:999px;background:rgba(147,197,253,0.12);margin-top:6px;overflow:visible}
+.zone-track .zone{position:absolute;top:0;bottom:0;border-radius:999px}
+.zone-track .mark{position:absolute;top:-5px;width:20px;height:20px;border-radius:50%;border:3px solid #fff;transform:translateX(-50%);box-shadow:0 0 14px rgba(255,255,255,0.35)}
+.zone-labels{display:flex;justify-content:space-between;font-size:10.5px;color:var(--ink-lite-muted);margin-top:8px;letter-spacing:.04em}
+.gauge-row{padding:14px 0;border-top:1px dashed rgba(147,197,253,0.15)}
+.gauge-row:first-of-type{border-top:none}
+.gauge-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.gauge-head .nm{font-family:var(--font-display);font-size:17px;color:var(--ink-lite)}
+.gauge-head .nm em{font-style:italic;color:var(--ink-lite-muted);font-size:14px}
+.gauge-head .vl{font-family:var(--font-display);font-size:22px;color:var(--gc)}
+.gauge-head .vl span{font-size:11px;color:var(--ink-lite-muted);font-family:var(--font-body);margin-left:4px}
+.gauge-desc{font-size:13px;color:var(--ink-lite-soft);margin-top:10px;line-height:1.55}
+.quad{display:grid;grid-template-columns:auto 1fr 1fr;grid-template-rows:1fr 1fr auto;gap:8px;max-width:520px;margin:0 auto}
+.quad .ax{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-lite-muted);font-weight:600;display:flex;align-items:center;justify-content:center}
+.quad .ax.v{writing-mode:vertical-rl;transform:rotate(180deg)}
+.quad .cell{border-radius:16px;padding:18px 14px;text-align:center;border:1px solid var(--line-dark);min-height:120px;display:flex;flex-direction:column;justify-content:center;gap:4px;transition:all .3s}
+.quad .cell .t{font-family:var(--font-display);font-size:18px;color:var(--ink-lite)}
+.quad .cell .n{font-family:var(--font-display);font-size:30px;line-height:1}
+.quad .cell .s{font-size:11px;color:var(--ink-lite-muted)}
+.diverge{margin-top:6px}
+.dv-row{display:grid;grid-template-columns:150px 1fr 52px;gap:12px;align-items:center;padding:7px 0;font-size:13.5px}
+.dv-name{color:var(--ink-lite);text-align:right}
+.dv-name small{display:block;color:var(--ink-lite-muted);font-size:10.5px;letter-spacing:.04em}
+.dv-track{position:relative;height:14px;background:rgba(147,197,253,0.08);border-radius:4px}
+.dv-track::after{content:"";position:absolute;left:50%;top:-4px;bottom:-4px;width:1px;background:rgba(241,245,249,0.45)}
+.dv-fill{position:absolute;top:0;bottom:0;border-radius:4px}
+.dv-val{font-family:var(--font-display);font-style:italic;font-size:15px;text-align:right}
+.hub-back{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-lite-muted);text-decoration:none;margin-bottom:26px;letter-spacing:.06em}
+.hub-back:hover{color:var(--ink-lite)}
+@media (max-width:820px){.hub-tabs.four{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.hub-tabs{position:static}.hub-tab{padding:12px 14px}.hub-tab .sub{display:none}.scale.s6{grid-template-columns:repeat(3,1fr)}.dv-row{grid-template-columns:96px 1fr 44px;gap:8px;font-size:12.5px}.quad .cell{min-height:96px;padding:12px 8px}.quad .cell .n{font-size:24px}}
+</style>
+</head>
+<body>
+<div class="hub-shell">
+  <a class="hub-back" href="index.html">‹ Önismereti térképek</a>
+  <div class="hub-header">
+    <div class="hub-eyebrow">VIII. — Értékek, cselekvés, ritmus · 4 térkép</div>
+    <h1>Mi <em>mozgat</em>, és hogyan <em>cselekszel</em></h1>
+    <p class="lead">A személyiségtesztek azt írják le, <em>milyen vagy</em>. Ez a négy azt, <strong>mi hajt</strong> (Schwartz-értékek), <strong>hogyan reagálsz az elvárásokra</strong> (négy tendencia), <strong>hogyan kezdesz neki egy feladatnak</strong> (cselekvési módok) és <strong>mikor vagy a csúcson</strong> (kronotípus). Ez a végrehajtás térképe.</p>
+  </div>
+  <nav class="hub-tabs four" id="hub-tabs" role="tablist"></nav>
+</div>
+
+<div id="panels"></div>
+<footer class="hub-footer">Önismereti térkép, nem diagnózis. A válaszaid csak ebben a böngészőben tárolódnak (localStorage), semmi nem megy szerverre.<br><a href="index.html" style="color:inherit">← Vissza az összes teszthez</a></footer>
+<script>
+/* ═══ SHARED HELPERS ═══ */
+window.H = (function(){
+  const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const mean=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:0;
+  const sum=a=>a.reduce((x,y)=>x+y,0);
+  const r1=x=>Math.round(x*10)/10;
+  const r2=x=>Math.round(x*100)/100;
+  const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+
+  function cards(list){
+    return `<div class="score-grid">${list.map(c=>`<div class="score-card" style="--sc:${c.color}">
+      <div class="abbr">${c.abbr||''}</div><h4>${c.name}</h4>
+      <div class="val">${c.val}</div><div class="out">${c.out||''}</div>
+      ${c.band?`<span class="band">${c.band}</span>`:''}
+      <div class="bar"><div class="bar-fill" style="width:${clamp(c.pct,0,100)}%"></div></div></div>`).join('')}</div>`;
+  }
+  function bars(title,groups){
+    return `<div class="facet-list"><h3>${title}</h3>${groups.map(g=>`<div class="facet-group" style="--fg-color:${g.color}">
+      ${g.title?`<div class="facet-group-head"><h4>${g.title}</h4></div>`:''}
+      ${g.rows.map(r=>`<div class="facet-row"><span class="facet-row-name">${r.name}</span><span class="facet-row-val">${r.val}<span>${r.unit||''}</span></span>
+        <div class="facet-row-track"><div class="facet-row-fill" style="width:${clamp(r.pct,0,100)}%;background:${r.color||g.color}"></div></div></div>`).join('')}
+    </div>`).join('')}</div>`;
+  }
+  function rank(title,items){
+    return `<div class="rank-list"><h3>${title}</h3>${items.map((it,i)=>`<div class="rank-item${it.top?' top':''}" style="--rc:${it.color};--top-color:${it.color}">
+      <div class="rank-pos">${i+1}.</div>
+      <div><div class="rank-name">${it.name}${it.sub?` <em>${it.sub}</em>`:''}</div>${it.desc?`<div class="rank-desc">${it.desc}</div>`:''}</div>
+      <div class="rank-score">${it.score}<span>${it.unit||''}</span></div></div>`).join('')}</div>`;
+  }
+  function interp(title,sections){
+    return `<div class="interp-card"><h3>${title}</h3>${sections.filter(Boolean).map(s=>`<div class="interp-section" style="--sc:${s.color||'var(--c1)'}"><h4>${s.h}</h4>${s.html}</div>`).join('')}</div>`;
+  }
+  function chart(title,sub,inner,legend){
+    return `<div class="chart-card"><h3>${title}</h3><div class="chart-sub">${sub}</div>${inner}${legend?`<div class="chart-legend">${legend.map(l=>`<div class="chart-legend-item"><span class="chart-legend-swatch" style="background:${l.color}"></span><span><strong>${l.label}</strong> ${l.val??''}</span></div>`).join('')}</div>`:''}</div>`;
+  }
+  function callout(html,color){return `<div class="callout" style="--cc:${color||'var(--gold-bright)'}">${html}</div>`;}
+  function refs(list){return `<div class="refs-card"><h3>Tudományos <em>háttér</em></h3>${list.map(r=>`<div class="ref-item">${r}</div>`).join('')}</div>`;}
+
+  function radar(data,opts){
+    opts=opts||{};
+    const W=480,H=480,cx=W/2,cy=H/2,R=160,n=data.length,step=(2*Math.PI)/n,start=-Math.PI/2;
+    const max=opts.max,min=opts.min||0,levels=opts.levels||4,sc=opts.stroke||'#60a5fa',fc=opts.fill||'rgba(96,165,250,0.28)';
+    let h='';
+    for(let g=1;g<=levels;g++){const gr=R*g/levels;let p='';for(let i=0;i<n;i++){const a=start+i*step;p+=`${cx+gr*Math.cos(a)},${cy+gr*Math.sin(a)} `;}
+      h+=`<polygon points="${p.trim()}" fill="none" stroke="rgba(147,197,253,0.18)" stroke-width="${g===levels?1.5:1}" stroke-dasharray="${g===levels?'':'3,4'}"/>`;}
+    for(let i=0;i<n;i++){const a=start+i*step;h+=`<line x1="${cx}" y1="${cy}" x2="${cx+R*Math.cos(a)}" y2="${cy+R*Math.sin(a)}" stroke="rgba(147,197,253,0.18)"/>`;}
+    let dp='';const dots=[];
+    for(let i=0;i<n;i++){const a=start+i*step;const r=clamp((data[i].value-min)/(max-min),0,1)*R;const x=cx+r*Math.cos(a),y=cy+r*Math.sin(a);dp+=`${x},${y} `;dots.push({x,y,c:data[i].color||sc});}
+    h+=`<polygon points="${dp.trim()}" fill="${fc}" stroke="${sc}" stroke-width="2.5" stroke-linejoin="round"/>`;
+    dots.forEach(d=>{h+=`<circle cx="${d.x}" cy="${d.y}" r="6" fill="${d.c}" stroke="#fff" stroke-width="2"/>`;});
+    for(let i=0;i<n;i++){const a=start+i*step,lr=R+32,x=cx+lr*Math.cos(a),y=cy+lr*Math.sin(a);
+      let an='middle';if(Math.cos(a)>0.3)an='start';else if(Math.cos(a)<-0.3)an='end';
+      h+=`<text x="${x}" y="${y-4}" text-anchor="${an}" font-family="Fraunces,Cardo,serif" font-size="13.5" font-weight="500" fill="#f1f5f9">${data[i].label}</text>`;
+      h+=`<text x="${x}" y="${y+13}" text-anchor="${an}" font-family="Manrope,sans-serif" font-size="12" font-weight="700" fill="${data[i].color||sc}">${data[i].shown??data[i].value}</text>`;}
+    return `<svg class="chart-svg" viewBox="-40 0 560 ${H}">${h}</svg>`;
+  }
+  function gauge(o){
+    // o: {name,sub,val,unit,min,max,color,zones:[{from,to,color}],labels:[..],desc}
+    const pos=v=>((v-o.min)/(o.max-o.min))*100;
+    return `<div class="gauge-row" style="--gc:${o.color}"><div class="gauge-head"><span class="nm">${o.name}${o.sub?` <em>${o.sub}</em>`:''}</span><span class="vl">${o.shown??o.val}<span>${o.unit||''}</span></span></div>
+      <div class="zone-track">${(o.zones||[]).map(z=>`<div class="zone" style="left:${pos(z.from)}%;width:${pos(z.to)-pos(z.from)}%;background:${z.color}"></div>`).join('')}
+      <div class="mark" style="left:${clamp(pos(o.val),0,100)}%;background:${o.color}"></div></div>
+      ${o.labels?`<div class="zone-labels">${o.labels.map(l=>`<span>${l}</span>`).join('')}</div>`:''}
+      ${o.desc?`<div class="gauge-desc">${o.desc}</div>`:''}</div>`;
+  }
+  return {esc,mean,sum,r1,r2,clamp,cards,bars,rank,interp,chart,callout,refs,radar,gauge};
+})();
+
+/* ═══ TEST ENGINE ═══ */
+window.TESTS={};
+function makeTest(cfg){
+  const items=[];let n=0;
+  cfg.sections.forEach(sec=>sec.items.forEach(it=>{n++;items.push(Object.assign({n,sec},it));}));
+  const TOTAL=items.length;
+  let responses={};
+  const $=id=>document.getElementById(cfg.id+'-'+id);
+  function load(){try{const r=localStorage.getItem(cfg.key);if(r)responses=JSON.parse(r)||{};}catch(e){responses={}}}
+  function save(){try{localStorage.setItem(cfg.key,JSON.stringify(responses));}catch(e){}window.hubCheckProgress&&window.hubCheckProgress();}
+
+  function panelHTML(){
+    const h=cfg.header;
+    return `<section id="test-${cfg.id}" class="test-panel" role="tabpanel" style="--c1:${cfg.c1};--c2:${cfg.c2}">
+    <div class="shell">
+      <header>
+        <span class="status-badge ${h.status}">${h.statusText}</span>
+        <div class="eyebrow" style="color:${cfg.c1}">${h.eyebrow}</div>
+        <h2>${h.title}</h2>
+        <p class="lead">${h.lead}</p>
+      </header>
+      <div class="intro-box">${h.intro}</div>
+      <div class="progress-shell"><div class="progress-bar"><div class="progress-fill" id="${cfg.id}-fill" style="background:linear-gradient(90deg,${cfg.c1},${cfg.c2})"></div></div><div class="progress-text"><strong id="${cfg.id}-num">0</strong> / ${TOTAL}</div></div>
+      <div id="${cfg.id}-quiz"></div>
+      <div class="results-trigger"><button class="btn-primary" id="${cfg.id}-show" disabled><em>Megmutatni</em> az eredményt</button></div>
+      <div class="results" id="${cfg.id}-results"></div>
+    </div></section>`;
+  }
+  function quizHTML(){
+    let html='';
+    cfg.sections.forEach(sec=>{
+      if(sec.title)html+=`<div class="section-head"><h3>${sec.title}</h3>${sec.desc?`<p>${sec.desc}</p>`:''}</div>`;
+      items.filter(it=>it.sec===sec).forEach(it=>{
+        const opts=it.opts||cfg.scale;
+        const choice=!!it.opts;
+        const cls=choice?'opts':`scale${opts.length===4?' s4':opts.length===6?' s6':''}`;
+        html+=`<div class="q" data-n="${it.n}"><div class="q-head"><span class="q-num">${it.n}.</span><span class="q-text">${it.t}</span></div>
+          <div class="${cls}">${opts.map((o,i)=>{
+            const val=choice?i:o.v;
+            return choice?`<button class="opt-btn" data-n="${it.n}" data-v="${val}">${o.t}</button>`
+                         :`<button class="scale-btn" data-n="${it.n}" data-v="${val}"><span class="v">${o.v}</span><span class="l">${o.l}</span></button>`;
+          }).join('')}</div></div>`;
+      });
+    });
+    return html;
+  }
+  function refreshSelection(){
+    document.querySelectorAll(`#${cfg.id}-quiz [data-n]`).forEach(b=>{
+      if(!b.dataset.v)return;
+      b.classList.toggle('selected',String(responses[b.dataset.n])===b.dataset.v);
+    });
+  }
+  function progress(){
+    const done=items.filter(it=>responses[it.n]!==undefined).length;
+    $('num').textContent=done;
+    $('fill').style.width=(done/TOTAL*100)+'%';
+    $('show').disabled=done<TOTAL;
+  }
+  function buildR(){
+    const R={items:[],scales:{},picks:[]};
+    items.forEach(it=>{
+      const raw=responses[it.n];
+      if(it.opts){const opt=it.opts[raw];R.picks.push({item:it,opt,idx:raw});R.items.push({n:it.n,t:it.t,raw,opt:opt&&opt.t});return;}
+      const vals=cfg.scale.map(s=>s.v),lo=Math.min(...vals),hi=Math.max(...vals);
+      const v=it.r?(lo+hi)-raw:raw;
+      R.items.push({n:it.n,s:it.s,t:it.t,raw,v});
+      (R.scales[it.s]=R.scales[it.s]||[]).push(v);
+    });
+    R.mean=s=>H.mean(R.scales[s]||[]);
+    R.sum=s=>H.sum(R.scales[s]||[]);
+    R.allMean=()=>H.mean(R.items.map(i=>i.v).filter(v=>v!==undefined));
+    return R;
+  }
+  let lastResult=null;
+  function show(){
+    const R=buildR();
+    lastResult=cfg.score?cfg.score(R):null;
+    const el=$('results');
+    el.innerHTML=cfg.render(R,lastResult)+`<div class="actions">
+      <button class="btn-secondary" onclick="window.print()">PDF</button>
+      <button class="btn-secondary" onclick="TESTS['${cfg.id}'].downloadJSON()">JSON</button>
+      <button class="btn-secondary" onclick="TESTS['${cfg.id}'].reset()">Új kitöltés</button></div>`;
+    el.classList.add('visible');
+    setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),60);
+  }
+  function downloadJSON(){
+    const R=buildR();
+    const data={test:cfg.name,key:cfg.key,date:new Date().toISOString(),responses:R.items,result:cfg.score?cfg.score(R):null};
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`${cfg.id}-${new Date().toISOString().slice(0,10)}.json`;a.click();
+  }
+  function reset(){
+    if(!confirm(`Biztos törlöd a(z) ${cfg.name} válaszaidat?`))return;
+    responses={};save();refreshSelection();progress();$('results').classList.remove('visible');
+    document.getElementById('test-'+cfg.id).scrollIntoView({behavior:'smooth'});
+  }
+  function mount(container){
+    container.insertAdjacentHTML('beforeend',panelHTML());
+    load();
+    $('quiz').innerHTML=quizHTML();
+    $('quiz').addEventListener('click',e=>{
+      const b=e.target.closest('[data-v]');if(!b)return;
+      responses[b.dataset.n]=Number(b.dataset.v);save();refreshSelection();progress();
+    });
+    $('show').addEventListener('click',show);
+    refreshSelection();progress();
+  }
+  const api={cfg,mount,show,reset,downloadJSON,total:TOTAL,hasProgress:()=>Object.keys(responses).length>0,_fillAll:(fn)=>{items.forEach(it=>{const k=it.opts?it.opts.length:cfg.scale.length;responses[it.n]=it.opts?fn(k,it):cfg.scale[fn(k,it)].v;});save();refreshSelection();progress();}};
+  TESTS[cfg.id]=api;
+  return api;
+}
+
+/* ═══ HUB BOOT ═══ */
+function bootHub(order){
+  const nav=document.getElementById('hub-tabs'),panels=document.getElementById('panels');
+  const romans=['I.','II.','III.','IV.','V.','VI.'];
+  order.forEach((id,i)=>{
+    const t=TESTS[id],c=t.cfg;
+    nav.insertAdjacentHTML('beforeend',`<button class="hub-tab" style="--tab-color:${c.c1}" data-target="test-${id}" role="tab" aria-selected="false"><span class="check"></span><span class="num">${romans[i]}</span><span class="name">${c.tab}</span><span class="sub">${c.tabSub}</span></button>`);
+    t.mount(panels);
+  });
+  const tabs=[...nav.querySelectorAll('.hub-tab')];
+  function activate(target,scroll){
+    if(!document.getElementById(target))target='test-'+order[0];
+    tabs.forEach(t=>{const on=t.dataset.target===target;t.classList.toggle('active',on);t.setAttribute('aria-selected',on)});
+    document.querySelectorAll('.test-panel').forEach(p=>p.classList.toggle('active',p.id===target));
+    if(scroll)window.scrollTo({top:0,behavior:'smooth'});
+  }
+  tabs.forEach(t=>t.addEventListener('click',()=>{activate(t.dataset.target,true);history.replaceState(null,'','#'+t.dataset.target);}));
+  window.hubCheckProgress=()=>order.forEach((id,i)=>tabs[i].classList.toggle('has-progress',TESTS[id].hasProgress()));
+  window.hubCheckProgress();
+  activate(location.hash.slice(1),false);
+  window.addEventListener('hashchange',()=>activate(location.hash.slice(1),true));
+}
+
+const SCALE5=[{v:1,l:'egyáltalán nem'},{v:2,l:'inkább nem'},{v:3,l:'részben'},{v:4,l:'inkább igen'},{v:5,l:'teljesen'}];
+
+/* ═══════════ 1. SCHWARTZ PVQ-21 ═══════════ */
+(function(){
+const V={
+  SD:{name:'Önirányítás',en:'Self-Direction',color:'#a78bfa',ho:'OC',desc:'Független gondolkodás és cselekvés, választás, alkotás, felfedezés.'},
+  ST:{name:'Stimuláció',en:'Stimulation',color:'#f472b6',ho:'OC',desc:'Izgalom, újdonság, kihívás az életben.'},
+  HE:{name:'Hedonizmus',en:'Hedonism',color:'#fb7185',ho:'OC',desc:'Öröm, élvezet, érzéki kielégülés.'},
+  AC:{name:'Teljesítmény',en:'Achievement',color:'#fbbf24',ho:'SE',desc:'Személyes siker, a kompetencia bizonyítása a társas mércék szerint.'},
+  PO:{name:'Hatalom',en:'Power',color:'#f97316',ho:'SE',desc:'Társas státusz, presztízs, kontroll emberek és erőforrások felett.'},
+  SE:{name:'Biztonság',en:'Security',color:'#60a5fa',ho:'CO',desc:'A társadalom, a kapcsolatok és az én biztonsága, harmóniája, stabilitása.'},
+  CO:{name:'Konformitás',en:'Conformity',color:'#818cf8',ho:'CO',desc:'Olyan cselekvések kerülése, amelyek másokat felzaklatnak vagy normát sértenek.'},
+  TR:{name:'Hagyomány',en:'Tradition',color:'#94a3b8',ho:'CO',desc:'A kultúra, a vallás vagy a család szokásainak tisztelete és vállalása.'},
+  BE:{name:'Jóindulat',en:'Benevolence',color:'#34d399',ho:'ST',desc:'A közeli emberek jóllétének megőrzése és növelése.'},
+  UN:{name:'Univerzalizmus',en:'Universalism',color:'#2dd4bf',ho:'ST',desc:'Megértés, tolerancia, minden ember és a természet jólléte.'}
+};
+const HO={
+  OC:{name:'Nyitottság a változásra',color:'#a78bfa',keys:['SD','ST','HE']},
+  SE:{name:'Önérvényesítés',color:'#fbbf24',keys:['AC','PO']},
+  CO:{name:'Megőrzés',color:'#60a5fa',keys:['SE','CO','TR']},
+  ST:{name:'Önmeghaladás',color:'#34d399',keys:['BE','UN']}
+};
+const PVQ_SCALE=[{v:1,l:'egyáltalán nem hasonlít'},{v:2,l:'nem hasonlít'},{v:3,l:'kicsit hasonlít'},{v:4,l:'valamennyire'},{v:5,l:'hasonlít'},{v:6,l:'nagyon hasonlít'}];
+makeTest({
+  id:'pvq',key:'pvq21-responses-v1',name:'Schwartz-értékek (PVQ-21)',c1:'#fbbf24',c2:'#f59e0b',
+  tab:'Értékek',tabSub:'Schwartz PVQ-21 · 21 item',scale:PVQ_SCALE,
+  header:{status:'valid',statusText:'Validált skála · European Social Survey-változat',
+    eyebrow:'Portrait Values Questionnaire · Schwartz (1992, 2003) · ESS',
+    title:'Mit tartasz <em style="color:#fbbf24">valóban fontosnak</em>',
+    lead:'Shalom Schwartz értékelmélete a legszélesebb körben tesztelt értékmodell: 80+ országban igazolták, hogy <strong>10 alapérték</strong> kör alakban rendeződik. A szomszédos értékek összeférnek, a szemközti értékek feszülnek egymásnak. Nem azt méri, mit <em>mondasz</em> fontosnak, hanem hogy mennyire hasonlítasz olyan emberekre, akiknek ezek fontosak.',
+    intro:'<p><strong>Kitöltés:</strong> minden állítás egy embert ír le. Döntsd el, <strong>mennyire hasonlít rád ez a személy</strong>. 1 = egyáltalán nem hasonlít · 6 = nagyon hasonlít.</p><p><strong>Pontozás:</strong> a válaszokat a saját átlagodhoz viszonyítva (centrálva) értékeljük, mert az értékek <em>egymáshoz képesti</em> sorrendje számít, nem az, hogy általában magasra vagy alacsonyra pontozol.</p>'},
+  sections:[{title:'Mennyire hasonlít rád ez a személy?',desc:'21 portré.',items:[
+    {s:'SD',t:'Fontos számára, hogy új ötletekkel álljon elő és kreatív legyen. Szereti a dolgokat a saját, eredeti módján csinálni.'},
+    {s:'PO',t:'Fontos számára, hogy gazdag legyen. Sok pénzt és drága dolgokat szeretne.'},
+    {s:'UN',t:'Fontosnak tartja, hogy a világon minden embert egyenlően kezeljenek. Úgy gondolja, mindenkinek egyenlő esélyt kell kapnia az életben.'},
+    {s:'AC',t:'Nagyon fontos számára, hogy megmutassa a képességeit. Azt szeretné, hogy az emberek csodálják azt, amit csinál.'},
+    {s:'SE',t:'Fontos számára, hogy biztonságos környezetben éljen. Kerül mindent, ami veszélyeztetheti a biztonságát.'},
+    {s:'ST',t:'Szereti a meglepetéseket, és mindig új dolgokat keres, amiket csinálhat. Fontosnak tartja, hogy sokféle dolgot kipróbáljon az életben.'},
+    {s:'CO',t:'Úgy gondolja, az embereknek azt kell tenniük, amit mondanak nekik. Szerinte mindig be kell tartani a szabályokat, akkor is, ha senki sem figyel.'},
+    {s:'UN',t:'Fontos számára, hogy meghallgassa a tőle különböző embereket. Akkor is meg akarja érteni őket, ha nem ért velük egyet.'},
+    {s:'TR',t:'Fontos számára, hogy alázatos és szerény legyen. Igyekszik nem magára vonni a figyelmet.'},
+    {s:'HE',t:'Fontos számára, hogy jól érezze magát. Szereti kényeztetni magát.'},
+    {s:'SD',t:'Fontos számára, hogy maga döntsön arról, mit csinál. Szeret szabad lenni, és nem függeni másoktól.'},
+    {s:'BE',t:'Nagyon fontos számára, hogy segítsen a körülötte élőknek. Törődni akar a jóllétükkel.'},
+    {s:'AC',t:'Fontos számára, hogy nagyon sikeres legyen. Reméli, hogy az emberek elismerik az eredményeit.'},
+    {s:'SE',t:'Fontos számára, hogy az állam minden fenyegetéssel szemben garantálja a biztonságát. Azt akarja, hogy az állam erős legyen, és meg tudja védeni a polgárait.'},
+    {s:'ST',t:'Kalandokat keres, és szeret kockázatot vállalni. Izgalmas életet szeretne.'},
+    {s:'CO',t:'Fontos számára, hogy mindig helyesen viselkedjen. El akarja kerülni, hogy bármit tegyen, amit mások helytelennek tartanának.'},
+    {s:'PO',t:'Fontos számára, hogy mások tiszteljék. Azt akarja, hogy az emberek azt tegyék, amit mond.'},
+    {s:'BE',t:'Fontos számára, hogy hűséges legyen a barátaihoz. Oda akarja adni magát a hozzá közel állóknak.'},
+    {s:'UN',t:'Erősen hiszi, hogy az embereknek vigyázniuk kell a természetre. Fontos számára a környezet védelme.'},
+    {s:'TR',t:'Fontos számára a hagyomány. Igyekszik követni a vallása vagy a családja által átadott szokásokat.'},
+    {s:'HE',t:'Minden alkalmat megragad, hogy jól szórakozzon. Fontos számára, hogy olyan dolgokat csináljon, amelyek örömet okoznak neki.'}]}],
+  score(R){
+    const mrat=R.allMean();const o={mrat:H.r2(mrat),raw:{},c:{},ho:{}};
+    Object.keys(V).forEach(k=>{o.raw[k]=H.r2(R.mean(k));o.c[k]=H.r2(R.mean(k)-mrat);});
+    Object.keys(HO).forEach(k=>{const vals=R.items.filter(i=>HO[k].keys.includes(i.s)).map(i=>i.v);o.ho[k]=H.r2(H.mean(vals)-mrat);});
+    return o;},
+  render(R,s){
+    const order=['SD','ST','HE','AC','PO','SE','CO','TR','BE','UN'];
+    const sorted=[...order].sort((a,b)=>s.c[b]-s.c[a]);
+    const top3=sorted.slice(0,3),bot2=sorted.slice(-2);
+    const maxAbs=Math.max(1.5,...order.map(k=>Math.abs(s.c[k])));
+    const dv=`<div class="diverge">${order.map(k=>{const v=s.c[k],w=Math.abs(v)/maxAbs*50;
+      return `<div class="dv-row"><div class="dv-name">${V[k].name}<small>${V[k].en}</small></div>
+      <div class="dv-track"><div class="dv-fill" style="${v>=0?`left:50%`:`left:${50-w}%`};width:${w}%;background:${V[k].color}"></div></div>
+      <div class="dv-val" style="color:${V[k].color}">${v>0?'+':''}${v.toFixed(2)}</div></div>`;}).join('')}</div>`;
+    const tensions=[];
+    const opp=[['SD','CO','Önirányítás','Konformitás'],['ST','SE','Stimuláció','Biztonság'],['AC','BE','Teljesítmény','Jóindulat'],['PO','UN','Hatalom','Univerzalizmus'],['HE','TR','Hedonizmus','Hagyomány']];
+    opp.forEach(([a,b,na,nb])=>{if(s.c[a]>0.3&&s.c[b]>0.3)tensions.push(`<p><strong>${na} ↔ ${nb}:</strong> mindkettő fontos neked, pedig a körön szemközt állnak. Ez belső feszültségforrás, mert a döntéseid gyakran az egyiket a másik rovására szolgálják. Érdemes tudatosan kijelölni, melyik terület melyiket kapja.</p>`);});
+    if(!tensions.length)tensions.push('<p>Nincs erős belső értékütközés: a legfontosabb értékeid a kör egy oldalán, egymás szomszédságában vannak. Ez koherens, könnyen követhető értékrendet jelez.</p>');
+    return `<div class="res-eyebrow">Eredmény · Értékprofil (centrált)</div>
+      <h2 class="res-title">Az <em>értékrended</em></h2>
+      <p class="res-lead">Legfontosabb értékeid: <strong>${top3.map(k=>V[k].name).join(', ')}</strong>. Legkevésbé fontos: <strong>${bot2.map(k=>V[k].name).join(', ')}</strong>. A pozitív érték az átlagodnál fontosabbat, a negatív kevésbé fontosat jelent. A személyes átlagod (MRAT): ${s.mrat}.</p>
+      ${H.chart('A <em>Schwartz-kör</em>, kiterítve','Körsorrendben · centrált pontszám',dv)}
+      ${H.cards(Object.keys(HO).map(k=>({abbr:'Magasabb rendű érték',name:HO[k].name,val:(s.ho[k]>0?'+':'')+s.ho[k].toFixed(2),out:HO[k].keys.map(x=>V[x].name).join(' · '),pct:50+s.ho[k]/maxAbs*50,color:HO[k].color})))}
+      ${H.interp('Mit <em>jelent</em>',[
+        {h:'A három vezérérték',color:V[top3[0]].color,html:top3.map(k=>`<p><strong>${V[k].name}:</strong> ${V[k].desc}</p>`).join('')},
+        {h:'Belső feszültségek',html:tensions.join('')},
+        {h:'Hogyan használd',html:'<p>Ha egy döntés vagy életszakasz a három vezérértékedet szolgálja, energiát ad. Ha tartósan a legalsó értékeid szerint kell működnöd (pl. alacsony Konformitással merev szabályrendszerben dolgozni), az kimerít, akkor is, ha „jól megy”. Nézd meg a jelenlegi projektjeidet ezen a szűrőn.</p>'}
+      ])}
+      ${H.refs(['<strong>Schwartz, S. H. (1992).</strong> Universals in the content and structure of values. <em>Advances in Experimental Social Psychology, 25</em>, 1–65.',
+        '<strong>Schwartz, S. H. (2003).</strong> A proposal for measuring value orientations across nations. <em>Questionnaire Development Report of the European Social Survey</em>, Ch. 7.',
+        '<strong>Schwartz, S. H. (2012).</strong> An overview of the Schwartz theory of basic values. <em>Online Readings in Psychology and Culture, 2</em>(1).',
+        '<strong>Davidov, E., Schmidt, P., & Schwartz, S. H. (2008).</strong> Bringing values back in: The adequacy of the European Social Survey to measure values in 20 countries. <em>Public Opinion Quarterly, 72</em>(3), 420–445.'])}`;
+  }
+});
+})();
+
+/* ═══════════ 2. NÉGY TENDENCIA (Rubin-modell) ═══════════ */
+(function(){
+const T={
+  U:{name:'Megfelelő',en:'Upholder',color:'#34d399',rule:'Teljesíti a külső és a belső elvárásokat is.',
+    desc:'Tudja, mit várnak tőle, és teljesíti, a saját magának tett ígéreteket is. Fegyelmezett, megbízható, önjáró.',
+    risk:'Merevség, szorongás, ha szabályt szeg (akár értelmetlent is), és türelmetlenség a „nem teljesítőkkel”.',
+    strat:['Tiszta, leírt szabályok és ütemterv: nálad a kimondott szabály maga a motor.','Tervezz be tudatosan „szabálytalan” időt, különben a rutin rabja leszel.','Kérdezd meg: ezt a szabályt azért tartom, mert jó, vagy csak azért, mert szabály?']},
+  Q:{name:'Kérdező',en:'Questioner',color:'#60a5fa',rule:'Minden elvárást megkérdőjelez, és csak azt teljesíti, amit megindokoltnak tart. Így minden elvárásból belső elvárás lesz.',
+    desc:'A logika, a hatékonyság és az igazolás hajtja. Ha meggyőződött, rendíthetetlen, ha nem, semmi nem mozdítja.',
+    risk:'Elemzési bénultság: a tökéletes információ keresése helyettesíti a döntést. Mások szemében nehézkes lehet.',
+    strat:['Minden célnál írd le a MIÉRT-et: nálad ez a motor.','Adj magadnak kutatási határidőt („péntekig gyűjtök, utána döntök”).','Ha elakadsz, kérdezd meg: a hiányzó információ tényleg megváltoztatná a döntést?']},
+  O:{name:'Kötelességtudó',en:'Obliger',color:'#fbbf24',rule:'A külső elvárásokat könnyen teljesíti, a belsőket (saját magának tett ígéreteket) nehezen.',
+    desc:'Ha más számít rá, szinte mindig teljesít. Ha csak saját magának ígérte, a terv hamar elhal. Ez a leggyakoribb tendencia.',
+    risk:'Kiégés és „kötelességtudó lázadás”: sok évnyi mások kiszolgálása után hirtelen, látszólag ok nélkül megtagad valamit.',
+    strat:['<strong>Külső elszámoltathatóság</strong> minden saját célhoz: edzőtárs, coach, nyilvános vállalás, fizetett határidő.','Keretezd át: „nem magamért csinálom, hanem hogy példát mutassak / hogy ne hagyjam cserben azokat, akik rám számítanak”.','Figyeld a lázadás előjeleit: a neheztelés jelzi, hogy túl sokat adsz.']},
+  R:{name:'Lázadó',en:'Rebel',color:'#fb7185',rule:'Ellenáll a külső és a belső elvárásoknak is. Azt teszi, amit most akar, a maga módján.',
+    desc:'A szabadság, a választás és az identitás hajtja. Ha megmondják, mit tegyen, pont azt nem akarja, akkor sem, ha saját magának mondta.',
+    risk:'A hosszú távú célok, rutinok és határidők tartós nehézséget jelentenek. Környezete kiszámíthatatlannak láthatja.',
+    strat:['Identitáskeretezés: nem „edzenem kell”, hanem „olyan ember vagyok, aki mozog”.','Választás, nem kötelesség: adj magadnak több opciót, és döntsd el a pillanatban.','Kihívásként fogalmazd meg: „Szerintük nem tudom megcsinálni. Majd meglátjuk.”']}
+};
+const Q=[
+  ['Újévi fogadalmat teszel. Mi történik általában?',{U:'Ha elhatároztam, tartom. Tulajdonképpen fogadalom nélkül is tartanám.',Q:'Csak akkor vállalok, ha értelmét látom. A január 1. amúgy is önkényes dátum.',O:'Lelkesen kezdem, de ha senki nem számít rám, lassan elhal.',R:'Nem szeretem a fogadalmakat: megkötnek, és épp ettől nem akarom.'}],
+  ['Egy ügyfél vagy a főnököd határidőt ad egy feladatra.',{U:'Határidőre megcsinálom, gond nélkül.',Q:'Megcsinálom, ha látom, miért pont akkor kell. Ha nem, rákérdezek.',O:'Megcsinálom, sőt, a külső határidő a legjobb motivációm.',R:'Ha kötelezőnek érzem, ellenállok. Akkor csinálom meg, amikor én akarom.'}],
+  ['Saját magadnak tűzöl ki egy célt (pl. heti 3 edzés), és senki nem ellenőriz.',{U:'Tartom, mert megígértem magamnak.',Q:'Tartom, ha meggyőztem magam, hogy ez a legjobb terv.',O:'Nehezen tartom. Kell egy edzőtárs, vagy valaki, aki számon kér.',R:'Akkor edzek, ha kedvem van. A „heti 3” nekem már teher.'}],
+  ['Valaki azt mondja: „Ezt így szokás csinálni.”',{U:'Rendben, ha ez a szabály, követem.',Q:'Miért? Ha nincs jó indok, a saját módomon csinálom.',O:'Követem, főleg ha zavarna másokat, ha nem tenném.',R:'Pont ettől lesz kedvem máshogy csinálni.'}],
+  ['Mi fáraszt ki leginkább?',{U:'Ha mások nem tartják be a megállapodást vagy a szabályokat.',Q:'Az önkényes, megindokolatlan döntések és a pazarlás.',O:'Hogy mindig másoknak teszek eleget, és magamra nem marad időm.',R:'Ha megmondják, mit csináljak és mikor.'}],
+  ['Mit mondanak rólad a közeli ismerőseid?',{U:'Megbízható, fegyelmezett, néha kicsit merev.',Q:'Sokat kérdez, mindennek alaposan utánanéz.',O:'Mindig lehet rá számítani, de magát elhanyagolja.',R:'Szabad szellem, nem lehet rá semmit ráerőltetni.'}],
+  ['A csapatban egy új szoftvert kell bevezetni.',{U:'A bevezetési terv szerint megtanulom.',Q:'Előbb utánanézek: tényleg ez a legjobb eszköz?',O:'Megtanulom, mert a csapat számít rám.',R:'Ha rám erőltetik, a régi módszernél maradok, ameddig lehet.'}],
+  ['Hogyan viszonyulsz a teendőlistákhoz?',{U:'Imádom, a kipipálás a legjobb érzés.',Q:'Csak akkor használom, ha tényleg hatékonyabbá tesz.',O:'Akkor működik, ha valakinek be is kell számolnom róla.',R:'Ha leírom, onnantól már nem akarom megcsinálni.'}],
+  ['Az orvosod életmódváltást javasol.',{U:'Követem a javaslatot.',Q:'Elolvasom a kutatásokat, és ha meggyőznek, csinálom.',O:'Nekem az segít, ha a családom vagy egy csoport is benne van.',R:'Ha én döntöm el, hogy akarom, megy. Ha előírják, nem.'}],
+  ['Mi a legerősebb motivátorod?',{U:'A kötelesség és a saját mércém.',Q:'A logika és az indoklás.',O:'Az elszámoltathatóság és mások elvárásai.',R:'A szabadság, a választás és az, hogy ki vagyok.'}],
+  ['Ha megszegsz egy megállapodást, annak oka leginkább…',{U:'Ritkán szegem meg. Ha mégis, erős bűntudatom van.',Q:'Menet közben rájöttem, hogy nincs értelme.',O:'Mások dolga előrébb került.',R:'Nem volt kedvem, és nekem ez elég ok.'}],
+  ['Egy kolléga önkényesen előír egy új folyamatot.',{U:'Betartom, ha hivatalos.',Q:'Addig kérdezek, amíg nem kapok meggyőző választ.',O:'Betartom, hogy ne legyen konfliktus, de bosszant.',R:'Keresek egy kerülő utat.'}]
+];
+const codes=['U','Q','O','R'];
+makeTest({
+  id:'ft',key:'four-tendencies-responses-v1',name:'Négy tendencia',c1:'#60a5fa',c2:'#818cf8',
+  tab:'Négy tendencia',tabSub:'Rubin-modell · 12 helyzet',
+  header:{status:'model',statusText:'Modell-alapú saját helyzetkérdőív · nem Rubin hivatalos kvíze',
+    eyebrow:'The Four Tendencies · Gretchen Rubin (2017)',
+    title:'Hogyan reagálsz az <em style="color:#60a5fa">elvárásokra</em>',
+    lead:'Rubin keretrendszere egyetlen kérdésre épít: hogyan reagálsz a <strong>külső elvárásokra</strong> (határidő, kérés, szabály) és a <strong>belső elvárásokra</strong> (saját magadnak tett ígéretek)? A két igen/nem válasz négy tendenciát ad. Ez az egyik leggyakorlatiasabb eszköz arra, <em>miért nem tartod be a saját terveidet</em>.',
+    intro:'<p><strong>Fontos:</strong> a keretrendszer nem tudományosan validált, pszichometriai kutatás alig van róla. Hasznos önmegfigyelési modell. Rubin hivatalos kvíze szerzői jogvédett, ez <strong>saját, 12 helyzetből álló változat</strong>.</p><p><strong>Kitöltés:</strong> mindegyik helyzetnél válaszd azt, ami <em>ténylegesen</em> történni szokott, ne azt, amit szeretnél.</p>'},
+  sections:[{title:'12 helyzet',desc:'Egy válasz helyzetenként.',items:Q.map(([t,o],i)=>{
+    const rot=codes.slice(i%4).concat(codes.slice(0,i%4));
+    return {t,opts:rot.map(c=>({t:o[c],s:c}))};})}],
+  score(R){const c={U:0,Q:0,O:0,R:0};R.picks.forEach(p=>c[p.opt.s]++);
+    const sorted=codes.slice().sort((a,b)=>c[b]-c[a]);
+    return {counts:c,primary:sorted[0],secondary:sorted[1],outer:c.U+c.O,inner:c.U+c.Q};},
+  render(R,s){
+    const c=s.counts,p=s.primary,q=s.secondary,max=Math.max(...Object.values(c));
+    const cell=(k)=>{const a=c[k]/12;return `<div class="cell" style="background:color-mix(in srgb,${T[k].color} ${Math.round(8+a*55)}%,transparent);border-color:${k===p?T[k].color:'var(--line-dark)'};${k===p?'box-shadow:0 0 24px '+T[k].color+'55':''}"><span class="t">${T[k].name}</span><span class="n" style="color:${k===p?'#fff':T[k].color}">${c[k]}</span><span class="s">${T[k].en}</span></div>`;};
+    const quad=`<div class="quad">
+      <div class="ax v">teljesíti a belsőt</div>${cell('U')}${cell('Q')}
+      <div class="ax v">ellenáll a belsőnek</div>${cell('O')}${cell('R')}
+      <div></div><div class="ax">teljesíti a külsőt</div><div class="ax">ellenáll a külsőnek</div></div>`;
+    const tie=c[p]===c[q];
+    const mixNote=tie?`<p>Holtverseny van <strong>${T[p].name}</strong> és <strong>${T[q].name}</strong> között. Rubin szerint mindenkinek egy tendenciája van, a második csak „színezi”. Nézd meg a leírásokat: melyik okoz neked <em>valódi</em> problémát?</p>`:
+      `<p>A második tendenciád, a <strong>${T[q].name}</strong>, színezi az elsődlegest. ${({
+        'OQ':'Rubin szerint gyakori átfedés: magadnak is megindoklod, miért kell teljesítened, és ettől könnyebben tartod a saját céljaidat.',
+        'QO':'Rubin szerint gyakori átfedés: az indoklás mellett a külső elszámoltathatóság is segít, főleg ha a „miért” már megvan.',
+        'OR':'Ez a lázadásba hajló kötelességtudó mintázata: sokáig teljesítesz, majd hirtelen „elég volt”. Figyeld a neheztelést, mert ez a korai jelzés.',
+        'RO':'Lázadó alap kötelességtudó vonással: a mások iránti elköteleződés akkor működik, ha azt saját választásként éled meg.',
+        'UQ':'Szabálytartó, de az értelmetlen szabályokat megkérdőjelező kombináció.',
+        'QU':'Ha meggyőzted magad, megfelelőként tartod a tervet. Az indoklás a belépő.',
+        'QR':'Erős belső autonómia: a külső elvárásokkal szemben szkeptikus és ellenálló vagy. Az indoklás és a választás szabadsága egyaránt kell.',
+        'RQ':'Erős belső autonómia: a külső elvárásokkal szemben szkeptikus és ellenálló vagy. Az indoklás és a választás szabadsága egyaránt kell.'
+      })[p+q]||'Ez a két tendencia ritkábban párosul, ezért érdemes megnézni, melyik helyzetekben jelenik meg a második.'}</p>`;
+    return `<div class="res-eyebrow">Eredmény · Tendencia</div>
+      <h2 class="res-title">Tendenciád: <em>${T[p].name}</em></h2>
+      <p class="res-lead">${T[p].rule}</p>
+      ${H.chart('A négy <em>tendencia</em>','Találatok száma a 12 helyzetből',quad)}
+      ${H.interp('Mit <em>jelent</em>',[
+        {h:T[p].name+' ('+T[p].en+')',color:T[p].color,html:`<p>${T[p].desc}</p><p><strong>Kockázat:</strong> ${T[p].risk}</p>`},
+        {h:'Stratégiák, amik nálad működnek',color:T[p].color,html:`<ul style="padding-left:18px;color:var(--ink-lite-soft);font-size:14.5px;line-height:1.7">${T[p].strat.map(x=>`<li>${x}</li>`).join('')}</ul>`},
+        {h:'A második tendencia',color:T[q].color,html:mixNote},
+        {h:'Miért fontos ez a tervezés szempontjából',html:'<p>A legtöbb produktivitási tanács a Megfelelőknek szól („tűzz ki célt és tartsd”). Ha nem Megfelelő vagy, a több tervezés nem segít. A <strong>tendenciádhoz illő végrehajtási mechanizmus</strong> segít: Kérdezőnek indoklás, Kötelességtudónak külső elszámoltathatóság, Lázadónak választás és identitás.</p>'}
+      ])}
+      ${H.refs(['<strong>Rubin, G. (2017).</strong> <em>The Four Tendencies: The Indispensable Personality Profiles That Reveal How to Make Your Life Better.</em> Harmony Books.',
+        '<em>Empirikus háttér: a keretrendszert független pszichometriai kutatásban nem validálták. Önmegfigyelési modell, nem mérőeszköz.</em>'])}`;
+  }
+});
+})();
+
+/* ═══════════ 3. CSELEKVÉSI MÓDOK (Kolbe-modell) ═══════════ */
+(function(){
+const M={
+  ff:{name:'Tényfeltáró',en:'Fact Finder',color:'#60a5fa',
+    init:'Kezdeményező: információgyűjtéssel indítasz. Adatok, háttér, precedens, pontos definíció nélkül nem mozdulsz.',
+    acc:'Rugalmas: annyi információt gyűjtesz, amennyi a helyzethez kell, se többet, se kevesebbet.',
+    prev:'Ellenálló: egyszerűsítesz, a lényegre ugrasz, a részletek elvesznek. Mások túlkomplikáltnak látják a kérdéseidet.'},
+  ft:{name:'Rendszerező',en:'Follow Thru',color:'#34d399',
+    init:'Kezdeményező: struktúrát, rendszert, sorrendet építesz. Egy dolgot végigviszel, mielőtt a következőbe kezdesz.',
+    acc:'Rugalmas: alkalmazkodsz a meglévő rendszerekhez, és szükség esetén szervezel.',
+    prev:'Ellenálló: a rendszerek megkötnek, egyszerre sok szálon futsz, nem sorrendben. Gyakori ára: sok elkezdett, kevés lezárt dolog.'},
+  qs:{name:'Gyorsindító',en:'Quick Start',color:'#fbbf24',
+    init:'Kezdeményező: kísérletezel, improvizálsz, kockázatot vállalsz, határidő-nyomás alatt pörögsz. Sok indítás.',
+    acc:'Rugalmas: nyitott vagy a változásra, de nem kergeted.',
+    prev:'Ellenálló: stabilizálsz, a kockázatot csökkented, és a rögtönzést kerülöd. Kell a terv, mielőtt lépsz.'},
+  im:{name:'Megvalósító',en:'Implementor',color:'#fb7185',
+    init:'Kezdeményező: kézzel, fizikailag, térben gondolkodsz. Prototípus, modell, tárgy kell ahhoz, hogy megérts valamit.',
+    acc:'Rugalmas: ha kell, fizikailag is dolgozol, de nem ez a fő csatornád.',
+    prev:'Ellenálló: fejben, fogalmakban, digitálisan dolgozol. A kézzelfogható megvalósítást inkább delegálod.'}
+};
+makeTest({
+  id:'kolbe',key:'action-modes-responses-v1',name:'Cselekvési módok',c1:'#fbbf24',c2:'#fb7185',
+  tab:'Cselekvési módok',tabSub:'Kolbe-modell · 24 item',scale:SCALE5,
+  header:{status:'model',statusText:'Modell-alapú saját itemkészlet · nem a hivatalos Kolbe A Index',
+    eyebrow:'Konatív cselekvési módok · Kathy Kolbe (1990) modellje alapján',
+    title:'Hogyan <em style="color:#fbbf24">kezdesz neki</em>',
+    lead:'Kolbe a gondolkodás (kogníció) és az érzelmek (affektus) mellett a <strong>konációt</strong> méri: az ösztönös cselekvési módot, azt, <em>ahogyan</em> nekiállsz valaminek, ha szabad kezet kapsz. Négy mód van, mindegyikben lehetsz <strong>kezdeményező</strong> (7–10), <strong>rugalmas</strong> (4–6) vagy <strong>ellenálló</strong> (1–3). Egyik sem jobb a másiknál.',
+    intro:'<p><strong>Fontos:</strong> a hivatalos Kolbe A Index fizetős, kényszerválasztós, szerzői jogvédett eszköz (kolbe.com). Ez <strong>saját, a négy módra írt 24 tételes Likert-változat</strong>, az 1–10-es skálára vetítve. Tájékoztató profil, nem Kolbe-eredmény.</p><p><strong>Kitöltés:</strong> arra gondolj, hogyan cselekszel, amikor <em>szabadon</em> csinálhatod a magad módján, ne arra, hogyan „kell” a munkahelyen. 1 = egyáltalán nem · 5 = teljesen.</p>'},
+  sections:[{title:'Amikor szabad kezet kapok…',desc:'24 állítás, négy móddal keverve. Néhány fordított pontozású.',items:[
+    {s:'ff',t:'Döntés előtt alaposan utánajárok minden részletnek.'},
+    {s:'ft',t:'Rendszereket, sablonokat, folyamatokat építek.'},
+    {s:'qs',t:'Szívesen belevágok új dolgokba akkor is, ha még nem látom a végét.'},
+    {s:'im',t:'Szívesen dolgozom a kezemmel, fizikai tárgyakkal.'},
+    {s:'ff',t:'Szeretek adatokat, hátteret, korábbi példákat gyűjteni.'},
+    {s:'ft',t:'Egy dolgot végigviszek, mielőtt a következőbe kezdek.'},
+    {s:'qs',t:'Improvizálok, menet közben találom ki a megoldást.'},
+    {s:'im',t:'Modellt vagy prototípust építek, hogy megértsek valamit.'},
+    {s:'ff',t:'Inkább a lényeg érdekel, a részletek untatnak.',r:true},
+    {s:'ft',t:'A rendszerek és beosztások megkötnek.',r:true},
+    {s:'qs',t:'Határidő-nyomás alatt dolgozom a legjobban.'},
+    {s:'im',t:'Tartós, kézzelfogható eredményt akarok létrehozni.'},
+    {s:'ff',t:'Kevés információ alapján is gyorsan döntök.',r:true},
+    {s:'ft',t:'Egyszerre sok dolgot csinálok, nem sorban.',r:true},
+    {s:'qs',t:'Kísérletezem és kockázatot vállalok, hogy kiderüljön, mi működik.'},
+    {s:'im',t:'Inkább fejben vagy digitálisan dolgozom, mint fizikailag.',r:true},
+    {s:'ff',t:'Összehasonlítom az opciókat, mielőtt választok.'},
+    {s:'ft',t:'Ütemtervet készítek, és a lépések logikus sorrendjére figyelek.'},
+    {s:'qs',t:'Nem szeretek rögtönözni, kell a terv, mielőtt lépek.',r:true},
+    {s:'im',t:'Nem vagyok ügyes a kézzel végzett feladatokban.',r:true},
+    {s:'ff',t:'Pontosan, precízen fogalmazok, és ezt másoktól is elvárom.'},
+    {s:'ft',t:'Zavar, ha a dolgok nincsenek a helyükön.'},
+    {s:'qs',t:'A bizonytalanság megterhel, stabilitást keresek.',r:true},
+    {s:'im',t:'A tér, a mozgás, az anyagok és a szerszámok érdekelnek.'}]}],
+  score(R){const o={};Object.keys(M).forEach(k=>{const m=R.mean(k);o[k]=Math.round((m-1)/4*9+1);});return o;},
+  render(R,s){
+    const zone=v=>v>=7?'init':v>=4?'acc':'prev';
+    const zname={init:'kezdeményező',acc:'rugalmas',prev:'ellenálló'};
+    const zones=[{from:1,to:3.5,color:'rgba(148,163,184,0.18)'},{from:3.5,to:6.5,color:'rgba(147,197,253,0.14)'},{from:6.5,to:10,color:'rgba(251,191,36,0.16)'}];
+    const g=Object.keys(M).map(k=>H.gauge({name:M[k].name,sub:M[k].en+' · '+zname[zone(s[k])],val:s[k],unit:'/10',min:1,max:10,color:M[k].color,zones,labels:['1 · ellenálló','rugalmas','kezdeményező · 10'],desc:M[k][zone(s[k])]})).join('');
+    const combos=[];
+    if(s.qs>=7&&s.ft<=4)combos.push('<p><strong>Magas Gyorsindító + alacsony Rendszerező:</strong> sok indítás, kevés lezárás. Az ötlet és a lendület megvan, a befejezéshez hiányzik a struktúra. Kolbe megoldása nem az, hogy „legyél rendszerezettebb”, hanem hogy a lezárást egy Rendszerező partnerre, eszközre vagy külső folyamatra bízd.</p>');
+    if(s.ff>=7&&s.qs<=4)combos.push('<p><strong>Magas Tényfeltáró + alacsony Gyorsindító:</strong> az elemzési bénultság klasszikus profilja. Mindig lehet még egy adatot gyűjteni, és a döntés csúszik. Adj a kutatásnak kemény határidőt.</p>');
+    if(s.ff>=7&&s.qs>=7)combos.push('<p><strong>Magas Tényfeltáró + magas Gyorsindító:</strong> belső húzóerő: az egyik rész kutatni akar, a másik azonnal indulni. Gyakran úgy jelenik meg, hogy gyorsan nekiugrasz, majd megakadsz, mert „még utána kell nézni”. Szétválaszthatod: előbb időkorlátos kutatás, utána kísérlet.</p>');
+    if(s.ft>=7&&s.qs<=3)combos.push('<p><strong>Magas Rendszerező + alacsony Gyorsindító:</strong> kiváló megvalósító és karbantartó. A változás, az új indítás energiaigényes. Ilyenkor érdemes egy Gyorsindítóval párba állni.</p>');
+    if(!combos.length)combos.push('<p>Nincs szélsőséges feszültség a módjaid között. A profilod kiegyensúlyozott: a helyzethez igazodva tudsz váltani.</p>');
+    const initCount=Object.keys(M).filter(k=>zone(s[k])==='init').length;
+    return `<div class="res-eyebrow">Eredmény · Cselekvési profil</div>
+      <h2 class="res-title">A te <em>konatív profilod</em>: ${Object.keys(M).map(k=>s[k]).join(' – ')}</h2>
+      <p class="res-lead">Sorrend: Tényfeltáró – Rendszerező – Gyorsindító – Megvalósító. ${initCount?`${initCount} módban vagy kezdeményező. Ezeken keresztül lépsz a legtermészetesebben cselekvésbe.`:'Egyik módban sem vagy kifejezetten kezdeményező. Ez rugalmas, „közvetítő” profilt jelez.'}</p>
+      ${H.chart('Négy <em>cselekvési mód</em>','1–10 skála · három zóna','<div>'+g+'</div>')}
+      ${H.interp('Mit <em>jelent</em>',[
+        {h:'Belső dinamika',html:combos.join('')},
+        {h:'A konatív feszültség',html:'<p>Kolbe szerint a stressz egyik fő forrása, ha tartósan a természetes módoddal <em>ellentétesen</em> kell dolgoznod: egy ellenálló Rendszerezőnek adminisztrálnia kell, egy ellenálló Tényfeltárónak részletes jelentést kell írnia. Ez nem lustaság vagy gyenge akarat, hanem energiapazarlás. A megoldás a feladat átszervezése, delegálása vagy eszközzel kiváltása, nem a „jobban kéne akarni”.</p>'},
+        {h:'Hogyan használd',html:'<p>Nézd meg, melyik módban vagy <strong>ellenálló</strong>. Ott ne akarj „fejlődni”: azt delegáld, automatizáld, vagy keress hozzá partnert. A kezdeményező módjaidban viszont ne fogd vissza magad: ott vagy a leghatékonyabb.</p>'}
+      ])}
+      ${H.refs(['<strong>Kolbe, K. (1990).</strong> <em>The Conative Connection: Acting on Instinct.</em> Addison-Wesley.',
+        '<strong>Kolbe, K. (2004).</strong> <em>Powered by Instinct: 5 Rules for Trusting Your Guts.</em> Monumentus Press.',
+        '<em>A hivatalos Kolbe A Index a Kolbe Corp. terméke (kolbe.com). Ez a változat saját itemkészlet, és a pontszámai nem összevethetők a hivatalos eredménnyel. A konáció-modell független pszichometriai validálása korlátozott.</em>'])}`;
+  }
+});
+})();
+
+/* ═══════════ 4. MEQ — REGGELI/ESTI KRONOTÍPUS ═══════════ */
+(function(){
+const o=(t,v)=>({t,v});
+const ITEMS=[
+  {t:'Ha teljesen szabadon tervezhetnéd a napod, mikor kelnél fel?',opts:[o('5:00 – 6:30',5),o('6:30 – 7:45',4),o('7:45 – 9:45',3),o('9:45 – 11:00',2),o('11:00 – 12:00 (vagy később)',1)]},
+  {t:'Ha teljesen szabadon tervezhetnéd az estéd, mikor feküdnél le?',opts:[o('20:00 – 21:00',5),o('21:00 – 22:15',4),o('22:15 – 0:30',3),o('0:30 – 1:45',2),o('1:45 – 3:00 (vagy később)',1)]},
+  {t:'Ha reggel adott időpontban kell kelned, mennyire függsz az ébresztőórától?',opts:[o('Egyáltalán nem',4),o('Kicsit',3),o('Eléggé',2),o('Nagyon',1)]},
+  {t:'Mennyire könnyű reggel felkelned (ha nem váratlanul ébresztenek)?',opts:[o('Egyáltalán nem könnyű',1),o('Nem túl könnyű',2),o('Elég könnyű',3),o('Nagyon könnyű',4)]},
+  {t:'Mennyire vagy éber az ébredés utáni első fél órában?',opts:[o('Egyáltalán nem',1),o('Kicsit',2),o('Elég éber',3),o('Nagyon éber',4)]},
+  {t:'Mennyire vagy éhes az ébredés utáni első fél órában?',opts:[o('Egyáltalán nem',1),o('Kicsit',2),o('Elég éhes',3),o('Nagyon éhes',4)]},
+  {t:'Hogyan érzed magad az ébredés utáni első fél órában?',opts:[o('Nagyon fáradt',1),o('Elég fáradt',2),o('Elég friss',3),o('Nagyon friss',4)]},
+  {t:'Ha másnap nincs semmi dolgod, a szokásoshoz képest mikor fekszel le?',opts:[o('Ritkán vagy soha nem később',4),o('Kevesebb mint 1 órával később',3),o('1–2 órával később',2),o('Több mint 2 órával később',1)]},
+  {t:'Egy barátod heti kétszer reggel 7 és 8 között edzést javasol. Milyen formában lennél?',opts:[o('Jó formában',4),o('Elfogadható formában',3),o('Nehezen menne',2),o('Nagyon nehezen menne',1)]},
+  {t:'Este hány órakor érzed magad fáradtnak, alvásra késznek?',opts:[o('20:00 – 21:00',5),o('21:00 – 22:15',4),o('22:15 – 0:45',3),o('0:45 – 2:00',2),o('2:00 – 3:00',1)]},
+  {t:'Egy 2 órás, szellemileg megterhelő vizsgán akarsz a csúcson lenni. Melyik idősávot választod?',opts:[o('8:00 – 10:00',6),o('11:00 – 13:00',4),o('15:00 – 17:00',2),o('19:00 – 21:00',0)]},
+  {t:'Ha este 23:00-kor feküdnél le, mennyire lennél fáradt?',opts:[o('Egyáltalán nem',0),o('Kicsit',2),o('Elég fáradt',3),o('Nagyon fáradt',5)]},
+  {t:'Egy alkalommal a szokásosnál több órával később fekszel le, de másnap nem kell adott időben kelned. Mi a legvalószínűbb?',opts:[o('A szokott időben ébredek, és nem alszom vissza',4),o('A szokott időben ébredek, utána szundikálok',3),o('A szokott időben ébredek, de visszaalszom',2),o('Csak a szokásosnál később ébredek',1)]},
+  {t:'Egy éjjel hajnali 4 és 6 között ébren kell lenned (pl. ügyelet). Másnap nincs dolgod. Mit csinálsz?',opts:[o('Csak az ügyelet után fekszem le',1),o('Előtte szundítok, utána alszom',2),o('Előtte jól kialszom magam, utána szundítok',3),o('Csak előtte alszom',4)]},
+  {t:'2 óra nehéz fizikai munkát kell végezned. Melyik idősávot választanád?',opts:[o('8:00 – 10:00',4),o('11:00 – 13:00',3),o('15:00 – 17:00',2),o('19:00 – 21:00',1)]},
+  {t:'Heti kétszer 22:00 és 23:00 között kellene edzened. Milyen formában lennél?',opts:[o('Jó formában',1),o('Elfogadható formában',2),o('Nehezen menne',3),o('Nagyon nehezen menne',4)]},
+  {t:'Szabadon választhatod meg az 5 órás munkaidőd kezdetét (a munka érdekes, teljesítmény szerint fizetnek). Mikor kezdenéd?',opts:[o('4:00 és 8:00 között',5),o('8:00 és 9:00 között',4),o('9:00 és 14:00 között',3),o('14:00 és 17:00 között',2),o('17:00 és 4:00 között',1)]},
+  {t:'Szerinted a nap melyik szakaszában érzed magad a legjobban?',opts:[o('5:00 – 8:00',5),o('8:00 – 10:00',4),o('10:00 – 17:00',3),o('17:00 – 22:00',2),o('22:00 – 5:00',1)]},
+  {t:'Az emberek „reggeli” és „esti” típusúak. Te melyiknek tartod magad?',opts:[o('Egyértelműen reggeli típus',6),o('Inkább reggeli, mint esti',4),o('Inkább esti, mint reggeli',2),o('Egyértelműen esti típus',0)]}
+];
+const CAT=[
+  {min:70,name:'Határozottan reggeli típus',en:'Definite morning',color:'#fbbf24',peak:'kb. 6:00–10:00',
+    desc:'A tested korán ébred, és a délelőtti órákban vagy a csúcson. Este korán fáradsz, a késői programok sokba kerülnek.'},
+  {min:59,name:'Mérsékelten reggeli típus',en:'Moderate morning',color:'#f59e0b',peak:'kb. 7:30–11:30',
+    desc:'Reggel viszonylag könnyen indulsz, a délelőtt a legjobb szellemi idősávod. Rugalmas vagy, de a korai ritmus a természetes.'},
+  {min:42,name:'Köztes típus',en:'Intermediate',color:'#34d399',peak:'kb. 9:30–13:30',
+    desc:'Nincs szélsőséges preferenciád, így ez a legrugalmasabb kronotípus. A csúcsod jellemzően késő délelőtt van.'},
+  {min:31,name:'Mérsékelten esti típus',en:'Moderate evening',color:'#818cf8',peak:'kb. 11:00–14:00 és késő délután',
+    desc:'Reggel lassan indulsz, a délután és a kora este erősebb. A korai kötelezettségek tartós alvásadósságot okozhatnak.'},
+  {min:0,name:'Határozottan esti típus',en:'Definite evening',color:'#a78bfa',peak:'kb. 16:00–22:00',
+    desc:'A belső órád jelentősen késik. A 9–5-ös ritmus számodra folyamatos „társas jet-lag”: a biológiai és a társadalmi idő eltérése.'}
+];
+makeTest({
+  id:'meq',key:'meq-responses-v1',name:'Kronotípus (MEQ)',c1:'#818cf8',c2:'#a78bfa',
+  tab:'Kronotípus',tabSub:'MEQ · 19 item',
+  header:{status:'valid',statusText:'Validált skála · Horne & Östberg (1976)',
+    eyebrow:'Morningness–Eveningness Questionnaire · Horne & Östberg (1976)',
+    title:'Mikor vagy a <em style="color:#818cf8">csúcson</em>',
+    lead:'A MEQ a kronobiológia legtöbbet használt önkitöltős eszköze. Megmutatja, hová esik a <strong>belső órád</strong> a reggeli–esti skálán. A kronotípus erősen genetikai: nem akarat kérdése, hanem biológiai adottság, amihez a munkarendet érdemes igazítani, nem fordítva.',
+    intro:'<p><strong>Kitöltés:</strong> arra gondolj, hogyan érezted magad <strong>az elmúlt néhány hétben</strong>, és hogyan döntenél, ha teljesen szabad lennél. Ne a jelenlegi kötelező napirended alapján válaszolj.</p><p>Összpontszám: 16–86. A magasabb érték reggelibb típust jelez.</p>'},
+  sections:[{title:'19 kérdés',desc:'Egy válasz kérdésenként.',items:ITEMS}],
+  score(R){const total=H.sum(R.picks.map(p=>p.opt.v));const cat=CAT.find(c=>total>=c.min);return {total,cat:cat.name};},
+  render(R,s){
+    const cat=CAT.find(c=>s.total>=c.min);
+    const zones=[{from:16,to:30.5,color:'rgba(167,139,250,0.25)'},{from:30.5,to:41.5,color:'rgba(129,140,248,0.2)'},{from:41.5,to:58.5,color:'rgba(52,211,153,0.18)'},{from:58.5,to:69.5,color:'rgba(245,158,11,0.2)'},{from:69.5,to:86,color:'rgba(251,191,36,0.25)'}];
+    const g=H.gauge({name:'MEQ-pontszám',sub:cat.en,val:s.total,unit:'/ 86',min:16,max:86,color:cat.color,zones,labels:['16 · esti','31','42','59','70','reggeli · 86']});
+    return `<div class="res-eyebrow">Eredmény · Kronotípus</div>
+      <h2 class="res-title"><em>${cat.name}</em></h2>
+      <p class="res-lead">MEQ-pontszám: <strong>${s.total}</strong> (16–86). ${cat.desc}</p>
+      ${H.chart('Reggeli–esti <em>skála</em>','Horne–Östberg kategóriahatárok','<div>'+g+'</div>')}
+      ${H.interp('Hogyan <em>használd</em>',[
+        {h:'A becsült csúcsidősávod: '+cat.peak,color:cat.color,html:'<p>Ide tedd a <strong>mély munkát</strong>: stratégiát, írást, komplex elemzést, fontos döntéseket. Ezek az órák a legértékesebbek, ne menjenek el e-mailre és meetingekre.</p><p>A csúcs utáni mélypont (jellemzően kora délután) adminisztrációra, rutinfeladatokra jó. A második, kisebb csúcs a kreatív, asszociatív munkának kedvez.</p>'},
+        {h:'Társas jet-lag',html:'<p>Ha hétvégén az alvásod közepe több mint 1–2 órával később van, mint hétköznap, a biológiai és a társadalmi időd tartósan eltér. Ez a kutatások szerint összefügg a rosszabb hangulattal, a fokozott nassolással és az alacsonyabb teljesítménnyel (Roenneberg és mtsai, 2012). A rendszeres reggeli fényexpozíció (10–20 perc kint, ébredés után) a legerősebb eszköz a belső óra előbbre hozására.</p>'},
+        {h:'Korlát',html:'<p>A MEQ a preferenciát méri, nem a pontos belső órát (azt a melatoninszint-mérés, DLMO adja). A kronotípus az életkorral is változik: a húszas években késik a legjobban, utána fokozatosan korábbra tolódik.</p>'}
+      ])}
+      ${H.refs(['<strong>Horne, J. A., & Östberg, O. (1976).</strong> A self-assessment questionnaire to determine morningness–eveningness in human circadian rhythms. <em>International Journal of Chronobiology, 4</em>(2), 97–110.',
+        '<strong>Roenneberg, T., Allebrandt, K. V., Merrow, M., & Vetter, C. (2012).</strong> Social jetlag and obesity. <em>Current Biology, 22</em>(10), 939–943.',
+        '<strong>Adan, A., Archer, S. N., Hidalgo, M. P., Di Milia, L., Natale, V., & Randler, C. (2012).</strong> Circadian typology: A comprehensive review. <em>Chronobiology International, 29</em>(9), 1153–1175.'])}`;
+  }
+});
+})();
+
+bootHub(['pvq','ft','kolbe','meq']);
+</script>
+</body>
+</html>
