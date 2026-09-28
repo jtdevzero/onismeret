@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>YSQ-L · Young Séma Kérdőív</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fonts/fonts.css">
 <style>
 :root {
   --navy:   #1B2A4A;
@@ -1048,6 +1048,25 @@ body {
 .print-header { display: none; }
 
 </style>
+<script>
+/* ONI-CORE v1 — közös eredménytár: minden teszt ide menti a fő pontszámait (csak ebben a böngészőben). */
+window.ONI=window.ONI||(function(){
+  var K='onismeret-results-v1';
+  function all(){try{return JSON.parse(localStorage.getItem(K))||{}}catch(e){return {}}}
+  function r(x){return Math.round(x*100)/100}
+  function save(id,rec){
+    try{
+      var a=all(),h=a[id]||[];
+      rec.t=new Date().toISOString();
+      if(rec.d)Object.keys(rec.d).forEach(function(k){var v=rec.d[k];if(v&&typeof v[1]==='number')v[1]=r(v[1]);});
+      if(h.length&&h[h.length-1].t.slice(0,10)===rec.t.slice(0,10))h[h.length-1]=rec;else h.push(rec);
+      a[id]=h.slice(-24);
+      localStorage.setItem(K,JSON.stringify(a));
+    }catch(e){}
+  }
+  return {K:K,all:all,save:save,r:r};
+})();
+</script>
 </head>
 <body>
 <a href="index.html" id="onismeret-back" style="position:fixed;left:16px;bottom:16px;z-index:9999;padding:8px 14px;border-radius:999px;background:rgba(5,13,30,.88);color:#fbbf24;border:1px solid #78551a;font:600 13px/1.2 'Manrope','Helvetica Neue',sans-serif;text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.25)">‹ Önismereti térképek</a>
@@ -1575,6 +1594,7 @@ function renderResults() {
     .sort((a,b) => b.score - a.score);
 
   const top3 = scored.slice(0, 3);
+  try{if(typeof activeClient==='undefined'||activeClient===null){ONI.save('ysq',{n:'YSQ-L',h:top3.map(x=>x.nev).join(', '),d:Object.fromEntries(scored.map(x=>[x.kod,[x.nev,x.score,1,6]]))});}}catch(e){console.warn('ONI',e)}
   const avgAll = scored.reduce((a,b) => a + b.score, 0) / scored.length;
 
   // Summary

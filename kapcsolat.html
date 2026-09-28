@@ -4,9 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kapcsolati dinamika — szeretetstílus · konfliktus · Gottman · temperamentum</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fonts/fonts.css">
 <style>
 :root{
   --font-display:'Fraunces','Cardo',serif;
@@ -258,6 +256,25 @@ body::after{content:"";position:fixed;inset:0;background-image:url("data:image/s
 @media (max-width:820px){.hub-tabs.four{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:560px){.hub-tabs{position:static}.hub-tab{padding:12px 14px}.hub-tab .sub{display:none}.scale.s6{grid-template-columns:repeat(3,1fr)}.dv-row{grid-template-columns:96px 1fr 44px;gap:8px;font-size:12.5px}.quad .cell{min-height:96px;padding:12px 8px}.quad .cell .n{font-size:24px}}
 </style>
+<script>
+/* ONI-CORE v1 — közös eredménytár: minden teszt ide menti a fő pontszámait (csak ebben a böngészőben). */
+window.ONI=window.ONI||(function(){
+  var K='onismeret-results-v1';
+  function all(){try{return JSON.parse(localStorage.getItem(K))||{}}catch(e){return {}}}
+  function r(x){return Math.round(x*100)/100}
+  function save(id,rec){
+    try{
+      var a=all(),h=a[id]||[];
+      rec.t=new Date().toISOString();
+      if(rec.d)Object.keys(rec.d).forEach(function(k){var v=rec.d[k];if(v&&typeof v[1]==='number')v[1]=r(v[1]);});
+      if(h.length&&h[h.length-1].t.slice(0,10)===rec.t.slice(0,10))h[h.length-1]=rec;else h.push(rec);
+      a[id]=h.slice(-24);
+      localStorage.setItem(K,JSON.stringify(a));
+    }catch(e){}
+  }
+  return {K:K,all:all,save:save,r:r};
+})();
+</script>
 </head>
 <body>
 <div class="hub-shell">
@@ -418,6 +435,7 @@ function makeTest(cfg){
   function show(){
     const R=buildR();
     lastResult=cfg.score?cfg.score(R):null;
+    if(window.ONI&&cfg.sum){try{ONI.save(cfg.id,Object.assign({n:cfg.name},cfg.sum(lastResult,R)));}catch(e){console.warn('ONI',e)}}
     const el=$('results');
     el.innerHTML=cfg.render(R,lastResult)+`<div class="actions">
       <button class="btn-secondary" onclick="window.print()">PDF</button>
@@ -527,6 +545,7 @@ makeTest({
       {s:'agape',t:'Bármit elviselnék a párom kedvéért.'}]}
   ],
   score(R){const o={};Object.keys(ST).forEach(k=>o[k]=H.r2(R.mean(k)));return o;},
+  sum(s){const k=Object.keys(ST).sort((a,b)=>s[b]-s[a]);return {h:ST[k[0]].name+' + '+ST[k[1]].name,d:Object.fromEntries(Object.keys(ST).map(x=>[x,[ST[x].name+' ('+ST[x].hu+')',s[x],1,5]]))};},
   render(R,s){
     const keys=Object.keys(ST);
     const sorted=[...keys].sort((a,b)=>s[b]-s[a]);
@@ -626,6 +645,7 @@ makeTest({
   score(R){const o={};Object.keys(M).forEach(k=>o[k]=H.r2(R.mean(k)));
     o.assert=H.r2((o.comp+o.coll)/2-(o.avoid+o.acc)/2);
     o.coop=H.r2((o.coll+o.acc)/2-(o.comp+o.avoid)/2);return o;},
+  sum(s){const k=Object.keys(M).sort((a,b)=>s[b]-s[a]);return {h:'Alapmód: '+M[k[0]].name,d:Object.assign(Object.fromEntries(Object.keys(M).map(x=>[x,[M[x].name,s[x],1,5]])),{assert:['Önérvényesítés-index',s.assert,-4,4],coop:['Együttműködés-index',s.coop,-4,4]})};},
   render(R,s){
     const keys=Object.keys(M),sorted=[...keys].sort((a,b)=>s[b]-s[a]);
     const top=sorted[0],low=sorted[sorted.length-1];
@@ -719,6 +739,7 @@ makeTest({
   ],
   score(R){const o={};[...Object.keys(SS),...Object.keys(HR)].forEach(k=>o[k]=H.r2(R.mean(k)));
     o.strength=H.r2(H.mean(Object.keys(SS).map(k=>o[k])));o.risk=H.r2(H.mean(Object.keys(HR).map(k=>o[k])));return o;},
+  sum(s){const st=s.strength>=4&&s.risk<2.5?'Erős alap, alacsony kockázat':s.strength>=3.5&&s.risk<3?'Működő kapcsolat, fejlesztési ponttal':s.risk>=3.5?'Magas konfliktuskockázat':'Gyengülő alapok';const d={strength:['Alapok átlaga',s.strength,1,5],risk:['Négy lovas átlaga',s.risk,1,5]};Object.keys(SS).forEach(k=>d[k]=[SS[k].name,s[k],1,5]);Object.keys(HR).forEach(k=>d[k]=[HR[k].name,s[k],1,5]);return {h:st,d};},
   render(R,s){
     const pct=v=>(v-1)/4*100;
     const weakS=Object.keys(SS).sort((a,b)=>s[a]-s[b])[0];
@@ -783,6 +804,7 @@ makeTest({
       const out=[];for(let i=0;i<10;i++){out.push({s:'exp',t:E[i]},{s:'bld',t:B[i]},{s:'dir',t:D[i]},{s:'neg',t:N[i]});}return out;})()}
   ],
   score(R){const o={};Object.keys(T).forEach(k=>o[k]=R.sum(k));return o;},
+  sum(s){const k=Object.keys(T).sort((a,b)=>s[b]-s[a]);return {h:T[k[0]].name+' – '+T[k[1]].name,d:Object.fromEntries(Object.keys(T).map(x=>[x,[T[x].name,s[x],10,50]]))};},
   render(R,s){
     const keys=Object.keys(T),sorted=[...keys].sort((a,b)=>s[b]-s[a]);
     const p=sorted[0],q=sorted[1];

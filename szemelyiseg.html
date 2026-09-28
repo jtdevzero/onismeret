@@ -4,9 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Két személyiség-térkép — Big Five · VIA karakter-erők</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fonts/fonts.css">
 <style>
 :root{
   --font-display:'Fraunces','Cardo',serif;
@@ -211,10 +209,30 @@ body::after{content:"";position:fixed;inset:0;background-image:url("data:image/s
 ::-webkit-scrollbar-thumb{background:rgba(96,165,250,0.3);border-radius:10px}
 ::selection{background:rgba(96,165,250,0.4);color:#fff}
 </style>
+<script>
+/* ONI-CORE v1 — közös eredménytár: minden teszt ide menti a fő pontszámait (csak ebben a böngészőben). */
+window.ONI=window.ONI||(function(){
+  var K='onismeret-results-v1';
+  function all(){try{return JSON.parse(localStorage.getItem(K))||{}}catch(e){return {}}}
+  function r(x){return Math.round(x*100)/100}
+  function save(id,rec){
+    try{
+      var a=all(),h=a[id]||[];
+      rec.t=new Date().toISOString();
+      if(rec.d)Object.keys(rec.d).forEach(function(k){var v=rec.d[k];if(v&&typeof v[1]==='number')v[1]=r(v[1]);});
+      if(h.length&&h[h.length-1].t.slice(0,10)===rec.t.slice(0,10))h[h.length-1]=rec;else h.push(rec);
+      a[id]=h.slice(-24);
+      localStorage.setItem(K,JSON.stringify(a));
+    }catch(e){}
+  }
+  return {K:K,all:all,save:save,r:r};
+})();
+</script>
 </head>
 <body>
 
 <div class="hub-shell">
+  <a href="index.html" style="display:inline-flex;gap:8px;font-size:12px;color:var(--ink-lite-muted,#94a3b8);text-decoration:none;letter-spacing:.06em;margin-bottom:26px">‹ Önismereti térképek</a>
   <div class="hub-header">
     <div class="hub-eyebrow">Két személyiség-térkép — alap-vonások + karakter-erők</div>
     <h1>Ki <em>vagy</em></h1>
@@ -570,6 +588,7 @@ const INTERP = {
 function renderResults(){
   const scores={};
   ['O','C','E','A','N'].forEach(d=>{scores[d]=scoreDomain(d);});
+  try{ONI.save('bf',{n:'Big Five',d:Object.fromEntries(['O','C','E','A','N'].map(k=>[k,[DOMAINS[k].name,scores[k],12,60]]))});}catch(e){console.warn('ONI',e)}
   // Radar
   const radarData=['O','C','E','A','N'].map(d=>({label:DOMAINS[d].name, value:scores[d]}));
   window.CHARTS.radar(document.getElementById('bf-radar'), radarData, {max:60, min:12, strokeColor:'#60a5fa', fillColor:'rgba(96,165,250,0.28)'});
@@ -742,6 +761,7 @@ function countInVirtue(v){return Object.values(STRENGTHS).filter(s=>s.v===v).len
 function renderResults(){
   // All strengths ranked
   const allScores=Object.keys(STRENGTHS).map(k=>({key:k,name:STRENGTHS[k].name,en:STRENGTHS[k].en,v:STRENGTHS[k].v,desc:STRENGTHS[k].desc,value:scoreStrength(k)})).sort((a,b)=>b.value-a.value);
+  try{ONI.save('via',{n:'VIA-72',h:allScores.slice(0,5).map(x=>x.name).join(', '),d:Object.fromEntries(allScores.map(x=>[x.key,[x.name,x.value,3,15]]))});}catch(e){console.warn('ONI',e)}
   // Virtue scores
   const virtueScores=['WK','CG','HU','JU','TE','TR'].map(v=>{
     const raw=scoreVirtue(v);

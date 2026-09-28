@@ -4,9 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kötődés — teljes profil</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200..900;1,9..144,200..900&family=Manrope:wght@200;300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fonts/fonts.css">
 <style>
   :root {
     --bg-0: #0b0c0e;
@@ -950,6 +948,25 @@
     }
   }
 </style>
+<script>
+/* ONI-CORE v1 — közös eredménytár: minden teszt ide menti a fő pontszámait (csak ebben a böngészőben). */
+window.ONI=window.ONI||(function(){
+  var K='onismeret-results-v1';
+  function all(){try{return JSON.parse(localStorage.getItem(K))||{}}catch(e){return {}}}
+  function r(x){return Math.round(x*100)/100}
+  function save(id,rec){
+    try{
+      var a=all(),h=a[id]||[];
+      rec.t=new Date().toISOString();
+      if(rec.d)Object.keys(rec.d).forEach(function(k){var v=rec.d[k];if(v&&typeof v[1]==='number')v[1]=r(v[1]);});
+      if(h.length&&h[h.length-1].t.slice(0,10)===rec.t.slice(0,10))h[h.length-1]=rec;else h.push(rec);
+      a[id]=h.slice(-24);
+      localStorage.setItem(K,JSON.stringify(a));
+    }catch(e){}
+  }
+  return {K:K,all:all,save:save,r:r};
+})();
+</script>
 </head>
 <body>
 <a href="index.html" id="onismeret-back" style="position:fixed;left:16px;bottom:16px;z-index:9999;padding:8px 14px;border-radius:999px;background:rgba(5,13,30,.88);color:#fbbf24;border:1px solid #78551a;font:600 13px/1.2 'Manrope','Helvetica Neue',sans-serif;text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.25)">‹ Önismereti térképek</a>
@@ -1512,6 +1529,7 @@ function submitTest() {
   }
   s.result = result;
   delete s.draft;
+  try{ONI.save('kotodes',{n:'Kötődési mélytérkép',h:result.style,d:{anxiety:['Szorongás',result.anxiety,0,100],avoidance:['Elkerülés',result.avoidance,0,100],earned:['Szerzett biztonság',result.earned,0,100]}});}catch(e){console.warn('ONI',e)}
   saveState(s);
   renderResult(result, s.history);
   goTo('result');

@@ -4,9 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Önismereti térképek — JT</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fonts/fonts.css">
 <style>
 :root{
   --bg-deep:#050d1e;
@@ -196,6 +194,15 @@ body::before{
 .pp-next-name{font-family:var(--font-serif);font-size:18px;flex:1}
 .pp-next .arrow{font-family:var(--font-serif);font-size:22px;color:var(--gold)}
 .pp-note{font-size:12px;color:var(--ink-mute);margin-top:12px}
+.pp-tools{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;align-items:center}
+.pp-sumlink{flex:1 1 260px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 18px;border-radius:12px;text-decoration:none;color:var(--ink);border:1px solid var(--line);background:rgba(96,165,250,0.06);font-family:var(--font-serif);font-size:16px;transition:all .2s}
+.pp-sumlink:hover{border-color:var(--sapphire);transform:translateY(-1px)}
+.pp-sumlink .arrow{color:var(--sapphire);font-size:20px}
+.pp-btn{appearance:none;cursor:pointer;font:inherit;font-size:12.5px;color:var(--ink-soft);padding:10px 14px;border-radius:99px;border:1px solid var(--line);background:transparent;transition:all .2s;white-space:nowrap}
+.pp-btn:hover{color:var(--ink);border-color:var(--gold-soft)}
+.pp-msg{font-size:12.5px;color:var(--emerald);width:100%}
+.status[data-state="due"] .st-lbl{color:#fda4af}
+.status[data-state="due"] .st-fill{background:#fb7185}
 
 /* COLLAPSIBLE INTRO */
 details.intro summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:baseline;gap:12px}
@@ -237,6 +244,25 @@ details.intro:not([open]){padding-top:20px;padding-bottom:20px}
   .card{padding:20px}
 }
 </style>
+<script>
+/* ONI-CORE v1 — közös eredménytár: minden teszt ide menti a fő pontszámait (csak ebben a böngészőben). */
+window.ONI=window.ONI||(function(){
+  var K='onismeret-results-v1';
+  function all(){try{return JSON.parse(localStorage.getItem(K))||{}}catch(e){return {}}}
+  function r(x){return Math.round(x*100)/100}
+  function save(id,rec){
+    try{
+      var a=all(),h=a[id]||[];
+      rec.t=new Date().toISOString();
+      if(rec.d)Object.keys(rec.d).forEach(function(k){var v=rec.d[k];if(v&&typeof v[1]==='number')v[1]=r(v[1]);});
+      if(h.length&&h[h.length-1].t.slice(0,10)===rec.t.slice(0,10))h[h.length-1]=rec;else h.push(rec);
+      a[id]=h.slice(-24);
+      localStorage.setItem(K,JSON.stringify(a));
+    }catch(e){}
+  }
+  return {K:K,all:all,save:save,r:r};
+})();
+</script>
 </head>
 <body>
 <div class="wrap">
@@ -272,7 +298,13 @@ details.intro:not([open]){padding-top:20px;padding-bottom:20px}
       <span class="pp-next-name" id="pp-next-name">MAIA-2 · Interoceptív tudatosság</span>
       <span class="arrow">›</span>
     </a>
-    <p class="pp-note">A haladás abból számolódik, amit a tesztek ebben a böngészőben elmentettek. Másik gépen vagy privát ablakban nem látszik.</p>
+    <div class="pp-tools">
+      <a class="pp-sumlink" href="osszegzes.html"><span>Összegzés, minták, változás</span><span class="arrow">›</span></a>
+      <button type="button" class="pp-btn" id="pp-export">Mentés fájlba</button>
+      <label class="pp-btn" for="pp-import">Visszaállítás fájlból</label><input type="file" id="pp-import" accept="application/json,.json" hidden>
+      <span class="pp-msg" id="pp-msg" hidden></span>
+    </div>
+    <p class="pp-note">A haladás abból számolódik, amit a tesztek ebben a böngészőben elmentettek. Másik gépre vagy telefonra a <em>Mentés fájlba</em> / <em>Visszaállítás fájlból</em> gombokkal viheted át, és ugyanígy biztonsági mentést is készíthetsz.</p>
   </section>
 
   <details class="intro" id="intro" open>
@@ -695,13 +727,17 @@ details.intro:not([open]){padding-top:20px;padding-bottom:20px}
     return {n:done?total:n,done:done};
   }
   var cards=[].slice.call(document.querySelectorAll('.card[data-key]'));
-  var nDone=0,nProg=0,answered=0,firstProg=null,firstNone=null,perCat={};
+  var nDone=0,nProg=0,nDue=0,answered=0,firstProg=null,firstNone=null,perCat={};
+  var ONI_ID={'maia2-responses-v1':'maia2','tas-20-responses-v1':'tas','des-2-responses-v1':'des','ecr-r-responses-v1':'ecr','@kotodes':'kotodes','@ysq':'ysq','smi-responses-v1':'smi','ssss-responses-v1':'ssss','sis-ses-responses-v1':'sisses','iief-responses-v1':'iief','pedt-responses-v1':'pedt','sdi-2-responses-v1':'sdi','nsss-responses-v1':'nsss','saq-responses-v1':'saq','love-responses-v1':'love','apo-responses-v1':'apo','imago-responses-v1':'imago','bf-responses-v1':'bf','via-responses-v1':'via','las-responses-v1':'las','conflict-responses-v1':'tki','gottman-responses-v1':'gott','fisher-responses-v1':'fti','pvq21-responses-v1':'pvq','four-tendencies-responses-v1':'ft','action-modes-responses-v1':'kolbe','meq-responses-v1':'meq'};
+  var RES=(window.ONI&&ONI.all())||{};
+  function lastRec(key){var h=RES[ONI_ID[key]];if(h&&h.length)return h[h.length-1];if(key==='@kotodes'){var a=read('attachment_assessment_v1');if(a&&a.result&&a.result.date)return {t:a.result.date};}return null;}
   cards.forEach(function(c){
     var total=+c.dataset.total,st=status(c.dataset.key,total);
     var box=c.querySelector('.status'),lbl=box.querySelector('.st-lbl'),fill=box.querySelector('.st-fill');
     var cat=c.closest('.cat').dataset.cat; perCat[cat]=perCat[cat]||{d:0,t:0}; perCat[cat].t++;
     answered+=st.n;
-    if(st.done){nDone++;perCat[cat].d++;box.dataset.state='done';lbl.textContent='Kész';fill.style.width='100%';c.classList.add('is-done');c.querySelector('.open-lbl').textContent='Eredmény megnyitása';}
+    if(st.done){nDone++;perCat[cat].d++;box.dataset.state='done';lbl.textContent='Kész';fill.style.width='100%';c.classList.add('is-done');c.querySelector('.open-lbl').textContent='Eredmény megnyitása';
+      var rec=lastRec(c.dataset.key);if(rec){var dd=Math.floor((Date.now()-new Date(rec.t).getTime())/864e5);if(dd>=90){nDue++;box.dataset.state='due';lbl.textContent='Kész · újramérés esedékes ('+dd+' napja)';c.querySelector('.open-lbl').textContent='Újramérés';}else{lbl.textContent='Kész · '+(dd===0?'ma':dd+' napja');}}}
     else if(st.n>0){nProg++;box.dataset.state='prog';lbl.textContent='Folyamatban · '+st.n+' / '+total;fill.style.width=(st.n/total*100)+'%';c.querySelector('.open-lbl').textContent='Folytatás';if(!firstProg)firstProg=c;}
     else{if(!firstNone)firstNone=c;}
   });
@@ -720,6 +756,35 @@ details.intro:not([open]){padding-top:20px;padding-bottom:20px}
     var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){links.forEach(function(l){l.classList.toggle('active',l.dataset.jump===e.target.dataset.cat)});}})},{rootMargin:'-40% 0px -55% 0px'});
     document.querySelectorAll('.cat').forEach(function(c){io.observe(c)});
   }
+})();
+
+/* ── Mentés fájlba / visszaállítás fájlból ── */
+(function(){
+  var KEYRX=/-responses-v1$|^ysq_|^attachment_assessment_v1$|^onismeret-/;
+  var msg=document.getElementById('pp-msg');
+  function say(t,bad){msg.hidden=false;msg.textContent=t;msg.style.color=bad?'#fda4af':'';}
+  document.getElementById('pp-export').addEventListener('click',function(){
+    var data={};try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(KEYRX.test(k))data[k]=localStorage.getItem(k);}}catch(e){}
+    var n=Object.keys(data).length;
+    if(!n){say('Nincs még mit menteni: egyik teszt sem tárolt választ ebben a böngészőben.',true);return;}
+    var blob=new Blob([JSON.stringify({app:'onismeret',v:1,exported:new Date().toISOString(),data:data},null,1)],{type:'application/json'});
+    var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='onismeret-mentes-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();
+    say(n+' tétel elmentve fájlba. Tartsd biztonságos helyen: érzékeny adatokat tartalmaz.');
+  });
+  document.getElementById('pp-import').addEventListener('change',function(ev){
+    var f=ev.target.files[0];if(!f)return;
+    var r=new FileReader();
+    r.onload=function(){
+      var obj;try{obj=JSON.parse(r.result)}catch(e){say('A fájl nem olvasható (nem érvényes JSON).',true);return;}
+      if(!obj||obj.app!=='onismeret'||!obj.data){say('Ez nem az Önismereti térképek mentésfájlja.',true);return;}
+      var keys=Object.keys(obj.data).filter(function(k){return KEYRX.test(k)});
+      if(!keys.length){say('A mentésben nincs visszaállítható adat.',true);return;}
+      if(!confirm(keys.length+' tétel visszaállítása ('+(obj.exported||'').slice(0,10)+'). Az azonos tesztek jelenlegi válaszait felülírja, a többihez nem nyúl. Folytatod?'))return;
+      try{keys.forEach(function(k){localStorage.setItem(k,obj.data[k])});}catch(e){say('A böngésző nem engedte a mentést (privát ablak?).',true);return;}
+      location.reload();
+    };
+    r.readAsText(f);ev.target.value='';
+  });
 })();
 </script>
 </body>

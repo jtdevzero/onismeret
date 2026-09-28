@@ -46,7 +46,9 @@ Huszonhét önismereti kérdőív magyarul, statikus HTML fájlok, GitHub Pages-
 
 ```
 self-knowledge-suite/
-├── index.html          Landing page — haladásjelző, témakör-navigáció, kártyák
+├── index.html          Landing page — haladásjelző, témakör-navigáció, kártyák, mentés/visszaállítás
+├── osszegzes.html      Kereszt-összegzés: visszatérő minták, változás, újramérés, idővonal
+├── fonts/              Helyben tárolt betűtípusok (Fontsource, SIL OFL, latin + latin-ext)
 ├── README.md           Ez a fájl
 ├── maia2.html          MAIA-2 (standalone)
 ├── sis-ses.html        SIS/SES (standalone)
@@ -61,13 +63,13 @@ self-knowledge-suite/
 └── cselekves.html      PVQ-21 + Négy tendencia + Cselekvési módok + MEQ (hub, 4 fül)
 ```
 
-Minden fájl **teljesen önálló** — inline CSS, JS, semmi external asset a Google Fonts kivételével. Ez azt jelenti, hogy ha csak egy fájlt küldesz el valakinek, működik.
+Minden oldal önálló: inline CSS és JS, külső szerverhez nem fordul. A betűtípusok a `fonts/` mappából töltődnek. Ha egyetlen HTML-fájlt küldesz el valakinek, az mappa nélkül is működik, csak rendszerbetűkkel jelenik meg.
 
 ---
 
 ## Adatkezelés
 
-- **Semmi adat nem hagyja el a böngészőt.** Nincs analytics, nincs cookie, nincs szerver-hívás (Google Fonts kivételével, azt ki lehet kapcsolni).
+- **Semmi adat nem hagyja el a böngészőt.** Nincs analytics, nincs cookie, nincs külső kérés (a betűtípusok is helyben vannak).
 - **Automatikus mentés `localStorage`-ba.** Ha félbehagyod és később visszatérsz, ott folytatod.
 - **Storage kulcsok** (haladtás esetére):
   - `maia2-responses-v1`
@@ -81,7 +83,17 @@ Minden fájl **teljesen önálló** — inline CSS, JS, semmi external asset a G
   - `pvq21-responses-v1`, `four-tendencies-responses-v1`, `action-modes-responses-v1`, `meq-responses-v1`
   - `ysq_autosave`, `ysq_snapshots`, `ysq_log` stb. (YSQ)
   - `attachment_assessment_v1` (Kötődési mélytérkép)
+  - `onismeret-results-v1` — közös eredménytár: minden teszt a kiértékeléskor ide menti a fő pontszámait dátummal (tesztenként legfeljebb 24 kitöltés, naponta egy). Ebből dolgozik az összegzés és az újramérés-jelzés.
 - **JSON export** minden tesztnél — ha meg akarod mutatni terapeutának.
+- **Mentés fájlba / Visszaállítás fájlból** a főoldalon: minden teszt összes adata egy JSON-fájlba, és vissza. Így lehet gépet vagy böngészőt váltani, illetve biztonsági mentést készíteni. A visszaállítás csak a fájlban szereplő teszteket írja felül.
+
+## Összegzés (`osszegzes.html`)
+
+- **Visszatérő minták:** 14 szabály, például szorongó vagy elkerülő kötődés, „indít, de nem zár le”, elemzési bénultság, teljesítmény-hajtás vagy önfeláldozó minta. Egy minta csak akkor jelenik meg, ha legalább két teszt ugyanabba az irányba mutat. A küszöbök heurisztikák, nem klinikai határértékek.
+- **Profil tesztenként** a legutóbbi eredménnyel, ▲▼ változással az előző kitöltéshez képest.
+- **Újramérés:** 90 nap után a főoldalon és az összegzésben is jelez.
+- **Idővonal** az összes kiértékelésről.
+- A régebben kitöltött teszteknél (a közös eredménytár előttről) az eredményt egyszer újra meg kell nyitni, hogy bekerüljön.
 
 ---
 

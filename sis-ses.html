@@ -4,9 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SIS/SES · A Szexuális Dual Control Térképe</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fonts/fonts.css">
 <style>
 :root{
   --bg:#0e0d10;
@@ -758,8 +756,28 @@ footer{
   body{background:#fff;color:#000}
 }
 </style>
+<script>
+/* ONI-CORE v1 — közös eredménytár: minden teszt ide menti a fő pontszámait (csak ebben a böngészőben). */
+window.ONI=window.ONI||(function(){
+  var K='onismeret-results-v1';
+  function all(){try{return JSON.parse(localStorage.getItem(K))||{}}catch(e){return {}}}
+  function r(x){return Math.round(x*100)/100}
+  function save(id,rec){
+    try{
+      var a=all(),h=a[id]||[];
+      rec.t=new Date().toISOString();
+      if(rec.d)Object.keys(rec.d).forEach(function(k){var v=rec.d[k];if(v&&typeof v[1]==='number')v[1]=r(v[1]);});
+      if(h.length&&h[h.length-1].t.slice(0,10)===rec.t.slice(0,10))h[h.length-1]=rec;else h.push(rec);
+      a[id]=h.slice(-24);
+      localStorage.setItem(K,JSON.stringify(a));
+    }catch(e){}
+  }
+  return {K:K,all:all,save:save,r:r};
+})();
+</script>
 </head>
 <body>
+<a href="index.html" style="position:absolute;top:14px;left:14px;z-index:50;display:inline-flex;gap:6px;font:500 12px/1 system-ui,sans-serif;letter-spacing:.04em;color:#e2e8f0;background:rgba(15,23,42,.72);border:1px solid rgba(148,163,184,.35);padding:8px 13px;border-radius:99px;text-decoration:none;backdrop-filter:blur(8px)">‹ Önismereti térképek</a>
 
 <div class="shell">
 
@@ -1240,6 +1258,7 @@ function renderResults(){
     sis1: scoreScale('sis1'),
     sis2: scoreScale('sis2')
   };
+  try{ONI.save('sisses',{n:'SIS/SES',d:Object.fromEntries(['ses','sis1','sis2'].filter(k=>scores[k]).map(k=>[k,[SCALES[k].short,scores[k].mean,1,4]]))});}catch(e){console.warn('ONI',e)}
 
   // score cards
   const grid = document.getElementById('scoresGrid');

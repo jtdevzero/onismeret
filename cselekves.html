@@ -4,9 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Értékek, cselekvés, ritmus — PVQ-21 · Négy tendencia · Cselekvési módok · MEQ</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fonts/fonts.css">
 <style>
 :root{
   --font-display:'Fraunces','Cardo',serif;
@@ -258,6 +256,25 @@ body::after{content:"";position:fixed;inset:0;background-image:url("data:image/s
 @media (max-width:820px){.hub-tabs.four{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:560px){.hub-tabs{position:static}.hub-tab{padding:12px 14px}.hub-tab .sub{display:none}.scale.s6{grid-template-columns:repeat(3,1fr)}.dv-row{grid-template-columns:96px 1fr 44px;gap:8px;font-size:12.5px}.quad .cell{min-height:96px;padding:12px 8px}.quad .cell .n{font-size:24px}}
 </style>
+<script>
+/* ONI-CORE v1 — közös eredménytár: minden teszt ide menti a fő pontszámait (csak ebben a böngészőben). */
+window.ONI=window.ONI||(function(){
+  var K='onismeret-results-v1';
+  function all(){try{return JSON.parse(localStorage.getItem(K))||{}}catch(e){return {}}}
+  function r(x){return Math.round(x*100)/100}
+  function save(id,rec){
+    try{
+      var a=all(),h=a[id]||[];
+      rec.t=new Date().toISOString();
+      if(rec.d)Object.keys(rec.d).forEach(function(k){var v=rec.d[k];if(v&&typeof v[1]==='number')v[1]=r(v[1]);});
+      if(h.length&&h[h.length-1].t.slice(0,10)===rec.t.slice(0,10))h[h.length-1]=rec;else h.push(rec);
+      a[id]=h.slice(-24);
+      localStorage.setItem(K,JSON.stringify(a));
+    }catch(e){}
+  }
+  return {K:K,all:all,save:save,r:r};
+})();
+</script>
 </head>
 <body>
 <div class="hub-shell">
@@ -418,6 +435,7 @@ function makeTest(cfg){
   function show(){
     const R=buildR();
     lastResult=cfg.score?cfg.score(R):null;
+    if(window.ONI&&cfg.sum){try{ONI.save(cfg.id,Object.assign({n:cfg.name},cfg.sum(lastResult,R)));}catch(e){console.warn('ONI',e)}}
     const el=$('results');
     el.innerHTML=cfg.render(R,lastResult)+`<div class="actions">
       <button class="btn-secondary" onclick="window.print()">PDF</button>
@@ -534,6 +552,7 @@ makeTest({
     Object.keys(V).forEach(k=>{o.raw[k]=H.r2(R.mean(k));o.c[k]=H.r2(R.mean(k)-mrat);});
     Object.keys(HO).forEach(k=>{const vals=R.items.filter(i=>HO[k].keys.includes(i.s)).map(i=>i.v);o.ho[k]=H.r2(H.mean(vals)-mrat);});
     return o;},
+  sum(s){const k=Object.keys(V).sort((a,b)=>s.c[b]-s.c[a]);const d=Object.fromEntries(Object.keys(V).map(x=>[x,[V[x].name,s.c[x],-3,3]]));Object.keys(HO).forEach(x=>d['ho_'+x]=[HO[x].name,s.ho[x],-3,3]);return {h:k.slice(0,3).map(x=>V[x].name).join(', '),d};},
   render(R,s){
     const order=['SD','ST','HE','AC','PO','SE','CO','TR','BE','UN'];
     const sorted=[...order].sort((a,b)=>s.c[b]-s.c[a]);
@@ -614,6 +633,7 @@ makeTest({
   score(R){const c={U:0,Q:0,O:0,R:0};R.picks.forEach(p=>c[p.opt.s]++);
     const sorted=codes.slice().sort((a,b)=>c[b]-c[a]);
     return {counts:c,primary:sorted[0],secondary:sorted[1],outer:c.U+c.O,inner:c.U+c.Q};},
+  sum(s){return {h:T[s.primary].name+' ('+T[s.primary].en+')',d:Object.fromEntries(codes.map(x=>[x,[T[x].name,s.counts[x],0,12]])),x:{primary:s.primary,secondary:s.secondary}};},
   render(R,s){
     const c=s.counts,p=s.primary,q=s.secondary,max=Math.max(...Object.values(c));
     const cell=(k)=>{const a=c[k]/12;return `<div class="cell" style="background:color-mix(in srgb,${T[k].color} ${Math.round(8+a*55)}%,transparent);border-color:${k===p?T[k].color:'var(--line-dark)'};${k===p?'box-shadow:0 0 24px '+T[k].color+'55':''}"><span class="t">${T[k].name}</span><span class="n" style="color:${k===p?'#fff':T[k].color}">${c[k]}</span><span class="s">${T[k].en}</span></div>`;};
@@ -703,6 +723,7 @@ makeTest({
     {s:'qs',t:'A bizonytalanság megterhel, stabilitást keresek.',r:true},
     {s:'im',t:'A tér, a mozgás, az anyagok és a szerszámok érdekelnek.'}]}],
   score(R){const o={};Object.keys(M).forEach(k=>{const m=R.mean(k);o[k]=Math.round((m-1)/4*9+1);});return o;},
+  sum(s){return {h:'Profil: '+Object.keys(M).map(k=>s[k]).join('–'),d:Object.fromEntries(Object.keys(M).map(k=>[k,[M[k].name,s[k],1,10]]))};},
   render(R,s){
     const zone=v=>v>=7?'init':v>=4?'acc':'prev';
     const zname={init:'kezdeményező',acc:'rugalmas',prev:'ellenálló'};
@@ -777,6 +798,7 @@ makeTest({
     intro:'<p><strong>Kitöltés:</strong> arra gondolj, hogyan érezted magad <strong>az elmúlt néhány hétben</strong>, és hogyan döntenél, ha teljesen szabad lennél. Ne a jelenlegi kötelező napirended alapján válaszolj.</p><p>Összpontszám: 16–86. A magasabb érték reggelibb típust jelez.</p>'},
   sections:[{title:'19 kérdés',desc:'Egy válasz kérdésenként.',items:ITEMS}],
   score(R){const total=H.sum(R.picks.map(p=>p.opt.v));const cat=CAT.find(c=>total>=c.min);return {total,cat:cat.name};},
+  sum(s){return {h:s.cat,d:{total:['MEQ-pontszám',s.total,16,86]}};},
   render(R,s){
     const cat=CAT.find(c=>s.total>=c.min);
     const zones=[{from:16,to:30.5,color:'rgba(167,139,250,0.25)'},{from:30.5,to:41.5,color:'rgba(129,140,248,0.2)'},{from:41.5,to:58.5,color:'rgba(52,211,153,0.18)'},{from:58.5,to:69.5,color:'rgba(245,158,11,0.2)'},{from:69.5,to:86,color:'rgba(251,191,36,0.25)'}];

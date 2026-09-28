@@ -4,9 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Négy szexuális és disszociatív térkép — IIEF-15 · PEDT · SDI-2 · DES-II</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fonts/fonts.css">
 <style>
 :root{
   --bg-1:#f8fafc; --bg-2:#f1f5f9; --bg-3:#e2e8f0;
@@ -288,10 +286,30 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
   body{background:#fff}
 }
 </style>
+<script>
+/* ONI-CORE v1 — közös eredménytár: minden teszt ide menti a fő pontszámait (csak ebben a böngészőben). */
+window.ONI=window.ONI||(function(){
+  var K='onismeret-results-v1';
+  function all(){try{return JSON.parse(localStorage.getItem(K))||{}}catch(e){return {}}}
+  function r(x){return Math.round(x*100)/100}
+  function save(id,rec){
+    try{
+      var a=all(),h=a[id]||[];
+      rec.t=new Date().toISOString();
+      if(rec.d)Object.keys(rec.d).forEach(function(k){var v=rec.d[k];if(v&&typeof v[1]==='number')v[1]=r(v[1]);});
+      if(h.length&&h[h.length-1].t.slice(0,10)===rec.t.slice(0,10))h[h.length-1]=rec;else h.push(rec);
+      a[id]=h.slice(-24);
+      localStorage.setItem(K,JSON.stringify(a));
+    }catch(e){}
+  }
+  return {K:K,all:all,save:save,r:r};
+})();
+</script>
 </head>
 <body>
 
 <div class="hub-shell">
+  <a href="index.html" style="display:inline-flex;gap:8px;font-size:12px;color:var(--ink-lite-muted,#94a3b8);text-decoration:none;letter-spacing:.06em;margin-bottom:26px">‹ Önismereti térképek</a>
   <div class="hub-header">
     <div class="hub-eyebrow">Négy klinikailag validált mérőműszer · szexuális funkció + disszociáció</div>
     <h1>Négy <em>funkcionális</em> térkép</h1>
@@ -633,6 +651,7 @@ function therapySuggestions(scores){
 function renderResults(){
   const scores={};
   ['EF','OF','SD','IS','OS'].forEach(d=>{scores[d]=scoreDomain(d);});
+  try{ONI.save('iief',{n:'IIEF-15',h:'Erekciós funkció: '+efBand(scores.EF).label,d:Object.fromEntries(['EF','OF','SD','IS','OS'].map(k=>[k,[DOMAINS[k].name,scores[k],0,DOMAINS[k].max]]))});}catch(e){console.warn('ONI',e)}
   const efB=efBand(scores.EF);
   const tc=document.getElementById('iief-totalCard');
   tc.style.setProperty('--band-color', efB.color);
@@ -750,6 +769,7 @@ function therapySuggestions(scores){
 function renderResults(){
   const s=scoreTotal();
   const b=band(s);
+  try{ONI.save('pedt',{n:'PEDT',h:b.label,d:{total:['PEDT összpontszám',s,0,20]}});}catch(e){console.warn('ONI',e)}
   const tc=document.getElementById('pedt-totalCard');
   tc.style.setProperty('--tc',b.color);
   tc.innerHTML=`<div class="total-label">PEDT összpontszám</div><div class="total-value">${s}</div><div class="total-out">/ 20 · cut-off: ≤8 · 9–10 · ≥11</div><div class="total-band">${b.label}</div><p style="color:var(--ink-soft);font-size:14px;margin-top:16px;line-height:1.6">${b.desc}</p>`;
@@ -901,6 +921,7 @@ function therapySuggestions(scores){
 }
 function renderResults(){
   const scores={D:scoreSub('D'),S:scoreSub('S')};
+  try{ONI.save('sdi',{n:'SDI-2',h:'Partneri vágy: '+band('D',scores.D).label,d:{D:['Partneri vágy',scores.D,0,64],S:['Szóló vágy',scores.S,0,48]}});}catch(e){console.warn('ONI',e)}
   let scHtml='';
   [{k:'D',n:'Partneri vágy',en:'Dyadic Sexual Desire',max:64},{k:'S',n:'Szólo vágy',en:'Solitary Sexual Desire',max:48}].forEach(dim=>{
     const s=scores[dim.k], b=band(dim.k,s), pct=(s/dim.max)*100;
@@ -1088,6 +1109,7 @@ function therapySuggestions(total, subs){
 function renderResults(){
   const total=scoreTotal();
   const subs={ABS:scoreSub('ABS'),AMN:scoreSub('AMN'),DPD:scoreSub('DPD')};
+  try{ONI.save('des',{n:'DES-II',h:totalBand(total).label,d:{total:['DES-II átlag',total,0,100],ABS:[SUB_META.ABS.name,subs.ABS,0,100],AMN:[SUB_META.AMN.name,subs.AMN,0,100],DPD:[SUB_META.DPD.name,subs.DPD,0,100]}});}catch(e){console.warn('ONI',e)}
   const tB=totalBand(total);
   const tc=document.getElementById('des-totalCard');
   tc.style.setProperty('--tc',tB.color);
