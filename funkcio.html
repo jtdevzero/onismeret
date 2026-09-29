@@ -286,10 +286,10 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
   body{background:#fff}
 }
 </style>
-<script src="assets/oni-core.js?v=303e8c2e"></script>
-<script src="assets/oni-schema.js?v=190e2f3e" defer></script>
+<script src="assets/oni-core.js?v=c294576c"></script>
+<script src="assets/oni-schema.js?v=e30726e8" defer></script>
 <script src="assets/tests-data.js?v=8174bfd3" defer></script>
-<script src="assets/results-plus.js?v=5e81801b" defer></script>
+<script src="assets/results-plus.js?v=e491f72e" defer></script>
 <link rel="stylesheet" href="assets/theme.css?v=e01934c0">
 </head>
 <body>
@@ -300,7 +300,7 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
     <div class="hub-eyebrow">Négy klinikailag validált mérőműszer · szexuális funkció + disszociáció</div>
     <h1>Négy <em>funkcionális</em> térkép</h1>
     <p class="lead"><strong>IIEF-15</strong> (erekciós funkció) · <strong>PEDT</strong> (időzítés-kontroll) · <strong>SDI-2</strong> (vágy-térkép) · <strong>DES-II</strong> (disszociatív élmények). A négy teszt együtt teljesebb képet ad, mint bármelyik egyedül: hogyan működik a szexuális rendszered <em>fiziológiai</em>, <em>időzítési</em>, <em>motivációs</em> és <em>tudati</em> szinten.</p>
-    <div class="hub-caveat"><strong>Fontos:</strong> Ezek önismereti szűrőeszközök, nem diagnosztikai instrumentumok. Erekciós vagy ejakulációs zavart jelző értékek esetén <strong>orvosi kivizsgálás</strong> is szükséges (érrendszeri, hormonális, gyógyszer-mellékhatás). Disszociatív skálán magas pontszám <strong>szakmai konzultációt</strong> indikál.</p>
+    <div class="hub-caveat"><strong>Fontos:</strong> Ezek önismereti szűrőeszközök, nem diagnosztikai instrumentumok. Erekciós vagy ejakulációs zavart jelző értékek esetén <strong>orvossal is érdemes</strong> átbeszélni (érrendszeri, hormonális, gyógyszer-mellékhatás). Disszociatív skálán magas pontszám <strong>szakmai konzultációt</strong> indikál.</p>
   </div>
   <nav class="hub-tabs" role="tablist">
     <button class="hub-tab iief active" data-target="test-iief" role="tab" aria-selected="true"><span class="check"></span><span class="num">I.</span><span class="name">Erekciós funkció</span><span class="sub">IIEF-15 · 15 item</span></button>
@@ -319,7 +319,7 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
       <div class="eyebrow">International Index of Erectile Function · Rosen et al. (1997)</div>
       <h2>Erekciós <em>funkció</em></h2>
       <p class="lead">Az IIEF-15 a férfi szexuális válaszrendszer 5 dimenzióját méri: <em>erekció</em>, <em>orgazmus</em>, <em>vágy</em>, <em>közösülési elégedettség</em>, <em>általános elégedettség</em>. Az elmúlt 4 hetes időszakra kérdez rá. A klinikai gyakorlatban ez a legelterjedtebb önbevallott szexuális funkcionális műszer.</p>
-      <div class="medical-note"><strong>Klinikai kontextus:</strong> Az IIEF eredménye szűrőeszköz. Az erekciós zavar hátterében <strong>szinte mindig van élettani komponens is</strong> (érrendszeri, hormonális, cukorbetegség, gyógyszer-mellékhatás — SSRI, béta-blokkoló, stb.), amit orvosi kivizsgálás tár fel. A pszichoszociális tényezők (stressz, kapcsolati distressz, teljesítmény-szorongás) általában <em>társulnak</em>, nem ok-okozati kizárólag magukban.</p>
+      <div class="medical-note"><strong>Klinikai kontextus:</strong> Az IIEF eredménye szűrőeszköz. Az erekciós nehézség hátterében <strong>gyakran élettani tényező is szerepet játszik</strong> (érrendszeri, hormonális, cukorbetegség, gyógyszer-mellékhatás — SSRI, béta-blokkoló, stb.), amit orvosi kivizsgálás tár fel. A pszichoszociális tényezők (stressz, kapcsolati distressz, teljesítmény-szorongás) általában <em>társulnak</em>, nem ok-okozati kizárólag magukban.</p>
     </header>
     <div class="intro-box"><p><strong>Kitöltés:</strong> Válaszaid az <em>elmúlt 4 hét</em> tapasztalataira vonatkozzanak. A skálák tételenként változnak — figyeld a válaszlehetőségek szövegét.</p></div>
     <div class="progress-shell"><div class="progress-bar"><div class="progress-fill" id="iief-progressFill"></div></div><div class="progress-text"><strong id="iief-progressNum">0</strong> / 15</div></div>
@@ -593,7 +593,7 @@ const INTERP = {
     none:`Az erekciós funkciód a normál tartományban. Ha jelen van valamilyen distressz vagy specifikus szituációs nehézség (pl. új partner, teljesítmény-szorongás), az inkább szituációs, mint funkcionális.`,
     mild:`Enyhe erekciós zavar tartomány. Ez a leggyakoribb kategória felnőtt férfiaknál — nem klinikai vészjelzés. <strong>Első lépés:</strong> orvosi alap-check (koleszterin, vércukor, tesztoszteron, gyógyszer-lista áttekintés) — az érrendszeri és metabolikus tényezők itt gyakran korrigálhatók.`,
     mildmod:`Enyhe-közepes erekciós zavar. Klinikai relevancia. <strong>Orvosi kivizsgálás indokolt</strong> (urológia + belgyógyászat: kardiovaszkuláris rizikó, endokrin panel). A pszichoszociális tényezők (teljesítmény-szorongás, kapcsolati distressz, spectator mode) többnyire <em>társulnak</em> — az elsődleges kezelés kombinált (organikus + pszichogén).`,
-    mod:`Közepes súlyosságú erekciós zavar. <strong>Orvosi kivizsgálás szükséges.</strong> Az érrendszeri kockázat itt már statisztikailag jelentős — az ED gyakran <em>korai jelzője</em> a koronária-betegségeknek (5–10 évvel megelőzheti). Kezelési opciók: PDE5-inhibitorok (Viagra/Cialis) hatásosak lehetnek, kombinálva a háttér-tényezők kezelésével.`,
+    mod:`Közepes súlyosságú erekciós zavar. <strong>Érdemes orvossal átbeszélni.</strong> Az érrendszeri kockázat itt már statisztikailag jelentős — az ED gyakran <em>korai jelzője</em> a koronária-betegségeknek (5–10 évvel megelőzheti). Kezelési opciók: PDE5-inhibitorok (Viagra/Cialis) hatásosak lehetnek, kombinálva a háttér-tényezők kezelésével.`,
     severe:`Súlyos erekciós zavar. <strong>Sürgős orvosi konzultáció javasolt.</strong> Az érrendszeri kivizsgálás nem halasztható. A pszichogén (situational) és organikus (mindig-jelen) elkülönítése kulcs — reggeli erekciók jelenléte pszichogén profilra utal, hiánya organikusra. A kezelési paletta széles: gyógyszeres, injekciós, vákumpumpa, protézis; a legtöbb esetben jelentős javulás elérhető.`
   }
 };
@@ -601,7 +601,7 @@ function getCrossLinks(scores){
   const ef=scores.EF, sd=scores.SD, os=scores.OS, is=scores.IS;
   const links=[];
   if(ef<22 && sd>=7){
-    links.push({label:'Van vágy, de nincs erekció — pszichogén profil valószínűbb',text:`Magas SD + alacsony EF gyakran <em>pszichogén</em> vagy szituációs profil jelzője (a rendszered akar, de nem tud "átkapcsolni"). Ez SIS/SES-en <strong>magas SIS1</strong> (teljesítmény-gátlás) képében jelenik meg. Reggeli erekciók jelenléte + önkielégítéskor működő funkció megerősíti ezt.`});
+    links.push({label:'Van vágy, de nehezebb az erekció',text:`Magas SD + alacsony EF mellett szituációs vagy lelki tényezők is szerepet játszhatnak, de ezt orvosi szempontból is érdemes megnézni (a rendszered akar, de nem tud "átkapcsolni"). Ez SIS/SES-en <strong>magas SIS1</strong> (teljesítmény-gátlás) képében jelenik meg. Reggeli erekciók jelenléte + önkielégítéskor működő funkció megerősíti ezt.`});
   }
   if(ef<22 && sd<=5){
     links.push({label:'Alacsony vágy + alacsony erekció — endokrin/depresszió is szóba jön',text:`Az együttes csökkenés <strong>tesztoszteron-hiány</strong>, hipogonadizmus, vagy súlyosabb depresszió jelzője lehet. Hormonpanel (össz-teszt, szabad-teszt, SHBG, prolaktin) érdemes.`});
@@ -731,7 +731,7 @@ function getCrossLinks(scores){
   const links=[];
   if(s>=9){
     links.push({label:'IIEF-15 kombinált értékelés (I. tab)',text:`PE gyakran társul ED-vel: az ED-vel élő férfiak azt kompenzálva sietősen fejezik be. Nézd meg az EF domént az I. tabon — ha az is 22 alatt, kombinált (két problémás) kezelés indokolt.`});
-    links.push({label:'SIS/SES: magas SIS1 valószínű',text:`A PE gyakran együtt jár magas <em>SIS1</em> (teljesítmény-gátlás) pontszámmal a Bancroft-modellben. A "mi lesz, ha túl gyorsan..." aggodalom önmagában felgyorsítja az ejakulációt. Ez terápiásan a Sensate Focus fő célpontja.`});
+    links.push({label:'SIS/SES: érdemes a SIS1-et is megnézni',text:`A PE gyakran együtt jár magas <em>SIS1</em> (teljesítmény-gátlás) pontszámmal a Bancroft-modellben. A "mi lesz, ha túl gyorsan..." aggodalom önmagában felgyorsítja az ejakulációt. Ez terápiásan a Sensate Focus fő célpontja.`});
     links.push({label:'ECR-R: szorongásos kötődés hozzájáruló',text:`Anxiously-preoccupied kötődési profilnál a "vajon elég vagyok" folyamatos monitorozása szomatikusan időzítés-problémaként manifesztálódhat. A kötődési munka indirekt PE-csökkentő hatású.`});
   }
   return links;
@@ -872,7 +872,7 @@ function crossPattern(d, s){
   /* hely a skála közepéhez képest (±1 ≈ a skálaterjedelem 20%-a); nem populációs z-érték */
   const dz=(d/SDI_MAX.D-0.5)/0.2, sz=(s/SDI_MAX.S-0.5)/0.2;
   if(dz<-1.0 && sz>0.5){
-    links.push({label:'Magas szólo + alacsony partneri — kontextuális ok valószínű',text:`A rendszered működik (magas szólo), csak partneri kontextusban nem "kapcsol". Okok lehetnek: kapcsolati distressz, teljesítmény-szorongás, kötődési biztonság hiánya, spectator mode. <strong>Nem alacsony libidó</strong> — hanem kontextus-érzékeny válaszrendszer.`});
+    links.push({label:'Magas szóló + alacsonyabb partneri vágy — a kontextust is érdemes megnézni',text:`A rendszered működik (magas szólo), csak partneri kontextusban nem "kapcsol". Okok lehetnek: kapcsolati distressz, teljesítmény-szorongás, kötődési biztonság hiánya, spectator mode. <strong>Nem alacsony libidó</strong> — hanem kontextus-érzékeny válaszrendszer.`});
   }
   if(dz>0.5 && sz<-1.0){
     links.push({label:'Magas partneri + alacsony szólo — a vágy relációs',text:`A vágyad inkább partnerhez kötött. Ez nem problematikus. Egyedül nem indul be szexuálisan a rendszer — ez elmondható a "responsive desire" egyik formájának.`});
@@ -893,7 +893,7 @@ function therapySuggestions(scores){
   const mods=[];
   const dz=(scores.D/SDI_MAX.D-0.5)/0.2, sz=(scores.S/SDI_MAX.S-0.5)/0.2;
   if(dz<-1.0 && sz>=0){
-    mods.push({name:'Sensate Focus + kontextus-építés',text:`Ha szólo működik, partnerivel nem — a probléma nem a libidó, hanem a kontextus. Sensate Focus és partner-kommunikáció a Nagoski "Come as You Are" modell szerint.`});
+    mods.push({name:'Sensate Focus + kontextus-építés',text:`Ha a szóló vágy megvan, a partneri kevésbé, akkor érdemes a kontextust is megnézni, nem csak a vágy szintjét. Sensate Focus és partner-kommunikáció a Nagoski "Come as You Are" modell szerint.`});
     mods.push({name:'Responsive desire pszichoedukáció',text:`A Basson-modell megismerése önmagában nagy segítség: nem "várni a spontán vágyra", hanem tudatosan a szexuális helyzetbe belépni (érintés, közelség), ahonnan a vágy MÁR ott van, csak nem előzte meg.`});
   }
   if(dz<-1.0 && sz<-1.0){
@@ -1066,8 +1066,8 @@ function getCrossLinks(total){
   const links=[];
   if(total>=30){
     links.push({label:'ECR-R: fearful-avoidant korreláció',text:`Magas DES gyakran együtt jár a fearful-avoidant (magas szorongás + magas elkerülés) kötődési profillal — mindkettő komplex trauma-történet tipikus markere.`});
-    links.push({label:'MAIA-2: Trusting és Not-Distracting alacsony',text:`Magas disszociáció mellett a testi bizalom és a "bent maradás a diszkomforttal" képessége szinte mindig csökkent.`});
-    links.push({label:'SMI: Detached Protector magas valószínűséggel',text:`A disszociáció mode-szinten a Detached Protector koping-mode-jaként jelenik meg. Ha felvetted az SMI-t, nézd meg.`});
+    links.push({label:'MAIA-2: Trusting és Not-Distracting alacsony',text:`Magas disszociáció mellett a testi bizalom és a "bent maradás a diszkomforttal" képessége gyakran alacsonyabb. A MAIA-2 megmutatja, nálad így van-e.`});
+    links.push({label:'SMI: érdemes az elszakadó védő módot is megnézni',text:`A sématerápia a disszociációt gyakran az elszakadó védő módhoz köti. Ha felvetted az SMI-t, nézd meg.`});
   }
   if(total>=15 && total<30){
     links.push({label:'Enyhe disszociatív mintázat',text:`Nem klinikai, de az MAIA-2 Trusting alskála értékét érdemes ellenőrizni. Az enyhe disszociáció gyakran fokozódik stressz alatt.`});
@@ -1078,7 +1078,7 @@ function getCrossLinks(total){
 function therapySuggestions(total, subs){
   const mods=[];
   if(total>=30){
-    mods.push({name:'Trauma-informált szakmai konzultáció — <em>első lépés</em>',text:`A DES magas pontszám nem "önmagában" kezelendő — a hátterében szinte mindig van trauma-történet. Egy trauma-informált pszichológus/pszichiáter felmérése szükséges (SCID-D-5 vagy DDIS). Nem sürgős krízis, de érdemes időpontot foglalni.`});
+    mods.push({name:'Trauma-informált szakmai konzultáció — <em>első lépés</em>',text:`A magas DES-pontszámnak többféle háttere lehet, gyakran megterhelő élmények is. Ha tartósan zavar, érdemes trauma-informált szakemberrel átbeszélni, aki strukturált felméréssel pontosíthat. Nem sürgős krízis, de érdemes időpontot foglalni.`});
     mods.push({name:'EMDR — <em>Shapiro</em>',text:`Az Eye Movement Desensitization and Reprocessing a leginkább validált trauma-kezelés. Disszociatív zavaroknál speciális adaptáció (Fine, Mosquera) — nem minden EMDR-terapeuta végzi ezt; érdemes komplex trauma-képzésű terapeutát keresni.`});
     mods.push({name:'Szomatikus Experiencing / Sensorimotor Psychotherapy',text:`Levine és Ogden módszerei — testi tudatosságon alapuló trauma-kezelés. Kifejezetten disszociatív klienseknél hatékonyak, mert a "top-down" (beszélgetéses) megközelítés a disszociációt fenntarthatja.`});
   } else if(total>=15){

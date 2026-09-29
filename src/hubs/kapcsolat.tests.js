@@ -71,7 +71,7 @@ makeTest({
       ${H.interp('Mit <em>jelent</em>',[
         {h:'A fő kombinációd: '+ST[top].name+' + '+ST[second].name,color:ST[top].color,html:`<p>${ST[top].desc}</p><p>${ST[second].desc}</p>`},
         {h:'Kiemelt jelzések',html:notes.join('')},
-        {h:'Párban használva',html:'<p>A legtöbbet akkor ad, ha a párod is kitölti. A kutatás szerint a hasonló stílusú párok (főleg Eros és Agape egyezés) elégedettebbek. A Ludus–Mania páros a klasszikus üldöző–menekülő dinamika.</p>'}
+        {h:'Párban használva',html:'<p>A legtöbbet akkor ad, ha a párod is kitölti. Több kutatás szerint a hasonló stílus (főleg Eros és Agape egyezés) az elégedettséggel jár együtt. A Ludus–Mania párosnál üldöző–menekülő dinamika alakulhat ki.</p>'}
       ])}
       ${H.refs(['<strong>Lee, J. A. (1973).</strong> <em>Colours of Love: An Exploration of the Ways of Loving.</em> New Press.',
         '<strong>Hendrick, C., & Hendrick, S. S. (1986).</strong> A theory and method of love. <em>Journal of Personality and Social Psychology, 50</em>(2), 392–402.',
@@ -106,7 +106,7 @@ const M={
     when:'Jelentéktelen ügy, túl magas érzelmi hőfok (lehűlés kell), vagy ha nincs esélyed nyerni, és a vita többe kerül.'},
   acc:{name:'Alkalmazkodó',en:'Accommodating',color:'#60a5fa',a:0,c:1,
     desc:'Alacsony önérvényesítés, magas együttműködés. A másik igényének előtérbe helyezése.',
-    over:'Túlhasználva: a saját igényeid láthatatlanná válnak, és felgyűlik a neheztelés.',
+    over:'Túlhasználva: a saját igényeid háttérbe kerülhetnek, és idővel neheztelés gyűlhet fel.',
     under:'Alulhasználva: nehezen engedsz akkor is, ha a kapcsolat fontosabb az ügynél.',
     when:'Ha rájöttél, hogy tévedtél, ha a másiknak sokkal fontosabb, vagy ha jóindulatot akarsz építeni.'}
 };

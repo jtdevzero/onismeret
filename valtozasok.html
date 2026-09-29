@@ -61,10 +61,10 @@ h2{font-family:var(--font-serif);font-weight:400;font-size:28px;margin:44px 0 8p
 @media (max-width:560px){.wrap{padding:28px 16px 64px}}
 </style>
 
-<script src="assets/oni-core.js?v=303e8c2e"></script>
-<script src="assets/oni-schema.js?v=190e2f3e" defer></script>
+<script src="assets/oni-core.js?v=c294576c"></script>
+<script src="assets/oni-schema.js?v=e30726e8" defer></script>
 <script src="assets/tests-data.js?v=8174bfd3" defer></script>
-<script src="assets/results-plus.js?v=5e81801b" defer></script>
+<script src="assets/results-plus.js?v=e491f72e" defer></script>
 <link rel="stylesheet" href="assets/theme.css?v=e01934c0">
 </head>
 <body>
@@ -95,6 +95,13 @@ document.addEventListener('DOMContentLoaded',function(){
   var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
   /* score/retake: 'no' | 'part' | 'yes' */
   var LOG=[
+    {d:'2026-09-29',t:'Óvatosabb szövegek, biztonságosabb mentés és visszaállítás',score:'no',retake:'no',items:[
+      'Átírtam a még megmaradt túl határozott mondatokat („szinte mindig együtt jár”, „klasszikus profil”, „diagnosztizálják”, „később egyszerre robbannak” és hasonlók) a tesztoldalakon és a párnézetben. Helyettük feltételes megfogalmazás és tisztázó kérdés áll.',
+      'Ha egy eredményt nem sikerül elmenteni (például tele a tárhely), az oldal ezt jelzi, és nem mutatja mentettnek. Jegyzetnél és vállalásnál is.',
+      'Tesztenként 200 kitöltés marad meg az előzményekben (eddig 24 volt, és a régiek csendben kiestek). A korlát elérésekor értesítést kapsz.',
+      'A visszaállítás a jegyzeteket, vállalásokat, jelöléseket, beállításokat és az eredmények skáláit is ellenőrzi; 5 MB feletti fájlt nem olvas be.',
+      'A párnézet eltérő tesztváltozatú eredményeket nem hasonlít össze és nem von le belőlük párjelzést.',
+      'Minden teszt kérdéssor-, pontozás- és fordításverziója explicit; a fejlesztői ellenőrzés rögzített függőségekkel és hivatkozás-ellenőrzéssel fut.']},
     {d:'2026-09-29',t:'Kereshető katalógus, akadálymentes válaszadás, tesztenkénti emlékeztető, párnézet',score:'no',retake:'no',items:[
       'A főoldalon kereshetsz a tesztek között, és szűrhetsz témakör, időigény, állapot és kérdőívtípus szerint. A kártyák rövidebbek: cél, időigény, állapot és indítás; a hosszabb leírás a „Részletes leírások” kapcsolóval jelenik meg. Első látogatáskor a „Mit szeretnél megérteni?” választó van elöl.',
       'Minden válaszcsoport a kérdés szövegével van felcímkézve a képernyőolvasóknak, a kijelölt válasz állapota is kiolvasható. Fókusz módban a számbillentyű a gombon látható számot választja (a MAIA-2-nél a 0 a 0-s választ, az 1 az 1-est), és továbblépéskor a fókusz az új kérdésre kerül.',

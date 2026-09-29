@@ -5,7 +5,7 @@
   var D=window.ONI_DATA,L=window.ONI_LINK||{},NK='onismeret-notes-v1',SK='onismeret-settings-v1',CK='onismeret-commit-v1',UK='onismeret-unclear-v1';
   var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
   function jget(k,d){try{return JSON.parse(localStorage.getItem(k))||d}catch(e){return d}}
-  function jset(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+  function jset(k,v){try{localStorage.setItem(k,JSON.stringify(v));return localStorage.getItem(k)===JSON.stringify(v)}catch(e){return false}}
   var page=document.documentElement.getAttribute('data-page');
   /* oldalanként: ONI-azonosító → panel és eredménykonténer */
   var MAP={};
@@ -171,7 +171,7 @@
     if(!text){if(i>-1)a.splice(i,1);}
     else if(i>-1){a[i].text=text;}
     else a.push({sid:sid,text:text,t:new Date().toISOString(),st:null});
-    all[id]=a.slice(-12);if(!all[id].length)delete all[id];jset(CK,all);
+    all[id]=a.slice(-12);if(!all[id].length)delete all[id];return jset(CK,all);
   }
   function setCommitState(id,t,st){var all=commits();(all[id]||[]).forEach(function(c){if(c.t===t){c.st=st;c.at=new Date().toISOString()}});jset(CK,all);}
   /* ── Újramérési emlékeztető naptárfájlként ── */
@@ -208,7 +208,7 @@
     var id=box.getAttribute('data-id'),sid=box.getAttribute('data-sid'),all=jget(NK,{});
     var pick=function(g){return [].map.call(box.querySelectorAll('.oni-chip.on[data-g="'+g+'"]'),function(b){return b.getAttribute('data-v')})};
     all[id]=all[id]||{};all[id][sid]={fit:pick('fit'),cond:pick('cond'),text:box.querySelector('textarea').value.slice(0,4000),t:new Date().toISOString()};
-    jset(NK,all);var s=box.querySelector('.oni-saved');s.textContent='Jegyzet mentve ✓';clearTimeout(s._t);s._t=setTimeout(function(){s.textContent=''},1600);
+    var ok=jset(NK,all);var s=box.querySelector('.oni-saved');s.textContent=ok?'Jegyzet mentve ✓':'A jegyzetet nem sikerült menteni ezen az eszközön.';clearTimeout(s._t);s._t=setTimeout(function(){s.textContent=''},1600);
   }
   function enhance(id,tries){
     tries=tries||0;var m=MAP[id];if(!m)return;
@@ -235,7 +235,7 @@
       if(c.getAttribute('data-g')==='fit'&&c.classList.contains('on')&&c.getAttribute('data-v')!=='explore')[].forEach.call(box.querySelectorAll('.oni-chip[data-g=fit]'),function(o){if(o!==c&&o.getAttribute('data-v')!=='explore'){o.classList.remove('on');o.setAttribute('aria-pressed','false')}});
       saveNote(box);});
     var cb=box.querySelector('.oni-cbtn'),ci=box.querySelector('.oni-crow input'),cs=box.querySelector('.oni-csaved');
-    var doCommit=function(){saveCommit(id,r.sid||'_',ci.value);cs.textContent=ci.value.trim()?'Vállalás mentve ✓ A főoldalon és a következő kitöltésnél emlékeztetlek rá.':'Vállalás törölve.';cb.textContent=ci.value.trim()?'Módosítom':'Vállalom'};
+    var doCommit=function(){if(!saveCommit(id,r.sid||'_',ci.value)){cs.textContent='A vállalást nem sikerült menteni ezen az eszközön.';return;}cs.textContent=ci.value.trim()?'Vállalás mentve ✓ A főoldalon és a következő kitöltésnél emlékeztetlek rá.':'Vállalás törölve.';cb.textContent=ci.value.trim()?'Módosítom':'Vállalom'};
     cb.onclick=doCommit;ci.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();doCommit()}});
     var pv=box.querySelector('.oni-cprev');if(pv)pv.addEventListener('click',function(e){var c=e.target.closest('[data-cst]');if(!c)return;e.stopPropagation();setCommitState(id,pv.getAttribute('data-t'),c.getAttribute('data-cst'));pv.innerHTML='<span>Köszönöm, rögzítve: <b>'+CST[c.getAttribute('data-cst')]+'</b>. Írhatsz új vállalást lent.</span>';});
     var bindRemind=function(){

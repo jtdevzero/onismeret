@@ -19,6 +19,7 @@
 })();
 window.ONI=window.ONI||(function(){
   var K='onismeret-results-v1';
+  var LIMIT=200;   /* tesztenként ennyi kitöltés marad meg az előzményekben */
   var PATH=[
     {id:'ft',n:'Négy tendencia',href:'cselekves.html#test-ft',min:5,why:'hogyan reagálsz az elvárásokra'},
     {id:'kolbe',n:'Cselekvési módok',href:'cselekves.html#test-kolbe',min:7,why:'hogyan fogsz neki egy feladatnak'},
@@ -33,7 +34,8 @@ window.ONI=window.ONI||(function(){
   function meta(){try{return JSON.parse(localStorage.getItem(META))||{}}catch(e){return {}}}
   /* Kérdéssor- (q), pontozás- (s) és fordításverzió (t) tesztenként. Ha egy teszt tételei, pontozása vagy
      magyar szövege változik, itt emeld a megfelelő számot. Eltérő változatú eredményeket nem hasonlítunk össze. */
-  var VERS={maia2:{q:2,s:2,t:1}};
+  /* minden teszt verziója explicit; új teszt felvételekor ide is be kell írni (a tesztcsomag ellenőrzi) */
+  var VERS={maia2:{q:2,s:2,t:1},tas:{q:1,s:1,t:1},des:{q:1,s:1,t:1},ecr:{q:1,s:1,t:1},kotodes:{q:1,s:1,t:1},ysq:{q:1,s:1,t:1},smi:{q:1,s:1,t:1},ssss:{q:1,s:1,t:1},sisses:{q:1,s:1,t:1},iief:{q:1,s:1,t:1},pedt:{q:1,s:1,t:1},sdi:{q:1,s:1,t:1},nsss:{q:1,s:1,t:1},saq:{q:1,s:1,t:1},love:{q:1,s:1,t:1},apo:{q:1,s:1,t:1},imago:{q:1,s:1,t:1},bf:{q:1,s:1,t:1},via:{q:1,s:1,t:1},las:{q:1,s:1,t:1},tki:{q:1,s:1,t:1},gott:{q:1,s:1,t:1},fti:{q:1,s:1,t:1},pvq:{q:1,s:1,t:1},ft:{q:1,s:1,t:1},kolbe:{q:1,s:1,t:1},meq:{q:1,s:1,t:1},ips:{q:1,s:1,t:1},ders:{q:1,s:1,t:1},scs:{q:1,s:1,t:1},tfeq:{q:1,s:1,t:1}};
   function vOf(id){var v=VERS[id]||{};return {q:v.q||1,s:v.s||1,t:v.t||1}}
   /* két eredmény összevethető-e (azonos kérdéssor, pontozás és fordítás) */
   function same(a,b){return !!a&&!!b&&(a.qv||1)===(b.qv||1)&&(a.sv||1)===(b.sv||1)&&(a.tv||1)===(b.tv||1)}
@@ -71,10 +73,18 @@ window.ONI=window.ONI||(function(){
       }
       if(key&&m.fresh[key])delete m.fresh[key];
       try{localStorage.setItem(META,JSON.stringify(m))}catch(e){}
-      a[id]=h.slice(-24);
+      if(h.length>LIMIT){h=h.slice(-LIMIT);try{window.ONI_TOAST&&ONI_TOAST('A legrégebbi kitöltés kikerült az előzményekből ('+LIMIT+' kitöltés a tesztenkénti korlát). Mentsd le az adataidat, ha meg akarod őrizni.',true)}catch(x){}}
+      a[id]=h;
       localStorage.setItem(K,JSON.stringify(a));
-    }catch(e){}
+      if(localStorage.getItem(K)!==JSON.stringify(a))throw new Error('verify');   /* visszaolvasva is ott van-e */
+    }catch(e){
+      /* a mentés nem sikerült: nem jelezzük mentettnek, és nem fut le a „mentve” esemény */
+      try{window.ONI_TOAST&&ONI_TOAST('Az eredményt nem sikerült elmenteni ezen az eszközön (tele a tárhely vagy privát ablak?). Az eredmény most látható, de nem marad meg. Exportáld a válaszaidat a főoldalon.',true)}catch(x){}
+      try{window.dispatchEvent(new CustomEvent('oni:savefail',{detail:{id:id}}));}catch(x){}
+      return false;
+    }
     try{window.dispatchEvent(new CustomEvent('oni:saved',{detail:{id:id}}));}catch(e){}
+    return true;
   }
   /* ── Újramérési emlékeztető tesztenként. Beállítás: onismeret-settings-v1 → retake (alapértelmezett napok, 0 = ki)
         és remind[id] = {d: napok (0 = ki, hiányzik = alapértelmezett), s: halasztás eddig (ISO)}. A határidő a tényleges kitöltésből indul. ── */
@@ -362,5 +372,5 @@ window.ONI=window.ONI||(function(){
   })();
 
   window.addEventListener('oni:saved',function(e){setTimeout(function(){banner(e.detail.id)},900);});
-  return {K:K,META:META,IDKEY:IDKEY,VERS:VERS,vOf:vOf,same:same,isCur:isCur,verText:verText,markFresh:markFresh,remindCfg:remindCfg,setRemind:setRemind,due:due,all:all,save:save,r:r,PATH:PATH,pathState:pathState};
+  return {K:K,LIMIT:LIMIT,META:META,IDKEY:IDKEY,VERS:VERS,vOf:vOf,same:same,isCur:isCur,verText:verText,markFresh:markFresh,remindCfg:remindCfg,setRemind:setRemind,due:due,all:all,save:save,r:r,PATH:PATH,pathState:pathState};
 })();

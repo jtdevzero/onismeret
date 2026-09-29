@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Értékek, cselekvés, ritmus — PVQ-21 · Négy tendencia · Cselekvési módok · MEQ</title>
 <link rel="stylesheet" href="fonts/fonts.css?v=a00887e2">
-<script src="assets/oni-core.js?v=303e8c2e"></script>
+<script src="assets/oni-core.js?v=c294576c"></script>
 <style>/* A hub-oldalak alapstílusa (eredetileg a szemelyiseg.html-ből). */
 :root{
   --font-display:'Fraunces','Cardo',serif;
@@ -259,9 +259,9 @@ body::after{content:"";position:fixed;inset:0;background-image:url("data:image/s
 @media (max-width:820px){.hub-tabs.four{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:560px){.hub-tabs{position:static}.hub-tab{padding:12px 14px}.hub-tab .sub{display:none}.scale.s6{grid-template-columns:repeat(3,1fr)}.dv-row{grid-template-columns:96px 1fr 44px;gap:8px;font-size:12.5px}.quad .cell{min-height:96px;padding:12px 8px}.quad .cell .n{font-size:24px}}
 </style>
-<script src="assets/oni-schema.js?v=190e2f3e" defer></script>
+<script src="assets/oni-schema.js?v=e30726e8" defer></script>
 <script src="assets/tests-data.js?v=8174bfd3" defer></script>
-<script src="assets/results-plus.js?v=5e81801b" defer></script>
+<script src="assets/results-plus.js?v=e491f72e" defer></script>
 <link rel="stylesheet" href="assets/theme.css?v=e01934c0">
 </head>
 <body>
@@ -584,7 +584,7 @@ const T={
     risk:'Elemzési bénultság: a tökéletes információ keresése helyettesíti a döntést. Mások szemében nehézkes lehet.',
     strat:['Minden célnál írd le a MIÉRT-et: nálad ez a motor.','Adj magadnak kutatási határidőt („péntekig gyűjtök, utána döntök”).','Ha elakadsz, kérdezd meg: a hiányzó információ tényleg megváltoztatná a döntést?']},
   O:{name:'Kötelességtudó',en:'Obliger',color:'#fbbf24',rule:'A külső elvárásokat könnyen teljesíti, a belsőket (saját magának tett ígéreteket) nehezen.',
-    desc:'Ha más számít rá, szinte mindig teljesít. Ha csak saját magának ígérte, a terv hamar elhal. Ez a leggyakoribb tendencia.',
+    desc:'Ha más számít rá, általában teljesít. Ha csak saját magának ígérte, a terv könnyebben elakad. Rubin szerint ez a leggyakoribb tendencia.',
     risk:'Kiégés és „kötelességtudó lázadás”: sok évnyi mások kiszolgálása után hirtelen, látszólag ok nélkül megtagad valamit.',
     strat:['<strong>Külső elszámoltathatóság</strong> minden saját célhoz: edzőtárs, coach, nyilvános vállalás, fizetett határidő.','Keretezd át: „nem magamért csinálom, hanem hogy példát mutassak / hogy ne hagyjam cserben azokat, akik rám számítanak”.','Figyeld a lázadás előjeleit: a neheztelés jelzi, hogy túl sokat adsz.']},
   R:{name:'Lázadó',en:'Rebel',color:'#fb7185',rule:'Ellenáll a külső és a belső elvárásoknak is. Azt teszi, amit most akar, a maga módján.',
@@ -719,7 +719,7 @@ makeTest({
     const g=Object.keys(M).map(k=>H.gauge({name:M[k].name,sub:M[k].en+' · '+zname[zone(s[k])],val:s[k],unit:'/10',min:1,max:10,color:M[k].color,zones,labels:['1 · ellenálló','rugalmas','kezdeményező · 10'],desc:M[k][zone(s[k])]})).join('');
     const combos=[];
     if(s.qs>=7&&s.ft<=4)combos.push('<p><strong>Magas Gyorsindító + alacsony Rendszerező:</strong> sok indítás, kevés lezárás. Az ötlet és a lendület megvan, a befejezéshez hiányzik a struktúra. Kolbe megoldása nem az, hogy „legyél rendszerezettebb”, hanem hogy a lezárást egy Rendszerező partnerre, eszközre vagy külső folyamatra bízd.</p>');
-    if(s.ff>=7&&s.qs<=4)combos.push('<p><strong>Magas Tényfeltáró + alacsony Gyorsindító:</strong> az elemzési bénultság klasszikus profilja. Mindig lehet még egy adatot gyűjteni, és a döntés csúszik. Adj a kutatásnak kemény határidőt.</p>');
+    if(s.ff>=7&&s.qs<=4)combos.push('<p><strong>Magas Tényfeltáró + alacsony Gyorsindító:</strong> ez elemzési bénultsággal járhat: mindig lehet még egy adatot gyűjteni, és a döntés csúszhat. Tisztázó kérdés: melyik döntésnél történt ez veled mostanában? Adj a kutatásnak kemény határidőt.</p>');
     if(s.ff>=7&&s.qs>=7)combos.push('<p><strong>Magas Tényfeltáró + magas Gyorsindító:</strong> belső húzóerő: az egyik rész kutatni akar, a másik azonnal indulni. Gyakran úgy jelenik meg, hogy gyorsan nekiugrasz, majd megakadsz, mert „még utána kell nézni”. Szétválaszthatod: előbb időkorlátos kutatás, utána kísérlet.</p>');
     if(s.ft>=7&&s.qs<=3)combos.push('<p><strong>Magas Rendszerező + alacsony Gyorsindító:</strong> kiváló megvalósító és karbantartó. A változás, az új indítás energiaigényes. Ilyenkor érdemes egy Gyorsindítóval párba állni.</p>');
     if(!combos.length)combos.push('<p>Nincs szélsőséges feszültség a módjaid között. A profilod kiegyensúlyozott: a helyzethez igazodva tudsz váltani.</p>');

@@ -8,17 +8,18 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Playwright telepítése
+          cache: npm
+      - name: Függőségek a lockfile szerint
         run: |
-          npm i --no-save playwright
+          npm ci
           npx playwright install --with-deps chromium
-      - name: Generált oldalak egyeznek a forrással
+      - name: Generált fájlok egyeznek a forrással
         run: |
           python3 tools/build.py
-          if ! git diff --quiet -- '*.html'; then
-            echo "A generált oldalak eltérnek a src/ forrástól. Futtasd helyben: python3 tools/build.py"
+          if ! git diff --quiet; then
+            echo "A build után generálatlan módosítás maradt. Futtasd helyben: python3 tools/build.py"
             git diff --stat
             exit 1
           fi
-      - name: Tesztek
-        run: node tests/run.js
+      - name: Tesztek (linkek, séma, pontozás, felület)
+        run: npm test

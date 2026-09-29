@@ -146,10 +146,10 @@ h2 em{font-style:italic;color:var(--gold)}
   body.rep-mode #report .cols{columns:2;column-gap:10pt}
 }
 </style>
-<script src="assets/oni-core.js?v=303e8c2e"></script>
-<script src="assets/oni-schema.js?v=190e2f3e" defer></script>
+<script src="assets/oni-core.js?v=c294576c"></script>
+<script src="assets/oni-schema.js?v=e30726e8" defer></script>
 <script src="assets/tests-data.js?v=8174bfd3" defer></script>
-<script src="assets/results-plus.js?v=5e81801b" defer></script>
+<script src="assets/results-plus.js?v=e491f72e" defer></script>
 <link rel="stylesheet" href="assets/theme.css?v=e01934c0">
 </head>
 <body>
@@ -313,7 +313,7 @@ const RULES=[
   sig:[S('ips','IPS halogatás ≥ 28',()=>val('ips','total')>=28),S('ders','DERS célirányos működés ≥ 10',()=>val('ders','goals')>=10),S('ders','DERS korlátozott stratégiák ≥ 10',()=>val('ders','strat')>=10),S('scs','Túlazonosulás ≥ 3,5',()=>val('scs','OI')>=3.5)],
   text:'Ezek a jelzések arra utalhatnak, hogy a halogatás mögött nem (csak) időbeosztás áll, hanem az, hogy a feladat kellemetlen érzést kelt, és az elkerülés azonnal csillapít.',
   q:'Melyik feladatot halogatod most, és milyen érzést kelt benned, ha rágondolsz?',
-  action:'A feladat előtt nevezd meg az érzést, amit kelt, és tedd <b>nevetségesen kicsivé</b> az első lépést (2 perc, egy mondat, egy fájl megnyitása). Az érzés a kezdés után szinte mindig gyengül.'},
+  action:'A feladat előtt nevezd meg az érzést, amit kelt, és tedd <b>nevetségesen kicsivé</b> az első lépést (2 perc, egy mondat, egy fájl megnyitása). Az érzés a kezdés után sokszor gyengül.'},
  {id:'bids',title:'Minőségi idő-igény, gyenge felé fordulás',acc:'#fbbf24',min:2,
   sig:[S('love','Első szeretetnyelv: Minőségi idő',()=>{const r=last('love');if(!r)return false;const top=Object.entries(r.d).sort((a,b)=>b[1][1]-a[1][1])[0];return top&&top[0]==='B'}),S('gott','Egymás felé fordulás ≤ 3',()=>val('gott','turn')!==null&&val('gott','turn')<=3)],
   text:'A figyelem és a közös jelenlét a legfontosabb szeretetnyelved, miközben az eredmények szerint a kapcsolatban az apró kapcsolódási kísérletekre adott válasz gyengébb. Ez hiányérzethez vezethet.',

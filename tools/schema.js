@@ -50,11 +50,21 @@ function compact(items) {
           Object.entries(JSON.parse(raw)).forEach(([n, v]) => { ((vals[k] = vals[k] || {})[n] = vals[k][n] || new Set()).add(v); });
         });
       }
+      /* eredménydimenziók: minden válaszváltozatnál megnyitjuk az eredményt, és gyűjtjük a mentett skálakulcsokat */
+      const dims = {};
+      const grab = () => { const all = ONI.all(); Object.entries(all).forEach(([id, h]) => h.forEach(r => Object.keys(r.d || {}).forEach(k => { (dims[id] = dims[id] || new Set()).add(k); }))); };
+      for (let i = 0; i < max; i++) {
+        groups.forEach(bs => bs[Math.min(i, bs.length - 1)].click());
+        await new Promise(r => setTimeout(r, 30));
+        document.querySelectorAll('button[id$=showResults], button[id$=-show], #showResults').forEach(b => { if (!b.disabled) b.click(); });
+        await new Promise(r => setTimeout(r, 60));
+        grab();
+      }
       const out = {};
-      Object.entries(vals).forEach(([k, o]) => { out[inv[k]] = { k, items: Object.fromEntries(Object.entries(o).map(([n, s]) => [n, [...s].sort((a, b) => (a > b ? 1 : -1))])) }; });
+      Object.entries(vals).forEach(([k, o]) => { const id = inv[k]; out[id] = { k, items: Object.fromEntries(Object.entries(o).map(([n, s]) => [n, [...s].sort((a, b) => (a > b ? 1 : -1))])), dims: [...(dims[id] || [])].sort() }; });
       return out;
     });
-    Object.entries(res).forEach(([id, v]) => { S[id] = { k: v.k, g: compact(v.items) }; console.log(f, id, Object.keys(v.items).length, 'kérdés'); });
+    Object.entries(res).forEach(([id, v]) => { S[id] = { k: v.k, g: compact(v.items), d: v.dims }; console.log(f, id, Object.keys(v.items).length, 'kérdés,', v.dims.length, 'skála'); });
     await ctx.close();
   }
   /* A két különálló oldal saját felépítésű: a kérdéslistát a forrásukból olvassuk. */
@@ -62,12 +72,16 @@ function compact(items) {
     const p = await (await browser.newContext()).newPage(); p.on('dialog', d => d.dismiss());
     await p.goto(R + 'kotodes-melyterkep.html'); await p.waitForTimeout(200);
     const secs = await p.evaluate(() => SECTIONS.map(s => [s.id, s.items.length]));
-    S.kotodes = { k: 'attachment_assessment_v1', c: 'draft', g: secs.map(([id, n]) => [id + '_0-' + (n - 1), [1, 2, 3, 4, 5, 6, 7]]) };
+    S.kotodes = { k: 'attachment_assessment_v1', c: 'draft', g: secs.map(([id, n]) => [id + '_0-' + (n - 1), [1, 2, 3, 4, 5, 6, 7]]), d: ['anxiety', 'avoidance', 'earned'] };
     await p.goto(R + 'ysq.html'); await p.waitForTimeout(300);
     const n = await p.evaluate(() => SCHEMAS.reduce((a, s) => Math.max(a, s.start + s.items.length - 1), 0));
-    S.ysq = { k: 'ysq_autosave', c: 'answers', g: [['1-' + n, [1, 2, 3, 4, 5, 6]]] };
+    const kods = await p.evaluate(() => SCHEMAS.map(s => s.kod).sort());
+    S.ysq = { k: 'ysq_autosave', c: 'answers', g: [['1-' + n, [1, 2, 3, 4, 5, 6]]], d: kods };
     console.log('kotodes', secs.reduce((a, s) => a + s[1], 0), 'kérdés; ysq', n, 'kérdés');
   }
+  /* Imágó: csak az 5 legerősebb szükséglet kerül az eredménybe, ezért mind a 10 lehetséges kulcsot a forrásból vesszük */
+  const needs = [...fs.readFileSync(path.join(ROOT, 'nyelvek.html'), 'utf8').matchAll(/\{n:(\d+), *s:'NEED'/g)].map(m => 'n' + m[1]);
+  if (S.imago && needs.length) S.imago.d = [...new Set([...S.imago.d, ...needs])].sort();
   await browser.close();
   const order = Object.keys(ONI_ORDER()).filter(id => S[id]);
   const body = order.map(id => '  ' + id + ':' + JSON.stringify(S[id])).join(',\n');

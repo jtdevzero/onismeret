@@ -312,10 +312,10 @@ body:not(.ct-longdesc) .card .tests{display:none}
 .card[hidden],.cat[hidden],.jump[hidden]{display:none!important}
 @media (max-width:900px){.cat-tools{grid-template-columns:1fr 1fr}.ct-search{grid-column:1/-1}}
 </style>
-<script src="assets/oni-core.js?v=303e8c2e"></script>
-<script src="assets/oni-schema.js?v=190e2f3e" defer></script>
+<script src="assets/oni-core.js?v=c294576c"></script>
+<script src="assets/oni-schema.js?v=e30726e8" defer></script>
 <script src="assets/tests-data.js?v=8174bfd3" defer></script>
-<script src="assets/results-plus.js?v=5e81801b" defer></script>
+<script src="assets/results-plus.js?v=e491f72e" defer></script>
 <link rel="stylesheet" href="assets/theme.css?v=e01934c0">
 </head>
 <body>
@@ -942,6 +942,7 @@ body:not(.ct-longdesc) .card .tests{display:none}
   });
   document.getElementById('pp-import').addEventListener('change',function(ev){
     var f=ev.target.files[0];if(!f)return;
+    if(f.size>5*1024*1024){say('A fájl túl nagy ('+Math.round(f.size/1048576)+' MB). Egy mentésfájl legfeljebb 5 MB lehet, ezért nem állítom vissza.',true);ev.target.value='';return;}
     var r=new FileReader();
     r.onload=function(){
       var obj;try{obj=JSON.parse(r.result)}catch(e){say('A fájl nem olvasható (nem érvényes JSON).',true);return;}

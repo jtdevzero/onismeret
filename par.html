@@ -108,10 +108,10 @@ b.me,.pv.me{color:var(--gold)}b.pa,.pv.pa{color:var(--sapphire)}
 .pq{margin:10px 0 0!important;font-size:14px;color:var(--ink)!important;font-style:italic}.pq b{font-style:normal}
 </style>
 
-<script src="assets/oni-core.js?v=303e8c2e"></script>
-<script src="assets/oni-schema.js?v=190e2f3e" defer></script>
+<script src="assets/oni-core.js?v=c294576c"></script>
+<script src="assets/oni-schema.js?v=e30726e8" defer></script>
 <script src="assets/tests-data.js?v=8174bfd3" defer></script>
-<script src="assets/results-plus.js?v=5e81801b" defer></script>
+<script src="assets/results-plus.js?v=e491f72e" defer></script>
 <link rel="stylesheet" href="assets/theme.css?v=e01934c0">
 </head>
 <body>
@@ -174,7 +174,9 @@ const lastOf=(st,id)=>{const h=st&&st[id];return h&&h.length?h[h.length-1]:null}
 const pname=()=>(P&&P.name)||'Párod';
 
 document.getElementById('pfile').addEventListener('change',ev=>{
-  const f=ev.target.files[0];if(!f)return;const r=new FileReader();
+  const f=ev.target.files[0];if(!f)return;
+  if(f.size>2*1024*1024){msg('A fájl túl nagy egy párexporthoz (legfeljebb 2 MB), ezért nem töltöm be.',true);ev.target.value='';return;}
+  const r=new FileReader();
   r.onload=()=>{
     let o;try{o=JSON.parse(r.result)}catch(e){msg('A fájl nem olvasható.',true);return;}
     if(!o||o.app!=='onismeret'||!o.data){msg('Ez nem az Önismereti térképek mentésfájlja.',true);return;}
@@ -226,7 +228,9 @@ document.getElementById('pclear').addEventListener('click',()=>{if(!confirm('Tö
 /* ── Párdinamikai jelzések ── */
 function insights(m,p){
   const out=[],v=(st,id,k)=>{const r=st[id];return r&&r.d&&r.d[k]?r.d[k][1]:null};
-  const M=Object.fromEntries(TESTS.map(([id])=>[id,lastOf(ME,id)])),Q=Object.fromEntries(TESTS.map(([id])=>[id,lastOf(P.results,id)]));
+  /* csak azonos kérdéssor-, pontozás- és fordításverziójú eredményekből vonunk le párjelzést */
+  const same=id=>{const x=lastOf(ME,id),y=lastOf(P.results,id);return !!x&&!!y&&window.ONI&&ONI.same(x,y)};
+  const M=Object.fromEntries(TESTS.map(([id])=>[id,same(id)?lastOf(ME,id):null])),Q=Object.fromEntries(TESTS.map(([id])=>[id,same(id)?lastOf(P.results,id):null]));
   const topKey=r=>r&&r.d?Object.entries(r.d).sort((a,b)=>b[1][1]-a[1][1])[0]:null;
   const N=pname();
   // szeretetnyelv
@@ -241,14 +245,14 @@ function insights(m,p){
   if(src){const a=kind(M[src],src),b=kind(Q[src],src);
     if((a==='anx'&&b==='avo')||(a==='avo'&&b==='anx'))out.push({t:'Szorongó–elkerülő csapda',c:'#fb7185',x:`Az egyikőtök kötődési rendszere a közelséget keresi, amikor bizonytalan, a másiké a távolságot. Ebből könnyen kialakulhat egy „üldöző–menekülő” kör: minél jobban közeledik az egyik, annál jobban húzódhat a másik. Hogy nálatok így van-e, azt csak ti tudjátok megmondani. A megoldás nem az, hogy valaki „nyer”, hanem hogy <strong>kimondjátok a mintát</strong>, amikor elindul („Most megint üldözlek / menekülök”).`});
     else if(a==='sec'&&b==='sec')out.push({t:'Két biztonságos kötődés',c:'#34d399',x:'Mindketten viszonylag nyugodtan kezelitek a közelséget és a távolságot. Ez stabil alap lehet: a konfliktusok kevésbé kapcsolnak be riasztást.'});
-    else if(a==='sec'||b==='sec')out.push({t:'Egy biztonságos „horgony”',c:'#60a5fa',x:'Egyikőtök biztonságos kötődése stabilizáló hatású lehet a másikra. A kutatás szerint egy biztonságos partner mellett a bizonytalan kötődés idővel „szerzett biztonsággá” alakulhat.'});
+    else if(a==='sec'||b==='sec')out.push({t:'Egy biztonságos „horgony”',c:'#60a5fa',x:'Egyikőtök biztonságos kötődése stabilizáló hatású lehet a másikra. Egyes kutatások szerint egy biztonságos partner mellett a bizonytalan kötődés idővel oldódhat.'});
     else if(a==='anx'&&b==='anx')out.push({t:'Két szorongó kötődés',c:'#fbbf24',x:'Mindketten érzékenyen reagáltok a távolságra. Erős közelség, de könnyen felpörgő konfliktusok. A lassítás, a bejelentett szünet és a rendszeres megerősítés sokat segít.'});
     else if(a==='avo'&&b==='avo')out.push({t:'Két elkerülő kötődés',c:'#fbbf24',x:'Mindkettőtöknek fontos az önállóság. Kevés a dráma, de a mélyebb érzelmi bevonódás könnyen elmarad. Érdemes tudatosan időt adni a sebezhető beszélgetéseknek.'});}
   // konfliktus
   if(M.tki&&Q.tki){const a=M.tki.d,b=Q.tki.d;
-    if(a.avoid[1]>=3.5&&b.avoid[1]>=3.5)out.push({t:'Mindketten kerülitek a konfliktust',c:'#94a3b8',x:'Kevés a vita, de a megoldatlan ügyek felhalmozódnak, és később egyszerre robbannak. Egy rögzített heti „mi foglalkoztat?” beszélgetés sokat segít.'});
-    if((a.comp[1]>=3.5&&b.acc[1]>=3.5)||(b.comp[1]>=3.5&&a.acc[1]>=3.5))out.push({t:'Versengő + alkalmazkodó páros',c:'#f97316',x:'Az egyikőtök érvényesít, a másik enged. Rövid távon gördülékeny, hosszú távon az engedő félben felgyűlik a neheztelés. Figyeljetek arra, hogy a döntésekben a kevésbé hangos fél igénye is kimondásra kerüljön.'});
-    if(a.comp[1]>=3.5&&b.comp[1]>=3.5)out.push({t:'Két versengő',c:'#fb7185',x:'Vitában mindketten nyerni akartok, ezért könnyen eszkalálódik. Egyeztessetek előre egy „stop” jelet, és a vita után egy nyugodt visszatérést.'});}
+    if(a.avoid[1]>=3.5&&b.avoid[1]>=3.5)out.push({t:'Mindketten kerülitek a konfliktust',c:'#94a3b8',x:'Kevés lehet a vita. Érdemes megnéznetek, maradnak-e nálatok kimondatlan ügyek, amelyek később egyszerre jönnek elő. Egy rögzített heti „mi foglalkoztat?” beszélgetés sokat segít.'});
+    if((a.comp[1]>=3.5&&b.acc[1]>=3.5)||(b.comp[1]>=3.5&&a.acc[1]>=3.5))out.push({t:'Versengő + alkalmazkodó páros',c:'#f97316',x:'Az egyikőtök érvényesít, a másik enged. Ez a kombináció gördülékeny lehet, de érdemes megnéznetek, gyűlik-e az engedő félben kimondatlan neheztelés. Figyeljetek arra, hogy a döntésekben a kevésbé hangos fél igénye is kimondásra kerüljön.'});
+    if(a.comp[1]>=3.5&&b.comp[1]>=3.5)out.push({t:'Két versengő',c:'#fb7185',x:'Ez a kombináció felvetheti, hogy vitában mindketten nyerni szeretnétek; érdemes megnéznetek, előfordul-e, hogy a vita elszabadul. Egyeztessetek előre egy „stop” jelet, és a vita után egy nyugodt visszatérést.'});}
   // Gottman
   if(M.gott&&Q.gott){const a=M.gott.d,b=Q.gott.d;
     if(a.cont[1]>=3||b.cont[1]>=3)out.push({t:'Megvetés-jelzés',c:'#fb7185',x:'Legalább egyikőtök ≥3-ra értékelte a saját megvető viselkedését. Gottman kutatásaiban a megvetés a szétválás egyik legerősebb előrejelzője volt, de egy önbevallásos pontszám ezt önmagában nem jelzi előre. Ellensúlyként a rendszeres, kimondott megbecsülés segíthet.',q:'Mikor érezted utoljára, hogy a másik lekezel vagy lenéz, és mit éreztél akkor?'});
@@ -325,7 +329,7 @@ function render(){
   h+=ins.length?ins.map(i=>{const q=qOf(i);return `<div class="card pat" style="--acc:${i.c}"><h3>${i.t}</h3><p>${i.x}</p>${q?`<p class="pq"><b>Kérdés egymásnak:</b> ${q}</p>`:''}</div>`}).join(''):'<div class="locked">A közösen kitöltött tesztekből még nem rajzolódik ki jellegzetes párdinamika.</div>';
   h+=`<h2>Egymás <em>mellett</em></h2><p class="h2sub"><span class="lg me"></span> Te &nbsp; <span class="lg pa"></span> ${esc(N)}. Kiemelve a legalább 30%-os eltérések.</p>`;
   both.forEach(([id,n])=>{const a=lastOf(ME,id),b=lastOf(P.results,id);
-    h+=`<div class="card cmp" style="--acc:var(--gold)"><h3>${n}</h3><div class="hl2"><span><b class="me">Te:</b> ${esc(a.h||'')}</span><span><b class="pa">${esc(N)}:</b> ${esc(b.h||'')}</span></div>${pairBars(a,b)}${gapQ(a,b)}</div>`;});
+    h+=`<div class="card cmp" style="--acc:var(--gold)"><h3>${n}</h3><div class="hl2"><span><b class="me">Te:</b> ${esc(a.h||'')}</span><span><b class="pa">${esc(N)}:</b> ${esc(b.h||'')}</span></div>${ONI.same(a,b)?pairBars(a,b)+gapQ(a,b):`<p class="pq" style="font-style:normal">A két eredmény eltérő tesztváltozatból származik (te: ${esc(verT(a))}; ${esc(N)}: ${esc(verT(b))}), ezért nem hasonlítható össze. Aki a régebbi változattal töltötte ki, töltse ki újra.</p>`}</div>`;});
   root.innerHTML=h;
 }
 render();

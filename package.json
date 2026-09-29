@@ -1,0 +1,13 @@
+{
+  "name": "onismeret",
+  "private": true,
+  "description": "Önismereti térképek — build és automatikus ellenőrzés",
+  "scripts": {
+    "build": "python3 tools/build.py",
+    "schema": "node tools/schema.js",
+    "test": "node tests/run.js"
+  },
+  "devDependencies": {
+    "playwright": "1.56.0"
+  }
+}

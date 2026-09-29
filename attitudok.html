@@ -251,10 +251,10 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
   body{background:#fff}
 }
 </style>
-<script src="assets/oni-core.js?v=303e8c2e"></script>
-<script src="assets/oni-schema.js?v=190e2f3e" defer></script>
+<script src="assets/oni-core.js?v=c294576c"></script>
+<script src="assets/oni-schema.js?v=e30726e8" defer></script>
 <script src="assets/tests-data.js?v=8174bfd3" defer></script>
-<script src="assets/results-plus.js?v=5e81801b" defer></script>
+<script src="assets/results-plus.js?v=e491f72e" defer></script>
 <link rel="stylesheet" href="assets/theme.css?v=e01934c0">
 </head>
 <body>
@@ -557,7 +557,7 @@ function getCrossLinks(scores){
     links.push({label:'Alacsony PL + alacsony OD — érzelmi távolság',text:`Kombinált gyenge intimitás + gyenge nyitottság gyakran együtt jár elkerülő kötődéssel (ECR-R elkerülés magas) és alexitímiával (TAS-20).`});
   }
   if(od<0.3){
-    links.push({label:'Nagyon alacsony OD → SIS2 magas valószínűleg',text:`A zárt, gátolt szexuális önkép szinte mindig együtt jár magas SIS2 (külső gátlás) pontszámmal a Bancroft-modellben. Ha nem töltötted még ki, érdemes a SIS/SES-t is (előző hub).`});
+    links.push({label:'Nagyon alacsony OD → érdemes a SIS2-t is megnézni',text:`A zárt, gátolt szexuális önkép a Bancroft-modell szerint gyakran együtt járhat magasabb SIS2 (külső gátlás) pontszámmal; hogy nálad így van-e, azt a SIS/SES mutatja meg. Ha nem töltötted még ki, érdemes a SIS/SES-t is (előző hub).`});
   }
   if(pl>=0.7 && od>=0.7){
     links.push({label:'Magas PL + magas OD — integrált érett szexuális önkép',text:`Együttesen magas érzelmi + nyitott önkép a legkedvezőbb profil: intimitás és felszabadultság egyszerre elérhető. Ez a "biztonságos-explorative" attitűd.`});
@@ -936,10 +936,10 @@ function getCrossLinks(scores){
   const links=[];
   if(scores.SM>=32){
     links.push({label:'Magas Monitoring → IIEF-15 EF-domén megnézése',text:`Aktív spectator mode klinikailag korrelál pszichogén erekciós zavarral. Ha nem töltötted még ki az IIEF-15-öt, most érdemes.`});
-    links.push({label:'SIS/SES: magas SIS1 valószínűleg',text:`A Sexual Monitoring és a SIS1 (Sexual Inhibition — teljesítmény-fenyegetés) szinte azonos jelenséget mérnek különböző szögből. Ha felvetted a SIS/SES-t, az SIS1 pontszám valószínűleg magas.`});
+    links.push({label:'SIS/SES: érdemes a SIS1-et is megnézni',text:`A Sexual Monitoring és a SIS1 (Sexual Inhibition — teljesítmény-fenyegetés) rokon jelenséget mérnek különböző szögből. Ha kitöltötted a SIS/SES-t, nézd meg, nálad is magasabb-e a SIS1.`});
   }
   if(scores.AS<=18 && scores.SM>=27){
-    links.push({label:'Alacsony asszertivitás + magas monitorozás — compliant szexuális profil',text:`Nem meged kifejezni a vágyaidat + folyamatos aggodalom, hogyan látnak — ez klasszikus <em>people-pleaser</em> szexuális minta. SMI-n Compliant Surrenderer valószínűleg magas.`});
+    links.push({label:'Alacsony asszertivitás + magas monitorozás — compliant szexuális profil',text:`Nem meged kifejezni a vágyaidat + folyamatos aggodalom, hogyan látnak — ez a mások elvárásaihoz igazodó (<em>people-pleaser</em>) mintára utalhat. Tisztázó kérdés: mikor mondtad ki utoljára, mit szeretnél? Az SMI alávető módja kiegészítő szempontot adhat.`});
   }
   if(scores.SC>=36 && scores.SM<=18){
     links.push({label:'Egészséges introspektív profil',text:`Magas tudatosság + alacsony monitorozás = reflektálsz magadra, de nem szorongsz mások értékelése miatt. A legegészségesebb konfiguráció.`});

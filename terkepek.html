@@ -472,10 +472,10 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
   body{background:#fff}
 }
 </style>
-<script src="assets/oni-core.js?v=303e8c2e"></script>
-<script src="assets/oni-schema.js?v=190e2f3e" defer></script>
+<script src="assets/oni-core.js?v=c294576c"></script>
+<script src="assets/oni-schema.js?v=e30726e8" defer></script>
 <script src="assets/tests-data.js?v=8174bfd3" defer></script>
-<script src="assets/results-plus.js?v=5e81801b" defer></script>
+<script src="assets/results-plus.js?v=e491f72e" defer></script>
 <link rel="stylesheet" href="assets/theme.css?v=e01934c0">
 </head>
 <body>
@@ -913,7 +913,7 @@ const STYLES={
   secure:{name:'Biztonságos (Secure)',color:'#065f46',short:'Alacsony szorongás + alacsony elkerülés',long:`<p><strong>A stabilitás profilja.</strong> Képes vagy megnyílni, függeni, és megtartani az önállóságodat is. A partner távolléte, konfliktus, csend nem sodor ki — a belső "biztonsági bázis" működik. Külföldi felnőtt mintákban nagyjából 55-60%.</p>`},
   preoccupied:{name:'Belefeledkező / szorongó (Preoccupied)',color:'#1e3a8a',short:'Magas szorongás + alacsony elkerülés',long:`<p><strong>A megközelítési profil.</strong> Mélyen érzelmi, könnyen megnyíló — de folyamatosan monitoros: "miért nem ír vissza", "már nem szeret". A kapcsolat hőmérője folyamatosan mérésre van kapcsolva. Fárasztó. Külföldi felnőtt mintákban nagyjából 15-20%.</p>`},
   dismissive:{name:'Elkerülő / elutasító (Dismissive-Avoidant)',color:'#b8912e',short:'Alacsony szorongás + magas elkerülés',long:`<p><strong>A távolítási profil.</strong> Önállóság magasra értékelve. A közeli megnyílás nehezen viselhető — a rendszer a közelség növekedésére deaktivációval reagál. "Egyedül boldogulok". A kapcsolat mélyülésével nő a menekülési vágy. Külföldi felnőtt mintákban nagyjából 20-25%.</p>`},
-  fearful:{name:'Rettegő / dezorganizált (Fearful-Avoidant)',color:'#7c2d3c',short:'Magas szorongás + magas elkerülés',long:`<p><strong>A legkomplexebb profil.</strong> Két ellentétes vágy: erős szükséglet a közelségre ÉS erős menekülési késztetés attól. Klasszikus közelítés-menekülés (approach-avoidance) konfliktus. Tipikusan korai traumatizáló kötődési tapasztalatok nyomán. Külföldi felnőtt mintákban nagyjából 7-10%.</p>`}
+  fearful:{name:'Rettegő / dezorganizált (Fearful-Avoidant)',color:'#7c2d3c',short:'Magas szorongás + magas elkerülés',long:`<p><strong>A legkomplexebb profil.</strong> Két ellentétes vágy: erős szükséglet a közelségre ÉS erős menekülési késztetés attól. Közelítés-menekülés (approach-avoidance) feszültség. Sok esetben korai, nehéz kötődési tapasztalatokkal hozzák összefüggésbe, de a pontszám önmagában ezt nem mutatja meg. Külföldi felnőtt mintákban nagyjából 7-10%.</p>`}
 };
 const INTERP={
   anx:{
@@ -971,7 +971,7 @@ function therapySuggestions(scores){
     mods.push({name:'Szomatikus önszabályozás',text:`Az akut kötődési aktiváció fiziológiai állapot. Hosszított kilégzés, pszichológiai sóhaj, jeges arc — direkt idegrendszeri szabályozás.`});
   }
   if(style==='dismissive' || avd>=4.5){
-    mods.push({name:'Attachment-based therapy — érzelmi hozzáférés',text:`A dismissive profil klasszikus tapasztalata: "nem érzek semmit" akkor, amikor valami erős érzelemnek kellene lennie. A régen elhallgattatott érzelmek biztonságos újrahangolása.`});
+    mods.push({name:'Attachment-based therapy — érzelmi hozzáférés',text:`Az elkerülő profilnál gyakori tapasztalat lehet: "nem érzek semmit" akkor, amikor valami erős érzelemnek kellene lennie. A régen elhallgattatott érzelmek biztonságos újrahangolása.`});
     mods.push({name:'MABT — testi tudatosság',text:`Ha az érzelmek nem elérhetőek, a test gyakran ott hordja őket. Kevésbé fenyegetőző belépési pont.`});
   }
   if(style==='secure'){
@@ -1248,11 +1248,11 @@ function getCrossLinks(scores){
     links.push({label:'YSQ átfedés: Defectiveness / Unrelenting Standards',text:`A magas <strong>szülő mode</strong>-ok mögött megfelelő <em>korai maladaptív sémák</em> húzódnak.`});
   }
   if(scores.detached.mean>=4.0){
-    links.push({label:'MAIA-2: Trusting és Body Listening alacsonyabb',text:`A detached protector szinte mindig együtt jár a MAIA-2 <em>Trusting</em> és <em>Body Listening</em> alacsonyabb értékeivel.`});
+    links.push({label:'MAIA-2: Trusting és Body Listening alacsonyabb',text:`Az elszakadó védő mód gyakran együtt járhat a MAIA-2 <em>Bizalom</em> és <em>Test-hallgatás</em> alacsonyabb értékeivel. A MAIA-2 megmutatja, nálad így van-e.`});
     links.push({label:'ECR-R: elkerülő kötődés (I. tab)',text:`Detached protector és elkerülő kötődési stílus mély átfedést mutatnak. Nézd meg az I. tabon!`});
   }
   if(scores.vuln.mean>=4.0&&scores.compliant.mean>=4.0){
-    links.push({label:'ECR-R: anxiously preoccupied profil valószínű (I. tab)',text:`Magas sebezhető gyermek + magas alávető = klasszikus szorongó kötődési profil mintázata.`});
+    links.push({label:'ECR-R: érdemes a szorongó kötődést is megnézni (I. tab)',text:`Magas sebezhető gyermek + magas alávető mód: ez szorongó kötődési mintára utalhat. Az ECR-R megmutatja, nálad így van-e.`});
   }
   if(scores.soother.mean>=4.0){
     links.push({label:'Érzelmi evés és képernyő-menekülés',text:`Az elterelő öncsillapító közvetlen kapcsolata a stresszes evéssel és képernyő-időtöltéssel.`});
@@ -1462,7 +1462,7 @@ const INTERP={
 function getCrossLinks(scores, total){
   const links=[];
   if(scores.DIF>=18){
-    links.push({label:'MAIA-2: Emotional Awareness alacsony',text:`Magas DIF szinte mindig együtt jár a MAIA-2 <em>Emotional Awareness</em> alacsony pontszámával.`});
+    links.push({label:'MAIA-2: Emotional Awareness alacsony',text:`Magas DIF gyakran együtt járhat a MAIA-2 <em>Érzelmi tudatosság</em> alacsonyabb pontszámával.`});
   }
   if(scores.DIF>=18&&scores.DDF>=13){
     links.push({label:'ECR-R: elkerülő kötődéssel átfedés (I. tab)',text:`A magas DIF+DDF profil erős korrelációt mutat az elkerülő kötődési stílussal. <strong>Nézd meg az I. tabon!</strong>`});

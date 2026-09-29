@@ -948,10 +948,10 @@
     }
   }
 </style>
-<script src="assets/oni-core.js?v=303e8c2e"></script>
-<script src="assets/oni-schema.js?v=190e2f3e" defer></script>
+<script src="assets/oni-core.js?v=c294576c"></script>
+<script src="assets/oni-schema.js?v=e30726e8" defer></script>
 <script src="assets/tests-data.js?v=8174bfd3" defer></script>
-<script src="assets/results-plus.js?v=5e81801b" defer></script>
+<script src="assets/results-plus.js?v=e491f72e" defer></script>
 <link rel="stylesheet" href="assets/theme.css?v=e01934c0">
 </head>
 <body>
@@ -1781,7 +1781,7 @@ function getSubdimReading(r) {
   html += `<li><strong>Dismissing</strong> (érzelmi lefojtás, racionalizáció): <em>${r.avoDismissing}</em>. ${r.avoDismissing > 60 ? 'A fő stratégia: „nincs szükségem rá, meg tudom oldani egyedül".' : r.avoDismissing > 40 ? 'Részben jelen — bizonyos területeken lefojtasz, máshol nyitott vagy.' : 'Alacsony — nem a lefojtás a védekezésed.'}</li>`;
   html += `<li><strong>Fearful</strong> (félelem-alapú visszahúzódás): <em>${r.avoFearful}</em>. ${r.avoFearful > 60 ? 'A fő stratégia: „ha közel engedem, sérülni fogok".' : r.avoFearful > 40 ? 'Részben jelen — sérülékeny pillanatokban aktiválódik.' : 'Alacsony — nem ez a domináns elkerülés-típus.'}</li>`;
   html += '</ul>';
-  html += `<p>${r.avoDismissing > r.avoFearful + 15 ? 'A <em>dismissing</em> stratégia dominál — ez klasszikus elkerülő minta, a függetlenség idealizálásával.' : r.avoFearful > r.avoDismissing + 15 ? 'A <em>fearful</em> stratégia dominál — ez gyakran együtt jár szorongással is, és utalhat korábbi kapcsolati sérülésre.' : 'Mindkét stratégiát használja a rendszered — rugalmas védekezés.'}</p>`;
+  html += `<p>${r.avoDismissing > r.avoFearful + 15 ? 'A válaszaidban a <em>dismissing</em> (elutasító) stratégia a hangsúlyosabb, ami a függetlenség előtérbe helyezésével járhat.' : r.avoFearful > r.avoDismissing + 15 ? 'A <em>fearful</em> stratégia dominál — ez gyakran együtt jár szorongással is, és utalhat korábbi kapcsolati sérülésre.' : 'Mindkét stratégiát használja a rendszered — rugalmas védekezés.'}</p>`;
 
   return html;
 }

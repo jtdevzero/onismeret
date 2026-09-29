@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kapcsolati dinamika — szeretetstílus · konfliktus · Gottman · temperamentum</title>
 <link rel="stylesheet" href="fonts/fonts.css?v=a00887e2">
-<script src="assets/oni-core.js?v=303e8c2e"></script>
+<script src="assets/oni-core.js?v=c294576c"></script>
 <style>/* A hub-oldalak alapstílusa (eredetileg a szemelyiseg.html-ből). */
 :root{
   --font-display:'Fraunces','Cardo',serif;
@@ -259,9 +259,9 @@ body::after{content:"";position:fixed;inset:0;background-image:url("data:image/s
 @media (max-width:820px){.hub-tabs.four{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:560px){.hub-tabs{position:static}.hub-tab{padding:12px 14px}.hub-tab .sub{display:none}.scale.s6{grid-template-columns:repeat(3,1fr)}.dv-row{grid-template-columns:96px 1fr 44px;gap:8px;font-size:12.5px}.quad .cell{min-height:96px;padding:12px 8px}.quad .cell .n{font-size:24px}}
 </style>
-<script src="assets/oni-schema.js?v=190e2f3e" defer></script>
+<script src="assets/oni-schema.js?v=e30726e8" defer></script>
 <script src="assets/tests-data.js?v=8174bfd3" defer></script>
-<script src="assets/results-plus.js?v=5e81801b" defer></script>
+<script src="assets/results-plus.js?v=e491f72e" defer></script>
 <link rel="stylesheet" href="assets/theme.css?v=e01934c0">
 </head>
 <body>
@@ -555,7 +555,7 @@ makeTest({
       ${H.interp('Mit <em>jelent</em>',[
         {h:'A fő kombinációd: '+ST[top].name+' + '+ST[second].name,color:ST[top].color,html:`<p>${ST[top].desc}</p><p>${ST[second].desc}</p>`},
         {h:'Kiemelt jelzések',html:notes.join('')},
-        {h:'Párban használva',html:'<p>A legtöbbet akkor ad, ha a párod is kitölti. A kutatás szerint a hasonló stílusú párok (főleg Eros és Agape egyezés) elégedettebbek. A Ludus–Mania páros a klasszikus üldöző–menekülő dinamika.</p>'}
+        {h:'Párban használva',html:'<p>A legtöbbet akkor ad, ha a párod is kitölti. Több kutatás szerint a hasonló stílus (főleg Eros és Agape egyezés) az elégedettséggel jár együtt. A Ludus–Mania párosnál üldöző–menekülő dinamika alakulhat ki.</p>'}
       ])}
       ${H.refs(['<strong>Lee, J. A. (1973).</strong> <em>Colours of Love: An Exploration of the Ways of Loving.</em> New Press.',
         '<strong>Hendrick, C., & Hendrick, S. S. (1986).</strong> A theory and method of love. <em>Journal of Personality and Social Psychology, 50</em>(2), 392–402.',
@@ -590,7 +590,7 @@ const M={
     when:'Jelentéktelen ügy, túl magas érzelmi hőfok (lehűlés kell), vagy ha nincs esélyed nyerni, és a vita többe kerül.'},
   acc:{name:'Alkalmazkodó',en:'Accommodating',color:'#60a5fa',a:0,c:1,
     desc:'Alacsony önérvényesítés, magas együttműködés. A másik igényének előtérbe helyezése.',
-    over:'Túlhasználva: a saját igényeid láthatatlanná válnak, és felgyűlik a neheztelés.',
+    over:'Túlhasználva: a saját igényeid háttérbe kerülhetnek, és idővel neheztelés gyűlhet fel.',
     under:'Alulhasználva: nehezen engedsz akkor is, ha a kapcsolat fontosabb az ügynél.',
     when:'Ha rájöttél, hogy tévedtél, ha a másiknak sokkal fontosabb, vagy ha jóindulatot akarsz építeni.'}
 };

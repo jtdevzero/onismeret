@@ -756,10 +756,10 @@ footer{
   body{background:#fff;color:#000}
 }
 </style>
-<script src="assets/oni-core.js?v=303e8c2e"></script>
-<script src="assets/oni-schema.js?v=190e2f3e" defer></script>
+<script src="assets/oni-core.js?v=c294576c"></script>
+<script src="assets/oni-schema.js?v=e30726e8" defer></script>
 <script src="assets/tests-data.js?v=8174bfd3" defer></script>
-<script src="assets/results-plus.js?v=5e81801b" defer></script>
+<script src="assets/results-plus.js?v=e491f72e" defer></script>
 <link rel="stylesheet" href="assets/theme.css?v=e01934c0">
 </head>
 <body>
@@ -1092,7 +1092,7 @@ function normalCDF(z){
 // ============ INTERPRETÁCIÓ ============
 const INTERPRET = {
   ses:{
-    'very-low':`A válaszaid a skála legalsó tartományában vannak: a kérdésekben leírt helyzetek ritkán indítják be az izgalmi rendszeredet. Ez nem szexuális vágy hiánya — sokkal inkább azt jelenti, hogy a szexuális rendszered <strong>komplex feltételeket igényel</strong> a beinduláshoz: kontextus, biztonság, érzelmi kapcsolódás, lassú felépítés. A "spontán beindulás" típusú vágy ritka. Ezt sokszor "alacsony libidónak" diagnosztizálják, holott a Basson-féle <em>responsive desire</em> modell pontosabb leírás.`,
+    'very-low':`A válaszaid a skála legalsó tartományában vannak: a kérdésekben leírt helyzetek ritkán indítják be az izgalmi rendszeredet. Ez nem szexuális vágy hiánya — sokkal inkább azt jelenti, hogy a szexuális rendszered <strong>komplex feltételeket igényel</strong> a beinduláshoz: kontextus, biztonság, érzelmi kapcsolódás, lassú felépítés. A "spontán beindulás" típusú vágy ritka. Ezt sokan "alacsony libidóként" élik meg, pedig a Basson-féle <em>responsive desire</em> (válaszként induló vágy) modell sokszor pontosabban írja le.`,
     'low':`A válaszaid a skála alsó részén vannak: az izgalmi rendszered a leírt helyzetek egy részére reagál. Általános vizuális/környezeti ingerekre kevésbé válaszol — inkább specifikus kontextusok, kapcsolódás, lelki ráhangolódás indítják be. Ez a <em>felelet-vágy</em> (responsive desire) profilja: a vágy jellemzően a szexuális helyzetbe kerülésből fakad, nem előzi meg azt.`,
     'mid':`Közepes izgalmi reaktivitás a skálán. Vizuális, taktilis, kontextuális ingerekre mérsékelten válaszol a rendszered. A spontán és a kontextuális vágy egyensúlyban van.`,
     'high':`Magas izgalmi reaktivitás. A rendszered könnyen, sok különféle ingerre kapcsol be. Erősség: jó vágyellátás, könnyű kezdeményezés. Ár: distraktivitás, könnyebben elcsábítható figyelem, esetleg túl-ingerlés-érzékenység.`,
@@ -1134,7 +1134,7 @@ function profileFor(ses, sisAvg){
   // !sesHigh && sisHigh
   return {
     name:'Gátolt rendszer (low gas, high brake)',
-    desc:`Csökkent izgalom, magas gátlás. <strong>A leggyakrabban panaszt okozó konfiguráció.</strong> A szexuális válaszrendszer nehezen indul, és könnyen leáll. Tipikusan "alacsony libidónak" diagnosztizálják, holott a probléma az arány: nem a gáz hiányzik, hanem a fék túl erős. <strong>Intervenció:</strong> SIS1 esetén kognitív-viselkedéses + Sensate Focus, SIS2 esetén kontextus-építés és érzelmi biztonság.`
+    desc:`Csökkent izgalom, magas gátlás. <strong>A leggyakrabban panaszt okozó konfiguráció.</strong> A szexuális válaszrendszer nehezen indul, és könnyen leáll. Ezt sokan "alacsony libidóként" élik meg, pedig a válaszaid alapján inkább az arány lehet a kérdés: nem feltétlenül a gáz kevés, hanem a fék erős. <strong>Intervenció:</strong> SIS1 esetén kognitív-viselkedéses + Sensate Focus, SIS2 esetén kontextus-építés és érzelmi biztonság.`
   };
 }
 
@@ -1142,7 +1142,7 @@ function profileFor(ses, sisAvg){
 const CROSS_LINKS = [
   {
     when:s=>s.sis1.mean >= 2.7,
-    text:`<div class="cross-item-label">"Spectator mode" hipotézis</div><p>A magas SIS1 a "spectator mode" szomatikus motorja — Masters & Johnson eredetileg pont ezt a mintázatot írta le: a tudat kívülről figyeli a saját szexuális teljesítményt ("vajon működik?"). Ez prefrontalis monitorozás, ami az autonóm szexuális választ aktívan blokkolja. A klasszikus terápiás célpont: <em>kilépés a teljesítmény-frame-ből</em>.</p>`
+    text:`<div class="cross-item-label">"Spectator mode" hipotézis</div><p>A magas SIS1 a "spectator mode" szomatikus motorja — Masters & Johnson eredetileg pont ezt a mintázatot írta le: a tudat kívülről figyeli a saját szexuális teljesítményt ("vajon működik?"). Ez prefrontalis monitorozás, ami az autonóm szexuális választ aktívan blokkolja. Terápiában gyakori cél ilyenkor: <em>kilépés a teljesítmény-keretből</em>.</p>`
   },
   {
     when:s=>s.ses.mean < 2.5 && s.sis1.mean >= 2.5,
@@ -1150,7 +1150,7 @@ const CROSS_LINKS = [
   },
   {
     when:s=>s.sis1.mean >= 2.7 && s.ses.mean >= 2.7,
-    text:`<div class="cross-item-label">Frusztráció-profil</div><p>Magas izgalom + magas belső gátlás = a vágy ott van, de a rendszer önmagával harcol. Ez a profil tipikusan <em>magas distresshez</em> vezet, mert a szexuális vágy és a szexuális elérhetőség közötti rés szubjektíven nagyon kínzó. A megoldás itt nem a libidó "kezelése" — hanem a fékek lassítása.</p>`
+    text:`<div class="cross-item-label">Frusztráció-profil</div><p>Magas izgalom + magas belső gátlás = a vágy ott van, de a rendszer önmagával harcol. Ez a profil <em>megterhelő</em> lehet, mert a szexuális vágy és a szexuális elérhetőség közötti rés szubjektíven nagyon kínzó. A megoldás itt nem a libidó "kezelése" — hanem a fékek lassítása.</p>`
   },
   {
     when:s=>s.sis2.mean >= 3.0,

@@ -594,6 +594,75 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     await ctx.close();
   }
 
+  console.log('\n23. Adatbiztonság: mentési hiba, korlát, szigorú import, verziók, párnézet-verzió');
+  {
+    const ctx = await newCtx(); const p = await pageIn(ctx);
+    // mentési hiba: nem fut le a „mentve” esemény, hibaüzenet jelenik meg
+    await p.goto(R + 'szabalyozas.html#test-ips'); await p.waitForTimeout(200);
+    const sf = await p.evaluate(() => { let saved = 0; window.addEventListener('oni:saved', () => saved++);
+      const o = Storage.prototype.setItem; Storage.prototype.setItem = function (k, v) { if (k === ONI.K) throw new Error('QuotaExceeded'); return o.call(this, k, v); };
+      TESTS.ips._fillAll(() => 2); const ok = ONI.save('ips', { n: 'IPS', d: { total: ['IPS', 20, 9, 45] } });
+      Storage.prototype.setItem = o; return { ok, saved, toast: (document.getElementById('oni-toast') || {}).textContent || '' }; });
+    ok(sf.ok === false && sf.saved === 0 && /nem sikerült elmenteni/.test(sf.toast), 'sikertelen mentésnél nincs „mentve” esemény, van hibaüzenet', sf);
+    // 200-as korlát
+    const lim = await p.evaluate(() => { const t = new Date().toISOString(), h = []; for (let i = 0; i < 200; i++) h.push({ n: 'IPS', t, done: new Date(Date.now() - (300 - i) * 864e5).toISOString(), qv: 1, sv: 1, tv: 1, sid: 's' + i, d: { total: ['IPS', 20, 9, 45] } });
+      localStorage.setItem(ONI.K, JSON.stringify({ ips: h })); const m = JSON.parse(localStorage.getItem(ONI.META) || '{}'); m.fresh = { 'ips-responses-v1': t }; localStorage.setItem(ONI.META, JSON.stringify(m));
+      ONI.save('ips', { n: 'IPS', d: { total: ['IPS', 21, 9, 45] } }); const a = ONI.all().ips; return { n: a.length, first: a[0].sid, toast: document.getElementById('oni-toast').textContent }; });
+    ok(lim.n === 200 && lim.first === 's1' && /korlát/.test(lim.toast), 'a 200-as korlát elérésekor értesít, a legrégebbi kerül ki', lim);
+    // minden tesztnek explicit verziója van
+    ok(await p.evaluate(() => Object.keys(ONI.IDKEY).every(id => ONI.VERS[id] && ONI.VERS[id].q && ONI.VERS[id].s && ONI.VERS[id].t)), 'mind a 31 tesztnek explicit kérdéssor-, pontozás- és fordításverziója van');
+    // szigorú import: jegyzet, beállítás, ismeretlen skála, fájlméret
+    await p.goto(R + 'index.html'); await p.evaluate(() => { localStorage.clear(); localStorage.setItem('tas-20-responses-v1', '{"1":2}'); });
+    const tmp = fs.mkdtempSync(path.join(require('os').tmpdir(), 'oni-')), iso = new Date(Date.now() - 864e5).toISOString();
+    const file = (data) => { const f = path.join(tmp, 'x' + Math.random() + '.json'); fs.writeFileSync(f, JSON.stringify({ app: 'onismeret', v: 1, exported: iso, data })); return f; };
+    const bad = [
+      ['jegyzet ismeretlen címkével', { 'onismeret-notes-v1': JSON.stringify({ ips: { a: { fit: ['xxx'], cond: [], text: '' } } }) }],
+      ['túl hosszú jegyzet', { 'onismeret-notes-v1': JSON.stringify({ ips: { a: { fit: [], cond: [], text: 'x'.repeat(5000) } } }) }],
+      ['ismeretlen beállítás', { 'onismeret-settings-v1': JSON.stringify({ evil: '<script>' }) }],
+      ['hibás téma', { 'onismeret-settings-v1': JSON.stringify({ theme: 'pink' }) }],
+      ['ismeretlen onismeret-kulcs', { 'onismeret-valami-v1': '{}' }],
+      ['nem létező skála az eredményben', { 'onismeret-results-v1': JSON.stringify({ ips: [{ t: iso, qv: 1, sv: 1, tv: 1, d: { hack: ['X', 1, 0, 5] } }] }) }],
+      ['vállalás hibás állapottal', { 'onismeret-commit-v1': JSON.stringify({ ips: [{ sid: 'a', text: 'x', t: iso, st: 'win' }] }) }],
+    ];
+    for (const [nm, data] of bad) {
+      await p.setInputFiles('#pp-import', file(data)); await p.waitForTimeout(150);
+      const r = await p.evaluate(() => ({ msg: document.getElementById('pp-msg').textContent, tas: localStorage.getItem('tas-20-responses-v1') }));
+      ok(/sérült/.test(r.msg) && r.tas === '{"1":2}', 'import elutasítva: ' + nm, r.msg.slice(0, 80));
+    }
+    const big = path.join(tmp, 'big.json'); fs.writeFileSync(big, JSON.stringify({ app: 'onismeret', v: 1, data: { pad: 'x'.repeat(6 * 1024 * 1024) } }));
+    await p.setInputFiles('#pp-import', big); await p.waitForTimeout(150);
+    ok(/túl nagy/.test(await p.textContent('#pp-msg')), '5 MB feletti fájlt be sem olvas');
+    // helyes jegyzet + beállítás átmegy
+    await p.setInputFiles('#pp-import', file({ 'onismeret-notes-v1': JSON.stringify({ ips: { a: { fit: ['fits'], cond: ['calm'], text: 'ok', t: iso } } }), 'onismeret-settings-v1': JSON.stringify({ theme: 'dark', retake: 60, remind: { ips: { d: 30 } } }) }));
+    await p.waitForLoadState('load'); await p.waitForTimeout(300);
+    ok(await p.evaluate(() => JSON.parse(localStorage.getItem('onismeret-settings-v1')).retake === 60), 'érvényes jegyzet és beállítás visszaállítható');
+    // párnézet: eltérő verzió nem hasonlítható
+    await p.evaluate(() => localStorage.clear()); await seedDemo(p);
+    await p.goto(R + 'par.html'); await p.waitForTimeout(200);
+    await p.click('#pexport'); await p.waitForTimeout(100);
+    const [dl] = await Promise.all([p.waitForEvent('download'), p.click('#pexp-go')]); const pf = path.join(tmp, 'p.json'); await dl.saveAs(pf);
+    const pe = JSON.parse(fs.readFileSync(pf)), rs = JSON.parse(pe.data['onismeret-results-v1']); rs.ecr.forEach(r => { r.tv = 2; }); pe.data['onismeret-results-v1'] = JSON.stringify(rs); fs.writeFileSync(pf, JSON.stringify(pe));
+    await p.setInputFiles('#pfile', pf); await p.waitForTimeout(200); await p.click('#pimp-go'); await p.waitForTimeout(200);
+    const pv = await p.evaluate(() => { const c = [...document.querySelectorAll('#root .card.cmp')].find(x => /ECR/.test(x.querySelector('h3').textContent)); return { txt: c && c.textContent, bars: c && c.querySelectorAll('.pr').length, att: [...document.querySelectorAll('#root .card.pat h3')].some(h => /kötődés|csapda|horgony/i.test(h.textContent)) }; });
+    ok(pv.txt && /eltérő tesztváltozatból/.test(pv.txt) && pv.bars === 0 && !pv.att, 'párnézet: eltérő változatú ECR-R nincs összehasonlítva, kötődési párjelzés sincs', pv);
+    ok(p._errs.length === 0, 'hibamentes', p._errs);
+    await ctx.close();
+  }
+
+  console.log('\n24. Linkek, fájlhivatkozások és óvatos megfogalmazás');
+  {
+    const htmls = fs.readdirSync(ROOT).filter(x => x.endsWith('.html')), broken = [];
+    for (const f of htmls) {
+      const src = fs.readFileSync(path.join(ROOT, f), 'utf8');
+      for (const m of src.matchAll(/(?:href|src)="([^"#?:]+\.(?:html|js|css|woff2?|png|svg|json))(?:[?#][^"]*)?"/g)) if (!fs.existsSync(path.join(ROOT, m[1]))) broken.push(f + ' → ' + m[1]);
+      for (const m of src.matchAll(/href="([\w-]+\.html)#([\w-]+)"/g)) { const t = fs.readFileSync(path.join(ROOT, m[1]), 'utf8'); if (!new RegExp('id="' + m[2] + '"|id:\\s*[\'"]' + m[2].replace(/^test-/, '') + '[\'"]|#' + m[2] + '\\b|[\'"]' + m[2].replace(/^test-/, '') + '[\'"]').test(t)) broken.push(f + ' → ' + m[1] + '#' + m[2]); }
+    }
+    ok(broken.length === 0, 'minden helyi link és fájlhivatkozás létező fájlra mutat', broken.slice(0, 5));
+    const FORBID = /szinte mindig együtt jár|majdnem mindig együtt jár|klasszikus profil|diagnosztizálják|a probléma nem a|valószínűleg magas|later egyszerre robban|egyszerre robbannak|felgyűlik a neheztelés|könnyen eszkalálódik|AuDHD|érzelmi süketség|a probléma <strong>belül/;
+    const hits = htmls.filter(f => !/valtozasok/.test(f)).flatMap(f => { const m = fs.readFileSync(path.join(ROOT, f), 'utf8').match(FORBID); return m ? [f + ': ' + m[0]] : []; });
+    ok(hits.length === 0, 'nincs visszakerült túlzó megfogalmazás', hits);
+  }
+
   await browser.close();
   console.log(`\n${pass} rendben, ${fail} hiba`);
   process.exit(fail ? 1 : 0);

@@ -926,10 +926,10 @@ body::after{
 .test-panel .score-card .out{color:var(--ink-lite-muted) !important}
 .test-panel .score-card .bar{background:rgba(147,197,253,0.15) !important}
 </style>
-<script src="assets/oni-core.js?v=303e8c2e"></script>
-<script src="assets/oni-schema.js?v=190e2f3e" defer></script>
+<script src="assets/oni-core.js?v=c294576c"></script>
+<script src="assets/oni-schema.js?v=e30726e8" defer></script>
 <script src="assets/tests-data.js?v=8174bfd3" defer></script>
-<script src="assets/results-plus.js?v=5e81801b" defer></script>
+<script src="assets/results-plus.js?v=e491f72e" defer></script>
 <link rel="stylesheet" href="assets/theme.css?v=e01934c0">
 </head>
 <body>
@@ -1793,7 +1793,7 @@ function renderResults(){
 
   interp+=`<div class="interp-section"><h4>Negatív-pozitív egyensúly</h4>`;
   if(negSum>posSum*2){
-    interp+=`<p>A negatív vonások jelentősen dominánsak (${negSum} vs ${posSum} pozitív). Ez erős — valószínűleg nehéz gyermekkorra utaló mintázat. Az imago-alapú vonzalom ilyenkor különösen erős: a rendszered <em>nagyon</em> keresi a gyógyulást a partnerekben. Trauma-informált terápiás munka jelentős erőforrás.</p>`;
+    interp+=`<p>A negatív vonások jelentősen dominánsak (${negSum} vs ${posSum} pozitív). Ez hangsúlyos mintázat; többféle háttere lehet, a nehéz gyermekkori tapasztalatok ezek egyike. Az imago-alapú vonzalom ilyenkor különösen erős: a rendszered <em>nagyon</em> keresi a gyógyulást a partnerekben. Trauma-informált terápiás munka jelentős erőforrás.</p>`;
   } else if(negSum>posSum){
     interp+=`<p>A negatív vonások enyhén dominánsak (${negSum} vs ${posSum}). Ez tipikus tartomány — a legtöbb ember gyermekkori gondozói kombinációja pozitív és negatív vonások. Az imago-mintázat működik, de nem extrém.</p>`;
   } else {
@@ -1814,7 +1814,7 @@ function renderResults(){
   // 4 dimenzió külön részletes interp
   interp+=`<div class="interp-section"><h4>I. Negatív gondozó-vonások — részletes olvasat</h4>`;
   if(topNeg[0].v>=2){
-    interp+=`<p>A legerősebb negatív vonás: <strong>"${topNeg[0].t}"</strong> (${topNeg[0].v}/3). Ez azt jelenti: felnőttként <em>szinte automatikusan reagálsz</em>, amikor egy partnernél ezt a vonást észleled — vagy erős vonzalommal (a rendszer gyógyítani akar), vagy erős taszítással (védekező oldal). Mindkettő ugyanabból a mintázatból jön: a gyermekkori élményből, hogy ezt a vonást kellene "másképp" megélni.</p>`;
+    interp+=`<p>A legerősebb negatív vonás: <strong>"${topNeg[0].t}"</strong> (${topNeg[0].v}/3). Tisztázó kérdés: előfordul, hogy felnőttként <em>szinte automatikusan reagálsz</em>, amikor egy partnernél ezt a vonást észleled — vagy erős vonzalommal (a rendszer gyógyítani akar), vagy erős taszítással? Az Imágó-elmélet szerint mindkettő ugyanabból a korai élményből eredhet; hogy nálad így van-e, azt a saját tapasztalatod dönti el.</p>`;
     if(topNeg.filter(x=>x.v>=2).length>=3){
       interp+=`<p>Több markáns negatív vonás egyszerre: ez összetett, több-rétegű imago. A partnereidnél nem egy-egy tulajdonságra, hanem egész <em>karakter-mintázatra</em> reagálsz. Ez sok "furán ismerős" élmény forrása lehet, még akkor is, ha egyes tulajdonságok nem egyeznek.</p>`;
     }
@@ -1906,7 +1906,7 @@ function renderResults(){
   const links=[];
   if(wndSum>=20){
     links.push({label:'ECR-R (kötődés) korreláció',text:`Magas seb-intenzitás gyakran együtt jár a fearful-avoidant vagy anxious-preoccupied kötődési profilokkal. Ha nem töltötted még ki az ECR-R-t, most különösen releváns.`});
-    links.push({label:'SMI Vulnerable Child + Punitive Parent',text:`A magas gyermekkori sebek majdnem mindig együtt járnak magas Vulnerable Child + Punitive Parent mode-okkal. Ha az SMI-t még nem töltötted, komplex kép ott lesz.`});
+    links.push({label:'SMI Vulnerable Child + Punitive Parent',text:`A gyermekkori sérülésekre utaló magas pontszámok gyakran együtt járhatnak magasabb Sebezhető gyermek és Büntető szülő módokkal. Ha az SMI-t még nem töltötted, komplex kép ott lesz.`});
     links.push({label:'CTQ (Childhood Trauma Questionnaire) — következő lépés',text:`Ha az imago-portré nehéz vagy fájdalmas volt, a CTQ (Childhood Trauma Questionnaire — Bernstein) strukturáltabb szűrés a gyermekkori trauma-történetre. Terápiás munka része lehet.`});
   }
   if(topWnd.filter(x=>x.v>=2).some(x=>x.t.includes('kritikus')||x.t.includes('elég'))){

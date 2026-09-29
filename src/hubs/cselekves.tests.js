@@ -100,7 +100,7 @@ const T={
     risk:'Elemzési bénultság: a tökéletes információ keresése helyettesíti a döntést. Mások szemében nehézkes lehet.',
     strat:['Minden célnál írd le a MIÉRT-et: nálad ez a motor.','Adj magadnak kutatási határidőt („péntekig gyűjtök, utána döntök”).','Ha elakadsz, kérdezd meg: a hiányzó információ tényleg megváltoztatná a döntést?']},
   O:{name:'Kötelességtudó',en:'Obliger',color:'#fbbf24',rule:'A külső elvárásokat könnyen teljesíti, a belsőket (saját magának tett ígéreteket) nehezen.',
-    desc:'Ha más számít rá, szinte mindig teljesít. Ha csak saját magának ígérte, a terv hamar elhal. Ez a leggyakoribb tendencia.',
+    desc:'Ha más számít rá, általában teljesít. Ha csak saját magának ígérte, a terv könnyebben elakad. Rubin szerint ez a leggyakoribb tendencia.',
     risk:'Kiégés és „kötelességtudó lázadás”: sok évnyi mások kiszolgálása után hirtelen, látszólag ok nélkül megtagad valamit.',
     strat:['<strong>Külső elszámoltathatóság</strong> minden saját célhoz: edzőtárs, coach, nyilvános vállalás, fizetett határidő.','Keretezd át: „nem magamért csinálom, hanem hogy példát mutassak / hogy ne hagyjam cserben azokat, akik rám számítanak”.','Figyeld a lázadás előjeleit: a neheztelés jelzi, hogy túl sokat adsz.']},
   R:{name:'Lázadó',en:'Rebel',color:'#fb7185',rule:'Ellenáll a külső és a belső elvárásoknak is. Azt teszi, amit most akar, a maga módján.',
@@ -235,7 +235,7 @@ makeTest({
     const g=Object.keys(M).map(k=>H.gauge({name:M[k].name,sub:M[k].en+' · '+zname[zone(s[k])],val:s[k],unit:'/10',min:1,max:10,color:M[k].color,zones,labels:['1 · ellenálló','rugalmas','kezdeményező · 10'],desc:M[k][zone(s[k])]})).join('');
     const combos=[];
     if(s.qs>=7&&s.ft<=4)combos.push('<p><strong>Magas Gyorsindító + alacsony Rendszerező:</strong> sok indítás, kevés lezárás. Az ötlet és a lendület megvan, a befejezéshez hiányzik a struktúra. Kolbe megoldása nem az, hogy „legyél rendszerezettebb”, hanem hogy a lezárást egy Rendszerező partnerre, eszközre vagy külső folyamatra bízd.</p>');
-    if(s.ff>=7&&s.qs<=4)combos.push('<p><strong>Magas Tényfeltáró + alacsony Gyorsindító:</strong> az elemzési bénultság klasszikus profilja. Mindig lehet még egy adatot gyűjteni, és a döntés csúszik. Adj a kutatásnak kemény határidőt.</p>');
+    if(s.ff>=7&&s.qs<=4)combos.push('<p><strong>Magas Tényfeltáró + alacsony Gyorsindító:</strong> ez elemzési bénultsággal járhat: mindig lehet még egy adatot gyűjteni, és a döntés csúszhat. Tisztázó kérdés: melyik döntésnél történt ez veled mostanában? Adj a kutatásnak kemény határidőt.</p>');
     if(s.ff>=7&&s.qs>=7)combos.push('<p><strong>Magas Tényfeltáró + magas Gyorsindító:</strong> belső húzóerő: az egyik rész kutatni akar, a másik azonnal indulni. Gyakran úgy jelenik meg, hogy gyorsan nekiugrasz, majd megakadsz, mert „még utána kell nézni”. Szétválaszthatod: előbb időkorlátos kutatás, utána kísérlet.</p>');
     if(s.ft>=7&&s.qs<=3)combos.push('<p><strong>Magas Rendszerező + alacsony Gyorsindító:</strong> kiváló megvalósító és karbantartó. A változás, az új indítás energiaigényes. Ilyenkor érdemes egy Gyorsindítóval párba állni.</p>');
     if(!combos.length)combos.push('<p>Nincs szélsőséges feszültség a módjaid között. A profilod kiegyensúlyozott: a helyzethez igazodva tudsz váltani.</p>');
