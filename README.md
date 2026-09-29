@@ -260,6 +260,7 @@ Minden teszt eredménye ugyanabban a rendben jelenik meg (`assets/results-plus.j
 ## Arculat
 
 - **Olvashatósági védőháló** (`assets/oni-core.js`, `ONI_CONTRAST`): minden oldalon, mindkét témában ellenőrzi a szövegek kontrasztját a tényleges (gradienses hátterű kártyáknál a legrosszabb esetű) háttérhez képest, és ahol a WCAG AA szint (4.5:1, nagy szövegnél 3:1) nem teljesül, a szöveg színét olvashatóra húzza. Letiltott gombokat nem módosít.
+- **Vizuális áttekintés** (`deepHTML`): a Röviden-kártya alatt profilalak (radar, max. 12 tengely, mindegyik a saját skáláján 0–100%), leginkább/legkevésbé jellemző skálák, válaszstílus-hisztogram a nyers válaszokból (egyhangú, szélsőséges vagy középre húzó kitöltés jelzése), változás az előző azonos változatú kitöltéshez képest. A részletes elemzés alapból nyitva.
 - **Diagramos összkép:** minden eredmény „Röviden” kártyáján sávdiagram a teszt összes skálájáról (12-nél több skálánál a 12 legmagasabb), kétirányú skáláknál nullponttal.
 
 - **Két téma:** világos (alapértelmezett) és sötét. A jobb alsó ☾/☀ gombbal váltható, a választás minden oldalon megmarad (`onismeret-settings-v1.theme`).

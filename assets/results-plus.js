@@ -55,6 +55,61 @@
       '<p class="oc-note">A sáv azt mutatja, hol áll az eredményed a skála saját tartományán belül'+(e.some(function(x){return x[1][2]<0})?'; a kétirányú skáláknál a függőleges vonal a nulla pont':'')+'. A skálák nem mind ugyanazt jelentik: a magas érték nem mindenhol jobb.</p></figure>';
   }
   window.ONI_CHART=chartHTML;
+
+  /* ── Vizuális áttekintés: profilalak, kiugró skálák, válaszstílus, változás ── */
+  function numDims(r){return Object.entries(r.d||{}).filter(function(x){var d=x[1];return typeof d[1]==='number'&&typeof d[2]==='number'&&typeof d[3]==='number'&&d[3]>d[2]}).map(function(x){var d=x[1];return {k:x[0],l:d[0],v:d[1],lo:d[2],hi:d[3],p:Math.max(0,Math.min(1,(d[1]-d[2])/(d[3]-d[2])))}})}
+  function short(t,n){t=String(t);return t.length>n?t.slice(0,n-1).trim()+'…':t}
+  function radar(ds){
+    var n=ds.length,S=320,c=S/2,R=112,pt=function(i,f){var a=-Math.PI/2+i*2*Math.PI/n;return [c+Math.cos(a)*R*f,c+Math.sin(a)*R*f]};
+    var g='';[.25,.5,.75,1].forEach(function(f){g+='<polygon class="rg" points="'+ds.map(function(_,i){return pt(i,f).join(',')}).join(' ')+'"/>'});
+    ds.forEach(function(_,i){var e=pt(i,1);g+='<line class="rg" x1="'+c+'" y1="'+c+'" x2="'+e[0]+'" y2="'+e[1]+'"/>'});
+    g+='<polygon class="rp" points="'+ds.map(function(d,i){return pt(i,Math.max(.03,d.p)).join(',')}).join(' ')+'"/>';
+    ds.forEach(function(d,i){var q=pt(i,Math.max(.03,d.p));g+='<circle class="rd" cx="'+q[0]+'" cy="'+q[1]+'" r="4"><title>'+esc(d.l)+': '+d.v+' ('+d.lo+'–'+d.hi+')</title></circle>';
+      var L=pt(i,1.17),anc=Math.abs(L[0]-c)<8?'middle':L[0]>c?'start':'end';g+='<text class="rl" x="'+L[0]+'" y="'+(L[1]+4)+'" text-anchor="'+anc+'">'+esc(short(d.l,n>8?14:20))+'</text>'});
+    return '<svg viewBox="-70 -10 460 340" role="img" aria-label="Profilalak: '+ds.map(function(d){return esc(d.l)+' '+Math.round(d.p*100)+'%'}).join(', ')+'">'+g+'</svg>';
+  }
+  function rawValues(id){
+    var key=(ONI.IDKEY||{})[id];if(!key)return null;var j;try{j=JSON.parse(localStorage.getItem(key))}catch(e){return null}
+    if(!j||typeof j!=='object')return null;if(j.answers&&typeof j.answers==='object')j=j.answers;else if(j.draft&&typeof j.draft==='object')j=j.draft;
+    var v=Object.keys(j).map(function(k){return j[k]}).filter(function(x){return typeof x==='number'&&isFinite(x)});
+    return v.length>=8?v:null;
+  }
+  function styleHTML(vals){
+    var lo=Math.min.apply(null,vals),hi=Math.max.apply(null,vals);
+    var scaleLo=Math.min(lo,1),scaleHi=hi<=5?5:hi<=7?7:hi<=10?10:hi;if(lo===0)scaleLo=0;
+    if(scaleHi-scaleLo<2||scaleHi-scaleLo>10)return '';
+    var cnt={},n=vals.length;for(var x=scaleLo;x<=scaleHi;x++)cnt[x]=0;vals.forEach(function(v){v=Math.round(v);if(v in cnt)cnt[v]++});
+    var mx=Math.max.apply(null,Object.keys(cnt).map(function(k){return cnt[k]}))||1;
+    var ext=(cnt[scaleLo]+cnt[scaleHi])/n,mids=0,mid=(scaleLo+scaleHi)/2;Object.keys(cnt).forEach(function(k){if(Math.abs(k-mid)<=.5)mids+=cnt[k]});mids/=n;
+    var bars=Object.keys(cnt).map(function(k){return '<div class="hb"><span class="hbv">'+cnt[k]+'</span><i style="height:'+Math.round(cnt[k]/mx*100)+'%"></i><span class="hbk">'+k+'</span></div>'}).join('');
+    var top=Math.max.apply(null,Object.keys(cnt).map(function(k){return cnt[k]}))/n,used=Object.keys(cnt).filter(function(k){return cnt[k]>0}).length;
+    var txt=top>=.6?'A válaszaid '+Math.round(top*100)+'%-a ugyanaz az érték volt. Ha ez tényleg így igaz rád, rendben van; ha fáradtan vagy sietve töltötted ki, az eredményt érdemes óvatosan kezelni, és később újra kitölteni.'
+      :ext>=.5?'A válaszaid '+Math.round(ext*100)+'%-a a skála két szélén van. Határozott válaszstílus: az eredményed kontrasztosabb lehet, mint amilyen a hétköznapokban vagy.'
+      :mids>=.4?'A válaszaid '+Math.round(mids*100)+'%-a a skála közepén van. Óvatos, középre húzó válaszstílus: a skálák közti különbségek tompábbak lehetnek a valóságosnál.'
+      :used<=2?'Csak '+used+' különböző értéket használtál. A skála árnyaltabb használata pontosabb képet adna.'
+      :'A válaszaid a skála nagy részét használják, nem húznak erősen se a szélekre, se a közepére. Ez jó alap az értelmezéshez.';
+    return '<div class="od-panel"><h6>Válaszstílus</h6><div class="hist" role="img" aria-label="Válaszok eloszlása: '+Object.keys(cnt).map(function(k){return k+': '+cnt[k]}).join(', ')+'">'+bars+'</div><p>'+txt+'</p></div>';
+  }
+  function deepHTML(id,r){
+    var ds=numDims(r);if(!ds.length)return '';
+    if(ds.length>2)ds=ds.filter(function(d){return !/^(total|strength|risk)$/.test(d.k)&&!/^ho_/.test(d.k)})||ds;
+    var panels='';
+    var rd=ds.length>12?ds.slice().sort(function(a,b){return b.p-a.p}).slice(0,12):ds;
+    if(rd.length>=3)panels+='<div class="od-panel od-radar"><h6>Profilalak'+(ds.length>12?' · a 12 legmagasabb skála':'')+'</h6>'+radar(rd)+'<p>Minden tengely a saját skálája szerint 0–100%. A forma azt mutatja, merre húz a profilod, nem azt, hogy jó vagy rossz.</p></div>';
+    var spread=ds.length>=3?Math.max.apply(null,ds.map(function(d){return d.p}))-Math.min.apply(null,ds.map(function(d){return d.p})):1;
+    if(ds.length>=3&&spread<.06)panels+='<div class="od-panel"><h6>Kiugró skálák</h6><p style="margin-top:0">Minden skálád közel azonos szinten van (a különbség a tartomány '+Math.round(spread*100)+'%-a). Ilyenkor nincs kiemelkedő vagy visszafogott terület; a profil egyenletes.</p></div>';
+    else if(ds.length>=3){var srt=ds.slice().sort(function(a,b){return b.p-a.p}),top=srt.slice(0,Math.min(3,Math.ceil(ds.length/2))),bot=srt.slice(-Math.min(3,Math.floor(ds.length/2))).reverse();
+      var row=function(d,cls){return '<li><span>'+esc(d.l)+'</span><b class="'+cls+'">'+Math.round(d.p*100)+'%</b><i><u class="'+cls+'" style="width:'+Math.round(d.p*100)+'%"></u></i></li>'};
+      panels+='<div class="od-panel"><h6>Leginkább jellemző</h6><ul class="od-list">'+top.map(function(d){return row(d,'hi')}).join('')+'</ul><h6 style="margin-top:14px">Legkevésbé jellemző</h6><ul class="od-list">'+bot.map(function(d){return row(d,'lo')}).join('')+'</ul>'+
+        '<p>A százalék azt jelzi, hol áll az eredményed a skála saját tartományán belül. Egy fordított irányú skálán (például nehézségek, kockázatok) a magas érték nem erősség.</p></div>';}
+    else panels+='<div class="od-panel"><h6>Hol állsz a skálán</h6><ul class="od-list">'+ds.map(function(d){return '<li><span>'+esc(d.l)+'</span><b class="hi">'+d.v+'</b><i><u class="hi" style="width:'+Math.round(d.p*100)+'%"></u></i></li>'}).join('')+'</ul><p>'+ds.map(function(d){return esc(d.l)+': '+d.v+' a '+d.lo+'–'+d.hi+' skálán, ez a tartomány '+Math.round(d.p*100)+'%-a.'}).join(' ')+'</p></div>';
+    var vals=rawValues(id);if(vals)panels+=styleHTML(vals);
+    var h=(ONI.all()[id]||[]).filter(function(e){return e!==r&&e.sid!==r.sid&&(e.sv||1)===(r.sv||1)&&(e.qv||1)===(r.qv||1)&&e.d});
+    if(h.length){var pv=h[h.length-1],ch=ds.map(function(d){var o=pv.d[d.k];return o&&typeof o[1]==='number'?{l:d.l,a:o[1],b:d.v,dp:(d.v-o[1])/(d.hi-d.lo)}:null}).filter(Boolean).sort(function(a,b){return Math.abs(b.dp)-Math.abs(a.dp)}).slice(0,6);
+      if(ch.length)panels+='<div class="od-panel"><h6>Változás az előző kitöltés óta · '+new Date(pv.done||pv.t).toLocaleDateString('hu-HU',{year:'numeric',month:'short',day:'numeric'})+'</h6><ul class="od-chg">'+ch.map(function(c){var d=c.b-c.a;return '<li><span>'+esc(c.l)+'</span><b>'+c.a+' → '+c.b+'</b><em class="'+(Math.abs(c.dp)<.05?'eq':d>0?'up':'dn')+'">'+(Math.abs(c.dp)<.05?'≈':d>0?'▲':'▼')+' '+Math.abs(Math.round(c.dp*100))+'%</em></li>'}).join('')+'</ul><p>A százalék a skála teljes tartományához viszonyított elmozdulás. 5% alatt a különbség belefér a mérési ingadozásba.</p></div>';}
+    return '<section class="oni-deep"><div class="oni-eyebrow">Vizuális áttekintés</div><div class="od-grid">'+panels+'</div></section>';
+  }
+  window.ONI_DEEP=deepHTML;
   function brief(id,r){
     var d=D[id]||{},notes=jget(NK,{}),n=((notes[id]||{})[r.sid||'_'])||{fit:[],cond:[],text:''};
     var dims=topDims(r).map(function(x){var v=x[1];return '<span class="oni-dim"><b>'+esc(v[0])+'</b> '+v[1]+'<small> ('+v[2]+'–'+v[3]+')</small></span>'}).join('');
@@ -137,7 +192,9 @@
       /* a summary maradjon az első */
       det.insertBefore(det.querySelector(':scope > summary'),det.firstChild);
       res.appendChild(det);}
-    var st=jget(SK,{});det.open=!!st.detailOpen;
+    var st=jget(SK,{});det.open=st.detailOpen!==false;   /* alapból nyitva: a részletes elemzés a lényeg */
+    var oldDeep=res.querySelector(':scope > .oni-deep');if(oldDeep)oldDeep.remove();
+    res.insertAdjacentHTML('afterbegin',deepHTML(id,r));
     res.insertAdjacentHTML('afterbegin',brief(id,r));
     var box=res.querySelector(':scope > .oni-brief'),more=box.querySelector('.oni-more');
     var sync=function(){more.textContent=det.open?'Részletes elemzés elrejtése ▴':'Részletes elemzés ▾';more.setAttribute('aria-expanded',det.open)};sync();

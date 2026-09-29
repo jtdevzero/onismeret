@@ -179,8 +179,8 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
       await p.goto(R + pg + '.html#test-' + id); await p.waitForTimeout(150);
       await p.evaluate(id => { const g = {}; document.querySelectorAll('#test-' + id + ' button[data-n]').forEach(x => (g[x.dataset.n] = g[x.dataset.n] || []).push(x)); Object.values(g).forEach(a => a[0].click()); const b = document.querySelector('#test-' + id + ' button[id$=showResults], #' + id + '-show'); b.click(); }, id);
       await p.waitForTimeout(700);
-      const r = await p.evaluate(id => { const res = document.getElementById(id + '-results'); return { brief: !!res.querySelector(':scope > .oni-brief'), det: !!res.querySelector(':scope > details.oni-detail'), closed: !res.querySelector(':scope > details.oni-detail').open }; }, id);
-      ok(r.brief && r.det && r.closed, `${id}: Röviden-kártya elöl, részletes elemzés lenyitható`, r);
+      const r = await p.evaluate(id => { const res = document.getElementById(id + '-results'); return { brief: !!res.querySelector(':scope > .oni-brief'), det: !!res.querySelector(':scope > details.oni-detail'), open: res.querySelector(':scope > details.oni-detail').open, deep: !!res.querySelector(':scope > .oni-deep .od-panel'), order: [...res.children].map(c => c.className.split(' ')[0]).join(',') }; }, id);
+      ok(r.brief && r.det && r.open && r.deep && /^oni-brief,oni-deep,oni-detail/.test(r.order), `${id}: Röviden-kártya, vizuális áttekintés, alapból nyitott részletes elemzés`, r);
     }
     await p.click('#love-results .oni-chip[data-v=explore]'); await p.fill('#love-results textarea', 'teszt jegyzet'); await p.waitForTimeout(700);
     const n = await p.evaluate(() => JSON.parse(localStorage.getItem('onismeret-notes-v1')).love);

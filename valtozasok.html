@@ -63,8 +63,8 @@ h2{font-family:var(--font-serif);font-weight:400;font-size:28px;margin:44px 0 8p
 
 <script src="assets/oni-core.js?v=26bbc6cd"></script>
 <script src="assets/tests-data.js?v=8174bfd3" defer></script>
-<script src="assets/results-plus.js?v=074992e6" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=47001bcb">
+<script src="assets/results-plus.js?v=7deabcc1" defer></script>
+<link rel="stylesheet" href="assets/theme.css?v=b9cc03ce">
 </head>
 <body>
 <div class="wrap">
@@ -94,6 +94,9 @@ document.addEventListener('DOMContentLoaded',function(){
   var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
   /* score/retake: 'no' | 'part' | 'yes' */
   var LOG=[
+    {d:'2026-09-29',t:'Hosszabb, vizuálisabb eredmények',score:'no',retake:'no',items:[
+      'A részletes elemzés alapból nyitva van (eddig egy gomb mögött volt, ezért tűntek rövidnek az eredmények). A beállítás megjegyzi, ha becsukod.',
+      'Új „Vizuális áttekintés” minden eredménynél: profilalak (pókháló-diagram), leginkább és legkevésbé jellemző skálák, válaszstílus (a válaszaid eloszlása, figyelmeztetéssel, ha szinte mindenhol ugyanazt választottad), és változás az előző kitöltés óta.']},
     {d:'2026-09-29',t:'Teljes olvashatósági ellenőrzés, diagram minden eredménynél',score:'no',retake:'no',items:[
       'Mind a 31 teszt kérdés- és eredményoldalát végigellenőriztem világos és sötét témában, asztali és mobil nézetben (kb. 55 000 szövegelem).',
       'Javítva: a Szeretetnyelvek és Bocsánatkérési nyelvek kérdéskártyái világos témában sötétek voltak sötét szöveggel; az Imágó-portré fehér szövege világos háttéren; a klinikai kártyák sárga/zöld háttere sötét témában; halvány (muted) feliratok mindkét témában.',
