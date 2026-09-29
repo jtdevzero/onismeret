@@ -68,27 +68,27 @@
       var L=pt(i,1.17),anc=Math.abs(L[0]-c)<8?'middle':L[0]>c?'start':'end';g+='<text class="rl" x="'+L[0]+'" y="'+(L[1]+4)+'" text-anchor="'+anc+'">'+esc(short(d.l,n>8?14:20))+'</text>'});
     return '<svg viewBox="-70 -10 460 340" role="img" aria-label="Profilalak: '+ds.map(function(d){return esc(d.l)+' '+Math.round(d.p*100)+'%'}).join(', ')+'">'+g+'</svg>';
   }
-  function rawValues(id){
-    var key=(ONI.IDKEY||{})[id];if(!key)return null;var j;try{j=JSON.parse(localStorage.getItem(key))}catch(e){return null}
-    if(!j||typeof j!=='object')return null;if(j.answers&&typeof j.answers==='object')j=j.answers;else if(j.draft&&typeof j.draft==='object')j=j.draft;
-    var v=Object.keys(j).map(function(k){return j[k]}).filter(function(x){return typeof x==='number'&&isFinite(x)});
-    return v.length>=8?v:null;
-  }
-  function styleHTML(vals){
-    var lo=Math.min.apply(null,vals),hi=Math.max.apply(null,vals);
-    var scaleLo=Math.min(lo,1),scaleHi=hi<=5?5:hi<=7?7:hi<=10?10:hi;if(lo===0)scaleLo=0;
-    if(scaleHi-scaleLo<2||scaleHi-scaleLo>10)return '';
-    var cnt={},n=vals.length;for(var x=scaleLo;x<=scaleHi;x++)cnt[x]=0;vals.forEach(function(v){v=Math.round(v);if(v in cnt)cnt[v]++});
-    var mx=Math.max.apply(null,Object.keys(cnt).map(function(k){return cnt[k]}))||1;
-    var ext=(cnt[scaleLo]+cnt[scaleHi])/n,mids=0,mid=(scaleLo+scaleHi)/2;Object.keys(cnt).forEach(function(k){if(Math.abs(k-mid)<=.5)mids+=cnt[k]});mids/=n;
-    var bars=Object.keys(cnt).map(function(k){return '<div class="hb"><span class="hbv">'+cnt[k]+'</span><i style="height:'+Math.round(cnt[k]/mx*100)+'%"></i><span class="hbk">'+k+'</span></div>'}).join('');
-    var top=Math.max.apply(null,Object.keys(cnt).map(function(k){return cnt[k]}))/n,used=Object.keys(cnt).filter(function(k){return cnt[k]>0}).length;
+  /* Válaszstílus: a kérdőív saját válaszskálája alapján (assets/oni-schema.js), nem a kitöltő válaszaiból kitalálva.
+     Eltérő skálájú kérdéseket nem öntünk össze: a diagram a leggyakoribb skálát mutatja, a többit megnevezi. */
+  function styleHTML(id){
+    var C=window.ONI_CHECK;if(!C)return '';
+    var key=(ONI.IDKEY||{})[id];if(!key)return '';var j;try{j=JSON.parse(localStorage.getItem(key))}catch(e){return ''}
+    var a=C.answersOf(id,j),sc=C.scales(id);if(!a||!sc.length)return '';
+    var main=sc[0],bins=main.vals,vals=main.qs.map(function(q){return a[q]}).filter(function(v){return typeof v==='number'&&bins.indexOf(v)>-1});
+    if(vals.length<8||bins.length<3||bins.length>11)return '';
+    var cnt={},n=vals.length;bins.forEach(function(b){cnt[b]=0});vals.forEach(function(v){cnt[v]++});
+    var mx=Math.max.apply(null,bins.map(function(b){return cnt[b]}))||1,lo=bins[0],hi=bins[bins.length-1];
+    var ext=(cnt[lo]+cnt[hi])/n,midIdx=bins.length%2?[(bins.length-1)/2]:[bins.length/2-1,bins.length/2],mids=midIdx.reduce(function(s,i){return s+cnt[bins[i]]},0)/n;
+    var bars=bins.map(function(k){return '<div class="hb"><span class="hbv">'+cnt[k]+'</span><i style="height:'+Math.round(cnt[k]/mx*100)+'%"></i><span class="hbk">'+k+'</span></div>'}).join('');
+    var top=mx/n,used=bins.filter(function(k){return cnt[k]>0}).length;
     var txt=top>=.6?'A válaszaid '+Math.round(top*100)+'%-a ugyanaz az érték volt. Ha ez tényleg így igaz rád, rendben van; ha fáradtan vagy sietve töltötted ki, az eredményt érdemes óvatosan kezelni, és később újra kitölteni.'
       :ext>=.5?'A válaszaid '+Math.round(ext*100)+'%-a a skála két szélén van. Határozott válaszstílus: az eredményed kontrasztosabb lehet, mint amilyen a hétköznapokban vagy.'
       :mids>=.4?'A válaszaid '+Math.round(mids*100)+'%-a a skála közepén van. Óvatos, középre húzó válaszstílus: a skálák közti különbségek tompábbak lehetnek a valóságosnál.'
       :used<=2?'Csak '+used+' különböző értéket használtál. A skála árnyaltabb használata pontosabb képet adna.'
       :'A válaszaid a skála nagy részét használják, nem húznak erősen se a szélekre, se a közepére. Ez jó alap az értelmezéshez.';
-    return '<div class="od-panel"><h6>Válaszstílus</h6><div class="hist" role="img" aria-label="Válaszok eloszlása: '+Object.keys(cnt).map(function(k){return k+': '+cnt[k]}).join(', ')+'">'+bars+'</div><p>'+txt+'</p></div>';
+    var other=sc.slice(1).reduce(function(s,x){return s+x.n},0);
+    var note='A diagram '+n+' kérdés válaszát mutatja a kérdőív '+lo+'–'+hi+' válaszskáláján.'+(other?' A teszt további '+other+' kérdése más válaszskálát használ, ezért az nincs benne.':'');
+    return '<div class="od-panel"><h6>Válaszstílus</h6><div class="hist" role="img" aria-label="Válaszok eloszlása a '+lo+'–'+hi+' skálán: '+bins.map(function(k){return k+': '+cnt[k]}).join(', ')+'">'+bars+'</div><p>'+txt+'</p><p class="oc-note">'+note+'</p></div>';
   }
   function deepHTML(id,r){
     var ds=numDims(r);if(!ds.length)return '';
@@ -103,10 +103,10 @@
       panels+='<div class="od-panel"><h6>Leginkább jellemző</h6><ul class="od-list">'+top.map(function(d){return row(d,'hi')}).join('')+'</ul><h6 style="margin-top:14px">Legkevésbé jellemző</h6><ul class="od-list">'+bot.map(function(d){return row(d,'lo')}).join('')+'</ul>'+
         '<p>A százalék azt jelzi, hol áll az eredményed a skála saját tartományán belül. Egy fordított irányú skálán (például nehézségek, kockázatok) a magas érték nem erősség.</p></div>';}
     else panels+='<div class="od-panel"><h6>Hol állsz a skálán</h6><ul class="od-list">'+ds.map(function(d){return '<li><span>'+esc(d.l)+'</span><b class="hi">'+d.v+'</b><i><u class="hi" style="width:'+Math.round(d.p*100)+'%"></u></i></li>'}).join('')+'</ul><p>'+ds.map(function(d){return esc(d.l)+': '+d.v+' a '+d.lo+'–'+d.hi+' skálán, ez a tartomány '+Math.round(d.p*100)+'%-a.'}).join(' ')+'</p></div>';
-    var vals=rawValues(id);if(vals)panels+=styleHTML(vals);
-    var h=(ONI.all()[id]||[]).filter(function(e){return e!==r&&e.sid!==r.sid&&(e.sv||1)===(r.sv||1)&&(e.qv||1)===(r.qv||1)&&e.d});
+    panels+=styleHTML(id);
+    var h=(ONI.all()[id]||[]).filter(function(e){return e!==r&&e.sid!==r.sid&&ONI.same(e,r)&&e.d});
     if(h.length){var pv=h[h.length-1],ch=ds.map(function(d){var o=pv.d[d.k];return o&&typeof o[1]==='number'?{l:d.l,a:o[1],b:d.v,dp:(d.v-o[1])/(d.hi-d.lo)}:null}).filter(Boolean).sort(function(a,b){return Math.abs(b.dp)-Math.abs(a.dp)}).slice(0,6);
-      if(ch.length)panels+='<div class="od-panel"><h6>Változás az előző kitöltés óta · '+new Date(pv.done||pv.t).toLocaleDateString('hu-HU',{year:'numeric',month:'short',day:'numeric'})+'</h6><ul class="od-chg">'+ch.map(function(c){var d=c.b-c.a;return '<li><span>'+esc(c.l)+'</span><b>'+c.a+' → '+c.b+'</b><em class="'+(Math.abs(c.dp)<.05?'eq':d>0?'up':'dn')+'">'+(Math.abs(c.dp)<.05?'≈':d>0?'▲':'▼')+' '+Math.abs(Math.round(c.dp*100))+'%</em></li>'}).join('')+'</ul><p>A százalék a skála teljes tartományához viszonyított elmozdulás. 5% alatt a különbség belefér a mérési ingadozásba.</p></div>';}
+      if(ch.length)panels+='<div class="od-panel"><h6>Változás az előző kitöltés óta · '+new Date(pv.done||pv.t).toLocaleDateString('hu-HU',{year:'numeric',month:'short',day:'numeric'})+'</h6><ul class="od-chg">'+ch.map(function(c){var d=c.b-c.a;return '<li><span>'+esc(c.l)+'</span><b>'+c.a+' → '+c.b+'</b><em class="'+(Math.abs(c.dp)<.05?'eq':d>0?'up':'dn')+'">'+(Math.abs(c.dp)<.05?'≈':d>0?'▲':'▼')+' '+Math.abs(Math.round(c.dp*100))+'%</em></li>'}).join('')+'</ul><p>A százalék a skála teljes tartományához viszonyított elmozdulás. A ≈ jel 5% alatti elmozdulást jelöl: ez csak megjelenítési határ, nem statisztikai küszöb. Hogy egy változás valódi-e, az a teszt megbízhatóságától és a kitöltés körülményeitől is függ.</p></div>';}
     return '<section class="oni-deep"><div class="oni-eyebrow">Vizuális áttekintés</div><div class="od-grid">'+panels+'</div></section>';
   }
   window.ONI_DEEP=deepHTML;
@@ -118,6 +118,7 @@
     return '<section class="oni-brief" data-id="'+id+'" data-sid="'+esc(r.sid||'_')+'">'+
       '<div class="oni-eyebrow">Röviden</div>'+
       '<p class="oni-head">'+esc(r.h||d.n||'')+'</p>'+
+      '<p class="oni-ver">Kitöltve: '+fmtD(r.done||r.t)+(r.corrected?' · javított válaszokkal':'')+' · '+ONI.verText(r)+'</p>'+
       (chartHTML(r)||(dims?'<div class="oni-dims">'+dims+'</div>':''))+
       '<div class="oni-grid">'+
         '<div><h5>Értelmezési korlát</h5><p>'+esc(d.limit||'Önbevallásos kérdőív: tendenciát mutat, nem diagnózist.')+'</p></div>'+

@@ -63,10 +63,11 @@ h2{font-family:var(--font-serif);font-weight:400;font-size:28px;margin:44px 0 8p
 @media (max-width:560px){.wrap{padding:28px 16px 64px}.card{padding:16px}.sess li{grid-template-columns:1fr auto}.sess .d{grid-column:1/-1}.th .tools{margin-left:0}}
 </style>
 
-<script src="assets/oni-core.js?v=26bbc6cd"></script>
+<script src="assets/oni-core.js?v=06166a21"></script>
+<script src="assets/oni-schema.js?v=190e2f3e" defer></script>
 <script src="assets/tests-data.js?v=8174bfd3" defer></script>
-<script src="assets/results-plus.js?v=7deabcc1" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=b9cc03ce">
+<script src="assets/results-plus.js?v=d9038a18" defer></script>
+<link rel="stylesheet" href="assets/theme.css?v=12602886">
 </head>
 <body>
 <div class="wrap">
@@ -139,7 +140,7 @@ document.addEventListener('DOMContentLoaded',function(){
     var u=jget(UNDO,null),ub=document.getElementById('undo');
     if(u&&u.t&&Date.now()-Date.parse(u.t)<7*864e5){ub.innerHTML='<div class="undo"><span>Van egy '+esc(u.t.slice(0,16).replace('T',' '))+' előtti pillanatkép ('+esc(u.why||'visszaállítás')+').</span><button type="button" class="btn sm" id="undo-go">Visszavonás</button></div>';
       document.getElementById('undo-go').onclick=function(){if(!confirm('Visszaállítsam a '+u.t.slice(0,16).replace('T',' ')+' előtti állapotot? Ami azóta változott, elvész.'))return;
-        Object.keys(ours()).forEach(function(k){localStorage.removeItem(k)});Object.keys(u.data).forEach(function(k){localStorage.setItem(k,u.data[k])});localStorage.removeItem(UNDO);say('Visszaállítva.');render();};}
+        window.ONI_BULK=true;Object.keys(ours()).forEach(function(k){localStorage.removeItem(k)});Object.keys(u.data).forEach(function(k){localStorage.setItem(k,u.data[k])});localStorage.removeItem(UNDO);say('Visszaállítva.');render();};}
     else ub.innerHTML='';
     var L=document.getElementById('list');
     if(!ids.length&&!orphans.length){L.innerHTML='<div class="empty">Ebben a böngészőben még nincs mentett adat. <a href="index.html">Válassz egy tesztet</a>, vagy nézd meg a <a href="osszegzes.html?demo=1">demó profilt</a>.</div>';}
@@ -147,7 +148,7 @@ document.addEventListener('DOMContentLoaded',function(){
       var h=res[id]||[],key=IDKEY[id],raw=key&&hasRaw(key),nn=notes[id]||{};
       var rows=h.map(function(r,i){var n=nn[r.sid||'_'],nt=n&&((n.fit&&n.fit.length)||(n.cond&&n.cond.length)||n.text);
         return '<li><span class="d">'+fmt(r.done||r.t)+(i===h.length-1?'<span class="tag">legutóbbi</span>':'')+'</span><span class="h">'+(r.h?'<strong>'+esc(r.h)+'</strong>':'<strong>'+esc(r.n||name(id))+'</strong>')+
-          ' <small style="color:var(--ink-mute)">· kérdéssor v'+(r.qv||1)+', pontozás v'+(r.sv||1)+(r.corrected?' · javított':'')+'</small>'+(((ONI.VERS||{})[id]&&((r.qv||1)<(ONI.VERS[id].q||1)||(r.sv||1)<(ONI.VERS[id].s||1)))?'<a class="tag" href="valtozasok.html" style="text-decoration:none">korábbi változat</a>':'')+
+          ' <small style="color:var(--ink-mute)">· '+ONI.verText(r)+(r.corrected?' · javított':'')+'</small>'+(!ONI.isCur(id,r)?'<a class="tag" href="valtozasok.html" style="text-decoration:none">korábbi változat</a>':'')+
           (nt?'<span class="n">Jegyzet: '+esc([].concat((n.fit||[]).map(function(k){return {fits:'illik rám',not:'nem jellemző',explore:'megérteném'}[k]||k}),n.text?['„'+n.text+'”']:[]).join(' · ')||'körülmények')+'</span>':'')+
           '</span><button type="button" class="btn danger sm" data-del-sess="'+esc(id)+'" data-i="'+i+'" aria-label="'+esc(name(id))+', '+fmt(r.done||r.t)+' kitöltés törlése">Törlés</button></li>';}).reverse().join('');
       return '<div class="card" data-test="'+esc(id)+'"><div class="th"><span class="nm">'+(LINK[id]?'<a href="'+LINK[id]+'">'+esc(name(id))+'</a>':esc(name(id)))+'</span>'+

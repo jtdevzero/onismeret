@@ -199,7 +199,8 @@ html[data-theme="light"][data-page="index"] .st-lbl{color:var(--u-muted)}
 
 .oni-brief{margin:0 0 22px;padding:22px 24px;border-radius:18px;border:1px solid var(--u-line);border-left:4px solid var(--u-gold2);background:var(--u-paper);color:var(--u-ink);box-shadow:var(--u-shadow);font-family:'Inter',system-ui,sans-serif}
 .oni-eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--u-gold)}
-.oni-head{font-family:'Lora',Georgia,serif;font-size:24px;line-height:1.25;margin:6px 0 12px;color:var(--u-ink)}
+.oni-head{font-family:'Lora',Georgia,serif;font-size:24px;line-height:1.25;margin:6px 0 4px;color:var(--u-ink)}
+.oni-ver{margin:0 0 12px;font-size:12px;color:var(--u-muted)}
 .oni-dims{display:flex;flex-wrap:wrap;gap:6px 8px;margin:0 0 16px}
 .oni-dim{font-size:12.5px;padding:5px 10px;border-radius:99px;background:var(--u-bg2);border:1px solid var(--u-line2);color:var(--u-soft)}
 .oni-dim b{color:var(--u-ink);font-weight:600}

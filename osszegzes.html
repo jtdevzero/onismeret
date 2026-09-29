@@ -35,6 +35,9 @@ h2 em{font-style:italic;color:var(--gold)}
 .pat .strength{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--acc);margin-bottom:8px}
 .pat p{color:var(--ink-soft);font-size:14.5px;margin-bottom:10px}
 .pat p strong{color:var(--ink)}
+.pat-ev{font-size:13px;color:var(--ink-soft);margin:0 0 10px;padding:10px 12px;border-radius:10px;background:var(--bg-soft,rgba(148,163,184,.08));border:1px solid var(--line,rgba(148,163,184,.25))}
+.pat-ev span{font-weight:600;color:var(--ink)}.pat-ev ul{margin:6px 0 0 18px;padding:0}.pat-ev li{margin:2px 0}.pat-ev small{color:var(--ink-mute)}
+.pat .pat-miss{font-size:13.5px}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 12px}
 .chip{font-size:12px;padding:4px 10px;border-radius:99px;border:1px solid var(--line);color:var(--ink-soft);background:rgba(5,13,30,0.5)}
 .chip.hit{border-color:var(--acc);color:var(--ink);background:color-mix(in srgb,var(--acc) 14%,transparent)}
@@ -143,10 +146,11 @@ h2 em{font-style:italic;color:var(--gold)}
   body.rep-mode #report .cols{columns:2;column-gap:10pt}
 }
 </style>
-<script src="assets/oni-core.js?v=26bbc6cd"></script>
+<script src="assets/oni-core.js?v=06166a21"></script>
+<script src="assets/oni-schema.js?v=190e2f3e" defer></script>
 <script src="assets/tests-data.js?v=8174bfd3" defer></script>
-<script src="assets/results-plus.js?v=7deabcc1" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=b9cc03ce">
+<script src="assets/results-plus.js?v=d9038a18" defer></script>
+<link rel="stylesheet" href="assets/theme.css?v=12602886">
 </head>
 <body>
 <div class="wrap">
@@ -168,7 +172,7 @@ h2 em{font-style:italic;color:var(--gold)}
   <div id="report"></div>
   <p class="note">A minták <strong>heurisztikák</strong>: egy minta akkor jelenik meg, ha legalább két független teszt ugyanabba az irányba mutat. A küszöbök tájékoztató jellegűek, nem klinikai határértékek. A „saját itemek” jelölésű tesztek (konfliktusmódok, Gottman, Fisher, Négy tendencia, Cselekvési módok) nem validált mérések. Egy minta kérdést vet fel, nem diagnózist mond ki. Az újramérést 90 nap után jelzi.</p>
 </div>
-<script src="assets/demo-data.js?v=2da1da6b"></script>
+<script src="assets/demo-data.js?v=8351e47a"></script>
 <script>
 (function(){
 const REG=[
@@ -223,8 +227,11 @@ const FITL={fits:'Ez illik rám',not:'Ez nem jellemző rám',explore:'Ezt szeret
 const noteOf=(id,r)=>{const n=(NOTES[id]||{})[r.sid||'_'];return n&&((n.fit&&n.fit.length)||(n.cond&&n.cond.length)||n.text)?n:null};
 const noteHTML=n=>`<div class="hl note">${(n.fit||[]).map(k=>`<span class="badge fresh">${FITL[k]||k}</span>`).join(' ')}${n.cond&&n.cond.length?` <span class="ncond">Körülmények: ${n.cond.map(k=>CONDL[k]||k).join(', ')}</span>`:''}${n.text?`<div class="ntext">„${esc(n.text)}”</div>`:''}</div>`;
 const prev=id=>{const h=store[id];return h&&h.length>1?h[h.length-2]:null};
-const val=(id,k)=>{const r=last(id);return r&&r.d&&r.d[k]?r.d[k][1]:null};
-const avgAll=id=>{const r=last(id);if(!r||!r.d)return null;const v=Object.values(r.d).map(x=>x[1]).filter(x=>typeof x==='number');return v.length?v.reduce((a,b)=>a+b,0)/v.length:null};
+/* A visszatérő mintákhoz csak a teszt jelenlegi változatával készült eredmény számít. */
+const cur=id=>{const r=last(id);return r&&ONI.isCur(id,r)?r:null};
+let TRACK=null;
+const val=(id,k)=>{const r=cur(id);if(TRACK&&r&&r.d&&r.d[k])TRACK.push([id,k]);return r&&r.d&&r.d[k]?r.d[k][1]:null};
+const avgAll=id=>{const r=cur(id);if(TRACK&&r)TRACK.push([id,'*']);if(!r||!r.d)return null;const v=Object.values(r.d).map(x=>x[1]).filter(x=>typeof x==='number');return v.length?v.reduce((a,b)=>a+b,0)/v.length:null};
 const days=t=>Math.floor((Date.now()-new Date(t).getTime())/86400000);
 const fmt=t=>new Date(t).toLocaleDateString('hu-HU',{year:'numeric',month:'short',day:'numeric'});
 const hasResponses=key=>{if(DEMO)return false;const v=read(key);if(!v)return false;if(key==='ysq_autosave')return v.answers&&Object.keys(v.answers).length>0;if(key==='attachment_assessment_v1')return !!(v.draft||v.result);return Object.keys(v).length>0};
@@ -314,11 +321,28 @@ const RULES=[
   action:'Egy hétig figyeld és számold a saját és a párod <b>apró jelzéseit</b> (megjegyzés, kérdés, érintés), és hogy mennyire fordultok egymás felé.'}
 ];
 
+/* A kiváltó eredmények: teszt, érintett skála, aktuális érték és kitöltési dátum */
+function evHTML(hits){
+  const rows=[];const seen=new Set();
+  hits.forEach(s=>{const r=cur(s.test);if(!r)return;
+    const parts=(s.used||[]).filter(([id,k])=>{const key=id+'|'+k;if(seen.has(key))return false;seen.add(key);return true}).map(([id,k])=>{
+      if(k==='*'){const a=avgAll(id);return 'skálaátlag '+(Math.round(a*100)/100);}
+      const d=r.d&&r.d[k];return d?esc(d[0])+': '+d[1]+' <small>('+d[2]+'–'+d[3]+')</small>':''}).filter(Boolean);
+    if(!parts.length&&r.h)parts.push(esc(r.h));
+    rows.push(`<li><b>${esc(NAME[s.test]||s.test)}</b> · ${parts.join(', ')||esc(s.label)} · ${fmt(when(r))}</li>`);});
+  return rows.length?`<div class="pat-ev"><span>Ezek az eredmények váltották ki:</span><ul>${rows.join('')}</ul></div>`:'';
+}
+/* Ami nem teljesül, az nem ellentmondás: a többi teszt ezt a mintát egyszerűen nem jelzi. */
+function missHTML(avail,hits){
+  const hitT=new Set(hits.map(s=>s.test)),miss=[...new Set(avail.filter(s=>!hitT.has(s.test)).map(s=>s.test))];
+  if(!miss.length)return '';
+  return `<p class="pat-miss"><b>Más irányba mutat:</b> ${miss.map(id=>esc(NAME[id]||id)).join(', ')} ezt a mintát nem jelzi. Ez nem ellentmondás, csak azt mutatja, hogy a minta nem minden területen jelenik meg. <i>Tisztázó kérdés: milyen helyzetben igaz rád ez a minta, és milyenben nem?</i></p>`;
+}
 function evalRules(){
   const fired=[],locked=[];
   RULES.forEach(r=>{
-    const avail=r.sig.filter(s=>last(s.test));
-    const hits=avail.filter(s=>{try{return !!s.fn()}catch(e){return false}});
+    const avail=r.sig.filter(s=>cur(s.test));
+    const hits=avail.filter(s=>{TRACK=[];let h=false;try{h=!!s.fn()}catch(e){}s.used=TRACK;TRACK=null;return h});
     const hitTests=new Set(hits.map(s=>s.test)),availTests=new Set(avail.map(s=>s.test));
     if(hitTests.size>=r.min)fired.push({r,avail,hits,nT:hitTests.size,aT:availTests.size});
     else if(availTests.size<r.min)locked.push(r);
@@ -347,7 +371,7 @@ function changeHTML(){
   const items=[];let nRe=0;
   REG.forEach(([cat,id])=>{
     const r=last(id);if(!r||!r.d)return;
-    const hist=(store[id]||[]).filter(e=>(e.sv||1)===(r.sv||1)&&(e.qv||1)===(r.qv||1)&&e.d);
+    const hist=(store[id]||[]).filter(e=>ONI.same(e,r)&&e.d);
     if(hist.length<2)return;nRe++;
     const f=hist[0],per=[];
     Object.entries(r.d).forEach(([k,d])=>{
@@ -364,16 +388,16 @@ function changeHTML(){
   const tone=x=>{const g=x.dir*(x.to>x.from?1:-1);return g>0?'<span class="chg good">kedvező irány</span>':g<0?'<span class="chg bad">kedvezőtlen irány</span>':'<span class="chg neu">semleges skála</span>'};
   const fm=t=>new Date(t).toLocaleDateString('hu-HU',{year:'numeric',month:'long'});
   let body;
-  if(!top.length)body=`<p>${nRe} tesztet töltöttél ki többször, de egyik skálán sem változott az eredmény a skála terjedelmének ${Math.round(CH_MIN*100)}%-ánál többet. Ekkora eltérés beleférhet a mérési ingadozásba.</p>`;
+  if(!top.length)body=`<p>${nRe} tesztet töltöttél ki többször, de egyik skálán sem változott az eredmény a skála terjedelmének ${Math.round(CH_MIN*100)}%-ánál többet. Ez a határ csak azt dönti el, mit emelek ki itt; kisebb változás is lehet valódi, és nagyobb is adódhat a körülményekből.</p>`;
   else{
     const good=top.filter(x=>x.dir*(x.to>x.from?1:-1)>0).length,bad=top.filter(x=>x.dir*(x.to>x.from?1:-1)<0).length;
     const lead=good&&!bad?'A kiemelt változások mind kedvező irányúak.':bad&&!good?'A kiemelt változások kedvezőtlen irányúak. Érdemes megnézni, mi történt azóta az életedben.':good&&bad?'Vegyes a kép: van, ami javult, és van, ami romlott.':'A változások semleges skálákon történtek, ezek önmagukban nem jók vagy rosszak.';
     body=`<p>${lead}</p><ul class="chg-list">${top.map(x=>`<li><strong>${esc(x.label)}</strong> (${esc(NAME[x.id]||x.id)}) ${verb(x)}: ${x.from} → ${x.to}, ${fm(x.since)} óta. ${tone(x)}</li>`).join('')}</ul>`;
   }
-  return `<h2>Mi <em>változott</em></h2><p class="h2sub">A többször kitöltött tesztek első és legutóbbi, azonos változatú eredménye alapján. Csak a skála terjedelmének legalább ${Math.round(CH_MIN*100)}%-át elérő változást említem, tesztenként legfeljebb kettőt.</p><div class="card chg-card" style="--acc:var(--sapphire)">${body}</div>`;
+  return `<h2>Mi <em>változott</em></h2><p class="h2sub">A többször kitöltött tesztek első és legutóbbi, azonos változatú eredménye alapján. Csak a skála terjedelmének legalább ${Math.round(CH_MIN*100)}%-át elérő változást emelem ki, tesztenként legfeljebb kettőt. Ez megjelenítési szabály, nem tudományosan igazolt jelentőségi küszöb.</p><div class="card chg-card" style="--acc:var(--sapphire)">${body}</div>`;
 }
 function hcHTML(id,r){
-  const hist=(store[id]||[]).filter(e=>(e.sv||1)===(r.sv||1)&&(e.qv||1)===(r.qv||1)&&e.d);
+  const hist=(store[id]||[]).filter(e=>ONI.same(e,r)&&e.d);
   if(hist.length<2)return `<div class="hc"><div class="hc-one">Egy kitöltés van ebből a változatból. A grafikon a második kitöltéstől jelenik meg.</div></div>`;
   // közös skálájú dimenziók: a leggyakoribb [min,max]
   const keys=Object.keys(r.d).filter(k=>typeof r.d[k][1]==='number');
@@ -445,11 +469,11 @@ function render(){
     fired.sort((a,b)=>b.nT-a.nT||b.hits.length-a.hits.length).forEach(({r,avail,hits,nT,aT})=>{
       h+=`<div class="card pat" style="--acc:${r.acc}"><div class="strength">${nT} különböző teszt jelzi · ${aT} elérhetőből</div><h3>${r.title}</h3>
       <div class="chips">${avail.map(s=>`<span class="chip ${hits.includes(s)?'hit':'miss'}" title="${esc(NAME[s.test])}">${esc(s.label)}</span>`).join('')}</div>
-      <p>${r.text}</p>${r.q?`<p class="refl"><b>Kérdés magadnak:</b> ${r.q}</p>`:''}<div class="action"><b>Egy lehetséges lépés:</b> ${r.action}</div></div>`;
+      <p>${r.text}</p>${evHTML(hits)}${missHTML(avail,hits)}${r.q?`<p class="refl"><b>Kérdés magadnak:</b> ${r.q}</p>`:''}<div class="action"><b>Egy lehetséges lépés:</b> ${r.action}</div></div>`;
     });
   } else h+=`<div class="locked">A jelenlegi eredmények alapján egyik minta sem teljesül két független jelzéssel. Ez jó hír is lehet, vagy azt jelenti, hogy még kevés a teszt.</div>`;
   if(locked.length){
-    const need={};locked.forEach(r=>r.sig.forEach(s=>{if(!last(s.test))need[s.test]=(need[s.test]||0)+1}));
+    const need={};locked.forEach(r=>r.sig.forEach(s=>{if(!cur(s.test))need[s.test]=(need[s.test]||0)+1}));
     const top=Object.entries(need).sort((a,b)=>b[1]-a[1]).slice(0,5);
     h+=`<div class="locked" style="margin-top:14px">${locked.length} minta még nem értékelhető, mert kevés hozzá az adat. A legtöbbet ezek a tesztek nyitnák meg: ${top.map(([id,n])=>`<a href="${LINK[id]}">${NAME[id]}</a> (${n})`).join(', ')}.</div>`;
   }
@@ -460,13 +484,13 @@ function render(){
     if(!r&&!pend)return;
     if(cat!==curCat){h+=`<div class="cat-title">${cat}</div>`;curCat=cat;}
     if(!r){h+=`<div class="card test" style="--acc:var(--ink-mute)"><div class="nm"><a href="${link}">${name}</a></div><div class="meta">nincs kiértékelve</div><div class="pending">Van mentett válaszod, de az eredményt még nem nyitottad meg ezzel a verzióval. <a href="${link}">Nyisd meg, és kattints az eredményre</a>, akkor ide is bekerül.</div></div>`;return;}
-    const p0=prev(id),cmp=!p0||((p0.sv||1)===(r.sv||1)&&(p0.qv||1)===(r.qv||1)),p=cmp?p0:null,dd=days(when(r)),due=!!DUE_DAYS&&dd>=DUE_DAYS;
+    const p0=prev(id),cmp=!p0||ONI.same(p0,r),p=cmp?p0:null,old=!ONI.isCur(id,r),dd=days(when(r)),due=!!DUE_DAYS&&dd>=DUE_DAYS;
     const entries=Object.entries(r.d||{});
     const sorted=entries.length>8?entries.slice().sort((a,b)=>{const na=(a[1][1]-a[1][2])/((a[1][3]-a[1][2])||1),nb=(b[1][1]-b[1][2])/((b[1][3]-b[1][2])||1);return nb-na}):entries;
     const shown=sorted.slice(0,8),rest=sorted.slice(8);
     const acc=due?'#fb7185':'var(--gold)';
     h+=`<div class="card test" style="--acc:${acc}"><div class="nm"><a href="${link}">${name}</a>${due?`<span class="badge due">Újramérhető</span>`:(store[id].length>1?`<span class="badge fresh">${store[id].length}× kitöltve</span>`:'')}</div>
-      <div class="meta" title="Kitöltés ideje (utolsó válasz). Kérdéssor v${r.qv||1}, pontozás v${r.sv||1}">${fmt(when(r))} · ${dd===0?'ma':dd+' napja'}</div>${!cmp?`<div class="pending">Az előző kitöltés egy korábbi kérdéssor- vagy pontozásverzióval készült, ezért nem hasonlítom össze vele.</div>`:''}
+      <div class="meta" title="Kitöltés ideje (utolsó válasz)">${fmt(when(r))} · ${dd===0?'ma':dd+' napja'}${r.corrected?' · javított válaszokkal':''} · ${ONI.verText(r)}</div>${old?`<div class="pending">Ez az eredmény a teszt egy korábbi változatával készült. Az előzmények között megmarad, de a visszatérő mintákba nem számít bele. <a href="${link}">Töltsd ki újra a jelenlegi változattal</a>, ha szeretnéd, hogy számítson.</div>`:!cmp?`<div class="pending">Az előző kitöltés a teszt egy másik változatával készült (kérdéssor, pontozás vagy fordítás), ezért nem hasonlítom össze vele.</div>`:''}
       ${r.h?`<div class="hl"><strong>${esc(r.h)}</strong></div>`:''}
       ${r.x&&r.x.need?`<div class="hl">Kielégítetlen szükségletek: ${r.x.need.map(esc).join(' · ')}</div>`:''}
       ${noteOf(id,r)?noteHTML(noteOf(id,r)):''}
@@ -479,7 +503,7 @@ function render(){
   const tl=[];Object.entries(store).forEach(([id,hist])=>hist.forEach(e=>tl.push({id,e})));
   tl.sort((a,b)=>when(b.e).localeCompare(when(a.e)));
   if(tl.length){
-    h+=`<h2><em>Idővonal</em></h2><p class="h2sub">Minden kiértékelés dátum szerint. A dátum a tényleges kitöltés (utolsó válasz) ideje. Egy napon belül ugyanannak a tesztnek csak az utolsó eredménye marad meg, és egy eredmény puszta újranyitása nem számít új kitöltésnek.</p><ul class="tl">${tl.slice(0,40).map(({id,e})=>`<li><span class="d">${fmt(when(e))}${(e.qv||1)<(last(id).qv||1)?' · korábbi kérdéssor-változat':''}${e.corrected?' · javított':''}</span><strong>${esc(NAME[id]||e.n||id)}</strong>${e.h?' · '+esc(e.h):''}</li>`).join('')}</ul>`;
+    h+=`<h2><em>Idővonal</em></h2><p class="h2sub">Minden kiértékelés dátum szerint. A dátum a tényleges kitöltés (utolsó válasz) ideje. Új mérés csak az „Új kitöltés” gombbal indul. Egy eredmény újranyitása nem új mérés, a válaszok utólagos módosítása pedig javításként ugyanahhoz a méréshez tartozik.</p><ul class="tl">${tl.slice(0,40).map(({id,e})=>`<li><span class="d">${fmt(when(e))}${!ONI.isCur(id,e)?' · korábbi változat':''}${e.corrected?' · javított':''}</span><strong>${esc(NAME[id]||e.n||id)}</strong>${e.h?' · '+esc(e.h):''}</li>`).join('')}</ul>`;
   }
   root.innerHTML=h;
   hcBind(root);
@@ -511,13 +535,13 @@ function buildRepUI(){
 function buildReport(ids,withPat,withNotes,nm){
   const inc=new Set(ids);let h=`<h1>Önismereti összefoglaló${nm?' — '+esc(nm):''}</h1><div class="rsub">Készült: ${fmt(new Date().toISOString())} · ${ids.length} teszt · önbevallásos kérdőívek, nem diagnózis</div>`;
   if(withPat){
-    const fired=[];RULES.forEach(r=>{const avail=r.sig.filter(x=>inc.has(x.test)&&last(x.test));const hits=avail.filter(x=>{try{return !!x.fn()}catch(e){return false}});if(new Set(hits.map(x=>x.test)).size>=r.min)fired.push({r,hits});});
+    const fired=[];RULES.forEach(r=>{const avail=r.sig.filter(x=>inc.has(x.test)&&cur(x.test));const hits=avail.filter(x=>{try{return !!x.fn()}catch(e){return false}});if(new Set(hits.map(x=>x.test)).size>=r.min)fired.push({r,hits});});
     h+=`<h2>Visszatérő minták</h2>`+(fired.length?fired.map(({r,hits})=>`<div class="rp"><b>${r.title}</b> — ${r.text.replace(/<[^>]+>/g,'')}<div class="ev">Jelzések: ${hits.map(x=>esc(x.label)).join(' · ')}</div></div>`).join(''):'<div class="rp">A kiválasztott tesztek alapján egyik minta sem teljesül két független jelzéssel.</div>');
   }
   h+=`<h2>Eredmények tesztenként</h2><div class="cols">`;
   REG.filter(r=>inc.has(r[1])&&last(r[1])).forEach(([cat,id,name])=>{const r=last(id),p=prev(id);
-    const rows=Object.values(r.d||{}).map((d,i)=>{const k=Object.keys(r.d)[i];const pv=p&&(p.sv||1)===(r.sv||1)&&(p.qv||1)===(r.qv||1)&&p.d&&p.d[k]?p.d[k][1]:null;return `<tr><td>${esc(d[0])}</td><td class="v">${d[1]}${pv!==null&&pv!==d[1]?` <span style="color:#64748b">(előző: ${pv})</span>`:''}</td><td class="r">${d[2]}–${d[3]}</td></tr>`}).join('');
-    h+=`<div class="rt"><div class="rh"><span class="rn">${esc(name)}${MODEL.has(id)?' <span class="tag">saját itemek / nem validált</span>':''}</span><span class="rd">${fmt(when(r))} · kérdéssor v${r.qv||1} · pontozás v${r.sv||1}</span></div>${r.h?`<div class="rhl">${esc(r.h)}</div>`:''}${r.x&&r.x.need?`<div>Kielégítetlen szükségletek: ${r.x.need.map(esc).join('; ')}</div>`:''}${withNotes&&noteOf(id,r)?(n=>`<div class="rnote">${(n.fit||[]).map(k=>FITL[k]||k).join(' · ')}${n.cond&&n.cond.length?(n.fit&&n.fit.length?' · ':'')+'Körülmények: '+n.cond.map(k=>CONDL[k]||k).join(', '):''}${n.text?'<br><i>„'+esc(n.text)+'”</i>':''}</div>`)(noteOf(id,r)):''}${rows?`<table>${rows}</table>`:''}</div>`;});
+    const rows=Object.values(r.d||{}).map((d,i)=>{const k=Object.keys(r.d)[i];const pv=p&&ONI.same(p,r)&&p.d&&p.d[k]?p.d[k][1]:null;return `<tr><td>${esc(d[0])}</td><td class="v">${d[1]}${pv!==null&&pv!==d[1]?` <span style="color:#64748b">(előző: ${pv})</span>`:''}</td><td class="r">${d[2]}–${d[3]}</td></tr>`}).join('');
+    h+=`<div class="rt"><div class="rh"><span class="rn">${esc(name)}${MODEL.has(id)?' <span class="tag">saját itemek / nem validált</span>':''}</span><span class="rd">${fmt(when(r))} · ${ONI.verText(r)}${ONI.isCur(id,r)?'':' · korábbi változat, a mintákba nem számít'}</span></div>${r.h?`<div class="rhl">${esc(r.h)}</div>`:''}${r.x&&r.x.need?`<div>Kielégítetlen szükségletek: ${r.x.need.map(esc).join('; ')}</div>`:''}${withNotes&&noteOf(id,r)?(n=>`<div class="rnote">${(n.fit||[]).map(k=>FITL[k]||k).join(' · ')}${n.cond&&n.cond.length?(n.fit&&n.fit.length?' · ':'')+'Körülmények: '+n.cond.map(k=>CONDL[k]||k).join(', '):''}${n.text?'<br><i>„'+esc(n.text)+'”</i>':''}</div>`)(noteOf(id,r)):''}${rows?`<table>${rows}</table>`:''}</div>`;});
   h+=`</div><div class="rfoot">Forrás: Önismereti térképek (jtdevzero.github.io/onismeret). A pontszámok nyers vagy átlagolt skálaértékek, a jobb oldali oszlop a skála terjedelmét mutatja. A minták heurisztikák: legalább két teszt egybehangzó jelzése, nem klinikai küszöbök. A „saját itemek” jelölésű eszközök modell-alapú, nem validált kérdőívek.</div>`;
   document.getElementById('report').innerHTML=h;
 }

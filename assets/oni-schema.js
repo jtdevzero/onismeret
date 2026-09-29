@@ -1,0 +1,96 @@
+/* Önismereti térképek — válaszséma. GENERÁLT FÁJL: node tools/schema.js
+   k = tárolási kulcs, c = a válaszokat tartalmazó mező (ha nem a teljes objektum), g = [kérdésazonosítók, megengedett értékek]. */
+window.ONI_SCHEMA={
+  maia2:{"k":"maia2-responses-v2","g":[["1-37",[0,1,2,3,4,5]]]},
+  tas:{"k":"tas-20-responses-v1","g":[["1-20",[1,2,3,4,5]]]},
+  des:{"k":"des-2-responses-v1","g":[["1-28",[0,10,20,30,40,50,60,70,80,90,100]]]},
+  ecr:{"k":"ecr-r-responses-v1","g":[["1-36",[1,2,3,4,5,6,7]]]},
+  kotodes:{"k":"attachment_assessment_v1","c":"draft","g":[["anxiety_0-9",[1,2,3,4,5,6,7]],["avoidance_0-9",[1,2,3,4,5,6,7]],["context_0-9",[1,2,3,4,5,6,7]],["activation_0-9",[1,2,3,4,5,6,7]],["mental_0-9",[1,2,3,4,5,6,7]],["earned_0-9",[1,2,3,4,5,6,7]]]},
+  ysq:{"k":"ysq_autosave","c":"answers","g":[["1-244",[1,2,3,4,5,6]]]},
+  smi:{"k":"smi-responses-v1","g":[["1-65",[1,2,3,4,5,6]]]},
+  ssss:{"k":"ssss-responses-v1","g":[["1-27",[0,1,2,3,4,5,6]]]},
+  sisses:{"k":"sis-ses-responses-v1","g":[["1-45",[1,2,3,4]]]},
+  iief:{"k":"iief-responses-v1","g":[["1-10",[0,1,2,3,4,5]],["11-15",[1,2,3,4,5]]]},
+  pedt:{"k":"pedt-responses-v1","g":[["1-5",[0,1,2,3,4]]]},
+  sdi:{"k":"sdi-2-responses-v1","g":[["1-14",[0,1,2,3,4,5,6,7,8]]]},
+  nsss:{"k":"nsss-responses-v1","g":[["1-20",[1,2,3,4,5]]]},
+  saq:{"k":"saq-responses-v1","g":[["1-36",[1,2,3,4,5]]]},
+  love:{"k":"love-responses-v1","g":[["1",["A","E"]],["2",["B","D"]],["3",["B","C"]],["4",["C","D"]],["5",["A","E"]],["6",["A","B"]],["7",["C","E"]],["8",["A","D"]],["9",["B","C"]],["10",["A","D"]],["11",["B","E"]],["12",["A","E"]],["13",["C","D"]],["14",["A","B"]],["15",["C","D"]],["16",["B","E"]],["17",["A","C"]],["18",["A","D"]],["19",["D","E"]],["20",["A","B"]],["21",["C","E"]],["22",["B","C"]],["23",["B","D"]],["24",["C","D"]],["25",["B","E"]],["26",["A","C"]],["27",["D","E"]],["28",["A","E"]],["29",["B","C"]],["30",["D","E"]]]},
+  apo:{"k":"apo-responses-v1","g":[["1",["A","R"]],["2",["M","P"]],["3",["F","R"]],["4",["A","M"]],["5",["F","P"]],["6",["A","R"]],["7",["M","P"]],["8",["F","R"]],["9",["A","M"]],["10",["F","P"]],["11",["A","R"]],["12",["F","M"]],["13",["P","R"]],["14",["A","M"]],["15",["F","P"]],["16",["A","R"]],["17",["F","M"]],["18",["P","R"]],["19",["F","M"]],["20",["A","P"]]]},
+  imago:{"k":"imago-responses-v1","g":[["1-57",[0,1,2,3]]]},
+  bf:{"k":"bf-responses-v1","g":[["1-60",[1,2,3,4,5]]]},
+  via:{"k":"via-responses-v1","g":[["1-72",[1,2,3,4,5]]]},
+  las:{"k":"las-responses-v1","g":[["1-24",[1,2,3,4,5]]]},
+  tki:{"k":"conflict-responses-v1","g":[["1-25",[1,2,3,4,5]]]},
+  gott:{"k":"gottman-responses-v1","g":[["1-32",[1,2,3,4,5]]]},
+  fti:{"k":"fisher-responses-v1","g":[["1-40",[1,2,3,4,5]]]},
+  pvq:{"k":"pvq21-responses-v1","g":[["1-21",[1,2,3,4,5,6]]]},
+  ft:{"k":"four-tendencies-responses-v1","g":[["1-12",[0,1,2,3]]]},
+  kolbe:{"k":"action-modes-responses-v1","g":[["1-24",[1,2,3,4,5]]]},
+  meq:{"k":"meq-responses-v1","g":[["1-2",[0,1,2,3,4]],["3-9",[0,1,2,3]],["10",[0,1,2,3,4]],["11-16",[0,1,2,3]],["17-18",[0,1,2,3,4]],["19",[0,1,2,3]]]},
+  ips:{"k":"ips-responses-v1","g":[["1-9",[1,2,3,4,5]]]},
+  ders:{"k":"ders-sf-responses-v1","g":[["1-18",[1,2,3,4,5]]]},
+  scs:{"k":"scs-sf-responses-v1","g":[["1-12",[1,2,3,4,5]]]},
+  tfeq:{"k":"tfeq-r18-responses-v1","g":[["1-17",[0,1,2,3]],["18",[0,1,2,3,4,5,6,7]]]}
+};
+/* ── Séma-alapú segédfüggvények (a tools/schema-runtime.js-ből másolva) ── */
+window.ONI_CHECK=(function(){
+  var S=window.ONI_SCHEMA,BYKEY={},CACHE={};
+  Object.keys(S).forEach(function(id){BYKEY[S[id].k]=id});
+  /* kérdésazonosító → megengedett értékek */
+  function items(id){
+    if(CACHE[id])return CACHE[id];var m={};
+    (S[id]?S[id].g:[]).forEach(function(g){var r=g[0].match(/^(.*?)(\d+)(?:-(\d+))?$/),a=+r[2],b=r[3]?+r[3]:a;for(var i=a;i<=b;i++)m[r[1]+i]=g[1];});
+    return CACHE[id]=m;
+  }
+  function answersOf(id,j){var c=S[id]&&S[id].c;if(!j||typeof j!=='object')return null;return c?(j[c]&&typeof j[c]==='object'?j[c]:{}):j;}
+  function isObj(x){return x!==null&&typeof x==='object'&&!Array.isArray(x)}
+  /* A válaszok ellenőrzése: csak létező kérdés, csak a kérdésnél megengedett érték. Hibaüzenet vagy null. */
+  function responses(id,j){
+    var it=items(id);if(!isObj(j))return 'nem objektum';
+    var a=answersOf(id,j);if(!isObj(a))return 'hiányzó válaszmező';
+    var ks=Object.keys(a);
+    for(var i=0;i<ks.length;i++){var q=ks[i],v=a[q];
+      if(!it[q])return 'ismeretlen kérdés: '+q;
+      if(it[q].indexOf(v)<0)return q+'. kérdés: nem megengedett válasz ('+JSON.stringify(v)+')';}
+    return null;
+  }
+  function iso(x){return typeof x==='string'&&!isNaN(Date.parse(x))&&Date.parse(x)<Date.now()+864e5}
+  function posInt(x){return x===undefined||(typeof x==='number'&&x>=1&&x<=99&&Math.floor(x)===x)}
+  /* Egy eredményrekord szerkezete */
+  function record(id,r){
+    if(!isObj(r))return 'nem objektum';
+    if(!iso(r.t))return 'hibás dátum';if(r.done!==undefined&&!iso(r.done))return 'hibás kitöltési dátum';
+    if(r.h!=null&&typeof r.h!=='string')return 'hibás címke';if(r.n!=null&&typeof r.n!=='string')return 'hibás név';
+    if(r.sid!=null&&(typeof r.sid!=='string'||r.sid.length>40))return 'hibás azonosító';
+    if(!posInt(r.qv)||!posInt(r.sv)||!posInt(r.tv))return 'hibás verziószám';
+    if(r.x!=null&&typeof r.x!=='object')return 'hibás kiegészítő adat';
+    if(r.d!=null){if(!isObj(r.d))return 'hibás skálák';
+      var ks=Object.keys(r.d);for(var i=0;i<ks.length;i++){var d=r.d[ks[i]];
+        if(!Array.isArray(d)||typeof d[0]!=='string'||typeof d[2]!=='number'||typeof d[3]!=='number'||!(d[3]>d[2]))return 'hibás skála: '+ks[i];
+        if(d[1]!==null&&(typeof d[1]!=='number'||!isFinite(d[1])||d[1]<d[2]-1e-6||d[1]>d[3]+1e-6))return 'skálán kívüli érték: '+ks[i];}}
+    return null;
+  }
+  /* Egy mentett tárolókulcs tartalma. Hibaüzenet vagy null. */
+  function stored(k,v){
+    if(typeof v!=='string'||v.length>3e6)return 'túl nagy vagy nem szöveg';
+    var j;try{j=JSON.parse(v)}catch(e){return 'nem érvényes JSON'}
+    if(BYKEY[k])return responses(BYKEY[k],j);
+    if(/-responses-v\d+$/.test(k)||/^ysq_/.test(k))return 'ismeretlen teszt';
+    if(k==='onismeret-results-v1'){
+      if(!isObj(j))return 'nem objektum';
+      var ids=Object.keys(j);for(var i=0;i<ids.length;i++){var id=ids[i],h=j[id];
+        if(!S[id])return 'ismeretlen teszt: '+id;
+        if(!Array.isArray(h)||h.length>50)return id+': hibás előzmény';
+        for(var x=0;x<h.length;x++){var e=record(id,h[x]);if(e)return id+' '+(x+1)+'. eredmény: '+e;}}
+      return null;
+    }
+    return isObj(j)||Array.isArray(j)?null:'nem objektum';
+  }
+  /* Válaszskálák egy tesztben: [{vals:[...], n:kérdésszám}], a leggyakoribb elöl */
+  function scales(id){
+    var it=items(id),by={};Object.keys(it).forEach(function(q){var v=it[q];if(!v.every(function(x){return typeof x==='number'}))return;var k=v.join(',');(by[k]=by[k]||{vals:v,n:0,qs:[]}).n++;by[k].qs.push(q);});
+    return Object.keys(by).map(function(k){return by[k]}).sort(function(a,b){return b.n-a.n});
+  }
+  return {items:items,answersOf:answersOf,responses:responses,record:record,stored:stored,scales:scales,idOfKey:function(k){return BYKEY[k]||null}};
+})();

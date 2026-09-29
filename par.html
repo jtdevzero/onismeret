@@ -102,10 +102,11 @@ b.me,.pv.me{color:var(--gold)}b.pa,.pv.pa{color:var(--sapphire)}
 @media (max-width:560px){.pr{grid-template-columns:1fr 38px 1fr 38px}.pl{grid-column:1/-1}}
 </style>
 
-<script src="assets/oni-core.js?v=26bbc6cd"></script>
+<script src="assets/oni-core.js?v=06166a21"></script>
+<script src="assets/oni-schema.js?v=190e2f3e" defer></script>
 <script src="assets/tests-data.js?v=8174bfd3" defer></script>
-<script src="assets/results-plus.js?v=7deabcc1" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=b9cc03ce">
+<script src="assets/results-plus.js?v=d9038a18" defer></script>
+<link rel="stylesheet" href="assets/theme.css?v=12602886">
 </head>
 <body>
 <div class="wrap">
@@ -172,16 +173,19 @@ document.getElementById('pfile').addEventListener('change',ev=>{
     let res={};try{res=JSON.parse(o.data['onismeret-results-v1']||'{}')}catch(e){}
     const att=o.data['attachment_assessment_v1'];
     if(!res.kotodes&&att){try{const a=JSON.parse(att);if(a.result)res.kotodes=[{t:a.result.date,h:a.result.style,d:{anxiety:['Szorongás',a.result.anxiety,0,100],avoidance:['Elkerülés',a.result.avoidance,0,100],earned:['Szerzett biztonság',a.result.earned,0,100]}}];}catch(e){}}
-    const keep={};TESTS.forEach(([id])=>{if(res[id])keep[id]=res[id]});
+    const keep={};let rej=0;
+    /* csak érvényes szerkezetű eredmények kerülnek be (assets/oni-schema.js) */
+    TESTS.forEach(([id])=>{if(!Array.isArray(res[id]))return;const ok=res[id].filter(e=>window.ONI_CHECK&&!ONI_CHECK.record(id,e));rej+=res[id].length-ok.length;if(ok.length)keep[id]=ok;});
+    if(rej&&!Object.keys(keep).length){msg('A fájl eredményei sérültek vagy módosítottak, ezért nem töltöttem be őket.',true);return;}
     if(!Object.keys(keep).length){msg('A fájlban nincs kiértékelt párteszt. Kérd meg a párodat, hogy nyissa meg az eredményeket, és mentsen újra.',true);return;}
     P={name:document.getElementById('pname').value.trim()||(P&&P.name)||'',loaded:new Date().toISOString(),exported:o.exported||'',results:keep};
     try{localStorage.setItem(PK,JSON.stringify(P))}catch(e){}
-    msg(Object.keys(keep).length+' párteszt betöltve. Csak az összesített eredmények kerültek be.');render();
+    msg(Object.keys(keep).length+' párteszt betöltve. Csak az összesített eredmények kerültek be.'+(rej?' '+rej+' hibás eredményt kihagytam.':''));render();
   };r.readAsText(f);ev.target.value='';
 });
 document.getElementById('pname').addEventListener('change',e=>{if(P){P.name=e.target.value.trim();try{localStorage.setItem(PK,JSON.stringify(P))}catch(x){}render();}});
 document.getElementById('pexport').addEventListener('click',()=>{
-  const keep={};TESTS.forEach(([id])=>{if(ME[id])keep[id]=ME[id].map(r=>({t:r.t,done:r.done,h:r.h,d:r.d,x:r.x&&{primary:r.x.primary,secondary:r.x.secondary},qv:r.qv,sv:r.sv}))});
+  const keep={};TESTS.forEach(([id])=>{if(ME[id])keep[id]=ME[id].map(r=>({t:r.t,done:r.done,h:r.h,d:r.d,x:r.x&&{primary:r.x.primary,secondary:r.x.secondary},qv:r.qv,sv:r.sv,tv:r.tv}))});
   const n=Object.keys(keep).length;if(!n){msg('Még nincs kiértékelt párteszted, amit megoszthatnál.',true);return;}
   if(!confirm(n+' párteszt összesített eredménye kerül a fájlba: '+TESTS.filter(([id])=>keep[id]).map(t=>t[1]).join(', ')+'. Nyers válaszok és más tesztek nem. Mehet?'))return;
   const blob=new Blob([JSON.stringify({app:'onismeret',v:1,kind:'partner',exported:new Date().toISOString(),data:{'onismeret-results-v1':JSON.stringify(keep)}},null,1)],{type:'application/json'});

@@ -84,16 +84,26 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     let n = await p.evaluate(() => ONI.all().meq.length); ok(n === 1, 'első kitöltés: 1 bejegyzés', n);
     await p.reload(); await p.evaluate(() => TESTS.meq.show());
     n = await p.evaluate(() => ONI.all().meq.length); ok(n === 1, 'újranyitás nem új mérés', n);
-    // ugyanazok a válaszok, de egy nappal később újra kitöltve → új mérés (azonos pontszám is)
-    await p.evaluate(() => { const a = ONI.all(); a.meq[0].done = a.meq[0].t = new Date(Date.now() - 3 * 864e5).toISOString(); localStorage.setItem(ONI.K, JSON.stringify(a)); });
-    await p.evaluate(() => { TESTS.meq._fillAll(() => 1); TESTS.meq.show(); });
-    const h = await p.evaluate(() => ONI.all().meq);
-    ok(h.length === 2 && JSON.stringify(h[0].d) === JSON.stringify(h[1].d), 'azonos pontszámú újramérés új bejegyzés', h.length);
-    ok(h[0].sid && h[1].sid && h[0].sid !== h[1].sid, 'minden kitöltés saját azonosítót kap');
+    // javítás: „Új kitöltés” nélkül módosított válasz → ugyanaz a mérés, javítottként
+    await p.evaluate(() => { TESTS.meq._fillAll((k, it) => (it.n === 1 ? 2 : 1)); TESTS.meq.show(); });
+    let h = await p.evaluate(() => ONI.all().meq);
+    ok(h.length === 1 && h[0].corrected === 1, 'válasz módosítása új kitöltés nélkül: javítás, nem új mérés', [h.length, h[0].corrected]);
+    const sid0 = h[0].sid;
+    // „Új kitöltés” ugyanazon a napon, ugyanazokkal a válaszokkal → mégis külön mérés
+    await p.evaluate(() => { TESTS.meq.reset(); TESTS.meq._fillAll((k, it) => (it.n === 1 ? 2 : 1)); TESTS.meq.show(); });
+    h = await p.evaluate(() => ONI.all().meq);
+    ok(h.length === 2 && JSON.stringify(h[0].d) === JSON.stringify(h[1].d) && h[0].done.slice(0, 10) === h[1].done.slice(0, 10), 'aznapi, azonos pontszámú új kitöltés külön bejegyzés', h.length);
+    ok(h[0].sid === sid0 && h[1].sid && h[0].sid !== h[1].sid && !h[1].corrected, 'minden kitöltés saját azonosítót kap');
+    await p.reload(); await p.evaluate(() => TESTS.meq.show());
+    ok(await p.evaluate(() => ONI.all().meq.length) === 2, 'az új kitöltés újranyitása sem új mérés');
     // verzióváltás: régebbi kérdéssor → összegzés nem hasonlít
     await p.evaluate(() => { const a = ONI.all(); a.meq[0].qv = 9; localStorage.setItem(ONI.K, JSON.stringify(a)); });
     await p.goto(R + 'osszegzes.html');
-    ok(await p.evaluate(() => document.body.innerText.includes('korábbi kérdéssor- vagy pontozásverzióval')), 'eltérő verzió: nincs összehasonlítás, jelzi');
+    ok(await p.evaluate(() => document.body.innerText.includes('egy másik változatával készült')), 'eltérő verzió: nincs összehasonlítás, jelzi');
+    // fordításverzió: eltérő fordítás sem összevethető, és megjelenik az eredményen
+    await p.evaluate(() => { const a = ONI.all(); a.meq[0].qv = 1; a.meq[0].tv = 2; localStorage.setItem(ONI.K, JSON.stringify(a)); });
+    await p.reload();
+    ok(await p.evaluate(() => document.body.innerText.includes('egy másik változatával készült') && /fordítás v1/.test(document.body.innerText)), 'eltérő fordításverzió sem hasonlítható össze, és látszik');
     await ctx.close();
   }
 
@@ -314,7 +324,7 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     // következő kitöltésnél visszakérdez
     await p.evaluate(() => { const a = ONI.all(); a.ips[0].done = a.ips[0].t = new Date(Date.now() - 20 * 864e5).toISOString(); localStorage.setItem(ONI.K, JSON.stringify(a)); const m = JSON.parse(localStorage.getItem(ONI.META)); m.ans['ips-responses-v1'] = new Date(Date.now() - 20 * 864e5).toISOString(); localStorage.setItem(ONI.META, JSON.stringify(m)); });
     await p.goto(R + 'szabalyozas.html#test-ips'); await p.waitForTimeout(200);
-    await p.evaluate(() => { TESTS.ips._fillAll(() => 1); TESTS.ips.show(); }); await p.waitForTimeout(500);
+    await p.evaluate(() => { TESTS.ips.reset(); TESTS.ips._fillAll(() => 1); TESTS.ips.show(); }); await p.waitForTimeout(500);
     ok(await p.evaluate(() => ONI.all().ips.length === 2 && /25 percben/.test((document.querySelector('#ips-results .oni-cprev') || {}).textContent || '')), 'új kitöltésnél visszakérdez a múltkori vállalásra');
     await p.click('#ips-results .oni-cprev [data-cst="part"]');
     ok(await p.evaluate(() => JSON.parse(localStorage.getItem('onismeret-commit-v1')).ips[0].st === 'part'), 'kimenetel rögzítve');
@@ -388,6 +398,74 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
       ok(p._errs.length === 0, th + ' téma: hibamentes', p._errs.slice(0, 2));
       await ctx.close();
     }
+  }
+
+  console.log('\n17. Hibajavítások: régi MAIA a mintákban, tesztspecifikus import, hisztogramhatár, félkész visszaállítás');
+  {
+    const ctx = await newCtx(); const p = await pageIn(ctx);
+    const iso = d => new Date(Date.now() - d * 864e5).toISOString();
+    const maia = (qv) => ({ n: 'MAIA-2', t: iso(5), done: iso(5), qv, sv: qv, tv: 1, sid: 'm' + qv, d: { noticing: ['Észrevevés', 1, 0, 5], trusting: ['Bizalom', 1.5, 0, 5] } });
+    const tas = { n: 'TAS-20', t: iso(4), done: iso(4), qv: 1, sv: 1, tv: 1, sid: 't1', d: { total: ['TAS-20 összpontszám', 70, 20, 100] } };
+    await p.goto(R + 'index.html');
+    // régi MAIA-2 + magas TAS: a régi MAIA nem adhat második jelzést
+    await p.evaluate(([m, t]) => localStorage.setItem(ONI.K, JSON.stringify({ maia2: [m], tas: [t] })), [maia(1), tas]);
+    await p.goto(R + 'osszegzes.html'); await p.waitForTimeout(150);
+    let st = await p.evaluate(() => ({ pats: [...document.querySelectorAll('.pat h3')].map(x => x.textContent), old: /korábbi változatával készült/.test(document.body.innerText) }));
+    ok(!st.pats.includes('Nehéz hozzáférés az érzésekhez') && st.old, 'régi MAIA-2 nem vált ki keresztmintát, de az előzményekben jelölve megmarad', st);
+    await p.evaluate(([m, t]) => localStorage.setItem(ONI.K, JSON.stringify({ maia2: [m], tas: [t] })), [maia(2), tas]);
+    await p.reload(); await p.waitForTimeout(150);
+    ok(await p.evaluate(() => [...document.querySelectorAll('.pat h3')].some(x => x.textContent === 'Nehéz hozzáférés az érzésekhez')), 'jelenlegi MAIA-2 már számít a mintába');
+    // keresztminta-kártya: pontszám és dátum a kiváltó teszteknél
+    ok(await p.evaluate(() => { const c = [...document.querySelectorAll('.pat')].find(x => /Nehéz hozzáférés/.test(x.textContent)); return !!c && /TAS-20/.test(c.textContent) && /70/.test(c.textContent) && /\d{4}\./.test(c.querySelector('.pat-ev').textContent); }), 'minta mellett az aktuális pontszám és dátum');
+
+    // tesztspecifikus import-ellenőrzés
+    await p.goto(R + 'index.html');
+    const tmp = fs.mkdtempSync(path.join(require('os').tmpdir(), 'oni-'));
+    const file = (name, data) => { const f = path.join(tmp, name); fs.writeFileSync(f, JSON.stringify({ app: 'onismeret', v: 1, exported: iso(0), data })); return f; };
+    await p.evaluate(() => { localStorage.clear(); localStorage.setItem('maia2-responses-v2', JSON.stringify({ 1: 3 })); });
+    const cases = [
+      ['MAIA-2: 99-es válasz', { 'maia2-responses-v2': JSON.stringify({ 1: 99 }) }],
+      ['MAIA-2: nem létező 999. kérdés', { 'maia2-responses-v2': JSON.stringify({ 999: 3 }) }],
+      ['IIEF: 11. kérdésnél 0 nem megengedett', { 'iief-responses-v1': JSON.stringify({ 11: 0 }) }],
+      ['DES-II: 15 nem megengedett (10-es lépték)', { 'des-2-responses-v1': JSON.stringify({ 1: 15 }) }],
+      ['YSQ: 245. kérdés nem létezik', { 'ysq_autosave': JSON.stringify({ answers: { 245: 3 } }) }],
+      ['eredmény skálán kívüli értékkel', { 'onismeret-results-v1': JSON.stringify({ ecr: [{ t: iso(1), d: { anx: ['Szorongás', 9, 1, 7] } }] }) }],
+      ['ismeretlen teszt eredménye', { 'onismeret-results-v1': JSON.stringify({ xyz: [{ t: iso(1), d: {} }] }) }],
+      ['vegyes: egy jó és egy hibás tétel', { 'tas-20-responses-v1': JSON.stringify({ 1: 3 }), 'maia2-responses-v2': JSON.stringify({ 2: 7 }) }],
+    ];
+    for (const [nm, data] of cases) {
+      await p.setInputFiles('#pp-import', file('x.json', data)); await p.waitForTimeout(150);
+      const r = await p.evaluate(() => ({ msg: document.getElementById('pp-msg').textContent, maia: localStorage.getItem('maia2-responses-v2'), tas: localStorage.getItem('tas-20-responses-v1') }));
+      ok(/sérült/.test(r.msg) && r.maia === '{"1":3}' && r.tas === null, 'import elutasítva, semmi nem változott: ' + nm, r.msg.slice(0, 90));
+    }
+    // helyes, vegyes skálájú fájl átmegy
+    await p.setInputFiles('#pp-import', file('ok.json', { 'iief-responses-v1': JSON.stringify({ 1: 0, 11: 5 }), 'maia2-responses-v2': JSON.stringify({ 1: 0, 37: 5 }), 'maia2-responses-v1': JSON.stringify({ 1: 3 }) }));
+    await p.waitForLoadState('load'); await p.waitForTimeout(300);
+    ok(await p.evaluate(() => localStorage.getItem('iief-responses-v1') === '{"1":0,"11":5}'), 'érvényes (vegyes skálájú) mentés visszaállítható');
+    // félúton elakadó visszaállítás: minden az előző állapotra áll vissza
+    await p.evaluate(() => { localStorage.clear(); localStorage.setItem('tas-20-responses-v1', JSON.stringify({ 1: 2 })); localStorage.setItem('meq-responses-v1', JSON.stringify({ 1: 1 }));
+      const o = Storage.prototype.setItem; Storage.prototype.setItem = function (k, v) { if (k === 'meq-responses-v1' && v === '{"1":3}') throw new Error('QuotaExceeded'); return o.call(this, k, v); }; });
+    await p.setInputFiles('#pp-import', file('half.json', { 'tas-20-responses-v1': JSON.stringify({ 1: 5 }), 'meq-responses-v1': JSON.stringify({ 1: 3 }), 'ips-responses-v1': JSON.stringify({ 1: 4 }) }));
+    await p.waitForTimeout(300);
+    st = await p.evaluate(() => ({ tas: localStorage.getItem('tas-20-responses-v1'), meq: localStorage.getItem('meq-responses-v1'), ips: localStorage.getItem('ips-responses-v1'), msg: document.getElementById('pp-msg').textContent }));
+    ok(st.tas === '{"1":2}' && st.meq === '{"1":1}' && st.ips === null && /nem fejeződött be/.test(st.msg), 'elakadt visszaállítás után nem marad félkész állapot', st);
+    await ctx.close();
+  }
+  {
+    // hisztogram: a skálahatár a kérdőívből jön, nem a válaszokból
+    const ctx = await newCtx(); const p = await pageIn(ctx);
+    await p.goto(R + 'maia2.html');
+    await p.evaluate(() => document.querySelectorAll('.q').forEach((q, i) => [...q.querySelectorAll('button[data-n]')].find(b => +(b.dataset.value ?? b.dataset.v) === (i % 2 ? 3 : 4)).click()));
+    await p.click('#showResults'); await p.waitForTimeout(600);
+    let bins = await p.$$eval('#results .hist .hbk', x => x.map(e => e.textContent));
+    ok(bins.join() === '0,1,2,3,4,5', 'MAIA-2 hisztogram a teljes 0–5 skálán, akkor is, ha csak 3 és 4 válasz van', bins);
+    await p.goto(R + 'funkcio.html#test-iief'); await p.waitForTimeout(200);
+    await p.evaluate(() => document.querySelectorAll('#test-iief .q').forEach(q => { const b = q.querySelectorAll('button[data-n]'); b[b.length - 1].click(); }));
+    await p.click('#iief-showResults'); await p.waitForTimeout(600);
+    const iief = await p.evaluate(() => ({ bins: [...document.querySelectorAll('#iief-results .hist .hbk')].map(e => e.textContent), note: (document.querySelector('#iief-results .hist') || { parentElement: { textContent: '' } }).parentElement.textContent }));
+    ok(iief.bins.join() === '0,1,2,3,4,5' && /további 5 kérdése más válaszskálát/.test(iief.note), 'IIEF: eltérő skálájú kérdések nincsenek összeöntve, a diagram megnevezi őket', iief.bins);
+    ok(p._errs.length === 0, 'hibamentes', p._errs);
+    await ctx.close();
   }
 
   await browser.close();

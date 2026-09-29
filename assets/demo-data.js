@@ -7,7 +7,7 @@
   function at(daysAgo){var d=new Date(now-daysAgo*DAY);d.setHours(19,30,0,0);return d.toISOString()}
   var n=0;
   function rec(id,name,daysAgo,h,d,x){
-    var t=at(daysAgo),r={n:name,d:d,t:t,done:t,qv:1,sv:1,sid:'demo'+(++n)};
+    var t=at(daysAgo),v=window.ONI&&ONI.vOf?ONI.vOf(id):{q:1,s:1,t:1},r={n:name,d:d,t:t,done:t,qv:v.q,sv:v.s,tv:v.t,sid:'demo'+(++n)};
     if(h)r.h=h;if(x)r.x=x;return r;
   }
   function mk(names,vals,lo,hi){var o={};Object.keys(names).forEach(function(k,i){o[k]=[names[k],vals[i],lo,hi]});return o}

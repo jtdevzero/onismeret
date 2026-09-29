@@ -31,32 +31,46 @@ window.ONI=window.ONI||(function(){
   var META='onismeret-meta-v1';
   var IDKEY={maia2:'maia2-responses-v2',tas:'tas-20-responses-v1',des:'des-2-responses-v1',ecr:'ecr-r-responses-v1',kotodes:'attachment_assessment_v1',ysq:'ysq_autosave',smi:'smi-responses-v1',ssss:'ssss-responses-v1',sisses:'sis-ses-responses-v1',iief:'iief-responses-v1',pedt:'pedt-responses-v1',sdi:'sdi-2-responses-v1',nsss:'nsss-responses-v1',saq:'saq-responses-v1',love:'love-responses-v1',apo:'apo-responses-v1',imago:'imago-responses-v1',bf:'bf-responses-v1',via:'via-responses-v1',las:'las-responses-v1',tki:'conflict-responses-v1',gott:'gottman-responses-v1',fti:'fisher-responses-v1',pvq:'pvq21-responses-v1',ft:'four-tendencies-responses-v1',kolbe:'action-modes-responses-v1',meq:'meq-responses-v1',ips:'ips-responses-v1',ders:'ders-sf-responses-v1',scs:'scs-sf-responses-v1',tfeq:'tfeq-r18-responses-v1'};
   function meta(){try{return JSON.parse(localStorage.getItem(META))||{}}catch(e){return {}}}
-  /* Kérdéssor- (q) és pontozásverzió (s) tesztenként. Ha egy teszt tételei vagy pontozása változik, itt emeld. */
-  var VERS={maia2:{q:2,s:2}};
+  /* Kérdéssor- (q), pontozás- (s) és fordításverzió (t) tesztenként. Ha egy teszt tételei, pontozása vagy
+     magyar szövege változik, itt emeld a megfelelő számot. Eltérő változatú eredményeket nem hasonlítunk össze. */
+  var VERS={maia2:{q:2,s:2,t:1}};
+  function vOf(id){var v=VERS[id]||{};return {q:v.q||1,s:v.s||1,t:v.t||1}}
+  /* két eredmény összevethető-e (azonos kérdéssor, pontozás és fordítás) */
+  function same(a,b){return !!a&&!!b&&(a.qv||1)===(b.qv||1)&&(a.sv||1)===(b.sv||1)&&(a.tv||1)===(b.tv||1)}
+  /* a rekord a teszt jelenlegi változatával készült-e */
+  function isCur(id,r){var v=vOf(id);return !!r&&(r.qv||1)===v.q&&(r.sv||1)===v.s&&(r.tv||1)===v.t}
+  function verText(r){return 'kérdéssor v'+(r.qv||1)+' · pontozás v'+(r.sv||1)+' · fordítás v'+(r.tv||1)}
+  /* „Új kitöltés” jelzése: ha egy teszt válaszai kiürülnek vagy megfogyatkoznak (törlés, újrakezdés),
+     a következő mentett eredmény biztosan új mérés lesz, akkor is, ha ugyanazon a napon ugyanaz a pontszám jön ki. */
+  function markFresh(key){try{var m=meta();m.fresh=m.fresh||{};m.fresh[key]=new Date().toISOString();localStorage.setItem(META,JSON.stringify(m))}catch(e){}}
   function save(id,rec,opts){
     try{
       opts=opts||{};
       var a=all(),h=a[id]||[],m=meta(),now=new Date().toISOString();
       var key=opts.key||IDKEY[id];
-      m.ans=m.ans||{};
-      if(key&&!m.ans[key]){m.ans[key]=now;try{localStorage.setItem(META,JSON.stringify(m))}catch(e){}}
-      var v=VERS[id]||{};
-      rec.qv=opts.qv||rec.qv||v.q||1; rec.sv=opts.sv||rec.sv||v.s||1;
+      m.ans=m.ans||{};m.fresh=m.fresh||{};
+      if(key&&!m.ans[key]){m.ans[key]=now;}
+      var v=vOf(id),fresh=!!(key&&m.fresh[key]);
+      rec.qv=opts.qv||rec.qv||v.q; rec.sv=opts.sv||rec.sv||v.s; rec.tv=opts.tv||rec.tv||v.t;
       rec.done=(key&&m.ans[key])||now;   /* a kitöltés ideje = az utolsó válasz ideje */
       rec.t=now;                          /* a kiértékelés megnyitásának ideje */
       if(rec.d)Object.keys(rec.d).forEach(function(k){var x=rec.d[k];if(x&&typeof x[1]==='number')x[1]=r(x[1]);});
       var prev=h[h.length-1];
-      if(prev&&prev.done===rec.done){
-        /* Ugyanaz a kitöltés, csak újranyitva: nem új mérés, a dátum marad. Ha közben a pontozás verziója változott, újraszámolt eredmény. */
-        if((prev.sv||1)!==rec.sv||(prev.qv||1)!==rec.qv){rec.sid=prev.sid;rec.rescored=true;h[h.length-1]=rec;}
+      if(prev&&prev.done===rec.done&&(prev.qv||1)===rec.qv&&(prev.tv||1)===rec.tv){
+        /* 1) Megnyitás: ugyanaz a kitöltés, csak újranyitva. Nem új mérés, a dátum marad.
+              Ha közben csak a pontozás változott, a régi rekord helyére az újraszámolt eredmény kerül. */
+        if((prev.sv||1)!==rec.sv){rec.sid=prev.sid;rec.rescored=true;if(prev.corrected)rec.corrected=prev.corrected;h[h.length-1]=rec;}
         else{rec=prev;}
-      } else if(prev&&prev.done&&prev.done.slice(0,10)===rec.done.slice(0,10)&&(prev.sv||1)===rec.sv&&(prev.qv||1)===rec.qv){
-        /* Ugyanazon a napon módosított válaszok: javításként kezeljük, nem új mérésként. */
-        rec.sid=prev.sid;rec.corrected=true;h[h.length-1]=rec;
+      } else if(prev&&!fresh&&same(prev,rec)){
+        /* 2) Javítás: a válaszok „Új kitöltés” nélkül változtak. Ugyanaz a mérés, módosított válaszokkal. */
+        rec.sid=prev.sid;rec.corrected=(prev.corrected||0)+1;if(prev.first||prev.done)rec.first=prev.first||prev.done;h[h.length-1]=rec;
       } else {
+        /* 3) Új kitöltés: saját azonosító, akkor is, ha ugyanazon a napon, ugyanazzal az eredménnyel zárul. */
         rec.sid=Date.now().toString(36)+Math.random().toString(36).slice(2,6);
         h.push(rec);
       }
+      if(key&&m.fresh[key])delete m.fresh[key];
+      try{localStorage.setItem(META,JSON.stringify(m))}catch(e){}
       a[id]=h.slice(-24);
       localStorage.setItem(K,JSON.stringify(a));
     }catch(e){}
@@ -87,11 +101,24 @@ window.ONI=window.ONI||(function(){
       proto.setItem=function(k,v){
         try{orig.call(this,k,v);}
         catch(e){toast('A mentés nem sikerült ezen az eszközön (tele a tárhely vagy privát ablak?). Exportáld a válaszaidat a főoldalon.',true);throw e;}
-        if(this===window.localStorage&&/-responses-v\d+$|^ysq_autosave$|^attachment_assessment_v1$/.test(k)){
-          try{var m=JSON.parse(localStorage.getItem(META))||{};m.ans=m.ans||{};m.ans[k]=new Date().toISOString();orig.call(this,META,JSON.stringify(m));}catch(x){}
-          var now=Date.now();if(now-lastToast>6000){lastToast=now;toast('Mentve ezen az eszközön ✓');}
+        if(this===window.localStorage&&!window.ONI_BULK&&/-responses-v\d+$|^ysq_autosave$|^attachment_assessment_v1$/.test(k)){
+          var before=prevAns[k],cur=ansOf(k,v),cs=JSON.stringify(cur);
+          prevAns[k]=cur;
+          if(before===undefined||JSON.stringify(before)!==cs){   /* csak valódi válaszváltozás számít kitöltési időnek */
+            try{var m=JSON.parse(localStorage.getItem(META))||{};m.ans=m.ans||{};m.ans[k]=new Date().toISOString();
+              var nb=before?Object.keys(before).length:0,nc=Object.keys(cur).length;
+              if(nb>0&&nc<nb){m.fresh=m.fresh||{};m.fresh[k]=m.ans[k];}   /* kiürült vagy megfogyott: új kitöltés indul */
+              orig.call(this,META,JSON.stringify(m));}catch(x){}
+            var now=Date.now();if(now-lastToast>6000){lastToast=now;toast('Mentve ezen az eszközön ✓');}
+          }
         }
       };
+      /* a tárolt válaszok (a YSQ és a mélytérkép saját mezőben tartja őket) */
+      var prevAns={};
+      function ansOf(k,raw){var j;try{j=JSON.parse(raw)}catch(e){return {}}if(!j||typeof j!=='object')return {};
+        if(k==='ysq_autosave')j=j.answers;else if(k==='attachment_assessment_v1')j=j.draft;return j&&typeof j==='object'?j:{};}
+      /* induló állapot: ami már el van mentve, ahhoz hasonlítunk */
+      try{for(var i=0;i<localStorage.length;i++){var kk=localStorage.key(i);if(/-responses-v\d+$|^ysq_autosave$|^attachment_assessment_v1$/.test(kk))prevAns[kk]=ansOf(kk,localStorage.getItem(kk));}}catch(e){}
     }catch(e){}
     function toast(t,bad){
       if(!document.body)return;
@@ -263,5 +290,5 @@ window.ONI=window.ONI||(function(){
   })();
 
   window.addEventListener('oni:saved',function(e){setTimeout(function(){banner(e.detail.id)},900);});
-  return {K:K,META:META,IDKEY:IDKEY,VERS:VERS,all:all,save:save,r:r,PATH:PATH,pathState:pathState};
+  return {K:K,META:META,IDKEY:IDKEY,VERS:VERS,vOf:vOf,same:same,isCur:isCur,verText:verText,markFresh:markFresh,all:all,save:save,r:r,PATH:PATH,pathState:pathState};
 })();
