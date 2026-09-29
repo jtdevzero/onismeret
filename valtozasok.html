@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Változásnapló — Önismereti térképek</title>
-<link rel="stylesheet" href="fonts/fonts.css?v=a00887e2">
+<link rel="stylesheet" href="fonts/fonts.css?v=885e76a5">
 <style>
 :root{
   --bg-deep:#050d1e;--bg-card:#0f2038;--bg-card-hi:#152845;
@@ -61,11 +61,11 @@ h2{font-family:var(--font-serif);font-weight:400;font-size:28px;margin:44px 0 8p
 @media (max-width:560px){.wrap{padding:28px 16px 64px}}
 </style>
 
-<script src="assets/oni-core.js?v=c294576c"></script>
+<script src="assets/oni-core.js?v=2a8027ce"></script>
 <script src="assets/oni-schema.js?v=e30726e8" defer></script>
 <script src="assets/tests-data.js?v=8174bfd3" defer></script>
 <script src="assets/results-plus.js?v=e491f72e" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=e01934c0">
+<link rel="stylesheet" href="assets/theme.css?v=c99321b3">
 </head>
 <body>
 <div class="wrap">
@@ -95,6 +95,11 @@ document.addEventListener('DOMContentLoaded',function(){
   var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
   /* score/retake: 'no' | 'part' | 'yes' */
   var LOG=[
+    {d:'2026-09-29',t:'Egységes prémium megjelenés',score:'no',retake:'no',items:[
+      'Új, egységes vizuális rendszer mind a 12 oldalon, világos és sötét témában: Cardo címbetű, Inter szöveg, hűvös pala alap, visszafogott drágakőszínek (smaragd = kész és kedvező irány, zafír = folyamat és adat, bordó = kötődés és kedvezőtlen irány), arany csak kiemelésnek.',
+      'Egyféle kártya, egyféle fő gomb és egyféle kijelölt válasz minden teszten; a régebbi, saját stílusú oldalak (YSQ-L, mélytérkép, MAIA-2, SIS/SES) is ezt kapják.',
+      'A főoldal letisztult: balra zárt nyitókép számokkal, a kezdő útvonal sötét sávban, a katalógusban témakörönként egy kiemelőszín.',
+      'Az eredmények „Röviden” része nagyobb, olvashatóbb címmel és kiemelt kérdéssel; a vizuális áttekintés és a részletes elemzés külön, tiszta blokkokban.']},
     {d:'2026-09-29',t:'Óvatosabb szövegek, biztonságosabb mentés és visszaállítás',score:'no',retake:'no',items:[
       'Átírtam a még megmaradt túl határozott mondatokat („szinte mindig együtt jár”, „klasszikus profil”, „diagnosztizálják”, „később egyszerre robbannak” és hasonlók) a tesztoldalakon és a párnézetben. Helyettük feltételes megfogalmazás és tisztázó kérdés áll.',
       'Ha egy eredményt nem sikerül elmenteni (például tele a tárhely), az oldal ezt jelzi, és nem mutatja mentettnek. Jegyzetnél és vállalásnál is.',

@@ -106,12 +106,14 @@ window.ONI=window.ONI||(function(){
     var done=st.filter(function(p){return p.done}).length,next=st.filter(function(p){return !p.done})[0];
     var old=document.getElementById('oni-path-banner');if(old)old.remove();
     var el=document.createElement('div');el.id='oni-path-banner';
-    el.setAttribute('style','position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:9999;max-width:calc(100% - 24px);width:560px;display:flex;align-items:center;gap:14px;padding:14px 16px 14px 20px;border-radius:16px;background:rgba(10,20,40,.94);color:#e6ecf5;border:1px solid rgba(251,191,36,.55);box-shadow:0 12px 40px rgba(0,0,0,.45);font:500 14px/1.4 Manrope,Inter,system-ui,sans-serif;backdrop-filter:blur(10px)');
-    var dots=st.map(function(p){return '<span style="width:9px;height:9px;border-radius:50%;display:inline-block;background:'+(p.done?'#fbbf24':'rgba(148,163,184,.35)')+'"></span>'}).join('');
+    el.setAttribute('style','position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:9999;max-width:calc(100% - 24px);width:560px;display:flex;align-items:center;gap:14px;padding:14px 16px 14px 20px;border-radius:18px;background:var(--u-paper,#fff);color:var(--u-ink,#0f172a);border:1px solid var(--u-line,#cbd5e1);box-shadow:var(--u-shadow);font:500 14px/1.4 Inter,system-ui,sans-serif');
+    var dots=st.map(function(p){return '<span style="width:8px;height:8px;border-radius:50%;display:inline-block;background:'+(p.done?'var(--u-emerald,#065f46)':'var(--u-bg3,#e2e8f0)')+'"></span>'}).join('');
+    var lbl='font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;display:flex;gap:6px;align-items:center;';
+    var cta='flex:none;padding:11px 18px;border-radius:99px;background:var(--u-cta,#0f172a);color:var(--u-on-cta,#fff);text-decoration:none;font-weight:600';
     var body=next
-      ? '<div style="flex:1;min-width:0"><div style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#fbbf24;font-weight:700;display:flex;gap:6px;align-items:center">Kezdő útvonal · '+done+'/5 '+dots+'</div><div style="margin-top:3px">Következő: <strong>'+next.n+'</strong> <span style="color:#a3b3c8">(~'+next.min+' perc)</span></div></div><a href="'+next.href+'" style="flex:none;padding:10px 16px;border-radius:99px;background:#fbbf24;color:#0a1428;text-decoration:none;font-weight:700">Tovább ›</a>'
-      : '<div style="flex:1;min-width:0"><div style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#34d399;font-weight:700">Kezdő útvonal kész · 5/5</div><div style="margin-top:3px">Most már az összegzés valódi adatokból dolgozik.</div></div><a href="osszegzes.html" style="flex:none;padding:10px 16px;border-radius:99px;background:#34d399;color:#0a1428;text-decoration:none;font-weight:700">Összegzés ›</a>';
-    el.innerHTML=body+'<button type="button" aria-label="Bezár" style="flex:none;background:none;border:none;color:#6b7c94;font-size:20px;cursor:pointer;padding:0 2px">×</button>';
+      ? '<div style="flex:1;min-width:0"><div style="'+lbl+'color:var(--u-gold,#8a6a1f)">Kezdő útvonal · '+done+'/5 '+dots+'</div><div style="margin-top:3px">Következő: <strong>'+next.n+'</strong> <span style="color:var(--u-muted,#5b6778)">(~'+next.min+' perc)</span></div></div><a href="'+next.href+'" style="'+cta+'">Tovább ›</a>'
+      : '<div style="flex:1;min-width:0"><div style="'+lbl+'color:var(--u-emerald,#065f46)">Kezdő útvonal kész · 5/5</div><div style="margin-top:3px">Most már az összegzés valódi adatokból dolgozik.</div></div><a href="osszegzes.html" style="'+cta+'">Összegzés ›</a>';
+    el.innerHTML=body+'<button type="button" aria-label="Bezár" style="flex:none;background:none;border:none;color:var(--u-muted,#5b6778);font-size:20px;cursor:pointer;padding:0 2px">×</button>';
     el.querySelector('button').onclick=function(){el.remove()};
     document.body.appendChild(el);
     if(next&&location.href.indexOf(next.href.split('#')[0])>-1){var a=el.querySelector('a');a.addEventListener('click',function(){setTimeout(function(){el.remove()},50)});}
@@ -172,7 +174,7 @@ window.ONI=window.ONI||(function(){
       var under=opaque||!el.parentElement?[]:layers(el.parentElement);
       var res=under.concat(own);cache.set(el,res);return res;
     }
-    function bgOf(el){var ls=layers(el),base=parse(getComputedStyle(document.documentElement).backgroundColor);if(!base||base.a<.5)base=document.documentElement.getAttribute('data-theme')==='dark'?{r:5,g:13,b:30,a:1}:{r:255,g:255,b:255,a:1};
+    function bgOf(el){var ls=layers(el),base=parse(getComputedStyle(document.documentElement).backgroundColor);if(!base||base.a<.5)base=document.documentElement.getAttribute('data-theme')==='dark'?{r:11,g:18,b:32,a:1}:{r:248,g:250,b:252,a:1};
       var lo=base,hi=base;ls.forEach(function(l){lo=blend(l[0],lo);hi=blend(l[1],hi)});return [lo,hi]}
     function mix(a,b,t){return {r:a.r+(b.r-a.r)*t,g:a.g+(b.g-a.g)*t,b:a.b+(b.b-a.b)*t,a:1}}
     function run(){
@@ -259,14 +261,14 @@ window.ONI=window.ONI||(function(){
       if(document.getElementById('oni-fill-css'))return;
       var st=document.createElement('style');st.id='oni-fill-css';
       st.textContent='body.oni-focus::before,body.oni-focus::after{opacity:.15!important}body.oni-focus .hub-header,body.oni-focus .test-panel.active header,body.oni-focus .hub-tabs,body.oni-focus .progress-shell{display:none!important}body.oni-focus .oni-unit:not(.oni-cur){display:none!important}body.oni-focus .test-panel.active .section-head,body.oni-focus .test-panel.active .intro-box{display:none}'+
-      'body.oni-focus .oni-sheet,body.oni-focus button[id$=showResults]:disabled,body.oni-focus button[id$=-show]:disabled{display:none!important}body.oni-focus{padding-bottom:180px}body.oni-focus .oni-unit.oni-cur{margin-top:12vh;transform:scale(1.02);box-shadow:0 0 0 2px rgba(251,191,36,.55),0 16px 48px rgba(0,0,0,.35)}'+
-      '.oni-unit.oni-flash{animation:oniFlash 1.6s ease}@keyframes oniFlash{0%,60%{box-shadow:0 0 0 3px rgba(251,191,36,.8)}100%{box-shadow:none}}'+
+      'body.oni-focus .oni-sheet,body.oni-focus button[id$=showResults]:disabled,body.oni-focus button[id$=-show]:disabled{display:none!important}body.oni-focus{padding-bottom:180px}body.oni-focus .oni-unit.oni-cur{margin-top:12vh;transform:scale(1.02);box-shadow:0 0 0 2px var(--u-sapphire2,#1d4ed8),var(--u-shadow)}'+
+      '.oni-unit.oni-flash{animation:oniFlash 1.6s ease}@keyframes oniFlash{0%,60%{box-shadow:0 0 0 3px var(--u-sapphire2,#1d4ed8)}100%{box-shadow:none}}'+
       '.oni-btn{white-space:nowrap;appearance:none;cursor:pointer;border:1px solid rgba(148,163,184,.35);background:rgba(10,20,40,.92);color:#e6ecf5;font:600 12.5px/1 Manrope,Inter,system-ui,sans-serif;padding:10px 14px;border-radius:99px;backdrop-filter:blur(8px)}'+
-      '.oni-btn:hover{border-color:#fbbf24}.oni-btn.pri{background:#fbbf24;color:#0a1428;border-color:#fbbf24}'+
-      '#oni-misslist{position:fixed;left:14px;bottom:64px;z-index:9999;width:min(420px,calc(100% - 28px));max-height:55vh;overflow:auto;padding:12px 14px;border-radius:14px;background:rgba(10,20,40,.97);color:#e6ecf5;border:1px solid rgba(251,191,36,.45);box-shadow:0 12px 40px rgba(0,0,0,.45);font:500 13px/1.45 Manrope,Inter,system-ui,sans-serif}'+
-      '#oni-misslist ul{list-style:none;margin:6px 0 4px;padding:0}#oni-misslist p{margin:6px 0;color:#cbd5e1}#oni-misslist .oni-ml-o{color:#fcd34d}'+
-      '.oni-ml-h{display:flex;justify-content:space-between;align-items:center}.oni-ml-x{background:none;border:none;color:#cbd5e1;font-size:20px;cursor:pointer;padding:0 4px}'+
-      '.oni-mi{display:block;width:100%;text-align:left;background:none;border:none;color:#e6ecf5;font:inherit;padding:6px 8px;border-radius:8px;cursor:pointer}.oni-mi:hover,.oni-mi:focus-visible{background:rgba(251,191,36,.15);outline:2px solid #fbbf24}.oni-mi b{color:#fbbf24;margin-right:4px}'+
+      '.oni-btn:hover{border-color:var(--u-sapphire2,#1d4ed8)}.oni-btn.pri{background:#fbbf24;color:#0a1428;border-color:#fbbf24}'+
+      '#oni-misslist{position:fixed;left:14px;bottom:64px;z-index:9999;width:min(420px,calc(100% - 28px));max-height:55vh;overflow:auto;padding:12px 14px;border-radius:14px;background:var(--u-paper,#fff);color:var(--u-ink,#0f172a);border:1px solid var(--u-line,#cbd5e1);box-shadow:var(--u-shadow);font:500 13px/1.45 Inter,system-ui,sans-serif}'+
+      '#oni-misslist ul{list-style:none;margin:6px 0 4px;padding:0}#oni-misslist p{margin:6px 0;color:var(--u-soft,#334155)}#oni-misslist .oni-ml-o{color:var(--u-gold,#8a6a1f)}'+
+      '.oni-ml-h{display:flex;justify-content:space-between;align-items:center}.oni-ml-x{background:none;border:none;color:var(--u-muted,#5b6778);font-size:20px;cursor:pointer;padding:0 4px}'+
+      '.oni-mi{display:block;width:100%;text-align:left;background:none;border:none;color:var(--u-ink,#0f172a);font:inherit;padding:6px 8px;border-radius:8px;cursor:pointer}.oni-mi:hover,.oni-mi:focus-visible{background:var(--u-bg2,#f1f5f9);outline:2px solid var(--u-sapphire2,#1d4ed8)}.oni-mi b{color:var(--u-gold,#8a6a1f);margin-right:4px}'+
       '@media (max-width:480px){#oni-misslist{bottom:110px}}'+
       '@media (max-width:480px){body.oni-focus .oni-unit.oni-cur{margin-top:12px;transform:none}#oni-focusbar .oni-btn{padding:9px 11px;font-size:12px}#oni-pos{font-size:11.5px!important;padding:0 2px!important}}@media print{#oni-pill,#oni-focusbar,#oni-toast{display:none!important}}';
       document.head.appendChild(st);
@@ -320,8 +322,8 @@ window.ONI=window.ONI||(function(){
     function enter(){
       if(!scan())return;focus=true;document.body.classList.add('oni-focus');
       bar=document.createElement('div');bar.id='oni-focusbar';
-      bar.setAttribute('style','position:fixed;left:50%;bottom:12px;transform:translateX(-50%);z-index:9999;display:flex;flex-wrap:wrap;justify-content:center;gap:6px;align-items:center;padding:7px;max-width:calc(100% - 16px);width:max-content;border-radius:22px;background:rgba(10,20,40,.94);border:1px solid rgba(251,191,36,.45);box-shadow:0 12px 40px rgba(0,0,0,.45)');
-      bar.innerHTML='<label class="oni-btn" style="display:flex;gap:6px;align-items:center" title="Válasz után automatikusan a következő kérdésre lép"><input type="checkbox" id="oni-auto" '+(auto?'checked':'')+'> auto</label><button class="oni-btn" id="oni-prev" aria-label="Előző kérdés">‹ Előző</button><span id="oni-pos" style="color:#cbd5e1;font:600 12.5px Manrope,Inter,sans-serif;padding:0 8px;white-space:nowrap"></span><button class="oni-btn pri" id="oni-next" aria-label="Következő kérdés">Tovább ›</button><button class="oni-btn" id="oni-fmiss" title="A hiányzó kérdések listája" aria-controls="oni-misslist">Hiányzók</button><button class="oni-btn" id="oni-exit" title="Vissza a listanézethez">Lista</button>';
+      bar.setAttribute('style','position:fixed;left:50%;bottom:12px;transform:translateX(-50%);z-index:9999;display:flex;flex-wrap:wrap;justify-content:center;gap:6px;align-items:center;padding:7px;max-width:calc(100% - 16px);width:max-content;border-radius:22px;background:var(--u-paper,#fff);border:1px solid var(--u-line,#cbd5e1);box-shadow:var(--u-shadow)');
+      bar.innerHTML='<label class="oni-btn" style="display:flex;gap:6px;align-items:center" title="Válasz után automatikusan a következő kérdésre lép"><input type="checkbox" id="oni-auto" '+(auto?'checked':'')+'> auto</label><button class="oni-btn" id="oni-prev" aria-label="Előző kérdés">‹ Előző</button><span id="oni-pos" style="color:var(--u-soft,#334155);font:600 12.5px Inter,sans-serif;padding:0 8px;white-space:nowrap"></span><button class="oni-btn pri" id="oni-next" aria-label="Következő kérdés">Tovább ›</button><button class="oni-btn" id="oni-fmiss" title="A hiányzó kérdések listája" aria-controls="oni-misslist">Hiányzók</button><button class="oni-btn" id="oni-exit" title="Vissza a listanézethez">Lista</button>';
       document.body.appendChild(bar);
       bar.querySelector('#oni-auto').onchange=function(e){auto=e.target.checked;try{var st=JSON.parse(localStorage.getItem('onismeret-settings-v1'))||{};st.autoAdvance=auto;localStorage.setItem('onismeret-settings-v1',JSON.stringify(st))}catch(x){}};
       bar.querySelector('#oni-prev').onclick=function(){show(cur-1)};

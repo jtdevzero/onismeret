@@ -8,34 +8,36 @@
 /* ── Közös paletták ─────────────────────────────────────────────────── */
 html[data-theme="light"]{
   --u-bg:#f8fafc; --u-bg2:#f1f5f9; --u-bg3:#e2e8f0; --u-paper:#ffffff;
-  --u-ink:#0f172a; --u-ink2:#1e293b; --u-soft:#334155; --u-muted:#556275; --u-quiet:#94a3b8;
+  --u-ink:#0f172a; --u-ink2:#1e293b; --u-soft:#334155; --u-muted:#5b6778; --u-quiet:#94a3b8;
   --u-line:#cbd5e1; --u-line2:#e2e8f0;
-  --u-emerald:#065f46; --u-emerald2:#059669; --u-emerald-soft:#d1fae5;
-  --u-sapphire:#1e3a8a; --u-sapphire2:#2563eb; --u-sapphire-soft:#dbeafe;
-  --u-burgundy:#7c2d3c; --u-burgundy2:#9f1239; --u-burgundy-soft:#fecdd3;
-  --u-gold:#8a6a12; --u-gold2:#b8912e; --u-gold-soft:#fef3c7;
+  --u-emerald:#065f46; --u-emerald2:#047857; --u-emerald-soft:#ecfdf5;
+  --u-sapphire:#1e3a8a; --u-sapphire2:#1d4ed8; --u-sapphire-soft:#eff6ff;
+  --u-burgundy:#881337; --u-burgundy2:#9f1239; --u-burgundy-soft:#fdf2f4;
+  --u-gold:#8a6a1f; --u-gold2:#a88532; --u-gold-soft:#fbf6e9;
   --u-violet:#5b21b6;
-  --u-shadow:0 1px 3px rgba(15,23,42,.06),0 10px 30px rgba(15,23,42,.08);
+  --u-sel:#1e3a8a; --u-on-sel:#ffffff; --u-cta:#0f172a; --u-on-cta:#ffffff;
+  --u-shadow:0 1px 2px rgba(15,23,42,.04),0 16px 40px -20px rgba(15,23,42,.14);
   --u-shadow-sm:0 1px 2px rgba(15,23,42,.05);
   color-scheme:light;
 }
 html[data-theme="dark"]{
-  --u-bg:#050d1e; --u-bg2:#0c1e3f; --u-bg3:#132848; --u-paper:#0f2038;
-  --u-ink:#f1f5f9; --u-ink2:#e2e8f0; --u-soft:#cbd5e1; --u-muted:#94a3b8; --u-quiet:#6b7c94;
-  --u-line:rgba(147,197,253,.22); --u-line2:rgba(147,197,253,.12);
-  --u-emerald:#34d399; --u-emerald2:#6ee7b7; --u-emerald-soft:rgba(52,211,153,.14);
-  --u-sapphire:#60a5fa; --u-sapphire2:#93c5fd; --u-sapphire-soft:rgba(96,165,250,.14);
-  --u-burgundy:#fb7185; --u-burgundy2:#fda4af; --u-burgundy-soft:rgba(251,113,133,.14);
-  --u-gold:#fbbf24; --u-gold2:#fde047; --u-gold-soft:rgba(251,191,36,.12);
-  --u-violet:#a78bfa;
-  --u-shadow:0 4px 20px rgba(5,13,30,.45);
-  --u-shadow-sm:0 1px 3px rgba(5,13,30,.4);
+  --u-bg:#0b1220; --u-bg2:#17223a; --u-bg3:#1f2c47; --u-paper:#111a2e;
+  --u-ink:#e8edf5; --u-ink2:#dde4ef; --u-soft:#c5cfdf; --u-muted:#8f9eb6; --u-quiet:#6b7c94;
+  --u-line:#2a3a5c; --u-line2:#1c2740;
+  --u-emerald:#6ee7b7; --u-emerald2:#a7f3d0; --u-emerald-soft:rgba(52,211,153,.14);
+  --u-sapphire:#93b4ff; --u-sapphire2:#7aa2f7; --u-sapphire-soft:#17274d;
+  --u-burgundy:#f9a8c4; --u-burgundy2:#fbcfe0; --u-burgundy-soft:rgba(244,114,182,.14);
+  --u-gold:#d4b25e; --u-gold2:#e2c77e; --u-gold-soft:rgba(212,178,94,.12);
+  --u-violet:#c4b5fd;
+  --u-sel:#7aa2f7; --u-on-sel:#0b1220; --u-cta:#d4b25e; --u-on-cta:#0b1220;
+  --u-shadow:0 1px 2px rgba(0,0,0,.3),0 16px 40px -20px rgba(0,0,0,.6);
+  --u-shadow-sm:0 1px 3px rgba(0,0,0,.35);
   color-scheme:dark;
 }
 
 /* ── Egységes tipográfia (a fonts.css álnevei mellett) ─────────────── */
 html[data-theme] body{font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif}
-html[data-theme] :is(h1,h2,h3,h4){font-family:'Lora','Cardo',Georgia,serif}
+html[data-theme] :is(h1,h2,h3,h4){font-family:'Cardo',Georgia,serif}
 
 /* ═══ 1. VILÁGOS PALA-CSALÁD (terkepek, funkcio, attitudok) → sötét téma ═══ */
 html[data-theme="dark"]:is([data-page="terkepek"],[data-page="funkcio"],[data-page="attitudok"]){
@@ -171,11 +173,11 @@ html[data-theme="light"][data-page="ysq"] body{background:var(--u-bg)!important}
 #oni-theme:focus-visible,html[data-theme] :is(button,a,input,select,label):focus-visible{outline:2px solid var(--u-sapphire2);outline-offset:2px}
 @media print{#oni-theme{display:none!important}}
 /* kitöltés-segéd sáv és pill világos témában */
-html[data-theme="light"] .oni-btn{background:rgba(255,255,255,.96)!important;color:var(--u-ink)!important;border-color:var(--u-line)!important}
-html[data-theme="light"] .oni-btn.pri{background:#b8912e!important;color:#fff!important;border-color:#b8912e!important}
-html[data-theme="light"] #oni-focusbar{background:rgba(255,255,255,.96)!important;border-color:var(--u-line)!important;box-shadow:var(--u-shadow)!important}
-html[data-theme="light"] #oni-pos{color:var(--u-soft)!important}
-html[data-theme="light"] #oni-path-banner{background:rgba(255,255,255,.97)!important;color:var(--u-ink)!important;border-color:#b8912e!important}
+html[data-theme] .oni-btn{background:var(--u-paper)!important;color:var(--u-ink)!important;border-color:var(--u-line)!important;box-shadow:var(--u-shadow-sm)}
+html[data-theme] .oni-btn.pri{background:var(--u-cta)!important;color:var(--u-on-cta)!important;border-color:var(--u-cta)!important}
+html[data-theme] #oni-focusbar{background:var(--u-paper)!important;border-color:var(--u-line)!important;box-shadow:var(--u-shadow)!important}
+html[data-theme] #oni-pos{color:var(--u-soft)!important}
+html[data-theme] #oni-path-banner{background:var(--u-paper)!important;color:var(--u-ink)!important;border-color:var(--u-line)!important;box-shadow:var(--u-shadow)!important}
 html[data-theme="light"] #oni-path-banner [style*="color:#a3b3c8"]{color:var(--u-muted)!important}
 /* főoldali kártyák: élénk kiemelőszínek világos háttéren sötétebb, olvasható árnyalatban */
 html[data-theme="light"][data-page="index"] .card :is(.open,.card-tag){filter:brightness(.6) saturate(1.3)}
@@ -338,3 +340,175 @@ html[data-theme="light"][data-page="osszegzes"] .chip.miss{opacity:.9}
 .oni-rstate{display:block;margin-top:6px;font-size:13px;color:var(--u-soft)}
 .oni-ics:disabled{opacity:.5;cursor:not-allowed}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PRÉMIUM RÉTEG — egységes megjelenés minden oldalon (a jóváhagyott minta alapján)
+   Cardo címek, Inter szöveg; hűvös pala alap; smaragd = kész/kedvező, zafír = folyamat/adat,
+   bordó = kötődés/kedvezőtlen, arany csak kiemelés. Kevés keret, sok levegő, egyféle kártya és gomb.
+   ═══════════════════════════════════════════════════════════════════════ */
+html[data-theme] body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+html[data-theme] :is(h1,h2,h3){font-weight:400!important;letter-spacing:-.005em}
+html[data-theme] :is(h1,h2,h3) :is(em,i){font-style:italic}
+html[data-theme] body::before,html[data-theme] body::after{opacity:0!important}
+
+/* ── Tesztoldalak fejléce és fülei ── */
+html[data-theme] .hub-tabs{background:color-mix(in srgb,var(--u-bg) 88%,transparent)!important;border:1px solid var(--u-line2)!important;border-radius:20px!important;box-shadow:none!important;padding:8px!important;gap:8px!important}
+html[data-theme] .hub-tab{background:var(--u-paper)!important;border:1px solid var(--u-line2)!important;border-radius:14px!important;box-shadow:none!important;transform:none!important}
+html[data-theme] .hub-tab:hover:not(.active){border-color:var(--u-line)!important}
+html[data-theme] .hub-tab.active{background:var(--u-cta)!important;border-color:var(--u-cta)!important}
+html[data-theme] .hub-tab.active :is(.name,.num,.sub){color:var(--u-on-cta)!important;opacity:1!important}
+html[data-theme] .hub-tab :is(.name){font-family:'Cardo',Georgia,serif!important;font-weight:400!important;font-size:20px!important}
+html[data-theme] .hub-tab :is(.sub){color:var(--u-muted)!important;letter-spacing:.08em}
+html[data-theme] .hub-tab .check{border-color:var(--u-line)!important}
+
+/* ── Kérdéskártyák és válaszgombok ── */
+html[data-theme] :is(.q,.fc,.question-card){background:var(--u-paper)!important;border:1px solid var(--u-line2)!important;border-radius:18px!important;box-shadow:none!important}
+html[data-theme] :is(.q-text,.fc-q,.question-card .q-text){color:var(--u-ink)!important}
+html[data-theme] :is(.scale-btn,.opt-btn,.fc-btn,.ans-btn,.l-opt):not(.selected){background:var(--u-paper)!important;border:1px solid var(--u-line)!important;color:var(--u-ink)!important;box-shadow:none!important}
+html[data-theme] :is(.scale-btn,.opt-btn,.fc-btn,.ans-btn,.l-opt):not(.selected):hover{border-color:var(--u-sapphire2)!important;background:var(--u-sapphire-soft)!important}
+html[data-theme] :is(.scale-btn,.opt-btn,.fc-btn,.ans-btn,.l-opt){border-radius:12px!important;transition:background .15s ease,border-color .15s ease!important}
+html[data-theme] :is(.scale-btn,.opt-btn,.fc-btn,.ans-btn,.l-opt).selected{background:var(--u-sel)!important;border-color:var(--u-sel)!important;color:var(--u-on-sel)!important;box-shadow:none!important;transform:none!important}
+html[data-theme] :is(.scale-btn,.opt-btn,.fc-btn,.ans-btn,.l-opt).selected *{color:var(--u-on-sel)!important}
+
+/* ── Gombok: egy fő gombstílus, egy másodlagos ── */
+html[data-theme] :is(button[id$=showResults],button[id$=-show],#showResults,.btn-primary,.btn-cta,.start-btn){background:var(--u-cta)!important;color:var(--u-on-cta)!important;border:1px solid var(--u-cta)!important;border-radius:999px!important;box-shadow:none!important;font-family:'Inter',system-ui,sans-serif!important;font-style:normal!important;font-weight:600!important;letter-spacing:0!important}
+html[data-theme] :is(button[id$=showResults],button[id$=-show],#showResults):disabled{background:var(--u-bg3)!important;border-color:var(--u-bg3)!important;color:var(--u-muted)!important;cursor:not-allowed}
+html[data-theme] :is(.btn-secondary,.btn-ghost,.result-actions button,.actions button){border-radius:999px!important;border:1px solid var(--u-line)!important;background:var(--u-paper)!important;color:var(--u-ink)!important;box-shadow:none!important}
+html[data-theme] :is(.progress-fill,.progress-bar-fill,.pp-fill,.st-fill){background:var(--u-sapphire2)!important}
+
+/* ── Eredmény: Röviden, vizuális áttekintés, saját megjegyzések ── */
+html[data-theme] .oni-brief{border:1px solid var(--u-line2)!important;border-left:1px solid var(--u-line2)!important;border-radius:24px!important;padding:40px 44px!important;box-shadow:var(--u-shadow)!important}
+html[data-theme] .oni-eyebrow{font-size:11.5px!important;letter-spacing:.22em!important;font-weight:600!important;color:var(--u-gold)!important}
+html[data-theme] .oni-head{font-family:'Cardo',Georgia,serif!important;font-size:40px!important;line-height:1.1!important;font-weight:400!important;margin:10px 0 6px!important}
+html[data-theme] .oni-sum{font-size:16.5px!important;line-height:1.7!important}
+html[data-theme] .oni-sum.oni-q{font-family:'Cardo',Georgia,serif!important;font-size:21px!important;line-height:1.45!important;padding-top:16px;border-top:1px solid var(--u-line2)}
+html[data-theme] .oni-sum.oni-q b{font-family:'Inter',system-ui,sans-serif;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--u-muted);display:block;margin-bottom:6px;font-weight:600}
+html[data-theme] .oni-dim{background:var(--u-bg2)!important;border:none!important;padding:7px 13px!important}
+html[data-theme] .oni-more{background:var(--u-cta)!important;color:var(--u-on-cta)!important;border:1px solid var(--u-cta)!important;border-radius:999px!important;padding:12px 22px!important;font-weight:600!important}
+html[data-theme] .oni-deep{margin-top:8px}
+html[data-theme] .oni-deep .oni-eyebrow{color:var(--u-sapphire)!important}
+html[data-theme] :is(.od-panel,.oni-chart){background:var(--u-paper)!important;border:1px solid var(--u-line2)!important;border-radius:20px!important;box-shadow:none!important}
+html[data-theme] .od-panel h6,html[data-theme] .oni-chart figcaption{letter-spacing:.18em;text-transform:uppercase;font-size:11.5px;color:var(--u-muted)}
+html[data-theme] .oni-mine{border:1px solid var(--u-line2)!important;border-radius:22px!important;padding:32px 36px!important;box-shadow:none!important}
+html[data-theme] .oni-chip{border-radius:999px!important}
+html[data-theme] .oni-chip.on{background:var(--u-emerald-soft)!important;border-color:var(--u-emerald)!important;color:var(--u-emerald)!important}
+html[data-theme] :is(.oni-cbtn){background:var(--u-emerald)!important;border-color:var(--u-emerald)!important;color:var(--u-paper)!important}
+html[data-theme] details.oni-detail{border-radius:20px}
+html[data-theme] .oni-sheet{border-color:var(--u-line2)!important;border-radius:16px!important}
+html[data-theme] .oni-calm{border-radius:20px!important}
+
+/* ── Főoldal ── */
+html[data-page="index"] .hero{text-align:left!important;padding:72px 0 56px!important;border-bottom:1px solid var(--u-line2);margin-bottom:48px}
+html[data-theme][data-page="index"] .hero .kicker{background:none!important;border:none!important;padding:0!important;font-size:12px!important;letter-spacing:.22em!important;color:var(--u-gold)!important;font-weight:600}
+html[data-page="index"] .hero h1{font-size:clamp(48px,7vw,84px)!important;line-height:1.02!important;margin:22px 0 22px!important;background:none!important;-webkit-text-fill-color:var(--u-ink)!important;color:var(--u-ink)!important}
+html[data-page="index"] .hero h1 em{-webkit-text-fill-color:var(--u-sapphire)!important;color:var(--u-sapphire)!important}
+html[data-page="index"] .hero .lead{margin:0 0 32px!important;max-width:640px;font-size:19px;line-height:1.65;color:var(--u-soft)!important}
+html[data-page="index"] .hero .meta{justify-content:flex-start!important;gap:0!important;border-top:1px solid var(--u-line2);padding-top:22px;max-width:760px}
+html[data-page="index"] .hero .meta span{display:flex;flex-direction:column;gap:4px;padding:0 36px;border-left:1px solid var(--u-line2);font-size:13px;color:var(--u-muted)!important;letter-spacing:0}
+html[data-page="index"] .hero .meta span:first-child{padding-left:0;border-left:none}
+html[data-page="index"] .hero .meta span strong{font-family:'Cardo',Georgia,serif;font-weight:400!important;font-size:34px;line-height:1;color:var(--u-ink)!important;margin:0!important}
+html[data-page="index"] .progress-panel{background:var(--u-paper)!important;border:1px solid var(--u-line2)!important;border-radius:22px!important;padding:32px 36px!important;box-shadow:none!important;margin-bottom:28px!important}
+html[data-page="index"] .pp-head h2{font-family:'Cardo',Georgia,serif!important;font-size:34px!important;color:var(--u-ink)!important;font-weight:400!important}
+html[data-page="index"] .pp-head h2 em,html[data-page="index"] .progress-panel h2 em{color:var(--u-sapphire)!important}
+html[data-page="index"] .goal-chip{height:44px;padding:0 20px!important;border-color:var(--u-line)!important;background:var(--u-paper)!important;color:var(--u-soft)!important;font-weight:500}
+html[data-page="index"] .goal-chip[aria-pressed="true"]{background:var(--u-cta)!important;border-color:var(--u-cta)!important;color:var(--u-on-cta)!important}
+html[data-page="index"] :is(.home-card,.pp-next,.pp-sumlink){background:var(--u-paper)!important;border:1px solid var(--u-line2)!important;border-radius:18px!important;box-shadow:none!important;transform:none!important}
+html[data-page="index"] :is(.home-card,.pp-next,.pp-sumlink):hover{border-color:var(--u-line)!important}
+html[data-page="index"] .home-card.first{border:1.5px solid var(--u-ink)!important}
+html[data-page="index"] :is(.home-card .hk,.pp-next-lbl){color:var(--u-gold)!important}
+html[data-page="index"] :is(.home-card .hn,.pp-next-name){font-family:'Cardo',Georgia,serif!important;font-size:22px!important;color:var(--u-ink)}
+html[data-page="index"] .home-card .hb{background:var(--u-bg3)!important}.home-card .hb i{background:var(--u-sapphire2)!important}
+/* kezdő útvonal: sötét sáv mindkét témában */
+html[data-theme][data-page="index"] .progress-panel.path-panel{background:#0f172a!important;border-color:#0f172a!important;color:#e2e8f0}
+html[data-theme="dark"][data-page="index"] .progress-panel.path-panel{background:#111a2e!important;border-color:#2a3a5c!important}
+html[data-page="index"] .path-panel .pp-head h2{color:#ffffff!important}
+html[data-page="index"] .path-panel :is(.pp-sum,.path-lead){color:#cbd5e1!important}
+html[data-page="index"] .path-panel .pp-sum strong{color:#ffffff!important}
+html[data-theme][data-page="index"] .path-panel .path-steps li{background:transparent!important;border:none!important;border-top:2px solid #334155!important;border-radius:0!important;padding:16px 4px 0!important;box-shadow:none!important}
+html[data-page="index"] .path-steps li::before{color:#d4b25e!important}
+html[data-page="index"] .path-steps li .pn{color:#ffffff!important;font-family:'Cardo',Georgia,serif!important;font-size:19px!important}
+html[data-page="index"] .path-steps li .pw{color:#94a3b8!important}
+html[data-theme][data-page="index"] .path-panel .path-steps li.done{border-top-color:#34d399!important;background:transparent!important}
+html[data-page="index"] .path-steps li.done::after{color:#34d399!important}
+html[data-theme][data-page="index"] .path-panel .path-steps li.next{border-top-color:#d4b25e!important;box-shadow:none!important}
+html[data-theme][data-page="index"] .path-panel .pp-next{background:#d4b25e!important;border-color:#d4b25e!important;border-radius:999px!important}
+html[data-theme][data-page="index"] .path-panel .pp-next :is(.pp-next-lbl,.pp-next-name,.arrow){color:#0b1220!important}
+/* katalógus */
+html[data-page="index"] .cat-tools :is(input,select){height:50px;border-radius:14px!important;background:var(--u-paper)!important;border-color:var(--u-line)!important;color:var(--u-ink)!important}
+html[data-page="index"] .cat{--cat:var(--u-sapphire)}
+html[data-page="index"] :is(.cat[data-cat="1"],.cat[data-cat="8"]){--cat:var(--u-emerald)}
+html[data-page="index"] :is(.cat[data-cat="2"],.cat[data-cat="4"],.cat[data-cat="7"]){--cat:var(--u-burgundy)}
+html[data-page="index"] .cat[data-cat="5"]{--cat:var(--u-gold)}
+html[data-page="index"] .cat-head{border-bottom:1px solid var(--u-line2);padding-bottom:16px;margin-bottom:24px}
+html[data-page="index"] .cat-num{font-family:'Cardo',Georgia,serif!important;color:var(--cat)!important;font-style:normal!important}
+html[data-page="index"] .cat-title{font-family:'Cardo',Georgia,serif!important;font-weight:400!important;color:var(--u-ink)!important}
+html[data-page="index"] .card{background:var(--u-paper)!important;border:1px solid var(--u-line2)!important;border-radius:18px!important;padding:28px!important;box-shadow:none!important;transform:none!important;transition:border-color .2s ease,box-shadow .2s ease!important}
+html[data-page="index"] .card:hover{border-color:var(--u-line)!important;box-shadow:var(--u-shadow)!important}
+html[data-page="index"] .card::before{display:none!important}
+html[data-page="index"] .card .card-tag{color:var(--cat)!important;filter:none!important;opacity:1!important;font-size:11px;letter-spacing:.18em}
+html[data-page="index"] .card h3{font-family:'Cardo',Georgia,serif!important;font-size:30px!important;font-weight:400!important;color:var(--u-ink)!important;margin:6px 0 10px!important}
+html[data-page="index"] .card h3 em{font-family:'Cardo',Georgia,serif!important;font-size:17px!important;color:var(--u-soft)!important}
+html[data-page="index"] .card .desc{color:var(--u-soft)!important;font-size:14.5px;line-height:1.6}
+html[data-page="index"] .card .card-meta{display:inline-block!important;margin:0 0 14px!important;padding:5px 11px;border-radius:999px;background:var(--u-bg2);color:var(--u-soft)!important}
+html[data-page="index"] .card .vstat{border-radius:999px!important;border:none!important;font-weight:600}
+html[data-page="index"] .card .status{margin:0 0 14px}
+html[data-page="index"] .card .status .st-bar{height:3px!important;background:var(--u-bg3)!important}
+html[data-page="index"] .card .status[data-state="done"] :is(.st-fill){background:var(--u-emerald)!important}
+html[data-page="index"] .card .status[data-state="due"] :is(.st-fill){background:var(--u-burgundy)!important}
+html[data-page="index"] .card .status[data-state="done"] .st-lbl{color:var(--u-emerald)!important}
+html[data-page="index"] .card .status[data-state="due"] .st-lbl{color:var(--u-burgundy)!important}
+html[data-page="index"] .card .status[data-state="prog"] .st-lbl{color:var(--u-sapphire)!important}
+html[data-page="index"] .card .open{color:var(--u-ink)!important;filter:none!important;text-transform:none!important;letter-spacing:0!important;font-size:14.5px!important;border-top:1px solid var(--u-line2)!important}
+html[data-page="index"] .card.is-done::after{background:var(--u-emerald)!important;color:var(--u-paper)!important;border:none!important}
+html[data-page="index"] .card.is-next{border-color:var(--u-ink)!important}
+html[data-page="index"] .jump{background:color-mix(in srgb,var(--u-bg) 92%,transparent)!important;border-color:var(--u-line2)!important}
+html[data-page="index"] .jump a{background:var(--u-paper)!important;border-color:var(--u-line2)!important;color:var(--u-soft)!important}
+html[data-page="index"] .jump a.active{background:var(--u-cta)!important;border-color:var(--u-cta)!important;color:var(--u-on-cta)!important}
+html[data-page="index"] .jump a.active :is(.jn,.jc){color:var(--u-on-cta)!important}
+html[data-page="index"] :is(.pp-btn,.ct-reset){border-radius:999px!important;background:var(--u-paper)!important;border-color:var(--u-line)!important;color:var(--u-ink)!important}
+@media (max-width:700px){html[data-page="index"] .hero .meta span{padding:0 16px}html[data-page="index"] .hero .meta span strong{font-size:26px}html[data-page="index"] .hero{padding:40px 0 36px!important}}
+
+/* ── Összegzés, Párban, Adatok, Változásnapló ── */
+html[data-theme]:is([data-page="osszegzes"],[data-page="par"],[data-page="adatok"],[data-page="valtozasok"]) :is(.card,.statbar,.how,.locked,.empty,.pbox,.status-grid .st){background:var(--u-paper)!important;border:1px solid var(--u-line2)!important;border-radius:20px!important;box-shadow:none!important}
+html[data-theme]:is([data-page="osszegzes"],[data-page="par"],[data-page="adatok"],[data-page="valtozasok"]) .card::before{display:none!important}
+html[data-theme]:is([data-page="osszegzes"],[data-page="par"],[data-page="adatok"],[data-page="valtozasok"]) h1{font-size:clamp(44px,6vw,72px)!important}
+html[data-theme]:is([data-page="osszegzes"],[data-page="par"],[data-page="adatok"],[data-page="valtozasok"]) :is(h2) em{color:var(--u-sapphire)!important}
+html[data-theme]:is([data-page="osszegzes"],[data-page="par"],[data-page="adatok"],[data-page="valtozasok"]) h1 em{color:var(--u-sapphire)!important;-webkit-text-fill-color:var(--u-sapphire)!important}
+html[data-theme]:is([data-page="osszegzes"],[data-page="par"],[data-page="adatok"],[data-page="valtozasok"]) .kicker{background:none!important;border:none!important;padding:0!important;letter-spacing:.22em;color:var(--u-gold)!important}
+html[data-theme]:is([data-page="osszegzes"],[data-page="par"],[data-page="adatok"],[data-page="valtozasok"]) :is(.btn){border-radius:999px!important;background:var(--u-cta)!important;border-color:var(--u-cta)!important;color:var(--u-on-cta)!important}
+html[data-theme]:is([data-page="osszegzes"],[data-page="par"],[data-page="adatok"],[data-page="valtozasok"]) :is(.btn.ghost){background:var(--u-paper)!important;border-color:var(--u-line)!important;color:var(--u-ink)!important}
+html[data-theme="dark"]:is([data-page="osszegzes"],[data-page="par"],[data-page="adatok"],[data-page="valtozasok"],[data-page="index"]) :is(html,body){background:var(--u-bg)!important;color:var(--u-ink)}
+
+/* ── YSQ és mélytérkép: a saját fejlécek a közös palettát kapják ── */
+html[data-page="ysq"] .app-header{background:var(--u-paper)!important;border-bottom:1px solid var(--u-line2)!important;box-shadow:none!important}
+html[data-page="ysq"] .header-title{color:var(--u-ink)!important;font-family:'Cardo',Georgia,serif!important;font-size:1.35rem!important}
+html[data-page="ysq"] .header-sub{color:var(--u-gold)!important;font-weight:500!important}
+html[data-page="ysq"] .progress-chip{background:var(--u-cta)!important;color:var(--u-on-cta)!important}
+html[data-page="ysq"] .nav-tabs{background:var(--u-paper)!important;border-bottom:1px solid var(--u-line2)!important}
+html[data-page="ysq"] .nav-tab{color:var(--u-muted)!important;border-bottom-color:transparent!important}
+html[data-page="ysq"] .nav-tab:hover{color:var(--u-ink)!important}
+html[data-page="ysq"] .nav-tab.active{color:var(--u-ink)!important;border-bottom:2px solid var(--u-sapphire2)!important;background:transparent!important}
+html[data-page="ysq"] :is(.welcome-hero,.results-hero,.psycho-hero){background:var(--u-paper)!important;border-bottom:1px solid var(--u-line2)}
+html[data-page="ysq"] :is(.welcome-hero,.results-hero,.psycho-hero) :is(h1,h2){color:var(--u-ink)!important;font-family:'Cardo',Georgia,serif!important;font-size:2.4rem!important}
+html[data-page="ysq"] :is(.welcome-hero,.results-hero,.psycho-hero) p{color:var(--u-gold)!important;font-weight:500!important}
+html[data-page="ysq"] .gold-divider{height:1px!important;background:var(--u-line2)!important}
+html[data-theme] #onismeret-back{background:var(--u-paper)!important;color:var(--u-ink)!important;border:1px solid var(--u-line)!important;box-shadow:var(--u-shadow-sm)!important}
+
+/* ── Címsorok kiemelése, tesztfülek, figyelmeztető dobozok ── */
+html[data-theme][data-page] :is(h1,h2) :is(em,i){color:var(--u-sapphire)!important;-webkit-text-fill-color:var(--u-sapphire)!important}
+html[data-theme][data-page] .hub-tabs .hub-tab.active{background:var(--u-cta)!important;border-color:var(--u-cta)!important;box-shadow:none!important}
+html[data-theme][data-page] .hub-tabs .hub-tab.active :is(.name,.num,.sub,.check){color:var(--u-on-cta)!important}
+html[data-theme][data-page] :is(.hub-caveat,.medical-note,.caveat,.warning-box,.disclaimer-box){background:var(--u-gold-soft)!important;border:1px solid color-mix(in srgb,var(--u-gold2) 40%,transparent)!important;border-radius:14px!important;color:var(--u-soft)!important;box-shadow:none!important}
+html[data-theme][data-page] :is(.hub-caveat,.medical-note,.caveat,.warning-box,.disclaimer-box) strong{color:var(--u-gold)!important}
+
+html[data-theme] .hub-header::before,html[data-theme] .hub-header::after{display:none!important}
+html[data-theme] .oni-deep{border:none!important;border-left:none!important;background:transparent!important;padding:8px 0 0!important;box-shadow:none!important}
+html[data-theme] .oni-deep>.oni-eyebrow{display:block;margin:0 0 12px;font-family:'Cardo',Georgia,serif!important;font-size:30px!important;letter-spacing:0!important;text-transform:none!important;font-weight:400!important;color:var(--u-ink)!important}
+html[data-theme] details.oni-detail{background:var(--u-paper);border:1px solid var(--u-line2);border-radius:20px;padding:6px 28px;margin:0 0 22px}
+html[data-theme] details.oni-detail>summary{font-family:'Cardo',Georgia,serif!important;font-size:26px!important;letter-spacing:0!important;text-transform:none!important;font-weight:400!important;color:var(--u-ink)!important;padding:18px 0!important}
+@media (max-width:640px){
+  html[data-theme] .oni-brief{padding:26px 20px!important;border-radius:20px!important}
+  html[data-theme] .oni-head{font-size:30px!important}
+  html[data-theme] .oni-mine{padding:24px 18px!important}
+  html[data-theme] details.oni-detail{padding:4px 16px}
+}

@@ -173,7 +173,7 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     ok(await p.evaluate(() => document.documentElement.dataset.theme) === 'dark', 'sötét téma megmarad oldalváltás után');
     await p.goto(R + 'ysq.html'); await p.waitForTimeout(200);
     ok(await p.evaluate(() => document.documentElement.dataset.theme) === 'dark', 'a YSQ a közös témát követi');
-    ok(/rgb\(5, 13, 30\)|rgba?\(5, 13, 30/.test(bg), 'sötét háttér a főoldalon', bg);
+    ok(/rgb\(11, 18, 32\)/.test(bg), 'sötét háttér a főoldalon (a prémium paletta szerint)', bg);
     await ctx.close();
   }
 
