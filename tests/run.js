@@ -152,7 +152,8 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     ok(await p.evaluate(() => [...document.querySelectorAll('.pp-btn')].some(b => /visszavonása/.test(b.textContent))), 'megjelenik a visszavonás gomb');
     // párexport csak párteszteket tartalmaz
     await p.goto(R + 'par.html');
-    const [dl2] = await Promise.all([p.waitForEvent('download'), p.click('#pexport')]); const f2 = path.join(tmp, 'p.json'); await dl2.saveAs(f2);
+    await p.click('#pexport'); await p.waitForTimeout(100);
+    const [dl2] = await Promise.all([p.waitForEvent('download'), p.click('#pexp-go')]); const f2 = path.join(tmp, 'p.json'); await dl2.saveAs(f2);
     const pe = JSON.parse(fs.readFileSync(f2)); const keys = Object.keys(pe.data);
     ok(pe.kind === 'partner' && keys.length === 1 && keys[0] === 'onismeret-results-v1', 'párexport: csak az eredménytár, nyers válaszok nélkül', keys);
     await ctx.close();
@@ -486,6 +487,109 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     await p.waitForTimeout(800); await p.click('#oni-miss'); await p.waitForTimeout(100);
     const ns = await p.evaluate(() => ({ req: document.querySelectorAll('#oni-misslist > ul')[0].querySelectorAll('.oni-mi').length, opt: /Kihagyható/.test(document.getElementById('oni-misslist').textContent), lists: document.querySelectorAll('#oni-misslist > ul').length }));
     ok(ns.req === 1 && ns.opt && ns.lists === 2, 'NSSS: a partner-kérdések külön, kihagyhatóként szerepelnek', ns);
+    ok(p._errs.length === 0, 'hibamentes', p._errs);
+    await ctx.close();
+  }
+
+  console.log('\n19. Katalógus: keresés és szűrés');
+  {
+    const ctx = await newCtx(); const p = await pageIn(ctx);
+    await p.goto(R + 'index.html'); await p.waitForTimeout(300);
+    const vis = () => p.$$eval('.card[data-key]', c => c.filter(x => !x.hidden).map(x => x.dataset.id));
+    ok((await vis()).length === 31 && /31 teszt/.test(await p.textContent('#ct-count')), 'alapból mind a 31 teszt látszik');
+    await p.fill('#ct-q', 'halogat'); await p.waitForTimeout(100);
+    ok((await vis()).includes('ips'), 'szöveges keresés (ékezet nélkül is): halogatás → IPS', await vis());
+    await p.fill('#ct-q', 'kotodes'); await p.waitForTimeout(100);
+    ok((await vis()).includes('ecr') && (await vis()).includes('kotodes'), 'ékezet nélküli keresés megtalálja a kötődési teszteket', await vis());
+    await p.fill('#ct-q', ''); await p.selectOption('#ct-time', '5'); await p.waitForTimeout(100);
+    const short = await p.evaluate(() => [...document.querySelectorAll('.card[data-key]:not([hidden])')].every(c => +c.dataset.min > 0 && +c.dataset.min <= 5));
+    ok(short && (await vis()).length > 0, 'időszűrő: csak a legfeljebb 5 perces tesztek');
+    await p.selectOption('#ct-time', ''); await p.selectOption('#ct-type', 'own'); await p.waitForTimeout(100);
+    ok((await vis()).sort().join() === ['fti', 'ft', 'gott', 'kolbe', 'kotodes', 'tki'].sort().join(), 'típusszűrő: saját kérdéssorok', await vis());
+    await p.selectOption('#ct-type', ''); await p.selectOption('#ct-cat', '1'); await p.waitForTimeout(100);
+    ok((await vis()).sort().join() === 'des,maia2,tas' && await p.evaluate(() => document.querySelectorAll('.cat:not([hidden])').length === 1), 'témakör-szűrő, az üres témakörök eltűnnek');
+    await p.selectOption('#ct-cat', ''); await p.selectOption('#ct-st', 'done'); await p.waitForTimeout(100);
+    ok((await vis()).length === 0 && !(await p.$eval('#ct-empty', e => e.hidden)), 'üres találatnál szöveges visszajelzés');
+    await p.click('#ct-reset2'); await p.waitForTimeout(100);
+    ok((await vis()).length === 31 && await p.evaluate(() => document.activeElement.id === 'ct-q'), 'szűrők törlése, fókusz a keresőre');
+    ok(await p.evaluate(() => document.getElementById('goals').compareDocumentPosition(document.getElementById('path')) & Node.DOCUMENT_POSITION_FOLLOWING), 'első látogatáskor a célválasztó az útvonal előtt');
+    ok(await p.evaluate(() => [...document.querySelectorAll('.card[data-key] .card-meta')].length === 31 && getComputedStyle(document.querySelector('.card .tests')).display === 'none'), 'kártyán időigény és kérdésszám, a részletes lista alapból rejtve');
+    ok(p._errs.length === 0, 'hibamentes', p._errs);
+    await ctx.close();
+  }
+
+  console.log('\n20. Akadálymentes válaszadás');
+  {
+    const ctx = await newCtx(); const p = await pageIn(ctx);
+    await p.goto(R + 'maia2.html'); await p.waitForTimeout(800);
+    const g = await p.evaluate(() => { const q = document.querySelector('.q'), grp = q.querySelector('[role=group]'); const b = grp.querySelectorAll('button[data-n]'); return { lbl: grp.getAttribute('aria-label'), pr: [...b].map(x => x.getAttribute('aria-pressed')) }; });
+    ok(g.lbl && g.lbl.length > 15 && g.pr.every(x => x === 'false'), 'válaszcsoport a kérdés szövegével címkézve, kijelölés nélkül aria-pressed=false', g.lbl);
+    await p.evaluate(() => document.querySelector('.q button[data-n]').click()); await p.waitForTimeout(900);
+    ok(await p.evaluate(() => document.querySelector('.q button[data-n]').getAttribute('aria-pressed') === 'true'), 'kijelöléskor aria-pressed=true');
+    await p.click('#oni-focus-on'); await p.waitForTimeout(500);
+    await p.keyboard.press('0'); await p.waitForTimeout(500);
+    let v = await p.evaluate(() => JSON.parse(localStorage.getItem('maia2-responses-v2')));
+    ok(v['2'] === 0, 'MAIA-2 fókusz módban a 0 billentyű a 0 választ adja', v);
+    await p.keyboard.press('1'); await p.waitForTimeout(500);
+    v = await p.evaluate(() => JSON.parse(localStorage.getItem('maia2-responses-v2')));
+    ok(v['3'] === 1, 'az 1 billentyű az 1 értéket adja, nem az első gombot (0)', v);
+    ok(await p.evaluate(() => document.querySelector('.oni-unit.oni-cur').contains(document.activeElement)), 'továbblépés után a fókusz az új kérdésen van');
+    await p.goto(R + 'szemelyiseg.html#test-via'); await p.waitForTimeout(800);
+    const via = await p.evaluate(() => [...document.querySelector('#test-via .oni-unit').querySelectorAll('[role=group]')].map(x => x.getAttribute('aria-label')));
+    ok(via.length === 3 && via.every(x => /^\d\. rész: .{10,}/.test(x)) && new Set(via).size === 3, 'több kérdéses kártyán minden válaszcsoport külön címkét kap', via);
+    ok(p._errs.length === 0, 'hibamentes', p._errs);
+    await ctx.close();
+  }
+
+  console.log('\n21. Tesztenkénti emlékeztető');
+  {
+    const ctx = await newCtx(); const p = await pageIn(ctx);
+    await p.goto(R + 'szabalyozas.html#test-ips'); await p.waitForTimeout(200);
+    await p.evaluate(() => { TESTS.ips._fillAll(() => 2); TESTS.ips.show(); }); await p.waitForTimeout(800);
+    // a kitöltés dátumát 40 nappal korábbra tesszük
+    await p.evaluate(() => { const t = new Date(Date.now() - 40 * 864e5).toISOString(), a = ONI.all(); a.ips[0].done = a.ips[0].t = t; localStorage.setItem(ONI.K, JSON.stringify(a)); const m = JSON.parse(localStorage.getItem(ONI.META)); m.ans['ips-responses-v1'] = t; localStorage.setItem(ONI.META, JSON.stringify(m)); });
+    await p.reload(); await p.evaluate(() => TESTS.ips.show()); await p.waitForTimeout(800);
+    await p.selectOption('#ips-results .oni-rsel', '30'); await p.waitForTimeout(100);
+    ok(await p.evaluate(() => ONI.due('ips', ONI.all().ips[0]).due && /Most esedékes/.test(document.querySelector('#ips-results .oni-rstate').textContent)), '30 napos egyedi emlékeztető: 40 nap után esedékes');
+    const [dl] = await Promise.all([p.waitForEvent('download'), p.click('#ips-results .oni-ics')]);
+    const ics = fs.readFileSync(await dl.path(), 'utf8'), tmr = new Date(Date.now() + 864e5).toISOString().slice(0, 10).replace(/-/g, '');
+    ok(ics.includes('DTSTART;VALUE=DATE:' + tmr), 'lejárt határidőnél a naptár a holnapi napot javasolja', ics.match(/DTSTART[^\r]*/)[0]);
+    await p.click('#ips-results .oni-snooze'); await p.waitForTimeout(100);
+    ok(await p.evaluate(() => { const d = ONI.due('ips', ONI.all().ips[0]); return !d.due && d.snoozed; }), 'halasztás 30 nappal');
+    await p.selectOption('#ips-results .oni-rsel', '0'); await p.waitForTimeout(100);
+    ok(await p.evaluate(() => ONI.due('ips', ONI.all().ips[0]).off && document.querySelector('#ips-results .oni-ics').disabled), 'tesztenként kikapcsolható');
+    await p.selectOption('#ips-results .oni-rsel', '90'); await p.waitForTimeout(100);
+    const exp = await p.evaluate(() => { const r = ONI.all().ips[0]; return new Date(Date.parse(r.done) + 90 * 864e5).toISOString().slice(0, 10).replace(/-/g, ''); });
+    const [dl3] = await Promise.all([p.waitForEvent('download'), p.click('#ips-results .oni-ics')]);
+    ok(fs.readFileSync(await dl3.path(), 'utf8').includes('DTSTART;VALUE=DATE:' + exp), 'a naptárjavaslat a tényleges kitöltés dátumából indul (+90 nap)');
+    await p.goto(R + 'index.html'); await p.waitForTimeout(200);
+    ok(await p.evaluate(() => document.querySelector('.card[data-key="ips-responses-v1"] .status').dataset.state === 'done'), 'főoldal az egyedi beállítást használja (90 nap: még nem esedékes)');
+    ok(p._errs.length === 0, 'hibamentes', p._errs);
+    await ctx.close();
+  }
+
+  console.log('\n22. Párnézet: választható export, betöltés előtti előnézet, semleges kérdések');
+  {
+    const ctx = await newCtx(); const p = await pageIn(ctx);
+    await p.goto(R + 'index.html'); await seedDemo(p);
+    await p.goto(R + 'par.html'); await p.waitForTimeout(200);
+    await p.click('#pexport'); await p.waitForTimeout(100);
+    const boxes = await p.$$eval('#pexp-box input[type=checkbox]', x => x.map(e => e.dataset.id));
+    ok(boxes.length >= 3, 'párexport: a tesztek egyenként kiválaszthatók', boxes);
+    for (const id of boxes.slice(1)) await p.uncheck(`#pexp-box input[data-id="${id}"]`);
+    const [dl] = await Promise.all([p.waitForEvent('download'), p.click('#pexp-go')]);
+    const tmp = fs.mkdtempSync(path.join(require('os').tmpdir(), 'oni-')), f = path.join(tmp, 'p.json'); await dl.saveAs(f);
+    const pe = JSON.parse(fs.readFileSync(f));
+    ok(Object.keys(JSON.parse(pe.data['onismeret-results-v1'])).join() === boxes[0], 'csak a kiválasztott teszt kerül a fájlba');
+    // teljes párexport a betöltéshez
+    await p.click('#pexport'); await p.waitForTimeout(100);
+    const [dl2] = await Promise.all([p.waitForEvent('download'), p.click('#pexp-go')]); const f2 = path.join(tmp, 'p2.json'); await dl2.saveAs(f2);
+    await p.setInputFiles('#pfile', f2); await p.waitForTimeout(200);
+    const pv = await p.evaluate(() => ({ shown: !document.getElementById('pimp-box').hidden, rows: document.querySelectorAll('#pimp-box li').length, txt: document.getElementById('pimp-box').textContent, stored: localStorage.getItem('onismeret-partner-v1') }));
+    ok(pv.shown && pv.rows === boxes.length && /kitöltés/.test(pv.txt) && /kérdéssor v/.test(pv.txt) && pv.stored === null, 'betöltés előtt előnézet: tesztek, dátumok, változatok; még nem mentett', pv.rows);
+    await p.click('#pimp-go'); await p.waitForTimeout(200);
+    const r = await p.evaluate(() => ({ stored: !!localStorage.getItem('onismeret-partner-v1'), pats: [...document.querySelectorAll('#root .card.pat')].map(c => !!c.querySelector('.pq')), cmp: [...document.querySelectorAll('#root .card.cmp')].every(c => !!c.querySelector('.pq')) }));
+    ok(r.stored && r.pats.length > 0 && r.pats.every(Boolean) && r.cmp, 'megerősítés után betöltve; minden jelzésnél és összevetésnél semleges kérdés', r);
     ok(p._errs.length === 0, 'hibamentes', p._errs);
     await ctx.close();
   }

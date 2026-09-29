@@ -295,12 +295,28 @@ details.intro:not([open]){padding-top:20px;padding-bottom:20px}
   .grid{grid-template-columns:1fr;gap:16px}
   .card{padding:20px}
 }
+
+/* ── Katalógus: keresés, szűrés, rövidebb kártyák ── */
+.catalog{margin:0 0 14px}
+.cat-tools{display:grid;grid-template-columns:2fr repeat(4,1fr);gap:8px}
+.cat-tools input,.cat-tools select{width:100%;box-sizing:border-box;font:inherit;font-size:14px;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--bg-card,transparent);color:var(--ink)}
+.cat-tools input:focus-visible,.cat-tools select:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+.ct-foot{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;margin-top:8px;font-size:13px;color:var(--ink-soft)}
+.ct-reset{appearance:none;cursor:pointer;font:inherit;font-size:13px;padding:5px 12px;border-radius:99px;border:1px solid var(--line);background:transparent;color:var(--ink)}
+.ct-long{margin-left:auto;display:inline-flex;gap:6px;align-items:center;cursor:pointer}
+.ct-empty{margin:10px 0 0;padding:14px 16px;border:1px dashed var(--line);border-radius:14px;color:var(--ink-soft)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.card .card-meta{display:block;font-size:12.5px;color:var(--ink-soft);margin:-8px 0 12px;font-variant-numeric:tabular-nums}
+body:not(.ct-longdesc) .card .desc{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:0;margin-bottom:14px}
+body:not(.ct-longdesc) .card .tests{display:none}
+.card[hidden],.cat[hidden],.jump[hidden]{display:none!important}
+@media (max-width:900px){.cat-tools{grid-template-columns:1fr 1fr}.ct-search{grid-column:1/-1}}
 </style>
-<script src="assets/oni-core.js?v=9c7ce065"></script>
+<script src="assets/oni-core.js?v=303e8c2e"></script>
 <script src="assets/oni-schema.js?v=190e2f3e" defer></script>
 <script src="assets/tests-data.js?v=8174bfd3" defer></script>
-<script src="assets/results-plus.js?v=27d63035" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=91a11e2c">
+<script src="assets/results-plus.js?v=5e81801b" defer></script>
+<link rel="stylesheet" href="assets/theme.css?v=e01934c0">
 </head>
 <body>
 <div class="wrap">
@@ -325,6 +341,12 @@ details.intro:not([open]){padding-top:20px;padding-bottom:20px}
     <div class="commit-list" id="home-commit"></div>
   </section>
 
+  <section class="progress-panel goal-panel" id="goals">
+    <div class="pp-head"><h2>Mit szeretnél <em>megérteni?</em></h2><span class="pp-sum">célonként 2–3 teszt</span></div>
+    <p class="path-lead">Válassz egy kérdést, és megmutatom, melyik tesztek adnak rá választ, és mivel érdemes kezdeni.</p>
+    <div class="goal-chips" id="goal-chips" role="group" aria-label="Célok"></div>
+    <div class="goal-out" id="goal-out" aria-live="polite"></div>
+  </section>
   <section class="progress-panel path-panel" id="path">
     <div class="pp-head">
       <h2>Kezdő útvonal</h2>
@@ -339,12 +361,6 @@ details.intro:not([open]){padding-top:20px;padding-bottom:20px}
     </a>
   </section>
 
-  <section class="progress-panel goal-panel" id="goals">
-    <div class="pp-head"><h2>Mit szeretnél <em>megérteni?</em></h2><span class="pp-sum">célonként 2–3 teszt</span></div>
-    <p class="path-lead">Válassz egy kérdést, és megmutatom, melyik tesztek adnak rá választ, és mivel érdemes kezdeni.</p>
-    <div class="goal-chips" id="goal-chips" role="group" aria-label="Célok"></div>
-    <div class="goal-out" id="goal-out" aria-live="polite"></div>
-  </section>
 
   <section class="progress-panel" id="progress">
     <div class="pp-head">
@@ -381,7 +397,7 @@ details.intro:not([open]){padding-top:20px;padding-bottom:20px}
     </p>
     <p>Amit adnak:</p>
     <ul class="list">
-      <li><strong>Nyers pontszámok, és ahol van publikált norma, összevetés vele</strong> — hol állsz a kutatási mintához képest. A kapcsolati nyelveknél, a kötődési mélytérképnél és a „saját itemek” jelölésű teszteknél nincs norma.</li>
+      <li><strong>Nyers pontszámok és a helyük a válaszskálán</strong> — a saját fordítások nincsenek magyar mintán normázva, ezért populációs átlaghoz nem hasonlítunk. A kapcsolati nyelveknél, a kötődési mélytérképnél és a „saját itemek” jelölésű teszteknél nincs norma.</li>
       <li><strong>Radar / oszlop-diagramok</strong> — vizuálisan is látszik, min van a hangsúly.</li>
       <li><strong>Teljes körű kiértékelés</strong> — magyarázat + gyakorlati lépések, nem csak számok.</li>
       <li><strong>Válaszok automatikus mentése</strong> — böngésző-lokálisan, folytathatod, ahol abbahagytad.</li>
@@ -392,6 +408,17 @@ details.intro:not([open]){padding-top:20px;padding-bottom:20px}
     </p>
   </details>
 
+<section class="catalog" id="catalog" aria-label="Tesztkatalógus">
+  <div class="cat-tools" role="search">
+    <label class="ct-search"><span class="sr">Keresés a tesztek között</span><input type="search" id="ct-q" placeholder="Keresés: név, téma, kulcsszó…" autocomplete="off"></label>
+    <label><span class="sr">Témakör</span><select id="ct-cat"><option value="">Minden témakör</option></select></label>
+    <label><span class="sr">Időigény</span><select id="ct-time"><option value="">Bármennyi idő</option><option value="5">legfeljebb 5 perc</option><option value="10">legfeljebb 10 perc</option><option value="11">10 percnél hosszabb</option></select></label>
+    <label><span class="sr">Állapot</span><select id="ct-st"><option value="">Minden állapot</option><option value="none">Nincs elkezdve</option><option value="prog">Folyamatban</option><option value="done">Kész</option><option value="due">Újramérhető</option></select></label>
+    <label><span class="sr">Kérdőív típusa</span><select id="ct-type"><option value="">Minden típus</option><option value="valid">Validált, ellenőrzött fordítás</option><option value="check">Validált, fordítás még nem ellenőrzött</option><option value="part">Modell-alapú rövid változat</option><option value="own">Saját kérdéssor</option><option value="frame">Népszerű keret</option></select></label>
+  </div>
+  <div class="ct-foot"><span id="ct-count" aria-live="polite"></span><button type="button" class="ct-reset" id="ct-reset" hidden>Szűrők törlése</button><label class="ct-long"><input type="checkbox" id="ct-long"> Részletes leírások</label></div>
+  <p class="ct-empty" id="ct-empty" hidden>Egy teszt sem felel meg a szűrésnek. <button type="button" class="ct-reset" id="ct-reset2">Szűrők törlése</button></p>
+</section>
 <nav class="jump" aria-label="Témakörök"><a href="#cat-1" data-jump="1"><span class="jn">I.</span>Test<span class="jc" id="jc-1"></span></a><a href="#cat-2" data-jump="2"><span class="jn">II.</span>Kötődés · séma<span class="jc" id="jc-2"></span></a><a href="#cat-3" data-jump="3"><span class="jn">III.</span>Szex-funkció<span class="jc" id="jc-3"></span></a><a href="#cat-4" data-jump="4"><span class="jn">IV.</span>Attitűdök<span class="jc" id="jc-4"></span></a><a href="#cat-5" data-jump="5"><span class="jn">V.</span>Kapcsolati nyelvek<span class="jc" id="jc-5"></span></a><a href="#cat-6" data-jump="6"><span class="jn">VI.</span>Személyiség<span class="jc" id="jc-6"></span></a><a href="#cat-7" data-jump="7"><span class="jn">VII.</span>Kapcsolati dinamika<span class="jc" id="jc-7"></span></a><a href="#cat-8" data-jump="8"><span class="jn">VIII.</span>Értékek · cselekvés<span class="jc" id="jc-8"></span></a><a href="#cat-9" data-jump="9"><span class="jn">IX.</span>Szabályozás<span class="jc" id="jc-9"></span></a></nav>
   <!-- KATEGÓRIA 1: TEST-TUDATOSSÁG -->
   <section class="cat" id="cat-1" data-cat="1">
@@ -860,7 +887,7 @@ details.intro:not([open]){padding-top:20px;padding-bottom:20px}
     var cat=c.closest('.cat').dataset.cat; perCat[cat]=perCat[cat]||{d:0,t:0}; perCat[cat].t++;
     answered+=st.n;
     if(st.done){nDone++;perCat[cat].d++;box.dataset.state='done';lbl.textContent='Kész';fill.style.width='100%';c.classList.add('is-done');c.querySelector('.open-lbl').textContent='Eredmény megnyitása';
-      var rec=lastRec(c.dataset.key);if(rec){var dd=Math.floor((Date.now()-new Date(rec.done||rec.t).getTime())/864e5);if(RETAKE&&dd>=RETAKE){nDue++;box.dataset.state='due';lbl.textContent='Kész · újramérhető ('+dd+' napja)';c.querySelector('.open-lbl').textContent='Újramérés';}else{lbl.textContent='Kész · '+(dd===0?'ma':dd+' napja');}}}
+      var rec=lastRec(c.dataset.key);if(rec){var dd=Math.floor((Date.now()-new Date(rec.done||rec.t).getTime())/864e5),du=ONI.due(ONI_ID[c.dataset.key],rec);if(du.due){nDue++;box.dataset.state='due';lbl.textContent='Kész · újramérhető ('+dd+' napja)';c.querySelector('.open-lbl').textContent='Újramérés';}else{lbl.textContent='Kész · '+(dd===0?'ma':dd+' napja');}}}
     else if(st.n>0){nProg++;box.dataset.state='prog';lbl.textContent='Folyamatban · '+st.n+' / '+total;fill.style.width=(st.n/total*100)+'%';c.querySelector('.open-lbl').textContent='Folytatás';if(!firstProg)firstProg=c;}
     else{if(!firstNone)firstNone=c;}
   });
@@ -1046,6 +1073,49 @@ window.addEventListener('DOMContentLoaded',function(){
     // kész útvonal esetén az útvonal-panel összecsukva
     if(!pn){var pp=document.getElementById('path');if(pp)pp.style.display='none';}
   }catch(e){console.warn('home',e)}
+});
+</script>
+<script>
+/* ── Kereshető, szűrhető tesztkatalógus + rövidebb kártyák ── */
+window.addEventListener('DOMContentLoaded',function(){
+  var D=window.ONI_DATA||{},C=window.ONI_CHECK;
+  var cards=[].slice.call(document.querySelectorAll('.card[data-key]')),cats=[].slice.call(document.querySelectorAll('.cat'));
+  var idOf=function(k){return k==='@ysq'?'ysq':k==='@kotodes'?'kotodes':(C&&C.idOfKey(k))};
+  var norm=function(t){return String(t||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')};
+  cards.forEach(function(c){
+    var id=idOf(c.dataset.key),d=D[id]||{};c.dataset.id=id||'';c.dataset.min=d.min||'';
+    var meta=document.createElement('span');meta.className='card-meta';
+    meta.textContent=(d.min?'kb. '+d.min+' perc · ':'')+(c.dataset.total||'?')+' kérdés';
+    var desc=c.querySelector('.desc');if(desc)desc.parentNode.insertBefore(meta,desc.nextSibling);
+    var vs=c.querySelector('.vstat');c.dataset.type=vs?vs.className.replace('vstat','').trim():'';
+    c.dataset.text=norm([c.dataset.name,c.textContent,d.what,d.n].join(' '));
+  });
+  var sel=document.getElementById('ct-cat');
+  cats.forEach(function(ct){var t=ct.querySelector('.cat-title'),n=ct.querySelector('.cat-num');var o=document.createElement('option');o.value=ct.dataset.cat;o.textContent=(n?n.textContent+' ':'')+(t?t.textContent:'');sel.appendChild(o)});
+  var q=document.getElementById('ct-q'),tm=document.getElementById('ct-time'),st=document.getElementById('ct-st'),ty=document.getElementById('ct-type'),cnt=document.getElementById('ct-count'),rs=document.getElementById('ct-reset'),emp=document.getElementById('ct-empty'),jump=document.querySelector('.jump');
+  function apply(){
+    var words=norm(q.value).split(/\s+/).filter(Boolean),n=0,any=!!(words.length||sel.value||tm.value||st.value||ty.value);
+    cards.forEach(function(c){
+      var ok=words.every(function(w){return c.dataset.text.indexOf(w)>-1});
+      if(ok&&sel.value)ok=c.closest('.cat').dataset.cat===sel.value;
+      if(ok&&tm.value){var m=+c.dataset.min||0;ok=tm.value==='11'?m>10:(m>0&&m<=+tm.value);}
+      if(ok&&st.value){var s=(c.querySelector('.status')||{dataset:{}}).dataset.state;ok=st.value==='done'?(s==='done'||s==='due'):s===st.value;}
+      if(ok&&ty.value)ok=c.dataset.type===ty.value;
+      c.hidden=!ok;if(ok)n++;
+    });
+    cats.forEach(function(ct){ct.hidden=!ct.querySelector('.card[data-key]:not([hidden])')});
+    cnt.textContent=any?n+' teszt felel meg a szűrésnek':cards.length+' teszt';
+    rs.hidden=!any;emp.hidden=n>0;if(jump)jump.hidden=any;
+  }
+  function reset(){q.value='';sel.value='';tm.value='';st.value='';ty.value='';apply();q.focus();}
+  [q,sel,tm,st,ty].forEach(function(el){el.addEventListener(el===q?'input':'change',apply)});
+  rs.onclick=reset;document.getElementById('ct-reset2').onclick=reset;
+  var lg=document.getElementById('ct-long');
+  var SK='onismeret-settings-v1',rd=function(){try{return JSON.parse(localStorage.getItem(SK))||{}}catch(e){return {}}};
+  lg.checked=!!rd().longDesc;
+  var syncL=function(){document.body.classList.toggle('ct-longdesc',lg.checked);try{var o=rd();o.longDesc=lg.checked;localStorage.setItem(SK,JSON.stringify(o))}catch(e){}};
+  lg.onchange=syncL;syncL();
+  apply();
 });
 </script>
 </body>

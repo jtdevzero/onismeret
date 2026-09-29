@@ -100,13 +100,19 @@ b.me,.pv.me{color:var(--gold)}b.pa,.pv.pa{color:var(--sapphire)}
 .pv{font-family:var(--font-serif);font-style:italic;text-align:right}
 .lg{display:inline-block;width:10px;height:10px;border-radius:3px;vertical-align:middle}.lg.me{background:var(--gold)}.lg.pa{background:var(--sapphire)}
 @media (max-width:560px){.pr{grid-template-columns:1fr 38px 1fr 38px}.pl{grid-column:1/-1}}
+.pbox{margin-top:14px;padding:16px 18px;border:1px solid var(--line);border-radius:14px;background:rgba(148,163,184,.06)}
+.pbox h4{margin:0 0 8px;font-size:15px}.pbox p{margin:0 0 10px;font-size:13.5px;color:var(--ink-soft)}
+.pbox ul{list-style:none;margin:0 0 12px;padding:0}.pbox li{padding:6px 0;border-top:1px solid var(--line-soft,rgba(148,163,184,.2));font-size:14px}.pbox li:first-child{border-top:none}
+.pbox label{display:flex;gap:10px;align-items:baseline;cursor:pointer}.pbox small{color:var(--ink-mute)}
+.pbox .row{display:flex;gap:8px;flex-wrap:wrap}
+.pq{margin:10px 0 0!important;font-size:14px;color:var(--ink)!important;font-style:italic}.pq b{font-style:normal}
 </style>
 
-<script src="assets/oni-core.js?v=9c7ce065"></script>
+<script src="assets/oni-core.js?v=303e8c2e"></script>
 <script src="assets/oni-schema.js?v=190e2f3e" defer></script>
 <script src="assets/tests-data.js?v=8174bfd3" defer></script>
-<script src="assets/results-plus.js?v=27d63035" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=91a11e2c">
+<script src="assets/results-plus.js?v=5e81801b" defer></script>
+<link rel="stylesheet" href="assets/theme.css?v=e01934c0">
 </head>
 <body>
 <div class="wrap">
@@ -129,6 +135,8 @@ b.me,.pv.me{color:var(--gold)}b.pa,.pv.pa{color:var(--sapphire)}
       <button type="button" class="btn ghost" id="pexport" title="Csak a lenti pártesztek összesített eredményei, nyers válaszok nélkül">Párexport: a saját párteszt-eredményeim</button>
     </div>
     <p class="msg" id="pmsg" hidden></p>
+    <div class="pbox" id="pexp-box" hidden></div>
+    <div class="pbox" id="pimp-box" hidden></div>
   </div>
 
   <h2>Pár<em>tesztek</em></h2>
@@ -178,19 +186,40 @@ document.getElementById('pfile').addEventListener('change',ev=>{
     TESTS.forEach(([id])=>{if(!Array.isArray(res[id]))return;const ok=res[id].filter(e=>window.ONI_CHECK&&!ONI_CHECK.record(id,e));rej+=res[id].length-ok.length;if(ok.length)keep[id]=ok;});
     if(rej&&!Object.keys(keep).length){msg('A fájl eredményei sérültek vagy módosítottak, ezért nem töltöttem be őket.',true);return;}
     if(!Object.keys(keep).length){msg('A fájlban nincs kiértékelt párteszt. Kérd meg a párodat, hogy nyissa meg az eredményeket, és mentsen újra.',true);return;}
-    P={name:document.getElementById('pname').value.trim()||(P&&P.name)||'',loaded:new Date().toISOString(),exported:o.exported||'',results:keep};
-    try{localStorage.setItem(PK,JSON.stringify(P))}catch(e){}
-    msg(Object.keys(keep).length+' párteszt betöltve. Csak az összesített eredmények kerültek be.'+(rej?' '+rej+' hibás eredményt kihagytam.':''));render();
+    /* előnézet: mi kerülne be, milyen dátummal és változattal; csak megerősítés után töltjük be */
+    const box=document.getElementById('pimp-box');document.getElementById('pexp-box').hidden=true;
+    box.innerHTML='<h4>Ezt tartalmazza a fájl'+(o.exported?' <small>('+fmtD(o.exported)+'-i mentés)</small>':'')+'</h4><p>Csak az összesített eredmények kerülnek be, nyers válaszok nem.'+(rej?' '+rej+' hibás eredményt kihagyok.':'')+(P?' A párod korábban betöltött eredményeit felülírja.':'')+'</p><ul>'+
+      TESTS.filter(([id])=>keep[id]).map(([id,n])=>{const h=keep[id],r=h[h.length-1];return `<li>${esc(n)} <small>· legutóbb ${fmtD(r.done||r.t)} · ${h.length} kitöltés · ${esc(verT(r))}</small></li>`}).join('')+
+      '</ul><div class="row"><button type="button" class="btn" id="pimp-go">Betöltés</button><button type="button" class="btn ghost" id="pimp-no">Mégse</button></div>';
+    box.hidden=false;box.querySelector('#pimp-go').focus();
+    box.querySelector('#pimp-no').onclick=()=>{box.hidden=true;msg('Nem töltöttem be semmit.');};
+    box.querySelector('#pimp-go').onclick=()=>{
+      P={name:document.getElementById('pname').value.trim()||(P&&P.name)||'',loaded:new Date().toISOString(),exported:o.exported||'',results:keep};
+      try{localStorage.setItem(PK,JSON.stringify(P))}catch(e){}
+      box.hidden=true;msg(Object.keys(keep).length+' párteszt betöltve. Csak az összesített eredmények kerültek be.'+(rej?' '+rej+' hibás eredményt kihagytam.':''));render();};
   };r.readAsText(f);ev.target.value='';
 });
 document.getElementById('pname').addEventListener('change',e=>{if(P){P.name=e.target.value.trim();try{localStorage.setItem(PK,JSON.stringify(P))}catch(x){}render();}});
+/* Párexport: a kapcsolati tesztek egyenként kiválaszthatók, csak összesített eredmény kerül a fájlba */
+const fmtD=t=>t?new Date(t).toLocaleDateString('hu-HU',{year:'numeric',month:'short',day:'numeric'}):'–';
+const verT=r=>window.ONI&&ONI.verText?ONI.verText(r):'';
 document.getElementById('pexport').addEventListener('click',()=>{
-  const keep={};TESTS.forEach(([id])=>{if(ME[id])keep[id]=ME[id].map(r=>({t:r.t,done:r.done,h:r.h,d:r.d,x:r.x&&{primary:r.x.primary,secondary:r.x.secondary},qv:r.qv,sv:r.sv,tv:r.tv}))});
-  const n=Object.keys(keep).length;if(!n){msg('Még nincs kiértékelt párteszted, amit megoszthatnál.',true);return;}
-  if(!confirm(n+' párteszt összesített eredménye kerül a fájlba: '+TESTS.filter(([id])=>keep[id]).map(t=>t[1]).join(', ')+'. Nyers válaszok és más tesztek nem. Mehet?'))return;
-  const blob=new Blob([JSON.stringify({app:'onismeret',v:1,kind:'partner',exported:new Date().toISOString(),data:{'onismeret-results-v1':JSON.stringify(keep)}},null,1)],{type:'application/json'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='onismeret-parexport-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();
-  msg(n+' párteszt eredménye elmentve. Ezt a fájlt küldd el a párodnak.');
+  const box=document.getElementById('pexp-box'),avail=TESTS.filter(([id])=>ME[id]&&ME[id].length);
+  if(!avail.length){msg('Még nincs kiértékelt párteszted, amit megoszthatnál.',true);return;}
+  document.getElementById('pimp-box').hidden=true;
+  box.innerHTML='<h4>Mit tegyek a párexport fájlba?</h4><p>Csak az összesített eredmények kerülnek bele, nyers válaszok és más tesztek nem. A legutóbbi kitöltés dátuma zárójelben.</p><ul>'+
+    avail.map(([id,n])=>{const r=ME[id][ME[id].length-1];return `<li><label><input type="checkbox" data-id="${id}" checked> <span>${esc(n)} <small>(${fmtD(r.done||r.t)} · ${ME[id].length} kitöltés)</small></span></label></li>`}).join('')+
+    '</ul><div class="row"><button type="button" class="btn" id="pexp-go">Fájl mentése</button><button type="button" class="btn ghost" id="pexp-no">Mégse</button></div>';
+  box.hidden=false;box.querySelector('input').focus();
+  box.querySelector('#pexp-no').onclick=()=>{box.hidden=true;document.getElementById('pexport').focus();};
+  box.querySelector('#pexp-go').onclick=()=>{
+    const ids=[...box.querySelectorAll('input:checked')].map(i=>i.dataset.id);
+    if(!ids.length){msg('Válassz ki legalább egy tesztet.',true);return;}
+    const keep={};ids.forEach(id=>{keep[id]=ME[id].map(r=>({t:r.t,done:r.done,h:r.h,d:r.d,x:r.x&&{primary:r.x.primary,secondary:r.x.secondary},qv:r.qv,sv:r.sv,tv:r.tv}))});
+    const blob=new Blob([JSON.stringify({app:'onismeret',v:1,kind:'partner',exported:new Date().toISOString(),data:{'onismeret-results-v1':JSON.stringify(keep)}},null,1)],{type:'application/json'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='onismeret-parexport-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();
+    box.hidden=true;msg(ids.length+' párteszt eredménye elmentve. Ezt a fájlt küldd el a párodnak.');
+  };
 });
 document.getElementById('pclear').addEventListener('click',()=>{if(!confirm('Törlöd a párod betöltött eredményeit ebből a böngészőből?'))return;localStorage.removeItem(PK);P=null;msg('Törölve.');render();});
 
@@ -222,9 +251,9 @@ function insights(m,p){
     if(a.comp[1]>=3.5&&b.comp[1]>=3.5)out.push({t:'Két versengő',c:'#fb7185',x:'Vitában mindketten nyerni akartok, ezért könnyen eszkalálódik. Egyeztessetek előre egy „stop” jelet, és a vita után egy nyugodt visszatérést.'});}
   // Gottman
   if(M.gott&&Q.gott){const a=M.gott.d,b=Q.gott.d;
-    if(a.cont[1]>=3||b.cont[1]>=3)out.push({t:'Megvetés-jelzés',c:'#fb7185',x:'Legalább egyikőtök ≥3-ra értékelte a saját megvető viselkedését. Gottman kutatásaiban a megvetés a szétválás egyik legerősebb előrejelzője volt, de egy önbevallásos pontszám ezt önmagában nem jelzi előre. Kérdés egymásnak: mikor érezted utoljára, hogy lekezellek? Ellensúlyként a rendszeres, kimondott megbecsülés segíthet.'});
+    if(a.cont[1]>=3||b.cont[1]>=3)out.push({t:'Megvetés-jelzés',c:'#fb7185',x:'Legalább egyikőtök ≥3-ra értékelte a saját megvető viselkedését. Gottman kutatásaiban a megvetés a szétválás egyik legerősebb előrejelzője volt, de egy önbevallásos pontszám ezt önmagában nem jelzi előre. Ellensúlyként a rendszeres, kimondott megbecsülés segíthet.',q:'Mikor érezted utoljára, hogy a másik lekezel vagy lenéz, és mit éreztél akkor?'});
     const gaps=['maps','fond','turn','repair'].map(k=>({k,l:a[k][0],g:Math.abs(a[k][1]-b[k][1])})).filter(x=>x.g>=1.2).sort((x,y)=>y.g-x.g);
-    if(gaps.length)out.push({t:'Eltérően látjátok a kapcsolatot',c:'#60a5fa',x:`A legnagyobb különbség: <strong>${esc(gaps[0].l)}</strong> (${gaps[0].g.toFixed(1)} pont). Ha az egyikőtök jóval erősebbnek érzi a kapcsolat egy alapját, mint a másik, az egy ki nem mondott hiányt jelezhet. Kérdezzétek meg egymást: „Mi hiányzik neked itt?”`});}
+    if(gaps.length)out.push({t:'Eltérően látjátok a kapcsolatot',c:'#60a5fa',x:`A legnagyobb különbség: <strong>${esc(gaps[0].l)}</strong> (${gaps[0].g.toFixed(1)} pont). Ha az egyikőtök jóval erősebbnek érzi a kapcsolat egy alapját, mint a másik, az egy ki nem mondott hiányt jelezhet.`,q:`Mi hiányzik neked ezen a területen, és mi az, ami működik?`});}
   // LAS
   if(M.las&&Q.las){const a=M.las.d,b=Q.las.d;
     if((a.ludus[1]>=3&&b.mania[1]>=3)||(b.ludus[1]>=3&&a.mania[1]>=3))out.push({t:'Ludus–Mania feszültség',c:'#a78bfa',x:'Az egyikőtök szerelmi stílusában erős a birtoklás és a megerősítés iránti igény, a másikéban a könnyedség és a kötetlenség. Ez üldöző–menekülő dinamikát erősíthet.'});
@@ -248,6 +277,33 @@ function insights(m,p){
   return out;
 }
 
+/* Semleges beszélgetésindító minden jelzéshez: nem ítél, hanem mindkettőtök tapasztalatára kérdez */
+const QDEF=[
+  ['Közös első szeretetnyelv','Melyik az a gesztus, amit ritkán kaptok egymástól, pedig jólesne?'],
+  ['Eltérő első szeretetnyelv','Mi volt az utóbbi időben az a gesztus a másiktól, amitől igazán szeretve érezted magad?'],
+  ['Eltérő bocsánatkérési nyelv','Mire van szükséged egy vita után ahhoz, hogy le tudd zárni?'],
+  ['Szorongó–elkerülő csapda','Mit csinálsz, amikor bizonytalannak érzed a kapcsolatot, és mit látsz ilyenkor a másikon?'],
+  ['Két biztonságos kötődés','Mi az, ami nálatok segít, amikor mégis feszültség van?'],
+  ['Egy biztonságos','Mi az, ami a másik mellett megnyugtat, és mi az, ami ezt nehezíti?'],
+  ['Két szorongó kötődés','Mi segít neked megnyugodni, amikor a másik távolabb van?'],
+  ['Két elkerülő kötődés','Mikor volt utoljára olyan beszélgetésetek, ahol mindketten kimondtatok valami nehezet?'],
+  ['Mindketten kerülitek','Van olyan téma, amit mindketten kerültök? Mi történne, ha szóba hoznátok?'],
+  ['Versengő + alkalmazkodó','Melyik közös döntésnél érezted, hogy a te szempontod kevésbé számított?'],
+  ['Két versengő','Mi segít nektek abbahagyni egy vitát, mielőtt eldurvul?'],
+  ['Ludus–Mania','Mennyi közelségre és mennyi szabadságra van szükséged egy átlagos héten?'],
+  ['Közös szeretetstílus','Hogyan jelenik meg ez a közös stílus a hétköznapjaitokban?'],
+  ['Temperamentum:','Mi az, ami neked természetes, a másiknak viszont erőfeszítés?'],
+  ['Értékek','Melyik érték a legfontosabb neked, és miből tudná a másik, hogy az?'],
+  ['Eltérő kronotípus','Mikor vagy a legjobb formádban, és mikor érdemes nehéz témát felhoznotok?'],
+  ['Tendenciák:','Hogyan szeretnéd, hogy a másik szóljon, ha egy közös vállalás elmarad?']
+];
+const qOf=i=>{if(i.q)return i.q;const m=QDEF.find(([k])=>i.t.startsWith(k));return m?m[1]:null};
+function gapQ(a,b){
+  const ks=Object.keys(a.d||{}).filter(k=>b.d&&b.d[k]&&typeof a.d[k][1]==='number'&&typeof b.d[k][1]==='number');if(!ks.length)return '';
+  const g=ks.map(k=>{const [l,va,mn,mx]=a.d[k];return {l,g:Math.abs(va-b.d[k][1])/((mx-mn)||1)}}).sort((x,y)=>y.g-x.g);
+  return g[0].g>=0.3?`<p class="pq"><b>Kérdés egymásnak:</b> A legnagyobb eltérés itt van: ${esc(g[0].l)}. Mondjatok egy-egy példát, mikor mutatkozik ez meg nálatok, és mit jelent nektek.</p>`
+    :`<p class="pq"><b>Kérdés egymásnak:</b> Ebben a tesztben közel álltok egymáshoz. Hol érzitek ezt a hétköznapokban, és van-e, ahol mégis másképp éltek meg valamit?</p>`;
+}
 function pairBars(a,b){
   const ks=Object.keys(a.d||{}).filter(k=>b.d&&b.d[k]);
   return ks.map(k=>{const [l,va,mn,mx]=a.d[k],vb=b.d[k][1],pa=Math.max(0,Math.min(100,(va-mn)/((mx-mn)||1)*100)),pb=Math.max(0,Math.min(100,(vb-mn)/((mx-mn)||1)*100)),gap=Math.abs(pa-pb);
@@ -266,10 +322,10 @@ function render(){
   if(!both.length){root.innerHTML=`<div class="empty">Nincs olyan teszt, amit mindketten kitöltöttetek volna. A fenti listában látszik, kinek mi hiányzik.</div>`;return;}
   let h=`<h2>Pár<em>dinamika</em></h2><p class="h2sub">Jelzések a két profil kombinációjából. Beszélgetésindító, nem ítélet.</p>`;
   const ins=insights(ME,P);
-  h+=ins.length?ins.map(i=>`<div class="card pat" style="--acc:${i.c}"><h3>${i.t}</h3><p>${i.x}</p></div>`).join(''):'<div class="locked">A közösen kitöltött tesztekből még nem rajzolódik ki jellegzetes párdinamika.</div>';
+  h+=ins.length?ins.map(i=>{const q=qOf(i);return `<div class="card pat" style="--acc:${i.c}"><h3>${i.t}</h3><p>${i.x}</p>${q?`<p class="pq"><b>Kérdés egymásnak:</b> ${q}</p>`:''}</div>`}).join(''):'<div class="locked">A közösen kitöltött tesztekből még nem rajzolódik ki jellegzetes párdinamika.</div>';
   h+=`<h2>Egymás <em>mellett</em></h2><p class="h2sub"><span class="lg me"></span> Te &nbsp; <span class="lg pa"></span> ${esc(N)}. Kiemelve a legalább 30%-os eltérések.</p>`;
   both.forEach(([id,n])=>{const a=lastOf(ME,id),b=lastOf(P.results,id);
-    h+=`<div class="card cmp" style="--acc:var(--gold)"><h3>${n}</h3><div class="hl2"><span><b class="me">Te:</b> ${esc(a.h||'')}</span><span><b class="pa">${esc(N)}:</b> ${esc(b.h||'')}</span></div>${pairBars(a,b)}</div>`;});
+    h+=`<div class="card cmp" style="--acc:var(--gold)"><h3>${n}</h3><div class="hl2"><span><b class="me">Te:</b> ${esc(a.h||'')}</span><span><b class="pa">${esc(N)}:</b> ${esc(b.h||'')}</span></div>${pairBars(a,b)}${gapQ(a,b)}</div>`;});
   root.innerHTML=h;
 }
 render();

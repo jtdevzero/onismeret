@@ -148,7 +148,7 @@
         '<textarea rows="2" aria-label="Saját jegyzet" placeholder="Saját jegyzet: mi jutott eszedbe, mi lepett meg, mit kérdeznél meg valakitől?">'+esc(n.text||'')+'</textarea>'+
         '<span class="oni-saved" aria-live="polite"></span></div>'+
       commitHTML(id,r)+
-      '<div class="oni-actions"><button type="button" class="oni-ics" title="Letölthető naptárbejegyzés (.ics), bármelyik naptárba importálható">Újramérés a naptárba · '+retakeDays()+' nap múlva</button></div>'+
+      remindHTML(id,r)+
     '</section>';
   }
   /* ── Vállalás: egy kicsi, konkrét lépés; a következő kitöltésnél visszakérdez ── */
@@ -175,18 +175,30 @@
   }
   function setCommitState(id,t,st){var all=commits();(all[id]||[]).forEach(function(c){if(c.t===t){c.st=st;c.at=new Date().toISOString()}});jset(CK,all);}
   /* ── Újramérési emlékeztető naptárfájlként ── */
-  function retakeDays(){var st=jget(SK,{});return st.retake?st.retake:90}
-  function icsEsc(x){return String(x).replace(/\\/g,'\\\\').replace(/;/g,'\;').replace(/,/g,'\\,').replace(/\n/g,'\\n')}
+  /* ── Újramérési emlékeztető tesztenként: be/ki, időköz, halasztás; a naptárjavaslat a tényleges kitöltésből indul ── */
+  var RDAYS=[30,60,90,180,365];
+  function remindHTML(id,r){
+    var c=ONI.remindCfg(id),du=ONI.due(id,r);
+    var opts='<option value="">Alapértelmezett ('+(c.def?c.def+' nap':'kikapcsolva')+')</option>'+RDAYS.map(function(d){return '<option value="'+d+'"'+(c.own&&c.days===d?' selected':'')+'>'+d+' nap</option>'}).join('')+'<option value="0"'+(c.own&&c.days===0?' selected':'')+'>Kikapcsolva</option>';
+    var when=du.off?'Ehhez a teszthez nincs emlékeztető.':(du.due?'Most esedékes: '+du.since+' napja töltötted ki.':'Esedékes: '+fmtD(du.at)+(du.snoozed?' (halasztva)':''));
+    return '<div class="oni-remind"><h5>Újramérési emlékeztető <small>(csak ennél a tesztnél)</small></h5>'+
+      '<div class="oni-crow"><label class="sr-only" for="oni-rd-'+id+'">Emlékeztető időköze</label><select id="oni-rd-'+id+'" class="oni-rsel">'+opts+'</select>'+
+      (du.due?'<button type="button" class="oni-cbtn oni-snooze">Halasztás 30 nappal</button>':'')+
+      '<button type="button" class="oni-ics"'+(du.off?' disabled':'')+' title="Letölthető naptárbejegyzés (.ics), bármelyik naptárba importálható">Naptárba (.ics)</button></div>'+
+      '<span class="oni-rstate" aria-live="polite">'+when+'</span></div>';
+  }
+  function icsEsc(x){return String(x).replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\n/g,'\\n')}
   function fold(line){var out=[];while(line.length>60){out.push(line.slice(0,60));line=' '+line.slice(60)}out.push(line);return out.join('\r\n')}
   function icsFile(id){
-    var d=D[id]||{},days=retakeDays(),at=new Date(Date.now()+days*864e5),end=new Date(at.getTime()+864e5);
+    var d=D[id]||{},r=last(id),du=ONI.due(id,r);if(du.off||!du.at)return null;
+    var at=du.at.getTime()<Date.now()?new Date(Date.now()+864e5):du.at,end=new Date(at.getTime()+864e5);
     var ymd=function(x){return x.toISOString().slice(0,10).replace(/-/g,'')};
     var base=/^https?:/.test(location.protocol)?location.href.replace(/[#?].*$/,'').replace(/[^/]*$/,''):'https://jtdevzero.github.io/onismeret/';
     var url=base+(L[id]||'index.html'),stamp=new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d+/,'');
     var body=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Onismereti terkepek//HU','CALSCALE:GREGORIAN','METHOD:PUBLISH','BEGIN:VEVENT',
       'UID:'+id+'-'+Date.now()+'@onismeret','DTSTAMP:'+stamp,'DTSTART;VALUE=DATE:'+ymd(at),'DTEND;VALUE=DATE:'+ymd(end),
       'SUMMARY:'+icsEsc('Újramérés: '+(d.n||id)),
-      'DESCRIPTION:'+icsEsc(days+' napja töltötted ki. Ha most újra kitöltöd, az összegzés megmutatja, mi változott. '+url),
+      'DESCRIPTION:'+icsEsc('Utoljára '+fmtD(r.done||r.t)+'-n töltötted ki. Ha most újra kitöltöd, az összegzés megmutatja, mi változott. '+url),
       'URL:'+url,'TRANSP:TRANSPARENT','BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+icsEsc('Újramérés: '+(d.n||id)),'TRIGGER:PT9H','END:VALARM','END:VEVENT','END:VCALENDAR'].map(fold).join('\r\n')+'\r\n';
     var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([body],{type:'text/calendar;charset=utf-8'}));a.download='ujrameres-'+id+'.ics';document.body.appendChild(a);a.click();a.remove();
     return body;
@@ -226,7 +238,14 @@
     var doCommit=function(){saveCommit(id,r.sid||'_',ci.value);cs.textContent=ci.value.trim()?'Vállalás mentve ✓ A főoldalon és a következő kitöltésnél emlékeztetlek rá.':'Vállalás törölve.';cb.textContent=ci.value.trim()?'Módosítom':'Vállalom'};
     cb.onclick=doCommit;ci.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();doCommit()}});
     var pv=box.querySelector('.oni-cprev');if(pv)pv.addEventListener('click',function(e){var c=e.target.closest('[data-cst]');if(!c)return;e.stopPropagation();setCommitState(id,pv.getAttribute('data-t'),c.getAttribute('data-cst'));pv.innerHTML='<span>Köszönöm, rögzítve: <b>'+CST[c.getAttribute('data-cst')]+'</b>. Írhatsz új vállalást lent.</span>';});
-    box.querySelector('.oni-ics').onclick=function(){icsFile(id)};
+    var bindRemind=function(){
+      var rm=box.querySelector('.oni-remind');
+      rm.querySelector('.oni-ics').onclick=function(){icsFile(id)};
+      rm.querySelector('.oni-rsel').onchange=function(e){var v=e.target.value;ONI.setRemind(id,{d:v===''?null:+v,s:null});rerender();};
+      var sn=rm.querySelector('.oni-snooze');if(sn)sn.onclick=function(){ONI.setRemind(id,{s:new Date(Date.now()+30*864e5).toISOString()});rerender();};
+    };
+    var rerender=function(){var rm=box.querySelector('.oni-remind');rm.outerHTML=remindHTML(id,r);bindRemind();};
+    bindRemind();
     var ta=box.querySelector('textarea'),tm;ta.addEventListener('input',function(){clearTimeout(tm);tm=setTimeout(function(){saveNote(box)},500)});
   }
   window.addEventListener('oni:saved',function(e){if(MAP[e.detail.id])setTimeout(function(){enhance(e.detail.id)},60)});

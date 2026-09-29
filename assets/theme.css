@@ -332,3 +332,9 @@ html[data-theme="light"][data-page="osszegzes"] .chip.miss{opacity:.9}
 
 /* különálló oldalak: mobilon a visszalink ne takarja a tartalmat */
 @media (max-width:560px){#onismeret-back{position:static!important;display:inline-block;margin:18px 16px 24px}}
+.oni-remind{padding-top:14px;margin-top:14px;border-top:1px dashed var(--u-line)}
+.oni-remind h5{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--u-muted);margin:0 0 6px;font-family:'Inter',system-ui,sans-serif;font-weight:700}.oni-remind h5 small{text-transform:none;letter-spacing:0;font-weight:500}
+.oni-rsel{font:inherit;font-size:14px;padding:8px 10px;border-radius:10px;border:1px solid var(--u-line);background:var(--u-bg);color:var(--u-ink)}
+.oni-rstate{display:block;margin-top:6px;font-size:13px;color:var(--u-soft)}
+.oni-ics:disabled{opacity:.5;cursor:not-allowed}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}

@@ -146,11 +146,11 @@ h2 em{font-style:italic;color:var(--gold)}
   body.rep-mode #report .cols{columns:2;column-gap:10pt}
 }
 </style>
-<script src="assets/oni-core.js?v=9c7ce065"></script>
+<script src="assets/oni-core.js?v=303e8c2e"></script>
 <script src="assets/oni-schema.js?v=190e2f3e" defer></script>
 <script src="assets/tests-data.js?v=8174bfd3" defer></script>
-<script src="assets/results-plus.js?v=27d63035" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=91a11e2c">
+<script src="assets/results-plus.js?v=5e81801b" defer></script>
+<link rel="stylesheet" href="assets/theme.css?v=e01934c0">
 </head>
 <body>
 <div class="wrap">
@@ -455,7 +455,8 @@ function render(){
   const ids=REG.map(r=>r[1]);
   const doneIds=ids.filter(id=>last(id));
   const pendingIds=REG.filter(r=>!last(r[1])&&hasResponses(r[4])).map(r=>r[1]);
-  const dueIds=DUE_DAYS?doneIds.filter(id=>days(when(last(id)))>=DUE_DAYS):[];
+  const dueOf=id=>DEMO?{due:!!DUE_DAYS&&days(when(last(id)))>=DUE_DAYS}:ONI.due(id,last(id));
+  const dueIds=doneIds.filter(id=>dueOf(id).due);
   const retaken=doneIds.filter(id=>(store[id]||[]).length>1);
   document.getElementById('statbar').innerHTML=`<span><strong>${doneIds.length}</strong>/ ${REG.length} teszt kiértékelve</span><span><strong>${retaken.length}</strong>többször kitöltve</span><span><strong>${dueIds.length}</strong>újramérhető</span><label class="rset">Újramérési emlékeztető: <select id="rset"><option value="0">ki</option><option value="90">90 nap</option><option value="180">180 nap</option><option value="365">1 év</option></select></label>`;
   const rs=document.getElementById('rset');rs.value=String(DUE_DAYS);rs.onchange=()=>{SET.retake=+rs.value;if(DEMO){DUE_DAYS=+rs.value;render();return;}try{localStorage.setItem('onismeret-settings-v1',JSON.stringify(SET))}catch(e){}location.reload();};
@@ -478,14 +479,14 @@ function render(){
     const top=Object.entries(need).sort((a,b)=>b[1]-a[1]).slice(0,5);
     h+=`<div class="locked" style="margin-top:14px">${locked.length} minta még nem értékelhető, mert kevés hozzá az adat. A legtöbbet ezek a tesztek nyitnák meg: ${top.map(([id,n])=>`<a href="${LINK[id]}">${NAME[id]}</a> (${n})`).join(', ')}.</div>`;
   }
-  h+=`<h2>Profil <em>tesztenként</em></h2><p class="h2sub">A legutóbbi eredmény. A ▲▼ jel a változást mutatja az előző kitöltéshez képest: zöld = kedvező, rózsaszín = kedvezőtlen irány, szürke = semleges skála, ahol az irány önmagában nem jó vagy rossz. ${DUE_DAYS?'Az újramérési emlékeztető '+DUE_DAYS+' napra van állítva.':'Az újramérési emlékeztető ki van kapcsolva.'}</p>`;
+  h+=`<h2>Profil <em>tesztenként</em></h2><p class="h2sub">A legutóbbi eredmény. A ▲▼ jel a változást mutatja az előző kitöltéshez képest: zöld = kedvező, rózsaszín = kedvezőtlen irány, szürke = semleges skála, ahol az irány önmagában nem jó vagy rossz. ${DUE_DAYS?'Az alapértelmezett újramérési idő '+DUE_DAYS+' nap':'Az alapértelmezett újramérési emlékeztető ki van kapcsolva'}; tesztenként az eredmény végén, a „Saját megjegyzések” résznél állítható.</p>`;
   let curCat='';
   REG.forEach(([cat,id,name,link,key])=>{
     const r=last(id),pend=!r&&hasResponses(key);
     if(!r&&!pend)return;
     if(cat!==curCat){h+=`<div class="cat-title">${cat}</div>`;curCat=cat;}
     if(!r){h+=`<div class="card test" style="--acc:var(--ink-mute)"><div class="nm"><a href="${link}">${name}</a></div><div class="meta">nincs kiértékelve</div><div class="pending">Van mentett válaszod, de az eredményt még nem nyitottad meg ezzel a verzióval. <a href="${link}">Nyisd meg, és kattints az eredményre</a>, akkor ide is bekerül.</div></div>`;return;}
-    const p0=prev(id),cmp=!p0||ONI.same(p0,r),p=cmp?p0:null,old=!ONI.isCur(id,r),dd=days(when(r)),due=!!DUE_DAYS&&dd>=DUE_DAYS;
+    const p0=prev(id),cmp=!p0||ONI.same(p0,r),p=cmp?p0:null,old=!ONI.isCur(id,r),dd=days(when(r)),due=dueOf(id).due;
     const entries=Object.entries(r.d||{});
     const sorted=entries.length>8?entries.slice().sort((a,b)=>{const na=(a[1][1]-a[1][2])/((a[1][3]-a[1][2])||1),nb=(b[1][1]-b[1][2])/((b[1][3]-b[1][2])||1);return nb-na}):entries;
     const shown=sorted.slice(0,8),rest=sorted.slice(8);

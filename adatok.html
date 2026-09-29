@@ -63,11 +63,11 @@ h2{font-family:var(--font-serif);font-weight:400;font-size:28px;margin:44px 0 8p
 @media (max-width:560px){.wrap{padding:28px 16px 64px}.card{padding:16px}.sess li{grid-template-columns:1fr auto}.sess .d{grid-column:1/-1}.th .tools{margin-left:0}}
 </style>
 
-<script src="assets/oni-core.js?v=9c7ce065"></script>
+<script src="assets/oni-core.js?v=303e8c2e"></script>
 <script src="assets/oni-schema.js?v=190e2f3e" defer></script>
 <script src="assets/tests-data.js?v=8174bfd3" defer></script>
-<script src="assets/results-plus.js?v=27d63035" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=91a11e2c">
+<script src="assets/results-plus.js?v=5e81801b" defer></script>
+<link rel="stylesheet" href="assets/theme.css?v=e01934c0">
 </head>
 <body>
 <div class="wrap">
@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded',function(){
     var cids=Object.keys(cm).filter(function(id){return (cm[id]||[]).length}),STL={done:'sikerült',part:'részben',no:'nem sikerült'};
     document.getElementById('commits').innerHTML=cids.length?'<div class="card" style="--acc:var(--emerald)"><ul class="ul">'+cids.map(function(id){return cm[id].map(function(c){return '<li><span><b>'+esc(name(id))+':</b> „'+esc(c.text)+'” <small>· '+fmt(c.t)+' · '+(c.st?STL[c.st]||c.st:'nyitott')+'</small></span><button type="button" class="btn ghost sm" data-uncm="'+esc(id)+'" data-t="'+esc(c.t)+'">Törlés</button></li>'}).join('')}).join('')+'</ul></div>':'<p class="raw">Még nincs vállalás. Az eredmények „Röviden” kártyáján rögzíthetsz egyet.</p>';
     var st=jget(SK,{});
-    document.getElementById('set-desc').textContent='Téma: '+(st.theme==='dark'?'sötét':'világos')+' · újramérési emlékeztető: '+(st.retake===0?'ki':(st.retake||90)+' nap')+' · automatikus továbblépés: '+(st.autoAdvance===false?'ki':'be')+' · részletes elemzés alapból: '+(st.detailOpen?'nyitva':'csukva')+'.';
+    document.getElementById('set-desc').textContent='Téma: '+(st.theme==='dark'?'sötét':'világos')+' · újramérési emlékeztető: '+(st.retake===0?'ki':(st.retake||90)+' nap')+(st.remind&&Object.keys(st.remind).length?' (tesztenként egyedi: '+Object.keys(st.remind).length+')':'')+' · automatikus továbblépés: '+(st.autoAdvance===false?'ki':'be')+' · részletes elemzés alapból: '+(st.detailOpen?'nyitva':'csukva')+'.';
   }
 
   document.addEventListener('click',function(e){

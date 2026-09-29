@@ -76,6 +76,19 @@ window.ONI=window.ONI||(function(){
     }catch(e){}
     try{window.dispatchEvent(new CustomEvent('oni:saved',{detail:{id:id}}));}catch(e){}
   }
+  /* ── Újramérési emlékeztető tesztenként. Beállítás: onismeret-settings-v1 → retake (alapértelmezett napok, 0 = ki)
+        és remind[id] = {d: napok (0 = ki, hiányzik = alapértelmezett), s: halasztás eddig (ISO)}. A határidő a tényleges kitöltésből indul. ── */
+  var SK='onismeret-settings-v1';
+  function sets(){try{return JSON.parse(localStorage.getItem(SK))||{}}catch(e){return {}}}
+  function remindCfg(id){var st=sets(),c=(st.remind||{})[id]||{},def=st.retake===undefined?90:st.retake;return {days:c.d!=null?c.d:def,own:c.d!=null,def:def,snooze:c.s||null}}
+  function setRemind(id,patch){var st=sets();st.remind=st.remind||{};var c=st.remind[id]||{};Object.keys(patch).forEach(function(k){if(patch[k]===null)delete c[k];else c[k]=patch[k]});
+    if(Object.keys(c).length)st.remind[id]=c;else delete st.remind[id];try{localStorage.setItem(SK,JSON.stringify(st))}catch(e){}}
+  function due(id,rec){
+    var c=remindCfg(id);if(!rec||!c.days)return {off:!c.days,due:false,at:null,days:c.days,own:c.own};
+    var base=new Date(rec.done||rec.t).getTime(),at=base+c.days*864e5;
+    if(c.snooze&&Date.parse(c.snooze)>at)at=Date.parse(c.snooze);
+    return {off:false,due:Date.now()>=at,at:new Date(at),days:c.days,own:c.own,snoozed:!!(c.snooze&&Date.parse(c.snooze)>Date.now()),since:Math.floor((Date.now()-base)/864e5)};
+  }
   function pathState(){var a=all();return PATH.map(function(p){return {id:p.id,n:p.n,href:p.href,min:p.min,why:p.why,done:!!(a[p.id]&&a[p.id].length)}});}
   function banner(savedId){
     var st=pathState(),inPath=st.some(function(p){return p.id===savedId});
@@ -199,7 +212,35 @@ window.ONI=window.ONI||(function(){
     function scan(){
       units=[].slice.call(scope().querySelectorAll('.q, .fc')).filter(function(u){return u.querySelector('button[data-n]')&&!u.parentElement.closest('.q, .fc');});
       units.forEach(function(u){u.classList.add('oni-unit')});
+      a11yAll();
       return units.length>=5;
+    }
+    /* ── Akadálymentes válaszadás: minden válaszcsoport a kérdés szövegével címkézett csoport,
+          a gombok kijelölt állapota aria-pressed, a számbillentyű a látható értéket választja ── */
+    function isSel(b){return b.classList.contains('selected')||b.classList.contains('active')||b.getAttribute('aria-checked')==='true'}
+    function groupsOf(u){var g={},o=[];[].forEach.call(u.querySelectorAll('button[data-n]'),function(b){var n=b.getAttribute('data-n');if(!g[n]){g[n]=[];o.push(n)}g[n].push(b)});return o.map(function(n){return g[n]})}
+    function a11y(u){
+      if(u.getAttribute('data-oni-a11y'))return;u.setAttribute('data-oni-a11y','1');
+      var gs=groupsOf(u),multi=gs.length>1;
+      gs.forEach(function(bs,i){
+        var box=bs[0].parentElement;if(!box||!bs.every(function(b){return b.parentElement===box}))return;
+        var lbl=qLabel(multi?(box.closest('.fc-item, .sub-q, [data-n]:not(button)')||u):u);
+        if(multi&&box.previousElementSibling&&box.previousElementSibling.textContent.trim())lbl=box.previousElementSibling.textContent.replace(/\s+/g,' ').trim().slice(0,200);
+        box.setAttribute('role','group');box.setAttribute('aria-label',(multi?(i+1)+'. rész: ':'')+lbl);
+        bs.forEach(function(b){b.setAttribute('aria-pressed',String(isSel(b)));if(!b.getAttribute('type'))b.setAttribute('type','button')});
+      });
+    }
+    function a11yAll(){[].forEach.call(document.querySelectorAll('.q, .fc'),function(u){if(u.querySelector('button[data-n]')&&!u.parentElement.closest('.q, .fc'))a11y(u)})}
+    if(window.MutationObserver)new MutationObserver(function(ms){ms.forEach(function(m){var b=m.target;if(b.matches&&b.matches('button[data-n]')&&b.hasAttribute('aria-pressed'))b.setAttribute('aria-pressed',String(isSel(b)))})})
+      .observe(document.documentElement,{subtree:true,attributes:true,attributeFilter:['class','aria-checked']});
+    /* a számbillentyű: ha a gombokon látható szám a tárolt értékkel egyezik (pl. 0–5), a szám azt az értéket választja;
+       különben a sorszámot (1 = első gomb). Így a MAIA-2 „0” válasza és az első gomb nem keverhető össze. */
+    function keyPick(bs,key){
+      var vis=bs.map(function(b){var m=(b.textContent||'').trim().match(/^\d+/);return m?+m[0]:null});
+      var val=bs.map(function(b){var v=b.getAttribute('data-value');if(v==null)v=b.getAttribute('data-v');return v==null?null:+v});
+      var numeric=vis.every(function(x,i){return x!==null&&x===val[i]&&x<=9});
+      if(numeric){var i=vis.indexOf(+key);return i>-1?bs[i]:null;}
+      return key==='0'?null:bs[+key-1]||null;
     }
     function answered(u){var g={};[].forEach.call(u.querySelectorAll('button[data-n]'),function(b){var n=b.getAttribute('data-n');g[n]=g[n]||b.classList.contains('selected')||b.classList.contains('active')||b.getAttribute('aria-checked')==='true';});return Object.keys(g).every(function(k){return g[k]});}
     function showBtn(){return scope().querySelector('button[id$=showResults], button[id$=-show], #showResults');}
@@ -229,7 +270,7 @@ window.ONI=window.ONI||(function(){
       var sb=showBtn(),resVisible=!!scope().querySelector('.results.visible, .results[style*="block"], #results.visible, .results-wrap.visible');
       pill.innerHTML=(i>=0&&done>0?'<button class="oni-btn pri" id="oni-cont">Folytatás: '+(i+1)+'. kérdés ›</button>':'')
         +(i>=0&&done>0?'<button class="oni-btn" id="oni-miss" aria-expanded="false" aria-controls="oni-misslist" title="A hiányzó kérdések listája">'+(n-done)+' kérdés hiányzik'+(optMiss()?' ('+optMiss()+' kihagyható)':'')+' ▴</button>':'')
-        +(i>=0?'<button class="oni-btn" id="oni-focus-on" title="Egyszerre egy kérdés, billentyűzettel is (1–9, ←/→)">Fókusz mód</button>':'')
+        +(i>=0?'<button class="oni-btn" id="oni-focus-on" title="Egyszerre egy kérdés, billentyűzettel is: a számbillentyű a gombon látható számot választja, ←/→ lapoz, Esc kilép">Fókusz mód</button>':'')
         +(i<0&&sb&&!sb.disabled&&!resVisible?'<button class="oni-btn pri" id="oni-res">Minden kérdés megvan · Eredmény megtekintése ›</button>':'');
       var rb=document.getElementById('oni-res');if(rb)rb.onclick=function(){sb.click();setTimeout(mkPill,400)};
       var c=document.getElementById('oni-cont');if(c)c.onclick=function(){go(firstOpen(),true)};
@@ -259,6 +300,7 @@ window.ONI=window.ONI||(function(){
     function show(i){
       cur=Math.max(0,Math.min(units.length-1,i));
       units.forEach(function(u,k){u.classList.toggle('oni-cur',k===cur)});
+      var fg=groupsOf(units[cur]),og=fg.filter(function(x){return !x.some(isSel)})[0]||fg[0];if(og){var fb=og.filter(isSel)[0]||og[0];setTimeout(function(){try{fb.focus({preventScroll:true})}catch(e){}},30);}
       if(bar){var d=units.filter(answered).length;bar.querySelector('#oni-pos').textContent=(cur+1)+' / '+units.length+(d<units.length?' · '+(units.length-d)+' hiányzik':' · kész');}
       /* a kérdés és minden válaszgombja férjen el a vezérlősáv fölött; ha túl magas, a tetejétől látszódjon */
       var u=units[cur],r=u.getBoundingClientRect(),bh=bar?bar.getBoundingClientRect().height+20:0,room=window.innerHeight-bh;
@@ -307,11 +349,10 @@ window.ONI=window.ONI||(function(){
       if(e.key==='ArrowRight'){e.preventDefault();next();}
       else if(e.key==='ArrowLeft'){e.preventDefault();show(cur-1);}
       else if(e.key==='Escape'){exit();}
-      else if(/^[1-9]$/.test(e.key)){
-        var u=units[cur];if(!u)return;var btns=[].slice.call(u.querySelectorAll('button[data-n]'));
-        var groups={};btns.forEach(function(b){var n=b.getAttribute('data-n');(groups[n]=groups[n]||[]).push(b)});
-        var g=Object.keys(groups).map(function(k){return groups[k]}).filter(function(x){return !x.some(function(b){return b.classList.contains('selected')})})[0]||groups[Object.keys(groups)[0]];
-        var b=g[+e.key-1];if(b){e.preventDefault();b.click();}
+      else if(/^[0-9]$/.test(e.key)){
+        var u=units[cur];if(!u)return;var gs=groupsOf(u);
+        var g=gs.filter(function(x){return !x.some(isSel)})[0]||gs[0];
+        var b=g&&keyPick(g,e.key);if(b){e.preventDefault();b.click();b.focus({preventScroll:true});}
       }
     });
     function boot(){css();setTimeout(mkPill,600);}
@@ -321,5 +362,5 @@ window.ONI=window.ONI||(function(){
   })();
 
   window.addEventListener('oni:saved',function(e){setTimeout(function(){banner(e.detail.id)},900);});
-  return {K:K,META:META,IDKEY:IDKEY,VERS:VERS,vOf:vOf,same:same,isCur:isCur,verText:verText,markFresh:markFresh,all:all,save:save,r:r,PATH:PATH,pathState:pathState};
+  return {K:K,META:META,IDKEY:IDKEY,VERS:VERS,vOf:vOf,same:same,isCur:isCur,verText:verText,markFresh:markFresh,remindCfg:remindCfg,setRemind:setRemind,due:due,all:all,save:save,r:r,PATH:PATH,pathState:pathState};
 })();
