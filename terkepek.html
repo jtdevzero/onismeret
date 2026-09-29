@@ -749,7 +749,6 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
         <h3>Tudományos <em>háttér</em></h3>
         <div class="ref-item"><strong>Bagby, R. M., Parker, J. D. A., & Taylor, G. J. (1994).</strong> The twenty-item Toronto Alexithymia Scale. <em>Journal of Psychosomatic Research, 38</em>, 23–32.</div>
         <div class="ref-item"><strong>Taylor, G. J., Bagby, R. M., & Parker, J. D. A. (2003).</strong> The 20-Item Toronto Alexithymia Scale IV. <em>Journal of Psychosomatic Research, 55</em>, 277–283.</div>
-        <div class="ref-item"><strong>Kinnaird, E., Stewart, C., & Tchanturia, K. (2019).</strong> Investigating alexithymia in autism: A systematic review and meta-analysis. <em>European Psychiatry, 55</em>, 80–89.</div>
         <div class="ref-item"><strong>Ogrodniczuk, J. S., Piper, W. E., & Joyce, A. S. (2011).</strong> Effect of alexithymia on the process and outcome of psychotherapy. <em>Psychiatry Research, 190</em>, 43–48.</div>
       </div>
       <div class="actions">
@@ -1171,7 +1170,7 @@ const INTERP = {
     'very-low':`Szinte hiányzó dühös gyermek. Ha alávetés magas, elfojtás jele.`
   },
   impulsive:{
-    high:`Aktív. Frusztrációtűrés alacsony. Gyakori AuDHD spektrumon.`,
+    high:`Aktív. Frusztrációtűrés alacsony.`,
     'very-high':`Domináns impulzivitás. Cél: frustration tolerance építése.`,
     mid:`Tipikus szintű.`,
     low:`Erős önszabályozás.`,
@@ -1264,9 +1263,6 @@ function getCrossLinks(scores){
   }
   if(scores.happy.mean<2.5){
     links.push({label:'Alacsony boldog gyermek — depresszív jel',text:`Az anhedónia szomszédságában lévő állapot.`});
-  }
-  if(scores.impulsive.mean>=4.0&&scores.demanding.mean>=4.0){
-    links.push({label:'AuDHD klasszikus profil',text:`Impulzivitás + követelő szülő gyakori AuDHD-felnőtteknél. Planning-stalling, érzelmi evés, self-criticism spirál.`});
   }
   if(scores.detached.mean>=4.0){
     links.push({label:'TAS-20 (alexitímia) — III. tab',text:`A detached protector és az alexitímia (különösen DIF) mély átfedést mutatnak. Nézd meg a III. tabon!`});
@@ -1443,12 +1439,12 @@ const INTERP={
   overall:{
     none:`Az érzelmi feldolgozó rendszered jól működik — érzed, felismered, meg tudod nevezni és kifejezni a saját belső élményeidet. Nem azt jelenti, hogy minden érzelem tiszta és könnyű — csak azt, hogy az érzelmi <em>szótár</em> nem hiányos.`,
     possible:`Határ menti tartományban vagy. Bizonyos érzelmek tisztán elérhetőek, mások (különösen keverék-érzelmek) elmosódottak. Sok felnőttnél ez a "napi" működés — nem patológia, de finomítható.`,
-    yes:`<strong>A pontszámod a klinikai küszöb felett van.</strong> A "szótár", ami az érzelmeidet észlelhetővé, azonosíthatóvá és kimondhatóvá teszi, hiányos. Nem karakterhiba — neurokognitív/fejlődési mintázat, ami gyakran együtt jár autizmus-spektrummal, ADHD-val, korai érzelmi elhanyagolással, vagy védekező érzelmi elfojtással.`
+    yes:`<strong>A pontszámod a klinikai küszöb felett van.</strong> A "szótár", ami az érzelmeidet észlelhetővé, azonosíthatóvá és kimondhatóvá teszi, hiányos. Nem karakterhiba — neurokognitív/fejlődési mintázat, aminek többféle háttere lehet. A pontszám önmagában nem mutatja meg, nálad melyik.`
   },
   DIF:{
     low:`Jó érzelem-azonosítási képesség. A testi/érzelmi feszültséget könnyen tudod címkézni.`,
     mid:`Közepes szint. Egyszerűbb érzelmek tiszták, bonyolultabbak elmosódottabbak.`,
-    high:`<strong>Emelt szintű nehézség az azonosításban.</strong> A feszültség jelen van, de a "mi ez pontosan?" kérdésre nincs válasz. A legszorosabban asszociált az interoceptív képességek csökkenésével (MAIA-2) és az AuDHD profillal.`
+    high:`<strong>Emelt szintű nehézség az azonosításban.</strong> A feszültség jelen van, de a "mi ez pontosan?" kérdésre nincs válasz. Érdemes összevetni a MAIA-2 testi figyelem skáláival.`
   },
   DDF:{
     low:`Jó érzelem-leírási képesség.`,
@@ -1468,9 +1464,6 @@ function getCrossLinks(scores, total){
   }
   if(scores.DIF>=18&&scores.DDF>=13){
     links.push({label:'ECR-R: elkerülő kötődéssel átfedés (I. tab)',text:`A magas DIF+DDF profil erős korrelációt mutat az elkerülő kötődési stílussal. <strong>Nézd meg az I. tabon!</strong>`});
-  }
-  if(total>=61){
-    links.push({label:'AuDHD (autizmus-spektrum) szűrés',text:`Alexitímia (TAS≥61) magas együttes előfordulást mutat autizmus-spektrummal — Kinnaird et al. (2019) szerint az autista felnőttek 50%+ szintjén.`});
   }
   if(scores.EOT<20&&scores.DIF>=18){
     links.push({label:'"Belülről akarok jönni, de nem tudom megnevezni"',text:`Alacsony EOT + magas DIF: tudod, hogy fontos érteni, mit érzel, de nem érkezik meg a válasz. A szomatikus/interoceptív munka a legmegtérülőbb belépési pont.`});
@@ -1504,7 +1497,7 @@ function therapySuggestions(scores, total){
   if(total<=51){
     mods.push({name:'Fenntartás — nincs specifikus intervenció',text:`Az érzelmi feldolgozó rendszered működik. Egyéb életterületeken felmerülő problémákkal más eszközökkel kell dolgozni.`});
   }
-  mods.push({name:'Pszichoedukáció',text:`Nagyobb önismeret: az alexitímia neurokognitív dimenzió (nem karakterhiba). Ismeret + tolerancia magaddal szemben. AuDHD-hoz kapcsolódva érdemes az AuDHD-specifikus szakirodalmat is.`});
+  mods.push({name:'Pszichoedukáció',text:`Nagyobb önismeret: az alexitímia neurokognitív dimenzió (nem karakterhiba). Ismeret + tolerancia magaddal szemben.`});
   return mods;
 }
 function renderResults(){

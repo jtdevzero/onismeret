@@ -804,7 +804,6 @@ footer{
     <div class="ref-item"><strong>Mehling, W. E. et al. (2012).</strong> The Multidimensional Assessment of Interoceptive Awareness (MAIA). <em>PLoS ONE, 7(11)</em>, e48230. — Eredeti változat.</div>
     <div class="ref-item"><strong>Khalsa, S. S. et al. (2018).</strong> Interoception and mental health: a roadmap. <em>Biological Psychiatry: Cognitive Neuroscience and Neuroimaging, 3(6)</em>, 501–513. — Az interocepció szerepe a mentális egészségben.</div>
     <div class="ref-item"><strong>Price, C. J. & Hooven, C. (2018).</strong> Interoceptive Awareness Skills for Emotion Regulation: Theory and Approach of Mindful Awareness in Body-Oriented Therapy (MABT). <em>Frontiers in Psychology, 9</em>, 798. — Klinikai alkalmazás.</div>
-    <div class="ref-item"><strong>Trevisan, D. A. et al. (2021).</strong> Interoceptive abilities and emotional dysregulation in autistic adults. <em>Autism, 25(8)</em>. — Autizmus és interocepció kapcsolata.</div>
   </div>
 
   <div class="actions">
@@ -1084,7 +1083,7 @@ function bandFor(score){
 // klinikai interpretációk doménenként
 const INTERPRET = {
   'noticing':{
-    low:'Az alapszintű testi figyelem gyengén működik. A test "háttérzaj" — a jelek csak akkor jutnak el a tudatig, ha már nagyon erősek. Ez jellemző AuDHD spektrumon, krónikus stressznél, vagy disszociatív túlélési minta után. Nem deficit — egy alkalmazkodás, ami valamikor védett.',
+    low:'Az alapszintű testi figyelem gyengén működik. A test "háttérzaj" — a jelek csak akkor jutnak el a tudatig, ha már nagyon erősek. Ennek többféle oka lehet, például tartós stressz. Nem deficit — egy alkalmazkodás, ami valamikor védett.',
     reduced:'A testi szignál-érzékelés csökkent érzékenységű. Néha észreveszed, néha lemarad. Tipikusan a "túl későn veszem észre, hogy fáradt/éhes/szomjas vagyok" mintázat.',
     mid:'Tipikus alaptérképezés. Érzed a fontosabb testi jelzéseket, de a finomabb árnyalatok kicsúszhatnak.',
     good:'Aktív testi figyelem. Hamar észreveszed a változásokat — energia, feszültség, érzelem korai jelei.',
@@ -1112,7 +1111,7 @@ const INTERPRET = {
     high:'Erős figyelmi kontroll a testi érzések felett. Nagy szabadság — bárhova tudod irányítani a figyelmet a testen belül.'
   },
   'emotional-aware':{
-    low:'Az érzelmek és testi érzések közötti kapcsolat zavart. Az érzelmeket "fejből" észleled (gondolatként, magyarázatként), nem a testből. Ez az alexitímia testi vetülete — gyakori AuDHD spektrumon. Az érzelmeket le tudod írni, de "nem érzed".',
+    low:'Az érzelmek és testi érzések közötti kapcsolat zavart. Az érzelmeket "fejből" észleled (gondolatként, magyarázatként), nem a testből. Ez az alexitímia testi vetülete lehet. Az érzelmeket le tudod írni, de "nem érzed".',
     reduced:'Részleges kapcsolat — bizonyos érzelmeket (pl. düh, idegesség) érzed a testben, másokat (pl. szomorúság, vágy, öröm) inkább kognitív szinten regisztrálsz.',
     mid:'Tipikus érzelmi-testi reflexivitás. Az erősebb érzelmek testi nyomot hagynak, a finomabbak nehezebben.',
     good:'Az érzelmek és testi érzetek között jó vezeték. Az érzelmi tájékozódás működik a testen keresztül.',
@@ -1169,7 +1168,7 @@ const CROSS_LINKS = [
   },
   {
     when:(scores)=>scores['emotional-aware']?.mean < 2.8 && scores['body-listen']?.mean < 2.8,
-    text:`<div class="cross-item-label">AuDHD interoceptív profil</div><p>Az érzelmi tudatosság és a test-hallgatás együttes csökkenése egy klasszikus AuDHD interoceptív mintázat. Trevisan et al. (2021) autista felnőtteknél ezt a kombinációt találta jellemzőnek, és összekötötte az érzelemszabályozási nehézségekkel. Nem deficit — egy másik feldolgozási stílus, ami specifikus eszközökkel jól kompenzálható.</p>`
+    text:`<div class="cross-item-label">Érzelmi tudatosság és test-hallgatás együtt alacsony</div><p>Mindkét skálán az alsó tartományban vannak a válaszaid: az érzelmeket inkább gondolatként észleled, és ritkán fordulsz a testi jelzések felé. Tisztázó kérdés: van olyan helyzet, amikor ez másképp működik nálad? A TAS-20 kitöltése segíthet ezt pontosítani.</p>`
   }
 ];
 
