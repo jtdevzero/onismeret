@@ -153,7 +153,7 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     const ctx = await newCtx(); const p = await pageIn(ctx);
     for (const f of fs.readdirSync(ROOT).filter(x => x.endsWith('.html'))) {
       await p.goto(R + f);
-      const t = await p.evaluate(() => [document.documentElement.dataset.theme, !!document.getElementById('oni-theme'), !!document.querySelector('link[href="assets/theme.css"]')]);
+      const t = await p.evaluate(() => [document.documentElement.dataset.theme, !!document.getElementById('oni-theme'), !!document.querySelector('link[href^="assets/theme.css"]')]);
       ok(t[0] === 'light' && t[1] && t[2], `${f}: világos alap, kapcsoló, témafájl`, t);
     }
     await p.goto(R + 'index.html'); await p.click('#oni-theme');

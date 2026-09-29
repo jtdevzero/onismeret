@@ -276,7 +276,7 @@ tools/build.py       Hubok generálása + a közös mag bekötése minden oldalb
 tests/run.js         Automatikus ellenőrzés (Playwright)
 ```
 
-- **Build:** `python3 tools/build.py`. A `kapcsolat.html`, `cselekves.html` és `szabalyozas.html` generált fájl, ezeket a `src/` mappában szerkeszd.
+- **Build:** `python3 tools/build.py`. A közös fájlok (mag, téma, adatlapok, betűk) linkjeihez tartalom-hash kerül (`?v=…`), így módosítás után a böngésző nem a régi, gyorsítótárazott változatot használja. A `kapcsolat.html`, `cselekves.html` és `szabalyozas.html` generált fájl, ezeket a `src/` mappában szerkeszd.
 - **Tesztek:** `npm i --no-save playwright && npx playwright install chromium && node tests/run.js`. Ellenőrzi az oldalak betöltését (JS-hiba, külső kérés), a mélylinkeket és a darabszámokat, a pontozási szélsőértékeket és a fordított tételeket, a kitöltési alkalmakat (újranyitás, javítás, azonos pontszámú újramérés, verzióváltás), az NSSS hiányos kitöltését, a mintaszabályokat, az importot, a visszavonást és a párexportot, a kezdőlapot, az eredménytörténet-grafikont, a demó profilt, az adatok oldal törléseit és exportját, valamint a változásnaplót. GitHub Actions minden feltöltéskor lefuttatja.
 - **Verziók:** ha egy teszt tételei vagy pontozása változik, emeld a verzióját az `assets/oni-core.js` `VERS` táblájában, és írj bejegyzést a `valtozasok.html` `LOG` tömbjébe (pontozás: no/part/yes, újrakitöltés: no/part/yes). Az eltérő verziójú eredményeket az összegzés nem hasonlítja össze, és a grafikonon sem köti össze.
 
