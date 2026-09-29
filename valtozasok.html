@@ -94,6 +94,13 @@ document.addEventListener('DOMContentLoaded',function(){
   var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
   /* score/retake: 'no' | 'part' | 'yes' */
   var LOG=[
+    {d:'2026-09-29',t:'Célok, vállalások, emlékeztető, jelölés',score:'no',retake:'no',items:[
+      'A főoldalon „Mit szeretnél megérteni?” választó: célonként 2–3 teszt, és hogy mivel érdemes kezdeni.',
+      'Az eredmény végén rögzíthetsz egy kicsi vállalást. A főoldalon és a következő kitöltésnél megkérdezi, hogyan sikerült.',
+      'Újramérési emlékeztető naptárfájlként (.ics), bármelyik naptárba importálható.',
+      'Minden kérdésnél jelölheted, ha nem egyértelmű. A jelölések a fordítás javítását segítik, a pontszámot nem érintik.',
+      'Az összegzés tetején szöveges összefoglaló arról, mi változott az első mérés óta.',
+      'A DES-II, az SMI és a YSQ-L eredménye előtt rövid szakasz arról, mit tehetsz, ha felkavart valami, és hová fordulhatsz.']},
     {d:'2026-09-29',t:'Saját kezdőlap, eredménytörténet, adatkezelés',score:'no',retake:'no',items:[
       'A főoldal visszatérő látogatónál a folytatható tesztet, a következő lépést és a legutóbbi eredményt mutatja.',
       'Az összegzésben a többször kitöltött teszteknél idővonal-grafikon és táblázat mutatja a változást.',

@@ -226,3 +226,40 @@ html[data-theme="light"][data-page="index"] .home-card:hover{border-color:var(--
 html[data-theme="light"][data-page="index"] .home-card .hb{background:var(--u-bg3)!important}
 html[data-theme="light"][data-page="index"] .home-card .hb i{background:var(--u-gold2)!important}
 html[data-theme="light"][data-page="index"] .home-panel{border-color:#93c5fd!important}
+
+/* ── Vállalás, naptár, nyugodt zárás, „nem értem” jelölés (assets/results-plus.js) ── */
+.oni-commit{padding-top:14px;border-top:1px dashed var(--u-line);margin-top:14px}
+.oni-commit h5{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--u-muted);margin:0 0 6px;font-family:'Inter',system-ui,sans-serif;font-weight:700}
+.oni-commit h5 small{text-transform:none;letter-spacing:0;font-weight:500}
+.oni-crow{display:flex;gap:8px;flex-wrap:wrap}
+.oni-crow input{flex:1 1 260px;min-width:0;padding:10px 12px;border-radius:12px;border:1px solid var(--u-line);background:var(--u-bg);color:var(--u-ink);font:14px/1.4 'Inter',system-ui,sans-serif}
+.oni-cbtn,.oni-ics{appearance:none;cursor:pointer;padding:10px 16px;border-radius:99px;border:1px solid var(--u-gold2);background:var(--u-gold-soft,rgba(251,191,36,.12));color:var(--u-ink);font:600 13px 'Inter',system-ui,sans-serif}
+.oni-ics{border-color:var(--u-line);background:var(--u-bg);font-weight:500;color:var(--u-soft)}
+.oni-cbtn:hover,.oni-ics:hover{border-color:var(--u-sapphire2)}
+.oni-csaved{display:block;min-height:16px;font-size:12px;color:var(--u-emerald);margin-top:4px}
+.oni-cprev{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;padding:10px 12px;margin:0 0 12px;border-radius:12px;background:var(--u-bg2);border:1px solid var(--u-line2);font-size:14px;color:var(--u-soft)}
+.oni-cprev b{color:var(--u-ink);font-weight:600}
+.oni-cprev .oni-chips{margin:0}
+.oni-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
+.oni-actions .oni-more{margin-top:0}
+.oni-calm{margin:0 0 18px;padding:18px 22px;border-radius:18px;border:1px solid var(--u-line);border-left:4px solid var(--u-emerald);background:var(--u-paper);color:var(--u-ink);font-family:'Inter',system-ui,sans-serif}
+.oni-calm .oni-eyebrow{color:var(--u-emerald)}
+.oni-calm p,.oni-calm li{font-size:14.5px;line-height:1.6;color:var(--u-soft);margin:8px 0 0}
+.oni-calm ol{margin:8px 0 0;padding-left:20px}
+.oni-calm b{color:var(--u-ink)}
+.oni-calm a{color:var(--u-sapphire);font-weight:600}
+.oni-calm .oni-calm-min{display:none;margin:4px 0 0}
+.oni-calm.min{padding:10px 16px}
+.oni-calm.min .oni-eyebrow,.oni-calm.min .oni-calm-body{display:none}
+.oni-calm.min .oni-calm-min{display:block}
+.oni-calm-open{appearance:none;background:none;border:none;padding:0;cursor:pointer;color:var(--u-sapphire);font:inherit;font-weight:600}
+.oni-unclear{position:absolute;top:8px;right:8px;z-index:2;width:22px;height:22px;padding:0;border-radius:50%;border:1px solid var(--u-line);background:var(--u-paper);color:var(--u-muted);font:700 12px/20px 'Inter',system-ui,sans-serif;text-align:center;cursor:pointer;opacity:.55;transition:opacity .15s,border-color .15s}
+.oni-unit:hover .oni-unclear,.q:hover>.oni-unclear,.fc:hover>.oni-unclear,.oni-unclear:focus-visible{opacity:1}
+.oni-unclear:hover{border-color:var(--u-gold2);color:var(--u-ink)}
+.oni-unclear.on{opacity:1;background:var(--u-gold2);border-color:var(--u-gold2);color:#0f172a}
+body.oni-focus .oni-unclear{opacity:.9}
+@media print{.oni-unclear,.oni-ics,.oni-calm,.oni-crow .oni-cbtn{display:none!important}}
+html[data-theme="light"][data-page="index"] .home-card.first{border-color:var(--u-gold2)!important;box-shadow:0 0 0 1px var(--u-gold2)}
+html[data-theme="light"][data-page="index"] .goal-chip[aria-pressed="true"]{background:var(--u-gold-soft)!important;border-color:var(--u-gold2)!important}
+html[data-theme="light"][data-page="index"] .commit-row{border-color:#e7d7a8!important;background:var(--u-bg)!important}
+.oni-unclear.tight{top:-11px;right:0}

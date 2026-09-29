@@ -224,6 +224,25 @@ body.returning .hero{padding:18px 0 22px}
 body.returning .hero .lead,body.returning .hero .meta{display:none}
 body.returning .hero h1{font-size:clamp(28px,4vw,40px)}
 @media (max-width:820px){.home-grid{grid-template-columns:1fr}}
+.progress-panel h2 em{font-style:italic;color:var(--gold)}
+.goal-chips{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 0}
+.goal-chip{appearance:none;cursor:pointer;font:inherit;font-size:13.5px;padding:8px 14px;border-radius:99px;border:1px solid var(--line);background:transparent;color:var(--ink-soft)}
+.goal-chip:hover{border-color:var(--gold-soft);color:var(--ink)}
+.goal-chip[aria-pressed="true"]{border-color:var(--gold);color:var(--ink);background:color-mix(in srgb,var(--gold) 12%,transparent);font-weight:600}
+.goal-out:empty{display:none}
+.goal-out{margin-top:14px}
+.goal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.goal-why{font-size:14px;color:var(--ink-soft);margin:0 0 12px}
+.home-card.first{border-color:var(--gold)}
+.home-card .hs{font-size:11.5px;font-weight:600;color:var(--ink-mute)}
+.home-card .hs.done{color:var(--emerald)}.home-card .hs.prog{color:var(--gold)}
+.commit-list{display:grid;gap:8px;margin-top:12px}
+.commit-row{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;padding:12px 16px;border:1px dashed var(--gold-soft);border-radius:14px;font-size:14px;color:var(--ink-soft)}
+.commit-row b{color:var(--ink);font-weight:600}
+.commit-row .cr-btns{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap}
+.commit-row button{appearance:none;cursor:pointer;font:inherit;font-size:12.5px;padding:6px 12px;border-radius:99px;border:1px solid var(--line);background:transparent;color:var(--ink-soft)}
+.commit-row button:hover{border-color:var(--gold);color:var(--ink)}
+@media (max-width:820px){.goal-grid{grid-template-columns:1fr}}
 .path-lead{color:var(--ink-soft);font-size:14.5px;margin:4px 0 16px;max-width:720px}
 .path-steps{list-style:none;display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px;counter-reset:ps}
 .path-steps li{counter-increment:ps;border:1px solid var(--line);border-radius:12px;padding:12px 12px 10px;background:rgba(5,13,30,.35);position:relative}
@@ -302,6 +321,7 @@ details.intro:not([open]){padding-top:20px;padding-bottom:20px}
   <section class="progress-panel home-panel" id="home" hidden>
     <div class="pp-head"><h2 id="home-title">Üdv újra</h2><span class="pp-sum" id="home-sub"></span></div>
     <div class="home-grid" id="home-grid"></div>
+    <div class="commit-list" id="home-commit"></div>
   </section>
 
   <section class="progress-panel path-panel" id="path">
@@ -316,6 +336,13 @@ details.intro:not([open]){padding-top:20px;padding-bottom:20px}
       <span class="pp-next-name" id="path-go-name">Négy tendencia</span>
       <span class="arrow">›</span>
     </a>
+  </section>
+
+  <section class="progress-panel goal-panel" id="goals">
+    <div class="pp-head"><h2>Mit szeretnél <em>megérteni?</em></h2><span class="pp-sum">célonként 2–3 teszt</span></div>
+    <p class="path-lead">Válassz egy kérdést, és megmutatom, melyik tesztek adnak rá választ, és mivel érdemes kezdeni.</p>
+    <div class="goal-chips" id="goal-chips" role="group" aria-label="Célok"></div>
+    <div class="goal-out" id="goal-out" aria-live="polite"></div>
   </section>
 
   <section class="progress-panel" id="progress">
@@ -954,6 +981,34 @@ details.intro:not([open]){padding-top:20px;padding-bottom:20px}
   [].forEach.call(document.querySelectorAll('.card[data-key]'),function(c){var k=K[c.dataset.key];if(!k)return;var el=document.createElement('span');el.className='vstat '+k;el.textContent=T[c.dataset.key]||V[k];var tag=c.querySelector('.card-tag');tag.parentNode.insertBefore(el,tag.nextSibling);});
 })();
 
+/* ── Célalapú belépés ── */
+window.addEventListener('DOMContentLoaded',function(){
+  var D=window.ONI_DATA||{},Lk=window.ONI_LINK||{},res=window.ONI?ONI.all():{};
+  var GOALS=[
+    ['rel','A kapcsolataimat','Hogyan kötődsz, mit jelent neked a szeretet, és mit vársz a másiktól.',['ecr','love','las']],
+    ['conf','Mi történik köztünk vitában','A konfliktusmódod, a párkapcsolati alapok és a bocsánatkérés nyelve.',['tki','gott','apo']],
+    ['proc','Miért halogatok','Mennyire jellemző a halogatás, hogyan reagálsz az elvárásokra, és hogyan fogsz neki egy feladatnak.',['ips','ft','kolbe']],
+    ['drive','Mi hajt, mik az értékeim','Az értékeid, az erősségeid és az alapvonásaid.',['pvq','via','bf']],
+    ['emo','Hogyan bánok az érzéseimmel','Érzelemszabályozás, önegyüttérzés, és hogy mennyire tudod szavakba önteni, mit érzel.',['ders','scs','tas']],
+    ['body','A testem jelzéseit és ritmusát','Mennyire figyelsz a testi jelzésekre, és mikor vagy a legjobb formában.',['maia2','meq']],
+    ['deep','A mélyebb mintáimat','Korai sémák, érzelmi módok és a kötődés részletes térképe. Hosszabb, megterhelőbb tesztek.',['kotodes','smi','ysq']],
+    ['sex','A szexualitásomat','Vágy, izgalom és gátlás, szexuális elégedettség.',['sisses','sdi','nsss']]
+  ];
+  var chips=document.getElementById('goal-chips'),out=document.getElementById('goal-out');if(!chips)return;
+  var esc=function(x){return String(x||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+  chips.innerHTML=GOALS.map(function(g){return '<button type="button" class="goal-chip" data-g="'+g[0]+'" aria-pressed="false">'+esc(g[1])+'</button>'}).join('');
+  function state(id){if(res[id]&&res[id].length)return 'done';var c=document.querySelector('.card[href="'+(Lk[id]||'#')+'"]');var st=c&&c.querySelector('.status');return st&&st.dataset.state==='prog'?'prog':'none'}
+  function show(key){
+    var g=GOALS.filter(function(x){return x[0]===key})[0];
+    [].forEach.call(chips.children,function(b){b.setAttribute('aria-pressed',String(b.dataset.g===key&&!!g))});
+    if(!g){out.innerHTML='';return;}
+    var ids=g[3].filter(function(id){return D[id]}),first=ids.filter(function(id){return state(id)==='prog'})[0]||ids.filter(function(id){return state(id)==='none'})[0];
+    out.innerHTML='<p class="goal-why">'+esc(g[2])+'</p><div class="goal-grid">'+ids.map(function(id){var d=D[id],st=state(id);
+      return '<a class="home-card'+(id===first?' first':'')+'" href="'+(Lk[id]||'#')+'"><span class="hk">'+(id===first?'Ezzel kezdd':'Ehhez tartozik')+'</span><span class="hn">'+esc(d.n)+'</span><span class="hd">'+esc(d.what)+'</span><span class="hs '+st+'">'+(st==='done'?'Kész · eredmény megnyitása':st==='prog'?'Folyamatban':'Kb. '+d.min+' perc')+'</span></a>';}).join('')+'</div>';
+  }
+  chips.onclick=function(e){var b=e.target.closest('.goal-chip');if(!b)return;show(b.getAttribute('aria-pressed')==='true'?null:b.dataset.g)};
+});
+
 /* ── Személyes kezdőlap (visszatérő látogatónak) ── */
 window.addEventListener('DOMContentLoaded',function(){
   try{
@@ -984,6 +1039,15 @@ window.addEventListener('DOMContentLoaded',function(){
       html+='<a class="home-card" href="'+(Lk[L.id]||'osszegzes.html')+'"><span class="hk">Legutóbbi eredmény · '+fmt(L.t)+'</span><span class="hn">'+esc(dl.n||L.r.n||L.id)+'</span><span class="hd">'+esc(L.r.h||'')+'</span><span class="hg">Eredmény megnyitása ›</span></a>';}
     document.getElementById('home-grid').innerHTML=html;
     var n=recs.length;document.getElementById('home-sub').innerHTML='<strong>'+n+'</strong> kiértékelt teszt · <a href="osszegzes.html" style="color:inherit">összegzés ›</a>';
+    // nyitott vállalások
+    (function commitsUI(){
+      var box=document.getElementById('home-commit'),C=(window.ONI_COMMITS&&ONI_COMMITS.get())||{},ST=(window.ONI_COMMITS&&ONI_COMMITS.ST)||{};
+      var open=[];Object.keys(C).forEach(function(id){(C[id]||[]).forEach(function(c){if(!c.st&&c.text)open.push({id:id,c:c})})});
+      open.sort(function(a,b){return b.c.t.localeCompare(a.c.t)});
+      box.innerHTML=open.slice(0,3).map(function(o){var dd=Math.floor((Date.now()-Date.parse(o.c.t))/864e5);
+        return '<div class="commit-row" data-id="'+esc(o.id)+'" data-t="'+esc(o.c.t)+'"><span>Vállalásod'+(dd?' ('+dd+' napja)':'')+' · '+esc((D[o.id]||{}).n||o.id)+': <b>„'+esc(o.c.text)+'”</b></span><span class="cr-btns">'+Object.keys(ST).map(function(k){return '<button type="button" data-cst="'+k+'">'+ST[k]+'</button>'}).join('')+'</span></div>';}).join('');
+      box.onclick=function(e){var b=e.target.closest('[data-cst]');if(!b)return;var row=b.closest('.commit-row');ONI_COMMITS.set(row.dataset.id,row.dataset.t,b.dataset.cst);row.innerHTML='<span>Rögzítve: <b>'+ST[b.dataset.cst]+'</b>. Új vállalást a teszt eredményénél írhatsz.</span>';};
+    })();
     // kész útvonal esetén az útvonal-panel összecsukva
     if(!pn){var pp=document.getElementById('path');if(pp)pp.style.display='none';}
   }catch(e){console.warn('home',e)}

@@ -93,6 +93,8 @@ Minden oldal önálló: inline CSS és JS, külső szerverhez nem fordul. A bet�
   - `onismeret-meta-v1` — az utolsó válasz ideje tesztenként (ebből lesz a kitöltés dátuma)
   - `onismeret-settings-v1` — pl. az újramérési emlékeztető (ki / 90 / 180 / 365 nap)
   - `onismeret-notes-v1` — saját jegyzetek, címkék és kitöltési körülmények kitöltésenként
+  - `onismeret-commit-v1` — vállalások tesztenként és azok kimenetele
+  - `onismeret-unclear-v1` — nem egyértelműnek jelölt kérdések (teszt, kérdésszám, kérdésszöveg)
   - `onismeret-undo-v1` — az utolsó visszaállítás előtti állapot (7 napig)
   - `onismeret-partner-v1` — a párod betöltött összesített eredményei (a nyers válaszai nem)
   - `ysq_autosave`, `ysq_snapshots`, `ysq_log` stb. (YSQ)
@@ -105,6 +107,7 @@ Minden oldal önálló: inline CSS és JS, külső szerverhez nem fordul. A bet�
 ## Összegzés (`osszegzes.html`)
 
 - **Visszatérő minták:** 16 szabály, például szorongó vagy elkerülő kötődés, „indít, de nem zár le”, elemzési bénultság, teljesítmény-hajtás vagy önfeláldozó minta. Egy minta csak akkor jelenik meg, ha legalább két teszt ugyanabba az irányba mutat. A küszöbök heurisztikák, nem klinikai határértékek.
+- **Mi változott:** szöveges összefoglaló a lap tetején. A többször kitöltött tesztek első és legutóbbi, azonos változatú eredményét veti össze, csak a skála terjedelmének legalább 10%-át elérő változást említi (tesztenként max. kettőt), irány szerint jelölve.
 - **Profil tesztenként** a legutóbbi eredménnyel, ▲▼ változással az előző kitöltéshez képest.
 - **Eredménytörténet:** két azonos változatú kitöltéstől vonaldiagram (egy közös skálán legfeljebb 4 dimenzió, a legtöbbet változók), jelölőformák és közvetlen feliratok, rámutatásra tooltip, mellette táblázat. Mobilon keskenyebb rajz, csak értékfeliratokkal.
 - **Demó profil:** `osszegzes.html?demo=1` kitalált, jól jelölt adatokkal (`assets/demo-data.js`), csak a memóriában, semmit nem ment.
@@ -114,6 +117,11 @@ Minden oldal önálló: inline CSS és JS, külső szerverhez nem fordul. A bet�
 
 ## Kitöltést segítő funkciók (minden oldalon)
 
+- **„Nem értem” jelölés:** minden kérdés jobb felső sarkában `?` gomb. A jelölés (`onismeret-unclear-v1`) a pontszámot nem befolyásolja, az Adatok oldalon látszik, és a mentésfájlba is bekerül, így a fordítás célzottan javítható.
+- **Vállalás:** az eredmény „Röviden” kártyáján egy kicsi, konkrét lépés rögzíthető (`onismeret-commit-v1`). A főoldali kezdőlapon és a teszt következő kitöltésénél visszakérdez: sikerült, részben, nem sikerült.
+- **Naptár-emlékeztető:** az eredménynél letölthető `.ics` az újramérés napjára (a beállított újramérési idő, alapból 90 nap).
+- **Nyugodt zárás:** a DES-II, az SMI és a YSQ-L eredménye előtt rövid szakasz: megállás, nem kell most mindent elolvasni, Lelki Elsősegély Telefonszolgálat (116-123, ingyenes, 0–24), közvetlen veszélyben 112.
+
 - **Folytatás:** ha egy tesztet félbehagytál, bal alul „Folytatás: N. kérdés ›” gomb visz az első megválaszolatlanhoz.
 - **Fókusz mód:** egyszerre egy kérdés, válasz után automatikus továbblépés, billentyűzettel is (1–9 = válasz, ←/→ = lapozás, Esc = kilépés). A végén a kihagyott kérdésekhez ugrik, utána az eredménygombhoz.
 - **Mentési visszajelzés:** „Mentve ezen az eszközön ✓”. Ha a mentés nem sikerül (tele a tárhely, privát ablak), látható figyelmeztetést ad.
@@ -122,6 +130,8 @@ Minden oldal önálló: inline CSS és JS, külső szerverhez nem fordul. A bet�
 ## Kezdő útvonal
 
 Öt teszt (Négy tendencia → Cselekvési módok → ECR-R → Big Five → PVQ-21, kb. 40 perc), amelyek az összegzés mintáinak alapját adják. A főoldalon panel mutatja az állást.
+
+Új látogatónak a „Mit szeretnél megérteni?” választó segít: nyolc cél (kapcsolatok, vita, halogatás, értékek, érzelmek, test és ritmus, mélyebb minták, szexualitás), mindegyikhez 2–3 teszt, kiemelve, mivel érdemes kezdeni.
 
 Visszatérő látogatónál a főoldal tetején saját kezdőlap: a félbehagyott teszt, a következő lépés (az útvonal következő tesztje, vagy a legutóbbi eredmény adatlapján javasolt teszt) és a legutóbbi eredmény. Minden teszt kiértékelése után lent megjelenik a „Következő lépés” sáv.
 

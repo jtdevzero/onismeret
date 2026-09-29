@@ -282,6 +282,63 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     await ctx.close();
   }
 
+  console.log('\n15. Célok, vállalás, naptár, jelölés, változás-összefoglaló, nyugodt zárás');
+  {
+    const ctx = await newCtx(); const p = await pageIn(ctx);
+    await p.goto(R + 'index.html'); await p.waitForTimeout(150);
+    ok(await p.$$eval('.goal-chip', x => x.length) === 8, 'nyolc cél a főoldalon');
+    await p.click('.goal-chip[data-g="proc"]');
+    let g = await p.evaluate(() => ({ n: document.querySelectorAll('#goal-out .home-card').length, first: document.querySelector('#goal-out .home-card.first .hn').textContent }));
+    ok(g.n === 3 && /IPS/.test(g.first), 'célhoz 3 teszt, az első kiemelve', g);
+    await p.goto(R + 'szabalyozas.html#test-ips'); await p.waitForTimeout(200);
+    // „nem értem” jelölés
+    const nFlags = await p.$$eval('#test-ips .oni-unclear', x => x.length);
+    ok(nFlags === 9, 'minden IPS-kérdésen van jelölőgomb', nFlags);
+    await p.click('#test-ips .oni-unclear');
+    const un = await p.evaluate(() => JSON.parse(localStorage.getItem('onismeret-unclear-v1')));
+    ok(un && un.ips && un.ips['1'] && un.ips['1'].q.length > 10, 'jelölés mentve a kérdés szövegével', un);
+    ok(await p.evaluate(() => !localStorage.getItem('ips-responses-v1')), 'a jelölés nem számít válasznak');
+    await p.evaluate(() => { TESTS.ips._fillAll(() => 2); TESTS.ips.show(); }); await p.waitForTimeout(500);
+    ok(await p.evaluate(() => !document.querySelector('#ips-results .oni-calm')), 'könnyű tesztnél nincs nyugodt zárás');
+    // vállalás
+    await p.fill('#ips-results .oni-crow input', 'Reggel az első 25 percben a legnehezebb feladat'); await p.click('#ips-results .oni-cbtn');
+    let cm = await p.evaluate(() => [JSON.parse(localStorage.getItem('onismeret-commit-v1')).ips, ONI.all().ips[0].sid]);
+    ok(cm[0] && cm[0].length === 1 && !cm[0][0].st && cm[0][0].sid === cm[1], 'vállalás mentve a kitöltéshez kötve');
+    // naptár
+    const [dl] = await Promise.all([p.waitForEvent('download'), p.click('#ips-results .oni-ics')]);
+    const ics = fs.readFileSync(await dl.path(), 'utf8'); const exp = new Date(Date.now() + 90 * 864e5).toISOString().slice(0, 10).replace(/-/g, '');
+    ok(/BEGIN:VCALENDAR/.test(ics) && ics.includes('DTSTART;VALUE=DATE:' + exp) && /\r\n/.test(ics) && dl.suggestedFilename() === 'ujrameres-ips.ics', 'naptárfájl a 90. napra', dl.suggestedFilename());
+    // főoldal visszakérdez
+    await p.goto(R + 'index.html'); await p.waitForTimeout(200);
+    ok(await p.evaluate(() => /25 percben/.test(document.getElementById('home-commit').textContent)), 'nyitott vállalás a főoldali kezdőlapon');
+    // következő kitöltésnél visszakérdez
+    await p.evaluate(() => { const a = ONI.all(); a.ips[0].done = a.ips[0].t = new Date(Date.now() - 20 * 864e5).toISOString(); localStorage.setItem(ONI.K, JSON.stringify(a)); const m = JSON.parse(localStorage.getItem(ONI.META)); m.ans['ips-responses-v1'] = new Date(Date.now() - 20 * 864e5).toISOString(); localStorage.setItem(ONI.META, JSON.stringify(m)); });
+    await p.goto(R + 'szabalyozas.html#test-ips'); await p.waitForTimeout(200);
+    await p.evaluate(() => { TESTS.ips._fillAll(() => 1); TESTS.ips.show(); }); await p.waitForTimeout(500);
+    ok(await p.evaluate(() => ONI.all().ips.length === 2 && /25 percben/.test((document.querySelector('#ips-results .oni-cprev') || {}).textContent || '')), 'új kitöltésnél visszakérdez a múltkori vállalásra');
+    await p.click('#ips-results .oni-cprev [data-cst="part"]');
+    ok(await p.evaluate(() => JSON.parse(localStorage.getItem('onismeret-commit-v1')).ips[0].st === 'part'), 'kimenetel rögzítve');
+    // változás-összefoglaló
+    await p.goto(R + 'osszegzes.html'); await p.waitForTimeout(200);
+    const chg = await p.evaluate(() => ({ txt: (document.querySelector('.chg-card') || {}).textContent, ips: ONI.all().ips.map(e => [e.d.total[1], e.qv, e.sv]) }));
+    ok(chg.txt && /10%-ánál/.test(chg.txt) && Math.abs(chg.ips[0][0] - chg.ips[1][0]) / 36 < 0.1, 'küszöb alatti változást (IPS 27 → 24) nem nagyít fel', chg);
+    await p.goto(R + 'osszegzes.html?demo=1'); await p.waitForTimeout(200);
+    ok(await p.evaluate(() => { const li = document.querySelectorAll('.chg-list li'); return li.length >= 3 && li.length <= 5 && [...li].every(x => /→/.test(x.textContent)); }), 'demó: 3–5 kiemelt változás, értékekkel');
+    // adatok oldal
+    await p.goto(R + 'adatok.html'); await p.waitForTimeout(150);
+    ok(await p.evaluate(() => /25 percben/.test(document.getElementById('commits').textContent) && document.querySelectorAll('#unclear [data-unf]').length === 1), 'adatok oldal: vállalások és jelölések listázva');
+    // nyugodt zárás (DES-II)
+    await p.goto(R + 'funkcio.html#test-des'); await p.waitForTimeout(300);
+    await p.evaluate(() => document.querySelectorAll('#test-des .q').forEach(q => { const b = q.querySelectorAll('button[data-n]'); b[1] && b[1].click(); }));
+    await p.waitForTimeout(300); await p.click('#test-des button[id$=show], #test-des button[id$=showResults]'); await p.waitForTimeout(1500);
+    const calm = await p.evaluate(() => { const r = document.getElementById('des-results'); const c = r.firstElementChild; return { first: c && c.classList.contains('oni-calm'), tel: !!(c && c.querySelector('a[href="tel:116123"]')), brief: !!r.querySelector(':scope > .oni-brief') }; });
+    ok(calm.first && calm.tel && calm.brief, 'DES-II: nyugodt zárás az eredmény előtt, 116-123-mal', calm);
+    await p.click('#des-results .oni-calm-ok');
+    ok(await p.evaluate(() => document.querySelector('#des-results .oni-calm').classList.contains('min')), 'összecsukható egy sorra');
+    ok(p._errs.length === 0, 'hibamentes', p._errs);
+    await ctx.close();
+  }
+
   await browser.close();
   console.log(`\n${pass} rendben, ${fail} hiba`);
   process.exit(fail ? 1 : 0);

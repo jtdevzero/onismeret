@@ -64,6 +64,8 @@ h2 em{font-style:italic;color:var(--gold)}
 .hc details{margin-top:6px}.hc summary{cursor:pointer;font-size:12px;color:var(--sapphire)}
 .hc table{border-collapse:collapse;font-size:12.5px;margin-top:6px;width:100%}.hc th,.hc td{padding:4px 8px;border-bottom:1px solid var(--line);text-align:right}.hc th:first-child,.hc td:first-child{text-align:left}
 .hc-one{font-size:12.5px;color:var(--ink-mute)}
+.chg-card p{color:var(--ink-soft);font-size:15px}.chg-list{margin:10px 0 0;padding-left:18px;display:grid;gap:6px;color:var(--ink-soft);font-size:14.5px}.chg-list strong{color:var(--ink);font-weight:600}
+.chg{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:99px;margin-left:4px;border:1px solid var(--line)}.chg.good{color:var(--emerald);border-color:color-mix(in srgb,var(--emerald) 45%,transparent)}.chg.bad{color:var(--rose);border-color:color-mix(in srgb,var(--rose) 45%,transparent)}.chg.neu{color:var(--ink-mute)}
 .sublinks{font-size:13px;color:var(--ink-mute);margin:-28px 0 30px}.sublinks a{color:var(--sapphire)}
 .demo-bar{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;margin:0 0 18px;padding:12px 16px;border-radius:12px;border:1px dashed var(--gold);background:rgba(251,191,36,.08);font-size:14px;color:var(--ink-soft)}
 .demo-bar strong{color:var(--gold);letter-spacing:.08em;text-transform:uppercase;font-size:12px}
@@ -339,6 +341,37 @@ function hcMarker(shape,x,y,c,r){r=r||4.5;
   if(shape==='diamond')return `<path class="mk" d="M${x} ${y-r-1}L${x+r+1} ${y}L${x} ${y+r+1}L${x-r-1} ${y}Z" fill="${c}"/>`;
   if(shape==='triangle')return `<path class="mk" d="M${x} ${y-r-1}L${x+r+1} ${y+r}L${x-r-1} ${y+r}Z" fill="${c}"/>`;
   return `<circle class="mk" cx="${x}" cy="${y}" r="${r}" fill="${c}"/>`;}
+/* ── Szöveges összefoglaló: mi változott az első összevethető mérés óta ── */
+const CH_MIN=0.10;
+function changeHTML(){
+  const items=[];let nRe=0;
+  REG.forEach(([cat,id])=>{
+    const r=last(id);if(!r||!r.d)return;
+    const hist=(store[id]||[]).filter(e=>(e.sv||1)===(r.sv||1)&&(e.qv||1)===(r.qv||1)&&e.d);
+    if(hist.length<2)return;nRe++;
+    const f=hist[0],per=[];
+    Object.entries(r.d).forEach(([k,d])=>{
+      const a=f.d[k];if(!a||typeof a[1]!=='number'||typeof d[1]!=='number')return;
+      const span=(d[3]-d[2])||1,n=(d[1]-a[1])/span;
+      if(Math.abs(n)>=CH_MIN)per.push({id,k,label:d[0],from:a[1],to:d[1],n,dir:dirOf(id,k),since:when(f)});
+    });
+    per.sort((a,b)=>Math.abs(b.n)-Math.abs(a.n)).slice(0,2).forEach(x=>items.push(x));
+  });
+  if(!nRe)return '';
+  items.sort((a,b)=>(b.dir!==0)-(a.dir!==0)||Math.abs(b.n)-Math.abs(a.n));
+  const top=items.slice(0,5);
+  const verb=x=>x.to>x.from?'nőtt':'csökkent';
+  const tone=x=>{const g=x.dir*(x.to>x.from?1:-1);return g>0?'<span class="chg good">kedvező irány</span>':g<0?'<span class="chg bad">kedvezőtlen irány</span>':'<span class="chg neu">semleges skála</span>'};
+  const fm=t=>new Date(t).toLocaleDateString('hu-HU',{year:'numeric',month:'long'});
+  let body;
+  if(!top.length)body=`<p>${nRe} tesztet töltöttél ki többször, de egyik skálán sem változott az eredmény a skála terjedelmének ${Math.round(CH_MIN*100)}%-ánál többet. Ekkora eltérés beleférhet a mérési ingadozásba.</p>`;
+  else{
+    const good=top.filter(x=>x.dir*(x.to>x.from?1:-1)>0).length,bad=top.filter(x=>x.dir*(x.to>x.from?1:-1)<0).length;
+    const lead=good&&!bad?'A kiemelt változások mind kedvező irányúak.':bad&&!good?'A kiemelt változások kedvezőtlen irányúak. Érdemes megnézni, mi történt azóta az életedben.':good&&bad?'Vegyes a kép: van, ami javult, és van, ami romlott.':'A változások semleges skálákon történtek, ezek önmagukban nem jók vagy rosszak.';
+    body=`<p>${lead}</p><ul class="chg-list">${top.map(x=>`<li><strong>${esc(x.label)}</strong> (${esc(NAME[x.id]||x.id)}) ${verb(x)}: ${x.from} → ${x.to}, ${fm(x.since)} óta. ${tone(x)}</li>`).join('')}</ul>`;
+  }
+  return `<h2>Mi <em>változott</em></h2><p class="h2sub">A többször kitöltött tesztek első és legutóbbi, azonos változatú eredménye alapján. Csak a skála terjedelmének legalább ${Math.round(CH_MIN*100)}%-át elérő változást említem, tesztenként legfeljebb kettőt.</p><div class="card chg-card" style="--acc:var(--sapphire)">${body}</div>`;
+}
 function hcHTML(id,r){
   const hist=(store[id]||[]).filter(e=>(e.sv||1)===(r.sv||1)&&(e.qv||1)===(r.qv||1)&&e.d);
   if(hist.length<2)return `<div class="hc"><div class="hc-one">Egy kitöltés van ebből a változatból. A grafikon a második kitöltéstől jelenik meg.</div></div>`;
@@ -407,7 +440,7 @@ function render(){
     return;
   }
   const {fired,locked}=evalRules();
-  let h=`<h2>Visszatérő <em>minták</em></h2><p class="h2sub">Lehetséges értelmezések ott, ahol legalább két <em>különböző</em> teszt ugyanabba az irányba mutat. A jelzések száma nem tudományos megerősítés, csak azt mutatja, hány mérés egybehangzó. A kiemelt címkék a teljesülő, a halványak az elérhető, de nem teljesülő jelzések.</p>`;
+  let h=changeHTML()+`<h2>Visszatérő <em>minták</em></h2><p class="h2sub">Lehetséges értelmezések ott, ahol legalább két <em>különböző</em> teszt ugyanabba az irányba mutat. A jelzések száma nem tudományos megerősítés, csak azt mutatja, hány mérés egybehangzó. A kiemelt címkék a teljesülő, a halványak az elérhető, de nem teljesülő jelzések.</p>`;
   if(fired.length){
     fired.sort((a,b)=>b.nT-a.nT||b.hits.length-a.hits.length).forEach(({r,avail,hits,nT,aT})=>{
       h+=`<div class="card pat" style="--acc:${r.acc}"><div class="strength">${nT} különböző teszt jelzi · ${aT} elérhetőből</div><h3>${r.title}</h3>

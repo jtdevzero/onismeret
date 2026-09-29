@@ -57,6 +57,7 @@ h2{font-family:var(--font-serif);font-weight:400;font-size:28px;margin:44px 0 8p
 .undo{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;padding:12px 16px;border:1px dashed var(--gold);border-radius:12px;margin-bottom:18px;font-size:14px;color:var(--ink-soft)}
 .empty{text-align:center;padding:40px 20px;border:1px dashed var(--line);border-radius:18px;color:var(--ink-soft)}
 .empty a{color:var(--gold)}
+.ul{list-style:none;display:grid;gap:6px}.ul li{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;font-size:14px;color:var(--ink-soft);padding:8px 0;border-bottom:1px dashed var(--line)}.ul li b{color:var(--ink);font-weight:600}.ul small{color:var(--ink-mute)}
 .note{font-size:12.5px;color:var(--ink-mute);margin-top:40px;line-height:1.7;border-top:1px dashed var(--line);padding-top:20px}
 .note a{color:var(--sapphire)}
 @media (max-width:560px){.wrap{padding:28px 16px 64px}.card{padding:16px}.sess li{grid-template-columns:1fr auto}.sess .d{grid-column:1/-1}.th .tools{margin-left:0}}
@@ -85,6 +86,14 @@ h2{font-family:var(--font-serif);font-weight:400;font-size:28px;margin:44px 0 8p
   <h2>Tesztenként</h2>
   <p class="h2sub">Egy kitöltés törlése csak azt az egy mérést veszi ki az előzményekből. A legutóbbi kitöltés törlésekor a teszt mentett válaszai is törlődnek, különben az eredmény megnyitáskor visszakerülne.</p>
   <div id="list"></div>
+
+  <h2>Nem egyértelmű <em>kérdések</em></h2>
+  <p class="h2sub">A kérdések jobb felső sarkában lévő <strong>?</strong> gombbal jelölheted, ha egy kérdés nem volt világos. A pontszámot nem befolyásolja. A jelölések bekerülnek a teljes mentésbe, így el tudod küldeni őket, hogy a fordítás javulhasson.</p>
+  <div id="unclear"></div>
+
+  <h2>Vállalások</h2>
+  <p class="h2sub">Az eredmények végén rögzített kicsi lépések, és hogy mi lett velük.</p>
+  <div id="commits"></div>
 
   <h2>Beállítások</h2>
   <p class="h2sub" id="set-desc"></p>
@@ -146,6 +155,12 @@ document.addEventListener('DOMContentLoaded',function(){
         '<span class="tools"><button type="button" class="btn ghost sm" data-exp="'+esc(id)+'">Export</button><button type="button" class="btn danger sm" data-del-test="'+esc(id)+'">A teszt összes adatának törlése</button></span></div>'+
         (h.length?'<ul class="sess">'+rows+'</ul>':'<p class="raw">Még nincs kiértékelt eredmény'+(raw?', csak elkezdett vagy kitöltött, de meg nem nyitott válaszok.':'.')+'</p>')+'</div>';
     }).join('')+(orphans.length?'<div class="card" style="--acc:var(--ink-mute)"><div class="th"><span class="nm">Régi kérdőívváltozatok válaszai</span><span class="tools"><button type="button" class="btn danger sm" id="del-orph">Törlés</button></span></div><p class="raw">'+orphans.map(esc).join(', ')+'. Ezeket a jelenlegi oldalak már nem használják (pl. a MAIA-2 korábbi, nem eredeti tételsora).</p></div>':'');
+    var UK='onismeret-unclear-v1',CK='onismeret-commit-v1',un=jget(UK,{}),cm=jget(CK,{});
+    var uids=Object.keys(un).filter(function(id){return Object.keys(un[id]).length});
+    document.getElementById('unclear').innerHTML=uids.length?uids.map(function(id){return '<div class="card" style="--acc:var(--sapphire)"><div class="th"><span class="nm">'+esc(name(id))+'</span><span class="mt">'+Object.keys(un[id]).length+' jelölés</span></div><ul class="ul">'+
+      Object.keys(un[id]).sort(function(a,b){return a-b}).map(function(n){var x=un[id][n];return '<li><span><b>'+esc(n)+'.</b> '+esc(x.q||'')+' <small>· '+fmt(x.t)+'</small></span><button type="button" class="btn ghost sm" data-unf="'+esc(id)+'" data-qn="'+esc(n)+'">Jelölés törlése</button></li>'}).join('')+'</ul></div>'}).join(''):'<p class="raw">Nincs megjelölt kérdés.</p>';
+    var cids=Object.keys(cm).filter(function(id){return (cm[id]||[]).length}),STL={done:'sikerült',part:'részben',no:'nem sikerült'};
+    document.getElementById('commits').innerHTML=cids.length?'<div class="card" style="--acc:var(--emerald)"><ul class="ul">'+cids.map(function(id){return cm[id].map(function(c){return '<li><span><b>'+esc(name(id))+':</b> „'+esc(c.text)+'” <small>· '+fmt(c.t)+' · '+(c.st?STL[c.st]||c.st:'nyitott')+'</small></span><button type="button" class="btn ghost sm" data-uncm="'+esc(id)+'" data-t="'+esc(c.t)+'">Törlés</button></li>'}).join('')}).join('')+'</ul></div>':'<p class="raw">Még nincs vállalás. Az eredmények „Röviden” kártyáján rögzíthetsz egyet.</p>';
     var st=jget(SK,{});
     document.getElementById('set-desc').textContent='Téma: '+(st.theme==='dark'?'sötét':'világos')+' · újramérési emlékeztető: '+(st.retake===0?'ki':(st.retake||90)+' nap')+' · automatikus továbblépés: '+(st.autoAdvance===false?'ki':'be')+' · részletes elemzés alapból: '+(st.detailOpen?'nyitva':'csukva')+'.';
   }
@@ -158,10 +173,11 @@ document.addEventListener('DOMContentLoaded',function(){
       if(!confirm('Törlöd a(z) '+name(id)+' '+fmt(r.done||r.t)+' kitöltését?'+(isLast&&key&&hasRaw(key)?'\n\nEz a legutóbbi kitöltés, ezért a teszt mentett válaszait is törlöm.':'')))return;
       snapshot();h.splice(i,1);if(h.length)res[id]=h;else delete res[id];jset(K,res);
       var nt=jget(NK,{});if(nt[id]&&r.sid){delete nt[id][r.sid];if(!Object.keys(nt[id]).length)delete nt[id];jset(NK,nt);}
+      var cm=jget('onismeret-commit-v1',{});if(cm[id]&&r.sid){cm[id]=cm[id].filter(function(c){return c.sid!==r.sid});if(!cm[id].length)delete cm[id];jset('onismeret-commit-v1',cm);}
       if(isLast&&key){localStorage.removeItem(key);var m=jget(META,{});if(m.ans){delete m.ans[key];jset(META,m);}}
       say('Kitöltés törölve. 7 napig visszavonható.');render();}
-    else if(b.dataset.delTest){id=b.dataset.delTest;if(!confirm('Törlöd a(z) '+name(id)+' minden adatát (kitöltések, mentett válaszok, jegyzetek)?'))return;
-      snapshot();res=ONI.all();delete res[id];jset(K,res);var n2=jget(NK,{});delete n2[id];jset(NK,n2);
+    else if(b.dataset.delTest){id=b.dataset.delTest;if(!confirm('Törlöd a(z) '+name(id)+' minden adatát (kitöltések, mentett válaszok, jegyzetek, vállalások)?'))return;
+      snapshot();res=ONI.all();delete res[id];jset(K,res);var n2=jget(NK,{});delete n2[id];jset(NK,n2);var c2=jget('onismeret-commit-v1',{});delete c2[id];jset('onismeret-commit-v1',c2);
       var k2=IDKEY[id];if(k2){localStorage.removeItem(k2);var m2=jget(META,{});if(m2.ans){delete m2.ans[k2];jset(META,m2);}}
       say(name(id)+': minden adat törölve. 7 napig visszavonható.');render();}
     else if(b.dataset.exp){id=b.dataset.exp;var data={},r3=ONI.all(),n3=jget(NK,{});
@@ -170,6 +186,8 @@ document.addEventListener('DOMContentLoaded',function(){
       if(IDKEY[id]&&localStorage.getItem(IDKEY[id])!=null)data[IDKEY[id]]=localStorage.getItem(IDKEY[id]);
       download('onismeret-'+id+'-'+new Date().toISOString().slice(0,10)+'.json',{app:'onismeret',v:1,kind:'test',test:id,exported:new Date().toISOString(),data:data});
       say(name(id)+' exportálva. A főoldalon visszaállítható; csak ezt a tesztet írja felül.');}
+    else if(b.dataset.unf){var u=jget('onismeret-unclear-v1',{});if(u[b.dataset.unf]){delete u[b.dataset.unf][b.dataset.qn];if(!Object.keys(u[b.dataset.unf]).length)delete u[b.dataset.unf];}jset('onismeret-unclear-v1',u);render();}
+    else if(b.dataset.uncm){var c=jget('onismeret-commit-v1',{});c[b.dataset.uncm]=(c[b.dataset.uncm]||[]).filter(function(x){return x.t!==b.dataset.t});if(!c[b.dataset.uncm].length)delete c[b.dataset.uncm];jset('onismeret-commit-v1',c);render();}
     else if(b.id==='del-orph'){if(!confirm('Törlöd a régi kérdőívváltozatok mentett válaszait?'))return;snapshot();
       var known={};Object.keys(IDKEY).forEach(function(x){known[IDKEY[x]]=1});Object.keys(ours()).forEach(function(k){if(/-responses-v\d+$/.test(k)&&!known[k])localStorage.removeItem(k)});say('Régi válaszok törölve.');render();}
   });
