@@ -469,6 +469,27 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     await ctx.close();
   }
 
+  console.log('\n18. Hiányzó kérdések listája');
+  {
+    const ctx = await newCtx(); const p = await pageIn(ctx);
+    await p.goto(R + 'szabalyozas.html#test-ders'); await p.waitForTimeout(200);
+    await p.evaluate(() => { const g = {}; document.querySelectorAll('#test-ders button[data-n]').forEach(x => (g[x.dataset.n] = g[x.dataset.n] || []).push(x)); Object.entries(g).forEach(([n, a]) => { if (!['4', '9', '15'].includes(n)) a[0].click(); }); });
+    await p.waitForTimeout(800);
+    await p.click('#oni-miss'); await p.waitForTimeout(100);
+    const items = await p.$$eval('#oni-misslist .oni-mi', x => x.map(e => e.textContent.trim().slice(0, 4)));
+    ok(items.length === 3 && /^4\./.test(items[0]) && /^15\./.test(items[2]), 'a lista pontosan a 3 hiányzó kérdést mutatja', items);
+    await p.click('#oni-misslist .oni-mi[data-k="8"]'); await p.waitForTimeout(700);
+    const st = await p.evaluate(() => { const u = [...document.querySelectorAll('#test-ders .oni-unit')][8], r = u.getBoundingClientRect(); return { open: !!document.getElementById('oni-misslist'), vis: r.top >= 0 && r.bottom <= innerHeight, foc: u.contains(document.activeElement) }; });
+    ok(!st.open && st.vis && st.foc, 'kattintásra a kérdéshez ugrik, és oda kerül a fókusz', st);
+    await p.goto(R + 'attitudok.html#test-nsss'); await p.waitForTimeout(200);
+    await p.evaluate(() => { [...document.querySelectorAll('#test-nsss .q')].slice(0, 9).forEach(q => q.querySelector('button[data-n]').click()); });
+    await p.waitForTimeout(800); await p.click('#oni-miss'); await p.waitForTimeout(100);
+    const ns = await p.evaluate(() => ({ req: document.querySelectorAll('#oni-misslist > ul')[0].querySelectorAll('.oni-mi').length, opt: /Kihagyható/.test(document.getElementById('oni-misslist').textContent), lists: document.querySelectorAll('#oni-misslist > ul').length }));
+    ok(ns.req === 1 && ns.opt && ns.lists === 2, 'NSSS: a partner-kérdések külön, kihagyhatóként szerepelnek', ns);
+    ok(p._errs.length === 0, 'hibamentes', p._errs);
+    await ctx.close();
+  }
+
   await browser.close();
   console.log(`\n${pass} rendben, ${fail} hiba`);
   process.exit(fail ? 1 : 0);

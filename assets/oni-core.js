@@ -208,47 +208,78 @@ window.ONI=window.ONI||(function(){
       if(document.getElementById('oni-fill-css'))return;
       var st=document.createElement('style');st.id='oni-fill-css';
       st.textContent='body.oni-focus::before,body.oni-focus::after{opacity:.15!important}body.oni-focus .hub-header,body.oni-focus .test-panel.active header,body.oni-focus .hub-tabs,body.oni-focus .progress-shell{display:none!important}body.oni-focus .oni-unit:not(.oni-cur){display:none!important}body.oni-focus .test-panel.active .section-head,body.oni-focus .test-panel.active .intro-box{display:none}'+
-      'body.oni-focus .oni-unit.oni-cur{margin-top:18vh;transform:scale(1.02);box-shadow:0 0 0 2px rgba(251,191,36,.55),0 16px 48px rgba(0,0,0,.35)}'+
+      'body.oni-focus .oni-sheet,body.oni-focus button[id$=showResults]:disabled,body.oni-focus button[id$=-show]:disabled{display:none!important}body.oni-focus{padding-bottom:180px}body.oni-focus .oni-unit.oni-cur{margin-top:12vh;transform:scale(1.02);box-shadow:0 0 0 2px rgba(251,191,36,.55),0 16px 48px rgba(0,0,0,.35)}'+
       '.oni-unit.oni-flash{animation:oniFlash 1.6s ease}@keyframes oniFlash{0%,60%{box-shadow:0 0 0 3px rgba(251,191,36,.8)}100%{box-shadow:none}}'+
       '.oni-btn{white-space:nowrap;appearance:none;cursor:pointer;border:1px solid rgba(148,163,184,.35);background:rgba(10,20,40,.92);color:#e6ecf5;font:600 12.5px/1 Manrope,Inter,system-ui,sans-serif;padding:10px 14px;border-radius:99px;backdrop-filter:blur(8px)}'+
       '.oni-btn:hover{border-color:#fbbf24}.oni-btn.pri{background:#fbbf24;color:#0a1428;border-color:#fbbf24}'+
-      '@media (max-width:480px){#oni-focusbar .oni-btn{padding:9px 11px;font-size:12px}#oni-pos{font-size:11.5px!important;padding:0 2px!important}}@media print{#oni-pill,#oni-focusbar,#oni-toast{display:none!important}}';
+      '#oni-misslist{position:fixed;left:14px;bottom:64px;z-index:9999;width:min(420px,calc(100% - 28px));max-height:55vh;overflow:auto;padding:12px 14px;border-radius:14px;background:rgba(10,20,40,.97);color:#e6ecf5;border:1px solid rgba(251,191,36,.45);box-shadow:0 12px 40px rgba(0,0,0,.45);font:500 13px/1.45 Manrope,Inter,system-ui,sans-serif}'+
+      '#oni-misslist ul{list-style:none;margin:6px 0 4px;padding:0}#oni-misslist p{margin:6px 0;color:#cbd5e1}#oni-misslist .oni-ml-o{color:#fcd34d}'+
+      '.oni-ml-h{display:flex;justify-content:space-between;align-items:center}.oni-ml-x{background:none;border:none;color:#cbd5e1;font-size:20px;cursor:pointer;padding:0 4px}'+
+      '.oni-mi{display:block;width:100%;text-align:left;background:none;border:none;color:#e6ecf5;font:inherit;padding:6px 8px;border-radius:8px;cursor:pointer}.oni-mi:hover,.oni-mi:focus-visible{background:rgba(251,191,36,.15);outline:2px solid #fbbf24}.oni-mi b{color:#fbbf24;margin-right:4px}'+
+      '@media (max-width:480px){#oni-misslist{bottom:110px}}'+
+      '@media (max-width:480px){body.oni-focus .oni-unit.oni-cur{margin-top:12px;transform:none}#oni-focusbar .oni-btn{padding:9px 11px;font-size:12px}#oni-pos{font-size:11.5px!important;padding:0 2px!important}}@media print{#oni-pill,#oni-focusbar,#oni-toast{display:none!important}}';
       document.head.appendChild(st);
     }
     function mkPill(){
       if(!pill){pill=document.createElement('div');pill.id='oni-pill';pill.setAttribute('style','position:fixed;left:14px;bottom:14px;z-index:9998;display:flex;gap:8px;flex-wrap:wrap;max-width:calc(100% - 28px)');document.body.appendChild(pill);}
+      var ol=document.getElementById('oni-misslist');if(ol&&!focus)ol.remove();   /* elavult lista helyett a gombbal újranyitható */
       if(focus||!scan()){pill.style.display='none';return;}
       var i=firstOpen(),n=units.length,done=units.filter(answered).length;
       pill.style.display='flex';
       var sb=showBtn(),resVisible=!!scope().querySelector('.results.visible, .results[style*="block"], #results.visible, .results-wrap.visible');
       pill.innerHTML=(i>=0&&done>0?'<button class="oni-btn pri" id="oni-cont">Folytatás: '+(i+1)+'. kérdés ›</button>':'')
-        +(i>=0&&done>0?'<span class="oni-btn" style="cursor:default;opacity:.85">'+(n-done)+' kérdés hiányzik</span>':'')
+        +(i>=0&&done>0?'<button class="oni-btn" id="oni-miss" aria-expanded="false" aria-controls="oni-misslist" title="A hiányzó kérdések listája">'+(n-done)+' kérdés hiányzik'+(optMiss()?' ('+optMiss()+' kihagyható)':'')+' ▴</button>':'')
         +(i>=0?'<button class="oni-btn" id="oni-focus-on" title="Egyszerre egy kérdés, billentyűzettel is (1–9, ←/→)">Fókusz mód</button>':'')
         +(i<0&&sb&&!sb.disabled&&!resVisible?'<button class="oni-btn pri" id="oni-res">Minden kérdés megvan · Eredmény megtekintése ›</button>':'');
       var rb=document.getElementById('oni-res');if(rb)rb.onclick=function(){sb.click();setTimeout(mkPill,400)};
       var c=document.getElementById('oni-cont');if(c)c.onclick=function(){go(firstOpen(),true)};
       var f=document.getElementById('oni-focus-on');if(f)f.onclick=function(){enter()};
+      var ms=document.getElementById('oni-miss');if(ms)ms.onclick=function(){missList(ms)};
     }
+    /* ── Kattintható lista a hiányzó kérdésekről; a szándékosan kihagyható részek külön ── */
+    function optOf(u){var o=u.closest('[data-optional]');return o?o.getAttribute('data-optional'):null}
+    function optMiss(){return units.filter(function(u){return !answered(u)&&optOf(u)}).length}
+    function qLabel(u){var c=u.cloneNode(true);[].forEach.call(c.querySelectorAll('button,input,label,.oni-unclear,.q-num'),function(x){x.remove()});var t=c.textContent.replace(/\s+/g,' ').trim();return t.length>70?t.slice(0,68).trim()+'…':t}
+    function missList(anchor){
+      var old=document.getElementById('oni-misslist');if(old){old.remove();if(anchor)anchor.setAttribute('aria-expanded','false');return;}
+      var req=[],opt=[];units.forEach(function(u,k){if(answered(u))return;(optOf(u)?opt:req).push(k)});
+      var row=function(k){return '<li><button type="button" class="oni-mi" data-k="'+k+'"><b>'+(k+1)+'.</b> '+esc(qLabel(units[k]))+'</button></li>'};
+      var el=document.createElement('div');el.id='oni-misslist';el.setAttribute('role','dialog');el.setAttribute('aria-label','Hiányzó kérdések');
+      el.innerHTML='<div class="oni-ml-h"><b>Hiányzó kérdések</b><button type="button" class="oni-ml-x" aria-label="Bezár">×</button></div>'+
+        (req.length?'<ul>'+req.map(row).join('')+'</ul>':'<p>Minden kötelező kérdés megvan.</p>')+
+        (opt.length?'<p class="oni-ml-o">Kihagyható ('+esc(optOf(units[opt[0]]))+'): ha nem vonatkozik rád, ezek nélkül is megnyitható az eredmény.</p><ul>'+opt.map(row).join('')+'</ul>':'');
+      document.body.appendChild(el);if(anchor)anchor.setAttribute('aria-expanded','true');
+      el.querySelector('.oni-ml-x').onclick=function(){missList(anchor)};
+      el.addEventListener('click',function(e){var b=e.target.closest('.oni-mi');if(!b)return;var k=+b.getAttribute('data-k');el.remove();if(anchor)anchor.setAttribute('aria-expanded','false');
+        if(focus)show(k);else{go(k,true);var bt=units[k].querySelector('button[data-n]');if(bt)setTimeout(function(){bt.focus({preventScroll:true})},450);}});
+      var first=el.querySelector('.oni-mi');if(first)first.focus();
+    }
+    function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
     function go(i,flash){if(i<0||!units[i])return;units[i].scrollIntoView({behavior:'smooth',block:'center'});if(flash){units[i].classList.remove('oni-flash');void units[i].offsetWidth;units[i].classList.add('oni-flash');}}
     function show(i){
       cur=Math.max(0,Math.min(units.length-1,i));
       units.forEach(function(u,k){u.classList.toggle('oni-cur',k===cur)});
       if(bar){var d=units.filter(answered).length;bar.querySelector('#oni-pos').textContent=(cur+1)+' / '+units.length+(d<units.length?' · '+(units.length-d)+' hiányzik':' · kész');}
-      window.scrollTo({top:units[cur].getBoundingClientRect().top+window.scrollY-window.innerHeight*0.18,behavior:'smooth'});
+      /* a kérdés és minden válaszgombja férjen el a vezérlősáv fölött; ha túl magas, a tetejétől látszódjon */
+      var u=units[cur],r=u.getBoundingClientRect(),bh=bar?bar.getBoundingClientRect().height+20:0,room=window.innerHeight-bh;
+      var off=r.height>room-24?12:Math.max(12,Math.min(window.innerHeight*0.18,room-r.height-12));
+      window.scrollTo({top:r.top+window.scrollY-off,behavior:'smooth'});
     }
     function enter(){
       if(!scan())return;focus=true;document.body.classList.add('oni-focus');
       bar=document.createElement('div');bar.id='oni-focusbar';
       bar.setAttribute('style','position:fixed;left:50%;bottom:12px;transform:translateX(-50%);z-index:9999;display:flex;flex-wrap:wrap;justify-content:center;gap:6px;align-items:center;padding:7px;max-width:calc(100% - 16px);width:max-content;border-radius:22px;background:rgba(10,20,40,.94);border:1px solid rgba(251,191,36,.45);box-shadow:0 12px 40px rgba(0,0,0,.45)');
-      bar.innerHTML='<label class="oni-btn" style="display:flex;gap:6px;align-items:center" title="Válasz után automatikusan a következő kérdésre lép"><input type="checkbox" id="oni-auto" '+(auto?'checked':'')+'> auto</label><button class="oni-btn" id="oni-prev" aria-label="Előző kérdés">‹ Előző</button><span id="oni-pos" style="color:#cbd5e1;font:600 12.5px Manrope,Inter,sans-serif;padding:0 8px;white-space:nowrap"></span><button class="oni-btn pri" id="oni-next" aria-label="Következő kérdés">Tovább ›</button><button class="oni-btn" id="oni-exit" title="Vissza a listanézethez">Lista</button>';
+      bar.innerHTML='<label class="oni-btn" style="display:flex;gap:6px;align-items:center" title="Válasz után automatikusan a következő kérdésre lép"><input type="checkbox" id="oni-auto" '+(auto?'checked':'')+'> auto</label><button class="oni-btn" id="oni-prev" aria-label="Előző kérdés">‹ Előző</button><span id="oni-pos" style="color:#cbd5e1;font:600 12.5px Manrope,Inter,sans-serif;padding:0 8px;white-space:nowrap"></span><button class="oni-btn pri" id="oni-next" aria-label="Következő kérdés">Tovább ›</button><button class="oni-btn" id="oni-fmiss" title="A hiányzó kérdések listája" aria-controls="oni-misslist">Hiányzók</button><button class="oni-btn" id="oni-exit" title="Vissza a listanézethez">Lista</button>';
       document.body.appendChild(bar);
       bar.querySelector('#oni-auto').onchange=function(e){auto=e.target.checked;try{var st=JSON.parse(localStorage.getItem('onismeret-settings-v1'))||{};st.autoAdvance=auto;localStorage.setItem('onismeret-settings-v1',JSON.stringify(st))}catch(x){}};
       bar.querySelector('#oni-prev').onclick=function(){show(cur-1)};
       bar.querySelector('#oni-next').onclick=function(){next()};
       bar.querySelector('#oni-exit').onclick=function(){exit()};
+      bar.querySelector('#oni-fmiss').onclick=function(){missList(this)};
       mkPill();var i=firstOpen();show(i<0?0:i);
     }
     function exit(scrollToEnd){
+      var ml=document.getElementById('oni-misslist');if(ml)ml.remove();
       focus=false;document.body.classList.remove('oni-focus');units.forEach(function(u){u.classList.remove('oni-cur')});
       if(bar){bar.remove();bar=null;}mkPill();
       if(scrollToEnd){var sb=scope().querySelector('button[id$=show], button[id$=showResults], .results-trigger button');if(sb)sb.scrollIntoView({behavior:'smooth',block:'center'});}

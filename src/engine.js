@@ -101,7 +101,7 @@ function makeTest(cfg){
       items.filter(it=>it.sec===sec).forEach(it=>{
         const opts=it.opts||cfg.scale;
         const choice=!!it.opts;
-        const cls=choice?'opts':`scale${opts.length===4?' s4':opts.length===6?' s6':''}`;
+        const cls=choice?'opts'+(it.opts.every(o=>String(o.t).length<=3)?' short':''):`scale${opts.length===4?' s4':opts.length===6?' s6':''}`;
         html+=`<div class="q" data-n="${it.n}"><div class="q-head"><span class="q-num">${it.n}.</span><span class="q-text">${it.t}</span></div>
           <div class="${cls}">${opts.map((o,i)=>{
             const val=choice?i:o.v;

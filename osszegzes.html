@@ -146,11 +146,11 @@ h2 em{font-style:italic;color:var(--gold)}
   body.rep-mode #report .cols{columns:2;column-gap:10pt}
 }
 </style>
-<script src="assets/oni-core.js?v=06166a21"></script>
+<script src="assets/oni-core.js?v=9c7ce065"></script>
 <script src="assets/oni-schema.js?v=190e2f3e" defer></script>
 <script src="assets/tests-data.js?v=8174bfd3" defer></script>
 <script src="assets/results-plus.js?v=27d63035" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=8936e71a">
+<link rel="stylesheet" href="assets/theme.css?v=91a11e2c">
 </head>
 <body>
 <div class="wrap">
@@ -323,13 +323,14 @@ const RULES=[
 
 /* A kiváltó eredmények: teszt, érintett skála, aktuális érték és kitöltési dátum */
 function evHTML(hits){
-  const rows=[];const seen=new Set();
-  hits.forEach(s=>{const r=cur(s.test);if(!r)return;
-    const parts=(s.used||[]).filter(([id,k])=>{const key=id+'|'+k;if(seen.has(key))return false;seen.add(key);return true}).map(([id,k])=>{
-      if(k==='*'){const a=avgAll(id);return 'skálaátlag '+(Math.round(a*100)/100);}
-      const d=r.d&&r.d[k];return d?esc(d[0])+': '+d[1]+' <small>('+d[2]+'–'+d[3]+')</small>':''}).filter(Boolean);
-    if(!parts.length&&r.h)parts.push(esc(r.h));
-    rows.push(`<li><b>${esc(NAME[s.test]||s.test)}</b> · ${parts.join(', ')||esc(s.label)} · ${fmt(when(r))}</li>`);});
+  const rng=(lo,hi)=>lo<0?String(lo).replace('-','−')+' … '+hi:lo+'–'+hi;
+  const by=new Map();
+  hits.forEach(s=>{const r=cur(s.test);if(!r)return;const e=by.get(s.test)||{r,parts:[],seen:new Set()};by.set(s.test,e);
+    (s.used||[]).forEach(([id,k])=>{if(e.seen.has(k))return;e.seen.add(k);
+      if(k==='*'){e.parts.push('skálaátlag '+(Math.round(avgAll(id)*100)/100));return;}
+      const d=r.d&&r.d[k];if(d)e.parts.push(esc(d[0])+': '+String(d[1]).replace('-','−')+' <small>('+rng(d[2],d[3])+')</small>');});
+    if(!(s.used||[]).length&&!e.parts.length&&r.h)e.parts.push(esc(r.h));});
+  const rows=[...by.entries()].map(([id,e])=>`<li><b>${esc(NAME[id]||id)}</b> · ${e.parts.join(', ')} · ${fmt(when(e.r))}</li>`);
   return rows.length?`<div class="pat-ev"><span>Ezek az eredmények váltották ki:</span><ul>${rows.join('')}</ul></div>`:'';
 }
 /* Ami nem teljesül, az nem ellentmondás: a többi teszt ezt a mintát egyszerűen nem jelzi. */

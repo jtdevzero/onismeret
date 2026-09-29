@@ -61,11 +61,11 @@ h2{font-family:var(--font-serif);font-weight:400;font-size:28px;margin:44px 0 8p
 @media (max-width:560px){.wrap{padding:28px 16px 64px}}
 </style>
 
-<script src="assets/oni-core.js?v=06166a21"></script>
+<script src="assets/oni-core.js?v=9c7ce065"></script>
 <script src="assets/oni-schema.js?v=190e2f3e" defer></script>
 <script src="assets/tests-data.js?v=8174bfd3" defer></script>
 <script src="assets/results-plus.js?v=27d63035" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=8936e71a">
+<link rel="stylesheet" href="assets/theme.css?v=91a11e2c">
 </head>
 <body>
 <div class="wrap">
@@ -95,6 +95,13 @@ document.addEventListener('DOMContentLoaded',function(){
   var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
   /* score/retake: 'no' | 'part' | 'yes' */
   var LOG=[
+    {d:'2026-09-29',t:'Óvatosabb értelmezés, rövidebb összefoglaló, hiányzó kérdések listája',score:'no',retake:'no',items:[
+      'Az „átlag alatti/feletti” és a becsült percentilis helyett az oldal azt írja le, hol van az eredményed a saját válaszskáláján (MAIA-2, NSSS, SDI-2, SIS/SES, ECR-R). A saját fordítások nincsenek magyar mintán normázva, ezért külföldi átlagokhoz nem hasonlít. A pontszámok nem változtak.',
+      'A Kötődési mélytérkép nem számol többé populációs rangot: saját fejlesztésű, nem validált kérdőív, nincs referenciamintája.',
+      'Kikerültek a diagnózisra utaló és a túl határozott megfogalmazások; helyettük feltételes értelmezés és tisztázó kérdés áll. A párnézet szövegei is óvatosabbak lettek.',
+      'A „Röviden” rész néhány mondat, a fő eredmények és egy kérdés. A diagram a vizuális áttekintésbe, a jegyzetek és a vállalás a „Saját megjegyzések” részbe kerültek, az eredmény végére.',
+      'A „N kérdés hiányzik” gombra kattintva listát kapsz a hiányzó kérdésekről, és bármelyikhez odaugorhatsz. A szándékosan kihagyható részek (NSSS partner-kérdések) külön szerepelnek.',
+      'Mobilos fókusz mód: a kérdés és a válaszok nem csúsznak a vezérlősáv alá, a rövid számskálák (például 1–8) egy tömör rácsban jelennek meg, a tesztadatlap és a még nem használható eredménygomb elrejtve.']},
     {d:'2026-09-29',t:'Pontosabb eredménykezelés és ellenőrzés',score:'no',retake:'no',items:[
       'Új mérés csak az „Új kitöltés” gombbal indul, és akkor is külön bejegyzés lesz, ha ugyanazon a napon ugyanaz az eredmény jön ki. Ha új kitöltés nélkül módosítasz válaszokat, az javításként ugyanahhoz a méréshez tartozik; az eredmény újranyitása nem mérés.',
       'A MAIA-2 régi változatával készült eredmény az előzményekben „korábbi változat” jelöléssel megmarad, de a visszatérő mintákba már nem számít bele.',

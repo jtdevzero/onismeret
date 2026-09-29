@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kapcsolati dinamika — szeretetstílus · konfliktus · Gottman · temperamentum</title>
 <link rel="stylesheet" href="fonts/fonts.css?v=a00887e2">
-<script src="assets/oni-core.js?v=06166a21"></script>
+<script src="assets/oni-core.js?v=9c7ce065"></script>
 <style>/* A hub-oldalak alapstílusa (eredetileg a szemelyiseg.html-ből). */
 :root{
   --font-display:'Fraunces','Cardo',serif;
@@ -214,6 +214,8 @@ body::after{content:"";position:fixed;inset:0;background-image:url("data:image/s
 .scale.s4{grid-template-columns:repeat(4,1fr)}
 .scale.s6{grid-template-columns:repeat(6,1fr)}
 .opts{display:flex;flex-direction:column;gap:7px}
+.opts.short{display:grid;grid-template-columns:repeat(8,1fr)}.opts.short .opt-btn{text-align:center;padding-left:0;padding-right:0}
+@media (max-width:560px){.opts.short{grid-template-columns:repeat(4,1fr)}}
 .opt-btn{appearance:none;text-align:left;border:1.5px solid var(--line-dark);background:rgba(12,30,63,0.5);color:var(--ink-lite);padding:12px 16px;border-radius:12px;cursor:pointer;font:inherit;font-size:14px;line-height:1.45;transition:all .18s ease}
 .opt-btn:hover:not(.selected){border-color:var(--line-glow);background:rgba(147,197,253,0.08);transform:translateX(2px)}
 .opt-btn.selected{background:linear-gradient(135deg,var(--c1),var(--c2));border-color:var(--c1);color:#fff;box-shadow:0 4px 16px color-mix(in srgb,var(--c1) 35%,transparent)}
@@ -260,7 +262,7 @@ body::after{content:"";position:fixed;inset:0;background-image:url("data:image/s
 <script src="assets/oni-schema.js?v=190e2f3e" defer></script>
 <script src="assets/tests-data.js?v=8174bfd3" defer></script>
 <script src="assets/results-plus.js?v=27d63035" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=8936e71a">
+<link rel="stylesheet" href="assets/theme.css?v=91a11e2c">
 </head>
 <body>
 <div class="hub-shell">
@@ -379,7 +381,7 @@ function makeTest(cfg){
       items.filter(it=>it.sec===sec).forEach(it=>{
         const opts=it.opts||cfg.scale;
         const choice=!!it.opts;
-        const cls=choice?'opts':`scale${opts.length===4?' s4':opts.length===6?' s6':''}`;
+        const cls=choice?'opts'+(it.opts.every(o=>String(o.t).length<=3)?' short':''):`scale${opts.length===4?' s4':opts.length===6?' s6':''}`;
         html+=`<div class="q" data-n="${it.n}"><div class="q-head"><span class="q-num">${it.n}.</span><span class="q-text">${it.t}</span></div>
           <div class="${cls}">${opts.map((o,i)=>{
             const val=choice?i:o.v;

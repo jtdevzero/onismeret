@@ -9,6 +9,8 @@
 .scale.s4{grid-template-columns:repeat(4,1fr)}
 .scale.s6{grid-template-columns:repeat(6,1fr)}
 .opts{display:flex;flex-direction:column;gap:7px}
+.opts.short{display:grid;grid-template-columns:repeat(8,1fr)}.opts.short .opt-btn{text-align:center;padding-left:0;padding-right:0}
+@media (max-width:560px){.opts.short{grid-template-columns:repeat(4,1fr)}}
 .opt-btn{appearance:none;text-align:left;border:1.5px solid var(--line-dark);background:rgba(12,30,63,0.5);color:var(--ink-lite);padding:12px 16px;border-radius:12px;cursor:pointer;font:inherit;font-size:14px;line-height:1.45;transition:all .18s ease}
 .opt-btn:hover:not(.selected){border-color:var(--line-glow);background:rgba(147,197,253,0.08);transform:translateX(2px)}
 .opt-btn.selected{background:linear-gradient(135deg,var(--c1),var(--c2));border-color:var(--c1);color:#fff;box-shadow:0 4px 16px color-mix(in srgb,var(--c1) 35%,transparent)}

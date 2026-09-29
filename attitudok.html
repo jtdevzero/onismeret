@@ -251,11 +251,11 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
   body{background:#fff}
 }
 </style>
-<script src="assets/oni-core.js?v=06166a21"></script>
+<script src="assets/oni-core.js?v=9c7ce065"></script>
 <script src="assets/oni-schema.js?v=190e2f3e" defer></script>
 <script src="assets/tests-data.js?v=8174bfd3" defer></script>
 <script src="assets/results-plus.js?v=27d63035" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=8936e71a">
+<link rel="stylesheet" href="assets/theme.css?v=91a11e2c">
 </head>
 <body>
 
@@ -658,7 +658,7 @@ function renderQuiz(){
   const root=document.getElementById('nsss-quiz');
   let html='';
   ITEMS.forEach(item=>{
-    html+=`<div class="q" data-n="${item.n}"><span class="q-num">${String(item.n).padStart(2,'0')}. · ${item.sub==='EGO'?'saját':'partner/aktivitás'}</span><div class="q-text">Mennyire vagyok elégedett ezzel az elmúlt 6 hónapban: <strong>${item.t}</strong></div><div class="scale" role="radiogroup">${SCALE.map(l=>`<button class="scale-btn" data-value="${l.v}" data-n="${item.n}" type="button"><span class="v">${l.v}</span><span class="l">${l.l}</span></button>`).join('')}</div></div>`;
+    html+=`<div class="q" data-n="${item.n}"${item.sub==='EGO'?'':' data-optional="partner-kérdések"'}><span class="q-num">${String(item.n).padStart(2,'0')}. · ${item.sub==='EGO'?'saját':'partner/aktivitás'}</span><div class="q-text">Mennyire vagyok elégedett ezzel az elmúlt 6 hónapban: <strong>${item.t}</strong></div><div class="scale" role="radiogroup">${SCALE.map(l=>`<button class="scale-btn" data-value="${l.v}" data-n="${item.n}" type="button"><span class="v">${l.v}</span><span class="l">${l.l}</span></button>`).join('')}</div></div>`;
   });
   root.innerHTML=html;
   root.querySelectorAll('.scale-btn').forEach(btn=>{
