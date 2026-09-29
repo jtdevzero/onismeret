@@ -9,7 +9,7 @@
   function btn(){
     if(document.getElementById('oni-theme'))return;
     var b=document.createElement('button');b.id='oni-theme';b.type='button';
-    function lbl(){var dark=d.getAttribute('data-theme')==='dark';b.textContent=dark?'☀':'☾';b.setAttribute('aria-label',dark?'Váltás világos témára':'Váltás sötét témára');b.title=b.getAttribute('aria-label');}
+    function lbl(){var dark=d.getAttribute('data-theme')==='dark';b.innerHTML=dark?'<span class="ic" aria-hidden="true">☀</span>Világos mód':'<span class="ic" aria-hidden="true">☾</span>Sötét mód';b.setAttribute('aria-label',dark?'Váltás világos témára':'Váltás sötét témára');b.title=b.getAttribute('aria-label');}
     lbl();
     b.onclick=function(){var t=d.getAttribute('data-theme')==='dark'?'light':'dark';d.setAttribute('data-theme',t);lbl();
       try{var s=JSON.parse(localStorage.getItem('onismeret-settings-v1'))||{};s.theme=t;localStorage.setItem('onismeret-settings-v1',JSON.stringify(s))}catch(e){}};

@@ -97,7 +97,7 @@ h2{font-family:var(--font-serif);font-weight:400;font-size:28px;margin:44px 0 8p
 
   <h2>Beállítások</h2>
   <p class="h2sub" id="set-desc"></p>
-  <div class="tools"><button type="button" class="btn ghost" id="set-reset">Beállítások alaphelyzetbe</button></div>
+  <div class="tools"><button type="button" class="btn" id="set-theme">Téma váltása</button><button type="button" class="btn ghost" id="set-reset">Beállítások alaphelyzetbe</button></div>
 
   <h2>Minden <em>törlése</em></h2>
   <div class="card danger-zone">
@@ -193,6 +193,7 @@ document.addEventListener('DOMContentLoaded',function(){
   });
   document.getElementById('exp-all').onclick=function(){var d=ours();if(!Object.keys(d).length){say('Nincs még mit menteni.',true);return;}
     download('onismeret-mentes-'+new Date().toISOString().slice(0,10)+'.json',{app:'onismeret',v:1,exported:new Date().toISOString(),data:d});say(Object.keys(d).length+' tétel elmentve fájlba. Érzékeny adatokat tartalmaz, tartsd biztonságos helyen.');};
+  document.getElementById('set-theme').onclick=function(){var t=document.getElementById('oni-theme');if(t)t.click();setTimeout(render,30);};
   document.getElementById('set-reset').onclick=function(){localStorage.removeItem(SK);document.documentElement.setAttribute('data-theme','light');say('Beállítások alaphelyzetben.');render();};
   var box=document.getElementById('wipe-box'),inp=document.getElementById('wipe-in'),go=document.getElementById('wipe-go');
   document.getElementById('wipe').onclick=function(){box.classList.add('on');inp.value='';go.disabled=true;inp.focus();};

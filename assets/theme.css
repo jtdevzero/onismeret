@@ -164,8 +164,9 @@ html[data-page="ysq"] #themeToggle{display:none!important}
 html[data-theme="light"][data-page="ysq"] body{background:var(--u-bg)!important}
 
 /* ── Téma-kapcsoló gomb ─────────────────────────────────────────────── */
-#oni-theme{position:fixed;right:14px;bottom:14px;z-index:9997;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;cursor:pointer;
-  border:1px solid var(--u-line);background:var(--u-paper);color:var(--u-ink);box-shadow:var(--u-shadow);font-size:18px;line-height:1;padding:0}
+#oni-theme{position:absolute;right:14px;top:14px;z-index:9997;height:36px;padding:0 14px;border-radius:99px;display:inline-flex;align-items:center;gap:7px;cursor:pointer;
+  border:1px solid var(--u-line);background:var(--u-paper);color:var(--u-ink);box-shadow:var(--u-shadow);font:600 13px/1 'Inter',system-ui,sans-serif;white-space:nowrap}
+#oni-theme .ic{font-size:15px}
 #oni-theme:hover{border-color:var(--u-gold2)}
 #oni-theme:focus-visible,html[data-theme] :is(button,a,input,select,label):focus-visible{outline:2px solid var(--u-sapphire2);outline-offset:2px}
 @media print{#oni-theme{display:none!important}}
@@ -263,3 +264,4 @@ html[data-theme="light"][data-page="index"] .home-card.first{border-color:var(--
 html[data-theme="light"][data-page="index"] .goal-chip[aria-pressed="true"]{background:var(--u-gold-soft)!important;border-color:var(--u-gold2)!important}
 html[data-theme="light"][data-page="index"] .commit-row{border-color:#e7d7a8!important;background:var(--u-bg)!important}
 .oni-unclear.tight{top:-11px;right:0}
+@media (max-width:640px){html[data-theme] body{padding-top:44px!important}#oni-theme{top:8px;right:8px;height:32px;padding:0 12px;font-size:12.5px}}
