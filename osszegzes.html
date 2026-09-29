@@ -44,6 +44,30 @@ h2 em{font-style:italic;color:var(--gold)}
 .action b{color:var(--gold);font-weight:600}
 .refl{font-size:14px;color:var(--ink)!important;font-style:italic}
 .note{margin-top:6px}.note .ncond{font-size:12.5px;color:var(--ink-mute)}.note .ntext{font-style:italic;margin-top:4px;font-size:13.5px}
+.hc{margin-top:14px;border-top:1px dashed var(--line);padding-top:12px;grid-column:1/-1}
+.hc h5{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mute);margin:0 0 8px;font-weight:700}
+.hc-wrap{position:relative}
+.hc svg{display:block;width:100%;height:auto;overflow:visible}
+.hc .ax{stroke:var(--line);stroke-width:1}
+.hc .gr{stroke:var(--line);stroke-width:1;stroke-dasharray:2 4;opacity:.7}
+.hc text{font:11px 'Inter',system-ui,sans-serif;fill:var(--ink-mute)}
+.hc text.dl{font-weight:600;fill:var(--ink-soft)}
+.hc .ln{fill:none;stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.hc .mk{stroke:var(--bg-card,#0f2038);stroke-width:2}
+.hc .xh{stroke:var(--ink-mute);stroke-width:1;opacity:0}
+.hc-leg{display:flex;flex-wrap:wrap;gap:4px 14px;margin:8px 0 0;font-size:12.5px;color:var(--ink-soft)}
+.hc-leg span{display:inline-flex;align-items:center;gap:6px}
+.hc-leg svg{width:14px;height:14px}
+.hc-tip{position:absolute;pointer-events:none;background:var(--bg-card,#0f2038);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:12.5px;color:var(--ink);box-shadow:0 8px 24px rgba(0,0,0,.25);opacity:0;transition:opacity .12s;white-space:nowrap;z-index:5}
+.hc-tip b{display:block;margin-bottom:4px;color:var(--ink)}
+.hc-tip i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+.hc details{margin-top:6px}.hc summary{cursor:pointer;font-size:12px;color:var(--sapphire)}
+.hc table{border-collapse:collapse;font-size:12.5px;margin-top:6px;width:100%}.hc th,.hc td{padding:4px 8px;border-bottom:1px solid var(--line);text-align:right}.hc th:first-child,.hc td:first-child{text-align:left}
+.hc-one{font-size:12.5px;color:var(--ink-mute)}
+.sublinks{font-size:13px;color:var(--ink-mute);margin:-28px 0 30px}.sublinks a{color:var(--sapphire)}
+.demo-bar{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;margin:0 0 18px;padding:12px 16px;border-radius:12px;border:1px dashed var(--gold);background:rgba(251,191,36,.08);font-size:14px;color:var(--ink-soft)}
+.demo-bar strong{color:var(--gold);letter-spacing:.08em;text-transform:uppercase;font-size:12px}
+.demo-bar a{margin-left:auto;color:var(--gold);font-weight:600}
 .refl b{font-style:normal;color:var(--sapphire);font-weight:600}
 .locked{color:var(--ink-mute);font-size:14px;padding:16px 20px;border:1px dashed var(--line);border-radius:14px}
 .locked a{color:var(--sapphire)}
@@ -128,7 +152,9 @@ h2 em{font-style:italic;color:var(--gold)}
   <span class="kicker">Összegzés</span>
   <h1>A teljes <em>térkép</em></h1>
   <p class="lead">Itt jelennek meg egymás mellett a kitöltött tesztek eredményei: a visszatérő minták, amelyeket több teszt is jelez, a változás az előző kitöltéshez képest, és hogy mit érdemes újramérni. Minden adat csak ebben a böngészőben van.</p>
+  <div class="demo-bar" id="demo-bar" hidden></div>
   <div class="statbar" id="statbar"></div>
+  <p class="sublinks"><a href="adatok.html">Adatok kezelése</a> · <a href="valtozasok.html">Változásnapló</a><span id="demo-link"> · <a href="osszegzes.html?demo=1">Demó profil megtekintése</a></span></p>
   <div id="root"></div>
   <div class="card rep" id="rep-ui" style="--acc:var(--sapphire);margin-top:44px">
     <h3>Terapeuta-összefoglaló (PDF)</h3>
@@ -140,6 +166,7 @@ h2 em{font-style:italic;color:var(--gold)}
   <div id="report"></div>
   <p class="note">A minták <strong>heurisztikák</strong>: egy minta akkor jelenik meg, ha legalább két független teszt ugyanabba az irányba mutat. A küszöbök tájékoztató jellegűek, nem klinikai határértékek. A „saját itemek” jelölésű tesztek (konfliktusmódok, Gottman, Fisher, Négy tendencia, Cselekvési módok) nem validált mérések. Egy minta kérdést vet fel, nem diagnózist mond ki. Az újramérést 90 nap után jelzi.</p>
 </div>
+<script src="assets/demo-data.js"></script>
 <script>
 (function(){
 const REG=[
@@ -179,15 +206,17 @@ const REG=[
 const NAME=Object.fromEntries(REG.map(r=>[r[1],r[2]]));
 const LINK=Object.fromEntries(REG.map(r=>[r[1],r[3]]));
 let SET={};try{SET=JSON.parse(localStorage.getItem('onismeret-settings-v1'))||{}}catch(e){}
-const DUE_DAYS=SET.retake===undefined?90:SET.retake;
+let DUE_DAYS=SET.retake===undefined?90:SET.retake;
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function read(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}}
-const store=(window.ONI&&ONI.all())||{};
+const DEMO=/[?&]demo=1\b/.test(location.search)&&window.ONI_DEMO?window.ONI_DEMO:null;
+const store=DEMO?DEMO.store():((window.ONI&&ONI.all())||{});
+if(DEMO){document.getElementById('demo-link').hidden=true;const b=document.getElementById('demo-bar');b.hidden=false;b.innerHTML=`<strong>Demó profil</strong><span>${esc(DEMO.label)}</span><a href="osszegzes.html">Vissza a saját adataimhoz ›</a>`;document.title='Demó profil · '+document.title;}
 // Visszamenőleges pótlás: a kötődési mélytérkép a saját tárolójában is őrzi az eredményt
-if(!store.kotodes){const a=read('attachment_assessment_v1');if(a&&a.result){store.kotodes=[{t:a.result.date||new Date().toISOString(),n:'Kötődési mélytérkép',h:a.result.style,d:{anxiety:['Szorongás',a.result.anxiety,0,100],avoidance:['Elkerülés',a.result.avoidance,0,100],earned:['Szerzett biztonság',a.result.earned,0,100]}}];}}
+if(!DEMO&&!store.kotodes){const a=read('attachment_assessment_v1');if(a&&a.result){store.kotodes=[{t:a.result.date||new Date().toISOString(),n:'Kötődési mélytérkép',h:a.result.style,d:{anxiety:['Szorongás',a.result.anxiety,0,100],avoidance:['Elkerülés',a.result.avoidance,0,100],earned:['Szerzett biztonság',a.result.earned,0,100]}}];}}
 const last=id=>{const h=store[id];return h&&h.length?h[h.length-1]:null};
 const when=r=>r.done||r.t;
-const NOTES=(()=>{try{return JSON.parse(localStorage.getItem('onismeret-notes-v1'))||{}}catch(e){return {}}})();
+const NOTES=DEMO?DEMO.notes():(()=>{try{return JSON.parse(localStorage.getItem('onismeret-notes-v1'))||{}}catch(e){return {}}})();
 const FITL={fits:'Ez illik rám',not:'Ez nem jellemző rám',explore:'Ezt szeretném megérteni'},CONDL={calm:'nyugodt voltam',tired:'fáradt voltam',stress:'stresszes napom volt',rush:'siettem',interrupted:'megszakítva töltöttem ki'};
 const noteOf=(id,r)=>{const n=(NOTES[id]||{})[r.sid||'_'];return n&&((n.fit&&n.fit.length)||(n.cond&&n.cond.length)||n.text)?n:null};
 const noteHTML=n=>`<div class="hl note">${(n.fit||[]).map(k=>`<span class="badge fresh">${FITL[k]||k}</span>`).join(' ')}${n.cond&&n.cond.length?` <span class="ncond">Körülmények: ${n.cond.map(k=>CONDL[k]||k).join(', ')}</span>`:''}${n.text?`<div class="ntext">„${esc(n.text)}”</div>`:''}</div>`;
@@ -196,7 +225,7 @@ const val=(id,k)=>{const r=last(id);return r&&r.d&&r.d[k]?r.d[k][1]:null};
 const avgAll=id=>{const r=last(id);if(!r||!r.d)return null;const v=Object.values(r.d).map(x=>x[1]).filter(x=>typeof x==='number');return v.length?v.reduce((a,b)=>a+b,0)/v.length:null};
 const days=t=>Math.floor((Date.now()-new Date(t).getTime())/86400000);
 const fmt=t=>new Date(t).toLocaleDateString('hu-HU',{year:'numeric',month:'short',day:'numeric'});
-const hasResponses=key=>{const v=read(key);if(!v)return false;if(key==='ysq_autosave')return v.answers&&Object.keys(v.answers).length>0;if(key==='attachment_assessment_v1')return !!(v.draft||v.result);return Object.keys(v).length>0};
+const hasResponses=key=>{if(DEMO)return false;const v=read(key);if(!v)return false;if(key==='ysq_autosave')return v.answers&&Object.keys(v.answers).length>0;if(key==='attachment_assessment_v1')return !!(v.draft||v.result);return Object.keys(v).length>0};
 
 /* ── Minták: legalább `min` jelzés kell ugyanabba az irányba ── */
 const S=(test,label,fn)=>({test,label,fn});
@@ -301,6 +330,60 @@ const DIR={ecr:{anx:-1,avd:-1},kotodes:{anxiety:-1,avoidance:-1,earned:1},tas:'-
   gott:{maps:1,fond:1,turn:1,repair:1,strength:1,crit:-1,cont:-1,def:-1,stone:-1,risk:-1},
   scs:{total:1,SK:1,CH:1,MI:1,SJ:-1,IS:-1,OI:-1},bf:{N:-1},iief:'+'};
 function dirOf(id,k){const d=DIR[id];if(!d)return 0;if(d==='+')return 1;if(d==='-')return -1;return d[k]||0;}
+
+/* ── Eredménytörténet diagram (csak összevethető verziók) ── */
+const HC_PAL={light:['#047857','#1d4ed8','#9f1239','#a16207'],dark:['#0d9488','#3b82f6','#e11d48','#b8860b']};
+const HC_SHAPE=['circle','square','diamond','triangle'];
+function hcMarker(shape,x,y,c,r){r=r||4.5;
+  if(shape==='square')return `<rect class="mk" x="${x-r}" y="${y-r}" width="${2*r}" height="${2*r}" rx="1.5" fill="${c}"/>`;
+  if(shape==='diamond')return `<path class="mk" d="M${x} ${y-r-1}L${x+r+1} ${y}L${x} ${y+r+1}L${x-r-1} ${y}Z" fill="${c}"/>`;
+  if(shape==='triangle')return `<path class="mk" d="M${x} ${y-r-1}L${x+r+1} ${y+r}L${x-r-1} ${y+r}Z" fill="${c}"/>`;
+  return `<circle class="mk" cx="${x}" cy="${y}" r="${r}" fill="${c}"/>`;}
+function hcHTML(id,r){
+  const hist=(store[id]||[]).filter(e=>(e.sv||1)===(r.sv||1)&&(e.qv||1)===(r.qv||1)&&e.d);
+  if(hist.length<2)return `<div class="hc"><div class="hc-one">Egy kitöltés van ebből a változatból. A grafikon a második kitöltéstől jelenik meg.</div></div>`;
+  // közös skálájú dimenziók: a leggyakoribb [min,max]
+  const keys=Object.keys(r.d).filter(k=>typeof r.d[k][1]==='number');
+  const rng={};keys.forEach(k=>{const t=r.d[k][2]+'|'+r.d[k][3];(rng[t]=rng[t]||[]).push(k)});
+  const best=Object.entries(rng).sort((a,b)=>b[1].length-a[1].length)[0];
+  let ks=best[1];const [mn,mx]=best[0].split('|').map(Number);
+  if(ks.length>4){ks=ks.map(k=>{const vals=hist.map(e=>e.d[k]?e.d[k][1]:null).filter(v=>v!==null);return [k,Math.max(...vals)-Math.min(...vals)]}).sort((a,b)=>b[1]-a[1]).slice(0,4).map(x=>x[0]);}
+  const theme=document.documentElement.dataset.theme==='dark'?'dark':'light',pal=HC_PAL[theme];
+  const cw=(document.getElementById('root').clientWidth||640)-36,narrow=cw<560;
+  const W=narrow?Math.max(280,Math.round(cw)):640,H=narrow?180:190,pl=narrow?30:40,pr=narrow?38:150,pt=12,pb=28,iw=W-pl-pr,ih=H-pt-pb;
+  const ts=hist.map(e=>new Date(when(e)).getTime()),t0=Math.min(...ts),t1=Math.max(...ts),span=Math.max(t1-t0,1);
+  const X=t=>pl+(hist.length===1?iw/2:(t-t0)/span*iw),Y=v=>pt+ih-(v-mn)/((mx-mn)||1)*ih;
+  let g='';
+  for(let i=0;i<=4;i++){const v=mn+(mx-mn)*i/4,y=Y(v);g+=`<line class="gr" x1="${pl}" x2="${pl+iw}" y1="${y}" y2="${y}"/><text x="${pl-6}" y="${y+4}" text-anchor="end">${+v.toFixed(1)}</text>`;}
+  g+=`<line class="ax" x1="${pl}" x2="${pl+iw}" y1="${pt+ih}" y2="${pt+ih}"/>`;
+  const fmtS=t=>new Date(t).toLocaleDateString('hu-HU',{year:'numeric',month:'short'}),fmtL=t=>new Date(t).toLocaleDateString('hu-HU',{year:'numeric',month:'short',day:'numeric'});
+  const tickIdx=hist.length<=(narrow?3:5)?hist.map((_,i)=>i):[0,Math.floor(hist.length/2),hist.length-1];
+  tickIdx.forEach(i=>{g+=`<text x="${X(ts[i])}" y="${H-8}" text-anchor="${i===0?'start':i===hist.length-1?'end':'middle'}">${fmtS(ts[i])}</text>`});
+  const labels=[];
+  ks.forEach((k,si)=>{const c=pal[si],pts=hist.map((e,i)=>e.d[k]?[X(ts[i]),Y(e.d[k][1]),e.d[k][1]]:null).filter(Boolean);
+    g+=`<path class="ln" stroke="${c}" d="${pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join('')}"/>`;
+    pts.forEach(p=>g+=hcMarker(HC_SHAPE[si],p[0],p[1],c));
+    const lp=pts[pts.length-1];labels.push({y:lp[1],t:narrow?String(lp[2]):`${r.d[k][0].length>17?r.d[k][0].slice(0,15).trim()+'…':r.d[k][0]} ${lp[2]}`});});
+  // közvetlen feliratok ütközés nélkül
+  labels.sort((a,b)=>a.y-b.y);for(let i=1;i<labels.length;i++)if(labels[i].y-labels[i-1].y<14)labels[i].y=labels[i-1].y+14;
+  labels.forEach(l=>g+=`<text class="dl" x="${pl+iw+(narrow?6:10)}" y="${l.y+4}">${esc(l.t)}</text>`);
+  g+=`<line class="xh" x1="0" x2="0" y1="${pt}" y2="${pt+ih}"/><rect class="hit" x="${pl-10}" y="0" width="${iw+20}" height="${H}" fill="transparent"/>`;
+  const leg=ks.map((k,si)=>`<span><svg viewBox="0 0 14 14">${hcMarker(HC_SHAPE[si],7,7,pal[si],4.5)}</svg>${esc(r.d[k][0])}</span>`).join('');
+  const data=JSON.stringify({t:ts,k:ks.map(k=>r.d[k][0]),c:ks.map((_,i)=>pal[i]),v:hist.map(e=>ks.map(k=>e.d[k]?e.d[k][1]:null)),x:ts.map(t=>X(t)),W});
+  const table=`<details><summary>Táblázat</summary><table><tr><th>Dátum</th>${ks.map(k=>`<th>${esc(r.d[k][0])}</th>`).join('')}</tr>${hist.map((e,i)=>`<tr><td>${fmtL(ts[i])}</td>${ks.map(k=>`<td>${e.d[k]?e.d[k][1]:'–'}</td>`).join('')}</tr>`).join('')}</table></details>`;
+  return `<div class="hc"><h5>Történet · ${hist.length} kitöltés · skála ${mn}–${mx}${Object.keys(rng).length>1||keys.length>ks.length?' · a legtöbbet változó skálák':''}</h5><div class="hc-wrap" data-hc='${data.replace(/'/g,"&#39;")}'><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(NAME[id])} eredménytörténete">${g}</svg><div class="hc-tip"></div></div><div class="hc-leg">${leg}</div>${table}</div>`;
+}
+function hcBind(root){
+  root.querySelectorAll('.hc-wrap').forEach(w=>{
+    const d=JSON.parse(w.dataset.hc),svg=w.querySelector('svg'),tip=w.querySelector('.hc-tip'),xh=svg.querySelector('.xh');
+    const move=ev=>{const rc=svg.getBoundingClientRect(),sx=(ev.clientX-rc.left)/rc.width*d.W;
+      let bi=0;d.x.forEach((x,i)=>{if(Math.abs(x-sx)<Math.abs(d.x[bi]-sx))bi=i});
+      xh.setAttribute('x1',d.x[bi]);xh.setAttribute('x2',d.x[bi]);xh.style.opacity=.6;
+      tip.innerHTML=`<b>${new Date(d.t[bi]).toLocaleDateString('hu-HU',{year:'numeric',month:'short',day:'numeric'})}</b>`+d.k.map((k,i)=>`<div><i style="background:${d.c[i]}"></i>${esc(k)}: <strong>${d.v[bi][i]??'–'}</strong></div>`).join('');
+      const px=d.x[bi]/d.W*rc.width;tip.style.left=Math.min(Math.max(px+12,0),rc.width-tip.offsetWidth)+'px';tip.style.top='8px';tip.style.opacity=1;};
+    svg.addEventListener('pointermove',move);svg.addEventListener('pointerleave',()=>{tip.style.opacity=0;xh.style.opacity=0});
+  });
+}
 function dimHTML(id,d,p,acc,k){
   const [label,v,mn,mx]=d;const pct=mx>mn?Math.max(0,Math.min(100,(v-mn)/(mx-mn)*100)):0;
   let dl='';
@@ -317,7 +400,7 @@ function render(){
   const dueIds=DUE_DAYS?doneIds.filter(id=>days(when(last(id)))>=DUE_DAYS):[];
   const retaken=doneIds.filter(id=>(store[id]||[]).length>1);
   document.getElementById('statbar').innerHTML=`<span><strong>${doneIds.length}</strong>/ ${REG.length} teszt kiértékelve</span><span><strong>${retaken.length}</strong>többször kitöltve</span><span><strong>${dueIds.length}</strong>újramérhető</span><label class="rset">Újramérési emlékeztető: <select id="rset"><option value="0">ki</option><option value="90">90 nap</option><option value="180">180 nap</option><option value="365">1 év</option></select></label>`;
-  const rs=document.getElementById('rset');rs.value=String(DUE_DAYS);rs.onchange=()=>{SET.retake=+rs.value;try{localStorage.setItem('onismeret-settings-v1',JSON.stringify(SET))}catch(e){}location.reload();};
+  const rs=document.getElementById('rset');rs.value=String(DUE_DAYS);rs.onchange=()=>{SET.retake=+rs.value;if(DEMO){DUE_DAYS=+rs.value;render();return;}try{localStorage.setItem('onismeret-settings-v1',JSON.stringify(SET))}catch(e){}location.reload();};
   const root=document.getElementById('root');
   if(!doneIds.length){
     root.innerHTML=`<div class="empty"><p style="font-family:var(--font-serif);font-size:22px;color:var(--ink);margin-bottom:10px">Még nincs kiértékelt teszt.</p><p>Az összegzés akkor kezd dolgozni, ha legalább két teszted van. A legtöbb mintához a <a href="cselekves.html#test-ft">Négy tendencia</a>, a <a href="cselekves.html#test-kolbe">Cselekvési módok</a>, a <a href="terkepek.html#test-ecr">ECR-R</a> és a <a href="szemelyiseg.html#test-bf">Big Five</a> ad adatot.</p>${pendingIds.length?`<p style="margin-top:14px">Van ${pendingIds.length} teszt, amelyet elkezdtél vagy kitöltöttél, de még nem nyitottad meg az eredményét: ${pendingIds.map(id=>`<a href="${LINK[id]}">${NAME[id]}</a>`).join(', ')}.</p>`:''}</div>`;
@@ -356,6 +439,7 @@ function render(){
       ${noteOf(id,r)?noteHTML(noteOf(id,r)):''}
       ${entries.length?`<div class="dims">${shown.map(([k,d])=>dimHTML(id,d,p&&p.d&&p.d[k],acc,k)).join('')}</div>`:''}
       ${rest.length?`<button class="more" data-id="${id}">+ további ${rest.length} skála</button><div class="dims" id="more-${id}" hidden>${rest.map(([k,d])=>dimHTML(id,d,p&&p.d&&p.d[k],acc,k)).join('')}</div>`:''}
+      ${entries.length?hcHTML(id,r):''}
     </div>`;
   });
   // Idővonal
@@ -365,6 +449,10 @@ function render(){
     h+=`<h2><em>Idővonal</em></h2><p class="h2sub">Minden kiértékelés dátum szerint. A dátum a tényleges kitöltés (utolsó válasz) ideje. Egy napon belül ugyanannak a tesztnek csak az utolsó eredménye marad meg, és egy eredmény puszta újranyitása nem számít új kitöltésnek.</p><ul class="tl">${tl.slice(0,40).map(({id,e})=>`<li><span class="d">${fmt(when(e))}${(e.qv||1)<(last(id).qv||1)?' · korábbi kérdéssor-változat':''}${e.corrected?' · javított':''}</span><strong>${esc(NAME[id]||e.n||id)}</strong>${e.h?' · '+esc(e.h):''}</li>`).join('')}</ul>`;
   }
   root.innerHTML=h;
+  hcBind(root);
+  const tb=document.getElementById('oni-theme');
+  if(tb&&!tb._hc){tb._hc=1;tb.addEventListener('click',()=>setTimeout(render,30));}
+  if(!window._hcRs){window._hcRs=1;let lw=root.clientWidth<596,tm;window.addEventListener('resize',()=>{clearTimeout(tm);tm=setTimeout(()=>{const n=root.clientWidth<596;if(n!==lw){lw=n;render();}},200)});}
   root.querySelectorAll('.more').forEach(b=>{const orig=b.textContent;b.addEventListener('click',()=>{const el=document.getElementById('more-'+b.dataset.id);el.hidden=!el.hidden;b.textContent=el.hidden?orig:'− kevesebb';});});
 }
 

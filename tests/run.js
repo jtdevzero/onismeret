@@ -191,6 +191,97 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     await ctx.close();
   }
 
+  const seedDemo = (p) => p.evaluate((src) => { eval(src); localStorage.setItem('onismeret-results-v1', JSON.stringify(ONI_DEMO.store())); localStorage.setItem('onismeret-notes-v1', JSON.stringify(ONI_DEMO.notes())); }, fs.readFileSync(path.join(ROOT, 'assets/demo-data.js'), 'utf8'));
+
+  console.log('\n11. Főoldal: saját kezdőlap visszatérőknek');
+  {
+    const ctx = await newCtx(); const p = await pageIn(ctx);
+    await p.goto(R + 'index.html');
+    ok(await p.evaluate(() => document.getElementById('home').hidden), 'új látogatónál nincs kezdőlap-panel');
+    await p.goto(R + 'cselekves.html#test-ft'); await p.evaluate(() => { TESTS.ft._fillAll(() => 0); TESTS.ft.show(); });
+    await p.evaluate(() => localStorage.setItem('meq-responses-v1', JSON.stringify({ 1: 2, 2: 3 })));
+    await p.goto(R + 'index.html'); await p.waitForTimeout(200);
+    const home = await p.evaluate(() => ({ hidden: document.getElementById('home').hidden, txt: document.getElementById('home-grid').textContent }));
+    ok(!home.hidden, 'visszatérőnél megjelenik a kezdőlap-panel');
+    ok(/Folytasd/.test(home.txt) && /MEQ|Kronotípus/.test(home.txt), 'a félbehagyott teszt a Folytasd kártyán', home.txt.slice(0, 200));
+    ok(/Legutóbbi/.test(home.txt) && /tendencia/i.test(home.txt), 'a legutóbbi eredmény látszik');
+    ok(/Következő/.test(home.txt) && /Cselekvési módok/.test(home.txt), 'következő lépés: a kezdő útvonal következő tesztje');
+    ok(await p.evaluate(() => !!document.querySelector('a[href="adatok.html"]') && !!document.querySelector('a[href="valtozasok.html"]')), 'főoldal linkeli az Adatok és a Változásnapló oldalt');
+    await ctx.close();
+  }
+
+  console.log('\n12. Összegzés: eredménytörténet-grafikon, demó profil');
+  {
+    const ctx = await newCtx(); const p = await pageIn(ctx);
+    await p.goto(R + 'osszegzes.html?demo=1'); await p.waitForTimeout(200);
+    ok(await p.evaluate(() => Object.keys(localStorage).filter(k => k !== 'onismeret-settings-v1').length === 0), 'a demó profil semmit nem ír a tárhelyre');
+    ok(await p.evaluate(() => !document.getElementById('demo-bar').hidden && /Kitalált/.test(document.getElementById('demo-bar').textContent)), 'a demó profil jól láthatóan jelölve');
+    const hc = await p.evaluate(() => { const card = [...document.querySelectorAll('.card.test')].find(c => c.querySelector('.nm').textContent.includes('ECR')); const w = card.querySelector('.hc-wrap'); return w ? { n: JSON.parse(w.dataset.hc).t.length, paths: w.querySelectorAll('path.ln').length, rows: card.querySelectorAll('.hc table tr').length } : null; });
+    ok(hc && hc.n === 3 && hc.paths === 2 && hc.rows === 4, 'ECR-R: 3 kitöltés, 2 vonal, táblázat', hc);
+    ok(await p.evaluate(() => { const card = [...document.querySelectorAll('.card.test')].find(c => c.querySelector('.nm').textContent.includes('Konfliktus')); return !card.querySelector('.hc-wrap') && /második kitöltéstől/.test(card.textContent); }), 'egy kitöltésnél nincs grafikon, csak magyarázat');
+    ok(await p.evaluate(() => [...document.querySelectorAll('.hc-wrap')].every(w => w.querySelectorAll('path.ln').length <= 4)), 'legfeljebb 4 vonal egy grafikonon');
+    const w = await p.$('.hc-wrap svg'); await w.scrollIntoViewIfNeeded(); const b = await w.boundingBox(); await p.mouse.move(b.x + b.width * 0.5, b.y + 40);
+    await p.mouse.move(b.x + b.width * 0.52, b.y + 44); await p.waitForTimeout(300);
+    ok(await p.evaluate(() => { const t = document.querySelector('.hc-tip'); return +getComputedStyle(t).opacity > 0.9 && /\d/.test(t.textContent); }), 'rámutatáskor megjelenik a tooltip');
+    await p.click('#oni-theme'); await p.waitForTimeout(100); await p.click('#oni-theme'); await p.waitForTimeout(100);
+    ok(p._errs.length === 0 && await p.$$eval('.hc-wrap', x => x.length) > 0, 'témaváltás után is újrarajzol, hiba nélkül', p._errs);
+    // eltérő verzió nem kerül a grafikonra
+    await p.goto(R + 'index.html'); await seedDemo(p);
+    await p.evaluate(() => { const a = ONI.all(); a.ecr[0].qv = 9; localStorage.setItem(ONI.K, JSON.stringify(a)); });
+    await p.goto(R + 'osszegzes.html'); await p.waitForTimeout(200);
+    ok(await p.evaluate(() => { const card = [...document.querySelectorAll('.card.test')].find(c => c.querySelector('.nm').textContent.includes('ECR')); return JSON.parse(card.querySelector('.hc-wrap').dataset.hc).t.length === 2; }), 'eltérő kérdéssor-változatú kitöltés kimarad a grafikonról');
+    await p.setViewportSize({ width: 390, height: 800 }); await p.waitForTimeout(400);
+    ok(await p.evaluate(() => document.documentElement.scrollWidth <= 392 && JSON.parse(document.querySelector('.hc-wrap').dataset.hc).W < 400), 'mobilon keskeny grafikon, nincs vízszintes görgetés');
+    await ctx.close();
+  }
+
+  console.log('\n13. Adatok oldal: törlés, visszavonás, export, teljes törlés');
+  {
+    const ctx = await newCtx(); const p = await pageIn(ctx);
+    await p.goto(R + 'index.html'); await seedDemo(p);
+    await p.evaluate(() => { localStorage.setItem('ecr-r-responses-v1', JSON.stringify({ 1: 4 })); localStorage.setItem('maia2-responses-v1', JSON.stringify({ 1: 3 })); });
+    await p.goto(R + 'adatok.html'); await p.waitForTimeout(150);
+    ok(await p.$$eval('.card[data-test]', c => c.length) === 11, 'minden adattal rendelkező teszt listázva');
+    await p.click('[data-del-sess="ecr"][data-i="0"]'); await p.waitForTimeout(100);
+    let st = await p.evaluate(() => ({ n: ONI.all().ecr.length, raw: localStorage.getItem('ecr-r-responses-v1') }));
+    ok(st.n === 2 && st.raw !== null, 'régebbi kitöltés törlése: csak az a mérés tűnik el, a válaszok maradnak');
+    await p.click('[data-del-sess="ecr"][data-i="1"]'); await p.waitForTimeout(100);
+    st = await p.evaluate(() => ({ n: ONI.all().ecr.length, raw: localStorage.getItem('ecr-r-responses-v1'), note: (JSON.parse(localStorage.getItem('onismeret-notes-v1')).ecr || {}).demo5 }));
+    ok(st.n === 1 && st.raw === null && !st.note, 'legutóbbi kitöltés törlése a mentett válaszokat és a jegyzetét is viszi');
+    await p.click('#undo-go'); await p.waitForTimeout(100);
+    ok(await p.evaluate(() => ONI.all().ecr.length === 2), 'törlés visszavonható');
+    await p.click('[data-del-test="bf"]'); await p.waitForTimeout(100);
+    ok(await p.evaluate(() => !ONI.all().bf && ONI.all().ecr.length === 2), 'tesztenkénti törlés csak azt a tesztet viszi');
+    const tmp = fs.mkdtempSync(path.join(require('os').tmpdir(), 'oni-'));
+    const [dl] = await Promise.all([p.waitForEvent('download'), p.click('[data-exp="ips"]')]); const f = path.join(tmp, 'ips.json'); await dl.saveAs(f);
+    const ex = JSON.parse(fs.readFileSync(f));
+    ok(ex.kind === 'test' && Object.keys(JSON.parse(ex.data['onismeret-results-v1'])).join() === 'ips', 'tesztenkénti export csak azt a tesztet tartalmazza');
+    await p.click('[data-del-test="ips"]'); await p.waitForTimeout(100);
+    await p.goto(R + 'index.html'); await p.setInputFiles('#pp-import', f); await p.waitForLoadState('load'); await p.waitForTimeout(400);
+    ok(await p.evaluate(() => ONI.all().ips.length === 3 && ONI.all().ecr.length === 2 && ONI.all().meq.length === 2), 'tesztexport visszaállítása összefésül, a többi tesztet nem bántja');
+    await p.goto(R + 'adatok.html'); await p.waitForTimeout(100);
+    ok(await p.evaluate(() => !!document.getElementById('del-orph')), 'régi kérdőívváltozat válaszai külön jelölve');
+    await p.click('#wipe'); await p.fill('#wipe-in', 'rossz');
+    ok(await p.evaluate(() => document.getElementById('wipe-go').disabled), 'teljes törlés csak a megerősítő szóval');
+    await p.fill('#wipe-in', 'TÖRLÉS'); await p.click('#wipe-go'); await p.waitForTimeout(100);
+    ok(await p.evaluate(() => Object.keys(localStorage).filter(k => /-responses-v\d+$|^onismeret-/.test(k)).length === 0), 'teljes törlés után nem marad adat');
+    ok(p._errs.length === 0, 'adatok oldal hibamentes', p._errs);
+    await ctx.close();
+  }
+
+  console.log('\n14. Változásnapló');
+  {
+    const ctx = await newCtx(); const p = await pageIn(ctx);
+    await p.goto(R + 'valtozasok.html'); await p.waitForTimeout(150);
+    ok(await p.evaluate(() => document.querySelectorAll('#log > li').length >= 5 && [...document.querySelectorAll('#log > li')].every(li => li.querySelectorAll('.flag').length === 2)), 'minden bejegyzésnél pontozás- és újrakitöltés-jelzés');
+    ok(await p.evaluate(() => /még nincs tárolt/.test(document.getElementById('mine').textContent)), 'adat nélkül: nem érint semmit');
+    await p.evaluate(() => localStorage.setItem(ONI.K, JSON.stringify({ maia2: [{ n: 'MAIA-2', t: '2026-01-01T10:00:00Z', done: '2026-01-01T10:00:00Z', qv: 1, sv: 1, d: {} }] })));
+    await p.reload(); await p.waitForTimeout(150);
+    ok(await p.evaluate(() => /MAIA-2/.test(document.getElementById('mine').textContent) && !!document.querySelector('#mine .hit')), 'régi MAIA-2 eredménynél jelzi az újrakitöltést');
+    ok(await p.evaluate(() => document.querySelectorAll('#vers tr').length === 32), 'verziótábla mind a 31 teszttel');
+    await ctx.close();
+  }
+
   await browser.close();
   console.log(`\n${pass} rendben, ${fail} hiba`);
   process.exit(fail ? 1 : 0);

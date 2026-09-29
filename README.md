@@ -51,7 +51,9 @@ Harmincegy önismereti kérdőív magyarul, statikus HTML fájlok, GitHub Pages-
 ```
 self-knowledge-suite/
 ├── index.html          Landing page — haladásjelző, témakör-navigáció, kártyák, mentés/visszaállítás
-├── osszegzes.html      Kereszt-összegzés: visszatérő minták, változás, újramérés, idővonal
+├── osszegzes.html      Kereszt-összegzés: visszatérő minták, változás, eredménytörténet-grafikon, idővonal (?demo=1: demó profil)
+├── adatok.html         Saját adatok: kitöltésenkénti és tesztenkénti törlés, export, teljes törlés
+├── valtozasok.html     Változásnapló: mi változott, érinti-e a pontozást, kell-e újrakitöltés
 ├── fonts/              Helyben tárolt betűtípusok (Fontsource, SIL OFL, latin + latin-ext)
 ├── README.md           Ez a fájl
 ├── maia2.html          MAIA-2 (standalone)
@@ -98,11 +100,14 @@ Minden oldal önálló: inline CSS és JS, külső szerverhez nem fordul. A bet�
   - `onismeret-results-v1` — közös eredménytár: minden teszt a kiértékeléskor ide menti a fő pontszámait dátummal (tesztenként legfeljebb 24 kitöltés, naponta egy). Ebből dolgozik az összegzés és az újramérés-jelzés.
 - **JSON export** minden tesztnél — ha meg akarod mutatni terapeutának.
 - **Mentés fájlba / Visszaállítás fájlból** a főoldalon: minden teszt összes adata egy JSON-fájlba, és vissza. Így lehet gépet vagy böngészőt váltani, illetve biztonsági mentést készíteni. A visszaállítás csak a fájlban szereplő teszteket írja felül.
+- **Adatok oldal** (`adatok.html`): tesztenként látszik, hány kitöltés, mentett válasz és jegyzet van. Egy kitöltés vagy egy teszt összes adata külön törölhető (7 napig visszavonható), egy teszt külön exportálható (`kind:'test'`; visszaállításkor csak azt a tesztet fésüli be), a teljes törléshez be kell írni: TÖRLÉS. A legutóbbi kitöltés törlése a teszt mentett válaszait is törli, különben az eredmény megnyitáskor visszakerülne.
 
 ## Összegzés (`osszegzes.html`)
 
 - **Visszatérő minták:** 16 szabály, például szorongó vagy elkerülő kötődés, „indít, de nem zár le”, elemzési bénultság, teljesítmény-hajtás vagy önfeláldozó minta. Egy minta csak akkor jelenik meg, ha legalább két teszt ugyanabba az irányba mutat. A küszöbök heurisztikák, nem klinikai határértékek.
 - **Profil tesztenként** a legutóbbi eredménnyel, ▲▼ változással az előző kitöltéshez képest.
+- **Eredménytörténet:** két azonos változatú kitöltéstől vonaldiagram (egy közös skálán legfeljebb 4 dimenzió, a legtöbbet változók), jelölőformák és közvetlen feliratok, rámutatásra tooltip, mellette táblázat. Mobilon keskenyebb rajz, csak értékfeliratokkal.
+- **Demó profil:** `osszegzes.html?demo=1` kitalált, jól jelölt adatokkal (`assets/demo-data.js`), csak a memóriában, semmit nem ment.
 - **Újramérés:** 90 nap után a főoldalon és az összegzésben is jelez.
 - **Idővonal** az összes kiértékelésről.
 - **Terapeuta-összefoglaló (PDF):** világos, nyomtatható riport a kiválasztott tesztekről és mintákról. Az érzékeny témák (szexuális tesztek, DES-II, TFEQ) alapból ki vannak kapcsolva.
@@ -116,7 +121,9 @@ Minden oldal önálló: inline CSS és JS, külső szerverhez nem fordul. A bet�
 
 ## Kezdő útvonal
 
-Öt teszt (Négy tendencia → Cselekvési módok → ECR-R → Big Five → PVQ-21, kb. 40 perc), amelyek az összegzés mintáinak alapját adják. A főoldalon panel mutatja az állást. Minden teszt kiértékelése után lent megjelenik a „Következő lépés” sáv.
+Öt teszt (Négy tendencia → Cselekvési módok → ECR-R → Big Five → PVQ-21, kb. 40 perc), amelyek az összegzés mintáinak alapját adják. A főoldalon panel mutatja az állást.
+
+Visszatérő látogatónál a főoldal tetején saját kezdőlap: a félbehagyott teszt, a következő lépés (az útvonal következő tesztje, vagy a legutóbbi eredmény adatlapján javasolt teszt) és a legutóbbi eredmény. Minden teszt kiértékelése után lent megjelenik a „Következő lépés” sáv.
 
 ## Párban (`par.html`)
 
@@ -260,8 +267,8 @@ tests/run.js         Automatikus ellenőrzés (Playwright)
 ```
 
 - **Build:** `python3 tools/build.py`. A `kapcsolat.html`, `cselekves.html` és `szabalyozas.html` generált fájl, ezeket a `src/` mappában szerkeszd.
-- **Tesztek:** `npm i --no-save playwright && npx playwright install chromium && node tests/run.js`. Ellenőrzi az oldalak betöltését (JS-hiba, külső kérés), a mélylinkeket és a darabszámokat, a pontozási szélsőértékeket és a fordított tételeket, a kitöltési alkalmakat (újranyitás, javítás, azonos pontszámú újramérés, verzióváltás), az NSSS hiányos kitöltését, a mintaszabályokat, valamint az importot, a visszavonást és a párexportot. GitHub Actions minden feltöltéskor lefuttatja.
-- **Verziók:** ha egy teszt tételei vagy pontozása változik, emeld a verzióját az `assets/oni-core.js` `VERS` táblájában. Az eltérő verziójú eredményeket az összegzés nem hasonlítja össze.
+- **Tesztek:** `npm i --no-save playwright && npx playwright install chromium && node tests/run.js`. Ellenőrzi az oldalak betöltését (JS-hiba, külső kérés), a mélylinkeket és a darabszámokat, a pontozási szélsőértékeket és a fordított tételeket, a kitöltési alkalmakat (újranyitás, javítás, azonos pontszámú újramérés, verzióváltás), az NSSS hiányos kitöltését, a mintaszabályokat, az importot, a visszavonást és a párexportot, a kezdőlapot, az eredménytörténet-grafikont, a demó profilt, az adatok oldal törléseit és exportját, valamint a változásnaplót. GitHub Actions minden feltöltéskor lefuttatja.
+- **Verziók:** ha egy teszt tételei vagy pontozása változik, emeld a verzióját az `assets/oni-core.js` `VERS` táblájában, és írj bejegyzést a `valtozasok.html` `LOG` tömbjébe (pontozás: no/part/yes, újrakitöltés: no/part/yes). Az eltérő verziójú eredményeket az összegzés nem hasonlítja össze, és a grafikonon sem köti össze.
 
 ## Eredménykezelés
 

@@ -151,6 +151,7 @@ body::before{
 }
 .footer strong{color:var(--gold);font-weight:600}
 .footer p{margin-bottom:8px}
+.foot-links a{color:var(--gold);text-decoration:none}.foot-links a:hover{text-decoration:underline}
 .footer .disclaimer{
   margin-top:20px;padding:16px 20px;background:rgba(251,113,133,0.05);
   border:1px solid rgba(251,113,133,0.2);border-radius:10px;
@@ -210,6 +211,19 @@ body::before{
 .vstat.own{color:#fde047;border-color:rgba(251,191,36,.35);background:rgba(251,191,36,.06)}
 .vstat.frame{color:#fda4af;border-color:rgba(251,113,133,.35);background:rgba(251,113,133,.06)}
 .path-panel{border-color:rgba(251,191,36,.35)}
+.home-panel{border-color:rgba(96,165,250,.35)}
+.home-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:6px}
+.home-card{display:flex;flex-direction:column;gap:6px;padding:16px 18px;border:1px solid var(--line);border-radius:14px;text-decoration:none;color:var(--ink);background:rgba(5,13,30,.3);transition:border-color .2s,transform .2s}
+.home-card:hover{border-color:var(--gold-soft);transform:translateY(-1px)}
+.home-card .hk{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--gold)}
+.home-card .hn{font-family:var(--font-serif);font-size:18px;line-height:1.25}
+.home-card .hd{font-size:13px;color:var(--ink-soft);line-height:1.5}
+.home-card .hg{margin-top:auto;font-size:12.5px;font-weight:600;color:var(--sapphire)}
+.home-card .hb{height:4px;border-radius:99px;background:rgba(147,197,253,.15);overflow:hidden}.home-card .hb i{display:block;height:100%;background:var(--gold)}
+body.returning .hero{padding:18px 0 22px}
+body.returning .hero .lead,body.returning .hero .meta{display:none}
+body.returning .hero h1{font-size:clamp(28px,4vw,40px)}
+@media (max-width:820px){.home-grid{grid-template-columns:1fr}}
 .path-lead{color:var(--ink-soft);font-size:14.5px;margin:4px 0 16px;max-width:720px}
 .path-steps{list-style:none;display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px;counter-reset:ps}
 .path-steps li{counter-increment:ps;border:1px solid var(--line);border-radius:12px;padding:12px 12px 10px;background:rgba(5,13,30,.35);position:relative}
@@ -285,6 +299,11 @@ details.intro:not([open]){padding-top:20px;padding-bottom:20px}
   </header>
 
 
+  <section class="progress-panel home-panel" id="home" hidden>
+    <div class="pp-head"><h2 id="home-title">Üdv újra</h2><span class="pp-sum" id="home-sub"></span></div>
+    <div class="home-grid" id="home-grid"></div>
+  </section>
+
   <section class="progress-panel path-panel" id="path">
     <div class="pp-head">
       <h2>Kezdő útvonal</h2>
@@ -321,6 +340,7 @@ details.intro:not([open]){padding-top:20px;padding-bottom:20px}
       <a class="pp-sumlink" href="par.html" style="flex:0 1 200px"><span>Párban</span><span class="arrow">›</span></a>
       <button type="button" class="pp-btn" id="pp-export">Mentés fájlba</button>
       <label class="pp-btn" for="pp-import">Visszaállítás fájlból</label><input type="file" id="pp-import" accept="application/json,.json" hidden>
+      <a class="pp-btn" href="adatok.html" style="text-decoration:none">Adatok kezelése</a>
       <span class="pp-msg" id="pp-msg" hidden></span>
     </div>
     <p class="pp-note">A haladás abból számolódik, amit a tesztek ebben a böngészőben elmentettek. Válasz vagy eredmény soha nem megy szerverre. Az oldal betöltése viszont hálózati kérés, és a tárhely (GitHub Pages) a látogatók IP-címét biztonsági célból naplózhatja. Másik gépre vagy telefonra a <em>Mentés fájlba</em> / <em>Visszaállítás fájlból</em> gombokkal viheted át, és ugyanígy biztonsági mentést is készíthetsz.</p>
@@ -779,6 +799,7 @@ details.intro:not([open]){padding-top:20px;padding-bottom:20px}
   <!-- FOOTER -->
   <footer class="footer">
     <p><strong>Készítő:</strong> JT · Budapest · 2025–2026</p>
+    <p class="foot-links"><a href="valtozasok.html">Változásnapló</a> · <a href="adatok.html">Saját adatok</a> · <a href="osszegzes.html?demo=1">Demó profil</a></p>
     <p>Minden kártyán látszik, milyen eszközről van szó: <strong>validált eszköz</strong> saját magyar fordításban (tételenként ellenőrizve, vagy még ellenőrzés nélkül), <strong>modell-alapú rövid változat</strong>, <strong>saját kérdéssor</strong> egy elméleti modellre, vagy <strong>népszerű keret</strong>, amely nem tudományos mérőeszköz. A magyar szövegek nem a hivatalos, validált magyar változatok, ezért publikált normákkal csak tájékoztató jelleggel vethetők össze.</p>
     <div class="disclaimer">
       <strong>Nem diagnosztikai eszköz.</strong> Ez a felület önismereti térkép-készítés, nem klinikai szűrés vagy terápia. Ha bármelyik eredmény aggodalmat kelt (különösen a disszociáció, séma-módok, szex-diszfunkció területén), keresd meg a saját terapeutád vagy szakembert. Az eredmények egy adott pillanat állapotát tükrözik.
@@ -890,12 +911,15 @@ details.intro:not([open]){padding-top:20px;padding-bottom:20px}
       var names={};[].forEach.call(document.querySelectorAll('.card[data-key]'),function(c){names[c.dataset.key]=c.dataset.name});names['@ysq']=names['@ysq']||'YSQ-L';
       var list=keys.map(function(k){if(/^ysq_/.test(k))return names['@ysq']||'YSQ-L';if(k==='attachment_assessment_v1')return names['@kotodes']||'Kötődési mélytérkép';if(k==='onismeret-results-v1')return 'összesített eredmények és előzmények';if(k==='onismeret-partner-v1')return 'párod betöltött eredményei';if(/^onismeret-/.test(k))return null;return names[k]||k}).filter(function(x,i,a){return x&&a.indexOf(x)===i});
       var over=keys.filter(function(k){try{return localStorage.getItem(k)!==null}catch(e){return false}});
-      var overNames=over.map(function(k){return /^ysq_/.test(k)?'YSQ-L':k==='attachment_assessment_v1'?'Kötődési mélytérkép':k==='onismeret-results-v1'?'összesített eredmények':/^onismeret-/.test(k)?null:(names[k]||k)}).filter(function(x,i,a){return x&&a.indexOf(x)===i});
+      var overNames=over.map(function(k){return /^ysq_/.test(k)?'YSQ-L':k==='attachment_assessment_v1'?'Kötődési mélytérkép':k==='onismeret-results-v1'?(obj.kind==='test'?((window.ONI_DATA&&ONI_DATA[obj.test]&&ONI_DATA[obj.test].n)||String(obj.test))+' előzményei':'összesített eredmények'):/^onismeret-/.test(k)?null:(names[k]||k)}).filter(function(x,i,a){return x&&a.indexOf(x)===i});
       if(!confirm('Visszaállítás a '+(obj.exported||'').slice(0,10)+' mentésből:\n\n• '+list.join('\n• ')+'\n\n'+(overNames.length?'FELÜLÍRJA a jelenlegi adatot: '+overNames.join(', ')+'.\nA mostani állapotot előtte eltárolom, és 7 napig egy kattintással visszaállítható.\n\n':'')+'A fájlban nem szereplő tesztekhez nem nyúl. Folytatod?'))return;
       try{
         var snap={};for(var i=0;i<localStorage.length;i++){var kk=localStorage.key(i);if(KEYRX.test(kk)&&kk!==UNDO)snap[kk]=localStorage.getItem(kk);}
         if(Object.keys(snap).length)localStorage.setItem(UNDO,JSON.stringify({t:new Date().toISOString(),data:snap}));
-        keys.forEach(function(k){localStorage.setItem(k,obj.data[k])});
+        keys.forEach(function(k){
+          /* Egy teszt exportja (adatok.html): az összesített tárakba csak az adott tesztet fésüli be, a többit nem bántja */
+          if(obj.kind==='test'&&(k==='onismeret-results-v1'||k==='onismeret-notes-v1')){var cur={};try{cur=JSON.parse(localStorage.getItem(k))||{}}catch(e){}var inc=JSON.parse(obj.data[k]);Object.keys(inc).forEach(function(id){cur[id]=inc[id]});localStorage.setItem(k,JSON.stringify(cur));return;}
+          localStorage.setItem(k,obj.data[k]);});
       }catch(e){say('A böngésző nem engedte a mentést (privát ablak?).',true);return;}
       location.reload();
     };
@@ -929,6 +953,41 @@ details.intro:not([open]){padding-top:20px;padding-bottom:20px}
   var T={'@kotodes':'Saját fejlesztés · nem validált','imago-responses-v1':'Terápiás önreflexiós keret · nem mérőeszköz'};
   [].forEach.call(document.querySelectorAll('.card[data-key]'),function(c){var k=K[c.dataset.key];if(!k)return;var el=document.createElement('span');el.className='vstat '+k;el.textContent=T[c.dataset.key]||V[k];var tag=c.querySelector('.card-tag');tag.parentNode.insertBefore(el,tag.nextSibling);});
 })();
+
+/* ── Személyes kezdőlap (visszatérő látogatónak) ── */
+window.addEventListener('DOMContentLoaded',function(){
+  try{
+    if(!window.ONI)return;
+    var res=ONI.all(),D=window.ONI_DATA||{},Lk=window.ONI_LINK||{};
+    var cards=[].slice.call(document.querySelectorAll('.card[data-key]'));
+    var prog=cards.filter(function(c){var b=c.querySelector('.status');return b&&b.dataset.state==='prog'});
+    var recs=[];Object.keys(res).forEach(function(id){var h=res[id];if(h&&h.length){var r=h[h.length-1];recs.push({id:id,r:r,t:r.done||r.t})}});
+    if(!recs.length&&!prog.length)return;
+    document.body.classList.add('returning');
+    var home=document.getElementById('home');home.hidden=false;
+    recs.sort(function(a,b){return b.t.localeCompare(a.t)});
+    var fmt=function(t){return new Date(t).toLocaleDateString('hu-HU',{month:'short',day:'numeric'})};
+    var esc=function(x){return String(x||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+    var html='';
+    // 1. félbehagyott
+    if(prog.length){var c=prog[0],lbl=c.querySelector('.st-lbl').textContent,fill=c.querySelector('.st-fill').style.width||'0%';
+      html+='<a class="home-card" href="'+c.getAttribute('href')+'"><span class="hk">Folytasd</span><span class="hn">'+esc(c.dataset.name)+'</span><span class="hd">'+esc(lbl.replace('Folyamatban · ',''))+' kérdés kész'+(prog.length>1?' · még '+(prog.length-1)+' félbehagyott teszt':'')+'</span><span class="hb"><i style="width:'+fill+'"></i></span><span class="hg">Folytatás az első megválaszolatlannál ›</span></a>';}
+    // 2. következő ajánlott
+    var nextId=null,why='';
+    var path=ONI.pathState?ONI.pathState():[];var pn=path.filter(function(p){return !p.done})[0];
+    if(pn){nextId=pn.id;why='A kezdő útvonal következő lépése: '+pn.why+'.';}
+    else if(recs.length){var d=D[recs[0].id];if(d&&d.next&&!res[d.next[0]]&&Lk[d.next[0]]){nextId=d.next[0];why='A legutóbbi eredményedhez kapcsolódik.';}}
+    if(!nextId){var none=cards.filter(function(c){var b=c.querySelector('.status');return b&&b.dataset.state==='none'})[0];if(none){html+='<a class="home-card" href="'+none.getAttribute('href')+'"><span class="hk">Következő lépés</span><span class="hn">'+esc(none.dataset.name)+'</span><span class="hd">Még nem töltötted ki.</span><span class="hg">Kezdés ›</span></a>';}}
+    else{var dn=D[nextId]||{};html+='<a class="home-card" href="'+(Lk[nextId]||'#')+'"><span class="hk">Következő lépés</span><span class="hn">'+esc(dn.n||nextId)+'</span><span class="hd">'+esc(why)+(dn.min?' Kb. '+dn.min+' perc.':'')+'</span><span class="hg">Kezdés ›</span></a>';}
+    // 3. legutóbbi eredmény
+    if(recs.length){var L=recs[0],dl=D[L.id]||{};
+      html+='<a class="home-card" href="'+(Lk[L.id]||'osszegzes.html')+'"><span class="hk">Legutóbbi eredmény · '+fmt(L.t)+'</span><span class="hn">'+esc(dl.n||L.r.n||L.id)+'</span><span class="hd">'+esc(L.r.h||'')+'</span><span class="hg">Eredmény megnyitása ›</span></a>';}
+    document.getElementById('home-grid').innerHTML=html;
+    var n=recs.length;document.getElementById('home-sub').innerHTML='<strong>'+n+'</strong> kiértékelt teszt · <a href="osszegzes.html" style="color:inherit">összegzés ›</a>';
+    // kész útvonal esetén az útvonal-panel összecsukva
+    if(!pn){var pp=document.getElementById('path');if(pp)pp.style.display='none';}
+  }catch(e){console.warn('home',e)}
+});
 </script>
 </body>
 </html>

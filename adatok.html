@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saját adatok — Önismereti térképek</title>
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+:root{
+  --bg-deep:#050d1e;--bg-card:#0f2038;--bg-card-hi:#152845;
+  --ink:#e6ecf5;--ink-soft:#a3b3c8;--ink-mute:#6b7c94;--line:#1e3255;--line-soft:#152845;
+  --gold:#fbbf24;--gold-soft:#78551a;--sapphire:#60a5fa;--rose:#fb7185;--emerald:#34d399;
+  --font-serif:'Fraunces','Cardo',Georgia,serif;--font-sans:'Manrope','Inter','Helvetica Neue',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg-deep);color:var(--ink);font-family:var(--font-sans);font-size:16px;line-height:1.6;min-height:100vh}
+a{color:inherit}
+.wrap{max-width:1000px;margin:0 auto;padding:40px 24px 96px}
+.back{display:inline-flex;gap:8px;font-size:12px;color:var(--ink-mute);text-decoration:none;letter-spacing:.06em;margin-bottom:28px}
+.back:hover{color:var(--ink)}
+.kicker{display:inline-block;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:18px;padding:6px 16px;border:1px solid var(--gold-soft);border-radius:99px}
+h1{font-family:var(--font-serif);font-weight:400;font-size:clamp(36px,6vw,56px);line-height:1.05;letter-spacing:-0.02em;margin-bottom:16px}
+h1 em,h2 em{font-style:italic;color:var(--gold)}
+.lead{color:var(--ink-soft);font-size:16.5px;max-width:720px;margin-bottom:28px}
+.statbar{display:flex;flex-wrap:wrap;gap:10px 26px;padding:18px 22px;border:1px solid var(--line);border-radius:16px;background:var(--bg-card);margin-bottom:18px;font-size:14px;color:var(--ink-soft)}
+.statbar strong{font-family:var(--font-serif);font-size:22px;color:var(--ink);font-weight:500;margin-right:6px}
+h2{font-family:var(--font-serif);font-weight:400;font-size:28px;margin:44px 0 8px;letter-spacing:-0.01em}
+.h2sub{color:var(--ink-mute);font-size:14px;margin-bottom:18px;max-width:720px}
+.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{appearance:none;cursor:pointer;font:inherit;font-size:13.5px;font-weight:600;padding:9px 16px;border-radius:99px;border:1px solid var(--gold);background:color-mix(in srgb,var(--gold) 12%,transparent);color:var(--ink);white-space:nowrap;text-decoration:none;display:inline-block}
+.btn.ghost{border-color:var(--line);background:transparent;color:var(--ink-soft);font-weight:500}
+.btn.danger{border-color:color-mix(in srgb,var(--rose) 60%,transparent);background:transparent;color:var(--rose)}
+.btn.sm{font-size:12.5px;padding:6px 12px}
+.btn:hover{filter:brightness(1.08)}
+.msg{font-size:13.5px;margin-top:10px;color:var(--ink-soft)}
+.msg.bad{color:var(--rose)}
+.card{background:var(--bg-card);border:1px solid var(--line);border-radius:18px;padding:20px 22px;margin-bottom:12px;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--acc,var(--gold))}
+.th{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;justify-content:space-between}
+.th .nm{font-family:var(--font-serif);font-size:19px}
+.th .nm a{text-decoration:none}.th .nm a:hover{color:var(--gold)}
+.th .mt{font-size:12.5px;color:var(--ink-mute)}
+.th .tools{margin-left:auto}
+.sess{list-style:none;margin-top:12px;border-top:1px dashed var(--line)}
+.sess li{display:grid;grid-template-columns:150px 1fr auto;gap:4px 14px;align-items:center;padding:9px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.sess .d{color:var(--ink-mute);font-size:12.5px}
+.sess .h{color:var(--ink-soft);min-width:0}
+.sess .h strong{color:var(--ink);font-weight:600}
+.sess .n{display:block;font-size:12.5px;color:var(--ink-mute);font-style:italic;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tag{display:inline-block;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;padding:2px 8px;border-radius:99px;border:1px solid var(--line);color:var(--ink-mute);margin-left:6px}
+.raw{font-size:13px;color:var(--ink-mute);margin-top:10px}
+.danger-zone{border-color:color-mix(in srgb,var(--rose) 45%,transparent)}
+.danger-zone{--acc:var(--rose)}
+.confirm{display:none;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.confirm.on{display:flex}
+.confirm input{flex:0 1 200px;background:var(--bg-deep);border:1px solid var(--line);border-radius:10px;padding:8px 12px;color:var(--ink);font:inherit;font-size:14px}
+.undo{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;padding:12px 16px;border:1px dashed var(--gold);border-radius:12px;margin-bottom:18px;font-size:14px;color:var(--ink-soft)}
+.empty{text-align:center;padding:40px 20px;border:1px dashed var(--line);border-radius:18px;color:var(--ink-soft)}
+.empty a{color:var(--gold)}
+.note{font-size:12.5px;color:var(--ink-mute);margin-top:40px;line-height:1.7;border-top:1px dashed var(--line);padding-top:20px}
+.note a{color:var(--sapphire)}
+@media (max-width:560px){.wrap{padding:28px 16px 64px}.card{padding:16px}.sess li{grid-template-columns:1fr auto}.sess .d{grid-column:1/-1}.th .tools{margin-left:0}}
+</style>
+
+<script src="assets/oni-core.js"></script>
+<script src="assets/tests-data.js" defer></script>
+<script src="assets/results-plus.js" defer></script>
+<link rel="stylesheet" href="assets/theme.css">
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">‹ Önismereti térképek</a>
+  <span class="kicker">Adatok</span>
+  <h1>Saját <em>adataid</em></h1>
+  <p class="lead">Minden, amit ez az oldal rólad tárol, csak ebben a böngészőben van. Itt látod egyben: melyik tesztből hány kitöltésed van, mely válaszaid vannak mentve, és hol írtál jegyzetet. Bármit exportálhatsz vagy törölhetsz, tesztenként vagy kitöltésenként is.</p>
+  <div id="undo"></div>
+  <div class="statbar" id="stat"></div>
+  <div class="tools">
+    <button type="button" class="btn" id="exp-all">Teljes mentés fájlba</button>
+    <a class="btn ghost" href="index.html#progress">Visszaállítás fájlból (főoldal)</a>
+    <a class="btn ghost" href="osszegzes.html">Összegzés ›</a>
+  </div>
+  <p class="msg" id="msg" aria-live="polite"></p>
+
+  <h2>Tesztenként</h2>
+  <p class="h2sub">Egy kitöltés törlése csak azt az egy mérést veszi ki az előzményekből. A legutóbbi kitöltés törlésekor a teszt mentett válaszai is törlődnek, különben az eredmény megnyitáskor visszakerülne.</p>
+  <div id="list"></div>
+
+  <h2>Beállítások</h2>
+  <p class="h2sub" id="set-desc"></p>
+  <div class="tools"><button type="button" class="btn ghost" id="set-reset">Beállítások alaphelyzetbe</button></div>
+
+  <h2>Minden <em>törlése</em></h2>
+  <div class="card danger-zone">
+    <p style="color:var(--ink-soft);font-size:14.5px">Törli az összes választ, eredményt, előzményt, jegyzetet és beállítást erről az eszközről. Nem vonható vissza. Előtte érdemes <strong>teljes mentést</strong> készíteni.</p>
+    <div class="tools" style="margin-top:12px"><button type="button" class="btn danger" id="wipe">Minden adat törlése…</button></div>
+    <div class="confirm" id="wipe-box"><label for="wipe-in" style="font-size:14px;color:var(--ink-soft)">Írd be: <strong>TÖRLÉS</strong></label><input id="wipe-in" autocomplete="off"><button type="button" class="btn danger" id="wipe-go" disabled>Végleges törlés</button><button type="button" class="btn ghost" id="wipe-no">Mégse</button></div>
+  </div>
+
+  <p class="note">Az oldal nem küld adatot sehova, nincs szerver és nincs fiók. Ha törlöd a böngésző adatait, vagy privát ablakban dolgozol, az itt látható adatok elvesznek. A <a href="valtozasok.html">változásnaplóban</a> látod, melyik teszt kérdései vagy pontozása változott, és mikor érdemes újra kitölteni.</p>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  var K=ONI.K,META=ONI.META,NK='onismeret-notes-v1',SK='onismeret-settings-v1',UNDO='onismeret-undo-v1';
+  var KEYRX=/-responses-v\d+$|^ysq_|^attachment_assessment_v1$|^onismeret-/;
+  var D=window.ONI_DATA||{},LINK=window.ONI_LINK||{},IDKEY=ONI.IDKEY||{};
+  var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+  function jget(k,d){try{var v=JSON.parse(localStorage.getItem(k));return v==null?d:v}catch(e){return d}}
+  function jset(k,v){localStorage.setItem(k,JSON.stringify(v))}
+  var fmt=function(t){return new Date(t).toLocaleDateString('hu-HU',{year:'numeric',month:'short',day:'numeric'})};
+  var msg=document.getElementById('msg');
+  function say(t,bad){msg.textContent=t;msg.className='msg'+(bad?' bad':'')}
+  function ours(){var o={};for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(KEYRX.test(k)&&k!==UNDO)o[k]=localStorage.getItem(k)}return o}
+  /* Törlés előtt pillanatkép, 7 napig visszavonható (ugyanaz a mechanizmus, mint a főoldali visszaállításnál) */
+  function snapshot(){try{var s=ours();if(Object.keys(s).length)localStorage.setItem(UNDO,JSON.stringify({t:new Date().toISOString(),data:s,why:'törlés'}))}catch(e){}}
+  function hasRaw(key){var v=localStorage.getItem(key);if(v==null)return false;try{var j=JSON.parse(v);if(key==='ysq_autosave')return !!(j&&j.answers&&Object.keys(j.answers).length);if(key==='attachment_assessment_v1')return !!(j&&(j.draft||j.result));return j&&typeof j==='object'&&Object.keys(j).length>0}catch(e){return true}}
+  function download(name,obj){var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(obj,null,1)],{type:'application/json'}));a.download=name;document.body.appendChild(a);a.click();a.remove();}
+  function name(id){return (D[id]&&D[id].n)||id}
+
+  function render(){
+    var res=ONI.all(),notes=jget(NK,{}),meta=jget(META,{});
+    var ids=Object.keys(D).filter(function(id){return (res[id]&&res[id].length)||(IDKEY[id]&&hasRaw(IDKEY[id]))||notes[id]});
+    Object.keys(res).forEach(function(id){if(ids.indexOf(id)<0&&res[id].length)ids.push(id)});
+    var known={};Object.keys(IDKEY).forEach(function(id){known[IDKEY[id]]=1});
+    var orphans=Object.keys(ours()).filter(function(k){return /-responses-v\d+$/.test(k)&&!known[k]});
+    var nSess=0,nNotes=0;Object.keys(res).forEach(function(id){nSess+=res[id].length});
+    Object.keys(notes).forEach(function(id){Object.keys(notes[id]).forEach(function(s){var n=notes[id][s];if(n&&((n.fit&&n.fit.length)||(n.cond&&n.cond.length)||n.text))nNotes++})});
+    var bytes=0;var all=ours();Object.keys(all).forEach(function(k){bytes+=k.length+all[k].length});
+    document.getElementById('stat').innerHTML='<span><strong>'+ids.length+'</strong>teszt adattal</span><span><strong>'+nSess+'</strong>kiértékelt kitöltés</span><span><strong>'+nNotes+'</strong>jegyzet</span><span><strong>'+Math.max(1,Math.round(bytes*2/1024))+'</strong>KB tárhely</span>';
+    var u=jget(UNDO,null),ub=document.getElementById('undo');
+    if(u&&u.t&&Date.now()-Date.parse(u.t)<7*864e5){ub.innerHTML='<div class="undo"><span>Van egy '+esc(u.t.slice(0,16).replace('T',' '))+' előtti pillanatkép ('+esc(u.why||'visszaállítás')+').</span><button type="button" class="btn sm" id="undo-go">Visszavonás</button></div>';
+      document.getElementById('undo-go').onclick=function(){if(!confirm('Visszaállítsam a '+u.t.slice(0,16).replace('T',' ')+' előtti állapotot? Ami azóta változott, elvész.'))return;
+        Object.keys(ours()).forEach(function(k){localStorage.removeItem(k)});Object.keys(u.data).forEach(function(k){localStorage.setItem(k,u.data[k])});localStorage.removeItem(UNDO);say('Visszaállítva.');render();};}
+    else ub.innerHTML='';
+    var L=document.getElementById('list');
+    if(!ids.length&&!orphans.length){L.innerHTML='<div class="empty">Ebben a böngészőben még nincs mentett adat. <a href="index.html">Válassz egy tesztet</a>, vagy nézd meg a <a href="osszegzes.html?demo=1">demó profilt</a>.</div>';}
+    else L.innerHTML=ids.map(function(id){
+      var h=res[id]||[],key=IDKEY[id],raw=key&&hasRaw(key),nn=notes[id]||{};
+      var rows=h.map(function(r,i){var n=nn[r.sid||'_'],nt=n&&((n.fit&&n.fit.length)||(n.cond&&n.cond.length)||n.text);
+        return '<li><span class="d">'+fmt(r.done||r.t)+(i===h.length-1?'<span class="tag">legutóbbi</span>':'')+'</span><span class="h">'+(r.h?'<strong>'+esc(r.h)+'</strong>':'<strong>'+esc(r.n||name(id))+'</strong>')+
+          ' <small style="color:var(--ink-mute)">· kérdéssor v'+(r.qv||1)+', pontozás v'+(r.sv||1)+(r.corrected?' · javított':'')+'</small>'+(((ONI.VERS||{})[id]&&((r.qv||1)<(ONI.VERS[id].q||1)||(r.sv||1)<(ONI.VERS[id].s||1)))?'<a class="tag" href="valtozasok.html" style="text-decoration:none">korábbi változat</a>':'')+
+          (nt?'<span class="n">Jegyzet: '+esc([].concat((n.fit||[]).map(function(k){return {fits:'illik rám',not:'nem jellemző',explore:'megérteném'}[k]||k}),n.text?['„'+n.text+'”']:[]).join(' · ')||'körülmények')+'</span>':'')+
+          '</span><button type="button" class="btn danger sm" data-del-sess="'+esc(id)+'" data-i="'+i+'" aria-label="'+esc(name(id))+', '+fmt(r.done||r.t)+' kitöltés törlése">Törlés</button></li>';}).reverse().join('');
+      return '<div class="card" data-test="'+esc(id)+'"><div class="th"><span class="nm">'+(LINK[id]?'<a href="'+LINK[id]+'">'+esc(name(id))+'</a>':esc(name(id)))+'</span>'+
+        '<span class="mt">'+h.length+' kitöltés · '+(raw?'mentett válaszok vannak':'nincs mentett válasz')+(meta.ans&&key&&meta.ans[key]?' · utolsó válasz: '+fmt(meta.ans[key]):'')+'</span>'+
+        '<span class="tools"><button type="button" class="btn ghost sm" data-exp="'+esc(id)+'">Export</button><button type="button" class="btn danger sm" data-del-test="'+esc(id)+'">A teszt összes adatának törlése</button></span></div>'+
+        (h.length?'<ul class="sess">'+rows+'</ul>':'<p class="raw">Még nincs kiértékelt eredmény'+(raw?', csak elkezdett vagy kitöltött, de meg nem nyitott válaszok.':'.')+'</p>')+'</div>';
+    }).join('')+(orphans.length?'<div class="card" style="--acc:var(--ink-mute)"><div class="th"><span class="nm">Régi kérdőívváltozatok válaszai</span><span class="tools"><button type="button" class="btn danger sm" id="del-orph">Törlés</button></span></div><p class="raw">'+orphans.map(esc).join(', ')+'. Ezeket a jelenlegi oldalak már nem használják (pl. a MAIA-2 korábbi, nem eredeti tételsora).</p></div>':'');
+    var st=jget(SK,{});
+    document.getElementById('set-desc').textContent='Téma: '+(st.theme==='dark'?'sötét':'világos')+' · újramérési emlékeztető: '+(st.retake===0?'ki':(st.retake||90)+' nap')+' · automatikus továbblépés: '+(st.autoAdvance===false?'ki':'be')+' · részletes elemzés alapból: '+(st.detailOpen?'nyitva':'csukva')+'.';
+  }
+
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('button');if(!b)return;
+    var res,id;
+    if(b.dataset.delSess){id=b.dataset.delSess;var i=+b.dataset.i;res=ONI.all();var h=res[id]||[],r=h[i];if(!r)return;
+      var isLast=i===h.length-1,key=IDKEY[id];
+      if(!confirm('Törlöd a(z) '+name(id)+' '+fmt(r.done||r.t)+' kitöltését?'+(isLast&&key&&hasRaw(key)?'\n\nEz a legutóbbi kitöltés, ezért a teszt mentett válaszait is törlöm.':'')))return;
+      snapshot();h.splice(i,1);if(h.length)res[id]=h;else delete res[id];jset(K,res);
+      var nt=jget(NK,{});if(nt[id]&&r.sid){delete nt[id][r.sid];if(!Object.keys(nt[id]).length)delete nt[id];jset(NK,nt);}
+      if(isLast&&key){localStorage.removeItem(key);var m=jget(META,{});if(m.ans){delete m.ans[key];jset(META,m);}}
+      say('Kitöltés törölve. 7 napig visszavonható.');render();}
+    else if(b.dataset.delTest){id=b.dataset.delTest;if(!confirm('Törlöd a(z) '+name(id)+' minden adatát (kitöltések, mentett válaszok, jegyzetek)?'))return;
+      snapshot();res=ONI.all();delete res[id];jset(K,res);var n2=jget(NK,{});delete n2[id];jset(NK,n2);
+      var k2=IDKEY[id];if(k2){localStorage.removeItem(k2);var m2=jget(META,{});if(m2.ans){delete m2.ans[k2];jset(META,m2);}}
+      say(name(id)+': minden adat törölve. 7 napig visszavonható.');render();}
+    else if(b.dataset.exp){id=b.dataset.exp;var data={},r3=ONI.all(),n3=jget(NK,{});
+      if(r3[id]){var o={};o[id]=r3[id];data[K]=JSON.stringify(o);}
+      if(n3[id]){var o2={};o2[id]=n3[id];data[NK]=JSON.stringify(o2);}
+      if(IDKEY[id]&&localStorage.getItem(IDKEY[id])!=null)data[IDKEY[id]]=localStorage.getItem(IDKEY[id]);
+      download('onismeret-'+id+'-'+new Date().toISOString().slice(0,10)+'.json',{app:'onismeret',v:1,kind:'test',test:id,exported:new Date().toISOString(),data:data});
+      say(name(id)+' exportálva. A főoldalon visszaállítható; csak ezt a tesztet írja felül.');}
+    else if(b.id==='del-orph'){if(!confirm('Törlöd a régi kérdőívváltozatok mentett válaszait?'))return;snapshot();
+      var known={};Object.keys(IDKEY).forEach(function(x){known[IDKEY[x]]=1});Object.keys(ours()).forEach(function(k){if(/-responses-v\d+$/.test(k)&&!known[k])localStorage.removeItem(k)});say('Régi válaszok törölve.');render();}
+  });
+  document.getElementById('exp-all').onclick=function(){var d=ours();if(!Object.keys(d).length){say('Nincs még mit menteni.',true);return;}
+    download('onismeret-mentes-'+new Date().toISOString().slice(0,10)+'.json',{app:'onismeret',v:1,exported:new Date().toISOString(),data:d});say(Object.keys(d).length+' tétel elmentve fájlba. Érzékeny adatokat tartalmaz, tartsd biztonságos helyen.');};
+  document.getElementById('set-reset').onclick=function(){localStorage.removeItem(SK);document.documentElement.setAttribute('data-theme','light');say('Beállítások alaphelyzetben.');render();};
+  var box=document.getElementById('wipe-box'),inp=document.getElementById('wipe-in'),go=document.getElementById('wipe-go');
+  document.getElementById('wipe').onclick=function(){box.classList.add('on');inp.value='';go.disabled=true;inp.focus();};
+  document.getElementById('wipe-no').onclick=function(){box.classList.remove('on')};
+  inp.oninput=function(){go.disabled=inp.value.trim().toUpperCase()!=='TÖRLÉS'};
+  go.onclick=function(){if(go.disabled)return;var ks=[];for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(KEYRX.test(k))ks.push(k)}ks.forEach(function(k){localStorage.removeItem(k)});
+    document.documentElement.setAttribute('data-theme','light');box.classList.remove('on');say('Minden adat törölve erről az eszközről ('+ks.length+' tétel).');render();};
+  render();
+});
+</script>
+</body>
+</html>

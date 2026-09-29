@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Változásnapló — Önismereti térképek</title>
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+:root{
+  --bg-deep:#050d1e;--bg-card:#0f2038;--bg-card-hi:#152845;
+  --ink:#e6ecf5;--ink-soft:#a3b3c8;--ink-mute:#6b7c94;--line:#1e3255;--line-soft:#152845;
+  --gold:#fbbf24;--gold-soft:#78551a;--sapphire:#60a5fa;--rose:#fb7185;--emerald:#34d399;
+  --font-serif:'Fraunces','Cardo',Georgia,serif;--font-sans:'Manrope','Inter','Helvetica Neue',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg-deep);color:var(--ink);font-family:var(--font-sans);font-size:16px;line-height:1.6;min-height:100vh}
+a{color:inherit}
+.wrap{max-width:1000px;margin:0 auto;padding:40px 24px 96px}
+.back{display:inline-flex;gap:8px;font-size:12px;color:var(--ink-mute);text-decoration:none;letter-spacing:.06em;margin-bottom:28px}
+.back:hover{color:var(--ink)}
+.kicker{display:inline-block;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:18px;padding:6px 16px;border:1px solid var(--gold-soft);border-radius:99px}
+h1{font-family:var(--font-serif);font-weight:400;font-size:clamp(36px,6vw,56px);line-height:1.05;letter-spacing:-0.02em;margin-bottom:16px}
+h1 em,h2 em{font-style:italic;color:var(--gold)}
+.lead{color:var(--ink-soft);font-size:16.5px;max-width:720px;margin-bottom:28px}
+.statbar{display:flex;flex-wrap:wrap;gap:10px 26px;padding:18px 22px;border:1px solid var(--line);border-radius:16px;background:var(--bg-card);margin-bottom:18px;font-size:14px;color:var(--ink-soft)}
+.statbar strong{font-family:var(--font-serif);font-size:22px;color:var(--ink);font-weight:500;margin-right:6px}
+h2{font-family:var(--font-serif);font-weight:400;font-size:28px;margin:44px 0 8px;letter-spacing:-0.01em}
+.h2sub{color:var(--ink-mute);font-size:14px;margin-bottom:18px;max-width:720px}
+.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{appearance:none;cursor:pointer;font:inherit;font-size:13.5px;font-weight:600;padding:9px 16px;border-radius:99px;border:1px solid var(--gold);background:color-mix(in srgb,var(--gold) 12%,transparent);color:var(--ink);white-space:nowrap;text-decoration:none;display:inline-block}
+.btn.ghost{border-color:var(--line);background:transparent;color:var(--ink-soft);font-weight:500}
+.btn.danger{border-color:color-mix(in srgb,var(--rose) 60%,transparent);background:transparent;color:var(--rose)}
+.btn.sm{font-size:12.5px;padding:6px 12px}
+.btn:hover{filter:brightness(1.08)}
+.msg{font-size:13.5px;margin-top:10px;color:var(--ink-soft)}
+.msg.bad{color:var(--rose)}
+.card{background:var(--bg-card);border:1px solid var(--line);border-radius:18px;padding:20px 22px;margin-bottom:12px;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--acc,var(--gold))}
+.log{list-style:none;border-left:1px solid var(--line);margin-left:6px}
+.log>li{position:relative;padding:4px 0 26px 24px}
+.log>li::before{content:'';position:absolute;left:-5px;top:12px;width:9px;height:9px;border-radius:50%;background:var(--acc,var(--gold))}
+.log .d{font-size:12px;color:var(--ink-mute);letter-spacing:.04em}
+.log h3{font-family:var(--font-serif);font-weight:500;font-size:20px;margin:2px 0 8px}
+.log ul{padding-left:18px;color:var(--ink-soft);font-size:14.5px;display:grid;gap:4px}
+.flags{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0}
+.flag{font-size:12px;padding:4px 10px;border-radius:99px;border:1px solid var(--line);color:var(--ink-soft)}
+.flag b{font-weight:700}
+.flag.yes{border-color:color-mix(in srgb,var(--rose) 55%,transparent);color:var(--ink)}
+.flag.yes b{color:var(--rose)}
+.flag.no b{color:var(--emerald)}
+.flag.part b{color:var(--gold)}
+.log .tip{font-size:13.5px;color:var(--ink-mute);margin-top:8px}
+.log a,.mine a{color:var(--sapphire)}
+.mine{padding:16px 20px;border:1px solid var(--line);border-radius:16px;background:var(--bg-card);font-size:14.5px;color:var(--ink-soft);margin-bottom:10px}
+.mine.hit{border-color:color-mix(in srgb,var(--rose) 55%,transparent)}
+.mine strong{color:var(--ink)}
+.vt{width:100%;border-collapse:collapse;font-size:13.5px;color:var(--ink-soft)}
+.vt th,.vt td{text-align:left;padding:7px 10px;border-bottom:1px dashed var(--line)}
+.vt th{color:var(--ink-mute);font-weight:600;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.note{font-size:12.5px;color:var(--ink-mute);margin-top:40px;line-height:1.7;border-top:1px dashed var(--line);padding-top:20px}
+@media (max-width:560px){.wrap{padding:28px 16px 64px}}
+</style>
+
+<script src="assets/oni-core.js"></script>
+<script src="assets/tests-data.js" defer></script>
+<script src="assets/results-plus.js" defer></script>
+<link rel="stylesheet" href="assets/theme.css">
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">‹ Önismereti térképek</a>
+  <span class="kicker">Változásnapló</span>
+  <h1>Mi <em>változott</em></h1>
+  <p class="lead">Minden olyan módosítás, amely a kérdéseket, a pontozást vagy az eredmények kezelését érinti. Minden bejegyzésnél látod, változott-e a pontozás, és kell-e újra kitöltened a tesztet ahhoz, hogy az eredményed összevethető legyen a korábbiakkal.</p>
+
+  <h2>Érint <em>téged?</em></h2>
+  <p class="h2sub">Ebben a böngészőben tárolt eredményeid alapján.</p>
+  <div id="mine"></div>
+
+  <h2>Napló</h2>
+  <p class="h2sub">A legfrissebb elöl. „Pontozás” = a pontszám számítása vagy a tételek változtak. „Újrakitöltés” = a korábbi eredmény nem vethető össze az újjal.</p>
+  <ul class="log" id="log"></ul>
+
+  <h2>Jelenlegi <em>változatok</em></h2>
+  <p class="h2sub">Minden eredmény elmenti, melyik kérdéssor- és pontozásváltozattal készült. Eltérő változatú eredményeket az összegzés nem hasonlít össze, és a grafikonon sem köt össze.</p>
+  <div id="vers"></div>
+
+  <p class="note">A kérdőívek saját magyar fordításban szerepelnek. Az eredmények önbevallásos tendenciák, nem diagnózisok. Az adataidat az <a href="adatok.html" style="color:var(--sapphire)">Adatok</a> oldalon kezelheted.</p>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  var D=window.ONI_DATA||{},VERS=(window.ONI&&ONI.VERS)||{};
+  var nm=function(id){return (D[id]&&D[id].n)||id};
+  var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+  /* score/retake: 'no' | 'part' | 'yes' */
+  var LOG=[
+    {d:'2026-09-29',t:'Saját kezdőlap, eredménytörténet, adatkezelés',score:'no',retake:'no',items:[
+      'A főoldal visszatérő látogatónál a folytatható tesztet, a következő lépést és a legutóbbi eredményt mutatja.',
+      'Az összegzésben a többször kitöltött teszteknél idővonal-grafikon és táblázat mutatja a változást.',
+      'Új <a href="adatok.html">Adatok</a> oldal: kitöltésenkénti és tesztenkénti törlés (7 napig visszavonható), tesztenkénti export, teljes törlés.',
+      'Demó profil: <a href="osszegzes.html?demo=1">osszegzes.html?demo=1</a>, kitalált adatokkal, semmit nem ment.',
+      'Ez a változásnapló.']},
+    {d:'2026-09-28',t:'Egységes eredményfelépítés, tesztadatlapok, jegyzetek',score:'no',retake:'no',items:[
+      'Minden teszt elején lenyitható tesztadatlap: mit mér, kinek szól, milyen időszakra kérdez, mire nem alkalmas.',
+      'Az eredmény tetején „Röviden” kártya, a részletes elemzés lenyitható.',
+      'Saját jegyzet és kitöltési körülmények kitöltésenként. A pontszámot nem befolyásolják.',
+      'Világos alapértelmezett téma, sötét kapcsolóval.']},
+    {d:'2026-09-28',t:'MAIA-2: az eredeti tételsor',tests:['maia2'],score:'yes',retake:'yes',items:[
+      'A korábbi változat tételei nem egyeztek a MAIA-2 eredeti tételeivel. Most az eredeti 37 tétel saját fordítása szerepel, az eredeti alskála-hozzárendeléssel.',
+      'Kérdéssor v2, pontozás v2. A régi válaszok nem vihetők át, mert más kérdésekre adtad őket.'],
+      tip:'A korábbi MAIA-2 eredményed megmarad az előzményekben, de az összegzés nem hasonlítja össze az újjal. A régi válaszokat az Adatok oldalon törölheted.'},
+    {d:'2026-09-28',t:'NSSS: a partnerre vonatkozó rész kihagyható',tests:['nsss'],score:'part',retake:'no',items:[
+      'Ha nincs partnered, vagy a kérdések nem vonatkoznak rád, a második rész kihagyható. Ilyenkor csak a saját tapasztalat (ego) alskála kap pontszámot.',
+      'A teljes kitöltés pontozása nem változott.']},
+    {d:'2026-09-28',t:'Óvatosabb minták és változásjelzés az összegzésben',score:'no',retake:'no',items:[
+      'Egy minta csak akkor jelenik meg, ha legalább két különböző teszt jelzi (korábban ugyanannak a tesztnek két skálája is elég volt).',
+      'A változásjel színe a skála irányát követi: zöld a kedvező, rózsaszín a kedvezőtlen irány, szürke a semleges skála.',
+      'A kitöltés dátuma az utolsó válasz ideje. Az eredmény puszta újranyitása nem számít új mérésnek, egy napon belüli módosítás javításnak számít.']},
+    {d:'2026-09-28',t:'Big Five: semleges sávnevek',tests:['bf'],score:'no',retake:'no',items:[
+      'A sávok elnevezése értékmentes lett, és a diagram tengelye a valódi 12–60 tartományt mutatja. A pontszám nem változott.']},
+    {d:'2026-09-28',t:'IX. témakör: szabályozás és végrehajtás',tests:['ips','ders','scs','tfeq'],score:'no',retake:'no',items:[
+      'Új tesztek: IPS (halogatás), DERS-SF (érzelemszabályozás), SCS-SF (önegyüttérzés), TFEQ-R18 (evési viselkedés).',
+      'Kezdő útvonal öt teszttel, pármód, terapeuta-összefoglaló PDF-ben.']},
+    {d:'2026-09-28',t:'VII–VIII. témakör',tests:['las','tki','gott','fti','pvq','ft','kolbe','meq'],score:'no',retake:'no',items:['Nyolc új teszt a kapcsolati dinamika, az értékek, a cselekvési stílus és a napi ritmus témájában.']},
+    {d:'2026-09-28',t:'YSQ-L és kötődési mélytérkép',tests:['ysq','kotodes'],score:'no',retake:'no',items:['Két új, hosszabb teszt.']}
+  ];
+  var FL={score:{no:'nem változott',part:'részben',yes:'változott'},retake:{no:'nem kell',part:'ajánlott',yes:'szükséges'}};
+  var flag=function(k,v){return '<span class="flag '+v+'">'+(k==='score'?'Pontozás':'Újrakitöltés')+': <b>'+FL[k][v]+'</b></span>'};
+  document.getElementById('log').innerHTML=LOG.map(function(e){
+    return '<li'+(e.retake==='yes'?' style="--acc:var(--rose)"':'')+'><div class="d">'+new Date(e.d+'T12:00:00').toLocaleDateString('hu-HU',{year:'numeric',month:'long',day:'numeric'})+(e.tests?' · '+e.tests.map(nm).map(esc).join(', '):'')+'</div><h3>'+esc(e.t)+'</h3><ul>'+e.items.map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul><div class="flags">'+flag('score',e.score)+flag('retake',e.retake)+'</div>'+(e.tip?'<p class="tip">'+esc(e.tip)+'</p>':'')+'</li>';
+  }).join('');
+  /* Érintettség a saját adatok alapján */
+  var all=window.ONI?ONI.all():{},hits=[];
+  Object.keys(VERS).forEach(function(id){var h=all[id];if(!h||!h.length)return;var r=h[h.length-1];
+    if((r.qv||1)<(VERS[id].q||1)||(r.sv||1)<(VERS[id].s||1))hits.push('<div class="mine hit"><strong>'+esc(nm(id))+'</strong>: a legutóbbi eredményed egy korábbi változattal készült (kérdéssor v'+(r.qv||1)+', pontozás v'+(r.sv||1)+'). <a href="'+((window.ONI_LINK||{})[id]||'index.html')+'">Töltsd ki újra</a>, ha össze szeretnéd vetni a későbbiekkel.</div>');});
+  var old=[];try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k==='maia2-responses-v1')old.push(k)}}catch(e){}
+  if(old.length)hits.push('<div class="mine">Van mentett válaszod a MAIA-2 régi tételsorára. Ezt a jelenlegi teszt nem használja; az <a href="adatok.html">Adatok</a> oldalon törölheted.</div>');
+  var any=Object.keys(all).some(function(id){return all[id]&&all[id].length});
+  document.getElementById('mine').innerHTML=hits.length?hits.join(''):'<div class="mine">'+(any?'Egyik tárolt eredményedet sem érinti olyan változás, amely miatt újra kellene tölteni.':'Ebben a böngészőben még nincs tárolt eredmény, így semmit nem érint.')+'</div>';
+  var ids=Object.keys(D);
+  document.getElementById('vers').innerHTML='<table class="vt"><tr><th>Teszt</th><th>Kérdéssor</th><th>Pontozás</th></tr>'+ids.map(function(id){var v=VERS[id]||{};return '<tr><td>'+esc(nm(id))+'</td><td>v'+(v.q||1)+'</td><td>v'+(v.s||1)+'</td></tr>'}).join('')+'</table>';
+});
+</script>
+</body>
+</html>

@@ -201,5 +201,5 @@ window.ONI=window.ONI||(function(){
   })();
 
   window.addEventListener('oni:saved',function(e){setTimeout(function(){banner(e.detail.id)},900);});
-  return {K:K,all:all,save:save,r:r,PATH:PATH,pathState:pathState};
+  return {K:K,META:META,IDKEY:IDKEY,VERS:VERS,all:all,save:save,r:r,PATH:PATH,pathState:pathState};
 })();
