@@ -61,10 +61,10 @@ h2{font-family:var(--font-serif);font-weight:400;font-size:28px;margin:44px 0 8p
 @media (max-width:560px){.wrap{padding:28px 16px 64px}}
 </style>
 
-<script src="assets/oni-core.js?v=9e3c5153"></script>
+<script src="assets/oni-core.js?v=26bbc6cd"></script>
 <script src="assets/tests-data.js?v=8174bfd3" defer></script>
-<script src="assets/results-plus.js?v=7819be5c" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=87b799cf">
+<script src="assets/results-plus.js?v=074992e6" defer></script>
+<link rel="stylesheet" href="assets/theme.css?v=47001bcb">
 </head>
 <body>
 <div class="wrap">
@@ -94,6 +94,11 @@ document.addEventListener('DOMContentLoaded',function(){
   var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
   /* score/retake: 'no' | 'part' | 'yes' */
   var LOG=[
+    {d:'2026-09-29',t:'Teljes olvashatósági ellenőrzés, diagram minden eredménynél',score:'no',retake:'no',items:[
+      'Mind a 31 teszt kérdés- és eredményoldalát végigellenőriztem világos és sötét témában, asztali és mobil nézetben (kb. 55 000 szövegelem).',
+      'Javítva: a Szeretetnyelvek és Bocsánatkérési nyelvek kérdéskártyái világos témában sötétek voltak sötét szöveggel; az Imágó-portré fehér szövege világos háttéren; a klinikai kártyák sárga/zöld háttere sötét témában; halvány (muted) feliratok mindkét témában.',
+      'Új védőháló: ha egy szöveg a saját hátterén nem éri el a WCAG AA kontrasztot (4.5:1, nagy szövegnél 3:1), az oldal automatikusan olvashatóra igazítja a színét.',
+      'Minden eredmény „Röviden” kártyáján diagramos összkép: minden skála egy sávon, a saját tartományában. Most már a YSQ-L-nél, a Kötődési mélytérképnél és az Imágónál is.']},
     {d:'2026-09-29',t:'Célok, vállalások, emlékeztető, jelölés',score:'no',retake:'no',items:[
       'A főoldalon „Mit szeretnél megérteni?” választó: célonként 2–3 teszt, és hogy mivel érdemes kezdeni.',
       'Az eredmény végén rögzíthetsz egy kicsi vállalást. A főoldalon és a következő kitöltésnél megkérdezi, hogyan sikerült.',

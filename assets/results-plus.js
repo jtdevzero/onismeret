@@ -13,6 +13,8 @@
     .forEach(function(id){MAP[id]={panel:'#test-'+id,res:'#'+id+'-results'}});
   if(page==='maia2')MAP.maia2={panel:'body',res:'#results'};
   if(page==='sis-ses')MAP.sisses={panel:'body',res:'#results'};
+  if(page==='ysq')MAP.ysq={panel:'#view-questionnaire',res:'#resultsContent'};
+  if(page==='kotodes-melyterkep')MAP.kotodes={panel:'#view-test',res:'#result-body'};
 
   /* ── Tesztadatlap a kérdések fölött ── */
   function sheet(id){
@@ -39,6 +41,20 @@
     if(e.length>5)e=e.map(function(x){var d=x[1],n=(d[1]-d[2])/((d[3]-d[2])||1);return [x[0],d,n]}).sort(function(a,b){return b[2]-a[2]}).slice(0,4).map(function(x){return [x[0],x[1]]});
     return e.slice(0,5);
   }
+  /* ── Diagramos összkép: minden dimenzió egy közös, 0–100%-os sávon, a saját skálája szerint ── */
+  function chartHTML(r){
+    var e=Object.entries(r.d||{}).filter(function(x){return typeof x[1][1]==='number'&&typeof x[1][2]==='number'&&typeof x[1][3]==='number'&&x[1][3]>x[1][2]});
+    if(!e.length)return '';
+    var total=e.length,more=0;
+    if(e.length>12){e=e.slice().sort(function(a,b){return (b[1][1]-b[1][2])/(b[1][3]-b[1][2])-(a[1][1]-a[1][2])/(a[1][3]-a[1][2])});more=e.length-12;e=e.slice(0,12);}
+    var rows=e.map(function(x){var d=x[1],lo=d[2],hi=d[3],v=Math.max(lo,Math.min(hi,d[1])),span=hi-lo,bar;
+      if(lo<0&&hi>0){var z=(0-lo)/span*100,p=(v-lo)/span*100;bar='<span class="zero" style="left:'+z.toFixed(1)+'%"></span><i class="'+(v<0?'neg':'pos')+'" style="left:'+Math.min(z,p).toFixed(1)+'%;width:'+Math.abs(p-z).toFixed(1)+'%"></i>';}
+      else bar='<i style="width:'+((v-lo)/span*100).toFixed(1)+'%"></i>';
+      return '<div class="oc-row"><span class="oc-l">'+esc(d[0])+'</span><span class="oc-t" role="img" aria-label="'+esc(d[0])+': '+d[1]+' ('+lo+'–'+hi+' skálán)">'+bar+'</span><span class="oc-v">'+d[1]+'<small> / '+lo+'–'+hi+'</small></span></div>';}).join('');
+    return '<figure class="oni-chart"><figcaption>Eredményprofil'+(more?' · a '+e.length+' legmagasabb a '+total+' skálából':'')+'</figcaption>'+rows+
+      '<p class="oc-note">A sáv azt mutatja, hol áll az eredményed a skála saját tartományán belül'+(e.some(function(x){return x[1][2]<0})?'; a kétirányú skáláknál a függőleges vonal a nulla pont':'')+'. A skálák nem mind ugyanazt jelentik: a magas érték nem mindenhol jobb.</p></figure>';
+  }
+  window.ONI_CHART=chartHTML;
   function brief(id,r){
     var d=D[id]||{},notes=jget(NK,{}),n=((notes[id]||{})[r.sid||'_'])||{fit:[],cond:[],text:''};
     var dims=topDims(r).map(function(x){var v=x[1];return '<span class="oni-dim"><b>'+esc(v[0])+'</b> '+v[1]+'<small> ('+v[2]+'–'+v[3]+')</small></span>'}).join('');
@@ -47,7 +63,7 @@
     return '<section class="oni-brief" data-id="'+id+'" data-sid="'+esc(r.sid||'_')+'">'+
       '<div class="oni-eyebrow">Röviden</div>'+
       '<p class="oni-head">'+esc(r.h||d.n||'')+'</p>'+
-      (dims?'<div class="oni-dims">'+dims+'</div>':'')+
+      (chartHTML(r)||(dims?'<div class="oni-dims">'+dims+'</div>':''))+
       '<div class="oni-grid">'+
         '<div><h5>Értelmezési korlát</h5><p>'+esc(d.limit||'Önbevallásos kérdőív: tendenciát mutat, nem diagnózist.')+'</p></div>'+
         '<div><h5>Kérdés magadnak</h5><p class="oni-q">'+esc(d.q||'Mi az, ami ebből igaz rád, és mi nem?')+'</p></div>'+
@@ -163,9 +179,9 @@
   }
   window.addEventListener('oni:saved',function(e){
     var id=e.detail.id;if(!CALM[id])return;
-    var tries=0;(function go(){var res=id==='ysq'?document.getElementById('resultsContent'):document.querySelector((MAP[id]||{}).res);
+    var tries=0;(function go(){var res=document.querySelector((MAP[id]||{}).res);
       /* a Röviden-kártya után kerüljön a legtetejére */
-      if(res&&res.children.length&&(id==='ysq'||res.querySelector(':scope > .oni-brief'))){var old=res.querySelector(':scope > .oni-calm');if(old)old.remove();calm(res);return;}
+      if(res&&res.children.length&&res.querySelector(':scope > .oni-brief')){var old=res.querySelector(':scope > .oni-calm');if(old)old.remove();calm(res);return;}
       if(++tries<30)setTimeout(go,100);})();
   });
 

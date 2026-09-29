@@ -102,6 +102,68 @@ window.ONI=window.ONI||(function(){
     window.ONI_TOAST=toast;
   })();
 
+  /* ── Olvashatósági védőháló: ha egy szöveg a saját hátterén túl halvány (WCAG AA alatt),
+        a színét a téma irányába húzza (sötét háttéren világosabbra, világoson sötétebbre). Mindkét témában fut. ── */
+  (function(){
+    var FIX='data-oni-fix',busy=false,tm=null;
+    function parse(c){var m=c&&c.match(/rgba?\(([^)]+)\)/);if(!m)return null;var p=m[1].split(/[\s,\/]+/).filter(Boolean).map(Number);return {r:p[0],g:p[1],b:p[2],a:p.length>3?p[3]:1}}
+    function lum(c){function f(v){v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)}return .2126*f(c.r)+.7152*f(c.g)+.0722*f(c.b)}
+    function blend(t,b){return {r:t.r*t.a+b.r*(1-t.a),g:t.g*t.a+b.g*(1-t.a),b:t.b*t.a+b.b*(1-t.a),a:1}}
+    function ratio(a,b){var x=lum(a),y=lum(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)}
+    /* gradiensnél a legsötétebb és a legvilágosabb színmegállót is figyelembe vesszük (legrosszabb eset) */
+    function gradStops(img){var m=img.match(/rgba?\([^)]+\)|#[0-9a-f]{6}\b/gi);if(!m)return null;var cs=m.map(function(x){if(x[0]==='#'){return {r:parseInt(x.substr(1,2),16),g:parseInt(x.substr(3,2),16),b:parseInt(x.substr(5,2),16),a:1}}return parse(x)});
+      cs.sort(function(a,b){return lum(a)-lum(b)});var aa=cs.reduce(function(s,c){return s+c.a},0)/cs.length;var lo=cs[0],hi=cs[cs.length-1];return [{r:lo.r,g:lo.g,b:lo.b,a:aa},{r:hi.r,g:hi.g,b:hi.b,a:aa}]}
+    var cache;
+    function layers(el){
+      if(cache.has(el))return cache.get(el);
+      var cs=getComputedStyle(el),c=parse(cs.backgroundColor),img=cs.backgroundImage,g=img&&img!=='none'?gradStops(img):null,own=[];
+      if(c&&c.a>0)own.push([c,c]);if(g&&g[0].a>0)own.push(g);   /* a gradiens a szín fölött van */
+      var opaque=own.some(function(x){return x[0].a>=.99});
+      var under=opaque||!el.parentElement?[]:layers(el.parentElement);
+      var res=under.concat(own);cache.set(el,res);return res;
+    }
+    function bgOf(el){var ls=layers(el),base=parse(getComputedStyle(document.documentElement).backgroundColor);if(!base||base.a<.5)base=document.documentElement.getAttribute('data-theme')==='dark'?{r:5,g:13,b:30,a:1}:{r:255,g:255,b:255,a:1};
+      var lo=base,hi=base;ls.forEach(function(l){lo=blend(l[0],lo);hi=blend(l[1],hi)});return [lo,hi]}
+    function mix(a,b,t){return {r:a.r+(b.r-a.r)*t,g:a.g+(b.g-a.g)*t,b:a.b+(b.b-a.b)*t,a:1}}
+    function run(){
+      if(busy||!document.body)return;busy=true;cache=new Map();
+      try{
+        var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT),t,seen=new Set();
+        while((t=w.nextNode())){
+          var el=t.parentElement;if(!el||seen.has(el)||!t.textContent.trim())continue;seen.add(el);
+          if(el.closest('svg,script,style,#oni-toast,[data-oni-nofix],:disabled'))continue;
+          var cs=getComputedStyle(el);if(cs.visibility==='hidden'||cs.display==='none')continue;
+          if(/text/.test(cs.webkitBackgroundClip||cs.backgroundClip||'')||cs.webkitTextFillColor==='rgba(0, 0, 0, 0)')continue;
+          var r=el.getClientRects();if(!r.length)continue;
+          var fg=parse(cs.color);if(!fg||fg.a===0)continue;
+          var bgs=bgOf(el),f=blend(fg,bgs[0]),fs=parseFloat(cs.fontSize),big=fs>=24||(fs>=18.66&&+cs.fontWeight>=700),need=big?3:4.5;
+          var rmin=function(c){return Math.min(ratio(c,bgs[0]),ratio(c,bgs[1]))};
+          if(rmin(f)>=need)continue;
+          var mid={r:(bgs[0].r+bgs[1].r)/2,g:(bgs[0].g+bgs[1].g)/2,b:(bgs[0].b+bgs[1].b)/2,a:1};
+          var D={r:15,g:23,b:42,a:1},Lt={r:248,g:250,b:252,a:1},K={r:0,g:0,b:0,a:1},W={r:255,g:255,b:255,a:1},first=lum(mid)>.3?[D,Lt,K,W]:[Lt,D,W,K],best=null;
+          for(var q=0;q<4&&!best;q++)for(var k=1;k<=10;k++){var c=mix(f,first[q],k/10);if(rmin(c)>=need+.1){best=c;break}}
+          best=best||[K,W].sort(function(a,b){return rmin(b)-rmin(a)})[0];
+          if(!el.hasAttribute(FIX))el.setAttribute(FIX,el.style.getPropertyValue('color')||'');
+          el.style.setProperty('color','rgb('+Math.round(best.r)+','+Math.round(best.g)+','+Math.round(best.b)+')','important');
+          if(cs.webkitTextFillColor&&cs.webkitTextFillColor!==cs.color)el.style.setProperty('-webkit-text-fill-color','currentColor','important');
+        }
+      }catch(e){}
+      busy=false;
+    }
+    function reset(){[].forEach.call(document.querySelectorAll('['+FIX+']'),function(e){e.style.removeProperty('color');e.style.removeProperty('-webkit-text-fill-color');var o=e.getAttribute(FIX);if(o)e.style.setProperty('color',o);e.removeAttribute(FIX)})}
+    function soon(ms){clearTimeout(tm);tm=setTimeout(function(){(window.requestIdleCallback||setTimeout)(run,{timeout:800})},ms||400)}
+    window.ONI_CONTRAST={run:run,reset:reset,soon:soon};
+    function boot(){
+      soon(250);setTimeout(run,1200);
+      if(window.MutationObserver)new MutationObserver(function(ms){for(var i=0;i<ms.length;i++){if(ms[i].type==='childList'&&ms[i].addedNodes.length){soon(500);return}if(ms[i].type==='attributes'&&ms[i].attributeName==='class'&&!/oni-cur|oni-flash|selected|active/.test(ms[i].target.className||'')){soon(500);return}}})
+        .observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
+      document.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('#oni-theme')){reset();setTimeout(run,60);}else soon(600)},true);
+      window.addEventListener('oni:saved',function(){soon(500);setTimeout(run,1600)});
+      window.addEventListener('hashchange',function(){soon(300)});
+    }
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+  })();
+
   /* ── Kitöltés-segéd: folytatás az első megválaszolatlannál + fókusz mód ── */
   (function(){
     var focus=false,cur=0,units=[],bar=null,pill=null,auto=true;

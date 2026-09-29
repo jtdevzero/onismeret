@@ -259,6 +259,9 @@ Minden teszt eredménye ugyanabban a rendben jelenik meg (`assets/results-plus.j
 
 ## Arculat
 
+- **Olvashatósági védőháló** (`assets/oni-core.js`, `ONI_CONTRAST`): minden oldalon, mindkét témában ellenőrzi a szövegek kontrasztját a tényleges (gradienses hátterű kártyáknál a legrosszabb esetű) háttérhez képest, és ahol a WCAG AA szint (4.5:1, nagy szövegnél 3:1) nem teljesül, a szöveg színét olvashatóra húzza. Letiltott gombokat nem módosít.
+- **Diagramos összkép:** minden eredmény „Röviden” kártyáján sávdiagram a teszt összes skálájáról (12-nél több skálánál a 12 legmagasabb), kétirányú skáláknál nullponttal.
+
 - **Két téma:** világos (alapértelmezett) és sötét. A jobb alsó ☾/☀ gombbal váltható, a választás minden oldalon megmarad (`onismeret-settings-v1.theme`).
 - **Világos:** hűvös palaszürke háttér (#f8fafc / #f1f5f9 / #e2e8f0), sötét palaszöveg, mély smaragd, zafír és burgundi kiemelés, arany akcentus. **Sötét:** sötétkék háttér ugyanezekkel az ékszerszínekkel, élénkebb árnyalatban.
 - **Tipográfia:** címek Lora, szöveg Inter, minden oldalon. A régi családnevek (Fraunces, Cardo, Playfair, DM Serif, Manrope, Nunito, DM Sans) a `fonts/fonts.css`-ben álnévként ugyanezekre a fájlokra mutatnak.

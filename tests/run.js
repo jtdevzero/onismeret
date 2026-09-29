@@ -339,6 +339,57 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     await ctx.close();
   }
 
+  console.log('\n16. Olvashatóság és diagram: minden teszt eredménye, mindkét témában');
+  {
+    const AUDIT=(scopeSel)=>{
+  const parse=c=>{const m=c.match(/rgba?\(([^)]+)\)/);if(!m)return null;const p=m[1].split(/[ ,\/]+/).filter(Boolean).map(Number);return {r:p[0],g:p[1],b:p[2],a:p.length>3?p[3]:1}};
+  const lum=c=>{const f=v=>{v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)};return .2126*f(c.r)+.7152*f(c.g)+.0722*f(c.b)};
+  const blend=(top,bot)=>({r:top.r*top.a+bot.r*(1-top.a),g:top.g*top.a+bot.g*(1-top.a),b:top.b*top.a+bot.b*(1-top.a),a:1});
+  const bgOf=el=>{const stack=[];let e=el;while(e&&e.nodeType===1){const cs=getComputedStyle(e);let c=parse(cs.backgroundColor);
+      if((!c||c.a===0)&&cs.backgroundImage&&cs.backgroundImage!=='none'){const m=cs.backgroundImage.match(/rgba?\([^)]+\)|#[0-9a-f]{3,8}/i);if(m){c=m[0][0]==='#'?null:parse(m[0]);}}
+      if(c&&c.a>0){stack.push(c);if(c.a>=0.99)break;}e=e.parentElement;}
+    let base={r:255,g:255,b:255,a:1};const bodyBg=parse(getComputedStyle(document.body).backgroundColor)||parse(getComputedStyle(document.documentElement).backgroundColor);if(bodyBg&&bodyBg.a>0.5)base=bodyBg;
+    let out=base;for(let i=stack.length-1;i>=0;i--)out=blend(stack[i],out);return out};
+  const scope=document.querySelector(scopeSel)||document.body;
+  const fails=[],seen=new Set();let n=0;
+  const walker=document.createTreeWalker(scope,NodeFilter.SHOW_TEXT);let t;
+  while(t=walker.nextNode()){
+    const s=t.textContent.trim();if(s.length<2)continue;const el=t.parentElement;if(!el||seen.has(el))continue;seen.add(el);
+    const r=el.getBoundingClientRect();if(r.width<2||r.height<2)continue;
+    const cs=getComputedStyle(el);if(cs.visibility==='hidden')continue;
+    let op=1,e=el,hidden=false;while(e&&e.nodeType===1){const c2=getComputedStyle(e);if(c2.display==='none'){hidden=true;break}op*=+c2.opacity;e=e.parentElement;}
+    if(hidden||op<0.05)continue;
+    if(el.closest('svg')||el.closest('#oni-toast,#oni-path-banner')||el.closest(':disabled'))continue;if(/text/.test(cs.webkitBackgroundClip||''))continue;
+    const fg=parse(cs.color);if(!fg)continue;const bg=bgOf(el);
+    const f2=blend({...fg,a:fg.a*Math.min(1,op)},bg);
+    const L1=lum(f2),L2=lum(bg),ratio=(Math.max(L1,L2)+.05)/(Math.min(L1,L2)+.05);
+    const big=parseFloat(cs.fontSize)>=18.5||(parseFloat(cs.fontSize)>=14&&+cs.fontWeight>=700);
+    n++;
+    if(ratio<(big?3:4.5))fails.push({txt:s.slice(0,50),ratio:+ratio.toFixed(2),fs:cs.fontSize,cls:(el.className&&el.className.baseVal===undefined?el.className:'').toString().slice(0,40),tag:el.tagName,fg:cs.color,bg:`rgb(${bg.r|0},${bg.g|0},${bg.b|0})`});
+  }
+  return {n,fails};
+};
+    const fillLegacy = id => { const sc = document.getElementById('test-' + id) || document.body; const g = {}; sc.querySelectorAll('button[data-n]').forEach(x => (g[x.dataset.n] = g[x.dataset.n] || []).push(x)); Object.values(g).forEach(a => a[Math.floor(a.length / 2)].click()); const bt = sc.querySelector('button[id$=showResults], #' + id + '-show, button[id$=-show], #showResults'); bt.click(); };
+    const CASES = [['kapcsolat', 'gott', 'hub'], ['szabalyozas', 'ders', 'hub'], ['terkepek', 'smi', 'leg'], ['terkepek', 'ecr', 'leg'], ['funkcio', 'sdi', 'leg'], ['funkcio', 'des', 'leg'], ['attitudok', 'nsss', 'leg'], ['nyelvek', 'love', 'leg'], ['nyelvek', 'imago', 'leg'], ['szemelyiseg', 'via', 'leg'], ['maia2', 'maia2', 'solo'], ['sis-ses', 'sisses', 'solo']];
+    for (const th of ['light', 'dark']) {
+      const ctx = await newCtx(); await ctx.addInitScript(t => { if (!sessionStorage.getItem('t')) { localStorage.setItem('onismeret-settings-v1', JSON.stringify({ theme: t })); sessionStorage.setItem('t', 1); } }, th);
+      const p = await pageIn(ctx); let worst = [], charts = [];
+      for (const [pg, id, kind] of CASES) {
+        await p.goto(R + pg + '.html' + (kind === 'solo' ? '' : '#test-' + id)); await p.waitForTimeout(250);
+        if (kind === 'hub') await p.evaluate(id => { TESTS[id]._fillAll(() => 1); TESTS[id].show(); }, id); else await p.evaluate(fillLegacy, id);
+        await p.waitForTimeout(1500); await p.evaluate(() => ONI_CONTRAST.run()); await p.waitForTimeout(300);
+        const sel = kind === 'solo' ? '#results' : '#' + id + '-results';
+        await p.evaluate(sel => { const d = document.querySelector(sel + ' details.oni-detail'); if (d) d.open = true; }, sel); await p.evaluate(() => ONI_CONTRAST.run()); await p.waitForTimeout(250);
+        const a = await p.evaluate(AUDIT, sel); if (a.fails.length) worst.push([id, a.fails.length, a.fails[0]]);
+        charts.push([id, await p.evaluate(sel => !!document.querySelector(sel + ' .oni-brief .oni-chart .oc-row'), sel)]);
+      }
+      ok(worst.length === 0, th + ' téma: minden vizsgált eredményoldal szövege eléri a WCAG AA kontrasztot', worst.slice(0, 3));
+      ok(charts.every(c => c[1]), th + ' téma: minden eredmény végén van diagramos összkép', charts.filter(c => !c[1]));
+      ok(p._errs.length === 0, th + ' téma: hibamentes', p._errs.slice(0, 2));
+      await ctx.close();
+    }
+  }
+
   await browser.close();
   console.log(`\n${pass} rendben, ${fail} hiba`);
   process.exit(fail ? 1 : 0);

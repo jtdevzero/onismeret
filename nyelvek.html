@@ -926,10 +926,10 @@ body::after{
 .test-panel .score-card .out{color:var(--ink-lite-muted) !important}
 .test-panel .score-card .bar{background:rgba(147,197,253,0.15) !important}
 </style>
-<script src="assets/oni-core.js?v=9e3c5153"></script>
+<script src="assets/oni-core.js?v=26bbc6cd"></script>
 <script src="assets/tests-data.js?v=8174bfd3" defer></script>
-<script src="assets/results-plus.js?v=7819be5c" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=87b799cf">
+<script src="assets/results-plus.js?v=074992e6" defer></script>
+<link rel="stylesheet" href="assets/theme.css?v=47001bcb">
 </head>
 <body>
 
@@ -1769,7 +1769,7 @@ function renderResults(){
   const topPos=topN('POS',5);
   const topWnd=topN('WND',5);
   const topNeed=topN('NEED',5);
-  try{ONI.save('imago',{n:'Imágó',h:'Fő kielégítetlen szükséglet: '+(topNeed[0]?topNeed[0].t.split('—')[0].trim():'–'),d:{},x:{need:topNeed.slice(0,3).map(x=>x.t),wound:topWnd.slice(0,3).map(x=>x.t),neg:topNeg.slice(0,3).map(x=>x.t)}});}catch(e){console.warn('ONI',e)}
+  try{ONI.save('imago',{n:'Imágó',h:'Fő kielégítetlen szükséglet: '+(topNeed[0]?topNeed[0].t.split('—')[0].trim():'–'),d:Object.fromEntries(topNeed.filter(x=>x.v>0).map(x=>['n'+x.n,['Szükséglet: '+x.t.split('—')[0].trim().slice(0,40),x.v,0,3]])),x:{need:topNeed.slice(0,3).map(x=>x.t),wound:topWnd.slice(0,3).map(x=>x.t),neg:topNeg.slice(0,3).map(x=>x.t)}});}catch(e){console.warn('ONI',e)}
   document.getElementById('imago-portraitCard').innerHTML=generatePortrait(topNeg,topPos,topWnd,topNeed);
   // Bar chart — 4 kategória top 5 mindben
   window.CHARTS.barGroup(document.getElementById('imago-barChart'), [
