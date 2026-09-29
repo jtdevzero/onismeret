@@ -759,8 +759,8 @@ footer{
 <script src="assets/oni-core.js?v=06166a21"></script>
 <script src="assets/oni-schema.js?v=190e2f3e" defer></script>
 <script src="assets/tests-data.js?v=8174bfd3" defer></script>
-<script src="assets/results-plus.js?v=d9038a18" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=12602886">
+<script src="assets/results-plus.js?v=27d63035" defer></script>
+<link rel="stylesheet" href="assets/theme.css?v=8936e71a">
 </head>
 <body>
 <a href="index.html" style="position:absolute;top:14px;left:14px;z-index:50;display:inline-flex;gap:6px;font:500 12px/1 system-ui,sans-serif;letter-spacing:.04em;color:#e2e8f0;background:rgba(15,23,42,.72);border:1px solid rgba(148,163,184,.35);padding:8px 13px;border-radius:99px;text-decoration:none;backdrop-filter:blur(8px)">‹ Önismereti térképek</a>
@@ -1067,28 +1067,17 @@ function scoreScale(scaleId){
   return {mean, n:vals.length};
 }
 
-// SIS/SES referencia sávok férfi populációra (Janssen 2002 + Velten 2016)
-// SES: M~2.7, SD~0.4 (férfi)
-// SIS1: M~2.0, SD~0.4
-// SIS2: M~2.5, SD~0.4
-const NORMS = {
-  ses:{mean:2.7, sd:0.4},
-  sis1:{mean:2.0, sd:0.4},
-  sis2:{mean:2.5, sd:0.4}
-};
-
 function bandFor(scaleId, score){
-  const norm = NORMS[scaleId];
-  const z = (score - norm.mean) / norm.sd;
-  let label, key, desc;
-  if(z <= -1.5){label='Jelentősen alacsony';key='very-low';desc='átlagtól ~1.5 SD-vel lejjebb (alsó ~7%)';}
-  else if(z <= -0.5){label='Alacsony';key='low';desc='átlag alatti tartomány';}
-  else if(z < 0.5){label='Átlagos';key='mid';desc='tipikus tartomány';}
-  else if(z < 1.5){label='Magas';key='high';desc='átlag feletti tartomány';}
-  else {label='Jelentősen magas';key='very-high';desc='átlagtól ~1.5 SD-vel feljebb (felső ~7%)';}
-  // percentilis közelítés normál eloszlásból
-  const pct = Math.round(100 * normalCDF(z));
-  return {label, key, desc, z, pct};
+  const LO=1,HI=4;
+  /* Nincs magyar mintán normázott referencia, ezért a válaszskála saját tartományán belüli helyet írjuk le, nem populációs átlagot. */
+  const p=(score-LO)/(HI-LO);
+  let label,key,desc;
+  if(p<0.2){label='Nagyon alacsony';key='very-low';desc='a válaszskála legalsó ötödében van'}
+  else if(p<0.4){label='Alacsony';key='low';desc='a válaszskála alsó részén van'}
+  else if(p<0.6){label='Közepes';key='mid';desc='a válaszskála középső részén van'}
+  else if(p<0.8){label='Magas';key='high';desc='a válaszskála felső részén van'}
+  else{label='Nagyon magas';key='very-high';desc='a válaszskála legfelső ötödében van'}
+  return {label,key,desc,p};
 }
 
 function normalCDF(z){
@@ -1103,11 +1092,11 @@ function normalCDF(z){
 // ============ INTERPRETÁCIÓ ============
 const INTERPRET = {
   ses:{
-    'very-low':`Az izgalmi rendszered jelentősen kevésbé reaktív, mint a férfi átlagé. Ez nem szexuális vágy hiánya — sokkal inkább azt jelenti, hogy a szexuális rendszered <strong>komplex feltételeket igényel</strong> a beinduláshoz: kontextus, biztonság, érzelmi kapcsolódás, lassú felépítés. A "spontán beindulás" típusú vágy ritka. Ezt sokszor "alacsony libidónak" diagnosztizálják, holott a Basson-féle <em>responsive desire</em> modell pontosabb leírás.`,
-    'low':`Az izgalmi rendszered az átlag alatti reaktivitású. Általános vizuális/környezeti ingerekre kevésbé válaszol — inkább specifikus kontextusok, kapcsolódás, lelki ráhangolódás indítják be. Ez a <em>felelet-vágy</em> (responsive desire) profilja: a vágy jellemzően a szexuális helyzetbe kerülésből fakad, nem előzi meg azt.`,
-    'mid':`Tipikus férfi izgalmi reaktivitás. Vizuális, taktilis, kontextuális ingerekre normál mértékben válaszol a rendszered. A spontán és a kontextuális vágy egyensúlyban van.`,
+    'very-low':`A válaszaid a skála legalsó tartományában vannak: a kérdésekben leírt helyzetek ritkán indítják be az izgalmi rendszeredet. Ez nem szexuális vágy hiánya — sokkal inkább azt jelenti, hogy a szexuális rendszered <strong>komplex feltételeket igényel</strong> a beinduláshoz: kontextus, biztonság, érzelmi kapcsolódás, lassú felépítés. A "spontán beindulás" típusú vágy ritka. Ezt sokszor "alacsony libidónak" diagnosztizálják, holott a Basson-féle <em>responsive desire</em> modell pontosabb leírás.`,
+    'low':`A válaszaid a skála alsó részén vannak: az izgalmi rendszered a leírt helyzetek egy részére reagál. Általános vizuális/környezeti ingerekre kevésbé válaszol — inkább specifikus kontextusok, kapcsolódás, lelki ráhangolódás indítják be. Ez a <em>felelet-vágy</em> (responsive desire) profilja: a vágy jellemzően a szexuális helyzetbe kerülésből fakad, nem előzi meg azt.`,
+    'mid':`Közepes izgalmi reaktivitás a skálán. Vizuális, taktilis, kontextuális ingerekre mérsékelten válaszol a rendszered. A spontán és a kontextuális vágy egyensúlyban van.`,
     'high':`Magas izgalmi reaktivitás. A rendszered könnyen, sok különféle ingerre kapcsol be. Erősség: jó vágyellátás, könnyű kezdeményezés. Ár: distraktivitás, könnyebben elcsábítható figyelem, esetleg túl-ingerlés-érzékenység.`,
-    'very-high':`Jelentősen magas izgalmi reaktivitás (felső ~7%). A rendszered szinte folyamatosan kapható. Ha más probléma nincs, ez egyszerűen egy magas-libidójú profil. Hiperszexualitás <em>csak akkor</em> klinikai kérdés, ha distresszt vagy funkcionális zavart okoz.`
+    'very-high':`Nagyon magas izgalmi reaktivitás a skálán. A rendszered szinte folyamatosan kapható. Ha más probléma nincs, ez egyszerűen egy magas-libidójú profil. Hiperszexualitás <em>csak akkor</em> klinikai kérdés, ha distresszt vagy funkcionális zavart okoz.`
   },
   sis1:{
     'very-low':`A teljesítmény-szorongás nem jelent fékpedált a szexuális rendszeredben. Ritka és kedvező profil. A rendszered nem reagál jelentősen a "mi lesz, ha nem megy" típusú gondolatokra.`,
@@ -1258,7 +1247,7 @@ function renderResults(){
         <div class="score-tag">${scale.short}</div>
         <div class="score-name">${scale.name.split('—')[1].trim()}</div>
         <div class="score-value">${s.mean.toFixed(2)}</div>
-        <div class="score-out">/ 4.00 · z = ${band.z>=0?'+':''}${band.z.toFixed(2)} · ~${band.pct}. percentilis</div>
+        <div class="score-out">/ 4.00 · ${band.label.toLowerCase()} a skálán</div>
         <div class="score-band">${band.label}</div>
         <div class="score-bar"><div class="score-bar-fill" style="width:${pct}%"></div></div>
       </div>
@@ -1284,10 +1273,10 @@ function renderResults(){
     interpHtml += `
       <div class="interp" style="--scale-color:${scale.color}">
         <h3>${scale.short} — <em>${scale.name.split('—')[1].trim()}</em></h3>
-        <div class="label">Klinikai értelmezés</div>
+        <div class="label">Értelmezés</div>
         <p>${INTERPRET[scale.id][band.key]}</p>
-        <div class="label">Sávpozicionálás</div>
-        <p>A pontszámod (<strong>${s.mean.toFixed(2)}</strong>) a férfi populációhoz képest a <strong>~${band.pct}. percentilisen</strong> helyezkedik el (z = ${band.z>=0?'+':''}${band.z.toFixed(2)}). Ez ${band.desc}.</p>
+        <div class="label">Hol áll a skálán</div>
+        <p>A pontszámod (<strong>${s.mean.toFixed(2)}</strong>) ${band.desc} (1–4). Külföldi mintákon közölt átlagokhoz nem hasonlítom, mert ez a saját fordítás nincs magyar mintán normázva.</p>
         <div class="label">Distress-kritérium</div>
         <p>Ez a pontszám <strong>önmagában nem klinikai diagnózis</strong>. Csak akkor érdemes kezelési kérdést felvetni, ha a saját szexuális életeddel kapcsolatban distresst, funkcionális zavart, vagy kapcsolati nehézséget tapasztalsz, és ez a profil ezt magyarázza. A magas/alacsony pontszám diszkomfort nélkül egyszerűen architekturális jellemző.</p>
       </div>
@@ -1354,7 +1343,7 @@ function drawQuadrant(ses, sisAvg){
     html += `<line x1="${xx}" y1="${M}" x2="${xx}" y2="${M+plotH}" stroke="rgba(255,250,242,0.06)" stroke-width="1"/>`;
     html += `<line x1="${M}" y1="${yy}" x2="${M+plotW}" y2="${yy}" stroke="rgba(255,250,242,0.06)" stroke-width="1"/>`;
   }
-  // mid lines (átlag)
+  // profilhatárok: ugyanazok az értékek, amelyekkel a profil besorolása dolgozik (külföldi minták közölt átlaga alapján)
   const midX = M + ((2.7-1)/3)*plotW;
   const midY = M + plotH - ((2.25-1)/3)*plotH;
   html += `<line x1="${midX}" y1="${M}" x2="${midX}" y2="${M+plotH}" stroke="rgba(217,179,112,0.4)" stroke-width="1" stroke-dasharray="4,4"/>`;
@@ -1394,7 +1383,7 @@ function drawQuadrant(ses, sisAvg){
   `;
 
   // mid-point label
-  html += `<text x="${midX+4}" y="${M+plotH-4}" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(217,179,112,0.5)">ø férfi átlag</text>`;
+  html += `<text x="${midX+4}" y="${M+plotH-4}" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(217,179,112,0.5)">profilhatár</text>`;
 
   svg.innerHTML = html;
 }

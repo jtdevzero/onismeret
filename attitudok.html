@@ -254,8 +254,8 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
 <script src="assets/oni-core.js?v=06166a21"></script>
 <script src="assets/oni-schema.js?v=190e2f3e" defer></script>
 <script src="assets/tests-data.js?v=8174bfd3" defer></script>
-<script src="assets/results-plus.js?v=d9038a18" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=12602886">
+<script src="assets/results-plus.js?v=27d63035" defer></script>
+<link rel="stylesheet" href="assets/theme.css?v=8936e71a">
 </head>
 <body>
 
@@ -298,7 +298,7 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
     <div id="ssss-quiz"></div>
     <div class="results-trigger"><button class="btn-primary" id="ssss-showResults" disabled><em>Megmutatni</em> az önképet</button></div>
     <div class="results" id="ssss-results">
-      <div class="res-eyebrow">Eredmény · SSSS · Klinikai értelmezés</div>
+      <div class="res-eyebrow">Eredmény · SSSS · Értelmezés</div>
       <h2 class="res-title">A te szexuális <em>önképed</em></h2>
       <p class="res-lead">A három dimenzió független — mindegyik saját karaktert ír le. A magas érték nem "jobb", csak "erősebben jelenlévő". Az érdekes információ a három együttes mintázata.</p>
       <div class="total-card" id="ssss-totalCard"></div>
@@ -344,7 +344,7 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
     <div id="nsss-quiz"></div>
     <div class="results-trigger"><button class="btn-primary" id="nsss-showResults" disabled><em>Megmutatni</em> az eredményt</button></div>
     <div class="results" id="nsss-results">
-      <div class="res-eyebrow">Eredmény · NSSS · Klinikai értelmezés</div>
+      <div class="res-eyebrow">Eredmény · NSSS · Értelmezés</div>
       <h2 class="res-title">A te elégedettségi <em>arányod</em></h2>
       <p class="res-lead">Két pontszámot kapsz — egyet a saját tapasztalatra, egyet a partner/aktivitás oldalra. Az érdekes információ a kettő <em>egyensúlya</em>: ha az egyik markánsan magasabb, ott van élet — ha markánsan alacsonyabb, ott van a nyomás.</p>
       <div class="total-card" id="nsss-totalCard"></div>
@@ -389,7 +389,7 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
     <div id="saq-quiz"></div>
     <div class="results-trigger"><button class="btn-primary" id="saq-showResults" disabled><em>Megmutatni</em> az eredményt</button></div>
     <div class="results" id="saq-results">
-      <div class="res-eyebrow">Eredmény · SAQ · 4 alskála · Klinikai értelmezés</div>
+      <div class="res-eyebrow">Eredmény · SAQ · 4 alskála · Értelmezés</div>
       <h2 class="res-title">A te szexuális <em>tudatossági profilod</em></h2>
       <p class="res-lead">A négy alskála egymástól független. A klinikailag legfontosabb a <strong>Sexual Monitoring</strong> — ez a spectator mode. A többi három inkább karakterjegy, mint patológia-jelző.</p>
       <div class="scores-grid" id="saq-scoresGrid"></div>
@@ -689,13 +689,13 @@ function egoDone(){return subDone('EGO');}
 function paDone(){return subDone('PA');}
 function scoreSub(s){return ITEMS.filter(it=>it.sub===s).reduce((sum,it)=>sum+(responses[it.n]||0),0);}
 function scoreTotal(){return ITEMS.reduce((sum,it)=>sum+(responses[it.n]||0),0);}
-// Male norms (Štulhofer 2010): total mean ~72-75, SD ~15. Cutoff for satisfaction: >60 satisfied
+/* Nincs magyar mintán normázott referencia: a sávok a 20–100 válaszskála tartományait írják le, nem populációs átlagot. */
 function totalBand(score){
-  if(score>=80)return{key:'high',label:'Nagyon elégedett',color:'#065f46',desc:'Kiemelkedően magas szexuális elégedettség'};
-  if(score>=65)return{key:'good',label:'Elégedett',color:'#84cc16',desc:'Az átlag feletti tartomány'};
-  if(score>=50)return{key:'mid',label:'Közepesen',color:'#b8912e',desc:'Az átlag közeli tartomány'};
-  if(score>=35)return{key:'low',label:'Elégedetlen',color:'#c97a4a',desc:'Az átlag alatti tartomány'};
-  return{key:'verylow',label:'Nagyon elégedetlen',color:'#7c2d3c',desc:'Jelentősen alacsony elégedettség'};
+  if(score>=80)return{key:'high',label:'Nagyon elégedett',color:'#065f46',desc:'A 20–100 skála legfelső része'};
+  if(score>=65)return{key:'good',label:'Elégedett',color:'#84cc16',desc:'A skála felső része'};
+  if(score>=50)return{key:'mid',label:'Közepesen',color:'#b8912e',desc:'A skála középső része'};
+  if(score>=35)return{key:'low',label:'Elégedetlen',color:'#c97a4a',desc:'A skála alsó része'};
+  return{key:'verylow',label:'Nagyon elégedetlen',color:'#7c2d3c',desc:'A 20–100 skála legalsó része'};
 }
 function subBand(score){
   if(score>=40)return{key:'high',label:'Magas',color:'#065f46'};
@@ -708,12 +708,12 @@ const INTERP = {
     good:`Elégedett tartomány. A szexuális életeddel általánosan elégedett vagy — vannak részek, ahol több lehetne, de a összbenyomás pozitív.`,
     mid:`Közepes elégedettség. Nem kifejezetten distresszes, de nem is pozitív erőforrás. Kérdés: <em>melyik dimenzió</em> húzza le az összpontszámot — nézd meg az alskálákat.`,
     low:`Elégedetlen tartomány. A szexuális életeddel jelentős elégedetlenség van. Két lehetőség: (1) szituációs (kapcsolati krízis, egészségi probléma, poszt-breakup); (2) tartós (funkcionális, kapcsolati, vagy önismereti nehézség). Az alskála-arány segít eldönteni.`,
-    verylow:`Nagyon alacsony elégedettség. Klinikai figyelmet érdemel — ha tartós, érdemes szexuálterapeutai vagy párterápiás konzultáció.`
+    verylow:`A válaszaid a skála legalsó részén vannak. Ha ez tartós és megterhel, érdemes szexuálterapeutával vagy párterapeutával átbeszélni.`
   },
   EGO:{
     high:`Erősen elégedett vagy a saját szexuális tapasztalataiddal — testi működés, izgalom, orgazmus, érzelmi megnyílás mind jól működnek belülről.`,
     mid:`Közepesen elégedett vagy a saját tapasztalattal. Bizonyos aspektusok (pl. testi működés) jól, mások (pl. érzelmi megnyílás) kevésbé.`,
-    low:`Alacsony a saját elégedettséged. Ha ez markánsan alacsonyabb, mint a partner-oldal, az azt jelzi: a probléma <strong>belül</strong> van — teljesítmény-szorongás, spectator mode, testi funkció, alexitímia, vagy saját szexuális önértékelés. Az IIEF-15, SAQ Monitoring, TAS-20 érdemes megnézni.`
+    low:`A saját tapasztalatodra vonatkozó válaszaid a skála alsó részén vannak. Ha ez jóval alacsonyabb, mint a partneri oldal, érdemes a saját élményed felől is megnézni: mi történik benned ilyenkor? Ennek sokféle oka lehet (például feszültség, figyelem, testi működés, önértékelés), és a kérdőív nem mutatja meg, melyik. Tisztázó kérdés: mikor volt ez másképp? Kiegészítésként az IIEF-15, a SAQ Monitorozás és a TAS-20 adhat további szempontot.`
   },
   PA:{
     high:`Erősen elégedett vagy a partneri/aktivitási dimenzióval — partner kezdeményez, kreatív, elérhető, orgazmus-képes; a szex változatos és kiegyensúlyozott.`,

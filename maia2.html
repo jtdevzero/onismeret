@@ -733,8 +733,8 @@ footer{
 <script src="assets/oni-core.js?v=06166a21"></script>
 <script src="assets/oni-schema.js?v=190e2f3e" defer></script>
 <script src="assets/tests-data.js?v=8174bfd3" defer></script>
-<script src="assets/results-plus.js?v=d9038a18" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=12602886">
+<script src="assets/results-plus.js?v=27d63035" defer></script>
+<link rel="stylesheet" href="assets/theme.css?v=8936e71a">
 </head>
 <body>
 <a href="index.html" style="position:absolute;top:14px;left:14px;z-index:50;display:inline-flex;gap:6px;font:500 12px/1 system-ui,sans-serif;letter-spacing:.04em;color:#e2e8f0;background:rgba(15,23,42,.72);border:1px solid rgba(148,163,184,.35);padding:8px 13px;border-radius:99px;text-decoration:none;backdrop-filter:blur(8px)">‹ Önismereti térképek</a>
@@ -1071,14 +1071,13 @@ function scoreDomain(domainId){
   return {mean, raw:vals};
 }
 
-// MAIA-2 referencia tartományok (nem klinikai populáció)
-// Mehling 2018 + általánosabb sávok
+/* Nincs magyar mintán normázott referencia: a 0–5 válaszskála saját tartományán belüli helyet írjuk le, nem populációs átlagot. */
 function bandFor(score){
-  if(score < 1.5) return {key:'low', label:'Alacsony', desc:'jelentősen elmarad a tipikus értéktől'};
-  if(score < 2.5) return {key:'reduced', label:'Csökkent', desc:'enyhén az átlag alatt'};
-  if(score < 3.5) return {key:'mid', label:'Átlagos', desc:'tipikus tartomány'};
-  if(score < 4.3) return {key:'good', label:'Magas', desc:'átlag feletti, fejlett'};
-  return {key:'high', label:'Kiemelkedő', desc:'jól fejlett kapacitás'};
+  if(score < 1) return {key:'low', label:'Nagyon alacsony', desc:'a 0–5 skála legalsó ötödében van'};
+  if(score < 2) return {key:'reduced', label:'Alacsony', desc:'a 0–5 skála alsó részén van'};
+  if(score < 3) return {key:'mid', label:'Közepes', desc:'a 0–5 skála középső részén van'};
+  if(score < 4) return {key:'good', label:'Magas', desc:'a 0–5 skála felső részén van'};
+  return {key:'high', label:'Nagyon magas', desc:'a 0–5 skála legfelső ötödében van'};
 }
 
 // klinikai interpretációk doménenként
@@ -1273,8 +1272,8 @@ function renderResults(){
         </div>
 
         <div class="dr-section">
-          <div class="dr-section-label">Sáv-pozicionálás</div>
-          <p>A pontszámod ${band.desc} az általános populációhoz képest. ${band.key==='low' || band.key==='reduced' ? 'Ez nem deficit — sokszor egy korábban védő alkalmazkodás, ami most már nem szolgál.' : band.key==='high' || band.key==='good' ? 'Ez egy erősség, amire építeni lehet más, gyengébb dimenziókban.' : 'Tipikus tartomány — fejleszthető, de nem prioritás.'}</p>
+          <div class="dr-section-label">Hol áll a skálán</div>
+          <p>A pontszámod ${band.desc}. Külföldi mintákon közölt átlagokhoz nem hasonlítom, mert ez a saját fordítás nincs magyar mintán normázva. ${band.key==='low' || band.key==='reduced' ? 'Tisztázó kérdés: vannak helyzetek, amikor ez a képesség jobban működik nálad?' : band.key==='high' || band.key==='good' ? 'Erre a területre építhetsz a többi dimenzióban.' : ''}</p>
         </div>
       </div>
     `;

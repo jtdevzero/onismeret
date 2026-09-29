@@ -475,8 +475,8 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
 <script src="assets/oni-core.js?v=06166a21"></script>
 <script src="assets/oni-schema.js?v=190e2f3e" defer></script>
 <script src="assets/tests-data.js?v=8174bfd3" defer></script>
-<script src="assets/results-plus.js?v=d9038a18" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=12602886">
+<script src="assets/results-plus.js?v=27d63035" defer></script>
+<link rel="stylesheet" href="assets/theme.css?v=8936e71a">
 </head>
 <body>
 
@@ -561,7 +561,7 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
     </div>
 
     <div class="results" id="ecr-results">
-      <div class="res-eyebrow">Eredmény · Kötődési profil · Klinikai értelmezés</div>
+      <div class="res-eyebrow">Eredmény · Kötődési profil · Értelmezés</div>
       <h2 class="res-title">A te kötődési <em>térképed</em></h2>
       <p class="res-lead">Két pontszám — egy szorongás-, egy elkerülés-dimenzióra. Metszéspontjuk határozza meg, melyik a négy fő kötődési stílus közül a domináns mintázat. Nem személyiségjegy — állapot, ami kapcsolati tapasztalatokból formálódik és változtatható.</p>
       <div class="scores-row" id="ecr-scoresRow"></div>
@@ -648,7 +648,7 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
     </div>
 
     <div class="results" id="smi-results">
-      <div class="res-eyebrow">Eredmény · Belső mode-térkép · Klinikai értelmezés</div>
+      <div class="res-eyebrow">Eredmény · Belső mode-térkép · Értelmezés</div>
       <h2 class="res-title">A te <em>lakásod</em></h2>
       <p class="res-lead">A 13 mode mindegyike egy "szoba". A pontszám azt mutatja, mennyire gyakran szólal meg ez a rész a napi életedben. A dominancia mintázata és a kategóriák egyensúlya beszédesebb, mint bármelyik egyedi pontszám.</p>
       <div class="dominant" id="smi-dominantCard"></div>
@@ -884,16 +884,17 @@ function scoreScale(id){
   if(!vals.length)return null;
   return {mean:vals.reduce((a,b)=>a+b,0)/vals.length, n:vals.length};
 }
-const NORMS={anx:{mean:3.5,sd:1.2},avd:{mean:2.9,sd:1.2}};
 function bandFor(id, score){
-  const norm=NORMS[id], z=(score-norm.mean)/norm.sd;
+  const LO=1,HI=7;
+  /* Nincs magyar mintán normázott referencia, ezért a válaszskála saját tartományán belüli helyet írjuk le, nem populációs átlagot. */
+  const p=(score-LO)/(HI-LO);
   let label,key,desc;
-  if(z<=-1.5){label='Nagyon alacsony';key='very-low';desc='átlagtól ~1.5 SD-vel lejjebb'}
-  else if(z<=-0.5){label='Alacsony';key='low';desc='átlag alatti tartomány'}
-  else if(z<0.5){label='Közepes';key='mid';desc='tipikus tartomány'}
-  else if(z<1.5){label='Magas';key='high';desc='átlag feletti tartomány'}
-  else{label='Nagyon magas';key='very-high';desc='átlagtól ~1.5 SD-vel feljebb'}
-  return {label,key,desc,z,pct:Math.round(100*normalCDF(z))};
+  if(p<0.2){label='Nagyon alacsony';key='very-low';desc='a válaszskála legalsó ötödében van'}
+  else if(p<0.4){label='Alacsony';key='low';desc='a válaszskála alsó részén van'}
+  else if(p<0.6){label='Közepes';key='mid';desc='a válaszskála középső részén van'}
+  else if(p<0.8){label='Magas';key='high';desc='a válaszskála felső részén van'}
+  else{label='Nagyon magas';key='very-high';desc='a válaszskála legfelső ötödében van'}
+  return {label,key,desc,p};
 }
 function normalCDF(z){
   const t=1/(1+0.2316419*Math.abs(z));
@@ -909,10 +910,10 @@ function attachmentStyle(anx,avd){
   return'fearful';
 }
 const STYLES={
-  secure:{name:'Biztonságos (Secure)',color:'#065f46',short:'Alacsony szorongás + alacsony elkerülés',long:`<p><strong>A stabilitás profilja.</strong> Képes vagy megnyílni, függeni, és megtartani az önállóságodat is. A partner távolléte, konfliktus, csend nem sodor ki — a belső "biztonsági bázis" működik. Populációban kb. 55-60%.</p>`},
-  preoccupied:{name:'Belefeledkező / szorongó (Preoccupied)',color:'#1e3a8a',short:'Magas szorongás + alacsony elkerülés',long:`<p><strong>A megközelítési profil.</strong> Mélyen érzelmi, könnyen megnyíló — de folyamatosan monitoros: "miért nem ír vissza", "már nem szeret". A kapcsolat hőmérője folyamatosan mérésre van kapcsolva. Fárasztó. Populációban kb. 15-20%.</p>`},
-  dismissive:{name:'Elkerülő / elutasító (Dismissive-Avoidant)',color:'#b8912e',short:'Alacsony szorongás + magas elkerülés',long:`<p><strong>A távolítási profil.</strong> Önállóság magasra értékelve. A közeli megnyílás nehezen viselhető — a rendszer a közelség növekedésére deaktivációval reagál. "Egyedül boldogulok". A kapcsolat mélyülésével nő a menekülési vágy. Populációban kb. 20-25%.</p>`},
-  fearful:{name:'Rettegő / dezorganizált (Fearful-Avoidant)',color:'#7c2d3c',short:'Magas szorongás + magas elkerülés',long:`<p><strong>A legkomplexebb profil.</strong> Két ellentétes vágy: erős szükséglet a közelségre ÉS erős menekülési késztetés attól. Klasszikus közelítés-menekülés (approach-avoidance) konfliktus. Tipikusan korai traumatizáló kötődési tapasztalatok nyomán. Populációban kb. 7-10%.</p>`}
+  secure:{name:'Biztonságos (Secure)',color:'#065f46',short:'Alacsony szorongás + alacsony elkerülés',long:`<p><strong>A stabilitás profilja.</strong> Képes vagy megnyílni, függeni, és megtartani az önállóságodat is. A partner távolléte, konfliktus, csend nem sodor ki — a belső "biztonsági bázis" működik. Külföldi felnőtt mintákban nagyjából 55-60%.</p>`},
+  preoccupied:{name:'Belefeledkező / szorongó (Preoccupied)',color:'#1e3a8a',short:'Magas szorongás + alacsony elkerülés',long:`<p><strong>A megközelítési profil.</strong> Mélyen érzelmi, könnyen megnyíló — de folyamatosan monitoros: "miért nem ír vissza", "már nem szeret". A kapcsolat hőmérője folyamatosan mérésre van kapcsolva. Fárasztó. Külföldi felnőtt mintákban nagyjából 15-20%.</p>`},
+  dismissive:{name:'Elkerülő / elutasító (Dismissive-Avoidant)',color:'#b8912e',short:'Alacsony szorongás + magas elkerülés',long:`<p><strong>A távolítási profil.</strong> Önállóság magasra értékelve. A közeli megnyílás nehezen viselhető — a rendszer a közelség növekedésére deaktivációval reagál. "Egyedül boldogulok". A kapcsolat mélyülésével nő a menekülési vágy. Külföldi felnőtt mintákban nagyjából 20-25%.</p>`},
+  fearful:{name:'Rettegő / dezorganizált (Fearful-Avoidant)',color:'#7c2d3c',short:'Magas szorongás + magas elkerülés',long:`<p><strong>A legkomplexebb profil.</strong> Két ellentétes vágy: erős szükséglet a közelségre ÉS erős menekülési késztetés attól. Klasszikus közelítés-menekülés (approach-avoidance) konfliktus. Tipikusan korai traumatizáló kötődési tapasztalatok nyomán. Külföldi felnőtt mintákban nagyjából 7-10%.</p>`}
 };
 const INTERP={
   anx:{
@@ -988,7 +989,7 @@ function renderResults(){
   let scoresHtml='';
   ['anx','avd'].forEach(k=>{
     const s=scores[k], band=bandFor(k,s.mean), pct=((s.mean-1)/6)*100;
-    scoresHtml+=`<div class="score-card ${k}"><div class="score-tag">${scaleNames[k].tag}</div><div class="score-name">${scaleNames[k].name}</div><div class="score-value">${s.mean.toFixed(2)}</div><div class="score-out">/ 7.00 · z = ${band.z>=0?'+':''}${band.z.toFixed(2)} · ~${band.pct}. percentilis</div><div class="score-band">${band.label}</div><div class="score-bar"><div class="score-bar-fill" style="width:${pct}%"></div></div></div>`;
+    scoresHtml+=`<div class="score-card ${k}"><div class="score-tag">${scaleNames[k].tag}</div><div class="score-name">${scaleNames[k].name}</div><div class="score-value">${s.mean.toFixed(2)}</div><div class="score-out">/ 7.00</div><div class="score-band">${band.label}</div><div class="score-bar"><div class="score-bar-fill" style="width:${pct}%"></div></div></div>`;
   });
   document.getElementById('ecr-scoresRow').innerHTML=scoresHtml;
   drawQuadrant(scores.anx.mean, scores.avd.mean, style);
@@ -996,7 +997,7 @@ function renderResults(){
   let interpHtml='';
   [{k:'anx',n:'Kötődési szorongás',tag:'Anxiety'},{k:'avd',n:'Kötődési elkerülés',tag:'Avoidance'}].forEach(dim=>{
     const s=scores[dim.k], band=bandFor(dim.k,s.mean);
-    interpHtml+=`<div class="interp ${dim.k}"><h3>${dim.n} — <em>${dim.tag}</em></h3><div class="sub">${band.label} · z = ${band.z>=0?'+':''}${band.z.toFixed(2)} · ~${band.pct}. percentilis</div><div class="label">Klinikai értelmezés</div><p>${INTERP[dim.k][band.key]}</p><div class="label">Sávpozicionálás</div><p>A pontszámod (<strong>${s.mean.toFixed(2)} / 7.00</strong>) a normatív populációhoz képest ${band.desc}. Ez <strong>állapotot</strong> tükröz, nem statikus vonást.</p></div>`;
+    interpHtml+=`<div class="interp ${dim.k}"><h3>${dim.n} — <em>${dim.tag}</em></h3><div class="sub">${band.label} a skálán</div><div class="label">Értelmezés</div><p>${INTERP[dim.k][band.key]}</p><div class="label">Hol áll a skálán</div><p>A pontszámod (<strong>${s.mean.toFixed(2)} / 7.00</strong>) ${band.desc}. Külföldi normákhoz nem hasonlítom, mert ez a saját fordítás nincs magyar mintán normázva. Ez <strong>állapotot</strong> tükröz, nem statikus vonást.</p></div>`;
   });
   document.getElementById('ecr-dimension-interpretations').innerHTML=interpHtml;
   const links=getCrossLinks(scores);

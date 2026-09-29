@@ -951,8 +951,8 @@
 <script src="assets/oni-core.js?v=06166a21"></script>
 <script src="assets/oni-schema.js?v=190e2f3e" defer></script>
 <script src="assets/tests-data.js?v=8174bfd3" defer></script>
-<script src="assets/results-plus.js?v=d9038a18" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=12602886">
+<script src="assets/results-plus.js?v=27d63035" defer></script>
+<link rel="stylesheet" href="assets/theme.css?v=8936e71a">
 </head>
 <body>
 <a href="index.html" id="onismeret-back" style="position:fixed;left:16px;bottom:16px;z-index:9999;padding:8px 14px;border-radius:999px;background:rgba(5,13,30,.88);color:#fbbf24;border:1px solid #78551a;font:600 13px/1.2 'Manrope','Helvetica Neue',sans-serif;text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.25)">‹ Önismereti térképek</a>
@@ -1585,7 +1585,7 @@ function renderResult(r, history) {
           ${getMapReading(r)}
         </div>
         <div class="pop-ref">
-          <div class="pop-ref-lbl">Populációs referencia</div>
+          <div class="pop-ref-lbl">Mihez viszonyítva</div>
           <div class="pop-ref-body">${getPopReference(r)}</div>
         </div>
       </div>
@@ -1733,20 +1733,8 @@ function getQuadrant(anx, avo) {
 }
 
 function getPopReference(r) {
-  // Approximate ECR-R Hungarian adult population norms
-  let html = '';
-  const pctRank = (val, mean, sd) => {
-    const z = (val - mean) / sd;
-    // approximate normal CDF
-    const p = 0.5 * (1 + Math.tanh(z * 0.79788));
-    return Math.round(p * 100);
-  };
-  // ECR-R norms (approximate from validation studies): anxiety mean ~50 sd 20, avoidance mean ~42 sd 19
-  const anxPct = pctRank(r.anxiety, 50, 20);
-  const avoPct = pctRank(r.avoidance, 42, 19);
-  html += `A szorongás-skálán a felnőtt populáció <em>${anxPct}%-ánál</em> magasabb vagy. Az elkerülés-skálán <em>${avoPct}%-ánál</em> magasabb. `;
-  html += `A populációban kb. 55-60% secure, 20% anxious, 15% avoidant, és 5-10% fearful-avoidant / disorganized — a tapasztalatnyi normák ECR-R validálások alapján.`;
-  return html;
+  /* Saját fejlesztésű, nem validált kérdőív: nincs populációs normája, ezért százalékos rangot nem számolunk. */
+  return `Ez a mélytérkép saját fejlesztésű, nem validált kérdőív, ezért nincs olyan referenciamintája, amihez a pontszámodat hasonlítani lehetne. A pontszámok a 0–100 skála saját tartományán belüli helyet mutatják: szorongás <em>${Math.round(r.anxiety)}</em>, elkerülés <em>${Math.round(r.avoidance)}</em>. Ha egy validált kérdőívvel is összevetnéd, töltsd ki az ECR-R-t.`;
 }
 
 function getProfileReading(r) {

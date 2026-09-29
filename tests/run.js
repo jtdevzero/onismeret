@@ -191,6 +191,7 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
       await p.waitForTimeout(700);
       const r = await p.evaluate(id => { const res = document.getElementById(id + '-results'); return { brief: !!res.querySelector(':scope > .oni-brief'), det: !!res.querySelector(':scope > details.oni-detail'), open: res.querySelector(':scope > details.oni-detail').open, deep: !!res.querySelector(':scope > .oni-deep .od-panel'), order: [...res.children].map(c => c.className.split(' ')[0]).join(',') }; }, id);
       ok(r.brief && r.det && r.open && r.deep && /^oni-brief,oni-deep,oni-detail/.test(r.order), `${id}: Röviden-kártya, vizuális áttekintés, alapból nyitott részletes elemzés`, r);
+      ok(await p.evaluate(id => { const res = document.getElementById(id + '-results'), b = res.querySelector(':scope > .oni-brief'); return !b.querySelector('.oni-chart, textarea, .oni-commit') && !!b.querySelector('.oni-sum') && res.lastElementChild.classList.contains('oni-mine') && !!res.querySelector(':scope > .oni-deep .oni-chart'); }, id), `${id}: rövid összefoglaló diagram és jegyzet nélkül; diagram az áttekintésben, jegyzetek a végén`);
     }
     await p.click('#love-results .oni-chip[data-v=explore]'); await p.fill('#love-results textarea', 'teszt jegyzet'); await p.waitForTimeout(700);
     const n = await p.evaluate(() => JSON.parse(localStorage.getItem('onismeret-notes-v1')).love);
@@ -391,7 +392,7 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
         const sel = kind === 'solo' ? '#results' : '#' + id + '-results';
         await p.evaluate(sel => { const d = document.querySelector(sel + ' details.oni-detail'); if (d) d.open = true; }, sel); await p.evaluate(() => ONI_CONTRAST.run()); await p.waitForTimeout(250);
         const a = await p.evaluate(AUDIT, sel); if (a.fails.length) worst.push([id, a.fails.length, a.fails[0]]);
-        charts.push([id, await p.evaluate(sel => !!document.querySelector(sel + ' .oni-brief .oni-chart .oc-row'), sel)]);
+        charts.push([id, await p.evaluate(sel => !!document.querySelector(sel + ' .oni-deep .oni-chart .oc-row'), sel)]);
       }
       ok(worst.length === 0, th + ' téma: minden vizsgált eredményoldal szövege eléri a WCAG AA kontrasztot', worst.slice(0, 3));
       ok(charts.every(c => c[1]), th + ' téma: minden eredmény végén van diagramos összkép', charts.filter(c => !c[1]));

@@ -289,8 +289,8 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
 <script src="assets/oni-core.js?v=06166a21"></script>
 <script src="assets/oni-schema.js?v=190e2f3e" defer></script>
 <script src="assets/tests-data.js?v=8174bfd3" defer></script>
-<script src="assets/results-plus.js?v=d9038a18" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=12602886">
+<script src="assets/results-plus.js?v=27d63035" defer></script>
+<link rel="stylesheet" href="assets/theme.css?v=8936e71a">
 </head>
 <body>
 
@@ -400,7 +400,7 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
     <div id="sdi-quiz"></div>
     <div class="results-trigger"><button class="btn-primary" id="sdi-showResults" disabled><em>Megmutatni</em> a térképet</button></div>
     <div class="results" id="sdi-results">
-      <div class="res-eyebrow">Eredmény · Vágy-térkép · Klinikai értelmezés</div>
+      <div class="res-eyebrow">Eredmény · Vágy-térkép · Értelmezés</div>
       <h2 class="res-title">A te vágy-<em>térképed</em></h2>
       <p class="res-lead">Két pontszámot kapsz — egyet a partneri, egyet a szólo vágyra. A "normális" tartomány nagyon széles. Nem az abszolút érték számít, hanem a <em>saját magad-hoz</em> viszonyított és a <em>két érték közötti arány</em>.</p>
       <div class="scores-grid" id="sdi-scoresGrid"></div>
@@ -841,41 +841,41 @@ function updateProgress(){
   document.getElementById('sdi-showResults').disabled=c<TOTAL;
 }
 function scoreSub(sub){return ITEMS.filter(it=>it.sub===sub).reduce((s,it)=>s+(responses[it.n]||0),0);}
-// Male norms (Spector 1996): Dyadic mean ~40-45, SD ~12; Solitary mean ~20-25, SD ~12
-const NORMS = {D:{max:64,mean:42,sd:12},S:{max:48,mean:22,sd:12}};
+/* Nincs magyar mintán normázott referencia: a válaszskála saját tartományán belüli helyet írjuk le, nem populációs átlagot. */
+const SDI_MAX = {D:64,S:48};
 function band(sub, score){
-  const norm=NORMS[sub];
-  const z=(score-norm.mean)/norm.sd;
-  if(z<=-1.5)return{key:'verylow',label:'Nagyon alacsony',color:'#7c2d3c',desc:'jóval átlag alatti'};
-  if(z<=-0.5)return{key:'low',label:'Alacsony',color:'#c97a4a',desc:'átlag alatti'};
-  if(z<0.5)return{key:'mid',label:'Átlagos',color:'#b8912e',desc:'tipikus tartomány'};
-  if(z<1.5)return{key:'high',label:'Magas',color:'#84cc16',desc:'átlag feletti'};
-  return{key:'veryhigh',label:'Nagyon magas',color:'#065f46',desc:'jóval átlag feletti'};
+  const p=score/SDI_MAX[sub];
+  if(p<0.2)return{key:'verylow',label:'Nagyon alacsony',color:'#7c2d3c',desc:'a skála legalsó ötöde'};
+  if(p<0.4)return{key:'low',label:'Alacsony',color:'#c97a4a',desc:'a skála alsó része'};
+  if(p<0.6)return{key:'mid',label:'Közepes',color:'#b8912e',desc:'a skála középső része'};
+  if(p<0.8)return{key:'high',label:'Magas',color:'#84cc16',desc:'a skála felső része'};
+  return{key:'veryhigh',label:'Nagyon magas',color:'#065f46',desc:'a skála legfelső ötöde'};
 }
 const INTERP = {
   D:{
     verylow:`A partneri vágy nagyon alacsony. Ez lehet: (1) rendszerszintű alacsony reaktivitás (magára az embereire nem "kapcsol"), (2) <em>responsive desire</em> profil (nem spontán, csak stimuláció után jön), (3) átmeneti állapot (stressz, kapcsolati distressz, gyógyszer, hormonális). Nem "hiba" — de érdemes a kontextust megnézni.`,
     low:`Alacsony partneri vágy. A "spontán" vágy ritka. A responsive desire modell (Basson) itt fontos: a vágy nem előzi meg a szexet — a szex vagy annak előjátéka <em>indítja el</em>. Kapcsolatban ez félreértéseket okozhat.`,
-    mid:`Tipikus partneri vágy-szint. A férfi populációs átlaghoz közel.`,
+    mid:`Közepes partneri vágy a skálán.`,
     high:`Magas partneri vágy. Rendszered könnyen aktivizálódik partneri kontextusban. Ha a partneri vágyak nem szinkronban vannak, kapcsolati distressz forrása lehet.`,
     veryhigh:`Nagyon magas partneri vágy. Kiemelkedően reaktív rendszer. Ha ez distresszt okoz vagy funkcionális zavart, érdemes szakmai konzultáció; egyébként egyszerűen egy magas-libidójú profil.`
   },
   S:{
     verylow:`A szólo vágy nagyon alacsony. Ha a partneri vágy is alacsony, ez általános alacsony reaktivitás. Ha a partneri magasabb — akkor a vágy szigorúan partneri (nem is a saját testeddel akarsz kapcsolatot).`,
     low:`Alacsony szólo vágy.`,
-    mid:`Tipikus szólo vágy-szint.`,
+    mid:`Közepes szóló vágy a skálán.`,
     high:`Magas szólo vágy. A rendszered erősen aktivizálódik partner nélkül is.`,
     veryhigh:`Nagyon magas szólo vágy.`
   }
 };
 function crossPattern(d, s){
   const links=[];
-  const dz=(d-NORMS.D.mean)/NORMS.D.sd, sz=(s-NORMS.S.mean)/NORMS.S.sd;
+  /* hely a skála közepéhez képest (±1 ≈ a skálaterjedelem 20%-a); nem populációs z-érték */
+  const dz=(d/SDI_MAX.D-0.5)/0.2, sz=(s/SDI_MAX.S-0.5)/0.2;
   if(dz<-1.0 && sz>0.5){
     links.push({label:'Magas szólo + alacsony partneri — kontextuális ok valószínű',text:`A rendszered működik (magas szólo), csak partneri kontextusban nem "kapcsol". Okok lehetnek: kapcsolati distressz, teljesítmény-szorongás, kötődési biztonság hiánya, spectator mode. <strong>Nem alacsony libidó</strong> — hanem kontextus-érzékeny válaszrendszer.`});
   }
   if(dz>0.5 && sz<-1.0){
-    links.push({label:'Magas partneri + alacsony szólo — a vágy relációs',text:`A vágyad partnerhez kötött. Nem tipikus férfi profil, de nem is problematikus. Egyedül nem indul be szexuálisan a rendszer — ez elmondható a "responsive desire" egyik formájának.`});
+    links.push({label:'Magas partneri + alacsony szólo — a vágy relációs',text:`A vágyad inkább partnerhez kötött. Ez nem problematikus. Egyedül nem indul be szexuálisan a rendszer — ez elmondható a "responsive desire" egyik formájának.`});
   }
   if(dz<-1.0 && sz<-1.0){
     links.push({label:'Általánosan alacsony vágy — több lehetséges ok',text:`Mindkét dimenzió jelentősen alacsony. Ez lehet: (1) átmeneti (stressz, depresszió, gyógyszer), (2) hormonális (alacsony tesztoszteron), (3) egyszerűen alacsony baseline. Ha distresszt okoz, orvosi + pszichológiai kivizsgálás érdemes.`});
@@ -891,7 +891,7 @@ function crossPattern(d, s){
 }
 function therapySuggestions(scores){
   const mods=[];
-  const dz=(scores.D-NORMS.D.mean)/NORMS.D.sd, sz=(scores.S-NORMS.S.mean)/NORMS.S.sd;
+  const dz=(scores.D/SDI_MAX.D-0.5)/0.2, sz=(scores.S/SDI_MAX.S-0.5)/0.2;
   if(dz<-1.0 && sz>=0){
     mods.push({name:'Sensate Focus + kontextus-építés',text:`Ha szólo működik, partnerivel nem — a probléma nem a libidó, hanem a kontextus. Sensate Focus és partner-kommunikáció a Nagoski "Come as You Are" modell szerint.`});
     mods.push({name:'Responsive desire pszichoedukáció',text:`A Basson-modell megismerése önmagában nagy segítség: nem "várni a spontán vágyra", hanem tudatosan a szexuális helyzetbe belépni (érintés, közelség), ahonnan a vágy MÁR ott van, csak nem előzte meg.`});
@@ -900,7 +900,7 @@ function therapySuggestions(scores){
     mods.push({name:'Orvosi kivizsgálás — tesztoszteron, egészségi állapot',text:`Általános alacsony vágy: hormonpanel (össz-teszt, szabad-teszt, SHBG, prolaktin, TSH), gyógyszerlista áttekintés (SSRI, béta-blokkoló, sok gyógyszer csökkenti). Depresszió-szűrés is indokolt.`});
   }
   if(dz>=0 && sz>=0){
-    mods.push({name:'Nincs vágy-oldali probléma',text:`A vágy-skálád a normál vagy magas tartományban. Ha valamilyen distresszt élsz meg, az valószínűleg NEM vágy-oldali. Nézd meg az IIEF-15 (I. tab), PEDT (II. tab), vagy SIS/SES tesztet.`});
+    mods.push({name:'A vágy-skála nem alacsony',text:`A vágy-skálád a skála középső vagy felső részén van. Ha valamilyen distresszt élsz meg, érdemes más oldalról is megnézni. Nézd meg az IIEF-15 (I. tab), PEDT (II. tab), vagy SIS/SES tesztet.`});
   }
   mods.push({name:'Kapcsolati kommunikáció — vágy-eltérés esetén',text:`A partneri vágy-eltérés nagyon gyakori. Ez nem "hibás profil" — hanem különbség, ami kommunikációval kezelhető. Emily Nagoski "Come As You Are" könyve közérthető keret.`});
   return mods;
@@ -917,7 +917,7 @@ function renderResults(){
   let interp=`<h3>Klinikai <em>értelmezés</em></h3>`;
   [{k:'D',n:'Partneri vágy'},{k:'S',n:'Szólo vágy'}].forEach(dim=>{
     const s=scores[dim.k], b=band(dim.k,s);
-    interp+=`<div class="interp-section" style="--sc:${b.color}"><h4>${dim.n} — ${b.label}</h4><p>${INTERP[dim.k][b.key]}</p></div>`;
+    interp+=`<div class="interp-section" style="--sc:${b.color}"><h4>${dim.n} — ${b.label}</h4><p>${INTERP[dim.k][b.key]}</p><p>A pontszámod (${s} / ${dim.max}) ${b.desc}. Külföldi mintákon közölt átlagokhoz nem hasonlítom, mert ez a saját fordítás nincs magyar mintán normázva.</p></div>`;
   });
   document.getElementById('sdi-interpCard').innerHTML=interp;
   const links=crossPattern(scores.D, scores.S);

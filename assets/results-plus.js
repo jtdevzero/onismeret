@@ -107,32 +107,48 @@
     var h=(ONI.all()[id]||[]).filter(function(e){return e!==r&&e.sid!==r.sid&&ONI.same(e,r)&&e.d});
     if(h.length){var pv=h[h.length-1],ch=ds.map(function(d){var o=pv.d[d.k];return o&&typeof o[1]==='number'?{l:d.l,a:o[1],b:d.v,dp:(d.v-o[1])/(d.hi-d.lo)}:null}).filter(Boolean).sort(function(a,b){return Math.abs(b.dp)-Math.abs(a.dp)}).slice(0,6);
       if(ch.length)panels+='<div class="od-panel"><h6>Változás az előző kitöltés óta · '+new Date(pv.done||pv.t).toLocaleDateString('hu-HU',{year:'numeric',month:'short',day:'numeric'})+'</h6><ul class="od-chg">'+ch.map(function(c){var d=c.b-c.a;return '<li><span>'+esc(c.l)+'</span><b>'+c.a+' → '+c.b+'</b><em class="'+(Math.abs(c.dp)<.05?'eq':d>0?'up':'dn')+'">'+(Math.abs(c.dp)<.05?'≈':d>0?'▲':'▼')+' '+Math.abs(Math.round(c.dp*100))+'%</em></li>'}).join('')+'</ul><p>A százalék a skála teljes tartományához viszonyított elmozdulás. A ≈ jel 5% alatti elmozdulást jelöl: ez csak megjelenítési határ, nem statisztikai küszöb. Hogy egy változás valódi-e, az a teszt megbízhatóságától és a kitöltés körülményeitől is függ.</p></div>';}
-    return '<section class="oni-deep"><div class="oni-eyebrow">Vizuális áttekintés</div><div class="od-grid">'+panels+'</div></section>';
+    return '<section class="oni-deep"><div class="oni-eyebrow">Vizuális áttekintés</div>'+chartHTML(r)+'<div class="od-grid">'+panels+'</div></section>';
   }
   window.ONI_DEEP=deepHTML;
+  /* ── Röviden: néhány mondat és a fő eredmények. A diagram a vizuális áttekintésbe, a jegyzetek a végére kerülnek. ── */
+  function az(w){return /^[aáeéiíoóöőuúüű]/i.test(String(w))?'az':'a'}
+  function sumText(r){
+    var ds=numDims(r);if(ds.length>2){var f=ds.filter(function(d){return !/^(total|strength|risk)$/.test(d.k)&&!/^ho_/.test(d.k)});if(f.length)ds=f;}
+    if(!ds.length)return '';
+    var v=function(d){return '<b>'+esc(d.l)+'</b> ('+d.v+', '+d.lo+'–'+d.hi+')'};
+    if(ds.length<=2)return ds.map(function(d){return esc(d.l)+': <b>'+d.v+'</b> a '+d.lo+'–'+d.hi+' skálán, ez a tartomány '+(d.p<.2?'legalsó':d.p<.4?'alsó':d.p<.6?'középső':d.p<.8?'felső':'legfelső')+' része.'}).join(' ');
+    var srt=ds.slice().sort(function(a,b){return b.p-a.p}),hi=srt[0],lo=srt[srt.length-1];
+    if(hi.p-lo.p<.06)return 'Minden skálád közel azonos szinten van, nincs kiugró terület.';
+    return 'A saját skálájához mérten '+az(hi.l)+' '+v(hi)+' a legmagasabb, '+az(lo.l)+' '+v(lo)+' a legalacsonyabb. A többi skála e kettő között van; mindegyik a saját tartományán belül értendő, nem egymáshoz képest jobb vagy rosszabb.';
+  }
   function brief(id,r){
-    var d=D[id]||{},notes=jget(NK,{}),n=((notes[id]||{})[r.sid||'_'])||{fit:[],cond:[],text:''};
+    var d=D[id]||{};
     var dims=topDims(r).map(function(x){var v=x[1];return '<span class="oni-dim"><b>'+esc(v[0])+'</b> '+v[1]+'<small> ('+v[2]+'–'+v[3]+')</small></span>'}).join('');
     var nx=d.next&&L[d.next[0]]?'<a href="'+L[d.next[0]]+'">'+esc(d.next[1])+' ›</a>':'<a href="osszegzes.html">Összegzés ›</a>';
-    var chip=function(group,arr,sel){return arr.map(function(c){return '<button type="button" class="oni-chip'+(sel.indexOf(c[0])>-1?' on':'')+'" data-g="'+group+'" data-v="'+c[0]+'" aria-pressed="'+(sel.indexOf(c[0])>-1)+'">'+c[1]+'</button>'}).join('')};
+    var st=sumText(r);
     return '<section class="oni-brief" data-id="'+id+'" data-sid="'+esc(r.sid||'_')+'">'+
       '<div class="oni-eyebrow">Röviden</div>'+
       '<p class="oni-head">'+esc(r.h||d.n||'')+'</p>'+
       '<p class="oni-ver">Kitöltve: '+fmtD(r.done||r.t)+(r.corrected?' · javított válaszokkal':'')+' · '+ONI.verText(r)+'</p>'+
-      (chartHTML(r)||(dims?'<div class="oni-dims">'+dims+'</div>':''))+
-      '<div class="oni-grid">'+
-        '<div><h5>Értelmezési korlát</h5><p>'+esc(d.limit||'Önbevallásos kérdőív: tendenciát mutat, nem diagnózist.')+'</p></div>'+
-        '<div><h5>Kérdés magadnak</h5><p class="oni-q">'+esc(d.q||'Mi az, ami ebből igaz rád, és mi nem?')+'</p></div>'+
-        '<div><h5>Egy lehetséges következő lépés</h5><p>'+nx+'</p></div>'+
-      '</div>'+
+      (st?'<p class="oni-sum">'+st+'</p>':'')+
+      (dims?'<div class="oni-dims" aria-label="Fő eredmények">'+dims+'</div>':'')+
+      '<p class="oni-sum oni-q"><b>Kérdés magadnak:</b> '+esc(d.q||'Mi az, ami ebből igaz rád, és mi nem?')+'</p>'+
+      '<p class="oni-lim">'+esc(d.limit||'Önbevallásos kérdőív: tendenciát mutat, nem diagnózist.')+'</p>'+
+      '<div class="oni-actions"><button type="button" class="oni-more" aria-expanded="false">Részletes elemzés ▾</button><span class="oni-next">Következő lépés: '+nx+'</span></div>'+
+    '</section>';
+  }
+  /* ── Saját megjegyzések: tapasztalat, körülmények, jegyzet, vállalás, emlékeztető ── */
+  function mineHTML(id,r){
+    var notes=jget(NK,{}),n=((notes[id]||{})[r.sid||'_'])||{fit:[],cond:[],text:''};
+    var chip=function(group,arr,sel){return arr.map(function(c){return '<button type="button" class="oni-chip'+(sel.indexOf(c[0])>-1?' on':'')+'" data-g="'+group+'" data-v="'+c[0]+'" aria-pressed="'+(sel.indexOf(c[0])>-1)+'">'+c[1]+'</button>'}).join('')};
+    return '<section class="oni-mine" data-id="'+id+'" data-sid="'+esc(r.sid||'_')+'"><div class="oni-eyebrow">Saját megjegyzések</div>'+
       '<div class="oni-notes"><h5>A saját tapasztalatod <small>(a pontszámot nem módosítja)</small></h5>'+
         '<div class="oni-chips">'+chip('fit',FIT,n.fit||[])+'</div>'+
         '<h5>Kitöltési körülmények <small>(nem kötelező)</small></h5><div class="oni-chips">'+chip('cond',COND,n.cond||[])+'</div>'+
-        '<textarea rows="2" placeholder="Saját jegyzet: mi jutott eszedbe, mi lepett meg, mit kérdeznél meg valakitől?">'+esc(n.text||'')+'</textarea>'+
+        '<textarea rows="2" aria-label="Saját jegyzet" placeholder="Saját jegyzet: mi jutott eszedbe, mi lepett meg, mit kérdeznél meg valakitől?">'+esc(n.text||'')+'</textarea>'+
         '<span class="oni-saved" aria-live="polite"></span></div>'+
       commitHTML(id,r)+
-      '<div class="oni-actions"><button type="button" class="oni-more" aria-expanded="false">Részletes elemzés ▾</button>'+
-      '<button type="button" class="oni-ics" title="Letölthető naptárbejegyzés (.ics), bármelyik naptárba importálható">Újramérés a naptárba · '+retakeDays()+' nap múlva</button></div>'+
+      '<div class="oni-actions"><button type="button" class="oni-ics" title="Letölthető naptárbejegyzés (.ics), bármelyik naptárba importálható">Újramérés a naptárba · '+retakeDays()+' nap múlva</button></div>'+
     '</section>';
   }
   /* ── Vállalás: egy kicsi, konkrét lépés; a következő kitöltésnél visszakérdez ── */
@@ -197,7 +213,9 @@
     var oldDeep=res.querySelector(':scope > .oni-deep');if(oldDeep)oldDeep.remove();
     res.insertAdjacentHTML('afterbegin',deepHTML(id,r));
     res.insertAdjacentHTML('afterbegin',brief(id,r));
-    var box=res.querySelector(':scope > .oni-brief'),more=box.querySelector('.oni-more');
+    var oldMine=res.querySelector(':scope > .oni-mine');if(oldMine)oldMine.remove();
+    res.insertAdjacentHTML('beforeend',mineHTML(id,r));
+    var more=res.querySelector(':scope > .oni-brief .oni-more'),box=res.querySelector(':scope > .oni-mine');
     var sync=function(){more.textContent=det.open?'Részletes elemzés elrejtése ▴':'Részletes elemzés ▾';more.setAttribute('aria-expanded',det.open)};sync();
     more.onclick=function(){det.open=!det.open;var s=jget(SK,{});s.detailOpen=det.open;jset(SK,s);sync();if(det.open)det.scrollIntoView({behavior:'smooth',block:'start'})};
     det.addEventListener('toggle',sync);
