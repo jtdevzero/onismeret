@@ -512,3 +512,33 @@ html[data-theme] details.oni-detail>summary{font-family:'Cardo',Georgia,serif!im
   html[data-theme] .oni-mine{padding:24px 18px!important}
   html[data-theme] details.oni-detail{padding:4px 16px}
 }
+/* ── Mélyelemzés (assets/mely.js) ── */
+.oni-mely{margin:0 0 22px;padding:30px 32px;border-radius:20px;border:1px solid var(--u-line2,var(--u-line));background:var(--u-paper);color:var(--u-ink);font-family:'Inter',system-ui,sans-serif;box-shadow:var(--u-shadow)}
+.oni-mely .oni-eyebrow{color:var(--u-burgundy)!important}
+.oni-mely .om-title{font-family:'Cardo',Georgia,serif;font-weight:400;font-size:28px;line-height:1.2;margin:6px 0 18px;color:var(--u-ink)}
+.oni-mely .om-sec{padding:18px 0;border-top:1px solid var(--u-line)}
+.oni-mely .om-sec h4{font-family:'Cardo',Georgia,serif;font-weight:400;font-size:20px;margin:0 0 10px;color:var(--u-ink)}
+.oni-mely .om-sec p{font-size:15px;line-height:1.7;color:var(--u-ink2);margin:0 0 10px}
+.oni-mely .om-sec p:last-child{margin-bottom:0}
+.oni-mely strong{color:var(--u-ink);font-weight:600}
+.oni-mely .om-scales{display:grid;gap:12px}
+.oni-mely .om-scale{border:1px solid var(--u-line);border-radius:14px;padding:14px 16px;background:var(--u-bg)}
+.oni-mely .om-sh{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.oni-mely .om-sh b{font-weight:600;font-size:15px;color:var(--u-ink)}
+.oni-mely .om-chip{font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;padding:2px 9px;border-radius:99px;background:var(--u-bg2);color:var(--u-sapphire)}
+.oni-mely .om-bad .om-chip{color:var(--u-burgundy)}
+.oni-mely .om-good .om-chip{color:var(--u-emerald)}
+.oni-mely .om-bad .om-bar i{background:var(--u-burgundy)}
+.oni-mely .om-good .om-bar i{background:var(--u-emerald)}
+.oni-mely .om-val{margin-left:auto;font-weight:600;color:var(--u-ink)}
+.oni-mely .om-val small{font-weight:400;color:var(--u-muted)}
+.oni-mely .om-bar{height:5px;border-radius:5px;background:var(--u-bg2);margin:8px 0 10px;overflow:hidden}
+.oni-mely .om-bar i{display:block;height:100%;border-radius:5px;background:var(--u-sapphire)}
+.oni-mely .om-scale p{font-size:14.5px;margin:0}
+.oni-mely .om-list{margin:0;padding-left:22px}
+.oni-mely .om-list li{font-size:15px;line-height:1.65;color:var(--u-ink2);margin-bottom:8px}
+.oni-mely .om-q li{font-style:italic}
+.oni-mely .om-sub{font-size:12px!important;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--u-muted)!important;margin:4px 0 8px!important}
+.oni-mely .om-note{font-size:12.5px;line-height:1.6;color:var(--u-muted);margin:14px 0 0;padding-top:14px;border-top:1px solid var(--u-line)}
+@media (max-width:640px){.oni-mely{padding:22px 16px}.oni-mely .om-title{font-size:24px}}
+@media print{.oni-mely{box-shadow:none;break-inside:auto}}

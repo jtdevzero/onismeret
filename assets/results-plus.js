@@ -225,6 +225,8 @@
     var oldDeep=res.querySelector(':scope > .oni-deep');if(oldDeep)oldDeep.remove();
     res.insertAdjacentHTML('afterbegin',deepHTML(id,r));
     res.insertAdjacentHTML('afterbegin',brief(id,r));
+    var oldMely=res.querySelector(':scope > .oni-mely');if(oldMely)oldMely.remove();
+    if(window.ONI_MELY)res.insertAdjacentHTML('beforeend',window.ONI_MELY(id,r));
     var oldMine=res.querySelector(':scope > .oni-mine');if(oldMine)oldMine.remove();
     res.insertAdjacentHTML('beforeend',mineHTML(id,r));
     var more=res.querySelector(':scope > .oni-brief .oni-more'),box=res.querySelector(':scope > .oni-mine');

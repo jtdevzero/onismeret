@@ -13,7 +13,7 @@ SRC = ROOT / 'src'
 CORE_TAG = '<script src="assets/oni-core.js"></script>'
 THEME_TAG = '<link rel="stylesheet" href="assets/theme.css">'
 SCHEMA_TAG = '<script src="assets/oni-schema.js" defer></script>'
-PLUS_TAGS = '<script src="assets/tests-data.js" defer></script>\n<script src="assets/results-plus.js" defer></script>'
+PLUS_TAGS = '<script src="assets/tests-data.js" defer></script>\n<script src="assets/mely.js" defer></script>\n<script src="assets/results-plus.js" defer></script>'
 FONTS = '<link rel="stylesheet" href="fonts/fonts.css">'
 FOOTER = ('<footer class="hub-footer">Önismereti térkép, nem diagnózis. A válaszaid csak ebben a böngészőben tárolódnak '
           '(localStorage), válasz vagy eredmény nem megy szerverre.<br><a href="index.html" style="color:inherit">← Vissza az összes teszthez</a></footer>')
@@ -39,7 +39,7 @@ def ver(rel):
     """Rövid tartalom-hash a gyorsítótár-ürítéshez: ha a fájl változik, a böngésző biztosan az újat tölti le."""
     return hashlib.sha1((ROOT / rel).read_bytes()).hexdigest()[:8]
 
-ASSETS = ['assets/oni-core.js', 'assets/oni-schema.js', 'assets/tests-data.js', 'assets/results-plus.js', 'assets/theme.css', 'assets/demo-data.js', 'assets/ysq-mely.js', 'fonts/fonts.css']
+ASSETS = ['assets/oni-core.js', 'assets/oni-schema.js', 'assets/tests-data.js', 'assets/results-plus.js', 'assets/theme.css', 'assets/demo-data.js', 'assets/ysq-mely.js', 'assets/mely.js', 'fonts/fonts.css']
 
 def link_core():
     V = {a: ver(a) for a in ASSETS}
@@ -50,10 +50,15 @@ def link_core():
         if CORE_TAG not in s2:
             s2 = s2.replace('</head>', CORE_TAG + '\n</head>', 1)
         s2 = s2.replace(THEME_TAG + '\n', '').replace(SCHEMA_TAG + '\n', '').replace(PLUS_TAGS + '\n', '')
-        s2 = s2.replace('</head>', SCHEMA_TAG + '\n' + PLUS_TAGS + '\n' + THEME_TAG + '\n</head>', 1)   # a témafájl mindig utolsó a fejlécben
+        for t in PLUS_TAGS.split('\n'): s2 = s2.replace(t + '\n', '')
+        mely = f'assets/mely-{p.stem}.js'                       # oldalankénti mélyelemzés-adatok, ha vannak
+        s2 = re.sub(r'<script src="assets/mely-[\w-]+\.js" defer></script>\n', '', s2)
+        mtag = (f'<script src="{mely}" defer></script>\n') if (ROOT / mely).exists() else ''
+        if mtag: V[mely] = ver(mely)
+        s2 = s2.replace('</head>', SCHEMA_TAG + '\n' + PLUS_TAGS + '\n' + mtag + THEME_TAG + '\n</head>', 1)   # a témafájl mindig utolsó a fejlécben
         if s2.count(CORE_TAG) != 1:
             raise SystemExit(f'{p.name}: core tag count {s2.count(CORE_TAG)}')
-        for a in ASSETS:
+        for a in ASSETS + ([mely] if mtag else []):
             s2 = re.sub(r'(src|href)="' + re.escape(a) + '"', lambda m: f'{m.group(1)}="{a}?v={V[a]}"', s2)
         if s2 != s:
             p.write_text(s2); print('linked', p.name)
