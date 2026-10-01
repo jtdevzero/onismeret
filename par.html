@@ -106,15 +106,20 @@ b.me,.pv.me{color:var(--gold)}b.pa,.pv.pa{color:var(--sapphire)}
 .pbox label{display:flex;gap:10px;align-items:baseline;cursor:pointer}.pbox small{color:var(--ink-mute)}
 .pbox .row{display:flex;gap:8px;flex-wrap:wrap}
 .pq{margin:10px 0 0!important;font-size:14px;color:var(--ink)!important;font-style:italic}.pq b{font-style:normal}
+.pdeep{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+.pdeep p{margin:0 0 6px}
+.pdeep ul{margin:0 0 4px;padding-left:20px}
+.pdeep li{font-size:14px;color:var(--ink-soft);line-height:1.6;margin-bottom:4px}
+.psum{font-size:14.5px;color:var(--ink-soft);margin:0 0 14px}
 </style>
 
 <script src="assets/oni-core.js?v=2a8027ce"></script>
-<script src="assets/oni-rules.js?v=fc41064d"></script>
+<script src="assets/oni-rules.js?v=908793e6"></script>
 <script src="assets/oni-schema.js?v=e30726e8" defer></script>
-<script src="assets/tests-data.js?v=8174bfd3" defer></script>
-<script src="assets/mely.js?v=186df765" defer></script>
-<script src="assets/results-plus.js?v=480c5fb6" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=026def2d">
+<script src="assets/tests-data.js?v=8d8e3f97" defer></script>
+<script src="assets/mely.js?v=1438910d" defer></script>
+<script src="assets/results-plus.js?v=9bcc8a35" defer></script>
+<link rel="stylesheet" href="assets/theme.css?v=95066824">
 </head>
 <body>
 <div class="wrap">
@@ -280,6 +285,15 @@ function insights(m,p){
   if(M.ft&&Q.ft&&M.ft.x&&Q.ft.x){const a=M.ft.x.primary,b=Q.ft.x.primary,NM={U:'Megfelelő',Q:'Kérdező',O:'Kötelességtudó',R:'Lázadó'};
     const k=[a,b].sort().join('');const t={'OR':'A Lázadó félnek a kérés elvárásként hat, és ellenállást vált ki. A Kötelességtudó fél ezt könnyen elutasításként éli meg. Kérés helyett választást adjatok.','QU':'A Megfelelő fél a szabályból indul ki, a Kérdező az indoklásból. A „mert így beszéltük meg” nem elég, a „miért” kimondása sok súrlódást megelőz.','OO':'Két Kötelességtudó: mindketten a másik elvárásaihoz igazodtok, és a közös saját célok (pl. közös sport, spórolás) könnyen elsikkadnak. Külső elszámoltathatóság kell.','RR':'Két Lázadó: sok szabadság, kevés rutin. A közös ügyekhez a „kötelező” helyett közös identitás működik („mi olyanok vagyunk, akik…”).'};
     out.push({t:'Tendenciák: '+NM[a]+' + '+NM[b],c:'#60a5fa',x:t[k]||'Ezt a kombinációt érdemes egyszer végigbeszélni: mi motivál téged, és mi a másikat, amikor egy közös vállalást kell tartani.'});}
+  // Big Five
+  if(M.bf&&Q.bf){const a=M.bf.d,b=Q.bf.d,g=k=>a[k]&&b[k]?a[k][1]-b[k][1]:0;
+    if(a.N&&b.N&&a.N[1]>=40&&b.N[1]>=40)out.push({t:'Két érzékeny idegrendszer',c:'#fb7185',x:'Mindkettőtöknél magas a neuroticizmus: a stressz, a szorongás és a sértettség gyorsan és erősen jön. Mély átélés, de a feszült időszakokban könnyen egymásra rezonáltok, és a vita gyorsan felpörög.'});
+    if(Math.abs(g('E'))>=12)out.push({t:'Eltérő társas energia',c:'#fbbf24',x:`Az extraverzióban ${Math.abs(g('E'))} pont a különbség. Az egyikőtöknek a társaság tölt, a másiknak a csend. Ez a hétvégék, a közös programok és a baráti kör körül hoz súrlódást, ha nem mondjátok ki.`});
+    if(Math.abs(g('C'))>=12)out.push({t:'Eltérő struktúraigény',c:'#fbbf24',x:`A lelkiismeretességben ${Math.abs(g('C'))} pont a különbség. Az egyikőtök tervez és rendet tart, a másik rugalmasabb. Ez a háztartás, a pénz és a határidők körül hoz feszültséget: az egyik „kontrollálónak”, a másik „megbízhatatlannak” láthatja a másikat.`});
+    if(Math.abs(g('O'))>=15)out.push({t:'Eltérő újdonságigény',c:'#60a5fa',x:`A nyitottságban ${Math.abs(g('O'))} pont a különbség. Az egyikőtök az újdonságot, a változatosságot keresi, a másik a bevált, ismerős dolgokat.`});
+    if(a.A&&b.A&&a.A[1]<=30&&b.A[1]<=30)out.push({t:'Két kritikus alkat',c:'#f97316',x:'Mindkettőtöknél alacsony a barátságosság: egyenesek, kritikusak, nehezen engedők vagytok. Ez őszinteséget ad, de a vitákban kevés a puhaság, és könnyen kemény szavak hangzanak el.'});
+    if(a.A&&b.A&&a.A[1]>=44&&b.A[1]>=44)out.push({t:'Két alkalmazkodó alkat',c:'#34d399',x:'Mindkettőtöknél magas a barátságosság: kedvesek, együttműködők, konfliktuskerülők vagytok. Békés légkör, de a kimondatlan igények könnyen felgyűlnek.'});
+  }
   return out;
 }
 
@@ -301,8 +315,43 @@ const QDEF=[
   ['Temperamentum:','Mi az, ami neked természetes, a másiknak viszont erőfeszítés?'],
   ['Értékek','Melyik érték a legfontosabb neked, és miből tudná a másik, hogy az?'],
   ['Eltérő kronotípus','Mikor vagy a legjobb formádban, és mikor érdemes nehéz témát felhoznotok?'],
-  ['Tendenciák:','Hogyan szeretnéd, hogy a másik szóljon, ha egy közös vállalás elmarad?']
+  ['Tendenciák:','Hogyan szeretnéd, hogy a másik szóljon, ha egy közös vállalás elmarad?'],
+  ['Két érzékeny','Mi segít neked lenyugodni, és mit tehet ilyenkor a másik?'],
+  ['Eltérő társas energia','Milyen lenne nektek egy jó hétvége, ami mindkettőtöket feltölt?'],
+  ['Eltérő struktúraigény','Melyik közös területen zavar leginkább a másik tervezési stílusa?'],
+  ['Eltérő újdonságigény','Mi az az új élmény, amit szívesen kipróbálnál együtt?'],
+  ['Két kritikus','Melyik az a mondat, ami a legtöbbet fáj egy vitában?'],
+  ['Két alkalmazkodó','Mi az az igényed, amit mostanában nem mondtál ki?']
 ];
+/* Pár-mélyelemzés: mi történik ilyenkor, és mit tehettek */
+const DEEP=[
+  ['Közös első szeretetnyelv',{m:'Ugyanazon a nyelven adtok és kaptok, ezért a szeretet gyorsan „átér”. A vakfolt ott van, ahol egyikőtök sem erős: ezeket a gesztusokat könnyen mindketten elhanyagoljátok, és csak hiányként veszitek észre.',l:['Válasszátok ki a harmadik-negyedik nyelvet is, és hetente egyszer tudatosan adjátok azt is.','Ne vegyétek magától értetődőnek a közös nyelvet: a rutin azt is kiüresítheti.']}],
+  ['Eltérő első szeretetnyelv',{m:'Mindketten adtok, csak a saját nyelveteken. A másik ezért kevesebbet érzékel belőle, mint amennyit kap, és mindketten úgy érezhetitek, hogy többet adtok, mint kaptok.',l:['Mondjátok ki egymásnak egy-egy konkrét példával, mitől érzitek magatokat szeretve.','Hetente egyszer a másik nyelvén adjatok, még ha nektek nem is természetes.','Vegyétek észre, amit a másik a saját nyelvén ad, és nevezzétek meg.']}],
+  ['Eltérő bocsánatkérési nyelv',{m:'A bocsánatkérés elhangzik, de nem ér célba, mert nem azt az elemet tartalmazza, amire a másiknak szüksége van. Ebből „már bocsánatot kértem, mit akarsz még?” típusú második vita lesz.',l:['Írjátok le egymásnak, mi kell ahhoz, hogy egy bocsánatkérést hitelesnek érezzetek.','Fontos vitában használjátok mind az öt elemet: sajnálom, hibáztam, mit tehetek, legközelebb másképp, megbocsátasz?']}],
+  ['Szorongó–elkerülő csapda',{m:'A szorongó fél bizonytalanságban közeledik, kérdez, megerősítést kér; az elkerülő fél ettől szorul, és távolodik; a távolodás a szorongót még erősebb közeledésre készteti. A kör magától gyorsul, és mindketten a másikat látjátok hibásnak.',l:['Nevezzétek meg a kört közös ellenségként: „most megint a csapdában vagyunk”.','A szorongó fél: kérj közvetlenül és röviden, vád nélkül. Az elkerülő fél: jelezd, hogy visszajössz („most kell egy óra, utána beszéljünk”).','Érzelemfókuszú párterápia (EFT) kifejezetten erre a körre épül.']}],
+  ['Két biztonságos kötődés',{m:'A konfliktus nálatok kisebb eséllyel kapcsol be riasztást, ezért tudtok vitatkozni anélkül, hogy a kapcsolat megkérdőjeleződne. Ez erős alap, amit a stressz (gyerek, költözés, betegség) ideiglenesen megingathat.',l:['A nehéz időszakokban is tartsátok meg a kapcsolódási rituálékat.','Használjátok az alapot arra, hogy a nehezebb témákat is felhozzátok.']}],
+  ['Egy biztonságos',{m:'A biztonságos fél nyugalma stabilizálhatja a másikat, ha nem veszi magára a másik riadóját. A kockázat, hogy a biztonságos fél idővel kimerül, ha mindig neki kell megnyugtatnia.',l:['A biztonságos fél: mondd ki, ami benned is zajlik, ne csak tartsd a helyzetet.','A bizonytalan fél: kérd ki a másik nézőpontját, mielőtt a régi félelmed alapján értelmeznél.']}],
+  ['Két szorongó kötődés',{m:'Erős közelség és erős érzelmek: ha mindketten bizonytalanok vagytok egyszerre, egymást is felhúzhatjátok. A konfliktus gyorsan pörög, mert senki nem tud a „felnőtt” lenni.',l:['Állapodjatok meg egy bejelentett szünetben (20–30 perc), amit mindketten tisztelettel kezeltek.','Építsetek külső támaszokat is (barátok, saját szabályozás), hogy ne csak egymás legyetek az egyetlen forrás.']}],
+  ['Két elkerülő kötődés',{m:'Nyugodt, önálló működés, kevés dráma. A kockázat a csendes eltávolodás: a nehéz érzések kimondatlanok maradnak, és a kapcsolat „lakótársi” működéssé válhat.',l:['Hetente egy beszélgetés, ahol mindketten kimondtok egy érzést (nem tényt).','Figyeljetek arra, mikor kezdtek párhuzamos életet élni.']}],
+  ['Mindketten kerülitek',{m:'Kevés a vita, de a kimondatlan sérelmek gyűlhetnek, és egy apró ügy egyszer nagy robbanást hozhat.',l:['Heti 20 perces „mi foglalkoztat?” beszélgetés rögzített időpontban.','Kezdjétek a kisebb ügyekkel, hogy gyakoroljátok a szóbahozást.']}],
+  ['Versengő + alkalmazkodó',{m:'Az egyik érvényesít, a másik enged. A döntések gyorsak, de az alkalmazkodó fél igényei fokozatosan háttérbe szorulnak, és ez később neheztelésként vagy hirtelen kivonulásként jelenhet meg.',l:['Fontos döntéseknél az alkalmazkodó fél mondja el először a véleményét.','A versengő fél: kérdezz rá, „te mit szeretnél valójában?”.']}],
+  ['Két versengő',{m:'Mindketten nyerni akartok, ezért a vita könnyen erőpróbává válik, ahol a téma már nem is számít.',l:['Egyeztessetek egy „stop” jelet.','Vita előtt mondjátok ki: „mi a közös célunk ebben?”.']}],
+  ['Ludus–Mania',{m:'Az egyik fél szabadságot és könnyedséget keres, a másik biztonságot és megerősítést; minél inkább kapaszkodik az egyik, annál inkább húzódik a másik.',l:['Beszéljetek konkrétan arról, mennyi közelségre és mennyi szabadságra van szükségetek egy héten.','A megerősítést kérő fél: dolgozz a saját önszabályozásodon is.']}],
+  ['Közös szeretetstílus',{m:'Hasonlóan élitek meg a szerelmet, ami megkönnyíti a megértést. A vakfolt az, ami egyikőtöknél sem erős.',l:['Nézzétek meg, melyik stílus hiányzik mindkettőtöknél, és van-e rá szükségetek.']}],
+  ['Megvetés-jelzés',{m:'Gottman kutatásaiban a megvetés a legerősebb kockázati jel: a másik lenézése, gúnyolása vagy szemforgatás az alapvető tiszteletet bontja.',l:['Tudatosan építsétek a megbecsülést: naponta egy kimondott értékelés.','Ha a megvetés rendszeres, érdemes pártámogatást kérni.']}],
+  ['Eltérően látjátok',{m:'Ha az egyikőtök jóval erősebbnek érzi a kapcsolat egy alapját, mint a másik, az gyakran azt jelzi, hogy valamelyikőtök kevesebbet kap ezen a területen, mint amennyit a másik gondol.',l:['Kérdezzétek meg egymást: „mi kellene ahhoz, hogy ezt te is erősnek érezd?”.']}],
+  ['Temperamentum:',{m:'A temperamentumok különbsége eltérő ritmust és döntési stílust jelent; ami az egyiknek természetes, a másiknak erőfeszítés.',l:['Mondjátok ki, kinek mi tölt fel és mi merít le.','A különbséget kezeljétek munkamegosztásként, ne jellemhibaként.']}],
+  ['Értékek',{m:'Az értékek a legmélyebb motivációk; az eltérésük ritkán oldható fel teljesen, de megérthető és kezelhető.',l:['Nevezzétek meg a közös értékeket, és építsetek rájuk közös célokat.','Az eltérő értékeknél keressétek, hogyan kaphat mindkettő teret.']}],
+  ['Eltérő kronotípus',{m:'Az egyikőtök reggel, a másik este van a csúcson; a fontos beszélgetések és a közös idő könnyen rossz időpontra esnek.',l:['A nehéz témákat a mindkettőtöknek elfogadható „köztes” időre tegyétek.','Tiszteljétek egymás alvási ritmusát.']}],
+  ['Tendenciák:',{m:'Ugyanaz a kérés másképp hat rátok: az egyiknek világos elvárás, a másiknak nyomás vagy kérdéses utasítás.',l:['Kéréskor igazodjatok a másik tendenciájához: indoklás, választás vagy külső keret.']}],
+  ['Két érzékeny',{m:'Mindketten erősen és gyorsan reagáltok; ha egyszerre vagytok terhelve, egymást húzhatjátok tovább.',l:['Vezessetek be egy jelzést arra, ha valamelyikőtök „túl van töltve”.','Szabályozzatok előbb, beszéljetek utána.']}],
+  ['Eltérő társas energia',{m:'A társaság az egyikőtöket tölti, a másikat meríti; ugyanaz a hétvége az egyiknek feltöltődés, a másiknak teher.',l:['Tervezzétek meg előre a hétvégéket: legyen benne társaság és csend is.','Az introvertáltabb fél: mondd ki, mennyi időre van szükséged egy esemény után.']}],
+  ['Eltérő struktúraigény',{m:'Az egyik tervez, a másik rugalmas; mindkettő érték, de a háztartásban és a pénzügyekben könnyen „kontroll” vs. „megbízhatatlanság” vitává válik.',l:['Osszátok fel a területeket: ahol a strukturáltabb dönt, és ahol a rugalmasabb.','Egyezzetek meg néhány közös, nem alkudható szabályban.']}],
+  ['Eltérő újdonságigény',{m:'Az egyik új élményekre vágyik, a másik a bevált dolgokban érzi jól magát.',l:['Váltakozva válasszatok programot.','Az újdonság lehet kicsi is: új étterem, új útvonal.']}],
+  ['Két kritikus',{m:'Az őszinteség erős, a puhaság kevés; vitában könnyen kemény szavak hangzanak el.',l:['Gyakoroljátok a szelíd kezdést: „azt érzem…, amikor…, azt szeretném…”.','Tudatosan mondjatok ki dicséretet is.']}],
+  ['Két alkalmazkodó',{m:'Mindketten engedtek, ezért a béke könnyen kimondatlan igényeken nyugszik.',l:['Hetente egyszer mondjatok ki egy saját igényt kompromisszum nélkül.']}]
+];
+const deepOf=i=>{const m=DEEP.find(([k])=>i.t.startsWith(k));return m?`<div class="pdeep"><p><b>Mi történik ilyenkor:</b> ${m[1].m}</p><ul>${m[1].l.map(x=>`<li>${x}</li>`).join('')}</ul></div>`:''};
 const qOf=i=>{if(i.q)return i.q;const m=QDEF.find(([k])=>i.t.startsWith(k));return m?m[1]:null};
 function gapQ(a,b){
   const ks=Object.keys(a.d||{}).filter(k=>b.d&&b.d[k]&&typeof a.d[k][1]==='number'&&typeof b.d[k][1]==='number');if(!ks.length)return '';
@@ -328,7 +377,8 @@ function render(){
   if(!both.length){root.innerHTML=`<div class="empty">Nincs olyan teszt, amit mindketten kitöltöttetek volna. A fenti listában látszik, kinek mi hiányzik.</div>`;return;}
   let h=`<h2>Pár<em>dinamika</em></h2><p class="h2sub">Jelzések a két profil kombinációjából. Beszélgetésindító, nem ítélet.</p>`;
   const ins=insights(ME,P);
-  h+=ins.length?ins.map(i=>{const q=qOf(i);return `<div class="card pat" style="--acc:${i.c}"><h3>${i.t}</h3><p>${i.x}</p>${q?`<p class="pq"><b>Kérdés egymásnak:</b> ${q}</p>`:''}</div>`}).join(''):'<div class="locked">A közösen kitöltött tesztekből még nem rajzolódik ki jellegzetes párdinamika.</div>';
+  if(ins.length){const pos=ins.filter(i=>i.c==='#34d399').length;h+=`<p class="psum"><strong>${ins.length}</strong> jelzés a közösen kitöltött tesztekből: <strong>${pos}</strong> közös erősség, <strong>${ins.length-pos}</strong> figyelmet érdemlő pont. A figyelmet érdemlő pont nem hiba, hanem az a terület, ahol a legtöbbet nyerhettek egy beszélgetéssel.</p>`;}
+  h+=ins.length?ins.map(i=>{const q=qOf(i);return `<div class="card pat" style="--acc:${i.c}"><h3>${i.t}</h3><p>${i.x}</p>${deepOf(i)}${q?`<p class="pq"><b>Kérdés egymásnak:</b> ${q}</p>`:''}</div>`}).join(''):'<div class="locked">A közösen kitöltött tesztekből még nem rajzolódik ki jellegzetes párdinamika.</div>';
   h+=`<h2>Egymás <em>mellett</em></h2><p class="h2sub"><span class="lg me"></span> Te &nbsp; <span class="lg pa"></span> ${esc(N)}. Kiemelve a legalább 30%-os eltérések.</p>`;
   both.forEach(([id,n])=>{const a=lastOf(ME,id),b=lastOf(P.results,id);
     h+=`<div class="card cmp" style="--acc:var(--gold)"><h3>${n}</h3><div class="hl2"><span><b class="me">Te:</b> ${esc(a.h||'')}</span><span><b class="pa">${esc(N)}:</b> ${esc(b.h||'')}</span></div>${ONI.same(a,b)?pairBars(a,b)+gapQ(a,b):`<p class="pq" style="font-style:normal">A két eredmény eltérő tesztváltozatból származik (te: ${esc(verT(a))}; ${esc(N)}: ${esc(verT(b))}), ezért nem hasonlítható össze. Aki a régebbi változattal töltötte ki, töltse ki újra.</p>`}</div>`;});

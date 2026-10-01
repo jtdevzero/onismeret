@@ -550,3 +550,13 @@ html[data-theme] details.oni-detail>summary{font-family:'Cardo',Georgia,serif!im
 .oni-mely .om-tag{font-size:11px;letter-spacing:.05em;text-transform:uppercase;font-weight:600;padding:1px 8px;border-radius:99px;background:var(--u-bg2);color:var(--u-sapphire);margin-left:4px}
 .oni-mely .om-up .om-tag{color:var(--u-emerald)}
 .oni-mely .om-down .om-tag{color:var(--u-burgundy)}
+/* ── Bizonyítékszint és válaszstílus ── */
+.oni-ev{display:inline-block;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;padding:2px 9px;border-radius:99px;border:1px solid var(--u-line);color:var(--u-muted);margin-left:4px;vertical-align:1px;cursor:help}
+.oni-ev-valid{color:var(--u-emerald);border-color:color-mix(in srgb,var(--u-emerald) 40%,transparent)}
+.oni-ev-model{color:var(--u-sapphire);border-color:color-mix(in srgb,var(--u-sapphire) 40%,transparent)}
+.oni-ev-pop,.oni-ev-own{color:var(--u-burgundy);border-color:color-mix(in srgb,var(--u-burgundy) 40%,transparent)}
+.oni-style{margin:12px 0 0;padding:10px 14px;border-radius:12px;border:1px dashed var(--u-gold2);background:color-mix(in srgb,var(--u-gold2) 8%,transparent);font-size:14px;line-height:1.55;color:var(--u-ink2)}
+.oni-style b{color:var(--u-ink)}
+.oni-mely .om-help{border:1px solid color-mix(in srgb,var(--u-burgundy) 35%,transparent);border-left:4px solid var(--u-burgundy);border-radius:14px;padding:14px 18px;background:color-mix(in srgb,var(--u-burgundy) 5%,var(--u-paper))}
+.oni-mely .om-help h4{color:var(--u-burgundy)!important}
+.oni-mely .om-norm{font-size:12.5px!important;color:var(--u-muted)!important;margin-top:8px!important}

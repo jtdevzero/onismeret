@@ -54,9 +54,9 @@ def link_core():
         s2 = s2.replace(CORE_TAG + '\n', CORE_TAG + '\n' + RULES_TAG + '\n', 1)
         s2 = s2.replace(THEME_TAG + '\n', '').replace(SCHEMA_TAG + '\n', '').replace(PLUS_TAGS + '\n', '')
         for t in PLUS_TAGS.split('\n'): s2 = s2.replace(t + '\n', '')
-        # oldalankénti mélyelemzés-adatok, ha vannak; a Fókusz-oldal mindet betölti
+        # oldalankénti mélyelemzés-adatok, ha vannak; a Fókusz-oldal és az Összegzés (riport) mindet betölti
         s2 = re.sub(r'<script src="assets/mely-[\w-]+\.js" defer></script>\n', '', s2)
-        melys = sorted(str(x.relative_to(ROOT)) for x in (ROOT / 'assets').glob('mely-*.js')) if p.stem == 'fokusz' else \
+        melys = sorted(str(x.relative_to(ROOT)) for x in (ROOT / 'assets').glob('mely-*.js')) if p.stem in ('fokusz', 'osszegzes') else \
                 [m for m in [f'assets/mely-{p.stem}.js'] if (ROOT / m).exists()]
         mtag = ''.join(f'<script src="{m}" defer></script>\n' for m in melys)
         for m in melys: V[m] = ver(m)

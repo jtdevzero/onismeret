@@ -144,15 +144,37 @@ h2 em{font-style:italic;color:var(--gold)}
   body.rep-mode #report .tag{font-size:8pt;color:#9a3412;font-weight:600}
   body.rep-mode #report .rfoot{margin-top:12pt;padding-top:5pt;border-top:0.75pt solid #cbd5e1;color:#64748b;font-size:8.5pt}
   body.rep-mode #report .cols{columns:2;column-gap:10pt}
+  body.rep-mode #report .rmh{break-before:page}
+  body.rep-mode #report .rmely{break-before:page}
+  body.rep-mode #report .rmely .rmn{font-family:'Cardo',Georgia,serif;font-size:15pt;font-weight:700;margin-bottom:4pt}
+  body.rep-mode #report .oni-mely{border:none!important;box-shadow:none!important;padding:0!important;margin:0!important;background:#fff!important;color:#0f172a!important;font-size:9.5pt}
+  body.rep-mode #report .oni-mely .oni-eyebrow{display:none}
+  body.rep-mode #report .oni-mely .om-title{font-size:12pt!important;margin:0 0 4pt!important}
+  body.rep-mode #report .oni-mely .om-sec{padding:5pt 0!important;break-inside:auto}
+  body.rep-mode #report .oni-mely .om-sec h4{font-size:11pt!important;margin:0 0 3pt!important}
+  body.rep-mode #report .oni-mely .om-sec p,body.rep-mode #report .oni-mely .om-list li{font-size:9.5pt!important;line-height:1.45!important;color:#1e293b!important;margin:0 0 3pt!important}
+  body.rep-mode #report .oni-mely .om-scale{break-inside:avoid;padding:4pt 6pt!important;border:0.75pt solid #cbd5e1!important;background:#fff!important}
+  body.rep-mode #report .oni-mely .om-bar{display:none}
 }
 </style>
 <script src="assets/oni-core.js?v=2a8027ce"></script>
-<script src="assets/oni-rules.js?v=fc41064d"></script>
+<script src="assets/oni-rules.js?v=908793e6"></script>
 <script src="assets/oni-schema.js?v=e30726e8" defer></script>
-<script src="assets/tests-data.js?v=8174bfd3" defer></script>
-<script src="assets/mely.js?v=186df765" defer></script>
-<script src="assets/results-plus.js?v=480c5fb6" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=026def2d">
+<script src="assets/tests-data.js?v=8d8e3f97" defer></script>
+<script src="assets/mely.js?v=1438910d" defer></script>
+<script src="assets/results-plus.js?v=9bcc8a35" defer></script>
+<script src="assets/mely-attitudok.js?v=65ccba3e" defer></script>
+<script src="assets/mely-cselekves.js?v=26834f40" defer></script>
+<script src="assets/mely-funkcio.js?v=33eea5fc" defer></script>
+<script src="assets/mely-kapcsolat.js?v=7316bb8a" defer></script>
+<script src="assets/mely-kotodes-melyterkep.js?v=bec4f693" defer></script>
+<script src="assets/mely-maia2.js?v=ca96c402" defer></script>
+<script src="assets/mely-nyelvek.js?v=cfc604ef" defer></script>
+<script src="assets/mely-sis-ses.js?v=95da76a5" defer></script>
+<script src="assets/mely-szabalyozas.js?v=a98cd7f9" defer></script>
+<script src="assets/mely-szemelyiseg.js?v=8dd4e84d" defer></script>
+<script src="assets/mely-terkepek.js?v=cca63a27" defer></script>
+<link rel="stylesheet" href="assets/theme.css?v=95066824">
 </head>
 <body>
 <div class="wrap">
@@ -169,7 +191,13 @@ h2 em{font-style:italic;color:var(--gold)}
     <p>Egy tömör, világos hátterű, nyomtatható összefoglaló a kiválasztott tesztekről és a visszatérő mintákról. A nyomtatási ablakban válaszd a <em>Mentés PDF-ként</em> lehetőséget. Az érzékeny témák alapból ki vannak kapcsolva, te döntöd el, mi kerül bele.</p>
     <div class="rep-row"><input type="text" id="rep-name" placeholder="Név a riporton (nem kötelező)" maxlength="60"><button type="button" class="rep-btn" id="rep-print">Nyomtatás / PDF mentése</button></div>
     <div class="rep-grid" id="rep-grid"></div>
-    <div class="rep-row"><label style="font-size:13.5px;color:var(--ink-soft);display:flex;gap:8px;align-items:center"><input type="checkbox" id="rep-pat" checked> Visszatérő minták (csak a kiválasztott tesztekből)</label><label style="font-size:13.5px;color:var(--ink-soft);display:flex;gap:8px;align-items:center"><input type="checkbox" id="rep-notes"> Saját jegyzeteim és a kitöltési körülmények</label><button type="button" class="rep-link" id="rep-all">mindet kijelöl</button><button type="button" class="rep-link" id="rep-none">egyiket sem</button></div>
+    <div class="rep-row"><label style="font-size:13.5px;color:var(--ink-soft);display:flex;gap:8px;align-items:center"><input type="checkbox" id="rep-pat" checked> Visszatérő minták (csak a kiválasztott tesztekből)</label><label style="font-size:13.5px;color:var(--ink-soft);display:flex;gap:8px;align-items:center"><input type="checkbox" id="rep-mely"> Teljes mélyelemzés is (tesztenként 1–2 oldal)</label><label style="font-size:13.5px;color:var(--ink-soft);display:flex;gap:8px;align-items:center"><input type="checkbox" id="rep-notes"> Saját jegyzeteim és a kitöltési körülmények</label><button type="button" class="rep-link" id="rep-all">mindet kijelöl</button><button type="button" class="rep-link" id="rep-none">egyiket sem</button></div>
+  </div>
+  <div class="card rep" id="ai-ui" style="--acc:var(--sapphire);margin-top:16px">
+    <h3>Másolás AI-elemzéshez</h3>
+    <p>Egy kész szöveget másol a vágólapra a fenti listában kiválasztott tesztek eredményeiből, a mintákkal, a válaszstílus-jelzésekkel és az aktuális fókuszoddal, egy elemzést kérő utasítással együtt. Beillesztheted Claude-ba vagy más AI-asszisztensbe. A szöveg csak akkor hagyja el ezt a böngészőt, ha te magad beilleszted valahova; a nyers válaszaid nincsenek benne.</p>
+    <div class="rep-row"><button type="button" class="rep-btn" id="ai-copy">Szöveg másolása</button><span class="msg" id="ai-msg" aria-live="polite"></span></div>
+    <textarea id="ai-text" readonly hidden style="width:100%;min-height:220px;margin-top:12px;font:13px/1.5 ui-monospace,Menlo,monospace;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--bg-deep);color:var(--ink)"></textarea>
   </div>
   <div id="report"></div>
   <p class="note">A minták <strong>heurisztikák</strong>: egy minta akkor jelenik meg, ha legalább két független teszt ugyanabba az irányba mutat. A küszöbök tájékoztató jellegűek, nem klinikai határértékek. A „saját itemek” jelölésű tesztek (konfliktusmódok, Gottman, Fisher, Négy tendencia, Cselekvési módok) nem validált mérések. Egy minta kérdést vet fel, nem diagnózist mond ki. Az újramérést 90 nap után jelzi.</p>
@@ -428,21 +456,55 @@ function buildRepUI(){
   document.getElementById('rep-print').onclick=()=>{
     const ids=[...grid.querySelectorAll('input:checked')].map(i=>i.dataset.id);
     if(!ids.length){alert('Válassz ki legalább egy tesztet.');return;}
-    buildReport(ids,document.getElementById('rep-pat').checked,document.getElementById('rep-notes').checked,document.getElementById('rep-name').value.trim());
+    buildReport(ids,document.getElementById('rep-pat').checked,document.getElementById('rep-notes').checked,document.getElementById('rep-name').value.trim(),document.getElementById('rep-mely').checked);
     document.body.classList.add('rep-mode');setTimeout(()=>window.print(),80);
   };
+  document.getElementById('ai-copy').onclick=()=>{
+    const ids=[...grid.querySelectorAll('input:checked')].map(i=>i.dataset.id),msg=document.getElementById('ai-msg'),ta=document.getElementById('ai-text');
+    if(!ids.length){msg.textContent='Válassz ki legalább egy tesztet a fenti listában.';return;}
+    const txt=aiPrompt(ids);ta.value=txt;ta.hidden=false;
+    const done=ok=>{msg.textContent=ok?'Kimásolva ('+ids.length+' teszt). Illeszd be egy új beszélgetésbe.':'Az automatikus másolás nem sikerült: jelöld ki a lenti szöveget, és másold ki kézzel.';if(!ok){ta.focus();ta.select();}};
+    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(txt).then(()=>done(true),()=>done(false));else done(false);
+  };
 }
-function buildReport(ids,withPat,withNotes,nm){
+const EVL=id=>{const E=window.ONI_EV||{},L=window.ONI_EV_LABEL||{};return L[E[id]]?L[E[id]][0]:'';};
+const focusNow=()=>{try{const f=JSON.parse(localStorage.getItem('onismeret-fokusz-v1'))||{};return f.active||null}catch(e){return null}};
+const styleOf=id=>{try{const a=(JSON.parse(localStorage.getItem('onismeret-style-v1'))||{})[id],r=last(id);return a&&r&&a.sid===(r.sid||'_')&&a.f&&a.f.length?a.f:[]}catch(e){return []}};
+const STYLE_L={straight:'szinte minden kérdésre ugyanaz a válasz',extreme:'szinte csak szélső válaszok',middle:'sok középső válasz'};
+function aiPrompt(ids){
+  const inc=new Set(ids),L=[];
+  L.push('Az alábbiak saját önismereti kérdőíves eredményeim (önbevallás, nem diagnózis). Kérlek, elemezd őket együtt:');
+  L.push('1) Milyen visszatérő mintákat látsz a tesztek között? 2) Mi tűnik a legfontosabb fejlődési területnek, és mi az erőforrásom? 3) Hol mondanak ellent egymásnak az eredmények, és mit kérdeznél tőlem, hogy tisztázd? 4) Javasolj legfeljebb 3 konkrét, kicsi lépést a következő 2–3 hétre.');
+  L.push('Légy őszinte és közvetlen, ne hízelegj. Vedd figyelembe a bizonyítékszintet: a „népszerű” és „saját” jelölésű eszközök gyengébb mérések. Ahol a pontszám erős terhelésre utal, mondd meg, ha szakember bevonását javasolnád.');
+  L.push('');L.push('EREDMÉNYEK (skála: érték, a skála tartománya)');
+  REG.filter(r=>inc.has(r[1])&&last(r[1])).forEach(([cat,id,name])=>{const r=last(id),p=prev(id),st=styleOf(id);
+    L.push('');L.push('## '+name+' — '+fmt(when(r))+(EVL(id)?' — '+EVL(id):'')+(r.h?' — '+String(r.h).replace(/<[^>]+>/g,''):''));
+    Object.keys(r.d||{}).forEach(k=>{const d=r.d[k];if(typeof d[1]!=='number')return;const pv=p&&ONI.same(p,r)&&p.d&&p.d[k]&&p.d[k][1]!==d[1]?' (előző: '+p.d[k][1]+')':'';L.push('- '+d[0]+': '+d[1]+' ('+d[2]+'–'+d[3]+')'+pv);});
+    if(st.length)L.push('- Válaszstílus-jelzés: '+st.map(x=>STYLE_L[x]||x).join(', '));});
+  const fired=[];RULES.forEach(r=>{const avail=r.sig.filter(x=>inc.has(x.test)&&cur(x.test));const hits=avail.filter(x=>{try{return !!x.fn()}catch(e){return false}});if(new Set(hits.map(x=>x.test)).size>=r.min)fired.push({r,hits});});
+  if(fired.length){L.push('');L.push('TESZTEK KÖZTI MINTÁK (legalább két teszt jelzi)');fired.forEach(({r,hits})=>L.push('- '+r.title+': '+r.text.replace(/<[^>]+>/g,'')+' [Jelzések: '+hits.map(x=>x.label).join('; ')+']'));}
+  const f=focusNow();if(f){L.push('');L.push('AMIN MOST DOLGOZOM (Fókusz, kezdve: '+fmt(f.start)+')');f.items.forEach(i=>L.push('- '+i.title+(i.action?': '+i.action:'')));
+    (f.checks||[]).slice(-3).forEach(c=>L.push('- Visszanézés '+fmt(c.t)+': '+f.items.map(i=>c.r[i.key]?i.title+' = '+({done:'sikerült',part:'részben',no:'nem sikerült'}[c.r[i.key]]):'').filter(Boolean).join('; ')+(c.note?' — „'+c.note+'”':'')));}
+  return L.join('\n');
+}
+function buildReport(ids,withPat,withNotes,nm,withMely){
   const inc=new Set(ids);let h=`<h1>Önismereti összefoglaló${nm?' — '+esc(nm):''}</h1><div class="rsub">Készült: ${fmt(new Date().toISOString())} · ${ids.length} teszt · önbevallásos kérdőívek, nem diagnózis</div>`;
   if(withPat){
     const fired=[];RULES.forEach(r=>{const avail=r.sig.filter(x=>inc.has(x.test)&&cur(x.test));const hits=avail.filter(x=>{try{return !!x.fn()}catch(e){return false}});if(new Set(hits.map(x=>x.test)).size>=r.min)fired.push({r,hits});});
     h+=`<h2>Visszatérő minták</h2>`+(fired.length?fired.map(({r,hits})=>`<div class="rp"><b>${r.title}</b> — ${r.text.replace(/<[^>]+>/g,'')}<div class="ev">Jelzések: ${hits.map(x=>esc(x.label)).join(' · ')}</div></div>`).join(''):'<div class="rp">A kiválasztott tesztek alapján egyik minta sem teljesül két független jelzéssel.</div>');
   }
+  const fN=focusNow();
+  if(fN)h+=`<h2>Amin most dolgozom</h2><div class="rp">Fókusz-kör kezdete: ${fmt(fN.start)}, ${(fN.checks||[]).length} heti visszanézés.</div>`+fN.items.map(i=>`<div class="rp"><b>${esc(i.title)}</b>${i.action?' — '+esc(i.action):''}</div>`).join('');
+  const sty=ids.filter(id=>last(id)&&styleOf(id).length);
+  if(sty.length)h+=`<h2>Válaszstílus-jelzések</h2>`+sty.map(id=>`<div class="rp"><b>${esc(NAME[id]||id)}</b> — ${styleOf(id).map(x=>STYLE_L[x]||x).join(', ')}. Az eredményt óvatosabban érdemes értelmezni.</div>`).join('');
   h+=`<h2>Eredmények tesztenként</h2><div class="cols">`;
   REG.filter(r=>inc.has(r[1])&&last(r[1])).forEach(([cat,id,name])=>{const r=last(id),p=prev(id);
     const rows=Object.values(r.d||{}).map((d,i)=>{const k=Object.keys(r.d)[i];const pv=p&&ONI.same(p,r)&&p.d&&p.d[k]?p.d[k][1]:null;return `<tr><td>${esc(d[0])}</td><td class="v">${d[1]}${pv!==null&&pv!==d[1]?` <span style="color:#64748b">(előző: ${pv})</span>`:''}</td><td class="r">${d[2]}–${d[3]}</td></tr>`}).join('');
-    h+=`<div class="rt"><div class="rh"><span class="rn">${esc(name)}${MODEL.has(id)?' <span class="tag">saját itemek / nem validált</span>':''}</span><span class="rd">${fmt(when(r))} · ${ONI.verText(r)}${ONI.isCur(id,r)?'':' · korábbi változat, a mintákba nem számít'}</span></div>${r.h?`<div class="rhl">${esc(r.h)}</div>`:''}${r.x&&r.x.need?`<div>Kielégítetlen szükségletek: ${r.x.need.map(esc).join('; ')}</div>`:''}${withNotes&&noteOf(id,r)?(n=>`<div class="rnote">${(n.fit||[]).map(k=>FITL[k]||k).join(' · ')}${n.cond&&n.cond.length?(n.fit&&n.fit.length?' · ':'')+'Körülmények: '+n.cond.map(k=>CONDL[k]||k).join(', '):''}${n.text?'<br><i>„'+esc(n.text)+'”</i>':''}</div>`)(noteOf(id,r)):''}${rows?`<table>${rows}</table>`:''}</div>`;});
-  h+=`</div><div class="rfoot">Forrás: Önismereti térképek (jtdevzero.github.io/onismeret). A pontszámok nyers vagy átlagolt skálaértékek, a jobb oldali oszlop a skála terjedelmét mutatja. A minták heurisztikák: legalább két teszt egybehangzó jelzése, nem klinikai küszöbök. A „saját itemek” jelölésű eszközök modell-alapú, nem validált kérdőívek.</div>`;
+    h+=`<div class="rt"><div class="rh"><span class="rn">${esc(name)}${EVL(id)?' <span class="tag">'+esc(EVL(id))+'</span>':''}</span><span class="rd">${fmt(when(r))} · ${ONI.verText(r)}${ONI.isCur(id,r)?'':' · korábbi változat, a mintákba nem számít'}</span></div>${r.h?`<div class="rhl">${esc(r.h)}</div>`:''}${r.x&&r.x.need?`<div>Kielégítetlen szükségletek: ${r.x.need.map(esc).join('; ')}</div>`:''}${withNotes&&noteOf(id,r)?(n=>`<div class="rnote">${(n.fit||[]).map(k=>FITL[k]||k).join(' · ')}${n.cond&&n.cond.length?(n.fit&&n.fit.length?' · ':'')+'Körülmények: '+n.cond.map(k=>CONDL[k]||k).join(', '):''}${n.text?'<br><i>„'+esc(n.text)+'”</i>':''}</div>`)(noteOf(id,r)):''}${rows?`<table>${rows}</table>`:''}</div>`;});
+  h+=`</div>`;
+  if(withMely&&window.ONI_MELY){const ms=REG.filter(r=>inc.has(r[1])&&last(r[1])).map(([cat,id,name])=>{const x=window.ONI_MELY(id,last(id));return x?`<div class="rmely"><div class="rmn">${esc(name)}</div>${x}</div>`:''}).filter(Boolean);
+    if(ms.length)h+=`<h2 class="rmh">Mélyelemzések</h2>`+ms.join('');}
+  h+=`<div class="rfoot">Forrás: Önismereti térképek (jtdevzero.github.io/onismeret). A pontszámok nyers vagy átlagolt skálaértékek, a jobb oldali oszlop a skála terjedelmét mutatja. A minták heurisztikák: legalább két teszt egybehangzó jelzése, nem klinikai küszöbök. A címkék a bizonyítékszintet jelzik: validált skála, ismert modell saját kérdésekkel, népszerű de kevéssé alátámasztott, vagy saját, nem validált eszköz.</div>`;
   document.getElementById('report').innerHTML=h;
 }
 render();

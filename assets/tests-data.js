@@ -34,3 +34,13 @@ window.ONI_DATA={
  tfeq:{n:'TFEQ-R18',what:'Három evési mintát mér: érzelmi evés, kontrollálatlan evés, kognitív visszafogás.',who:'Felnőttek.',period:'Általában.',min:4,ver:'Karlsson és mtsai (2000), 18 tétel, 0–100; saját fordítás.',notFor:'Étkezési zavar szűrésére vagy diétás tanácsra.',limit:'A minták erőssége stresszes időszakban változik.',q:'Milyen érzés előzi meg leggyakrabban, hogy éhség nélkül eszel?',next:['ders','DERS-SF: érzelemszabályozás']}
 };
 window.ONI_LINK={maia2:'maia2.html',tas:'terkepek.html#test-tas',des:'funkcio.html#test-des',ecr:'terkepek.html#test-ecr',kotodes:'kotodes-melyterkep.html',ysq:'ysq.html',smi:'terkepek.html#test-smi',ssss:'attitudok.html#test-ssss',sisses:'sis-ses.html',iief:'funkcio.html#test-iief',pedt:'funkcio.html#test-pedt',sdi:'funkcio.html#test-sdi',nsss:'attitudok.html#test-nsss',saq:'attitudok.html#test-saq',love:'nyelvek.html#test-love',apo:'nyelvek.html#test-apo',imago:'nyelvek.html#test-imago',bf:'szemelyiseg.html#test-bf',via:'szemelyiseg.html#test-via',las:'kapcsolat.html#test-las',tki:'kapcsolat.html#test-tki',gott:'kapcsolat.html#test-gott',fti:'kapcsolat.html#test-fti',pvq:'cselekves.html#test-pvq',ft:'cselekves.html#test-ft',kolbe:'cselekves.html#test-kolbe',meq:'cselekves.html#test-meq',ips:'szabalyozas.html#test-ips',ders:'szabalyozas.html#test-ders',scs:'szabalyozas.html#test-scs',tfeq:'szabalyozas.html#test-tfeq',par:'par.html'};
+/* Bizonyítékszint tesztenként: valid = publikált, kutatásban vizsgált skála; model = ismert elmélet, saját kérdések;
+   pop = népszerű modell, kevés empirikus alátámasztással; own = saját, nem validált eszköz. */
+window.ONI_EV_LABEL={
+ valid:['Validált skála','Publikált, kutatásokban vizsgált kérdőív. A magyar fordítás saját, külön nem validált.'],
+ model:['Ismert modell, saját kérdések','Az elmélet ismert, de a kérdések ehhez az oldalhoz készültek, és nincsenek validálva.'],
+ pop:['Népszerű, kevéssé alátámasztott','Elterjedt modell, de a kutatások csak részben igazolják. Beszélgetésindítónak jó, mérésnek gyenge.'],
+ own:['Saját, nem validált','Ehhez az oldalhoz készült eszköz; tájékozódásra, nem mérésre.']
+};
+window.ONI_EV={maia2:'valid',tas:'valid',des:'valid',ecr:'valid',ysq:'valid',smi:'valid',ssss:'valid',sisses:'valid',iief:'valid',pedt:'valid',sdi:'valid',nsss:'valid',saq:'valid',bf:'valid',via:'valid',las:'valid',pvq:'valid',meq:'valid',ips:'valid',ders:'valid',scs:'valid',tfeq:'valid',
+ tki:'model',gott:'model',fti:'model',kolbe:'model',ft:'model',love:'pop',apo:'pop',imago:'pop',kotodes:'own'};

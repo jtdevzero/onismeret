@@ -37,7 +37,7 @@ const RULES=[
   text:'Lehetséges, hogy a döntés előtti információgyűjtés biztonságot ad neked, de időnként a döntést helyettesíti.',
   q:'Melyik döntést halasztod most azzal, hogy még utánanézel valaminek?',
   action:'Minden döntésnél írd fel előre: <b>meddig gyűjtök, és milyen információ változtatná meg a döntést?</b> Ha a határidő lejárt, a legjobb elérhető opció mellett döntesz.'},
- {id:'autonomy',title:'Autonómia a motor',acc:'#a78bfa',min:2,
+ {id:'autonomy',tone:'jelleg',title:'Autonómia a motor',acc:'#a78bfa',min:2,
   sig:[S('pvq','Önirányítás vezérérték (centrált ≥ 0,5)',()=>val('pvq','SD')>=0.5),S('ft','Lázadó vagy Kérdező tendencia',()=>{const r=last('ft');return r&&r.x&&(r.x.primary==='R'||r.x.primary==='Q')}),S('pvq','Konformitás alacsony (≤ −0,5)',()=>val('pvq','CO')!==null&&val('pvq','CO')<=-0.5),S('kolbe','Gyorsindító ≥ 7',()=>val('kolbe','qs')>=7)],
   text:'Ezek a jelzések arra utalhatnak, hogy a választás szabadsága és a saját út nálad energiaforrás, a kívülről ráerőltetett keretek pedig lemeríthetnek, akkor is, ha észszerűek.',
   q:'Hol érzed most kötelezőnek azt, amit akár saját választásként is felépíthetnél?',

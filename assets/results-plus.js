@@ -121,6 +121,27 @@
     if(hi.p-lo.p<.06)return 'Minden skálád közel azonos szinten van, nincs kiugró terület.';
     return 'A saját skálájához mérten '+az(hi.l)+' '+v(hi)+' a legmagasabb, '+az(lo.l)+' '+v(lo)+' a legalacsonyabb. A többi skála e kettő között van; mindegyik a saját tartományán belül értendő, nem egymáshoz képest jobb vagy rosszabb.';
   }
+  /* ── Válaszstílus-figyelmeztetés a Röviden-kártyán: ugyanazt a skálát és számítást használja, mint a részletes
+     elemzés válaszstílus-panelje (ONI_CHECK), csak szigorúbb küszöbökkel; az eredményt a riport is olvassa. ── */
+  var STK='onismeret-style-v1';
+  function styleFlags(id){
+    var C=window.ONI_CHECK,key=(ONI.IDKEY||{})[id];if(!C||!key)return [];
+    var a=C.answersOf(id,jget(key,null)),sc=C.scales(id);if(!a||!sc.length)return [];
+    var main=sc[0],bins=main.vals,vals=main.qs.map(function(q){return a[q]}).filter(function(v){return typeof v==='number'&&bins.indexOf(v)>-1});
+    var n=vals.length;if(n<8||bins.length<3||bins.length>11)return [];
+    var cnt={};bins.forEach(function(b){cnt[b]=0});vals.forEach(function(v){cnt[v]++});
+    var top=Math.max.apply(null,bins.map(function(b){return cnt[b]}))/n,ext=(cnt[bins[0]]+cnt[bins[bins.length-1]])/n;
+    var midIdx=bins.length%2?[(bins.length-1)/2]:[bins.length/2-1,bins.length/2],mid=midIdx.reduce(function(s,i){return s+cnt[bins[i]]},0)/n,pct=function(x){return Math.round(x*100)};
+    if(top>=.85)return [['straight','A kérdések '+pct(top)+'%-ára ugyanazt a választ adtad. Ez lehet valós, de gyakran fáradtság, sietés vagy egy általános benyomás okozza; ha a kérdőívben fordított tételek is vannak, az eredmény torzulhat. Érdemes egy nyugodtabb pillanatban újra kitölteni.']];
+    if(ext>=.85)return [['extreme','A válaszaid '+pct(ext)+'%-a a skála két szélén van. Ez erős meggyőződést is jelezhet, de a köztes válaszok kerülése felnagyíthatja a kiugró eredményeket.']];
+    if(mid>=.7)return [['middle','A válaszaid '+pct(mid)+'%-a a skála közepén van. Ez óvatosságot vagy bizonytalanságot is jelezhet; ilyenkor a profil a valóságosnál laposabbnak tűnhet.']];
+    return [];
+  }
+  function styleWarn(id,r){
+    var f=styleFlags(id),all=jget(STK,{});all[id]={sid:r.sid||'_',f:f.map(function(x){return x[0]}),t:new Date().toISOString()};jset(STK,all);
+    return f.length?'<div class="oni-style" role="note"><b>Válaszstílus:</b> '+esc(f[0][1])+' Részletek a „Részletes elemzés” válaszstílus-diagramján.</div>':'';
+  }
+  function evHTML(id){var E=window.ONI_EV||{},LB=window.ONI_EV_LABEL||{},l=LB[E[id]];return l?'<span class="oni-ev oni-ev-'+E[id]+'" title="'+esc(l[1])+'">'+esc(l[0])+'</span>':'';}
   function brief(id,r){
     var d=D[id]||{};
     var dims=topDims(r).map(function(x){var v=x[1];return '<span class="oni-dim"><b>'+esc(v[0])+'</b> '+v[1]+'<small> ('+v[2]+'–'+v[3]+')</small></span>'}).join('');
@@ -129,11 +150,12 @@
     return '<section class="oni-brief" data-id="'+id+'" data-sid="'+esc(r.sid||'_')+'">'+
       '<div class="oni-eyebrow">Röviden</div>'+
       '<p class="oni-head">'+esc(r.h||d.n||'')+'</p>'+
-      '<p class="oni-ver">Kitöltve: '+fmtD(r.done||r.t)+(r.corrected?' · javított válaszokkal':'')+' · '+ONI.verText(r)+'</p>'+
+      '<p class="oni-ver">Kitöltve: '+fmtD(r.done||r.t)+(r.corrected?' · javított válaszokkal':'')+' · '+ONI.verText(r)+' '+evHTML(id)+'</p>'+
       (st?'<p class="oni-sum">'+st+'</p>':'')+
       (dims?'<div class="oni-dims" aria-label="Fő eredmények">'+dims+'</div>':'')+
       '<p class="oni-sum oni-q"><b>Kérdés magadnak:</b> '+esc(d.q||'Mi az, ami ebből igaz rád, és mi nem?')+'</p>'+
       '<p class="oni-lim">'+esc(d.limit||'Önbevallásos kérdőív: tendenciát mutat, nem diagnózist.')+'</p>'+
+      styleWarn(id,r)+
       '<div class="oni-actions"><button type="button" class="oni-more" aria-expanded="false">Részletes elemzés ▾</button><span class="oni-next">Következő lépés: '+nx+'</span></div>'+
     '</section>';
   }

@@ -19,12 +19,14 @@ D.ecr = {
   },
   skalak: {
     anx: {
+      norma: { m: 3.56, sd: 1.12, src: "Fraley online mintája, n > 17 000, 73% nő" },
       hi: "Erős a kötődési riasztórendszered. A partner elérhetőségének jeleit sokszor felnagyítva érzékeled, a bizonytalanságot nehezen viseled, és a kapcsolat könnyen a gondolataid középpontjába kerül. Ez gyakran a legintenzívebb érzelmeket hozza – a vonzalmat és a fájdalmat is.",
       mid: "A kötődési szorongásod közepes: nyugodt időszakokban kevésbé, stresszben, távolság vagy konfliktus idején jobban aktiválódik. Érdemes megfigyelni, milyen helyzetek kapcsolják be.",
       lo: "Kevés a kötődési szorongásod: nem kell folyamatosan ellenőrizned, hogy a másik szeret-e, és a távolságot vagy egy konfliktust nem éled meg a kapcsolat végének.",
       tipHi: "Amikor bekapcsol a riadó (olvasatlan üzenet, hűvösebb hang), nevezd meg: „ez a kötődési szorongásom”. Várj 20 percet mielőtt írsz, és közben szabályozd magad testileg (légzés, mozgás). A „ha szeretne, írna” helyett kérj közvetlenül: „jól esne, ha este jelentkeznél”."
     },
     avd: {
+      norma: { m: 2.92, sd: 1.19, src: "Fraley online mintája, n > 17 000, 73% nő" },
       hi: "Erős a kötődési elkerülés: a közelség, a függés és az érzelmi megnyílás feszültséget kelt. Könnyebb egyedül megoldani a dolgokat, és a partner érzelmi igényei tehernek tűnhetnek. Belül ez gyakran védekezés egy régi csalódás ellen.",
       mid: "Az elkerülésed közepes: bizonyos témákban, helyzetekben (sebezhetőség, nagy elköteleződés, konfliktus) visszahúzódsz, máskor tudsz közel maradni.",
       lo: "Kényelmes számodra a közelség: meg tudsz nyílni, tudsz támaszkodni a másikra, és a függés nem fenyegeti az önállóságodat.",

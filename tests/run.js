@@ -696,6 +696,53 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     await ctx.close();
   }
 
+  console.log('\n26. Bizonyítékszint, válaszstílus, segítség-blokk, normák, riport, AI-szöveg, pár-mélyelemzés');
+  {
+    const ctx = await newCtx(); const p = await pageIn(ctx);
+    const legacyFill = (id, pick) => p.evaluate(([id, pick]) => { document.querySelectorAll('#test-' + id + ' .q').forEach(q => { const b = [...q.querySelectorAll('.scale-btn')]; if (b.length) (pick === 'last' ? b[b.length - 1] : b[Math.floor(b.length / 2)]).click(); }); const s = document.getElementById(id + '-showResults'); s.disabled = false; s.click(); }, [id, pick]);
+    await p.goto(R + 'szabalyozas.html#test-ips'); await p.waitForTimeout(200);
+    await p.evaluate(() => { TESTS.ips._fillAll(() => 2); TESTS.ips.show(); }); await p.waitForTimeout(600);
+    let m = await p.evaluate(() => ({ ev: !!document.querySelector('#ips-results .oni-brief .oni-ev-valid'), st: (document.querySelector('#ips-results .oni-style') || {}).textContent || '' }));
+    ok(m.ev, 'Röviden: bizonyítékszint-címke (validált)');
+    ok(/ugyanazt a választ/.test(m.st), 'egyforma válaszoknál válaszstílus-jelzés', m.st);
+    await p.evaluate(() => { TESTS.ips.reset(); TESTS.ips._fillAll((k, it) => it.n % 2 ? 0 : 4); TESTS.ips.show(); }); await p.waitForTimeout(600);
+    ok(await p.evaluate(() => /két szélén/.test((document.querySelector('#ips-results .oni-style') || {}).textContent || '')), 'csak szélső válaszoknál szélső-jelzés');
+    await p.evaluate(() => { TESTS.ders._fillAll(() => 4); TESTS.ders.show(); }); await p.waitForTimeout(600);
+    m = await p.evaluate(() => { const x = document.querySelector('#ders-results .oni-mely'); return { help: !!x.querySelector('.om-help'), norm: (x.querySelector('.om-norm') || {}).textContent || '' }; });
+    ok(m.help && /116-123/.test(await p.evaluate(() => document.querySelector('#ders-results .om-help').textContent)), 'magas DERS: segítség-blokk a 116-123-mal');
+    ok(/Kaufman/.test(m.norm) && /\d+%-ánál/.test(m.norm), 'DERS: viszonyítás közölt mintához', m.norm);
+    await p.goto(R + 'funkcio.html#test-des'); await p.waitForTimeout(200);
+    await legacyFill('des', 'mid'); await p.waitForTimeout(700);
+    ok(await p.evaluate(() => !!document.querySelector('#des-results .oni-mely .om-help')), 'magas DES: segítség-blokk');
+    await p.goto(R + 'terkepek.html#test-ecr'); await p.waitForTimeout(200);
+    await legacyFill('ecr', 'mid'); await p.waitForTimeout(700);
+    ok(await p.evaluate(() => document.querySelectorAll('#ecr-results .oni-mely .om-norm').length === 2 && !document.querySelector('#ecr-results .oni-mely .om-help')), 'ECR: két normaviszonyítás, segítség-blokk nélkül');
+    // riport és AI-szöveg demó adatokkal
+    await p.goto(R + 'index.html'); await seedDemo(p);
+    await p.evaluate(() => localStorage.setItem('onismeret-fokusz-v1', JSON.stringify({ active: { start: new Date().toISOString(), items: [{ key: 'x', title: 'Próbafókusz', action: 'Egy kis lépés' }], checks: [] } })));
+    await p.goto(R + 'fokusz.html'); await p.waitForTimeout(250);
+    ok(await p.evaluate(() => /Próbafókusz/.test(document.body.textContent)), 'Fókusz: a mentett kör megjelenik');
+    await p.evaluate(() => { const s = JSON.parse(localStorage.getItem('onismeret-fokusz-v1')); delete s.active; localStorage.setItem('onismeret-fokusz-v1', JSON.stringify(s)); });
+    await p.reload(); await p.waitForTimeout(250);
+    ok(await p.evaluate(() => !/Autonómia a motor/.test(document.getElementById('root').textContent)), 'Fókusz: a semleges („jellegzetes vonás”) minta nem kerül a javaslatok közé');
+    await p.evaluate(() => localStorage.setItem('onismeret-fokusz-v1', JSON.stringify({ active: { start: new Date().toISOString(), items: [{ key: 'x', title: 'Próbafókusz', action: 'Egy kis lépés' }], checks: [] } })));
+    await p.goto(R + 'osszegzes.html'); await p.waitForTimeout(300);
+    await p.evaluate(() => { window.print = () => {}; document.getElementById('rep-all').click(); document.getElementById('rep-mely').checked = true; document.getElementById('rep-print').click(); }); await p.waitForTimeout(300);
+    m = await p.evaluate(() => { const r = document.getElementById('report'); return { mely: r.querySelectorAll('.oni-mely').length, focus: /Amin most dolgozom/.test(r.textContent) && /Próbafókusz/.test(r.textContent), ev: /Validált skála/.test(r.textContent) }; });
+    ok(m.mely >= 3 && m.focus && m.ev, 'riport: mélyelemzések, aktuális fókusz és bizonyítékszint', m);
+    await p.evaluate(() => document.body.classList.remove('rep-mode'));
+    await p.click('#ai-copy'); await p.waitForTimeout(200);
+    m = await p.evaluate(() => document.getElementById('ai-text').value);
+    ok(/EREDMÉNYEK/.test(m) && /Próbafókusz/.test(m) && /ne hízelegj/.test(m) && m.length > 800, 'AI-szöveg: eredmények, fókusz és utasítás', m.length);
+    // pár-mélyelemzés
+    await p.evaluate(() => { const st = ONI.all(), q = JSON.parse(JSON.stringify(st)); if (q.bf) { const r = q.bf[q.bf.length - 1]; r.d.E[1] = Math.min(60, r.d.E[1] + 20) === r.d.E[1] ? r.d.E[1] - 20 : Math.min(60, r.d.E[1] + 20); } localStorage.setItem('onismeret-partner-v1', JSON.stringify({ name: 'Próba', results: q, t: new Date().toISOString() })); });
+    await p.goto(R + 'par.html'); await p.waitForTimeout(300);
+    m = await p.evaluate(() => ({ deep: document.querySelectorAll('.pdeep').length, sum: !!document.querySelector('.psum') }));
+    ok(m.deep >= 1 && m.sum, 'párnézet: összegző sor és mélyebb magyarázat a jelzésekhez', m);
+    ok(p._errs.length === 0, 'nincs JS-hiba a 26. szakaszban', p._errs);
+    await ctx.close();
+  }
+
   await browser.close();
   console.log(`\n${pass} rendben, ${fail} hiba`);
   process.exit(fail ? 1 : 0);

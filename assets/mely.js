@@ -71,7 +71,7 @@
     if (mine.length) {
       return mine.map(function(f){
         var tests = []; f.hits.forEach(function(s){ if (tests.indexOf(s.test) < 0) tests.push(s.test); });
-        return '<div class="om-cross"><b>' + esc(f.r.title) + '</b><p>' + f.r.text + '</p>' +
+        return '<div class="om-cross"><b>' + (f.r.tone === 'jelleg' ? 'Jellegzetes vonás, nem probléma · ' : '') + esc(f.r.title) + '</b><p>' + f.r.text + '</p>' +
           (f.r.action ? '<p><strong>Mit tehetsz:</strong> ' + f.r.action + '</p>' : '') +
           '<p class="om-ev">Jelzések ' + tests.length + ' tesztből: ' + f.hits.map(function(s){ return esc(s.label); }).join(' · ') + '</p></div>';
       }).join('') + '<p class="om-sub2">A minták akkor jelennek meg, ha legalább két különböző teszt ugyanabba az irányba mutat. Részletek és bizonyítékok: <a href="osszegzes.html">Összegzés ›</a></p>';
@@ -85,6 +85,30 @@
     var sug = Object.keys(cnt).sort(function(a, b){ return cnt[b] - cnt[a]; }).slice(0, 3);
     if (!sug.length) return '<p>A kitöltött tesztjeid alapján ennél a tesztnél jelenleg nincs olyan minta, amelyet legalább két teszt együtt jelezne. Ez nem hiány: azt jelenti, hogy ez az eredmény most önmagában értelmezendő.</p>';
     return '<p>Ennél a tesztnél még nincs tesztek közti minta. A legtöbb összevetést ezek kitöltése adná: <strong>' + sug.map(function(t){ var L = window.ONI_LINK || {}; return L[t] ? '<a href="' + L[t] + '">' + esc(nm(t)) + '</a>' : esc(nm(t)); }).join(', ') + '</strong>.</p>';
+  }
+  /* Normál eloszlású közelítés a közölt átlag és szórás alapján */
+  function pctOf(v, m, sd){ var z = (v - m) / sd, t = 1 / (1 + 0.2316419 * Math.abs(z)), d = 0.3989423 * Math.exp(-z * z / 2);
+    var p = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274)))); return z > 0 ? 1 - p : p; }
+  function normHTML(sc, v){
+    if (!sc.norma || typeof v !== 'number') return '';
+    var p = Math.round(pctOf(v, sc.norma.m, sc.norma.sd) * 100); p = Math.max(1, Math.min(99, p));
+    return '<p class="om-norm">Összevetés egy közölt mintával (' + sc.norma.src + '): az eredményed kb. a válaszadók <strong>' + p + '%-ánál</strong> magasabb. A minta nem magyar és nem reprezentatív, ezért ez tájékoztató viszonyítás.</p>';
+  }
+  /* Mikor érdemes szakemberhez fordulni: tesztenkénti jelzés */
+  function gv(r, k){ return r.d && r.d[k] && typeof r.d[k][1] === 'number' ? r.d[k][1] : null; }
+  var HELP = {
+    des: function(r){ return gv(r, 'total') >= 30; },
+    ders: function(r){ return gv(r, 'total') >= 60; },
+    tfeq: function(r){ return gv(r, 'EE') >= 67 || gv(r, 'UE') >= 67; },
+    smi: function(r){ return gv(r, 'punitive') >= 5 || gv(r, 'vuln') >= 5; },
+    scs: function(r){ var t = gv(r, 'total'); return t !== null && t <= 1.8; },
+    bf: function(r){ return gv(r, 'N') >= 50; }
+  };
+  function helpHTML(id, r){
+    var f = HELP[id]; try { if (!f || !f(r)) return ''; } catch (e) { return ''; }
+    return '<div class="om-sec om-help"><h4><span aria-hidden="true">🆘</span> Mikor érdemes szakemberhez fordulni?</h4>' +
+      '<p>Az eredményed ezen a területen erős terhelést jelez. Ez nem diagnózis, de jó jelzés arra, hogy nem kell egyedül megoldanod. Érdemes pszichológussal, pszichiáterrel vagy a háziorvosoddal átbeszélni, különösen ha a nehézség hetek óta tart, ha az alvásod, az evésed, a munkád vagy a kapcsolataid láthatóan sínylik, vagy ha reménytelenséget érzel.</p>' +
+      '<p>Ha most nagyon nehéz: <strong>Lelki Elsősegély Telefonszolgálat, 116-123</strong> (ingyenes, éjjel-nappal, névtelenül hívható). Közvetlen veszélyben: <strong>112</strong>.</p></div>';
   }
   function sec(icon, title, body, cls){ return body ? '<div class="om-sec' + (cls ? ' ' + cls : '') + '"><h4><span aria-hidden="true">' + icon + '</span> ' + title + '</h4>' + body + '</div>' : ''; }
 
@@ -111,7 +135,7 @@
       var chip = x.grp === 'top' ? 'Legerősebb' : x.grp === 'bot' ? 'Leggyengébb' : L[x.lv];
       var jo = x.sc.jo || M.jo, tone = x.grp ? (x.grp === 'top' ? ' om-good' : '') : (!jo || x.lv === 'mid' ? '' : (x.lv === jo ? ' om-good' : ' om-bad'));
       return '<div class="om-scale om-' + x.lv + tone + '"><div class="om-sh"><b>' + x.d[0] + '</b><span class="om-chip">' + chip + '</span><span class="om-val">' + num(x.d[1]) +
-        '<small> / ' + num(x.d[2]) + '–' + num(x.d[3]) + '</small></span></div><div class="om-bar"><i style="width:' + Math.round(x.p * 100) + '%"></i></div><p>' + t + '</p></div>';
+        '<small> / ' + num(x.d[2]) + '–' + num(x.d[3]) + '</small></span></div><div class="om-bar"><i style="width:' + Math.round(x.p * 100) + '%"></i></div><p>' + t + '</p>' + normHTML(x.sc, x.d[1]) + '</div>';
     }).join('');
     /* személyre szabott lépések a kiugró skálákból */
     var tips = [];
@@ -128,6 +152,7 @@
       '<h3 class="om-title">' + (M.cim || 'Mit mond ez rólad?') + '</h3>' +
       sec('📌', 'Mit jelent?', ps(M.bevezeto) + prof) +
       sec('📊', M.mutat ? 'A legerősebb és leggyengébb skáláid' : 'A te skáláid', cards ? '<div class="om-scales">' + cards + '</div>' : '') +
+      helpHTML(id, r) +
       sec('🔗', 'Kapcsolódás a többi eredményeddel', crossHTML(id, R)) +
       sec('📈', 'Változás az előző kitöltés óta', changeHTML(id, r, M, R)) +
       sec('🌳', 'Honnan ered?', ps(M.gyoker)) +

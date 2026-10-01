@@ -62,12 +62,12 @@ h2{font-family:var(--font-serif);font-weight:400;font-size:28px;margin:44px 0 8p
 </style>
 
 <script src="assets/oni-core.js?v=2a8027ce"></script>
-<script src="assets/oni-rules.js?v=fc41064d"></script>
+<script src="assets/oni-rules.js?v=908793e6"></script>
 <script src="assets/oni-schema.js?v=e30726e8" defer></script>
-<script src="assets/tests-data.js?v=8174bfd3" defer></script>
-<script src="assets/mely.js?v=186df765" defer></script>
-<script src="assets/results-plus.js?v=480c5fb6" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=026def2d">
+<script src="assets/tests-data.js?v=8d8e3f97" defer></script>
+<script src="assets/mely.js?v=1438910d" defer></script>
+<script src="assets/results-plus.js?v=9bcc8a35" defer></script>
+<link rel="stylesheet" href="assets/theme.css?v=95066824">
 </head>
 <body>
 <div class="wrap">
@@ -97,6 +97,16 @@ document.addEventListener('DOMContentLoaded',function(){
   var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
   /* score/retake: 'no' | 'part' | 'yes' */
   var LOG=[
+    {d:'2026-10-01',t:'Megbízhatóság, export és pár-mélyelemzés',score:'no',retake:'no',items:[
+      'Bizonyítékszint-címke minden teszt Röviden-kártyáján és a riportban: validált skála, ismert modell saját kérdésekkel, népszerű de kevéssé alátámasztott, vagy saját, nem validált eszköz.',
+      'Válaszstílus-figyelmeztetés a Röviden-kártyán, ha szinte minden válasz azonos, szinte csak szélső vagy szinte csak középső (a részletes elemzés válaszstílus-diagramjával azonos számítás, szigorúbb küszöbbel). Bekerül a riportba és az AI-szövegbe is.',
+      '„Mikor érdemes szakemberhez fordulni?” blokk a mélyelemzésben, ha egy eredmény erős terhelést jelez (DES-II, DERS-SF, TFEQ-R18, SMI, SCS-SF, Big Five neuroticizmus), a Lelki Elsősegély Telefonszolgálat (116-123) és a 112 elérhetőségével.',
+      'Viszonyítás közölt mintákhoz ott, ahol ellenőrzött átlag és szórás érhető el: ECR-R (Fraley), DERS-SF (Kaufman és mtsai, 2016), SCS-SF (Raes és mtsai, 2011). A minták nem magyarok, ezért tájékoztató jellegűek.',
+      'A semleges tesztek közti minták („Autonómia a motor”) jellegzetes vonásként jelennek meg, és nem kerülnek a fókuszjavaslatok közé.',
+      'Terapeuta-összefoglaló: választható teljes mélyelemzés tesztenként külön oldalon, aktuális fókusz, válaszstílus-jelzések, bizonyítékszint.',
+      'Új: „Másolás AI-elemzéshez”: a kiválasztott tesztek eredményei, a minták és a fókusz egy elemzést kérő utasítással, nyers válaszok nélkül.',
+      'Párnézet: összegző sor, minden párjelzéshez „Mi történik ilyenkor” magyarázat és konkrét lépések, új Big Five párjelzések (érzékenység, társas energia, struktúraigény, újdonságigény, barátságosság).',
+      'A pontozás nem változott.']},
     {d:'2026-10-01',t:'Fókusz-oldal, tesztek közti minták és változás a mélyelemzésben',score:'no',retake:'no',items:[
       'Új <a href="fokusz.html">Fókusz-oldal</a>: a kitöltött tesztekből összegyűjti, mi kér leginkább figyelmet (tesztek közti minták, kedvezőtlen irányban kiugró skálák), és legfeljebb hármat lehet választani a következő 2–3 hétre. Hetente visszanézés (sikerült / részben / nem), a kör lezárható, a lezárt körök megmaradnak.',
       'A mélyelemzés új része: „Kapcsolódás a többi eredményeddel”. Ha legalább két teszt ugyanazt a mintát jelzi, és ez a teszt is köztük van, itt is megjelenik; ha még nincs minta, megmutatja, melyik teszt adna összevetést.',

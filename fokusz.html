@@ -85,11 +85,11 @@ h2{font-family:var(--font-serif);font-weight:400;font-size:28px;margin:44px 0 8p
 .fk-done{color:var(--emerald)}.fk-part{color:var(--gold)}.fk-no{color:var(--rose)}
 </style>
 <script src="assets/oni-core.js?v=2a8027ce"></script>
-<script src="assets/oni-rules.js?v=fc41064d"></script>
+<script src="assets/oni-rules.js?v=908793e6"></script>
 <script src="assets/oni-schema.js?v=e30726e8" defer></script>
-<script src="assets/tests-data.js?v=8174bfd3" defer></script>
-<script src="assets/mely.js?v=186df765" defer></script>
-<script src="assets/results-plus.js?v=480c5fb6" defer></script>
+<script src="assets/tests-data.js?v=8d8e3f97" defer></script>
+<script src="assets/mely.js?v=1438910d" defer></script>
+<script src="assets/results-plus.js?v=9bcc8a35" defer></script>
 <script src="assets/mely-attitudok.js?v=65ccba3e" defer></script>
 <script src="assets/mely-cselekves.js?v=26834f40" defer></script>
 <script src="assets/mely-funkcio.js?v=33eea5fc" defer></script>
@@ -98,10 +98,10 @@ h2{font-family:var(--font-serif);font-weight:400;font-size:28px;margin:44px 0 8p
 <script src="assets/mely-maia2.js?v=ca96c402" defer></script>
 <script src="assets/mely-nyelvek.js?v=cfc604ef" defer></script>
 <script src="assets/mely-sis-ses.js?v=95da76a5" defer></script>
-<script src="assets/mely-szabalyozas.js?v=bfcc5c40" defer></script>
+<script src="assets/mely-szabalyozas.js?v=a98cd7f9" defer></script>
 <script src="assets/mely-szemelyiseg.js?v=8dd4e84d" defer></script>
-<script src="assets/mely-terkepek.js?v=0bbc9b6f" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=026def2d">
+<script src="assets/mely-terkepek.js?v=cca63a27" defer></script>
+<link rel="stylesheet" href="assets/theme.css?v=95066824">
 </head>
 <body>
 <div class="wrap">
@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded',function(){
   function candidates(){
     var store=window.ONI?ONI.all():{},out=[];
     if(window.ONI_RULES){try{var RX=ONI_RULES({store:store,isCur:function(i,r){return ONI.isCur(i,r)}});
-      RX.evalRules().fired.forEach(function(f){var t=[];f.hits.forEach(function(s){if(t.indexOf(s.test)<0)t.push(s.test)});
+      RX.evalRules().fired.forEach(function(f){if(f.r.tone==='jelleg')return;var t=[];f.hits.forEach(function(s){if(t.indexOf(s.test)<0)t.push(s.test)});
         out.push({key:'rule:'+f.r.id,kind:'Tesztek közti minta',title:f.r.title,text:strip(f.r.text),action:strip(f.r.action),src:t,score:2+t.length*.25});});}catch(e){}}
     var per={};
     Object.keys(store).forEach(function(id){var h=store[id];if(!h||!h.length||!window.ONI_MELY_CAND)return;
