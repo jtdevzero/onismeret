@@ -671,7 +671,7 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     let m = await p.evaluate(() => { const x = document.querySelector('#ips-results > .oni-mely'); return x && { sc: x.querySelectorAll('.om-scale').length, words: x.textContent.trim().split(/\s+/).length, last: document.querySelector('#ips-results').lastElementChild.className }; });
     ok(m && m.sc === 1 && m.words > 250 && /oni-mine/.test(m.last), 'IPS mélyelemzés: skálakártya, hosszú szöveg, a saját megjegyzések előtt', m);
     ok(await p.evaluate(() => !/Változás az előző/.test(document.querySelector('#ips-results .oni-mely').textContent)), 'első kitöltésnél nincs változás-szakasz');
-    await p.evaluate(() => { TESTS.ders._fillAll(() => 5); TESTS.ders.show(); }); await p.waitForTimeout(600);
+    await p.evaluate(() => { TESTS.ders._fillAll(() => 4); TESTS.ders.show(); }); await p.waitForTimeout(600);
     await p.evaluate(() => { TESTS.ips.show(); }); await p.waitForTimeout(600);
     ok(await p.evaluate(() => /Érzelmi halogatás/.test(document.querySelector('#ips-results .oni-mely').textContent)), 'IPS + DERS együtt: a tesztek közti minta megjelenik a mélyelemzésben');
     await p.evaluate(() => { const a = ONI.all(); a.ips[0].done = a.ips[0].t = new Date(Date.now() - 20 * 864e5).toISOString(); localStorage.setItem(ONI.K, JSON.stringify(a)); const mm = JSON.parse(localStorage.getItem(ONI.META)); mm.ans['ips-responses-v1'] = new Date(Date.now() - 20 * 864e5).toISOString(); localStorage.setItem(ONI.META, JSON.stringify(mm)); });
