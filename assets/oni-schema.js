@@ -31,7 +31,10 @@ window.ONI_SCHEMA={
   ips:{"k":"ips-responses-v1","g":[["1-9",[1,2,3,4,5]]],"d":["total"]},
   ders:{"k":"ders-sf-responses-v1","g":[["1-18",[1,2,3,4,5]]],"d":["aware","clarity","goals","impulse","nonacc","strat","total"]},
   scs:{"k":"scs-sf-responses-v1","g":[["1-12",[1,2,3,4,5]]],"d":["CH","IS","MI","OI","SJ","SK","total"]},
-  tfeq:{"k":"tfeq-r18-responses-v1","g":[["1-17",[0,1,2,3]],["18",[0,1,2,3,4,5,6,7]]],"d":["CR","EE","UE"]}
+  tfeq:{"k":"tfeq-r18-responses-v1","g":[["1-17",[0,1,2,3]],["18",[0,1,2,3,4,5,6,7]]],"d":["CR","EE","UE"]},
+  asrs:{"k":"asrs-responses-v1","g":[["1-18",[0,1,2,3,4]]],"d":["hyper","inatt","partA","partB"]},
+  phq9:{"k":"phq9-responses-v1","g":[["1-10",[0,1,2,3]]],"d":["total"]},
+  gad7:{"k":"gad7-responses-v1","g":[["1-7",[0,1,2,3]]],"d":["total"]}
 };
 /* ── Séma-alapú segédfüggvények (a tools/schema-runtime.js-ből másolva) ── */
 window.ONI_CHECK=(function(){

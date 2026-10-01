@@ -1,9 +1,9 @@
 /* ONI-CORE v5 — közös eredménytár + kezdő útvonal. Minden adat csak ebben a böngészőben marad. */
-/* Téma: világos (alap) vagy sötét; azonnal beállítva, hogy ne villanjon. */
+/* Téma: sötét (alap) vagy világos; azonnal beállítva, hogy ne villanjon. */
 (function(){
   var d=document.documentElement,st={};
   try{st=JSON.parse(localStorage.getItem('onismeret-settings-v1'))||{}}catch(e){}
-  d.setAttribute('data-theme',st.theme==='dark'?'dark':'light');
+  d.setAttribute('data-theme',st.theme==='light'?'light':'dark');
   var pg=(location.pathname.split('/').pop()||'index.html').replace(/\.html$/,'')||'index';
   d.setAttribute('data-page',pg);
   function btn(){
@@ -16,6 +16,26 @@
     document.body.appendChild(b);
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',btn);else btn();
+})();
+/* Vízszintesen görgethető menüsávban az aktív pont mindig középre kerül (főoldali témakörsáv, tesztfülek). */
+(function(){
+  var SEL='.jump,[role="tablist"],.tabs,.test-tabs';
+  function center(nav){
+    if(!nav||nav.scrollWidth<=nav.clientWidth+2)return;
+    var a=nav.querySelector('.active,[aria-selected="true"]');if(!a)return;
+    var nr=nav.getBoundingClientRect(),ar=a.getBoundingClientRect();
+    var left=nav.scrollLeft+(ar.left-nr.left)-(nav.clientWidth-ar.width)/2;
+    try{nav.scrollTo({left:Math.max(0,left),behavior:'smooth'})}catch(e){nav.scrollLeft=Math.max(0,left)}
+  }
+  window.ONI_CENTER=center;
+  function boot(){
+    [].forEach.call(document.querySelectorAll(SEL),function(nav){
+      center(nav);if(nav.dataset.oniCenter)return;nav.dataset.oniCenter='1';
+      if(window.MutationObserver){var t;new MutationObserver(function(){clearTimeout(t);t=setTimeout(function(){center(nav)},40)}).observe(nav,{subtree:true,attributes:true,attributeFilter:['class','aria-selected']});}
+    });
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+  window.addEventListener('load',boot);
 })();
 window.ONI=window.ONI||(function(){
   var K='onismeret-results-v1';
@@ -30,12 +50,12 @@ window.ONI=window.ONI||(function(){
   function all(){try{return JSON.parse(localStorage.getItem(K))||{}}catch(e){return {}}}
   function r(x){return Math.round(x*100)/100}
   var META='onismeret-meta-v1';
-  var IDKEY={maia2:'maia2-responses-v2',tas:'tas-20-responses-v1',des:'des-2-responses-v1',ecr:'ecr-r-responses-v1',kotodes:'attachment_assessment_v1',ysq:'ysq_autosave',smi:'smi-responses-v1',ssss:'ssss-responses-v1',sisses:'sis-ses-responses-v1',iief:'iief-responses-v1',pedt:'pedt-responses-v1',sdi:'sdi-2-responses-v1',nsss:'nsss-responses-v1',saq:'saq-responses-v1',love:'love-responses-v1',apo:'apo-responses-v1',imago:'imago-responses-v1',bf:'bf-responses-v1',via:'via-responses-v1',las:'las-responses-v1',tki:'conflict-responses-v1',gott:'gottman-responses-v1',fti:'fisher-responses-v1',pvq:'pvq21-responses-v1',ft:'four-tendencies-responses-v1',kolbe:'action-modes-responses-v1',meq:'meq-responses-v1',ips:'ips-responses-v1',ders:'ders-sf-responses-v1',scs:'scs-sf-responses-v1',tfeq:'tfeq-r18-responses-v1'};
+  var IDKEY={maia2:'maia2-responses-v2',tas:'tas-20-responses-v1',des:'des-2-responses-v1',ecr:'ecr-r-responses-v1',kotodes:'attachment_assessment_v1',ysq:'ysq_autosave',smi:'smi-responses-v1',ssss:'ssss-responses-v1',sisses:'sis-ses-responses-v1',iief:'iief-responses-v1',pedt:'pedt-responses-v1',sdi:'sdi-2-responses-v1',nsss:'nsss-responses-v1',saq:'saq-responses-v1',love:'love-responses-v1',apo:'apo-responses-v1',imago:'imago-responses-v1',bf:'bf-responses-v1',via:'via-responses-v1',las:'las-responses-v1',tki:'conflict-responses-v1',gott:'gottman-responses-v1',fti:'fisher-responses-v1',pvq:'pvq21-responses-v1',ft:'four-tendencies-responses-v1',kolbe:'action-modes-responses-v1',meq:'meq-responses-v1',ips:'ips-responses-v1',ders:'ders-sf-responses-v1',scs:'scs-sf-responses-v1',tfeq:'tfeq-r18-responses-v1',asrs:'asrs-responses-v1',phq9:'phq9-responses-v1',gad7:'gad7-responses-v1'};
   function meta(){try{return JSON.parse(localStorage.getItem(META))||{}}catch(e){return {}}}
   /* Kérdéssor- (q), pontozás- (s) és fordításverzió (t) tesztenként. Ha egy teszt tételei, pontozása vagy
      magyar szövege változik, itt emeld a megfelelő számot. Eltérő változatú eredményeket nem hasonlítunk össze. */
   /* minden teszt verziója explicit; új teszt felvételekor ide is be kell írni (a tesztcsomag ellenőrzi) */
-  var VERS={maia2:{q:2,s:2,t:1},tas:{q:1,s:1,t:1},des:{q:1,s:1,t:1},ecr:{q:1,s:1,t:1},kotodes:{q:1,s:1,t:1},ysq:{q:1,s:1,t:1},smi:{q:1,s:1,t:1},ssss:{q:1,s:1,t:1},sisses:{q:1,s:1,t:1},iief:{q:1,s:1,t:1},pedt:{q:1,s:1,t:1},sdi:{q:1,s:1,t:1},nsss:{q:1,s:1,t:1},saq:{q:1,s:1,t:1},love:{q:1,s:1,t:1},apo:{q:1,s:1,t:1},imago:{q:1,s:1,t:1},bf:{q:1,s:1,t:1},via:{q:1,s:1,t:1},las:{q:1,s:1,t:1},tki:{q:1,s:1,t:1},gott:{q:1,s:1,t:1},fti:{q:1,s:1,t:1},pvq:{q:1,s:1,t:1},ft:{q:1,s:1,t:1},kolbe:{q:1,s:1,t:1},meq:{q:1,s:1,t:1},ips:{q:1,s:1,t:1},ders:{q:1,s:1,t:1},scs:{q:1,s:1,t:1},tfeq:{q:1,s:1,t:1}};
+  var VERS={maia2:{q:2,s:2,t:1},tas:{q:1,s:1,t:1},des:{q:1,s:1,t:1},ecr:{q:1,s:1,t:1},kotodes:{q:1,s:1,t:1},ysq:{q:1,s:1,t:1},smi:{q:1,s:1,t:1},ssss:{q:1,s:1,t:1},sisses:{q:1,s:1,t:1},iief:{q:1,s:1,t:1},pedt:{q:1,s:1,t:1},sdi:{q:1,s:1,t:1},nsss:{q:1,s:1,t:1},saq:{q:1,s:1,t:1},love:{q:1,s:1,t:1},apo:{q:1,s:1,t:1},imago:{q:1,s:1,t:1},bf:{q:1,s:1,t:1},via:{q:1,s:1,t:1},las:{q:1,s:1,t:1},tki:{q:1,s:1,t:1},gott:{q:1,s:1,t:1},fti:{q:1,s:1,t:1},pvq:{q:1,s:1,t:1},ft:{q:1,s:1,t:1},kolbe:{q:1,s:1,t:1},meq:{q:1,s:1,t:1},ips:{q:1,s:1,t:1},ders:{q:1,s:1,t:1},scs:{q:1,s:1,t:1},tfeq:{q:1,s:1,t:1},asrs:{q:1,s:1,t:1},phq9:{q:1,s:1,t:1},gad7:{q:1,s:1,t:1}};
   function vOf(id){var v=VERS[id]||{};return {q:v.q||1,s:v.s||1,t:v.t||1}}
   /* két eredmény összevethető-e (azonos kérdéssor, pontozás és fordítás) */
   function same(a,b){return !!a&&!!b&&(a.qv||1)===(b.qv||1)&&(a.sv||1)===(b.sv||1)&&(a.tv||1)===(b.tv||1)}

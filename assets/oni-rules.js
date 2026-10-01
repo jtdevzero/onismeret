@@ -91,7 +91,17 @@ const RULES=[
   sig:[S('love','Első szeretetnyelv: Minőségi idő',()=>{const r=last('love');if(!r)return false;const top=Object.entries(r.d).sort((a,b)=>b[1][1]-a[1][1])[0];return top&&top[0]==='B'}),S('gott','Egymás felé fordulás ≤ 3',()=>val('gott','turn')!==null&&val('gott','turn')<=3)],
   text:'A figyelem és a közös jelenlét a legfontosabb szeretetnyelved, miközben az eredmények szerint a kapcsolatban az apró kapcsolódási kísérletekre adott válasz gyengébb. Ez hiányérzethez vezethet.',
   q:'Mikor érezted utoljára, hogy a párod teljes figyelme veled van?',
-  action:'Egy hétig figyeld és számold a saját és a párod <b>apró jelzéseit</b> (megjegyzés, kérdés, érintés), és hogy mennyire fordultok egymás felé.'}
+  action:'Egy hétig figyeld és számold a saját és a párod <b>apró jelzéseit</b> (megjegyzés, kérdés, érintés), és hogy mennyire fordultok egymás felé.'},
+ {id:'execadhd',title:'Figyelmi és végrehajtási nehézség',acc:'#f97316',min:2,
+  sig:[S('asrs','ASRS A rész ≥ 4/6',()=>val('asrs','partA')>=4),S('ips','IPS halogatás ≥ 28',()=>val('ips','total')>=28),S('bf','Lelkiismeretesség ≤ 36/60',()=>val('bf','C')!==null&&val('bf','C')<=36),S('ysq','Elégtelen önkontroll ≥ 4,5',()=>val('ysq','is')>=4.5),S('ders','DERS impulzuskontroll ≥ 10',()=>val('ders','impulse')>=10)],
+  text:'Ezek a jelzések arra utalhatnak, hogy a nehézség nem (csak) akarat vagy motiváció kérdése: a figyelem, a kezdés és a befejezés szabályozása is érintett lehet. Ez lehet ADHD, de alváshiány, szorongás vagy depresszió is okozhatja. A szűrők nem diagnosztizálnak.',
+  q:'Mióta jellemző rád ez a működés? Volt-e már gyerekkorban is?',
+  action:'Ha az ASRS szűrő pozitív, érdemes <b>szakmai kivizsgálást</b> kérni (pszichiáter, klinikai szakpszichológus). Addig is: külső struktúra (naptár, határidő, közös munka) az akaraterő helyett.'},
+ {id:'mood',title:'Hangulati terhelés',acc:'#60a5fa',min:2,
+  sig:[S('phq9','PHQ-9 ≥ 10',()=>val('phq9','total')>=10),S('gad7','GAD-7 ≥ 10',()=>val('gad7','total')>=10),S('bf','Neuroticizmus ≥ 40/60',()=>val('bf','N')>=40),S('ders','DERS-SF összpontszám ≥ 54',()=>val('ders','total')>=54),S('scs','Önegyüttérzés ≤ 2,5',()=>val('scs','total')!==null&&val('scs','total')<=2.5)],
+  text:'Ezek az eredmények együtt arra utalhatnak, hogy most nagyobb érzelmi terhelés alatt vagy. Ilyenkor a többi teszt eredménye is sötétebbnek tűnhet, mint egy nyugodtabb időszakban.',
+  q:'Mi változott az utóbbi hetekben, ami ehhez hozzájárulhatott?',
+  action:'Ha ez hetek óta tart, beszélj róla <b>szakemberrel</b>. Addig is: alvás, napi mozgás és legalább egy beszélgetés valakivel, akiben megbízol. Ha nagyon nehéz: Lelki Elsősegély Telefonszolgálat, 116-123.'}
 ];
 
 function evalRules(){
@@ -110,7 +120,7 @@ function evalRules(){
 const DIR={ecr:{anx:-1,avd:-1},kotodes:{anxiety:-1,avoidance:-1,earned:1},tas:'-',des:'-',ysq:'-',ips:'-',ders:'-',pedt:'-',maia2:'+',nsss:'+',
   smi:{happy:1,healthy:1,wise:1,vuln:-1,angry:-1,impulsive:-1,compliant:-1,detached:-1,soother:-1,grandiose:-1,bully:-1,punitive:-1,demanding:-1},
   gott:{maps:1,fond:1,turn:1,repair:1,strength:1,crit:-1,cont:-1,def:-1,stone:-1,risk:-1},
-  scs:{total:1,SK:1,CH:1,MI:1,SJ:-1,IS:-1,OI:-1},bf:{N:-1},iief:'+'};
+  scs:{total:1,SK:1,CH:1,MI:1,SJ:-1,IS:-1,OI:-1},bf:{N:-1},iief:'+',asrs:'-',phq9:'-',gad7:'-'};
 function dirOf(id,k){const d=DIR[id];if(!d)return 0;if(d==='+')return 1;if(d==='-')return -1;return d[k]||0;}
 return {RULES:RULES,evalRules:evalRules,val:val,avgAll:avgAll,cur:cur,last:last,DIR:DIR,dirOf:dirOf};
 };

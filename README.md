@@ -1,6 +1,6 @@
 # Önismereti térképek
 
-Harmincegy önismereti kérdőív magyarul, statikus HTML fájlok, GitHub Pages-en futtatható.
+Harmincnégy önismereti kérdőív magyarul, statikus HTML fájlok, GitHub Pages-en futtatható.
 
 **Live:** [`https://jtdevzero.github.io/onismeret/`](https://jtdevzero.github.io/onismeret/) (miután a GitHub Pages be van kapcsolva: Settings → Pages → Branch: main → / (root))
 
@@ -41,8 +41,12 @@ Harmincegy önismereti kérdőív magyarul, statikus HTML fájlok, GitHub Pages-
 | | DERS-SF (érzelemszabályozás) | 18 | `szabalyozas.html#test-ders` |
 | | SCS-SF (önegyüttérzés) | 12 | `szabalyozas.html#test-scs` |
 | | TFEQ-R18 (evési viselkedés) | 18 | `szabalyozas.html#test-tfeq` |
+| **X. Hangulat és figyelem** | ASRS v1.1 (felnőttkori ADHD-tünetek) | 18 | `allapot.html#test-asrs` |
+| | PHQ-9 (lehangoltság) | 9+1 | `allapot.html#test-phq9` |
+| | GAD-7 (szorongás) | 7 | `allapot.html#test-gad7` |
+| **XI. Szimbolikus térképek** | Csillagtérkép és számmisztika (nem tudományos, nem mérés) | – | `csillagok.html` |
 
-**Összesen: 31 teszt, 1145 kérdés, 9 témakör.**
+**Összesen: 34 teszt, 1180 kérdés, 10 témakör**, plusz egy szimbolikus (nem tudományos) csillagtérkép-oldal.
 
 ---
 
@@ -90,6 +94,8 @@ Minden oldal önálló: inline CSS és JS, külső szerverhez nem fordul. A bet�
   - `las-responses-v1`, `conflict-responses-v1`, `gottman-responses-v1`, `fisher-responses-v1`
   - `pvq21-responses-v1`, `four-tendencies-responses-v1`, `action-modes-responses-v1`, `meq-responses-v1`
   - `ips-responses-v1`, `ders-sf-responses-v1`, `scs-sf-responses-v1`, `tfeq-r18-responses-v1`
+  - `asrs-responses-v1`, `phq9-responses-v1`, `gad7-responses-v1`
+  - `onismeret-birth-v1` (csillagtérkép születési adatai), `onismeret-fokusz-v1`, `onismeret-style-v1`
   - `onismeret-meta-v1` — az utolsó válasz ideje tesztenként (ebből lesz a kitöltés dátuma)
   - `onismeret-settings-v1` — pl. az újramérési emlékeztető (ki / 90 / 180 / 365 nap)
   - `onismeret-notes-v1` — saját jegyzetek, címkék és kitöltési körülmények kitöltésenként

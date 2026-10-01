@@ -9,7 +9,7 @@
   var page=document.documentElement.getAttribute('data-page');
   /* oldalanként: ONI-azonosító → panel és eredménykonténer */
   var MAP={};
-  ['ecr','smi','tas','iief','pedt','sdi','des','ssss','nsss','saq','love','apo','imago','bf','via','las','tki','gott','fti','pvq','ft','kolbe','meq','ips','ders','scs','tfeq']
+  ['ecr','smi','tas','iief','pedt','sdi','des','ssss','nsss','saq','love','apo','imago','bf','via','las','tki','gott','fti','pvq','ft','kolbe','meq','ips','ders','scs','tfeq','asrs','phq9','gad7']
     .forEach(function(id){MAP[id]={panel:'#test-'+id,res:'#'+id+'-results'}});
   if(page==='maia2')MAP.maia2={panel:'body',res:'#results'};
   if(page==='sis-ses')MAP.sisses={panel:'body',res:'#results'};
@@ -277,7 +277,7 @@
   window.addEventListener('afterprint',function(){[].forEach.call(document.querySelectorAll('details.oni-detail'),function(d){d.open=d.dataset.wasOpen==='true'})});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',insertSheets);else insertSheets();
   /* ── Nyugodt zárás a megterhelőbb tesztek eredménye előtt ── */
-  var CALM={des:1,smi:1,ysq:1};
+  var CALM={des:1,smi:1,ysq:1,phq9:1};
   function calmHTML(){
     var seen=false;try{seen=sessionStorage.getItem('oni-calm')==='1'}catch(e){}
     return '<section class="oni-calm'+(seen?' min':'')+'" role="note"><div class="oni-eyebrow">Mielőtt tovább olvasol</div>'+

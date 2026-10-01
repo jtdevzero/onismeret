@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Csillagtérkép és számok — Önismereti térképek</title>
+<link rel="stylesheet" href="fonts/fonts.css?v=885e76a5">
+<style>
+:root{
+  --bg-deep:#050d1e;--bg-card:#0f2038;--bg-card-hi:#152845;
+  --ink:#e6ecf5;--ink-soft:#a3b3c8;--ink-mute:#6b7c94;--line:#1e3255;--line-soft:#152845;
+  --gold:#fbbf24;--gold-soft:#78551a;--sapphire:#60a5fa;--rose:#fb7185;--emerald:#34d399;
+  --font-serif:'Fraunces','Cardo',Georgia,serif;--font-sans:'Manrope','Inter','Helvetica Neue',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg-deep);color:var(--ink);font-family:var(--font-sans);font-size:16px;line-height:1.6;min-height:100vh}
+a{color:inherit}
+.wrap{max-width:1000px;margin:0 auto;padding:40px 24px 96px}
+.back{display:inline-flex;gap:8px;font-size:12px;color:var(--ink-mute);text-decoration:none;letter-spacing:.06em;margin-bottom:28px}
+.back:hover{color:var(--ink)}
+.kicker{display:inline-block;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:18px;padding:6px 16px;border:1px solid var(--gold-soft);border-radius:99px}
+h1{font-family:var(--font-serif);font-weight:400;font-size:clamp(36px,6vw,56px);line-height:1.05;letter-spacing:-0.02em;margin-bottom:16px}
+h1 em,h2 em{font-style:italic;color:var(--gold)}
+.lead{color:var(--ink-soft);font-size:16.5px;max-width:720px;margin-bottom:28px}
+.statbar{display:flex;flex-wrap:wrap;gap:10px 26px;padding:18px 22px;border:1px solid var(--line);border-radius:16px;background:var(--bg-card);margin-bottom:18px;font-size:14px;color:var(--ink-soft)}
+.statbar strong{font-family:var(--font-serif);font-size:22px;color:var(--ink);font-weight:500;margin-right:6px}
+h2{font-family:var(--font-serif);font-weight:400;font-size:28px;margin:44px 0 8px;letter-spacing:-0.01em}
+.h2sub{color:var(--ink-mute);font-size:14px;margin-bottom:18px;max-width:720px}
+.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{appearance:none;cursor:pointer;font:inherit;font-size:13.5px;font-weight:600;padding:9px 16px;border-radius:99px;border:1px solid var(--gold);background:color-mix(in srgb,var(--gold) 12%,transparent);color:var(--ink);white-space:nowrap;text-decoration:none;display:inline-block}
+.btn.ghost{border-color:var(--line);background:transparent;color:var(--ink-soft);font-weight:500}
+.btn.danger{border-color:color-mix(in srgb,var(--rose) 60%,transparent);background:transparent;color:var(--rose)}
+.btn.sm{font-size:12.5px;padding:6px 12px}
+.btn:hover{filter:brightness(1.08)}
+.msg{font-size:13.5px;margin-top:10px;color:var(--ink-soft)}
+.msg.bad{color:var(--rose)}
+.card{background:var(--bg-card);border:1px solid var(--line);border-radius:18px;padding:20px 22px;margin-bottom:12px;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--acc,var(--gold))}
+.th{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;justify-content:space-between}
+.th .nm{font-family:var(--font-serif);font-size:19px}
+.th .nm a{text-decoration:none}.th .nm a:hover{color:var(--gold)}
+.th .mt{font-size:12.5px;color:var(--ink-mute)}
+.th .tools{margin-left:auto}
+.sess{list-style:none;margin-top:12px;border-top:1px dashed var(--line)}
+.sess li{display:grid;grid-template-columns:150px 1fr auto;gap:4px 14px;align-items:center;padding:9px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.sess .d{color:var(--ink-mute);font-size:12.5px}
+.sess .h{color:var(--ink-soft);min-width:0}
+.sess .h strong{color:var(--ink);font-weight:600}
+.sess .n{display:block;font-size:12.5px;color:var(--ink-mute);font-style:italic;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tag{display:inline-block;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;padding:2px 8px;border-radius:99px;border:1px solid var(--line);color:var(--ink-mute);margin-left:6px}
+.raw{font-size:13px;color:var(--ink-mute);margin-top:10px}
+.danger-zone{border-color:color-mix(in srgb,var(--rose) 45%,transparent)}
+.danger-zone{--acc:var(--rose)}
+.confirm{display:none;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.confirm.on{display:flex}
+.confirm input{flex:0 1 200px;background:var(--bg-deep);border:1px solid var(--line);border-radius:10px;padding:8px 12px;color:var(--ink);font:inherit;font-size:14px}
+.undo{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;padding:12px 16px;border:1px dashed var(--gold);border-radius:12px;margin-bottom:18px;font-size:14px;color:var(--ink-soft)}
+.empty{text-align:center;padding:40px 20px;border:1px dashed var(--line);border-radius:18px;color:var(--ink-soft)}
+.empty a{color:var(--gold)}
+.ul{list-style:none;display:grid;gap:6px}.ul li{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;font-size:14px;color:var(--ink-soft);padding:8px 0;border-bottom:1px dashed var(--line)}.ul li b{color:var(--ink);font-weight:600}.ul small{color:var(--ink-mute)}
+.note{font-size:12.5px;color:var(--ink-mute);margin-top:40px;line-height:1.7;border-top:1px dashed var(--line);padding-top:20px}
+.note a{color:var(--sapphire)}
+@media (max-width:560px){.wrap{padding:28px 16px 64px}.card{padding:16px}.sess li{grid-template-columns:1fr auto}.sess .d{grid-column:1/-1}.th .tools{margin-left:0}}
+</style>
+<style>
+.cs-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px 18px;background:var(--bg-card);border:1px solid var(--line);border-radius:18px;padding:20px 22px}
+.cs-form label{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--ink-soft);font-weight:600}
+.cs-form input,.cs-form select{background:var(--bg-deep);border:1px solid var(--line);border-radius:10px;padding:10px 12px;color:var(--ink);font:inherit;font-size:15px;font-weight:400}
+.cs-form .chk{flex-direction:row;align-items:center;font-weight:500}
+.cs-form .full{grid-column:1/-1}
+.cs-form small{font-weight:400;color:var(--ink-mute)}
+.cs-warn{border:1px solid color-mix(in srgb,var(--rose) 45%,transparent);border-left:4px solid var(--rose);border-radius:14px;padding:14px 18px;background:color-mix(in srgb,var(--rose) 6%,transparent);color:var(--ink-soft);font-size:14.5px;margin:0 0 22px}
+.cs-warn b{color:var(--ink)}
+.cs-big{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.cs-card{background:var(--bg-card);border:1px solid var(--line);border-radius:18px;padding:18px 20px;position:relative;overflow:hidden}
+.cs-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--acc,#a78bfa)}
+.cs-card .rl{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--ink-mute)}
+.cs-card .sg{font-family:var(--font-serif);font-size:30px;line-height:1.1;margin:6px 0 2px;color:var(--ink)}
+.cs-card .sg span{font-size:34px;margin-right:8px}
+.cs-card .dg{font-size:12.5px;color:var(--ink-mute)}
+.cs-card p{font-size:14.5px;color:var(--ink-soft);margin-top:10px;line-height:1.65}
+.cs-tbl{width:100%;border-collapse:collapse;font-size:14.5px;margin-top:6px}
+.cs-tbl td{padding:9px 6px;border-bottom:1px dashed var(--line);color:var(--ink-soft);vertical-align:top}
+.cs-tbl td:first-child{color:var(--ink);font-weight:600;white-space:nowrap}
+.cs-bars{display:grid;gap:8px;margin-top:10px}
+.cs-bar{display:grid;grid-template-columns:110px 1fr 28px;gap:10px;align-items:center;font-size:14px;color:var(--ink-soft)}
+.cs-bar i{display:block;height:8px;border-radius:8px;background:var(--line)}
+.cs-bar i b{display:block;height:100%;border-radius:8px;background:#a78bfa}
+.cs-sec{margin-top:36px}
+.cs-sec>p{color:var(--ink-soft);font-size:15px;line-height:1.7;max-width:780px;margin-bottom:10px}
+.cs-q li{font-style:italic;color:var(--ink-soft);margin:0 0 6px 20px}
+</style>
+<script src="assets/oni-core.js?v=f029013a"></script>
+<script src="assets/oni-rules.js?v=e3eaf200"></script>
+<script src="assets/oni-schema.js?v=b4e7d462" defer></script>
+<script src="assets/tests-data.js?v=21854d35" defer></script>
+<script src="assets/mely.js?v=8eeb009a" defer></script>
+<script src="assets/results-plus.js?v=16b17d24" defer></script>
+<link rel="stylesheet" href="assets/theme.css?v=e3217f94">
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">‹ Önismereti térképek</a>
+  <span class="kicker">XI. Szimbolikus térképek</span>
+  <h1>Csillagtérkép <em>és számok</em></h1>
+  <p class="lead">Nyugati asztrológia (Nap, Hold, aszcendens és bolygók), kínai és védikus horoszkóp, maja napjel és számmisztika a születési adataidból. A pozíciókat valódi csillagászati számítás adja; az értelmezés szimbolikus.</p>
+  <div class="cs-warn" role="note"><b>Nem tudományos.</b> Az asztrológiának és a számmisztikának nincs empirikus alátámasztása: kontrollált vizsgálatok nem találtak összefüggést a születési adatok és a személyiség között. A leírások azért tűnhetnek találónak, mert általánosak (Barnum-hatás). Ezért ezek az eredmények nem kerülnek az összegzésbe, a mintákba és a fókuszjavaslatok közé. Úgy érdemes olvasni, mint egy tükröt vagy beszélgetésindítót: mi az, amit igaznak érzel, és mit mond erről egy mért teszt?</div>
+  <form class="cs-form" id="cs-form" autocomplete="off">
+    <label class="full">Teljes születési név <small>(a számmisztikához; nem kötelező)</small><input type="text" id="cs-name" maxlength="80" placeholder="pl. Kovács János"></label>
+    <label>Születési dátum<input type="date" id="cs-date" required></label>
+    <label>Születési idő<input type="time" id="cs-time"></label>
+    <label class="chk"><input type="checkbox" id="cs-notime"> Nem tudom pontosan az időt</label>
+    <label>Születési hely<select id="cs-place"></select></label>
+    <label class="cs-man" hidden>Földrajzi szélesség<input type="number" id="cs-lat" step="0.0001" min="-89" max="89" placeholder="pl. 47.4979"></label>
+    <label class="cs-man" hidden>Földrajzi hosszúság<input type="number" id="cs-lon" step="0.0001" min="-180" max="180" placeholder="pl. 19.0402 (kelet +)"></label>
+    <label class="cs-man" hidden>Eltérés az UTC-től a születés idején<select id="cs-off"></select></label>
+    <div class="full tools"><button type="submit" class="btn">Kiszámolom</button><button type="button" class="btn ghost" id="cs-clear" hidden>Adataim törlése</button><span class="msg" id="cs-msg" aria-live="polite"></span></div>
+  </form>
+  <div id="cs-out"></div>
+  <p class="note">Számítás: tropikus zodiákus a dátum valódi ekliptikájára (astronomy-engine, MIT-licenc), aszcendens és MC a helyi csillagidőből; védikus (sziderikus) jegyek Lahiri-ayanamsa közelítéssel; kínai újév a téli napfordulót tartalmazó holdhónap utáni második újhold kínai idő szerint; maja Tzolk’in a GMT-korrelációval (584283); számmisztika a püthagoraszi betűértékekkel, ékezetek nélkül, a 11, 22 és 33 mesterszámok megtartásával. A születési adataid csak ebben a böngészőben tárolódnak.</p>
+</div>
+<script src="assets/vendor/astronomy.browser.min.js"></script>
+<script src="assets/csillag-calc.js?v=d8ce36f3"></script>
+<script src="assets/csillag-data.js?v=5be1bbf6"></script>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  var C=window.CSILLAG,T=window.CSILLAG_DATA,K='onismeret-birth-v1',out=document.getElementById('cs-out');
+  var esc=function(x){return String(x==null?'':x).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+  var PLACES=[['Budapest',47.4979,19.0402,'Europe/Budapest'],['Debrecen',47.5316,21.6273,'Europe/Budapest'],['Szeged',46.2530,20.1414,'Europe/Budapest'],['Miskolc',48.1035,20.7784,'Europe/Budapest'],['Pécs',46.0727,18.2323,'Europe/Budapest'],['Győr',47.6875,17.6504,'Europe/Budapest'],['Nyíregyháza',47.9554,21.7167,'Europe/Budapest'],['Kecskemét',46.8964,19.6897,'Europe/Budapest'],['Székesfehérvár',47.1860,18.4221,'Europe/Budapest'],['Szombathely',47.2307,16.6218,'Europe/Budapest'],['Szolnok',47.1621,20.1825,'Europe/Budapest'],['Tatabánya',47.5692,18.4048,'Europe/Budapest'],['Kaposvár',46.3594,17.7968,'Europe/Budapest'],['Érd',47.3919,18.9045,'Europe/Budapest'],['Veszprém',47.0930,17.9093,'Europe/Budapest'],['Békéscsaba',46.6736,21.0877,'Europe/Budapest'],['Zalaegerszeg',46.8417,16.8416,'Europe/Budapest'],['Sopron',47.6817,16.5845,'Europe/Budapest'],['Eger',47.9025,20.3772,'Europe/Budapest'],['Nagykanizsa',46.4590,16.9897,'Europe/Budapest'],['Dunaújváros',46.9619,18.9355,'Europe/Budapest'],['Hódmezővásárhely',46.4181,20.3300,'Europe/Budapest'],['Salgótarján',48.0935,19.7999,'Europe/Budapest'],['Cegléd',47.1726,19.7995,'Europe/Budapest'],['Baja',46.1803,18.9550,'Europe/Budapest'],['Szekszárd',46.3474,18.7062,'Europe/Budapest'],
+    ['Bécs',48.2082,16.3738,'Europe/Vienna'],['Pozsony',48.1486,17.1077,'Europe/Bratislava'],['Kassa',48.7164,21.2611,'Europe/Bratislava'],['Kolozsvár',46.7712,23.6236,'Europe/Bucharest'],['Marosvásárhely',46.5455,24.5625,'Europe/Bucharest'],['Nagyvárad',47.0465,21.9189,'Europe/Bucharest'],['Szabadka',46.1003,19.6656,'Europe/Belgrade'],['Ungvár',48.6208,22.2879,'Europe/Kiev'],['Berlin',52.5200,13.4050,'Europe/Berlin'],['Párizs',48.8566,2.3522,'Europe/Paris'],['London',51.5074,-0.1278,'Europe/London'],['New York',40.7128,-74.0060,'America/New_York']];
+  var sel=document.getElementById('cs-place');
+  sel.innerHTML=PLACES.map(function(p,i){return '<option value="'+i+'">'+esc(p[0])+'</option>'}).join('')+'<option value="man">Egyéb hely: koordináták megadása</option>';
+  var off=document.getElementById('cs-off'),offs=[];for(var h=-12;h<=14;h+=0.5)offs.push(h);
+  off.innerHTML=offs.map(function(h){var s=(h<0?'−':'+')+Math.floor(Math.abs(h))+':'+(Math.abs(h)%1?'30':'00');return '<option value="'+(h*60)+'"'+(h===1?' selected':'')+'>UTC'+s+'</option>'}).join('');
+  var man=function(){var on=sel.value==='man';[].forEach.call(document.querySelectorAll('.cs-man'),function(e){e.hidden=!on})};sel.addEventListener('change',man);
+  function get(){try{return JSON.parse(localStorage.getItem(K))||null}catch(e){return null}}
+  function fmtDeg(L){var d=C.degIn(L);return d.d+'° '+String(d.m).padStart(2,'0')+'′'+(d.cusp?' · jegyhatár közelében':'');}
+  function signCard(role,L,txt,acc,extra){var s=T.signs[C.sign(L)];return '<div class="cs-card" style="--acc:'+acc+'"><div class="rl">'+esc(T.roles[role][0])+'</div><div class="sg"><span aria-hidden="true">'+s.g+'</span>'+esc(s.n)+'</div><div class="dg">'+fmtDeg(L)+' · '+s.el+' · '+s.mo+'</div><p><em>'+esc(T.roles[role][1])+'</em></p><p>'+txt(s)+'</p>'+(extra||'')+'</div>'}
+  function render(b){
+    var r=C.compute(b),h='',s;
+    h+='<div class="cs-sec"><h2>Nyugati <em>asztrológia</em></h2><p>A három legfontosabb pont a Nap (ki vagy), a Hold (mire van szükséged) és az aszcendens (hogyan lépsz be egy helyzetbe).</p><div class="cs-big">';
+    h+=signCard('Sun',r.pos.Sun,function(s){return esc(s.d)+' '+esc(s.s)+' '+esc(s.gr)},'#fbbf24');
+    h+=signCard('Moon',r.pos.Moon,function(s){return esc(s.moon)},'#93c5fd',r.moonRange?'<p class="dg">Születési idő nélkül a Hold aznap jegyet váltott: <b>'+esc(T.signs[r.moonRange[0]].n)+'</b> vagy <b>'+esc(T.signs[r.moonRange[1]].n)+'</b>. A fenti a déli állás.</p>':'');
+    h+=r.asc!==undefined?signCard('Asc',r.asc,function(s){return esc(s.asc)},'#a78bfa'):'<div class="cs-card" style="--acc:#a78bfa"><div class="rl">Aszcendens</div><p>Az aszcendenshez a pontos születési idő és hely kell: négyminutonként kb. egy fokot mozdul, kétóránként jegyet vált.</p></div>';
+    h+='</div><h3 style="font-family:var(--font-serif);font-weight:400;font-size:22px;margin:22px 0 4px">Bolygók</h3><table class="cs-tbl">';
+    ['Mercury','Venus','Mars','Jupiter','Saturn'].forEach(function(p){var sg=T.signs[C.sign(r.pos[p])];h+='<tr><td>'+esc(T.roles[p][0])+' · '+sg.g+' '+esc(sg.n)+'</td><td>'+esc(T.roles[p][1])+' A '+esc(sg.n)+' színezete: '+esc(sg.kw)+'. <small>('+fmtDeg(r.pos[p])+')</small></td></tr>'});
+    if(r.mc!==undefined){var mc=T.signs[C.sign(r.mc)];h+='<tr><td>MC · '+mc.g+' '+esc(mc.n)+'</td><td>'+esc(T.roles.MC[1])+' A '+esc(mc.n)+' színezete: '+esc(mc.kw)+'.</td></tr>';}
+    h+='</table>';
+    var EL=['tűz','föld','levegő','víz'],MO=['kardinális','fix','változó'],n=r.elements.reduce(function(a,b){return a+b},0);
+    var de=r.elements.indexOf(Math.max.apply(null,r.elements)),dm=r.modes.indexOf(Math.max.apply(null,r.modes));
+    h+='<h3 style="font-family:var(--font-serif);font-weight:400;font-size:22px;margin:22px 0 4px">Elemek és minőségek</h3><p style="color:var(--ink-soft);font-size:14.5px">A Nap, a Hold, a Merkúr, a Vénusz, a Mars'+(r.asc!==undefined?' és az aszcendens':'')+' jegyeinek eloszlása.</p><div class="cs-bars">'+
+      EL.map(function(e,i){return '<div class="cs-bar"><span>'+e+'</span><i><b style="width:'+Math.round(r.elements[i]/n*100)+'%"></b></i><span>'+r.elements[i]+'</span></div>'}).join('')+'</div>'+
+      '<p style="color:var(--ink-soft);font-size:14.5px;margin-top:10px">'+esc(T.elements[EL[de]])+' '+(r.elements.indexOf(0)>-1?'Hiányzó elem: <b>'+r.elements.map(function(x,i){return x?null:EL[i]}).filter(Boolean).join(', ')+'</b>. ':'')+esc(T.modes[MO[dm]])+'</p></div>';
+    var c=r.chinese,an=T.animals[c.animal],ce=T.cElements[c.element];
+    h+='<div class="cs-sec"><h2>Kínai <em>horoszkóp</em></h2><p>A kínai év a holdújévvel kezdődik ('+c.ny.y+'. '+String(c.ny.m).padStart(2,'0')+'. '+String(c.ny.d).padStart(2,'0')+'.), ezért januárban vagy februárban születve a jegy az előző évé is lehet.</p><div class="cs-big">'+
+      '<div class="cs-card" style="--acc:#fb7185"><div class="rl">Évjegy · '+c.cy+'</div><div class="sg">'+esc(ce.n)+' '+esc(an.n)+'</div><div class="dg">'+(c.yang?'jang':'jin')+' · '+esc(ce.d)+'</div><p>'+esc(an.d)+'</p><p>Az elem ('+esc(ce.n)+') a hagyomány szerint így színezi: '+esc(ce.d)+'.</p></div>'+
+      '<div class="cs-card" style="--acc:#fb7185"><div class="rl">Hónapjegy (belső állat)</div><div class="sg">'+esc(T.animals[c.month].n)+'</div><p>A hagyomány szerint a hónap állata a belső, érzelmi világodat és a családi kapcsolataidat színezi.</p></div>'+
+      (c.hour!==null?'<div class="cs-card" style="--acc:#fb7185"><div class="rl">Órajegy (titkos állat)</div><div class="sg">'+esc(T.animals[c.hour].n)+'</div><p>A hagyomány szerint a születési óra állata a legbensőbb, legkevésbé látható éned.</p></div>':'')+'</div></div>';
+    var v=r.vedic;
+    h+='<div class="cs-sec"><h2>Védikus <em>(sziderikus) horoszkóp</em></h2><p>A védikus asztrológia a csillagképekhez rögzített zodiákust használja, amely mára kb. '+r.ayan.toFixed(1)+'°-kal tér el a nyugatitól, ezért a jegyek gyakran eggyel korábbiak.</p><table class="cs-tbl">'+
+      '<tr><td>Nap (Surya)</td><td>'+esc(T.rashi[C.sign(v.sun)])+' · '+esc(T.signs[C.sign(v.sun)].n)+'</td></tr>'+
+      '<tr><td>Hold (Chandra)</td><td>'+esc(T.rashi[C.sign(v.moon)])+' · '+esc(T.signs[C.sign(v.moon)].n)+' — a védikus hagyomány a Hold jegyét tartja a legfontosabbnak.</td></tr>'+
+      (v.asc!==null?'<tr><td>Lagna (aszcendens)</td><td>'+esc(T.rashi[C.sign(v.asc)])+' · '+esc(T.signs[C.sign(v.asc)].n)+'</td></tr>':'')+
+      '<tr><td>Nakshatra</td><td>'+esc(T.nakshatras[r.nak])+', '+r.pada+'. pada — a Hold holdháza; a hagyomány szerint az érzelmi természet finomabb rajzolata.</td></tr></table></div>';
+    var tz=r.tzolkin,ms=T.maya[tz.sign];
+    h+='<div class="cs-sec"><h2>Maja <em>napjel</em></h2><div class="cs-big"><div class="cs-card" style="--acc:#34d399"><div class="rl">Tzolk’in</div><div class="sg">'+tz.num+' '+esc(ms.n)+'</div><div class="dg">'+esc(ms.h)+'</div><p>A 260 napos szertartási naptár napjele; a hagyomány szerint témái: '+esc(ms.d)+'. A szám (1–13) a hagyományban az energia hullámának fázisa.</p></div></div></div>';
+    var nm=r.num,keys=['life','expression','soul','personality','birthday','maturity','personalYear'];
+    h+='<div class="cs-sec"><h2><em>Számmisztika</em></h2>'+(b.name?'':'<p>A név alapú számokhoz add meg a teljes születési neved.</p>')+'<div class="cs-big">'+keys.filter(function(k){return nm[k]!==undefined}).map(function(k){var t=T.num[nm[k]];return '<div class="cs-card" style="--acc:#fbbf24"><div class="rl">'+esc(T.numRoles[k][0])+'</div><div class="sg">'+nm[k]+' · '+esc(t.n)+'</div><p><em>'+esc(T.numRoles[k][1])+'</em></p><p>'+esc(t.d)+' '+esc(t.s)+'</p></div>'}).join('')+'</div></div>';
+    h+='<div class="cs-sec"><h2>Hogyan használd <em>önismeretre</em></h2><p>A szimbolikus rendszerek nem mérnek, de jó kérdéseket tehetnek fel. A legtöbbet akkor adják, ha nem elfogadod vagy elutasítod őket, hanem összeveted a saját tapasztalatoddal és a mért eredményeiddel.</p><ul class="cs-q">'+
+      '<li>Melyik leírás érint meg a legjobban, és melyik egyáltalán nem igaz rád?</li><li>Ami igaznak tűnik: mit mond róla egy mért teszt, például a <a href="szemelyiseg.html#test-bf">Big Five</a> vagy a <a href="szemelyiseg.html#test-via">VIA</a>?</li><li>Ha egy árnyoldal-leírás ismerős: milyen helyzetben jelenik meg, és mi segít ilyenkor?</li></ul>'+
+      '<p style="font-size:13px;color:var(--ink-mute);margin-top:14px">Háttér: Carlson, S. (1985). A double-blind test of astrology. <em>Nature, 318</em>, 419–425. · Dean, G., & Kelly, I. W. (2003). Is astrology relevant to consciousness and psi? <em>Journal of Consciousness Studies, 10</em>(6–7), 175–198. · Forer, B. R. (1949). The fallacy of personal validation. <em>Journal of Abnormal and Social Psychology, 44</em>(1), 118–123.</p></div>';
+    out.innerHTML=h;
+  }
+  function read(){var pl=sel.value,b={name:document.getElementById('cs-name').value.trim(),date:document.getElementById('cs-date').value,time:document.getElementById('cs-time').value,noTime:document.getElementById('cs-notime').checked,place:pl};
+    if(pl==='man'){b.lat=parseFloat(document.getElementById('cs-lat').value);b.lon=parseFloat(document.getElementById('cs-lon').value);b.zone='offset';b.offset=+off.value;}
+    else{var p=PLACES[+pl];b.lat=p[1];b.lon=p[2];b.tz=p[3];}
+    return b;}
+  function fill(b){document.getElementById('cs-name').value=b.name||'';document.getElementById('cs-date').value=b.date||'';document.getElementById('cs-time').value=b.time||'';document.getElementById('cs-notime').checked=!!b.noTime;sel.value=b.place||'0';if(b.place==='man'){document.getElementById('cs-lat').value=b.lat;document.getElementById('cs-lon').value=b.lon;off.value=b.offset;}man();}
+  document.getElementById('cs-form').addEventListener('submit',function(e){e.preventDefault();var b=read(),m=document.getElementById('cs-msg');
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(b.date)){m.textContent='Add meg a születési dátumot.';return;}
+    if(b.place==='man'&&(!isFinite(b.lat)||!isFinite(b.lon))){m.textContent='Add meg a szélességet és a hosszúságot.';return;}
+    try{localStorage.setItem(K,JSON.stringify(b))}catch(x){}document.getElementById('cs-clear').hidden=false;m.textContent='';
+    try{render(b)}catch(x){m.textContent='A számítás nem sikerült: '+x.message;}});
+  document.getElementById('cs-clear').addEventListener('click',function(){try{localStorage.removeItem(K)}catch(x){}out.innerHTML='';document.getElementById('cs-form').reset();man();this.hidden=true;});
+  var saved=get();if(saved){fill(saved);document.getElementById('cs-clear').hidden=false;try{render(saved)}catch(x){}}
+});
+</script>
+</body>
+</html>

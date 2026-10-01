@@ -159,21 +159,21 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     await ctx.close();
   }
 
-  console.log('\n9. Arculat: világos alap, sötét kapcsoló, megmarad oldalváltáskor');
+  console.log('\n9. Arculat: sötét alap, világos kapcsoló, megmarad oldalváltáskor');
   {
     const ctx = await newCtx(); const p = await pageIn(ctx);
     for (const f of fs.readdirSync(ROOT).filter(x => x.endsWith('.html'))) {
       await p.goto(R + f);
       const t = await p.evaluate(() => [document.documentElement.dataset.theme, !!document.getElementById('oni-theme'), !!document.querySelector('link[href^="assets/theme.css"]')]);
-      ok(t[0] === 'light' && t[1] && t[2], `${f}: világos alap, kapcsoló, témafájl`, t);
+      ok(t[0] === 'dark' && t[1] && t[2], `${f}: sötét alap, kapcsoló, témafájl`, t);
     }
     await p.goto(R + 'index.html'); await p.click('#oni-theme');
     const bg = await p.evaluate(() => getComputedStyle(document.body).backgroundColor);
     await p.goto(R + 'maia2.html');
-    ok(await p.evaluate(() => document.documentElement.dataset.theme) === 'dark', 'sötét téma megmarad oldalváltás után');
+    ok(await p.evaluate(() => document.documentElement.dataset.theme) === 'light', 'világos téma megmarad oldalváltás után');
     await p.goto(R + 'ysq.html'); await p.waitForTimeout(200);
-    ok(await p.evaluate(() => document.documentElement.dataset.theme) === 'dark', 'a YSQ a közös témát követi');
-    ok(/rgb\(11, 18, 32\)/.test(bg), 'sötét háttér a főoldalon (a prémium paletta szerint)', bg);
+    ok(await p.evaluate(() => document.documentElement.dataset.theme) === 'light', 'a YSQ a közös témát követi');
+    ok(/rgb\(248, 250, 252\)/.test(bg), 'váltás után világos háttér a főoldalon (a prémium paletta szerint)', bg);
     await ctx.close();
   }
 
@@ -185,7 +185,7 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     for (const [pg, list] of Object.entries(pages)) { await p.goto(R + pg + '.html'); await p.waitForTimeout(150);
       for (const id of list) ok(await p.evaluate(id => !!document.querySelector('#test-' + id + ' .oni-sheet'), id), `${id}: tesztadatlap a kérdések fölött`); }
     for (const f of ['maia2', 'sis-ses']) { await p.goto(R + f + '.html'); await p.waitForTimeout(150); ok(await p.evaluate(() => !!document.querySelector('.oni-sheet')), `${f}: tesztadatlap`); }
-    ok(await p.evaluate(() => Object.keys(window.ONI_DATA).length) === 31, 'mind a 31 teszthez van adatlap');
+    ok(await p.evaluate(() => Object.keys(window.ONI_DATA).length) === 34, 'mind a 34 teszthez van adatlap');
     for (const [pg, id] of [['szabalyozas', 'ips'], ['terkepek', 'tas'], ['nyelvek', 'love']]) {
       await p.goto(R + pg + '.html#test-' + id); await p.waitForTimeout(150);
       await p.evaluate(id => { const g = {}; document.querySelectorAll('#test-' + id + ' button[data-n]').forEach(x => (g[x.dataset.n] = g[x.dataset.n] || []).push(x)); Object.values(g).forEach(a => a[0].click()); const b = document.querySelector('#test-' + id + ' button[id$=showResults], #' + id + '-show'); b.click(); }, id);
@@ -290,7 +290,7 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     await p.evaluate(() => localStorage.setItem(ONI.K, JSON.stringify({ maia2: [{ n: 'MAIA-2', t: '2026-01-01T10:00:00Z', done: '2026-01-01T10:00:00Z', qv: 1, sv: 1, d: {} }] })));
     await p.reload(); await p.waitForTimeout(150);
     ok(await p.evaluate(() => /MAIA-2/.test(document.getElementById('mine').textContent) && !!document.querySelector('#mine .hit')), 'régi MAIA-2 eredménynél jelzi az újrakitöltést');
-    ok(await p.evaluate(() => document.querySelectorAll('#vers tr').length === 32), 'verziótábla mind a 31 teszttel');
+    ok(await p.evaluate(() => document.querySelectorAll('#vers tr').length === 35), 'verziótábla mind a 34 teszttel');
     await ctx.close();
   }
 
@@ -496,7 +496,7 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     const ctx = await newCtx(); const p = await pageIn(ctx);
     await p.goto(R + 'index.html'); await p.waitForTimeout(300);
     const vis = () => p.$$eval('.card[data-key]', c => c.filter(x => !x.hidden).map(x => x.dataset.id));
-    ok((await vis()).length === 31 && /31 teszt/.test(await p.textContent('#ct-count')), 'alapból mind a 31 teszt látszik');
+    ok((await vis()).length === 34 && /34 teszt/.test(await p.textContent('#ct-count')), 'alapból mind a 34 teszt látszik');
     await p.fill('#ct-q', 'halogat'); await p.waitForTimeout(100);
     ok((await vis()).includes('ips'), 'szöveges keresés (ékezet nélkül is): halogatás → IPS', await vis());
     await p.fill('#ct-q', 'kotodes'); await p.waitForTimeout(100);
@@ -511,9 +511,9 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     await p.selectOption('#ct-cat', ''); await p.selectOption('#ct-st', 'done'); await p.waitForTimeout(100);
     ok((await vis()).length === 0 && !(await p.$eval('#ct-empty', e => e.hidden)), 'üres találatnál szöveges visszajelzés');
     await p.click('#ct-reset2'); await p.waitForTimeout(100);
-    ok((await vis()).length === 31 && await p.evaluate(() => document.activeElement.id === 'ct-q'), 'szűrők törlése, fókusz a keresőre');
+    ok((await vis()).length === 34 && await p.evaluate(() => document.activeElement.id === 'ct-q'), 'szűrők törlése, fókusz a keresőre');
     ok(await p.evaluate(() => document.getElementById('goals').compareDocumentPosition(document.getElementById('path')) & Node.DOCUMENT_POSITION_FOLLOWING), 'első látogatáskor a célválasztó az útvonal előtt');
-    ok(await p.evaluate(() => [...document.querySelectorAll('.card[data-key] .card-meta')].length === 31 && getComputedStyle(document.querySelector('.card .tests')).display === 'none'), 'kártyán időigény és kérdésszám, a részletes lista alapból rejtve');
+    ok(await p.evaluate(() => [...document.querySelectorAll('.card[data-key] .card-meta')].length === 34 && getComputedStyle(document.querySelector('.card .tests')).display === 'none'), 'kártyán időigény és kérdésszám, a részletes lista alapból rejtve');
     ok(p._errs.length === 0, 'hibamentes', p._errs);
     await ctx.close();
   }
@@ -610,7 +610,7 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
       ONI.save('ips', { n: 'IPS', d: { total: ['IPS', 21, 9, 45] } }); const a = ONI.all().ips; return { n: a.length, first: a[0].sid, toast: document.getElementById('oni-toast').textContent }; });
     ok(lim.n === 200 && lim.first === 's1' && /korlát/.test(lim.toast), 'a 200-as korlát elérésekor értesít, a legrégebbi kerül ki', lim);
     // minden tesztnek explicit verziója van
-    ok(await p.evaluate(() => Object.keys(ONI.IDKEY).every(id => ONI.VERS[id] && ONI.VERS[id].q && ONI.VERS[id].s && ONI.VERS[id].t)), 'mind a 31 tesztnek explicit kérdéssor-, pontozás- és fordításverziója van');
+    ok(await p.evaluate(() => Object.keys(ONI.IDKEY).every(id => ONI.VERS[id] && ONI.VERS[id].q && ONI.VERS[id].s && ONI.VERS[id].t)), 'mind a 34 tesztnek explicit kérdéssor-, pontozás- és fordításverziója van');
     // szigorú import: jegyzet, beállítás, ismeretlen skála, fájlméret
     await p.goto(R + 'index.html'); await p.evaluate(() => { localStorage.clear(); localStorage.setItem('tas-20-responses-v1', '{"1":2}'); });
     const tmp = fs.mkdtempSync(path.join(require('os').tmpdir(), 'oni-')), iso = new Date(Date.now() - 864e5).toISOString();
@@ -740,6 +740,53 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     m = await p.evaluate(() => ({ deep: document.querySelectorAll('.pdeep').length, sum: !!document.querySelector('.psum') }));
     ok(m.deep >= 1 && m.sum, 'párnézet: összegző sor és mélyebb magyarázat a jelzésekhez', m);
     ok(p._errs.length === 0, 'nincs JS-hiba a 26. szakaszban', p._errs);
+    await ctx.close();
+  }
+
+  console.log('\n27. Hangulat és figyelem (ASRS, PHQ-9, GAD-7), menüközépre igazítás, csillagtérkép');
+  {
+    const ctx = await newCtx(); const p = await pageIn(ctx);
+    await p.goto(R + 'allapot.html#test-asrs'); await p.waitForTimeout(200);
+    await p.evaluate(() => { TESTS.asrs._fillAll((k, it) => it.n <= 3 ? 2 : it.n <= 6 ? 3 : 0); TESTS.asrs.show(); }); await p.waitForTimeout(500);
+    let r = await p.evaluate(() => ONI.all().asrs.slice(-1)[0]);
+    ok(r.d.partA[1] === 6 && /tünetkonzisztens/.test(r.h) && !/nem/.test(r.h), 'ASRS: A rész küszöbei (1–3: néha, 4–6: gyakran) → pozitív szűrő', r.h);
+    await p.evaluate(() => { TESTS.asrs._fillAll((k, it) => it.n <= 3 ? 1 : it.n <= 6 ? 2 : 4); TESTS.asrs.show(); }); await p.waitForTimeout(500);
+    r = await p.evaluate(() => ONI.all().asrs.slice(-1)[0]);
+    ok(r.d.partA[1] === 0 && r.d.partB[1] === 12 && /nem tünetkonzisztens/.test(r.h), 'ASRS: küszöb alatti A rész negatív, a B rész külön számolódik', [r.d.partA[1], r.d.partB[1]]);
+    await p.evaluate(() => { TESTS.phq9._fillAll((k, it) => it.opts ? 0 : (it.n === 9 ? 1 : 0)); TESTS.phq9.show(); }); await p.waitForTimeout(600);
+    r = await p.evaluate(() => ({ rec: ONI.all().phq9.slice(-1)[0], cb: (document.querySelector('#phq9-results .callout') || {}).textContent || '', help: !!document.querySelector('#phq9-results .om-help'), calm: !!document.querySelector('#phq9-results .oni-calm') }));
+    ok(r.rec.d.total[1] === 1 && r.rec.x.i9 === 1 && /116-123/.test(r.cb) && r.help && r.calm, 'PHQ-9: a 9. tétel jelzése biztonsági blokkot ad alacsony összpontszám mellett is', r.rec.d.total[1]);
+    await p.evaluate(() => { TESTS.gad7._fillAll(() => 2); TESTS.gad7.show(); }); await p.waitForTimeout(500);
+    ok(await p.evaluate(() => ONI.all().gad7.slice(-1)[0].d.total[1] === 14 && /Közepes/.test(ONI.all().gad7.slice(-1)[0].h) && !!document.querySelector('#gad7-results .om-help')), 'GAD-7: 14 pont = közepes, segítség-blokk');
+    // ADHD-jellegű minta több tesztből
+    await p.evaluate(() => { TESTS.asrs._fillAll(() => 4); TESTS.asrs.show(); }); await p.waitForTimeout(400);
+    await p.goto(R + 'szabalyozas.html#test-ips'); await p.waitForTimeout(200);
+    await p.evaluate(() => { TESTS.ips._fillAll(() => 4); TESTS.ips.show(); }); await p.waitForTimeout(600);
+    ok(await p.evaluate(() => /Figyelmi és végrehajtási nehézség/.test(document.querySelector('#ips-results .oni-mely').textContent)), 'ASRS + IPS: tesztek közti minta');
+    await p.goto(R + 'osszegzes.html'); await p.waitForTimeout(300);
+    ok(await p.evaluate(() => /ASRS v1\.1/.test(document.body.textContent)), 'az összegzés ismeri az új teszteket');
+    // főoldal: új témakörök, menü középre
+    await p.setViewportSize({ width: 420, height: 800 });
+    await p.goto(R + 'index.html'); await p.waitForTimeout(300);
+    ok(await p.evaluate(() => document.querySelectorAll('.jump a').length === 11 && !!document.querySelector('#cat-11 .sym-card') && document.querySelectorAll('#cat-10 .card[data-key]').length === 3), 'főoldal: X. és XI. témakör, 11 menüpont');
+    await p.evaluate(() => document.getElementById('cat-10').scrollIntoView()); await p.waitForTimeout(1200);
+    const c = await p.evaluate(() => { const n = document.querySelector('.jump'), a = n.querySelector('a.active'); if (!a) return null; const nr = n.getBoundingClientRect(), ar = a.getBoundingClientRect(); return { d: Math.abs((ar.left + ar.width / 2) - (nr.left + nr.width / 2)), sl: n.scrollLeft, id: a.dataset.jump }; });
+    ok(c && c.sl > 0 && c.d < 40, 'görgetéskor az aktív témakör a menüsáv közepére kerül', c);
+    await p.setViewportSize({ width: 1280, height: 900 });
+    // csillagtérkép
+    await p.goto(R + 'csillagok.html'); await p.waitForTimeout(200);
+    const cny = await p.evaluate(() => [1985, 1993, 2015, 2020, 2024, 2025, 2026].map(y => { const r = CSILLAG.chineseNewYear(y); return y + '-' + r.m + '-' + r.d; }).join(','));
+    ok(cny === '1985-2-20,1993-1-23,2015-2-19,2020-1-25,2024-2-10,2025-1-29,2026-2-17', 'kínai újév: ismert dátumok', cny);
+    ok(await p.evaluate(() => { const z = CSILLAG.tzolkin(2012, 12, 21); return z.num === 4 && z.sign === 19; }), 'maja Tzolk’in: 2012. 12. 21. = 4 Ajaw');
+    ok(await p.evaluate(() => [['1993-08-14T06:30:00Z', 47.5, 19.04], ['1985-11-03T17:45:00Z', 40.7, -74]].every(([iso, la, lo]) => { const t = Astronomy.MakeTime(new Date(iso)), am = CSILLAG.ascMc(t, la, lo), h = CSILLAG.horizonOfEcl(t, la, lo, am.asc), m = CSILLAG.horizonOfEcl(t, la, lo, am.mc); return Math.abs(h.alt) < 0.05 && h.az > 45 && h.az < 135 && Math.abs(m.az - 180) < 0.5; })), 'aszcendens a keleti horizonton, MC délen');
+    ok(await p.evaluate(() => CSILLAG.tzOffsetMin('Europe/Budapest', Date.UTC(1993, 7, 14, 12)) === 120 && CSILLAG.tzOffsetMin('Europe/Budapest', Date.UTC(1985, 0, 10)) === 60), 'budapesti nyári és téli időszámítás');
+    await p.fill('#cs-name', 'Teszt Elek'); await p.fill('#cs-date', '1990-03-25'); await p.fill('#cs-time', '14:30'); await p.click('#cs-form button[type=submit]'); await p.waitForTimeout(300);
+    const txt = await p.evaluate(() => document.getElementById('cs-out').textContent);
+    ok(/Kos/.test(txt) && /Fém Ló|Ló/.test(txt) && /Életút-szám/.test(txt) && /11 ·/.test(txt) && /Nakshatra/.test(txt) && /Tzolk/.test(txt), 'csillagtérkép: nyugati, kínai, védikus, maja és számmisztika');
+    ok(await p.evaluate(() => !!JSON.parse(localStorage.getItem('onismeret-birth-v1')).date), 'születési adatok helyben mentve');
+    await p.check('#cs-notime'); await p.click('#cs-form button[type=submit]'); await p.waitForTimeout(300);
+    ok(await p.evaluate(() => /pontos születési idő/.test(document.getElementById('cs-out').textContent)), 'idő nélkül nincs aszcendens, magyarázattal');
+    ok(p._errs.length === 0, 'nincs JS-hiba a 27. szakaszban', p._errs);
     await ctx.close();
   }
 

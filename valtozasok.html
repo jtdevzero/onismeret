@@ -61,13 +61,13 @@ h2{font-family:var(--font-serif);font-weight:400;font-size:28px;margin:44px 0 8p
 @media (max-width:560px){.wrap{padding:28px 16px 64px}}
 </style>
 
-<script src="assets/oni-core.js?v=2a8027ce"></script>
-<script src="assets/oni-rules.js?v=908793e6"></script>
-<script src="assets/oni-schema.js?v=e30726e8" defer></script>
-<script src="assets/tests-data.js?v=8d8e3f97" defer></script>
-<script src="assets/mely.js?v=1438910d" defer></script>
-<script src="assets/results-plus.js?v=9bcc8a35" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=95066824">
+<script src="assets/oni-core.js?v=f029013a"></script>
+<script src="assets/oni-rules.js?v=e3eaf200"></script>
+<script src="assets/oni-schema.js?v=b4e7d462" defer></script>
+<script src="assets/tests-data.js?v=21854d35" defer></script>
+<script src="assets/mely.js?v=8eeb009a" defer></script>
+<script src="assets/results-plus.js?v=16b17d24" defer></script>
+<link rel="stylesheet" href="assets/theme.css?v=e3217f94">
 </head>
 <body>
 <div class="wrap">
@@ -97,6 +97,15 @@ document.addEventListener('DOMContentLoaded',function(){
   var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
   /* score/retake: 'no' | 'part' | 'yes' */
   var LOG=[
+    {d:'2026-10-01',t:'Hangulat és figyelem, csillagtérkép, sötét alapértelmezett téma',score:'no',retake:'no',items:[
+      'Új X. témakör, <a href="allapot.html">Hangulat és figyelem</a>: ASRS v1.1 (felnőttkori ADHD-tünetek, WHO), PHQ-9 (lehangoltság) és GAD-7 (szorongás). Szűrők, nem diagnózisok; mindhárom mélyelemzéssel.',
+      'PHQ-9: ha a 9. kérdésre (önsértő gondolatok) bármilyen nem nulla válasz érkezik, az eredmény biztonsági blokkal kezdődik, az összpontszámtól függetlenül.',
+      'Új tesztek közti minták: „Figyelmi és végrehajtási nehézség” (ASRS, IPS, Big Five, YSQ, DERS) és „Hangulati terhelés” (PHQ-9, GAD-7, Big Five, DERS, SCS).',
+      'Új XI. témakör, <a href="csillagok.html">Csillagtérkép és számok</a>: nyugati asztrológia valódi csillagászati számítással (Nap, Hold, aszcendens, MC, bolygók, elemek), kínai horoszkóp (év-, hónap- és órajegy), védikus jegyek és nakshatra, maja napjel, számmisztika. Nem tudományos, ezért nem kerül az összegzésbe, a mintákba és a fókuszba.',
+      'A sötét téma lett az alapértelmezett; a világos téma a kapcsolóval továbbra is választható, és megmarad.',
+      'A vízszintesen görgethető menüsávokban (főoldali témakörök, tesztfülek) az aktív pont mindig középre kerül.',
+      'A Big Five és a VIA bizonyítékszint-címkéje igazodott a főoldalhoz: modell-alapú rövid változat.',
+      'A meglévő tesztek pontozása nem változott.']},
     {d:'2026-10-01',t:'Megbízhatóság, export és pár-mélyelemzés',score:'no',retake:'no',items:[
       'Bizonyítékszint-címke minden teszt Röviden-kártyáján és a riportban: validált skála, ismert modell saját kérdésekkel, népszerű de kevéssé alátámasztott, vagy saját, nem validált eszköz.',
       'Válaszstílus-figyelmeztetés a Röviden-kártyán, ha szinte minden válasz azonos, szinte csak szélső vagy szinte csak középső (a részletes elemzés válaszstílus-diagramjával azonos számítás, szigorúbb küszöbbel). Bekerül a riportba és az AI-szövegbe is.',

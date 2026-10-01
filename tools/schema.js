@@ -11,7 +11,7 @@ catch (e) { ({ chromium } = require(require('path').join(process.env.HOME || '',
 const fs = require('fs'), path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 const R = 'file://' + ROOT + '/';
-const PAGES = ['terkepek', 'szemelyiseg', 'nyelvek', 'sis-ses', 'maia2', 'attitudok', 'funkcio', 'kapcsolat', 'cselekves', 'szabalyozas'];
+const PAGES = ['terkepek', 'szemelyiseg', 'nyelvek', 'sis-ses', 'maia2', 'attitudok', 'funkcio', 'kapcsolat', 'cselekves', 'szabalyozas', 'allapot'];
 
 /* egymást követő, azonos értékkészletű kérdések összevonása: [['1-20',[1,2,3,4,5]], ...] */
 function compact(items) {

@@ -102,7 +102,9 @@
     tfeq: function(r){ return gv(r, 'EE') >= 67 || gv(r, 'UE') >= 67; },
     smi: function(r){ return gv(r, 'punitive') >= 5 || gv(r, 'vuln') >= 5; },
     scs: function(r){ var t = gv(r, 'total'); return t !== null && t <= 1.8; },
-    bf: function(r){ return gv(r, 'N') >= 50; }
+    bf: function(r){ return gv(r, 'N') >= 50; },
+    phq9: function(r){ return gv(r, 'total') >= 10 || (r.x && r.x.i9 > 0); },
+    gad7: function(r){ return gv(r, 'total') >= 10; }
   };
   function helpHTML(id, r){
     var f = HELP[id]; try { if (!f || !f(r)) return ''; } catch (e) { return ''; }

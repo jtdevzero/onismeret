@@ -1064,14 +1064,14 @@ body {
 .print-header { display: none; }
 
 </style>
-<script src="assets/oni-core.js?v=2a8027ce"></script>
-<script src="assets/oni-rules.js?v=908793e6"></script>
+<script src="assets/oni-core.js?v=f029013a"></script>
+<script src="assets/oni-rules.js?v=e3eaf200"></script>
 <script src="assets/ysq-mely.js?v=9d9a002e"></script>
-<script src="assets/oni-schema.js?v=e30726e8" defer></script>
-<script src="assets/tests-data.js?v=8d8e3f97" defer></script>
-<script src="assets/mely.js?v=1438910d" defer></script>
-<script src="assets/results-plus.js?v=9bcc8a35" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=95066824">
+<script src="assets/oni-schema.js?v=b4e7d462" defer></script>
+<script src="assets/tests-data.js?v=21854d35" defer></script>
+<script src="assets/mely.js?v=8eeb009a" defer></script>
+<script src="assets/results-plus.js?v=16b17d24" defer></script>
+<link rel="stylesheet" href="assets/theme.css?v=e3217f94">
 </head>
 <body>
 <a href="index.html" id="onismeret-back" style="position:fixed;left:16px;bottom:16px;z-index:9999;padding:8px 14px;border-radius:999px;background:rgba(5,13,30,.88);color:#fbbf24;border:1px solid #78551a;font:600 13px/1.2 'Manrope','Helvetica Neue',sans-serif;text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.25)">‹ Önismereti térképek</a>
@@ -1935,7 +1935,7 @@ function toggleRec(kod) {
 // ═══════════════════════════════════════════════════════════════
 // DARK MODE
 // ═══════════════════════════════════════════════════════════════
-let darkMode = (function(){try{return (JSON.parse(localStorage.getItem('onismeret-settings-v1'))||{}).theme==='dark'}catch(e){return false}})(); // közös téma (onismeret-settings-v1)
+let darkMode = (function(){try{return (JSON.parse(localStorage.getItem('onismeret-settings-v1'))||{}).theme!=='light'}catch(e){return true}})(); // közös téma (onismeret-settings-v1)
 function applyTheme() {
   document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light');
   var tt=document.getElementById('themeToggle');if(tt)tt.textContent = darkMode ? '☀️ Világos' : '🌙 Sötét';
