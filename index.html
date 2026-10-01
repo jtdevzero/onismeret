@@ -1169,7 +1169,8 @@ window.addEventListener('DOMContentLoaded',function(){
       if(ok&&ty.value)ok=c.dataset.type===ty.value;
       c.hidden=!ok;if(ok)n++;
     });
-    cats.forEach(function(ct){ct.hidden=!ct.querySelector('.card[data-key]:not([hidden])')});
+    /* teszt nélküli témakör (XI. Szimbolikus térképek) szűrés nélkül mindig látszik, szűréskor rejtve */
+    cats.forEach(function(ct){ct.hidden=ct.querySelector('.card[data-key]')?!ct.querySelector('.card[data-key]:not([hidden])'):(any&&!(words.length&&norm(ct.textContent).indexOf(words.join(' '))>-1));});
     cnt.textContent=any?n+' teszt felel meg a szűrésnek':cards.length+' teszt';
     rs.hidden=!any;emp.hidden=n>0;if(jump)jump.hidden=any;
   }
