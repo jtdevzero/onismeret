@@ -62,11 +62,12 @@ h2{font-family:var(--font-serif);font-weight:400;font-size:28px;margin:44px 0 8p
 </style>
 
 <script src="assets/oni-core.js?v=2a8027ce"></script>
+<script src="assets/oni-rules.js?v=fc41064d"></script>
 <script src="assets/oni-schema.js?v=e30726e8" defer></script>
 <script src="assets/tests-data.js?v=8174bfd3" defer></script>
-<script src="assets/mely.js?v=f3cb7aa4" defer></script>
+<script src="assets/mely.js?v=186df765" defer></script>
 <script src="assets/results-plus.js?v=480c5fb6" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=be0d3008">
+<link rel="stylesheet" href="assets/theme.css?v=12bf6301">
 </head>
 <body>
 <div class="wrap">
@@ -96,6 +97,12 @@ document.addEventListener('DOMContentLoaded',function(){
   var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
   /* score/retake: 'no' | 'part' | 'yes' */
   var LOG=[
+    {d:'2026-10-01',t:'Fókusz-oldal, tesztek közti minták és változás a mélyelemzésben',score:'no',retake:'no',items:[
+      'Új <a href="fokusz.html">Fókusz-oldal</a>: a kitöltött tesztekből összegyűjti, mi kér leginkább figyelmet (tesztek közti minták, kedvezőtlen irányban kiugró skálák), és legfeljebb hármat lehet választani a következő 2–3 hétre. Hetente visszanézés (sikerült / részben / nem), a kör lezárható, a lezárt körök megmaradnak.',
+      'A mélyelemzés új része: „Kapcsolódás a többi eredményeddel”. Ha legalább két teszt ugyanazt a mintát jelzi, és ez a teszt is köztük van, itt is megjelenik; ha még nincs minta, megmutatja, melyik teszt adna összevetést.',
+      'Új rész: „Változás az előző kitöltés óta”. A tartomány legalább 10%-át elérő elmozdulások irány szerint jelölve.',
+      'A tesztek közti szabályok egy közös modulba kerültek, így az összegzés, a mélyelemzés és a Fókusz-oldal ugyanazt használja. Az összegzés kimenete nem változott.',
+      'A pontozás nem változott.']},
     {d:'2026-10-01',t:'Mélyelemzés minden teszt végén',score:'no',retake:'no',items:[
       'Mind a 30 további teszt eredménye új „Mélyelemzés” blokkal zárul, a YSQ-L sémakártyáihoz hasonló szerkezetben: mit jelent, a te skáláid szintenként értelmezve, honnan ered, hogyan jelenik meg a mindennapokban, miért marad fenn, hogyan dolgozz vele (a kiugró skáláidhoz igazított lépésekkel), önreflexiós kérdések.',
       'Ahol a teszt skáláinak együttállása önmagában is jelent valamit (pl. ECR-R kötődési minta, sémamódok egyensúlya, Big Five kombinációk, értékfeszültségek, gázpedál–fék), külön értelmező bekezdés jelenik meg.',

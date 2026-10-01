@@ -663,6 +663,39 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     ok(hits.length === 0, 'nincs visszakerült túlzó megfogalmazás', hits);
   }
 
+  console.log('\n25. Mélyelemzés, tesztek közti minta, változás, Fókusz-oldal');
+  {
+    const ctx = await newCtx(); const p = await pageIn(ctx);
+    await p.goto(R + 'szabalyozas.html#test-ips'); await p.waitForTimeout(200);
+    await p.evaluate(() => { TESTS.ips._fillAll(() => 4); TESTS.ips.show(); }); await p.waitForTimeout(600);
+    let m = await p.evaluate(() => { const x = document.querySelector('#ips-results > .oni-mely'); return x && { sc: x.querySelectorAll('.om-scale').length, words: x.textContent.trim().split(/\s+/).length, last: document.querySelector('#ips-results').lastElementChild.className }; });
+    ok(m && m.sc === 1 && m.words > 250 && /oni-mine/.test(m.last), 'IPS mélyelemzés: skálakártya, hosszú szöveg, a saját megjegyzések előtt', m);
+    ok(await p.evaluate(() => !/Változás az előző/.test(document.querySelector('#ips-results .oni-mely').textContent)), 'első kitöltésnél nincs változás-szakasz');
+    await p.evaluate(() => { TESTS.ders._fillAll(() => 5); TESTS.ders.show(); }); await p.waitForTimeout(600);
+    await p.evaluate(() => { TESTS.ips.show(); }); await p.waitForTimeout(600);
+    ok(await p.evaluate(() => /Érzelmi halogatás/.test(document.querySelector('#ips-results .oni-mely').textContent)), 'IPS + DERS együtt: a tesztek közti minta megjelenik a mélyelemzésben');
+    await p.evaluate(() => { const a = ONI.all(); a.ips[0].done = a.ips[0].t = new Date(Date.now() - 20 * 864e5).toISOString(); localStorage.setItem(ONI.K, JSON.stringify(a)); const mm = JSON.parse(localStorage.getItem(ONI.META)); mm.ans['ips-responses-v1'] = new Date(Date.now() - 20 * 864e5).toISOString(); localStorage.setItem(ONI.META, JSON.stringify(mm)); });
+    await p.goto(R + 'szabalyozas.html#test-ips'); await p.waitForTimeout(200);
+    await p.evaluate(() => { TESTS.ips.reset(); TESTS.ips._fillAll(() => 1); TESTS.ips.show(); }); await p.waitForTimeout(600);
+    m = await p.evaluate(() => ({ n: ONI.all().ips.length, t: document.querySelector('#ips-results .oni-mely').textContent }));
+    ok(m.n === 2 && /Változás az előző/.test(m.t) && /kedvező irány/.test(m.t), 'új kitöltés után változás-szakasz kedvező iránnyal', m.n);
+    // Fókusz-oldal
+    await p.goto(R + 'fokusz.html'); await p.waitForTimeout(250);
+    m = await p.evaluate(() => ({ cards: document.querySelectorAll('.fk-card').length, on: document.querySelectorAll('.fk-pick.on').length }));
+    ok(m.cards >= 1 && m.on >= 1 && m.on <= 3, 'Fókusz: javaslatok, legfeljebb 3 előre kijelölve', m);
+    await p.click('#fk-start'); await p.waitForTimeout(100);
+    ok(await p.evaluate(() => { const s = JSON.parse(localStorage.getItem('onismeret-fokusz-v1')); return s.active && s.active.items.length >= 1 && s.active.items.length <= 3; }), 'Fókusz: a kör elindul és mentődik');
+    ok(await p.evaluate(() => !document.getElementById('fk-save')), 'Fókusz: az első héten még nincs visszanézés');
+    await p.evaluate(() => { const s = JSON.parse(localStorage.getItem('onismeret-fokusz-v1')); s.active.start = new Date(Date.now() - 8 * 864e5).toISOString(); localStorage.setItem('onismeret-fokusz-v1', JSON.stringify(s)); });
+    await p.reload(); await p.waitForTimeout(250);
+    await p.click('[data-rate] .fk-chip[data-v="done"]'); await p.click('#fk-save'); await p.waitForTimeout(100);
+    ok(await p.evaluate(() => JSON.parse(localStorage.getItem('onismeret-fokusz-v1')).active.checks.length === 1 && /Sikerült/.test(document.querySelector('.fk-hist').textContent)), 'Fókusz: heti visszanézés mentve és listázva');
+    await p.click('#fk-close'); await p.waitForTimeout(150);
+    ok(await p.evaluate(() => { const s = JSON.parse(localStorage.getItem('onismeret-fokusz-v1')); return !s.active && s.past.length === 1 && !!document.getElementById('fk-start'); }), 'Fókusz: a kör lezárható, utána új választás jön');
+    ok(p._errs.length === 0, 'nincs JS-hiba a folyamatban', p._errs);
+    await ctx.close();
+  }
+
   await browser.close();
   console.log(`\n${pass} rendben, ${fail} hiba`);
   process.exit(fail ? 1 : 0);

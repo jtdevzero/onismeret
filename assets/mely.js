@@ -29,12 +29,70 @@
   }
   function pos(d){ return Math.max(0, Math.min(1, (d[1]-d[2]) / ((d[3]-d[2]) || 1))); }
   function ps(a){ return (a || []).map(function(t){ return '<p>' + t + '</p>'; }).join(''); }
+  function esc(x){ return String(x == null ? '' : x).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function fmtD(t){ try { return new Date(t).toLocaleDateString('hu-HU', {year:'numeric', month:'short', day:'numeric'}); } catch (e) { return ''; } }
+  function rx(){ try { return window.ONI_RULES && window.ONI ? window.ONI_RULES({store: ONI.all(), isCur: function(i, r){ return ONI.isCur(i, r); }}) : null; } catch (e) { return null; } }
+  /* kedvező irány: +1 magasabb jobb, -1 alacsonyabb jobb, 0 semleges */
+  function dirFor(R, id, k, M){
+    var d = R ? R.dirOf(id, k) : 0; if (d) return d;
+    var sc = M && M.skalak && M.skalak[k], jo = (sc && sc.jo) || (M && M.jo);
+    return jo === 'hi' ? 1 : jo === 'lo' ? -1 : 0;
+  }
+  /* Változás az előző kitöltéshez képest (ugyanazzal a kérdésváltozattal) */
+  function changeHTML(id, r, M, R){
+    var h = window.ONI ? (ONI.all()[id] || []) : [];
+    if (h.length < 2) return '';
+    var prev = h[h.length - 2];
+    if (!prev || !prev.d || (prev.qv || 1) !== (r.qv || 1)) return '';
+    var out = [];
+    Object.keys(r.d).forEach(function(k){
+      var a = prev.d[k], b = r.d[k];
+      if (!a || !b || typeof a[1] !== 'number' || typeof b[1] !== 'number') return;
+      var span = (b[3] - b[2]) || 1, n = (b[1] - a[1]) / span;
+      if (Math.abs(n) < 0.10) return;
+      var dr = dirFor(R, id, k, M), good = dr === 0 ? null : ((n > 0) === (dr > 0));
+      out.push({l: b[0], from: a[1], to: b[1], n: n, good: good});
+    });
+    out.sort(function(x, y){ return Math.abs(y.n) - Math.abs(x.n); });
+    var head = '<p>Az előző kitöltésed: <strong>' + fmtD(prev.done || prev.t).replace(/\.$/, '') + '</strong>. A skála tartományának legalább 10%-át elérő elmozdulások:</p>';
+    if (!out.length) return head.replace(' A skála tartományának legalább 10%-át elérő elmozdulások:', '') + '<p>Egyik skálád sem mozdult el jelentősen (a tartomány 10%-ánál többet). A stabilitás is információ: ha dolgoztál valamin, lehet, hogy a változás még nem látszik a kérdőívben, vagy más területen jelenik meg.</p>';
+    return head + '<ul class="om-list om-change">' + out.slice(0, 8).map(function(c){
+      var tag = c.good === null ? 'elmozdulás' : c.good ? 'kedvező irány' : 'kedvezőtlen irány';
+      return '<li class="' + (c.good === null ? '' : c.good ? 'om-up' : 'om-down') + '"><strong>' + esc(c.l) + ':</strong> ' + num(c.from) + ' → ' + num(c.to) + ' <span class="om-tag">' + tag + '</span></li>';
+    }).join('') + '</ul><p class="om-sub2">Egy-egy kitöltés között a hangulat és a körülmények is mozgatnak az eredményen. Akkor érdemes komolyan venni, ha a változás több kitöltésen át ugyanarra mutat.</p>';
+  }
+  /* Tesztek közti minták, amelyekben ez a teszt is jelez */
+  function crossHTML(id, R){
+    if (!R) return '';
+    var res; try { res = R.evalRules(); } catch (e) { return ''; }
+    var mine = res.fired.filter(function(f){ return f.hits.some(function(s){ return s.test === id; }); });
+    var NM = window.ONI_DATA || {};
+    var nm = function(t){ return (NM[t] && NM[t].n) || t; };
+    if (mine.length) {
+      return mine.map(function(f){
+        var tests = []; f.hits.forEach(function(s){ if (tests.indexOf(s.test) < 0) tests.push(s.test); });
+        return '<div class="om-cross"><b>' + esc(f.r.title) + '</b><p>' + f.r.text + '</p>' +
+          (f.r.action ? '<p><strong>Mit tehetsz:</strong> ' + f.r.action + '</p>' : '') +
+          '<p class="om-ev">Jelzések ' + tests.length + ' tesztből: ' + f.hits.map(function(s){ return esc(s.label); }).join(' · ') + '</p></div>';
+      }).join('') + '<p class="om-sub2">A minták akkor jelennek meg, ha legalább két különböző teszt ugyanabba az irányba mutat. Részletek és bizonyítékok: <a href="osszegzes.html">Összegzés ›</a></p>';
+    }
+    /* ha még nincs minta: melyik további teszt adna összevetést */
+    var cnt = {};
+    R.RULES.forEach(function(rule){
+      if (!rule.sig.some(function(s){ return s.test === id; })) return;
+      rule.sig.forEach(function(s){ if (s.test !== id && !R.cur(s.test)) cnt[s.test] = (cnt[s.test] || 0) + 1; });
+    });
+    var sug = Object.keys(cnt).sort(function(a, b){ return cnt[b] - cnt[a]; }).slice(0, 3);
+    if (!sug.length) return '<p>A kitöltött tesztjeid alapján ennél a tesztnél jelenleg nincs olyan minta, amelyet legalább két teszt együtt jelezne. Ez nem hiány: azt jelenti, hogy ez az eredmény most önmagában értelmezendő.</p>';
+    return '<p>Ennél a tesztnél még nincs tesztek közti minta. A legtöbb összevetést ezek kitöltése adná: <strong>' + sug.map(function(t){ var L = window.ONI_LINK || {}; return L[t] ? '<a href="' + L[t] + '">' + esc(nm(t)) + '</a>' : esc(nm(t)); }).join(', ') + '</strong>.</p>';
+  }
   function sec(icon, title, body, cls){ return body ? '<div class="om-sec' + (cls ? ' ' + cls : '') + '"><h4><span aria-hidden="true">' + icon + '</span> ' + title + '</h4>' + body + '</div>' : ''; }
 
   window.ONI_MELY = function(id, r){
     var M = window.ONI_MELY_DATA[id];
     if (!M || !r || !r.d) return '';
     var L = Object.assign({}, LV, M.szint || {});
+    var R = rx();
     /* skálák, amelyekhez van szöveg */
     var rows = Object.keys(M.skalak || {}).filter(function(k){ var d = r.d[k]; return d && typeof d[1] === 'number'; })
       .map(function(k){ var d = r.d[k], sc = M.skalak[k]; return {k:k, d:d, sc:sc, lv:level(sc, d), p:pos(d)}; });
@@ -70,6 +128,8 @@
       '<h3 class="om-title">' + (M.cim || 'Mit mond ez rólad?') + '</h3>' +
       sec('📌', 'Mit jelent?', ps(M.bevezeto) + prof) +
       sec('📊', M.mutat ? 'A legerősebb és leggyengébb skáláid' : 'A te skáláid', cards ? '<div class="om-scales">' + cards + '</div>' : '') +
+      sec('🔗', 'Kapcsolódás a többi eredményeddel', crossHTML(id, R)) +
+      sec('📈', 'Változás az előző kitöltés óta', changeHTML(id, r, M, R)) +
       sec('🌳', 'Honnan ered?', ps(M.gyoker)) +
       sec('🔄', 'Hogyan jelenik meg a mindennapokban?', ps(M.mindennap)) +
       sec('🔁', 'Miért marad fenn?', M.fennmarad ? '<p>' + M.fennmarad + '</p>' : '') +
@@ -77,5 +137,20 @@
       sec('❓', 'Kérdések önmagadhoz', M.kerdesek && M.kerdesek.length ? '<ul class="om-list om-q">' + M.kerdesek.map(function(t){ return '<li>' + t + '</li>'; }).join('') + '</ul>' : '') +
       '<p class="om-note">' + (M.megjegyzes ? M.megjegyzes + ' ' : '') + 'A skálánkénti szöveg aszerint választódik, hogy az eredményed a skála saját tartományának alsó, középső vagy felső harmadába esik' + (rows.some(function(x){ return x.sc.cut; }) ? ' (ahol a tesztnek van saját határértéke, azt használja)' : '') + '. Ez értelmezési segítség, nem normaadat és nem diagnózis.</p>' +
     '</section>';
+  };
+  /* Fókusz-oldal: a kedvezőtlen irányban kiugró skálák, amelyekhez van konkrét lépés */
+  window.ONI_MELY_CAND = function(id, r){
+    var M = window.ONI_MELY_DATA[id]; if (!M || !r || !r.d) return [];
+    var R = rx(), out = [];
+    Object.keys(M.skalak || {}).forEach(function(k){
+      var d = r.d[k], sc = M.skalak[k]; if (!d || typeof d[1] !== 'number') return;
+      var lv = level(sc, d); if (lv === 'mid') return;
+      var tip = lv === 'hi' ? sc.tipHi : sc.tipLo; if (!tip) return;
+      var dr = dirFor(R, id, k, M);
+      if (dr && ((lv === 'hi') === (dr > 0))) return;          /* kedvező irányban kiugró: nem fókusz */
+      var p = pos(d);
+      out.push({key: id + ':' + k, test: id, scale: d[0], value: d[1], lo: d[2], hi: d[3], text: sc[lv] || '', action: tip, score: Math.abs(p - .5) * 2 * (dr ? 1 : .8)});
+    });
+    return out;
   };
 })();
