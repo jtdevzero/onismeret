@@ -39,7 +39,7 @@ def ver(rel):
     """Rövid tartalom-hash a gyorsítótár-ürítéshez: ha a fájl változik, a böngésző biztosan az újat tölti le."""
     return hashlib.sha1((ROOT / rel).read_bytes()).hexdigest()[:8]
 
-ASSETS = ['assets/oni-core.js', 'assets/oni-schema.js', 'assets/tests-data.js', 'assets/results-plus.js', 'assets/theme.css', 'assets/demo-data.js', 'fonts/fonts.css']
+ASSETS = ['assets/oni-core.js', 'assets/oni-schema.js', 'assets/tests-data.js', 'assets/results-plus.js', 'assets/theme.css', 'assets/demo-data.js', 'assets/ysq-mely.js', 'fonts/fonts.css']
 
 def link_core():
     V = {a: ver(a) for a in ASSETS}

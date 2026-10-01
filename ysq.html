@@ -288,6 +288,22 @@ body {
   letter-spacing: 0.08em; margin-bottom: 6px;
 }
 .detail-section p { font-size: 0.88rem; color: var(--txt2); line-height: 1.6; }
+.detail-section p + p { margin-top: 8px; }
+.mely-quote { margin: 0 0 18px; padding: 14px 18px; border-left: 3px solid var(--gold); background: #F6F8FC; border-radius: 0 8px 8px 0; font-family: 'Cardo', Georgia, serif; font-style: italic; font-size: 1.05rem; line-height: 1.5; color: var(--txt); }
+.mely-quote span { display: block; margin-top: 4px; font-family: inherit; font-style: normal; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--txt3); }
+.mely-level p { background: #F6F8FC; border: 1px solid #E8EDF5; border-radius: 8px; padding: 10px 12px; }
+.mely-coping { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 8px; }
+.mely-coping > div { border: 1px solid #E8EDF5; border-radius: 8px; padding: 10px 12px; }
+.mely-coping b { display: block; font-size: 0.86rem; color: var(--txt); }
+.mely-coping span { display: block; font-size: 0.74rem; color: var(--txt3); margin-bottom: 4px; }
+.mely-coping p { font-size: 0.84rem; }
+.mely-list { margin: 0; padding-left: 20px; }
+.mely-list li { font-size: 0.88rem; color: var(--txt2); line-height: 1.6; margin-bottom: 6px; }
+.mely-q li { font-style: italic; }
+[data-theme="dark"] .mely-quote, [data-theme="dark"] .mely-level p { background: #151E2E; border-color: #2A3D58; color: #E8EDF5; }
+[data-theme="dark"] .mely-coping > div { border-color: #2A3D58; }
+[data-theme="dark"] .mely-coping b { color: #E8EDF5; }
+[data-theme="dark"] .mely-list li { color: #A8B8CC; }
 .memo-area {
   width: 100%; border: 2px solid #E8EDF5;
   border-radius: 8px; padding: 10px 12px;
@@ -1049,6 +1065,7 @@ body {
 
 </style>
 <script src="assets/oni-core.js?v=2a8027ce"></script>
+<script src="assets/ysq-mely.js?v=9d9a002e"></script>
 <script src="assets/oni-schema.js?v=e30726e8" defer></script>
 <script src="assets/tests-data.js?v=8174bfd3" defer></script>
 <script src="assets/results-plus.js?v=e491f72e" defer></script>
@@ -1643,22 +1660,7 @@ function renderResults() {
         </div>
       </div>
       <div class="schema-detail" id="detail-${schema.kod}">
-        <div class="detail-section">
-          <h4>📌 Mit jelent?</h4>
-          <p>${schema.leiras}</p>
-        </div>
-        <div class="detail-section">
-          <h4>👶 Gyermekkori eredet</h4>
-          <p>${schema.eredet}</p>
-        </div>
-        <div class="detail-section">
-          <h4>🔄 Tipikus viselkedési minták</h4>
-          <p>${schema.viselkedes}</p>
-        </div>
-        <div class="detail-section">
-          <h4>🌱 Hogyan dolgozz rajta?</h4>
-          <p>${schema.terapia}</p>
-        </div>
+        ${schemaDeepHTML(schema, score)}
         <div class="detail-section">
           <h4>✏️ Személyes megjegyzés</h4>
           <textarea class="memo-area" id="memo-${schema.kod}" placeholder="Ide írhatod gondolataidat ezzel a sémával kapcsolatban..."
@@ -1675,6 +1677,43 @@ function renderResults() {
 
   html += `</div>`;
   document.getElementById('resultsContent').innerHTML = html;
+}
+
+/* Kibővített séma-értelmezés (assets/ysq-mely.js); ha az nem töltődik be, a rövid leírás marad. */
+function schemaLevelText(name, score) {
+  const s = score.toFixed(2);
+  if (score >= 5) return `<strong>Nagyon magas (${s}/6).</strong> A ${name} séma valószínűleg az életed több területén is aktív, és amikor bekapcsol, erős, a helyzethez képest aránytalan érzelmi reakciót hoz. Ez az egyik központi sémád: érdemes elsők között foglalkozni vele, lehetőleg szakember (sématerapeuta) segítségével.`;
+  if (score >= 4) return `<strong>Magas (${s}/6).</strong> A ${name} séma rendszeresen aktiválódik, különösen stresszben, fáradtan és a közeli kapcsolatokban. Valószínűleg felismersz magadon több, lent leírt mintát. Jó célpontja a tudatos munkának.`;
+  if (score >= 3) return `<strong>Közepes (${s}/6).</strong> A ${name} séma bizonyos helyzetekben jelenik meg, máskor háttérben marad. Figyeld meg, milyen kiváltó helyzetekben (emberek, témák, állapotok) erősödik fel – ott a legtöbb a tanulnivaló.`;
+  if (score >= 2) return `<strong>Alacsony (${s}/6).</strong> A ${name} séma nem jellemző rád általánosságban, de egy-egy speciális helyzetben vagy kapcsolatban még felbukkanhat. Az alábbi leírás abban segít, hogy felismerd, ha mégis előjön.`;
+  return `<strong>Nagyon alacsony (${s}/6).</strong> A ${name} séma gyakorlatilag nem jellemző rád. Ez erőforrás: ezen a területen a szükségleteid valószínűleg elég jól teljesültek. Az alábbi leírás inkább a megértést és mások (pl. a partnered) sémáinak felismerését segíti.`;
+}
+function schemaDeepHTML(schema, score) {
+  const M = (window.YSQ_MELY || {})[schema.kod];
+  if (!M) {
+    return `<div class="detail-section"><h4>📌 Mit jelent?</h4><p>${schema.leiras}</p></div>
+      <div class="detail-section"><h4>👶 Gyermekkori eredet</h4><p>${schema.eredet}</p></div>
+      <div class="detail-section"><h4>🔄 Tipikus viselkedési minták</h4><p>${schema.viselkedes}</p></div>
+      <div class="detail-section"><h4>🌱 Hogyan dolgozz rajta?</h4><p>${schema.terapia}</p></div>`;
+  }
+  const ps = arr => arr.map(t => `<p>${t}</p>`).join('');
+  const c = M.megkuzdes;
+  return `<blockquote class="mely-quote">${M.mag}<span>a séma központi hiedelme</span></blockquote>
+    <div class="detail-section"><h4>📌 Mit jelent?</h4>${ps(M.mitJelent)}</div>
+    <div class="detail-section mely-level"><h4>📊 A te szinted</h4><p>${schemaLevelText(schema.nev, score)}</p></div>
+    <div class="detail-section"><h4>🧩 Melyik alapszükséglet sérült?</h4><p>${M.szukseglet}</p></div>
+    <div class="detail-section"><h4>🌳 A gyökere: honnan ered?</h4>${ps(M.gyoker)}</div>
+    <div class="detail-section"><h4>🔄 Hogyan működik ma: a három megküzdési mód</h4>
+      <p>Ugyanaz a séma háromféleképpen is megjelenhet, és a legtöbb ember mindhármat használja, helyzettől függően.</p>
+      <div class="mely-coping">
+        <div><b>Megadás</b><span>úgy élsz, mintha a séma igaz lenne</span><p>${c.megadas}</p></div>
+        <div><b>Elkerülés</b><span>távol tartod magad attól, ami bekapcsolná</span><p>${c.elkerules}</p></div>
+        <div><b>Túlkompenzálás</b><span>az ellenkezőjét csinálod, hogy ne érezd</span><p>${c.tulkomp}</p></div>
+      </div></div>
+    <div class="detail-section"><h4>💞 Kapcsolatokban és munkában</h4><p>${M.kapcsolat}</p></div>
+    <div class="detail-section"><h4>🔁 Miért marad fenn?</h4><p>${M.fennmarad}</p></div>
+    <div class="detail-section"><h4>🌱 Hogyan dolgozz rajta?</h4><ol class="mely-list">${M.lepesek.map(t => `<li>${t}</li>`).join('')}</ol></div>
+    <div class="detail-section"><h4>❓ Kérdések önmagadhoz</h4><ul class="mely-list mely-q">${M.kerdesek.map(t => `<li>${t}</li>`).join('')}</ul></div>`;
 }
 
 function toggleDetail(kod) {
