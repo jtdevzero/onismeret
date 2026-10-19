@@ -111,10 +111,10 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
   {
     const ctx = await newCtx(); const p = await pageIn(ctx);
     await p.goto(R + 'attitudok.html#test-nsss'); await p.waitForTimeout(150);
-    ok(await p.evaluate(() => document.getElementById('nsss-showResults').disabled), 'üresen tiltott az eredmény');
+    ok(await p.evaluate(() => document.getElementById('nsss-show').disabled), 'üresen tiltott az eredmény');
     await p.evaluate(() => { const qs = [...document.querySelectorAll('#test-nsss .q')]; qs.forEach(q => { if (/saját/.test(q.textContent)) q.querySelector('button[data-n]').click(); }); });
-    ok(await p.evaluate(() => !document.getElementById('nsss-showResults').disabled), 'csak az ego-kérdésekkel megnyitható');
-    await p.click('#nsss-showResults'); await p.waitForTimeout(200);
+    ok(await p.evaluate(() => !document.getElementById('nsss-show').disabled), 'csak az ego-kérdésekkel megnyitható');
+    await p.click('#nsss-show'); await p.waitForTimeout(200);
     const r = await p.evaluate(() => { const h = ONI.all().nsss; return h[h.length - 1]; });
     ok(r && r.d.EGO && !r.d.total && r.x && r.x.partial, 'csak az ego-alskála mentve, összpontszám nincs', r && Object.keys(r.d));
     await ctx.close();
@@ -382,7 +382,7 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
   return {n,fails};
 };
     const fillLegacy = id => { const sc = document.getElementById('test-' + id) || document.body; const g = {}; sc.querySelectorAll('button[data-n]').forEach(x => (g[x.dataset.n] = g[x.dataset.n] || []).push(x)); Object.values(g).forEach(a => a[Math.floor(a.length / 2)].click()); const bt = sc.querySelector('button[id$=showResults], #' + id + '-show, button[id$=-show], #showResults'); bt.click(); };
-    const CASES = [['kapcsolat', 'gott', 'hub'], ['szabalyozas', 'ders', 'hub'], ['terkepek', 'smi', 'leg'], ['terkepek', 'ecr', 'leg'], ['funkcio', 'sdi', 'leg'], ['funkcio', 'des', 'leg'], ['attitudok', 'nsss', 'leg'], ['nyelvek', 'love', 'leg'], ['nyelvek', 'imago', 'leg'], ['szemelyiseg', 'via', 'hub'], ['maia2', 'maia2', 'solo'], ['sis-ses', 'sisses', 'solo']];
+    const CASES = [['kapcsolat', 'gott', 'hub'], ['szabalyozas', 'ders', 'hub'], ['terkepek', 'smi', 'leg'], ['terkepek', 'ecr', 'leg'], ['funkcio', 'sdi', 'leg'], ['funkcio', 'des', 'leg'], ['attitudok', 'nsss', 'hub'], ['nyelvek', 'love', 'leg'], ['nyelvek', 'imago', 'leg'], ['szemelyiseg', 'via', 'hub'], ['maia2', 'maia2', 'solo'], ['sis-ses', 'sisses', 'solo']];
     for (const th of ['light', 'dark']) {
       const ctx = await newCtx(); await ctx.addInitScript(t => { if (!sessionStorage.getItem('t')) { localStorage.setItem('onismeret-settings-v1', JSON.stringify({ theme: t })); sessionStorage.setItem('t', 1); } }, th);
       const p = await pageIn(ctx); let worst = [], charts = [];

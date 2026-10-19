@@ -261,13 +261,19 @@ body::after{content:"";position:fixed;inset:0;background-image:url("data:image/s
 .hub-back:hover{color:var(--ink-lite)}
 @media (max-width:820px){.hub-tabs.four{grid-template-columns:repeat(2,1fr)}.hub-tabs.three{grid-template-columns:1fr}}
 @media (max-width:560px){.hub-tabs{position:static}.hub-tab{padding:12px 14px}.hub-tab .sub{display:none}.scale.s6{grid-template-columns:repeat(3,1fr)}.dv-row{grid-template-columns:96px 1fr 44px;gap:8px;font-size:12.5px}.quad .cell{min-height:96px;padding:12px 8px}.quad .cell .n{font-size:24px}}
+
+.partial-note{font-size:13px;color:var(--gold-bright,#fbbf24);margin:0 0 10px;text-align:center}
+.total-card{text-align:center;margin-bottom:22px}
+.total-card .val{font-size:56px}
+.total-card .total-desc{font-size:14px;line-height:1.6;color:var(--ink-lite-muted);margin-top:12px}
+.therapy-card .therapy-sub{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-lite-muted);margin:-6px 0 14px;font-weight:600}
 </style>
 <script src="assets/oni-schema.js?v=9dbd0f7d" defer></script>
 <script src="assets/tests-data.js?v=5c562e03" defer></script>
 <script src="assets/mely.js?v=8eeb009a" defer></script>
 <script src="assets/results-plus.js?v=faf16aa6" defer></script>
 <script src="assets/mely-cselekves.js?v=26834f40" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=f49849e4">
+<link rel="stylesheet" href="assets/theme.css?v=74196f5c">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#050d1e">
 <link rel="icon" type="image/png" href="icons/favicon-32.png">
@@ -352,7 +358,20 @@ window.H = (function(){
       ${o.labels?`<div class="zone-labels">${o.labels.map(l=>`<span>${l}</span>`).join('')}</div>`:''}
       ${o.desc?`<div class="gauge-desc">${o.desc}</div>`:''}</div>`;
   }
-  return {esc,mean,sum,r1,r2,clamp,cards,bars,rank,interp,chart,callout,refs,radar,gauge};
+  /* összesítő kártya (a régi kézzel írt oldalak „total-card” blokkja a motor stílusában) */
+  function total(o){
+    return `<div class="score-card total-card" style="--sc:${o.color||'var(--c1)'}"><div class="abbr">${o.label}</div><div class="val">${o.val}</div>${o.out?`<div class="out">${o.out}</div>`:''}${o.band?`<span class="band">${o.band}</span>`:''}${o.desc?`<p class="total-desc">${o.desc}</p>`:''}</div>`;
+  }
+  /* kapcsolódó minták más tesztekkel: [{label,text}] */
+  function cross(title,links,empty){
+    return links.length?interp(title,links.map(l=>({h:l.label,html:`<p>${l.text}</p>`}))):interp(title,[{h:'',html:`<p style="font-style:italic;color:var(--ink-lite-muted)">${empty||'Nincs markáns keresztmintázat.'}</p>`}]);
+  }
+  /* szakmai következtetések / lehetséges irányok: [{name,text}] */
+  function therapy(title,sub,mods){
+    if(!mods.length)return '';
+    return `<div class="interp-card therapy-card"><h3>${title}</h3>${sub?`<div class="therapy-sub">${sub}</div>`:''}${mods.map(m=>`<div class="interp-section" style="--sc:var(--gold-bright)"><h4>${m.name}</h4><p>${m.text}</p></div>`).join('')}</div>`;
+  }
+  return {esc,mean,sum,r1,r2,clamp,cards,bars,rank,interp,chart,callout,refs,radar,gauge,total,cross,therapy};
 })();
 
 /* ═══ TEST ENGINE ═══ */
@@ -379,6 +398,7 @@ function makeTest(cfg){
       <div class="intro-box">${h.intro}</div>
       <div class="progress-shell"><div class="progress-bar"><div class="progress-fill" id="${cfg.id}-fill" style="background:linear-gradient(90deg,${cfg.c1},${cfg.c2})"></div></div><div class="progress-text"><strong id="${cfg.id}-num">0</strong> / ${TOTAL}</div></div>
       <div id="${cfg.id}-quiz"></div>
+      ${cfg.partialNote?`<p id="${cfg.id}-partial" class="partial-note" hidden>${cfg.partialNote}</p>`:''}
       <div class="results-trigger"><button class="btn-primary" id="${cfg.id}-show" disabled><em>Megmutatni</em> az eredményt</button></div>
       <div class="results" id="${cfg.id}-results"></div>
     </div></section>`;
@@ -391,9 +411,9 @@ function makeTest(cfg){
         const opts=it.opts||cfg.scale;
         const choice=!!it.opts;
         const cls=choice?'opts'+(it.opts.every(o=>String(o.t).length<=3)?' short':''):`scale${opts.length===4?' s4':opts.length===6?' s6':''}`;
-        html+=`<div class="q" data-n="${it.n}"><div class="q-head"><span class="q-num">${it.n}.</span><span class="q-text">${it.t}</span></div>
+        html+=`<div class="q" data-n="${it.n}"${it.optional?` data-optional="${it.optional}"`:''}><div class="q-head"><span class="q-num">${it.n}.${it.tag?` · ${it.tag}`:''}</span><span class="q-text">${it.t}</span></div>
           <div class="${cls}">${opts.map((o,i)=>{
-            const val=choice?i:o.v;
+            const val=choice?(o.v!==undefined?o.v:i):o.v;
             return choice?`<button class="opt-btn" data-n="${it.n}" data-v="${val}">${o.t}</button>`
                          :`<button class="scale-btn" data-n="${it.n}" data-v="${val}"><span class="v">${o.v}</span><span class="l">${o.l}</span></button>`;
           }).join('')}</div></div>`;
@@ -401,6 +421,8 @@ function makeTest(cfg){
     });
     return html;
   }
+  /* választós kérdésnél a tárolt érték az opció indexe, vagy (ha az opciónak van v-je) maga a v */
+  function optIdx(it,raw){if(raw===undefined)return undefined;const i=it.opts.findIndex(o=>o.v!==undefined&&o.v===raw);return i>-1?i:raw;}
   function refreshSelection(){
     document.querySelectorAll(`#${cfg.id}-quiz [data-n]`).forEach(b=>{
       if(!b.dataset.v)return;
@@ -411,13 +433,16 @@ function makeTest(cfg){
     const done=items.filter(it=>responses[it.n]!==undefined).length;
     $('num').textContent=done;
     $('fill').style.width=(done/TOTAL*100)+'%';
-    $('show').disabled=done<TOTAL;
+    /* cfg.ready: részleges kitöltésnél is megnyitható eredmény (pl. NSSS partner-kérdések nélkül) */
+    const early=done<TOTAL&&!!(cfg.ready&&cfg.ready(responses));
+    $('show').disabled=done<TOTAL&&!early;
+    if($('partial'))$('partial').hidden=!early;
   }
   function buildR(){
     const R={items:[],scales:{},picks:[]};
     items.forEach(it=>{
       const raw=responses[it.n];
-      if(it.opts){const opt=it.opts[raw];R.picks.push({item:it,opt,idx:raw});R.items.push({n:it.n,t:it.t,raw,opt:opt&&opt.t});return;}
+      if(it.opts){const idx=optIdx(it,raw),opt=it.opts[idx];R.picks.push({item:it,opt,idx});R.items.push({n:it.n,t:it.t,raw,opt:opt&&opt.t});return;}
       const vals=cfg.scale.map(s=>s.v),lo=Math.min(...vals),hi=Math.max(...vals);
       const v=it.r?(lo+hi)-raw:raw;
       R.items.push({n:it.n,s:it.s,t:it.t,raw,v,r:!!it.r});
@@ -458,12 +483,13 @@ function makeTest(cfg){
     $('quiz').innerHTML=quizHTML();
     $('quiz').addEventListener('click',e=>{
       const b=e.target.closest('[data-v]');if(!b)return;
-      responses[b.dataset.n]=Number(b.dataset.v);save();refreshSelection();progress();
+      const it=items.find(x=>String(x.n)===b.dataset.n);
+      responses[b.dataset.n]=it&&it.opts&&typeof it.opts[0].v==='string'?b.dataset.v:Number(b.dataset.v);save();refreshSelection();progress();
     });
     $('show').addEventListener('click',show);
     refreshSelection();progress();
   }
-  const api={cfg,mount,show,reset,downloadJSON,total:TOTAL,hasProgress:()=>Object.keys(responses).length>0,_fillAll:(fn)=>{items.forEach(it=>{const k=it.opts?it.opts.length:cfg.scale.length;responses[it.n]=it.opts?fn(k,it):cfg.scale[fn(k,it)].v;});save();refreshSelection();progress();}};
+  const api={cfg,mount,show,reset,downloadJSON,total:TOTAL,hasProgress:()=>Object.keys(responses).length>0,_fillAll:(fn)=>{items.forEach(it=>{const k=it.opts?it.opts.length:cfg.scale.length,i=fn(k,it);responses[it.n]=it.opts?(it.opts[i].v!==undefined?it.opts[i].v:i):cfg.scale[i].v;});save();refreshSelection();progress();}};
   TESTS[cfg.id]=api;
   return api;
 }
