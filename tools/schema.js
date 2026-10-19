@@ -11,7 +11,8 @@ catch (e) { ({ chromium } = require(require('path').join(process.env.HOME || '',
 const fs = require('fs'), path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 const R = 'file://' + ROOT + '/';
-const PAGES = ['terkepek', 'szemelyiseg', 'nyelvek', 'sis-ses', 'maia2', 'attitudok', 'funkcio', 'kapcsolat', 'cselekves', 'szabalyozas', 'allapot', 'onbizalom'];
+require(path.join(ROOT, 'assets/registry.js'));
+const PAGES = [...new Set(globalThis.ONI_REG.filter(t => /#test-|^(maia2|sis-ses)\.html$/.test(t.link)).map(t => t.link.split(/[.#]/)[0]))];   // forrás: assets/registry.js
 
 /* egymást követő, azonos értékkészletű kérdések összevonása: [['1-20',[1,2,3,4,5]], ...] */
 function compact(items) {
@@ -95,7 +96,6 @@ ${fs.readFileSync(path.join(__dirname, 'schema-runtime.js'), 'utf8')}`);
   console.log('assets/oni-schema.js kész,', order.length, 'teszt');
 
   function ONI_ORDER() {
-    const src = fs.readFileSync(path.join(ROOT, 'assets/oni-core.js'), 'utf8');
-    return eval('(' + src.match(/var IDKEY=(\{[^}]*\})/)[1] + ')');
+    return Object.fromEntries(globalThis.ONI_REG.map(t => [t.id, t.key]));   // forrás: assets/registry.js
   }
 })();

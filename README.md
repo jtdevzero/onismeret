@@ -71,7 +71,7 @@ onismeret/
 │                         GENERÁLT hub-oldalak — ne szerkeszd közvetlenül, hanem a src/hubs/ fájlokat
 ├── csillagok.html        Csillagtérkép és számmisztika (nem mérés)
 ├── src/                  A generált hubok forrása: engine.js, hub-base.css, extra.css, hubs/*.hub.html + *.tests.js
-├── assets/               Közös modulok: oni-core (eredménytár), oni-rules (minták), oni-schema (válaszséma),
+├── assets/               Közös modulok: registry (tesztnyilvántartás), oni-core (eredménytár), oni-rules (minták), oni-schema (válaszséma),
 │                         tests-data (adatlapok), results-plus, mely-*.js (mélyelemzések), theme.css
 ├── fonts/                Helyben tárolt betűtípusok (Fontsource, SIL OFL)
 ├── sw.js                 Service worker az offline működéshez — GENERÁLT (tools/build.py)
@@ -247,8 +247,8 @@ tests/run.js         Automatikus ellenőrzés (Playwright)
 
 - **Build:** `python3 tools/build.py`. A közös fájlok (mag, téma, adatlapok, betűk) linkjeihez tartalom-hash kerül (`?v=…`), így módosítás után a böngésző nem a régi, gyorsítótárazott változatot használja. A `kapcsolat.html`, `cselekves.html`, `szabalyozas.html`, `allapot.html` és `onbizalom.html` generált fájl, ezeket a `src/` mappában szerkeszd. Ha egy teszt kérdései vagy skálája változik, futtasd a `node tools/schema.js`-t is.
 - **Tesztek:** `npm ci && npx playwright install chromium && npm test`. Ellenőrzi az oldalak betöltését (JS-hiba, külső kérés), a mélylinkeket és a darabszámokat, a pontozási szélsőértékeket és a fordított tételeket, a kitöltési alkalmakat (újranyitás, javítás, azonos pontszámú újramérés, verzióváltás), az NSSS hiányos kitöltését, a mintaszabályokat, az importot, a visszavonást és a párexportot, a kezdőlapot, az eredménytörténet-grafikont, a demó profilt, az adatok oldal törléseit és exportját, valamint a változásnaplót. GitHub Actions minden feltöltéskor lefuttatja.
-- **Verziók:** ha egy teszt tételei vagy pontozása változik, emeld a verzióját az `assets/oni-core.js` `VERS` táblájában, és írj bejegyzést a `valtozasok.html` `LOG` tömbjébe (pontozás: no/part/yes, újrakitöltés: no/part/yes). Az eltérő verziójú eredményeket az összegzés nem hasonlítja össze, és a grafikonon sem köti össze.
-- **Új teszt felvétele:** a definíció a `src/hubs/*.tests.js`-be, majd regisztráció: `assets/tests-data.js` (adatlap, link, bizonyítékszint), `assets/oni-core.js` (`IDKEY`, `VERS`), `assets/results-plus.js` (`MAP`), `assets/oni-rules.js` (`DIR`, ha a változás iránya számít), `osszegzes.html` (`REG`), `index.html` (kártya, `ONI_ID`, státuszcímke), opcionálisan `assets/mely-<oldal>.js`. Utána `python3 tools/build.py`, `node tools/schema.js`, `npm test`.
+- **Verziók:** ha egy teszt tételei vagy pontozása változik, emeld a verzióját az `assets/registry.js` `v` mezőjében, és írj bejegyzést a `valtozasok.html` `LOG` tömbjébe (pontozás: no/part/yes, újrakitöltés: no/part/yes). Az eltérő verziójú eredményeket az összegzés nem hasonlítja össze, és a grafikonon sem köti össze.
+- **Új teszt felvétele:** egy sor az `assets/registry.js` közös tesztnyilvántartásba (azonosító, tárolási kulcs, témakör, név, link, kérdésszám, bizonyítékszint, verzió) — ebből jön a közös mag, a linkek, az összegzés, a főoldali státusz és a válaszséma. Ezen felül: a kérdőív (`src/hubs/*.tests.js`), az adatlap (`assets/tests-data.js`, `ONI_DATA`), a főoldali kártya, és ha a változás iránya számít, `assets/oni-rules.js` `DIR`. Utána `python3 tools/build.py`, `node tools/schema.js`, `npm test` — a 30. tesztszakasz jelzi, ha valami nincs összhangban.
 
 ## Eredménykezelés
 

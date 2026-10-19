@@ -2,7 +2,7 @@
    Offline működés: az első látogatáskor minden oldal és közös fájl a böngésző gyorsítótárába kerül.
    Az oldalak hálózatról frissülnek, ha van net; a verziózott (?v=…) fájlok a gyorsítótárból jönnek.
    Válasz vagy eredmény nem megy át rajta: csak a statikus fájlokat kezeli. */
-const VERSION = '1c388ecb7a';
+const VERSION = 'b22384ffd0';
 const PRECACHE = [
 "./",
 "adatok.html",
@@ -24,11 +24,12 @@ const PRECACHE = [
 "assets/mely-szemelyiseg.js?v=e91e84bd",
 "assets/mely-terkepek.js?v=fc297f4e",
 "assets/mely.js?v=8eeb009a",
-"assets/oni-core.js?v=2f9535e7",
+"assets/oni-core.js?v=172147a9",
 "assets/oni-rules.js?v=8b76609e",
 "assets/oni-schema.js?v=9dbd0f7d",
-"assets/results-plus.js?v=21fd7519",
-"assets/tests-data.js?v=d48a72a4",
+"assets/registry.js?v=1d248b64",
+"assets/results-plus.js?v=faf16aa6",
+"assets/tests-data.js?v=5c562e03",
 "assets/theme.css?v=f49849e4",
 "assets/vendor/astronomy.browser.min.js",
 "assets/ysq-mely.js?v=8155356a",
