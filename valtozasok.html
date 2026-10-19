@@ -54,6 +54,7 @@ h2{font-family:var(--font-serif);font-weight:400;font-size:28px;margin:44px 0 8p
 .mine{padding:16px 20px;border:1px solid var(--line);border-radius:16px;background:var(--bg-card);font-size:14.5px;color:var(--ink-soft);margin-bottom:10px}
 .mine.hit{border-color:color-mix(in srgb,var(--rose) 55%,transparent)}
 .mine strong{color:var(--ink)}
+.vt-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
 .vt{width:100%;border-collapse:collapse;font-size:13.5px;color:var(--ink-soft)}
 .vt th,.vt td{text-align:left;padding:7px 10px;border-bottom:1px dashed var(--line)}
 .vt th{color:var(--ink-mute);font-weight:600;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
@@ -61,13 +62,13 @@ h2{font-family:var(--font-serif);font-weight:400;font-size:28px;margin:44px 0 8p
 @media (max-width:560px){.wrap{padding:28px 16px 64px}}
 </style>
 
-<script src="assets/oni-core.js?v=f029013a"></script>
-<script src="assets/oni-rules.js?v=e3eaf200"></script>
-<script src="assets/oni-schema.js?v=b4e7d462" defer></script>
-<script src="assets/tests-data.js?v=21854d35" defer></script>
+<script src="assets/oni-core.js?v=c604c755"></script>
+<script src="assets/oni-rules.js?v=8b76609e"></script>
+<script src="assets/oni-schema.js?v=9dbd0f7d" defer></script>
+<script src="assets/tests-data.js?v=d48a72a4" defer></script>
 <script src="assets/mely.js?v=8eeb009a" defer></script>
-<script src="assets/results-plus.js?v=16b17d24" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=e3217f94">
+<script src="assets/results-plus.js?v=21fd7519" defer></script>
+<link rel="stylesheet" href="assets/theme.css?v=f49849e4">
 </head>
 <body>
 <div class="wrap">
@@ -97,6 +98,13 @@ document.addEventListener('DOMContentLoaded',function(){
   var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
   /* score/retake: 'no' | 'part' | 'yes' */
   var LOG=[
+    {d:'2026-10-19',t:'Önbizalom és önértékelés, javítások',score:'no',retake:'no',items:[
+      'Új XI. témakör, <a href="onbizalom.html">Önbizalom és önértékelés</a>: RSES (önértékelés, Rosenberg), GSE (általános énhatékonyság), BFNE-II (mások ítéletétől való félelem) és egy saját, kurzushoz készült skála a gyakorlati önbizalomról (kiállás, határok, kezdeményezés, hibák, láthatóság). Mind a négy mélyelemzéssel; kurzus előtt és után kitöltve az eredménytörténet mutatja a változást.',
+      'Új tesztek közti minta: „Törékeny önértékelés” (RSES, BFNE-II, SCS, YSQ csökkentértékűség, gyakorlati önbizalom).',
+      'A Szimbolikus térképek témakör XII. lett.',
+      'Javítás: a Hangulat és figyelem oldal világos módban is világos (eddig sötét maradt).',
+      'Javítás: a verziótábla telefonon vízszintesen görgethető, nem lóg ki az oldalból; a szöveg- és fájlmezőknek akadálymentes címkéjük van.',
+      'A meglévő tesztek pontozása nem változott.']},
     {d:'2026-10-01',t:'Hangulat és figyelem, csillagtérkép, sötét alapértelmezett téma',score:'no',retake:'no',items:[
       'Új X. témakör, <a href="allapot.html">Hangulat és figyelem</a>: ASRS v1.1 (felnőttkori ADHD-tünetek, WHO), PHQ-9 (lehangoltság) és GAD-7 (szorongás). Szűrők, nem diagnózisok; mindhárom mélyelemzéssel.',
       'PHQ-9: ha a 9. kérdésre (önsértő gondolatok) bármilyen nem nulla válasz érkezik, az eredmény biztonsági blokkal kezdődik, az összpontszámtól függetlenül.',
@@ -222,7 +230,7 @@ document.addEventListener('DOMContentLoaded',function(){
   var any=Object.keys(all).some(function(id){return all[id]&&all[id].length});
   document.getElementById('mine').innerHTML=hits.length?hits.join(''):'<div class="mine">'+(any?'Egyik tárolt eredményedet sem érinti olyan változás, amely miatt újra kellene tölteni.':'Ebben a böngészőben még nincs tárolt eredmény, így semmit nem érint.')+'</div>';
   var ids=Object.keys(D);
-  document.getElementById('vers').innerHTML='<table class="vt"><tr><th>Teszt</th><th>Kérdéssor</th><th>Pontozás</th><th>Fordítás</th></tr>'+ids.map(function(id){var v=ONI.vOf(id);return '<tr><td>'+esc(nm(id))+'</td><td>v'+v.q+'</td><td>v'+v.s+'</td><td>v'+v.t+'</td></tr>'}).join('')+'</table>';
+  document.getElementById('vers').innerHTML='<div class="vt-wrap"><table class="vt"><tr><th>Teszt</th><th>Kérdéssor</th><th>Pontozás</th><th>Fordítás</th></tr>'+ids.map(function(id){var v=ONI.vOf(id);return '<tr><td>'+esc(nm(id))+'</td><td>v'+v.q+'</td><td>v'+v.s+'</td><td>v'+v.t+'</td></tr>'}).join('')+'</table></div>';
 });
 </script>
 </body>

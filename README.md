@@ -1,8 +1,8 @@
 # Önismereti térképek
 
-Harmincnégy önismereti kérdőív magyarul, statikus HTML fájlok, GitHub Pages-en futtatható.
+Harmincnyolc önismereti kérdőív magyarul, statikus HTML fájlok, GitHub Pages-en futtatható.
 
-**Live:** [`https://jtdevzero.github.io/onismeret/`](https://jtdevzero.github.io/onismeret/) (miután a GitHub Pages be van kapcsolva: Settings → Pages → Branch: main → / (root))
+**Live:** [`https://jtdevzero.github.io/onismeret/`](https://jtdevzero.github.io/onismeret/)
 
 ---
 
@@ -44,38 +44,42 @@ Harmincnégy önismereti kérdőív magyarul, statikus HTML fájlok, GitHub Page
 | **X. Hangulat és figyelem** | ASRS v1.1 (felnőttkori ADHD-tünetek) | 18 | `allapot.html#test-asrs` |
 | | PHQ-9 (lehangoltság) | 9+1 | `allapot.html#test-phq9` |
 | | GAD-7 (szorongás) | 7 | `allapot.html#test-gad7` |
-| **XI. Szimbolikus térképek** | Csillagtérkép és számmisztika (nem tudományos, nem mérés) | – | `csillagok.html` |
+| **XI. Önbizalom és önértékelés** | RSES (Rosenberg önértékelés) | 10 | `onbizalom.html#test-rses` |
+| | GSE (általános énhatékonyság) | 10 | `onbizalom.html#test-gse` |
+| | BFNE-II (negatív értékeléstől való félelem) | 12 | `onbizalom.html#test-bfne` |
+| | Gyakorlati önbizalom (saját, nem validált, kurzus előtt/után) | 20 | `onbizalom.html#test-obgy` |
+| **XII. Szimbolikus térképek** | Csillagtérkép és számmisztika (nem tudományos, nem mérés) | – | `csillagok.html` |
 
-**Összesen: 34 teszt, 1180 kérdés, 10 témakör**, plusz egy szimbolikus (nem tudományos) csillagtérkép-oldal.
+**Összesen: 38 teszt, 1232 kérdés, 11 témakör**, plusz egy szimbolikus (nem tudományos) csillagtérkép-oldal.
 
 ---
 
 ## Fájlstruktúra
 
 ```
-self-knowledge-suite/
-├── index.html          Landing page — haladásjelző, témakör-navigáció, kártyák, mentés/visszaállítás
-├── osszegzes.html      Kereszt-összegzés: visszatérő minták, változás, eredménytörténet-grafikon, idővonal (?demo=1: demó profil)
-├── adatok.html         Saját adatok: kitöltésenkénti és tesztenkénti törlés, export, teljes törlés
-├── valtozasok.html     Változásnapló: mi változott, érinti-e a pontozást, kell-e újrakitöltés
-├── fonts/              Helyben tárolt betűtípusok (Fontsource, SIL OFL, latin + latin-ext)
-├── README.md           Ez a fájl
-├── maia2.html          MAIA-2 (standalone)
-├── sis-ses.html        SIS/SES (standalone)
-├── ysq.html            YSQ-L (standalone)
-├── kotodes-melyterkep.html  Kötődési mélytérkép (standalone)
-├── terkepek.html       ECR-R + SMI + TAS-20 (hub, 3 fül)
-├── funkcio.html        IIEF-15 + PEDT + SDI-2 + DES-II (hub, 4 fül)
-├── attitudok.html      SSSS + NSSS + SAQ (hub, 3 fül)
-├── nyelvek.html        Love + Apology + Imago (hub, 3 fül)
-├── szemelyiseg.html    Big Five + VIA (hub, 2 fül)
-├── kapcsolat.html      LAS + Konfliktus + Gottman + Fisher (hub, 4 fül)
-├── cselekves.html      PVQ-21 + Négy tendencia + Cselekvési módok + MEQ (hub, 4 fül)
-├── szabalyozas.html    IPS + DERS-SF + SCS-SF + TFEQ-R18 (hub, 4 fül)
-└── par.html            Párkapcsolati mód: két profil egymás mellett
+onismeret/
+├── index.html            Főoldal: haladás, témakör-navigáció, kereshető katalógus, mentés/visszaállítás
+├── osszegzes.html        Kereszt-összegzés: minták, változás, eredménytörténet, riport (?demo=1: demó profil)
+├── fokusz.html           Fókusz: egy kiválasztott minta 2–4 hetes gyakorlási köre
+├── par.html              Párkapcsolati mód: két profil egymás mellett
+├── adatok.html           Saját adatok: kitöltésenkénti és tesztenkénti törlés, export
+├── valtozasok.html       Változásnapló és tesztverziók
+├── maia2.html · sis-ses.html · ysq.html · kotodes-melyterkep.html     önálló tesztoldalak
+├── terkepek.html · funkcio.html · attitudok.html · nyelvek.html · szemelyiseg.html
+│                         kézzel írt hub-oldalak (több teszt fülekkel)
+├── kapcsolat.html · cselekves.html · szabalyozas.html · allapot.html · onbizalom.html
+│                         GENERÁLT hub-oldalak — ne szerkeszd közvetlenül, hanem a src/hubs/ fájlokat
+├── csillagok.html        Csillagtérkép és számmisztika (nem mérés)
+├── src/                  A generált hubok forrása: engine.js, hub-base.css, extra.css, hubs/*.hub.html + *.tests.js
+├── assets/               Közös modulok: oni-core (eredménytár), oni-rules (minták), oni-schema (válaszséma),
+│                         tests-data (adatlapok), results-plus, mely-*.js (mélyelemzések), theme.css
+├── fonts/                Helyben tárolt betűtípusok (Fontsource, SIL OFL)
+├── tools/                build.py (hubok + asset-hivatkozások), schema.js (válaszséma generálása)
+└── tests/run.js          Playwright-tesztcsomag (linkek, séma, pontozás, felület)
 ```
 
-Minden oldal önálló: inline CSS és JS, külső szerverhez nem fordul. A betűtípusok a `fonts/` mappából töltődnek. Ha egyetlen HTML-fájlt küldesz el valakinek, az mappa nélkül is működik, csak rendszerbetűkkel jelenik meg.
+Az oldalak az `assets/` és a `fonts/` mappát használják, ezért a teljes mappát kell egyben kiszolgálni; egyetlen HTML-fájl önmagában nem működik teljesen. Külső szerverhez nem fordulnak.
+
 
 ---
 
@@ -95,6 +99,7 @@ Minden oldal önálló: inline CSS és JS, külső szerverhez nem fordul. A bet�
   - `pvq21-responses-v1`, `four-tendencies-responses-v1`, `action-modes-responses-v1`, `meq-responses-v1`
   - `ips-responses-v1`, `ders-sf-responses-v1`, `scs-sf-responses-v1`, `tfeq-r18-responses-v1`
   - `asrs-responses-v1`, `phq9-responses-v1`, `gad7-responses-v1`
+  - `rses-responses-v1`, `gse-responses-v1`, `bfne2-responses-v1`, `onbizalom-gyak-responses-v1`
   - `onismeret-birth-v1` (csillagtérkép születési adatai), `onismeret-fokusz-v1`, `onismeret-style-v1`
   - `onismeret-meta-v1` — az utolsó válasz ideje tesztenként (ebből lesz a kitöltés dátuma)
   - `onismeret-settings-v1` — pl. az újramérési emlékeztető (ki / 90 / 180 / 365 nap)
@@ -150,55 +155,7 @@ A párod a saját eszközén kitölti a párteszteket (szeretet- és bocsánatk�
 
 ## GitHub Pages telepítés
 
-### Ha még nincs `jtdevzero.github.io` repód
-
-```bash
-# 1. Klónold le a repót (üresen)
-cd ~/Documents  # vagy ahova akarod
-git clone https://github.com/jtdevzero/jtdevzero.github.io.git
-cd jtdevzero.github.io
-
-# 2. Másold be a fájlokat
-cp -R /path/to/self-knowledge-suite/* .
-
-# 3. Commit + push
-git add .
-git commit -m "Initial upload: self-knowledge suite"
-git push origin main
-```
-
-Néhány perc, és élesben elérhető: `https://jtdevzero.github.io`
-
-### Ha már van tartalmad ott, és almappa alá szeretnéd tenni
-
-```bash
-cd ~/Documents/jtdevzero.github.io
-mkdir -p tests
-cp -R /path/to/self-knowledge-suite/* tests/
-git add tests/
-git commit -m "Add self-knowledge test suite"
-git push origin main
-```
-
-Elérhető: `https://jtdevzero.github.io/tests/`
-
-### Új dedikált repó (nem a fő `.github.io` alá)
-
-```bash
-# GitHub-on hozz létre új publikus repót: pl. `onismereti-terkepek`
-cd ~/Documents
-git clone https://github.com/jtdevzero/onismereti-terkepek.git
-cd onismereti-terkepek
-cp -R /path/to/self-knowledge-suite/* .
-git add .
-git commit -m "Initial upload"
-git push origin main
-
-# Aktiváld a Pages-t: GitHub repo → Settings → Pages →
-#   Source: Deploy from a branch → Branch: main → / (root) → Save
-```
-
-Elérhető pár perc múlva: `https://jtdevzero.github.io/onismereti-terkepek/`
+A repó gyökeréből közvetlenül kiszolgálható: GitHub → Settings → Pages → Source: Deploy from a branch → Branch: `main` → `/ (root)`. Build-lépés nincs; a generált fájlok a repóban vannak, a CI ellenőrzi, hogy egyeznek a forrással.
 
 ---
 
@@ -280,15 +237,16 @@ Minden teszt eredménye ugyanabban a rendben jelenik meg (`assets/results-plus.j
 src/                 A motoros hub-oldalak forrása (engine.js, stílusok, hubs/*.hub.html + *.tests.js)
 assets/oni-core.js   Közös mag minden oldalon: téma, eredménytár, kitöltési alkalmak, verziók, kitöltés-segéd, mentési visszajelzés
 assets/theme.css     Egységes arculat: világos/sötét téma minden oldalcsaládra
-assets/tests-data.js Tesztadatlapok (31 kérdőív)
+assets/tests-data.js Tesztadatlapok (38 kérdőív)
 assets/results-plus.js Röviden-kártya, adatlap, saját jegyzetek
 tools/build.py       Hubok generálása + a közös mag bekötése minden oldalba
 tests/run.js         Automatikus ellenőrzés (Playwright)
 ```
 
-- **Build:** `python3 tools/build.py`. A közös fájlok (mag, téma, adatlapok, betűk) linkjeihez tartalom-hash kerül (`?v=…`), így módosítás után a böngésző nem a régi, gyorsítótárazott változatot használja. A `kapcsolat.html`, `cselekves.html` és `szabalyozas.html` generált fájl, ezeket a `src/` mappában szerkeszd.
-- **Tesztek:** `npm i --no-save playwright && npx playwright install chromium && node tests/run.js`. Ellenőrzi az oldalak betöltését (JS-hiba, külső kérés), a mélylinkeket és a darabszámokat, a pontozási szélsőértékeket és a fordított tételeket, a kitöltési alkalmakat (újranyitás, javítás, azonos pontszámú újramérés, verzióváltás), az NSSS hiányos kitöltését, a mintaszabályokat, az importot, a visszavonást és a párexportot, a kezdőlapot, az eredménytörténet-grafikont, a demó profilt, az adatok oldal törléseit és exportját, valamint a változásnaplót. GitHub Actions minden feltöltéskor lefuttatja.
+- **Build:** `python3 tools/build.py`. A közös fájlok (mag, téma, adatlapok, betűk) linkjeihez tartalom-hash kerül (`?v=…`), így módosítás után a böngésző nem a régi, gyorsítótárazott változatot használja. A `kapcsolat.html`, `cselekves.html`, `szabalyozas.html`, `allapot.html` és `onbizalom.html` generált fájl, ezeket a `src/` mappában szerkeszd. Ha egy teszt kérdései vagy skálája változik, futtasd a `node tools/schema.js`-t is.
+- **Tesztek:** `npm ci && npx playwright install chromium && npm test`. Ellenőrzi az oldalak betöltését (JS-hiba, külső kérés), a mélylinkeket és a darabszámokat, a pontozási szélsőértékeket és a fordított tételeket, a kitöltési alkalmakat (újranyitás, javítás, azonos pontszámú újramérés, verzióváltás), az NSSS hiányos kitöltését, a mintaszabályokat, az importot, a visszavonást és a párexportot, a kezdőlapot, az eredménytörténet-grafikont, a demó profilt, az adatok oldal törléseit és exportját, valamint a változásnaplót. GitHub Actions minden feltöltéskor lefuttatja.
 - **Verziók:** ha egy teszt tételei vagy pontozása változik, emeld a verzióját az `assets/oni-core.js` `VERS` táblájában, és írj bejegyzést a `valtozasok.html` `LOG` tömbjébe (pontozás: no/part/yes, újrakitöltés: no/part/yes). Az eltérő verziójú eredményeket az összegzés nem hasonlítja össze, és a grafikonon sem köti össze.
+- **Új teszt felvétele:** a definíció a `src/hubs/*.tests.js`-be, majd regisztráció: `assets/tests-data.js` (adatlap, link, bizonyítékszint), `assets/oni-core.js` (`IDKEY`, `VERS`), `assets/results-plus.js` (`MAP`), `assets/oni-rules.js` (`DIR`, ha a változás iránya számít), `osszegzes.html` (`REG`), `index.html` (kártya, `ONI_ID`, státuszcímke), opcionálisan `assets/mely-<oldal>.js`. Utána `python3 tools/build.py`, `node tools/schema.js`, `npm test`.
 
 ## Eredménykezelés
 

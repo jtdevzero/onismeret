@@ -312,13 +312,13 @@ body:not(.ct-longdesc) .card .tests{display:none}
 .card[hidden],.cat[hidden],.jump[hidden]{display:none!important}
 @media (max-width:900px){.cat-tools{grid-template-columns:1fr 1fr}.ct-search{grid-column:1/-1}}
 </style>
-<script src="assets/oni-core.js?v=f029013a"></script>
-<script src="assets/oni-rules.js?v=e3eaf200"></script>
-<script src="assets/oni-schema.js?v=b4e7d462" defer></script>
-<script src="assets/tests-data.js?v=21854d35" defer></script>
+<script src="assets/oni-core.js?v=c604c755"></script>
+<script src="assets/oni-rules.js?v=8b76609e"></script>
+<script src="assets/oni-schema.js?v=9dbd0f7d" defer></script>
+<script src="assets/tests-data.js?v=d48a72a4" defer></script>
 <script src="assets/mely.js?v=8eeb009a" defer></script>
-<script src="assets/results-plus.js?v=16b17d24" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=e3217f94">
+<script src="assets/results-plus.js?v=21fd7519" defer></script>
+<link rel="stylesheet" href="assets/theme.css?v=f49849e4">
 </head>
 <body>
 <div class="wrap">
@@ -422,7 +422,7 @@ body:not(.ct-longdesc) .card .tests{display:none}
   <div class="ct-foot"><span id="ct-count" aria-live="polite"></span><button type="button" class="ct-reset" id="ct-reset" hidden>Szűrők törlése</button><label class="ct-long"><input type="checkbox" id="ct-long"> Részletes leírások</label></div>
   <p class="ct-empty" id="ct-empty" hidden>Egy teszt sem felel meg a szűrésnek. <button type="button" class="ct-reset" id="ct-reset2">Szűrők törlése</button></p>
 </section>
-<nav class="jump" aria-label="Témakörök"><a href="#cat-1" data-jump="1"><span class="jn">I.</span>Test<span class="jc" id="jc-1"></span></a><a href="#cat-2" data-jump="2"><span class="jn">II.</span>Kötődés · séma<span class="jc" id="jc-2"></span></a><a href="#cat-3" data-jump="3"><span class="jn">III.</span>Szex-funkció<span class="jc" id="jc-3"></span></a><a href="#cat-4" data-jump="4"><span class="jn">IV.</span>Attitűdök<span class="jc" id="jc-4"></span></a><a href="#cat-5" data-jump="5"><span class="jn">V.</span>Kapcsolati nyelvek<span class="jc" id="jc-5"></span></a><a href="#cat-6" data-jump="6"><span class="jn">VI.</span>Személyiség<span class="jc" id="jc-6"></span></a><a href="#cat-7" data-jump="7"><span class="jn">VII.</span>Kapcsolati dinamika<span class="jc" id="jc-7"></span></a><a href="#cat-8" data-jump="8"><span class="jn">VIII.</span>Értékek · cselekvés<span class="jc" id="jc-8"></span></a><a href="#cat-9" data-jump="9"><span class="jn">IX.</span>Szabályozás<span class="jc" id="jc-9"></span></a><a href="#cat-10" data-jump="10"><span class="jn">X.</span>Hangulat · figyelem<span class="jc" id="jc-10"></span></a><a href="#cat-11" data-jump="11"><span class="jn">XI.</span>Szimbolikus<span class="jc" id="jc-11"></span></a></nav>
+<nav class="jump" aria-label="Témakörök"><a href="#cat-1" data-jump="1"><span class="jn">I.</span>Test<span class="jc" id="jc-1"></span></a><a href="#cat-2" data-jump="2"><span class="jn">II.</span>Kötődés · séma<span class="jc" id="jc-2"></span></a><a href="#cat-3" data-jump="3"><span class="jn">III.</span>Szex-funkció<span class="jc" id="jc-3"></span></a><a href="#cat-4" data-jump="4"><span class="jn">IV.</span>Attitűdök<span class="jc" id="jc-4"></span></a><a href="#cat-5" data-jump="5"><span class="jn">V.</span>Kapcsolati nyelvek<span class="jc" id="jc-5"></span></a><a href="#cat-6" data-jump="6"><span class="jn">VI.</span>Személyiség<span class="jc" id="jc-6"></span></a><a href="#cat-7" data-jump="7"><span class="jn">VII.</span>Kapcsolati dinamika<span class="jc" id="jc-7"></span></a><a href="#cat-8" data-jump="8"><span class="jn">VIII.</span>Értékek · cselekvés<span class="jc" id="jc-8"></span></a><a href="#cat-9" data-jump="9"><span class="jn">IX.</span>Szabályozás<span class="jc" id="jc-9"></span></a><a href="#cat-10" data-jump="10"><span class="jn">X.</span>Hangulat · figyelem<span class="jc" id="jc-10"></span></a><a href="#cat-11" data-jump="11"><span class="jn">XI.</span>Önbizalom<span class="jc" id="jc-11"></span></a><a href="#cat-12" data-jump="12"><span class="jn">XII.</span>Szimbolikus<span class="jc" id="jc-12"></span></a></nav>
   <!-- KATEGÓRIA 1: TEST-TUDATOSSÁG -->
   <section class="cat" id="cat-1" data-cat="1">
     <div class="cat-head">
@@ -896,9 +896,62 @@ body:not(.ct-longdesc) .card .tests{display:none}
     </div>
   </section>
 
-  <section class="cat sym" id="cat-11" data-cat="11">
+  <section class="cat" id="cat-11" data-cat="11">
     <div class="cat-head">
       <span class="cat-num">XI.</span>
+      <h2 class="cat-title">Önbizalom és önértékelés</h2>
+      <span class="cat-sub">4 térkép · 52 kérdés · kurzus előtt és után</span>
+    </div>
+    <div class="grid">
+      <a class="card" href="onbizalom.html#test-rses" data-key="rses-responses-v1" data-total="10" data-name="RSES · Önértékelés" style="--accent:#10b981">
+        <span class="card-tag">Önértékelés</span>
+        <h3>RSES <em>Önértékelés</em></h3>
+        <p class="desc">Mennyire tartod értékesnek magad, úgy, ahogy vagy? A világ leggyakrabban használt önértékelési skálája.</p>
+        <ul class="tests">
+          <li><span class="name">RSES · validált skála</span><span class="cnt">10 item</span></li>
+        </ul>
+        <div class="status" data-state="none"><span class="st-lbl">Nincs elkezdve</span><span class="st-bar"><span class="st-fill"></span></span></div>
+        <div class="open"><span class="open-lbl">Nyisd meg</span> <span class="arrow">›</span></div>
+      </a>
+
+      <a class="card" href="onbizalom.html#test-gse" data-key="gse-responses-v1" data-total="10" data-name="GSE · Énhatékonyság" style="--accent:#2563eb">
+        <span class="card-tag">Énhatékonyság</span>
+        <h3>GSE <em>Énhatékonyság</em></h3>
+        <p class="desc">Mennyire bízol abban, hogy a nehéz és váratlan helyzeteket is megoldod.</p>
+        <ul class="tests">
+          <li><span class="name">GSE · validált skála</span><span class="cnt">10 item</span></li>
+        </ul>
+        <div class="status" data-state="none"><span class="st-lbl">Nincs elkezdve</span><span class="st-bar"><span class="st-fill"></span></span></div>
+        <div class="open"><span class="open-lbl">Nyisd meg</span> <span class="arrow">›</span></div>
+      </a>
+
+      <a class="card" href="onbizalom.html#test-bfne" data-key="bfne2-responses-v1" data-total="12" data-name="BFNE-II · Ítélettől való félelem" style="--accent:#be123c">
+        <span class="card-tag">Ítélettől való félelem</span>
+        <h3>BFNE-II <em>Mások ítélete</em></h3>
+        <p class="desc">Mennyire tart vissza, mit gondolnak rólad mások. Az önbizalom egyik leggyakoribb fékje.</p>
+        <ul class="tests">
+          <li><span class="name">BFNE-II · validált skála</span><span class="cnt">12 item</span></li>
+        </ul>
+        <div class="status" data-state="none"><span class="st-lbl">Nincs elkezdve</span><span class="st-bar"><span class="st-fill"></span></span></div>
+        <div class="open"><span class="open-lbl">Nyisd meg</span> <span class="arrow">›</span></div>
+      </a>
+
+      <a class="card" href="onbizalom.html#test-obgy" data-key="onbizalom-gyak-responses-v1" data-total="20" data-name="Gyakorlati önbizalom" style="--accent:#d4a017">
+        <span class="card-tag">Gyakorlatban</span>
+        <h3>Gyakorlati <em>önbizalom</em></h3>
+        <p class="desc">Kiállás, határok, kezdeményezés, hibák, láthatóság: hol akad el az önbizalom a hétköznapokban. Kurzus előtt és után.</p>
+        <ul class="tests">
+          <li><span class="name">Saját skála · nem validált</span><span class="cnt">20 item</span></li>
+        </ul>
+        <div class="status" data-state="none"><span class="st-lbl">Nincs elkezdve</span><span class="st-bar"><span class="st-fill"></span></span></div>
+        <div class="open"><span class="open-lbl">Nyisd meg</span> <span class="arrow">›</span></div>
+      </a>
+    </div>
+  </section>
+
+  <section class="cat sym" id="cat-12" data-cat="12">
+    <div class="cat-head">
+      <span class="cat-num">XII.</span>
       <h2 class="cat-title">Szimbolikus térképek</h2>
       <span class="cat-sub">nem tudományos · önreflexióhoz</span>
     </div>
@@ -941,7 +994,7 @@ body:not(.ct-longdesc) .card .tests{display:none}
   }
   var cards=[].slice.call(document.querySelectorAll('.card[data-key]'));
   var nDone=0,nProg=0,nDue=0,answered=0,firstProg=null,firstNone=null,perCat={};
-  var ONI_ID={'maia2-responses-v2':'maia2','tas-20-responses-v1':'tas','des-2-responses-v1':'des','ecr-r-responses-v1':'ecr','@kotodes':'kotodes','@ysq':'ysq','smi-responses-v1':'smi','ssss-responses-v1':'ssss','sis-ses-responses-v1':'sisses','iief-responses-v1':'iief','pedt-responses-v1':'pedt','sdi-2-responses-v1':'sdi','nsss-responses-v1':'nsss','saq-responses-v1':'saq','love-responses-v1':'love','apo-responses-v1':'apo','imago-responses-v1':'imago','bf-responses-v1':'bf','via-responses-v1':'via','las-responses-v1':'las','conflict-responses-v1':'tki','gottman-responses-v1':'gott','fisher-responses-v1':'fti','pvq21-responses-v1':'pvq','four-tendencies-responses-v1':'ft','action-modes-responses-v1':'kolbe','meq-responses-v1':'meq','ips-responses-v1':'ips','ders-sf-responses-v1':'ders','scs-sf-responses-v1':'scs','tfeq-r18-responses-v1':'tfeq','asrs-responses-v1':'asrs','phq9-responses-v1':'phq9','gad7-responses-v1':'gad7'};
+  var ONI_ID={'maia2-responses-v2':'maia2','tas-20-responses-v1':'tas','des-2-responses-v1':'des','ecr-r-responses-v1':'ecr','@kotodes':'kotodes','@ysq':'ysq','smi-responses-v1':'smi','ssss-responses-v1':'ssss','sis-ses-responses-v1':'sisses','iief-responses-v1':'iief','pedt-responses-v1':'pedt','sdi-2-responses-v1':'sdi','nsss-responses-v1':'nsss','saq-responses-v1':'saq','love-responses-v1':'love','apo-responses-v1':'apo','imago-responses-v1':'imago','bf-responses-v1':'bf','via-responses-v1':'via','las-responses-v1':'las','conflict-responses-v1':'tki','gottman-responses-v1':'gott','fisher-responses-v1':'fti','pvq21-responses-v1':'pvq','four-tendencies-responses-v1':'ft','action-modes-responses-v1':'kolbe','meq-responses-v1':'meq','ips-responses-v1':'ips','ders-sf-responses-v1':'ders','scs-sf-responses-v1':'scs','tfeq-r18-responses-v1':'tfeq','asrs-responses-v1':'asrs','phq9-responses-v1':'phq9','gad7-responses-v1':'gad7','rses-responses-v1':'rses','gse-responses-v1':'gse','bfne2-responses-v1':'bfne','onbizalom-gyak-responses-v1':'obgy'};
   var RES=(window.ONI&&ONI.all())||{};
   var RETAKE=90;try{var _st=JSON.parse(localStorage.getItem('onismeret-settings-v1'))||{};if(_st.retake!==undefined)RETAKE=_st.retake;}catch(e){}
   function lastRec(key){var h=RES[ONI_ID[key]];if(h&&h.length)return h[h.length-1];if(key==='@kotodes'){var a=read('attachment_assessment_v1');if(a&&a.result&&a.result.date)return {t:a.result.date};}return null;}
@@ -1062,6 +1115,7 @@ body:not(.ct-longdesc) .card .tests{display:none}
   var K={'maia2-responses-v2':'valid','las-responses-v1':'valid','pvq21-responses-v1':'valid','meq-responses-v1':'valid','ips-responses-v1':'valid','ders-sf-responses-v1':'valid','scs-sf-responses-v1':'valid','tfeq-r18-responses-v1':'valid',
     'tas-20-responses-v1':'check','des-2-responses-v1':'check','ecr-r-responses-v1':'check','@ysq':'check','smi-responses-v1':'check','ssss-responses-v1':'check','sis-ses-responses-v1':'check','iief-responses-v1':'check','pedt-responses-v1':'check','sdi-2-responses-v1':'check','nsss-responses-v1':'check','saq-responses-v1':'check',
     'asrs-responses-v1':'check','phq9-responses-v1':'check','gad7-responses-v1':'check',
+    'rses-responses-v1':'check','gse-responses-v1':'check','bfne2-responses-v1':'check','onbizalom-gyak-responses-v1':'own',
     'bf-responses-v1':'part','via-responses-v1':'part',
     'conflict-responses-v1':'own','gottman-responses-v1':'own','fisher-responses-v1':'own','four-tendencies-responses-v1':'own','action-modes-responses-v1':'own','@kotodes':'own',
     'love-responses-v1':'frame','apo-responses-v1':'frame','imago-responses-v1':'frame'};
@@ -1080,6 +1134,7 @@ window.addEventListener('DOMContentLoaded',function(){
     ['emo','Hogyan bánok az érzéseimmel','Érzelemszabályozás, önegyüttérzés, és hogy mennyire tudod szavakba önteni, mit érzel.',['ders','scs','tas']],
     ['body','A testem jelzéseit és ritmusát','Mennyire figyelsz a testi jelzésekre, és mikor vagy a legjobb formában.',['maia2','meq']],
     ['deep','A mélyebb mintáimat','Korai sémák, érzelmi módok és a kötődés részletes térképe. Hosszabb, megterhelőbb tesztek.',['kotodes','smi','ysq']],
+    ['self','Az önbizalmamat','Mennyire tartod értékesnek magad, mennyire bízol a megküzdésedben, és mennyire tart vissza mások ítélete.',['rses','gse','bfne']],
     ['sex','A szexualitásomat','Vágy, izgalom és gátlás, szexuális elégedettség.',['sisses','sdi','nsss']]
   ];
   var chips=document.getElementById('goal-chips'),out=document.getElementById('goal-out');if(!chips)return;
@@ -1169,7 +1224,7 @@ window.addEventListener('DOMContentLoaded',function(){
       if(ok&&ty.value)ok=c.dataset.type===ty.value;
       c.hidden=!ok;if(ok)n++;
     });
-    /* teszt nélküli témakör (XI. Szimbolikus térképek) szűrés nélkül mindig látszik, szűréskor rejtve */
+    /* teszt nélküli témakör (XII. Szimbolikus térképek) szűrés nélkül mindig látszik, szűréskor rejtve */
     cats.forEach(function(ct){ct.hidden=ct.querySelector('.card[data-key]')?!ct.querySelector('.card[data-key]:not([hidden])'):(any&&!(words.length&&norm(ct.textContent).indexOf(words.join(' '))>-1));});
     cnt.textContent=any?n+' teszt felel meg a szűrésnek':cards.length+' teszt';
     rs.hidden=!any;emp.hidden=n>0;if(jump)jump.hidden=any;

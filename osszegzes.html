@@ -157,12 +157,12 @@ h2 em{font-style:italic;color:var(--gold)}
   body.rep-mode #report .oni-mely .om-bar{display:none}
 }
 </style>
-<script src="assets/oni-core.js?v=f029013a"></script>
-<script src="assets/oni-rules.js?v=e3eaf200"></script>
-<script src="assets/oni-schema.js?v=b4e7d462" defer></script>
-<script src="assets/tests-data.js?v=21854d35" defer></script>
+<script src="assets/oni-core.js?v=c604c755"></script>
+<script src="assets/oni-rules.js?v=8b76609e"></script>
+<script src="assets/oni-schema.js?v=9dbd0f7d" defer></script>
+<script src="assets/tests-data.js?v=d48a72a4" defer></script>
 <script src="assets/mely.js?v=8eeb009a" defer></script>
-<script src="assets/results-plus.js?v=16b17d24" defer></script>
+<script src="assets/results-plus.js?v=21fd7519" defer></script>
 <script src="assets/mely-allapot.js?v=386da5ef" defer></script>
 <script src="assets/mely-attitudok.js?v=65ccba3e" defer></script>
 <script src="assets/mely-cselekves.js?v=26834f40" defer></script>
@@ -171,11 +171,12 @@ h2 em{font-style:italic;color:var(--gold)}
 <script src="assets/mely-kotodes-melyterkep.js?v=bec4f693" defer></script>
 <script src="assets/mely-maia2.js?v=ca96c402" defer></script>
 <script src="assets/mely-nyelvek.js?v=cfc604ef" defer></script>
+<script src="assets/mely-onbizalom.js?v=17e74f4b" defer></script>
 <script src="assets/mely-sis-ses.js?v=95da76a5" defer></script>
 <script src="assets/mely-szabalyozas.js?v=a98cd7f9" defer></script>
 <script src="assets/mely-szemelyiseg.js?v=8dd4e84d" defer></script>
 <script src="assets/mely-terkepek.js?v=cca63a27" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=e3217f94">
+<link rel="stylesheet" href="assets/theme.css?v=f49849e4">
 </head>
 <body>
 <div class="wrap">
@@ -190,7 +191,7 @@ h2 em{font-style:italic;color:var(--gold)}
   <div class="card rep" id="rep-ui" style="--acc:var(--sapphire);margin-top:44px">
     <h3>Terapeuta-összefoglaló (PDF)</h3>
     <p>Egy tömör, világos hátterű, nyomtatható összefoglaló a kiválasztott tesztekről és a visszatérő mintákról. A nyomtatási ablakban válaszd a <em>Mentés PDF-ként</em> lehetőséget. Az érzékeny témák alapból ki vannak kapcsolva, te döntöd el, mi kerül bele.</p>
-    <div class="rep-row"><input type="text" id="rep-name" placeholder="Név a riporton (nem kötelező)" maxlength="60"><button type="button" class="rep-btn" id="rep-print">Nyomtatás / PDF mentése</button></div>
+    <div class="rep-row"><input type="text" id="rep-name" aria-label="Név a riporton (nem kötelező)" placeholder="Név a riporton (nem kötelező)" maxlength="60"><button type="button" class="rep-btn" id="rep-print">Nyomtatás / PDF mentése</button></div>
     <div class="rep-grid" id="rep-grid"></div>
     <div class="rep-row"><label style="font-size:13.5px;color:var(--ink-soft);display:flex;gap:8px;align-items:center"><input type="checkbox" id="rep-pat" checked> Visszatérő minták (csak a kiválasztott tesztekből)</label><label style="font-size:13.5px;color:var(--ink-soft);display:flex;gap:8px;align-items:center"><input type="checkbox" id="rep-mely"> Teljes mélyelemzés is (tesztenként 1–2 oldal)</label><label style="font-size:13.5px;color:var(--ink-soft);display:flex;gap:8px;align-items:center"><input type="checkbox" id="rep-notes"> Saját jegyzeteim és a kitöltési körülmények</label><button type="button" class="rep-link" id="rep-all">mindet kijelöl</button><button type="button" class="rep-link" id="rep-none">egyiket sem</button></div>
   </div>
@@ -198,7 +199,7 @@ h2 em{font-style:italic;color:var(--gold)}
     <h3>Másolás AI-elemzéshez</h3>
     <p>Egy kész szöveget másol a vágólapra a fenti listában kiválasztott tesztek eredményeiből, a mintákkal, a válaszstílus-jelzésekkel és az aktuális fókuszoddal, egy elemzést kérő utasítással együtt. Beillesztheted Claude-ba vagy más AI-asszisztensbe. A szöveg csak akkor hagyja el ezt a böngészőt, ha te magad beilleszted valahova; a nyers válaszaid nincsenek benne.</p>
     <div class="rep-row"><button type="button" class="rep-btn" id="ai-copy">Szöveg másolása</button><span class="msg" id="ai-msg" aria-live="polite"></span></div>
-    <textarea id="ai-text" readonly hidden style="width:100%;min-height:220px;margin-top:12px;font:13px/1.5 ui-monospace,Menlo,monospace;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--bg-deep);color:var(--ink)"></textarea>
+    <textarea id="ai-text" aria-label="Szöveg AI-asszisztensnek, másolásra" readonly hidden style="width:100%;min-height:220px;margin-top:12px;font:13px/1.5 ui-monospace,Menlo,monospace;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--bg-deep);color:var(--ink)"></textarea>
   </div>
   <div id="report"></div>
   <p class="note">A minták <strong>heurisztikák</strong>: egy minta akkor jelenik meg, ha legalább két független teszt ugyanabba az irányba mutat. A küszöbök tájékoztató jellegűek, nem klinikai határértékek. A „saját itemek” jelölésű tesztek (konfliktusmódok, Gottman, Fisher, Négy tendencia, Cselekvési módok) nem validált mérések. Egy minta kérdést vet fel, nem diagnózist mond ki. Az újramérést 90 nap után jelzi.</p>
@@ -241,7 +242,11 @@ const REG=[
   ['Szabályozás és végrehajtás','tfeq','TFEQ-R18 · Evési viselkedés','szabalyozas.html#test-tfeq','tfeq-r18-responses-v1'],
   ['Hangulat és figyelem','asrs','ASRS v1.1 · Felnőttkori ADHD-tünetek','allapot.html#test-asrs','asrs-responses-v1'],
   ['Hangulat és figyelem','phq9','PHQ-9 · Lehangoltság','allapot.html#test-phq9','phq9-responses-v1'],
-  ['Hangulat és figyelem','gad7','GAD-7 · Szorongás','allapot.html#test-gad7','gad7-responses-v1']
+  ['Hangulat és figyelem','gad7','GAD-7 · Szorongás','allapot.html#test-gad7','gad7-responses-v1'],
+  ['Önbizalom és önértékelés','rses','RSES · Önértékelés','onbizalom.html#test-rses','rses-responses-v1'],
+  ['Önbizalom és önértékelés','gse','GSE · Énhatékonyság','onbizalom.html#test-gse','gse-responses-v1'],
+  ['Önbizalom és önértékelés','bfne','BFNE-II · Ítélettől való félelem','onbizalom.html#test-bfne','bfne2-responses-v1'],
+  ['Önbizalom és önértékelés','obgy','Gyakorlati önbizalom','onbizalom.html#test-obgy','onbizalom-gyak-responses-v1']
 ];
 const NAME=Object.fromEntries(REG.map(r=>[r[1],r[2]]));
 const LINK=Object.fromEntries(REG.map(r=>[r[1],r[3]]));

@@ -34,7 +34,11 @@ window.ONI_SCHEMA={
   tfeq:{"k":"tfeq-r18-responses-v1","g":[["1-17",[0,1,2,3]],["18",[0,1,2,3,4,5,6,7]]],"d":["CR","EE","UE"]},
   asrs:{"k":"asrs-responses-v1","g":[["1-18",[0,1,2,3,4]]],"d":["hyper","inatt","partA","partB"]},
   phq9:{"k":"phq9-responses-v1","g":[["1-10",[0,1,2,3]]],"d":["total"]},
-  gad7:{"k":"gad7-responses-v1","g":[["1-7",[0,1,2,3]]],"d":["total"]}
+  gad7:{"k":"gad7-responses-v1","g":[["1-7",[0,1,2,3]]],"d":["total"]},
+  rses:{"k":"rses-responses-v1","g":[["1-10",[0,1,2,3]]],"d":["total"]},
+  gse:{"k":"gse-responses-v1","g":[["1-10",[1,2,3,4]]],"d":["total"]},
+  bfne:{"k":"bfne2-responses-v1","g":[["1-12",[0,1,2,3,4]]],"d":["total"]},
+  obgy:{"k":"onbizalom-gyak-responses-v1","g":[["1-20",[1,2,3,4,5]]],"d":["HA","HI","KE","KI","LA","total"]}
 };
 /* ── Séma-alapú segédfüggvények (a tools/schema-runtime.js-ből másolva) ── */
 window.ONI_CHECK=(function(){

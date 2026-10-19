@@ -1058,20 +1058,20 @@ body {
     text-align: center; padding: 20px 0 10px;
     border-bottom: 3px solid #1B2A4A; margin-bottom: 20px;
   }
-  .print-header h1 { font-size: 1.6rem; color: #1B2A4A !important; }
-  .print-header p { color: #555; font-size: 0.9rem; margin-top: 4px; }
+  .print-header .print-title { font-family: 'Cardo', Georgia, serif; font-weight: 700; font-size: 1.6rem; color: #1B2A4A !important; margin: 0; }
+  .print-header p:not(.print-title) { color: #555; font-size: 0.9rem; margin-top: 4px; }
 }
 .print-header { display: none; }
 
 </style>
-<script src="assets/oni-core.js?v=f029013a"></script>
-<script src="assets/oni-rules.js?v=e3eaf200"></script>
+<script src="assets/oni-core.js?v=c604c755"></script>
+<script src="assets/oni-rules.js?v=8b76609e"></script>
 <script src="assets/ysq-mely.js?v=9d9a002e"></script>
-<script src="assets/oni-schema.js?v=b4e7d462" defer></script>
-<script src="assets/tests-data.js?v=21854d35" defer></script>
+<script src="assets/oni-schema.js?v=9dbd0f7d" defer></script>
+<script src="assets/tests-data.js?v=d48a72a4" defer></script>
 <script src="assets/mely.js?v=8eeb009a" defer></script>
-<script src="assets/results-plus.js?v=16b17d24" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=e3217f94">
+<script src="assets/results-plus.js?v=21fd7519" defer></script>
+<link rel="stylesheet" href="assets/theme.css?v=f49849e4">
 </head>
 <body>
 <a href="index.html" id="onismeret-back" style="position:fixed;left:16px;bottom:16px;z-index:9999;padding:8px 14px;border-radius:999px;background:rgba(5,13,30,.88);color:#fbbf24;border:1px solid #78551a;font:600 13px/1.2 'Manrope','Helvetica Neue',sans-serif;text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.25)">‹ Önismereti térképek</a>
@@ -1113,7 +1113,7 @@ body {
 
 <div class="main">
 <div class="print-header" id="printHeader">
-  <h1>Young Séma Kérdőív – YSQ-L</h1>
+  <p class="print-title">Young Séma Kérdőív – YSQ-L</p>
   <p id="printMeta">Kiértékelés · Magyar adaptáció (Unoka Zs. és mtsai, 2004)</p>
 </div>
 
