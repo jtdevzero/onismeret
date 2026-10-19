@@ -64,10 +64,8 @@ onismeret/
 ├── par.html              Párkapcsolati mód: két profil egymás mellett
 ├── adatok.html           Saját adatok: kitöltésenkénti és tesztenkénti törlés, export
 ├── valtozasok.html       Változásnapló és tesztverziók
-├── maia2.html · sis-ses.html · ysq.html · kotodes-melyterkep.html     önálló tesztoldalak
-├── terkepek.html · funkcio.html · attitudok.html · nyelvek.html · szemelyiseg.html
-│                         kézzel írt hub-oldalak (több teszt fülekkel)
-├── kapcsolat.html · cselekves.html · szabalyozas.html · allapot.html · onbizalom.html
+├── maia2.html · sis-ses.html · ysq.html · kotodes-melyterkep.html     önálló tesztoldalak (saját logikával)
+├── terkepek · funkcio · attitudok · nyelvek · szemelyiseg · kapcsolat · cselekves · szabalyozas · allapot · onbizalom (.html)
 │                         GENERÁLT hub-oldalak — ne szerkeszd közvetlenül, hanem a src/hubs/ fájlokat
 ├── csillagok.html        Csillagtérkép és számmisztika (nem mérés)
 ├── src/                  A generált hubok forrása: engine.js, hub-base.css, extra.css, hubs/*.hub.html + *.tests.js
@@ -245,7 +243,7 @@ tools/build.py       Hubok generálása + a közös mag bekötése minden oldalb
 tests/run.js         Automatikus ellenőrzés (Playwright)
 ```
 
-- **Build:** `python3 tools/build.py`. A közös fájlok (mag, téma, adatlapok, betűk) linkjeihez tartalom-hash kerül (`?v=…`), így módosítás után a böngésző nem a régi, gyorsítótárazott változatot használja. A `kapcsolat.html`, `cselekves.html`, `szabalyozas.html`, `allapot.html` és `onbizalom.html` generált fájl, ezeket a `src/` mappában szerkeszd. Ha egy teszt kérdései vagy skálája változik, futtasd a `node tools/schema.js`-t is.
+- **Build:** `python3 tools/build.py`. A közös fájlok (mag, téma, adatlapok, betűk) linkjeihez tartalom-hash kerül (`?v=…`), így módosítás után a böngésző nem a régi, gyorsítótárazott változatot használja. Mind a tíz hub-oldal (`terkepek`, `funkcio`, `attitudok`, `nyelvek`, `szemelyiseg`, `kapcsolat`, `cselekves`, `szabalyozas`, `allapot`, `onbizalom`) generált fájl, ezeket a `src/hubs/` mappában szerkeszd. Ha egy teszt kérdései vagy skálája változik, futtasd a `node tools/schema.js`-t is.
 - **Tesztek:** `npm ci && npx playwright install chromium && npm test`. Ellenőrzi az oldalak betöltését (JS-hiba, külső kérés), a mélylinkeket és a darabszámokat, a pontozási szélsőértékeket és a fordított tételeket, a kitöltési alkalmakat (újranyitás, javítás, azonos pontszámú újramérés, verzióváltás), az NSSS hiányos kitöltését, a mintaszabályokat, az importot, a visszavonást és a párexportot, a kezdőlapot, az eredménytörténet-grafikont, a demó profilt, az adatok oldal törléseit és exportját, valamint a változásnaplót. GitHub Actions minden feltöltéskor lefuttatja.
 - **Verziók:** ha egy teszt tételei vagy pontozása változik, emeld a verzióját az `assets/registry.js` `v` mezőjében, és írj bejegyzést a `valtozasok.html` `LOG` tömbjébe (pontozás: no/part/yes, újrakitöltés: no/part/yes). Az eltérő verziójú eredményeket az összegzés nem hasonlítja össze, és a grafikonon sem köti össze.
 - **Új teszt felvétele:** egy sor az `assets/registry.js` közös tesztnyilvántartásba (azonosító, tárolási kulcs, témakör, név, link, kérdésszám, bizonyítékszint, verzió) — ebből jön a közös mag, a linkek, az összegzés, a főoldali státusz és a válaszséma. Ezen felül: a kérdőív (`src/hubs/*.tests.js`), az adatlap (`assets/tests-data.js`, `ONI_DATA`), a főoldali kártya, és ha a változás iránya számít, `assets/oni-rules.js` `DIR`. Utána `python3 tools/build.py`, `node tools/schema.js`, `npm test` — a 30. tesztszakasz jelzi, ha valami nincs összhangban.
