@@ -315,12 +315,13 @@ body:not(.ct-longdesc) .card .tests{display:none}
 .card[hidden],.cat[hidden],.jump[hidden]{display:none!important}
 @media (max-width:900px){.cat-tools{grid-template-columns:1fr 1fr}.ct-search{grid-column:1/-1}}
 </style>
-<script src="assets/oni-core.js?v=2f9535e7"></script>
+<script src="assets/registry.js?v=1d248b64"></script>
+<script src="assets/oni-core.js?v=172147a9"></script>
 <script src="assets/oni-rules.js?v=8b76609e"></script>
 <script src="assets/oni-schema.js?v=9dbd0f7d" defer></script>
-<script src="assets/tests-data.js?v=d48a72a4" defer></script>
+<script src="assets/tests-data.js?v=5c562e03" defer></script>
 <script src="assets/mely.js?v=8eeb009a" defer></script>
-<script src="assets/results-plus.js?v=21fd7519" defer></script>
+<script src="assets/results-plus.js?v=faf16aa6" defer></script>
 <link rel="stylesheet" href="assets/theme.css?v=f49849e4">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#050d1e">
@@ -1002,7 +1003,7 @@ body:not(.ct-longdesc) .card .tests{display:none}
   }
   var cards=[].slice.call(document.querySelectorAll('.card[data-key]'));
   var nDone=0,nProg=0,nDue=0,answered=0,firstProg=null,firstNone=null,perCat={};
-  var ONI_ID={'maia2-responses-v2':'maia2','tas-20-responses-v1':'tas','des-2-responses-v1':'des','ecr-r-responses-v1':'ecr','@kotodes':'kotodes','@ysq':'ysq','smi-responses-v1':'smi','ssss-responses-v1':'ssss','sis-ses-responses-v1':'sisses','iief-responses-v1':'iief','pedt-responses-v1':'pedt','sdi-2-responses-v1':'sdi','nsss-responses-v1':'nsss','saq-responses-v1':'saq','love-responses-v1':'love','apo-responses-v1':'apo','imago-responses-v1':'imago','bf-responses-v1':'bf','via-responses-v1':'via','las-responses-v1':'las','conflict-responses-v1':'tki','gottman-responses-v1':'gott','fisher-responses-v1':'fti','pvq21-responses-v1':'pvq','four-tendencies-responses-v1':'ft','action-modes-responses-v1':'kolbe','meq-responses-v1':'meq','ips-responses-v1':'ips','ders-sf-responses-v1':'ders','scs-sf-responses-v1':'scs','tfeq-r18-responses-v1':'tfeq','asrs-responses-v1':'asrs','phq9-responses-v1':'phq9','gad7-responses-v1':'gad7','rses-responses-v1':'rses','gse-responses-v1':'gse','bfne2-responses-v1':'bfne','onbizalom-gyak-responses-v1':'obgy'};
+  var ONI_ID={};(window.ONI_REG||[]).forEach(function(t){ONI_ID[t.card]=t.id});   /* forrás: assets/registry.js */
   var RES=(window.ONI&&ONI.all())||{};
   var RETAKE=90;try{var _st=JSON.parse(localStorage.getItem('onismeret-settings-v1'))||{};if(_st.retake!==undefined)RETAKE=_st.retake;}catch(e){}
   function lastRec(key){var h=RES[ONI_ID[key]];if(h&&h.length)return h[h.length-1];if(key==='@kotodes'){var a=read('attachment_assessment_v1');if(a&&a.result&&a.result.date)return {t:a.result.date};}return null;}
@@ -1121,13 +1122,7 @@ body:not(.ct-longdesc) .card .tests{display:none}
 /* ── Tudományos státusz minden kártyán ── */
 (function(){
   var V={valid:'Validált eszköz · saját fordítás, tételenként ellenőrizve',check:'Validált eszköz alapján · fordítás tételenként még nem ellenőrzött',part:'Modell-alapú rövid változat · nem hivatalos tételkészlet',own:'Saját kérdéssor · modell-alapú, nem validált',frame:'Népszerű keret · nem validált mérőeszköz'};
-  var K={'maia2-responses-v2':'valid','las-responses-v1':'valid','pvq21-responses-v1':'valid','meq-responses-v1':'valid','ips-responses-v1':'valid','ders-sf-responses-v1':'valid','scs-sf-responses-v1':'valid','tfeq-r18-responses-v1':'valid',
-    'tas-20-responses-v1':'check','des-2-responses-v1':'check','ecr-r-responses-v1':'check','@ysq':'check','smi-responses-v1':'check','ssss-responses-v1':'check','sis-ses-responses-v1':'check','iief-responses-v1':'check','pedt-responses-v1':'check','sdi-2-responses-v1':'check','nsss-responses-v1':'check','saq-responses-v1':'check',
-    'asrs-responses-v1':'check','phq9-responses-v1':'check','gad7-responses-v1':'check',
-    'rses-responses-v1':'check','gse-responses-v1':'check','bfne2-responses-v1':'check','onbizalom-gyak-responses-v1':'own',
-    'bf-responses-v1':'part','via-responses-v1':'part',
-    'conflict-responses-v1':'own','gottman-responses-v1':'own','fisher-responses-v1':'own','four-tendencies-responses-v1':'own','action-modes-responses-v1':'own','@kotodes':'own',
-    'love-responses-v1':'frame','apo-responses-v1':'frame','imago-responses-v1':'frame'};
+  var K={};(window.ONI_REG||[]).forEach(function(t){K[t.card]=t.badge});   /* forrás: assets/registry.js */
   var T={'@kotodes':'Saját fejlesztés · nem validált','imago-responses-v1':'Terápiás önreflexiós keret · nem mérőeszköz'};
   [].forEach.call(document.querySelectorAll('.card[data-key]'),function(c){var k=K[c.dataset.key];if(!k)return;var el=document.createElement('span');el.className='vstat '+k;el.textContent=T[c.dataset.key]||V[k];var tag=c.querySelector('.card-tag');tag.parentNode.insertBefore(el,tag.nextSibling);});
 })();

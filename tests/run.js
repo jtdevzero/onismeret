@@ -889,6 +889,36 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     await ctx.close(); srv.close();
   }
 
+  console.log('\n30. Közös tesztnyilvántartás (assets/registry.js) és a ráépülő listák');
+  {
+    const ctx = await newCtx(); const p = await pageIn(ctx);
+    await p.goto(R + 'index.html'); await p.waitForTimeout(300);
+    const r = await p.evaluate(() => {
+      const REG = window.ONI_REG, cards = [...document.querySelectorAll('.card[data-key]')].map(c => ({ key: c.dataset.key, n: +c.dataset.total, href: c.getAttribute('href') }));
+      const miss = REG.filter(t => !cards.some(c => c.key === t.card && c.n === t.n && c.href === t.link)).map(t => t.id);
+      const extra = cards.filter(c => !REG.some(t => t.card === c.key)).map(c => c.key);
+      return { n: REG.length, ids: new Set(REG.map(t => t.id)).size, keys: new Set(REG.map(t => t.key)).size, miss, extra,
+        data: REG.filter(t => !window.ONI_DATA[t.id]).map(t => t.id), ev: REG.filter(t => !window.ONI_EV_LABEL[t.ev]).map(t => t.id),
+        core: REG.every(t => ONI.IDKEY[t.id] === t.key && ONI.VERS[t.id] === t.v), link: REG.every(t => window.ONI_LINK[t.id] === t.link) };
+    });
+    ok(r.ids === r.n && r.keys === r.n, 'egyedi azonosítók és tárolási kulcsok', r);
+    ok(!r.miss.length && !r.extra.length, 'minden teszthez pontosan egy főoldali kártya, egyező kulccsal, kérdésszámmal és linkkel', { miss: r.miss, extra: r.extra });
+    ok(!r.data.length && !r.ev.length, 'minden teszthez van adatlap és érvényes bizonyítékszint', r);
+    ok(r.core && r.link, 'a közös mag (IDKEY, VERS) és a linkek a nyilvántartásból jönnek');
+    const pages = {};
+    for (const t of await p.evaluate(() => window.ONI_REG)) { const [f, h] = t.link.split('#'); (pages[f] = pages[f] || []).push(h); }
+    const bad = [];
+    for (const [f, hs] of Object.entries(pages)) {
+      await p.goto(R + f); await p.waitForTimeout(150);
+      for (const h of hs.filter(Boolean)) if (!(await p.$('#' + h))) bad.push(f + '#' + h);
+    }
+    ok(!bad.length, 'minden nyilvántartott link létező oldalra és fülre mutat', bad);
+    await p.goto(R + 'osszegzes.html'); await p.waitForTimeout(300);
+    { const src = fs.readFileSync(path.join(ROOT, 'osszegzes.html'), 'utf8'); ok(/const REG=\(window\.ONI_REG\|\|\[\]\)\.map/.test(src) && !/\['Test-tudatosság','maia2'/.test(src), 'az összegzés tesztlistája a nyilvántartásból jön, nincs beégetett lista'); }
+    ok(p._errs.length === 0, 'nincs JS-hiba a 30. szakaszban', p._errs);
+    await ctx.close();
+  }
+
   await browser.close();
   console.log(`\n${pass} rendben, ${fail} hiba`);
   process.exit(fail ? 1 : 0);

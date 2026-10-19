@@ -11,6 +11,7 @@ import re, pathlib, hashlib, json
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SRC = ROOT / 'src'
 CORE_TAG = '<script src="assets/oni-core.js"></script>'
+REG_TAG = '<script src="assets/registry.js"></script>'   # tesztnyilvántartás: a közös mag előtt kell
 THEME_TAG = '<link rel="stylesheet" href="assets/theme.css">'
 SCHEMA_TAG = '<script src="assets/oni-schema.js" defer></script>'
 RULES_TAG = '<script src="assets/oni-rules.js"></script>'   # nem defer: az összegzés beágyazott szkriptje azonnal használja
@@ -42,7 +43,7 @@ def ver(rel):
     """Rövid tartalom-hash a gyorsítótár-ürítéshez: ha a fájl változik, a böngésző biztosan az újat tölti le."""
     return hashlib.sha1((ROOT / rel).read_bytes()).hexdigest()[:8]
 
-ASSETS = ['assets/oni-core.js', 'assets/oni-schema.js', 'assets/tests-data.js', 'assets/results-plus.js', 'assets/theme.css', 'assets/demo-data.js', 'assets/ysq-mely.js', 'assets/mely.js', 'assets/oni-rules.js', 'assets/csillag-calc.js', 'assets/csillag-data.js', 'fonts/fonts.css']
+ASSETS = ['assets/registry.js', 'assets/oni-core.js', 'assets/oni-schema.js', 'assets/tests-data.js', 'assets/results-plus.js', 'assets/theme.css', 'assets/demo-data.js', 'assets/ysq-mely.js', 'assets/mely.js', 'assets/oni-rules.js', 'assets/csillag-calc.js', 'assets/csillag-data.js', 'fonts/fonts.css']
 
 def link_core():
     V = {a: ver(a) for a in ASSETS}
@@ -52,6 +53,8 @@ def link_core():
         s2 = re.sub(r'(assets/[\w.-]+\.(?:js|css)|fonts/fonts\.css)\?v=[0-9a-f]+', r'\1', s2)   # régi verziójelek le
         if CORE_TAG not in s2:
             s2 = s2.replace('</head>', CORE_TAG + '\n</head>', 1)
+        s2 = s2.replace(REG_TAG + '\n', '')
+        s2 = s2.replace(CORE_TAG + '\n', REG_TAG + '\n' + CORE_TAG + '\n', 1)
         s2 = s2.replace(RULES_TAG + '\n', '')
         s2 = s2.replace(CORE_TAG + '\n', CORE_TAG + '\n' + RULES_TAG + '\n', 1)
         s2 = s2.replace(THEME_TAG + '\n', '').replace(SCHEMA_TAG + '\n', '').replace(PLUS_TAGS + '\n', '')

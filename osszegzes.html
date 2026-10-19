@@ -157,12 +157,13 @@ h2 em{font-style:italic;color:var(--gold)}
   body.rep-mode #report .oni-mely .om-bar{display:none}
 }
 </style>
-<script src="assets/oni-core.js?v=2f9535e7"></script>
+<script src="assets/registry.js?v=1d248b64"></script>
+<script src="assets/oni-core.js?v=172147a9"></script>
 <script src="assets/oni-rules.js?v=8b76609e"></script>
 <script src="assets/oni-schema.js?v=9dbd0f7d" defer></script>
-<script src="assets/tests-data.js?v=d48a72a4" defer></script>
+<script src="assets/tests-data.js?v=5c562e03" defer></script>
 <script src="assets/mely.js?v=8eeb009a" defer></script>
-<script src="assets/results-plus.js?v=21fd7519" defer></script>
+<script src="assets/results-plus.js?v=faf16aa6" defer></script>
 <script src="assets/mely-allapot.js?v=386da5ef" defer></script>
 <script src="assets/mely-attitudok.js?v=65ccba3e" defer></script>
 <script src="assets/mely-cselekves.js?v=26834f40" defer></script>
@@ -211,47 +212,7 @@ h2 em{font-style:italic;color:var(--gold)}
 <script src="assets/demo-data.js?v=8351e47a"></script>
 <script>
 (function(){
-const REG=[
-  // cat, id, név, link, válasz-kulcs
-  ['Test-tudatosság','maia2','MAIA-2 · Interocepció','maia2.html','maia2-responses-v2'],
-  ['Test-tudatosság','tas','TAS-20 · Alexitímia','terkepek.html#test-tas','tas-20-responses-v1'],
-  ['Test-tudatosság','des','DES-II · Disszociáció','funkcio.html#test-des','des-2-responses-v1'],
-  ['Kötődés és séma','ecr','ECR-R · Kötődés','terkepek.html#test-ecr','ecr-r-responses-v1'],
-  ['Kötődés és séma','kotodes','Kötődési mélytérkép','kotodes-melyterkep.html','attachment_assessment_v1'],
-  ['Kötődés és séma','ysq','YSQ-L · Korai sémák','ysq.html','ysq_autosave'],
-  ['Kötődés és séma','smi','SMI · Séma-módok','terkepek.html#test-smi','smi-responses-v1'],
-  ['Kötődés és séma','ssss','SSSS · Szexuális önkép','attitudok.html#test-ssss','ssss-responses-v1'],
-  ['Szex-funkció','sisses','SIS/SES · Duál kontroll','sis-ses.html','sis-ses-responses-v1'],
-  ['Szex-funkció','iief','IIEF-15 · Férfi funkció','funkcio.html#test-iief','iief-responses-v1'],
-  ['Szex-funkció','pedt','PEDT · Ejakuláció','funkcio.html#test-pedt','pedt-responses-v1'],
-  ['Szex-funkció','sdi','SDI-2 · Vágy','funkcio.html#test-sdi','sdi-2-responses-v1'],
-  ['Szex-attitűdök','nsss','NSSS · Elégedettség','attitudok.html#test-nsss','nsss-responses-v1'],
-  ['Szex-attitűdök','saq','SAQ · Szexuális tudatosság','attitudok.html#test-saq','saq-responses-v1'],
-  ['Kapcsolati nyelvek','love','Szeretetnyelvek','nyelvek.html#test-love','love-responses-v1'],
-  ['Kapcsolati nyelvek','apo','Bocsánatkérési nyelvek','nyelvek.html#test-apo','apo-responses-v1'],
-  ['Kapcsolati nyelvek','imago','Imágó','nyelvek.html#test-imago','imago-responses-v1'],
-  ['Személyiség','bf','Big Five · IPIP-NEO-60','szemelyiseg.html#test-bf','bf-responses-v1'],
-  ['Személyiség','via','VIA-72 · Karakter-erők','szemelyiseg.html#test-via','via-responses-v1'],
-  ['Kapcsolati dinamika','las','LAS-SF · Szeretetstílus','kapcsolat.html#test-las','las-responses-v1'],
-  ['Kapcsolati dinamika','tki','Konfliktusmódok','kapcsolat.html#test-tki','conflict-responses-v1'],
-  ['Kapcsolati dinamika','gott','Gottman-térkép','kapcsolat.html#test-gott','gottman-responses-v1'],
-  ['Kapcsolati dinamika','fti','Fisher-temperamentum','kapcsolat.html#test-fti','fisher-responses-v1'],
-  ['Értékek, cselekvés, ritmus','pvq','PVQ-21 · Értékek','cselekves.html#test-pvq','pvq21-responses-v1'],
-  ['Értékek, cselekvés, ritmus','ft','Négy tendencia','cselekves.html#test-ft','four-tendencies-responses-v1'],
-  ['Értékek, cselekvés, ritmus','kolbe','Cselekvési módok','cselekves.html#test-kolbe','action-modes-responses-v1'],
-  ['Értékek, cselekvés, ritmus','meq','MEQ · Kronotípus','cselekves.html#test-meq','meq-responses-v1'],
-  ['Szabályozás és végrehajtás','ips','IPS · Halogatás','szabalyozas.html#test-ips','ips-responses-v1'],
-  ['Szabályozás és végrehajtás','ders','DERS-SF · Érzelemszabályozás','szabalyozas.html#test-ders','ders-sf-responses-v1'],
-  ['Szabályozás és végrehajtás','scs','SCS-SF · Önegyüttérzés','szabalyozas.html#test-scs','scs-sf-responses-v1'],
-  ['Szabályozás és végrehajtás','tfeq','TFEQ-R18 · Evési viselkedés','szabalyozas.html#test-tfeq','tfeq-r18-responses-v1'],
-  ['Hangulat és figyelem','asrs','ASRS v1.1 · Felnőttkori ADHD-tünetek','allapot.html#test-asrs','asrs-responses-v1'],
-  ['Hangulat és figyelem','phq9','PHQ-9 · Lehangoltság','allapot.html#test-phq9','phq9-responses-v1'],
-  ['Hangulat és figyelem','gad7','GAD-7 · Szorongás','allapot.html#test-gad7','gad7-responses-v1'],
-  ['Önbizalom és önértékelés','rses','RSES · Önértékelés','onbizalom.html#test-rses','rses-responses-v1'],
-  ['Önbizalom és önértékelés','gse','GSE · Énhatékonyság','onbizalom.html#test-gse','gse-responses-v1'],
-  ['Önbizalom és önértékelés','bfne','BFNE-II · Ítélettől való félelem','onbizalom.html#test-bfne','bfne2-responses-v1'],
-  ['Önbizalom és önértékelés','obgy','Gyakorlati önbizalom','onbizalom.html#test-obgy','onbizalom-gyak-responses-v1']
-];
+const REG=(window.ONI_REG||[]).map(t=>[t.cat,t.id,t.name,t.link,t.key]);   // forrás: assets/registry.js
 const NAME=Object.fromEntries(REG.map(r=>[r[1],r[2]]));
 const LINK=Object.fromEntries(REG.map(r=>[r[1],r[3]]));
 let SET={};try{SET=JSON.parse(localStorage.getItem('onismeret-settings-v1'))||{}}catch(e){}
