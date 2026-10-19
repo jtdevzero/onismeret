@@ -69,7 +69,7 @@ h2{font-family:var(--font-serif);font-weight:400;font-size:28px;margin:44px 0 8p
 <script src="assets/tests-data.js?v=5c562e03" defer></script>
 <script src="assets/mely.js?v=8eeb009a" defer></script>
 <script src="assets/results-plus.js?v=faf16aa6" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=f49849e4">
+<link rel="stylesheet" href="assets/theme.css?v=41d0552c">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#050d1e">
 <link rel="icon" type="image/png" href="icons/favicon-32.png">
@@ -103,6 +103,11 @@ document.addEventListener('DOMContentLoaded',function(){
   var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
   /* score/retake: 'no' | 'part' | 'yes' */
   var LOG=[
+    {d:'2026-10-19',t:'Egységes szerkezet: közös tesztnyilvántartás, minden hub egy motoron',score:'no',retake:'no',items:[
+      'Minden teszt adata (név, kulcs, oldal, verzió, bizonyítékszint) egyetlen nyilvántartásban van; a főoldal, az összegzés és a többi lista ebből készül.',
+      'Az öt régi, kézzel írt hub-oldal (Belső térképek, Szex-funkció, Szex-attitűdök, Kapcsolati nyelvek, Személyiség) átkerült a közös motorra, így minden hub egyformán működik és néz ki, világos és sötét módban is.',
+      'A pontozás nem változott: minden átköltöztetett tesztnél 10-10 véletlen kitöltéssel ellenőrizve, hogy a mentett eredmény azonos a régi oldaléval. A korábbi válaszaid és eredményeid megmaradnak.',
+      'Javítás: a Szeretetnyelvek két kockázati blokkja (magas érintés-igény, gesztus-vak profil) eddig egy hiba miatt sosem jelent meg.']},
     {d:'2026-10-19',t:'Gyorsabb betöltés, offline működés, adatvédelem',score:'no',retake:'no',items:[
       'Az oldal internet nélkül is működik: az első látogatás után minden oldal és közös fájl a böngészőben marad, így a tesztek offline is kitölthetők. Válasz vagy eredmény ettől sem megy szerverre.',
       'Telepíthető: telefonon a kezdőképernyőre tehető saját ikonnal, és alkalmazásként nyílik meg.',
