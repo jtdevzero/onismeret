@@ -324,14 +324,14 @@ body:not(.ct-longdesc) .card .tests{display:none}
 <div class="wrap">
 
   <header class="hero">
-    <span class="kicker">31 kérdőív · magyarul · csak ezen az eszközön</span>
+    <span class="kicker"><span id="hero-k">38</span> kérdőív · magyarul · csak ezen az eszközön</span>
     <h1>Önismereti <em>térképek</em></h1>
     <p class="lead">
-      Harmincegy kérdőív magyarul, egy helyen. Kötődés, szex, test-tudatosság, sémák, karakter-erők, kapcsolati dinamika, értékek, cselekvés, szabályozás — a válaszaid és az eredményeid csak ezen az eszközön tárolódnak.
+      Önismereti kérdőívek magyarul, egy helyen. Kötődés, szex, test-tudatosság, sémák, karakter-erők, kapcsolati dinamika, értékek, cselekvés, szabályozás, hangulat, önbizalom — a válaszaid és az eredményeid csak ezen az eszközön tárolódnak.
     </p>
     <div class="meta">
-      <span><strong id="hero-tests">31</strong> teszt</span><span><strong id="hero-done">0</strong> kész</span>
-      <span><strong id="hero-q">~1150</strong> kérdés</span>
+      <span><strong id="hero-tests">38</strong> teszt</span><span><strong id="hero-done">0</strong> kész</span>
+      <span><strong id="hero-q">~1230</strong> kérdés</span>
             <span><strong>0</strong> válasz a szerveren</span>
     </div>
   </header>
@@ -367,14 +367,14 @@ body:not(.ct-longdesc) .card .tests{display:none}
   <section class="progress-panel" id="progress">
     <div class="pp-head">
       <h2>Hol tartasz</h2>
-      <span class="pp-sum"><strong id="pp-done">0</strong> / <span id="pp-total">31</span> kész</span>
+      <span class="pp-sum"><strong id="pp-done">0</strong> / <span id="pp-total">38</span> kész</span>
     </div>
     <div class="pp-bar" aria-hidden="true"><div class="pp-fill" id="pp-fill"></div></div>
     <div class="pp-stats">
       <span><i class="dot done"></i><strong id="pp-n-done">0</strong> kész</span>
       <span><i class="dot prog"></i><strong id="pp-n-prog">0</strong> folyamatban</span>
-      <span><i class="dot none"></i><strong id="pp-n-none">31</strong> nincs elkezdve</span>
-      <span class="pp-q"><strong id="pp-answered">0</strong> / <span id="pp-qtotal">1145</span> kérdés megválaszolva</span>
+      <span><i class="dot none"></i><strong id="pp-n-none">38</strong> nincs elkezdve</span>
+      <span class="pp-q"><strong id="pp-answered">0</strong> / <span id="pp-qtotal">1232</span> kérdés megválaszolva</span>
     </div>
     <a class="pp-next" id="pp-next" href="maia2.html">
       <span class="pp-next-lbl" id="pp-next-lbl">Kezdd itt</span>
@@ -1012,7 +1012,7 @@ body:not(.ct-longdesc) .card .tests{display:none}
   var nNone=cards.length-nDone-nProg;
   /* Darabszámok a kártyákból számolva, hogy ne csússzanak el bővítéskor */
   var qTotal=cards.reduce(function(a,c){return a+(+c.dataset.total||0)},0);
-  set('hero-tests',cards.length);set('hero-q','~'+Math.round(qTotal/10)*10);set('pp-total',cards.length);set('pp-qtotal',qTotal);
+  set('hero-tests',cards.length);set('hero-k',cards.length);set('hero-q','~'+Math.round(qTotal/10)*10);set('pp-total',cards.length);set('pp-qtotal',qTotal);
   [].forEach.call(document.querySelectorAll('.cat'),function(cat){var cs=cat.querySelectorAll('.card[data-key]'),q=0;[].forEach.call(cs,function(c){q+=+c.dataset.total||0});var sub=cat.querySelector('.cat-sub');if(sub&&cs.length)sub.textContent=cs.length+' teszt · '+q+' kérdés';});
   set('pp-done',nDone);set('hero-done',nDone);set('pp-n-done',nDone);set('pp-n-prog',nProg);set('pp-n-none',nNone);set('pp-answered',answered);
   document.getElementById('pp-fill').style.width=(nDone/cards.length*100)+'%';
