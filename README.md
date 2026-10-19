@@ -74,11 +74,13 @@ onismeret/
 ├── assets/               Közös modulok: oni-core (eredménytár), oni-rules (minták), oni-schema (válaszséma),
 │                         tests-data (adatlapok), results-plus, mely-*.js (mélyelemzések), theme.css
 ├── fonts/                Helyben tárolt betűtípusok (Fontsource, SIL OFL)
-├── tools/                build.py (hubok + asset-hivatkozások), schema.js (válaszséma generálása)
+├── sw.js                 Service worker az offline működéshez — GENERÁLT (tools/build.py)
+├── manifest.webmanifest  Telepíthetőség (kezdőképernyő), icons/ az ikonokkal
+├── tools/                build.py (hubok, asset-hivatkozások, sw.js), schema.js (válaszséma), fonts.py (betűszűkítés, eredetik: tools/fonts-src/)
 └── tests/run.js          Playwright-tesztcsomag (linkek, séma, pontozás, felület)
 ```
 
-Az oldalak az `assets/` és a `fonts/` mappát használják, ezért a teljes mappát kell egyben kiszolgálni; egyetlen HTML-fájl önmagában nem működik teljesen. Külső szerverhez nem fordulnak.
+Az első látogatás után az oldal offline is működik (service worker), és telepíthető a kezdőképernyőre. Az oldalak az `assets/` és a `fonts/` mappát használják, ezért a teljes mappát kell egyben kiszolgálni; egyetlen HTML-fájl önmagában nem működik teljesen. Külső szerverhez nem fordulnak.
 
 
 ---

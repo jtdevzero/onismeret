@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Saját adatok — Önismereti térképek</title>
-<link rel="stylesheet" href="fonts/fonts.css?v=885e76a5">
+<link rel="stylesheet" href="fonts/fonts.css?v=50e1f8e3">
 <style>
 :root{
   --bg-deep:#050d1e;--bg-card:#0f2038;--bg-card-hi:#152845;
@@ -63,13 +63,17 @@ h2{font-family:var(--font-serif);font-weight:400;font-size:28px;margin:44px 0 8p
 @media (max-width:560px){.wrap{padding:28px 16px 64px}.card{padding:16px}.sess li{grid-template-columns:1fr auto}.sess .d{grid-column:1/-1}.th .tools{margin-left:0}}
 </style>
 
-<script src="assets/oni-core.js?v=c604c755"></script>
+<script src="assets/oni-core.js?v=2f9535e7"></script>
 <script src="assets/oni-rules.js?v=8b76609e"></script>
 <script src="assets/oni-schema.js?v=9dbd0f7d" defer></script>
 <script src="assets/tests-data.js?v=d48a72a4" defer></script>
 <script src="assets/mely.js?v=8eeb009a" defer></script>
 <script src="assets/results-plus.js?v=21fd7519" defer></script>
 <link rel="stylesheet" href="assets/theme.css?v=f49849e4">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#050d1e">
+<link rel="icon" type="image/png" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 </head>
 <body>
 <div class="wrap">
@@ -195,7 +199,7 @@ document.addEventListener('DOMContentLoaded',function(){
       var known={};Object.keys(IDKEY).forEach(function(x){known[IDKEY[x]]=1});Object.keys(ours()).forEach(function(k){if(/-responses-v\d+$/.test(k)&&!known[k])localStorage.removeItem(k)});say('Régi válaszok törölve.');render();}
   });
   document.getElementById('exp-all').onclick=function(){var d=ours();if(!Object.keys(d).length){say('Nincs még mit menteni.',true);return;}
-    download('onismeret-mentes-'+new Date().toISOString().slice(0,10)+'.json',{app:'onismeret',v:1,exported:new Date().toISOString(),data:d});say(Object.keys(d).length+' tétel elmentve fájlba. Érzékeny adatokat tartalmaz, tartsd biztonságos helyen.');};
+    download('onismeret-mentes-'+new Date().toISOString().slice(0,10)+'.json',{app:'onismeret',v:1,exported:new Date().toISOString(),data:d});if(window.ONI&&ONI.markBackup)ONI.markBackup();say(Object.keys(d).length+' tétel elmentve fájlba. Érzékeny adatokat tartalmaz, tartsd biztonságos helyen.');};
   document.getElementById('set-theme').onclick=function(){var t=document.getElementById('oni-theme');if(t)t.click();setTimeout(render,30);};
   document.getElementById('set-reset').onclick=function(){localStorage.removeItem(SK);document.documentElement.setAttribute('data-theme','light');say('Beállítások alaphelyzetben.');render();};
   var box=document.getElementById('wipe-box'),inp=document.getElementById('wipe-in'),go=document.getElementById('wipe-go');

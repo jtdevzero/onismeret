@@ -1,4 +1,5 @@
 /* Egységes tipográfia: minden címbetű Cardo (Fontsource, SIL OFL: Cardo-OFL.txt), minden szövegbetű Inter (SIL OFL, latin + latin-ext).
+   A latin-ext fájlok a Latin Extended-A tartományra szűkítve (tools/fonts.py; eredetijük: tools/fonts-src/).
    A régi családnevek (Lora, Fraunces, Playfair, DM Serif, Manrope, Nunito, DM Sans) álnévként ugyanezekre a fájlokra mutatnak,
    így az oldalak külön módosítás nélkül egységes betűt kapnak. */
 @font-face {
@@ -7,7 +8,7 @@
   font-display: swap;
   font-weight: 100 900;
   src: url(./inter-latin-ext-wght-normal.woff2) format('woff2-variations');
-  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+  unicode-range: U+0100-017F;
 }
 @font-face {
   font-family: 'Inter';
@@ -23,7 +24,7 @@
   font-display: swap;
   font-weight: 100 900;
   src: url(./inter-latin-ext-wght-normal.woff2) format('woff2-variations');
-  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+  unicode-range: U+0100-017F;
 }
 @font-face {
   font-family: 'Manrope';
@@ -39,7 +40,7 @@
   font-display: swap;
   font-weight: 100 900;
   src: url(./inter-latin-ext-wght-normal.woff2) format('woff2-variations');
-  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+  unicode-range: U+0100-017F;
 }
 @font-face {
   font-family: 'Nunito';
@@ -55,7 +56,7 @@
   font-display: swap;
   font-weight: 100 900;
   src: url(./inter-latin-ext-wght-normal.woff2) format('woff2-variations');
-  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+  unicode-range: U+0100-017F;
 }
 @font-face {
   font-family: 'DM Sans';
@@ -71,7 +72,7 @@
   font-display: swap;
   font-weight: 100 800;
   src: url(./jetbrains-mono-latin-ext-wght-normal.woff2) format('woff2-variations');
-  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+  unicode-range: U+0100-017F;
 }
 @font-face {
   font-family: 'JetBrains Mono';
@@ -87,7 +88,7 @@
   font-display: swap;
   font-weight: 400;
   src: url(./cardo-latin-ext-400-normal.woff2) format('woff2');
-  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+  unicode-range: U+0100-017F;
 }
 @font-face {
   font-family: 'Cardo';
@@ -95,7 +96,7 @@
   font-display: swap;
   font-weight: 700;
   src: url(./cardo-latin-ext-700-normal.woff2) format('woff2');
-  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+  unicode-range: U+0100-017F;
 }
 @font-face {
   font-family: 'Cardo';
@@ -103,7 +104,7 @@
   font-display: swap;
   font-weight: 400;
   src: url(./cardo-latin-ext-400-italic.woff2) format('woff2');
-  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+  unicode-range: U+0100-017F;
 }
 @font-face {
   font-family: 'Cardo';
@@ -135,7 +136,7 @@
   font-display: swap;
   font-weight: 400;
   src: url(./cardo-latin-ext-400-normal.woff2) format('woff2');
-  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+  unicode-range: U+0100-017F;
 }
 @font-face {
   font-family: 'Lora';
@@ -143,7 +144,7 @@
   font-display: swap;
   font-weight: 700;
   src: url(./cardo-latin-ext-700-normal.woff2) format('woff2');
-  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+  unicode-range: U+0100-017F;
 }
 @font-face {
   font-family: 'Lora';
@@ -151,7 +152,7 @@
   font-display: swap;
   font-weight: 400;
   src: url(./cardo-latin-ext-400-italic.woff2) format('woff2');
-  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+  unicode-range: U+0100-017F;
 }
 @font-face {
   font-family: 'Lora';
@@ -183,7 +184,7 @@
   font-display: swap;
   font-weight: 400;
   src: url(./cardo-latin-ext-400-normal.woff2) format('woff2');
-  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+  unicode-range: U+0100-017F;
 }
 @font-face {
   font-family: 'Fraunces';
@@ -191,7 +192,7 @@
   font-display: swap;
   font-weight: 700;
   src: url(./cardo-latin-ext-700-normal.woff2) format('woff2');
-  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+  unicode-range: U+0100-017F;
 }
 @font-face {
   font-family: 'Fraunces';
@@ -199,7 +200,7 @@
   font-display: swap;
   font-weight: 400;
   src: url(./cardo-latin-ext-400-italic.woff2) format('woff2');
-  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+  unicode-range: U+0100-017F;
 }
 @font-face {
   font-family: 'Fraunces';
@@ -231,7 +232,7 @@
   font-display: swap;
   font-weight: 400;
   src: url(./cardo-latin-ext-400-normal.woff2) format('woff2');
-  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+  unicode-range: U+0100-017F;
 }
 @font-face {
   font-family: 'Playfair Display';
@@ -239,7 +240,7 @@
   font-display: swap;
   font-weight: 700;
   src: url(./cardo-latin-ext-700-normal.woff2) format('woff2');
-  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+  unicode-range: U+0100-017F;
 }
 @font-face {
   font-family: 'Playfair Display';
@@ -247,7 +248,7 @@
   font-display: swap;
   font-weight: 400;
   src: url(./cardo-latin-ext-400-italic.woff2) format('woff2');
-  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+  unicode-range: U+0100-017F;
 }
 @font-face {
   font-family: 'Playfair Display';
@@ -279,7 +280,7 @@
   font-display: swap;
   font-weight: 400;
   src: url(./cardo-latin-ext-400-normal.woff2) format('woff2');
-  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+  unicode-range: U+0100-017F;
 }
 @font-face {
   font-family: 'DM Serif Display';
@@ -287,7 +288,7 @@
   font-display: swap;
   font-weight: 700;
   src: url(./cardo-latin-ext-700-normal.woff2) format('woff2');
-  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+  unicode-range: U+0100-017F;
 }
 @font-face {
   font-family: 'DM Serif Display';
@@ -295,7 +296,7 @@
   font-display: swap;
   font-weight: 400;
   src: url(./cardo-latin-ext-400-italic.woff2) format('woff2');
-  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+  unicode-range: U+0100-017F;
 }
 @font-face {
   font-family: 'DM Serif Display';

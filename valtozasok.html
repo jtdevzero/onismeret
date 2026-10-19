@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Változásnapló — Önismereti térképek</title>
-<link rel="stylesheet" href="fonts/fonts.css?v=885e76a5">
+<link rel="stylesheet" href="fonts/fonts.css?v=50e1f8e3">
 <style>
 :root{
   --bg-deep:#050d1e;--bg-card:#0f2038;--bg-card-hi:#152845;
@@ -62,13 +62,17 @@ h2{font-family:var(--font-serif);font-weight:400;font-size:28px;margin:44px 0 8p
 @media (max-width:560px){.wrap{padding:28px 16px 64px}}
 </style>
 
-<script src="assets/oni-core.js?v=c604c755"></script>
+<script src="assets/oni-core.js?v=2f9535e7"></script>
 <script src="assets/oni-rules.js?v=8b76609e"></script>
 <script src="assets/oni-schema.js?v=9dbd0f7d" defer></script>
 <script src="assets/tests-data.js?v=d48a72a4" defer></script>
 <script src="assets/mely.js?v=8eeb009a" defer></script>
 <script src="assets/results-plus.js?v=21fd7519" defer></script>
 <link rel="stylesheet" href="assets/theme.css?v=f49849e4">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#050d1e">
+<link rel="icon" type="image/png" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 </head>
 <body>
 <div class="wrap">
@@ -98,6 +102,13 @@ document.addEventListener('DOMContentLoaded',function(){
   var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
   /* score/retake: 'no' | 'part' | 'yes' */
   var LOG=[
+    {d:'2026-10-19',t:'Gyorsabb betöltés, offline működés, adatvédelem',score:'no',retake:'no',items:[
+      'Az oldal internet nélkül is működik: az első látogatás után minden oldal és közös fájl a böngészőben marad, így a tesztek offline is kitölthetők. Válasz vagy eredmény ettől sem megy szerverre.',
+      'Telepíthető: telefonon a kezdőképernyőre tehető saját ikonnal, és alkalmazásként nyílik meg.',
+      'Kb. harmadával kevesebb letöltés oldalanként: a kiegészítő betűfájlok a ténylegesen szükséges ékezetes betűkre szűkültek (197 KB helyett 46 KB).',
+      'Az első mentéskor az oldal tartós tárolást kér a böngészőtől, hogy tárhelyhiány esetén se törlődjenek automatikusan az adatok.',
+      'A főoldal emlékeztet, ha még nem, vagy 30 napnál régebben mentetted fájlba az eredményeidet; iPhone-on arra is figyelmeztet, hogy a Safari 7 nap használat nélkül törölheti az adatokat, és a kezdőképernyőre tett változat ettől védett.',
+      'A meglévő tesztek pontozása nem változott.']},
     {d:'2026-10-19',t:'Szövegellenőrzés',score:'no',retake:'no',items:[
       'Helyesírási és elírás-javítások az oldalak szövegében, köztük néhány kérdés szövegében is (pl. „tested”, „konfliktust”, „ostorozom”, „cserben hagyok”). A kérdések jelentése és a pontozás nem változott, ezért nincs szükség újrakitöltésre.',
       'Egységes szóhasználat: „önszánat” helyett mindenhol „önegyüttérzés”, ahogy az SCS-SF tesztnél is.',
