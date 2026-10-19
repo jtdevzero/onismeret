@@ -9,7 +9,7 @@
   var page=document.documentElement.getAttribute('data-page');
   /* oldalanként: ONI-azonosító → panel és eredménykonténer */
   var MAP={};
-  ['ecr','smi','tas','iief','pedt','sdi','des','ssss','nsss','saq','love','apo','imago','bf','via','las','tki','gott','fti','pvq','ft','kolbe','meq','ips','ders','scs','tfeq','asrs','phq9','gad7']
+  ['ecr','smi','tas','iief','pedt','sdi','des','ssss','nsss','saq','love','apo','imago','bf','via','las','tki','gott','fti','pvq','ft','kolbe','meq','ips','ders','scs','tfeq','asrs','phq9','gad7','rses','gse','bfne','obgy']
     .forEach(function(id){MAP[id]={panel:'#test-'+id,res:'#'+id+'-results'}});
   if(page==='maia2')MAP.maia2={panel:'body',res:'#results'};
   if(page==='sis-ses')MAP.sisses={panel:'body',res:'#results'};
