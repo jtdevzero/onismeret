@@ -204,3 +204,11 @@ html[data-theme="light"] :is(.cross-card,.therapy-card,.imago-portrait,.total-ca
 html[data-theme="light"] .cross-item-label{color:var(--u-sapphire)!important}
 html[data-theme="light"] :is(.bar-row-track,.score-bar,.room-bar){background:var(--u-bg3)!important}
 html[data-theme="light"] :is(.bar-row-name){color:var(--u-ink)!important}
+
+/* a pontszám-kártyák neve címke, nem címsor (a címsorrend miatt) */
+.score-card .sc-h{font-family:var(--font-display);font-weight:500;font-size:17px;line-height:1.2;margin-bottom:12px;color:var(--ink-lite)}
+.score-card .sc-h em{font-style:italic}
+html[data-theme="light"] .score-card .sc-h{color:var(--u-ink)!important}
+#test-tas .sub-card .sc-h{font-family:'Cardo',serif;font-weight:500;font-size:16px;line-height:1.25;margin-bottom:12px;min-height:40px;color:var(--ink-lite)}
+html[data-theme="light"] #test-tas .sub-card .sc-h{color:var(--u-ink)!important}
+html[data-theme="light"] .quad .cell .s{color:var(--u-soft)!important}

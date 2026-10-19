@@ -4,10 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Szexuális funkció és disszociáció — IIEF-15 · PEDT · SDI-2 · DES-II</title>
+<meta name="description" content="Szexuális funkció és disszociáció — IIEF-15 · PEDT · SDI-2 · DES-II — önismereti kérdőívek magyarul. A válaszok és az eredmények csak ebben a böngészőben tárolódnak.">
 <link rel="stylesheet" href="fonts/fonts.css?v=50e1f8e3">
-<script src="assets/registry.js?v=1d248b64"></script>
-<script src="assets/oni-core.js?v=172147a9"></script>
-<script src="assets/oni-rules.js?v=8b76609e"></script>
+<script src="assets/oni.js?v=aadf38b1"></script>
 <style>/* A hub-oldalak alapstílusa (eredetileg a szemelyiseg.html-ből). */
 :root{
   --font-display:'Fraunces','Cardo',serif;
@@ -411,19 +410,28 @@ html[data-theme="light"] :is(.cross-card,.therapy-card,.imago-portrait,.total-ca
 html[data-theme="light"] .cross-item-label{color:var(--u-sapphire)!important}
 html[data-theme="light"] :is(.bar-row-track,.score-bar,.room-bar){background:var(--u-bg3)!important}
 html[data-theme="light"] :is(.bar-row-name){color:var(--u-ink)!important}
+
+/* a pontszám-kártyák neve címke, nem címsor (a címsorrend miatt) */
+.score-card .sc-h{font-family:var(--font-display);font-weight:500;font-size:17px;line-height:1.2;margin-bottom:12px;color:var(--ink-lite)}
+.score-card .sc-h em{font-style:italic}
+html[data-theme="light"] .score-card .sc-h{color:var(--u-ink)!important}
+#test-tas .sub-card .sc-h{font-family:'Cardo',serif;font-weight:500;font-size:16px;line-height:1.25;margin-bottom:12px;min-height:40px;color:var(--ink-lite)}
+html[data-theme="light"] #test-tas .sub-card .sc-h{color:var(--u-ink)!important}
+html[data-theme="light"] .quad .cell .s{color:var(--u-soft)!important}
 </style>
 <script src="assets/oni-schema.js?v=9dbd0f7d" defer></script>
 <script src="assets/tests-data.js?v=5c562e03" defer></script>
 <script src="assets/mely.js?v=8eeb009a" defer></script>
-<script src="assets/results-plus.js?v=faf16aa6" defer></script>
+<script src="assets/results-plus.js?v=1f96d0e0" defer></script>
 <script src="assets/mely-funkcio.js?v=33eea5fc" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=41d0552c">
+<link rel="stylesheet" href="assets/theme.css?v=1a89d72b">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#050d1e">
 <link rel="icon" type="image/png" href="icons/favicon-32.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 </head>
 <body>
+<main id="main">
 <div class="hub-shell">
   <a class="hub-back" href="index.html">‹ Önismereti térképek</a>
   <div class="hub-header">
@@ -450,7 +458,7 @@ window.H = (function(){
 
   function cards(list){
     return `<div class="score-grid">${list.map(c=>`<div class="score-card" style="--sc:${c.color}">
-      <div class="abbr">${c.abbr||''}</div><h4>${c.name}</h4>
+      <div class="abbr">${c.abbr||''}</div><div class="sc-h">${c.name}</div>
       <div class="val">${c.val}</div><div class="out">${c.out||''}</div>
       ${c.band?`<span class="band">${c.band}</span>`:''}
       <div class="bar"><div class="bar-fill" style="width:${clamp(c.pct,0,100)}%"></div></div></div>`).join('')}</div>`;
@@ -469,7 +477,7 @@ window.H = (function(){
       <div class="rank-score">${it.score}<span>${it.unit||''}</span></div></div>`).join('')}</div>`;
   }
   function interp(title,sections){
-    return `<div class="interp-card"><h3>${title}</h3>${sections.filter(Boolean).map(s=>`<div class="interp-section" style="--sc:${s.color||'var(--c1)'}"><h4>${s.h}</h4>${s.html}</div>`).join('')}</div>`;
+    return `<div class="interp-card"><h3>${title}</h3>${sections.filter(Boolean).map(s=>`<div class="interp-section" style="--sc:${s.color||'var(--c1)'}">${s.h?`<h4>${s.h}</h4>`:''}${s.html}</div>`).join('')}</div>`;
   }
   function chart(title,sub,inner,legend){
     return `<div class="chart-card"><h3>${title}</h3><div class="chart-sub">${sub}</div>${inner}${legend?`<div class="chart-legend">${legend.map(l=>`<div class="chart-legend-item"><span class="chart-legend-swatch" style="background:${l.color}"></span><span><strong>${l.label}</strong> ${l.val??''}</span></div>`).join('')}</div>`:''}</div>`;
@@ -787,7 +795,7 @@ function __oldRender(){
   let scHtml='';
   ['EF','OF','SD','IS','OS'].forEach(d=>{
     const meta=DOMAINS[d], s=scores[d], band=subBand(d,s), pct=(s/meta.max)*100;
-    scHtml+=`<div class="score-card" style="--sc:${band.color}"><div class="abbr">${d} · ${meta.en}</div><h4><em>${meta.name}</em></h4><div class="val">${s}</div><div class="out">/ ${meta.max}</div><div class="band">${band.label}</div><div class="bar"><div class="bar-fill" style="width:${pct}%"></div></div></div>`;
+    scHtml+=`<div class="score-card" style="--sc:${band.color}"><div class="abbr">${d} · ${meta.en}</div><div class="sc-h"><em>${meta.name}</em></div><div class="val">${s}</div><div class="out">/ ${meta.max}</div><div class="band">${band.label}</div><div class="bar"><div class="bar-fill" style="width:${pct}%"></div></div></div>`;
   });
   document.getElementById('iief-scoresGrid').innerHTML=scHtml;
   let interp=`<h3>Klinikai <em>értelmezés</em></h3><div class="interp-section" style="--sc:${efB.color}"><h4>Erekciós Funkció — ${efB.label}</h4><p>${INTERP.EF[efB.key]}</p></div>`;
@@ -1012,13 +1020,13 @@ function __oldRender(){
   let scHtml='';
   [{k:'D',n:'Partneri vágy',en:'Dyadic Sexual Desire',max:64},{k:'S',n:'Szóló vágy',en:'Solitary Sexual Desire',max:48}].forEach(dim=>{
     const s=scores[dim.k], b=band(dim.k,s), pct=(s/dim.max)*100;
-    scHtml+=`<div class="score-card" style="--sc:${b.color}"><div class="abbr">${dim.en}</div><h4><em>${dim.n}</em></h4><div class="val">${s}</div><div class="out">/ ${dim.max}</div><div class="band">${b.label}</div><div class="bar"><div class="bar-fill" style="width:${pct}%"></div></div></div>`;
+    scHtml+=`<div class="score-card" style="--sc:${b.color}"><div class="abbr">${dim.en}</div><div class="sc-h"><em>${dim.n}</em></div><div class="val">${s}</div><div class="out">/ ${dim.max}</div><div class="band">${b.label}</div><div class="bar"><div class="bar-fill" style="width:${pct}%"></div></div></div>`;
   });
   document.getElementById('sdi-scoresGrid').innerHTML=scHtml;
   let interp=`<h3>Klinikai <em>értelmezés</em></h3>`;
   [{k:'D',n:'Partneri vágy'},{k:'S',n:'Szóló vágy'}].forEach(dim=>{
     const s=scores[dim.k], b=band(dim.k,s);
-    interp+=`<div class="interp-section" style="--sc:${b.color}"><h4>${dim.n} — ${b.label}</h4><p>${INTERP[dim.k][b.key]}</p><p>A pontszámod (${s} / ${dim.max}) ${b.desc}. Külföldi mintákon közölt átlagokhoz nem hasonlítom, mert ez a saját fordítás nincs magyar mintán normázva.</p></div>`;
+    interp+=`<div class="interp-section" style="--sc:${b.color}"><h4>${dim.n} — ${b.label}</h4><p>${INTERP[dim.k][b.key]}</p><p>A pontszámod (${s} / ${SDI_MAX[dim.k]}) ${b.desc}. Külföldi mintákon közölt átlagokhoz nem hasonlítom, mert ez a saját fordítás nincs magyar mintán normázva.</p></div>`;
   });
   document.getElementById('sdi-interpCard').innerHTML=interp;
   const links=crossPattern(scores.D, scores.S);
@@ -1183,7 +1191,7 @@ function __oldRender(){
   let scHtml='';
   ['ABS','AMN','DPD'].forEach(sub=>{
     const s=subs[sub], meta=SUB_META[sub], b=subBand(s), pct=(s/100)*100;
-    scHtml+=`<div class="score-card" style="--sc:${b.color}"><div class="abbr">${sub} · ${meta.en}</div><h4><em>${meta.name}</em></h4><div class="val">${s.toFixed(1)}</div><div class="out">/ 100 · ${meta.items} item</div><div class="band">${b.label}</div><div class="bar"><div class="bar-fill" style="width:${pct}%"></div></div></div>`;
+    scHtml+=`<div class="score-card" style="--sc:${b.color}"><div class="abbr">${sub} · ${meta.en}</div><div class="sc-h"><em>${meta.name}</em></div><div class="val">${s.toFixed(1)}</div><div class="out">/ 100 · ${meta.items} item</div><div class="band">${b.label}</div><div class="bar"><div class="bar-fill" style="width:${pct}%"></div></div></div>`;
   });
   document.getElementById('des-scoresGrid').innerHTML=scHtml;
   let interp=`<h3>Klinikai <em>értelmezés</em></h3><div class="interp-section" style="--sc:${tB.color}"><h4>Összkép — ${tB.label}</h4><p>${INTERP.overall[tB.key]}</p></div>`;
@@ -1219,5 +1227,6 @@ makeTest({
 
 bootHub(['iief','pedt','sdi','des']);
 </script>
+</main>
 </body>
 </html>

@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Párban — Önismereti térképek</title>
+<meta name="description" content="Párban — Önismereti térképek — önismereti kérdőívek magyarul. A válaszok és az eredmények csak ebben a böngészőben tárolódnak.">
 <link rel="stylesheet" href="fonts/fonts.css?v=50e1f8e3">
 <style>
 :root{
@@ -113,20 +114,19 @@ b.me,.pv.me{color:var(--gold)}b.pa,.pv.pa{color:var(--sapphire)}
 .psum{font-size:14.5px;color:var(--ink-soft);margin:0 0 14px}
 </style>
 
-<script src="assets/registry.js?v=1d248b64"></script>
-<script src="assets/oni-core.js?v=172147a9"></script>
-<script src="assets/oni-rules.js?v=8b76609e"></script>
+<script src="assets/oni.js?v=aadf38b1"></script>
 <script src="assets/oni-schema.js?v=9dbd0f7d" defer></script>
 <script src="assets/tests-data.js?v=5c562e03" defer></script>
 <script src="assets/mely.js?v=8eeb009a" defer></script>
-<script src="assets/results-plus.js?v=faf16aa6" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=41d0552c">
+<script src="assets/results-plus.js?v=1f96d0e0" defer></script>
+<link rel="stylesheet" href="assets/theme.css?v=1a89d72b">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#050d1e">
 <link rel="icon" type="image/png" href="icons/favicon-32.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 </head>
 <body>
+<main id="main">
 <div class="wrap">
   <a class="back" href="index.html">‹ Önismereti térképek</a>
   <span class="kicker">Párban</span>
@@ -134,7 +134,7 @@ b.me,.pv.me{color:var(--gold)}b.pa,.pv.pa{color:var(--sapphire)}
   <p class="lead">A kapcsolati tesztek fele akkor ér a legtöbbet, ha a párod is kitölti. Itt egymás mellé teszitek az eredményeiteket: hol egyeztek, hol tér el a legjobban a két profil, és milyen párdinamikát jeleznek a kombinációk.</p>
 
   <div class="card how" style="--acc:var(--sapphire)">
-    <h3>Hogyan működik</h3>
+    <h3 aria-level="2">Hogyan működik</h3>
     <ol>
       <li>A párod a <strong>saját eszközén</strong> megnyitja ugyanezt az oldalt, és kitölti az alábbi párteszteket (legalább kettőt).</li>
       <li>Ezen az oldalon a <em>Párexport</em> gombbal elmenti <strong>csak a párteszt-eredményeit</strong>, és elküldi neked a fájlt. (A főoldali teljes mentésfájl is működik, de abban minden adata benne van, a szexuális tesztek nyers válaszai is.)</li>
@@ -392,5 +392,6 @@ function render(){
 render();
 })();
 </script>
+</main>
 </body>
 </html>

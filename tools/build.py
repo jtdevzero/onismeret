@@ -15,6 +15,11 @@ REG_TAG = '<script src="assets/registry.js"></script>'   # tesztnyilvántartás:
 THEME_TAG = '<link rel="stylesheet" href="assets/theme.css">'
 SCHEMA_TAG = '<script src="assets/oni-schema.js" defer></script>'
 RULES_TAG = '<script src="assets/oni-rules.js"></script>'   # nem defer: az összegzés beágyazott szkriptje azonnal használja
+# A három szinkron közös szkript (nyilvántartás, mag, minták) egy fájlba csomagolva: egy kérés három helyett,
+# így rövidebb a megjelenés előtti várakozás. A forrás továbbra is a három külön fájl.
+BUNDLE = 'assets/oni.js'
+BUNDLE_TAG = '<script src="assets/oni.js"></script>'
+TRIO = REG_TAG + '\n' + CORE_TAG + '\n' + RULES_TAG + '\n'
 PLUS_TAGS = '<script src="assets/tests-data.js" defer></script>\n<script src="assets/mely.js" defer></script>\n<script src="assets/results-plus.js" defer></script>'
 FONTS = '<link rel="stylesheet" href="fonts/fonts.css">'
 PWA_TAGS = ('<link rel="manifest" href="manifest.webmanifest">\n<meta name="theme-color" content="#050d1e">\n'
@@ -45,12 +50,20 @@ def ver(rel):
 
 ASSETS = ['assets/registry.js', 'assets/oni-core.js', 'assets/oni-schema.js', 'assets/tests-data.js', 'assets/results-plus.js', 'assets/theme.css', 'assets/demo-data.js', 'assets/ysq-mely.js', 'assets/mely.js', 'assets/oni-rules.js', 'assets/csillag-calc.js', 'assets/csillag-data.js', 'fonts/fonts.css']
 
+def build_bundle():
+    parts = ['assets/registry.js', 'assets/oni-core.js', 'assets/oni-rules.js']
+    out = '/* GENERÁLT FÁJL (tools/build.py): ' + ' + '.join(parts) + ' — ne szerkeszd kézzel, a forrásfájlokat módosítsd. */\n'
+    out += '\n'.join(f'/* ── {x} ── */\n' + (ROOT / x).read_text() for x in parts)
+    (ROOT / BUNDLE).write_text(out)
+
 def link_core():
-    V = {a: ver(a) for a in ASSETS}
+    build_bundle()
+    V = {a: ver(a) for a in ASSETS + [BUNDLE]}
     for p in sorted(ROOT.glob('*.html')):
         s = p.read_text()
         s2 = re.sub(r'<script>\n/\* ONI-CORE v\d.*?</script>\n', '', s, flags=re.S)
         s2 = re.sub(r'(assets/[\w.-]+\.(?:js|css)|fonts/fonts\.css)\?v=[0-9a-f]+', r'\1', s2)   # régi verziójelek le
+        s2 = s2.replace(BUNDLE_TAG + '\n', TRIO)   # a csomag helyén a három forrás, a sorrend-ellenőrzés miatt
         if CORE_TAG not in s2:
             s2 = s2.replace('</head>', CORE_TAG + '\n</head>', 1)
         s2 = s2.replace(REG_TAG + '\n', '')
@@ -66,11 +79,19 @@ def link_core():
         mtag = ''.join(f'<script src="{m}" defer></script>\n' for m in melys)
         for m in melys: V[m] = ver(m)
         s2 = s2.replace('</head>', SCHEMA_TAG + '\n' + PLUS_TAGS + '\n' + mtag + THEME_TAG + '\n</head>', 1)   # a témafájl mindig utolsó a fejlécben
+        if '<main' not in s2:   # tájolópont (landmark) a képernyőolvasóknak: az oldal teljes tartalma egy <main> elemben
+            s2 = re.sub(r'(<body[^>]*>)', r'\1\n<main id="main">', s2, count=1)
+            s2 = s2.replace('</body>', '</main>\n</body>', 1)
+        if '<meta name="description"' not in s2:   # keresőknek és megosztáskor megjelenő leírás
+            t = re.search(r'<title>(.*?)</title>', s2, re.S)
+            desc = (t.group(1).strip() + ' — ' if t else '') + 'önismereti kérdőívek magyarul. A válaszok és az eredmények csak ebben a böngészőben tárolódnak.'
+            s2 = s2.replace('</title>', '</title>\n<meta name="description" content="' + desc.replace('"', '&quot;') + '">', 1)
         s2 = s2.replace(PWA_TAGS + '\n', '')
         s2 = s2.replace('</head>', PWA_TAGS + '\n</head>', 1)
-        if s2.count(CORE_TAG) != 1:
+        if s2.count(CORE_TAG) != 1 or TRIO not in s2:
             raise SystemExit(f'{p.name}: core tag count {s2.count(CORE_TAG)}')
-        for a in ASSETS + melys:
+        s2 = s2.replace(TRIO, BUNDLE_TAG + '\n', 1)
+        for a in ASSETS + [BUNDLE] + melys:
             s2 = re.sub(r'(src|href)="' + re.escape(a) + '"', lambda m: f'{m.group(1)}="{a}?v={V[a]}"', s2)
         if s2 != s:
             p.write_text(s2); print('linked', p.name)

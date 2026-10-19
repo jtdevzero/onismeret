@@ -919,6 +919,30 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     await ctx.close();
   }
 
+  console.log('\n31. Minőségőr: szövegben nincs undefined/NaN, YSQ Fókusz-nézet, tájolópontok, egyetlen közös szkript');
+  {
+    const ctx = await newCtx(); const p = await pageIn(ctx);
+    const bad = [];
+    for (const t of await (async () => { await p.goto(R + 'index.html'); return p.evaluate(() => window.ONI_REG.filter(t => /#test-/.test(t.link))); })()) {
+      await p.goto(R + t.link); await p.waitForTimeout(120);
+      for (const mode of ['min', 'max']) {
+        const txt = await p.evaluate(([id, mode]) => { TESTS[id]._fillAll(k => mode === 'min' ? 0 : k - 1); TESTS[id].show(); return document.getElementById(id + '-results').innerText; }, [t.id, mode]);
+        const m = txt.match(/.{0,30}\b(undefined|NaN|Infinity|\[object Object\])\b.{0,20}/); if (m) bad.push(t.id + '/' + mode + ': ' + m[0]);
+      }
+    }
+    ok(!bad.length, 'egyik eredményoldal szövegében sincs undefined/NaN (min és max kitöltés)', bad.slice(0, 3));
+    await p.goto(R + 'ysq.html'); await p.waitForTimeout(300); p._errs = [];
+    const dose = await p.evaluate(async () => { for (let n = 1; n <= 244; n++) answers[n] = 1 + (n % 6); showView('dose'); await new Promise(r => setTimeout(r, 300)); return document.getElementById('view-dose').innerText.length; });
+    ok(dose > 300 && p._errs.length === 0, 'YSQ: a Fókusz-nézet hiba nélkül megnyílik', [dose, p._errs]);
+    const pages = fs.readdirSync(ROOT).filter(x => x.endsWith('.html'));
+    ok(pages.every(f => (fs.readFileSync(path.join(ROOT, f), 'utf8').match(/<main\b/g) || []).length === 1), 'minden oldalon pontosan egy <main> tájolópont');
+    ok(pages.every(f => { const h = fs.readFileSync(path.join(ROOT, f), 'utf8'); return /<script src="assets\/oni\.js\?v=[0-9a-f]+"><\/script>/.test(h) && !/src="assets\/(registry|oni-core|oni-rules)\.js/.test(h) && /<meta name="description"/.test(h); }), 'minden oldal egyetlen közös szkriptet tölt be, és van leírása');
+    await p.goto(R + 'index.html'); await p.waitForTimeout(200);
+    ok(await p.evaluate(() => { const b = document.getElementById('oni-theme'); return !b.hasAttribute('aria-label') && /mód/.test(b.textContent) && !!b.title; }), 'témaváltó: az akadálymentes név a látható szöveg');
+    ok(p._errs.length === 0, 'nincs JS-hiba a 31. szakaszban', p._errs);
+    await ctx.close();
+  }
+
   await browser.close();
   console.log(`\n${pass} rendben, ${fail} hiba`);
   process.exit(fail ? 1 : 0);

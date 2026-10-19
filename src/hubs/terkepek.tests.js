@@ -615,7 +615,7 @@ function __oldRender(){
   let subHtml='';
   ['DIF','DDF','EOT'].forEach(sub=>{
     const s=scores[sub], meta=SUB_META[sub], band=subBand(sub,s), pct=(s/meta.max)*100;
-    subHtml+=`<div class="sub-card" style="--sc:${band.color}"><div class="abbr">${meta.short} · ${meta.en}</div><h4><em>${meta.name}</em></h4><div class="val">${s}</div><div class="out">/ ${meta.max}</div><div class="band">${band.label}</div><div class="bar"><div class="bar-fill" style="width:${pct}%"></div></div></div>`;
+    subHtml+=`<div class="sub-card" style="--sc:${band.color}"><div class="abbr">${meta.short} · ${meta.en}</div><div class="sc-h"><em>${meta.name}</em></div><div class="val">${s}</div><div class="out">/ ${meta.max}</div><div class="band">${band.label}</div><div class="bar"><div class="bar-fill" style="width:${pct}%"></div></div></div>`;
   });
   document.getElementById('tas-subScores').innerHTML=subHtml;
   let interpHtml=`<h3>Klinikai <em>értelmezés</em></h3><div class="interp-section" style="--sc:${tBand.color}"><h4>Összkép — ${tBand.label}</h4><p>${INTERP.overall[tBand.key]}</p></div>`;
