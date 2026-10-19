@@ -113,7 +113,7 @@ function makeTest(cfg){
     cfg.sections.forEach(sec=>{
       if(sec.title)html+=`<div class="section-head"><h3>${sec.title}</h3>${sec.desc?`<p>${sec.desc}</p>`:''}</div>`;
       items.filter(it=>it.sec===sec).forEach(it=>{
-        const opts=it.opts||cfg.scale;
+        const opts=it.opts||it.scale||cfg.scale;   /* it.scale: tételenként eltérő skála (pl. IIEF, SDI-2) */
         const choice=!!it.opts;
         const cls=choice?'opts'+(it.opts.every(o=>String(o.t).length<=3)?' short':''):`scale${opts.length===4?' s4':opts.length===6?' s6':''}`;
         html+=`<div class="q" data-n="${it.n}"${it.optional?` data-optional="${it.optional}"`:''}><div class="q-head"><span class="q-num">${it.n}.${it.tag?` · ${it.tag}`:''}</span><span class="q-text">${it.t}</span></div>
@@ -148,7 +148,7 @@ function makeTest(cfg){
     items.forEach(it=>{
       const raw=responses[it.n];
       if(it.opts){const idx=optIdx(it,raw),opt=it.opts[idx];R.picks.push({item:it,opt,idx});R.items.push({n:it.n,t:it.t,raw,opt:opt&&opt.t});return;}
-      const vals=cfg.scale.map(s=>s.v),lo=Math.min(...vals),hi=Math.max(...vals);
+      const vals=(it.scale||cfg.scale).map(s=>s.v),lo=Math.min(...vals),hi=Math.max(...vals);
       const v=it.r?(lo+hi)-raw:raw;
       R.items.push({n:it.n,s:it.s,t:it.t,raw,v,r:!!it.r});
       (R.scales[it.s]=R.scales[it.s]||[]).push(v);
@@ -194,7 +194,7 @@ function makeTest(cfg){
     $('show').addEventListener('click',show);
     refreshSelection();progress();
   }
-  const api={cfg,mount,show,reset,downloadJSON,total:TOTAL,hasProgress:()=>Object.keys(responses).length>0,_fillAll:(fn)=>{items.forEach(it=>{const k=it.opts?it.opts.length:cfg.scale.length,i=fn(k,it);responses[it.n]=it.opts?(it.opts[i].v!==undefined?it.opts[i].v:i):cfg.scale[i].v;});save();refreshSelection();progress();}};
+  const api={cfg,mount,show,reset,downloadJSON,total:TOTAL,hasProgress:()=>Object.keys(responses).length>0,_fillAll:(fn)=>{items.forEach(it=>{const sc=it.scale||cfg.scale,k=it.opts?it.opts.length:sc.length,i=fn(k,it);responses[it.n]=it.opts?(it.opts[i].v!==undefined?it.opts[i].v:i):sc[i].v;});save();refreshSelection();progress();}};
   TESTS[cfg.id]=api;
   return api;
 }

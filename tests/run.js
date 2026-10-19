@@ -382,7 +382,7 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
   return {n,fails};
 };
     const fillLegacy = id => { const sc = document.getElementById('test-' + id) || document.body; const g = {}; sc.querySelectorAll('button[data-n]').forEach(x => (g[x.dataset.n] = g[x.dataset.n] || []).push(x)); Object.values(g).forEach(a => a[Math.floor(a.length / 2)].click()); const bt = sc.querySelector('button[id$=showResults], #' + id + '-show, button[id$=-show], #showResults'); bt.click(); };
-    const CASES = [['kapcsolat', 'gott', 'hub'], ['szabalyozas', 'ders', 'hub'], ['terkepek', 'smi', 'leg'], ['terkepek', 'ecr', 'leg'], ['funkcio', 'sdi', 'leg'], ['funkcio', 'des', 'leg'], ['attitudok', 'nsss', 'hub'], ['nyelvek', 'love', 'hub'], ['nyelvek', 'imago', 'hub'], ['szemelyiseg', 'via', 'hub'], ['maia2', 'maia2', 'solo'], ['sis-ses', 'sisses', 'solo']];
+    const CASES = [['kapcsolat', 'gott', 'hub'], ['szabalyozas', 'ders', 'hub'], ['terkepek', 'smi', 'leg'], ['terkepek', 'ecr', 'leg'], ['funkcio', 'sdi', 'hub'], ['funkcio', 'des', 'hub'], ['attitudok', 'nsss', 'hub'], ['nyelvek', 'love', 'hub'], ['nyelvek', 'imago', 'hub'], ['szemelyiseg', 'via', 'hub'], ['maia2', 'maia2', 'solo'], ['sis-ses', 'sisses', 'solo']];
     for (const th of ['light', 'dark']) {
       const ctx = await newCtx(); await ctx.addInitScript(t => { if (!sessionStorage.getItem('t')) { localStorage.setItem('onismeret-settings-v1', JSON.stringify({ theme: t })); sessionStorage.setItem('t', 1); } }, th);
       const p = await pageIn(ctx); let worst = [], charts = [];
@@ -463,7 +463,7 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     ok(bins.join() === '0,1,2,3,4,5', 'MAIA-2 hisztogram a teljes 0–5 skálán, akkor is, ha csak 3 és 4 válasz van', bins);
     await p.goto(R + 'funkcio.html#test-iief'); await p.waitForTimeout(200);
     await p.evaluate(() => document.querySelectorAll('#test-iief .q').forEach(q => { const b = q.querySelectorAll('button[data-n]'); b[b.length - 1].click(); }));
-    await p.click('#iief-showResults'); await p.waitForTimeout(600);
+    await p.click('#iief-show'); await p.waitForTimeout(600);
     const iief = await p.evaluate(() => ({ bins: [...document.querySelectorAll('#iief-results .hist .hbk')].map(e => e.textContent), note: (document.querySelector('#iief-results .hist') || { parentElement: { textContent: '' } }).parentElement.textContent }));
     ok(iief.bins.join() === '0,1,2,3,4,5' && /további 5 kérdése más válaszskálát/.test(iief.note), 'IIEF: eltérő skálájú kérdések nincsenek összeöntve, a diagram megnevezi őket', iief.bins);
     ok(p._errs.length === 0, 'hibamentes', p._errs);
@@ -699,7 +699,7 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
   console.log('\n26. Bizonyítékszint, válaszstílus, segítség-blokk, normák, riport, AI-szöveg, pár-mélyelemzés');
   {
     const ctx = await newCtx(); const p = await pageIn(ctx);
-    const legacyFill = (id, pick) => p.evaluate(([id, pick]) => { document.querySelectorAll('#test-' + id + ' .q').forEach(q => { const b = [...q.querySelectorAll('.scale-btn')]; if (b.length) (pick === 'last' ? b[b.length - 1] : b[Math.floor(b.length / 2)]).click(); }); const s = document.getElementById(id + '-showResults'); s.disabled = false; s.click(); }, [id, pick]);
+    const legacyFill = (id, pick) => p.evaluate(([id, pick]) => { document.querySelectorAll('#test-' + id + ' .q').forEach(q => { const b = [...q.querySelectorAll('.scale-btn')]; if (b.length) (pick === 'last' ? b[b.length - 1] : b[Math.floor(b.length / 2)]).click(); }); const s = document.getElementById(id + '-showResults') || document.getElementById(id + '-show'); s.disabled = false; s.click(); }, [id, pick]);
     await p.goto(R + 'szabalyozas.html#test-ips'); await p.waitForTimeout(200);
     await p.evaluate(() => { TESTS.ips._fillAll(() => 2); TESTS.ips.show(); }); await p.waitForTimeout(600);
     let m = await p.evaluate(() => ({ ev: !!document.querySelector('#ips-results .oni-brief .oni-ev-valid'), st: (document.querySelector('#ips-results .oni-style') || {}).textContent || '' }));

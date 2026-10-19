@@ -290,13 +290,32 @@ body::after{content:"";position:fixed;inset:0;background-image:url("data:image/s
 .bar-row-track{grid-column:1/-1;height:6px;border-radius:99px;background:rgba(147,197,253,.12);overflow:hidden}
 .bar-row-fill{height:100%;border-radius:99px}
 .rank-item .rank-pos,.rank-item.top .rank-pos,.rank-item.top .rank-score{color:color-mix(in srgb,var(--top-color,var(--rc,var(--gold-bright))) 55%,var(--ink-lite))}
+.hub-caveat{margin-top:18px;padding:14px 16px;border-radius:14px;border:1px solid rgba(251,191,36,.35);background:rgba(251,191,36,.07);font-size:14px;line-height:1.6;color:var(--ink-lite-soft)}
+.hub-caveat strong{color:var(--ink-lite)}
+.q-context{display:block;font-size:12.5px;color:var(--ink-lite-muted);font-style:italic;margin-bottom:6px}
+/* régi összesítő kártya és következtetés-blokk (kézzel írt oldalakról átvett eredménysablonok) */
+.total-card{background:linear-gradient(180deg,rgba(19,40,72,0.85),rgba(12,30,63,0.7));border:1px solid var(--line-dark);border-radius:20px;padding:30px 24px;margin-bottom:22px;text-align:center;position:relative;overflow:hidden}
+.total-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--tc,var(--sc,var(--c1)))}
+.total-label{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-lite-muted);margin-bottom:12px;font-weight:600}
+.total-value{font-family:'Cardo',serif;font-size:60px;line-height:1;color:var(--ink-lite);margin-bottom:6px}
+.total-out{font-size:13px;color:var(--ink-lite-muted);margin-bottom:14px}
+.total-band{display:inline-block;padding:6px 16px;border-radius:999px;font-size:12px;text-transform:uppercase;letter-spacing:.14em;color:#fff;font-weight:600;background:var(--tc,var(--c1))}
+.scores-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:22px}
+.therapy-card{background:linear-gradient(135deg,rgba(30,58,138,.55),rgba(49,46,129,.45));border:1px solid var(--line-glow);border-radius:20px;padding:26px 24px;margin-bottom:22px}
+.therapy-card h3{font-family:'Cardo',serif;font-weight:400;font-size:24px;margin-bottom:6px;color:var(--ink-lite)}
+.therapy-card h3 em{font-style:italic;color:var(--gold-bright)}
+.therapy-card .sub{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-lite-muted);margin-bottom:16px;font-weight:600}
+.therapy-mod{margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--line-dark)}
+.therapy-mod:last-child{border-bottom:0;margin-bottom:0;padding-bottom:0}
+.therapy-mod-name{font-family:'Cardo',serif;font-size:18px;color:var(--gold-brighter);margin-bottom:6px}
+.therapy-mod p{font-size:14px;line-height:1.65;color:var(--ink-lite-soft)}
 </style>
 <script src="assets/oni-schema.js?v=9dbd0f7d" defer></script>
 <script src="assets/tests-data.js?v=5c562e03" defer></script>
 <script src="assets/mely.js?v=8eeb009a" defer></script>
 <script src="assets/results-plus.js?v=faf16aa6" defer></script>
 <script src="assets/mely-nyelvek.js?v=cfc604ef" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=74196f5c">
+<link rel="stylesheet" href="assets/theme.css?v=2e8e994c">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#050d1e">
 <link rel="icon" type="image/png" href="icons/favicon-32.png">
@@ -431,7 +450,7 @@ function makeTest(cfg){
     cfg.sections.forEach(sec=>{
       if(sec.title)html+=`<div class="section-head"><h3>${sec.title}</h3>${sec.desc?`<p>${sec.desc}</p>`:''}</div>`;
       items.filter(it=>it.sec===sec).forEach(it=>{
-        const opts=it.opts||cfg.scale;
+        const opts=it.opts||it.scale||cfg.scale;   /* it.scale: tételenként eltérő skála (pl. IIEF, SDI-2) */
         const choice=!!it.opts;
         const cls=choice?'opts'+(it.opts.every(o=>String(o.t).length<=3)?' short':''):`scale${opts.length===4?' s4':opts.length===6?' s6':''}`;
         html+=`<div class="q" data-n="${it.n}"${it.optional?` data-optional="${it.optional}"`:''}><div class="q-head"><span class="q-num">${it.n}.${it.tag?` · ${it.tag}`:''}</span><span class="q-text">${it.t}</span></div>
@@ -466,7 +485,7 @@ function makeTest(cfg){
     items.forEach(it=>{
       const raw=responses[it.n];
       if(it.opts){const idx=optIdx(it,raw),opt=it.opts[idx];R.picks.push({item:it,opt,idx});R.items.push({n:it.n,t:it.t,raw,opt:opt&&opt.t});return;}
-      const vals=cfg.scale.map(s=>s.v),lo=Math.min(...vals),hi=Math.max(...vals);
+      const vals=(it.scale||cfg.scale).map(s=>s.v),lo=Math.min(...vals),hi=Math.max(...vals);
       const v=it.r?(lo+hi)-raw:raw;
       R.items.push({n:it.n,s:it.s,t:it.t,raw,v,r:!!it.r});
       (R.scales[it.s]=R.scales[it.s]||[]).push(v);
@@ -512,7 +531,7 @@ function makeTest(cfg){
     $('show').addEventListener('click',show);
     refreshSelection();progress();
   }
-  const api={cfg,mount,show,reset,downloadJSON,total:TOTAL,hasProgress:()=>Object.keys(responses).length>0,_fillAll:(fn)=>{items.forEach(it=>{const k=it.opts?it.opts.length:cfg.scale.length,i=fn(k,it);responses[it.n]=it.opts?(it.opts[i].v!==undefined?it.opts[i].v:i):cfg.scale[i].v;});save();refreshSelection();progress();}};
+  const api={cfg,mount,show,reset,downloadJSON,total:TOTAL,hasProgress:()=>Object.keys(responses).length>0,_fillAll:(fn)=>{items.forEach(it=>{const sc=it.scale||cfg.scale,k=it.opts?it.opts.length:sc.length,i=fn(k,it);responses[it.n]=it.opts?(it.opts[i].v!==undefined?it.opts[i].v:i):sc[i].v;});save();refreshSelection();progress();}};
   TESTS[cfg.id]=api;
   return api;
 }
