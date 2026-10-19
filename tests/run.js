@@ -382,7 +382,7 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
   return {n,fails};
 };
     const fillLegacy = id => { const sc = document.getElementById('test-' + id) || document.body; const g = {}; sc.querySelectorAll('button[data-n]').forEach(x => (g[x.dataset.n] = g[x.dataset.n] || []).push(x)); Object.values(g).forEach(a => a[Math.floor(a.length / 2)].click()); const bt = sc.querySelector('button[id$=showResults], #' + id + '-show, button[id$=-show], #showResults'); bt.click(); };
-    const CASES = [['kapcsolat', 'gott', 'hub'], ['szabalyozas', 'ders', 'hub'], ['terkepek', 'smi', 'leg'], ['terkepek', 'ecr', 'leg'], ['funkcio', 'sdi', 'leg'], ['funkcio', 'des', 'leg'], ['attitudok', 'nsss', 'leg'], ['nyelvek', 'love', 'leg'], ['nyelvek', 'imago', 'leg'], ['szemelyiseg', 'via', 'leg'], ['maia2', 'maia2', 'solo'], ['sis-ses', 'sisses', 'solo']];
+    const CASES = [['kapcsolat', 'gott', 'hub'], ['szabalyozas', 'ders', 'hub'], ['terkepek', 'smi', 'leg'], ['terkepek', 'ecr', 'leg'], ['funkcio', 'sdi', 'leg'], ['funkcio', 'des', 'leg'], ['attitudok', 'nsss', 'leg'], ['nyelvek', 'love', 'leg'], ['nyelvek', 'imago', 'leg'], ['szemelyiseg', 'via', 'hub'], ['maia2', 'maia2', 'solo'], ['sis-ses', 'sisses', 'solo']];
     for (const th of ['light', 'dark']) {
       const ctx = await newCtx(); await ctx.addInitScript(t => { if (!sessionStorage.getItem('t')) { localStorage.setItem('onismeret-settings-v1', JSON.stringify({ theme: t })); sessionStorage.setItem('t', 1); } }, th);
       const p = await pageIn(ctx); let worst = [], charts = [];
@@ -536,7 +536,7 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     ok(await p.evaluate(() => document.querySelector('.oni-unit.oni-cur').contains(document.activeElement)), 'továbblépés után a fókusz az új kérdésen van');
     await p.goto(R + 'szemelyiseg.html#test-via'); await p.waitForTimeout(800);
     const via = await p.evaluate(() => [...document.querySelector('#test-via .oni-unit').querySelectorAll('[role=group]')].map(x => x.getAttribute('aria-label')));
-    ok(via.length === 3 && via.every(x => /^\d\. rész: .{10,}/.test(x)) && new Set(via).size === 3, 'több kérdéses kártyán minden válaszcsoport külön címkét kap', via);
+    ok(via.length === 1 && /Új ötleteim vannak/.test(via[0]), 'a VIA kérdéskártyáin a válaszcsoport a kérdés szövegével címkézett', via);
     ok(p._errs.length === 0, 'hibamentes', p._errs);
     await ctx.close();
   }

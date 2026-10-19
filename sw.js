@@ -2,7 +2,7 @@
    Offline működés: az első látogatáskor minden oldal és közös fájl a böngésző gyorsítótárába kerül.
    Az oldalak hálózatról frissülnek, ha van net; a verziózott (?v=…) fájlok a gyorsítótárból jönnek.
    Válasz vagy eredmény nem megy át rajta: csak a statikus fájlokat kezeli. */
-const VERSION = 'b22384ffd0';
+const VERSION = '5d7b5b8bb0';
 const PRECACHE = [
 "./",
 "adatok.html",

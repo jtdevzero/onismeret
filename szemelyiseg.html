@@ -3,9 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Két személyiség-térkép — Big Five · VIA karakter-erők</title>
+<title>Személyiség — Big Five · VIA karakter-erők</title>
 <link rel="stylesheet" href="fonts/fonts.css?v=50e1f8e3">
-<style>
+<script src="assets/registry.js?v=1d248b64"></script>
+<script src="assets/oni-core.js?v=172147a9"></script>
+<script src="assets/oni-rules.js?v=8b76609e"></script>
+<style>/* A hub-oldalak alapstílusa (eredetileg a szemelyiseg.html-ből). */
 :root{
   --font-display:'Fraunces','Cardo',serif;
   --font-body:'Manrope','Inter',system-ui,sans-serif;
@@ -59,8 +62,6 @@ body::after{content:"";position:fixed;inset:0;background-image:url("data:image/s
 .hub-tab.active .num{color:rgba(255,255,255,0.75)}
 .hub-tab.active .name{color:#fff}
 .hub-tab.active .sub{color:rgba(255,255,255,0.8)}
-.hub-tab.bf{--tab-color:var(--sap-bright)}
-.hub-tab.via{--tab-color:var(--gold-bright)}
 
 .test-panel{display:none}
 .test-panel.active{display:block;animation:fadeSwitch 0.35s cubic-bezier(.4,0,.2,1)}
@@ -108,15 +109,11 @@ body::after{content:"";position:fixed;inset:0;background-image:url("data:image/s
 .scale-btn.selected .v,.scale-btn.selected .l{color:#fff}
 .scale-btn.selected .l{color:rgba(255,255,255,0.85)}
 
-#test-bf .scale-btn.selected{background:linear-gradient(135deg,var(--sap-bright),var(--indigo-bright));border-color:var(--sap-bright);box-shadow:0 4px 16px rgba(96,165,250,0.4)}
-#test-via .scale-btn.selected{background:linear-gradient(135deg,var(--gold-bright),var(--gold-brighter));border-color:var(--gold-bright);box-shadow:0 4px 16px rgba(251,191,36,0.4)}
 
 .results-trigger{display:flex;justify-content:center;margin:40px 0 22px}
 .btn-primary{appearance:none;border:none;color:#fff;padding:16px 36px;border-radius:999px;font-family:var(--font-display);font-size:17px;font-style:italic;cursor:pointer;transition:all 0.25s ease;font-weight:400}
 .btn-primary:disabled{opacity:0.3;cursor:not-allowed;box-shadow:none}
 .btn-primary:not(:disabled):hover{transform:translateY(-2px)}
-#test-bf .btn-primary{background:linear-gradient(135deg,var(--sap-bright),var(--indigo-bright));box-shadow:0 8px 28px rgba(96,165,250,0.5)}
-#test-via .btn-primary{background:linear-gradient(135deg,var(--gold-bright),var(--gold-brighter));box-shadow:0 8px 28px rgba(251,191,36,0.5);color:var(--bg-deep)}
 .btn-secondary{appearance:none;background:rgba(19,40,72,0.5);padding:10px 20px;border-radius:999px;font-size:13px;font-weight:500;cursor:pointer;transition:all 0.2s ease;color:var(--ink-lite);border:1.5px solid var(--line-glow)}
 .btn-secondary:hover{background:rgba(147,197,253,0.15);border-color:var(--sap-bright)}
 
@@ -208,10 +205,63 @@ body::after{content:"";position:fixed;inset:0;background-image:url("data:image/s
 ::-webkit-scrollbar-track{background:var(--bg-mid)}
 ::-webkit-scrollbar-thumb{background:rgba(96,165,250,0.3);border-radius:10px}
 ::selection{background:rgba(96,165,250,0.4);color:#fff}
+
+/* ═══ engine additions (kapcsolat / cselekves hubs) ═══ */
+.hub-tabs.four{grid-template-columns:repeat(4,1fr)}
+.hub-tabs.three{grid-template-columns:repeat(3,1fr)}
+.hub-tab .name{font-size:17px}
+.test-panel .scale-btn.selected{background:linear-gradient(135deg,var(--c1),var(--c2));border-color:var(--c1);box-shadow:0 4px 16px color-mix(in srgb,var(--c1) 40%,transparent)}
+.test-panel .btn-primary{background:linear-gradient(135deg,var(--c1),var(--c2));box-shadow:0 8px 28px color-mix(in srgb,var(--c1) 45%,transparent)}
+.test-panel .q-num{color:var(--c1)}
+.test-panel .section-head{--section-color:var(--c1)}
+.scale.s4{grid-template-columns:repeat(4,1fr)}
+.scale.s6{grid-template-columns:repeat(6,1fr)}
+.opts{display:flex;flex-direction:column;gap:7px}
+.opts.short{display:grid;grid-template-columns:repeat(8,1fr)}.opts.short .opt-btn{text-align:center;padding-left:0;padding-right:0}
+@media (max-width:560px){.opts.short{grid-template-columns:repeat(4,1fr)}}
+.opt-btn{appearance:none;text-align:left;border:1.5px solid var(--line-dark);background:rgba(12,30,63,0.5);color:var(--ink-lite);padding:12px 16px;border-radius:12px;cursor:pointer;font:inherit;font-size:14px;line-height:1.45;transition:all .18s ease}
+.opt-btn:hover:not(.selected){border-color:var(--line-glow);background:rgba(147,197,253,0.08);transform:translateX(2px)}
+.opt-btn.selected{background:linear-gradient(135deg,var(--c1),var(--c2));border-color:var(--c1);color:#fff;box-shadow:0 4px 16px color-mix(in srgb,var(--c1) 35%,transparent)}
+.status-badge{display:inline-flex;align-items:center;gap:8px;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:6px 13px;border-radius:999px;margin-bottom:18px}
+.status-badge::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.status-badge.valid{background:rgba(52,211,153,0.12);color:#6ee7b7;border:1px solid rgba(52,211,153,.35)}
+.status-badge.model{background:rgba(251,191,36,0.10);color:#fde047;border:1px solid rgba(251,191,36,.35)}
+.callout{background:rgba(19,40,72,0.7);border:1px solid var(--line-dark);border-left:3px solid var(--cc,var(--gold-bright));border-radius:14px;padding:16px 20px;margin:0 0 22px;color:var(--ink-lite-soft);font-size:14px;line-height:1.65}
+.callout strong{color:var(--ink-lite)}
+.test-panel .res-title em{color:var(--c1)}
+.test-panel .chart-card h3 em,.test-panel .interp-card h3 em,.test-panel .facet-list h3 em,.test-panel .refs-card h3 em{color:var(--c1)}
+.zone-track{position:relative;height:10px;border-radius:999px;background:rgba(147,197,253,0.12);margin-top:6px;overflow:visible}
+.zone-track .zone{position:absolute;top:0;bottom:0;border-radius:999px}
+.zone-track .mark{position:absolute;top:-5px;width:20px;height:20px;border-radius:50%;border:3px solid #fff;transform:translateX(-50%);box-shadow:0 0 14px rgba(255,255,255,0.35)}
+.zone-labels{display:flex;justify-content:space-between;font-size:10.5px;color:var(--ink-lite-muted);margin-top:8px;letter-spacing:.04em}
+.gauge-row{padding:14px 0;border-top:1px dashed rgba(147,197,253,0.15)}
+.gauge-row:first-of-type{border-top:none}
+.gauge-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.gauge-head .nm{font-family:var(--font-display);font-size:17px;color:var(--ink-lite)}
+.gauge-head .nm em{font-style:italic;color:var(--ink-lite-muted);font-size:14px}
+.gauge-head .vl{font-family:var(--font-display);font-size:22px;color:var(--gc)}
+.gauge-head .vl span{font-size:11px;color:var(--ink-lite-muted);font-family:var(--font-body);margin-left:4px}
+.gauge-desc{font-size:13px;color:var(--ink-lite-soft);margin-top:10px;line-height:1.55}
+.quad{display:grid;grid-template-columns:auto 1fr 1fr;grid-template-rows:1fr 1fr auto;gap:8px;max-width:520px;margin:0 auto}
+.quad .ax{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-lite-muted);font-weight:600;display:flex;align-items:center;justify-content:center}
+.quad .ax.v{writing-mode:vertical-rl;transform:rotate(180deg)}
+.quad .cell{border-radius:16px;padding:18px 14px;text-align:center;border:1px solid var(--line-dark);min-height:120px;display:flex;flex-direction:column;justify-content:center;gap:4px;transition:all .3s}
+.quad .cell .t{font-family:var(--font-display);font-size:18px;color:var(--ink-lite)}
+.quad .cell .n{font-family:var(--font-display);font-size:30px;line-height:1}
+.quad .cell .s{font-size:11px;color:var(--ink-lite-muted)}
+.diverge{margin-top:6px}
+.dv-row{display:grid;grid-template-columns:150px 1fr 52px;gap:12px;align-items:center;padding:7px 0;font-size:13.5px}
+.dv-name{color:var(--ink-lite);text-align:right}
+.dv-name small{display:block;color:var(--ink-lite-muted);font-size:10.5px;letter-spacing:.04em}
+.dv-track{position:relative;height:14px;background:rgba(147,197,253,0.08);border-radius:4px}
+.dv-track::after{content:"";position:absolute;left:50%;top:-4px;bottom:-4px;width:1px;background:rgba(241,245,249,0.45)}
+.dv-fill{position:absolute;top:0;bottom:0;border-radius:4px}
+.dv-val{font-family:var(--font-display);font-style:italic;font-size:15px;text-align:right}
+.hub-back{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-lite-muted);text-decoration:none;margin-bottom:26px;letter-spacing:.06em}
+.hub-back:hover{color:var(--ink-lite)}
+@media (max-width:820px){.hub-tabs.four{grid-template-columns:repeat(2,1fr)}.hub-tabs.three{grid-template-columns:1fr}}
+@media (max-width:560px){.hub-tabs{position:static}.hub-tab{padding:12px 14px}.hub-tab .sub{display:none}.scale.s6{grid-template-columns:repeat(3,1fr)}.dv-row{grid-template-columns:96px 1fr 44px;gap:8px;font-size:12.5px}.quad .cell{min-height:96px;padding:12px 8px}.quad .cell .n{font-size:24px}}
 </style>
-<script src="assets/registry.js?v=1d248b64"></script>
-<script src="assets/oni-core.js?v=172147a9"></script>
-<script src="assets/oni-rules.js?v=8b76609e"></script>
 <script src="assets/oni-schema.js?v=9dbd0f7d" defer></script>
 <script src="assets/tests-data.js?v=5c562e03" defer></script>
 <script src="assets/mely.js?v=8eeb009a" defer></script>
@@ -224,309 +274,276 @@ body::after{content:"";position:fixed;inset:0;background-image:url("data:image/s
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 </head>
 <body>
-
 <div class="hub-shell">
-  <a href="index.html" style="display:inline-flex;gap:8px;font-size:12px;color:var(--ink-lite-muted,#94a3b8);text-decoration:none;letter-spacing:.06em;margin-bottom:26px">‹ Önismereti térképek</a>
+  <a class="hub-back" href="index.html">‹ Önismereti térképek</a>
   <div class="hub-header">
-    <div class="hub-eyebrow">Két személyiség-térkép — alap-vonások + karakter-erők</div>
+    <div class="hub-eyebrow">VI. — Személyiség és erősségek · 2 térkép</div>
     <h1>Ki <em>vagy</em></h1>
     <p class="lead"><strong>Big Five (IPIP-NEO-60)</strong> — a legszélesebb körben validált személyiségmodell (OCEAN: nyitottság · lelkiismeretesség · extraverzió · barátságosság · érzelmi stabilitás), 5 domain × 6 facet szinten. <strong>VIA karakter-erők (Seligman/Peterson)</strong> — 24 pozitív karakter-erő rangsorolása, 6 erénycsoportban. Az egyik <em>hogyan működsz</em>, a másik <em>miben vagy erős</em>.</p>
   </div>
-  <nav class="hub-tabs" role="tablist">
-    <button class="hub-tab bf active" data-target="test-bf" role="tab" aria-selected="true"><span class="check"></span><span class="num">I.</span><span class="name">Big Five</span><span class="sub">IPIP-NEO-60 · 60 item</span></button>
-    <button class="hub-tab via" data-target="test-via" role="tab" aria-selected="false"><span class="check"></span><span class="num">II.</span><span class="name">Karakter-erők</span><span class="sub">VIA-72 · 72 item</span></button>
-  </nav>
+  <nav class="hub-tabs" id="hub-tabs" role="tablist"></nav>
 </div>
 
-<!-- ═══ BIG FIVE ═══ -->
-<section id="test-bf" class="test-panel active" role="tabpanel">
-  <div class="shell">
-    <header>
-      <div class="eyebrow" style="color:var(--sap-bright)">IPIP-alapú 60 tételes változat · a NEO-PI-R 30 facetjének szerkezetére (Johnson, 2014)</div>
-      <h2>A te <em style="color:var(--sap-bright)">OCEAN-profilod</em></h2>
-      <p class="lead">A Big Five modell 60 éves konszenzus arról, hogy 5 alapdimenzió mentén szisztematikusan leírhatók a személyiségjegyek. Ez a legjobban validált, kultúrákon átívelő személyiségmodell a pszichológiában. Az IPIP-NEO-60 minden domént 2 tétellel × 6 facet-tel mér (facet = alsóbb szintű dimenzió).</p>
-    </header>
-    <div class="intro-box">
-      <p><strong>Kitöltési útmutató:</strong> 60 állítást olvasol. Mindegyiknél értékeld 1–5 skálán, mennyire igaz rád. Ne "az ideális self"-et válaszold — hanem az aktuális működésedet.</p>
-      <p>1 = egyáltalán nem igaz · 2 = inkább nem · 3 = semleges · 4 = inkább igen · 5 = teljesen igaz. Bizonyos itemek fordított pontozásúak (a rendszer kezeli).</p>
-    </div>
-    <div class="progress-shell"><div class="progress-bar"><div class="progress-fill" id="bf-progressFill" style="background:linear-gradient(90deg,var(--sap-bright),var(--indigo-bright),var(--violet-bright))"></div></div><div class="progress-text"><strong id="bf-progressNum">0</strong> / 60</div></div>
-    <div id="bf-quiz"></div>
-    <div class="results-trigger"><button class="btn-primary" id="bf-showResults" disabled><em>Megmutatni</em> a profilt</button></div>
-    <div class="results" id="bf-results">
-      <div class="res-eyebrow">Eredmény · Big Five profil · Facet-szint</div>
-      <h2 class="res-title">A te <em>OCEAN-térképed</em></h2>
-      <p class="res-lead">Öt domén-pontszám + 30 facet-pontszám. A domén az általános tendencia, a facet a részlet. A sávok (alacsony–magas) a skála terjedelméből számolt <strong>tájékoztató</strong> határok, nem publikált normák. Nem azt mutatják, hol állsz másokhoz képest.</p>
-      <div class="chart-card">
-        <h3>Big Five <em>térkép</em></h3>
-        <div class="chart-sub">Öt tengely · min 12 · max 60</div>
-        <svg class="chart-svg" id="bf-radar"></svg>
-        <div class="chart-legend" id="bf-legend"></div>
-      </div>
-      <div class="score-grid" id="bf-scoreGrid"></div>
-      <div class="facet-list" id="bf-facets"></div>
-      <div class="interp-card" id="bf-interp"></div>
-      <div class="refs-card">
-        <h3>Tudományos <em>háttér</em></h3>
-        <div class="ref-item"><strong>Costa, P. T., & McCrae, R. R. (1992).</strong> Revised NEO Personality Inventory (NEO-PI-R). Psychological Assessment Resources.</div>
-        <div class="ref-item"><strong>Johnson, J. A. (2014).</strong> Measuring thirty facets of the Five Factor Model with a 120-item public domain inventory: Development of the IPIP-NEO-120. <em>Journal of Research in Personality, 51</em>, 78–89.</div>
-        <div class="ref-item"><strong>Goldberg, L. R. (1993).</strong> The structure of phenotypic personality traits. <em>American Psychologist, 48(1)</em>, 26–34.</div>
-        <div class="ref-item"><strong>Soto, C. J., & John, O. P. (2017).</strong> The next Big Five Inventory (BFI-2). <em>Journal of Personality and Social Psychology, 113(1)</em>, 117–143.</div>
-      </div>
-      <div class="actions">
-        <button class="btn-secondary" onclick="window.print()">PDF</button>
-        <button class="btn-secondary" onclick="BF.downloadJSON()">JSON</button>
-        <button class="btn-secondary" onclick="BF.reset()">Új kitöltés</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ VIA ═══ -->
-<section id="test-via" class="test-panel" role="tabpanel">
-  <div class="shell">
-    <header>
-      <div class="eyebrow" style="color:var(--gold-bright)">VIA Character Strengths · Peterson & Seligman (2004)</div>
-      <h2>A te <em style="color:var(--gold-bright)">karakter-erőid</em></h2>
-      <p class="lead">A VIA klasszifikáció 24 univerzális karakter-erőt ír le, 6 erény-csoportba rendezve. A pozitív pszichológia egyik alapmodellje. A cél nem a "gyengeségek javítása" — hanem a saját <em>szignatúra-erőid</em> felismerése és tudatos használata. Erős empirikus bázis: 75+ ország, 3M+ kitöltő.</p>
-    </header>
-    <div class="intro-box">
-      <p><strong>Kitöltési útmutató:</strong> 72 állítás. Mindegyiknél értékeld 1–5 skálán, mennyire igaz rád. A cél nem a "kívánt" válasz, hanem a valóság.</p>
-      <p>Skála: 1 = egyáltalán nem jellemző · 2 = inkább nem · 3 = néha · 4 = gyakran · 5 = nagyon jellemző.</p>
-    </div>
-    <div class="progress-shell"><div class="progress-bar"><div class="progress-fill" id="via-progressFill" style="background:linear-gradient(90deg,var(--gold-bright),var(--gold-brighter),var(--rose-bright))"></div></div><div class="progress-text"><strong id="via-progressNum">0</strong> / 72</div></div>
-    <div id="via-quiz"></div>
-    <div class="results-trigger"><button class="btn-primary" id="via-showResults" disabled><em>Megmutatni</em> az erőket</button></div>
-    <div class="results" id="via-results">
-      <div class="res-eyebrow">Eredmény · 24 karakter-erő rangsora · 6 erény-csoport</div>
-      <h2 class="res-title">A te <em>szignatúra-erőid</em></h2>
-      <p class="res-lead">A top 5 erő a te "szignatúra-profilod" — az, ami tényleg vagy, nem az, ami lenni szeretnél. Peterson & Seligman javaslata: heti szinten használd tudatosan a szignatúra-erődet, akár egyet-egyet váltogatva.</p>
-      <div class="chart-card">
-        <h3>Erény-csoportok <em>térképe</em></h3>
-        <div class="chart-sub">6 erény-csoport · aggregált pontszám</div>
-        <svg class="chart-svg" id="via-radar"></svg>
-        <div class="chart-legend" id="via-legend"></div>
-      </div>
-      <div class="rank-list" id="via-topStrengths"></div>
-      <div class="rank-list" id="via-allStrengths"></div>
-      <div class="interp-card" id="via-interp"></div>
-      <div class="refs-card">
-        <h3>Tudományos <em>háttér</em></h3>
-        <div class="ref-item"><strong>Peterson, C., & Seligman, M. E. P. (2004).</strong> Character strengths and virtues: A handbook and classification. Oxford University Press.</div>
-        <div class="ref-item"><strong>Niemiec, R. M. (2018).</strong> Character strengths interventions: A field guide for practitioners. Hogrefe.</div>
-        <div class="ref-item"><strong>McGrath, R. E. (2015).</strong> Character strengths in 75 nations: An update. <em>Journal of Positive Psychology, 10(1)</em>, 41–52.</div>
-        <div class="ref-item"><strong>Seligman, M. E. P., Steen, T. A., Park, N., & Peterson, C. (2005).</strong> Positive psychology progress: Empirical validation of interventions. <em>American Psychologist, 60(5)</em>, 410–421.</div>
-      </div>
-      <div class="actions">
-        <button class="btn-secondary" onclick="window.print()">PDF</button>
-        <button class="btn-secondary" onclick="VIA.downloadJSON()">JSON</button>
-        <button class="btn-secondary" onclick="VIA.reset()">Új kitöltés</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<footer class="hub-footer">
-  IPIP-NEO-60 · VIA-72 · magyar adaptáció · v1.0<br>
-  önismereti célra · nem klinikai diagnosztikai eszközök
-</footer>
-
+<div id="panels"></div>
+<footer class="hub-footer">Önismereti térkép, nem diagnózis. A válaszaid csak ebben a böngészőben tárolódnak (localStorage), válasz vagy eredmény nem megy szerverre.<br><a href="index.html" style="color:inherit">← Vissza az összes teszthez</a></footer>
 <script>
-/* CHART UTILITIES */
-window.CHARTS = (function(){
-  function radar(svgEl, data, opts){
-    const W=480,H=480,cx=W/2,cy=H/2,R=170,n=data.length,angleStep=(2*Math.PI)/n,startAngle=-Math.PI/2;
-    const maxVal=opts.max||Math.max(...data.map(d=>d.value));
-    const minVal=opts.min||0;
-    const gridLevels=opts.gridLevels||4;
-    const strokeColor=opts.strokeColor||'#60a5fa';
-    const fillColor=opts.fillColor||'rgba(96,165,250,0.28)';
-    let html='';
-    for(let g=1;g<=gridLevels;g++){
-      const gr=(R*g)/gridLevels;
-      let pts='';
-      for(let i=0;i<n;i++){const a=startAngle+i*angleStep;pts+=`${cx+gr*Math.cos(a)},${cy+gr*Math.sin(a)} `;}
-      html+=`<polygon points="${pts.trim()}" fill="none" stroke="rgba(147,197,253,0.18)" stroke-width="${g===gridLevels?1.5:1}" stroke-dasharray="${g===gridLevels?'':'3,4'}"/>`;
-    }
-    for(let i=0;i<n;i++){const a=startAngle+i*angleStep;html+=`<line x1="${cx}" y1="${cy}" x2="${cx+R*Math.cos(a)}" y2="${cy+R*Math.sin(a)}" stroke="rgba(147,197,253,0.18)" stroke-width="1"/>`;}
+/* ═══ SHARED HELPERS ═══ */
+window.H = (function(){
+  const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const mean=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:0;
+  const sum=a=>a.reduce((x,y)=>x+y,0);
+  const r1=x=>Math.round(x*10)/10;
+  const r2=x=>Math.round(x*100)/100;
+  const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+
+  function cards(list){
+    return `<div class="score-grid">${list.map(c=>`<div class="score-card" style="--sc:${c.color}">
+      <div class="abbr">${c.abbr||''}</div><h4>${c.name}</h4>
+      <div class="val">${c.val}</div><div class="out">${c.out||''}</div>
+      ${c.band?`<span class="band">${c.band}</span>`:''}
+      <div class="bar"><div class="bar-fill" style="width:${clamp(c.pct,0,100)}%"></div></div></div>`).join('')}</div>`;
+  }
+  function bars(title,groups){
+    return `<div class="facet-list"><h3>${title}</h3>${groups.map(g=>`<div class="facet-group" style="--fg-color:${g.color}">
+      ${g.title?`<div class="facet-group-head"><h4>${g.title}</h4></div>`:''}
+      ${g.rows.map(r=>`<div class="facet-row"><span class="facet-row-name">${r.name}</span><span class="facet-row-val">${r.val}<span>${r.unit||''}</span></span>
+        <div class="facet-row-track"><div class="facet-row-fill" style="width:${clamp(r.pct,0,100)}%;background:${r.color||g.color}"></div></div></div>`).join('')}
+    </div>`).join('')}</div>`;
+  }
+  function rank(title,items){
+    return `<div class="rank-list"><h3>${title}</h3>${items.map((it,i)=>`<div class="rank-item${it.top?' top':''}" style="--rc:${it.color};--top-color:${it.color}">
+      <div class="rank-pos">${i+1}.</div>
+      <div><div class="rank-name">${it.name}${it.sub?` <em>${it.sub}</em>`:''}</div>${it.desc?`<div class="rank-desc">${it.desc}</div>`:''}</div>
+      <div class="rank-score">${it.score}<span>${it.unit||''}</span></div></div>`).join('')}</div>`;
+  }
+  function interp(title,sections){
+    return `<div class="interp-card"><h3>${title}</h3>${sections.filter(Boolean).map(s=>`<div class="interp-section" style="--sc:${s.color||'var(--c1)'}"><h4>${s.h}</h4>${s.html}</div>`).join('')}</div>`;
+  }
+  function chart(title,sub,inner,legend){
+    return `<div class="chart-card"><h3>${title}</h3><div class="chart-sub">${sub}</div>${inner}${legend?`<div class="chart-legend">${legend.map(l=>`<div class="chart-legend-item"><span class="chart-legend-swatch" style="background:${l.color}"></span><span><strong>${l.label}</strong> ${l.val??''}</span></div>`).join('')}</div>`:''}</div>`;
+  }
+  function callout(html,color){return `<div class="callout" style="--cc:${color||'var(--gold-bright)'}">${html}</div>`;}
+  function refs(list){return `<div class="refs-card"><h3>Tudományos <em>háttér</em></h3>${list.map(r=>`<div class="ref-item">${r}</div>`).join('')}</div>`;}
+
+  function radar(data,opts){
+    opts=opts||{};
+    const W=480,H=480,cx=W/2,cy=H/2,R=160,n=data.length,step=(2*Math.PI)/n,start=-Math.PI/2;
+    const max=opts.max,min=opts.min||0,levels=opts.levels||4,sc=opts.stroke||'#60a5fa',fc=opts.fill||'rgba(96,165,250,0.28)';
+    let h='';
+    for(let g=1;g<=levels;g++){const gr=R*g/levels;let p='';for(let i=0;i<n;i++){const a=start+i*step;p+=`${cx+gr*Math.cos(a)},${cy+gr*Math.sin(a)} `;}
+      h+=`<polygon points="${p.trim()}" fill="none" stroke="rgba(147,197,253,0.18)" stroke-width="${g===levels?1.5:1}" stroke-dasharray="${g===levels?'':'3,4'}"/>`;}
+    for(let i=0;i<n;i++){const a=start+i*step;h+=`<line x1="${cx}" y1="${cy}" x2="${cx+R*Math.cos(a)}" y2="${cy+R*Math.sin(a)}" stroke="rgba(147,197,253,0.18)"/>`;}
     let dp='';const dots=[];
-    for(let i=0;i<n;i++){const a=startAngle+i*angleStep;const r=((data[i].value-minVal)/(maxVal-minVal))*R;const x=cx+r*Math.cos(a),y=cy+r*Math.sin(a);dp+=`${x},${y} `;dots.push({x,y});}
-    html+=`<polygon points="${dp.trim()}" fill="${fillColor}" stroke="${strokeColor}" stroke-width="2.5" stroke-linejoin="round"/>`;
-    dots.forEach(d=>{html+=`<circle cx="${d.x}" cy="${d.y}" r="6" fill="${strokeColor}" stroke="#fff" stroke-width="2"/>`;});
-    for(let i=0;i<n;i++){
-      const a=startAngle+i*angleStep;const lr=R+34;const x=cx+lr*Math.cos(a),y=cy+lr*Math.sin(a);
-      let anchor='middle';if(Math.cos(a)>0.3)anchor='start';else if(Math.cos(a)<-0.3)anchor='end';
-      html+=`<text x="${x}" y="${y-4}" text-anchor="${anchor}" font-family="Fraunces,Cardo,serif" font-size="13" font-weight="500" fill="#f1f5f9">${data[i].label}</text>`;
-      html+=`<text x="${x}" y="${y+13}" text-anchor="${anchor}" font-family="Manrope,Inter,sans-serif" font-size="12" font-weight="700" fill="${strokeColor}">${data[i].value}<tspan font-size="9" fill="rgba(203,213,225,0.6)" font-weight="500">/${maxVal}</tspan></text>`;
-    }
-    html+=`<circle cx="${cx}" cy="${cy}" r="3" fill="${strokeColor}"/>`;
-    svgEl.setAttribute('viewBox',`0 0 ${W} ${H}`);
-    svgEl.innerHTML=html;
+    for(let i=0;i<n;i++){const a=start+i*step;const r=clamp((data[i].value-min)/(max-min),0,1)*R;const x=cx+r*Math.cos(a),y=cy+r*Math.sin(a);dp+=`${x},${y} `;dots.push({x,y,c:data[i].color||sc});}
+    h+=`<polygon points="${dp.trim()}" fill="${fc}" stroke="${sc}" stroke-width="2.5" stroke-linejoin="round"/>`;
+    dots.forEach(d=>{h+=`<circle cx="${d.x}" cy="${d.y}" r="6" fill="${d.c}" stroke="#fff" stroke-width="2"/>`;});
+    for(let i=0;i<n;i++){const a=start+i*step,lr=R+32,x=cx+lr*Math.cos(a),y=cy+lr*Math.sin(a);
+      let an='middle';if(Math.cos(a)>0.3)an='start';else if(Math.cos(a)<-0.3)an='end';
+      h+=`<text x="${x}" y="${y-4}" text-anchor="${an}" font-family="Fraunces,Cardo,serif" font-size="13.5" font-weight="500" fill="#f1f5f9">${data[i].label}</text>`;
+      h+=`<text x="${x}" y="${y+13}" text-anchor="${an}" font-family="Manrope,sans-serif" font-size="12" font-weight="700" fill="${data[i].color||sc}">${data[i].shown??data[i].value}</text>`;}
+    return `<svg class="chart-svg" viewBox="-40 0 560 ${H}">${h}</svg>`;
   }
-  return {radar};
+  function gauge(o){
+    // o: {name,sub,val,unit,min,max,color,zones:[{from,to,color}],labels:[..],desc}
+    const pos=v=>((v-o.min)/(o.max-o.min))*100;
+    return `<div class="gauge-row" style="--gc:${o.color}"><div class="gauge-head"><span class="nm">${o.name}${o.sub?` <em>${o.sub}</em>`:''}</span><span class="vl">${o.shown??o.val}<span>${o.unit||''}</span></span></div>
+      <div class="zone-track">${(o.zones||[]).map(z=>`<div class="zone" style="left:${pos(z.from)}%;width:${pos(z.to)-pos(z.from)}%;background:${z.color}"></div>`).join('')}
+      <div class="mark" style="left:${clamp(pos(o.val),0,100)}%;background:${o.color}"></div></div>
+      ${o.labels?`<div class="zone-labels">${o.labels.map(l=>`<span>${l}</span>`).join('')}</div>`:''}
+      ${o.desc?`<div class="gauge-desc">${o.desc}</div>`:''}</div>`;
+  }
+  return {esc,mean,sum,r1,r2,clamp,cards,bars,rank,interp,chart,callout,refs,radar,gauge};
 })();
 
-/* HUB */
-(function(){
-  const tabs=document.querySelectorAll('.hub-tab');
-  const panels=document.querySelectorAll('.test-panel');
-  tabs.forEach(tab=>{
-    tab.addEventListener('click',()=>{
-      const target=tab.dataset.target;
-      tabs.forEach(t=>{t.classList.remove('active');t.setAttribute('aria-selected','false')});
-      panels.forEach(p=>p.classList.remove('active'));
-      tab.classList.add('active');
-      tab.setAttribute('aria-selected','true');
-      document.getElementById(target).classList.add('active');
-      window.scrollTo({top:0,behavior:'smooth'});
+/* ═══ TEST ENGINE ═══ */
+window.TESTS={};
+function makeTest(cfg){
+  const items=[];let n=0;
+  cfg.sections.forEach(sec=>sec.items.forEach(it=>{n++;items.push(Object.assign({n,sec},it));}));
+  const TOTAL=items.length;
+  let responses={};
+  const $=id=>document.getElementById(cfg.id+'-'+id);
+  function load(){try{const r=localStorage.getItem(cfg.key);if(r)responses=JSON.parse(r)||{};}catch(e){responses={}}}
+  function save(){try{localStorage.setItem(cfg.key,JSON.stringify(responses));}catch(e){}window.hubCheckProgress&&window.hubCheckProgress();}
+
+  function panelHTML(){
+    const h=cfg.header;
+    return `<section id="test-${cfg.id}" class="test-panel" role="tabpanel" style="--c1:${cfg.c1};--c2:${cfg.c2}">
+    <div class="shell">
+      <header>
+        <span class="status-badge ${h.status}">${h.statusText}</span>
+        <div class="eyebrow" style="color:${cfg.c1}">${h.eyebrow}</div>
+        <h2>${h.title}</h2>
+        <p class="lead">${h.lead}</p>
+      </header>
+      <div class="intro-box">${h.intro}</div>
+      <div class="progress-shell"><div class="progress-bar"><div class="progress-fill" id="${cfg.id}-fill" style="background:linear-gradient(90deg,${cfg.c1},${cfg.c2})"></div></div><div class="progress-text"><strong id="${cfg.id}-num">0</strong> / ${TOTAL}</div></div>
+      <div id="${cfg.id}-quiz"></div>
+      <div class="results-trigger"><button class="btn-primary" id="${cfg.id}-show" disabled><em>Megmutatni</em> az eredményt</button></div>
+      <div class="results" id="${cfg.id}-results"></div>
+    </div></section>`;
+  }
+  function quizHTML(){
+    let html='';
+    cfg.sections.forEach(sec=>{
+      if(sec.title)html+=`<div class="section-head"><h3>${sec.title}</h3>${sec.desc?`<p>${sec.desc}</p>`:''}</div>`;
+      items.filter(it=>it.sec===sec).forEach(it=>{
+        const opts=it.opts||cfg.scale;
+        const choice=!!it.opts;
+        const cls=choice?'opts'+(it.opts.every(o=>String(o.t).length<=3)?' short':''):`scale${opts.length===4?' s4':opts.length===6?' s6':''}`;
+        html+=`<div class="q" data-n="${it.n}"><div class="q-head"><span class="q-num">${it.n}.</span><span class="q-text">${it.t}</span></div>
+          <div class="${cls}">${opts.map((o,i)=>{
+            const val=choice?i:o.v;
+            return choice?`<button class="opt-btn" data-n="${it.n}" data-v="${val}">${o.t}</button>`
+                         :`<button class="scale-btn" data-n="${it.n}" data-v="${val}"><span class="v">${o.v}</span><span class="l">${o.l}</span></button>`;
+          }).join('')}</div></div>`;
+      });
     });
+    return html;
+  }
+  function refreshSelection(){
+    document.querySelectorAll(`#${cfg.id}-quiz [data-n]`).forEach(b=>{
+      if(!b.dataset.v)return;
+      b.classList.toggle('selected',String(responses[b.dataset.n])===b.dataset.v);
+    });
+  }
+  function progress(){
+    const done=items.filter(it=>responses[it.n]!==undefined).length;
+    $('num').textContent=done;
+    $('fill').style.width=(done/TOTAL*100)+'%';
+    $('show').disabled=done<TOTAL;
+  }
+  function buildR(){
+    const R={items:[],scales:{},picks:[]};
+    items.forEach(it=>{
+      const raw=responses[it.n];
+      if(it.opts){const opt=it.opts[raw];R.picks.push({item:it,opt,idx:raw});R.items.push({n:it.n,t:it.t,raw,opt:opt&&opt.t});return;}
+      const vals=cfg.scale.map(s=>s.v),lo=Math.min(...vals),hi=Math.max(...vals);
+      const v=it.r?(lo+hi)-raw:raw;
+      R.items.push({n:it.n,s:it.s,t:it.t,raw,v,r:!!it.r});
+      (R.scales[it.s]=R.scales[it.s]||[]).push(v);
+    });
+    R.mean=s=>H.mean(R.scales[s]||[]);
+    R.sum=s=>H.sum(R.scales[s]||[]);
+    R.allMean=()=>H.mean(R.items.map(i=>i.v).filter(v=>v!==undefined));
+    return R;
+  }
+  let lastResult=null;
+  function show(){
+    const R=buildR();
+    lastResult=cfg.score?cfg.score(R):null;
+    if(window.ONI&&cfg.sum){try{ONI.save(cfg.id,Object.assign({n:cfg.name},cfg.sum(lastResult,R)));}catch(e){console.warn('ONI',e)}}
+    const el=$('results');
+    el.innerHTML=cfg.render(R,lastResult)+`<div class="actions">
+      <button class="btn-secondary" onclick="window.print()">PDF</button>
+      <button class="btn-secondary" onclick="TESTS['${cfg.id}'].downloadJSON()">JSON</button>
+      <button class="btn-secondary" onclick="TESTS['${cfg.id}'].reset()">Új kitöltés</button></div>`;
+    el.classList.add('visible');
+    setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),60);
+  }
+  function downloadJSON(){
+    const R=buildR();
+    const data={test:cfg.name,key:cfg.key,date:new Date().toISOString(),responses:R.items,result:cfg.score?cfg.score(R):null};
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`${cfg.id}-${new Date().toISOString().slice(0,10)}.json`;a.click();
+  }
+  function reset(){
+    if(!confirm(`Biztos törlöd a(z) ${cfg.name} válaszaidat?`))return;
+    responses={};save();refreshSelection();progress();$('results').classList.remove('visible');
+    document.getElementById('test-'+cfg.id).scrollIntoView({behavior:'smooth'});
+  }
+  function mount(container){
+    container.insertAdjacentHTML('beforeend',panelHTML());
+    load();
+    $('quiz').innerHTML=quizHTML();
+    $('quiz').addEventListener('click',e=>{
+      const b=e.target.closest('[data-v]');if(!b)return;
+      responses[b.dataset.n]=Number(b.dataset.v);save();refreshSelection();progress();
+    });
+    $('show').addEventListener('click',show);
+    refreshSelection();progress();
+  }
+  const api={cfg,mount,show,reset,downloadJSON,total:TOTAL,hasProgress:()=>Object.keys(responses).length>0,_fillAll:(fn)=>{items.forEach(it=>{const k=it.opts?it.opts.length:cfg.scale.length;responses[it.n]=it.opts?fn(k,it):cfg.scale[fn(k,it)].v;});save();refreshSelection();progress();}};
+  TESTS[cfg.id]=api;
+  return api;
+}
+
+/* ═══ HUB BOOT ═══ */
+function bootHub(order){
+  const nav=document.getElementById('hub-tabs'),panels=document.getElementById('panels');
+  const romans=['I.','II.','III.','IV.','V.','VI.'];
+  order.forEach((id,i)=>{
+    const t=TESTS[id],c=t.cfg;
+    nav.insertAdjacentHTML('beforeend',`<button class="hub-tab" style="--tab-color:${c.c1}" data-target="test-${id}" role="tab" aria-selected="false"><span class="check"></span><span class="num">${romans[i]}</span><span class="name">${c.tab}</span><span class="sub">${c.tabSub}</span></button>`);
+    t.mount(panels);
   });
-  function checkProgress(){
-    ['bf-responses-v1','via-responses-v1'].forEach((key,i)=>{
-      try{const raw=localStorage.getItem(key);if(raw){const p=JSON.parse(raw);if(Object.keys(p).length>0)tabs[i].classList.add('has-progress');}}catch(e){}
-    });
+  const tabs=[...nav.querySelectorAll('.hub-tab')];
+  function activate(target,scroll){
+    if(!document.getElementById(target))target='test-'+order[0];
+    tabs.forEach(t=>{const on=t.dataset.target===target;t.classList.toggle('active',on);t.setAttribute('aria-selected',on)});
+    document.querySelectorAll('.test-panel').forEach(p=>p.classList.toggle('active',p.id===target));
+    if(scroll)window.scrollTo({top:0,behavior:'smooth'});
   }
-  checkProgress();
-  window.hubCheckProgress=checkProgress;
-})();
+  tabs.forEach(t=>t.addEventListener('click',()=>{activate(t.dataset.target,true);history.replaceState(null,'','#'+t.dataset.target);}));
+  window.hubCheckProgress=()=>order.forEach((id,i)=>tabs[i].classList.toggle('has-progress',TESTS[id].hasProgress()));
+  window.hubCheckProgress();
+  activate(location.hash.slice(1),false);
+  window.addEventListener('hashchange',()=>activate(location.hash.slice(1),true));
+}
 
-/* ═══ BIG FIVE (IPIP-NEO-60) ═══ */
-window.BF = (function(){
-// 5 domain × 6 facet × 2 item = 60 items
-// Codes: N=Neuroticism, E=Extraversion, O=Openness, A=Agreeableness, C=Conscientiousness
-// r = reverse-scored
-const ITEMS = [
-  // Neuroticism (N)
-  {n:1, d:'N', f:'N1-Anxiety', t:'Gyakran aggódom.'},
-  {n:2, d:'N', f:'N1-Anxiety', t:'Ritkán érzem magam idegesnek vagy feszültnek.', r:true},
-  {n:3, d:'N', f:'N2-Anger', t:'Könnyen felmérgesítenek.'},
-  {n:4, d:'N', f:'N2-Anger', t:'Ritkán vagyok dühös.', r:true},
-  {n:5, d:'N', f:'N3-Depression', t:'Gyakran érzem magam kékben vagy szomorúnak.'},
-  {n:6, d:'N', f:'N3-Depression', t:'Ritkán érzem magam letörtnek.', r:true},
-  {n:7, d:'N', f:'N4-Self-Consciousness', t:'Könnyen zavarba jövök.'},
-  {n:8, d:'N', f:'N4-Self-Consciousness', t:'Nem érdekel, mit gondolnak rólam.', r:true},
-  {n:9, d:'N', f:'N5-Immoderation', t:'Nehezen tudok ellenállni a kísértéseknek.'},
-  {n:10, d:'N', f:'N5-Immoderation', t:'Ritkán engedek a hirtelen késztetéseknek.', r:true},
-  {n:11, d:'N', f:'N6-Vulnerability', t:'Stressz alatt könnyen szétesek.'},
-  {n:12, d:'N', f:'N6-Vulnerability', t:'Nyomás alatt is higgadt maradok.', r:true},
-  // Extraversion (E)
-  {n:13, d:'E', f:'E1-Friendliness', t:'Könnyen barátkozom új emberekkel.'},
-  {n:14, d:'E', f:'E1-Friendliness', t:'Tartok másoktól.', r:true},
-  {n:15, d:'E', f:'E2-Gregariousness', t:'Szeretem a nagy társaságokat.'},
-  {n:16, d:'E', f:'E2-Gregariousness', t:'Kerülöm a tömeget.', r:true},
-  {n:17, d:'E', f:'E3-Assertiveness', t:'Természetes vezető vagyok.'},
-  {n:18, d:'E', f:'E3-Assertiveness', t:'Hagyom, hogy mások irányítsanak.', r:true},
-  {n:19, d:'E', f:'E4-Activity', t:'Mindig elfoglalt vagyok.'},
-  {n:20, d:'E', f:'E4-Activity', t:'Kényelmes, laza tempóban élek.', r:true},
-  {n:21, d:'E', f:'E5-Excitement-Seeking', t:'Szeretek kockázatot vállalni.'},
-  {n:22, d:'E', f:'E5-Excitement-Seeking', t:'Kerülöm az izgalmas, veszélyes helyzeteket.', r:true},
-  {n:23, d:'E', f:'E6-Cheerfulness', t:'Gyakran érzem magam boldognak és jókedvűnek.'},
-  {n:24, d:'E', f:'E6-Cheerfulness', t:'Ritkán vagyok igazán vidám.', r:true},
-  // Openness (O)
-  {n:25, d:'O', f:'O1-Imagination', t:'Gazdag képzelőerőm van.'},
-  {n:26, d:'O', f:'O1-Imagination', t:'Nem szeretem az elvont gondolkodást.', r:true},
-  {n:27, d:'O', f:'O2-Artistic-Interests', t:'Érzékeny vagyok a szépségre — művészet, természet.'},
-  {n:28, d:'O', f:'O2-Artistic-Interests', t:'A művészet nem érdekel különösebben.', r:true},
-  {n:29, d:'O', f:'O3-Emotionality', t:'Mélyen átélem az érzéseimet.'},
-  {n:30, d:'O', f:'O3-Emotionality', t:'Ritkán vagyok érzelmileg felkavart.', r:true},
-  {n:31, d:'O', f:'O4-Adventurousness', t:'Szeretem a változatosságot és a kalandot.'},
-  {n:32, d:'O', f:'O4-Adventurousness', t:'Az ismerős rutinokat részesítem előnyben.', r:true},
-  {n:33, d:'O', f:'O5-Intellect', t:'Élvezem a komplex, elméleti problémákon való gondolkodást.'},
-  {n:34, d:'O', f:'O5-Intellect', t:'Nem érdekelnek az absztrakt kérdések.', r:true},
-  {n:35, d:'O', f:'O6-Liberalism', t:'Nyitott vagyok az új, szokatlan értékekre.'},
-  {n:36, d:'O', f:'O6-Liberalism', t:'A hagyományos értékek melletti vagyok.', r:true},
-  // Agreeableness (A)
-  {n:37, d:'A', f:'A1-Trust', t:'Alapvetően bízom másokban.'},
-  {n:38, d:'A', f:'A1-Trust', t:'Gyanakvó vagyok mások szándékaival szemben.', r:true},
-  {n:39, d:'A', f:'A2-Morality', t:'Őszintén viselkedem minden helyzetben.'},
-  {n:40, d:'A', f:'A2-Morality', t:'Készen állok blöffölni, ha az érdekem úgy kívánja.', r:true},
-  {n:41, d:'A', f:'A3-Altruism', t:'Élvezem, ha segíthetek másoknak.'},
-  {n:42, d:'A', f:'A3-Altruism', t:'Nem érdekelnek mások problémái.', r:true},
-  {n:43, d:'A', f:'A4-Cooperation', t:'Inkább együttműködök, mint versenyzek.'},
-  {n:44, d:'A', f:'A4-Cooperation', t:'Szeretem a konfliktust, ha kell.', r:true},
-  {n:45, d:'A', f:'A5-Modesty', t:'Ritkán dicsekszem a teljesítményeimmel.'},
-  {n:46, d:'A', f:'A5-Modesty', t:'Úgy érzem, jobb vagyok, mint mások.', r:true},
-  {n:47, d:'A', f:'A6-Sympathy', t:'Együttérzek a nehéz helyzetben lévőkkel.'},
-  {n:48, d:'A', f:'A6-Sympathy', t:'A "puha szívűség" a gyengeség jele.', r:true},
-  // Conscientiousness (C)
-  {n:49, d:'C', f:'C1-Self-Efficacy', t:'Hiszek abban, hogy amit elkezdek, sikeresen befejezem.'},
-  {n:50, d:'C', f:'C1-Self-Efficacy', t:'Sokszor kudarcot vallok.', r:true},
-  {n:51, d:'C', f:'C2-Orderliness', t:'Rendszeretők vagyok, minden a helyén van.'},
-  {n:52, d:'C', f:'C2-Orderliness', t:'Rendetlen vagyok.', r:true},
-  {n:53, d:'C', f:'C3-Dutifulness', t:'Betartom a szabályokat és megígért dolgokat.'},
-  {n:54, d:'C', f:'C3-Dutifulness', t:'A szabályok nem mindig érvényesek rám.', r:true},
-  {n:55, d:'C', f:'C4-Achievement-Striving', t:'Magas célokat tűzök ki magam elé.'},
-  {n:56, d:'C', f:'C4-Achievement-Striving', t:'Elégedett vagyok a jelenlegi teljesítményemmel.', r:true},
-  {n:57, d:'C', f:'C5-Self-Discipline', t:'A kellemetlen feladatokat is befejezem.'},
-  {n:58, d:'C', f:'C5-Self-Discipline', t:'Halogatok.', r:true},
-  {n:59, d:'C', f:'C6-Cautiousness', t:'Alaposan végiggondolom a döntéseimet.'},
-  {n:60, d:'C', f:'C6-Cautiousness', t:'Gyorsan, néha meggondolatlanul döntök.', r:true}
-];
-const TOTAL=ITEMS.length;
+/* Személyiség hub — Big Five (IPIP-NEO-60) és VIA-72. A kézzel írt szemelyiseg.html-ből átköltöztetve;
+   a pontozás, a tételsorrend (és így a mentett válaszok) változatlan. */
+
+/* ═══════════ 1. BIG FIVE (IPIP-NEO-60) ═══════════ */
+(function(){
 const SCALE=[{v:1,l:'nem'},{v:2,l:'inkább nem'},{v:3,l:'semleges'},{v:4,l:'inkább igen'},{v:5,l:'teljesen'}];
-const STORAGE_KEY='bf-responses-v1';
-let responses={};
-function loadState(){try{const r=localStorage.getItem(STORAGE_KEY);if(r)responses=JSON.parse(r);}catch(e){responses={}}}
-function saveState(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(responses));}catch(e){}window.hubCheckProgress&&window.hubCheckProgress();}
-
-const DOMAINS = {
+// 5 domén × 6 facet × 2 tétel; r = fordított pontozású
+const ITEMS=[
+  ['N','N1-Anxiety','Gyakran aggódom.'],['N','N1-Anxiety','Ritkán érzem magam idegesnek vagy feszültnek.',1],
+  ['N','N2-Anger','Könnyen felmérgesítenek.'],['N','N2-Anger','Ritkán vagyok dühös.',1],
+  ['N','N3-Depression','Gyakran érzem magam kékben vagy szomorúnak.'],['N','N3-Depression','Ritkán érzem magam letörtnek.',1],
+  ['N','N4-Self-Consciousness','Könnyen zavarba jövök.'],['N','N4-Self-Consciousness','Nem érdekel, mit gondolnak rólam.',1],
+  ['N','N5-Immoderation','Nehezen tudok ellenállni a kísértéseknek.'],['N','N5-Immoderation','Ritkán engedek a hirtelen késztetéseknek.',1],
+  ['N','N6-Vulnerability','Stressz alatt könnyen szétesek.'],['N','N6-Vulnerability','Nyomás alatt is higgadt maradok.',1],
+  ['E','E1-Friendliness','Könnyen barátkozom új emberekkel.'],['E','E1-Friendliness','Tartok másoktól.',1],
+  ['E','E2-Gregariousness','Szeretem a nagy társaságokat.'],['E','E2-Gregariousness','Kerülöm a tömeget.',1],
+  ['E','E3-Assertiveness','Természetes vezető vagyok.'],['E','E3-Assertiveness','Hagyom, hogy mások irányítsanak.',1],
+  ['E','E4-Activity','Mindig elfoglalt vagyok.'],['E','E4-Activity','Kényelmes, laza tempóban élek.',1],
+  ['E','E5-Excitement-Seeking','Szeretek kockázatot vállalni.'],['E','E5-Excitement-Seeking','Kerülöm az izgalmas, veszélyes helyzeteket.',1],
+  ['E','E6-Cheerfulness','Gyakran érzem magam boldognak és jókedvűnek.'],['E','E6-Cheerfulness','Ritkán vagyok igazán vidám.',1],
+  ['O','O1-Imagination','Gazdag képzelőerőm van.'],['O','O1-Imagination','Nem szeretem az elvont gondolkodást.',1],
+  ['O','O2-Artistic-Interests','Érzékeny vagyok a szépségre — művészet, természet.'],['O','O2-Artistic-Interests','A művészet nem érdekel különösebben.',1],
+  ['O','O3-Emotionality','Mélyen átélem az érzéseimet.'],['O','O3-Emotionality','Ritkán vagyok érzelmileg felkavart.',1],
+  ['O','O4-Adventurousness','Szeretem a változatosságot és a kalandot.'],['O','O4-Adventurousness','Az ismerős rutinokat részesítem előnyben.',1],
+  ['O','O5-Intellect','Élvezem a komplex, elméleti problémákon való gondolkodást.'],['O','O5-Intellect','Nem érdekelnek az absztrakt kérdések.',1],
+  ['O','O6-Liberalism','Nyitott vagyok az új, szokatlan értékekre.'],['O','O6-Liberalism','A hagyományos értékek melletti vagyok.',1],
+  ['A','A1-Trust','Alapvetően bízom másokban.'],['A','A1-Trust','Gyanakvó vagyok mások szándékaival szemben.',1],
+  ['A','A2-Morality','Őszintén viselkedem minden helyzetben.'],['A','A2-Morality','Készen állok blöffölni, ha az érdekem úgy kívánja.',1],
+  ['A','A3-Altruism','Élvezem, ha segíthetek másoknak.'],['A','A3-Altruism','Nem érdekelnek mások problémái.',1],
+  ['A','A4-Cooperation','Inkább együttműködök, mint versenyzek.'],['A','A4-Cooperation','Szeretem a konfliktust, ha kell.',1],
+  ['A','A5-Modesty','Ritkán dicsekszem a teljesítményeimmel.'],['A','A5-Modesty','Úgy érzem, jobb vagyok, mint mások.',1],
+  ['A','A6-Sympathy','Együttérzek a nehéz helyzetben lévőkkel.'],['A','A6-Sympathy','A "puha szívűség" a gyengeség jele.',1],
+  ['C','C1-Self-Efficacy','Hiszek abban, hogy amit elkezdek, sikeresen befejezem.'],['C','C1-Self-Efficacy','Sokszor kudarcot vallok.',1],
+  ['C','C2-Orderliness','Rendszeretők vagyok, minden a helyén van.'],['C','C2-Orderliness','Rendetlen vagyok.',1],
+  ['C','C3-Dutifulness','Betartom a szabályokat és megígért dolgokat.'],['C','C3-Dutifulness','A szabályok nem mindig érvényesek rám.',1],
+  ['C','C4-Achievement-Striving','Magas célokat tűzök ki magam elé.'],['C','C4-Achievement-Striving','Elégedett vagyok a jelenlegi teljesítményemmel.',1],
+  ['C','C5-Self-Discipline','A kellemetlen feladatokat is befejezem.'],['C','C5-Self-Discipline','Halogatok.',1],
+  ['C','C6-Cautiousness','Alaposan végiggondolom a döntéseimet.'],['C','C6-Cautiousness','Gyorsan, néha meggondolatlanul döntök.',1]];
+const FACET={};ITEMS.forEach((x,i)=>FACET[i+1]=x[1]);
+const DOMAINS={
   O:{name:'Nyitottság',en:'Openness to Experience',color:'#a78bfa',desc:'Új élmények, ötletek, esztétika iránti érzékenység.'},
   C:{name:'Lelkiismeretesség',en:'Conscientiousness',color:'#34d399',desc:'Szervezettség, kitartás, kötelesség-tudat, önkontroll.'},
   E:{name:'Extraverzió',en:'Extraversion',color:'#fbbf24',desc:'Társasági orientáció, energiaszint, pozitív érzelmek.'},
   A:{name:'Barátságosság',en:'Agreeableness',color:'#2dd4bf',desc:'Együttműködés, empátia, mások iránti bizalom.'},
-  N:{name:'Neuroticizmus',en:'Neuroticism',color:'#fb7185',desc:'Érzelmi instabilitás, negatív érzelmek gyakorisága. <em>Alacsony érték</em> = érzelmi stabilitás.'}
-};
-
-const SECTIONS = {
+  N:{name:'Neuroticizmus',en:'Neuroticism',color:'#fb7185',desc:'Érzelmi instabilitás, negatív érzelmek gyakorisága. <em>Alacsony érték</em> = érzelmi stabilitás.'}};
+const SECTIONS={
   N:{title:'I. rész — Neuroticizmus (érzelmi stabilitás)',desc:'Anxiety · Anger · Depression · Self-Consciousness · Immoderation · Vulnerability. Alacsony érték = stabil; magas = reaktív.'},
   E:{title:'II. rész — Extraverzió',desc:'Friendliness · Gregariousness · Assertiveness · Activity · Excitement-Seeking · Cheerfulness.'},
   O:{title:'III. rész — Nyitottság az élményekre',desc:'Imagination · Artistic Interests · Emotionality · Adventurousness · Intellect · Liberalism.'},
   A:{title:'IV. rész — Barátságosság',desc:'Trust · Morality · Altruism · Cooperation · Modesty · Sympathy.'},
-  C:{title:'V. rész — Lelkiismeretesség',desc:'Self-Efficacy · Orderliness · Dutifulness · Achievement-Striving · Self-Discipline · Cautiousness.'}
-};
-
-function renderQuiz(){
-  const root=document.getElementById('bf-quiz');
-  let html='';
-  let currentD=null;
-  ITEMS.forEach(item=>{
-    if(item.d!==currentD){
-      currentD=item.d;
-      const sec=SECTIONS[currentD];
-      html+=`<div class="section-head" style="--section-color:${DOMAINS[currentD].color}"><h3>${sec.title}</h3><p>${sec.desc}</p></div>`;
-    }
-    html+=`<div class="q" data-n="${item.n}"><div class="q-head"><div class="q-num">${String(item.n).padStart(2,'0')}.</div><div class="q-text">${item.t}</div></div><div class="scale" role="radiogroup">${SCALE.map(l=>`<button class="scale-btn" data-value="${l.v}" data-n="${item.n}" type="button"><span class="v">${l.v}</span><span class="l">${l.l}</span></button>`).join('')}</div></div>`;
-  });
-  root.innerHTML=html;
-  root.querySelectorAll('.scale-btn').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      const n=parseInt(btn.dataset.n,10),v=parseInt(btn.dataset.value,10);
-      responses[n]=v;
-      btn.parentElement.querySelectorAll('.scale-btn').forEach(b=>b.classList.remove('selected'));
-      btn.classList.add('selected');
-      saveState();updateProgress();
-    });
-  });
-  Object.keys(responses).forEach(n=>{
-    const btn=root.querySelector(`.scale-btn[data-n="${n}"][data-value="${responses[n]}"]`);
-    if(btn)btn.classList.add('selected');
-  });
-  updateProgress();
-}
-function updateProgress(){
-  const c=Object.keys(responses).length;
-  document.getElementById('bf-progressFill').style.width=(c/TOTAL*100)+'%';
-  document.getElementById('bf-progressNum').textContent=c;
-  document.getElementById('bf-showResults').disabled=c<TOTAL;
-}
-function scoreItem(it){const raw=responses[it.n];if(raw==null)return 0;return it.r?(6-raw):raw;}
-function scoreDomain(d){return ITEMS.filter(it=>it.d===d).reduce((s,it)=>s+scoreItem(it),0);}
-function scoreFacet(f){return ITEMS.filter(it=>it.f===f).reduce((s,it)=>s+scoreItem(it),0);}
-
-// Tájékoztató sávok a skála terjedelme alapján (nem publikált normák). A tételek pontos forrása nincs dokumentálva.
-// Domain range: 12-60 (2 item × 6 facet × 5 skála)
-function band(score, isN){
-  // isN → magas neuroticizmus rossz; alacsonyt "magas stabilitás"-nak írunk
+  C:{title:'V. rész — Lelkiismeretesség',desc:'Self-Efficacy · Orderliness · Dutifulness · Achievement-Striving · Self-Discipline · Cautiousness.'}};
+// Tájékoztató sávok a skála terjedelme alapján (12–60), nem publikált normák.
+function band(score,isN){
   if(isN){
     if(score<=22)return{key:'vlow',label:'Nagyon alacsony',color:'#34d399',desc:'kiemelkedő érzelmi stabilitás'};
     if(score<=30)return{key:'low',label:'Alacsony',color:'#2dd4bf',desc:'stabil érzelmi működés'};
@@ -540,280 +557,142 @@ function band(score, isN){
   if(score<=50)return{key:'high',label:'Magas',color:'#818cf8',desc:'a skála felső része'};
   return{key:'vhigh',label:'Nagyon magas',color:'#a78bfa',desc:'a skála legfelső része'};
 }
-
-const INTERP = {
-  N:{
-    vlow:`<strong>Kiemelkedő érzelmi stabilitás.</strong> Ritkán aggódsz, nem kavarnak fel a stresszes helyzetek, nyugodt vagy nyomás alatt is. Ez jelentős erőforrás. Tisztázó kérdés: előfordul, hogy a nehéz érzéseket (a sajátodat vagy másokét) később veszed észre, mint szeretnéd?`,
+const INTERP={
+  N:{vlow:`<strong>Kiemelkedő érzelmi stabilitás.</strong> Ritkán aggódsz, nem kavarnak fel a stresszes helyzetek, nyugodt vagy nyomás alatt is. Ez jelentős erőforrás. Tisztázó kérdés: előfordul, hogy a nehéz érzéseket (a sajátodat vagy másokét) később veszed észre, mint szeretnéd?`,
     low:`Stabil érzelmi működés. Az élet stresszforrásait viszonylag könnyen kezeled. Nem vagy immunis a szorongásra vagy szomorúságra — de nem a domináns hangolódásod.`,
     mid:`Tipikus tartomány. Vannak érzelmi hullámhegyek és hullámvölgyek, ami normális. A stresszkezelési képességed helyzet- és kontextusfüggő.`,
     high:`<strong>Emelkedett érzelmi reaktivitás.</strong> Erősebb, gyakrabban felszínre törő negatív érzelmek (aggodalom, düh, szomorúság). Nem "gyengeség" — a magasabb neuroticizmus együtt jár a kreativitással, empátiával, önreflexióval is. Klinikai szempontból figyelemre méltó, ha distresszt okoz.`,
-    vhigh:`<strong>Kiemelkedő reaktivitás.</strong> Az érzelmi élet intenzitása és a stresszorokra adott válasz erősen kifejezett. Ha ez distresszt okoz, mindfulness-alapú és kognitív munka (CBT, ACT) hatékony módszerek. A DERS és PHQ-9/GAD-7 skálák pontosabban célzottan mérnek.`
-  },
-  E:{
-    vlow:`<strong>Erős introvertált profil.</strong> Az energiádat egyedül tölted fel, kis csoportokat és mély beszélgetéseket preferálsz.`,
+    vhigh:`<strong>Kiemelkedő reaktivitás.</strong> Az érzelmi élet intenzitása és a stresszorokra adott válasz erősen kifejezett. Ha ez distresszt okoz, mindfulness-alapú és kognitív munka (CBT, ACT) hatékony módszerek. A DERS és PHQ-9/GAD-7 skálák pontosabban célzottan mérnek.`},
+  E:{vlow:`<strong>Erős introvertált profil.</strong> Az energiádat egyedül tölted fel, kis csoportokat és mély beszélgetéseket preferálsz.`,
     low:`Introvertált oldal. A hosszabb szociális interakciók fárasztanak, csendes idő szükséges a regenerációhoz.`,
     mid:`Kiegyensúlyozott (ambivert). Néha keresed a társaságot, néha a magányt — kontextus-függő.`,
     high:`Extravertált oldal. Az energiádat emberek között kapod, kereseted a szociális interakciót.`,
-    vhigh:`<strong>Erős extravertált profil.</strong> Magas szociális energia, aktivitás, kereskedelmi keresés. Több emberrel körülvéve érzed magad a legjobban.`
-  },
-  O:{
-    vlow:`<strong>Konvencionális gondolkodás.</strong> A hagyományos, jól bevált utakat kedveled, kevésbé keresed az újat, absztraktot vagy szokatlant.`,
+    vhigh:`<strong>Erős extravertált profil.</strong> Magas szociális energia, aktivitás, kereskedelmi keresés. Több emberrel körülvéve érzed magad a legjobban.`},
+  O:{vlow:`<strong>Konvencionális gondolkodás.</strong> A hagyományos, jól bevált utakat kedveled, kevésbé keresed az újat, absztraktot vagy szokatlant.`,
     low:`Gyakorlatiasabb, konkrét gondolkodás. Az elméleti absztrakciók vagy művészi élmények kevésbé fontosak.`,
     mid:`Kiegyensúlyozott. Nyitott vagy az újra, de nem élsz állandó keresésben.`,
     high:`Nyitott gondolkodás. Kereseted az új élményeket, ötleteket, esztétikai tapasztalatokat.`,
-    vhigh:`<strong>Erősen nyitott profil.</strong> Kreativitás, intellektuális kíváncsiság, esztétikai érzékenység, filozófiai gondolkodás. Gyakran együtt jár a szokatlansággal.`
-  },
-  A:{
-    vlow:`<strong>Versenyző, direkt orientáció.</strong> Az együttműködés és mások szempontjai kevésbé vezérelnek — a saját céljaid előrébb valók.`,
+    vhigh:`<strong>Erősen nyitott profil.</strong> Kreativitás, intellektuális kíváncsiság, esztétikai érzékenység, filozófiai gondolkodás. Gyakran együtt jár a szokatlansággal.`},
+  A:{vlow:`<strong>Versenyző, direkt orientáció.</strong> Az együttműködés és mások szempontjai kevésbé vezérelnek — a saját céljaid előrébb valók.`,
     low:`Kritikus, néha távolságtartó orientáció. Nem vagy naiv, gyanakvóbb vagy mások szándékaival kapcsolatban.`,
     mid:`Kiegyensúlyozott. Együttműködsz, de nem áldozod fel a saját érdekedet minden áron.`,
     high:`Együttműködő, empatikus profil. Fontos számodra a harmónia, mások segítése, a bizalom.`,
-    vhigh:`<strong>Erősen barátságos profil.</strong> Nagyfokú együttműködés, empátia, altruizmus. Kockázat: túlzott alkalmazkodás, önmagad háttérbe helyezése.`
-  },
-  C:{
-    vlow:`<strong>Impulzív, spontán orientáció.</strong> A struktúra, tervezés, kötelesség-tudat kevésbé domináns. Kreatív rugalmasság — vagy káosz.`,
+    vhigh:`<strong>Erősen barátságos profil.</strong> Nagyfokú együttműködés, empátia, altruizmus. Kockázat: túlzott alkalmazkodás, önmagad háttérbe helyezése.`},
+  C:{vlow:`<strong>Impulzív, spontán orientáció.</strong> A struktúra, tervezés, kötelesség-tudat kevésbé domináns. Kreatív rugalmasság — vagy káosz.`,
     low:`Lazább, kevésbé strukturált stílus. Nem szeretsz szabályokhoz és rutinokhoz kötve lenni.`,
     mid:`Kiegyensúlyozott. Van struktúrád, de nem merev vagy.`,
     high:`Szervezett, kitartó, célorientált. Betartod a szabályokat, végigviszed amit elkezdesz.`,
-    vhigh:`<strong>Kiemelkedően lelkiismeretes profil.</strong> Erős struktúra, kötelesség-érzet, tökéletességre törekvés. Kockázat: perfekcionizmus, burnout, rugalmatlan kontrollra való igény.`
+    vhigh:`<strong>Kiemelkedően lelkiismeretes profil.</strong> Erős struktúra, kötelesség-érzet, tökéletességre törekvés. Kockázat: perfekcionizmus, burnout, rugalmatlan kontrollra való igény.`}};
+const ORDER=['O','C','E','A','N'];
+makeTest({
+  id:'bf',key:'bf-responses-v1',name:'Big Five',c1:'#60a5fa',c2:'#a78bfa',
+  tab:'Big Five',tabSub:'IPIP-NEO-60 · 60 item',scale:SCALE,
+  header:{status:'model',statusText:'Modell-alapú rövid változat · nem hivatalos tételkészlet',
+    eyebrow:'IPIP-alapú 60 tételes változat · a NEO-PI-R 30 facetjének szerkezetére (Johnson, 2014)',
+    title:'A te <em style="color:#60a5fa">OCEAN-profilod</em>',
+    lead:'A Big Five modell 60 éves konszenzus arról, hogy 5 alapdimenzió mentén szisztematikusan leírhatók a személyiségjegyek. Ez a legjobban validált, kultúrákon átívelő személyiségmodell a pszichológiában.',
+    intro:'<p><strong>Kitöltési útmutató:</strong> 60 állítást olvasol. Mindegyiknél értékeld 1–5 skálán, mennyire igaz rád. Ne "az ideális self"-et válaszold — hanem az aktuális működésedet.</p><p>1 = egyáltalán nem igaz · 2 = inkább nem · 3 = semleges · 4 = inkább igen · 5 = teljesen igaz. Bizonyos itemek fordított pontozásúak (a rendszer kezeli).</p>'},
+  sections:['N','E','O','A','C'].map(d=>({title:SECTIONS[d].title,desc:SECTIONS[d].desc,items:ITEMS.filter(x=>x[0]===d).map(x=>Object.assign({s:x[0],t:x[2]},x[3]?{r:true}:{}))})),
+  score(R){const o={};ORDER.forEach(d=>o[d]=R.sum(d));
+    const fac={};R.items.forEach(i=>{fac[FACET[i.n]]=(fac[FACET[i.n]]||0)+i.v;});o.facets=fac;return o;},
+  sum(s){return {d:Object.fromEntries(ORDER.map(k=>[k,[DOMAINS[k].name,s[k],12,60]]))};},
+  render(R,s){
+    const radar=H.radar(ORDER.map(d=>({label:DOMAINS[d].name,value:s[d],shown:s[d]+'/60'})),{max:60,min:12,stroke:'#60a5fa',fill:'rgba(96,165,250,0.28)'});
+    const legend=ORDER.map(d=>({color:DOMAINS[d].color,label:DOMAINS[d].name,val:'· '+s[d]+'/60'}));
+    const cards=`<div class="score-grid">${ORDER.map(d=>{const v=s[d],dm=DOMAINS[d],b=band(v,d==='N');
+      return `<div class="score-card" style="--sc:${b.color}"><div class="abbr">${d} · ${dm.en}</div><h4><em>${dm.name}</em></h4><div class="val">${v}</div><div class="out">/ 60 · ${b.label}</div><div class="band">${b.desc}</div><div class="bar"><div class="bar-fill" style="width:${(v-12)/48*100}%"></div></div></div>`;}).join('')}</div>`;
+    const facets=H.bars('Facet-szintű <em>bontás</em>',ORDER.map(d=>({title:DOMAINS[d].name,color:DOMAINS[d].color,
+      rows:[...new Set(ITEMS.filter(x=>x[0]===d).map(x=>x[1]))].map(f=>({name:f.split('-').slice(1).join('-'),val:s.facets[f],unit:'/10',pct:(s.facets[f]-2)/8*100}))})));
+    const interp=H.interp('Klinikai <em>értelmezés</em>',ORDER.map(d=>{const v=s[d],dm=DOMAINS[d],b=band(v,d==='N');
+      return {h:`${dm.name} — ${b.label} (${v}/60)`,color:dm.color,html:`<p style="font-size:13px;color:var(--ink-lite-muted);font-style:italic;margin-bottom:8px">${dm.desc}</p><p>${INTERP[d][b.key]}</p>`};}));
+    return `<div class="res-eyebrow">Eredmény · Big Five profil · Facet-szint</div>
+      <h2 class="res-title">A te <em>OCEAN-térképed</em></h2>
+      <p class="res-lead">Öt domén-pontszám + 30 facet-pontszám. A domén az általános tendencia, a facet a részlet. A sávok (alacsony–magas) a skála terjedelméből számolt <strong>tájékoztató</strong> határok, nem publikált normák.</p>
+      ${H.chart('Big Five <em>térkép</em>','Öt tengely · min 12 · max 60',radar,legend)}
+      ${cards}${facets}${interp}
+      ${H.refs(['<strong>Costa, P. T., & McCrae, R. R. (1992).</strong> Revised NEO Personality Inventory (NEO-PI-R). Psychological Assessment Resources.',
+        '<strong>Johnson, J. A. (2014).</strong> Measuring thirty facets of the Five Factor Model with a 120-item public domain inventory: Development of the IPIP-NEO-120. <em>Journal of Research in Personality, 51</em>, 78–89.',
+        '<strong>Goldberg, L. R. (1993).</strong> The structure of phenotypic personality traits. <em>American Psychologist, 48(1)</em>, 26–34.',
+        '<strong>Soto, C. J., & John, O. P. (2017).</strong> The next Big Five Inventory (BFI-2). <em>Journal of Personality and Social Psychology, 113(1)</em>, 117–143.'])}`;
   }
-};
-
-function renderResults(){
-  const scores={};
-  ['O','C','E','A','N'].forEach(d=>{scores[d]=scoreDomain(d);});
-  try{ONI.save('bf',{n:'Big Five',d:Object.fromEntries(['O','C','E','A','N'].map(k=>[k,[DOMAINS[k].name,scores[k],12,60]]))});}catch(e){console.warn('ONI',e)}
-  // Radar
-  const radarData=['O','C','E','A','N'].map(d=>({label:DOMAINS[d].name, value:scores[d]}));
-  window.CHARTS.radar(document.getElementById('bf-radar'), radarData, {max:60, min:12, strokeColor:'#60a5fa', fillColor:'rgba(96,165,250,0.28)'});
-  // Legend
-  document.getElementById('bf-legend').innerHTML=['O','C','E','A','N'].map(d=>{
-    const dm=DOMAINS[d];
-    return `<div class="chart-legend-item"><span class="chart-legend-swatch" style="background:${dm.color}"></span><span><strong>${dm.name}</strong> · ${scores[d]}/60</span></div>`;
-  }).join('');
-  // Score cards
-  let sgHtml='';
-  ['O','C','E','A','N'].forEach(d=>{
-    const s=scores[d],dm=DOMAINS[d],b=band(s,d==='N'),pct=((s-12)/48)*100;
-    sgHtml+=`<div class="score-card" style="--sc:${b.color}"><div class="abbr">${d} · ${dm.en}</div><h4><em>${dm.name}</em></h4><div class="val">${s}</div><div class="out">/ 60 · ${b.label}</div><div class="band">${b.desc}</div><div class="bar"><div class="bar-fill" style="width:${pct}%"></div></div></div>`;
-  });
-  document.getElementById('bf-scoreGrid').innerHTML=sgHtml;
-  // Facets
-  let fHtml='<h3>Facet-szintű <em>bontás</em></h3>';
-  ['O','C','E','A','N'].forEach(d=>{
-    const dm=DOMAINS[d];
-    fHtml+=`<div class="facet-group" style="--fg-color:${dm.color}"><div class="facet-group-head"><h4>${dm.name}</h4></div>`;
-    // Get facets for this domain
-    const facets=[...new Set(ITEMS.filter(it=>it.d===d).map(it=>it.f))];
-    facets.forEach(f=>{
-      const fs=scoreFacet(f);
-      const fname=f.split('-').slice(1).join('-');
-      const pct=((fs-2)/8)*100;
-      fHtml+=`<div class="facet-row"><div class="facet-row-name">${fname}</div><div class="facet-row-val">${fs}<span>/10</span></div><div class="facet-row-track"><div class="facet-row-fill" style="width:${pct}%;background:linear-gradient(90deg,${dm.color},${dm.color})"></div></div></div>`;
-    });
-    fHtml+=`</div>`;
-  });
-  document.getElementById('bf-facets').innerHTML=fHtml;
-  // Interp — mindegyik doménhez
-  let iHtml=`<h3>Klinikai <em>értelmezés</em></h3>`;
-  ['O','C','E','A','N'].forEach(d=>{
-    const s=scores[d],dm=DOMAINS[d],b=band(s,d==='N');
-    iHtml+=`<div class="interp-section" style="--sc:${dm.color}"><h4>${dm.name} — ${b.label} (${s}/60)</h4><p style="font-size:13px;color:var(--ink-lite-muted);font-style:italic;margin-bottom:8px">${dm.desc}</p><p>${INTERP[d][b.key]}</p></div>`;
-  });
-  document.getElementById('bf-interp').innerHTML=iHtml;
-  document.getElementById('bf-results').classList.add('visible');
-  setTimeout(()=>{document.getElementById('bf-results').scrollIntoView({behavior:'smooth',block:'start'});},100);
-}
-document.getElementById('bf-showResults').addEventListener('click',()=>{if(Object.keys(responses).length<TOTAL)return;renderResults();});
-function reset(){if(!confirm('Biztos törlöd a Big Five válaszaidat?'))return;responses={};saveState();document.querySelectorAll('#test-bf .scale-btn.selected').forEach(b=>b.classList.remove('selected'));document.getElementById('bf-results').classList.remove('visible');updateProgress();window.scrollTo({top:0,behavior:'smooth'});}
-function downloadJSON(){
-  const scores={};['O','C','E','A','N'].forEach(d=>{scores[d]=scoreDomain(d);});
-  const facets={};[...new Set(ITEMS.map(it=>it.f))].forEach(f=>{facets[f]=scoreFacet(f);});
-  const data={test:'IPIP-NEO-60',timestamp:new Date().toISOString(),raw_responses:responses,domain_scores:scores,facet_scores:facets};
-  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-  const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`big-five-${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(url);
-}
-loadState();renderQuiz();
-return {reset,downloadJSON};
+});
 })();
 
-/* ═══ VIA CHARACTER STRENGTHS (VIA-72) ═══ */
-window.VIA = (function(){
-// 24 strengths × 3 items = 72 items
-// 6 virtue groups: WK=Wisdom&Knowledge, CG=Courage, HU=Humanity, JU=Justice, TE=Temperance, TR=Transcendence
-const STRENGTHS = {
-  // Wisdom & Knowledge
+/* ═══════════ 2. VIA KARAKTER-ERŐK (VIA-72) ═══════════ */
+(function(){
+const SCALE=[{v:1,l:'nem'},{v:2,l:'inkább nem'},{v:3,l:'néha'},{v:4,l:'gyakran'},{v:5,l:'nagyon'}];
+const STRENGTHS={
   creativity:{name:'Kreativitás',en:'Creativity',v:'WK',desc:'Új, hasznos gondolatok, megoldások alkotása.',items:['Új ötleteim vannak, amik gyakran meglepik a többieket.','Élvezek elmerülni új és szokatlan gondolatokban.','Az emberek "kreatívnak" tartanak.']},
   curiosity:{name:'Kíváncsiság',en:'Curiosity',v:'WK',desc:'Aktív érdeklődés minden iránt.',items:['Sok minden felkelti az érdeklődésemet.','Élvezem az újdonságokat, akárhol találkozom velük.','Élvezettel fedezek fel új helyeket, ötleteket, tapasztalatokat.']},
   judgment:{name:'Ítélőképesség',en:'Judgment',v:'WK',desc:'Kritikus gondolkodás, minden oldal mérlegelése.',items:['Alaposan végiggondolom a dolgokat, mielőtt döntést hozok.','Meg tudom vizsgálni egy kérdés több oldalát.','Nem hozok elhamarkodott ítéleteket.']},
   learning:{name:'Tanulás szeretete',en:'Love of Learning',v:'WK',desc:'Új készségek, témák szisztematikus elsajátítása.',items:['Élvezem az új dolgok tanulását.','Bármikor lehetőségem van tanulni valami újat, kihasználom.','Az olvasás, kurzusok, könyvek fontos részei az életemnek.']},
   perspective:{name:'Bölcsesség / perspektíva',en:'Perspective',v:'WK',desc:'Az élet nagy összefüggéseinek látása; jó tanácsok másoknak.',items:['Az emberek gyakran kérnek tőlem tanácsot fontos kérdésekben.','Képes vagyok a nagy összefüggéseket látni.','A tapasztalataimból értékes tanulságokat vonok le.']},
-  // Courage
   bravery:{name:'Bátorság',en:'Bravery',v:'CG',desc:'Nem hátrálás meg a nehézségek, fenyegetés vagy fájdalom elől.',items:['Kiállok azért, amiben hiszek, akkor is, ha népszerűtlen.','Nem hátrálok meg a nehézségektől.','Fel merek szólalni, amikor kell.']},
   perseverance:{name:'Kitartás',en:'Perseverance',v:'CG',desc:'A megkezdett dolgok végigvitele, akadályok ellenére.',items:['Amit elkezdek, azt befejezem.','Nem adom fel könnyen, még akadályok esetén sem.','Kitartó vagyok, akkor is, ha lassan halad.']},
   honesty:{name:'Őszinteség',en:'Honesty',v:'CG',desc:'Igazmondás, hiteles önmagam vállalása.',items:['Őszinte vagyok, akkor is, ha kényelmetlen.','Nem mondok olyat, ami nem igaz.','Vállalom, hogy ki vagyok.']},
   zest:{name:'Lelkesedés',en:'Zest',v:'CG',desc:'Energikus, lelkes életfelfogás.',items:['Energikusan lépek az életbe.','Lelkesedéssel csinálom, amit csinálok.','Élvezem az életet.']},
-  // Humanity
   love:{name:'Szeretet',en:'Love',v:'HU',desc:'Közeli kapcsolatokban értékelt és értékel másokat.',items:['Sokat jelentenek nekem a közeli emberi kapcsolatok.','Fontos, hogy szeretve érezzem magam.','Mély kapcsolatokat építek másokkal.']},
   kindness:{name:'Kedvesség',en:'Kindness',v:'HU',desc:'Segítségnyújtás, jóság, gondoskodás.',items:['Örömet szerez, ha segíthetek másoknak.','Kedves vagyok az emberekkel.','Odafigyelek mások szükségleteire.']},
   social_iq:{name:'Szociális intelligencia',en:'Social Intelligence',v:'HU',desc:'Mások és saját érzelmek megértése, ügyes szociális helyzetkezelés.',items:['Jól olvasom mások érzelmeit.','Tudom, hogyan érzik magukat mások, akkor is, ha nem mondják ki.','Ügyesen navigálok szociális helyzetekben.']},
-  // Justice
   teamwork:{name:'Csapatmunka',en:'Teamwork',v:'JU',desc:'A csoport javára dolgozás, lojalitás.',items:['Élvezem a csapatban való munkát.','A csoport eredménye fontos nekem.','Lojális vagyok a csoportokhoz, amikbe tartozom.']},
   fairness:{name:'Igazságosság',en:'Fairness',v:'JU',desc:'Mindenkit egyenlően kezelése, elfogulatlanság.',items:['Igyekszem mindenkivel igazságosan bánni.','Az egyenlő elbánás fontos elvem.','Nem tervezek elfogultan.']},
   leadership:{name:'Vezetői készség',en:'Leadership',v:'JU',desc:'Csoport szervezése, motiválása, közös célok elérése.',items:['Természetesen veszem át a vezetést egy csoportban.','Jól tudok másokat motiválni közös cél felé.','Az emberek követnek engem.']},
-  // Temperance
   forgiveness:{name:'Megbocsátás',en:'Forgiveness',v:'TE',desc:'A hibázók iránti irgalom, nem bosszúállás.',items:['Meg tudok bocsátani másoknak.','Nem tartok haragot sokáig.','Elengedem a régi sérelmeket.']},
   humility:{name:'Alázat',en:'Humility',v:'TE',desc:'Saját teljesítmények nem-túlhangsúlyozása.',items:['Nem hangsúlyozom túl a saját teljesítményeimet.','Elismerem a hibáimat.','Nem érzem magam különb embernek másoknál.']},
   prudence:{name:'Óvatosság',en:'Prudence',v:'TE',desc:'Körültekintő döntéshozatal, nem-kockáztatás megbánható helyzeteken.',items:['Óvatos vagyok a döntéseimben.','Nem mondok vagy csinálok olyat, amit később megbánhatok.','Végiggondolom a következményeket.']},
   self_regulation:{name:'Önszabályozás',en:'Self-Regulation',v:'TE',desc:'Érzelmek, ösztönök, viselkedés tudatos szabályozása.',items:['Uralom a saját érzelmeimet.','Fegyelmezett vagyok.','A hosszú távú célom miatt le tudok mondani rövid távú örömről.']},
-  // Transcendence
   beauty:{name:'Szépség értékelése',en:'Appreciation of Beauty',v:'TR',desc:'Természet, művészet, kiválóság iránti csodálat.',items:['Mély élvezettel csodálom a természet szépségét.','A művészet mély érzelmeket vált ki belőlem.','A kiváló emberi teljesítmény meghat.']},
   gratitude:{name:'Hála',en:'Gratitude',v:'TR',desc:'Az élet jó dolgainak tudatos észlelése és köszönete.',items:['Hálát érzek sokféle dolog iránt az életemben.','Rendszeresen köszönetet mondok azoknak, akik segítettek.','Tudatosan megállok észrevenni a jó dolgokat.']},
   hope:{name:'Remény',en:'Hope',v:'TR',desc:'Optimizmus, a jövőbe vetett bizakodás.',items:['Hiszem, hogy jó dolgok fognak történni.','Optimista vagyok a jövőmet illetően.','Nehéz helyzetekben is látom a fényt.']},
   humor:{name:'Humor',en:'Humor',v:'TR',desc:'Játékosság, nevetés-kelt, könnyed nézőpont.',items:['Szeretem megnevettetni az embereket.','A humor fontos része az életemnek.','Játékos vagyok.']},
-  spirituality:{name:'Spiritualitás',en:'Spirituality',v:'TR',desc:'Az élet nagyobb értelmére, célra való érzékenység.',items:['Van egy magasabb célom, ami vezet.','Az életemnek mélyebb értelme van.','Kapcsolatot érzek valami nálam nagyobbal.']}
-};
-const VIRTUES = {
-  WK:{name:'Bölcsesség és tudás',color:'#a78bfa'},
-  CG:{name:'Bátorság',color:'#fb7185'},
-  HU:{name:'Emberség',color:'#fbbf24'},
-  JU:{name:'Igazságosság',color:'#60a5fa'},
-  TE:{name:'Mértékletesség',color:'#34d399'},
-  TR:{name:'Transzcendencia',color:'#fde047'}
-};
-
-// Build ITEMS from STRENGTHS
-const ITEMS=[];
-let cnt=1;
-Object.entries(STRENGTHS).forEach(([key,s])=>{
-  s.items.forEach(t=>{ITEMS.push({n:cnt++,s:key,t});});
+  spirituality:{name:'Spiritualitás',en:'Spirituality',v:'TR',desc:'Az élet nagyobb értelmére, célra való érzékenység.',items:['Van egy magasabb célom, ami vezet.','Az életemnek mélyebb értelme van.','Kapcsolatot érzek valami nálam nagyobbal.']}};
+const VIRTUES={WK:{name:'Bölcsesség és tudás',color:'#a78bfa'},CG:{name:'Bátorság',color:'#fb7185'},HU:{name:'Emberség',color:'#fbbf24'},
+  JU:{name:'Igazságosság',color:'#60a5fa'},TE:{name:'Mértékletesség',color:'#34d399'},TR:{name:'Transzcendencia',color:'#fde047'}};
+const VO=['WK','CG','HU','JU','TE','TR'];
+makeTest({
+  id:'via',key:'via-responses-v1',name:'VIA-72',c1:'#fbbf24',c2:'#fb7185',
+  tab:'Karakter-erők',tabSub:'VIA-72 · 72 item',scale:SCALE,
+  header:{status:'model',statusText:'Modell-alapú rövid változat · nem hivatalos tételkészlet',
+    eyebrow:'VIA Character Strengths · Peterson & Seligman (2004)',
+    title:'A te <em style="color:#fbbf24">karakter-erőid</em>',
+    lead:'A VIA klasszifikáció 24 univerzális karakter-erőt ír le, 6 erény-csoportba rendezve. A pozitív pszichológia egyik alapmodellje. A cél nem a "gyengeségek javítása" — hanem a saját <em>szignatúra-erőid</em> felismerése és tudatos használata. Erős empirikus bázis: 75+ ország, 3M+ kitöltő.',
+    intro:'<p><strong>Kitöltési útmutató:</strong> 72 állítás. Mindegyiknél értékeld 1–5 skálán, mennyire igaz rád. A cél nem a "kívánt" válasz, hanem a valóság.</p><p>Skála: 1 = egyáltalán nem jellemző · 2 = inkább nem · 3 = néha · 4 = gyakran · 5 = nagyon jellemző.</p>'},
+  sections:Object.entries(STRENGTHS).map(([k,st])=>({title:`${st.name} <em>· ${st.en}</em>`,desc:VIRTUES[st.v].name,items:st.items.map(t=>({s:k,t}))})),
+  score(R){
+    const all=Object.keys(STRENGTHS).map(k=>({key:k,name:STRENGTHS[k].name,en:STRENGTHS[k].en,v:STRENGTHS[k].v,desc:STRENGTHS[k].desc,value:R.sum(k)})).sort((a,b)=>b.value-a.value);
+    const virt=VO.map(v=>{const ks=Object.keys(STRENGTHS).filter(k=>STRENGTHS[k].v===v),raw=ks.reduce((x,k)=>x+R.sum(k),0);
+      return {v,name:VIRTUES[v].name,color:VIRTUES[v].color,raw,avg:(raw/ks.length).toFixed(1),max:ks.length*15};});
+    return {all,virt};
+  },
+  sum(s){return {h:s.all.slice(0,5).map(x=>x.name).join(', '),d:Object.fromEntries(s.all.map(x=>[x.key,[x.name,x.value,3,15]]))};},
+  render(R,s){
+    const all=s.all,top5=all.slice(0,5),bottom5=all.slice(-5).reverse(),C=v=>VIRTUES[v].color;
+    const radar=H.radar(s.virt.map(v=>({label:v.name,value:parseFloat(v.avg)})),{max:15,min:3,stroke:'#fbbf24',fill:'rgba(251,191,36,0.28)'});
+    const legend=s.virt.map(v=>({color:v.color,label:v.name,val:'· átlag '+v.avg+'/15'}));
+    const rank=(title,list,withDesc)=>`<div class="rank-list"><h3>${title}</h3>${list.map((x,i)=>`<div class="rank-item${withDesc||i<5?' top':''}" style="--rc:${C(x.v)};--top-color:${C(x.v)}"><div class="rank-pos">${i+1}.</div><div><div class="rank-name"><em>${x.name}</em> · <span style="color:var(--ink-lite-muted);font-size:12px">${withDesc?x.en:VIRTUES[x.v].name}</span></div>${withDesc?`<div class="rank-desc">${x.desc}</div>`:''}</div><div class="rank-score">${x.value}<span>/15</span></div></div>`).join('')}</div>`;
+    const topVirtue=[...s.virt].sort((a,b)=>parseFloat(b.avg)-parseFloat(a.avg))[0];
+    const interp=H.interp('Klinikai <em>értelmezés</em>',[
+      {h:'Szignatúra-erő (top 1) — '+top5[0].name,color:C(top5[0].v),html:`<p>${top5[0].desc} <strong>Ez az, aki tényleg vagy</strong> — nem az, ami lenni szeretnél. Seligman & Peterson kutatása azt mutatja: a szignatúra-erő <em>heti szintű tudatos használata</em> mérhető jóllét-növekedést hoz. Kérdezd meg magadtól: az elmúlt héten hol tudtad ezt használni? Hol lehetett volna még?</p>`},
+      {h:'Top 2-5 — a szignatúra-portré',color:C(top5[1].v),html:`<p>A top 5 erő együtt jellemzi a "központi karakteredet" — <strong>${top5.map(x=>x.name).join(' · ')}</strong>. Ez az a kombináció, amit másokban ritkán találsz meg ugyanígy. Kérdés a hét kezdetéhez: melyik szignatúra-erődet fogod tudatosan használni a következő 7 napban?</p>`},
+      {h:'Bottom 5 — a "gyengeségek" mítosza',color:C(bottom5[4].v),html:`<p>Az alsó 5: <strong>${[4,3,2,1,0].map(i=>bottom5[i].name).join(' · ')}</strong>. <strong>Ez NEM egy fejlesztendő terület lista.</strong> A pozitív pszichológia egyik központi tanulsága: az idő 80%-át a szignatúra-erők használatával, nem a gyengeségek "javításával" érdemes tölteni. A gyengeségeket ELÉG "elég jó" szinten tartani.</p>`},
+      {h:'Domináns erény-csoport — '+topVirtue.name,color:topVirtue.color,html:`<p>Az erény-csoportok szintjén a <strong>${topVirtue.name}</strong> a legerősebb (átlag ${topVirtue.avg}/15). Ez az általános irányultságod — hogy milyen típusú "jóság" felé húz a rendszered természetesen.</p>`},
+      {h:'Praktikus lépések',color:'var(--gold-bright)',html:`<p><strong>1. Szignatúra-erő gyakorlat</strong> (Seligman 2005 · empirikusan validált): 7 napig minden nap találj egy új módot, ahogyan a top erődet használhatod. Írd le végig — mit tettél, milyen érzés volt.</p><p><strong>2. "Erő-tudatos" partnerkommunikáció:</strong> mondd el a partnerednek, kollégáidnak, mi a top 3 szignatúra-erőd. Kérj visszajelzést: látják-e ezt benned.</p><p><strong>3. Karrier-illesztés:</strong> a saját üzleted (business/ERP consulting) mely részei használják a top 3 erődet? Melyek azok, ahol egyáltalán nem? A frusztráció-források gyakran ott vannak, ahol a szignatúra-erő NEM jut szóhoz.</p>`}]);
+    return `<div class="res-eyebrow">Eredmény · 24 karakter-erő rangsora · 6 erény-csoport</div>
+      <h2 class="res-title">A te <em>szignatúra-erőid</em></h2>
+      <p class="res-lead">A top 5 erő a te "szignatúra-profilod" — az, ami tényleg vagy, nem az, ami lenni szeretnél. Peterson & Seligman javaslata: heti szinten használd tudatosan a szignatúra-erődet, akár egyet-egyet váltogatva.</p>
+      ${H.chart('Erény-csoportok <em>térképe</em>','6 erény-csoport · átlag 3–15',radar,legend)}
+      ${rank('Top 5 <em>szignatúra-erőd</em>',top5,true)}
+      ${rank('Mind a 24 erő <em>rangsorolva</em>',all,false)}
+      ${interp}
+      ${H.refs(['<strong>Peterson, C., & Seligman, M. E. P. (2004).</strong> <em>Character strengths and virtues: A handbook and classification.</em> Oxford University Press.',
+        '<strong>Niemiec, R. M. (2018).</strong> <em>Character strengths interventions: A field guide for practitioners.</em> Hogrefe.',
+        '<strong>McGrath, R. E. (2015).</strong> Character strengths in 75 nations: An update. <em>Journal of Positive Psychology, 10(1)</em>, 41–52.',
+        '<strong>Seligman, M. E. P., Steen, T. A., Park, N., & Peterson, C. (2005).</strong> Positive psychology progress: Empirical validation of interventions. <em>American Psychologist, 60</em>(5), 410–421.'])}`;
+  }
 });
-const TOTAL=ITEMS.length;
-
-const SCALE=[{v:1,l:'nem'},{v:2,l:'inkább nem'},{v:3,l:'néha'},{v:4,l:'gyakran'},{v:5,l:'nagyon'}];
-const STORAGE_KEY='via-responses-v1';
-let responses={};
-function loadState(){try{const r=localStorage.getItem(STORAGE_KEY);if(r)responses=JSON.parse(r);}catch(e){responses={}}}
-function saveState(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(responses));}catch(e){}window.hubCheckProgress&&window.hubCheckProgress();}
-
-function renderQuiz(){
-  const root=document.getElementById('via-quiz');
-  let html='';
-  let currentV=null;
-  Object.entries(STRENGTHS).forEach(([key,s])=>{
-    if(s.v!==currentV){
-      currentV=s.v;
-      const v=VIRTUES[currentV];
-      html+=`<div class="section-head" style="--section-color:${v.color}"><h3>${v.name}</h3><p>Erény-csoport: az ide tartozó karakter-erők közös témája.</p></div>`;
-    }
-  });
-  // Simpler: no per-virtue heading, just items
-  html='';
-  currentV=null;
-  Object.entries(STRENGTHS).forEach(([key,s])=>{
-    if(s.v!==currentV){
-      currentV=s.v;
-      const v=VIRTUES[currentV];
-      html+=`<div class="section-head" style="--section-color:${v.color}"><h3>${v.name}</h3><p>Az ide tartozó karakter-erők közös témája: <em>${v.name.toLowerCase()}</em>.</p></div>`;
-    }
-    html+=`<div class="q" data-strength="${key}" style="border-left:3px solid ${VIRTUES[s.v].color}"><div style="font-family:var(--font-display);font-style:italic;font-size:14px;color:${VIRTUES[s.v].color};margin-bottom:10px;font-weight:600">${s.name} <span style="color:var(--ink-lite-muted);font-weight:400"> · ${s.en}</span></div>`;
-    // 3 items each
-    ITEMS.filter(it=>it.s===key).forEach(item=>{
-      html+=`<div class="q-head" style="margin-bottom:10px"><div class="q-num">${String(item.n).padStart(2,'0')}.</div><div class="q-text">${item.t}</div></div><div class="scale" role="radiogroup" style="margin-bottom:10px">${SCALE.map(l=>`<button class="scale-btn" data-value="${l.v}" data-n="${item.n}" type="button"><span class="v">${l.v}</span><span class="l">${l.l}</span></button>`).join('')}</div>`;
-    });
-    html+=`</div>`;
-  });
-  root.innerHTML=html;
-  root.querySelectorAll('.scale-btn').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      const n=parseInt(btn.dataset.n,10),v=parseInt(btn.dataset.value,10);
-      responses[n]=v;
-      btn.parentElement.querySelectorAll('.scale-btn').forEach(b=>b.classList.remove('selected'));
-      btn.classList.add('selected');
-      saveState();updateProgress();
-    });
-  });
-  Object.keys(responses).forEach(n=>{
-    const btn=root.querySelector(`.scale-btn[data-n="${n}"][data-value="${responses[n]}"]`);
-    if(btn)btn.classList.add('selected');
-  });
-  updateProgress();
-}
-function updateProgress(){
-  const c=Object.keys(responses).length;
-  document.getElementById('via-progressFill').style.width=(c/TOTAL*100)+'%';
-  document.getElementById('via-progressNum').textContent=c;
-  document.getElementById('via-showResults').disabled=c<TOTAL;
-}
-function scoreStrength(key){return ITEMS.filter(it=>it.s===key).reduce((s,it)=>s+(responses[it.n]||0),0);}
-function scoreVirtue(v){
-  const keys=Object.entries(STRENGTHS).filter(([k,s])=>s.v===v).map(([k])=>k);
-  return keys.reduce((s,k)=>s+scoreStrength(k),0);
-}
-function countInVirtue(v){return Object.values(STRENGTHS).filter(s=>s.v===v).length;}
-
-function renderResults(){
-  // All strengths ranked
-  const allScores=Object.keys(STRENGTHS).map(k=>({key:k,name:STRENGTHS[k].name,en:STRENGTHS[k].en,v:STRENGTHS[k].v,desc:STRENGTHS[k].desc,value:scoreStrength(k)})).sort((a,b)=>b.value-a.value);
-  try{ONI.save('via',{n:'VIA-72',h:allScores.slice(0,5).map(x=>x.name).join(', '),d:Object.fromEntries(allScores.map(x=>[x.key,[x.name,x.value,3,15]]))});}catch(e){console.warn('ONI',e)}
-  // Virtue scores
-  const virtueScores=['WK','CG','HU','JU','TE','TR'].map(v=>{
-    const raw=scoreVirtue(v);
-    const cnt=countInVirtue(v);
-    return {v,name:VIRTUES[v].name,color:VIRTUES[v].color,raw,avg:(raw/cnt).toFixed(1),max:cnt*15};
-  });
-  // Radar with virtue avgs
-  const radarData=virtueScores.map(v=>({label:v.name,value:parseFloat(v.avg)}));
-  window.CHARTS.radar(document.getElementById('via-radar'),radarData,{max:15,min:3,strokeColor:'#fbbf24',fillColor:'rgba(251,191,36,0.28)'});
-  // Legend
-  document.getElementById('via-legend').innerHTML=virtueScores.map(v=>{
-    return `<div class="chart-legend-item"><span class="chart-legend-swatch" style="background:${v.color}"></span><span><strong>${v.name}</strong> · átlag ${v.avg}/15</span></div>`;
-  }).join('');
-  // Top 5 signature strengths
-  const top5=allScores.slice(0,5);
-  let topHtml=`<h3>Top 5 <em>szignatúra-erőd</em></h3>`;
-  top5.forEach((s,i)=>{
-    topHtml+=`<div class="rank-item top" style="--rc:${VIRTUES[s.v].color};--top-color:${VIRTUES[s.v].color}"><div class="rank-pos">${i+1}.</div><div><div class="rank-name"><em>${s.name}</em> · <span style="color:var(--ink-lite-muted);font-size:12px">${s.en}</span></div><div class="rank-desc">${s.desc}</div></div><div class="rank-score">${s.value}<span>/15</span></div></div>`;
-  });
-  document.getElementById('via-topStrengths').innerHTML=topHtml;
-  // All 24 ranked
-  let allHtml=`<h3>Mind a 24 erő <em>rangsorolva</em></h3>`;
-  allScores.forEach((s,i)=>{
-    const isTop=i<5;
-    allHtml+=`<div class="rank-item ${isTop?'top':''}" style="--rc:${VIRTUES[s.v].color};--top-color:${VIRTUES[s.v].color}"><div class="rank-pos">${i+1}.</div><div><div class="rank-name"><em>${s.name}</em> · <span style="color:var(--ink-lite-muted);font-size:12px">${VIRTUES[s.v].name}</span></div></div><div class="rank-score">${s.value}<span>/15</span></div></div>`;
-  });
-  document.getElementById('via-allStrengths').innerHTML=allHtml;
-  // Interp
-  let iHtml=`<h3>Klinikai <em>értelmezés</em></h3>`;
-  iHtml+=`<div class="interp-section" style="--sc:${VIRTUES[top5[0].v].color}"><h4>Szignatúra-erő (top 1) — ${top5[0].name}</h4><p>${top5[0].desc} <strong>Ez az, aki tényleg vagy</strong> — nem az, ami lenni szeretnél. Seligman & Peterson kutatása azt mutatja: a szignatúra-erő <em>heti szintű tudatos használata</em> mérhető jóllét-növekedést hoz. Kérdezd meg magadtól: az elmúlt héten hol tudtad ezt használni? Hol lehetett volna még?</p></div>`;
-  iHtml+=`<div class="interp-section" style="--sc:${VIRTUES[top5[1].v].color}"><h4>Top 2-5 — a szignatúra-portré</h4><p>A top 5 erő együtt jellemzi a "központi karakteredet" — <strong>${top5[0].name} · ${top5[1].name} · ${top5[2].name} · ${top5[3].name} · ${top5[4].name}</strong>. Ez az a kombináció, amit másokban ritkán találsz meg ugyanígy. Kérdés a hét kezdetéhez: melyik szignatúra-erődet fogod tudatosan használni a következő 7 napban?</p></div>`;
-  const bottom5=allScores.slice(-5).reverse();
-  iHtml+=`<div class="interp-section" style="--sc:${VIRTUES[bottom5[4].v].color}"><h4>Bottom 5 — a "gyengeségek" mítosza</h4><p>Az alsó 5: <strong>${bottom5[4].name} · ${bottom5[3].name} · ${bottom5[2].name} · ${bottom5[1].name} · ${bottom5[0].name}</strong>. <strong>Ez NEM egy fejlesztendő terület lista.</strong> A pozitív pszichológia egyik központi tanulsága: az idő 80%-át a szignatúra-erők használatával, nem a gyengeségek "javításával" érdemes tölteni. A gyengeségeket ELÉG "elég jó" szinten tartani.</p></div>`;
-  // Virtue analysis
-  const topVirtue=[...virtueScores].sort((a,b)=>parseFloat(b.avg)-parseFloat(a.avg))[0];
-  iHtml+=`<div class="interp-section" style="--sc:${topVirtue.color}"><h4>Domináns erény-csoport — ${topVirtue.name}</h4><p>Az erény-csoportok szintjén a <strong>${topVirtue.name}</strong> a legerősebb (átlag ${topVirtue.avg}/15). Ez az általános irányultságod — hogy milyen típusú "jóság" felé húz a rendszered természetesen.</p></div>`;
-  // Practical
-  iHtml+=`<div class="interp-section" style="--sc:var(--gold-bright)"><h4>Praktikus lépések</h4><p><strong>1. Szignatúra-erő gyakorlat</strong> (Seligman 2005 · empirikusan validált): 7 napig minden nap találj egy új módot, ahogyan a top erődet használhatod. Írd le végig — mit tettél, milyen érzés volt.</p><p><strong>2. "Erő-tudatos" partnerkommunikáció:</strong> mondd el a partnerednek, kollégáidnak, mi a top 3 szignatúra-erőd. Kérj visszajelzést: látják-e ezt benned.</p><p><strong>3. Karrier-illesztés:</strong> a saját üzleted (business/ERP consulting) mely részei használják a top 3 erődet? Melyek azok, ahol egyáltalán nem? A frusztráció-források gyakran ott vannak, ahol a szignatúra-erő NEM jut szóhoz.</p></div>`;
-  document.getElementById('via-interp').innerHTML=iHtml;
-  document.getElementById('via-results').classList.add('visible');
-  setTimeout(()=>{document.getElementById('via-results').scrollIntoView({behavior:'smooth',block:'start'});},100);
-}
-document.getElementById('via-showResults').addEventListener('click',()=>{if(Object.keys(responses).length<TOTAL)return;renderResults();});
-function reset(){if(!confirm('Biztos törlöd a VIA válaszaidat?'))return;responses={};saveState();document.querySelectorAll('#test-via .scale-btn.selected').forEach(b=>b.classList.remove('selected'));document.getElementById('via-results').classList.remove('visible');updateProgress();window.scrollTo({top:0,behavior:'smooth'});}
-function downloadJSON(){
-  const scores={};Object.keys(STRENGTHS).forEach(k=>{scores[k]=scoreStrength(k);});
-  const virtues={};['WK','CG','HU','JU','TE','TR'].forEach(v=>{virtues[v]=scoreVirtue(v);});
-  const data={test:'VIA-72',timestamp:new Date().toISOString(),raw_responses:responses,strength_scores:scores,virtue_scores:virtues};
-  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-  const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`via-strengths-${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(url);
-}
-loadState();renderQuiz();
-return {reset,downloadJSON};
 })();
-</script>
-<script>
-/* Deep link: a #test-xxx hash a megfelelő fület nyitja meg (a főoldal kártyáiról érkezve). */
-(function(){function go(){var h=location.hash.slice(1);if(!h)return;var t=document.querySelector('.hub-tab[data-target="'+h+'"]');if(t&&!t.classList.contains('active'))t.click();}go();window.addEventListener('hashchange',go);})();
+
+bootHub(['bf','via']);
 </script>
 </body>
 </html>
