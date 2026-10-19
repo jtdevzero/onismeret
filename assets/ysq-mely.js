@@ -102,7 +102,7 @@ gyoker:[
 megkuzdes:{
 megadas:"Csoportban a perifériára húzódsz, nem szólalsz meg, nem kezdeményezel – és ezzel megerősíted a kívülálló helyzetet.",
 elkerules:"Kerülöd a társas helyzeteket, a csoportokat, a közösségi eseményeket; magányos tevékenységekbe, online térbe húzódsz.",
-tulkomp:"Hangsúlyozott különállás: „én más vagyok, és ez így jó”, lenézés a „tömeggel” szemben, vagy kameleonszerű alkalmazkodás, ami mögött nem mutatod meg magad."
+tulkomp:"Hangsúlyozott különállás: „én más vagyok, és ez így jó”, lenézés a „tömeggel” szemben, vagy kaméleonszerű alkalmazkodás, ami mögött nem mutatod meg magad."
 },
 kapcsolat:"Kettesben, mélyebb kapcsolatban sokszor jól működsz, a gond inkább a csoportban jelenik meg (baráti társaság, partner családja, munkahelyi közösség). A partnered közösségi élete fenyegető vagy kimerítő lehet. Munkában gyakori a magányos szakértő szerep, aki kiváló teljesítményt nyújt, de nem része a csapatnak.",
 fennmarad:"A visszahúzódás miatt valóban nem alakul ki kötődés a csoporttal; a különbözőségre való figyelés elfedi a hasonlóságokat, így a séma az „idegen” élményt újra és újra megerősíti.",

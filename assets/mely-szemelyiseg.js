@@ -55,7 +55,7 @@ D.via = {
   ],
   mutat: { top: 5, bottom: 3 },
   skalak: {
-    creativity: V("Új ötletek, szokatlan megoldások – a kreativitás nálad természetes erőforrás. Akkor vagy a legjobb, ha alkothatsz, kísérletezhetsz, nem csak végrehajtasz.", "A kreativitás kevésbé a te terepd; a bevált megoldásokat részesíted előnyben."),
+    creativity: V("Új ötletek, szokatlan megoldások – a kreativitás nálad természetes erőforrás. Akkor vagy a legjobb, ha alkothatsz, kísérletezhetsz, nem csak végrehajtasz.", "A kreativitás kevésbé a te tereped; a bevált megoldásokat részesíted előnyben."),
     curiosity: V("Erős kíváncsiság: minden új élmény, kérdés, terület vonz. Ez a tanulás és a kapcsolódás motorja.", "A kíváncsiság kevésbé hajt; inkább a már ismert dolgok elmélyítését választod."),
     judgment: V("Kritikus gondolkodás: mérlegelsz, több oldalról nézed a dolgokat, nem hozol elhamarkodott ítéletet.", "Kevésbé jellemző rád a hosszas mérlegelés; inkább intuitívan vagy gyorsan döntesz."),
     learning: V("A tanulás szeretete: új tudás, készségek elsajátítása önmagában örömet okoz.", "A strukturált tanulás kevésbé motivál; inkább a gyakorlatban, tapasztalatból tanulsz."),

@@ -834,6 +834,8 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     await p.setViewportSize({ width: 390, height: 844 });
     await p.goto(R + 'valtozasok.html'); await p.waitForTimeout(300);
     ok(await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'változásnapló: telefonon nincs vízszintes kilógás');
+    await p.goto(R + 'index.html'); await p.waitForTimeout(300);
+    ok(await p.evaluate(() => { const n = document.querySelectorAll('.card[data-key]').length; return +document.getElementById('hero-k').textContent === n && +document.getElementById('hero-tests').textContent === n && !/Harminc/.test(document.querySelector('.hero').textContent); }), 'főoldal fejléce: a kérdőívszám a kártyákból számolódik, nincs beégetett szám');
     ok(p._errs.length === 0, 'nincs JS-hiba a 28. szakaszban', p._errs);
     await ctx.close();
   }

@@ -942,7 +942,7 @@ body::after{
   <div class="hub-header">
     <div class="hub-eyebrow">Három kapcsolati-önismereti térkép</div>
     <h1>Három kapcsolati <em>tükör</em></h1>
-    <p class="lead"><strong>Love Languages</strong> (hogyan érzed magad szeretettnek) · <strong>Apology Languages</strong> (mitől érzed őszintének a bocsánatkérést) · <strong>Imago</strong> (kik voltak a gyermekkori gondozóid, és hogyan aktivizálják ezt partnereid). Ez a hármas a párkapcsolati dinamika három rétegét mérí — a szeretet-nyelvet, a konfliktus-utáni javítást, és a gyermekkori tükröt.</p>
+    <p class="lead"><strong>Love Languages</strong> (hogyan érzed magad szeretettnek) · <strong>Apology Languages</strong> (mitől érzed őszintének a bocsánatkérést) · <strong>Imago</strong> (kik voltak a gyermekkori gondozóid, és hogyan aktivizálják ezt partnereid). Ez a hármas a párkapcsolati dinamika három rétegét méri — a szeretet-nyelvet, a konfliktus-utáni javítást, és a gyermekkori tükröt.</p>
     <div class="hub-caveat"><strong>Fontos árnyalás:</strong> Ez a három eszköz <strong>nem klinikai</strong> értelemben validált skála. A Chapman-féle Love/Apology Languages pop-pszichológia (bár érvényes klinikai kutatások vannak róluk); az Imago Hendrix pár-terápiás modelljének <em>műhely-gyakorlata</em>. Jó önreflexiós eszközök — de nem tudományos súlyúak, mint az IIEF, TAS-20 vagy DES-II.</p>
   </div>
   <nav class="hub-tabs" role="tablist">
@@ -1345,7 +1345,7 @@ function crossLinks(scores){
     links.push({label:'ECR-R szorongásos kötődés potenciálisan',text:`A minőségi idő-elsődleges nyelv gyakran korrelál a szorongásos kötődéssel — a "jelen légy velem" alapélmény. Nem szükségszerű, de érdemes megnézni.`});
   }
   if(primary==='A'){
-    links.push({label:'SMI Vulnerable Child kapcsolat',text:`Az elismerő szavak-elsődleges nyelv gyakran együtt jár egy "nem vagyok elég" alapszkémával — a külső validáció fontossága ebből fakadhat. Ha SMI Punitive Parent magas, ez különösen fontos.`});
+    links.push({label:'SMI Vulnerable Child kapcsolat',text:`Az elismerő szavak-elsődleges nyelv gyakran együtt jár egy "nem vagyok elég" alapsémával — a külső validáció fontossága ebből fakadhat. Ha SMI Punitive Parent magas, ez különösen fontos.`});
   }
   return links;
 }
@@ -1413,7 +1413,7 @@ function renderResults(){
     interp+=`<div class="interp-section"><h4>Kombinált mintázat — top 2 nyelved együtt</h4><p>${combos[pair]}</p></div>`;
   }
   // Partneri implikációk
-  interp+=`<div class="interp-section"><h4>Partneri implikáció — mit kell tudnia rólad</h4><p><strong>Mondd el a partnerednek:</strong> "Én elsősorban <em>${CATEGORIES[primary].name.toLowerCase()}</em>-en keresztül érzem a szeretetet. Amikor te adsz nekem <em>${CATEGORIES[weakest].name.toLowerCase()}</em>-t, örülök — de nem ez az, amiből építek. Ha egyszer megkérdezhetlek: adnál nekem heti szinten <em>${CATEGORIES[primary].name.toLowerCase()}</em>-t?"</p><p>A partnered valószínűleg <strong>a saját</strong> elsődleges nyelvén ad — az emberek úgy szeretnek, ahogyan saját maguknak kellene. Ha ez eltér a te profiledtől, kettőtök szeretete "eltéved a fordításban".</p></div>`;
+  interp+=`<div class="interp-section"><h4>Partneri implikáció — mit kell tudnia rólad</h4><p><strong>Mondd el a partnerednek:</strong> "Én elsősorban <em>${CATEGORIES[primary].name.toLowerCase()}</em>-en keresztül érzem a szeretetet. Amikor te adsz nekem <em>${CATEGORIES[weakest].name.toLowerCase()}</em>-t, örülök — de nem ez az, amiből építek. Ha egyszer megkérdezhetlek: adnál nekem heti szinten <em>${CATEGORIES[primary].name.toLowerCase()}</em>-t?"</p><p>A partnered valószínűleg <strong>a saját</strong> elsődleges nyelvén ad — az emberek úgy szeretnek, ahogyan saját maguknak kellene. Ha ez eltér a te profilodtól, kettőtök szeretete "eltéved a fordításban".</p></div>`;
   // Kockázati mintázatok
   if(scores.E>=8){
     interp+=`<div class="interp-section"><h4>Kockázati kontextus — magas Physical Touch</h4><p>Magas fizikai érintés-nyelv esetén különösen fontos, hogy a szex NE keveredjen a szeretetigénnyel — a testi jelenlét mint szeretet-forma NEM azonos a szexszel. Ha csak szex-alapú érintésed van, "üresen maradsz" a nem-szexuális testi közelség hiányában.</p></div>`;
@@ -1520,7 +1520,7 @@ const APO_CATS = {
 const APO_INTERP = {
   R:{primary:`Elsődleges bocsánat-nyelved a <strong>sajnálat kifejezése</strong>. Ahhoz, hogy hidd, hogy a partnered komolyan gondolja: <em>látnia kell a fájdalmadat</em>, és érzelmileg reagálnia rá. A puszta "hibáztam" (racionális elismerés) nem elég — az érzelmi jelenlét kell. <em>Amit mondj el a partnerednek</em>: "Nekem az kell, hogy lássam, hogy tényleg fáj neked, hogy fáj nekem."`, weak:`Nem elsődleges, de fontos.`},
   A:{primary:`Elsődleges bocsánat-nyelved a <strong>felelősség vállalása</strong>. Neked a tiszta "hibáztam, nincs mentség" kell. Ha a partnered akárhogy is megpróbálja megmagyarázni ("de te is..."), a bocsánatkérés semmissé válik. <em>Amit mondj el</em>: "Először vállald a felelősséget, csak utána tudom hallgatni a kontextust."`, weak:`Nem elsődleges, de fontos.`},
-  M:{primary:`Elsődleges bocsánat-nyelved a <strong>jóvátétel</strong>. Az érzelem és a szó nem elég — <em>tett</em> kell. Amíg nincs konkrét cselekvés, a bocsánatkérés csak jószándék. <em>Amit mondj el</em>: "Mondd el, mit fogsz csinálni, hogy helyrehozd — az kell, hogy elhiggyem."`, weak:`Nem elsődleges, de fontos.`},
+  M:{primary:`Elsődleges bocsánat-nyelved a <strong>jóvátétel</strong>. Az érzelem és a szó nem elég — <em>tett</em> kell. Amíg nincs konkrét cselekvés, a bocsánatkérés csak jó szándék. <em>Amit mondj el</em>: "Mondd el, mit fogsz csinálni, hogy helyrehozd — az kell, hogy elhiggyem."`, weak:`Nem elsődleges, de fontos.`},
   P:{primary:`Elsődleges bocsánat-nyelved az <strong>őszinte megbánás</strong> — a jövőre irányuló változás. A "sajnálom" pillanat számodra kevés, ha ugyanaz újra megtörténik. Neked az idő beszél: <em>3 hónap után</em> derül ki, hogy a bocsánatkérés valódi volt-e. <em>Amit mondj el</em>: "Nekem az idő és a viselkedés-változás számít; a szavak addig üresek, amíg nem látom a tettet."`, weak:`Nem elsődleges, de fontos.`},
   F:{primary:`Elsődleges bocsánat-nyelved a <strong>bocsánat kérése</strong>. Neked a formális aktus — a "kérlek, bocsáss meg" konkrét kimondása — kell, hogy le tudd zárni. Nem "sejtett" bocsánat, nem "gondolt" bocsánat: a mondat kimondása. <em>Amit mondj el</em>: "Konkrétan kérned kell a bocsánatot, hogy tudjam megbocsátani."`, weak:`Nem elsődleges, de fontos.`}
 };
@@ -1567,7 +1567,7 @@ function renderResults(){
     else text = `Közepesen fontos (${score}/8). Ha ez jelen van a partneri bocsánatkérésben, kiegészíti az elsődleges nyelvedet — de önmagában nem elég.`;
     interp+=`<div class="interp-section"><h4>${idx+1}. ${rank} — ${cat.name} (${score}/8)</h4><p style="font-size:13px;color:var(--ink-lite-muted);margin-bottom:8px;font-style:italic">${cat.desc}</p><p>${text}</p></div>`;
   });
-  // Konfliktus-szcenariók
+  // Konfliktus-szcenáriók
   const scenarios = {
     R: `<strong>Konfliktus-forgatókönyv számodra:</strong> a partnered <em>érzelmi jelenléttel</em> jön el hozzád (visszafogott hang, "látom, mit tettem veled", esetleg könnyek). Ha ő pragmatikusan mondja "hát oké, hibáztam", te nem érzed őszintének — pedig lehet, hogy ő komolyan gondolja.`,
     A: `<strong>Konfliktus-forgatókönyv számodra:</strong> a partnered <em>tiszta felelősségvállalással</em> jön ("én rontottam el, punktum, nincs mentség"). Ha ő "de te is..." pozíciót vesz fel, számodra semmissé válik a bocsánatkérés.`,
@@ -1579,7 +1579,7 @@ function renderResults(){
   // Kockázati mintázatok
   interp+=`<div class="interp-section"><h4>Kockázat — leggyengébb nyelv</h4><p>A legalacsonyabb pontszámod: <strong>${APO_CATS[weakest].name}</strong> (${sorted[4][1]}/8). Ha a partnered <em>éppen ezen keresztül</em> próbál bocsánatot kérni (mert neki ez a saját elsődleges nyelve), számodra "átsiklik" — nem érzed hitelesnek. <strong>Ezt kell tudnia rólad.</strong> Nem kritika a partnered felé — csak a te szótárad más.</p></div>`;
   // Gyakorlati partneri implikáció
-  interp+=`<div class="interp-section"><h4>Praktikus partneri implikáció</h4><p><strong>Ne várd, hogy a partnered magától rájöjjön.</strong> Az emberek általában úgy kérnek bocsánatot, ahogyan <em>saját maguknak</em> kellene — nem úgy, ahogy neked. Ha ez eltér, a jószándékú bocsánatkérése is elveszik a "nem ez volt, amit kellett" fordításban.</p><p><strong>Explicit script neked:</strong> "Amikor konfliktus van, nekem az a fontos, hogy ${primary==='R'?'lássam, tényleg fáj neked, ami történt':primary==='A'?'tisztán elismerd, hogy te hibáztál (a "de" nélkül)':primary==='M'?'konkrétan mondd meg, mit fogsz csinálni, hogy helyrehozd':primary==='P'?'ígérd meg — és tartsd is be — hogy változtatsz':'kérj bocsánatot direkten, konkrétan kimondva "kérlek, bocsáss meg"'}. Ez nekem többet ér, mint bármi más."</p></div>`;
+  interp+=`<div class="interp-section"><h4>Praktikus partneri implikáció</h4><p><strong>Ne várd, hogy a partnered magától rájöjjön.</strong> Az emberek általában úgy kérnek bocsánatot, ahogyan <em>saját maguknak</em> kellene — nem úgy, ahogy neked. Ha ez eltér, a jó szándékú bocsánatkérése is elveszik a "nem ez volt, amit kellett" fordításban.</p><p><strong>Explicit script neked:</strong> "Amikor konfliktus van, nekem az a fontos, hogy ${primary==='R'?'lássam, tényleg fáj neked, ami történt':primary==='A'?'tisztán elismerd, hogy te hibáztál (a "de" nélkül)':primary==='M'?'konkrétan mondd meg, mit fogsz csinálni, hogy helyrehozd':primary==='P'?'ígérd meg — és tartsd is be — hogy változtatsz':'kérj bocsánatot direkten, konkrétan kimondva "kérlek, bocsáss meg"'}. Ez nekem többet ér, mint bármi más."</p></div>`;
   document.getElementById('apo-interpCard').innerHTML=interp;
   const links=[];
   links.push({label:'Kapcsolat a Love Languages-szel',text:`Sokszor (de nem mindig) az elsődleges bocsánat-nyelv rezonál az elsődleges szeretet-nyelvvel. Pl. Words of Affirmation → Expressing Regret; Acts of Service → Making Restitution. Nézd meg, van-e ilyen mintázat.`});
@@ -1743,7 +1743,7 @@ function generatePortrait(topNeg, topPos, topWnd, topNeed){
   html+=`<div class="portrait-text">`;
 
   if(negList.length){
-    html+=`<p>A gyermekkori gondozó(i)d — akiktől a legmélyebb kapcsolódási mintát tanultad — <strong>${negList.join(' · ')}</strong> voltak. Ez a lista nem "vádemelés" — csak a mintázat, ami belé eddett a rendszeredbe.</p>`;
+    html+=`<p>A gyermekkori gondozó(i)d — akiktől a legmélyebb kapcsolódási mintát tanultad — <strong>${negList.join(' · ')}</strong> voltak. Ez a lista nem "vádemelés" — csak a mintázat, ami beléégett a rendszeredbe.</p>`;
   } else {
     html+=`<p>Nem jelöltél be markáns negatív gondozó-vonást — vagy a gyermekkori gondozók valóban egészségesek voltak, vagy a védekező rendszer még nem enged hozzáférést a nehezebb emlékekhez. Mindkettő lehet.</p>`;
   }
@@ -1830,7 +1830,7 @@ function renderResults(){
   if(topPos[0].v>=2){
     interp+=`<p>A legerősebb pozitív vonás: <strong>"${topPos[0].t}"</strong> (${topPos[0].v}/3). Ez az, amit belülre <em>vittél magaddal</em> — a "belső jó szülő" alapanyaga. Amikor egy partnerben ezt a vonást találod, "otthon" érzed magad — de vigyázz: az önmagában nem elég, ha a negatív oldal is aktiválódik.</p>`;
   } else {
-    interp+=`<p>A pozitív vonások alacsonyak. Ez gyakori a nehéz gyermekkori kontextusban, de figyelemre méltó: a belső "biztonságos alap" nélkülé nehezebb egy egészséges felnőtt kapcsolatot megtartani. Ez terápiásan pótolható — az "earned security" (megszerzett biztonság) fogalma erre vonatkozik.</p>`;
+    interp+=`<p>A pozitív vonások alacsonyak. Ez gyakori a nehéz gyermekkori kontextusban, de figyelemre méltó: a belső "biztonságos alap" nélküle nehezebb egy egészséges felnőtt kapcsolatot megtartani. Ez terápiásan pótolható — az "earned security" (megszerzett biztonság) fogalma erre vonatkozik.</p>`;
   }
   interp+=`</div>`;
 
@@ -1839,7 +1839,7 @@ function renderResults(){
     const woundText = topWnd[0].t.replace(/\.$/,'');
     interp+=`<p>A legerősebb seb: <strong>"${woundText}"</strong> (${topWnd[0].v}/3). Egy közeli, romantikus kapcsolat <em>automatikusan újra-aktiválja</em> ezt a sebet — nem a partnered "rontja el", hanem a közelség maga hozza vissza. Amikor ez a seb aktív, a rendszered a gyermekkori védekezéseket használja (nem a felnőtt eszközöket) — pl. visszahúzódik, támad, disszociál, kompenzál.</p>`;
     if(topWnd.filter(x=>x.v>=2).length>=3){
-      interp+=`<p><strong>Több markáns seb egyszerre</strong> — ez összetett sebzési mintázat. A jó hír: mindegyik <em>ugyanabból a talajból</em> jött, és a gyógyulás nem seb-onként, hanem alapállás-szinten történik (az egyik legerősebb terápiás elv: nem tüneteket kezelünk, hanem a rendszert, ami termeli őket).</p>`;
+      interp+=`<p><strong>Több markáns seb egyszerre</strong> — ez összetett sebzési mintázat. A jó hír: mindegyik <em>ugyanabból a talajból</em> jött, és a gyógyulás nem sebenként, hanem alapállás-szinten történik (az egyik legerősebb terápiás elv: nem tüneteket kezelünk, hanem a rendszert, ami termeli őket).</p>`;
     }
   } else {
     interp+=`<p>A sebek intenzitása alacsony. Ez kedvező alap. Ha valamilyen kapcsolati distresszt élsz meg most, az inkább szituációs, nem strukturális.</p>`;

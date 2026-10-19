@@ -130,7 +130,7 @@ D.tas = {
     "Szerepet játszhat a trauma is: ha egy érzelem túl fájdalmas volt, a rendszer megtanulhatta tompítani. Biológiai és neurológiai tényezők is hozzájárulnak (pl. autizmus spektrum, egyes neurológiai állapotok), és a nemi szerepek is: a fiúk gyakran kevesebb érzelmi szót tanulnak."
   ],
   mindennap: [
-    "Az alexitímia gyakran testi tünetekben jelenik meg (feszültség, fáradtság, emésztési panaszok, fejfájás), mert az érzelem a testben marad. Gyakori a <strong>külső szabályozás</strong>: evés, munka, mozgás, képernyő, szerek, amelyekkel a nevenincs feszültséget csillapítod.",
+    "Az alexitímia gyakran testi tünetekben jelenik meg (feszültség, fáradtság, emésztési panaszok, fejfájás), mert az érzelem a testben marad. Gyakori a <strong>külső szabályozás</strong>: evés, munka, mozgás, képernyő, szerek, amelyekkel a névtelen feszültséget csillapítod.",
     "A kapcsolatokban a partner gyakran hiányolja az érzelmi elérhetőséget, te pedig nem érted, mit vár. Konfliktusban könnyen racionális érvekkel válaszolsz egy érzelmi kérdésre, ami a másikat még jobban frusztrálja."
   ],
   fennmarad: "Mivel a nem azonosított érzelmet nehéz kimondani, ritkán kapsz rá választ, így nincs alkalom gyakorolni. A külső szabályozó viselkedések rövid távon megoldják a feszültséget, ezért nem keletkezik igény a belső szótár fejlesztésére.",

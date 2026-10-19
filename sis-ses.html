@@ -1098,7 +1098,7 @@ const INTERPRET = {
     'very-low':`A válaszaid a skála legalsó tartományában vannak: a kérdésekben leírt helyzetek ritkán indítják be az izgalmi rendszeredet. Ez nem szexuális vágy hiánya — sokkal inkább azt jelenti, hogy a szexuális rendszered <strong>komplex feltételeket igényel</strong> a beinduláshoz: kontextus, biztonság, érzelmi kapcsolódás, lassú felépítés. A "spontán beindulás" típusú vágy ritka. Ezt sokan "alacsony libidóként" élik meg, pedig a Basson-féle <em>responsive desire</em> (válaszként induló vágy) modell sokszor pontosabban írja le.`,
     'low':`A válaszaid a skála alsó részén vannak: az izgalmi rendszered a leírt helyzetek egy részére reagál. Általános vizuális/környezeti ingerekre kevésbé válaszol — inkább specifikus kontextusok, kapcsolódás, lelki ráhangolódás indítják be. Ez a <em>felelet-vágy</em> (responsive desire) profilja: a vágy jellemzően a szexuális helyzetbe kerülésből fakad, nem előzi meg azt.`,
     'mid':`Közepes izgalmi reaktivitás a skálán. Vizuális, taktilis, kontextuális ingerekre mérsékelten válaszol a rendszered. A spontán és a kontextuális vágy egyensúlyban van.`,
-    'high':`Magas izgalmi reaktivitás. A rendszered könnyen, sok különféle ingerre kapcsol be. Erősség: jó vágyellátás, könnyű kezdeményezés. Ár: distraktivitás, könnyebben elcsábítható figyelem, esetleg túl-ingerlés-érzékenység.`,
+    'high':`Magas izgalmi reaktivitás. A rendszered könnyen, sok különféle ingerre kapcsol be. Erősség: jó vágyellátás, könnyű kezdeményezés. Ár: elterelhetőség, könnyebben elcsábítható figyelem, esetleg túl-ingerlés-érzékenység.`,
     'very-high':`Nagyon magas izgalmi reaktivitás a skálán. A rendszered szinte folyamatosan kapható. Ha más probléma nincs, ez egyszerűen egy magas-libidójú profil. Hiperszexualitás <em>csak akkor</em> klinikai kérdés, ha distresszt vagy funkcionális zavart okoz.`
   },
   sis1:{
@@ -1200,7 +1200,7 @@ function therapySuggestions(scores){
   if(sis2 >= 2.7){
     mods.push({
       name:'Kognitív-viselkedéses intervenció szexuális szégyenre',
-      text:`Ha az SIS2 mögött szégyen-elem van (Mosher Sex Guilt skála magas), a kognitív restrukturálás a kulcs: a szexuálitásra vonatkozó automatikus negatív gondolatok azonosítása, kontextusba helyezése, alternatív értelmezés gyakorlása. Az ACT-defúziós technikák itt jól működnek.`
+      text:`Ha az SIS2 mögött szégyen-elem van (Mosher Sex Guilt skála magas), a kognitív restrukturálás a kulcs: a szexualitásra vonatkozó automatikus negatív gondolatok azonosítása, kontextusba helyezése, alternatív értelmezés gyakorlása. Az ACT-defúziós technikák itt jól működnek.`
     });
   }
 
@@ -1281,7 +1281,7 @@ function renderResults(){
         <div class="label">Hol áll a skálán</div>
         <p>A pontszámod (<strong>${s.mean.toFixed(2)}</strong>) ${band.desc} (1–4). Külföldi mintákon közölt átlagokhoz nem hasonlítom, mert ez a saját fordítás nincs magyar mintán normázva.</p>
         <div class="label">Distress-kritérium</div>
-        <p>Ez a pontszám <strong>önmagában nem klinikai diagnózis</strong>. Csak akkor érdemes kezelési kérdést felvetni, ha a saját szexuális életeddel kapcsolatban distresst, funkcionális zavart, vagy kapcsolati nehézséget tapasztalsz, és ez a profil ezt magyarázza. A magas/alacsony pontszám diszkomfort nélkül egyszerűen architekturális jellemző.</p>
+        <p>Ez a pontszám <strong>önmagában nem klinikai diagnózis</strong>. Csak akkor érdemes kezelési kérdést felvetni, ha a saját szexuális életeddel kapcsolatban distresszt, funkcionális zavart, vagy kapcsolati nehézséget tapasztalsz, és ez a profil ezt magyarázza. A magas/alacsony pontszám diszkomfort nélkül egyszerűen architekturális jellemző.</p>
       </div>
     `;
   });

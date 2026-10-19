@@ -98,6 +98,10 @@ document.addEventListener('DOMContentLoaded',function(){
   var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
   /* score/retake: 'no' | 'part' | 'yes' */
   var LOG=[
+    {d:'2026-10-19',t:'Szövegellenőrzés',score:'no',retake:'no',items:[
+      'Helyesírási és elírás-javítások az oldalak szövegében, köztük néhány kérdés szövegében is (pl. „tested”, „konfliktust”, „ostorozom”, „cserben hagyok”). A kérdések jelentése és a pontozás nem változott, ezért nincs szükség újrakitöltésre.',
+      'Egységes szóhasználat: „önszánat” helyett mindenhol „önegyüttérzés”, ahogy az SCS-SF tesztnél is.',
+      'A főoldal fejlécében a kérdőívek száma mostantól a ténylegesen elérhető tesztekből számolódik (eddig elavult szám, 31 szerepelt benne).']},
     {d:'2026-10-19',t:'Önbizalom és önértékelés, javítások',score:'no',retake:'no',items:[
       'Új XI. témakör, <a href="onbizalom.html">Önbizalom és önértékelés</a>: RSES (önértékelés, Rosenberg), GSE (általános énhatékonyság), BFNE-II (mások ítéletétől való félelem) és egy saját, kurzushoz készült skála a gyakorlati önbizalomról (kiállás, határok, kezdeményezés, hibák, láthatóság). Mind a négy mélyelemzéssel; kurzus előtt és után kitöltve az eredménytörténet mutatja a változást.',
       'Új tesztek közti minta: „Törékeny önértékelés” (RSES, BFNE-II, SCS, YSQ csökkentértékűség, gyakorlati önbizalom).',
