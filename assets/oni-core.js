@@ -17,6 +17,10 @@
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',btn);else btn();
 })();
+/* Offline működés: a service worker a statikus fájlokat menti a böngészőbe (válaszokat nem). Csak http(s) alatt. */
+(function(){
+  try{if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol))window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})});}catch(e){}
+})();
 /* Vízszintesen görgethető menüsávban az aktív pont mindig középre kerül (főoldali témakörsáv, tesztfülek). */
 (function(){
   var SEL='.jump,[role="tablist"],.tabs,.test-tabs';
@@ -65,7 +69,15 @@ window.ONI=window.ONI||(function(){
   /* „Új kitöltés” jelzése: ha egy teszt válaszai kiürülnek vagy megfogyatkoznak (törlés, újrakezdés),
      a következő mentett eredmény biztosan új mérés lesz, akkor is, ha ugyanazon a napon ugyanaz a pontszám jön ki. */
   function markFresh(key){try{var m=meta();m.fresh=m.fresh||{};m.fresh[key]=new Date().toISOString();localStorage.setItem(META,JSON.stringify(m))}catch(e){}}
+  /* Tartós tárolás kérése az első mentéskor: így a böngésző tárhelyhiány esetén sem törli automatikusan az adatokat. */
+  var persistAsked=false;
+  function persist(){if(persistAsked)return;persistAsked=true;try{var s=navigator.storage;if(s&&s.persist&&s.persisted)s.persisted().then(function(ok){if(!ok)s.persist()}).catch(function(){})}catch(e){}}
+  /* Utolsó fájlba mentés ideje (a főoldali emlékeztetőhöz). */
+  var SET='onismeret-settings-v1';
+  function markBackup(){try{var st=JSON.parse(localStorage.getItem(SET))||{};st.lastBackup=new Date().toISOString();localStorage.setItem(SET,JSON.stringify(st))}catch(e){}}
+  function backupAgeDays(){try{var st=JSON.parse(localStorage.getItem(SET))||{};return st.lastBackup?Math.floor((Date.now()-Date.parse(st.lastBackup))/864e5):null}catch(e){return null}}
   function save(id,rec,opts){
+    persist();
     try{
       opts=opts||{};
       var a=all(),h=a[id]||[],m=meta(),now=new Date().toISOString();
@@ -394,5 +406,5 @@ window.ONI=window.ONI||(function(){
   })();
 
   window.addEventListener('oni:saved',function(e){setTimeout(function(){banner(e.detail.id)},900);});
-  return {K:K,LIMIT:LIMIT,META:META,IDKEY:IDKEY,VERS:VERS,vOf:vOf,same:same,isCur:isCur,verText:verText,markFresh:markFresh,remindCfg:remindCfg,setRemind:setRemind,due:due,all:all,save:save,r:r,PATH:PATH,pathState:pathState};
+  return {K:K,LIMIT:LIMIT,META:META,IDKEY:IDKEY,VERS:VERS,vOf:vOf,same:same,isCur:isCur,verText:verText,markFresh:markFresh,remindCfg:remindCfg,setRemind:setRemind,due:due,all:all,save:save,r:r,PATH:PATH,pathState:pathState,markBackup:markBackup,backupAgeDays:backupAgeDays};
 })();

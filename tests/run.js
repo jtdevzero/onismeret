@@ -840,6 +840,55 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     await ctx.close();
   }
 
+  console.log('\n29. Betűtípusok, offline működés (service worker), telepíthetőség, mentés-emlékeztető');
+  {
+    // betűk: a latin-ext fájlok szűkítve, a tartomány hozzájuk igazítva
+    const ext = fs.readdirSync(path.join(ROOT, 'fonts')).filter(f => /latin-ext.*\.woff2$/.test(f));
+    ok(ext.length === 5 && ext.every(f => fs.statSync(path.join(ROOT, 'fonts', f)).size < 20 * 1024), 'latin-ext betűfájlok 20 KB alatt', ext.map(f => [f, fs.statSync(path.join(ROOT, 'fonts', f)).size]));
+    ok(!/U\+0100-02BA/.test(fs.readFileSync(path.join(ROOT, 'fonts/fonts.css'), 'utf8')), 'a latin-ext unicode-tartomány a szűkített fájlhoz igazodik');
+    const htmls = fs.readdirSync(ROOT).filter(x => x.endsWith('.html'));
+    ok(htmls.every(f => /<link rel="manifest" href="manifest.webmanifest">/.test(fs.readFileSync(path.join(ROOT, f), 'utf8'))), 'minden oldalon van manifest, ikon és témaszín');
+    const man = JSON.parse(fs.readFileSync(path.join(ROOT, 'manifest.webmanifest'), 'utf8'));
+    ok(man.display === 'standalone' && man.icons.length >= 2 && man.icons.every(i => fs.existsSync(path.join(ROOT, i.src))), 'manifest: önálló alkalmazás, létező ikonok');
+    // helyi http-szerver /onismeret/ alatt, mint a GitHub Pages
+    const http = require('http');
+    const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.woff2': 'font/woff2', '.png': 'image/png', '.webmanifest': 'application/manifest+json', '.json': 'application/json' };
+    const srv = http.createServer((q, r) => {
+      const u = decodeURIComponent(q.url.split('?')[0]).replace(/^\/onismeret\//, '/');
+      let f = path.join(ROOT, u.endsWith('/') ? u + 'index.html' : u);
+      if (!f.startsWith(ROOT) || !fs.existsSync(f) || fs.statSync(f).isDirectory()) { r.writeHead(404); return r.end(); }
+      r.writeHead(200, { 'content-type': MIME[path.extname(f)] || 'application/octet-stream' }); r.end(fs.readFileSync(f));
+    });
+    await new Promise(res => srv.listen(0, res)); const H = 'http://localhost:' + srv.address().port + '/onismeret/';
+    const ctx = await newCtx(); const p = await pageIn(ctx);
+    await p.goto(H + 'index.html'); await p.waitForTimeout(300);
+    const sw = await p.evaluate(async () => { const reg = await navigator.serviceWorker.ready; const keys = await caches.keys(); const c = await caches.open(keys.find(k => k.startsWith('onismeret-'))); return { scope: reg.scope, n: (await c.keys()).length }; });
+    const pre = (fs.readFileSync(path.join(ROOT, 'sw.js'), 'utf8').match(/const PRECACHE = (\[[\s\S]*?\]);/) || [])[1];
+    ok(sw.scope.endsWith('/onismeret/') && pre && sw.n >= JSON.parse(pre).length, 'service worker regisztrálva, minden fájl előtöltve', sw);
+    await p.reload(); await p.waitForTimeout(300);
+    await ctx.setOffline(true);
+    for (const f of ['index.html', 'onbizalom.html#test-rses', 'ysq.html', 'csillagok.html']) {
+      p._errs = []; await p.goto(H + f); await p.waitForTimeout(300);
+      ok(await p.evaluate(() => !!document.querySelector('h1') && !!window.ONI) && p._errs.length === 0, 'offline is megnyílik: ' + f, p._errs);
+    }
+    await p.goto(H + 'onbizalom.html#test-gse'); await p.waitForTimeout(200);
+    await p.evaluate(() => { TESTS.gse._fillAll(() => 2); TESTS.gse.show(); }); await p.waitForTimeout(400);
+    ok(await p.evaluate(() => ONI.all().gse.slice(-1)[0].d.total[1] === 30), 'offline is kitölthető és menthető (GSE)');
+    await ctx.setOffline(false);
+    // mentés-emlékeztető: van eredmény, de még nem volt fájlba mentés
+    await p.goto(H + 'index.html'); await p.waitForTimeout(400);
+    ok(await p.evaluate(() => { const b = document.getElementById('backup-note'); return !b.hidden && /Még nem mentetted/.test(b.textContent); }), 'főoldal: emlékeztető, ha még nincs fájlba mentés');
+    const [dl] = await Promise.all([p.waitForEvent('download'), p.click('#backup-now')]);
+    ok(/onismeret-mentes-.*\.json/.test(dl.suggestedFilename()) && await p.evaluate(() => document.getElementById('backup-note').hidden && ONI.backupAgeDays() === 0), 'a „Mentés fájlba most” letölt, és az emlékeztető eltűnik', dl.suggestedFilename());
+    await p.reload(); await p.waitForTimeout(400);
+    ok(await p.evaluate(() => document.getElementById('backup-note').hidden), 'friss mentés után nincs emlékeztető');
+    await p.evaluate(() => { const s = JSON.parse(localStorage.getItem('onismeret-settings-v1')); s.lastBackup = new Date(Date.now() - 40 * 864e5).toISOString(); localStorage.setItem('onismeret-settings-v1', JSON.stringify(s)); });
+    await p.reload(); await p.waitForTimeout(400);
+    ok(await p.evaluate(() => /40 napja/.test(document.getElementById('backup-note').textContent)), '30 napnál régebbi mentésnél újra emlékeztet');
+    ok(p._errs.length === 0, 'nincs JS-hiba a 29. szakaszban', p._errs);
+    await ctx.close(); srv.close();
+  }
+
   await browser.close();
   console.log(`\n${pass} rendben, ${fail} hiba`);
   process.exit(fail ? 1 : 0);
