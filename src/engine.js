@@ -9,7 +9,7 @@ window.H = (function(){
 
   function cards(list){
     return `<div class="score-grid">${list.map(c=>`<div class="score-card" style="--sc:${c.color}">
-      <div class="abbr">${c.abbr||''}</div><h4>${c.name}</h4>
+      <div class="abbr">${c.abbr||''}</div><div class="sc-h">${c.name}</div>
       <div class="val">${c.val}</div><div class="out">${c.out||''}</div>
       ${c.band?`<span class="band">${c.band}</span>`:''}
       <div class="bar"><div class="bar-fill" style="width:${clamp(c.pct,0,100)}%"></div></div></div>`).join('')}</div>`;
@@ -28,7 +28,7 @@ window.H = (function(){
       <div class="rank-score">${it.score}<span>${it.unit||''}</span></div></div>`).join('')}</div>`;
   }
   function interp(title,sections){
-    return `<div class="interp-card"><h3>${title}</h3>${sections.filter(Boolean).map(s=>`<div class="interp-section" style="--sc:${s.color||'var(--c1)'}"><h4>${s.h}</h4>${s.html}</div>`).join('')}</div>`;
+    return `<div class="interp-card"><h3>${title}</h3>${sections.filter(Boolean).map(s=>`<div class="interp-section" style="--sc:${s.color||'var(--c1)'}">${s.h?`<h4>${s.h}</h4>`:''}${s.html}</div>`).join('')}</div>`;
   }
   function chart(title,sub,inner,legend){
     return `<div class="chart-card"><h3>${title}</h3><div class="chart-sub">${sub}</div>${inner}${legend?`<div class="chart-legend">${legend.map(l=>`<div class="chart-legend-item"><span class="chart-legend-swatch" style="background:${l.color}"></span><span><strong>${l.label}</strong> ${l.val??''}</span></div>`).join('')}</div>`:''}</div>`;

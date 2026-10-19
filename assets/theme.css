@@ -280,7 +280,7 @@ html[data-theme="light"][data-page="nyelvek"] .imago-portrait :is(h2,h3,h4,stron
 html[data-theme="light"][data-page="nyelvek"] .imago-portrait :is(em,.hl,mark){color:var(--u-gold)!important}
 /* Sötét témában a halvány (muted) szöveg is érje el a 4.5:1 kontrasztot */
 html[data-theme="dark"]:is([data-page="index"],[data-page="osszegzes"],[data-page="par"],[data-page="adatok"],[data-page="fokusz"],[data-page="csillagok"],[data-page="valtozasok"]){--ink-mute:#8b9bb4}
-html[data-theme="light"][data-page="index"] .jn{color:#6b520c!important}
+html[data-theme="light"][data-page="index"] .jn{color:#6b520c!important;opacity:1!important}
 html[data-theme="light"][data-page="osszegzes"] .chip.miss{opacity:.9}
 [data-page="ysq"] .snapshot-btn-save{color:#1c1305!important}
 
@@ -289,7 +289,7 @@ html[data-theme="light"][data-page="osszegzes"] .chip.miss{opacity:.9}
 .oni-deep .oni-eyebrow{color:var(--u-sapphire)}
 .od-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:12px}
 .od-panel{padding:14px 16px;border-radius:14px;background:var(--u-bg2);border:1px solid var(--u-line2);min-width:0}
-.od-panel h6{margin:0 0 10px;font:700 11px 'Inter',system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--u-muted)}
+.od-panel .od-h{margin:0 0 10px;font:700 11px 'Inter',system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--u-muted)}
 .od-panel p{margin:10px 0 0;font-size:13px;line-height:1.55;color:var(--u-soft)}
 .od-radar svg{display:block;width:100%;max-width:360px;margin:0 auto;height:auto;overflow:visible}
 .od-radar .rg{fill:none;stroke:var(--u-line);stroke-width:1}
@@ -371,7 +371,7 @@ html[data-theme] .oni-more{background:var(--u-cta)!important;color:var(--u-on-ct
 html[data-theme] .oni-deep{margin-top:8px}
 html[data-theme] .oni-deep .oni-eyebrow{color:var(--u-sapphire)!important}
 html[data-theme] :is(.od-panel,.oni-chart){background:var(--u-paper)!important;border:1px solid var(--u-line2)!important;border-radius:20px!important;box-shadow:none!important}
-html[data-theme] .od-panel h6,html[data-theme] .oni-chart figcaption{letter-spacing:.18em;text-transform:uppercase;font-size:11.5px;color:var(--u-muted)}
+html[data-theme] .od-panel .od-h,html[data-theme] .oni-chart figcaption{letter-spacing:.18em;text-transform:uppercase;font-size:11.5px;color:var(--u-muted)}
 html[data-theme] .oni-mine{border:1px solid var(--u-line2)!important;border-radius:22px!important;padding:32px 36px!important;box-shadow:none!important}
 html[data-theme] .oni-chip{border-radius:999px!important}
 html[data-theme] .oni-chip.on{background:var(--u-emerald-soft)!important;border-color:var(--u-emerald)!important;color:var(--u-emerald)!important}
@@ -424,6 +424,7 @@ html[data-page="index"] :is(.cat[data-cat="2"],.cat[data-cat="4"],.cat[data-cat=
 html[data-page="index"] .cat[data-cat="5"]{--cat:var(--u-gold)}
 html[data-page="index"] .cat-head{border-bottom:1px solid var(--u-line2);padding-bottom:16px;margin-bottom:24px}
 html[data-page="index"] .cat-num{font-family:'Cardo',Georgia,serif!important;color:var(--cat)!important;font-style:normal!important}
+html[data-theme="light"][data-page="index"] .cat-num{opacity:1!important}
 html[data-page="index"] .cat-title{font-family:'Cardo',Georgia,serif!important;font-weight:400!important;color:var(--u-ink)!important}
 html[data-page="index"] .card{background:var(--u-paper)!important;border:1px solid var(--u-line2)!important;border-radius:18px!important;padding:28px!important;box-shadow:none!important;transform:none!important;transition:border-color .2s ease,box-shadow .2s ease!important}
 html[data-page="index"] .card:hover{border-color:var(--u-line)!important;box-shadow:var(--u-shadow)!important}

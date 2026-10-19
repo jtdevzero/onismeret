@@ -107,7 +107,7 @@ makeTest({
     const radar=H.radar(ORDER.map(d=>({label:DOMAINS[d].name,value:s[d],shown:s[d]+'/60'})),{max:60,min:12,stroke:'#60a5fa',fill:'rgba(96,165,250,0.28)'});
     const legend=ORDER.map(d=>({color:DOMAINS[d].color,label:DOMAINS[d].name,val:'· '+s[d]+'/60'}));
     const cards=`<div class="score-grid">${ORDER.map(d=>{const v=s[d],dm=DOMAINS[d],b=band(v,d==='N');
-      return `<div class="score-card" style="--sc:${b.color}"><div class="abbr">${d} · ${dm.en}</div><h4><em>${dm.name}</em></h4><div class="val">${v}</div><div class="out">/ 60 · ${b.label}</div><div class="band">${b.desc}</div><div class="bar"><div class="bar-fill" style="width:${(v-12)/48*100}%"></div></div></div>`;}).join('')}</div>`;
+      return `<div class="score-card" style="--sc:${b.color}"><div class="abbr">${d} · ${dm.en}</div><div class="sc-h"><em>${dm.name}</em></div><div class="val">${v}</div><div class="out">/ 60 · ${b.label}</div><div class="band">${b.desc}</div><div class="bar"><div class="bar-fill" style="width:${(v-12)/48*100}%"></div></div></div>`;}).join('')}</div>`;
     const facets=H.bars('Facet-szintű <em>bontás</em>',ORDER.map(d=>({title:DOMAINS[d].name,color:DOMAINS[d].color,
       rows:[...new Set(ITEMS.filter(x=>x[0]===d).map(x=>x[1]))].map(f=>({name:f.split('-').slice(1).join('-'),val:s.facets[f],unit:'/10',pct:(s.facets[f]-2)/8*100}))})));
     const interp=H.interp('Klinikai <em>értelmezés</em>',ORDER.map(d=>{const v=s[d],dm=DOMAINS[d],b=band(v,d==='N');

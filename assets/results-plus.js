@@ -88,25 +88,25 @@
       :'A válaszaid a skála nagy részét használják, nem húznak erősen se a szélekre, se a közepére. Ez jó alap az értelmezéshez.';
     var other=sc.slice(1).reduce(function(s,x){return s+x.n},0);
     var note='A diagram '+n+' kérdés válaszát mutatja a kérdőív '+lo+'–'+hi+' válaszskáláján.'+(other?' A teszt további '+other+' kérdése más válaszskálát használ, ezért az nincs benne.':'');
-    return '<div class="od-panel"><h6>Válaszstílus</h6><div class="hist" role="img" aria-label="Válaszok eloszlása a '+lo+'–'+hi+' skálán: '+bins.map(function(k){return k+': '+cnt[k]}).join(', ')+'">'+bars+'</div><p>'+txt+'</p><p class="oc-note">'+note+'</p></div>';
+    return '<div class="od-panel"><div class="od-h">Válaszstílus</div><div class="hist" role="img" aria-label="Válaszok eloszlása a '+lo+'–'+hi+' skálán: '+bins.map(function(k){return k+': '+cnt[k]}).join(', ')+'">'+bars+'</div><p>'+txt+'</p><p class="oc-note">'+note+'</p></div>';
   }
   function deepHTML(id,r){
     var ds=numDims(r);if(!ds.length)return '';
     if(ds.length>2)ds=ds.filter(function(d){return !/^(total|strength|risk)$/.test(d.k)&&!/^ho_/.test(d.k)})||ds;
     var panels='';
     var rd=ds.length>12?ds.slice().sort(function(a,b){return b.p-a.p}).slice(0,12):ds;
-    if(rd.length>=3)panels+='<div class="od-panel od-radar"><h6>Profilalak'+(ds.length>12?' · a 12 legmagasabb skála':'')+'</h6>'+radar(rd)+'<p>Minden tengely a saját skálája szerint 0–100%. A forma azt mutatja, merre húz a profilod, nem azt, hogy jó vagy rossz.</p></div>';
+    if(rd.length>=3)panels+='<div class="od-panel od-radar"><div class="od-h">Profilalak'+(ds.length>12?' · a 12 legmagasabb skála':'')+'</div>'+radar(rd)+'<p>Minden tengely a saját skálája szerint 0–100%. A forma azt mutatja, merre húz a profilod, nem azt, hogy jó vagy rossz.</p></div>';
     var spread=ds.length>=3?Math.max.apply(null,ds.map(function(d){return d.p}))-Math.min.apply(null,ds.map(function(d){return d.p})):1;
-    if(ds.length>=3&&spread<.06)panels+='<div class="od-panel"><h6>Kiugró skálák</h6><p style="margin-top:0">Minden skálád közel azonos szinten van (a különbség a tartomány '+Math.round(spread*100)+'%-a). Ilyenkor nincs kiemelkedő vagy visszafogott terület; a profil egyenletes.</p></div>';
+    if(ds.length>=3&&spread<.06)panels+='<div class="od-panel"><div class="od-h">Kiugró skálák</div><p style="margin-top:0">Minden skálád közel azonos szinten van (a különbség a tartomány '+Math.round(spread*100)+'%-a). Ilyenkor nincs kiemelkedő vagy visszafogott terület; a profil egyenletes.</p></div>';
     else if(ds.length>=3){var srt=ds.slice().sort(function(a,b){return b.p-a.p}),top=srt.slice(0,Math.min(3,Math.ceil(ds.length/2))),bot=srt.slice(-Math.min(3,Math.floor(ds.length/2))).reverse();
       var row=function(d,cls){return '<li><span>'+esc(d.l)+'</span><b class="'+cls+'">'+Math.round(d.p*100)+'%</b><i><u class="'+cls+'" style="width:'+Math.round(d.p*100)+'%"></u></i></li>'};
-      panels+='<div class="od-panel"><h6>Leginkább jellemző</h6><ul class="od-list">'+top.map(function(d){return row(d,'hi')}).join('')+'</ul><h6 style="margin-top:14px">Legkevésbé jellemző</h6><ul class="od-list">'+bot.map(function(d){return row(d,'lo')}).join('')+'</ul>'+
+      panels+='<div class="od-panel"><div class="od-h">Leginkább jellemző</div><ul class="od-list">'+top.map(function(d){return row(d,'hi')}).join('')+'</ul><div class="od-h" style="margin-top:14px">Legkevésbé jellemző</div><ul class="od-list">'+bot.map(function(d){return row(d,'lo')}).join('')+'</ul>'+
         '<p>A százalék azt jelzi, hol áll az eredményed a skála saját tartományán belül. Egy fordított irányú skálán (például nehézségek, kockázatok) a magas érték nem erősség.</p></div>';}
-    else panels+='<div class="od-panel"><h6>Hol állsz a skálán</h6><ul class="od-list">'+ds.map(function(d){return '<li><span>'+esc(d.l)+'</span><b class="hi">'+d.v+'</b><i><u class="hi" style="width:'+Math.round(d.p*100)+'%"></u></i></li>'}).join('')+'</ul><p>'+ds.map(function(d){return esc(d.l)+': '+d.v+' a '+d.lo+'–'+d.hi+' skálán, ez a tartomány '+Math.round(d.p*100)+'%-a.'}).join(' ')+'</p></div>';
+    else panels+='<div class="od-panel"><div class="od-h">Hol állsz a skálán</div><ul class="od-list">'+ds.map(function(d){return '<li><span>'+esc(d.l)+'</span><b class="hi">'+d.v+'</b><i><u class="hi" style="width:'+Math.round(d.p*100)+'%"></u></i></li>'}).join('')+'</ul><p>'+ds.map(function(d){return esc(d.l)+': '+d.v+' a '+d.lo+'–'+d.hi+' skálán, ez a tartomány '+Math.round(d.p*100)+'%-a.'}).join(' ')+'</p></div>';
     panels+=styleHTML(id);
     var h=(ONI.all()[id]||[]).filter(function(e){return e!==r&&e.sid!==r.sid&&ONI.same(e,r)&&e.d});
     if(h.length){var pv=h[h.length-1],ch=ds.map(function(d){var o=pv.d[d.k];return o&&typeof o[1]==='number'?{l:d.l,a:o[1],b:d.v,dp:(d.v-o[1])/(d.hi-d.lo)}:null}).filter(Boolean).sort(function(a,b){return Math.abs(b.dp)-Math.abs(a.dp)}).slice(0,6);
-      if(ch.length)panels+='<div class="od-panel"><h6>Változás az előző kitöltés óta · '+new Date(pv.done||pv.t).toLocaleDateString('hu-HU',{year:'numeric',month:'short',day:'numeric'})+'</h6><ul class="od-chg">'+ch.map(function(c){var d=c.b-c.a;return '<li><span>'+esc(c.l)+'</span><b>'+c.a+' → '+c.b+'</b><em class="'+(Math.abs(c.dp)<.05?'eq':d>0?'up':'dn')+'">'+(Math.abs(c.dp)<.05?'≈':d>0?'▲':'▼')+' '+Math.abs(Math.round(c.dp*100))+'%</em></li>'}).join('')+'</ul><p>A százalék a skála teljes tartományához viszonyított elmozdulás. A ≈ jel 5% alatti elmozdulást jelöl: ez csak megjelenítési határ, nem statisztikai küszöb. Hogy egy változás valódi-e, az a teszt megbízhatóságától és a kitöltés körülményeitől is függ.</p></div>';}
+      if(ch.length)panels+='<div class="od-panel"><div class="od-h">Változás az előző kitöltés óta · '+new Date(pv.done||pv.t).toLocaleDateString('hu-HU',{year:'numeric',month:'short',day:'numeric'})+'</div><ul class="od-chg">'+ch.map(function(c){var d=c.b-c.a;return '<li><span>'+esc(c.l)+'</span><b>'+c.a+' → '+c.b+'</b><em class="'+(Math.abs(c.dp)<.05?'eq':d>0?'up':'dn')+'">'+(Math.abs(c.dp)<.05?'≈':d>0?'▲':'▼')+' '+Math.abs(Math.round(c.dp*100))+'%</em></li>'}).join('')+'</ul><p>A százalék a skála teljes tartományához viszonyított elmozdulás. A ≈ jel 5% alatti elmozdulást jelöl: ez csak megjelenítési határ, nem statisztikai küszöb. Hogy egy változás valódi-e, az a teszt megbízhatóságától és a kitöltés körülményeitől is függ.</p></div>';}
     return '<section class="oni-deep"><div class="oni-eyebrow">Vizuális áttekintés</div>'+chartHTML(r)+'<div class="od-grid">'+panels+'</div></section>';
   }
   window.ONI_DEEP=deepHTML;
@@ -164,9 +164,9 @@
     var notes=jget(NK,{}),n=((notes[id]||{})[r.sid||'_'])||{fit:[],cond:[],text:''};
     var chip=function(group,arr,sel){return arr.map(function(c){return '<button type="button" class="oni-chip'+(sel.indexOf(c[0])>-1?' on':'')+'" data-g="'+group+'" data-v="'+c[0]+'" aria-pressed="'+(sel.indexOf(c[0])>-1)+'">'+c[1]+'</button>'}).join('')};
     return '<section class="oni-mine" data-id="'+id+'" data-sid="'+esc(r.sid||'_')+'"><div class="oni-eyebrow">Saját megjegyzések</div>'+
-      '<div class="oni-notes"><h5>A saját tapasztalatod <small>(a pontszámot nem módosítja)</small></h5>'+
+      '<div class="oni-notes"><div class="od-h">A saját tapasztalatod <small>(a pontszámot nem módosítja)</small></div>'+
         '<div class="oni-chips">'+chip('fit',FIT,n.fit||[])+'</div>'+
-        '<h5>Kitöltési körülmények <small>(nem kötelező)</small></h5><div class="oni-chips">'+chip('cond',COND,n.cond||[])+'</div>'+
+        '<div class="od-h">Kitöltési körülmények <small>(nem kötelező)</small></div><div class="oni-chips">'+chip('cond',COND,n.cond||[])+'</div>'+
         '<textarea rows="2" aria-label="Saját jegyzet" placeholder="Saját jegyzet: mi jutott eszedbe, mi lepett meg, mit kérdeznél meg valakitől?">'+esc(n.text||'')+'</textarea>'+
         '<span class="oni-saved" aria-live="polite"></span></div>'+
       commitHTML(id,r)+
@@ -183,7 +183,7 @@
     return '<div class="oni-commit">'+
       (pv?'<div class="oni-cprev" data-t="'+esc(pv.t)+'"><span>'+fmtD(pv.t)+' ezt vállaltad: <b>„'+esc(pv.text)+'”</b> Hogy sikerült?</span><span class="oni-chips">'+
         Object.keys(CST).map(function(k){return '<button type="button" class="oni-chip" data-cst="'+k+'">'+CST[k]+'</button>'}).join('')+'</span></div>':'')+
-      '<h5>Egy vállalás a következő hetekre <small>(nem kötelező)</small></h5>'+
+      '<div class="od-h">Egy vállalás a következő hetekre <small>(nem kötelező)</small></div>'+
       '<div class="oni-crow"><input type="text" maxlength="200" aria-label="Vállalás" placeholder="Egy kicsi, konkrét lépés: mit csinálsz másképp a következő két hétben?" value="'+esc(cur?cur.text:'')+'">'+
       '<button type="button" class="oni-cbtn">'+(cur?'Módosítom':'Vállalom')+'</button></div><span class="oni-csaved" aria-live="polite"></span></div>';
   }
@@ -203,7 +203,7 @@
     var c=ONI.remindCfg(id),du=ONI.due(id,r);
     var opts='<option value="">Alapértelmezett ('+(c.def?c.def+' nap':'kikapcsolva')+')</option>'+RDAYS.map(function(d){return '<option value="'+d+'"'+(c.own&&c.days===d?' selected':'')+'>'+d+' nap</option>'}).join('')+'<option value="0"'+(c.own&&c.days===0?' selected':'')+'>Kikapcsolva</option>';
     var when=du.off?'Ehhez a teszthez nincs emlékeztető.':(du.due?'Most esedékes: '+du.since+' napja töltötted ki.':'Esedékes: '+fmtD(du.at)+(du.snoozed?' (halasztva)':''));
-    return '<div class="oni-remind"><h5>Újramérési emlékeztető <small>(csak ennél a tesztnél)</small></h5>'+
+    return '<div class="oni-remind"><div class="od-h">Újramérési emlékeztető <small>(csak ennél a tesztnél)</small></div>'+
       '<div class="oni-crow"><label class="sr-only" for="oni-rd-'+id+'">Emlékeztető időköze</label><select id="oni-rd-'+id+'" class="oni-rsel">'+opts+'</select>'+
       (du.due?'<button type="button" class="oni-cbtn oni-snooze">Halasztás 30 nappal</button>':'')+
       '<button type="button" class="oni-ics"'+(du.off?' disabled':'')+' title="Letölthető naptárbejegyzés (.ics), bármelyik naptárba importálható">Naptárba (.ics)</button></div>'+

@@ -122,7 +122,7 @@ function __oldRender(){
   let scHtml='';
   ['EF','OF','SD','IS','OS'].forEach(d=>{
     const meta=DOMAINS[d], s=scores[d], band=subBand(d,s), pct=(s/meta.max)*100;
-    scHtml+=`<div class="score-card" style="--sc:${band.color}"><div class="abbr">${d} · ${meta.en}</div><h4><em>${meta.name}</em></h4><div class="val">${s}</div><div class="out">/ ${meta.max}</div><div class="band">${band.label}</div><div class="bar"><div class="bar-fill" style="width:${pct}%"></div></div></div>`;
+    scHtml+=`<div class="score-card" style="--sc:${band.color}"><div class="abbr">${d} · ${meta.en}</div><div class="sc-h"><em>${meta.name}</em></div><div class="val">${s}</div><div class="out">/ ${meta.max}</div><div class="band">${band.label}</div><div class="bar"><div class="bar-fill" style="width:${pct}%"></div></div></div>`;
   });
   document.getElementById('iief-scoresGrid').innerHTML=scHtml;
   let interp=`<h3>Klinikai <em>értelmezés</em></h3><div class="interp-section" style="--sc:${efB.color}"><h4>Erekciós Funkció — ${efB.label}</h4><p>${INTERP.EF[efB.key]}</p></div>`;
@@ -347,13 +347,13 @@ function __oldRender(){
   let scHtml='';
   [{k:'D',n:'Partneri vágy',en:'Dyadic Sexual Desire',max:64},{k:'S',n:'Szóló vágy',en:'Solitary Sexual Desire',max:48}].forEach(dim=>{
     const s=scores[dim.k], b=band(dim.k,s), pct=(s/dim.max)*100;
-    scHtml+=`<div class="score-card" style="--sc:${b.color}"><div class="abbr">${dim.en}</div><h4><em>${dim.n}</em></h4><div class="val">${s}</div><div class="out">/ ${dim.max}</div><div class="band">${b.label}</div><div class="bar"><div class="bar-fill" style="width:${pct}%"></div></div></div>`;
+    scHtml+=`<div class="score-card" style="--sc:${b.color}"><div class="abbr">${dim.en}</div><div class="sc-h"><em>${dim.n}</em></div><div class="val">${s}</div><div class="out">/ ${dim.max}</div><div class="band">${b.label}</div><div class="bar"><div class="bar-fill" style="width:${pct}%"></div></div></div>`;
   });
   document.getElementById('sdi-scoresGrid').innerHTML=scHtml;
   let interp=`<h3>Klinikai <em>értelmezés</em></h3>`;
   [{k:'D',n:'Partneri vágy'},{k:'S',n:'Szóló vágy'}].forEach(dim=>{
     const s=scores[dim.k], b=band(dim.k,s);
-    interp+=`<div class="interp-section" style="--sc:${b.color}"><h4>${dim.n} — ${b.label}</h4><p>${INTERP[dim.k][b.key]}</p><p>A pontszámod (${s} / ${dim.max}) ${b.desc}. Külföldi mintákon közölt átlagokhoz nem hasonlítom, mert ez a saját fordítás nincs magyar mintán normázva.</p></div>`;
+    interp+=`<div class="interp-section" style="--sc:${b.color}"><h4>${dim.n} — ${b.label}</h4><p>${INTERP[dim.k][b.key]}</p><p>A pontszámod (${s} / ${SDI_MAX[dim.k]}) ${b.desc}. Külföldi mintákon közölt átlagokhoz nem hasonlítom, mert ez a saját fordítás nincs magyar mintán normázva.</p></div>`;
   });
   document.getElementById('sdi-interpCard').innerHTML=interp;
   const links=crossPattern(scores.D, scores.S);
@@ -518,7 +518,7 @@ function __oldRender(){
   let scHtml='';
   ['ABS','AMN','DPD'].forEach(sub=>{
     const s=subs[sub], meta=SUB_META[sub], b=subBand(s), pct=(s/100)*100;
-    scHtml+=`<div class="score-card" style="--sc:${b.color}"><div class="abbr">${sub} · ${meta.en}</div><h4><em>${meta.name}</em></h4><div class="val">${s.toFixed(1)}</div><div class="out">/ 100 · ${meta.items} item</div><div class="band">${b.label}</div><div class="bar"><div class="bar-fill" style="width:${pct}%"></div></div></div>`;
+    scHtml+=`<div class="score-card" style="--sc:${b.color}"><div class="abbr">${sub} · ${meta.en}</div><div class="sc-h"><em>${meta.name}</em></div><div class="val">${s.toFixed(1)}</div><div class="out">/ 100 · ${meta.items} item</div><div class="band">${b.label}</div><div class="bar"><div class="bar-fill" style="width:${pct}%"></div></div></div>`;
   });
   document.getElementById('des-scoresGrid').innerHTML=scHtml;
   let interp=`<h3>Klinikai <em>értelmezés</em></h3><div class="interp-section" style="--sc:${tB.color}"><h4>Összkép — ${tB.label}</h4><p>${INTERP.overall[tB.key]}</p></div>`;

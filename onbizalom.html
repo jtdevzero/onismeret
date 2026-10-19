@@ -4,10 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Önbizalom és önértékelés — RSES · GSE · BFNE-II · gyakorlati önbizalom</title>
+<meta name="description" content="Önbizalom és önértékelés — RSES · GSE · BFNE-II · gyakorlati önbizalom — önismereti kérdőívek magyarul. A válaszok és az eredmények csak ebben a böngészőben tárolódnak.">
 <link rel="stylesheet" href="fonts/fonts.css?v=50e1f8e3">
-<script src="assets/registry.js?v=1d248b64"></script>
-<script src="assets/oni-core.js?v=172147a9"></script>
-<script src="assets/oni-rules.js?v=8b76609e"></script>
+<script src="assets/oni.js?v=aadf38b1"></script>
 <style>/* A hub-oldalak alapstílusa (eredetileg a szemelyiseg.html-ből). */
 :root{
   --font-display:'Fraunces','Cardo',serif;
@@ -411,19 +410,28 @@ html[data-theme="light"] :is(.cross-card,.therapy-card,.imago-portrait,.total-ca
 html[data-theme="light"] .cross-item-label{color:var(--u-sapphire)!important}
 html[data-theme="light"] :is(.bar-row-track,.score-bar,.room-bar){background:var(--u-bg3)!important}
 html[data-theme="light"] :is(.bar-row-name){color:var(--u-ink)!important}
+
+/* a pontszám-kártyák neve címke, nem címsor (a címsorrend miatt) */
+.score-card .sc-h{font-family:var(--font-display);font-weight:500;font-size:17px;line-height:1.2;margin-bottom:12px;color:var(--ink-lite)}
+.score-card .sc-h em{font-style:italic}
+html[data-theme="light"] .score-card .sc-h{color:var(--u-ink)!important}
+#test-tas .sub-card .sc-h{font-family:'Cardo',serif;font-weight:500;font-size:16px;line-height:1.25;margin-bottom:12px;min-height:40px;color:var(--ink-lite)}
+html[data-theme="light"] #test-tas .sub-card .sc-h{color:var(--u-ink)!important}
+html[data-theme="light"] .quad .cell .s{color:var(--u-soft)!important}
 </style>
 <script src="assets/oni-schema.js?v=9dbd0f7d" defer></script>
 <script src="assets/tests-data.js?v=5c562e03" defer></script>
 <script src="assets/mely.js?v=8eeb009a" defer></script>
-<script src="assets/results-plus.js?v=faf16aa6" defer></script>
+<script src="assets/results-plus.js?v=1f96d0e0" defer></script>
 <script src="assets/mely-onbizalom.js?v=17e74f4b" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=41d0552c">
+<link rel="stylesheet" href="assets/theme.css?v=1a89d72b">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#050d1e">
 <link rel="icon" type="image/png" href="icons/favicon-32.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 </head>
 <body>
+<main id="main">
 <div class="hub-shell">
   <a class="hub-back" href="index.html">‹ Önismereti térképek</a>
   <div class="hub-header">
@@ -449,7 +457,7 @@ window.H = (function(){
 
   function cards(list){
     return `<div class="score-grid">${list.map(c=>`<div class="score-card" style="--sc:${c.color}">
-      <div class="abbr">${c.abbr||''}</div><h4>${c.name}</h4>
+      <div class="abbr">${c.abbr||''}</div><div class="sc-h">${c.name}</div>
       <div class="val">${c.val}</div><div class="out">${c.out||''}</div>
       ${c.band?`<span class="band">${c.band}</span>`:''}
       <div class="bar"><div class="bar-fill" style="width:${clamp(c.pct,0,100)}%"></div></div></div>`).join('')}</div>`;
@@ -468,7 +476,7 @@ window.H = (function(){
       <div class="rank-score">${it.score}<span>${it.unit||''}</span></div></div>`).join('')}</div>`;
   }
   function interp(title,sections){
-    return `<div class="interp-card"><h3>${title}</h3>${sections.filter(Boolean).map(s=>`<div class="interp-section" style="--sc:${s.color||'var(--c1)'}"><h4>${s.h}</h4>${s.html}</div>`).join('')}</div>`;
+    return `<div class="interp-card"><h3>${title}</h3>${sections.filter(Boolean).map(s=>`<div class="interp-section" style="--sc:${s.color||'var(--c1)'}">${s.h?`<h4>${s.h}</h4>`:''}${s.html}</div>`).join('')}</div>`;
   }
   function chart(title,sub,inner,legend){
     return `<div class="chart-card"><h3>${title}</h3><div class="chart-sub">${sub}</div>${inner}${legend?`<div class="chart-legend">${legend.map(l=>`<div class="chart-legend-item"><span class="chart-legend-swatch" style="background:${l.color}"></span><span><strong>${l.label}</strong> ${l.val??''}</span></div>`).join('')}</div>`:''}</div>`;
@@ -865,5 +873,6 @@ makeTest({
 
 bootHub(['rses','gse','bfne','obgy']);
 </script>
+</main>
 </body>
 </html>

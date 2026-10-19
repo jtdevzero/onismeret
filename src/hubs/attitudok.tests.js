@@ -129,7 +129,7 @@ makeTest({
   render(R,s){
     const sc=s.scores,total=sc.PL+sc.PI+sc.OD;
     return HEAD()+H.total({label:'Összesített szexuális önkép-erősség',val:total,out:'/ 162 (11+7+9 item × 6 max)',band:'3 dimenzió integrált',desc:'A dimenziók külön-külön értelmezendők — az érdekes az egymáshoz viszonyított aránya.'})
-      +'<div class="score-grid">'+['PL','PI','OD'].map(f=>{const v=sc[f],m=FACTORS[f],b=band(f,v);return `<div class="score-card" style="--sc:${b.color}"><div class="abbr">${f+" · "+m.en}</div><h4><em>${m.name}</em></h4><div class="val">${v}</div><div class="out">${"/ "+m.max+" · "+m.items+" item"}</div><div class="band">${b.label}</div><div class="bar"><div class="bar-fill" style="width:${v/m.max*100}%"></div></div></div>`;}).join('')+'</div>'
+      +'<div class="score-grid">'+['PL','PI','OD'].map(f=>{const v=sc[f],m=FACTORS[f],b=band(f,v);return `<div class="score-card" style="--sc:${b.color}"><div class="abbr">${f+" · "+m.en}</div><div class="sc-h"><em>${m.name}</em></div><div class="val">${v}</div><div class="out">${"/ "+m.max+" · "+m.items+" item"}</div><div class="band">${b.label}</div><div class="bar"><div class="bar-fill" style="width:${v/m.max*100}%"></div></div></div>`;}).join('')+'</div>'
       +H.interp('Klinikai <em>értelmezés</em>',['PL','PI','OD'].map(f=>{const v=sc[f],m=FACTORS[f],b=band(f,v);return {h:m.name+' — '+b.label,color:b.color,html:`<p style="font-size:13px;color:var(--ink-lite-muted);margin-bottom:8px;font-style:italic">${m.desc}</p><p>${INTERP[f][b.key]}</p>`};}))
       +H.cross(TX.cross,getCrossLinks(sc))+H.therapy(TX.therapy,TX.therapy_sub,therapySuggestions(sc))+REFS();
   }
@@ -260,12 +260,12 @@ makeTest({
   render(R,s){
     if(!s.scores){const ego=s.ego,b=s.b;
       return HEAD()+H.total({label:'NSSS · csak a saját tapasztalat alskála',val:ego,out:'/ 50',band:b.label,color:b.color,desc:'A partner- és aktivitásfókuszú kérdések nem mind kaptak választ, ezért azt az alskálát és az összpontszámot nem számoljuk. A saját tapasztalat alskála önmagában is értelmezhető.'})
-        +'<div class="score-grid">'+`<div class="score-card" style="--sc:${b.color}"><div class="abbr">${"Ego-Centered"}</div><h4><em>${"Saját tapasztalat"}</em></h4><div class="val">${ego}</div><div class="out">${"/ 50"}</div><div class="band">${b.label}</div><div class="bar"><div class="bar-fill" style="width:${ego/50*100}%"></div></div></div>`+'</div>'
+        +'<div class="score-grid">'+`<div class="score-card" style="--sc:${b.color}"><div class="abbr">${"Ego-Centered"}</div><div class="sc-h"><em>${"Saját tapasztalat"}</em></div><div class="val">${ego}</div><div class="out">${"/ 50"}</div><div class="band">${b.label}</div><div class="bar"><div class="bar-fill" style="width:${ego/50*100}%"></div></div></div>`+'</div>'
         +H.interp('Lehetséges <em>értelmezés</em>',[{h:`Saját tapasztalat-elégedettség — ${b.label} (${ego}/50)`,color:b.color,html:`<p>${INTERP.EGO[b.key]}</p>`}])
         +H.cross(TX.cross,[],'Keresztmintázat csak mindkét alskálával számolható.')+REFS();}
     const sc=s.scores,tB=totalBand(sc.total);
     return HEAD()+H.total({label:'NSSS összpontszám',val:sc.total,out:'/ 100 · Štulhofer 2010',band:tB.label,color:tB.color,desc:tB.desc})
-      +'<div class="score-grid">'+[{k:'EGO',n:'Saját tapasztalat',en:'Ego-Centered',max:50},{k:'PA',n:'Partner/Aktivitás',en:'Partner/Activity-Centered',max:50}].map(dim=>{const v=sc[dim.k],b=subBand(v);return `<div class="score-card" style="--sc:${b.color}"><div class="abbr">${dim.en}</div><h4><em>${dim.n}</em></h4><div class="val">${v}</div><div class="out">${"/ "+dim.max}</div><div class="band">${b.label}</div><div class="bar"><div class="bar-fill" style="width:${v/dim.max*100}%"></div></div></div>`;}).join('')+'</div>'
+      +'<div class="score-grid">'+[{k:'EGO',n:'Saját tapasztalat',en:'Ego-Centered',max:50},{k:'PA',n:'Partner/Aktivitás',en:'Partner/Activity-Centered',max:50}].map(dim=>{const v=sc[dim.k],b=subBand(v);return `<div class="score-card" style="--sc:${b.color}"><div class="abbr">${dim.en}</div><div class="sc-h"><em>${dim.n}</em></div><div class="val">${v}</div><div class="out">${"/ "+dim.max}</div><div class="band">${b.label}</div><div class="bar"><div class="bar-fill" style="width:${v/dim.max*100}%"></div></div></div>`;}).join('')+'</div>'
       +H.interp('Klinikai <em>értelmezés</em>',[{h:'Összkép — '+tB.label,color:tB.color,html:`<p>${INTERP.overall[tB.key]}</p>`}].concat([{k:'EGO',n:'Saját tapasztalat-elégedettség'},{k:'PA',n:'Partner/Aktivitás-elégedettség'}].map(dim=>{const v=sc[dim.k],b=subBand(v);return {h:`${dim.n} — ${b.label} (${v}/50)`,color:b.color,html:`<p>${INTERP[dim.k][b.key]}</p>`};})))
       +H.cross(TX.cross,getCrossLinks(sc))+H.therapy(TX.therapy,TX.therapy_sub,therapySuggestions(sc))+REFS();
   }
@@ -421,7 +421,7 @@ makeTest({
   sum(s){return s.oni;},
   render(R,s){
     const sc=s.scores;
-    return HEAD()+'<div class="score-grid">'+['SC','SM','SA','AS'].map(k=>{const v=sc[k],m=SUBSCALES[k],b=band(v);return `<div class="score-card" style="--sc:${m.color}"><div class="abbr">${k+" · "+m.en}</div><h4><em>${m.name}</em></h4><div class="val">${v}</div><div class="out">${"/ 45 · 9 item"}</div><div class="band">${b.label}</div><div class="bar"><div class="bar-fill" style="width:${v/45*100}%"></div></div></div>`;}).join('')+'</div>'
+    return HEAD()+'<div class="score-grid">'+['SC','SM','SA','AS'].map(k=>{const v=sc[k],m=SUBSCALES[k],b=band(v);return `<div class="score-card" style="--sc:${m.color}"><div class="abbr">${k+" · "+m.en}</div><div class="sc-h"><em>${m.name}</em></div><div class="val">${v}</div><div class="out">${"/ 45 · 9 item"}</div><div class="band">${b.label}</div><div class="bar"><div class="bar-fill" style="width:${v/45*100}%"></div></div></div>`;}).join('')+'</div>'
       +H.interp('Klinikai <em>értelmezés</em>',['SC','SM','SA','AS'].map(k=>{const v=sc[k],m=SUBSCALES[k],b=band(v);return {h:`${m.name} — ${b.label} (${v}/45)`,color:m.color,html:`<p style="font-size:13px;color:var(--ink-lite-muted);margin-bottom:8px;font-style:italic">${m.desc}</p><p>${INTERP[k][b.key]}</p>`};}))
       +H.cross(TX.cross,getCrossLinks(sc))+H.therapy(TX.therapy,TX.therapy_sub,therapySuggestions(sc))+REFS();
   }
