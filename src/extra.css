@@ -60,3 +60,26 @@
 .total-card .val{font-size:56px}
 .total-card .total-desc{font-size:14px;line-height:1.6;color:var(--ink-lite-muted);margin-top:12px}
 .therapy-card .therapy-sub{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-lite-muted);margin:-6px 0 14px;font-weight:600}
+/* A régi kézzel írt oldalakról átvett eredményblokkok (keresztminták, Imago-portré, sávos listák) */
+.cross-card{background:linear-gradient(180deg,rgba(19,40,72,0.85),rgba(12,30,63,0.7));border:1px solid var(--line-dark);border-radius:18px;padding:26px 24px;margin-bottom:22px}
+.cross-card h3{font-family:'Cardo',serif;font-weight:400;font-size:24px;margin-bottom:16px;color:var(--ink-lite)}
+.cross-card h3 em{font-style:italic;color:var(--gold-bright)}
+.cross-item{padding:14px 16px;background:rgba(5,13,30,0.45);border-left:3px solid var(--gold-bright);border-radius:0 12px 12px 0;margin-bottom:10px}
+.cross-item-label{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--sap-brighter);margin-bottom:6px;font-weight:700}
+.cross-item p{font-size:14px;color:var(--ink-lite-soft);line-height:1.6}
+.cross-item strong{color:var(--ink-lite)}
+.imago-portrait{background:linear-gradient(135deg,#1e3a8a,#312e81);border-radius:20px;padding:30px 26px;margin-bottom:22px;color:#fff}
+.imago-portrait h3{font-family:'Cardo',serif;font-weight:400;font-size:26px;margin-bottom:6px}
+.imago-portrait h3 em{font-style:italic;color:var(--gold-brighter)}
+.imago-portrait .sub{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.75);margin-bottom:18px;font-weight:600}
+.portrait-text{font-size:15px;line-height:1.75;color:rgba(255,255,255,.94)}
+.portrait-text strong{color:var(--gold-brighter)}
+.portrait-text p{margin-bottom:12px}
+.bar-group{margin-bottom:24px}
+.bar-group:last-child{margin-bottom:0}
+.bar-row{display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:baseline;margin-bottom:12px}
+.bar-row-name{color:var(--ink-lite);font-weight:500;font-size:14px}
+.bar-row-value{font-size:14px}
+.bar-row-track{grid-column:1/-1;height:6px;border-radius:99px;background:rgba(147,197,253,.12);overflow:hidden}
+.bar-row-fill{height:100%;border-radius:99px}
+.rank-item .rank-pos,.rank-item.top .rank-pos,.rank-item.top .rank-score{color:color-mix(in srgb,var(--top-color,var(--rc,var(--gold-bright))) 55%,var(--ink-lite))}
