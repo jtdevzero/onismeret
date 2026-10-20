@@ -48,7 +48,8 @@
 | | GSE (általános énhatékonyság) | 10 | `onbizalom.html#test-gse` |
 | | BFNE-II (negatív értékeléstől való félelem) | 12 | `onbizalom.html#test-bfne` |
 | | Gyakorlati önbizalom (saját, nem validált, kurzus előtt/után) | 20 | `onbizalom.html#test-obgy` |
-| **XII. Jóllét és stressz** | WHO-5 (jóllét) | 5 | `jollet.html#test-who5` |
+| **XII. Jóllét és stressz** | Havi állapotfelmérés (WHO-5, PSS-4, CBI személyes, UCLA-3, SCI rövid; havi idővonallal) | 20 | `havi.html#test-pulse` |
+| | WHO-5 (jóllét) | 5 | `jollet.html#test-who5` |
 | | PSS-10 (észlelt stressz) | 10 | `jollet.html#test-pss` |
 | | CBI (Koppenhágai kiégés-kérdőív: személyes + munkához kötött) | 13 | `jollet.html#test-cbi` |
 | | BRS (rövid reziliencia-skála) | 6 | `jollet.html#test-brs` |
@@ -61,9 +62,16 @@
 | **XV. Munka és célok** | UWES-9 (munkahelyi bevonódás) | 9 | `munka.html#test-uwes` |
 | | Grit-S (kitartás) | 8 | `munka.html#test-grit` |
 | | SAPS (perfekcionizmus: mérce + diszkrepancia) | 8 | `munka.html#test-saps` |
-| **XVI. Szimbolikus térképek** | Csillagtérkép és számmisztika (nem tudományos, nem mérés) | – | `csillagok.html` |
+| **XVI. Erőforrások** | SWLS (élettel való elégedettség) | 5 | `eroforras.html#test-swls` |
+| | LOT-R (optimizmus) | 10 | `eroforras.html#test-lotr` |
+| | GQ-6 (hála) | 6 | `eroforras.html#test-gq6` |
+| | BPNSFS (alapszükségletek: kielégülés és frusztráció) | 24 | `eroforras.html#test-bpns` |
+| **XVII. Szokások és önkontroll** | AUDIT (alkoholfogyasztás, WHO-szűrő) | 10 | `szokasok.html#test-audit` |
+| | SAS-SV (telefonhasználat) | 10 | `szokasok.html#test-sas` |
+| | BSCS (önkontroll) | 13 | `szokasok.html#test-bscs` |
+| **XVIII. Szimbolikus térképek** | Csillagtérkép és számmisztika (nem tudományos, nem mérés) | – | `csillagok.html` |
 
-**Összesen: 51 teszt, 1345 kérdés, 15 témakör**, plusz egy szimbolikus (nem tudományos) csillagtérkép-oldal.
+**Összesen: 59 teszt, 1443 kérdés, 17 témakör** (ebből egy havonta ismételhető állapotfelmérés), plusz egy szimbolikus (nem tudományos) csillagtérkép-oldal.
 
 ---
 
@@ -78,7 +86,7 @@ onismeret/
 ├── adatok.html           Saját adatok: kitöltésenkénti és tesztenkénti törlés, export
 ├── valtozasok.html       Változásnapló és tesztverziók
 ├── maia2.html · sis-ses.html · ysq.html · kotodes-melyterkep.html     önálló tesztoldalak (saját logikával)
-├── terkepek · funkcio · attitudok · nyelvek · szemelyiseg · kapcsolat · cselekves · szabalyozas · allapot · onbizalom · jollet · ertelem · alvas · munka (.html)
+├── terkepek · funkcio · attitudok · nyelvek · szemelyiseg · kapcsolat · cselekves · szabalyozas · allapot · onbizalom · jollet · ertelem · alvas · munka · havi · eroforras · szokasok (.html)
 │                         GENERÁLT hub-oldalak — ne szerkeszd közvetlenül, hanem a src/hubs/ fájlokat
 ├── csillagok.html        Csillagtérkép és számmisztika (nem mérés)
 ├── src/                  A generált hubok forrása: engine.js, hub-base.css, extra.css, hubs/*.hub.html + *.tests.js
@@ -115,6 +123,7 @@ Az első látogatás után az oldal offline is működik (service worker), és t
   - `rses-responses-v1`, `gse-responses-v1`, `bfne2-responses-v1`, `onbizalom-gyak-responses-v1`
   - `who5-responses-v1`, `pss10-responses-v1`, `cbi-responses-v1`, `brs-responses-v1`, `ucla3-responses-v1`, `mlq-responses-v1`, `maas-responses-v1`
   - `sci-responses-v1`, `ess-responses-v1`, `bas2-responses-v1`, `uwes9-responses-v1`, `grit-responses-v1`, `saps-responses-v1`
+  - `pulse-responses-v1` (havi állapotfelmérés; 20 nap után új kitöltés indul), `swls-responses-v1`, `lotr-responses-v1`, `gq6-responses-v1`, `bpnsfs-responses-v1`, `audit-responses-v1`, `sassv-responses-v1`, `bscs-responses-v1`
   - `onismeret-birth-v1` (csillagtérkép születési adatai), `onismeret-fokusz-v1`, `onismeret-style-v1`
   - `onismeret-meta-v1` — az utolsó válasz ideje tesztenként (ebből lesz a kitöltés dátuma)
   - `onismeret-settings-v1` — pl. az újramérési emlékeztető (ki / 90 / 180 / 365 nap)

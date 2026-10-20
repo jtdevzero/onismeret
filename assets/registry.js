@@ -80,6 +80,17 @@ g.ONI_REG=[
  // Munka és célok
  {id:'uwes',key:'uwes9-responses-v1',card:'uwes9-responses-v1',cat:'Munka és célok',name:'UWES-9 · Munkahelyi bevonódás',link:'munka.html#test-uwes',n:9,ev:'valid',badge:'check',v:{q:1,s:1,t:1}},
  {id:'grit',key:'grit-responses-v1',card:'grit-responses-v1',cat:'Munka és célok',name:'Grit-S · Kitartás',link:'munka.html#test-grit',n:8,ev:'valid',badge:'check',v:{q:1,s:1,t:1}},
- {id:'saps',key:'saps-responses-v1',card:'saps-responses-v1',cat:'Munka és célok',name:'SAPS · Perfekcionizmus',link:'munka.html#test-saps',n:8,ev:'valid',badge:'check',v:{q:1,s:1,t:1}}
+ {id:'saps',key:'saps-responses-v1',card:'saps-responses-v1',cat:'Munka és célok',name:'SAPS · Perfekcionizmus',link:'munka.html#test-saps',n:8,ev:'valid',badge:'check',v:{q:1,s:1,t:1}},
+ // Havi állapot
+ {id:'pulse',key:'pulse-responses-v1',card:'pulse-responses-v1',cat:'Havi állapot',name:'Havi állapotfelmérés',link:'havi.html#test-pulse',n:20,ev:'valid',badge:'check',v:{q:1,s:1,t:1}},
+ // Erőforrások
+ {id:'swls',key:'swls-responses-v1',card:'swls-responses-v1',cat:'Erőforrások',name:'SWLS · Élettel való elégedettség',link:'eroforras.html#test-swls',n:5,ev:'valid',badge:'check',v:{q:1,s:1,t:1}},
+ {id:'lotr',key:'lotr-responses-v1',card:'lotr-responses-v1',cat:'Erőforrások',name:'LOT-R · Optimizmus',link:'eroforras.html#test-lotr',n:10,ev:'valid',badge:'check',v:{q:1,s:1,t:1}},
+ {id:'gq6',key:'gq6-responses-v1',card:'gq6-responses-v1',cat:'Erőforrások',name:'GQ-6 · Hála',link:'eroforras.html#test-gq6',n:6,ev:'valid',badge:'check',v:{q:1,s:1,t:1}},
+ {id:'bpns',key:'bpnsfs-responses-v1',card:'bpnsfs-responses-v1',cat:'Erőforrások',name:'BPNSFS · Alapszükségletek',link:'eroforras.html#test-bpns',n:24,ev:'valid',badge:'check',v:{q:1,s:1,t:1}},
+ // Szokások és önkontroll
+ {id:'audit',key:'audit-responses-v1',card:'audit-responses-v1',cat:'Szokások és önkontroll',name:'AUDIT · Alkoholfogyasztás',link:'szokasok.html#test-audit',n:10,ev:'valid',badge:'check',v:{q:1,s:1,t:1}},
+ {id:'sas',key:'sassv-responses-v1',card:'sassv-responses-v1',cat:'Szokások és önkontroll',name:'SAS-SV · Telefonhasználat',link:'szokasok.html#test-sas',n:10,ev:'valid',badge:'check',v:{q:1,s:1,t:1}},
+ {id:'bscs',key:'bscs-responses-v1',card:'bscs-responses-v1',cat:'Szokások és önkontroll',name:'BSCS · Önkontroll',link:'szokasok.html#test-bscs',n:13,ev:'valid',badge:'check',v:{q:1,s:1,t:1}}
 ];
 })(typeof window!=='undefined'?window:globalThis);
