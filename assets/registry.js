@@ -72,6 +72,14 @@ g.ONI_REG=[
  // Kapcsolódás, értelem, jelenlét
  {id:'ucla',key:'ucla3-responses-v1',card:'ucla3-responses-v1',cat:'Kapcsolódás, értelem, jelenlét',name:'UCLA-3 · Magányosság',link:'ertelem.html#test-ucla',n:3,ev:'valid',badge:'check',v:{q:1,s:1,t:1}},
  {id:'mlq',key:'mlq-responses-v1',card:'mlq-responses-v1',cat:'Kapcsolódás, értelem, jelenlét',name:'MLQ · Az élet értelme',link:'ertelem.html#test-mlq',n:10,ev:'valid',badge:'check',v:{q:1,s:1,t:1}},
- {id:'maas',key:'maas-responses-v1',card:'maas-responses-v1',cat:'Kapcsolódás, értelem, jelenlét',name:'MAAS · Tudatos jelenlét',link:'ertelem.html#test-maas',n:15,ev:'valid',badge:'check',v:{q:1,s:1,t:1}}
+ {id:'maas',key:'maas-responses-v1',card:'maas-responses-v1',cat:'Kapcsolódás, értelem, jelenlét',name:'MAAS · Tudatos jelenlét',link:'ertelem.html#test-maas',n:15,ev:'valid',badge:'check',v:{q:1,s:1,t:1}},
+ // Alvás és test
+ {id:'sci',key:'sci-responses-v1',card:'sci-responses-v1',cat:'Alvás és test',name:'SCI · Alvásminőség',link:'alvas.html#test-sci',n:8,ev:'valid',badge:'check',v:{q:1,s:1,t:1}},
+ {id:'ess',key:'ess-responses-v1',card:'ess-responses-v1',cat:'Alvás és test',name:'Epworth · Nappali álmosság',link:'alvas.html#test-ess',n:8,ev:'valid',badge:'check',v:{q:1,s:1,t:1}},
+ {id:'bas',key:'bas2-responses-v1',card:'bas2-responses-v1',cat:'Alvás és test',name:'BAS-2 · Testkép',link:'alvas.html#test-bas',n:10,ev:'valid',badge:'check',v:{q:1,s:1,t:1}},
+ // Munka és célok
+ {id:'uwes',key:'uwes9-responses-v1',card:'uwes9-responses-v1',cat:'Munka és célok',name:'UWES-9 · Munkahelyi bevonódás',link:'munka.html#test-uwes',n:9,ev:'valid',badge:'check',v:{q:1,s:1,t:1}},
+ {id:'grit',key:'grit-responses-v1',card:'grit-responses-v1',cat:'Munka és célok',name:'Grit-S · Kitartás',link:'munka.html#test-grit',n:8,ev:'valid',badge:'check',v:{q:1,s:1,t:1}},
+ {id:'saps',key:'saps-responses-v1',card:'saps-responses-v1',cat:'Munka és célok',name:'SAPS · Perfekcionizmus',link:'munka.html#test-saps',n:8,ev:'valid',badge:'check',v:{q:1,s:1,t:1}}
 ];
 })(typeof window!=='undefined'?window:globalThis);
