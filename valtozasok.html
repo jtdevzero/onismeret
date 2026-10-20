@@ -63,12 +63,12 @@ h2{font-family:var(--font-serif);font-weight:400;font-size:28px;margin:44px 0 8p
 @media (max-width:560px){.wrap{padding:28px 16px 64px}}
 </style>
 
-<script src="assets/oni.js?v=aadf38b1"></script>
-<script src="assets/oni-schema.js?v=9dbd0f7d" defer></script>
-<script src="assets/tests-data.js?v=5c562e03" defer></script>
-<script src="assets/mely.js?v=8eeb009a" defer></script>
+<script src="assets/oni.js?v=7d78d9a9"></script>
+<script src="assets/oni-schema.js?v=1c676a9b" defer></script>
+<script src="assets/tests-data.js?v=27b9a987" defer></script>
+<script src="assets/mely.js?v=d706c3b7" defer></script>
 <script src="assets/results-plus.js?v=1f96d0e0" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=1a89d72b">
+<link rel="stylesheet" href="assets/theme.css?v=abc37d9f">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#050d1e">
 <link rel="icon" type="image/png" href="icons/favicon-32.png">
@@ -103,6 +103,11 @@ document.addEventListener('DOMContentLoaded',function(){
   var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
   /* score/retake: 'no' | 'part' | 'yes' */
   var LOG=[
+    {d:'2026-10-20',t:'Jóllét és stressz; kapcsolódás, értelem, jelenlét',score:'no',retake:'no',items:[
+      'Új XII. témakör, <a href="jollet.html">Jóllét és stressz</a>: WHO-5 (jóllét), PSS-10 (észlelt stressz), Koppenhágai kiégés-kérdőív (személyes és munkához kötött kiégés külön), BRS (reziliencia).',
+      'Új XIII. témakör, <a href="ertelem.html">Kapcsolódás, értelem, jelenlét</a>: UCLA-3 (magányosság), MLQ (az élet értelmének jelenléte és keresése), MAAS (tudatos jelenlét).',
+      'Mind a hét szabadon használható, validált skála, mélyelemzéssel. Új tesztek közti minták: „Kimerülés-közeli állapot” és „Elszigeteltség és értelemhiány”. Új cél a főoldalon: „Hogy vagyok mostanában”.',
+      'A Szimbolikus térképek témakör XIV. lett. A meglévő tesztek pontozása nem változott.']},
     {d:'2026-10-19',t:'Hibajavítás, akadálymentesség, gyorsítás',score:'no',retake:'no',items:[
       'Javítás: a YSQ „Fókusz” nézete eddig hibával leállt és üres maradt; most működik.',
       'Javítás: az SDI-2 értelmezésében a skála maximuma helyett „undefined” szerepelt.',

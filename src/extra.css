@@ -212,3 +212,7 @@ html[data-theme="light"] .score-card .sc-h{color:var(--u-ink)!important}
 #test-tas .sub-card .sc-h{font-family:'Cardo',serif;font-weight:500;font-size:16px;line-height:1.25;margin-bottom:12px;min-height:40px;color:var(--ink-lite)}
 html[data-theme="light"] #test-tas .sub-card .sc-h{color:var(--u-ink)!important}
 html[data-theme="light"] .quad .cell .s{color:var(--u-soft)!important}
+/* 3 és 7 fokú skálák (UCLA-3, MLQ, ECR-R) */
+.scale.s3{grid-template-columns:repeat(3,1fr)}
+.scale.s7{grid-template-columns:repeat(7,1fr)}
+@media (max-width:560px){.scale.s7{grid-template-columns:repeat(4,1fr)}}

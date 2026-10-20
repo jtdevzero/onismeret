@@ -185,7 +185,7 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     for (const [pg, list] of Object.entries(pages)) { await p.goto(R + pg + '.html'); await p.waitForTimeout(150);
       for (const id of list) ok(await p.evaluate(id => !!document.querySelector('#test-' + id + ' .oni-sheet'), id), `${id}: tesztadatlap a kérdések fölött`); }
     for (const f of ['maia2', 'sis-ses']) { await p.goto(R + f + '.html'); await p.waitForTimeout(150); ok(await p.evaluate(() => !!document.querySelector('.oni-sheet')), `${f}: tesztadatlap`); }
-    ok(await p.evaluate(() => Object.keys(window.ONI_DATA).length) === 38, 'mind a 38 teszthez van adatlap');
+    ok(await p.evaluate(() => Object.keys(window.ONI_DATA).length) === 45, 'mind a 45 teszthez van adatlap');
     for (const [pg, id] of [['szabalyozas', 'ips'], ['terkepek', 'tas'], ['nyelvek', 'love']]) {
       await p.goto(R + pg + '.html#test-' + id); await p.waitForTimeout(150);
       await p.evaluate(id => { const g = {}; document.querySelectorAll('#test-' + id + ' button[data-n]').forEach(x => (g[x.dataset.n] = g[x.dataset.n] || []).push(x)); Object.values(g).forEach(a => a[0].click()); const b = document.querySelector('#test-' + id + ' button[id$=showResults], #' + id + '-show'); b.click(); }, id);
@@ -290,7 +290,7 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     await p.evaluate(() => localStorage.setItem(ONI.K, JSON.stringify({ maia2: [{ n: 'MAIA-2', t: '2026-01-01T10:00:00Z', done: '2026-01-01T10:00:00Z', qv: 1, sv: 1, d: {} }] })));
     await p.reload(); await p.waitForTimeout(150);
     ok(await p.evaluate(() => /MAIA-2/.test(document.getElementById('mine').textContent) && !!document.querySelector('#mine .hit')), 'régi MAIA-2 eredménynél jelzi az újrakitöltést');
-    ok(await p.evaluate(() => document.querySelectorAll('#vers tr').length === 39), 'verziótábla mind a 38 teszttel');
+    ok(await p.evaluate(() => document.querySelectorAll('#vers tr').length === 46), 'verziótábla mind a 45 teszttel');
     await ctx.close();
   }
 
@@ -298,7 +298,7 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
   {
     const ctx = await newCtx(); const p = await pageIn(ctx);
     await p.goto(R + 'index.html'); await p.waitForTimeout(150);
-    ok(await p.$$eval('.goal-chip', x => x.length) === 9, 'kilenc cél a főoldalon');
+    ok(await p.$$eval('.goal-chip', x => x.length) === 10, 'tíz cél a főoldalon');
     await p.click('.goal-chip[data-g="proc"]');
     let g = await p.evaluate(() => ({ n: document.querySelectorAll('#goal-out .home-card').length, first: document.querySelector('#goal-out .home-card.first .hn').textContent }));
     ok(g.n === 3 && /IPS/.test(g.first), 'célhoz 3 teszt, az első kiemelve', g);
@@ -496,7 +496,7 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     const ctx = await newCtx(); const p = await pageIn(ctx);
     await p.goto(R + 'index.html'); await p.waitForTimeout(300);
     const vis = () => p.$$eval('.card[data-key]', c => c.filter(x => !x.hidden).map(x => x.dataset.id));
-    ok((await vis()).length === 38 && /38 teszt/.test(await p.textContent('#ct-count')), 'alapból mind a 38 teszt látszik');
+    ok((await vis()).length === 45 && /45 teszt/.test(await p.textContent('#ct-count')), 'alapból mind a 45 teszt látszik');
     await p.fill('#ct-q', 'halogat'); await p.waitForTimeout(100);
     ok((await vis()).includes('ips'), 'szöveges keresés (ékezet nélkül is): halogatás → IPS', await vis());
     await p.fill('#ct-q', 'kotodes'); await p.waitForTimeout(100);
@@ -511,9 +511,9 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     await p.selectOption('#ct-cat', ''); await p.selectOption('#ct-st', 'done'); await p.waitForTimeout(100);
     ok((await vis()).length === 0 && !(await p.$eval('#ct-empty', e => e.hidden)), 'üres találatnál szöveges visszajelzés');
     await p.click('#ct-reset2'); await p.waitForTimeout(100);
-    ok((await vis()).length === 38 && await p.evaluate(() => document.activeElement.id === 'ct-q'), 'szűrők törlése, fókusz a keresőre');
+    ok((await vis()).length === 45 && await p.evaluate(() => document.activeElement.id === 'ct-q'), 'szűrők törlése, fókusz a keresőre');
     ok(await p.evaluate(() => document.getElementById('goals').compareDocumentPosition(document.getElementById('path')) & Node.DOCUMENT_POSITION_FOLLOWING), 'első látogatáskor a célválasztó az útvonal előtt');
-    ok(await p.evaluate(() => [...document.querySelectorAll('.card[data-key] .card-meta')].length === 38 && getComputedStyle(document.querySelector('.card .tests')).display === 'none'), 'kártyán időigény és kérdésszám, a részletes lista alapból rejtve');
+    ok(await p.evaluate(() => [...document.querySelectorAll('.card[data-key] .card-meta')].length === 45 && getComputedStyle(document.querySelector('.card .tests')).display === 'none'), 'kártyán időigény és kérdésszám, a részletes lista alapból rejtve');
     ok(p._errs.length === 0, 'hibamentes', p._errs);
     await ctx.close();
   }
@@ -610,7 +610,7 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
       ONI.save('ips', { n: 'IPS', d: { total: ['IPS', 21, 9, 45] } }); const a = ONI.all().ips; return { n: a.length, first: a[0].sid, toast: document.getElementById('oni-toast').textContent }; });
     ok(lim.n === 200 && lim.first === 's1' && /korlát/.test(lim.toast), 'a 200-as korlát elérésekor értesít, a legrégebbi kerül ki', lim);
     // minden tesztnek explicit verziója van
-    ok(await p.evaluate(() => Object.keys(ONI.IDKEY).every(id => ONI.VERS[id] && ONI.VERS[id].q && ONI.VERS[id].s && ONI.VERS[id].t)), 'mind a 38 tesztnek explicit kérdéssor-, pontozás- és fordításverziója van');
+    ok(await p.evaluate(() => Object.keys(ONI.IDKEY).every(id => ONI.VERS[id] && ONI.VERS[id].q && ONI.VERS[id].s && ONI.VERS[id].t)), 'mind a 45 tesztnek explicit kérdéssor-, pontozás- és fordításverziója van');
     // szigorú import: jegyzet, beállítás, ismeretlen skála, fájlméret
     await p.goto(R + 'index.html'); await p.evaluate(() => { localStorage.clear(); localStorage.setItem('tas-20-responses-v1', '{"1":2}'); });
     const tmp = fs.mkdtempSync(path.join(require('os').tmpdir(), 'oni-')), iso = new Date(Date.now() - 864e5).toISOString();
@@ -768,11 +768,11 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     // főoldal: új témakörök, menü középre
     await p.setViewportSize({ width: 420, height: 800 });
     await p.goto(R + 'index.html'); await p.waitForTimeout(300);
-    ok(await p.evaluate(() => document.querySelectorAll('.jump a').length === 12 && !!document.querySelector('#cat-12 .sym-card') && document.querySelectorAll('#cat-10 .card[data-key]').length === 3 && document.querySelectorAll('#cat-11 .card[data-key]').length === 4), 'főoldal: X., XI. (önbizalom) és XII. témakör, 12 menüpont');
-    ok(await p.evaluate(() => { const c = document.getElementById('cat-12'), k = document.querySelector('#cat-12 .sym-card'); return !c.hidden && !!k.offsetParent && k.getBoundingClientRect().height > 0; }), 'a XII. témakör és a Csillagtérkép kártya ténylegesen látszik');
-    await p.click('.jump a[data-jump="12"]'); await p.waitForTimeout(900);
-    ok(await p.evaluate(() => { const r = document.getElementById('cat-12').getBoundingClientRect(); return r.top < innerHeight && r.bottom > 0; }), 'a menü XII. pontja a látható témakörhöz görget');
-    await p.click('#cat-12 .sym-card'); await p.waitForTimeout(400);
+    ok(await p.evaluate(() => document.querySelectorAll('.jump a').length === 14 && !!document.querySelector('#cat-14 .sym-card') && document.querySelectorAll('#cat-10 .card[data-key]').length === 3 && document.querySelectorAll('#cat-11 .card[data-key]').length === 4), 'főoldal: X–XIII. témakör és XIV. szimbolikus, 14 menüpont');
+    ok(await p.evaluate(() => { const c = document.getElementById('cat-14'), k = document.querySelector('#cat-14 .sym-card'); return !c.hidden && !!k.offsetParent && k.getBoundingClientRect().height > 0; }), 'a XIV. témakör és a Csillagtérkép kártya ténylegesen látszik');
+    await p.click('.jump a[data-jump="14"]'); await p.waitForTimeout(900);
+    ok(await p.evaluate(() => { const r = document.getElementById('cat-14').getBoundingClientRect(); return r.top < innerHeight && r.bottom > 0; }), 'a menü XIV. pontja a látható témakörhöz görget');
+    await p.click('#cat-14 .sym-card'); await p.waitForTimeout(400);
     ok(/csillagok\.html/.test(p.url()), 'a kártya megnyitja a csillagtérképet', p.url());
     await p.goto(R + 'index.html'); await p.waitForTimeout(300);
     await p.evaluate(() => document.getElementById('cat-10').scrollIntoView()); await p.waitForTimeout(1200);
@@ -940,6 +940,42 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     await p.goto(R + 'index.html'); await p.waitForTimeout(200);
     ok(await p.evaluate(() => { const b = document.getElementById('oni-theme'); return !b.hasAttribute('aria-label') && /mód/.test(b.textContent) && !!b.title; }), 'témaváltó: az akadálymentes név a látható szöveg');
     ok(p._errs.length === 0, 'nincs JS-hiba a 31. szakaszban', p._errs);
+    await ctx.close();
+  }
+
+  console.log('\n32. Jóllét és stressz (WHO-5, PSS-10, CBI, BRS), kapcsolódás, értelem, jelenlét (UCLA-3, MLQ, MAAS)');
+  {
+    const ctx = await newCtx(); const p = await pageIn(ctx);
+    const run = async (pg, id, fn) => { await p.goto(R + pg + '.html#test-' + id); await p.waitForTimeout(150); return p.evaluate(([id, f]) => { TESTS[id]._fillAll(eval(f)); TESTS[id].show(); const h = ONI.all()[id]; const r = h[h.length - 1]; return { d: Object.fromEntries(Object.entries(r.d).map(([k, v]) => [k, v[1]])), h: r.h, txt: document.getElementById(id + '-results').innerText }; }, [id, fn]); };
+    let r = await run('jollet', 'who5', 'k=>0');
+    ok(r.d.total === 0 && /Nagyon alacsony/.test(r.h) && /116-123/.test(r.txt) && /PHQ-9/.test(r.txt), 'WHO-5: 0 pont = nagyon alacsony jóllét, PHQ-9 ajánlás és segélyvonal', r.d);
+    r = await run('jollet', 'who5', 'k=>k-1');
+    ok(r.d.total === 100 && /Jó közérzet/.test(r.h), 'WHO-5: a nyers pontszám ×4 (25 → 100)', r.d);
+    r = await run('jollet', 'pss', 'k=>0');
+    ok(r.d.total === 16 && r.d.H === 0 && r.d.E === 16, 'PSS-10: a 4., 5., 7., 8. kérdés fordított pontozású', r.d);
+    r = await run('jollet', 'pss', 'k=>k-1');
+    ok(r.d.total === 24 && /Közepes/.test(r.h), 'PSS-10: csupa „nagyon gyakran” = 24, közepes', r.d);
+    r = await run('jollet', 'cbi', 'k=>k-1');
+    ok(r.d.P === 100 && r.d.W === 85.7 && /Magas kiégés/.test(r.txt), 'CBI: tételenkénti skála (gyakoriság/mérték), a 13. kérdés fordított', r.d);
+    r = await run('jollet', 'cbi', '(k,it)=>it.s==="W"?(it.r?0:k-1):0');
+    ok(r.d.P === 0 && r.d.W === 100 && /A munka merít le jobban/.test(r.txt), 'CBI: a két alskála különbsége külön értelmezést kap', r.d);
+    r = await run('jollet', 'brs', 'k=>k-1');
+    ok(r.d.total === 3 && /Átlagos/.test(r.h), 'BRS: a 2., 4., 6. állítás fordított (csupa 5 → átlag 3)', r.d);
+    r = await run('ertelem', 'ucla', 'k=>k-1');
+    ok(r.d.total === 9 && /Gyakori magányosság/.test(r.h), 'UCLA-3: 3–9, 6 felett gyakori', r.d);
+    r = await run('ertelem', 'mlq', 'k=>k-1');
+    ok(r.d.P === 29 && r.d.S === 35 && /tovább kereső/.test(r.h), 'MLQ: a 9. állítás fordított, két független alskála és négy profil', r.d);
+    r = await run('ertelem', 'maas', 'k=>0');
+    ok(r.d.total === 1 && /robotpilóta/.test(r.h), 'MAAS: 1–6 átlag, alacsony = gyakori robotpilóta', r.d);
+    // tesztek közti minta
+    await run('jollet', 'who5', 'k=>1'); await run('jollet', 'pss', '(k,it)=>it.r?0:k-1');
+    await p.waitForTimeout(800);
+    ok(await p.evaluate(() => /Kimerülés-közeli állapot/.test(document.querySelector('#pss-results .oni-mely').textContent)), 'WHO-5 + PSS-10: „Kimerülés-közeli állapot” minta');
+    ok(await p.evaluate(() => ONI_RULES({ store: ONI.all() }).dirOf('pss', 'total') === -1 && ONI_RULES({ store: ONI.all() }).dirOf('who5', 'total') === 1 && ONI_RULES({ store: ONI.all() }).dirOf('mlq', 'S') === 0), 'változás iránya: WHO-5 +, PSS-10 −, MLQ-keresés semleges');
+    await p.goto(R + 'index.html'); await p.waitForTimeout(300);
+    ok(await p.evaluate(() => document.querySelectorAll('#cat-12 .card[data-key]').length === 4 && document.querySelectorAll('#cat-13 .card[data-key]').length === 3), 'főoldal: XII. (4 kártya) és XIII. (3 kártya) témakör');
+    for (const f of ['jollet', 'ertelem']) { await p.evaluate(() => localStorage.setItem('onismeret-settings-v1', JSON.stringify({ theme: 'light' }))); await p.goto(R + f + '.html'); await p.waitForTimeout(150); ok(await p.evaluate(() => getComputedStyle(document.body).backgroundColor === 'rgb(248, 250, 252)'), f + '.html: világos módban világos háttér'); }
+    ok(p._errs.length === 0, 'nincs JS-hiba a 32. szakaszban', p._errs);
     await ctx.close();
   }
 

@@ -65,7 +65,16 @@ g.ONI_REG=[
  {id:'rses',key:'rses-responses-v1',card:'rses-responses-v1',cat:'Önbizalom és önértékelés',name:'RSES · Önértékelés',link:'onbizalom.html#test-rses',n:10,ev:'valid',badge:'check',v:{q:1,s:1,t:1}},
  {id:'gse',key:'gse-responses-v1',card:'gse-responses-v1',cat:'Önbizalom és önértékelés',name:'GSE · Énhatékonyság',link:'onbizalom.html#test-gse',n:10,ev:'valid',badge:'check',v:{q:1,s:1,t:1}},
  {id:'bfne',key:'bfne2-responses-v1',card:'bfne2-responses-v1',cat:'Önbizalom és önértékelés',name:'BFNE-II · Ítélettől való félelem',link:'onbizalom.html#test-bfne',n:12,ev:'valid',badge:'check',v:{q:1,s:1,t:1}},
- {id:'obgy',key:'onbizalom-gyak-responses-v1',card:'onbizalom-gyak-responses-v1',cat:'Önbizalom és önértékelés',name:'Gyakorlati önbizalom',link:'onbizalom.html#test-obgy',n:20,ev:'own',badge:'own',v:{q:1,s:1,t:1}}
+ {id:'obgy',key:'onbizalom-gyak-responses-v1',card:'onbizalom-gyak-responses-v1',cat:'Önbizalom és önértékelés',name:'Gyakorlati önbizalom',link:'onbizalom.html#test-obgy',n:20,ev:'own',badge:'own',v:{q:1,s:1,t:1}},
+ // Jóllét és stressz
+ {id:'who5',key:'who5-responses-v1',card:'who5-responses-v1',cat:'Jóllét és stressz',name:'WHO-5 · Jóllét',link:'jollet.html#test-who5',n:5,ev:'valid',badge:'check',v:{q:1,s:1,t:1}},
+ {id:'pss',key:'pss10-responses-v1',card:'pss10-responses-v1',cat:'Jóllét és stressz',name:'PSS-10 · Észlelt stressz',link:'jollet.html#test-pss',n:10,ev:'valid',badge:'check',v:{q:1,s:1,t:1}},
+ {id:'cbi',key:'cbi-responses-v1',card:'cbi-responses-v1',cat:'Jóllét és stressz',name:'CBI · Kiégés',link:'jollet.html#test-cbi',n:13,ev:'valid',badge:'check',v:{q:1,s:1,t:1}},
+ {id:'brs',key:'brs-responses-v1',card:'brs-responses-v1',cat:'Jóllét és stressz',name:'BRS · Reziliencia',link:'jollet.html#test-brs',n:6,ev:'valid',badge:'check',v:{q:1,s:1,t:1}},
+ // Kapcsolódás, értelem, jelenlét
+ {id:'ucla',key:'ucla3-responses-v1',card:'ucla3-responses-v1',cat:'Kapcsolódás, értelem, jelenlét',name:'UCLA-3 · Magányosság',link:'ertelem.html#test-ucla',n:3,ev:'valid',badge:'check',v:{q:1,s:1,t:1}},
+ {id:'mlq',key:'mlq-responses-v1',card:'mlq-responses-v1',cat:'Kapcsolódás, értelem, jelenlét',name:'MLQ · Az élet értelme',link:'ertelem.html#test-mlq',n:10,ev:'valid',badge:'check',v:{q:1,s:1,t:1}},
+ {id:'maas',key:'maas-responses-v1',card:'maas-responses-v1',cat:'Kapcsolódás, értelem, jelenlét',name:'MAAS · Tudatos jelenlét',link:'ertelem.html#test-maas',n:15,ev:'valid',badge:'check',v:{q:1,s:1,t:1}}
 ];
 })(typeof window!=='undefined'?window:globalThis);
 
@@ -592,7 +601,17 @@ const RULES=[
   sig:[S('rses','Önértékelés (RSES) ≤ 14',()=>val('rses','total')!==null&&val('rses','total')<=14),S('bfne','Ítélettől való félelem (BFNE-II) ≥ 33',()=>val('bfne','total')>=33),S('scs','Önegyüttérzés ≤ 2,5',()=>val('scs','total')!==null&&val('scs','total')<=2.5),S('ysq','Csökkentértékűség/szégyen séma ≥ 4,5',()=>val('ysq','ds')>=4.5),S('obgy','Hibák kezelése ≤ 2,5',()=>val('obgy','HI')!==null&&val('obgy','HI')<=2.5)],
   text:'Ezek az eredmények együtt arra utalhatnak, hogy az önértékelésed most erősen függ attól, hogyan teljesítesz, és mit gondolnak rólad mások. Egy hiba vagy kritika ilyenkor nem egy helyzetről, hanem rólad szóló ítéletnek érződik.',
   q:'Mi az a mondat, amit egy hiba után a leggyakrabban mondasz magadnak?',
-  action:'Válassz egy kis tétű helyzetet, ahol szándékosan nem tökéletesen csinálsz valamit (pl. elküldesz egy levelet háromszori átolvasás nélkül), és jegyezd fel, mi történt valójában. A változás itt a <b>tapasztalatból</b> jön, nem a meggyőzésből.'}
+  action:'Válassz egy kis tétű helyzetet, ahol szándékosan nem tökéletesen csinálsz valamit (pl. elküldesz egy levelet háromszori átolvasás nélkül), és jegyezd fel, mi történt valójában. A változás itt a <b>tapasztalatból</b> jön, nem a meggyőzésből.'},
+ {id:'depletion',title:'Kimerülés-közeli állapot',acc:'#e11d48',min:2,
+  sig:[S('who5','WHO-5 jóllét ≤ 48',()=>val('who5','total')!==null&&val('who5','total')<=48),S('pss','PSS-10 ≥ 27',()=>val('pss','total')>=27),S('cbi','Személyes kiégés ≥ 50',()=>val('cbi','P')>=50),S('cbi','Munkához kötött kiégés ≥ 50',()=>val('cbi','W')>=50),S('brs','Reziliencia < 3,00',()=>val('brs','total')!==null&&val('brs','total')<3),S('phq9','PHQ-9 ≥ 10',()=>val('phq9','total')>=10)],
+  text:'Ezek az eredmények együtt arra utalhatnak, hogy most többet adsz ki, mint amennyi visszatöltődik: a terhelés magas, a jóllét és a helyrejövés lassul. Ilyenkor a többi teszt eredménye is rosszabbnak látszhat, mint egy pihentebb időszakban.',
+  q:'Mi az az egy dolog, amit a következő két hétben elhagyhatnál vagy átadhatnál?',
+  action:'Most ne új szokást vegyél fel, hanem <b>terhet tegyél le</b>: egy vállalást, egy esti munkaórát, egy kötelességből tartott programot. Két hét múlva töltsd ki újra a WHO-5-öt. Ha a jóllét 28 alá esik, vagy hetek óta így van, beszélj róla orvossal vagy pszichológussal.'},
+ {id:'disconnect',title:'Elszigeteltség és értelemhiány',acc:'#7c3aed',min:2,
+  sig:[S('ucla','UCLA-3 magányosság ≥ 6',()=>val('ucla','total')>=6),S('mlq','Az értelem jelenléte ≤ 20',()=>val('mlq','P')!==null&&val('mlq','P')<=20),S('who5','WHO-5 jóllét ≤ 48',()=>val('who5','total')!==null&&val('who5','total')<=48),S('ecr','ECR-R elkerülés ≥ 4,5',()=>val('ecr','avd')>=4.5),S('phq9','PHQ-9 ≥ 10',()=>val('phq9','total')>=10)],
+  text:'Ezek az eredmények arra utalhatnak, hogy most kevés olyan kapcsolódás van az életedben, amely megtart és értelmet ad. A kettő gyakran együtt jár: a jelentés nagy része a kapcsolatokból jön.',
+  q:'Ki az az egy ember, akivel szívesen beszélnél, de régóta nem kerested?',
+  action:'Ezen a héten keress meg <b>egy embert</b>, és beszélgess vele legalább fél órát, nem üzenetben. Írd le utána, mi változott a napodban.'}
 ];
 
 function evalRules(){
@@ -611,7 +630,7 @@ function evalRules(){
 const DIR={ecr:{anx:-1,avd:-1},kotodes:{anxiety:-1,avoidance:-1,earned:1},tas:'-',des:'-',ysq:'-',ips:'-',ders:'-',pedt:'-',maia2:'+',nsss:'+',
   smi:{happy:1,healthy:1,wise:1,vuln:-1,angry:-1,impulsive:-1,compliant:-1,detached:-1,soother:-1,grandiose:-1,bully:-1,punitive:-1,demanding:-1},
   gott:{maps:1,fond:1,turn:1,repair:1,strength:1,crit:-1,cont:-1,def:-1,stone:-1,risk:-1},
-  scs:{total:1,SK:1,CH:1,MI:1,SJ:-1,IS:-1,OI:-1},bf:{N:-1},iief:'+',asrs:'-',phq9:'-',gad7:'-',rses:'+',gse:'+',bfne:'-',obgy:'+'};
+  scs:{total:1,SK:1,CH:1,MI:1,SJ:-1,IS:-1,OI:-1},bf:{N:-1},iief:'+',asrs:'-',phq9:'-',gad7:'-',rses:'+',gse:'+',bfne:'-',obgy:'+',who5:'+',pss:'-',cbi:'-',brs:'+',ucla:'-',mlq:{P:1,S:0},maas:'+'};
 function dirOf(id,k){const d=DIR[id];if(!d)return 0;if(d==='+')return 1;if(d==='-')return -1;return d[k]||0;}
 return {RULES:RULES,evalRules:evalRules,val:val,avgAll:avgAll,cur:cur,last:last,DIR:DIR,dirOf:dirOf};
 };
