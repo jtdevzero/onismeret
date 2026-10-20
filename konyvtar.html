@@ -370,8 +370,12 @@ select{font:inherit;font-size:13.5px;padding:6px 10px;border-radius:10px;border:
   document.addEventListener('change',function(e){var x=e.target;if(!x.matches('.steps input'))return;var pid=x.closest('[data-path]').dataset.path,n=+x.dataset.step;
     var ps=S.paths[pid]||(S.paths[pid]={start:new Date().toISOString(),done:[]});ps.done=ps.done.filter(function(v){return v!==n});if(x.checked)ps.done.push(n);ps.done.sort(function(a,b){return a-b});
     put(S);var y=window.scrollY;renderPaths();window.scrollTo(0,y)});
-  var nt;document.addEventListener('input',function(e){var x=e.target;if(!x.matches('.rl-row textarea'))return;var id=x.closest('[data-id]').dataset.id;clearTimeout(nt);
-    nt=setTimeout(function(){var v=x.value.slice(0,1000);if(!S.list[id])return;if(v)S.list[id].note=v;else delete S.list[id].note;put(S)},400)});
+  /* A jegyzet azonnal mentődik: állapotváltás vagy újrarajzolás sem szakíthat meg függőben lévő mentést. */
+  document.addEventListener('input',function(e){var x=e.target;if(!x.matches('.rl-row textarea'))return;var id=x.closest('[data-id]').dataset.id;
+    if(!S.list[id])return;var v=x.value.slice(0,1000);if(v)S.list[id].note=v;else delete S.list[id].note;
+    if(!put(S)){x.setCustomValidity('Nem sikerült menteni a jegyzetet. Ellenőrizd a böngésződ tárhelyét.')}
+    else{x.setCustomValidity('')}});
+
   function renderAll(keep){var y=window.scrollY;renderStats();renderRecs();renderList();if(keep){renderCat()}else{renderTiles();renderPaths();renderFilters();renderCat()}if(keep)window.scrollTo(0,y)}
   renderGoals();renderAll(false);
   function fromHash(){var h=location.hash.slice(1);
