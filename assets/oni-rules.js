@@ -116,7 +116,17 @@ const RULES=[
   sig:[S('ucla','UCLA-3 magányosság ≥ 6',()=>val('ucla','total')>=6),S('mlq','Az értelem jelenléte ≤ 20',()=>val('mlq','P')!==null&&val('mlq','P')<=20),S('who5','WHO-5 jóllét ≤ 48',()=>val('who5','total')!==null&&val('who5','total')<=48),S('ecr','ECR-R elkerülés ≥ 4,5',()=>val('ecr','avd')>=4.5),S('phq9','PHQ-9 ≥ 10',()=>val('phq9','total')>=10)],
   text:'Ezek az eredmények arra utalhatnak, hogy most kevés olyan kapcsolódás van az életedben, amely megtart és értelmet ad. A kettő gyakran együtt jár: a jelentés nagy része a kapcsolatokból jön.',
   q:'Ki az az egy ember, akivel szívesen beszélnél, de régóta nem kerested?',
-  action:'Ezen a héten keress meg <b>egy embert</b>, és beszélgess vele legalább fél órát, nem üzenetben. Írd le utána, mi változott a napodban.'}
+  action:'Ezen a héten keress meg <b>egy embert</b>, és beszélgess vele legalább fél órát, nem üzenetben. Írd le utána, mi változott a napodban.'},
+ {id:'sleepbrake',title:'Az alvás mint fő fék',acc:'#2563eb',min:2,
+  sig:[S('sci','SCI ≤ 16 (valószínű álmatlanság)',()=>val('sci','total')!==null&&val('sci','total')<=16),S('ess','Epworth ≥ 11',()=>val('ess','total')>=11),S('who5','WHO-5 jóllét ≤ 48',()=>val('who5','total')!==null&&val('who5','total')<=48),S('cbi','Személyes kiégés ≥ 50',()=>val('cbi','P')>=50),S('maas','MAAS ≤ 3',()=>val('maas','total')!==null&&val('maas','total')<=3)],
+  text:'Ezek az eredmények arra utalhatnak, hogy az alvásod most a jóllét egyik fő fékje. Rossz alvás mellett a hangulat, a figyelem és a terhelhetőség is gyengébb, ezért itt a legnagyobb a nyereség.',
+  q:'Mikor aludtál utoljára egy hétig rendesen, és milyen volt akkor a közérzeted?',
+  action:'Két hétig csak az alvásra fókuszálj: <b>rögzített kelési idő</b>, ágy csak alvásra, este képernyő nélküli fél óra. Utána töltsd ki újra az SCI-t és a WHO-5-öt. Ha horkolsz, vagy az álmosság 16 felett van, beszélj orvossal.'},
+ {id:'perfburn',title:'Teljesítménykényszer',acc:'#e11d48',min:2,
+  sig:[S('saps','SAPS diszkrepancia ≥ 16',()=>val('saps','D')>=16),S('ysq','Könyörtelen mércék séma ≥ 4,5',()=>val('ysq','us')>=4.5),S('cbi','Munkához kötött kiégés ≥ 50',()=>val('cbi','W')>=50),S('scs','Önegyüttérzés ≤ 2,5',()=>val('scs','total')!==null&&val('scs','total')<=2.5),S('ips','IPS halogatás ≥ 28',()=>val('ips','total')>=28)],
+  text:'Ezek az eredmények arra utalhatnak, hogy a magas mérce nálad most inkább hajszol, mint hajt: a teljesítmény sosem elég, ami kimerít, és paradox módon halogatáshoz is vezethet.',
+  q:'Kinek a mércéjének akarsz igazán megfelelni?',
+  action:'Egy hétig minden feladatnál írd le előre, <b>mikor lesz elég jó</b>, és ott állj meg. Jegyezd fel, mi történt valójában: volt-e bármilyen következménye a 90%-nak?'}
 ];
 
 function evalRules(){
@@ -135,7 +145,7 @@ function evalRules(){
 const DIR={ecr:{anx:-1,avd:-1},kotodes:{anxiety:-1,avoidance:-1,earned:1},tas:'-',des:'-',ysq:'-',ips:'-',ders:'-',pedt:'-',maia2:'+',nsss:'+',
   smi:{happy:1,healthy:1,wise:1,vuln:-1,angry:-1,impulsive:-1,compliant:-1,detached:-1,soother:-1,grandiose:-1,bully:-1,punitive:-1,demanding:-1},
   gott:{maps:1,fond:1,turn:1,repair:1,strength:1,crit:-1,cont:-1,def:-1,stone:-1,risk:-1},
-  scs:{total:1,SK:1,CH:1,MI:1,SJ:-1,IS:-1,OI:-1},bf:{N:-1},iief:'+',asrs:'-',phq9:'-',gad7:'-',rses:'+',gse:'+',bfne:'-',obgy:'+',who5:'+',pss:'-',cbi:'-',brs:'+',ucla:'-',mlq:{P:1,S:0},maas:'+'};
+  scs:{total:1,SK:1,CH:1,MI:1,SJ:-1,IS:-1,OI:-1},bf:{N:-1},iief:'+',asrs:'-',phq9:'-',gad7:'-',rses:'+',gse:'+',bfne:'-',obgy:'+',who5:'+',pss:'-',cbi:'-',brs:'+',ucla:'-',mlq:{P:1,S:0},maas:'+',sci:'+',ess:'-',bas:'+',uwes:'+',grit:'+',saps:{S:0,D:-1}};
 function dirOf(id,k){const d=DIR[id];if(!d)return 0;if(d==='+')return 1;if(d==='-')return -1;return d[k]||0;}
 return {RULES:RULES,evalRules:evalRules,val:val,avgAll:avgAll,cur:cur,last:last,DIR:DIR,dirOf:dirOf};
 };

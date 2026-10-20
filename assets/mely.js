@@ -108,7 +108,8 @@
     who5: function(r){ return gv(r, 'total') !== null && gv(r, 'total') <= 28; },
     pss: function(r){ return gv(r, 'total') >= 27; },
     cbi: function(r){ return gv(r, 'P') >= 75 || gv(r, 'W') >= 75; },
-    ucla: function(r){ return gv(r, 'total') >= 7; }
+    ucla: function(r){ return gv(r, 'total') >= 7; },
+    ess: function(r){ return gv(r, 'total') >= 16; }
   };
   function helpHTML(id, r){
     var f = HELP[id]; try { if (!f || !f(r)) return ''; } catch (e) { return ''; }

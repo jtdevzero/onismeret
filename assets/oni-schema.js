@@ -45,7 +45,13 @@ window.ONI_SCHEMA={
   brs:{"k":"brs-responses-v1","g":[["1-6",[1,2,3,4,5]]],"d":["total"]},
   ucla:{"k":"ucla3-responses-v1","g":[["1-3",[1,2,3]]],"d":["total"]},
   mlq:{"k":"mlq-responses-v1","g":[["1-10",[1,2,3,4,5,6,7]]],"d":["P","S"]},
-  maas:{"k":"maas-responses-v1","g":[["1-15",[1,2,3,4,5,6]]],"d":["total"]}
+  maas:{"k":"maas-responses-v1","g":[["1-15",[1,2,3,4,5,6]]],"d":["total"]},
+  sci:{"k":"sci-responses-v1","g":[["1-8",[0,1,2,3,4]]],"d":["total"]},
+  ess:{"k":"ess-responses-v1","g":[["1-8",[0,1,2,3]]],"d":["total"]},
+  bas:{"k":"bas2-responses-v1","g":[["1-10",[1,2,3,4,5]]],"d":["total"]},
+  uwes:{"k":"uwes9-responses-v1","g":[["1-9",[0,1,2,3,4,5,6]]],"d":["AB","DE","VI","total"]},
+  grit:{"k":"grit-responses-v1","g":[["1-8",[1,2,3,4,5]]],"d":["CI","PE","total"]},
+  saps:{"k":"saps-responses-v1","g":[["1-8",[1,2,3,4,5,6,7]]],"d":["D","S"]}
 };
 /* ── Séma-alapú segédfüggvények (a tools/schema-runtime.js-ből másolva) ── */
 window.ONI_CHECK=(function(){
