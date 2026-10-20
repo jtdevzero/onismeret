@@ -161,6 +161,15 @@ window.ONI_CHECK=(function(){
             if(!Array.isArray(r.tries)||r.tries.length>50||!r.tries.every(function(t){return isObj(t)&&iso(t.t)&&sc(t.pred)&&sc(t.real)&&str(t.note,500)}))return (i+1)+'. lépcső próbái hibásak';}
           return null}
         return 'ismeretlen mező'})},
+    'onismeret-konyvtar-v1':function(j){
+      var ST=['want','doing','done'],ID=/^[a-z0-9-]{2,40}$/;
+      return each(j,function(k,v){
+        if(k==='list')return each(v,function(id,e){if(!ID.test(id))return 'hibás azonosító';if(!isObj(e)||ST.indexOf(e.s)<0||!iso(e.t))return 'hibás bejegyzés';
+          if(e.note!==undefined&&!str(e.note,1000))return 'hibás jegyzet';return Object.keys(e).every(function(x){return ['s','t','note'].indexOf(x)>-1})?null:'ismeretlen mező'});
+        if(k==='paths')return each(v,function(id,p){if(!ID.test(id))return 'hibás azonosító';if(!isObj(p)||!iso(p.start))return 'hibás kezdés';
+          if(!Array.isArray(p.done)||p.done.length>30||!p.done.every(function(n){return typeof n==='number'&&n>=0&&n<30&&Math.floor(n)===n}))return 'hibás lépéslista';
+          return Object.keys(p).every(function(x){return x==='start'||x==='done'})?null:'ismeretlen mező'});
+        return 'ismeretlen mező'})},
     'onismeret-partner-v1':function(j){if(!isObj(j))return 'nem objektum';if(j.name!=null&&!str(j.name,40))return 'hibás név';if(!iso(j.loaded))return 'hibás dátum';
       return each(j.results,function(id,h){if(testId(id))return testId(id);if(!Array.isArray(h)||h.length>LIMIT)return 'hibás előzmény';for(var i=0;i<h.length;i++){var e=record(id,h[i]);if(e)return e;}return null})}
   };

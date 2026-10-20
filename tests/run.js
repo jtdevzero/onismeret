@@ -1097,6 +1097,58 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     await ctx.close();
   }
 
+  console.log('\n36. Önismereti könyvtár: adat, Markdown-alkönyvtárak, ajánlás, szűrők, olvasólista, útvonalak');
+  {
+    const src = JSON.parse(fs.readFileSync(path.join(ROOT, 'src/konyvtar.json'), 'utf8'));
+    const gen = fs.readFileSync(path.join(ROOT, 'assets/konyvtar-data.js'), 'utf8');
+    ok(JSON.stringify(JSON.parse(gen.slice(gen.indexOf('=') + 1).trim().replace(/;$/, ''))) === JSON.stringify(src), 'az assets/konyvtar-data.js a src/konyvtar.json pontos másolata');
+    const dirs = src.cats.map(c => c.dir).concat('09-utvonalak');
+    ok(dirs.every(d => fs.existsSync(path.join(ROOT, 'konyvtar', d, 'README.md'))) && fs.existsSync(path.join(ROOT, 'konyvtar/README.md')), 'minden alkönyvtárnak van README.md-je', dirs);
+    ok(src.cats.every(c => { const md = fs.readFileSync(path.join(ROOT, 'konyvtar', c.dir, 'README.md'), 'utf8'); return src.items.filter(i => i.c === c.id).every(i => md.includes(i.ti)); }), 'a Markdown-alkönyvtárak minden forrást tartalmaznak');
+    ok(src.items.every(i => !i.u || /^(https:\/\/|tel:)/.test(i.u)) && src.items.filter(i => i.ev === 'V').length >= 5, 'csak https és tel linkek; a vitatott állítások jelölve');
+    const ctx = await newCtx(); const p = await pageIn(ctx);
+    await p.goto(R + 'konyvtar.html'); await p.waitForTimeout(250);
+    let m = await p.evaluate(() => ({ items: document.querySelectorAll('#cat .it').length, tiles: document.querySelectorAll('#tiles .tile').length, paths: document.querySelectorAll('#paths .path').length,
+      empty: /Még nincs kitöltött teszted/.test(document.getElementById('recs').textContent), ext: [...document.querySelectorAll('#cat a[target="_blank"]')].every(a => /^https:/.test(a.href) && /noopener/.test(a.rel)) }));
+    ok(m.items === src.items.length && m.tiles === src.cats.length + 1 && m.paths === src.paths.length && m.empty && m.ext, 'betöltés: minden forrás, 8+1 csempe, útvonalak, üres ajánlás, biztonságos külső linkek', m);
+    // keresés ékezet nélkül, szűrők
+    await p.fill('#q', 'halogatas'); await p.waitForTimeout(80);
+    m = await p.evaluate(() => [...document.querySelectorAll('#cat .it')].map(e => e.dataset.id));
+    ok(m.includes('procrastination-equation') && m.includes('steel-2007') && !m.includes('flow'), 'keresés: ékezet nélkül is talál, és szűkít', m.length);
+    await p.fill('#q', ''); await p.click('#filters .chip[data-f="ev"][data-v="V"]'); await p.waitForTimeout(80);
+    ok(await p.evaluate(() => { const c = [...document.querySelectorAll('#cat .it')]; return c.length >= 5 && c.every(e => e.querySelector('.ev-V')); }), 'bizonyíték-szűrő: csak a vitatottak');
+    await p.click('#clr'); await p.waitForTimeout(50);
+    // olvasólista
+    await p.click('#cat .it[data-id="atomszokasok"] button[data-s="want"]'); await p.click('#cat .it[data-id="flow"] button[data-s="done"]'); await p.waitForTimeout(80);
+    await p.fill('#rl .rl-row[data-id="flow"] textarea', 'Kihívás és képesség egyensúlya'); await p.waitForTimeout(600);
+    m = await p.evaluate(() => JSON.parse(localStorage.getItem('onismeret-konyvtar-v1')));
+    ok(m.list.atomszokasok.s === 'want' && m.list.flow.s === 'done' && m.list.flow.note === 'Kihívás és képesség egyensúlya' && await p.evaluate(() => document.querySelectorAll('#rl .rl-row').length === 2 && document.getElementById('jn-list').textContent === '2'), 'olvasólista: állapot, jegyzet, számláló', m);
+    await p.click('#cat .it[data-id="atomszokasok"] button[data-s="want"]'); await p.waitForTimeout(50);
+    ok(await p.evaluate(() => !JSON.parse(localStorage.getItem('onismeret-konyvtar-v1')).list.atomszokasok), 'ugyanarra a gombra kattintva lekerül a listáról');
+    // útvonal
+    await p.click('#paths [data-start="szokasok-6"]'); await p.check('#p-szokasok-6 input[data-step="2"]'); await p.waitForTimeout(50);
+    m = await p.evaluate(() => ({ s: JSON.parse(localStorage.getItem('onismeret-konyvtar-v1')).paths['szokasok-6'], txt: document.querySelector('#p-szokasok-6 .pmeta').textContent }));
+    ok(m.s.done.join() === '2' && /1\/5 lépés/.test(m.txt) && /ma indult/.test(m.txt), 'útvonal: indítás, kipipált lépés, haladás', m);
+    // séma: visszaállítható, a hibás nem
+    ok(await p.evaluate(() => { const k = 'onismeret-konyvtar-v1', v = localStorage.getItem(k), bad = JSON.parse(v); bad.list.flow.s = 'x';
+      return ONI_CHECK.stored(k, v) === null && !!ONI_CHECK.stored(k, JSON.stringify(bad)) && !!ONI_CHECK.stored(k, JSON.stringify({ paths: { 'szokasok-6': { start: new Date().toISOString(), done: [99] } } })); }), 'séma: a könyvtár-adat visszaállítható, a hibás elutasítva');
+    // ajánlás kitöltött teszt után + szakember-jelzés magas PHQ-9-nél
+    await p.goto(R + 'szokasok.html#test-bscs'); await p.waitForTimeout(150); await p.evaluate(() => { TESTS.bscs._fillAll(k => 1); TESTS.bscs.show(); });
+    await p.goto(R + 'allapot.html#test-phq9'); await p.waitForTimeout(150); await p.evaluate(() => { TESTS.phq9._fillAll(k => 2); TESTS.phq9.show(); });
+    await p.goto(R + 'konyvtar.html'); await p.waitForTimeout(250);
+    m = await p.evaluate(() => ({ ids: [...document.querySelectorAll('#recs .it')].map(e => e.dataset.id), why: document.querySelector('#recs .why-rec') && document.querySelector('#recs .why-rec').textContent, help: !!document.querySelector('#recs .help a[href="tel:116123"]'), dupe: document.querySelectorAll('[id="i-atomszokasok"]').length }));
+    ok(m.ids.length >= 4 && !m.ids.includes('flow') && /Mert kitöltötted/.test(m.why) && m.help && m.dupe <= 1, 'ajánlás: a kitöltött tesztekhez illő források, a kész kimarad, magas PHQ-9-nél segítségkérés', m);
+    // mélylink alkönyvtárra
+    await p.goto(R + 'konyvtar.html#k-gyakorlatok'); await p.waitForTimeout(250);
+    ok(await p.evaluate(n => document.querySelectorAll('#cat .it').length === n && document.querySelector('#filters .chip[data-f="c"][data-v="gyakorlatok"]').getAttribute('aria-pressed') === 'true', src.items.filter(i => i.c === 'gyakorlatok').length), 'mélylink: #k-gyakorlatok a gyakorlatokra szűr');
+    await p.evaluate(() => localStorage.setItem('onismeret-settings-v1', JSON.stringify({ theme: 'light' }))); await p.reload(); await p.waitForTimeout(150);
+    ok(await p.evaluate(() => getComputedStyle(document.body).backgroundColor === 'rgb(248, 250, 252)'), 'konyvtar.html: világos módban világos háttér');
+    await p.goto(R + 'index.html'); await p.waitForTimeout(200);
+    ok(await p.evaluate(() => !!document.querySelector('.pp-tools a[href="konyvtar.html"]') && !!document.querySelector('.foot-links a[href="konyvtar.html"]')), 'főoldal: link a könyvtárra');
+    ok(p._errs.length === 0, 'nincs JS-hiba a 36. szakaszban', p._errs);
+    await ctx.close();
+  }
+
   await browser.close();
   console.log(`\n${pass} rendben, ${fail} hiba`);
   process.exit(fail ? 1 : 0);

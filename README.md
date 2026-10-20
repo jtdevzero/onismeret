@@ -74,6 +74,22 @@
 
 **Összesen: 59 teszt, 1443 kérdés, 17 témakör** (ebből egy havonta ismételhető állapotfelmérés), plusz egy szimbolikus (nem tudományos) csillagtérkép-oldal.
 
+### Önismereti könyvtár
+
+[`konyvtar.html`](https://jtdevzero.github.io/onismeret/konyvtar.html) · [`konyvtar/`](konyvtar/) — kurált forrásgyűjtemény a tesztek mellé, **184 forrás nyolc alkönyvtárban + 8 útvonal**. Minden forrásnál bizonyítékszint és a kapcsolódó tesztek; a böngészős változatban keresés, szűrők, ajánlás a kitöltött tesztek alapján, olvasólista és kipipálható útvonalak. Egyetlen forrás: `src/konyvtar.json`, ebből generálja a `tools/build.py` az alkönyvtárak `README.md`-jét és az `assets/konyvtar-data.js`-t. Bővítés: [`konyvtar/HOZZAJARULAS.md`](konyvtar/HOZZAJARULAS.md).
+
+| Alkönyvtár | Tartalom |
+|---|---|
+| [01 Könyvek](konyvtar/01-konyvek/) | 69 könyv témák szerint, magyar címmel, ahol tudjuk |
+| [02 Módszertanok](konyvtar/02-modszerek/) | KVT, ACT, DBT, sématerápia, EFT, MBSR, CBT-I, IFS és mások |
+| [03 Gyakorlatok](konyvtar/03-gyakorlatok/) | 24 gyakorlat lépésekkel és időigénnyel |
+| [04 Külső tesztek](konyvtar/04-kulso-tesztek/) | Ingyenes online kérdőívek, validált és szórakoztató külön jelölve |
+| [05 Eszközök](konyvtar/05-eszkozok/) | Nyílt forrású szokáskövetők, naplók, fókuszeszközök, awesome-listák |
+| [06 Podcastok, kurzusok](konyvtar/06-podcastok-kurzusok/) | Ingyenes egyetemi kurzusok és podcastok |
+| [07 Elmélet és kutatás](konyvtar/07-elmelet-kutatas/) | Alapművek, kulcscikkek és a nagy replikációs viták |
+| [08 Magyar](konyvtar/08-magyar/) | Magyar szerzők és segélyvonalak |
+| [09 Útvonalak](konyvtar/09-utvonalak/) | Több hetes programok mérésről újramérésig |
+
 ---
 
 ## Fájlstruktúra
@@ -85,6 +101,8 @@ onismeret/
 ├── fokusz.html           Fókusz: egy kiválasztott minta 2–4 hetes gyakorlási köre
 ├── edzes.html            Önbizalom-edzés: terv a négy önbizalom-tesztből, napi gyakorlatok, bátorság-létra (nem teszt)
 ├── par.html              Párkapcsolati mód: két profil egymás mellett
+├── konyvtar.html         Önismereti könyvtár: források, ajánlás, olvasólista, útvonalak (nem teszt; forrás: src/konyvtar.json)
+├── konyvtar/             A könyvtár alkönyvtárai Markdownban — GENERÁLT (tools/build.py)
 ├── adatok.html           Saját adatok: kitöltésenkénti és tesztenkénti törlés, export
 ├── valtozasok.html       Változásnapló és tesztverziók
 ├── maia2.html · sis-ses.html · ysq.html · kotodes-melyterkep.html     önálló tesztoldalak (saját logikával)
@@ -126,6 +144,7 @@ Az első látogatás után az oldal offline is működik (service worker), és t
   - `who5-responses-v1`, `pss10-responses-v1`, `cbi-responses-v1`, `brs-responses-v1`, `ucla3-responses-v1`, `mlq-responses-v1`, `maas-responses-v1`
   - `sci-responses-v1`, `ess-responses-v1`, `bas2-responses-v1`, `uwes9-responses-v1`, `grit-responses-v1`, `saps-responses-v1`
   - `pulse-responses-v1` (havi állapotfelmérés; 20 nap után új kitöltés indul), `swls-responses-v1`, `lotr-responses-v1`, `gq6-responses-v1`, `bpnsfs-responses-v1`, `audit-responses-v1`, `sassv-responses-v1`, `bscs-responses-v1`
+  - `onismeret-konyvtar-v1` — a könyvtár olvasólistája (állapot, dátum, jegyzet) és az útvonalak haladása
   - `onismeret-birth-v1` (csillagtérkép születési adatai), `onismeret-fokusz-v1`, `onismeret-style-v1`
   - `onismeret-meta-v1` — az utolsó válasz ideje tesztenként (ebből lesz a kitöltés dátuma)
   - `onismeret-settings-v1` — pl. az újramérési emlékeztető (ki / 90 / 180 / 365 nap)

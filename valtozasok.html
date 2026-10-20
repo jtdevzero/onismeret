@@ -64,7 +64,7 @@ h2{font-family:var(--font-serif);font-weight:400;font-size:28px;margin:44px 0 8p
 </style>
 
 <script src="assets/oni.js?v=604a0bdc"></script>
-<script src="assets/oni-schema.js?v=30cdae7f" defer></script>
+<script src="assets/oni-schema.js?v=9d9e5514" defer></script>
 <script src="assets/tests-data.js?v=972452a2" defer></script>
 <script src="assets/mely.js?v=394634ec" defer></script>
 <script src="assets/results-plus.js?v=1f96d0e0" defer></script>
@@ -103,6 +103,11 @@ document.addEventListener('DOMContentLoaded',function(){
   var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
   /* score/retake: 'no' | 'part' | 'yes' */
   var LOG=[
+    {d:'2026-10-20',t:'Önismereti könyvtár',score:'no',retake:'no',items:[
+      'Új oldal: <a href="konyvtar.html">Önismereti könyvtár</a>. 184 forrás nyolc alkönyvtárban: könyvek, módszertanok, lépésenkénti gyakorlatok, külső ingyenes tesztek, nyílt forrású eszközök, podcastok és kurzusok, elmélet és kutatás, magyar szerzők és segélyvonalak.',
+      'Minden forrásnál bizonyítékszint (erős, ígéretes, gyakorlati, vitatott) és a kapcsolódó tesztek. A népszerű, de nem igazolt állítások (pl. akaraterő-kimerülés, tanulási stílusok) vitatott jelöléssel szerepelnek.',
+      'Ajánlás a kitöltött tesztjeid alapján, olvasólista saját jegyzettel, és nyolc több hetes útvonal kipipálható lépésekkel (önbizalom, stressz, szokások, párkapcsolat, érzelmek, értelem, alvás, vezetői fejlődés).',
+      'A könyvtár a GitHubon alkönyvtáranként is olvasható (konyvtar/ mappa). Az adatai benne vannak a főoldali mentésben és visszaállításban. A tesztek pontozása nem változott.']},
     {d:'2026-10-20',t:'Önbizalom-edzés',score:'no',retake:'no',items:[
       'Új gyakorló oldal: <a href="edzes.html">Önbizalom-edzés</a>. Nem teszt: a négy önbizalom-teszt legutóbbi eredményéből személyre szabott gyakorlatsort állít össze.',
       'Napi 5–10 perces gyakorlatok (bizonyíték-napló, a kritikus hang átírása, önegyüttérző szünet, rövid nem, felkészületlen igen, figyelem kifelé és mások), sorozat és 4 hetes áttekintés.',

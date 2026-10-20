@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="hu" data-page="konyvtar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Önismereti könyvtár — Önismereti térképek</title>
+<meta name="description" content="Önismereti könyvtár: könyvek, módszerek, gyakorlatok, nyílt forrású eszközök, kurzusok és kutatások bizonyítékszinttel, a tesztekhez kapcsolva. Olvasólista és útvonalak, minden adat csak ebben a böngészőben.">
+<link rel="stylesheet" href="fonts/fonts.css?v=50e1f8e3">
+<script src="assets/konyvtar-data.js?v=22a7ebab"></script>
+<style>
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{background:var(--u-bg);color:var(--u-ink);font-family:'Inter',system-ui,sans-serif;font-size:16px;line-height:1.6;min-height:100vh;margin:0}
+*{box-sizing:border-box}
+a{color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:40px 24px 96px}
+.back{display:inline-flex;gap:8px;font-size:12px;color:var(--u-muted);text-decoration:none;letter-spacing:.06em;margin-bottom:26px}
+.back:hover{color:var(--u-ink)}
+.kicker{display:inline-block;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--u-gold);font-weight:700;margin-bottom:16px;padding:6px 16px;border:1px solid color-mix(in srgb,var(--u-gold) 45%,transparent);border-radius:99px}
+h1{font-family:'Cardo',Georgia,serif;font-weight:400;font-size:clamp(36px,6.4vw,62px);line-height:1.04;letter-spacing:-.02em;margin:0 0 16px}
+h1 em,h2 em{font-style:italic;color:var(--u-gold)}
+.lead{color:var(--u-soft);font-size:17px;max-width:760px;margin:0 0 22px}
+h2{font-family:'Cardo',Georgia,serif;font-weight:400;font-size:30px;margin:60px 0 6px;letter-spacing:-.01em}
+h3{font-family:'Cardo',Georgia,serif;font-weight:400;margin:0}
+.h2sub{color:var(--u-muted);font-size:14.5px;margin:0 0 20px;max-width:760px}
+.statbar{display:flex;flex-wrap:wrap;gap:10px 30px;padding:18px 22px;border:1px solid var(--u-line);border-radius:16px;background:var(--u-paper);box-shadow:var(--u-shadow-sm);font-size:14px;color:var(--u-soft)}
+.statbar strong{font-family:'Cardo',Georgia,serif;font-size:26px;color:var(--u-ink);font-weight:700;margin-right:6px}
+.jump{position:sticky;top:0;z-index:5;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:10px 0;margin-top:10px;background:var(--u-bg)}
+.jump a{flex:0 0 auto;font-size:13px;font-weight:600;text-decoration:none;padding:7px 14px;border-radius:99px;border:1px solid var(--u-line);color:var(--u-soft);background:var(--u-paper)}
+.jump a:hover{border-color:var(--u-gold);color:var(--u-ink)}
+.jump .n{font-weight:700;color:var(--u-gold);margin-left:6px}
+/* kategória-színek: világosban mély ékszertónus, sötétben világosított */
+[style*="--acc"]{--accv:var(--acc)}
+html[data-theme="dark"] [style*="--acc"]{--accv:color-mix(in srgb,var(--acc) 42%,#fff)}
+/* alkönyvtár-csempék */
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.tile{appearance:none;font:inherit;text-align:left;cursor:pointer;color:inherit;display:flex;flex-direction:column;gap:6px;padding:18px 18px 16px;border-radius:16px;border:1px solid var(--u-line);background:var(--u-paper);box-shadow:var(--u-shadow-sm);position:relative;overflow:hidden;transition:transform .15s,border-color .15s;text-decoration:none}
+.tile::before{content:'';position:absolute;left:0;top:0;right:0;height:3px;background:var(--accv)}
+.tile:hover{transform:translateY(-2px);border-color:var(--accv)}
+.tile .num{font-size:11px;letter-spacing:.18em;font-weight:700;color:var(--accv)}
+.tile h3{font-size:21px;line-height:1.15}
+.tile p{margin:0;font-size:13.5px;color:var(--u-muted);line-height:1.5}
+.tile .cnt{margin-top:auto;padding-top:8px;font-size:12.5px;font-weight:600;color:var(--u-soft)}
+/* ajánlás és segítség */
+.panel{border:1px solid var(--u-line);border-radius:18px;background:var(--u-paper);box-shadow:var(--u-shadow-sm);padding:20px 22px}
+.empty{padding:22px;border:1px dashed var(--u-line);border-radius:18px;color:var(--u-soft);font-size:15px}
+.empty a,.help a{color:var(--u-sapphire2);font-weight:600}
+.done-tests{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 16px}
+.help{border:1px solid color-mix(in srgb,var(--u-burgundy) 45%,transparent);background:var(--u-burgundy-soft);border-radius:16px;padding:16px 20px;font-size:14.5px;color:var(--u-ink);margin-bottom:16px}
+.help b{color:var(--u-burgundy)}
+/* elemkártyák */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:12px}
+.it{border:1px solid var(--u-line);border-radius:16px;background:var(--u-paper);box-shadow:var(--u-shadow-sm);padding:16px 18px 14px;display:flex;flex-direction:column;gap:7px;position:relative;overflow:hidden}
+.it::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accv)}
+.it.st-done{opacity:.86}
+.it-h{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.tag{display:inline-block;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;padding:2px 8px;border-radius:99px;border:1px solid var(--u-line);color:var(--u-muted);white-space:nowrap}
+.tag.cat{border-color:transparent;color:var(--accv);padding-left:0}
+.ev{font-size:10.5px;font-weight:800;letter-spacing:.06em;padding:2px 8px;border-radius:99px;white-space:nowrap;cursor:help}
+.ev-A{background:var(--u-emerald-soft);color:var(--u-emerald)}
+.ev-B{background:var(--u-gold-soft);color:var(--u-gold)}
+.ev-C{background:var(--u-bg2);color:var(--u-soft)}
+.ev-V{background:var(--u-burgundy-soft);color:var(--u-burgundy)}
+.it h3{font-size:20px;line-height:1.2}
+.it h3 a{text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--u-ink) 25%,transparent)}
+.it h3 a:hover{border-bottom-color:var(--u-gold)}
+.it h3 .ext{font-size:13px;color:var(--u-muted);margin-left:4px;font-family:'Inter',sans-serif}
+.by{font-size:13px;color:var(--u-muted)}
+.by i{color:var(--u-soft)}
+.it p{margin:0;font-size:14px;color:var(--u-soft);line-height:1.55}
+.how summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--u-sapphire2)}
+.how ol{margin:8px 0 2px;padding-left:20px;font-size:13.5px;color:var(--u-soft)}
+.how li{margin-bottom:4px}
+.rel{display:flex;flex-wrap:wrap;gap:5px;align-items:center;font-size:12px;color:var(--u-muted)}
+.tc{font-size:12px;font-weight:600;text-decoration:none;padding:2px 9px;border-radius:99px;border:1px solid var(--u-line);color:var(--u-soft);background:var(--u-bg)}
+.tc:hover{border-color:var(--u-sapphire2);color:var(--u-ink)}
+.tc.done{border-color:color-mix(in srgb,var(--u-emerald) 55%,transparent);color:var(--u-emerald);background:var(--u-emerald-soft)}
+.why-rec{font-size:12px;color:var(--u-emerald);font-weight:600}
+.st{display:flex;gap:4px;margin-top:auto;padding-top:6px}
+.st button,.chip{appearance:none;cursor:pointer;font:inherit;font-size:12.5px;font-weight:600;padding:5px 11px;border-radius:99px;border:1px solid var(--u-line);background:transparent;color:var(--u-soft);white-space:nowrap}
+.st button:hover,.chip:hover{border-color:var(--u-gold);color:var(--u-ink)}
+.st button[aria-pressed="true"],.chip[aria-pressed="true"]{background:var(--u-sel);border-color:var(--u-sel);color:var(--u-on-sel)}
+/* szűrők */
+.filters{border:1px solid var(--u-line);border-radius:18px;background:var(--u-paper);box-shadow:var(--u-shadow-sm);padding:16px 18px;display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.frow{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.frow .lbl{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--u-muted);min-width:92px}
+.search{width:100%;font:inherit;font-size:16px;padding:12px 16px;border-radius:12px;border:1px solid var(--u-line);background:var(--u-bg);color:var(--u-ink)}
+.search:focus,select:focus,textarea:focus{outline:2px solid var(--u-sapphire2);outline-offset:1px}
+select{font:inherit;font-size:13.5px;padding:6px 10px;border-radius:10px;border:1px solid var(--u-line);background:var(--u-bg);color:var(--u-ink)}
+.tg{display:inline-flex;gap:6px;align-items:center;font-size:13.5px;color:var(--u-soft);margin-right:10px;cursor:pointer}
+.tg input{accent-color:var(--u-sel);width:16px;height:16px}
+.count{font-size:14px;color:var(--u-soft);margin:0 0 12px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.count b{color:var(--u-ink)}
+.linkbtn{appearance:none;border:0;background:none;font:inherit;font-size:13.5px;color:var(--u-sapphire2);cursor:pointer;padding:0;font-weight:600}
+.sec-h{display:flex;align-items:baseline;gap:12px;margin:26px 0 10px}
+.sec-h h3{font-size:22px}
+.sec-h span{font-size:13px;color:var(--u-muted)}
+/* útvonalak */
+.paths{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px}
+.path{border:1px solid var(--u-line);border-radius:18px;background:var(--u-paper);box-shadow:var(--u-shadow-sm);padding:18px 20px;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:8px}
+.path::before{content:'';position:absolute;left:0;top:0;right:0;height:3px;background:var(--accv)}
+.path h3{font-size:24px}
+.path h3 small{font-family:'Inter',sans-serif;font-size:13px;color:var(--accv);font-weight:700;margin-left:8px;letter-spacing:.04em}
+.path .goal{font-size:14px;color:var(--u-soft);margin:0}
+.bar{height:6px;border-radius:99px;background:var(--u-bg3);overflow:hidden}
+.bar span{display:block;height:100%;background:var(--accv);border-radius:99px;transition:width .3s}
+.pmeta{font-size:12.5px;color:var(--u-muted);display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.steps{list-style:none;margin:4px 0 0;padding:0;display:flex;flex-direction:column;gap:2px}
+.steps li{display:grid;grid-template-columns:22px 1fr;gap:8px;padding:8px 0;border-top:1px dashed var(--u-line)}
+.steps input{accent-color:var(--accv);width:17px;height:17px;margin-top:3px}
+.steps .w{font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--u-muted)}
+.steps .t{font-weight:600;font-size:14.5px}
+.steps .d{font-size:13.5px;color:var(--u-soft)}
+.steps .refs{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.steps .refs button{appearance:none;cursor:pointer;font:inherit;font-size:12px;padding:1px 8px;border-radius:99px;border:1px solid var(--u-line);background:var(--u-bg);color:var(--u-soft)}
+.steps .refs button:hover{border-color:var(--u-gold);color:var(--u-ink)}
+.steps li.ok .t{text-decoration:line-through;text-decoration-color:var(--u-quiet)}
+.btn{appearance:none;cursor:pointer;font:inherit;font-size:13px;font-weight:600;padding:7px 14px;border-radius:99px;border:1px solid var(--u-cta);background:var(--u-cta);color:var(--u-on-cta);text-decoration:none;display:inline-block}
+.btn.ghost{background:transparent;color:var(--u-soft);border-color:var(--u-line)}
+/* olvasólista */
+.rl{display:flex;flex-direction:column;gap:8px}
+.rl-row{display:grid;grid-template-columns:1fr auto;gap:6px 14px;align-items:start;border:1px solid var(--u-line);border-radius:14px;background:var(--u-paper);padding:12px 16px;position:relative;overflow:hidden}
+.rl-row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accv)}
+.rl-row .ti{font-family:'Cardo',Georgia,serif;font-size:18px}
+.rl-row .sub{font-size:12.5px;color:var(--u-muted)}
+.rl-row textarea{grid-column:1/-1;width:100%;min-height:42px;font:inherit;font-size:13.5px;padding:8px 10px;border-radius:10px;border:1px solid var(--u-line);background:var(--u-bg);color:var(--u-ink);resize:vertical}
+.flash{animation:flash 1.4s ease}
+@keyframes flash{0%,40%{box-shadow:0 0 0 3px var(--u-gold)}100%{box-shadow:var(--u-shadow-sm)}}
+.note{font-size:12.5px;color:var(--u-muted);margin-top:56px;line-height:1.7;border-top:1px dashed var(--u-line);padding-top:20px}
+.note a{color:var(--u-sapphire2)}
+@media (max-width:640px){.wrap{padding:26px 16px 64px}h2{margin-top:44px;font-size:26px}.grid,.paths{grid-template-columns:1fr}.frow .lbl{min-width:100%}.tiles{grid-template-columns:1fr 1fr}.tile h3{font-size:18px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.tile,.bar span{transition:none}.flash{animation:none}}
+</style>
+<script src="assets/oni.js?v=604a0bdc"></script>
+<script src="assets/oni-schema.js?v=9d9e5514" defer></script>
+<script src="assets/tests-data.js?v=972452a2" defer></script>
+<script src="assets/mely.js?v=394634ec" defer></script>
+<script src="assets/results-plus.js?v=1f96d0e0" defer></script>
+<link rel="stylesheet" href="assets/theme.css?v=b50d9800">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#050d1e">
+<link rel="icon" type="image/png" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+</head>
+<body>
+<main id="main">
+<div class="wrap">
+  <a class="back" href="index.html">← Vissza a tesztekhez</a>
+  <div><span class="kicker">Könyvtár · nem teszt</span></div>
+  <h1>Önismereti <em>könyvtár</em></h1>
+  <p class="lead">Könyvek, módszerek, gyakorlatok, eszközök, kurzusok és kutatások a tesztek mellé. Mindegyiknél ott a bizonyítékszint, és hogy melyik eredményedhez kapcsolódik. A vitatott, népszerű állítások is itt vannak, megjelölve.</p>
+  <div class="statbar" id="stats"></div>
+  <nav class="jump" aria-label="Szakaszok">
+    <a href="#ajanlott">Neked ajánlott</a><a href="#alkonyvtarak">Alkönyvtárak</a><a href="#utvonalak">Útvonalak</a><a href="#olvasolista">Olvasólistám<span class="n" id="jn-list"></span></a><a href="#katalogus">Minden forrás</a>
+  </nav>
+
+  <h2 id="ajanlott">Neked <em>ajánlott</em></h2>
+  <p class="h2sub">A kitöltött tesztjeidhez kapcsolódó források, előre véve az erősebb bizonyítékúakat. Ami a listádon már kész, kimarad.</p>
+  <div id="recs"></div>
+
+  <h2 id="alkonyvtarak">Alkönyvtárak</h2>
+  <p class="h2sub">Kattints egy alkönyvtárra a szűréshez. Mindegyik a GitHubon is olvasható, a <a href="https://github.com/jtdevzero/onismeret/tree/main/konyvtar" style="color:var(--u-sapphire2)">konyvtar</a> mappában.</p>
+  <div class="tiles" id="tiles"></div>
+
+  <h2 id="utvonalak">Útvonalak</h2>
+  <p class="h2sub">Több hetes programok: méréssel kezdődnek, olvasmánnyal és gyakorlattal folytatódnak, újraméréssel zárulnak. A lépések kipipálhatók; a haladás ebben a böngészőben mentődik.</p>
+  <div class="paths" id="paths"></div>
+
+  <h2 id="olvasolista">Olvasólistám</h2>
+  <p class="h2sub">Amit „Tervben”, „Folyamatban” vagy „Kész” jelöléssel láttál el, saját jegyzettel. A főoldali mentés és visszaállítás ezt is tartalmazza.</p>
+  <div id="rl"></div>
+
+  <h2 id="katalogus">Minden <em>forrás</em></h2>
+  <p class="h2sub">Keresés címben, szerzőben, ismertetőben és tesztnévben. A szűrők együtt érvényesek.</p>
+  <div class="filters" id="filters"></div>
+  <div class="count" id="count"></div>
+  <div id="cat"></div>
+
+  <div class="help" style="margin-top:40px"><b>Ha most nehéz:</b> Lelki Elsősegély Telefonszolgálat <a href="tel:116123">116-123</a> (ingyenes, éjjel-nappal). Közvetlen veszélyben: <a href="tel:112">112</a>. A könyvtár önsegítő forrásai nem helyettesítik a szakembert.</div>
+  <p class="note">A forrásokat kézzel válogattuk; a bizonyítékszint tájékoztató, nem szakmai minősítés. A külső linkek új lapon nyílnak, és a megnyitásuk elhagyja ezt az oldalt; a könyvtár maga nem küld adatot sehová. Bővítés és hibajelzés: <a href="https://github.com/jtdevzero/onismeret/blob/main/konyvtar/HOZZAJARULAS.md">HOZZAJARULAS.md</a>.</p>
+</div>
+<script>
+(function(){
+  var L=window.ONI_LIB,REG=window.ONI_REG||[],K='onismeret-konyvtar-v1';
+  var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+  var norm=function(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')};
+  var CAT={},ITEM={},TEST={};L.cats.forEach(function(c){CAT[c.id]=c});L.items.forEach(function(i){ITEM[i.id]=i});REG.forEach(function(t){TEST[t.id]=t});
+  var EVO={A:0,B:1,C:2,V:3},STL={want:'Tervben',doing:'Folyamatban',done:'Kész'};
+  /* tárolás */
+  function get(){try{var s=JSON.parse(localStorage.getItem(K));if(s&&typeof s==='object')return {list:s.list||{},paths:s.paths||{}}}catch(e){}return {list:{},paths:{}}}
+  function put(s){try{var o={};if(Object.keys(s.list).length)o.list=s.list;if(Object.keys(s.paths).length)o.paths=s.paths;
+    if(!o.list&&!o.paths)localStorage.removeItem(K);else localStorage.setItem(K,JSON.stringify(o));return true}catch(e){return false}}
+  var S=get();
+  /* kitöltött tesztek */
+  var store={};try{store=(window.ONI&&ONI.all())||{}}catch(e){}
+  var DONE={};Object.keys(store).forEach(function(id){if(TEST[id]&&store[id]&&store[id].length)DONE[id]=1});
+  var last=function(id,k){var h=store[id];if(!h||!h.length)return null;var r=h[h.length-1];return r&&r.d&&r.d[k]?r.d[k][1]:null};
+  var tname=function(id){return TEST[id]?TEST[id].name.split(' · ')[0]:id};
+  function testChip(id){var t=TEST[id];if(!t)return '';var d=DONE[id];
+    return '<a class="tc'+(d?' done':'')+'" href="'+esc(t.link)+'" title="'+esc(t.name)+(d?' · kitöltve':' · még nincs kitöltve')+'">'+esc(tname(id))+(d?' ✓':'')+'</a>'}
+  function evBadge(e){var m=L.meta.ev[e];return '<span class="ev ev-'+e+'" title="'+esc(m[0]+'. '+m[1])+'">'+(e==='V'?'vitatott':e)+'</span>'}
+  function card(i,extra){var c=CAT[i.c],st=(S.list[i.id]||{}).s,ext=i.u&&/^https:/.test(i.u);
+    var h='<article class="it'+(st?' st-'+st:'')+'" id="'+(extra?'r-':'i-')+esc(i.id)+'" data-id="'+esc(i.id)+'" style="--acc:'+c.acc+'">';
+    h+='<div class="it-h"><span class="tag cat">'+esc(c.num+' '+c.title)+'</span><span class="tag">'+esc(L.meta.types[i.t])+'</span>'+evBadge(i.ev)+'</div>';
+    var ti=esc(i.ti);
+    if(ext)ti='<a href="'+esc(i.u)+'" target="_blank" rel="noopener noreferrer">'+ti+'</a><span class="ext" aria-hidden="true">↗</span>';
+    else if(i.u)ti='<a href="'+esc(i.u)+'">'+ti+'</a>';
+    else if(i.site)ti='<a href="'+esc(i.site)+'">'+ti+'</a><span class="ext" aria-hidden="true">›</span>';
+    h+='<h3>'+ti+'</h3>';
+    var by=[];if(i.a)by.push(esc(i.a));if(i.y)by.push(i.y<1000?'kb. '+i.y:i.y);if(i.time)by.push('⏱ '+esc(i.time));
+    if(i.hu)by.push('<i>magyarul: '+esc(i.hu)+'</i>');
+    if(by.length)h+='<div class="by">'+by.join(' · ')+'</div>';
+    if(extra)h+='<div class="why-rec">'+extra+'</div>';
+    h+='<p>'+esc(i.w)+'</p>';
+    if(i.how)h+='<details class="how"><summary>Lépések ('+i.how.length+')</summary><ol>'+i.how.map(function(s){return '<li>'+esc(s)+'</li>'}).join('')+'</ol></details>';
+    var rel=i.ts.map(testChip).join('')+(i.site?'<a class="tc" href="'+esc(i.site)+'">'+esc(i.site.replace('.html',''))+' oldal ›</a>':'');
+    if(rel)h+='<div class="rel">'+rel+'</div>';
+    if(i.t!=='segitseg')h+='<div class="st" role="group" aria-label="Olvasólista: '+esc(i.ti)+'">'+['want','doing','done'].map(function(k){return '<button type="button" data-s="'+k+'" aria-pressed="'+(st===k)+'">'+STL[k]+'</button>'}).join('')+'</div>';
+    return h+'</article>'}
+  /* statisztika */
+  function renderStats(){var n=Object.keys(S.list).length,done=Object.keys(S.list).filter(function(k){return S.list[k].s==='done'}).length;
+    document.getElementById('stats').innerHTML='<span><strong>'+L.items.length+'</strong>forrás</span><span><strong>'+L.cats.length+'</strong>alkönyvtár</span><span><strong>'+L.paths.length+'</strong>útvonal</span>'+
+      '<span><strong>'+L.items.filter(function(i){return i.ev==='A'}).length+'</strong>erős bizonyítékú</span><span><strong>'+n+'</strong>a listádon'+(done?' ('+done+' kész)':'')+'</span>';
+    document.getElementById('jn-list').textContent=n?n:''}
+  /* ajánlás */
+  function renderRecs(){var el=document.getElementById('recs'),ids=Object.keys(DONE);
+    var warn='';var p=last('phq9','total'),g=last('gad7','total');
+    if((p!=null&&p>=10)||(g!=null&&g>=10))warn='<div class="help"><b>Az eredményeid alapján</b> ('+(p!=null&&p>=10?'PHQ-9: '+p:'')+(p!=null&&p>=10&&g!=null&&g>=10?', ':'')+(g!=null&&g>=10?'GAD-7: '+g:'')+') az önsegítő források mellé érdemes szakemberrel is beszélni. <a href="#i-szakember-keresese" data-go="szakember-keresese">Hogyan találj szakembert?</a> Ha most nehéz: <a href="tel:116123">116-123</a>.</div>';
+    if(!ids.length){el.innerHTML=warn+'<div class="empty">Még nincs kitöltött teszted ebben a böngészőben. Ha kitöltesz néhányat, itt az eredményeidhez illő források jelennek meg. <a href="index.html">Tesztek ›</a> Addig is: az <a href="#utvonalak">útvonalak</a> kész programok, és a <a href="#katalogus">teljes katalógus</a> szűrhető.</div>';return}
+    var sc=L.items.filter(function(i){return i.t!=='segitseg'&&!(S.list[i.id]&&S.list[i.id].s==='done')}).map(function(i){var m=i.ts.filter(function(t){return DONE[t]});
+      return {i:i,m:m,s:m.length*10-EVO[i.ev]*2.5+(i.t==='gyakorlat'?1:0)}}).filter(function(x){return x.m.length&&x.i.ev!=='V'});
+    sc.sort(function(a,b){return b.s-a.s});
+    var seen={},top=[];sc.forEach(function(x){var k=x.m.join();if(top.length<9&&(seen[k]||0)<3){seen[k]=(seen[k]||0)+1;top.push(x)}});
+    el.innerHTML=warn+'<div class="done-tests"><span class="tag" style="border:0;padding-left:0">Kitöltve ('+ids.length+'):</span>'+ids.map(testChip).join('')+'</div>'+
+      (top.length?'<div class="grid">'+top.map(function(x){return card(x.i,'Mert kitöltötted: '+x.m.map(tname).join(', '))}).join('')+'</div>':'<div class="empty">A kitöltött tesztjeidhez kapcsolódó források mind a kész listádon vannak. Szép munka.</div>')}
+  /* csempék */
+  function renderTiles(){var cnt={};L.items.forEach(function(i){[i.c,i.c2].forEach(function(c){if(c)cnt[c]=(cnt[c]||0)+1})});
+    document.getElementById('tiles').innerHTML=L.cats.map(function(c){return '<button type="button" class="tile" id="k-'+c.id+'" data-cat="'+c.id+'" style="--acc:'+c.acc+'"><span class="num">'+c.num+'</span><h3>'+esc(c.title)+'</h3><p>'+esc(c.desc)+'</p><span class="cnt">'+cnt[c.id]+' forrás ›</span></button>'}).join('')+
+      '<a class="tile" href="#utvonalak" style="--acc:#065f46"><span class="num">09</span><h3>Útvonalak</h3><p>Több hetes programok mérésről újramérésig, kipipálható lépésekkel.</p><span class="cnt">'+L.paths.length+' útvonal ›</span></a>'}
+  /* útvonalak */
+  function renderPaths(){document.getElementById('paths').innerHTML=L.paths.map(function(p){var ps=S.paths[p.id],done=ps?ps.done:[],n=p.steps.length,k=done.length;
+    var days=ps?Math.max(0,Math.floor((Date.now()-Date.parse(ps.start))/864e5)):null;
+    var h='<article class="path" id="p-'+p.id+'" data-path="'+p.id+'" style="--acc:'+p.acc+'"><h3>'+esc(p.ti)+'<small>'+esc(p.em)+'</small></h3><p class="goal">'+esc(p.goal)+'</p>';
+    h+='<div class="rel">Mérés: '+p.ts.map(testChip).join('')+(p.site?'<a class="tc" href="'+esc(p.site)+'">'+esc(p.site.replace('.html',''))+' oldal ›</a>':'')+'</div>';
+    h+='<div class="bar" role="progressbar" aria-label="Haladás: '+esc(p.ti)+'" aria-valuemin="0" aria-valuemax="'+n+'" aria-valuenow="'+k+'"><span style="width:'+Math.round(k/n*100)+'%"></span></div>';
+    h+='<div class="pmeta"><span>'+k+'/'+n+' lépés</span>'+(ps?'<span>'+(days===0?'ma indult':days+'. napja tart')+'</span><button type="button" class="linkbtn" data-reset="'+p.id+'">újrakezdés</button>':'<button type="button" class="btn" data-start="'+p.id+'">Indítás</button>')+'</div>';
+    h+='<ol class="steps">'+p.steps.map(function(s,x){var ok=done.indexOf(x)>-1;return '<li class="'+(ok?'ok':'')+'"><input type="checkbox" data-step="'+x+'" aria-label="'+esc(s.w+': '+s.t)+'"'+(ok?' checked':'')+'><div><div class="w">'+esc(s.w)+'</div><div class="t">'+esc(s.t)+'</div><div class="d">'+esc(s.d)+'</div>'+
+      (s.i.length?'<div class="refs">'+s.i.map(function(r){return '<button type="button" data-go="'+r+'">'+esc(ITEM[r].ti)+'</button>'}).join('')+'</div>':'')+'</div></li>'}).join('')+'</ol>';
+    return h+'</article>'}).join('')}
+  /* olvasólista */
+  function renderList(){var el=document.getElementById('rl'),ids=Object.keys(S.list).filter(function(id){return ITEM[id]});
+    if(!ids.length){el.innerHTML='<div class="empty">Még üres. Bármelyik forrásnál a „Tervben”, „Folyamatban” vagy „Kész” gombbal kerül ide.</div>';return}
+    var h='';['doing','want','done'].forEach(function(s){var g=ids.filter(function(id){return S.list[id].s===s}).sort(function(a,b){return S.list[b].t<S.list[a].t?-1:1});if(!g.length)return;
+      h+='<div class="sec-h"><h3>'+STL[s]+'</h3><span>'+g.length+'</span></div><div class="rl">'+g.map(function(id){var i=ITEM[id],e=S.list[id],c=CAT[i.c];
+        return '<div class="rl-row" data-id="'+id+'" style="--acc:'+c.acc+'"><div><div class="ti">'+esc(i.ti)+'</div><div class="sub">'+esc((i.a?i.a+' · ':'')+L.meta.types[i.t])+' · '+new Date(e.t).toLocaleDateString('hu-HU')+'</div></div>'+
+          '<div class="st">'+['want','doing','done'].map(function(k){return '<button type="button" data-s="'+k+'" aria-pressed="'+(e.s===k)+'">'+STL[k]+'</button>'}).join('')+'<button type="button" data-s="" title="Levétel a listáról" aria-label="Levétel a listáról: '+esc(i.ti)+'">×</button></div>'+
+          '<textarea maxlength="1000" placeholder="Saját jegyzet: mit vittél haza belőle?" aria-label="Jegyzet: '+esc(i.ti)+'">'+esc(e.note||'')+'</textarea></div>'}).join('')+'</div>'});
+    el.innerHTML=h}
+  /* katalógus */
+  var F={q:'',c:'',t:'',ev:'',tag:'',hu:false,mine:false,link:false};
+  function renderFilters(){var types={};L.items.forEach(function(i){types[i.t]=1});
+    var chips=function(key,opts){return opts.map(function(o){return '<button type="button" class="chip" data-f="'+key+'" data-v="'+o[0]+'" aria-pressed="'+(F[key]===o[0])+'">'+esc(o[1])+'</button>'}).join('')};
+    document.getElementById('filters').innerHTML='<input class="search" id="q" type="search" placeholder="Keresés: pl. halogatás, Gottman, alvás, BSCS…" aria-label="Keresés a könyvtárban" value="'+esc(F.q)+'">'+
+      '<div class="frow"><span class="lbl">Alkönyvtár</span>'+chips('c',[['','Mind']].concat(L.cats.map(function(c){return [c.id,c.title]})))+'</div>'+
+      '<div class="frow"><span class="lbl">Típus</span>'+chips('t',[['','Mind']].concat(Object.keys(L.meta.types).filter(function(t){return types[t]}).map(function(t){return [t,L.meta.types[t]]})))+'</div>'+
+      '<div class="frow"><span class="lbl">Bizonyíték</span>'+chips('ev',[['','Mind'],['A','A · erős'],['B','B · ígéretes'],['C','C · gyakorlati'],['V','Vitatott']])+'</div>'+
+      '<div class="frow"><span class="lbl">Téma</span><select id="tag" aria-label="Téma"><option value="">Minden téma</option>'+Object.keys(L.meta.tags).map(function(t){return '<option value="'+t+'"'+(F.tag===t?' selected':'')+'>'+esc(L.meta.tags[t])+'</option>'}).join('')+'</select>'+
+      '<label class="tg" style="margin-left:10px"><input type="checkbox" id="f-hu"'+(F.hu?' checked':'')+'>Magyarul is megjelent</label>'+
+      '<label class="tg"><input type="checkbox" id="f-mine"'+(F.mine?' checked':'')+'>Kitöltött tesztemhez kapcsolódik</label>'+
+      '<label class="tg"><input type="checkbox" id="f-link"'+(F.link?' checked':'')+'>Van linkje</label></div>';
+    var q=document.getElementById('q');q.addEventListener('input',function(){F.q=q.value;renderCat()});
+    document.getElementById('tag').addEventListener('change',function(e){F.tag=e.target.value;renderCat()});
+    [['f-hu','hu'],['f-mine','mine'],['f-link','link']].forEach(function(x){document.getElementById(x[0]).addEventListener('change',function(e){F[x[1]]=e.target.checked;renderCat()})});
+    document.querySelectorAll('#filters .chip').forEach(function(b){b.addEventListener('click',function(){F[b.dataset.f]=b.dataset.v;
+      document.querySelectorAll('#filters .chip[data-f="'+b.dataset.f+'"]').forEach(function(o){o.setAttribute('aria-pressed',String(o===b))});renderCat()})})}
+  function hay(i){return norm([i.ti,i.hu,i.a,i.w,L.meta.types[i.t],(i.how||[]).join(' '),i.tg.map(function(t){return L.meta.tags[t]}).join(' '),i.ts.map(function(t){return TEST[t]?TEST[t].name:t}).join(' ')].join(' '))}
+  var HAY={};L.items.forEach(function(i){HAY[i.id]=hay(i)});
+  function match(i){if(F.c&&i.c!==F.c&&i.c2!==F.c)return false;if(F.t&&i.t!==F.t)return false;if(F.ev&&i.ev!==F.ev)return false;if(F.tag&&i.tg.indexOf(F.tag)<0)return false;
+    if(F.hu&&!i.hu&&i.c!=='magyar')return false;if(F.mine&&!i.ts.some(function(t){return DONE[t]}))return false;if(F.link&&!i.u)return false;
+    var ws=norm(F.q).split(/\s+/).filter(Boolean);return ws.every(function(w){return HAY[i.id].indexOf(w)>-1})}
+  function renderCat(){var res=L.items.filter(match),el=document.getElementById('cat');
+    var act=F.q||F.c||F.t||F.ev||F.tag||F.hu||F.mine||F.link;
+    document.getElementById('count').innerHTML='<span><b>'+res.length+'</b> / '+L.items.length+' forrás</span>'+(act?'<button type="button" class="linkbtn" id="clr">Szűrők törlése</button>':'');
+    if(act)document.getElementById('clr').onclick=function(){F={q:'',c:'',t:'',ev:'',tag:'',hu:false,mine:false,link:false};renderFilters();renderCat()};
+    if(!res.length){el.innerHTML='<div class="empty">Nincs találat ezekkel a szűrőkkel. Próbálj rövidebb szót, vagy töröld a szűrőket.</div>';return}
+    var h='';L.cats.forEach(function(c){var g=res.filter(function(i){return i.c===c.id||(i.c2===c.id&&F.c===c.id)});if(!g.length)return;
+      h+='<div class="sec-h"><h3>'+esc(c.num+' · '+c.title)+'</h3><span>'+g.length+'</span></div><div class="grid">'+g.map(function(i){return card(i)}).join('')+'</div>'});
+    el.innerHTML=h}
+  /* események */
+  function setStatus(id,s){if(!ITEM[id])return;if(!s)delete S.list[id];else{var o=S.list[id]||{};if(o.s===s){delete S.list[id]}else{o.s=s;o.t=new Date().toISOString();S.list[id]=o}}
+    put(S);renderAll(true)}
+  function go(id){var t=document.querySelector('#cat #i-'+id);if(!t){F={q:'',c:'',t:'',ev:'',tag:'',hu:false,mine:false,link:false};F.c=ITEM[id].c;renderFilters();renderCat();t=document.querySelector('#cat #i-'+id)}
+    if(t){t.scrollIntoView({block:'center'});t.classList.remove('flash');void t.offsetWidth;t.classList.add('flash');var d=t.querySelector('details');if(d)d.open=true}}
+  document.addEventListener('click',function(e){var b=e.target.closest('button,a[data-go]');if(!b)return;
+    if(b.dataset.s!==undefined){var host=b.closest('[data-id]');if(host)setStatus(host.dataset.id,b.dataset.s);return}
+    if(b.dataset.go){e.preventDefault();go(b.dataset.go);return}
+    if(b.dataset.cat){F={q:'',c:b.dataset.cat,t:'',ev:'',tag:'',hu:false,mine:false,link:false};renderFilters();renderCat();document.getElementById('katalogus').scrollIntoView();return}
+    if(b.dataset.start){S.paths[b.dataset.start]={start:new Date().toISOString(),done:[]};put(S);renderPaths();return}
+    if(b.dataset.reset){delete S.paths[b.dataset.reset];put(S);renderPaths();return}});
+  document.addEventListener('change',function(e){var x=e.target;if(!x.matches('.steps input'))return;var pid=x.closest('[data-path]').dataset.path,n=+x.dataset.step;
+    var ps=S.paths[pid]||(S.paths[pid]={start:new Date().toISOString(),done:[]});ps.done=ps.done.filter(function(v){return v!==n});if(x.checked)ps.done.push(n);ps.done.sort(function(a,b){return a-b});
+    put(S);var y=window.scrollY;renderPaths();window.scrollTo(0,y)});
+  var nt;document.addEventListener('input',function(e){var x=e.target;if(!x.matches('.rl-row textarea'))return;var id=x.closest('[data-id]').dataset.id;clearTimeout(nt);
+    nt=setTimeout(function(){var v=x.value.slice(0,1000);if(!S.list[id])return;if(v)S.list[id].note=v;else delete S.list[id].note;put(S)},400)});
+  function renderAll(keep){var y=window.scrollY;renderStats();renderRecs();renderList();if(keep){renderCat()}else{renderTiles();renderPaths();renderFilters();renderCat()}if(keep)window.scrollTo(0,y)}
+  renderAll(false);
+  function fromHash(){var h=location.hash.slice(1);
+    if(/^k-/.test(h)&&CAT[h.slice(2)]){F.c=h.slice(2);renderFilters();renderCat();setTimeout(function(){document.getElementById('katalogus').scrollIntoView()},0)}
+    else if(/^i-/.test(h)&&ITEM[h.slice(2)])setTimeout(function(){go(h.slice(2))},0);}
+  fromHash();window.addEventListener('hashchange',fromHash);
+  window.ONI_KONYVTAR={state:function(){return get()},filter:function(f){Object.keys(f).forEach(function(k){F[k]=f[k]});renderFilters();renderCat()}};
+})();
+</script>
+</main>
+</body>
+</html>
