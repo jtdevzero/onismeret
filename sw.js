@@ -2,7 +2,7 @@
    Offline működés: az első látogatáskor minden oldal és közös fájl a böngésző gyorsítótárába kerül.
    Az oldalak hálózatról frissülnek, ha van net; a verziózott (?v=…) fájlok a gyorsítótárból jönnek.
    Válasz vagy eredmény nem megy át rajta: csak a statikus fájlokat kezeli. */
-const VERSION = '53aeacb8c9';
+const VERSION = '99d5b88017';
 const PRECACHE = [
 "./",
 "adatok.html",
@@ -15,8 +15,10 @@ const PRECACHE = [
 "assets/mely-alvas.js?v=707e2e14",
 "assets/mely-attitudok.js?v=65ccba3e",
 "assets/mely-cselekves.js?v=26834f40",
+"assets/mely-eroforras.js?v=e0a3c94d",
 "assets/mely-ertelem.js?v=7cbd708c",
 "assets/mely-funkcio.js?v=33eea5fc",
+"assets/mely-havi.js?v=f384e670",
 "assets/mely-jollet.js?v=c22568ae",
 "assets/mely-kapcsolat.js?v=7316bb8a",
 "assets/mely-kotodes-melyterkep.js?v=bec4f693",
@@ -27,18 +29,20 @@ const PRECACHE = [
 "assets/mely-sis-ses.js?v=95da76a5",
 "assets/mely-szabalyozas.js?v=a98cd7f9",
 "assets/mely-szemelyiseg.js?v=e91e84bd",
+"assets/mely-szokasok.js?v=0278c30b",
 "assets/mely-terkepek.js?v=fc297f4e",
-"assets/mely.js?v=e3fc27ab",
-"assets/oni-schema.js?v=2b2d5248",
-"assets/oni.js?v=a9acbe9a",
+"assets/mely.js?v=394634ec",
+"assets/oni-schema.js?v=a5f356ec",
+"assets/oni.js?v=604a0bdc",
 "assets/results-plus.js?v=1f96d0e0",
-"assets/tests-data.js?v=f1d3b686",
-"assets/theme.css?v=debe128c",
+"assets/tests-data.js?v=972452a2",
+"assets/theme.css?v=1200e8a2",
 "assets/vendor/astronomy.browser.min.js",
 "assets/ysq-mely.js?v=8155356a",
 "attitudok.html",
 "cselekves.html",
 "csillagok.html",
+"eroforras.html",
 "ertelem.html",
 "fokusz.html",
 "fonts/cardo-latin-400-italic.woff2",
@@ -53,6 +57,7 @@ const PRECACHE = [
 "fonts/jetbrains-mono-latin-ext-wght-normal.woff2",
 "fonts/jetbrains-mono-latin-wght-normal.woff2",
 "funkcio.html",
+"havi.html",
 "icons/apple-touch-icon.png",
 "icons/favicon-32.png",
 "icons/icon-192.png",
@@ -72,6 +77,7 @@ const PRECACHE = [
 "sis-ses.html",
 "szabalyozas.html",
 "szemelyiseg.html",
+"szokasok.html",
 "terkepek.html",
 "valtozasok.html",
 "ysq.html"

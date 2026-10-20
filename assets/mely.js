@@ -109,7 +109,9 @@
     pss: function(r){ return gv(r, 'total') >= 27; },
     cbi: function(r){ return gv(r, 'P') >= 75 || gv(r, 'W') >= 75; },
     ucla: function(r){ return gv(r, 'total') >= 7; },
-    ess: function(r){ return gv(r, 'total') >= 16; }
+    ess: function(r){ return gv(r, 'total') >= 16; },
+    audit: function(r){ return gv(r, 'total') >= 16; },
+    pulse: function(r){ return gv(r, 'who5') !== null && gv(r, 'who5') <= 28; }
   };
   function helpHTML(id, r){
     var f = HELP[id]; try { if (!f || !f(r)) return ''; } catch (e) { return ''; }

@@ -51,7 +51,15 @@ window.ONI_SCHEMA={
   bas:{"k":"bas2-responses-v1","g":[["1-10",[1,2,3,4,5]]],"d":["total"]},
   uwes:{"k":"uwes9-responses-v1","g":[["1-9",[0,1,2,3,4,5,6]]],"d":["AB","DE","VI","total"]},
   grit:{"k":"grit-responses-v1","g":[["1-8",[1,2,3,4,5]]],"d":["CI","PE","total"]},
-  saps:{"k":"saps-responses-v1","g":[["1-8",[1,2,3,4,5,6,7]]],"d":["D","S"]}
+  saps:{"k":"saps-responses-v1","g":[["1-8",[1,2,3,4,5,6,7]]],"d":["D","S"]},
+  pulse:{"k":"pulse-responses-v1","g":[["1-5",[0,1,2,3,4,5]],["6-9",[0,1,2,3,4]],["10-15",[0,25,50,75,100]],["16-18",[1,2,3]],["19-20",[0,1,2,3,4]]],"d":["cbiP","pss4","sleep","ucla","who5"]},
+  swls:{"k":"swls-responses-v1","g":[["1-5",[1,2,3,4,5,6,7]]],"d":["total"]},
+  lotr:{"k":"lotr-responses-v1","g":[["1-10",[0,1,2,3,4]]],"d":["total"]},
+  gq6:{"k":"gq6-responses-v1","g":[["1-6",[1,2,3,4,5,6,7]]],"d":["total"]},
+  bpns:{"k":"bpnsfs-responses-v1","g":[["1-24",[1,2,3,4,5]]],"d":["AF","AS","CF","CS","RF","RS"]},
+  audit:{"k":"audit-responses-v1","g":[["1-8",[0,1,2,3,4]],["9-10",[0,2,4]]],"d":["C","D","H","total"]},
+  sas:{"k":"sassv-responses-v1","g":[["1-10",[1,2,3,4,5,6]]],"d":["total"]},
+  bscs:{"k":"bscs-responses-v1","g":[["1-13",[1,2,3,4,5]]],"d":["total"]}
 };
 /* ── Séma-alapú segédfüggvények (a tools/schema-runtime.js-ből másolva) ── */
 window.ONI_CHECK=(function(){

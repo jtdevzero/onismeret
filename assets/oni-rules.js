@@ -126,7 +126,17 @@ const RULES=[
   sig:[S('saps','SAPS diszkrepancia ≥ 16',()=>val('saps','D')>=16),S('ysq','Könyörtelen mércék séma ≥ 4,5',()=>val('ysq','us')>=4.5),S('cbi','Munkához kötött kiégés ≥ 50',()=>val('cbi','W')>=50),S('scs','Önegyüttérzés ≤ 2,5',()=>val('scs','total')!==null&&val('scs','total')<=2.5),S('ips','IPS halogatás ≥ 28',()=>val('ips','total')>=28)],
   text:'Ezek az eredmények arra utalhatnak, hogy a magas mérce nálad most inkább hajszol, mint hajt: a teljesítmény sosem elég, ami kimerít, és paradox módon halogatáshoz is vezethet.',
   q:'Kinek a mércéjének akarsz igazán megfelelni?',
-  action:'Egy hétig minden feladatnál írd le előre, <b>mikor lesz elég jó</b>, és ott állj meg. Jegyezd fel, mi történt valójában: volt-e bármilyen következménye a 90%-nak?'}
+  action:'Egy hétig minden feladatnál írd le előre, <b>mikor lesz elég jó</b>, és ott állj meg. Jegyezd fel, mi történt valójában: volt-e bármilyen következménye a 90%-nak?'},
+ {id:'resources',title:'Erős erőforrás-háló',acc:'#10b981',min:3,
+  sig:[S('swls','Élettel való elégedettség ≥ 26',()=>val('swls','total')>=26),S('lotr','Optimizmus ≥ 19',()=>val('lotr','total')>=19),S('gq6','Hála ≥ 39',()=>val('gq6','total')>=39),S('brs','Reziliencia > 4,3',()=>val('brs','total')>4.3),S('ucla','Magányosság ≤ 3',()=>val('ucla','total')!==null&&val('ucla','total')<=3),S('bpns','Kapcsolódás-kielégülés ≥ 4',()=>val('bpns','RS')>=4)],
+  text:'Ezek az eredmények arra utalnak, hogy erős belső és külső erőforrásaid vannak: elégedett vagy az életeddel, jóra számítasz, és vannak megtartó kapcsolataid. Ez nehéz időszakokban is jó alap.',
+  q:'Mi az, ami a legtöbbet ad ezekből az erőforrásokból, és hogyan tudnád megtartani?',
+  action:'Írd le azt a három dolgot (ember, szokás, hely), ami a legtöbbet tölt, és tegyél azért, hogy a következő nehéz időszakban is jelen legyenek. Az erőforrásokat jó időben érdemes gondozni.'},
+ {id:'coping',title:'Feszültségoldás szokásokkal',acc:'#d4a017',min:2,
+  sig:[S('audit','AUDIT ≥ 8',()=>val('audit','total')>=8),S('sas','Telefonhasználat (SAS-SV) ≥ 31',()=>val('sas','total')>=31),S('bscs','Önkontroll < 2,67',()=>val('bscs','total')!==null&&val('bscs','total')<2.67),S('pss','PSS-10 ≥ 27',()=>val('pss','total')>=27),S('ders','DERS impulzuskontroll ≥ 10',()=>val('ders','impulse')>=10)],
+  text:'Ezek az eredmények arra utalhatnak, hogy a feszültség oldásában most nagy szerepe van egy-egy gyors szokásnak (ital, telefon, más késztetés). Ezek rövid távon működnek, hosszabb távon viszont fenntartják a terhelést.',
+  q:'Milyen érzés előzi meg leggyakrabban ezt a szokást?',
+  action:'Egy hétig figyeld meg és írd fel, mi előzi meg a szokást (fáradtság, stressz, unalom, magány). Keress arra a helyzetre <b>egy másik, legalább részben működő megoldást</b>, és tedd a régit kicsit nehezebbé.'}
 ];
 
 function evalRules(){
@@ -145,7 +155,7 @@ function evalRules(){
 const DIR={ecr:{anx:-1,avd:-1},kotodes:{anxiety:-1,avoidance:-1,earned:1},tas:'-',des:'-',ysq:'-',ips:'-',ders:'-',pedt:'-',maia2:'+',nsss:'+',
   smi:{happy:1,healthy:1,wise:1,vuln:-1,angry:-1,impulsive:-1,compliant:-1,detached:-1,soother:-1,grandiose:-1,bully:-1,punitive:-1,demanding:-1},
   gott:{maps:1,fond:1,turn:1,repair:1,strength:1,crit:-1,cont:-1,def:-1,stone:-1,risk:-1},
-  scs:{total:1,SK:1,CH:1,MI:1,SJ:-1,IS:-1,OI:-1},bf:{N:-1},iief:'+',asrs:'-',phq9:'-',gad7:'-',rses:'+',gse:'+',bfne:'-',obgy:'+',who5:'+',pss:'-',cbi:'-',brs:'+',ucla:'-',mlq:{P:1,S:0},maas:'+',sci:'+',ess:'-',bas:'+',uwes:'+',grit:'+',saps:{S:0,D:-1}};
+  scs:{total:1,SK:1,CH:1,MI:1,SJ:-1,IS:-1,OI:-1},bf:{N:-1},iief:'+',asrs:'-',phq9:'-',gad7:'-',rses:'+',gse:'+',bfne:'-',obgy:'+',who5:'+',pss:'-',cbi:'-',brs:'+',ucla:'-',mlq:{P:1,S:0},maas:'+',sci:'+',ess:'-',bas:'+',uwes:'+',grit:'+',saps:{S:0,D:-1},pulse:{who5:1,pss4:-1,cbiP:-1,ucla:-1,sleep:1},swls:'+',lotr:'+',gq6:'+',bpns:{AS:1,AF:-1,RS:1,RF:-1,CS:1,CF:-1},audit:'-',sas:'-',bscs:'+'};
 function dirOf(id,k){const d=DIR[id];if(!d)return 0;if(d==='+')return 1;if(d==='-')return -1;return d[k]||0;}
 return {RULES:RULES,evalRules:evalRules,val:val,avgAll:avgAll,cur:cur,last:last,DIR:DIR,dirOf:dirOf};
 };

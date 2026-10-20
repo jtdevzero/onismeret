@@ -6,7 +6,7 @@
 <title>Jóllét és stressz — WHO-5 · PSS-10 · CBI · BRS</title>
 <meta name="description" content="Jóllét és stressz — WHO-5 · PSS-10 · CBI · BRS — önismereti kérdőívek magyarul. A válaszok és az eredmények csak ebben a böngészőben tárolódnak.">
 <link rel="stylesheet" href="fonts/fonts.css?v=50e1f8e3">
-<script src="assets/oni.js?v=a9acbe9a"></script>
+<script src="assets/oni.js?v=604a0bdc"></script>
 <style>/* A hub-oldalak alapstílusa (eredetileg a szemelyiseg.html-ből). */
 :root{
   --font-display:'Fraunces','Cardo',serif;
@@ -422,13 +422,28 @@ html[data-theme="light"] .quad .cell .s{color:var(--u-soft)!important}
 .scale.s3{grid-template-columns:repeat(3,1fr)}
 .scale.s7{grid-template-columns:repeat(7,1fr)}
 @media (max-width:560px){.scale.s7{grid-template-columns:repeat(4,1fr)}}
+/* havi állapotfelmérés */
+.hub-tabs.one{display:none}
+.pulse-card .pulse-row{display:grid;grid-template-columns:1.2fr .9fr 1.3fr 1fr;gap:10px;align-items:center;padding:12px 0;border-top:1px solid var(--line-dark)}
+.pulse-card .pulse-row:first-of-type{border-top:0}
+.pulse-name a{color:var(--ink-lite);font-weight:600;text-decoration:none;border-bottom:1px dashed var(--line-glow)}
+.pulse-val{font-family:var(--font-display);font-size:24px;color:var(--pc)}
+.pulse-val span{display:block;font-family:var(--font-body);font-size:11px;color:var(--ink-lite-muted)}
+.pulse-delta{font-size:13px;color:var(--ink-lite-muted)}
+.pulse-delta.up{color:#34d399}.pulse-delta.down{color:#fb7185}
+.pulse-trend{color:var(--pc)}.pulse-spark{width:100%;max-width:120px;height:28px}
+@media (max-width:560px){.pulse-card .pulse-row{grid-template-columns:1fr 1fr}.pulse-trend{grid-column:2}}
+html[data-theme="light"] .pulse-name a{color:var(--u-ink)!important}
+html[data-theme="light"] .pulse-delta{color:var(--u-muted)}
+html[data-theme="light"] .pulse-delta.up{color:#047857!important}html[data-theme="light"] .pulse-delta.down{color:#9f1239!important}
+html[data-theme="light"] .pulse-val span{color:var(--u-muted)!important}
 </style>
-<script src="assets/oni-schema.js?v=2b2d5248" defer></script>
-<script src="assets/tests-data.js?v=f1d3b686" defer></script>
-<script src="assets/mely.js?v=e3fc27ab" defer></script>
+<script src="assets/oni-schema.js?v=a5f356ec" defer></script>
+<script src="assets/tests-data.js?v=972452a2" defer></script>
+<script src="assets/mely.js?v=394634ec" defer></script>
 <script src="assets/results-plus.js?v=1f96d0e0" defer></script>
 <script src="assets/mely-jollet.js?v=c22568ae" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=debe128c">
+<link rel="stylesheet" href="assets/theme.css?v=1200e8a2">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#050d1e">
 <link rel="icon" type="image/png" href="icons/favicon-32.png">
@@ -637,6 +652,10 @@ function makeTest(cfg){
   function mount(container){
     container.insertAdjacentHTML('beforeend',panelHTML());
     load();
+    /* cfg.renewAfterDays: ismétlődő mérés (pl. havi). Ha az utolsó mentett mérés régebbi, a régi válaszok
+       nem maradnak kitöltve: új kitöltés indul, így a következő eredmény új mérés lesz, nem az előző javítása. */
+    if(cfg.renewAfterDays&&Object.keys(responses).length&&window.ONI){try{const h=ONI.all()[cfg.id]||[],L=h[h.length-1];
+      if(L&&(Date.now()-Date.parse(L.done||L.t))/864e5>=cfg.renewAfterDays){responses={};save();}}catch(e){}}
     $('quiz').innerHTML=quizHTML();
     $('quiz').addEventListener('click',e=>{
       const b=e.target.closest('[data-v]');if(!b)return;

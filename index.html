@@ -213,7 +213,8 @@ body::before{
 .vstat.frame{color:#fda4af;border-color:rgba(251,113,133,.35);background:rgba(251,113,133,.06)}
 .path-panel{border-color:rgba(251,191,36,.35)}
 .home-panel{border-color:rgba(96,165,250,.35)}
-.home-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:6px}
+.home-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:6px}
+.home-card.pulse-tile.due{border-color:rgba(16,185,129,.55)}
 .home-card{display:flex;flex-direction:column;gap:6px;padding:16px 18px;border:1px solid var(--line);border-radius:14px;text-decoration:none;color:var(--ink);background:rgba(5,13,30,.3);transition:border-color .2s,transform .2s}
 .home-card:hover{border-color:var(--gold-soft);transform:translateY(-1px)}
 .home-card .hk{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--gold)}
@@ -316,12 +317,12 @@ body:not(.ct-longdesc) .card .tests{display:none}
 .card[hidden],.cat[hidden],.jump[hidden]{display:none!important}
 @media (max-width:900px){.cat-tools{grid-template-columns:1fr 1fr}.ct-search{grid-column:1/-1}}
 </style>
-<script src="assets/oni.js?v=a9acbe9a"></script>
-<script src="assets/oni-schema.js?v=2b2d5248" defer></script>
-<script src="assets/tests-data.js?v=f1d3b686" defer></script>
-<script src="assets/mely.js?v=e3fc27ab" defer></script>
+<script src="assets/oni.js?v=604a0bdc"></script>
+<script src="assets/oni-schema.js?v=a5f356ec" defer></script>
+<script src="assets/tests-data.js?v=972452a2" defer></script>
+<script src="assets/mely.js?v=394634ec" defer></script>
 <script src="assets/results-plus.js?v=1f96d0e0" defer></script>
-<link rel="stylesheet" href="assets/theme.css?v=debe128c">
+<link rel="stylesheet" href="assets/theme.css?v=1200e8a2">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#050d1e">
 <link rel="icon" type="image/png" href="icons/favicon-32.png">
@@ -431,7 +432,7 @@ body:not(.ct-longdesc) .card .tests{display:none}
   <div class="ct-foot"><span id="ct-count" aria-live="polite"></span><button type="button" class="ct-reset" id="ct-reset" hidden>Szűrők törlése</button><label class="ct-long"><input type="checkbox" id="ct-long"> Részletes leírások</label></div>
   <p class="ct-empty" id="ct-empty" hidden>Egy teszt sem felel meg a szűrésnek. <button type="button" class="ct-reset" id="ct-reset2">Szűrők törlése</button></p>
 </section>
-<nav class="jump" aria-label="Témakörök"><a href="#cat-1" data-jump="1"><span class="jn">I.</span>Test<span class="jc" id="jc-1"></span></a><a href="#cat-2" data-jump="2"><span class="jn">II.</span>Kötődés · séma<span class="jc" id="jc-2"></span></a><a href="#cat-3" data-jump="3"><span class="jn">III.</span>Szex-funkció<span class="jc" id="jc-3"></span></a><a href="#cat-4" data-jump="4"><span class="jn">IV.</span>Attitűdök<span class="jc" id="jc-4"></span></a><a href="#cat-5" data-jump="5"><span class="jn">V.</span>Kapcsolati nyelvek<span class="jc" id="jc-5"></span></a><a href="#cat-6" data-jump="6"><span class="jn">VI.</span>Személyiség<span class="jc" id="jc-6"></span></a><a href="#cat-7" data-jump="7"><span class="jn">VII.</span>Kapcsolati dinamika<span class="jc" id="jc-7"></span></a><a href="#cat-8" data-jump="8"><span class="jn">VIII.</span>Értékek · cselekvés<span class="jc" id="jc-8"></span></a><a href="#cat-9" data-jump="9"><span class="jn">IX.</span>Szabályozás<span class="jc" id="jc-9"></span></a><a href="#cat-10" data-jump="10"><span class="jn">X.</span>Hangulat · figyelem<span class="jc" id="jc-10"></span></a><a href="#cat-11" data-jump="11"><span class="jn">XI.</span>Önbizalom<span class="jc" id="jc-11"></span></a><a href="#cat-12" data-jump="12"><span class="jn">XII.</span>Jóllét · stressz<span class="jc" id="jc-12"></span></a><a href="#cat-13" data-jump="13"><span class="jn">XIII.</span>Kapcsolódás · értelem<span class="jc" id="jc-13"></span></a><a href="#cat-14" data-jump="14"><span class="jn">XIV.</span>Alvás · test<span class="jc" id="jc-14"></span></a><a href="#cat-15" data-jump="15"><span class="jn">XV.</span>Munka · célok<span class="jc" id="jc-15"></span></a><a href="#cat-16" data-jump="16"><span class="jn">XVI.</span>Szimbolikus<span class="jc" id="jc-16"></span></a></nav>
+<nav class="jump" aria-label="Témakörök"><a href="#cat-1" data-jump="1"><span class="jn">I.</span>Test<span class="jc" id="jc-1"></span></a><a href="#cat-2" data-jump="2"><span class="jn">II.</span>Kötődés · séma<span class="jc" id="jc-2"></span></a><a href="#cat-3" data-jump="3"><span class="jn">III.</span>Szex-funkció<span class="jc" id="jc-3"></span></a><a href="#cat-4" data-jump="4"><span class="jn">IV.</span>Attitűdök<span class="jc" id="jc-4"></span></a><a href="#cat-5" data-jump="5"><span class="jn">V.</span>Kapcsolati nyelvek<span class="jc" id="jc-5"></span></a><a href="#cat-6" data-jump="6"><span class="jn">VI.</span>Személyiség<span class="jc" id="jc-6"></span></a><a href="#cat-7" data-jump="7"><span class="jn">VII.</span>Kapcsolati dinamika<span class="jc" id="jc-7"></span></a><a href="#cat-8" data-jump="8"><span class="jn">VIII.</span>Értékek · cselekvés<span class="jc" id="jc-8"></span></a><a href="#cat-9" data-jump="9"><span class="jn">IX.</span>Szabályozás<span class="jc" id="jc-9"></span></a><a href="#cat-10" data-jump="10"><span class="jn">X.</span>Hangulat · figyelem<span class="jc" id="jc-10"></span></a><a href="#cat-11" data-jump="11"><span class="jn">XI.</span>Önbizalom<span class="jc" id="jc-11"></span></a><a href="#cat-12" data-jump="12"><span class="jn">XII.</span>Jóllét · stressz<span class="jc" id="jc-12"></span></a><a href="#cat-13" data-jump="13"><span class="jn">XIII.</span>Kapcsolódás · értelem<span class="jc" id="jc-13"></span></a><a href="#cat-14" data-jump="14"><span class="jn">XIV.</span>Alvás · test<span class="jc" id="jc-14"></span></a><a href="#cat-15" data-jump="15"><span class="jn">XV.</span>Munka · célok<span class="jc" id="jc-15"></span></a><a href="#cat-16" data-jump="16"><span class="jn">XVI.</span>Erőforrások<span class="jc" id="jc-16"></span></a><a href="#cat-17" data-jump="17"><span class="jn">XVII.</span>Szokások<span class="jc" id="jc-17"></span></a><a href="#cat-18" data-jump="18"><span class="jn">XVIII.</span>Szimbolikus<span class="jc" id="jc-18"></span></a></nav>
   <!-- KATEGÓRIA 1: TEST-TUDATOSSÁG -->
   <section class="cat" id="cat-1" data-cat="1">
     <div class="cat-head">
@@ -962,9 +963,20 @@ body:not(.ct-longdesc) .card .tests{display:none}
     <div class="cat-head">
       <span class="cat-num">XII.</span>
       <h2 class="cat-title">Jóllét és stressz</h2>
-      <span class="cat-sub">4 térkép · 34 kérdés · 2–3 havonta érdemes újra</span>
+      <span class="cat-sub">havi felmérés + 4 térkép · 2–3 havonta érdemes újra</span>
     </div>
     <div class="grid">
+      <a class="card" href="havi.html#test-pulse" data-key="pulse-responses-v1" data-total="20" data-name="Havi állapotfelmérés" style="--accent:#10b981">
+        <span class="card-tag">Havonta</span>
+        <h3>Havi <em>állapotfelmérés</em></h3>
+        <p class="desc">Jóllét, stressz, kimerültség, kapcsolódás és alvás egy 5 perces menetben, havi idővonallal.</p>
+        <ul class="tests">
+          <li><span class="name">5 rövid, validált skála</span><span class="cnt">20 kérdés</span></li>
+        </ul>
+        <div class="status" data-state="none"><span class="st-lbl">Nincs elkezdve</span><span class="st-bar"><span class="st-fill"></span></span></div>
+        <div class="open"><span class="open-lbl">Nyisd meg</span> <span class="arrow">›</span></div>
+      </a>
+
       <a class="card" href="jollet.html#test-who5" data-key="who5-responses-v1" data-total="5" data-name="WHO-5 · Jóllét" style="--accent:#10b981">
         <span class="card-tag">Közérzet</span>
         <h3>WHO-5 <em>Jóllét</em></h3>
@@ -1137,9 +1149,104 @@ body:not(.ct-longdesc) .card .tests{display:none}
     </div>
   </section>
 
-  <section class="cat sym" id="cat-16" data-cat="16">
+  <section class="cat" id="cat-16" data-cat="16">
     <div class="cat-head">
       <span class="cat-num">XVI.</span>
+      <h2 class="cat-title">Erőforrások</h2>
+      <span class="cat-sub">4 térkép · 45 kérdés</span>
+    </div>
+    <div class="grid">
+      <a class="card" href="eroforras.html#test-swls" data-key="swls-responses-v1" data-total="5" data-name="SWLS · Élettel való elégedettség" style="--accent:#10b981">
+        <span class="card-tag">Elégedettség</span>
+        <h3>SWLS <em>Élettel való elégedettség</em></h3>
+        <p class="desc">Ha egészében ránézel az életedre, mennyire felel meg a saját mércédnek.</p>
+        <ul class="tests">
+          <li><span class="name">SWLS · validált skála</span><span class="cnt">5 item</span></li>
+        </ul>
+        <div class="status" data-state="none"><span class="st-lbl">Nincs elkezdve</span><span class="st-bar"><span class="st-fill"></span></span></div>
+        <div class="open"><span class="open-lbl">Nyisd meg</span> <span class="arrow">›</span></div>
+      </a>
+
+      <a class="card" href="eroforras.html#test-lotr" data-key="lotr-responses-v1" data-total="10" data-name="LOT-R · Optimizmus" style="--accent:#d4a017">
+        <span class="card-tag">Optimizmus</span>
+        <h3>LOT-R <em>Optimizmus</em></h3>
+        <p class="desc">Mennyire számítasz arra, hogy a jövőben inkább jó dolgok történnek veled.</p>
+        <ul class="tests">
+          <li><span class="name">LOT-R · validált skála</span><span class="cnt">10 item</span></li>
+        </ul>
+        <div class="status" data-state="none"><span class="st-lbl">Nincs elkezdve</span><span class="st-bar"><span class="st-fill"></span></span></div>
+        <div class="open"><span class="open-lbl">Nyisd meg</span> <span class="arrow">›</span></div>
+      </a>
+
+      <a class="card" href="eroforras.html#test-gq6" data-key="gq6-responses-v1" data-total="6" data-name="GQ-6 · Hála" style="--accent:#d4a017">
+        <span class="card-tag">Hála</span>
+        <h3>GQ-6 <em>Hála</em></h3>
+        <p class="desc">Milyen gyakran, milyen erősen és hány dolog iránt érzel hálát.</p>
+        <ul class="tests">
+          <li><span class="name">GQ-6 · validált skála</span><span class="cnt">6 item</span></li>
+        </ul>
+        <div class="status" data-state="none"><span class="st-lbl">Nincs elkezdve</span><span class="st-bar"><span class="st-fill"></span></span></div>
+        <div class="open"><span class="open-lbl">Nyisd meg</span> <span class="arrow">›</span></div>
+      </a>
+
+      <a class="card" href="eroforras.html#test-bpns" data-key="bpnsfs-responses-v1" data-total="24" data-name="BPNSFS · Alapszükségletek" style="--accent:#2563eb">
+        <span class="card-tag">Alapszükségletek</span>
+        <h3>BPNSFS <em>Alapszükségletek</em></h3>
+        <p class="desc">Autonómia, kapcsolódás, kompetencia: mennyire kapják meg, amire szükségük van, és hol frusztrálódnak.</p>
+        <ul class="tests">
+          <li><span class="name">BPNSFS · validált skála</span><span class="cnt">24 item</span></li>
+        </ul>
+        <div class="status" data-state="none"><span class="st-lbl">Nincs elkezdve</span><span class="st-bar"><span class="st-fill"></span></span></div>
+        <div class="open"><span class="open-lbl">Nyisd meg</span> <span class="arrow">›</span></div>
+      </a>
+    </div>
+  </section>
+
+  <section class="cat" id="cat-17" data-cat="17">
+    <div class="cat-head">
+      <span class="cat-num">XVII.</span>
+      <h2 class="cat-title">Szokások és önkontroll</h2>
+      <span class="cat-sub">3 térkép · 33 kérdés</span>
+    </div>
+    <div class="grid">
+      <a class="card" href="szokasok.html#test-audit" data-key="audit-responses-v1" data-total="10" data-name="AUDIT · Alkoholfogyasztás" style="--accent:#d4a017">
+        <span class="card-tag">Alkohol</span>
+        <h3>AUDIT <em>Alkoholfogyasztás</em></h3>
+        <p class="desc">A WHO tíz kérdéses szűrője: milyen kockázati zónába esik a jelenlegi fogyasztási mintád.</p>
+        <ul class="tests">
+          <li><span class="name">AUDIT · validált szűrő</span><span class="cnt">10 item</span></li>
+        </ul>
+        <div class="status" data-state="none"><span class="st-lbl">Nincs elkezdve</span><span class="st-bar"><span class="st-fill"></span></span></div>
+        <div class="open"><span class="open-lbl">Nyisd meg</span> <span class="arrow">›</span></div>
+      </a>
+
+      <a class="card" href="szokasok.html#test-sas" data-key="sassv-responses-v1" data-total="10" data-name="SAS-SV · Telefonhasználat" style="--accent:#2563eb">
+        <span class="card-tag">Telefon</span>
+        <h3>SAS-SV <em>Telefonhasználat</em></h3>
+        <p class="desc">Nem a képernyőidő, hanem az, hogy mennyire zavarja a telefon a mindennapjaidat.</p>
+        <ul class="tests">
+          <li><span class="name">SAS-SV · validált skála</span><span class="cnt">10 item</span></li>
+        </ul>
+        <div class="status" data-state="none"><span class="st-lbl">Nincs elkezdve</span><span class="st-bar"><span class="st-fill"></span></span></div>
+        <div class="open"><span class="open-lbl">Nyisd meg</span> <span class="arrow">›</span></div>
+      </a>
+
+      <a class="card" href="szokasok.html#test-bscs" data-key="bscs-responses-v1" data-total="13" data-name="BSCS · Önkontroll" style="--accent:#10b981">
+        <span class="card-tag">Önkontroll</span>
+        <h3>BSCS <em>Önkontroll</em></h3>
+        <p class="desc">Mennyire tudod a pillanatnyi késztetést a hosszú távú céljaid kedvéért felülírni.</p>
+        <ul class="tests">
+          <li><span class="name">BSCS · validált skála</span><span class="cnt">13 item</span></li>
+        </ul>
+        <div class="status" data-state="none"><span class="st-lbl">Nincs elkezdve</span><span class="st-bar"><span class="st-fill"></span></span></div>
+        <div class="open"><span class="open-lbl">Nyisd meg</span> <span class="arrow">›</span></div>
+      </a>
+    </div>
+  </section>
+
+  <section class="cat sym" id="cat-18" data-cat="18">
+    <div class="cat-head">
+      <span class="cat-num">XVIII.</span>
       <h2 class="cat-title">Szimbolikus térképek</h2>
       <span class="cat-sub">nem tudományos · önreflexióhoz</span>
     </div>
@@ -1320,6 +1427,8 @@ window.addEventListener('DOMContentLoaded',function(){
     ['well','Hogy vagyok mostanában','Közérzet, stressz és kiégés: mennyire vagy most terhelve, és mennyire töltődsz.',['who5','pss','cbi']],
     ['sleep','Az alvásomat és a testemet','Alvásminőség, nappali álmosság és a testedhez való viszonyod.',['sci','ess','bas']],
     ['work','A munkához való viszonyomat','Mennyire töltődsz a munkádban, mennyire tartasz ki, és milyen a mérced önmagaddal szemben.',['uwes','grit','saps']],
+    ['res','Mi tart meg','Élettel való elégedettség, optimizmus, hála és a lelki alapszükségletek.',['swls','lotr','bpns']],
+    ['habit','A szokásaimat','Alkohol, telefon és önkontroll: hol szolgálnak a szokásaid, és hol kezdenek önálló életre kelni.',['audit','sas','bscs']],
     ['self','Az önbizalmamat','Mennyire tartod értékesnek magad, mennyire bízol a megküzdésedben, és mennyire tart vissza mások ítélete.',['rses','gse','bfne']],
     ['sex','A szexualitásomat','Vágy, izgalom és gátlás, szexuális elégedettség.',['sisses','sdi','nsss']]
   ];
@@ -1366,6 +1475,10 @@ window.addEventListener('DOMContentLoaded',function(){
     // 3. legutóbbi eredmény
     if(recs.length){var L=recs[0],dl=D[L.id]||{};
       html+='<a class="home-card" href="'+(Lk[L.id]||'osszegzes.html')+'"><span class="hk">Legutóbbi eredmény · '+fmt(L.t)+'</span><span class="hn">'+esc(dl.n||L.r.n||L.id)+'</span><span class="hd">'+esc(L.r.h||'')+'</span><span class="hg">Eredmény megnyitása ›</span></a>';}
+    // 4. havi állapotfelmérés: esedékes, ha nincs még, vagy 28 napnál régebbi
+    (function(){var h=res.pulse||[],L=h[h.length-1],days=L?Math.floor((Date.now()-Date.parse(L.done||L.t))/864e5):null;
+      var due=days===null||days>=28;
+      html+='<a class="home-card pulse-tile'+(due?' due':'')+'" href="havi.html#test-pulse"><span class="hk">Havi állapotfelmérés'+(L?' · '+fmt(L.done||L.t):'')+'</span><span class="hn">'+(due?(L?'Esedékes':'Első felmérés'):'Ebben a hónapban kész')+'</span><span class="hd">'+(L?esc(L.h||''):'Jóllét, stressz, kimerültség, kapcsolódás, alvás, kb. 5 perc. Havonta kitöltve idővonalat kapsz.')+'</span><span class="hg">'+(due?'Kitöltés ›':'Idővonal ›')+'</span></a>';})();
     document.getElementById('home-grid').innerHTML=html;
     var n=recs.length;document.getElementById('home-sub').innerHTML='<strong>'+n+'</strong> kiértékelt teszt · <a href="osszegzes.html" style="color:inherit">összegzés ›</a>';
     // nyitott vállalások
@@ -1423,7 +1536,7 @@ window.addEventListener('DOMContentLoaded',function(){
       if(ok&&ty.value)ok=c.dataset.type===ty.value;
       c.hidden=!ok;if(ok)n++;
     });
-    /* teszt nélküli témakör (XVI. Szimbolikus térképek) szűrés nélkül mindig látszik, szűréskor rejtve */
+    /* teszt nélküli témakör (XVIII. Szimbolikus térképek) szűrés nélkül mindig látszik, szűréskor rejtve */
     cats.forEach(function(ct){ct.hidden=ct.querySelector('.card[data-key]')?!ct.querySelector('.card[data-key]:not([hidden])'):(any&&!(words.length&&norm(ct.textContent).indexOf(words.join(' '))>-1));});
     cnt.textContent=any?n+' teszt felel meg a szűrésnek':cards.length+' teszt';
     rs.hidden=!any;emp.hidden=n>0;if(jump)jump.hidden=any;

@@ -185,6 +185,10 @@ function makeTest(cfg){
   function mount(container){
     container.insertAdjacentHTML('beforeend',panelHTML());
     load();
+    /* cfg.renewAfterDays: ismétlődő mérés (pl. havi). Ha az utolsó mentett mérés régebbi, a régi válaszok
+       nem maradnak kitöltve: új kitöltés indul, így a következő eredmény új mérés lesz, nem az előző javítása. */
+    if(cfg.renewAfterDays&&Object.keys(responses).length&&window.ONI){try{const h=ONI.all()[cfg.id]||[],L=h[h.length-1];
+      if(L&&(Date.now()-Date.parse(L.done||L.t))/864e5>=cfg.renewAfterDays){responses={};save();}}catch(e){}}
     $('quiz').innerHTML=quizHTML();
     $('quiz').addEventListener('click',e=>{
       const b=e.target.closest('[data-v]');if(!b)return;

@@ -216,3 +216,18 @@ html[data-theme="light"] .quad .cell .s{color:var(--u-soft)!important}
 .scale.s3{grid-template-columns:repeat(3,1fr)}
 .scale.s7{grid-template-columns:repeat(7,1fr)}
 @media (max-width:560px){.scale.s7{grid-template-columns:repeat(4,1fr)}}
+/* havi állapotfelmérés */
+.hub-tabs.one{display:none}
+.pulse-card .pulse-row{display:grid;grid-template-columns:1.2fr .9fr 1.3fr 1fr;gap:10px;align-items:center;padding:12px 0;border-top:1px solid var(--line-dark)}
+.pulse-card .pulse-row:first-of-type{border-top:0}
+.pulse-name a{color:var(--ink-lite);font-weight:600;text-decoration:none;border-bottom:1px dashed var(--line-glow)}
+.pulse-val{font-family:var(--font-display);font-size:24px;color:var(--pc)}
+.pulse-val span{display:block;font-family:var(--font-body);font-size:11px;color:var(--ink-lite-muted)}
+.pulse-delta{font-size:13px;color:var(--ink-lite-muted)}
+.pulse-delta.up{color:#34d399}.pulse-delta.down{color:#fb7185}
+.pulse-trend{color:var(--pc)}.pulse-spark{width:100%;max-width:120px;height:28px}
+@media (max-width:560px){.pulse-card .pulse-row{grid-template-columns:1fr 1fr}.pulse-trend{grid-column:2}}
+html[data-theme="light"] .pulse-name a{color:var(--u-ink)!important}
+html[data-theme="light"] .pulse-delta{color:var(--u-muted)}
+html[data-theme="light"] .pulse-delta.up{color:#047857!important}html[data-theme="light"] .pulse-delta.down{color:#9f1239!important}
+html[data-theme="light"] .pulse-val span{color:var(--u-muted)!important}
