@@ -1,0 +1,3881 @@
+{
+ "meta": {
+  "title": "Önismereti könyvtár",
+  "site": "https://jtdevzero.github.io/onismeret/",
+  "repo": "https://github.com/jtdevzero/onismeret",
+  "ev": {
+   "A": [
+    "Erős kutatási háttér",
+    "Több kontrollált vizsgálat vagy metaanalízis támogatja."
+   ],
+   "B": [
+    "Ígéretes, mérsékelt háttér",
+    "Van kutatás mögötte, de kisebb hatások, kevesebb vizsgálat vagy vitatott részletek."
+   ],
+   "C": [
+    "Gyakorlati vagy elméleti",
+    "Hasznos keret vagy tapasztalati tudás, de nincs vagy kevés a kontrollált vizsgálat."
+   ],
+   "V": [
+    "Vitatott",
+    "Népszerű, de a kutatások nem igazolták vagy kifejezetten cáfolták a fő állítást. Azért van itt, hogy tudd, mire figyelj."
+   ]
+  },
+  "types": {
+   "konyv": "Könyv",
+   "modszer": "Módszer",
+   "gyakorlat": "Gyakorlat",
+   "teszt": "Külső teszt",
+   "eszkoz": "Eszköz",
+   "podcast": "Podcast",
+   "kurzus": "Kurzus",
+   "kutatas": "Kutatás",
+   "segitseg": "Segítség"
+  },
+  "tags": {
+   "szokasok": "Szokások · halogatás",
+   "erzelem": "Érzelmek · szabályozás",
+   "kapcsolat": "Kapcsolat · kötődés",
+   "szex": "Szexualitás",
+   "trauma": "Trauma · test",
+   "onbizalom": "Önbizalom · önértékelés",
+   "ertelem": "Értelem · értékek",
+   "fejlodes": "Felnőttkori fejlődés",
+   "munka": "Munka · fókusz",
+   "alvas": "Alvás · test",
+   "jelenlet": "Jelenlét · mindfulness",
+   "stressz": "Stressz · kiégés",
+   "szemelyiseg": "Személyiség · erősségek",
+   "gondolkodas": "Gondolkodás · döntés",
+   "hangulat": "Hangulat · szorongás"
+  }
+ },
+ "cats": [
+  {
+   "id": "konyvek",
+   "dir": "01-konyvek",
+   "num": "01",
+   "title": "Könyvek",
+   "acc": "#8a6a1f",
+   "desc": "Könyvek témák szerint, a magyar kiadás címével, ahol tudjuk. Mindegyik mellett: miért érdemes, mennyire megalapozott, és melyik teszt eredményéhez kapcsolódik."
+  },
+  {
+   "id": "modszerek",
+   "dir": "02-modszerek",
+   "num": "02",
+   "title": "Módszertanok és irányzatok",
+   "acc": "#1e3a8a",
+   "desc": "A fő terápiás és fejlesztési irányzatok röviden: mire jó, kinek, mennyire bizonyított, és hogy egyedül vagy szakemberrel érdemes-e."
+  },
+  {
+   "id": "gyakorlatok",
+   "dir": "03-gyakorlatok",
+   "num": "03",
+   "title": "Gyakorlatok",
+   "acc": "#065f46",
+   "desc": "Kipróbálható, lépésről lépésre leírt gyakorlatok időigénnyel. A legtöbbjük 5–20 perc, és kutatásból jön."
+  },
+  {
+   "id": "tesztek",
+   "dir": "04-kulso-tesztek",
+   "num": "04",
+   "title": "Külső ingyenes tesztek",
+   "acc": "#881337",
+   "desc": "Ingyenes online kérdőívek más oldalakon, kiegészítésnek. Jelölve, melyik validált és melyik csak szórakozás."
+  },
+  {
+   "id": "eszkozok",
+   "dir": "05-eszkozok",
+   "num": "05",
+   "title": "Nyílt forrású eszközök",
+   "acc": "#5b21b6",
+   "desc": "Szokáskövetők, naplók, jegyzetelők, fókuszeszközök és awesome-listák. Ahol lehet, nyílt forráskódú és saját adatos."
+  },
+  {
+   "id": "hallgatnivalo",
+   "dir": "06-podcastok-kurzusok",
+   "num": "06",
+   "title": "Podcastok és kurzusok",
+   "acc": "#a16207",
+   "desc": "Ingyenes egyetemi kurzusok és podcastok, amelyek kutatókat és klinikusokat szólaltatnak meg."
+  },
+  {
+   "id": "elmelet",
+   "dir": "07-elmelet-kutatas",
+   "num": "07",
+   "title": "Elmélet és kutatás",
+   "acc": "#334155",
+   "desc": "Az alapművek és kulcscikkek, amelyekre a tesztek és a módszerek épülnek, plusz a nagy viták: mi nem replikálódott."
+  },
+  {
+   "id": "magyar",
+   "dir": "08-magyar",
+   "num": "08",
+   "title": "Magyar szerzők és segítség",
+   "acc": "#9f1239",
+   "desc": "Magyar szerzők alapművei és a mindig elérhető segélyvonalak."
+  }
+ ],
+ "items": [
+  {
+   "id": "atomszokasok",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Atomic Habits",
+   "hu": "Atomszokások",
+   "a": "James Clear",
+   "y": 2018,
+   "ev": "B",
+   "tg": [
+    "szokasok"
+   ],
+   "ts": [
+    "bscs",
+    "ips",
+    "sas"
+   ],
+   "w": "A szokás négy lépése (jel, vágy, válasz, jutalom) és az identitásalapú változás. Azonnal használható, de a hatásokat kutatásokból kölcsönzi, nem saját vizsgálatból."
+  },
+  {
+   "id": "tiny-habits",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Tiny Habits",
+   "a": "BJ Fogg",
+   "y": 2019,
+   "ev": "B",
+   "tg": [
+    "szokasok"
+   ],
+   "ts": [
+    "bscs"
+   ],
+   "w": "Viselkedés = motiváció × képesség × kiváltó jel. Nevetségesen kicsi kezdés, egy meglévő szokáshoz kötve. Jó ellenszer a túl nagy fogadalmakra."
+  },
+  {
+   "id": "szokas-hatalma",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "The Power of Habit",
+   "hu": "A szokás hatalma",
+   "a": "Charles Duhigg",
+   "y": 2012,
+   "ev": "B",
+   "tg": [
+    "szokasok"
+   ],
+   "ts": [
+    "bscs",
+    "audit"
+   ],
+   "w": "A szokáshurok és a kulcsszokások gondolata, sok esettanulmánnyal. Inkább megértéshez, mint programnak."
+  },
+  {
+   "id": "procrastination-equation",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "The Procrastination Equation",
+   "a": "Piers Steel",
+   "y": 2010,
+   "ev": "A",
+   "tg": [
+    "szokasok"
+   ],
+   "ts": [
+    "ips"
+   ],
+   "w": "A halogatás legnagyobb metaanalízisének szerzőjétől: elvárás, érték, impulzivitás és késleltetés. A IPS-eredményed mellé ez a legjobb magyarázat."
+  },
+  {
+   "id": "now-habit",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "The Now Habit",
+   "a": "Neil Fiore",
+   "y": 1988,
+   "ev": "C",
+   "tg": [
+    "szokasok"
+   ],
+   "ts": [
+    "ips",
+    "saps"
+   ],
+   "w": "A halogatás mint félelemkezelés. A „fordított naptár” (először a pihenést írod be) sokaknak működik."
+  },
+  {
+   "id": "willpower-instinct",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "The Willpower Instinct",
+   "a": "Kelly McGonigal",
+   "y": 2011,
+   "ev": "B",
+   "tg": [
+    "szokasok"
+   ],
+   "ts": [
+    "bscs",
+    "audit"
+   ],
+   "w": "Stanfordi kurzus könyvként: önkontroll, kísértés, stressz. Az akaraterő-kimerülésről szóló részt a későbbi replikációk fényében olvasd."
+  },
+  {
+   "id": "rethinking-positive",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Rethinking Positive Thinking",
+   "a": "Gabriele Oettingen",
+   "y": 2014,
+   "ev": "A",
+   "tg": [
+    "szokasok",
+    "munka"
+   ],
+   "ts": [
+    "gse",
+    "grit"
+   ],
+   "w": "Miért gyengít a puszta pozitív vizualizáció, és miért működik a WOOP: kívánság, eredmény, akadály, terv. Húsz év kutatás összefoglalója."
+  },
+  {
+   "id": "gondolkodas-gyorsan",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Thinking, Fast and Slow",
+   "hu": "Gondolkodás gyorsan és lassan",
+   "a": "Daniel Kahneman",
+   "y": 2011,
+   "ev": "B",
+   "tg": [
+    "gondolkodas"
+   ],
+   "ts": [],
+   "w": "Az 1-es és 2-es rendszer, torzítások, döntések. Alapmű, de néhány idézett priming-vizsgálat azóta nem replikálódott; ezt maga Kahneman is elismerte."
+  },
+  {
+   "id": "feeling-good",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Feeling Good",
+   "a": "David D. Burns",
+   "y": 1980,
+   "ev": "A",
+   "tg": [
+    "hangulat",
+    "onbizalom"
+   ],
+   "ts": [
+    "phq9",
+    "rses"
+   ],
+   "w": "Kognitív terápia önsegítő formában. Biblioterápiás vizsgálatokban enyhe-közepes lehangoltságnál mérhetően segített. A gondolattorzítások listája klasszikus."
+  },
+  {
+   "id": "mind-over-mood",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Mind Over Mood",
+   "a": "Dennis Greenberger, Christine A. Padesky",
+   "y": 1995,
+   "ev": "A",
+   "tg": [
+    "hangulat"
+   ],
+   "ts": [
+    "phq9",
+    "gad7"
+   ],
+   "w": "A legtöbbet használt KVT-munkafüzet (2. kiadás: 2015). Gondolatnapló, cselekvési kísérletek, szorongás- és depressziófejezetek."
+  },
+  {
+   "id": "unwinding-anxiety",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Unwinding Anxiety",
+   "a": "Judson Brewer",
+   "y": 2021,
+   "ev": "B",
+   "tg": [
+    "hangulat",
+    "szokasok",
+    "jelenlet"
+   ],
+   "ts": [
+    "gad7",
+    "sas"
+   ],
+   "w": "A szorongás mint szokáshurok, és a kíváncsiság mint kilépés. Mindfulness-alapú, kisebb klinikai vizsgálatokkal."
+  },
+  {
+   "id": "happiness-trap",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "The Happiness Trap",
+   "a": "Russ Harris",
+   "y": 2007,
+   "ev": "B",
+   "tg": [
+    "erzelem",
+    "ertelem"
+   ],
+   "ts": [
+    "ders",
+    "maas",
+    "mlq"
+   ],
+   "w": "Az ACT (elfogadás és elköteleződés) legjobb bevezetője: a nehéz gondolatok eltávolítása helyett távolságtartás és értékek szerinti cselekvés."
+  },
+  {
+   "id": "dbt-skills",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "DBT Skills Training Manual",
+   "a": "Marsha M. Linehan",
+   "y": 2014,
+   "ev": "A",
+   "tg": [
+    "erzelem"
+   ],
+   "ts": [
+    "ders"
+   ],
+   "w": "A dialektikus viselkedésterápia készségei: tudatosság, distressz-tűrés, érzelemszabályozás, kapcsolati hatékonyság. A munkalapok önállóan is használhatók."
+  },
+  {
+   "id": "how-emotions",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "How Emotions Are Made",
+   "a": "Lisa Feldman Barrett",
+   "y": 2017,
+   "ev": "A",
+   "tg": [
+    "erzelem"
+   ],
+   "ts": [
+    "tas",
+    "ders",
+    "maia2"
+   ],
+   "w": "Az érzelem mint az agy előrejelzése. Gyakorlati következmény: minél finomabb az érzelmi szókincsed, annál jobban szabályozol. Alexitímiánál különösen érdekes."
+  },
+  {
+   "id": "mindsight",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Mindsight",
+   "a": "Daniel J. Siegel",
+   "y": 2010,
+   "ev": "C",
+   "tg": [
+    "erzelem",
+    "jelenlet"
+   ],
+   "ts": [
+    "maas",
+    "ders"
+   ],
+   "w": "Az elme, az agy és a kapcsolatok integrációja. A „tolerancia-ablak” és a „nevezd meg, hogy megszelídítsd” közérthetően."
+  },
+  {
+   "id": "self-compassion",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Self-Compassion",
+   "a": "Kristin Neff",
+   "y": 2011,
+   "ev": "B",
+   "tg": [
+    "onbizalom",
+    "erzelem"
+   ],
+   "ts": [
+    "scs",
+    "rses",
+    "saps"
+   ],
+   "w": "Az önegyüttérzés három része: kedvesség, közös emberi tapasztalat, tudatosság. Az SCS-SF skála szerzőjétől, gyakorlatokkal."
+  },
+  {
+   "id": "gifts-imperfection",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "The Gifts of Imperfection",
+   "a": "Brené Brown",
+   "y": 2010,
+   "ev": "C",
+   "tg": [
+    "onbizalom"
+   ],
+   "ts": [
+    "saps",
+    "scs",
+    "bfne"
+   ],
+   "w": "Szégyen, perfekcionizmus, sebezhetőség. Kvalitatív kutatásra épül, nem kísérletekre. Érzelmileg sokaknak áttörés."
+  },
+  {
+   "id": "six-pillars",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "The Six Pillars of Self-Esteem",
+   "a": "Nathaniel Branden",
+   "y": 1994,
+   "ev": "C",
+   "tg": [
+    "onbizalom"
+   ],
+   "ts": [
+    "rses",
+    "gse"
+   ],
+   "w": "Az önértékelés hat gyakorlata (tudatos élet, önelfogadás, felelősség, önérvényesítés, céltudatosság, integritás), mondatbefejezős feladatokkal."
+  },
+  {
+   "id": "feel-the-fear",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Feel the Fear and Do It Anyway",
+   "a": "Susan Jeffers",
+   "y": 1987,
+   "ev": "C",
+   "tg": [
+    "onbizalom"
+   ],
+   "ts": [
+    "bfne",
+    "gse",
+    "obgy"
+   ],
+   "w": "A félelem nem tűnik el, mielőtt lépsz; a lépés közben csökken. Az expozíció elve népszerű nyelven."
+  },
+  {
+   "id": "perfect-enough",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "When Perfect Isn't Good Enough",
+   "a": "Martin M. Antony, Richard P. Swinson",
+   "y": 1998,
+   "ev": "A",
+   "tg": [
+    "onbizalom",
+    "munka"
+   ],
+   "ts": [
+    "saps",
+    "ips"
+   ],
+   "w": "KVT-alapú munkafüzet perfekcionizmusra: mérce, ellenőrzés, halogatás. Magas SAPS-diszkrepanciánál célzott olvasmány."
+  },
+  {
+   "id": "attached",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Attached",
+   "a": "Amir Levine, Rachel Heller",
+   "y": 2010,
+   "ev": "B",
+   "tg": [
+    "kapcsolat"
+   ],
+   "ts": [
+    "ecr",
+    "kotodes"
+   ],
+   "w": "A felnőtt kötődéselmélet közérthetően: szorongó, elkerülő, biztonságos. Kicsit leegyszerűsít, de az ECR-R eredmény értelmezéséhez kiváló."
+  },
+  {
+   "id": "hold-me-tight",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Hold Me Tight",
+   "hu": "Tarts szorosan",
+   "a": "Sue Johnson",
+   "y": 2008,
+   "ev": "A",
+   "tg": [
+    "kapcsolat"
+   ],
+   "ts": [
+    "ecr",
+    "las",
+    "gott"
+   ],
+   "w": "Az érzelemfókuszú párterápia (EFT) hét beszélgetése. Az EFT a legjobban vizsgált párterápiák egyike."
+  },
+  {
+   "id": "seven-principles",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "The Seven Principles for Making Marriage Work",
+   "a": "John M. Gottman, Nan Silver",
+   "y": 1999,
+   "ev": "B",
+   "tg": [
+    "kapcsolat"
+   ],
+   "ts": [
+    "gott",
+    "tki"
+   ],
+   "w": "Szeretettérkép, odafordulás, a négy lovas, megoldhatatlan konfliktusok. Laborban megfigyelt párokra épül, kérdőívekkel és gyakorlatokkal."
+  },
+  {
+   "id": "nvc",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Nonviolent Communication",
+   "hu": "Erőszakmentes kommunikáció",
+   "a": "Marshall B. Rosenberg",
+   "y": 1999,
+   "ev": "C",
+   "tg": [
+    "kapcsolat"
+   ],
+   "ts": [
+    "tki",
+    "apo"
+   ],
+   "w": "Megfigyelés, érzés, szükséglet, kérés. Konfliktusban az ítélkezés helyett a szükségletre figyel. Kevés kontrollált vizsgálat, sok gyakorlati tapasztalat."
+  },
+  {
+   "id": "mating-captivity",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Mating in Captivity",
+   "a": "Esther Perel",
+   "y": 2006,
+   "ev": "C",
+   "tg": [
+    "kapcsolat",
+    "szex"
+   ],
+   "ts": [
+    "nsss",
+    "sdi"
+   ],
+   "w": "Biztonság és vágy feszültsége hosszú kapcsolatban. Klinikai tapasztalatból írt esszé, nem kutatási összefoglaló."
+  },
+  {
+   "id": "come-as-you-are",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Come As You Are",
+   "a": "Emily Nagoski",
+   "y": 2015,
+   "ev": "B",
+   "tg": [
+    "szex"
+   ],
+   "ts": [
+    "sisses",
+    "nsss",
+    "saq"
+   ],
+   "w": "A kettős kontroll modell (gázpedál és fék), amit a SIS/SES mér. Ha kitöltötted, ez a könyv mondja el, mit kezdj az eredménnyel."
+  },
+  {
+   "id": "five-love-languages",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "The Five Love Languages",
+   "hu": "Az 5 szeretetnyelv",
+   "a": "Gary Chapman",
+   "y": 1992,
+   "ev": "V",
+   "tg": [
+    "kapcsolat"
+   ],
+   "ts": [
+    "love"
+   ],
+   "w": "Népszerű beszélgetésindító. A kutatások nem igazolták, hogy öt különálló „nyelv” lenne, vagy hogy az egyezés javítaná a kapcsolatot. Használd párbeszédhez, ne ítéletnek."
+  },
+  {
+   "id": "getting-love",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Getting the Love You Want",
+   "a": "Harville Hendrix",
+   "y": 1988,
+   "ev": "C",
+   "tg": [
+    "kapcsolat"
+   ],
+   "ts": [
+    "imago"
+   ],
+   "w": "Az Imago-elmélet alapkönyve: gyerekkori sebek a párválasztásban, és az Imago-párbeszéd. Az Imago-teszt mellé."
+  },
+  {
+   "id": "why-him",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Why Him? Why Her?",
+   "a": "Helen Fisher",
+   "y": 2009,
+   "ev": "C",
+   "tg": [
+    "kapcsolat",
+    "szemelyiseg"
+   ],
+   "ts": [
+    "fti"
+   ],
+   "w": "A négy temperamentum (felfedező, építő, irányító, tárgyaló) és a vonzódás. Érdekes keret, a biológiai kapcsolat bizonyítéka korlátozott."
+  },
+  {
+   "id": "body-keeps-score",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "The Body Keeps the Score",
+   "hu": "A test mindenre emlékszik",
+   "a": "Bessel van der Kolk",
+   "y": 2014,
+   "ev": "B",
+   "tg": [
+    "trauma"
+   ],
+   "ts": [
+    "maia2",
+    "des",
+    "tas"
+   ],
+   "w": "Trauma, test, emlékezet, kezelési lehetőségek. Hatalmas hatású; néhány idegtudományi állítását a szakma túlzónak tartja. Megterhelő olvasmány lehet."
+  },
+  {
+   "id": "waking-tiger",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Waking the Tiger",
+   "a": "Peter A. Levine",
+   "y": 1997,
+   "ev": "C",
+   "tg": [
+    "trauma"
+   ],
+   "ts": [
+    "maia2"
+   ],
+   "w": "A szomatikus élményfeldolgozás (SE) alapja: a félbemaradt védekező válaszok lezárása a testben. Inkább szemlélet, mint bizonyított módszer."
+  },
+  {
+   "id": "reinventing-life",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Reinventing Your Life",
+   "a": "Jeffrey E. Young, Janet S. Klosko",
+   "y": 1993,
+   "ev": "B",
+   "tg": [
+    "erzelem",
+    "kapcsolat"
+   ],
+   "ts": [
+    "ysq",
+    "smi"
+   ],
+   "w": "A sématerápia önsegítő könyve a YSQ szerzőjétől: 11 korai maladaptív séma, felismerés és változtatás. A YSQ-eredményed mellé ez az első olvasmány."
+  },
+  {
+   "id": "no-bad-parts",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "No Bad Parts",
+   "a": "Richard C. Schwartz",
+   "y": 2021,
+   "ev": "C",
+   "tg": [
+    "erzelem"
+   ],
+   "ts": [
+    "smi"
+   ],
+   "w": "Belső családrendszer (IFS): részek, védelmezők, száműzöttek, és a Self. Rokona a sématerápia módusz-modelljének (SMI)."
+  },
+  {
+   "id": "full-catastrophe",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Full Catastrophe Living",
+   "a": "Jon Kabat-Zinn",
+   "y": 1990,
+   "ev": "A",
+   "tg": [
+    "jelenlet",
+    "stressz"
+   ],
+   "ts": [
+    "maas",
+    "pss"
+   ],
+   "w": "Az MBSR nyolchetes program teljes leírása, testpásztázással, ülő és mozgásos meditációval. Stresszre és krónikus fájdalomra jól vizsgált."
+  },
+  {
+   "id": "barhova-mesz",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Wherever You Go, There You Are",
+   "hu": "Bárhová mész, ott vagy",
+   "a": "Jon Kabat-Zinn",
+   "y": 1994,
+   "ev": "C",
+   "tg": [
+    "jelenlet"
+   ],
+   "ts": [
+    "maas"
+   ],
+   "w": "Rövid fejezetek a mindennapi tudatos jelenlétről. Ha a programos könyv túl sok, ezzel kezdd."
+  },
+  {
+   "id": "radical-acceptance",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Radical Acceptance",
+   "a": "Tara Brach",
+   "y": 2003,
+   "ev": "C",
+   "tg": [
+    "jelenlet",
+    "onbizalom"
+   ],
+   "ts": [
+    "scs"
+   ],
+   "w": "Az „értéktelenség transza” és az elfogadás gyakorlata, a RAIN-módszer forrása. Buddhista és pszichoterápiás szemlélet."
+  },
+  {
+   "id": "power-of-now",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "The Power of Now",
+   "hu": "A most hatalma",
+   "a": "Eckhart Tolle",
+   "y": 1997,
+   "ev": "C",
+   "tg": [
+    "jelenlet"
+   ],
+   "ts": [],
+   "w": "Spirituális klasszikus a jelenlétről. Nem pszichológiai mű; akkor hasznos, ha a hangvétele megszólít."
+  },
+  {
+   "id": "mondj-igent",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Man's Search for Meaning",
+   "hu": "…mégis mondj igent az életre!",
+   "a": "Viktor E. Frankl",
+   "y": 1946,
+   "ev": "C",
+   "tg": [
+    "ertelem"
+   ],
+   "ts": [
+    "mlq"
+   ],
+   "w": "Koncentrációs táborban szerzett tapasztalat és a logoterápia alapjai: az értelem mint túlélési erő. Rövid, sokszor újraolvasott könyv."
+  },
+  {
+   "id": "staring-sun",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Staring at the Sun",
+   "a": "Irvin D. Yalom",
+   "y": 2008,
+   "ev": "C",
+   "tg": [
+    "ertelem"
+   ],
+   "ts": [
+    "mlq"
+   ],
+   "w": "A halálszorongás egzisztenciális terápiás megközelítése, esetekkel. Ha az MLQ-ban magas a keresés, ez mély, de nyugodt olvasmány."
+  },
+  {
+   "id": "good-life",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "The Good Life",
+   "a": "Robert Waldinger, Marc Schulz",
+   "y": 2023,
+   "ev": "A",
+   "tg": [
+    "kapcsolat",
+    "ertelem"
+   ],
+   "ts": [
+    "ucla",
+    "swls"
+   ],
+   "w": "A Harvard felnőttfejlődés-kutatás, 80+ év követés: a kapcsolatok minősége jósolja leginkább az egészséget és az elégedettséget."
+  },
+  {
+   "id": "together",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Together",
+   "a": "Vivek H. Murthy",
+   "y": 2020,
+   "ev": "B",
+   "tg": [
+    "kapcsolat"
+   ],
+   "ts": [
+    "ucla"
+   ],
+   "w": "A magány mint közegészségügyi kérdés, az USA tisztifőorvosától. Gyakorlati javaslatok a kapcsolódás újraépítéséhez."
+  },
+  {
+   "id": "flow",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Flow",
+   "hu": "Flow – Az áramlat",
+   "a": "Csíkszentmihályi Mihály",
+   "y": 1990,
+   "ev": "A",
+   "tg": [
+    "munka",
+    "ertelem"
+   ],
+   "ts": [
+    "uwes",
+    "maas"
+   ],
+   "w": "Az optimális élmény: kihívás és képesség egyensúlya, világos cél, azonnali visszajelzés. A magyar származású szerző életműve.",
+   "c2": "magyar"
+  },
+  {
+   "id": "tanult-optimizmus",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Learned Optimism",
+   "hu": "Tanult optimizmus",
+   "a": "Martin E. P. Seligman",
+   "y": 1990,
+   "ev": "A",
+   "tg": [
+    "hangulat",
+    "gondolkodas"
+   ],
+   "ts": [
+    "lotr",
+    "phq9"
+   ],
+   "w": "A magyarázó stílus (állandó, általános, személyes) és átírása az ABCDE-módszerrel. A LOT-R mellé."
+  },
+  {
+   "id": "flourish",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Flourish",
+   "a": "Martin E. P. Seligman",
+   "y": 2011,
+   "ev": "B",
+   "tg": [
+    "ertelem",
+    "szemelyiseg"
+   ],
+   "ts": [
+    "via",
+    "swls",
+    "who5"
+   ],
+   "w": "A PERMA-modell: pozitív érzelem, bevonódás, kapcsolatok, értelem, teljesítmény. A pozitív pszichológia programja."
+  },
+  {
+   "id": "character-strengths",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "The Power of Character Strengths",
+   "a": "Ryan M. Niemiec, Robert E. McGrath",
+   "y": 2019,
+   "ev": "B",
+   "tg": [
+    "szemelyiseg"
+   ],
+   "ts": [
+    "via"
+   ],
+   "w": "A VIA Intézet könyve a 24 erősségről: mit jelentenek, hogyan használd többet a fő erősségeidet. A VIA-72 eredmény mellé."
+  },
+  {
+   "id": "personality-nettle",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Personality: What Makes You the Way You Are",
+   "a": "Daniel Nettle",
+   "y": 2007,
+   "ev": "A",
+   "tg": [
+    "szemelyiseg"
+   ],
+   "ts": [
+    "bf"
+   ],
+   "w": "A Big Five közérthetően, evolúciós szemlélettel: mire jó a magas és az alacsony érték egy-egy vonásban. A legjobb könyv a Big Five-eredmény mellé."
+  },
+  {
+   "id": "quiet",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Quiet",
+   "a": "Susan Cain",
+   "y": 2012,
+   "ev": "B",
+   "tg": [
+    "szemelyiseg",
+    "munka"
+   ],
+   "ts": [
+    "bf"
+   ],
+   "w": "Az introverzió erősségei egy extravertált munkakultúrában. Alacsony extraverziónál felszabadító."
+  },
+  {
+   "id": "four-tendencies",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "The Four Tendencies",
+   "a": "Gretchen Rubin",
+   "y": 2017,
+   "ev": "C",
+   "tg": [
+    "szokasok",
+    "szemelyiseg"
+   ],
+   "ts": [
+    "ft"
+   ],
+   "w": "Megtartó, kérdező, engedelmes, lázadó: hogyan reagálsz külső és belső elvárásokra. Nem validált tipológia, de a szokásépítést jól személyre szabja."
+  },
+  {
+   "id": "conative-connection",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "The Conative Connection",
+   "a": "Kathy Kolbe",
+   "y": 1990,
+   "ev": "C",
+   "tg": [
+    "munka",
+    "szemelyiseg"
+   ],
+   "ts": [
+    "kolbe"
+   ],
+   "w": "A cselekvési ösztönök (tényfeltáró, rendszerező, kezdeményező, megvalósító) modellje. A cselekvési módok teszt mögötti elmélet."
+  },
+  {
+   "id": "why-we-do",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Why We Do What We Do",
+   "a": "Edward L. Deci, Richard Flaste",
+   "y": 1995,
+   "ev": "A",
+   "tg": [
+    "ertelem",
+    "munka"
+   ],
+   "ts": [
+    "bpns",
+    "uwes"
+   ],
+   "w": "Az önmeghatározás-elmélet a szerzőtől: autonómia, kompetencia, kapcsolódás. A BPNSFS mögötti elmélet első kézből."
+  },
+  {
+   "id": "drive",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Drive",
+   "a": "Daniel H. Pink",
+   "y": 2009,
+   "ev": "B",
+   "tg": [
+    "munka"
+   ],
+   "ts": [
+    "bpns",
+    "uwes"
+   ],
+   "w": "Az önmeghatározás-elmélet népszerű változata munkahelyre: autonómia, szakértelem, cél. Gyors olvasmány vezetőknek."
+  },
+  {
+   "id": "deep-work",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Deep Work",
+   "a": "Cal Newport",
+   "y": 2016,
+   "ev": "C",
+   "tg": [
+    "munka"
+   ],
+   "ts": [
+    "uwes",
+    "asrs"
+   ],
+   "w": "Megszakítás nélküli, kognitívan nehéz munka mint versenyelőny, és a napi rutin, ami lehetővé teszi."
+  },
+  {
+   "id": "digital-minimalism",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Digital Minimalism",
+   "a": "Cal Newport",
+   "y": 2019,
+   "ev": "C",
+   "tg": [
+    "szokasok",
+    "munka"
+   ],
+   "ts": [
+    "sas"
+   ],
+   "w": "30 napos digitális rendrakás, utána tudatos visszaengedés. Magas SAS-SV pontszámnál konkrét program."
+  },
+  {
+   "id": "four-thousand-weeks",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Four Thousand Weeks",
+   "a": "Oliver Burkeman",
+   "y": 2021,
+   "ev": "C",
+   "tg": [
+    "munka",
+    "ertelem"
+   ],
+   "ts": [
+    "ips",
+    "saps"
+   ],
+   "w": "Időgazdálkodás a végesség elfogadásával: nem fogsz mindent megcsinálni, ezért válassz. Perfekcionistáknak gyógyír."
+  },
+  {
+   "id": "taking-charge-adhd",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Taking Charge of Adult ADHD",
+   "a": "Russell A. Barkley",
+   "y": 2010,
+   "ev": "A",
+   "tg": [
+    "munka",
+    "hangulat"
+   ],
+   "ts": [
+    "asrs"
+   ],
+   "w": "A felnőttkori ADHD vezető kutatójától: a végrehajtó funkciók, gyakorlati szabályok, kezelési lehetőségek. Az ASRS nem diagnózis; ez a könyv segít eldönteni, érdemes-e vizsgálatra menni."
+  },
+  {
+   "id": "driven-distraction",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Driven to Distraction",
+   "a": "Edward M. Hallowell, John J. Ratey",
+   "y": 1994,
+   "ev": "B",
+   "tg": [
+    "munka",
+    "hangulat"
+   ],
+   "ts": [
+    "asrs"
+   ],
+   "w": "Két ADHD-s pszichiáter klasszikusa, sok esettel és felismeréssel (átdolgozva: 2011)."
+  },
+  {
+   "id": "burnout-nagoski",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Burnout",
+   "a": "Emily Nagoski, Amelia Nagoski",
+   "y": 2019,
+   "ev": "B",
+   "tg": [
+    "stressz"
+   ],
+   "ts": [
+    "cbi",
+    "pss",
+    "who5"
+   ],
+   "w": "A stressz és a stresszor különbsége, és a stresszválasz lezárása (mozgás, légzés, nevetés, ölelés, sírás). Gyakorlatias, kutatásokra hivatkozik."
+  },
+  {
+   "id": "when-body-says-no",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "When the Body Says No",
+   "a": "Gabor Maté",
+   "y": 2003,
+   "ev": "C",
+   "tg": [
+    "stressz",
+    "trauma"
+   ],
+   "ts": [
+    "pss",
+    "tas"
+   ],
+   "w": "Elfojtott érzelmek, krónikus stressz és betegség. Erős esetek, de az ok-okozati állításokat óvatosan kezeld.",
+   "c2": "magyar"
+  },
+  {
+   "id": "hungry-ghosts",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "In the Realm of Hungry Ghosts",
+   "a": "Gabor Maté",
+   "y": 2008,
+   "ev": "C",
+   "tg": [
+    "szokasok",
+    "trauma"
+   ],
+   "ts": [
+    "audit",
+    "sas"
+   ],
+   "w": "A függőség mint fájdalomcsillapítás, vancouveri klinikai tapasztalatból. Együttérző szemlélet a függőség kérdéséhez.",
+   "c2": "magyar"
+  },
+  {
+   "id": "miert-alszunk",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Why We Sleep",
+   "hu": "Miért alszunk?",
+   "a": "Matthew Walker",
+   "y": 2017,
+   "ev": "B",
+   "tg": [
+    "alvas"
+   ],
+   "ts": [
+    "sci",
+    "ess",
+    "meq"
+   ],
+   "w": "Az alvás szerepe mindenben. Motiváló, de néhány számot és állítást szakmai kritika ért; a gyakorlati tanácsai rendben vannak."
+  },
+  {
+   "id": "say-good-night",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Say Good Night to Insomnia",
+   "a": "Gregg D. Jacobs",
+   "y": 1998,
+   "ev": "A",
+   "tg": [
+    "alvas"
+   ],
+   "ts": [
+    "sci"
+   ],
+   "w": "Hathetes CBT-I program önsegítő formában. Az álmatlanság első vonalbeli kezelése, altatók nélkül."
+  },
+  {
+   "id": "body-image-workbook",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "The Body Image Workbook",
+   "a": "Thomas F. Cash",
+   "y": 1997,
+   "ev": "A",
+   "tg": [
+    "alvas",
+    "onbizalom"
+   ],
+   "ts": [
+    "bas"
+   ],
+   "w": "Nyolclépéses KVT-program a testképre, a terület vezető kutatójától (2. kiadás: 2008)."
+  },
+  {
+   "id": "intuitive-eating",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Intuitive Eating",
+   "a": "Evelyn Tribole, Elyse Resch",
+   "y": 1995,
+   "ev": "B",
+   "tg": [
+    "alvas"
+   ],
+   "ts": [
+    "tfeq",
+    "bas"
+   ],
+   "w": "Diéták helyett az éhség- és teltségjelzések újratanulása. Ha az evés körül komoly nehézség van, szakember mellett olvasd."
+  },
+  {
+   "id": "naked-mind",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "This Naked Mind",
+   "a": "Annie Grace",
+   "y": 2015,
+   "ev": "C",
+   "tg": [
+    "szokasok"
+   ],
+   "ts": [
+    "audit"
+   ],
+   "w": "Az alkoholról szóló hiedelmek átvizsgálása, ítélkezés nélkül. Magas AUDIT-nál ne helyettesítse az orvosi segítséget, és hirtelen leállás előtt kérdezz orvost."
+  },
+  {
+   "id": "immunity-to-change",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Immunity to Change",
+   "a": "Robert Kegan, Lisa Laskow Lahey",
+   "y": 2009,
+   "ev": "B",
+   "tg": [
+    "fejlodes",
+    "szokasok"
+   ],
+   "ts": [],
+   "w": "Miért nem változunk, amikor tényleg akarunk: a rejtett ellenvállalások és nagy feltevések. Négyoszlopos térképpel, amit egyedül is kitölthetsz."
+  },
+  {
+   "id": "elmelkedesek",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Meditations",
+   "hu": "Elmélkedések",
+   "a": "Marcus Aurelius",
+   "y": 180,
+   "ev": "C",
+   "tg": [
+    "ertelem",
+    "gondolkodas"
+   ],
+   "ts": [],
+   "w": "Egy császár naplója önmagának. A sztoikus gyakorlat forrása: ami rajtad múlik és ami nem. A KVT egyik szellemi őse."
+  },
+  {
+   "id": "akadaly-az-ut",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "The Obstacle Is the Way",
+   "hu": "Az akadály maga az út",
+   "a": "Ryan Holiday",
+   "y": 2014,
+   "ev": "C",
+   "tg": [
+    "ertelem",
+    "gondolkodas"
+   ],
+   "ts": [
+    "brs"
+   ],
+   "w": "Sztoicizmus mai nyelven: észlelés, cselekvés, akarat. Gyors, motiváló, nem tudományos mű."
+  },
+  {
+   "id": "thanks-emmons",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Thanks!",
+   "a": "Robert A. Emmons",
+   "y": 2007,
+   "ev": "A",
+   "tg": [
+    "ertelem",
+    "hangulat"
+   ],
+   "ts": [
+    "gq6"
+   ],
+   "w": "A hálakutatás vezetőjétől (a GQ-6 egyik szerzője): mit mutatnak a hálanapló-kísérletek, és hogyan csináld, hogy ne kopjon el."
+  },
+  {
+   "id": "outlive",
+   "c": "konyvek",
+   "t": "konyv",
+   "ti": "Outlive",
+   "a": "Peter Attia",
+   "y": 2023,
+   "ev": "B",
+   "tg": [
+    "alvas"
+   ],
+   "ts": [
+    "sci"
+   ],
+   "w": "Egészséges élettartam: mozgás, alvás, táplálkozás, érzelmi egészség. Orvosi szemlélet, néhol a bizonyítékoknál előrébb jár."
+  },
+  {
+   "id": "pszichofitness",
+   "c": "magyar",
+   "t": "konyv",
+   "ti": "Pszichofitness",
+   "a": "Bagdy Emőke",
+   "ev": "C",
+   "tg": [
+    "stressz",
+    "onbizalom"
+   ],
+   "ts": [
+    "pss",
+    "brs"
+   ],
+   "w": "Lelki edzésprogram a magyar klinikai szakpszichológus-irodalom ismert alakjától: stresszkezelés, önismeret, lelki egészség gyakorlatokkal."
+  },
+  {
+   "id": "empatia-buda",
+   "c": "magyar",
+   "t": "konyv",
+   "ti": "Empátia",
+   "a": "Buda Béla",
+   "ev": "C",
+   "tg": [
+    "kapcsolat"
+   ],
+   "ts": [
+    "gott"
+   ],
+   "w": "A beleélés lélektana, magyar alapmű. Kapcsolati és segítő munkához."
+  },
+  {
+   "id": "stressz-selye",
+   "c": "magyar",
+   "t": "konyv",
+   "ti": "Stress Without Distress",
+   "hu": "Stressz distressz nélkül",
+   "a": "Selye János",
+   "y": 1974,
+   "ev": "C",
+   "tg": [
+    "stressz"
+   ],
+   "ts": [
+    "pss",
+    "cbi"
+   ],
+   "w": "A stresszfogalom megalkotójától, az általános adaptációs szindróma és a „jó stressz” (eustressz) gondolata. Történeti alapmű."
+  },
+  {
+   "id": "magyar-lelkiallapot",
+   "c": "magyar",
+   "t": "konyv",
+   "ti": "Magyar lelkiállapot",
+   "a": "Kopp Mária, Skrabski Árpád",
+   "ev": "B",
+   "tg": [
+    "stressz",
+    "hangulat"
+   ],
+   "ts": [
+    "phq9",
+    "pss"
+   ],
+   "w": "Országos felmérésekre épülő magatartástudományi munka a magyar népesség lelki egészségéről, a Hungarostudy-kutatások vezetőitől."
+  },
+  {
+   "id": "lelki-elsosegely",
+   "c": "magyar",
+   "t": "segitseg",
+   "ti": "Lelki Elsősegély Telefonszolgálat: 116-123",
+   "a": "Ingyenes, éjjel-nappal",
+   "ev": "A",
+   "tg": [
+    "hangulat"
+   ],
+   "ts": [
+    "phq9",
+    "gad7",
+    "ucla"
+   ],
+   "u": "tel:116123",
+   "w": "Ha most nehéz, ha nincs kivel beszélni, ha a gondolataid sötétek: hívd. Névtelenül is lehet, a nap bármely órájában."
+  },
+  {
+   "id": "segelyhivo-112",
+   "c": "magyar",
+   "t": "segitseg",
+   "ti": "Általános segélyhívó: 112",
+   "a": "Életveszélyben",
+   "ev": "A",
+   "tg": [
+    "hangulat"
+   ],
+   "ts": [
+    "phq9"
+   ],
+   "u": "tel:112",
+   "w": "Közvetlen veszélyben, magadért vagy másért. Ne mérlegelj, hívd."
+  },
+  {
+   "id": "kek-vonal",
+   "c": "magyar",
+   "t": "segitseg",
+   "ti": "Kék Vonal: 116-111",
+   "a": "Gyerekeknek és fiataloknak, ingyenes",
+   "ev": "A",
+   "tg": [
+    "hangulat"
+   ],
+   "ts": [],
+   "u": "tel:116111",
+   "w": "Gyermek- és ifjúsági lelki segély. Ha egy fiatal ismerősödnek kell segítség, ezt a számot add tovább."
+  },
+  {
+   "id": "szakember-keresese",
+   "c": "magyar",
+   "t": "segitseg",
+   "ti": "Hogyan találj szakembert?",
+   "a": "Gyakorlati útmutató",
+   "ev": "C",
+   "tg": [
+    "hangulat"
+   ],
+   "ts": [
+    "phq9",
+    "gad7",
+    "asrs"
+   ],
+   "w": "Állami ellátás: háziorvos → beutaló pszichiátriai gondozóba vagy klinikai szakpszichológushoz. Magánúton: kérdezd meg a végzettséget (klinikai szakpszichológus, pszichiáter, pszichoterapeuta) és a módszert. Az első alkalom illeszkedéspróba; ha nem kattan, válts."
+  },
+  {
+   "id": "kvt",
+   "c": "modszerek",
+   "t": "modszer",
+   "ti": "Kognitív viselkedésterápia (KVT / CBT)",
+   "a": "Beck, Ellis nyomán",
+   "ev": "A",
+   "tg": [
+    "hangulat",
+    "gondolkodas"
+   ],
+   "ts": [
+    "phq9",
+    "gad7",
+    "rses"
+   ],
+   "w": "Gondolat, érzés, viselkedés összefüggése; gondolatnapló, viselkedési kísérletek, expozíció. A legtöbbet vizsgált pszichoterápia. Önsegítő formában is működik (Feeling Good, Mind Over Mood)."
+  },
+  {
+   "id": "act",
+   "c": "modszerek",
+   "t": "modszer",
+   "ti": "Elfogadás- és elköteleződés-terápia (ACT)",
+   "a": "Steven C. Hayes",
+   "ev": "A",
+   "tg": [
+    "erzelem",
+    "ertelem"
+   ],
+   "ts": [
+    "ders",
+    "mlq",
+    "maas"
+   ],
+   "w": "A nehéz belső élmények elfogadása és az értékek szerinti cselekvés. Rugalmasságot épít, nem tüneteket irt. Önsegítő könyvként: The Happiness Trap."
+  },
+  {
+   "id": "dbt",
+   "c": "modszerek",
+   "t": "modszer",
+   "ti": "Dialektikus viselkedésterápia (DBT)",
+   "a": "Marsha M. Linehan",
+   "ev": "A",
+   "tg": [
+    "erzelem"
+   ],
+   "ts": [
+    "ders"
+   ],
+   "w": "Erős érzelmi hullámzásra kifejlesztett készségtréning. A készségek (pl. TIPP, ellentétes cselekvés, DEAR MAN) bárkinek hasznosak."
+  },
+  {
+   "id": "sematerapia",
+   "c": "modszerek",
+   "t": "modszer",
+   "ti": "Sématerápia",
+   "a": "Jeffrey E. Young",
+   "ev": "A",
+   "tg": [
+    "erzelem",
+    "kapcsolat"
+   ],
+   "ts": [
+    "ysq",
+    "smi"
+   ],
+   "w": "Korai maladaptív sémák és módusz-munka, imaginációval és székmunkával. Személyiségzavaroknál jól vizsgált. Mélyebb munkához szakemberrel."
+  },
+  {
+   "id": "eft-par",
+   "c": "modszerek",
+   "t": "modszer",
+   "ti": "Érzelemfókuszú párterápia (EFT)",
+   "a": "Sue Johnson",
+   "ev": "A",
+   "tg": [
+    "kapcsolat"
+   ],
+   "ts": [
+    "ecr",
+    "las",
+    "gott"
+   ],
+   "w": "Kötődéselméleti párterápia: a negatív kör felismerése, alatta a kötődési szükségletek. A legjobb eredményű párterápiák egyike."
+  },
+  {
+   "id": "gottman-modszer",
+   "c": "modszerek",
+   "t": "modszer",
+   "ti": "Gottman-módszer",
+   "a": "John és Julie Gottman",
+   "ev": "B",
+   "tg": [
+    "kapcsolat"
+   ],
+   "ts": [
+    "gott",
+    "tki"
+   ],
+   "w": "A „Biztos párkapcsolat háza”: barátság, konfliktuskezelés, közös értelem. A Gottman-térkép teszt erre épül."
+  },
+  {
+   "id": "ifs",
+   "c": "modszerek",
+   "t": "modszer",
+   "ti": "Belső családrendszer (IFS)",
+   "a": "Richard C. Schwartz",
+   "ev": "C",
+   "tg": [
+    "erzelem"
+   ],
+   "ts": [
+    "smi"
+   ],
+   "w": "A psziché részekből áll; a cél nem kiirtani őket, hanem a Selfből kapcsolódni hozzájuk. Népszerű és ígéretes, de még kevés a kontrollált vizsgálat."
+  },
+  {
+   "id": "mbsr",
+   "c": "modszerek",
+   "t": "modszer",
+   "ti": "Tudatosságon alapuló stresszcsökkentés (MBSR)",
+   "a": "Jon Kabat-Zinn",
+   "ev": "A",
+   "tg": [
+    "jelenlet",
+    "stressz"
+   ],
+   "ts": [
+    "maas",
+    "pss"
+   ],
+   "w": "Nyolchetes, heti 2,5 órás program napi gyakorlással. Stresszre, szorongásra, krónikus fájdalomra metaanalízisekkel alátámasztva. Ingyen is elvégezhető (Palouse Mindfulness)."
+  },
+  {
+   "id": "mbct",
+   "c": "modszerek",
+   "t": "modszer",
+   "ti": "Tudatosságon alapuló kognitív terápia (MBCT)",
+   "a": "Segal, Williams, Teasdale",
+   "ev": "A",
+   "tg": [
+    "jelenlet",
+    "hangulat"
+   ],
+   "ts": [
+    "phq9",
+    "maas"
+   ],
+   "w": "MBSR és KVT ötvözete visszatérő depresszió megelőzésére. Három vagy több korábbi epizódnál csökkenti a visszaesés kockázatát."
+  },
+  {
+   "id": "cft",
+   "c": "modszerek",
+   "t": "modszer",
+   "ti": "Együttérzés-fókuszú terápia (CFT)",
+   "a": "Paul Gilbert",
+   "ev": "B",
+   "tg": [
+    "onbizalom",
+    "erzelem"
+   ],
+   "ts": [
+    "scs",
+    "rses"
+   ],
+   "w": "Három érzelemrendszer (fenyegetés, hajtóerő, megnyugvás) és az együttérző én fejlesztése. Erős szégyennél és önkritikánál."
+  },
+  {
+   "id": "msc",
+   "c": "modszerek",
+   "t": "modszer",
+   "ti": "Tudatos önegyüttérzés program (MSC)",
+   "a": "Kristin Neff, Christopher Germer",
+   "ev": "B",
+   "tg": [
+    "onbizalom",
+    "jelenlet"
+   ],
+   "ts": [
+    "scs"
+   ],
+   "w": "Nyolchetes csoportos program. A vizsgálatokban nő az önegyüttérzés és csökken a lehangoltság. A SCS-SF alacsony értékénél célzott lépés."
+  },
+  {
+   "id": "cbt-i",
+   "c": "modszerek",
+   "t": "modszer",
+   "ti": "Álmatlanság kognitív viselkedésterápiája (CBT-I)",
+   "a": "",
+   "ev": "A",
+   "tg": [
+    "alvas"
+   ],
+   "ts": [
+    "sci",
+    "ess"
+   ],
+   "w": "Alváskorlátozás, ingerkontroll, alváshigiénia, gondolati munka. Az álmatlanság első vonalbeli kezelése, hosszú távon hatékonyabb az altatónál."
+  },
+  {
+   "id": "mi",
+   "c": "modszerek",
+   "t": "modszer",
+   "ti": "Motivációs interjú",
+   "a": "William R. Miller, Stephen Rollnick",
+   "ev": "A",
+   "tg": [
+    "szokasok"
+   ],
+   "ts": [
+    "audit",
+    "sas"
+   ],
+   "w": "Ambivalencia feloldása rábeszélés nélkül: a változás melletti saját érvek felszínre hozása. Függőségeknél jól vizsgált, önmagadra is alkalmazható kérdésekkel."
+  },
+  {
+   "id": "pozitiv-intervenciok",
+   "c": "modszerek",
+   "t": "modszer",
+   "ti": "Pozitív pszichológiai intervenciók",
+   "a": "Seligman, Lyubomirsky és mások",
+   "ev": "B",
+   "tg": [
+    "ertelem",
+    "hangulat"
+   ],
+   "ts": [
+    "who5",
+    "swls",
+    "gq6",
+    "via"
+   ],
+   "w": "Hálagyakorlatok, erősséghasználat, legjobb lehetséges én. Metaanalízisekben kicsi, de valós hatás a jóllétre; a hatás az illeszkedésen és a rendszerességen múlik."
+  },
+  {
+   "id": "logoterapia",
+   "c": "modszerek",
+   "t": "modszer",
+   "ti": "Logoterápia és egzisztenciális terápia",
+   "a": "Viktor Frankl, Irvin Yalom",
+   "ev": "C",
+   "tg": [
+    "ertelem"
+   ],
+   "ts": [
+    "mlq"
+   ],
+   "w": "Értelem, szabadság, magány, halál mint az élet alapkérdései. Kevésbé technika, inkább szemlélet."
+  },
+  {
+   "id": "sztoicizmus",
+   "c": "modszerek",
+   "t": "modszer",
+   "ti": "Sztoikus gyakorlatok",
+   "a": "Epiktétosz, Seneca, Marcus Aurelius",
+   "ev": "C",
+   "tg": [
+    "gondolkodas",
+    "ertelem"
+   ],
+   "ts": [
+    "brs",
+    "lotr"
+   ],
+   "w": "A kontroll kettéosztása, a rosszabb elképzelése (premeditatio malorum), esti áttekintés. Filozófiai gyakorlat, a KVT rokona."
+  },
+  {
+   "id": "somatic",
+   "c": "modszerek",
+   "t": "modszer",
+   "ti": "Testközpontú traumamunka (SE, szenzomotoros)",
+   "a": "Peter Levine, Pat Ogden",
+   "ev": "C",
+   "tg": [
+    "trauma"
+   ],
+   "ts": [
+    "maia2",
+    "des"
+   ],
+   "w": "A test jelzéseinek lassú, adagolt követése. Ígéretes, de a bizonyíték korlátozott; trauma esetén képzett szakemberrel."
+  },
+  {
+   "id": "emdr",
+   "c": "modszerek",
+   "t": "modszer",
+   "ti": "EMDR",
+   "a": "Francine Shapiro",
+   "ev": "A",
+   "tg": [
+    "trauma"
+   ],
+   "ts": [
+    "des"
+   ],
+   "w": "Traumás emlékek feldolgozása kétoldali ingerléssel. PTSD-re a nemzetközi irányelvek ajánlják. Csak képzett terapeutával; önmagadon ne próbáld."
+  },
+  {
+   "id": "immunity-modszer",
+   "c": "modszerek",
+   "t": "modszer",
+   "ti": "Változási immunitás (Immunity to Change)",
+   "a": "Robert Kegan, Lisa Laskow Lahey",
+   "ev": "B",
+   "tg": [
+    "fejlodes"
+   ],
+   "ts": [],
+   "w": "Négyoszlopos térkép: fejlesztési cél, akadályozó viselkedések, rejtett ellenvállalások, nagy feltevések. Utána biztonságos kísérletek a feltevés tesztelésére."
+  },
+  {
+   "id": "gtd",
+   "c": "modszerek",
+   "t": "modszer",
+   "ti": "Getting Things Done (GTD)",
+   "a": "David Allen",
+   "ev": "C",
+   "tg": [
+    "munka"
+   ],
+   "ts": [
+    "ips",
+    "asrs"
+   ],
+   "w": "Minden elköteleződés egy megbízható rendszerbe: begyűjtés, tisztázás, rendezés, áttekintés, végrehajtás. A heti áttekintés a lényeg."
+  },
+  {
+   "id": "woop-modszer",
+   "c": "modszerek",
+   "t": "modszer",
+   "ti": "WOOP / mentális kontrasztálás",
+   "a": "Gabriele Oettingen",
+   "ev": "A",
+   "tg": [
+    "szokasok",
+    "munka"
+   ],
+   "ts": [
+    "gse",
+    "ips"
+   ],
+   "w": "A kívánt jövő és a belső akadály összevetése, majd ha–akkor terv. Rövid, ingyenes, sok vizsgálattal. Lásd a Gyakorlatok között."
+  },
+  {
+   "id": "coaching-grow",
+   "c": "modszerek",
+   "t": "modszer",
+   "ti": "Coaching (GROW-modell)",
+   "a": "John Whitmore",
+   "ev": "C",
+   "tg": [
+    "munka",
+    "fejlodes"
+   ],
+   "ts": [
+    "gse"
+   ],
+   "w": "Cél, valóság, lehetőségek, akarat. Egyszerű beszélgetésszerkezet önmagadnak vagy másnak. A coaching hatásvizsgálatai vegyesek, a minőség a coachon múlik."
+  },
+  {
+   "id": "focusing",
+   "c": "modszerek",
+   "t": "modszer",
+   "ti": "Focusing",
+   "a": "Eugene Gendlin",
+   "ev": "C",
+   "tg": [
+    "erzelem",
+    "trauma"
+   ],
+   "ts": [
+    "maia2",
+    "tas"
+   ],
+   "w": "A homályos testi érzet („felérzés”) megszólítása, amíg szót nem talál. A terápiás haladás egyik előrejelzőjéből lett módszer."
+  },
+  {
+   "id": "expressziv-iras",
+   "c": "gyakorlatok",
+   "t": "gyakorlat",
+   "ti": "Expresszív írás (Pennebaker)",
+   "a": "James W. Pennebaker",
+   "ev": "A",
+   "tg": [
+    "erzelem",
+    "trauma"
+   ],
+   "ts": [
+    "ders",
+    "tas",
+    "pss"
+   ],
+   "time": "4 nap × 15–20 perc",
+   "w": "Írj a legmélyebb gondolataidról és érzéseidről egy megterhelő élményről. Több száz vizsgálat; kicsi, de tartós hatás egészségre és hangulatra.",
+   "how": [
+    "Válassz 4 egymást követő napot és egy zavartalan negyedórát.",
+    "Írj folyamatosan egy nehéz élményről: mi történt, mit éreztél, hogyan hat ma rád.",
+    "Ne javíts, ne törődj a helyesírással; senkinek nem kell megmutatnod.",
+    "Az első napokban rosszabb lehet a hangulat; ez várható. Ha elárasztó, válts könnyebb témára."
+   ]
+  },
+  {
+   "id": "legjobb-en",
+   "c": "gyakorlatok",
+   "t": "gyakorlat",
+   "ti": "Legjobb lehetséges én",
+   "a": "Laura King (2001)",
+   "ev": "A",
+   "tg": [
+    "ertelem",
+    "hangulat"
+   ],
+   "ts": [
+    "lotr",
+    "mlq",
+    "swls"
+   ],
+   "time": "20 perc, 1–4 alkalom",
+   "w": "Képzeld el, hogy 10 év múlva minden úgy alakult, ahogy szeretted volna, és írd le részletesen. Az optimizmust növelő legjobban vizsgált gyakorlat.",
+   "how": [
+    "Válassz egy területet (munka, kapcsolat, egészség) vagy az egészet.",
+    "Írd le 15–20 percig, milyen a napod abban a jövőben, konkrét részletekkel.",
+    "Végül: mi az az egy lépés, ami ebbe az irányba visz a héten?",
+    "A WOOP-pal kiegészítve (akadály + terv) a hatás erősebb."
+   ]
+  },
+  {
+   "id": "harom-jo-dolog",
+   "c": "gyakorlatok",
+   "t": "gyakorlat",
+   "ti": "Három jó dolog",
+   "a": "Seligman és mtsai (2005)",
+   "ev": "B",
+   "tg": [
+    "hangulat",
+    "ertelem"
+   ],
+   "ts": [
+    "who5",
+    "gq6",
+    "phq9"
+   ],
+   "time": "5 perc este, 1 hét",
+   "w": "Minden este három dolog, ami jól ment, és hogy miért. Az eredeti vizsgálatban hónapokig tartó javulás; a későbbi replikációk kisebb hatást mutattak.",
+   "how": [
+    "Este írj le három dolgot, ami aznap jól ment (lehet apróság).",
+    "Mindegyik mellé: miért történt meg? Mi volt benne a te részed?",
+    "Egy hét után nézd meg, folytatnád-e. Heti 1–3 alkalom sokaknak jobb, mint a napi."
+   ]
+  },
+  {
+   "id": "halalevel",
+   "c": "gyakorlatok",
+   "t": "gyakorlat",
+   "ti": "Hálalevél és hálalátogatás",
+   "a": "Seligman és mtsai (2005)",
+   "ev": "A",
+   "tg": [
+    "kapcsolat",
+    "ertelem"
+   ],
+   "ts": [
+    "gq6",
+    "ucla"
+   ],
+   "time": "30 perc + egy találkozás",
+   "w": "Levél valakinek, akinek sosem köszönted meg rendesen, amit kaptál tőle, és felolvasás neki. A legerősebb rövid távú hatású pozitív intervenció.",
+   "how": [
+    "Gondolj valakire, aki fontos volt, de nem mondtad el neki.",
+    "Írj neki egy oldalt: konkrétan mit tett, és mit változtatott az életedben.",
+    "Ha lehet, találkozz vele és olvasd fel; ha nem, küldd el.",
+    "Számíts rá, hogy megható lesz mindkettőtöknek."
+   ]
+  },
+  {
+   "id": "woop",
+   "c": "gyakorlatok",
+   "t": "gyakorlat",
+   "ti": "WOOP",
+   "a": "Gabriele Oettingen",
+   "ev": "A",
+   "tg": [
+    "szokasok",
+    "munka"
+   ],
+   "ts": [
+    "gse",
+    "ips",
+    "grit"
+   ],
+   "time": "5 perc",
+   "u": "https://woopmylife.org/",
+   "w": "Wish, Outcome, Obstacle, Plan. A pozitív kép és a belső akadály összevetése energiát ad, a ha–akkor terv pedig átviszi a cselekvésbe.",
+   "how": [
+    "Kívánság: egy kihívó, de elérhető cél a következő hetekre (3–6 szó).",
+    "Eredmény: mi lenne a legjobb következménye? Képzeld el élénken.",
+    "Akadály: mi az a BELSŐ dolog benned (érzés, szokás, gondolat), ami útját állja?",
+    "Terv: Ha [akadály], akkor [konkrét lépés]. Írd le."
+   ]
+  },
+  {
+   "id": "ha-akkor",
+   "c": "gyakorlatok",
+   "t": "gyakorlat",
+   "ti": "Ha–akkor terv (implementációs szándék)",
+   "a": "Peter Gollwitzer",
+   "ev": "A",
+   "tg": [
+    "szokasok"
+   ],
+   "ts": [
+    "ips",
+    "bscs",
+    "gse"
+   ],
+   "time": "2 perc",
+   "w": "„Ha X helyzet áll elő, akkor Y-t csinálom.” Metaanalízisben közepes-nagy hatás a célok elérésére. A legolcsóbb hatékony szokástechnika.",
+   "how": [
+    "Válaszd ki a viselkedést, amit el akarsz kezdeni.",
+    "Kösd egy biztosan bekövetkező jelhez: idő, hely vagy egy meglévő szokás.",
+    "Fogalmazd meg pontosan: Ha … , akkor … .",
+    "Készíts egy ha–akkor tervet a legvalószínűbb akadályra is."
+   ]
+  },
+  {
+   "id": "gondolatnaplo",
+   "c": "gyakorlatok",
+   "t": "gyakorlat",
+   "ti": "Gondolatnapló (KVT)",
+   "a": "Aaron T. Beck nyomán",
+   "ev": "A",
+   "tg": [
+    "hangulat",
+    "gondolkodas",
+    "onbizalom"
+   ],
+   "ts": [
+    "phq9",
+    "gad7",
+    "rses",
+    "bfne"
+   ],
+   "time": "10 perc, amikor erős az érzés",
+   "w": "Helyzet, automatikus gondolat, érzés és erőssége, bizonyítékok mellette és ellene, kiegyensúlyozottabb gondolat. A KVT alapeszköze.",
+   "how": [
+    "Írd le a helyzetet tényszerűen (ki, mi, hol, mikor).",
+    "Mi futott át a fejeden? Melyik gondolat a legforróbb?",
+    "Mit éreztél, és mennyire (0–100)?",
+    "Bizonyítékok a gondolat mellett és ellene; mit mondanál egy barátnak?",
+    "Új, kiegyensúlyozottabb gondolat, és az érzés ereje most (0–100)."
+   ]
+  },
+  {
+   "id": "viselkedesaktivalas",
+   "c": "gyakorlatok",
+   "t": "gyakorlat",
+   "ti": "Viselkedésaktiválás",
+   "a": "Jacobson, Martell nyomán",
+   "ev": "A",
+   "tg": [
+    "hangulat"
+   ],
+   "ts": [
+    "phq9",
+    "who5"
+   ],
+   "time": "napi 5 perc tervezés, 2–4 hét",
+   "w": "Lehangoltságnál nem várni a kedvre, hanem tervezett, kis örömteli vagy értelmes tevékenységekkel kezdeni. A depresszió egyik leghatékonyabb önálló összetevője.",
+   "how": [
+    "Egy hétig írd le óránként, mit csináltál, és mennyi örömet (0–10) és teljesítményt (0–10) adott.",
+    "Keresd meg, mi emeli a hangulatot, mi süllyeszti.",
+    "Tervezz be minden napra 1–2 kis örömteli és 1 értelmes tevékenységet, konkrét időponttal.",
+    "Ha nem megy, felezd meg a lépést, ne hagyd ki."
+   ]
+  },
+  {
+   "id": "onegyutterzo-szunet",
+   "c": "gyakorlatok",
+   "t": "gyakorlat",
+   "ti": "Önegyüttérző szünet",
+   "a": "Kristin Neff",
+   "ev": "B",
+   "tg": [
+    "onbizalom",
+    "erzelem"
+   ],
+   "ts": [
+    "scs",
+    "rses",
+    "saps"
+   ],
+   "time": "1–3 perc",
+   "u": "https://self-compassion.org/",
+   "w": "Három mondat nehéz pillanatban: ez most fáj; a szenvedés az emberi lét része; legyek kedves magamhoz. Gyors ellenszer az önostorozásra.",
+   "how": [
+    "Vedd észre: ez most nehéz (tudatosság).",
+    "Emlékeztesd magad: más is érez így hasonló helyzetben (közös emberi tapasztalat).",
+    "Tedd a kezed a mellkasodra, és mondd: legyek most kedves magamhoz. Mit mondanál egy barátnak?"
+   ]
+  },
+  {
+   "id": "ingerkontroll",
+   "c": "gyakorlatok",
+   "t": "gyakorlat",
+   "ti": "Ingerkontroll alváshoz",
+   "a": "Richard Bootzin (CBT-I)",
+   "ev": "A",
+   "tg": [
+    "alvas"
+   ],
+   "ts": [
+    "sci",
+    "ess"
+   ],
+   "time": "minden este, 2–4 hét",
+   "w": "Az ágy csak alvásra (és szexre) való. Ha nem alszol el kb. 20 perc alatt, kelj fel. Az álmatlanság egyik leghatékonyabb önálló technikája.",
+   "how": [
+    "Csak akkor feküdj le, ha álmos vagy (nem csak fáradt).",
+    "Ha kb. 20 perc múlva sem alszol, kelj fel, menj ki, csinálj valami nyugodtat félhomályban.",
+    "Akkor feküdj vissza, ha újra álmos vagy; ismételd, ahányszor kell.",
+    "Minden nap ugyanakkor kelj, hétvégén is. Napközben ne aludj.",
+    "Az első héten fáradtabb lehetsz; ez a működés része. Ha nappal veszélyesen álmos vagy, ne vezess."
+   ]
+  },
+  {
+   "id": "lassu-legzes",
+   "c": "gyakorlatok",
+   "t": "gyakorlat",
+   "ti": "Lassú légzés (kb. 6 légzés/perc)",
+   "a": "",
+   "ev": "B",
+   "tg": [
+    "stressz",
+    "erzelem"
+   ],
+   "ts": [
+    "pss",
+    "gad7",
+    "ders"
+   ],
+   "time": "5 perc",
+   "w": "Kb. 4–5 mp be, 5–6 mp ki. A hosszabb kilégzés a paraszimpatikus rendszert erősíti, és csökkenti az akut feszültséget.",
+   "how": [
+    "Ülj kényelmesen, lélegezz az orrodon.",
+    "Be 4–5 másodpercig, ki 5–6 másodpercig, megállás nélkül.",
+    "5 percig csináld, egy időzítő segít.",
+    "Ha szédülsz, lassíts, és lélegezz kisebbeket."
+   ]
+  },
+  {
+   "id": "testpasztazas",
+   "c": "gyakorlatok",
+   "t": "gyakorlat",
+   "ti": "Testpásztázás",
+   "a": "MBSR",
+   "ev": "B",
+   "tg": [
+    "jelenlet",
+    "trauma"
+   ],
+   "ts": [
+    "maia2",
+    "maas",
+    "tas"
+   ],
+   "time": "10–30 perc",
+   "w": "A figyelem lassú végigvezetése a testen, ítélkezés nélkül. Az interocepciót (MAIA-2) és a jelenlétet edzi.",
+   "how": [
+    "Feküdj vagy ülj le, csukd be a szemed, ha kényelmes.",
+    "Kezdd a lábujjaknál: mit érzel ott most? Meleg, nyomás, bizsergés, semmi?",
+    "Haladj lassan felfelé; ha elkalandozol, csak térj vissza.",
+    "Traumatörténetnél előfordul, hogy nyugtalanító; ilyenkor nyisd ki a szemed, és figyelj a talpadra."
+   ]
+  },
+  {
+   "id": "rain",
+   "c": "gyakorlatok",
+   "t": "gyakorlat",
+   "ti": "RAIN",
+   "a": "Tara Brach",
+   "ev": "C",
+   "tg": [
+    "erzelem",
+    "jelenlet"
+   ],
+   "ts": [
+    "ders",
+    "scs"
+   ],
+   "time": "5–10 perc",
+   "w": "Recognize, Allow, Investigate, Nurture: felismerés, engedés, kíváncsi vizsgálat, gondoskodás. Erős érzésnél a menekülés helyett.",
+   "how": [
+    "Ismerd fel: mi történik bennem most? Nevezd meg.",
+    "Engedd: maradhat egy kicsit, nem kell eltüntetni.",
+    "Vizsgáld kedvesen: hol érzem a testben? Mire van szüksége ennek a részemnek?",
+    "Gondoskodj: mondj vagy tégy valamit, ami ennek a résznek jólesik."
+   ]
+  },
+  {
+   "id": "aron-36",
+   "c": "gyakorlatok",
+   "t": "gyakorlat",
+   "ti": "36 kérdés a közelségért",
+   "a": "Arthur Aron és mtsai (1997)",
+   "ev": "B",
+   "tg": [
+    "kapcsolat"
+   ],
+   "ts": [
+    "ucla",
+    "las",
+    "gott"
+   ],
+   "time": "45–90 perc, ketten",
+   "w": "Fokozatosan mélyülő kérdések, felváltva. A laborban idegenek között is közelséget teremtett; párban a rutin megtörésére jó.",
+   "how": [
+    "Szánjatok rá egy zavartalan estét, telefon nélkül.",
+    "Felváltva olvassátok fel és válaszoljátok meg a kérdéseket, a sorrendet tartva.",
+    "Ne siessetek; a harmadik szakasz a legmélyebb.",
+    "A végén 4 perc szótlan szemkontaktus (ha furcsa, nevessetek rajta)."
+   ]
+  },
+  {
+   "id": "stresszcsokkento-beszelgetes",
+   "c": "gyakorlatok",
+   "t": "gyakorlat",
+   "ti": "Stresszcsökkentő beszélgetés",
+   "a": "John Gottman",
+   "ev": "B",
+   "tg": [
+    "kapcsolat",
+    "stressz"
+   ],
+   "ts": [
+    "gott",
+    "pss"
+   ],
+   "time": "20 perc naponta",
+   "w": "Naponta 20 perc a kapcsolaton KÍVÜLI stresszről, felváltva. A társ dolga megérteni és mellé állni, nem megoldani.",
+   "how": [
+    "Egyikőtök beszél 10 percig a napja nehézségéről (nem a kapcsolatról).",
+    "A másik figyel, kérdez, megérti, és jelzi: veled vagyok, mi ketten a probléma ellen.",
+    "Csak akkor adj tanácsot, ha kéri.",
+    "Cseréljetek."
+   ]
+  },
+  {
+   "id": "negy-lovas",
+   "c": "gyakorlatok",
+   "t": "gyakorlat",
+   "ti": "A négy lovas és ellenszereik",
+   "a": "John Gottman",
+   "ev": "B",
+   "tg": [
+    "kapcsolat"
+   ],
+   "ts": [
+    "gott",
+    "tki"
+   ],
+   "time": "egy hét megfigyelés",
+   "w": "Kritika, megvetés, védekezés, falazás: a válás négy előrejelzője. Mindegyiknek van ellenszere: szelíd kezdés, megbecsülés, felelősségvállalás, önmegnyugtatás.",
+   "how": [
+    "Egy hétig jegyezd fel, melyik lovas jelenik meg nálad (nem a társadnál).",
+    "Kritika helyett: én-közlés + kérés („Zavar, hogy …, kérlek …”).",
+    "Megvetés helyett: napi egy kimondott megbecsülés.",
+    "Védekezés helyett: vállald a részed, akár egy kis részét.",
+    "Falazásnál: kérj 20 perc szünetet, nyugodj meg, aztán térj vissza."
+   ]
+  },
+  {
+   "id": "expozicios-letra",
+   "c": "gyakorlatok",
+   "t": "gyakorlat",
+   "ti": "Bátorság-létra (fokozatos expozíció)",
+   "a": "KVT",
+   "ev": "A",
+   "tg": [
+    "onbizalom",
+    "hangulat"
+   ],
+   "ts": [
+    "bfne",
+    "gse",
+    "obgy",
+    "gad7"
+   ],
+   "time": "heti 2–3 lépés",
+   "site": "edzes.html",
+   "w": "A került helyzetek sorba rendezése a legkönnyebbtől, és lépésenkénti szembenézés. A szorongás legjobban vizsgált kezelési eleme. Az oldal Önbizalom-edzésében beépítve.",
+   "how": [
+    "Írj 8–12 helyzetet, amit kerülsz, és értékeld a félelmet 0–10-ig.",
+    "Kezdd egy 3–4-es lépéssel; maradj benne, amíg a feszültség csökkenni kezd.",
+    "Előtte jósold meg, mennyire lesz nehéz; utána írd le, mennyire volt.",
+    "Ugyanazt ismételd, amíg könnyű, aztán lépj feljebb."
+   ]
+  },
+  {
+   "id": "ertek-celtabla",
+   "c": "gyakorlatok",
+   "t": "gyakorlat",
+   "ti": "Értéktisztázás: ACT céltábla",
+   "a": "Tobias Lundgren (ACT)",
+   "ev": "B",
+   "tg": [
+    "ertelem"
+   ],
+   "ts": [
+    "pvq",
+    "mlq",
+    "swls"
+   ],
+   "time": "20 perc",
+   "w": "Négy terület (munka, kapcsolatok, fejlődés, szabadidő): mi fontos itt, és mennyire élsz most eszerint? A távolság mutatja, merre lépj.",
+   "how": [
+    "Mind a négy területre írd le 1–2 mondatban, milyen ember szeretnél lenni benne.",
+    "Jelöld egy céltáblán 1–7 között, mennyire élsz most így.",
+    "Írd le, mi áll az útban (gondolat, érzés, helyzet).",
+    "Válassz egy kis, értékvezérelt lépést a legtávolabbi területre."
+   ]
+  },
+  {
+   "id": "premortem",
+   "c": "gyakorlatok",
+   "t": "gyakorlat",
+   "ti": "Premortem",
+   "a": "Gary Klein",
+   "ev": "B",
+   "tg": [
+    "gondolkodas",
+    "munka"
+   ],
+   "ts": [],
+   "time": "15 perc",
+   "w": "Döntés előtt: képzeld el, hogy egy év múlva a terv csúfosan elbukott. Miért? A visszatekintő képzelet több kockázatot hoz elő, mint a kérdés, hogy „mi mehet rosszul”.",
+   "how": [
+    "Írd le a tervet vagy döntést egy mondatban.",
+    "Képzeld el: egy év telt el, és teljes kudarc lett.",
+    "Írj 5 percig minden lehetséges okot, cenzúra nélkül.",
+    "Válaszd ki a 2–3 legvalószínűbbet, és építs be ellenük lépést most."
+   ]
+  },
+  {
+   "id": "dontesi-naplo",
+   "c": "gyakorlatok",
+   "t": "gyakorlat",
+   "ti": "Döntési napló",
+   "a": "",
+   "ev": "C",
+   "tg": [
+    "gondolkodas",
+    "fejlodes"
+   ],
+   "ts": [],
+   "time": "5 perc döntésenként",
+   "w": "Fontos döntésnél írd le a helyzetet, a lehetőségeket, a várt kimenetelt és a hangulatodat. Hónapok múlva összevetve látod a mintáidat, és elválik a jó döntés a jó szerencsétől.",
+   "how": [
+    "Dátum, döntés, a lehetőségek, amiket mérlegeltél.",
+    "Mit vársz, mi lesz, és mennyire vagy biztos benne (%)?",
+    "Milyen állapotban döntöttél (fáradt, feszült, nyugodt)?",
+    "3 és 12 hónap múlva olvasd vissza, és írd mellé, mi lett."
+   ]
+  },
+  {
+   "id": "heti-attekintes",
+   "c": "gyakorlatok",
+   "t": "gyakorlat",
+   "ti": "Heti áttekintés",
+   "a": "David Allen (GTD) nyomán",
+   "ev": "C",
+   "tg": [
+    "munka",
+    "szokasok"
+   ],
+   "ts": [
+    "ips",
+    "asrs"
+   ],
+   "time": "30–45 perc hetente",
+   "w": "Hetente egyszer: kiüríted a fejed, átnézed a projekteket és a naptárat, és eldöntöd a következő hét 3 fő dolgát.",
+   "how": [
+    "Gyűjts össze minden laza végződést (cetlik, e-mailek, ötletek).",
+    "Nézd át a múlt hetet: mi ment jól, mi akadt el, és miért?",
+    "Nézd át a következő két hét naptárát.",
+    "Válaszd ki a hét 3 legfontosabb eredményét, és tegyél nekik időpontot."
+   ]
+  },
+  {
+   "id": "felelem-beallitas",
+   "c": "gyakorlatok",
+   "t": "gyakorlat",
+   "ti": "Félelem-feltérképezés",
+   "a": "Seneca, Tim Ferriss nyomán",
+   "ev": "C",
+   "tg": [
+    "onbizalom",
+    "gondolkodas"
+   ],
+   "ts": [
+    "bfne",
+    "gad7"
+   ],
+   "time": "30 perc",
+   "w": "A halogatott lépés legrosszabb kimenetelei, megelőzésük és helyrehozásuk, valamint a tétlenség ára 6 hónap és 3 év múlva. A homályos félelmet kezelhető listává alakítja.",
+   "how": [
+    "Mi a lépés, amitől tartasz? Írd le a 10 legrosszabb lehetséges következményét.",
+    "Mindegyik mellé: hogyan előzhető meg, és hogyan hozható helyre?",
+    "Mi a haszna egy részleges sikernek?",
+    "Mi az ára, ha NEM lépsz: 6 hónap, 1 év, 3 év múlva?"
+   ]
+  },
+  {
+   "id": "eletkerek",
+   "c": "gyakorlatok",
+   "t": "gyakorlat",
+   "ti": "Életkerék",
+   "a": "coaching-hagyomány",
+   "ev": "C",
+   "tg": [
+    "ertelem"
+   ],
+   "ts": [
+    "swls",
+    "who5"
+   ],
+   "time": "15 perc negyedévente",
+   "w": "8 terület (egészség, kapcsolat, család, barátok, munka, pénz, fejlődés, szabadidő) 1–10-ig. Gyors pillanatkép, nem mérés; a havi állapotfelméréssel együtt jó.",
+   "how": [
+    "Rajzolj egy kört 8 cikkel, és nevezd el a területeket.",
+    "Mindegyiket pontozd 1–10-ig a mostani elégedettséged szerint.",
+    "Melyik egy terület emelné a legtöbbet a többit is?",
+    "Egy lépés arra a területre a következő két hétben."
+   ]
+  },
+  {
+   "id": "digitalis-rend",
+   "c": "gyakorlatok",
+   "t": "gyakorlat",
+   "ti": "Telefon-diéta",
+   "a": "",
+   "ev": "B",
+   "tg": [
+    "szokasok",
+    "alvas"
+   ],
+   "ts": [
+    "sas",
+    "sci"
+   ],
+   "time": "egyszeri beállítás + 2 hét",
+   "w": "A környezet átalakítása erősebb az akaratnál: kevesebb jel, több súrlódás. Magas SAS-SV-nél a legegyszerűbb első lépés.",
+   "how": [
+    "Kapcsold ki az összes nem-emberi értesítést (hírek, közösségi média, játékok).",
+    "A kezdőképernyőn csak eszközök legyenek; a csábító appok mappában, a második oldalon.",
+    "A telefon éjszakára a hálószobán kívül tölt; ébresztőnek vegyél órát.",
+    "Két hét múlva töltsd ki újra a SAS-SV-t."
+   ]
+  },
+  {
+   "id": "via-survey",
+   "c": "tesztek",
+   "t": "teszt",
+   "ti": "VIA karaktererősség-felmérés",
+   "a": "VIA Institute on Character",
+   "ev": "A",
+   "tg": [
+    "szemelyiseg"
+   ],
+   "ts": [
+    "via"
+   ],
+   "u": "https://www.viacharacter.org/",
+   "f": true,
+   "w": "A teljes, 24 erősséget mérő eredeti kérdőív, ingyenes alaperedménnyel. Az oldal VIA-72 rövidített változata mellé összevetésnek."
+  },
+  {
+   "id": "ipip",
+   "c": "tesztek",
+   "t": "teszt",
+   "ti": "IPIP – Nemzetközi személyiségtétel-gyűjtemény",
+   "a": "Lewis R. Goldberg és mtsai",
+   "ev": "A",
+   "tg": [
+    "szemelyiseg"
+   ],
+   "ts": [
+    "bf"
+   ],
+   "u": "https://ipip.ori.org/",
+   "f": true,
+   "w": "Szabadon használható tételek több száz skálához (Big Five, HEXACO és más). Innen származik az oldal IPIP-NEO-60 tesztje is. Kutatóknak és kíváncsiaknak."
+  },
+  {
+   "id": "bigfive-test",
+   "c": "tesztek",
+   "t": "teszt",
+   "ti": "bigfive-test.com",
+   "a": "nyílt forráskódú (rubynor/bigfive-web)",
+   "ev": "B",
+   "tg": [
+    "szemelyiseg"
+   ],
+   "ts": [
+    "bf"
+   ],
+   "u": "https://bigfive-test.com/",
+   "f": true,
+   "w": "IPIP-alapú 120 tételes Big Five, magyarul is, alvonásokkal. Nyílt forráskódú, összehasonlításnak jó."
+  },
+  {
+   "id": "yourpersonality",
+   "c": "tesztek",
+   "t": "teszt",
+   "ti": "Kötődési kérdőív (Fraley)",
+   "a": "R. Chris Fraley",
+   "ev": "A",
+   "tg": [
+    "kapcsolat"
+   ],
+   "ts": [
+    "ecr"
+   ],
+   "u": "https://yourpersonality.net/",
+   "f": true,
+   "w": "Az ECR-R egyik szerzőjének kutatási oldala, a kötődési eredményed összevetésével nagy mintán."
+  },
+  {
+   "id": "self-compassion-test",
+   "c": "tesztek",
+   "t": "teszt",
+   "ti": "Önegyüttérzés-teszt (Neff)",
+   "a": "Kristin Neff",
+   "ev": "A",
+   "tg": [
+    "onbizalom"
+   ],
+   "ts": [
+    "scs"
+   ],
+   "u": "https://self-compassion.org/",
+   "f": true,
+   "w": "A teljes, 26 tételes Self-Compassion Scale a szerzőtől. Plusz ingyenes vezetett gyakorlatok."
+  },
+  {
+   "id": "authentic-happiness",
+   "c": "tesztek",
+   "t": "teszt",
+   "ti": "Authentic Happiness kérdőívek",
+   "a": "University of Pennsylvania",
+   "ev": "A",
+   "tg": [
+    "ertelem",
+    "hangulat"
+   ],
+   "ts": [
+    "via",
+    "swls",
+    "lotr"
+   ],
+   "u": "https://www.authentichappiness.sas.upenn.edu/",
+   "f": true,
+   "w": "A pozitív pszichológiai központ ingyenes kérdőívei (jóllét, optimizmus, erősségek, hála), regisztrációval."
+  },
+  {
+   "id": "openpsychometrics",
+   "c": "tesztek",
+   "t": "teszt",
+   "ti": "Open-Source Psychometrics Project",
+   "a": "",
+   "ev": "B",
+   "tg": [
+    "szemelyiseg"
+   ],
+   "ts": [
+    "bf"
+   ],
+   "u": "https://openpsychometrics.org/",
+   "f": true,
+   "w": "Sok nyílt kérdőív és nyílt adatbázis. Vegyes: van köztük validált skála és játékos teszt is; mindegyiknél nézd meg a leírást."
+  },
+  {
+   "id": "greater-good-quizzes",
+   "c": "tesztek",
+   "t": "teszt",
+   "ti": "Greater Good kvízek",
+   "a": "UC Berkeley Greater Good Science Center",
+   "ev": "B",
+   "tg": [
+    "ertelem",
+    "kapcsolat"
+   ],
+   "ts": [
+    "gq6",
+    "maas"
+   ],
+   "u": "https://greatergood.berkeley.edu/quizzes",
+   "f": true,
+   "w": "Rövid, kutatásalapú kvízek (hála, empátia, megbocsátás, tudatosság, munkahelyi jóllét) magyarázattal."
+  },
+  {
+   "id": "16personalities",
+   "c": "tesztek",
+   "t": "teszt",
+   "ti": "16Personalities",
+   "a": "",
+   "ev": "V",
+   "tg": [
+    "szemelyiseg"
+   ],
+   "ts": [
+    "bf"
+   ],
+   "u": "https://www.16personalities.com/",
+   "f": true,
+   "w": "Nagyon népszerű, MBTI-szerű betűkódokkal. Valójában Big Five-szerű skálákat mér, de típusokba vágja őket, ami pontatlan és instabil. Szórakozásnak jó; komolyabban a Big Five-ot használd."
+  },
+  {
+   "id": "enneagram",
+   "c": "tesztek",
+   "t": "teszt",
+   "ti": "Enneagram-tesztek",
+   "a": "",
+   "ev": "V",
+   "tg": [
+    "szemelyiseg"
+   ],
+   "ts": [
+    "bf"
+   ],
+   "w": "Kilenc típus, spirituális háttérrel. A típusok megbízhatósága és érvényessége gyenge. Önreflexiós nyelvnek használható, mérésnek nem."
+  },
+  {
+   "id": "loop-habit",
+   "c": "eszkozok",
+   "t": "eszkoz",
+   "ti": "Loop Habit Tracker",
+   "a": "Android, nyílt forrású",
+   "ev": "C",
+   "tg": [
+    "szokasok"
+   ],
+   "ts": [
+    "bscs"
+   ],
+   "u": "https://github.com/iSoron/uhabits",
+   "f": true,
+   "w": "Minimalista szokáskövető reklám és fiók nélkül, okos „szokáserősség” pontszámmal, ami nem nulláz egy kihagyott naptól."
+  },
+  {
+   "id": "habitica",
+   "c": "eszkozok",
+   "t": "eszkoz",
+   "ti": "Habitica",
+   "a": "web, iOS, Android, nyílt forrású",
+   "ev": "C",
+   "tg": [
+    "szokasok"
+   ],
+   "ts": [
+    "bscs",
+    "ips"
+   ],
+   "u": "https://github.com/HabitRPG/habitica",
+   "f": true,
+   "w": "Szokások és teendők szerepjátékként: a karaktered fejlődik vagy sérül. Ha a játékosítás motivál, kiváló; ha nem, zaj."
+  },
+  {
+   "id": "tasks-org",
+   "c": "eszkozok",
+   "t": "eszkoz",
+   "ti": "Tasks.org",
+   "a": "Android, nyílt forrású",
+   "ev": "C",
+   "tg": [
+    "munka"
+   ],
+   "ts": [
+    "ips"
+   ],
+   "u": "https://github.com/tasks/tasks",
+   "f": true,
+   "w": "Teendőkezelő helyfüggő emlékeztetőkkel és szinkronnal, adatgyűjtés nélkül."
+  },
+  {
+   "id": "super-productivity",
+   "c": "eszkozok",
+   "t": "eszkoz",
+   "ti": "Super Productivity",
+   "a": "asztali és web, nyílt forrású",
+   "ev": "C",
+   "tg": [
+    "munka"
+   ],
+   "ts": [
+    "ips",
+    "asrs"
+   ],
+   "u": "https://github.com/johannesjo/super-productivity",
+   "f": true,
+   "w": "Teendők, időmérés, pomodoro és timeboxing egyben, helyi adattárolással."
+  },
+  {
+   "id": "logseq",
+   "c": "eszkozok",
+   "t": "eszkoz",
+   "ti": "Logseq",
+   "a": "asztali és mobil, nyílt forrású",
+   "ev": "C",
+   "tg": [
+    "gondolkodas"
+   ],
+   "ts": [],
+   "u": "https://github.com/logseq/logseq",
+   "f": true,
+   "w": "Napi jegyzet-alapú, összekapcsolt tudásbázis helyi Markdown-fájlokban. Naplóhoz és önreflexióhoz ideális: minden nap egy oldal."
+  },
+  {
+   "id": "obsidian",
+   "c": "eszkozok",
+   "t": "eszkoz",
+   "ti": "Obsidian",
+   "a": "ingyenes (nem nyílt forrású)",
+   "ev": "C",
+   "tg": [
+    "gondolkodas"
+   ],
+   "ts": [],
+   "u": "https://obsidian.md/",
+   "f": true,
+   "w": "Helyi Markdown-jegyzetek hivatkozásokkal és sablonokkal. Napi napló, heti áttekintés, döntési napló sablonként."
+  },
+  {
+   "id": "joplin",
+   "c": "eszkozok",
+   "t": "eszkoz",
+   "ti": "Joplin",
+   "a": "minden platform, nyílt forrású",
+   "ev": "C",
+   "tg": [
+    "gondolkodas"
+   ],
+   "ts": [],
+   "u": "https://github.com/laurent22/joplin",
+   "f": true,
+   "w": "Jegyzetelő végpontok közötti titkosítással. Ha a napló érzékeny, ez jó választás."
+  },
+  {
+   "id": "standard-notes",
+   "c": "eszkozok",
+   "t": "eszkoz",
+   "ti": "Standard Notes",
+   "a": "minden platform, nyílt forrású",
+   "ev": "C",
+   "tg": [
+    "gondolkodas"
+   ],
+   "ts": [],
+   "u": "https://github.com/standardnotes/app",
+   "f": true,
+   "w": "Titkosított, egyszerű jegyzetelő; az ingyenes szint naplónak bőven elég."
+  },
+  {
+   "id": "jrnl",
+   "c": "eszkozok",
+   "t": "eszkoz",
+   "ti": "jrnl",
+   "a": "parancssor, nyílt forrású",
+   "ev": "C",
+   "tg": [
+    "gondolkodas"
+   ],
+   "ts": [],
+   "u": "https://github.com/jrnl-org/jrnl",
+   "f": true,
+   "w": "Napló a terminálból, titkosítható szövegfájlba. Fejlesztőknek a legkisebb súrlódású naplózás."
+  },
+  {
+   "id": "anki",
+   "c": "eszkozok",
+   "t": "eszkoz",
+   "ti": "Anki",
+   "a": "minden platform, nyílt forrású",
+   "ev": "A",
+   "tg": [
+    "gondolkodas"
+   ],
+   "ts": [],
+   "u": "https://github.com/ankitects/anki",
+   "f": true,
+   "w": "Térközös ismétlés: a tanulás egyik legjobban igazolt módszere. Könyvek tanulságainak megtartására is (pl. kártya a gondolattorzításokról)."
+  },
+  {
+   "id": "activitywatch",
+   "c": "eszkozok",
+   "t": "eszkoz",
+   "ti": "ActivityWatch",
+   "a": "asztali, nyílt forrású",
+   "ev": "C",
+   "tg": [
+    "munka",
+    "szokasok"
+   ],
+   "ts": [
+    "sas",
+    "asrs"
+   ],
+   "u": "https://github.com/ActivityWatch/activitywatch",
+   "f": true,
+   "w": "Automatikus képernyőidő-mérés helyben, felhő nélkül. Tényadat arról, hová megy az időd."
+  },
+  {
+   "id": "leechblock",
+   "c": "eszkozok",
+   "t": "eszkoz",
+   "ti": "LeechBlock NG",
+   "a": "böngészőbővítmény, nyílt forrású",
+   "ev": "C",
+   "tg": [
+    "munka",
+    "szokasok"
+   ],
+   "ts": [
+    "sas",
+    "ips"
+   ],
+   "u": "https://github.com/proginosko/LeechBlockNG",
+   "f": true,
+   "w": "Időkorlát és tiltás oldalanként, időszakra. Súrlódás a csábító oldalak elé."
+  },
+  {
+   "id": "stretchly",
+   "c": "eszkozok",
+   "t": "eszkoz",
+   "ti": "Stretchly",
+   "a": "asztali, nyílt forrású",
+   "ev": "C",
+   "tg": [
+    "munka",
+    "alvas"
+   ],
+   "ts": [
+    "cbi"
+   ],
+   "u": "https://github.com/hovancik/stretchly",
+   "f": true,
+   "w": "Szünetemlékeztető mikroszünetekkel és nyújtási ötletekkel hosszú képernyős munkához."
+  },
+  {
+   "id": "medito",
+   "c": "eszkozok",
+   "t": "eszkoz",
+   "ti": "Medito",
+   "a": "iOS, Android, nyílt forrású, nonprofit",
+   "ev": "C",
+   "tg": [
+    "jelenlet"
+   ],
+   "ts": [
+    "maas",
+    "pss"
+   ],
+   "u": "https://github.com/meditohq/medito-app",
+   "f": true,
+   "w": "Teljesen ingyenes meditációs app vezetett gyakorlatokkal, előfizetés és reklám nélkül."
+  },
+  {
+   "id": "monica",
+   "c": "eszkozok",
+   "t": "eszkoz",
+   "ti": "Monica",
+   "a": "web, nyílt forrású",
+   "ev": "C",
+   "tg": [
+    "kapcsolat"
+   ],
+   "ts": [
+    "ucla"
+   ],
+   "u": "https://github.com/monicahq/monica",
+   "f": true,
+   "w": "Személyes „kapcsolatkezelő”: mikor beszéltél utoljára valakivel, mi történik az életében. Magánynál és elfoglaltságnál a kapcsolatok ápolására."
+  },
+  {
+   "id": "awesome",
+   "c": "eszkozok",
+   "t": "eszkoz",
+   "ti": "Awesome (a listák listája)",
+   "a": "sindresorhus/awesome",
+   "ev": "C",
+   "tg": [
+    "gondolkodas"
+   ],
+   "ts": [],
+   "u": "https://github.com/sindresorhus/awesome",
+   "f": true,
+   "w": "Az awesome-listák központi gyűjteménye, minden témában. Innen indult a formátum, amit ez a könyvtár is követ."
+  },
+  {
+   "id": "awesome-productivity",
+   "c": "eszkozok",
+   "t": "eszkoz",
+   "ti": "awesome-productivity",
+   "a": "jyguyomarch/awesome-productivity",
+   "ev": "C",
+   "tg": [
+    "munka"
+   ],
+   "ts": [],
+   "u": "https://github.com/jyguyomarch/awesome-productivity",
+   "f": true,
+   "w": "Termelékenységi eszközök és cikkek gyűjteménye."
+  },
+  {
+   "id": "awesome-mental-health",
+   "c": "eszkozok",
+   "t": "eszkoz",
+   "ti": "awesome-mental-health",
+   "a": "dreamingechoes/awesome-mental-health",
+   "ev": "C",
+   "tg": [
+    "hangulat",
+    "munka"
+   ],
+   "ts": [],
+   "u": "https://github.com/dreamingechoes/awesome-mental-health",
+   "f": true,
+   "w": "Lelki egészség a szoftveriparban: cikkek, előadások, szervezetek."
+  },
+  {
+   "id": "awesome-quantified-self",
+   "c": "eszkozok",
+   "t": "eszkoz",
+   "ti": "awesome-quantified-self",
+   "a": "woop/awesome-quantified-self",
+   "ev": "C",
+   "tg": [
+    "szokasok",
+    "alvas"
+   ],
+   "ts": [],
+   "u": "https://github.com/woop/awesome-quantified-self",
+   "f": true,
+   "w": "Önmérés: eszközök, appok, adatexport, vizualizáció. Ha az eredményeidet más adatokkal (alvás, mozgás) is össze akarod vetni."
+  },
+  {
+   "id": "science-wellbeing",
+   "c": "hallgatnivalo",
+   "t": "kurzus",
+   "ti": "The Science of Well-Being",
+   "a": "Laurie Santos, Yale (Coursera)",
+   "ev": "A",
+   "tg": [
+    "ertelem",
+    "hangulat"
+   ],
+   "ts": [
+    "who5",
+    "swls",
+    "gq6"
+   ],
+   "u": "https://www.coursera.org/learn/the-science-of-well-being",
+   "f": true,
+   "w": "A Yale legnépszerűbb kurzusa: mit tévedünk a boldogságról, és mely szokások működnek valóban. Hetente rövid gyakorlatokkal; ingyen hallgatható."
+  },
+  {
+   "id": "learning-how-to-learn",
+   "c": "hallgatnivalo",
+   "t": "kurzus",
+   "ti": "Learning How to Learn",
+   "a": "Barbara Oakley, Terrence Sejnowski (Coursera)",
+   "ev": "A",
+   "tg": [
+    "gondolkodas",
+    "szokasok"
+   ],
+   "ts": [
+    "ips"
+   ],
+   "u": "https://www.coursera.org/learn/learning-how-to-learn",
+   "f": true,
+   "w": "Fókuszált és szórt gondolkodás, térközös ismétlés, halogatás. A világ egyik legnagyobb online kurzusa; a halogatásról szóló hét külön is megéri."
+  },
+  {
+   "id": "palouse",
+   "c": "hallgatnivalo",
+   "t": "kurzus",
+   "ti": "Palouse Mindfulness",
+   "a": "Dave Potter",
+   "ev": "A",
+   "tg": [
+    "jelenlet",
+    "stressz"
+   ],
+   "ts": [
+    "maas",
+    "pss"
+   ],
+   "u": "https://palousemindfulness.com/",
+   "f": true,
+   "w": "Teljes, ingyenes, nyolchetes online MBSR-program videókkal, vezetett gyakorlatokkal és olvasmányokkal."
+  },
+  {
+   "id": "idg",
+   "c": "hallgatnivalo",
+   "t": "kurzus",
+   "ti": "Inner Development Goals",
+   "a": "IDG kezdeményezés",
+   "ev": "C",
+   "tg": [
+    "fejlodes"
+   ],
+   "ts": [],
+   "u": "https://www.innerdevelopmentgoals.org/",
+   "f": true,
+   "w": "Öt dimenzió és 23 készség a belső fejlődéshez (lét, gondolkodás, kapcsolódás, együttműködés, cselekvés), ingyenes eszköztárral."
+  },
+  {
+   "id": "huberman",
+   "c": "hallgatnivalo",
+   "t": "podcast",
+   "ti": "Huberman Lab",
+   "a": "Andrew Huberman",
+   "ev": "B",
+   "tg": [
+    "alvas",
+    "szokasok"
+   ],
+   "ts": [
+    "sci",
+    "meq"
+   ],
+   "u": "https://www.hubermanlab.com/",
+   "f": true,
+   "w": "Idegtudomány és gyakorlati protokollok (alvás, fény, fókusz). Hosszú és alapos, de néhol a gyakorlati következtetés túllép a kutatáson; ezt kritikusan hallgasd."
+  },
+  {
+   "id": "hidden-brain",
+   "c": "hallgatnivalo",
+   "t": "podcast",
+   "ti": "Hidden Brain",
+   "a": "Shankar Vedantam",
+   "ev": "B",
+   "tg": [
+    "gondolkodas",
+    "kapcsolat"
+   ],
+   "ts": [],
+   "u": "https://hiddenbrain.org/",
+   "f": true,
+   "w": "Viselkedéstudomány történetekben, kutatók meghívásával. Könnyen hallgatható, igényes."
+  },
+  {
+   "id": "happiness-lab",
+   "c": "hallgatnivalo",
+   "t": "podcast",
+   "ti": "The Happiness Lab",
+   "a": "Laurie Santos",
+   "ev": "B",
+   "tg": [
+    "ertelem",
+    "hangulat"
+   ],
+   "ts": [
+    "who5",
+    "swls"
+   ],
+   "f": true,
+   "w": "A Science of Well-Being kurzus folytatása podcastként: mi tesz boldoggá, és mi nem."
+  },
+  {
+   "id": "ten-percent",
+   "c": "hallgatnivalo",
+   "t": "podcast",
+   "ti": "Ten Percent Happier",
+   "a": "Dan Harris",
+   "ev": "B",
+   "tg": [
+    "jelenlet"
+   ],
+   "ts": [
+    "maas",
+    "gad7"
+   ],
+   "f": true,
+   "w": "Meditáció szkeptikusoknak: tanárok, kutatók, pszichológusok beszélgetései gyakorlati tanácsokkal."
+  },
+  {
+   "id": "where-should-we-begin",
+   "c": "hallgatnivalo",
+   "t": "podcast",
+   "ti": "Where Should We Begin?",
+   "a": "Esther Perel",
+   "ev": "C",
+   "tg": [
+    "kapcsolat",
+    "szex"
+   ],
+   "ts": [
+    "gott",
+    "nsss"
+   ],
+   "f": true,
+   "w": "Valódi párok (névtelen) egyszeri párterápiás ülései. Ritka belelátás abba, hogyan beszélnek a párok, amikor elakadnak."
+  },
+  {
+   "id": "feeling-good-podcast",
+   "c": "hallgatnivalo",
+   "t": "podcast",
+   "ti": "Feeling Good Podcast",
+   "a": "David D. Burns",
+   "ev": "B",
+   "tg": [
+    "hangulat",
+    "onbizalom"
+   ],
+   "ts": [
+    "phq9",
+    "rses"
+   ],
+   "u": "https://feelinggood.com/",
+   "f": true,
+   "w": "A Feeling Good szerzője esetekkel és technikákkal (TEAM-CBT). Sok élő demonstráció."
+  },
+  {
+   "id": "knowledge-project",
+   "c": "hallgatnivalo",
+   "t": "podcast",
+   "ti": "The Knowledge Project",
+   "a": "Shane Parrish (Farnam Street)",
+   "ev": "C",
+   "tg": [
+    "gondolkodas",
+    "munka"
+   ],
+   "ts": [],
+   "u": "https://fs.blog/knowledge-project-podcast/",
+   "f": true,
+   "w": "Gondolkodási modellek, döntéshozatal, vezetők és kutatók interjúi. A fs.blog cikkei a mentális modellekről külön is aranybánya."
+  },
+  {
+   "id": "kegan-evolving",
+   "c": "elmelet",
+   "t": "kutatas",
+   "ti": "The Evolving Self",
+   "a": "Robert Kegan",
+   "y": 1982,
+   "ev": "B",
+   "tg": [
+    "fejlodes"
+   ],
+   "ts": [],
+   "w": "A konstruktív-fejlődéselmélet alapja: az én fejlődése a „szubjektum–objektum” átrendeződésén át. A Kegan-féle tudatossági rendek forrása."
+  },
+  {
+   "id": "kegan-in-over",
+   "c": "elmelet",
+   "t": "kutatas",
+   "ti": "In Over Our Heads",
+   "a": "Robert Kegan",
+   "y": 1994,
+   "ev": "B",
+   "tg": [
+    "fejlodes"
+   ],
+   "ts": [],
+   "w": "A modern élet szellemi követelményei és a tudatossági rendek (szocializált, önvezérelt, önátalakító elme). A vezetőfejlesztés egyik alapműve."
+  },
+  {
+   "id": "loevinger",
+   "c": "elmelet",
+   "t": "kutatas",
+   "ti": "Ego Development",
+   "a": "Jane Loevinger",
+   "y": 1976,
+   "ev": "A",
+   "tg": [
+    "fejlodes"
+   ],
+   "ts": [],
+   "w": "Az énfejlődés szakaszai és a mondatkiegészítéses mérés (WUSCT), sok ezer protokollon validálva. Cook-Greuter és Torbert erre épít."
+  },
+  {
+   "id": "cook-greuter",
+   "c": "elmelet",
+   "t": "kutatas",
+   "ti": "Ego Development: Nine Levels of Increasing Embrace",
+   "a": "Susanne Cook-Greuter",
+   "y": 2005,
+   "ev": "B",
+   "tg": [
+    "fejlodes"
+   ],
+   "ts": [],
+   "w": "Loevinger modelljének kiterjesztése a késői, posztkonvencionális szakaszokra. Ingyenes, gyakran idézett tanulmány."
+  },
+  {
+   "id": "seven-transformations",
+   "c": "elmelet",
+   "t": "kutatas",
+   "ti": "Seven Transformations of Leadership",
+   "a": "David Rooke, William R. Torbert (Harvard Business Review)",
+   "y": 2005,
+   "ev": "B",
+   "tg": [
+    "fejlodes",
+    "munka"
+   ],
+   "ts": [],
+   "w": "A cselekvési logikák (opportunista, diplomata, szakértő, megvalósító, individualista, stratéga, alkimista) vezetői szemmel. A legrövidebb belépő a témába."
+  },
+  {
+   "id": "schwartz-values",
+   "c": "elmelet",
+   "t": "kutatas",
+   "ti": "Universals in the Content and Structure of Values",
+   "a": "Shalom H. Schwartz (Advances in Experimental Social Psychology)",
+   "y": 1992,
+   "ev": "A",
+   "tg": [
+    "ertelem"
+   ],
+   "ts": [
+    "pvq"
+   ],
+   "w": "Tíz alapérték körkörös szerkezete, 20 ország adataiból. A PVQ-21 mögötti elmélet."
+  },
+  {
+   "id": "sdt-2000",
+   "c": "elmelet",
+   "t": "kutatas",
+   "ti": "Self-Determination Theory and the Facilitation of Intrinsic Motivation",
+   "a": "Richard M. Ryan, Edward L. Deci (American Psychologist)",
+   "y": 2000,
+   "ev": "A",
+   "tg": [
+    "ertelem",
+    "munka"
+   ],
+   "ts": [
+    "bpns"
+   ],
+   "w": "Az önmeghatározás-elmélet legtöbbet idézett összefoglalója: a három alapszükséglet és a belső motiváció."
+  },
+  {
+   "id": "character-strengths-virtues",
+   "c": "elmelet",
+   "t": "kutatas",
+   "ti": "Character Strengths and Virtues",
+   "a": "Christopher Peterson, Martin E. P. Seligman",
+   "y": 2004,
+   "ev": "A",
+   "tg": [
+    "szemelyiseg"
+   ],
+   "ts": [
+    "via"
+   ],
+   "w": "A 24 erősség és 6 erény osztályozása; a pozitív pszichológia „DSM-je”. A VIA-kérdőív elméleti alapja."
+  },
+  {
+   "id": "hazan-shaver",
+   "c": "elmelet",
+   "t": "kutatas",
+   "ti": "Romantic Love Conceptualized as an Attachment Process",
+   "a": "Cindy Hazan, Phillip Shaver (JPSP)",
+   "y": 1987,
+   "ev": "A",
+   "tg": [
+    "kapcsolat"
+   ],
+   "ts": [
+    "ecr",
+    "las"
+   ],
+   "w": "Az a cikk, amely Bowlby kötődéselméletét a felnőtt párkapcsolatokra vitte át. Innen indul az ECR-R kutatási vonala."
+  },
+  {
+   "id": "gross-1998",
+   "c": "elmelet",
+   "t": "kutatas",
+   "ti": "The Emerging Field of Emotion Regulation",
+   "a": "James J. Gross (Review of General Psychology)",
+   "y": 1998,
+   "ev": "A",
+   "tg": [
+    "erzelem"
+   ],
+   "ts": [
+    "ders"
+   ],
+   "w": "Az érzelemszabályozás folyamatmodellje: helyzetválasztás, helyzetformálás, figyelem, átértékelés, válaszmoduláció. Miért jobb az átértékelés, mint az elfojtás."
+  },
+  {
+   "id": "pennebaker-1997",
+   "c": "elmelet",
+   "t": "kutatas",
+   "ti": "Writing About Emotional Experiences as a Therapeutic Process",
+   "a": "James W. Pennebaker (Psychological Science)",
+   "y": 1997,
+   "ev": "A",
+   "tg": [
+    "erzelem"
+   ],
+   "ts": [
+    "ders"
+   ],
+   "w": "Az expresszív írás kutatásainak összefoglalója: mikor és miért segít a nehéz élmények szavakba öntése."
+  },
+  {
+   "id": "gollwitzer-1999",
+   "c": "elmelet",
+   "t": "kutatas",
+   "ti": "Implementation Intentions: Strong Effects of Simple Plans",
+   "a": "Peter M. Gollwitzer (American Psychologist)",
+   "y": 1999,
+   "ev": "A",
+   "tg": [
+    "szokasok"
+   ],
+   "ts": [
+    "ips",
+    "bscs"
+   ],
+   "w": "A ha–akkor tervek elmélete és első bizonyítékai. A szokásépítés egyik legerősebb, legolcsóbb eszközének forrása."
+  },
+  {
+   "id": "lally-2010",
+   "c": "elmelet",
+   "t": "kutatas",
+   "ti": "How Are Habits Formed",
+   "a": "Phillippa Lally és mtsai (European Journal of Social Psychology)",
+   "y": 2010,
+   "ev": "A",
+   "tg": [
+    "szokasok"
+   ],
+   "ts": [
+    "bscs"
+   ],
+   "w": "A „21 nap” mítosz vége: a szokás automatikussá válása átlagosan 66 nap volt, 18 és 254 nap között. Egy-egy kihagyás nem rontott érdemben."
+  },
+  {
+   "id": "steel-2007",
+   "c": "elmelet",
+   "t": "kutatas",
+   "ti": "The Nature of Procrastination",
+   "a": "Piers Steel (Psychological Bulletin)",
+   "y": 2007,
+   "ev": "A",
+   "tg": [
+    "szokasok"
+   ],
+   "ts": [
+    "ips"
+   ],
+   "w": "A halogatás metaanalízise: legerősebb előrejelzői a feladat averzivitása, az impulzivitás és az alacsony lelkiismeretesség."
+  },
+  {
+   "id": "fredrickson-2001",
+   "c": "elmelet",
+   "t": "kutatas",
+   "ti": "The Role of Positive Emotions in Positive Psychology",
+   "a": "Barbara L. Fredrickson (American Psychologist)",
+   "y": 2001,
+   "ev": "B",
+   "tg": [
+    "hangulat",
+    "ertelem"
+   ],
+   "ts": [
+    "who5",
+    "brs"
+   ],
+   "w": "A tágító-építő elmélet: a pozitív érzelmek kitágítják a figyelmet és erőforrásokat építenek. (A később hozzá kapcsolt „pozitivitási arány” matematikai alapját visszavonták.)"
+  },
+  {
+   "id": "ryff-1989",
+   "c": "elmelet",
+   "t": "kutatas",
+   "ti": "Happiness Is Everything, or Is It?",
+   "a": "Carol D. Ryff (JPSP)",
+   "y": 1989,
+   "ev": "A",
+   "tg": [
+    "ertelem"
+   ],
+   "ts": [
+    "swls",
+    "mlq"
+   ],
+   "w": "A pszichológiai jóllét hat dimenziója (önelfogadás, kapcsolatok, autonómia, környezet uralása, életcél, fejlődés). A jóllét nem csak jó érzés."
+  },
+  {
+   "id": "ego-depletion",
+   "c": "elmelet",
+   "t": "kutatas",
+   "ti": "Akaraterő-kimerülés (ego depletion) – replikációs kudarc",
+   "a": "Hagger és mtsai (Perspectives on Psychological Science)",
+   "y": 2016,
+   "ev": "V",
+   "tg": [
+    "szokasok"
+   ],
+   "ts": [
+    "bscs"
+   ],
+   "w": "A „véges akaraterő-tartály” elméletét egy 23 laboros, előre regisztrált replikáció nem tudta kimutatni. Tanulság: ne arra építs, hogy az akaraterőd fogy; a környezet és a szokás fontosabb."
+  },
+  {
+   "id": "grit-meta",
+   "c": "elmelet",
+   "t": "kutatas",
+   "ti": "Much Ado About Grit",
+   "a": "Marcus Credé és mtsai (JPSP)",
+   "y": 2017,
+   "ev": "V",
+   "tg": [
+    "munka"
+   ],
+   "ts": [
+    "grit"
+   ],
+   "w": "Metaanalízis: a grit nagyrészt a lelkiismeretességgel azonos, és a teljesítményt csak mérsékelten jósolja. A Grit-S eredményedet ennek tudatában olvasd."
+  },
+  {
+   "id": "mindset-meta",
+   "c": "elmelet",
+   "t": "kutatas",
+   "ti": "To What Extent and Under Which Circumstances Are Growth Mind-Sets Important?",
+   "a": "Victoria F. Sisk és mtsai (Psychological Science)",
+   "y": 2018,
+   "ev": "V",
+   "tg": [
+    "onbizalom",
+    "munka"
+   ],
+   "ts": [
+    "gse"
+   ],
+   "w": "Két metaanalízis: a növekedési szemlélet és a teljesítmény kapcsolata, illetve a szemléletváltó beavatkozások hatása nagyon kicsi. Hátrányos helyzetű csoportoknál valamivel nagyobb."
+  },
+  {
+   "id": "tanulasi-stilusok",
+   "c": "elmelet",
+   "t": "kutatas",
+   "ti": "Tanulási stílusok (vizuális, auditív…) – mítosz",
+   "a": "Pashler és mtsai (Psychological Science in the Public Interest)",
+   "y": 2008,
+   "ev": "V",
+   "tg": [
+    "gondolkodas"
+   ],
+   "ts": [],
+   "w": "Nincs megbízható bizonyíték arra, hogy a „saját tanulási stílushoz” igazított tanítás jobb lenne. Hasznosabb: térközös ismétlés, önellenőrzés, vegyes gyakorlás."
+  }
+ ],
+ "paths": [
+  {
+   "id": "onbizalom-6",
+   "ti": "Önbizalom",
+   "em": "6 hét",
+   "acc": "#8a6a1f",
+   "ts": [
+    "rses",
+    "gse",
+    "bfne",
+    "obgy"
+   ],
+   "site": "edzes.html",
+   "goal": "Kevesebb önostorozás, több kiállás és lépés a került helyzetekbe.",
+   "steps": [
+    {
+     "w": "1. hét",
+     "t": "Mérés és terv",
+     "d": "Töltsd ki a négy önbizalom-tesztet, és indítsd el az Önbizalom-edzés tervét.",
+     "i": [
+      "six-pillars"
+     ]
+    },
+    {
+     "w": "1–2. hét",
+     "t": "Az önkritika észrevétele",
+     "d": "Gondolatnapló a legerősebb önkritikus pillanatokról, mellé önegyüttérző szünet.",
+     "i": [
+      "gondolatnaplo",
+      "onegyutterzo-szunet",
+      "self-compassion"
+     ]
+    },
+    {
+     "w": "2–5. hét",
+     "t": "Bátorság-létra",
+     "d": "Heti 2–3 lépcső, előtte jóslat, utána valóság. A fő munka itt történik.",
+     "i": [
+      "expozicios-letra",
+      "feel-the-fear",
+      "felelem-beallitas"
+     ]
+    },
+    {
+     "w": "3–6. hét",
+     "t": "Mélyítés",
+     "d": "Ha a szégyen vagy a perfekcionizmus erős, olvass rá célzottan.",
+     "i": [
+      "feeling-good",
+      "perfect-enough",
+      "cft"
+     ]
+    },
+    {
+     "w": "6. hét",
+     "t": "Újramérés",
+     "d": "Ugyanazok a tesztek. Az Edzés oldal megmutatja a változást a kezdéshez képest.",
+     "i": []
+    }
+   ]
+  },
+  {
+   "id": "stressz-4",
+   "ti": "Stressz és kiégés",
+   "em": "4 hét",
+   "acc": "#881337",
+   "ts": [
+    "pss",
+    "cbi",
+    "who5",
+    "pulse"
+   ],
+   "goal": "A stresszválasz lezárása naponta, és a kimerülés forrásainak szétválasztása.",
+   "steps": [
+    {
+     "w": "1. hét",
+     "t": "Kiindulópont",
+     "d": "Havi állapotfelmérés, PSS-10, CBI. Melyik a nagyobb: a személyes vagy a munkához kötött kimerültség?",
+     "i": [
+      "burnout-nagoski"
+     ]
+    },
+    {
+     "w": "1–4. hét",
+     "t": "Napi lezárás",
+     "d": "Napi 5 perc lassú légzés és valamilyen mozgás. A stresszor nem tűnik el, de a test kiléphet a riasztásból.",
+     "i": [
+      "lassu-legzes",
+      "testpasztazas"
+     ]
+    },
+    {
+     "w": "2–4. hét",
+     "t": "Program",
+     "d": "Kezdd el a Palouse MBSR első heteit, vagy olvasd a Full Catastrophe Livinget.",
+     "i": [
+      "palouse",
+      "full-catastrophe",
+      "mbsr"
+     ]
+    },
+    {
+     "w": "2–4. hét",
+     "t": "Alvás és határok",
+     "d": "Ha az alvás romlott, ingerkontroll. A munkahelyi forrásokra egy-egy ha–akkor terv.",
+     "i": [
+      "ingerkontroll",
+      "ha-akkor"
+     ]
+    },
+    {
+     "w": "4. hét",
+     "t": "Újramérés",
+     "d": "Havi állapotfelmérés újra. Ha a PSS vagy a CBI magas maradt, beszélj szakemberrel.",
+     "i": [
+      "szakember-keresese"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "szokasok-6",
+   "ti": "Szokások és halogatás",
+   "em": "6 hét",
+   "acc": "#065f46",
+   "ts": [
+    "ips",
+    "bscs",
+    "sas"
+   ],
+   "goal": "Egy-két új szokás tartósan, és kevesebb halogatás a fontos feladatoknál.",
+   "steps": [
+    {
+     "w": "1. hét",
+     "t": "Mérés és megértés",
+     "d": "IPS, BSCS, SAS-SV. Olvasd el, miért halogatunk: nem lustaság, hanem érzelemszabályozás.",
+     "i": [
+      "procrastination-equation",
+      "steel-2007"
+     ]
+    },
+    {
+     "w": "1. hét",
+     "t": "Környezet",
+     "d": "Telefon-diéta és blokkolók: a súrlódás erősebb az akaratnál.",
+     "i": [
+      "digitalis-rend",
+      "leechblock",
+      "ego-depletion"
+     ]
+    },
+    {
+     "w": "2–6. hét",
+     "t": "Egy szokás, kicsiben",
+     "d": "Egyetlen szokás, nevetségesen kicsi kezdéssel, ha–akkor tervvel, követővel.",
+     "i": [
+      "tiny-habits",
+      "ha-akkor",
+      "loop-habit",
+      "lally-2010"
+     ]
+    },
+    {
+     "w": "2–6. hét",
+     "t": "Halogatott feladatok",
+     "d": "WOOP minden reggel a nap egy fontos feladatára, heti áttekintés vasárnap.",
+     "i": [
+      "woop",
+      "heti-attekintes"
+     ]
+    },
+    {
+     "w": "6. hét",
+     "t": "Újramérés",
+     "d": "IPS és SAS-SV újra. Ha ment, jöhet a második szokás.",
+     "i": [
+      "atomszokasok"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "par-8",
+   "ti": "Párkapcsolat",
+   "em": "8 hét, ketten",
+   "acc": "#9f1239",
+   "ts": [
+    "ecr",
+    "gott",
+    "love",
+    "tki"
+   ],
+   "site": "par.html",
+   "goal": "Biztonságosabb kötődés, jobb konfliktuskezelés és több odafordulás.",
+   "steps": [
+    {
+     "w": "1. hét",
+     "t": "Közös mérés",
+     "d": "Mindketten: ECR-R, Gottman-térkép, Konfliktusmódok. A Párban oldalon egymás mellett.",
+     "i": [
+      "attached"
+     ]
+    },
+    {
+     "w": "1–8. hét",
+     "t": "Napi 20 perc",
+     "d": "Stresszcsökkentő beszélgetés minden nap, és napi egy kimondott megbecsülés.",
+     "i": [
+      "stresszcsokkento-beszelgetes",
+      "seven-principles"
+     ]
+    },
+    {
+     "w": "2–4. hét",
+     "t": "A négy lovas",
+     "d": "Mindenki a SAJÁT lovasait figyeli, és az ellenszert gyakorolja.",
+     "i": [
+      "negy-lovas",
+      "nvc"
+     ]
+    },
+    {
+     "w": "3–8. hét",
+     "t": "A negatív kör",
+     "d": "Olvassátok együtt, fejezetenként beszélgetve.",
+     "i": [
+      "hold-me-tight",
+      "eft-par"
+     ]
+    },
+    {
+     "w": "5. hét",
+     "t": "Egy különleges este",
+     "d": "36 kérdés, telefon nélkül.",
+     "i": [
+      "aron-36"
+     ]
+    },
+    {
+     "w": "8. hét",
+     "t": "Újramérés",
+     "d": "Ugyanazok a tesztek. Ha egy téma újra és újra elakad, a párterápia nem kudarc, hanem eszköz.",
+     "i": [
+      "szakember-keresese"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "erzelmek-6",
+   "ti": "Érzelmek és testtudat",
+   "em": "6 hét",
+   "acc": "#1e3a8a",
+   "ts": [
+    "tas",
+    "maia2",
+    "ders"
+   ],
+   "goal": "Az érzések finomabb észlelése és megnevezése, és több választás a reakcióban.",
+   "steps": [
+    {
+     "w": "1. hét",
+     "t": "Mérés",
+     "d": "TAS-20, MAIA-2, DERS-SF. Az alexitímia és az alacsony interocepció együtt gyakori.",
+     "i": [
+      "how-emotions"
+     ]
+    },
+    {
+     "w": "1–6. hét",
+     "t": "Napi testpásztázás",
+     "d": "Napi 10 perc. A cél nem a nyugalom, hanem az észlelés.",
+     "i": [
+      "testpasztazas",
+      "focusing"
+     ]
+    },
+    {
+     "w": "2–3. hét",
+     "t": "Szavakba öntés",
+     "d": "Expresszív írás négy egymást követő napon.",
+     "i": [
+      "expressziv-iras",
+      "pennebaker-1997"
+     ]
+    },
+    {
+     "w": "3–6. hét",
+     "t": "Szabályozási készségek",
+     "d": "RAIN erős érzésnél, és a DBT érzelemszabályozási munkalapjai.",
+     "i": [
+      "rain",
+      "dbt-skills",
+      "gross-1998"
+     ]
+    },
+    {
+     "w": "6. hét",
+     "t": "Újramérés",
+     "d": "MAIA-2 és DERS-SF újra.",
+     "i": []
+    }
+   ]
+  },
+  {
+   "id": "ertelem-4",
+   "ti": "Értelem és irány",
+   "em": "4 hét",
+   "acc": "#5b21b6",
+   "ts": [
+    "mlq",
+    "pvq",
+    "via",
+    "swls"
+   ],
+   "goal": "Tisztább értékek, a fő erősségek tudatos használata, és egy irány a következő évre.",
+   "steps": [
+    {
+     "w": "1. hét",
+     "t": "Mérés",
+     "d": "MLQ, PVQ-21, VIA-72, SWLS.",
+     "i": [
+      "mondj-igent"
+     ]
+    },
+    {
+     "w": "1–2. hét",
+     "t": "Értékek",
+     "d": "ACT céltábla és életkerék. Hol a legnagyobb a távolság?",
+     "i": [
+      "ertek-celtabla",
+      "eletkerek",
+      "schwartz-values"
+     ]
+    },
+    {
+     "w": "2–3. hét",
+     "t": "Erősségek",
+     "d": "Minden nap használd az egyik fő erősségedet új módon.",
+     "i": [
+      "character-strengths",
+      "flourish"
+     ]
+    },
+    {
+     "w": "3–4. hét",
+     "t": "Jövőkép",
+     "d": "Legjobb lehetséges én, majd WOOP az első lépésre.",
+     "i": [
+      "legjobb-en",
+      "woop",
+      "four-thousand-weeks"
+     ]
+    },
+    {
+     "w": "4. hét",
+     "t": "Újramérés",
+     "d": "MLQ és SWLS újra; a változás lassú, a négy hét inkább irányt ad.",
+     "i": []
+    }
+   ]
+  },
+  {
+   "id": "alvas-4",
+   "ti": "Alvás",
+   "em": "4 hét",
+   "acc": "#334155",
+   "ts": [
+    "sci",
+    "ess",
+    "meq"
+   ],
+   "goal": "Gyorsabb elalvás, kevesebb éjszakai ébrenlét, a kronotípushoz illő napirend.",
+   "steps": [
+    {
+     "w": "1. hét",
+     "t": "Mérés és alvásnapló",
+     "d": "SCI, Epworth, MEQ. Egy hétig írd fel a lefekvés, elalvás, ébredés és felkelés idejét.",
+     "i": [
+      "miert-alszunk"
+     ]
+    },
+    {
+     "w": "1–4. hét",
+     "t": "Ingerkontroll",
+     "d": "Fix felkelés, csak álmosan az ágyba, 20 perc után felkelni.",
+     "i": [
+      "ingerkontroll",
+      "cbt-i"
+     ]
+    },
+    {
+     "w": "1–4. hét",
+     "t": "Esti lezárás",
+     "d": "Telefon a hálón kívül, lassú légzés lefekvés előtt.",
+     "i": [
+      "digitalis-rend",
+      "lassu-legzes"
+     ]
+    },
+    {
+     "w": "2–4. hét",
+     "t": "Teljes program",
+     "d": "Ha nem javul, a CBT-I könyv teljes programja (alváskorlátozással).",
+     "i": [
+      "say-good-night"
+     ]
+    },
+    {
+     "w": "4. hét",
+     "t": "Újramérés",
+     "d": "SCI újra. Ha erős horkolás, légzéskimaradás vagy nagy nappali álmosság van, menj alvásvizsgálatra.",
+     "i": [
+      "szakember-keresese"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "fejlodes-8",
+   "ti": "Vezetői és felnőttkori fejlődés",
+   "em": "8 hét",
+   "acc": "#a16207",
+   "ts": [
+    "bf",
+    "pvq",
+    "kolbe"
+   ],
+   "goal": "A saját cselekvési logikád megértése, és egy makacs viselkedési minta valódi megváltoztatása.",
+   "steps": [
+    {
+     "w": "1. hét",
+     "t": "Térkép",
+     "d": "Big Five, PVQ-21, cselekvési módok. Mi a természetes működésed?",
+     "i": [
+      "seven-transformations"
+     ]
+    },
+    {
+     "w": "1–2. hét",
+     "t": "Elmélet",
+     "d": "Kegan és Loevinger: hogyan fejlődik a jelentésadás felnőttkorban.",
+     "i": [
+      "kegan-in-over",
+      "cook-greuter"
+     ]
+    },
+    {
+     "w": "2–6. hét",
+     "t": "Változási immunitás",
+     "d": "Töltsd ki a négyoszlopos térképet, majd heti egy biztonságos kísérlet a nagy feltevésre.",
+     "i": [
+      "immunity-to-change",
+      "immunity-modszer"
+     ]
+    },
+    {
+     "w": "2–8. hét",
+     "t": "Döntések és visszajelzés",
+     "d": "Döntési napló, premortem a nagy döntések előtt, heti áttekintés.",
+     "i": [
+      "dontesi-naplo",
+      "premortem",
+      "heti-attekintes"
+     ]
+    },
+    {
+     "w": "8. hét",
+     "t": "Áttekintés",
+     "d": "Mi változott a viselkedésben, és mi a feltevésben? A fejlődés a második.",
+     "i": [
+      "idg"
+     ]
+    }
+   ]
+  }
+ ]
+}

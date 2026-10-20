@@ -2,7 +2,7 @@
    Offline működés: az első látogatáskor minden oldal és közös fájl a böngésző gyorsítótárába kerül.
    Az oldalak hálózatról frissülnek, ha van net; a verziózott (?v=…) fájlok a gyorsítótárból jönnek.
    Válasz vagy eredmény nem megy át rajta: csak a statikus fájlokat kezeli. */
-const VERSION = '84917b7c3a';
+const VERSION = '1fd96e3125';
 const PRECACHE = [
 "./",
 "adatok.html",
@@ -11,6 +11,7 @@ const PRECACHE = [
 "assets/csillag-calc.js?v=d8ce36f3",
 "assets/csillag-data.js?v=5be1bbf6",
 "assets/demo-data.js?v=8351e47a",
+"assets/konyvtar-data.js?v=22a7ebab",
 "assets/mely-allapot.js?v=386da5ef",
 "assets/mely-alvas.js?v=707e2e14",
 "assets/mely-attitudok.js?v=65ccba3e",
@@ -32,7 +33,7 @@ const PRECACHE = [
 "assets/mely-szokasok.js?v=0278c30b",
 "assets/mely-terkepek.js?v=fc297f4e",
 "assets/mely.js?v=394634ec",
-"assets/oni-schema.js?v=30cdae7f",
+"assets/oni-schema.js?v=9d9e5514",
 "assets/oni.js?v=604a0bdc",
 "assets/results-plus.js?v=1f96d0e0",
 "assets/tests-data.js?v=972452a2",
@@ -67,6 +68,7 @@ const PRECACHE = [
 "index.html",
 "jollet.html",
 "kapcsolat.html",
+"konyvtar.html",
 "kotodes-melyterkep.html",
 "maia2.html",
 "manifest.webmanifest",

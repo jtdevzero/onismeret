@@ -48,7 +48,7 @@ def ver(rel):
     """Rövid tartalom-hash a gyorsítótár-ürítéshez: ha a fájl változik, a böngésző biztosan az újat tölti le."""
     return hashlib.sha1((ROOT / rel).read_bytes()).hexdigest()[:8]
 
-ASSETS = ['assets/registry.js', 'assets/oni-core.js', 'assets/oni-schema.js', 'assets/tests-data.js', 'assets/results-plus.js', 'assets/theme.css', 'assets/demo-data.js', 'assets/ysq-mely.js', 'assets/mely.js', 'assets/oni-rules.js', 'assets/csillag-calc.js', 'assets/csillag-data.js', 'fonts/fonts.css']
+ASSETS = ['assets/registry.js', 'assets/oni-core.js', 'assets/oni-schema.js', 'assets/tests-data.js', 'assets/results-plus.js', 'assets/theme.css', 'assets/demo-data.js', 'assets/ysq-mely.js', 'assets/mely.js', 'assets/oni-rules.js', 'assets/csillag-calc.js', 'assets/csillag-data.js', 'assets/konyvtar-data.js', 'fonts/fonts.css']
 
 def build_bundle():
     parts = ['assets/registry.js', 'assets/oni-core.js', 'assets/oni-rules.js']
@@ -149,7 +149,101 @@ def build_sw():
     (ROOT / 'sw.js').write_text(body)
     print('sw', len(lst), 'fájl', version)
 
+def build_konyvtar():
+    """Önismereti könyvtár: egyetlen forrás (src/konyvtar.json) → assets/konyvtar-data.js (az oldalnak)
+    és konyvtar/<alkönyvtár>/README.md (GitHubon olvasható awesome-lista). Ellenőrzi a hivatkozásokat is."""
+    d = json.loads((SRC / 'konyvtar.json').read_text())
+    reg = {m.group(1): (m.group(2), m.group(3)) for m in re.finditer(r"\{id:'([\w-]+)'.*?name:'([^']*)',link:'([^']*)'", (ROOT / 'assets/registry.js').read_text())}
+    M, cats = d['meta'], {c['id']: c for c in d['cats']}
+    items = {}
+    for i in d['items']:
+        e = f"konyvtar: {i.get('id')}"
+        if not re.fullmatch(r'[a-z0-9-]{2,40}', i['id']) or i['id'] in items: raise SystemExit(e + ': hibás vagy ismétlődő azonosító')
+        if i['c'] not in cats or (i.get('c2') and i['c2'] not in cats): raise SystemExit(e + ': ismeretlen alkönyvtár')
+        if i['t'] not in M['types'] or i['ev'] not in M['ev']: raise SystemExit(e + ': ismeretlen típus vagy bizonyítékszint')
+        bad = [x for x in i['tg'] if x not in M['tags']] + [x for x in i['ts'] if x not in reg]
+        if bad: raise SystemExit(e + ': ismeretlen címke vagy teszt: ' + ', '.join(bad))
+        if i.get('site') and not (ROOT / i['site']).exists(): raise SystemExit(e + ': nem létező oldal ' + i['site'])
+        if i.get('u') and not re.match(r'(https://|tel:)', i['u']): raise SystemExit(e + ': a link csak https:// vagy tel: lehet')
+        items[i['id']] = i
+    for p in d['paths']:
+        bad = [x for s in p['steps'] for x in s['i'] if x not in items] + [x for x in p['ts'] if x not in reg]
+        if bad or (p.get('site') and not (ROOT / p['site']).exists()): raise SystemExit(f"konyvtar: útvonal {p['id']}: hibás hivatkozás {bad}")
+    (ROOT / 'assets/konyvtar-data.js').write_text('/* GENERÁLT FÁJL (tools/build.py) a src/konyvtar.json-ból — ne szerkeszd kézzel. */\nwindow.ONI_LIB=' +
+                                                json.dumps(d, ensure_ascii=False, separators=(',', ':')) + ';\n')
+    # ── Markdown: alkönyvtárak ──
+    site, out = M['site'], ROOT / 'konyvtar'
+    EVB = {'A': '🟢 A', 'B': '🟡 B', 'C': '⚪ C', 'V': '🔴 vitatott'}
+    def tlink(t): return f"[{reg[t][0].split(' · ')[0]}]({site}{reg[t][1]})"
+    def entry(i):
+        head = f"[{i['ti']}]({i['u']})" if i.get('u', '').startswith('https://') else i['ti']
+        if i.get('u', '').startswith('tel:'): head = f"**{i['ti']}**"
+        else: head = f"**{head}**"
+        by = ' — ' + i['a'] if i.get('a') else ''
+        yr = f" ({i['y']})" if i.get('y') else ''
+        lines = [f"- {head}{by}{yr}"]
+        meta = [EVB[i['ev']], M['types'][i['t']]]
+        if i.get('hu'): meta.append(f"magyarul: *{i['hu']}*")
+        if i.get('time'): meta.append('⏱ ' + i['time'])
+        lines.append(f"  <br>{' · '.join(meta)}")
+        lines.append(f"  <br>{i['w']}")
+        if i.get('how'): lines += [f"  {n}. {s}" for n, s in enumerate(i['how'], 1)]
+        rel = [tlink(t) for t in i['ts']] + ([f"[{i['site']}]({site}{i['site']})"] if i.get('site') else [])
+        if rel: lines.append(f"  <br>↳ Kapcsolódó: {', '.join(rel)}")
+        return '\n'.join(lines)
+    legend = '**Bizonyítékszint:** ' + ' · '.join(EVB[k] + ('' if k == 'V' else ' ' + v[0].lower()) for k, v in M['ev'].items())
+    gen = '<!-- GENERÁLT FÁJL (tools/build.py) a src/konyvtar.json-ból — ne szerkeszd kézzel. -->\n'
+    nav = lambda: ' · '.join(f"[{c['num']} {c['title']}](../{c['dir']}/)" for c in d['cats']) + ' · [09 Útvonalak](../09-utvonalak/)'
+    written = set()
+    for c in d['cats']:
+        mine = [i for i in d['items'] if c['id'] in (i['c'], i.get('c2'))]
+        md = [gen, f"# {c['num']} · {c['title']}", '', f"> {c['desc']}", '', f"[← Könyvtár]({'../'}) · [Böngészhető, kereshető változat]({site}konyvtar.html#k-{c['id']})", '', legend, '']
+        if c['id'] == 'gyakorlatok' or len(mine) < 14:
+            md += [entry(i) + '\n' for i in mine]
+        else:
+            groups = {}
+            for i in mine: groups.setdefault(i['tg'][0], []).append(i)
+            md += ['## Tartalom', ''] + [f"- [{M['tags'][g]}](#{re.sub(r'[^a-z0-9áéíóöőúüű -]', '', M['tags'][g].lower()).replace(' ', '-')}) ({len(v)})" for g, v in groups.items()] + ['']
+            for g, v in groups.items(): md += [f"## {M['tags'][g]}", ''] + [entry(i) + '\n' for i in v]
+        md += ['---', '', nav(), '']
+        (out / c['dir']).mkdir(parents=True, exist_ok=True)
+        (out / c['dir'] / 'README.md').write_text('\n'.join(md)); written.add(c['dir'])
+    md = [gen, '# 09 · Útvonalak', '', '> Több hetes, sorrendbe rakott programok: mérés, olvasmány, gyakorlat, újramérés. A böngészős változatban a lépések kipipálhatók, és a haladás mentődik.', '',
+          f"[← Könyvtár](../) · [Böngészhető változat]({site}konyvtar.html#utvonalak)", '']
+    for p in d['paths']:
+        md += [f"## {p['ti']} · {p['em']}", '', f"*{p['goal']}*", '', 'Mérés: ' + ', '.join(tlink(t) for t in p['ts']) + (f" · Oldal: [{p['site']}]({site}{p['site']})" if p.get('site') else ''), '']
+        for s in p['steps']:
+            refs = ', '.join(f"[{items[x]['ti']}](../{next(c['dir'] for c in d['cats'] if c['id'] == items[x]['c'])}/)" for x in s['i'])
+            md.append(f"1. **{s['w']} · {s['t']}** — {s['d']}" + (f" <br>↳ {refs}" if refs else ''))
+        md.append('')
+    md += ['---', '', nav(), '']
+    (out / '09-utvonalak').mkdir(parents=True, exist_ok=True)
+    (out / '09-utvonalak' / 'README.md').write_text('\n'.join(md)); written.add('09-utvonalak')
+    # ── Markdown: főoldal ──
+    cnt = {c['id']: sum(1 for i in d['items'] if c['id'] in (i['c'], i.get('c2'))) for c in d['cats']}
+    evc = {k: sum(1 for i in d['items'] if i['ev'] == k) for k in M['ev']}
+    md = [gen, '# Önismereti könyvtár', '',
+          f"> Kurált, magyar nyelvű forrásgyűjtemény az [Önismereti térképek]({site}) tesztjei mellé: könyvek, módszerek, gyakorlatok, eszközök, kurzusok és kutatások, "
+          'mindegyiknél bizonyítékszinttel és a kapcsolódó tesztekkel.', '',
+          f"**{len(d['items'])} forrás · {len(d['cats'])} alkönyvtár · {len(d['paths'])} útvonal** · "
+          f"[Böngészhető, kereshető változat]({site}konyvtar.html) (olvasólistával és a kitöltött tesztjeid alapján ajánlással)", '',
+          '## Alkönyvtárak', '', '| | Alkönyvtár | Tartalom | Forrás |', '|---|---|---|---|']
+    md += [f"| {c['num']} | [{c['title']}]({c['dir']}/) | {c['desc']} | {cnt[c['id']]} |" for c in d['cats']]
+    md += [f"| 09 | [Útvonalak](09-utvonalak/) | Több hetes programok mérésről mérésig: " + ', '.join(p['ti'].lower() for p in d['paths']) + f". | {len(d['paths'])} |", '',
+           '## Bizonyítékszint', '', '| Jel | Jelentés | Forrás |', '|---|---|---|']
+    md += [f"| {EVB[k]} | **{v[0]}.** {v[1]} | {evc[k]} |" for k, v in M['ev'].items()]
+    md += ['', '## Elvek', '',
+           '- **Őszinteség a népszerűség előtt.** A sokat idézett, de nem igazolt állítások is itt vannak, vitatott jelöléssel, hogy tudd, mire figyelj.',
+           '- **Teszttől a tettig.** Minden forrás mellett ott a teszt, amelynek az eredményéhez kapcsolódik; az útvonalak méréssel kezdődnek és újraméréssel zárulnak.',
+           '- **Nem helyettesít szakembert.** Ha most nehéz: Lelki Elsősegély Telefonszolgálat **116-123** (ingyenes, éjjel-nappal), életveszélyben **112**.', '',
+           'Bővítés: [HOZZAJARULAS.md](HOZZAJARULAS.md).', '']
+    (out / 'README.md').write_text('\n'.join(md))
+    for x in out.iterdir():   # elárvult, régi alkönyvtár ne maradjon
+        if x.is_dir() and x.name not in written: raise SystemExit(f'konyvtar: elárvult mappa {x.name}, töröld vagy vedd fel a forrásba')
+    print('konyvtar', len(d['items']), 'forrás,', len(d['paths']), 'útvonal')
+
 if __name__ == '__main__':
+    build_konyvtar()
     build_hubs()
     link_core()
     build_sw()
