@@ -1111,6 +1111,9 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     let m = await p.evaluate(() => ({ items: document.querySelectorAll('#cat .it').length, tiles: document.querySelectorAll('#tiles .tile').length, paths: document.querySelectorAll('#paths .path').length,
       empty: /Még nincs kitöltött teszted/.test(document.getElementById('recs').textContent), ext: [...document.querySelectorAll('#cat a[target="_blank"]')].every(a => /^https:/.test(a.href) && /noopener/.test(a.rel)) }));
     ok(m.items === src.items.length && m.tiles === src.cats.length + 1 && m.paths === src.paths.length && m.empty && m.ext, 'betöltés: minden forrás, 8+1 csempe, útvonalak, üres ajánlás, biztonságos külső linkek', m);
+    await p.click('#goals [data-goal="szokasok"]'); await p.waitForTimeout(80);
+    ok(await p.evaluate(() => document.querySelectorAll('#recs .it').length >= 4 && /Választott célod/.test(document.getElementById('recs').textContent)), 'választott cél: kitöltött teszt nélkül is témához illő ajánlás');
+    await p.click('#goals [data-goal=""]'); await p.waitForTimeout(40);
     // keresés ékezet nélkül, szűrők
     await p.fill('#q', 'halogatas'); await p.waitForTimeout(80);
     m = await p.evaluate(() => [...document.querySelectorAll('#cat .it')].map(e => e.dataset.id));
@@ -1124,7 +1127,10 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     m = await p.evaluate(() => JSON.parse(localStorage.getItem('onismeret-konyvtar-v1')));
     ok(m.list.atomszokasok.s === 'want' && m.list.flow.s === 'done' && m.list.flow.note === 'Kihívás és képesség egyensúlya' && await p.evaluate(() => document.querySelectorAll('#rl .rl-row').length === 2 && document.getElementById('jn-list').textContent === '2'), 'olvasólista: állapot, jegyzet, számláló', m);
     await p.click('#cat .it[data-id="atomszokasok"] button[data-s="want"]'); await p.waitForTimeout(50);
-    ok(await p.evaluate(() => !JSON.parse(localStorage.getItem('onismeret-konyvtar-v1')).list.atomszokasok), 'ugyanarra a gombra kattintva lekerül a listáról');
+    ok(await p.evaluate(() => !!JSON.parse(localStorage.getItem('onismeret-konyvtar-v1')).list.atomszokasok), 'ugyanarra a státuszra kattintva a mentett tétel nem törlődik');
+    p.once('dialog', dialog => dialog.accept());
+    await p.click('#rl .rl-row[data-id="atomszokasok"] button[data-remove="1"]'); await p.waitForTimeout(50);
+    ok(await p.evaluate(() => !JSON.parse(localStorage.getItem('onismeret-konyvtar-v1')).list.atomszokasok), 'eltávolítás csak külön gombbal és megerősítéssel');
     // útvonal
     await p.click('#paths [data-start="szokasok-6"]'); await p.check('#p-szokasok-6 input[data-step="2"]'); await p.waitForTimeout(50);
     m = await p.evaluate(() => ({ s: JSON.parse(localStorage.getItem('onismeret-konyvtar-v1')).paths['szokasok-6'], txt: document.querySelector('#p-szokasok-6 .pmeta').textContent }));
@@ -1138,6 +1144,8 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     await p.goto(R + 'konyvtar.html'); await p.waitForTimeout(250);
     m = await p.evaluate(() => ({ ids: [...document.querySelectorAll('#recs .it')].map(e => e.dataset.id), why: document.querySelector('#recs .why-rec') && document.querySelector('#recs .why-rec').textContent, help: !!document.querySelector('#recs .help a[href="tel:116123"]'), dupe: document.querySelectorAll('[id="i-atomszokasok"]').length }));
     ok(m.ids.length >= 4 && !m.ids.includes('flow') && /Mert kitöltötted/.test(m.why) && m.help && m.dupe <= 1, 'ajánlás: a kitöltött tesztekhez illő források, a kész kimarad, magas PHQ-9-nél segítségkérés', m);
+    await p.goto(R + 'konyvtar.html#k-magyar'); await p.waitForTimeout(200);
+    ok(await p.evaluate(() => { const cards=[...document.querySelectorAll('#cat .it')];const ids=cards.map(c => c.dataset.id);return ids.length===new Set(ids).size&&ids.includes('flow') }), 'másodlagos kategóriaszűrés: nincs ismétlődő könyvkártya');
     // mélylink alkönyvtárra
     await p.goto(R + 'konyvtar.html#k-gyakorlatok'); await p.waitForTimeout(250);
     ok(await p.evaluate(n => document.querySelectorAll('#cat .it').length === n && document.querySelector('#filters .chip[data-f="c"][data-v="gyakorlatok"]').getAttribute('aria-pressed') === 'true', src.items.filter(i => i.c === 'gyakorlatok').length), 'mélylink: #k-gyakorlatok a gyakorlatokra szűr');
