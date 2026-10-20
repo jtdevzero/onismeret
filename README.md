@@ -48,6 +48,7 @@
 | | GSE (általános énhatékonyság) | 10 | `onbizalom.html#test-gse` |
 | | BFNE-II (negatív értékeléstől való félelem) | 12 | `onbizalom.html#test-bfne` |
 | | Gyakorlati önbizalom (saját, nem validált, kurzus előtt/után) | 20 | `onbizalom.html#test-obgy` |
+| | Önbizalom-edzés (gyakorló oldal, nem teszt: terv, napi gyakorlat, bátorság-létra) | – | `edzes.html` |
 | **XII. Jóllét és stressz** | Havi állapotfelmérés (WHO-5, PSS-4, CBI személyes, UCLA-3, SCI rövid; havi idővonallal) | 20 | `havi.html#test-pulse` |
 | | WHO-5 (jóllét) | 5 | `jollet.html#test-who5` |
 | | PSS-10 (észlelt stressz) | 10 | `jollet.html#test-pss` |
@@ -82,6 +83,7 @@ onismeret/
 ├── index.html            Főoldal: haladás, témakör-navigáció, kereshető katalógus, mentés/visszaállítás
 ├── osszegzes.html        Kereszt-összegzés: minták, változás, eredménytörténet, riport (?demo=1: demó profil)
 ├── fokusz.html           Fókusz: egy kiválasztott minta 2–4 hetes gyakorlási köre
+├── edzes.html            Önbizalom-edzés: terv a négy önbizalom-tesztből, napi gyakorlatok, bátorság-létra (nem teszt)
 ├── par.html              Párkapcsolati mód: két profil egymás mellett
 ├── adatok.html           Saját adatok: kitöltésenkénti és tesztenkénti törlés, export
 ├── valtozasok.html       Változásnapló és tesztverziók

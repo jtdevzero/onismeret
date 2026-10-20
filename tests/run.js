@@ -1051,6 +1051,52 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     await ctx.close();
   }
 
+  console.log('\n35. Önbizalom-edzés: terv, napi gyakorlat, bátorság-létra, mentés');
+  {
+    const ctx = await newCtx(); const p = await pageIn(ctx);
+    const KE = 'onismeret-edzes-v1';
+    await p.goto(R + 'edzes.html'); await p.waitForTimeout(200);
+    ok(await p.evaluate(() => /Még nincs kitöltve/.test(document.getElementById('plan').textContent) && document.querySelectorAll('#pl-areas .chip').length === 5 && document.querySelectorAll('#daily .ex').length === 5), 'üres állapot: tesztajánló, 5 terület, 5 gyakorlat');
+    // eredmények: alacsony RSES, erős BFNE, gyenge kiállás és határok
+    await p.goto(R + 'onbizalom.html#test-rses'); await p.waitForTimeout(150);
+    await p.evaluate(() => { TESTS.rses._fillAll((k, it) => it.r ? k - 1 : 0); TESTS.rses.show(); TESTS.bfne._fillAll(k => k - 1); TESTS.bfne.show(); TESTS.obgy._fillAll((k, it) => (it.s === 'KI' || it.s === 'HA') ? (it.r ? k - 1 : 0) : (it.r ? 0 : k - 1)); TESTS.obgy.show(); });
+    await p.goto(R + 'edzes.html'); await p.waitForTimeout(200);
+    let m = await p.evaluate(() => ({ on: [...document.querySelectorAll('#pl-areas .chip.on')].map(c => c.dataset.a).sort(), set: [...document.querySelectorAll('#daily .ex')].map(e => e.dataset.ex), warn: !!document.querySelector('#plan .warn'), txt: document.getElementById('plan').innerText }));
+    ok(m.on.join() === 'HA,KI' && m.set.includes('voice') && m.set.includes('no') && m.set.includes('win') && m.set.includes('attn') && m.warn && !/undefined|NaN/.test(m.txt), 'terv: a két leggyengébb terület kijelölve, hozzá illő gyakorlatok, CBT-javaslat', m.set);
+    await p.click('#pl-areas .chip[data-a="LA"]'); await p.waitForTimeout(50);
+    ok(await p.evaluate(() => document.querySelectorAll('#pl-areas .chip.on').length === 2 && /Legfeljebb két/.test(document.getElementById('pl-msg').textContent)), 'legfeljebb két fókuszterület');
+    await p.click('#pl-start'); await p.waitForTimeout(100);
+    ok(await p.evaluate(k => { const s = JSON.parse(localStorage.getItem(k)); const h = ONI.all().rses; return s.plan && s.plan.base.rses === h[h.length - 1].d.total[1] && s.plan.base.bfne === 48 && s.plan.areas.length === 2 && /napja tart a terv/.test(document.getElementById('plan').textContent); }, KE), 'a terv elindul, kiindulópont mentve');
+    // napi gyakorlat
+    await p.click('#daily .ex[data-ex="win"] .chip'); await p.waitForTimeout(50);
+    await p.fill('#daily [data-win="0"]', 'Szóltam a megbeszélésen'); await p.waitForTimeout(700);
+    m = await p.evaluate(k => { const s = JSON.parse(localStorage.getItem(k)), d = Object.values(s.log)[0]; return { ex: d.ex, w: d.win[0], st: document.querySelector('#daily .statbar').textContent }; }, KE);
+    ok(m.ex.join() === 'win' && m.w === 'Szóltam a megbeszélésen' && /1 nap sorozat/.test(m.st.replace(/\s+/g, ' ')), 'napi gyakorlat és napló automatikusan mentve, sorozat 1', m);
+    // létra
+    await p.click('#ld-pre .chip'); await p.fill('#ld-fear', '7'); await p.click('#ld-add'); await p.waitForTimeout(50);
+    await p.fill('#ld-text', 'Könnyű lépés'); await p.fill('#ld-fear', '2'); await p.click('#ld-add'); await p.waitForTimeout(50);
+    ok(await p.evaluate(() => { const r = document.querySelectorAll('.rung'); return r.length === 2 && /Könnyű lépés/.test(r[0].textContent) && r[0].classList.contains('next'); }), 'létra: félelem szerint rendez, a legkönnyebb a következő lépcső');
+    await p.click('.rung.next [data-act="try"]'); await p.fill('.rung.next [data-f="real"]', '0'); await p.check('.rung.next [data-f="done"]'); await p.click('.rung.next [data-act="save"]'); await p.waitForTimeout(50);
+    m = await p.evaluate(k => ({ s: JSON.parse(localStorage.getItem(k)).ladder, txt: document.getElementById('ladder').innerText }), KE);
+    ok(m.s.filter(r => r.done).length === 1 && m.s.find(r => r.done).tries[0].pred === 2 && /2 ponttal könnyebb/.test(m.txt), 'létra: próba mentve, kipipálva, jóslat és valóság különbsége', m.txt.slice(0, 200));
+    // séma: a mentett adat érvényes, a hibás nem
+    ok(await p.evaluate(k => { const v = localStorage.getItem(k); const bad = JSON.parse(v); bad.ladder[0].fear = 11; return ONI_CHECK.stored(k, v) === null && !!ONI_CHECK.stored(k, JSON.stringify(bad)) && !!ONI_CHECK.stored(k, JSON.stringify({ x: 1 })); }, KE), 'séma: az edzés-adat visszaállítható, a hibás elutasítva');
+    // újramérés 6 hét után, változás a kezdéshez képest
+    await p.evaluate(k => { const s = JSON.parse(localStorage.getItem(k)); s.plan.start = new Date(Date.now() - 45 * 864e5).toISOString(); localStorage.setItem(k, JSON.stringify(s)); }, KE);
+    await p.reload(); await p.waitForTimeout(200);
+    ok(await p.evaluate(() => /Ideje újramérni/.test(document.getElementById('plan').textContent)), '6 hét után újramérést javasol');
+    await p.goto(R + 'onbizalom.html#test-rses'); await p.waitForTimeout(150);
+    await p.evaluate(() => { TESTS.rses._fillAll((k, it) => it.r ? 0 : k - 1); TESTS.rses.show(); });
+    await p.goto(R + 'edzes.html'); await p.waitForTimeout(200);
+    ok(await p.evaluate(() => /\+\d+ a kezdéshez képest · kedvező irány/.test(document.getElementById('plan').textContent)), 'újramérés után a változás látszik, iránnyal');
+    await p.evaluate(() => localStorage.setItem('onismeret-settings-v1', JSON.stringify({ theme: 'light' }))); await p.reload(); await p.waitForTimeout(150);
+    ok(await p.evaluate(() => getComputedStyle(document.body).backgroundColor === 'rgb(248, 250, 252)'), 'edzes.html: világos módban világos háttér');
+    await p.goto(R + 'index.html'); await p.waitForTimeout(200);
+    ok(await p.evaluate(() => !!document.querySelector('#cat-11 a.card[href="edzes.html"]') && document.querySelectorAll('#cat-11 .card[data-key]').length === 4), 'főoldal: az edzés-kártya a XI. témakörben, a tesztkártyák száma változatlan');
+    ok(p._errs.length === 0, 'nincs JS-hiba a 35. szakaszban', p._errs);
+    await ctx.close();
+  }
+
   await browser.close();
   console.log(`\n${pass} rendben, ${fail} hiba`);
   process.exit(fail ? 1 : 0);

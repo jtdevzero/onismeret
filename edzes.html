@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="hu" data-page="edzes">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Önbizalom-edzés — Önismereti térképek</title>
+<meta name="description" content="Önbizalom-edzés: személyre szabott terv a tesztjeid alapján, napi 5–10 perces gyakorlatok és bátorság-létra. Minden adat csak ebben a böngészőben marad.">
+<link rel="stylesheet" href="fonts/fonts.css?v=50e1f8e3">
+<style>
+:root{
+  --bg-deep:#050d1e;--bg-card:#0f2038;--bg-card-hi:#152845;
+  --ink:#e6ecf5;--ink-soft:#a3b3c8;--ink-mute:#6b7c94;--line:#1e3255;--line-soft:#152845;
+  --gold:#fbbf24;--gold-soft:#78551a;--sapphire:#60a5fa;--rose:#fb7185;--emerald:#34d399;--violet:#a78bfa;
+  --font-serif:'Fraunces','Cardo',Georgia,serif;--font-sans:'Manrope','Inter','Helvetica Neue',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg-deep);color:var(--ink);font-family:var(--font-sans);font-size:16px;line-height:1.6;min-height:100vh}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+a{color:inherit}
+.wrap{max-width:1000px;margin:0 auto;padding:40px 24px 96px}
+.back{display:inline-flex;gap:8px;font-size:12px;color:var(--ink-mute);text-decoration:none;letter-spacing:.06em;margin-bottom:28px}
+.back:hover{color:var(--ink)}
+.kicker{display:inline-block;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:18px;padding:6px 16px;border:1px solid var(--gold-soft);border-radius:99px}
+h1{font-family:var(--font-serif);font-weight:400;font-size:clamp(34px,6vw,56px);line-height:1.05;letter-spacing:-0.02em;margin-bottom:16px}
+h1 em,h2 em{font-style:italic;color:var(--gold)}
+.lead{color:var(--ink-soft);font-size:16.5px;max-width:720px;margin-bottom:18px}
+h2{font-family:var(--font-serif);font-weight:400;font-size:28px;margin:52px 0 8px;letter-spacing:-0.01em}
+h3{font-family:var(--font-serif);font-weight:400;font-size:19px;margin-bottom:4px}
+.h2sub{color:var(--ink-mute);font-size:14px;margin-bottom:18px;max-width:720px}
+.statbar{display:flex;flex-wrap:wrap;gap:10px 26px;padding:18px 22px;border:1px solid var(--line);border-radius:16px;background:var(--bg-card);margin-bottom:18px;font-size:14px;color:var(--ink-soft)}
+.statbar strong{font-family:var(--font-serif);font-size:22px;color:var(--ink);font-weight:500;margin-right:6px}
+.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{appearance:none;cursor:pointer;font:inherit;font-size:13.5px;font-weight:600;padding:9px 16px;border-radius:99px;border:1px solid var(--gold);background:color-mix(in srgb,var(--gold) 12%,transparent);color:var(--ink);white-space:nowrap;text-decoration:none;display:inline-block}
+.btn.ghost{border-color:var(--line);background:transparent;color:var(--ink-soft);font-weight:500}
+.btn.danger{border-color:color-mix(in srgb,var(--rose) 60%,transparent);background:transparent;color:var(--rose)}
+.btn.sm{font-size:12.5px;padding:6px 12px}
+.btn:hover{filter:brightness(1.08)}
+.msg{font-size:13.5px;color:var(--ink-soft)}
+.card{background:var(--bg-card);border:1px solid var(--line);border-radius:18px;padding:20px 22px;margin-bottom:12px;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--acc,var(--gold))}
+.empty{padding:22px;border:1px dashed var(--line);border-radius:18px;color:var(--ink-soft);font-size:15px}
+.empty a,.how a,.note a,.warn a{color:var(--gold)}
+.note{font-size:12.5px;color:var(--ink-mute);margin-top:48px;line-height:1.7;border-top:1px dashed var(--line);padding-top:20px}
+.note a{color:var(--sapphire)}
+.jump{position:sticky;top:0;z-index:5;display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding:10px 0;margin:8px 0 0;background:var(--bg-deep)}
+.jump a{flex:0 0 auto;font-size:13px;font-weight:600;text-decoration:none;padding:7px 14px;border-radius:99px;border:1px solid var(--line);color:var(--ink-soft)}
+.jump a:hover{border-color:var(--gold);color:var(--ink)}
+.how{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin:22px 0 4px}
+.how div{border:1px solid var(--line);border-radius:14px;padding:14px 16px;background:var(--bg-card);font-size:13.5px;color:var(--ink-soft)}
+.how b{display:block;color:var(--ink);font-family:var(--font-serif);font-weight:400;font-size:16.5px;margin-bottom:2px}
+/* terv */
+.base{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:16px}
+.bs{border:1px solid var(--line);border-radius:14px;padding:14px 16px;background:var(--bg-card);position:relative;overflow:hidden}
+.bs::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--acc,var(--gold))}
+.bs .k{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mute);font-weight:700}
+.bs .v{font-family:var(--font-serif);font-size:26px;line-height:1.2}
+.bs .v small{font-size:14px;color:var(--ink-mute);font-family:var(--font-sans)}
+.bs .l{font-size:13px;color:var(--ink-soft)}
+.bs a{font-size:13px;color:var(--gold)}
+.bs .dl{font-size:12.5px;font-weight:600;margin-top:4px}
+.dl.up{color:var(--emerald)}.dl.down{color:var(--rose)}.dl.neu{color:var(--ink-mute)}
+.ins{list-style:none;display:grid;gap:8px;margin-bottom:18px}
+.ins li{border-left:3px solid var(--acc,var(--sapphire));padding:6px 0 6px 14px;color:var(--ink-soft);font-size:14.5px}
+.ins li b{color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 14px}
+.chip{appearance:none;cursor:pointer;font:inherit;font-size:13px;padding:6px 12px;border-radius:99px;border:1px solid var(--line);background:transparent;color:var(--ink-soft)}
+.chip.on{border-color:var(--gold);color:var(--ink);background:color-mix(in srgb,var(--gold) 14%,transparent)}
+.chip small{color:var(--ink-mute);margin-left:4px}
+.set{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.set li{font-size:13.5px;padding:6px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg-card);color:var(--ink-soft)}
+.set li b{color:var(--ink);font-weight:600}
+.warn{border:1px solid color-mix(in srgb,var(--rose) 45%,transparent);border-radius:14px;padding:14px 16px;font-size:14px;color:var(--ink-soft);margin-bottom:16px}
+.remeasure{border:1px dashed var(--gold);border-radius:14px;padding:14px 16px;font-size:14px;color:var(--ink-soft);margin-bottom:16px}
+.remeasure a{color:var(--gold)}
+/* napi */
+.ex{--acc:var(--sapphire)}
+.ex.done{--acc:var(--emerald);border-color:color-mix(in srgb,var(--emerald) 45%,var(--line))}
+.ex-h{display:flex;gap:10px 14px;align-items:baseline;flex-wrap:wrap}
+.ex-h h3{margin:0}
+.ex-meta{font-size:12px;color:var(--ink-mute)}
+.ex-h .chip{margin-left:auto}
+.ex p{color:var(--ink-soft);font-size:14.5px;margin-top:8px}
+.ex ol{margin:8px 0 0 20px;color:var(--ink-soft);font-size:14.5px}
+.ex ol li{margin:2px 0}
+.ex details{margin-top:8px}
+.ex summary{cursor:pointer;font-size:13px;color:var(--ink-mute)}
+.ex .why{font-size:13.5px;color:var(--ink-mute);margin-top:6px}
+.fld{width:100%;margin-top:8px;background:var(--bg-deep);border:1px solid var(--line);border-radius:10px;padding:9px 12px;color:var(--ink);font:inherit;font-size:14px}
+textarea.fld{min-height:60px;resize:vertical}
+.lbl{display:block;font-size:12.5px;color:var(--ink-mute);margin-top:10px}
+.grid28{display:grid;grid-template-columns:repeat(14,1fr);gap:5px;max-width:520px;margin:6px 0 4px}
+.grid28 span{aspect-ratio:1;border-radius:5px;background:var(--line-soft);border:1px solid var(--line)}
+.grid28 span[data-l="1"]{background:color-mix(in srgb,var(--emerald) 35%,transparent)}
+.grid28 span[data-l="2"]{background:color-mix(in srgb,var(--emerald) 65%,transparent)}
+.grid28 span[data-l="3"]{background:var(--emerald)}
+.grid28 span.today{outline:2px solid var(--gold);outline-offset:1px}
+.legend{font-size:12px;color:var(--ink-mute)}
+.saved{font-size:12.5px;color:var(--emerald);min-height:18px;margin-top:6px}
+.wins{list-style:none;margin-top:8px}
+.wins li{padding:8px 0;border-bottom:1px dashed var(--line);font-size:14px;color:var(--ink-soft)}
+.wins li b{color:var(--ink);display:inline-block;min-width:110px;font-weight:600}
+/* létra */
+.add{display:grid;grid-template-columns:1fr 200px;gap:10px;align-items:end}
+.add .full{grid-column:1/-1}
+.rng{display:flex;gap:10px;align-items:center;margin-top:8px}
+.rng input{flex:1;accent-color:var(--gold)}
+.rng output{font-family:var(--font-serif);font-size:20px;min-width:34px;text-align:right}
+select.fld{appearance:auto}
+.rung{--acc:var(--line)}
+.rung.next{--acc:var(--gold);border-color:var(--gold)}
+.rung.ok{--acc:var(--emerald);opacity:.78}
+.rung-h{display:flex;gap:8px 12px;align-items:baseline;flex-wrap:wrap}
+.rung-h .t{font-family:var(--font-serif);font-size:18px;flex:1 1 320px}
+.tag{display:inline-block;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;padding:2px 8px;border-radius:99px;border:1px solid var(--line);color:var(--ink-mute)}
+.tag.next{border-color:var(--gold);color:var(--gold)}
+.tag.ok{border-color:var(--emerald);color:var(--emerald)}
+.fear{font-size:12.5px;color:var(--ink-soft)}
+.fear b{font-family:var(--font-serif);font-size:17px;color:var(--ink);font-weight:500}
+.tries{list-style:none;margin-top:10px;border-top:1px dashed var(--line)}
+.tries li{padding:7px 0;border-bottom:1px dashed var(--line);font-size:13.5px;color:var(--ink-soft)}
+.tries i{color:var(--ink-mute)}
+.tryform{display:none;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.tryform.on{display:block}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.chk{display:flex;gap:8px;align-items:center;font-size:14px;color:var(--ink-soft);margin-top:10px}
+.chk input{accent-color:var(--emerald);width:16px;height:16px}
+.rung .tools{margin-top:12px}
+@media (max-width:640px){.wrap{padding:28px 16px 64px}.jump a{font-size:12.5px;padding:6px 11px}h2{margin-top:40px}.card{padding:16px}.add,.two{grid-template-columns:1fr}.grid28{gap:4px}.ex-h .chip{margin-left:0}}
+</style>
+<script src="assets/oni.js?v=604a0bdc"></script>
+<script src="assets/oni-schema.js?v=a5f356ec" defer></script>
+<script src="assets/tests-data.js?v=972452a2" defer></script>
+<script src="assets/mely.js?v=394634ec" defer></script>
+<script src="assets/results-plus.js?v=1f96d0e0" defer></script>
+<link rel="stylesheet" href="assets/theme.css?v=b50d9800">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#050d1e">
+<link rel="icon" type="image/png" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+</head>
+<body>
+<main id="main">
+<div class="wrap">
+  <a class="back" href="index.html">‹ Önismereti térképek</a>
+  <span class="kicker">Önbizalom-edzés</span>
+  <h1>Az önbizalom <em>a cselekvés után</em> jön</h1>
+  <p class="lead">A tesztek megmutatják, hol tartasz. Ez az oldal arra való, hogy elmozdulj: a tesztjeid alapján összeállít egy személyre szabott gyakorlatsort, ad naponta 5–10 percnyi tennivalót, és felépít egy bátorság-létrát a került helyzetekből. 6–8 hét után újraméred, és látod, mi változott.</p>
+  <div class="how">
+    <div><b>Saját siker</b>Az énhatékonyság legerősebb forrása az, amit te magad végigcsinálsz. Ezért kicsi, de valódi lépések vannak itt, nem megerősítő mondatok.</div>
+    <div><b>Bizonyíték</b>A negatív önkép a cáfoló tapasztalatokat kivételnek könyveli el. A napló összegyűjti azt, amit az emlékezet elenged.</div>
+    <div><b>Fokozatos kitettség</b>A kerülés tartja életben a félelmet. A létrán a könnyebb helyzetektől haladsz a nehezebbek felé.</div>
+    <div><b>Önegyüttérzés hibánál</b>Kudarc után nem a mérce lazítása, hanem a kedvesebb belső hang segít újra próbálkozni.</div>
+  </div>
+  <nav class="jump" aria-label="Szakaszok"><a href="#terv">1 · Terv</a><a href="#napi">2 · Napi gyakorlat</a><a href="#letra">3 · Bátorság-létra</a></nav>
+
+  <section id="terv"><h2>Személyre szabott <em>terv</em></h2><div id="plan"></div></section>
+  <section id="napi"><h2>Napi <em>gyakorlat</em></h2><div id="daily"></div></section>
+  <section id="letra"><h2>Bátorság-<em>létra</em></h2><div id="ladder"></div></section>
+
+  <p class="note">Mire épül: Bandura énhatékonyság-elmélete (saját siker, minta, bátorítás, testi állapot), a kognitív viselkedésterápia fokozatos kitettsége és jóslat-ellenőrzése, Clark és Wells modellje a szociális szorongásban kifelé fordított figyelemről, valamint Kristin Neff önegyüttérzés-kutatása. A gyakorlatsor saját összeállítás, nem validált program, és nem helyettesíti a terápiát. A terv a <a href="onbizalom.html">négy önbizalom-teszt</a> legutóbbi eredményéből készül. Minden adat csak ebben a böngészőben marad, és benne van a főoldali mentésben.</p>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  var K='onismeret-edzes-v1';
+  var esc=function(x){return String(x==null?'':x).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+  var fmt=function(t){return new Date(t).toLocaleDateString('hu-HU',{year:'numeric',month:'short',day:'numeric'})};
+  var pad=function(n){return (n<10?'0':'')+n};
+  var dk=function(d){d=d||new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())};
+  var dayOf=function(k){var p=k.split('-');return new Date(+p[0],+p[1]-1,+p[2])};
+  var days=function(t){return Math.floor((Date.now()-new Date(t).getTime())/864e5)};
+  var uid=function(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)};
+  function get(){try{var v=JSON.parse(localStorage.getItem(K));return v&&typeof v==='object'&&!Array.isArray(v)?v:{}}catch(e){return {}}}
+  function put(v){try{localStorage.setItem(K,JSON.stringify(v));return true}catch(e){return false}}
+
+  var AREAS={
+    KI:{n:'Kiállás magadért',c:'var(--sapphire)'},
+    HA:{n:'Határok, nemet mondás',c:'var(--emerald)'},
+    KE:{n:'Kezdeményezés, kockázat',c:'var(--gold)'},
+    HI:{n:'Hibák, kudarc kezelése',c:'var(--rose)'},
+    LA:{n:'Láthatóság, elismerés',c:'var(--violet)'}};
+  var AK=Object.keys(AREAS);
+  var TESTS={
+    rses:{n:'Önértékelés',s:'RSES',min:0,max:30,dir:1,link:'onbizalom.html#test-rses',band:function(v){return v>=26?'magas':v>=15?'átlagos':'alacsony'},lvl:function(v){return v>=26?0:v>=15?1:2}},
+    gse:{n:'Énhatékonyság',s:'GSE',min:10,max:40,dir:1,link:'onbizalom.html#test-gse',band:function(v){return v>=35?'magas':v>=25?'átlagos':'alacsonyabb'},lvl:function(v){return v>=35?0:v>=25?1:2}},
+    bfne:{n:'Ítélettől való félelem',s:'BFNE-II',min:0,max:48,dir:-1,link:'onbizalom.html#test-bfne',band:function(v){return v>=33?'erős':v>=17?'közepes':'enyhe'},lvl:function(v){return v>=33?2:v>=17?1:0}},
+    obgy:{n:'Gyakorlati önbizalom',s:'átlag',min:1,max:5,dir:1,link:'onbizalom.html#test-obgy',band:function(v){return v>=3.8?'erős':v>2.8?'közepes':'fejleszthető'},lvl:function(v){return v>=3.8?0:v>2.8?1:2}}};
+  var TK=Object.keys(TESTS);
+
+  var EX=[
+    {id:'win',t:'Bizonyíték-napló',m:5,kind:'win',tags:['rses','LA'],
+      p:'Este írj le három dolgot, amit ma jól csináltál, vagy amiben a saját értékeid szerint cselekedtél. Apró is lehet. Két hét után olvasd vissza lent.',
+      why:'Az alacsony önértékelés a sikereket szerencsének, a hibákat jellemnek könyveli el. A leírt bizonyíték ellensúlyozza ezt a torzítást.'},
+    {id:'crit',t:'A kritikus szó szerint',m:5,kind:'crit',tags:['rses','HI'],
+      p:'Amikor a belső hang leszól, írd le szó szerint, amit mond. Utána írd mellé, mit mondanál egy barátnak ugyanerre a helyzetre.',
+      why:'A kritikus hang gondolatként tényként hat. Leírva távolabbról látod, és kiderül, hogy mással sosem beszélnél így.'},
+    {id:'comp',t:'Önegyüttérző szünet',m:3,kind:'check',tags:['HI','rses'],
+      steps:['Nevezd meg: „Ez most nehéz.”','Emlékeztesd magad: „Ezt más is átéli, nem vagyok vele egyedül.”','Tedd a kezed a mellkasodra, és mondd magadnak azt, amit egy jó barát mondana.'],
+      why:'Neff kutatásai szerint az önegyüttérzés nem lazítja a mércét: kudarc után gyorsabban próbálkozol újra, mert kisebb a szégyen.'},
+    {id:'voice',t:'Egy mondat',m:5,kind:'check',tags:['KI'],
+      p:'Mondj ki ma egy véleményt vagy kérést, amit máskor lenyeltél volna. Kezdd kicsiben: étterem, bolt, egy kolléga. Utána jegyezd fel, mitől féltél, és mi történt valójában.',
+      why:'A kiállás készség, ismétléssel erősödik. A jegyzet a jóslatot és a valóságot választja szét.'},
+    {id:'no',t:'Rövid nem',m:3,kind:'check',tags:['HA'],
+      p:'Mondj nemet egy kisebb kérésre, magyarázkodás nélkül: „Ezt most nem vállalom.” Figyeld meg, hogy a bűntudat hullámként jön és megy, és a kapcsolat általában kibírja.',
+      why:'A hosszú magyarázkodás azt üzeni, hogy engedélyt kérsz. A rövid nem gyakorlása csökkenti a vele járó szorongást.'},
+    {id:'unready',t:'Felkészületlen igen',m:10,kind:'check',tags:['KE','gse'],
+      p:'Jelentkezz valamire, vagy kezdeményezz valamit, mielőtt teljesen késznek éreznéd magad. Egy kérdés egy megbeszélésen, egy félkész ötlet megosztása, egy beszélgetés kezdeményezése.',
+      why:'Aki megvárja, hogy magabiztosnak érezze magát, sokáig vár. A cselekvés hozza a tapasztalatot, a tapasztalat az önbizalmat.'},
+    {id:'thanks',t:'Köszönöm, és kész',m:2,kind:'check',tags:['LA'],
+      p:'Ha dicséretet kapsz, mondd csak annyit: „Köszönöm.” Lekicsinylés, magyarázat és visszadicséret nélkül. Ha ma nem kaptál, mondd ki valakinek, miben vagy jó.',
+      why:'A dicséret elhárítása megerősíti azt a hiedelmet, hogy nem érdemled meg. Elfogadni kényelmetlen, és éppen ezért gyakorlás.'},
+    {id:'mastery',t:'Kicsit nehéz, befejezve',m:20,kind:'check',tags:['gse','KE'],
+      p:'Válassz egy 15–30 perces feladatot, ami kicsit a komfortzónád szélén van, és csináld végig. Nem a tökéletes eredmény a cél, hanem a befejezés.',
+      why:'Bandura szerint a saját sikeres tapasztalat az énhatékonyság legerősebb forrása. A kis, befejezett kihívások összeadódnak.'},
+    {id:'attn',t:'Figyelem kifelé',m:5,kind:'check',tags:['bfne'],
+      p:'A következő beszélgetésben a másik szavaira figyelj, ne arra, hogyan festesz vagy mit gondol rólad. Utána gondold végig: mit tudtál meg róla?',
+      why:'Clark és Wells modellje szerint a magunkra irányuló figyelem tartja fenn a társas szorongást. A kifelé fordított figyelem csökkenti, és a beszélgetés is jobb lesz.'},
+    {id:'ladder',t:'Egy lépcső a létrán',m:10,kind:'check',tags:['bfne','KI','HA','KE','HI','LA'],
+      p:'Csináld meg a bátorság-létra következő lépcsőjét, és jegyezd fel lent, mennyire tartottál tőle, és mennyire volt valójában nehéz.',
+      why:'A fokozatos kitettség a félelem kezelésének legjobban bizonyított módja. A jóslat és a valóság összevetése tanítja át az agyat.'}];
+  var EXM={};EX.forEach(function(e){EXM[e.id]=e});
+
+  var PRESETS={
+    KI:['Visszaküldök egy rosszul elkészült ételt vagy terméket','Megbeszélésen elmondom a véleményemet, ha eltér a többiekétől','Kérek egy szívességet, amit eddig nem mertem'],
+    HA:['Nemet mondok egy kisebb kérésre magyarázkodás nélkül','Szólok, ha valaki rendszeresen félbeszakít','Elutasítok egy meghívást, amihez nincs kedvem'],
+    KE:['Beszélgetést kezdeményezek egy ismeretlennel','Jelentkezem egy feladatra, mielőtt teljesen felkészültnek érezném magam','Megosztok egy félkész ötletet a csapattal'],
+    HI:['Elmondom valakinek egy hibámat, mentegetőzés nélkül','Elkövetek egy apró, ártalmatlan baklövést (pl. „buta” kérdés egy boltban)','Újrapróbálom azt, ami legutóbb nem sikerült'],
+    LA:['Dicséretre csak annyit mondok: köszönöm','Elmondom valakinek, miben vagyok jó','Hozzászólok egy nagyobb körben (megbeszélés, csoport)']};
+
+  /* ── eredmények ── */
+  var store=window.ONI&&ONI.all?ONI.all():{};
+  function recs(id){var h=store[id];return Array.isArray(h)?h:[]}
+  function dv(r,k){return r&&r.d&&r.d[k]&&typeof r.d[k][1]==='number'?r.d[k][1]:null}
+  function latest(id){var h=recs(id);return h.length?h[h.length-1]:null}
+  function snapshot(){var b={};TK.forEach(function(id){b[id]=dv(latest(id),'total')});var o=latest('obgy');AK.forEach(function(a){b[a]=dv(o,a)});return b}
+  function weakAreas(){var o=latest('obgy');if(!o)return [];
+    var v=AK.map(function(a){return [a,dv(o,a)]}).filter(function(x){return x[1]!=null}).sort(function(a,b){return a[1]-b[1]});
+    if(!v.length)return [];var out=[v[0][0]];if(v[1]&&v[1][1]<3.8)out.push(v[1][0]);return v[0][1]>=4.3?[]:out}
+
+  function rank(areas,b){
+    var sc={};EX.forEach(function(e,i){sc[e.id]=-i*0.01});
+    var add=function(tag,w){EX.forEach(function(e){if(e.tags.indexOf(tag)>-1)sc[e.id]+=w})};
+    (areas||[]).forEach(function(a){EX.forEach(function(e){if(e.tags[0]===a)sc[e.id]+=4;else if(e.tags.indexOf(a)>-1&&e.id!=='ladder')sc[e.id]+=2})});
+    ['rses','gse','bfne'].forEach(function(id){var v=b[id];if(v==null)return;var l=TESTS[id].lvl(v);if(l)add(id,l===2?3:1.5)});
+    sc.win+=1.2;sc.ladder+=1;
+    /* minden kijelölt terület és minden figyelmet kérő teszt kap legalább egy saját gyakorlatot, a többi pontszám szerint */
+    var PRIM={KI:'voice',HA:'no',KE:'unready',HI:'comp',LA:'thanks',rses:'win',gse:'mastery',bfne:'attn'},out=[];
+    var need=function(id){if(out.length<5&&out.indexOf(id)<0)out.push(id)};
+    (areas||[]).forEach(function(a){need(PRIM[a])});
+    ['rses','gse','bfne'].filter(function(id){return b[id]!=null&&TESTS[id].lvl(b[id])}).sort(function(x,y){return TESTS[y].lvl(b[y])-TESTS[x].lvl(b[x])}).forEach(function(id){need(PRIM[id])});
+    EX.slice().sort(function(x,y){return sc[y.id]-sc[x.id]}).forEach(function(e){need(e.id)});
+    return out;
+  }
+
+  var st=get(),selAreas=null;
+  function curAreas(){return st.plan?st.plan.areas:(selAreas||weakAreas())}
+  function curSet(){return rank(curAreas(),st.plan?st.plan.base:snapshot())}
+
+  /* ── 1. terv ── */
+  function insights(b){
+    var out=[];
+    if(b.rses!=null){var l=TESTS.rses.lvl(b.rses);out.push({c:'var(--emerald)',h:l===2?'Az alapérzés most az, hogy nem vagy elég.':l===1?'Az önértékelésed működik, de kudarc vagy kritika megbillentheti.':'Stabil önértékelés: erre lehet építeni.',
+      t:l?'Ezért kerül a tervbe a bizonyíték-napló és a kritikus hang átírása.':'A munka inkább a gyakorlati helyzetekben van.'});}
+    if(b.gse!=null){var g=TESTS.gse.lvl(b.gse);out.push({c:'var(--sapphire)',h:g?'A megküzdési képességedbe vetett bizalom fejleszthető.':'Erős énhatékonyság.',
+      t:g?'Ezt saját, befejezett kis kihívások építik a leggyorsabban.':'Bízol abban, hogy megoldod a nehéz helyzeteket. Ezt át lehet vinni a társas helyzetekre is.'});}
+    if(b.bfne!=null){var f=TESTS.bfne.lvl(b.bfne);out.push({c:'var(--rose)',h:f===2?'Mások ítéletétől való félelem erősen visszatart.':f===1?'Mások véleménye közepesen fékez.':'Mások ítélete kevéssé tart vissza.',
+      t:f?'Ehhez a bátorság-létra és a kifelé fordított figyelem a legjobban bizonyított eszköz.':'A félelem itt nem a fő akadály.'});}
+    var o=latest('obgy');if(o){var v=AK.map(function(a){return [a,dv(o,a)]}).filter(function(x){return x[1]!=null}).sort(function(a,b){return a[1]-b[1]});
+      if(v.length)out.push({c:'var(--gold)',h:'Legerősebb terület: '+AREAS[v[v.length-1][0]].n+'. Legtöbb munka: '+AREAS[v[0][0]].n+'.',t:'A gyakorlatokat és a létrát erre a területre hangolja a terv. Lent átállíthatod.'});}
+    return out;
+  }
+  function delta(id,a,b){if(a==null||b==null)return '';var d=Math.round((b-a)*100)/100,t=TESTS[id];
+    if(Math.abs(d)<(t.max-t.min)*0.03)return '<div class="dl neu">Lényegében változatlan ('+(d>0?'+':'')+d+')</div>';
+    var good=d*t.dir>0;return '<div class="dl '+(good?'up':'down')+'">'+(d>0?'+':'')+d+' a kezdéshez képest · '+(good?'kedvező irány':'kedvezőtlen irány')+'</div>'}
+  function renderPlan(){
+    var el=document.getElementById('plan'),b=st.plan?st.plan.base:snapshot(),any=TK.some(function(id){return latest(id)}),h='';
+    if(st.plan){var d=days(st.plan.start);
+      h+='<div class="statbar"><span><strong>'+d+'</strong> napja tart a terv</span><span>Kezdés: '+fmt(st.plan.start)+'</span><span>Fókusz: '+(st.plan.areas.length?st.plan.areas.map(function(a){return esc(AREAS[a].n)}).join(', '):'általános')+'</span></div>';
+      var newer=TK.filter(function(id){var r=latest(id);return r&&Date.parse(r.t)>Date.parse(st.plan.start)});
+      if(d>=42&&newer.length<TK.length)h+='<div class="remeasure"><strong>Ideje újramérni.</strong> Eltelt '+d+' nap. Töltsd ki újra a teszteket, és itt látod, mi mozdult: '+TK.filter(function(id){return newer.indexOf(id)<0}).map(function(id){return '<a href="'+TESTS[id].link+'">'+esc(TESTS[id].n)+'</a>'}).join(' · ')+'</div>';
+      else if(d<42)h+='<p class="h2sub">Újramérés '+(42-d)+' nap múlva javasolt. A gyakorlati önbizalom mozdul el leghamarabb, az önértékelés és az énhatékonyság lassabban.</p>';
+      h+='<div class="base">'+TK.map(function(id){var t=TESTS[id],v0=st.plan.base[id],r=newer.indexOf(id)>-1?latest(id):null,v1=r?dv(r,'total'):null;
+        return '<div class="bs" style="--acc:'+['var(--emerald)','var(--sapphire)','var(--rose)','var(--gold)'][TK.indexOf(id)]+'"><div class="k">'+esc(t.s)+'</div><div class="v">'+(v1!=null?v1:v0!=null?v0:'–')+' <small>/ '+t.max+'</small></div><div class="l">'+esc(t.n)+(v0!=null?' · kezdéskor '+v0:'')+'</div>'+(v1!=null?delta(id,v0,v1):v0==null?'<a href="'+t.link+'">Nem volt kitöltve</a>':'')+'</div>'}).join('')+'</div>';
+      if(newer.indexOf('obgy')>-1&&AK.some(function(a){return st.plan.base[a]!=null})){var o=latest('obgy');
+        h+='<ul class="ins">'+AK.filter(function(a){return st.plan.base[a]!=null&&dv(o,a)!=null}).map(function(a){var x=st.plan.base[a],y=dv(o,a),dd=Math.round((y-x)*100)/100;
+          return '<li style="--acc:'+AREAS[a].c+'"><b>'+esc(AREAS[a].n)+':</b> '+x+' → '+y+' ('+(dd>0?'+':'')+dd+')</li>'}).join('')+'</ul>';}
+      h+='<h3>A gyakorlatsorod</h3><ul class="set">'+curSet().map(function(id){return '<li><b>'+esc(EXM[id].t)+'</b> · '+EXM[id].m+' perc</li>'}).join('')+'</ul>';
+      h+='<div class="tools"><a class="btn" href="#napi">Mai gyakorlatok</a><button type="button" class="btn ghost" id="pl-reset">Új terv a mostani eredményekből</button></div>';
+      el.innerHTML=h;
+      document.getElementById('pl-reset').addEventListener('click',function(){if(!confirm('Új tervet indítasz a legfrissebb eredményeidből? A napló és a létra megmarad, csak a kiindulópont és a fókusz változik.'))return;
+        delete st.plan;put(st);selAreas=null;store=window.ONI&&ONI.all?ONI.all():store;renderAll();});
+      return;
+    }
+    if(!any)h+='<div class="empty">Még nincs kitöltve egyik <a href="onbizalom.html">önbizalom-teszt</a> sem. Érdemes előbb ezeket kitölteni (kb. 10 perc): így a terv a te eredményeidre épül, és 6–8 hét után látni fogod a változást. Addig is elindulhatsz: válassz lent egy-két területet.</div>';
+    else{
+      h+='<div class="base">'+TK.map(function(id,i){var t=TESTS[id],v=b[id];
+        return '<div class="bs" style="--acc:'+['var(--emerald)','var(--sapphire)','var(--rose)','var(--gold)'][i]+'"><div class="k">'+esc(t.s)+'</div>'+(v!=null?'<div class="v">'+v+' <small>/ '+t.max+'</small></div><div class="l">'+esc(t.n)+': '+t.band(v)+'</div>':'<div class="v">–</div><div class="l">'+esc(t.n)+'</div><a href="'+t.link+'">Kitöltöm</a>')+'</div>'}).join('')+'</div>';
+      h+='<ul class="ins">'+insights(b).map(function(x){return '<li style="--acc:'+x.c+'"><b>'+esc(x.h)+'</b> '+esc(x.t)+'</li>'}).join('')+'</ul>';
+      if((b.rses!=null&&b.rses<15)||(b.bfne!=null&&b.bfne>=33))h+='<div class="warn">Ha az alacsony önértékelés vagy a mások ítéletétől való félelem tartósan és sok helyzetben visszatart, a kognitív viselkedésterápia (CBT) a legjobban bizonyított segítség. Ez az oldal jó kiegészítés, de nem helyettesíti. Ha a hangulatod is tartósan rossz, nézd meg a <a href="allapot.html#test-phq9">PHQ-9</a>-et is.</div>';
+    }
+    var areas=curAreas();
+    h+='<h3>Fókuszterület</h3><p class="h2sub">Legfeljebb kettő. '+(latest('obgy')?'A gyakorlati önbizalom két leggyengébb területe van előre kijelölve.':'A <a href="onbizalom.html#test-obgy" style="color:var(--gold)">gyakorlati önbizalom</a> teszt alapján ezt automatikusan kijelöljük.')+'</p>';
+    var o=latest('obgy');
+    h+='<div class="chips" id="pl-areas">'+AK.map(function(a){var on=areas.indexOf(a)>-1,v=dv(o,a);return '<button type="button" class="chip'+(on?' on':'')+'" aria-pressed="'+on+'" data-a="'+a+'">'+esc(AREAS[a].n)+(v!=null?'<small>'+v.toFixed(1)+'</small>':'')+'</button>'}).join('')+'</div>';
+    h+='<h3>Ebből ez a gyakorlatsor lesz</h3><ul class="set" id="pl-set">'+curSet().map(function(id){return '<li><b>'+esc(EXM[id].t)+'</b> · '+EXM[id].m+' perc</li>'}).join('')+'</ul>';
+    h+='<div class="tools"><button type="button" class="btn" id="pl-start">Indul a terv</button><span class="msg" id="pl-msg" aria-live="polite"></span></div>';
+    el.innerHTML=h;
+    el.querySelectorAll('#pl-areas .chip').forEach(function(c){c.addEventListener('click',function(){
+      var a=c.getAttribute('data-a'),s=curAreas().slice(),i=s.indexOf(a),m=document.getElementById('pl-msg');
+      if(i>-1)s.splice(i,1);else{if(s.length>=2){m.textContent='Legfeljebb két terület. Előbb vegyél ki egyet.';return;}s.push(a);}
+      selAreas=s;renderPlan();renderDaily();});});
+    document.getElementById('pl-start').addEventListener('click',function(){
+      st=get();st.plan={start:new Date().toISOString(),areas:curAreas().slice(),base:snapshot()};
+      if(!put(st)){document.getElementById('pl-msg').textContent='Nem sikerült menteni ezen az eszközön.';return;}
+      renderAll();document.getElementById('napi').scrollIntoView();});
+  }
+
+  /* ── 2. napi ── */
+  function dayLevel(e){var n=e&&e.ex?e.ex.length:0;return n>=3?3:n}
+  function streak(log){var d=new Date(),n=0;if(!(log[dk(d)]&&log[dk(d)].ex&&log[dk(d)].ex.length))d.setDate(d.getDate()-1);
+    while(log[dk(d)]&&log[dk(d)].ex&&log[dk(d)].ex.length){n++;d.setDate(d.getDate()-1);}return n}
+  function clean(e){var o={ex:(e.ex||[]).filter(function(x,i,a){return EXM[x]&&a.indexOf(x)===i})};
+    var w=(e.win||[]).map(function(x){return String(x||'').slice(0,300)});if(w.some(function(x){return x.trim()}))o.win=w.slice(0,3);
+    if(e.crit&&((e.crit.a||'').trim()||(e.crit.b||'').trim()))o.crit={a:String(e.crit.a||'').slice(0,500),b:String(e.crit.b||'').slice(0,500)};
+    if((e.note||'').trim())o.note=String(e.note).slice(0,1000);return o}
+  var saveT=null;
+  function saveDay(today,entry){st=get();st.log=st.log||{};var c=clean(entry);
+    if(!c.ex.length&&!c.win&&!c.crit&&!c.note)delete st.log[today];else st.log[today]=c;
+    var ks=Object.keys(st.log).sort();while(ks.length>400)delete st.log[ks.shift()];
+    var ok=put(st),s=document.getElementById('dy-saved');if(s)s.textContent=ok?'Mentve':'Nem sikerült menteni ezen az eszközön.';return ok}
+  function renderDaily(){
+    var el=document.getElementById('daily'),log=st.log||{},today=dk(),e=log[today]||{},entry={ex:(e.ex||[]).slice(),win:(e.win||['','','']).slice(),crit:{a:(e.crit||{}).a||'',b:(e.crit||{}).b||''},note:e.note||''};
+    while(entry.win.length<3)entry.win.push('');
+    var act=0,wins=0;for(var i=0;i<28;i++){var d=new Date();d.setDate(d.getDate()-i);var x=log[dk(d)];if(x&&x.ex&&x.ex.length)act++;}
+    Object.keys(log).forEach(function(k){(log[k].win||[]).forEach(function(w){if(String(w).trim())wins++})});
+    var set=curSet();
+    var h='<div class="statbar"><span><strong>'+streak(log)+'</strong> nap sorozat</span><span><strong>'+act+'</strong> aktív nap az elmúlt 4 hétben</span><span><strong>'+wins+'</strong> bizonyíték a naplóban</span></div>';
+    h+='<p class="h2sub">'+(st.plan?'A tervedből':'A fenti kijelölés alapján')+' ezek a mai gyakorlatok. Nem kell mindet megcsinálni: napi egy-kettő elég, a rendszeresség számít. Amit megcsináltál, jelöld; a mentés automatikus.</p>';
+    h+=set.map(function(id){var x=EXM[id],on=entry.ex.indexOf(id)>-1,body='';
+      if(x.p)body+='<p>'+esc(x.p)+'</p>';
+      if(x.steps)body+='<ol>'+x.steps.map(function(s){return '<li>'+esc(s)+'</li>'}).join('')+'</ol>';
+      if(x.kind==='win')body+=[0,1,2].map(function(i){return '<input class="fld" type="text" maxlength="300" data-win="'+i+'" placeholder="'+(i+1)+'. ma jól csináltam / az értékeim szerint cselekedtem…" value="'+esc(entry.win[i])+'">'}).join('');
+      if(x.kind==='crit')body+='<label class="lbl" for="cr-a">A belső hang szó szerint</label><textarea class="fld" id="cr-a" maxlength="500" data-crit="a" placeholder="pl. „Megint elrontottad, mindig ez van.”">'+esc(entry.crit.a)+'</textarea><label class="lbl" for="cr-b">Amit egy barátnak mondanék</label><textarea class="fld" id="cr-b" maxlength="500" data-crit="b" placeholder="pl. „Hibáztál, ez emberi. Mit tanulsz belőle?”">'+esc(entry.crit.b)+'</textarea>';
+      if(id==='ladder')body+='<p><a class="btn sm ghost" href="#letra">A létrához</a></p>';
+      return '<div class="card ex'+(on?' done':'')+'" data-ex="'+id+'"><div class="ex-h"><h3>'+esc(x.t)+'</h3><span class="ex-meta">'+x.m+' perc</span><button type="button" class="chip'+(on?' on':'')+'" aria-pressed="'+on+'">'+(on?'Megcsináltam ✓':'Megcsináltam')+'</button></div>'+body+'<details><summary>Miért működik?</summary><p class="why">'+esc(x.why)+'</p></details></div>'}).join('');
+    h+='<label class="lbl" for="dy-note">Mai megjegyzés (nem kötelező)</label><textarea class="fld" id="dy-note" maxlength="1000" placeholder="Mi volt nehéz, mi lepett meg?">'+esc(entry.note)+'</textarea><div class="saved" id="dy-saved" aria-live="polite"></div>';
+    h+='<h3 style="margin-top:22px">Az elmúlt 4 hét</h3><div class="grid28" role="img" aria-label="Aktív napok az elmúlt 28 napban: '+act+'">';
+    for(var j=27;j>=0;j--){var dd=new Date();dd.setDate(dd.getDate()-j);var k=dk(dd);h+='<span data-l="'+dayLevel(log[k])+'"'+(j===0?' class="today"':'')+' title="'+k+': '+((log[k]&&log[k].ex)?log[k].ex.length:0)+' gyakorlat"></span>';}
+    h+='</div><div class="legend">Minden négyzet egy nap; minél sötétebb, annál több gyakorlat. A keretes a mai.</div>';
+    var wk=Object.keys(log).filter(function(k){return (log[k].win||[]).some(function(w){return String(w).trim()})}).sort().reverse().slice(0,14);
+    if(wk.length)h+='<details style="margin-top:18px"><summary class="lbl" style="cursor:pointer;font-size:14px">Bizonyíték-napló visszaolvasása ('+wk.length+' nap)</summary><ul class="wins">'+wk.map(function(k){return '<li><b>'+esc(dayOf(k).toLocaleDateString('hu-HU',{month:'short',day:'numeric',weekday:'short'}))+'</b> '+(log[k].win||[]).filter(function(w){return String(w).trim()}).map(esc).join(' · ')+'</li>'}).join('')+'</ul></details>';
+    el.innerHTML=h;
+    var later=function(){clearTimeout(saveT);var s=document.getElementById('dy-saved');if(s)s.textContent='';saveT=setTimeout(function(){saveDay(today,entry)},500)};
+    el.querySelectorAll('.ex .chip').forEach(function(b){b.addEventListener('click',function(){
+      var card=b.closest('.ex'),id=card.getAttribute('data-ex'),i=entry.ex.indexOf(id);if(i>-1)entry.ex.splice(i,1);else entry.ex.push(id);
+      var on=i<0;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);b.textContent=on?'Megcsináltam ✓':'Megcsináltam';card.classList.toggle('done',on);
+      clearTimeout(saveT);if(saveDay(today,entry)){st=get();renderDaily();}});});
+    el.querySelectorAll('[data-win]').forEach(function(f){f.addEventListener('input',function(){entry.win[+f.getAttribute('data-win')]=f.value;later()})});
+    el.querySelectorAll('[data-crit]').forEach(function(f){f.addEventListener('input',function(){entry.crit[f.getAttribute('data-crit')]=f.value;later()})});
+    document.getElementById('dy-note').addEventListener('input',function(ev){entry.note=ev.target.value;later()});
+  }
+
+  /* ── 3. létra ── */
+  function renderLadder(){
+    var el=document.getElementById('ladder'),L=(st.ladder||[]).slice(),areas=curAreas().length?curAreas():AK;
+    var open=L.filter(function(r){return !r.done}).sort(function(a,b){return a.fear-b.fear}),done=L.filter(function(r){return r.done}),next=open[0];
+    var tries=[];L.forEach(function(r){(r.tries||[]).forEach(function(t){tries.push(t)})});
+    var gap=tries.length?Math.round(tries.reduce(function(s,t){return s+(t.pred-t.real)},0)/tries.length*10)/10:null;
+    var h='<p class="h2sub">Írd fel azokat a helyzeteket, amelyeket kerülsz, és jelöld, mennyire tartasz tőlük (0–10). A legkönnyebbel kezdj, és csak akkor lépj feljebb, ha az már elviselhető. Minden próba után jegyezd fel, mire számítottál, és mi lett belőle.</p>';
+    if(L.length)h+='<div class="statbar"><span><strong>'+done.length+'</strong> / '+L.length+' lépcső kész</span><span><strong>'+tries.length+'</strong> próba</span>'+(gap!=null?'<span>'+(gap>0?'Átlagosan <strong>'+gap+'</strong> ponttal könnyebb volt, mint vártad':gap<0?'Átlagosan <strong>'+(-gap)+'</strong> ponttal nehezebb volt, mint vártad':'A jóslataid eddig pontosak voltak')+'</span>':'')+'</div>';
+    h+='<div class="card" style="--acc:var(--gold)"><h3>Új lépcső</h3><div class="add"><div class="full"><label class="lbl" for="ld-text">Helyzet</label><input class="fld" id="ld-text" type="text" maxlength="200" placeholder="pl. Megbeszélésen elmondom a véleményemet"></div>'+
+      '<div><label class="lbl" for="ld-fear">Mennyire tartasz tőle?</label><div class="rng"><input id="ld-fear" type="range" min="0" max="10" step="1" value="4"><output id="ld-fear-o">4</output></div></div>'+
+      '<div><label class="lbl" for="ld-area">Terület</label><select class="fld" id="ld-area">'+AK.map(function(a){return '<option value="'+a+'"'+(a===areas[0]?' selected':'')+'>'+esc(AREAS[a].n)+'</option>'}).join('')+'</select></div></div>'+
+      '<div class="lbl">Ötletek'+(curAreas().length?' a fókuszterületeidhez':'')+':</div><div class="chips" id="ld-pre">'+areas.map(function(a){return PRESETS[a].filter(function(t){return !L.some(function(r){return r.text===t})}).map(function(t){return '<button type="button" class="chip" data-a="'+a+'">'+esc(t)+'</button>'}).join('')}).join('')+'</div>'+
+      '<div class="tools"><button type="button" class="btn" id="ld-add">Felveszem a létrára</button><span class="msg" id="ld-msg" aria-live="polite"></span></div></div>';
+    if(!L.length)h+='<div class="empty">Még üres a létra. Vegyél fel 5–8 helyzetet különböző nehézséggel, a 2-es szinttől a 8-asig. A legnehezebbel ne kezdj.</div>';
+    h+=open.concat(done).map(function(r){var isNext=r===next,ok=!!r.done,last=(r.tries||[]).slice(-1)[0];
+      return '<div class="card rung'+(isNext?' next':'')+(ok?' ok':'')+'" data-id="'+esc(r.id)+'"><div class="rung-h"><span class="t">'+esc(r.text)+'</span>'+(isNext?'<span class="tag next">Következő lépcső</span>':'')+(ok?'<span class="tag ok">Megy</span>':'')+'<span class="tag" style="border-color:'+AREAS[r.area].c+'">'+esc(AREAS[r.area].n)+'</span><span class="fear">félelem <b>'+r.fear+'</b>/10</span></div>'+
+        ((r.tries||[]).length?'<ul class="tries">'+r.tries.slice().reverse().map(function(t){return '<li><b>'+fmt(t.t)+'</b>: vártam '+t.pred+', valójában '+t.real+(t.note?' · <i>'+esc(t.note)+'</i>':'')+'</li>'}).join('')+'</ul>':'')+
+        '<div class="tools">'+(ok?'<button type="button" class="btn sm ghost" data-act="reopen">Visszateszem</button>':'<button type="button" class="btn sm" data-act="try">Megcsináltam</button>')+'<button type="button" class="btn sm danger" data-act="del">Törlöm</button></div>'+
+        (ok?'':'<div class="tryform"><div class="two"><div><label class="lbl">Előtte mennyire tartottál tőle?</label><div class="rng"><input type="range" min="0" max="10" step="1" value="'+r.fear+'" data-f="pred"><output>'+r.fear+'</output></div></div><div><label class="lbl">Valójában mennyire volt nehéz?</label><div class="rng"><input type="range" min="0" max="10" step="1" value="'+Math.max(0,r.fear-2)+'" data-f="real"><output>'+Math.max(0,r.fear-2)+'</output></div></div></div>'+
+        '<label class="lbl">Mi történt valójában? Mire számítottál?</label><textarea class="fld" maxlength="500" data-f="note" placeholder="pl. Azt vártam, hogy kinevetnek. Bólintottak, és folytattuk."></textarea>'+
+        '<label class="chk"><input type="checkbox" data-f="done"> Ez már könnyen megy, kipipálom</label><div class="tools"><button type="button" class="btn sm" data-act="save">Próba mentése</button><button type="button" class="btn sm ghost" data-act="cancel">Mégse</button></div></div>')+'</div>'}).join('');
+    el.innerHTML=h;
+    var fr=document.getElementById('ld-fear');fr.addEventListener('input',function(){document.getElementById('ld-fear-o').textContent=fr.value});
+    el.querySelectorAll('.rng input').forEach(function(i){i.addEventListener('input',function(){i.nextElementSibling.textContent=i.value})});
+    el.querySelectorAll('#ld-pre .chip').forEach(function(c){c.addEventListener('click',function(){document.getElementById('ld-text').value=c.textContent;document.getElementById('ld-area').value=c.getAttribute('data-a');document.getElementById('ld-text').focus()})});
+    document.getElementById('ld-add').addEventListener('click',function(){var t=document.getElementById('ld-text').value.trim().slice(0,200),m=document.getElementById('ld-msg');
+      if(!t){m.textContent='Írd be a helyzetet.';return;}st=get();st.ladder=st.ladder||[];
+      if(st.ladder.length>=40){m.textContent='Legfeljebb 40 lépcső lehet. Törölj egy kész vagy elavult lépcsőt.';return;}
+      st.ladder.push({id:uid(),text:t,area:document.getElementById('ld-area').value,fear:+fr.value,tries:[]});
+      if(!put(st)){m.textContent='Nem sikerült menteni ezen az eszközön.';return;}renderLadder();});
+    el.querySelectorAll('.rung').forEach(function(card){var id=card.getAttribute('data-id');
+      var find=function(s){return (s.ladder||[]).filter(function(r){return r.id===id})[0]};
+      card.querySelectorAll('[data-act]').forEach(function(b){b.addEventListener('click',function(){var a=b.getAttribute('data-act'),f=card.querySelector('.tryform');
+        if(a==='try'){f.classList.add('on');b.hidden=true;return;}
+        if(a==='cancel'){f.classList.remove('on');card.querySelector('[data-act="try"]').hidden=false;return;}
+        st=get();var r=find(st);if(!r)return;
+        if(a==='del'){if(!confirm('Törlöd ezt a lépcsőt a próbáival együtt?'))return;st.ladder=st.ladder.filter(function(x){return x.id!==id});}
+        if(a==='reopen')delete r.done;
+        if(a==='save'){r.tries=(r.tries||[]).concat([{t:new Date().toISOString(),pred:+card.querySelector('[data-f="pred"]').value,real:+card.querySelector('[data-f="real"]').value,note:card.querySelector('[data-f="note"]').value.trim().slice(0,500)}]).slice(-50);
+          if(card.querySelector('[data-f="done"]').checked)r.done=new Date().toISOString();}
+        put(st);renderLadder();});});});
+  }
+
+  function renderAll(){st=get();renderPlan();renderDaily();renderLadder();}
+  renderAll();
+});
+</script>
+</main>
+</body>
+</html>
