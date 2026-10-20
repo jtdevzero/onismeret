@@ -1130,9 +1130,9 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     ok(m.list.atomszokasok.s === 'want' && m.list.flow.s === 'doing' && m.list.flow.note === 'Kihívás és képesség egyensúlya' && await p.evaluate(() => document.querySelectorAll('#rl .rl-row').length === 2 && document.getElementById('jn-list').textContent === '2'), 'olvasólista: állapot, jegyzet, számláló', m);
     await p.click('#cat .it[data-id="atomszokasok"] button[data-s="want"]'); await p.waitForTimeout(50);
     ok(await p.evaluate(() => !!JSON.parse(localStorage.getItem('onismeret-konyvtar-v1')).list.atomszokasok), 'ugyanarra a státuszra kattintva a mentett tétel nem törlődik');
-    p.once('dialog', dialog => dialog.accept());
+    await p.evaluate(() => { window.__removeConfirmed = false; window.confirm = () => { window.__removeConfirmed = true; return true; }; });
     await p.click('#rl .rl-row[data-id="atomszokasok"] button[data-remove="1"]'); await p.waitForTimeout(50);
-    ok(await p.evaluate(() => !JSON.parse(localStorage.getItem('onismeret-konyvtar-v1')).list.atomszokasok), 'eltávolítás csak külön gombbal és megerősítéssel');
+    ok(await p.evaluate(() => window.__removeConfirmed && !JSON.parse(localStorage.getItem('onismeret-konyvtar-v1')).list.atomszokasok), 'eltávolítás csak külön gombbal és megerősítéssel');
     await p.click('#cat .it[data-id="flow"] button[data-s="done"]');
     // útvonal
     await p.click('#paths [data-start="szokasok-6"]'); await p.check('#p-szokasok-6 input[data-step="2"]'); await p.waitForTimeout(50);
