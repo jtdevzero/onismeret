@@ -1,6 +1,6 @@
 # Önismereti térképek
 
-Harmincnyolc önismereti kérdőív magyarul, statikus HTML fájlok, GitHub Pages-en futtatható.
+Negyvenöt önismereti kérdőív magyarul, statikus HTML fájlok, GitHub Pages-en futtatható.
 
 **Live:** [`https://jtdevzero.github.io/onismeret/`](https://jtdevzero.github.io/onismeret/)
 
@@ -48,9 +48,16 @@ Harmincnyolc önismereti kérdőív magyarul, statikus HTML fájlok, GitHub Page
 | | GSE (általános énhatékonyság) | 10 | `onbizalom.html#test-gse` |
 | | BFNE-II (negatív értékeléstől való félelem) | 12 | `onbizalom.html#test-bfne` |
 | | Gyakorlati önbizalom (saját, nem validált, kurzus előtt/után) | 20 | `onbizalom.html#test-obgy` |
-| **XII. Szimbolikus térképek** | Csillagtérkép és számmisztika (nem tudományos, nem mérés) | – | `csillagok.html` |
+| **XII. Jóllét és stressz** | WHO-5 (jóllét) | 5 | `jollet.html#test-who5` |
+| | PSS-10 (észlelt stressz) | 10 | `jollet.html#test-pss` |
+| | CBI (Koppenhágai kiégés-kérdőív: személyes + munkához kötött) | 13 | `jollet.html#test-cbi` |
+| | BRS (rövid reziliencia-skála) | 6 | `jollet.html#test-brs` |
+| **XIII. Kapcsolódás, értelem, jelenlét** | UCLA-3 (magányosság) | 3 | `ertelem.html#test-ucla` |
+| | MLQ (az élet értelme: jelenlét + keresés) | 10 | `ertelem.html#test-mlq` |
+| | MAAS (tudatos jelenlét) | 15 | `ertelem.html#test-maas` |
+| **XIV. Szimbolikus térképek** | Csillagtérkép és számmisztika (nem tudományos, nem mérés) | – | `csillagok.html` |
 
-**Összesen: 38 teszt, 1232 kérdés, 11 témakör**, plusz egy szimbolikus (nem tudományos) csillagtérkép-oldal.
+**Összesen: 45 teszt, 1294 kérdés, 13 témakör**, plusz egy szimbolikus (nem tudományos) csillagtérkép-oldal.
 
 ---
 
@@ -65,7 +72,7 @@ onismeret/
 ├── adatok.html           Saját adatok: kitöltésenkénti és tesztenkénti törlés, export
 ├── valtozasok.html       Változásnapló és tesztverziók
 ├── maia2.html · sis-ses.html · ysq.html · kotodes-melyterkep.html     önálló tesztoldalak (saját logikával)
-├── terkepek · funkcio · attitudok · nyelvek · szemelyiseg · kapcsolat · cselekves · szabalyozas · allapot · onbizalom (.html)
+├── terkepek · funkcio · attitudok · nyelvek · szemelyiseg · kapcsolat · cselekves · szabalyozas · allapot · onbizalom · jollet · ertelem (.html)
 │                         GENERÁLT hub-oldalak — ne szerkeszd közvetlenül, hanem a src/hubs/ fájlokat
 ├── csillagok.html        Csillagtérkép és számmisztika (nem mérés)
 ├── src/                  A generált hubok forrása: engine.js, hub-base.css, extra.css, hubs/*.hub.html + *.tests.js
@@ -100,6 +107,7 @@ Az első látogatás után az oldal offline is működik (service worker), és t
   - `ips-responses-v1`, `ders-sf-responses-v1`, `scs-sf-responses-v1`, `tfeq-r18-responses-v1`
   - `asrs-responses-v1`, `phq9-responses-v1`, `gad7-responses-v1`
   - `rses-responses-v1`, `gse-responses-v1`, `bfne2-responses-v1`, `onbizalom-gyak-responses-v1`
+  - `who5-responses-v1`, `pss10-responses-v1`, `cbi-responses-v1`, `brs-responses-v1`, `ucla3-responses-v1`, `mlq-responses-v1`, `maas-responses-v1`
   - `onismeret-birth-v1` (csillagtérkép születési adatai), `onismeret-fokusz-v1`, `onismeret-style-v1`
   - `onismeret-meta-v1` — az utolsó válasz ideje tesztenként (ebből lesz a kitöltés dátuma)
   - `onismeret-settings-v1` — pl. az újramérési emlékeztető (ki / 90 / 180 / 365 nap)

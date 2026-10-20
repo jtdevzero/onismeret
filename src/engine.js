@@ -115,7 +115,7 @@ function makeTest(cfg){
       items.filter(it=>it.sec===sec).forEach(it=>{
         const opts=it.opts||it.scale||cfg.scale;   /* it.scale: tételenként eltérő skála (pl. IIEF, SDI-2) */
         const choice=!!it.opts;
-        const cls=choice?'opts'+(it.opts.every(o=>String(o.t).length<=3)?' short':''):`scale${opts.length===4?' s4':opts.length===6?' s6':''}`;
+        const cls=choice?'opts'+(it.opts.every(o=>String(o.t).length<=3)?' short':''):`scale s${opts.length}`;
         html+=`<div class="q" data-n="${it.n}"${it.optional?` data-optional="${it.optional}"`:''}><div class="q-head"><span class="q-num">${it.n}.${it.tag?` · ${it.tag}`:''}</span><span class="q-text">${it.t}</span></div>
           <div class="${cls}">${opts.map((o,i)=>{
             const val=choice?(o.v!==undefined?o.v:i):o.v;

@@ -27,18 +27,25 @@ window.ONI_SCHEMA={
   pvq:{"k":"pvq21-responses-v1","g":[["1-21",[1,2,3,4,5,6]]],"d":["AC","BE","CO","HE","PO","SD","SE","ST","TR","UN","ho_CO","ho_OC","ho_SE","ho_ST"]},
   ft:{"k":"four-tendencies-responses-v1","g":[["1-12",[0,1,2,3]]],"d":["O","Q","R","U"]},
   kolbe:{"k":"action-modes-responses-v1","g":[["1-24",[1,2,3,4,5]]],"d":["ff","ft","im","qs"]},
-  meq:{"k":"meq-responses-v1","g":[["1-2",[0,1,2,3,4]],["3-9",[0,1,2,3]],["10",[0,1,2,3,4]],["11-16",[0,1,2,3]],["17-18",[0,1,2,3,4]],["19",[0,1,2,3]]],"d":["total"]},
+  meq:{"k":"meq-responses-v1","g":[["1-2",[1,2,3,4,5]],["3-9",[1,2,3,4]],["10",[1,2,3,4,5]],["11",[0,2,4,6]],["12",[0,2,3,5]],["13-16",[1,2,3,4]],["17-18",[1,2,3,4,5]],["19",[0,2,4,6]]],"d":["total"]},
   ips:{"k":"ips-responses-v1","g":[["1-9",[1,2,3,4,5]]],"d":["total"]},
   ders:{"k":"ders-sf-responses-v1","g":[["1-18",[1,2,3,4,5]]],"d":["aware","clarity","goals","impulse","nonacc","strat","total"]},
   scs:{"k":"scs-sf-responses-v1","g":[["1-12",[1,2,3,4,5]]],"d":["CH","IS","MI","OI","SJ","SK","total"]},
-  tfeq:{"k":"tfeq-r18-responses-v1","g":[["1-17",[0,1,2,3]],["18",[0,1,2,3,4,5,6,7]]],"d":["CR","EE","UE"]},
+  tfeq:{"k":"tfeq-r18-responses-v1","g":[["1-18",[1,2,3,4]]],"d":["CR","EE","UE"]},
   asrs:{"k":"asrs-responses-v1","g":[["1-18",[0,1,2,3,4]]],"d":["hyper","inatt","partA","partB"]},
   phq9:{"k":"phq9-responses-v1","g":[["1-10",[0,1,2,3]]],"d":["total"]},
   gad7:{"k":"gad7-responses-v1","g":[["1-7",[0,1,2,3]]],"d":["total"]},
   rses:{"k":"rses-responses-v1","g":[["1-10",[0,1,2,3]]],"d":["total"]},
   gse:{"k":"gse-responses-v1","g":[["1-10",[1,2,3,4]]],"d":["total"]},
   bfne:{"k":"bfne2-responses-v1","g":[["1-12",[0,1,2,3,4]]],"d":["total"]},
-  obgy:{"k":"onbizalom-gyak-responses-v1","g":[["1-20",[1,2,3,4,5]]],"d":["HA","HI","KE","KI","LA","total"]}
+  obgy:{"k":"onbizalom-gyak-responses-v1","g":[["1-20",[1,2,3,4,5]]],"d":["HA","HI","KE","KI","LA","total"]},
+  who5:{"k":"who5-responses-v1","g":[["1-5",[0,1,2,3,4,5]]],"d":["total"]},
+  pss:{"k":"pss10-responses-v1","g":[["1-10",[0,1,2,3,4]]],"d":["E","H","total"]},
+  cbi:{"k":"cbi-responses-v1","g":[["1-13",[0,25,50,75,100]]],"d":["P","W"]},
+  brs:{"k":"brs-responses-v1","g":[["1-6",[1,2,3,4,5]]],"d":["total"]},
+  ucla:{"k":"ucla3-responses-v1","g":[["1-3",[1,2,3]]],"d":["total"]},
+  mlq:{"k":"mlq-responses-v1","g":[["1-10",[1,2,3,4,5,6,7]]],"d":["P","S"]},
+  maas:{"k":"maas-responses-v1","g":[["1-15",[1,2,3,4,5,6]]],"d":["total"]}
 };
 /* ── Séma-alapú segédfüggvények (a tools/schema-runtime.js-ből másolva) ── */
 window.ONI_CHECK=(function(){

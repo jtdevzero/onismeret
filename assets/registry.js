@@ -63,6 +63,15 @@ g.ONI_REG=[
  {id:'rses',key:'rses-responses-v1',card:'rses-responses-v1',cat:'Önbizalom és önértékelés',name:'RSES · Önértékelés',link:'onbizalom.html#test-rses',n:10,ev:'valid',badge:'check',v:{q:1,s:1,t:1}},
  {id:'gse',key:'gse-responses-v1',card:'gse-responses-v1',cat:'Önbizalom és önértékelés',name:'GSE · Énhatékonyság',link:'onbizalom.html#test-gse',n:10,ev:'valid',badge:'check',v:{q:1,s:1,t:1}},
  {id:'bfne',key:'bfne2-responses-v1',card:'bfne2-responses-v1',cat:'Önbizalom és önértékelés',name:'BFNE-II · Ítélettől való félelem',link:'onbizalom.html#test-bfne',n:12,ev:'valid',badge:'check',v:{q:1,s:1,t:1}},
- {id:'obgy',key:'onbizalom-gyak-responses-v1',card:'onbizalom-gyak-responses-v1',cat:'Önbizalom és önértékelés',name:'Gyakorlati önbizalom',link:'onbizalom.html#test-obgy',n:20,ev:'own',badge:'own',v:{q:1,s:1,t:1}}
+ {id:'obgy',key:'onbizalom-gyak-responses-v1',card:'onbizalom-gyak-responses-v1',cat:'Önbizalom és önértékelés',name:'Gyakorlati önbizalom',link:'onbizalom.html#test-obgy',n:20,ev:'own',badge:'own',v:{q:1,s:1,t:1}},
+ // Jóllét és stressz
+ {id:'who5',key:'who5-responses-v1',card:'who5-responses-v1',cat:'Jóllét és stressz',name:'WHO-5 · Jóllét',link:'jollet.html#test-who5',n:5,ev:'valid',badge:'check',v:{q:1,s:1,t:1}},
+ {id:'pss',key:'pss10-responses-v1',card:'pss10-responses-v1',cat:'Jóllét és stressz',name:'PSS-10 · Észlelt stressz',link:'jollet.html#test-pss',n:10,ev:'valid',badge:'check',v:{q:1,s:1,t:1}},
+ {id:'cbi',key:'cbi-responses-v1',card:'cbi-responses-v1',cat:'Jóllét és stressz',name:'CBI · Kiégés',link:'jollet.html#test-cbi',n:13,ev:'valid',badge:'check',v:{q:1,s:1,t:1}},
+ {id:'brs',key:'brs-responses-v1',card:'brs-responses-v1',cat:'Jóllét és stressz',name:'BRS · Reziliencia',link:'jollet.html#test-brs',n:6,ev:'valid',badge:'check',v:{q:1,s:1,t:1}},
+ // Kapcsolódás, értelem, jelenlét
+ {id:'ucla',key:'ucla3-responses-v1',card:'ucla3-responses-v1',cat:'Kapcsolódás, értelem, jelenlét',name:'UCLA-3 · Magányosság',link:'ertelem.html#test-ucla',n:3,ev:'valid',badge:'check',v:{q:1,s:1,t:1}},
+ {id:'mlq',key:'mlq-responses-v1',card:'mlq-responses-v1',cat:'Kapcsolódás, értelem, jelenlét',name:'MLQ · Az élet értelme',link:'ertelem.html#test-mlq',n:10,ev:'valid',badge:'check',v:{q:1,s:1,t:1}},
+ {id:'maas',key:'maas-responses-v1',card:'maas-responses-v1',cat:'Kapcsolódás, értelem, jelenlét',name:'MAAS · Tudatos jelenlét',link:'ertelem.html#test-maas',n:15,ev:'valid',badge:'check',v:{q:1,s:1,t:1}}
 ];
 })(typeof window!=='undefined'?window:globalThis);

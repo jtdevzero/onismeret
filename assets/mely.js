@@ -104,7 +104,11 @@
     scs: function(r){ var t = gv(r, 'total'); return t !== null && t <= 1.8; },
     bf: function(r){ return gv(r, 'N') >= 50; },
     phq9: function(r){ return gv(r, 'total') >= 10 || (r.x && r.x.i9 > 0); },
-    gad7: function(r){ return gv(r, 'total') >= 10; }
+    gad7: function(r){ return gv(r, 'total') >= 10; },
+    who5: function(r){ return gv(r, 'total') !== null && gv(r, 'total') <= 28; },
+    pss: function(r){ return gv(r, 'total') >= 27; },
+    cbi: function(r){ return gv(r, 'P') >= 75 || gv(r, 'W') >= 75; },
+    ucla: function(r){ return gv(r, 'total') >= 7; }
   };
   function helpHTML(id, r){
     var f = HELP[id]; try { if (!f || !f(r)) return ''; } catch (e) { return ''; }
