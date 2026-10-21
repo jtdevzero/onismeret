@@ -108,6 +108,33 @@ window.ONI_CHECK=(function(){
           if(!Array.isArray(p.done)||p.done.length>30||!p.done.every(function(n){return typeof n==='number'&&n>=0&&n<30&&Math.floor(n)===n}))return 'hibás lépéslista';
           return Object.keys(p).every(function(x){return x==='start'||x==='done'})?null:'ismeretlen mező'});
         return 'ismeretlen mező'})},
+    /* Csillagtérkép születési adatai (csillagok.html) */
+    'onismeret-birth-v1':function(j){if(!isObj(j))return 'nem objektum';
+      var F={name:function(v){return str(v,100)},date:function(v){return typeof v==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(v)},time:function(v){return v===''||(typeof v==='string'&&/^\d{2}:\d{2}$/.test(v))},
+        noTime:function(v){return typeof v==='boolean'},place:function(v){return typeof v==='string'&&/^(man|\d{1,3})$/.test(v)},lat:function(v){return typeof v==='number'&&v>=-90&&v<=90},
+        lon:function(v){return typeof v==='number'&&v>=-180&&v<=180},tz:function(v){return typeof v==='string'&&/^[A-Za-z_\/+-]{1,60}$/.test(v)},zone:function(v){return v==='offset'},
+        offset:function(v){return typeof v==='number'&&v>=-14&&v<=14}};
+      if(!F.date(j.date))return 'hibás dátum';
+      return each(j,function(k,v){return F[k]?(F[k](v)?null:'hibás érték'):'ismeretlen mező'})},
+    /* Fókusz-körök (fokusz.html): aktív kör és legfeljebb 20 lezárt */
+    'onismeret-fokusz-v1':function(j){
+      var RT=['done','part','no'];
+      function round(o,closed){if(!isObj(o)||!iso(o.start))return 'hibás kezdés';if(closed&&!iso(o.end))return 'hibás zárás';
+        if(!Array.isArray(o.items)||o.items.length>10)return 'hibás elemlista';
+        for(var i=0;i<o.items.length;i++){var c=o.items[i];
+          if(!isObj(c)||!str(c.key,200)||!str(c.title,500)||(c.kind!=null&&!str(c.kind,80))||(c.text!=null&&!str(c.text,4000))||(c.action!=null&&!str(c.action,2000)))return (i+1)+'. elem hibás';
+          if(c.src!=null&&(!Array.isArray(c.src)||c.src.length>20||!c.src.every(function(s){return str(s,40)})))return (i+1)+'. elem forrása hibás';}
+        if(o.checks!=null&&(!Array.isArray(o.checks)||o.checks.length>400))return 'hibás visszanézések';
+        for(var x=0;x<(o.checks||[]).length;x++){var k=o.checks[x];
+          if(!isObj(k)||!iso(k.t)||(k.note!=null&&!str(k.note,1000))||each(k.r,function(key,v){return str(key,200)&&RT.indexOf(v)>-1?null:'hibás értékelés'}))return (x+1)+'. visszanézés hibás';}
+        return null}
+      return each(j,function(k,v){
+        if(k==='active')return round(v,false);
+        if(k==='past'){if(!Array.isArray(v)||v.length>20)return 'hibás lista';for(var i=0;i<v.length;i++){var e=round(v[i],true);if(e)return (i+1)+'. kör: '+e;}return null}
+        return 'ismeretlen mező'})},
+    /* Válaszstílus-jelzések gyorstára (results-plus.js) */
+    'onismeret-style-v1':function(j){var FL=['straight','extreme','middle'];
+      return each(j,function(id,o){return testId(id)||(isObj(o)&&str(o.sid,40)&&iso(o.t)&&Array.isArray(o.f)&&o.f.length<=3&&o.f.every(function(x){return FL.indexOf(x)>-1})?null:'hibás jelzés')})},
     'onismeret-partner-v1':function(j){if(!isObj(j))return 'nem objektum';if(j.name!=null&&!str(j.name,40))return 'hibás név';if(!iso(j.loaded))return 'hibás dátum';
       return each(j.results,function(id,h){if(testId(id))return testId(id);if(!Array.isArray(h)||h.length>LIMIT)return 'hibás előzmény';for(var i=0;i<h.length;i++){var e=record(id,h[i]);if(e)return e;}return null})}
   };

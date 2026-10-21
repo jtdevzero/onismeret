@@ -1163,6 +1163,60 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     await ctx.close();
   }
 
+  console.log('\n37. Biztonság: CSP és referrer minden oldalon, CSP-sértés nélkül; XSS-próba; teljes mentés visszaállítása');
+  {
+    const pages = fs.readdirSync(ROOT).filter(x => x.endsWith('.html')).concat(['onbizalom-kurzus/index.html']);
+    const head = f => fs.readFileSync(path.join(ROOT, f), 'utf8').slice(0, 1500);
+    ok(pages.every(f => /<meta http-equiv="Content-Security-Policy" content="default-src 'self';[^"]*connect-src 'self';[^"]*object-src 'none'; base-uri 'none'/.test(head(f)) && /<meta name="referrer" content="no-referrer">/.test(head(f))), 'minden oldal fejlécében CSP (csak saját domain, nincs külső kérés) és no-referrer', pages.filter(f => !/Content-Security-Policy/.test(head(f))));
+    // helyi http-szerver, hogy a CSP 'self' ugyanúgy működjön, mint a GitHub Pages-en
+    const http = require('http');
+    const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.woff2': 'font/woff2', '.png': 'image/png', '.webmanifest': 'application/manifest+json' };
+    const srv = http.createServer((q, r) => { const u = decodeURIComponent(q.url.split('?')[0]); const f = path.join(ROOT, u.endsWith('/') ? u + 'index.html' : u);
+      if (!f.startsWith(ROOT) || !fs.existsSync(f) || fs.statSync(f).isDirectory()) { r.writeHead(404); return r.end(); } r.writeHead(200, { 'content-type': MIME[path.extname(f)] || 'application/octet-stream' }); r.end(fs.readFileSync(f)); });
+    await new Promise(res => srv.listen(0, res)); const H = 'http://localhost:' + srv.address().port + '/';
+    const ctx = await newCtx(); await ctx.addInitScript(() => { window.__hits = 0; window.__x = () => { window.__hits++; }; });
+    const p = await pageIn(ctx); const csp = []; p.on('console', m => { if (/Content Security Policy|Refused to/.test(m.text())) csp.push(p.url().split('/').pop() + ': ' + m.text().slice(0, 120)); });
+    for (const [pg, ids] of [['onbizalom', ['rses', 'gse', 'bfne']], ['jollet', ['who5', 'pss']], ['szabalyozas', ['ips', 'ders']], ['allapot', ['phq9']]]) {
+      await p.goto(H + pg + '.html#test-' + ids[0]); await p.waitForTimeout(150); await p.evaluate(ids => ids.forEach(id => { TESTS[id]._fillAll((k, it) => it.r ? 0 : k - 1); TESTS[id].show(); }), ids); await p.waitForTimeout(250); }
+    await p.goto(H + 'csillagok.html'); await p.waitForTimeout(200); await p.fill('#cs-date', '1993-05-10'); await p.fill('#cs-time', '10:00'); await p.click('button[type=submit]'); await p.waitForTimeout(300);
+    await p.goto(H + 'fokusz.html'); await p.waitForTimeout(300); await p.click('.fk-pick'); await p.click('#root button.btn'); await p.waitForTimeout(200);
+    for (const f of pages) { await p.goto(H + f); await p.waitForTimeout(250); }
+    ok(csp.length === 0, 'egyik oldal sem sérti a CSP-t (minden szkript, stílus, betű és kép betöltődik)', csp.slice(0, 5));
+    // teljes mentés → törlés → visszaállítás, csillagtérképpel, fókusszal és válaszstílussal (korábban ezek miatt elutasította)
+    await p.goto(H + 'index.html'); await p.waitForTimeout(300);
+    const before = await p.evaluate(() => Object.keys(localStorage).filter(k => /^onismeret-/.test(k)).sort());
+    const [dl] = await Promise.all([p.waitForEvent('download'), p.click('#pp-export')]); const file = await dl.path();
+    await p.evaluate(() => localStorage.clear()); await p.reload(); await p.waitForTimeout(300);
+    await p.setInputFiles('#pp-import', file); await p.waitForTimeout(1200);
+    const after = await p.evaluate(() => Object.keys(localStorage).filter(k => /^onismeret-/.test(k) && k !== 'onismeret-undo-v1').sort());
+    ok(['onismeret-birth-v1', 'onismeret-fokusz-v1', 'onismeret-style-v1'].every(k => before.includes(k)) && JSON.stringify(after) === JSON.stringify(before.filter(k => k !== 'onismeret-undo-v1')), 'a mentés csillagtérképpel, fókusszal és válaszstílussal is visszaállítható', { before, after });
+    // XSS: sémán átmenő, mérgezett szöveg minden szabad szöveges mezőben, minden oldalon
+    const P = '<img src=x onerror=__x(1)>';
+    const sch = await p.evaluate(P => {
+      const now = new Date().toISOString(), res = JSON.parse(localStorage.getItem('onismeret-results-v1'));
+      Object.values(res).forEach(h => h.forEach(r => { r.h = P; r.n = P; Object.values(r.d || {}).forEach(d => d[0] = P); }));
+      const fk = JSON.parse(localStorage.getItem('onismeret-fokusz-v1')); fk.active.items.forEach(i => { i.title = P; i.kind = P; i.text = P; i.action = P; }); fk.active.checks = [{ t: now, r: { [P]: 'done' }, note: P }];
+      const bth = JSON.parse(localStorage.getItem('onismeret-birth-v1')); bth.name = P;
+      const set = { 'onismeret-results-v1': res, 'onismeret-fokusz-v1': fk, 'onismeret-birth-v1': bth,
+        'onismeret-notes-v1': Object.fromEntries(Object.keys(res).map(id => [id, { [res[id][0].sid || 'x1']: { fit: [], cond: [], text: P, t: now } }])),
+        'onismeret-commit-v1': Object.fromEntries(Object.keys(res).map(id => [id, [{ sid: res[id][0].sid || 'x1', text: P, t: now }]])),
+        'onismeret-unclear-v1': { rses: { '1': { t: now, q: P } } },
+        'onismeret-edzes-v1': { plan: { start: now, areas: ['KI'], base: { rses: 10 } }, log: { [now.slice(0, 10)]: { ex: ['win'], win: [P], crit: { a: P, b: P }, note: P } }, ladder: [{ id: 'a1', text: P, area: 'KI', fear: 3, tries: [{ t: now, pred: 3, real: 2, note: P }] }] },
+        'onismeret-konyvtar-v1': { list: { flow: { s: 'doing', t: now, note: P } } }, 'onismeret-partner-v1': { name: P, loaded: now, results: res } };
+      return Object.entries(set).map(([k, v]) => { const s = JSON.stringify(v); localStorage.setItem(k, s); return ONI_CHECK.stored(k, s) === null ? null : k; }).filter(Boolean);
+    }, P);
+    ok(!sch.length, 'a mérgezett adat sémán átmegy (vagyis egy mentésfájllal is bejuttatható lenne)', sch);
+    const hit = [];
+    for (const f of pages.concat(['osszegzes.html?demo=1', 'index.html#' + encodeURIComponent(P), 'konyvtar.html#k-' + encodeURIComponent(P)])) {
+      await p.goto(H + f); await p.waitForTimeout(250);
+      await p.evaluate(() => document.querySelectorAll('.hub-tab').forEach(t => t.click())); await p.waitForTimeout(150);
+      const r = await p.evaluate(() => ({ h: window.__hits, img: document.querySelectorAll('img[src="x"]').length })); if (r.h || r.img) hit.push([f, r]);
+    }
+    ok(!hit.length, 'XSS-próba: a beszúrt HTML sehol nem fut le, csak szövegként jelenik meg', hit);
+    ok(p._errs.length === 0, 'nincs JS-hiba a 37. szakaszban', p._errs);
+    await ctx.close(); srv.close();
+  }
+
   await browser.close();
   console.log(`\n${pass} rendben, ${fail} hiba`);
   process.exit(fail ? 1 : 0);
