@@ -1113,6 +1113,9 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     ok(m.items === src.items.length && m.tiles === src.cats.length + 1 && m.paths === src.paths.length && m.empty && m.ext, 'betöltés: minden forrás, 8+1 csempe, útvonalak, üres ajánlás, biztonságos külső linkek', m);
     await p.click('#goals [data-goal="szokasok"]'); await p.waitForTimeout(80);
     ok(await p.evaluate(() => document.querySelectorAll('#recs .it').length >= 4 && /Választott célod/.test(document.getElementById('recs').textContent)), 'választott cél: kitöltött teszt nélkül is témához illő ajánlás');
+    ok(await p.evaluate(() => { const k = 'onismeret-konyvtar-v1', v = localStorage.getItem(k); return JSON.parse(v).goal === 'szokasok' && ONI_CHECK.stored(k, v) === null && localStorage.getItem('onismeret-konyvtar-goal-v1') === null; }), 'a választott cél a könyvtár tárolójában, a visszaállítás sémája elfogadja');
+    await p.evaluate(() => { localStorage.removeItem('onismeret-konyvtar-v1'); localStorage.setItem('onismeret-konyvtar-goal-v1', 'alvas'); }); await p.reload(); await p.waitForTimeout(150);
+    ok(await p.evaluate(() => JSON.parse(localStorage.getItem('onismeret-konyvtar-v1')).goal === 'alvas' && localStorage.getItem('onismeret-konyvtar-goal-v1') === null && document.querySelector('#goals [data-goal="alvas"]').getAttribute('aria-pressed') === 'true'), 'a régi külön célkulcs átköltözik, és megszűnik (különben a mentés visszaállítása elbukna)');
     await p.click('#goals [data-goal=""]'); await p.waitForTimeout(40);
     // keresés ékezet nélkül, szűrők
     await p.fill('#q', 'halogatas'); await p.waitForTimeout(80);

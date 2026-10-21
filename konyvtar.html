@@ -159,7 +159,7 @@ select{font:inherit;font-size:13.5px;padding:6px 10px;border-radius:10px;border:
 @media(max-width:760px){.library-hero{grid-template-columns:1fr;gap:20px;padding:26px 22px}.hero-side{border-left:0;border-top:1px solid var(--u-line);padding:20px 0 0}.hero-side strong{margin:10px 0}.goal-panel{padding:15px}.goal-choices button{font-size:12.5px;padding:8px 11px}}
 </style>
 <script src="assets/oni.js?v=604a0bdc"></script>
-<script src="assets/oni-schema.js?v=9d9e5514" defer></script>
+<script src="assets/oni-schema.js?v=9da2923c" defer></script>
 <script src="assets/tests-data.js?v=972452a2" defer></script>
 <script src="assets/mely.js?v=394634ec" defer></script>
 <script src="assets/results-plus.js?v=1f96d0e0" defer></script>
@@ -227,17 +227,20 @@ select{font:inherit;font-size:13.5px;padding:6px 10px;border-radius:10px;border:
 (function(){
   var L=window.ONI_LIB,REG=window.ONI_REG||[],K='onismeret-konyvtar-v1',GK='onismeret-konyvtar-goal-v1';
   var GOALS=[['','Automatikus'],['szokasok','Szokások és halogatás'],['erzelem','Érzelmek'],['onbizalom','Önbizalom'],['kapcsolat','Kapcsolatok'],['stressz','Stressz'],['alvas','Alvás'],['munka','Fókusz és munka'],['ertelem','Értékek és irány']];
-  var goal='';try{var savedGoal=localStorage.getItem(GK);if(GOALS.some(function(g){return g[0]===savedGoal}))goal=savedGoal}catch(e){}
+  var goal='';   /* a választott cél a könyvtár saját tárolójában (S.goal), hogy a mentés-visszaállítás sémája ellenőrizni tudja */
   function renderGoals(){document.getElementById('goals').innerHTML=GOALS.map(function(g){return '<button type="button" data-goal="'+g[0]+'" aria-pressed="'+(goal===g[0])+'">'+esc(g[1])+'</button>'}).join('')}
   var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
   var norm=function(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')};
   var CAT={},ITEM={},TEST={};L.cats.forEach(function(c){CAT[c.id]=c});L.items.forEach(function(i){ITEM[i.id]=i});REG.forEach(function(t){TEST[t.id]=t});
   var EVO={A:0,B:1,C:2,V:3},STL={want:'Tervben',doing:'Folyamatban',done:'Kész'};
   /* tárolás */
-  function get(){try{var s=JSON.parse(localStorage.getItem(K));if(s&&typeof s==='object')return {list:s.list||{},paths:s.paths||{}}}catch(e){}return {list:{},paths:{}}}
-  function put(s){try{var o={};if(Object.keys(s.list).length)o.list=s.list;if(Object.keys(s.paths).length)o.paths=s.paths;
-    if(!o.list&&!o.paths)localStorage.removeItem(K);else localStorage.setItem(K,JSON.stringify(o));return true}catch(e){return false}}
+  function get(){try{var s=JSON.parse(localStorage.getItem(K));if(s&&typeof s==='object')return {list:s.list||{},paths:s.paths||{},goal:typeof s.goal==='string'?s.goal:''}}catch(e){}return {list:{},paths:{},goal:''}}
+  function put(s){try{var o={};if(Object.keys(s.list).length)o.list=s.list;if(Object.keys(s.paths).length)o.paths=s.paths;if(s.goal)o.goal=s.goal;
+    if(!o.list&&!o.paths&&!o.goal)localStorage.removeItem(K);else localStorage.setItem(K,JSON.stringify(o));return true}catch(e){return false}}
   var S=get();
+  /* korábbi külön kulcs (onismeret-konyvtar-goal-v1) átköltöztetése: nyers szövegként a visszaállítás elutasította */
+  try{var oldGoal=localStorage.getItem(GK);if(oldGoal!==null){if(!S.goal&&oldGoal)S.goal=oldGoal;localStorage.removeItem(GK);put(S)}}catch(e){}
+  if(GOALS.some(function(g){return g[0]===S.goal}))goal=S.goal;else S.goal='';
   /* kitöltött tesztek */
   var store={};try{store=(window.ONI&&ONI.all())||{}}catch(e){}
   var DONE={};Object.keys(store).forEach(function(id){if(TEST[id]&&store[id]&&store[id].length)DONE[id]=1});
@@ -360,7 +363,7 @@ select{font:inherit;font-size:13.5px;padding:6px 10px;border-radius:10px;border:
   function go(id){var t=document.querySelector('#cat #i-'+id);if(!t){F={q:'',c:'',t:'',ev:'',tag:'',hu:false,mine:false,link:false};F.c=ITEM[id].c;renderFilters();renderCat();t=document.querySelector('#cat #i-'+id)}
     if(t){t.scrollIntoView({block:'center'});t.classList.remove('flash');void t.offsetWidth;t.classList.add('flash');var d=t.querySelector('details');if(d)d.open=true}}
   document.addEventListener('click',function(e){var b=e.target.closest('button,a[data-go]');if(!b)return;
-    if(b.dataset.goal!==undefined){goal=b.dataset.goal;try{localStorage.setItem(GK,goal)}catch(e){}renderGoals();renderRecs();return}
+    if(b.dataset.goal!==undefined){goal=b.dataset.goal;S.goal=goal;put(S);renderGoals();renderRecs();return}
     if(b.dataset.remove!==undefined){var host=b.closest('[data-id]');if(host)removeStatus(host.dataset.id);return}
     if(b.dataset.s!==undefined){var host=b.closest('[data-id]');if(host)setStatus(host.dataset.id,b.dataset.s);return}
     if(b.dataset.go){e.preventDefault();go(b.dataset.go);return}

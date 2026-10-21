@@ -166,6 +166,7 @@ window.ONI_CHECK=(function(){
       return each(j,function(k,v){
         if(k==='list')return each(v,function(id,e){if(!ID.test(id))return 'hibás azonosító';if(!isObj(e)||ST.indexOf(e.s)<0||!iso(e.t))return 'hibás bejegyzés';
           if(e.note!==undefined&&!str(e.note,1000))return 'hibás jegyzet';return Object.keys(e).every(function(x){return ['s','t','note'].indexOf(x)>-1})?null:'ismeretlen mező'});
+        if(k==='goal')return typeof v==='string'&&/^[a-z]{0,20}$/.test(v)?null:'hibás cél';
         if(k==='paths')return each(v,function(id,p){if(!ID.test(id))return 'hibás azonosító';if(!isObj(p)||!iso(p.start))return 'hibás kezdés';
           if(!Array.isArray(p.done)||p.done.length>30||!p.done.every(function(n){return typeof n==='number'&&n>=0&&n<30&&Math.floor(n)===n}))return 'hibás lépéslista';
           return Object.keys(p).every(function(x){return x==='start'||x==='done'})?null:'ismeretlen mező'});
