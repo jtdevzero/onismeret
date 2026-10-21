@@ -22,6 +22,14 @@ BUNDLE_TAG = '<script src="assets/oni.js"></script>'
 TRIO = REG_TAG + '\n' + CORE_TAG + '\n' + RULES_TAG + '\n'
 PLUS_TAGS = '<script src="assets/tests-data.js" defer></script>\n<script src="assets/mely.js" defer></script>\n<script src="assets/results-plus.js" defer></script>'
 FONTS = '<link rel="stylesheet" href="fonts/fonts.css">'
+# Biztonsági meta-fejlécek. A GitHub Pages nem enged saját HTTP-fejlécet, ezért meta-címkében: a tartalombiztonsági
+# szabály (CSP) csak a saját domainről enged szkriptet, stílust, betűt, képet és hálózati kérést, így egy esetleges
+# beszúrt kód sem tudna adatot külső szerverre küldeni vagy idegen szkriptet betölteni. A beágyazott szkriptek és
+# eseménykezelők miatt kell az 'unsafe-inline'. A referrer-szabály miatt külső linkre kattintva a cél nem látja,
+# melyik teszt oldaláról jöttél.
+CSP = ("default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; "
+       "font-src 'self'; connect-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'")
+SEC_TAGS = f'<meta http-equiv="Content-Security-Policy" content="{CSP}">\n<meta name="referrer" content="no-referrer">'
 PWA_TAGS = ('<link rel="manifest" href="manifest.webmanifest">\n<meta name="theme-color" content="#050d1e">\n'
             '<link rel="icon" type="image/png" href="icons/favicon-32.png">\n<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">')
 FOOTER = ('<footer class="hub-footer">Önismereti térkép, nem diagnózis. A válaszaid csak ebben a böngészőben tárolódnak '
@@ -86,6 +94,9 @@ def link_core():
             t = re.search(r'<title>(.*?)</title>', s2, re.S)
             desc = (t.group(1).strip() + ' — ' if t else '') + 'önismereti kérdőívek magyarul. A válaszok és az eredmények csak ebben a böngészőben tárolódnak.'
             s2 = s2.replace('</title>', '</title>\n<meta name="description" content="' + desc.replace('"', '&quot;') + '">', 1)
+        s2 = re.sub(r'<meta http-equiv="Content-Security-Policy"[^>]*>\n<meta name="referrer"[^>]*>\n', '', s2)
+        s2 = re.sub(r'(<meta charset="utf-8">\n)', lambda m: m.group(1) + SEC_TAGS + '\n', s2, count=1, flags=re.I)   # a fejléc elejére, minden más elé
+        if SEC_TAGS not in s2: raise SystemExit(f'{p.name}: nincs <meta charset="utf-8"> sor, a biztonsági fejléc nem illeszthető be')
         s2 = s2.replace(PWA_TAGS + '\n', '')
         s2 = s2.replace('</head>', PWA_TAGS + '\n</head>', 1)
         if s2.count(CORE_TAG) != 1 or TRIO not in s2:
