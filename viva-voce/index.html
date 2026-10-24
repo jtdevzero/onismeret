@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Viva Voce</title>
 <meta name="description" content="Olasz nyelvtanulás FSRS ismétléssel, valós mondatokkal és kiejtésgyakorlással.">
-<meta name="theme-color" content="#0b1324">
+<meta name="theme-color" content="#0c1310">
 <script>
 /* Téma beállítása még a rajzolás előtt, hogy ne villanjon. Alapból sötét. */
 (function () {
@@ -13,21 +13,18 @@
   try { t = (JSON.parse(localStorage.getItem('vivavoce.v1')) || {}).settings.theme || 'dark'; } catch (e) {}
   if (t === 'system') t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
   document.documentElement.dataset.theme = t;
-  document.querySelector('meta[name=theme-color]').content = t === 'dark' ? '#0b1324' : '#f8fafc';
+  document.querySelector('meta[name=theme-color]').content = t === 'dark' ? '#0c1310' : '#f4f4f1';
 })();
 </script>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <link rel="stylesheet" href="fonts/fonts.css">
-<link rel="stylesheet" href="style.css?v=4">
+<link rel="stylesheet" href="style.css?v=5">
 </head>
 <body>
 <header class="top">
-  <a class="brand" href="./" aria-label="Viva Voce főoldal">
-    <span class="logo" aria-hidden="true"></span>
-    <span class="brand-name">Viva Voce</span>
-  </a>
+  <a class="brand" href="./" aria-label="Viva Voce főoldal"><span class="brand-name">Viva Voce</span><span class="brand-dot" aria-hidden="true"></span></a>
   <div class="streak" id="streak" title="Ennyi napja tanulsz megszakítás nélkül">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c1 3.5 5 6 5 11a5 5 0 0 1-10 0c0-2.5 1.2-4 2.5-5.5C9.8 9.5 10 11 11 12c0-3.5.5-6.5 1-10z"/></svg>
     <span class="streak-n" id="streakN">0</span>
@@ -60,7 +57,7 @@
 <div id="sheet" class="sheet" hidden></div>
 
 <noscript><p class="loading">A Viva Voce JavaScriptet igényel.</p></noscript>
-<script src="fsrs.js?v=4"></script>
-<script src="app.js?v=4"></script>
+<script src="fsrs.js?v=5"></script>
+<script src="app.js?v=5"></script>
 </body>
 </html>

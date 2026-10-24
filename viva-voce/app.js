@@ -2,7 +2,7 @@
 'use strict';
 
 const STORE_KEY = 'vivavoce.v1';
-const PACK_URL = 'data/it.json?v=4';
+const PACK_URL = 'data/it.json?v=5';
 const KEY_STORE = 'vivavoce.apikey';
 const AI_MODEL = 'claude-haiku-5-5';
 const { review: fsrsReview, retrievability, dayIndex, DAY } = window.FSRS;
@@ -17,12 +17,13 @@ const DEFAULT_SETTINGS = { newPerDay: 8, targetR: 0.9, rate: 0.9, speak: true, a
 let state = loadState();
 let PACK = null, ITEMS = {}, ORDER = [];
 let session = null;
+let talk = null;
 
 function loadState() {
   let s = {};
   try { s = JSON.parse(localStorage.getItem(STORE_KEY)) || {}; } catch (e) { s = {}; }
   return {
-    cards: s.cards || {}, log: s.log || [], days: s.days || {}, focus: s.focus || null,
+    cards: s.cards || {}, log: s.log || [], days: s.days || {}, focus: s.focus || null, stamps: s.stamps || {},
     settings: Object.assign({}, DEFAULT_SETTINGS, s.settings || {})
   };
 }
@@ -36,7 +37,14 @@ const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;'
 const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 const pick = a => a[Math.floor(Math.random() * a.length)];
 const today = () => dayIndex();
-const IT = s => `<span class="it" lang="it">${esc(s)}</span>`;
+const IT = (s, tag = 'span') => `<${tag} class="it" lang="it">${esc(s)}</${tag}>`;
+
+/* Illusztrációk: a Higgsfield CDN-ről, kicsi WebP a listákhoz, teljes PNG a nagy képekhez */
+const imgUrl = (base, big) => base + (big ? '.png' : '_min.webp');
+function art(base, { big = false, cls = '', eager = false } = {}) {
+  if (!base) return `<div class="art ${cls}"></div>`;
+  return `<div class="art ${cls}"><img src="${imgUrl(base, big)}" alt="" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='${imgUrl(base, !big)}'}else{this.remove()}"></div>`;
+}
 
 function norm(s) {
   return String(s).normalize('NFC').toLowerCase()
@@ -62,7 +70,6 @@ function lev(a, b) {
 }
 const similarity = (a, b) => 1 - lev(a, b) / Math.max(a.length, b.length, 1);
 
-/* Gépelt válasz értékelése → { grade 1–3, note } */
 function evaluate(input, item) {
   const n = norm(input);
   if (!n) return { grade: 1 };
@@ -82,7 +89,10 @@ function evaluate(input, item) {
   return { grade: 1 };
 }
 
-/* ---------- Hang ---------- */
+/* ---------- Hang ----------
+   A tananyag minden kifejezéséhez előre felvett hangfájl tartozik (audio/<nyelv>/<id>.mp3, Kokoro neurális hang).
+   Ez minden telefonon szól, a némító kapcsoló sem némítja. A böngésző felolvasója csak az AI-beszélgetés
+   szabad szövegeihez kell, tartaléknak. */
 let itVoice = null;
 function pickVoice() {
   if (!('speechSynthesis' in window)) return;
@@ -90,14 +100,12 @@ function pickVoice() {
   itVoice = it.find(v => /google|natural|premium|enhanced|neural|alice|federica|luca/i.test(v.name)) || it[0] || null;
 }
 if ('speechSynthesis' in window) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
-/* A tananyag minden kifejezéséhez előre felvett hangfájl tartozik (audio/<nyelv>/<id>.mp3, Kokoro neurális hang).
-   Ez minden telefonon szól, a némító kapcsoló sem némítja. A böngésző felolvasója csak az AI-beszélgetés
-   szabad szövegeihez kell, tartaléknak. */
+
 const AUDIO_BY_TEXT = {};
 const player = new Audio();
 player.preload = 'auto';
 let playerBtn = null;
-const ttsOK = () => true; // a tananyag hangja mindig megvan
+let actx = null;
 const clearSpeaking = () => { if (playerBtn) playerBtn.classList.remove('speaking'); playerBtn = null; };
 player.addEventListener('ended', clearSpeaking);
 
@@ -107,7 +115,6 @@ function stopAudio() {
   if ('speechSynthesis' in window && (speechSynthesis.speaking || speechSynthesis.pending)) speechSynthesis.cancel();
 }
 
-/* iPhone: a hang csak akkor indulhat magától, ha egyszer már egy érintésre elindult. Az első érintéskor feloldjuk. */
 let unlocked = false;
 function unlockAudio() {
   if (unlocked) return; unlocked = true;
@@ -133,7 +140,6 @@ function say(text, rate, btn) {
   }
   ttsSay(text, r, btn);
 }
-
 function ttsSay(text, rate, btn) {
   if (!('speechSynthesis' in window)) return;
   const u = new SpeechSynthesisUtterance(text);
@@ -142,7 +148,6 @@ function ttsSay(text, rate, btn) {
   if (itVoice) u.voice = itVoice;
   u.rate = rate;
   if (btn) { btn.classList.add('speaking'); u.onend = u.onerror = () => btn.classList.remove('speaking'); }
-  // Chrome/Android: a cancel utáni azonnali speak néha elvész, ezért egy pillanatot várunk
   setTimeout(() => speechSynthesis.speak(u), 60);
 }
 
@@ -162,36 +167,39 @@ function listenOnce() {
   });
 }
 
-/* Rövid hangjelzés és rezgés a visszajelzéshez */
-let actx = null;
 function chime(kind) {
-  if (navigator.vibrate) navigator.vibrate(kind === 'bad' ? [30, 40, 30] : 12);
+  if (navigator.vibrate) navigator.vibrate(kind === 'bad' ? [30, 40, 30] : kind === 'stamp' ? [10, 60, 40] : 12);
   if (!state.settings.sound) return;
   try {
     actx = actx || new (window.AudioContext || window.webkitAudioContext)();
-    const notes = kind === 'ok' ? [[659.25, 0], [987.77, .09]] : kind === 'hard' ? [[587.33, 0], [739.99, .09]] : kind === 'done' ? [[523.25, 0], [659.25, .1], [783.99, .2], [1046.5, .3]] : [[220, 0], [174.6, .1]];
+    const N = {
+      ok: [[659.25, 0], [987.77, .09]],
+      hard: [[587.33, 0], [739.99, .09]],
+      bad: [[220, 0], [174.6, .1]],
+      done: [[523.25, 0], [659.25, .1], [783.99, .2], [1046.5, .32]],
+      stamp: [[130.8, 0], [523.25, .12], [783.99, .22], [1046.5, .34], [1318.5, .46]]
+    }[kind] || [];
     const t0 = actx.currentTime;
-    for (const [f, d] of notes) {
+    for (const [f, d] of N) {
       const o = actx.createOscillator(), g = actx.createGain();
-      o.type = kind === 'bad' ? 'triangle' : 'sine';
+      o.type = kind === 'bad' || (kind === 'stamp' && d === 0) ? 'triangle' : 'sine';
       o.frequency.value = f;
       g.gain.setValueAtTime(0, t0 + d);
-      g.gain.linearRampToValueAtTime(kind === 'bad' ? .12 : .16, t0 + d + .015);
-      g.gain.exponentialRampToValueAtTime(.0001, t0 + d + .35);
+      g.gain.linearRampToValueAtTime(kind === 'bad' ? .12 : .15, t0 + d + .015);
+      g.gain.exponentialRampToValueAtTime(.0001, t0 + d + .4);
       o.connect(g).connect(actx.destination);
-      o.start(t0 + d); o.stop(t0 + d + .4);
+      o.start(t0 + d); o.stop(t0 + d + .45);
     }
   } catch (e) { /* nincs hang */ }
 }
 
 const ICON = {
-  play: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>',
-  slow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17h13a4 4 0 0 0 4-4V9"/><path d="M5 17c0-4 2.5-7 6-7s5 2.5 5 5"/><circle cx="20" cy="7" r="2"/></svg>',
-  mic: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><path d="M12 17v5"/></svg>',
-  x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>',
-  check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg>',
-  tilde: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M5 13c2-3 4-3 7 0s5 3 7 0"/></svg>',
-  back: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>'
+  play: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>',
+  slow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17h13a4 4 0 0 0 4-4V9"/><path d="M5 17c0-4 2.5-7 6-7s5 2.5 5 5"/><circle cx="20" cy="7" r="2"/></svg>',
+  mic: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><path d="M12 17v5"/></svg>',
+  x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+  check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg>',
+  back: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>'
 };
 const playBtn = (text, label = 'Meghallgatom', cls = '', rate = '') =>
   `<button class="icon-btn ${cls}" data-say="${esc(text)}" ${rate ? `data-rate="${rate}"` : ''} aria-label="${label}" title="${label}">${rate ? ICON.slow : ICON.play}</button>`;
@@ -200,6 +208,26 @@ document.addEventListener('click', e => {
   const b = e.target.closest('[data-say]');
   if (b) { e.preventDefault(); say(b.dataset.say, b.dataset.rate ? +b.dataset.rate : undefined, b); }
 });
+
+/* ---------- Pecsét (timbro): minden befejezett leckéért ---------- */
+let stampSeq = 0;
+function stampSvg(u, day) {
+  const id = 'sp' + (++stampSeq);
+  const d = day != null ? new Date(day * DAY + 12 * 3600000) : new Date();
+  const date = d.toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'UTC' });
+  const ring = `VIVA VOCE · LEZIONE ${u.index + 1} · ${u.level} · `.repeat(2);
+  return `<svg viewBox="0 0 200 200" role="img" aria-label="Pecsét: ${esc(u.title)}">
+    <defs><path id="${id}" d="M100,100 m-74,0 a74,74 0 1,1 148,0 a74,74 0 1,1 -148,0"/>
+    <filter id="${id}r"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.2 1.6" result="m"/><feComposite in="SourceGraphic" in2="m" operator="in"/></filter></defs>
+    <g filter="url(#${id}r)" fill="none" stroke="currentColor">
+      <circle cx="100" cy="100" r="94" stroke-width="5"/><circle cx="100" cy="100" r="86" stroke-width="1.5"/>
+      <circle cx="100" cy="100" r="60" stroke-width="1.5"/>
+      <text fill="currentColor" stroke="none" font-family="Instrument, sans-serif" font-size="12.5" font-weight="700" letter-spacing="1"><textPath href="#${id}" startOffset="0" textLength="458" lengthAdjust="spacing">${esc(ring)}</textPath></text>
+      <text x="100" y="98" text-anchor="middle" fill="currentColor" stroke="none" font-family="Bodoni, serif" font-style="italic" font-size="${u.title.length > 14 ? 15 : 19}" font-weight="600">${esc(u.title)}</text>
+      <text x="100" y="121" text-anchor="middle" fill="currentColor" stroke="none" font-family="Instrument, sans-serif" font-size="11" font-weight="600" letter-spacing="1">${date}</text>
+      <path d="M70 132h60" stroke-width="1.2"/>
+    </g></svg>`;
+}
 
 /* ---------- Tananyag ---------- */
 async function loadPack() {
@@ -211,9 +239,12 @@ async function loadPack() {
     u.items.forEach(it => { it.unit = u; ITEMS[it.id] = it; ORDER.push(it.id); AUDIO_BY_TEXT[it.it] = it.id; });
   });
   for (const id of Object.keys(state.cards)) if (!ITEMS[id]) delete state.cards[id];
+  // korábbi haladásból is járjon a pecsét
+  PACK.units.forEach(u => { if (!state.stamps[u.id] && u.items.every(i => state.cards[i.id])) state.stamps[u.id] = today(); });
 }
 
 const level = c => !c ? 0 : c.s < 3 ? 1 : c.s < 21 ? 2 : 3;
+const startedIn = u => u.items.filter(i => state.cards[i.id]).length;
 
 function currentUnit() {
   if (state.focus) {
@@ -259,6 +290,11 @@ function rate(id, grade) {
   state.log.push([now, id, grade, prev && prev.reps ? 0 : 1]);
   const d = today();
   state.days[d] = (state.days[d] || 0) + 1;
+  const u = ITEMS[id].unit;
+  if (!state.stamps[u.id] && u.items.every(i => state.cards[i.id])) {
+    state.stamps[u.id] = d;
+    if (session) session.stamps.push(u);
+  }
   saveState();
   paintStreak();
 }
@@ -268,6 +304,8 @@ const VIEWS = { home: renderHome, library: renderLibrary, talk: renderTalk, stat
 function show(view, arg) {
   if (view !== 'talk') talk = null;
   document.body.classList.remove('in-session', 'sheet-open');
+  document.body.className = document.body.className.replace(/\bview-\w+/g, '').trim();
+  document.body.classList.add('view-' + view);
   closeSheet();
   $$('.tabbar button').forEach(b => b.dataset.view === view ? b.setAttribute('aria-current', 'page') : b.removeAttribute('aria-current'));
   stopAudio();
@@ -275,16 +313,10 @@ function show(view, arg) {
   window.scrollTo(0, 0);
 }
 $$('.tabbar button').forEach(b => b.addEventListener('click', () => show(b.dataset.view)));
-
+function enterSession() { document.body.className = document.body.className.replace(/\bview-\w+/g, '').trim(); document.body.classList.add('in-session'); }
 function closeSheet() { sheet.hidden = true; sheet.innerHTML = ''; document.body.classList.remove('sheet-open'); }
 
 /* ---------- Főoldal ---------- */
-function ringSvg(pct, big, small) {
-  const r = 38, c = 2 * Math.PI * r;
-  return `<div class="ring" role="img" aria-label="${big} ${small}"><svg viewBox="0 0 84 84"><circle class="track" cx="42" cy="42" r="${r}"/><circle class="val" cx="42" cy="42" r="${r}" stroke-dasharray="${c}" stroke-dashoffset="${c}" data-off="${c * (1 - pct)}"/></svg><b><span>${big}<small>${small}</small></span></b></div>`;
-}
-const animateRings = () => requestAnimationFrame(() => requestAnimationFrame(() => $$('.ring .val').forEach(el => el.style.strokeDashoffset = el.dataset.off)));
-
 function wordOfDay() {
   const known = ORDER.filter(id => state.cards[id] && ITEMS[id].k === 's');
   const pool = known.length ? known : currentUnit().items.filter(i => i.k === 's').map(i => i.id);
@@ -296,66 +328,91 @@ function renderHome() {
   const nl = Math.min(newLeftToday(), nextNewItems(999).length);
   const doneToday = state.days[today()] || 0;
   const left = due + nl;
-  const plannedTotal = doneToday + left + Math.ceil(nl * 1.2); // új szavaknál ellenőrzés is jön
-  const pct = left === 0 ? 1 : doneToday / Math.max(1, plannedTotal);
+  const planned = doneToday + left + Math.ceil(nl * 1.3);
+  const pct = left === 0 ? 100 : Math.round(100 * doneToday / Math.max(1, planned));
   const learned = Object.keys(state.cards).length;
   const hour = new Date().getHours();
-  const greet = hour < 17 ? ['Buongiorno', 'Jó napot'] : ['Buonasera', 'Jó estét'];
+  const greet = hour < 5 ? ['Buonanotte', 'Jó éjszakát'] : hour < 13 ? ['Buongiorno', 'Jó reggelt'] : hour < 18 ? ['Buon pomeriggio', 'Szép délutánt'] : ['Buonasera', 'Jó estét'];
+  const date = new Date().toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long' });
   const u = currentUnit();
   const wod = wordOfDay();
+  const mins = Math.max(2, Math.round(due * 0.3 + nl * 0.9));
 
-  let h, p;
-  if (!learned) { h = 'Az első lecke vár.'; p = `${nl} új kifejezés, hanggal és valós mondatokban. Kb. 10 perc.`; }
-  else if (!left) { h = 'Mára kész vagy.'; p = 'Az ütemező akkor hozza vissza a szavakat, amikor épp felejtenéd. Holnap folytasd.'; }
-  else { h = `${due ? `${due} ismétlés` : ''}${due && nl ? ' és ' : ''}${nl ? `${nl} új kifejezés` : ''}`; p = `Kb. ${Math.max(2, Math.round(left * 0.3 + nl * 0.4))} perc. Bármikor abbahagyhatod, minden válasz azonnal mentődik.`; }
+  let plan;
+  if (!learned) plan = `<div class="plan-line"><span class="plan-num">${nl}</span><span class="plan-txt">új kifejezés vár az első leckéből.<br>Kb. ${mins} perc, hanggal.</span></div>
+      <button class="btn cta block lg" id="start">Kezdjük</button>`;
+  else if (!left) plan = `<div class="plan-line"><span class="plan-num">✓</span><span class="plan-txt">Mára kész vagy. A szavak akkor jönnek vissza, amikor épp felejtenéd őket.</span></div>
+      ${nextNewItems(1).length ? '<button class="btn block" id="extra">Még 5 új kifejezés</button>' : ''}`;
+  else plan = `<div class="plan-line"><span class="plan-num">${left}</span><span class="plan-txt">${due ? `${due} ismétlés` : ''}${due && nl ? ' és ' : ''}${nl ? `${nl} új kifejezés` : ''}<br>Kb. ${mins} perc</span></div>
+      <button class="btn cta block lg" id="start">Folytatás</button>`;
 
   app.innerHTML = `
-    <section class="tile-frame">
-      <div class="tile-inner">
-        <h1 class="greeting" lang="it">${greet[0]}</h1>
-        <p class="greeting-hu">${greet[1]}</p>
-        <div class="today-row">
-          <div class="today-text"><h2>${esc(h)}</h2><p>${esc(p)}</p></div>
-          ${ringSvg(pct, left ? doneToday : '✓', left ? 'ma kész' : 'mára')}
+    <section class="hero">
+      ${art(PACK.hero, { big: true, eager: true })}
+      <div class="hero-text">
+        <p class="hero-date" lang="it">${esc(date)}</p>
+        <h1 class="hero-greet" lang="it">${greet[0]}</h1>
+        <p class="hero-sub">${greet[1]}</p>
+        <div class="plan">${plan}
+          ${learned ? `<div class="daybar"><i data-w="${pct}"></i></div><div class="daybar-l"><span>Ma ${doneToday} válasz</span><span>${streak()} napos sorozat</span></div>` : ''}
         </div>
-        ${left ? `<button class="btn primary block lg" id="start">${learned ? 'Mai kör indítása' : 'Első lecke indítása'}</button>`
-          : nextNewItems(1).length ? `<button class="btn block" id="extra">Még 5 új kifejezés</button>` : ''}
-        ${wod ? `<div class="word-of-day">${playBtn(wod.it)}<div>${IT(wod.it)}<div class="hu">${esc(wod.hu)}</div></div></div>` : ''}
       </div>
     </section>
 
-    <div class="section-h"><h2>Útvonal</h2><span>${PACK.units.length} lecke, A1–A2</span></div>
-    <div class="path">
-      ${PACK.units.map((x, xi) => {
-        const lvlHead = xi === 0 || PACK.units[xi - 1].level !== x.level ? `<div class="level-h"><span>${x.level}</span>${x.level === 'A1' ? 'Alapok' : 'Haladó kezdő'}</div>` : '';
-        const started = x.items.filter(i => state.cards[i.id]).length;
-        const cls = started === x.items.length ? 'done' : x === u ? 'now' : started ? 'started' : 'locked';
-        const meta = cls === 'done' ? 'kész' : cls === 'now' ? `${started}/${x.items.length}` : started ? `${started}/${x.items.length}` : '';
-        return lvlHead + `<button class="stop-row ${cls}" data-unit="${x.id}" aria-label="${x.index + 1}. lecke: ${esc(x.hu)}">
-          <span class="medal">${cls === 'done' ? ICON.check.replace('stroke-width="3"', 'stroke-width="3" width="22" height="22"') : x.index + 1}</span>
-          <span class="stop-txt">${IT(x.title)}<span class="hu">${esc(x.hu)}</span></span>
-          <span class="stop-meta">${meta}</span>
+    <div class="sec-h"><h2 lang="it">La lezione</h2><span>${u.level} szint</span></div>
+    <button class="feature" id="feature" aria-label="${esc(u.hu)} lecke">
+      ${art(u.img, { big: true })}
+      <div class="feature-body">
+        <div class="feature-k"><span class="lvl-chip">${u.level}</span><span>${u.index + 1}. lecke</span></div>
+        <div class="feature-t" lang="it">${esc(u.title)}</div>
+        <div class="feature-hu">${esc(u.hu)}</div>
+        <div class="feature-row"><span class="meter"><i style="width:${Math.round(100 * startedIn(u) / u.items.length)}%"></i></span><b>${startedIn(u)}/${u.items.length}</b></div>
+      </div>
+    </button>
+    <div class="under-feature"><button class="btn" id="grammar">Nyelvtan</button><button class="btn quiet" id="words">Szavak</button></div>
+
+    <div class="sec-h"><h2 lang="it">Il percorso</h2><span>${Object.keys(state.stamps).length}/${PACK.units.length} pecsét</span></div>
+    <div class="rail" id="rail">
+      ${PACK.units.map(x => {
+        const st = startedIn(x), done = !!state.stamps[x.id];
+        const cls = done ? 'done' : x === u ? 'now' : st ? 'started' : 'locked';
+        return `<button class="poster ${cls}" data-unit="${x.id}" aria-label="${x.index + 1}. lecke: ${esc(x.hu)}">
+          <div style="position:relative">${art(x.img, { cls: cls === 'locked' ? 'dim' : '' })}
+            <span class="poster-n">${x.index + 1}</span>
+            ${done ? `<span class="poster-mark">${ICON.check}</span>` : st ? `<span class="poster-bar"><i style="width:${Math.round(100 * st / x.items.length)}%"></i></span>` : ''}
+          </div>
+          ${IT(x.title)}<span class="hu">${esc(x.hu)}</span>
         </button>`;
       }).join('')}
-    </div>`;
+    </div>
 
-  animateRings();
+    ${wod ? `<section class="quote">
+      <p class="quote-k">A nap mondata</p>
+      <div class="quote-row"><div>${IT(wod.it)}<span class="hu">${esc(wod.hu)}</span></div>${playBtn(wod.it)}</div>
+    </section>` : ''}`;
+
+  requestAnimationFrame(() => requestAnimationFrame(() => { const b = $('.daybar i'); if (b) b.style.width = b.dataset.w + '%'; }));
   const s = $('#start'); if (s) s.onclick = () => startSession();
   const x = $('#extra'); if (x) x.onclick = () => startSession(5);
-  $$('.stop-row').forEach(b => b.onclick = () => show('library', b.dataset.unit));
+  $('#feature').onclick = $('#words').onclick = () => show('library', u.id);
+  $('#grammar').onclick = () => showGrammar(u, () => show('home'));
+  $$('.poster').forEach(b => b.onclick = () => show('library', b.dataset.unit));
+  const now = $('.poster.now'); if (now) $('#rail').scrollLeft = Math.max(0, now.offsetLeft - 20);
 }
 
 function grammarHtml(u) {
   return u.grammar.map(g => `<div class="rule"><h3>${esc(g.h)}</h3><p>${esc(g.p)}</p></div>`).join('');
 }
 function showGrammar(u, back) {
-  document.body.classList.add('in-session');
+  enterSession();
   app.innerHTML = `
     <div class="session-bar"><button class="quit" id="back" aria-label="Vissza">${ICON.back}</button></div>
+    <div class="g-art art"><img src="${imgUrl(u.img, true)}" alt="" onerror="this.remove()"></div>
     <div class="grammar-head">${IT(u.title)}<span class="hu">${u.level}, ${u.index + 1}. lecke: ${esc(u.hu.toLowerCase())}</span></div>
     <div style="margin-top:8px">${grammarHtml(u)}</div>
     <button class="btn block" id="back2" style="margin-top:20px">Vissza</button>`;
   $('#back').onclick = $('#back2').onclick = back;
+  window.scrollTo(0, 0);
 }
 
 /* ---------- Tanulási kör ---------- */
@@ -377,14 +434,12 @@ function startSession(extraNew = 0) {
   });
   while (ni < news.length) pushNew();
   if (!queue.length) return show('home');
-  session = { queue, pos: 0, correct: 0, rated: 0, combo: 0, best: 0, noSpeak: false, newCount: news.length, started: Date.now() };
-  document.body.classList.add('in-session');
+  session = { queue, pos: 0, correct: 0, rated: 0, combo: 0, best: 0, noSpeak: false, newCount: news.length, started: Date.now(), stamps: [] };
+  enterSession();
   nextStep();
 }
 
-function insertAhead(step, gap) {
-  session.queue.splice(Math.min(session.queue.length, session.pos + gap), 0, step);
-}
+function insertAhead(step, gap) { session.queue.splice(Math.min(session.queue.length, session.pos + gap), 0, step); }
 
 function nextStep() {
   if (!session) return;
@@ -398,11 +453,12 @@ function nextStep() {
   MODES[pickMode(item, step)](item, step);
 }
 
-function sessionShell(head, body) {
+function sessionShell(head, body, unit) {
   const steps = session.queue.filter(q => q.kind !== 'unit').length;
   const done = session.queue.slice(0, session.pos - 1).filter(q => q.kind !== 'unit').length;
   const pct = Math.round(100 * done / Math.max(1, steps));
   app.innerHTML = `
+    ${unit && unit.img ? `<div class="backdrop" aria-hidden="true"><img src="${imgUrl(unit.img)}" alt="" onerror="this.remove()"></div>` : ''}
     <div class="session-bar">
       <button class="quit" id="quit" aria-label="Kilépés a körből">${ICON.x}</button>
       <div class="progress" role="progressbar" aria-label="Haladás a körben" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"><i style="width:${pct}%"></i></div>
@@ -416,53 +472,49 @@ function sessionShell(head, body) {
 function pickMode(item, step) {
   const c = state.cards[item.id];
   const isS = item.k === 's';
-  const canListen = ttsOK();
   const canSpeak = srOK() && state.settings.speak && !session.noSpeak;
   if (step.kind === 'retry') return isS ? 'tiles' : 'mcHuIt';
   if (step.kind === 'check' || !c) return 'mcItHu';
   let pool;
-  if (c.s < 3) pool = isS ? ['tiles', 'tiles', 'mcHuIt'] : ['mcHuIt', 'mcItHu', canListen ? 'listenMc' : 'mcHuIt'];
-  else if (c.s < 12) pool = isS ? ['tiles', 'type', canListen ? 'dictation' : 'tiles'] : ['type', 'type', canListen ? 'dictation' : 'mcHuIt'];
-  else pool = isS ? ['type', canListen ? 'dictation' : 'type', canSpeak ? 'speak' : 'tiles'] : ['type', canListen ? 'dictation' : 'type', canSpeak ? 'speak' : 'type'];
+  if (c.s < 3) pool = isS ? ['tiles', 'tiles', 'listenMc'] : ['mcHuIt', 'mcItHu', 'listenMc'];
+  else if (c.s < 12) pool = isS ? ['tiles', 'type', 'dictation'] : ['type', 'type', 'dictation'];
+  else pool = isS ? ['type', 'dictation', canSpeak ? 'speak' : 'tiles'] : ['type', 'dictation', canSpeak ? 'speak' : 'type'];
   return pick(pool);
 }
 
-const PILL = { check: ['new', 'Új'], review: ['rev', 'Ismétlés'], retry: ['again', 'Még egyszer'] };
+const TAG = { check: ['new', 'Új'], review: ['rev', 'Ismétlés'], retry: ['again', 'Még egyszer'] };
 const kind = (step, text) => {
-  const [cls, l] = PILL[step.kind] || ['rev', ''];
-  return `<div class="task-kind"><span class="pill ${cls}">${l}</span>${esc(text)}</div>`;
+  const [cls, l] = TAG[step.kind] || ['rev', ''];
+  return `<div class="task-kind"><span class="tag ${cls}">${l}</span>${esc(text)}</div>`;
 };
 
-/* Közös visszajelzés: alulról becsúszó lap */
 function finish(item, step, res) {
   const { grade, note, given, override } = res;
-  if (step.kind !== 'retry') {
-    rate(item.id, grade); session.rated++;
-    if (grade >= 2) session.correct++;
-  }
+  if (step.kind !== 'retry') { rate(item.id, grade); session.rated++; if (grade >= 2) session.correct++; }
   if (grade >= 2) { session.combo++; session.best = Math.max(session.best, session.combo); }
   else { session.combo = 0; insertAhead({ kind: 'retry', id: item.id }, 3); }
-  const combo = $('.combo'); if (combo) combo.textContent = session.combo >= 3 ? '×' + session.combo : '';
+  const combo = $('.combo');
+  if (combo) { combo.textContent = session.combo >= 3 ? '×' + session.combo : ''; combo.classList.remove('pop'); void combo.offsetWidth; if (session.combo >= 3) combo.classList.add('pop'); }
 
   const cls = grade >= 3 ? 'ok' : grade === 2 ? 'hard' : 'bad';
   chime(cls);
-  const title = grade >= 3 ? pick(['Esatto!', 'Perfetto!', 'Bravo!', 'Giusto!', 'Ottimo!']) : grade === 2 ? 'Majdnem' : 'Nem egészen';
+  const title = grade >= 3 ? pick(['Esatto!', 'Perfetto!', 'Bravo!', 'Giusto!', 'Ottimo!', 'Benissimo!']) : grade === 2 ? 'Quasi!' : 'Peccato…';
   const ivl = step.kind !== 'retry' && state.cards[item.id] ? state.cards[item.id].ivl : null;
   const next = grade === 1 ? 'Pár feladat múlva újra előjön.' : ivl ? `Legközelebb ${ivl === 1 ? 'holnap' : ivl + ' nap múlva'} kérdezem.` : '';
   sheet.className = `sheet ${cls}`;
   sheet.innerHTML = `<div class="wrap">
-    <div class="sheet-head"><span class="mark">${grade >= 3 ? ICON.check : grade === 2 ? ICON.tilde : ICON.x}</span><h3>${title}</h3>${playBtn(item.it)}</div>
+    <div class="sheet-head"><h3 lang="it">${title}</h3>${playBtn(item.it)}</div>
     <div class="sol">${IT(item.it)}<span class="hu">${esc(item.hu)}</span></div>
-    ${given && grade < 3 ? `<p class="note">Te ezt írtad: <b lang="it">${esc(given)}</b></p>` : ''}
+    ${given && grade < 3 ? `<p class="note">Te ezt adtad meg: <b lang="it">${esc(given)}</b></p>` : ''}
     ${note ? `<p class="note">${note}</p>` : ''}
     ${next ? `<p class="note">${next}</p>` : ''}
     <div class="actions">
       ${grade === 1 && override && step.kind !== 'retry' ? `<button class="btn" id="override">${esc(override)}</button>` : ''}
-      <button class="btn ${cls === 'bad' ? 'stop' : 'go'} lg" id="next">Tovább</button>
+      <button class="btn ${cls === 'bad' ? 'bad' : 'cta'} lg" id="next">Tovább</button>
     </div></div>`;
   sheet.hidden = false;
   document.body.classList.add('sheet-open');
-  if (grade < 3 && state.settings.autoplay) setTimeout(() => say(item.it), 200);
+  if (grade < 3 && state.settings.autoplay) setTimeout(() => say(item.it, null, $('.sheet .icon-btn')), 250);
   const nb = $('#next');
   nb.focus({ preventScroll: true });
   nb.onclick = nextStep;
@@ -483,30 +535,42 @@ function beginExercise(item) {
   session.t0 = Date.now();
 }
 
-/* ---------- Képernyők a körön belül ---------- */
 function renderUnitIntro(u) {
-  sessionShell(`<div class="task-kind"><span class="pill new">Új lecke</span>${u.level}, ${u.index + 1}. lecke</div>`, `
-    <div class="grammar-head">${IT(u.title)}<span class="hu">${esc(u.hu)}</span></div>
-    <div style="margin-top:6px">${grammarHtml(u)}</div>
-    <button class="btn primary block lg" id="go" style="margin-top:18px">Kezdjük</button>`);
+  enterSession();
+  const steps = session.queue.filter(q => q.kind !== 'unit').length;
+  const done = session.queue.slice(0, session.pos - 1).filter(q => q.kind !== 'unit').length;
+  app.innerHTML = `
+    <div class="session-bar"><button class="quit" id="quit" aria-label="Kilépés a körből">${ICON.x}</button><div class="progress"><i style="width:${Math.round(100 * done / Math.max(1, steps))}%"></i></div><span class="combo"></span></div>
+    <div class="enter">
+      <div class="g-art art" style="margin-top:-10px">${`<img src="${imgUrl(u.img, true)}" alt="" onerror="this.remove()">`}</div>
+      <div class="task-kind"><span class="tag new">Új lecke</span>${u.level}, ${u.index + 1}. lecke</div>
+      <div class="grammar-head">${IT(u.title)}<span class="hu">${esc(u.hu)}</span></div>
+      <div style="margin-top:6px">${grammarHtml(u)}</div>
+      <button class="btn cta block lg" id="go" style="margin-top:18px">Kezdjük</button>
+    </div>`;
+  $('#quit').onclick = () => { session = null; show('home'); };
   const go = $('#go'); go.focus({ preventScroll: true }); go.onclick = nextStep;
+  window.scrollTo(0, 0);
 }
 
 function renderIntro(item) {
   const core = stripArticle(norm(item.it));
   const ex = item.k === 'w' ? item.unit.items.find(i => i.k === 's' && norm(i.it).split(' ').includes(core.split(' ')[0])) : null;
-  sessionShell(`<div class="task-kind"><span class="pill new">Új</span>${item.k === 's' ? 'mondat' : 'kifejezés'}</div>`, `
-    <section class="tile-frame word-card"><div class="tile-inner">
-      <div class="big" lang="it">${esc(item.it)}</div>
-      <div class="mean">${esc(item.hu)}</div>
-      <div class="tools">${playBtn(item.it)}${playBtn(item.it, 'Lassan', '', '0.6')}
-        ${srOK() && state.settings.speak ? `<button class="btn" id="practice" style="min-height:44px">${ICON.mic.replace('<svg', '<svg width="18" height="18"')} Mondd ki</button>` : ''}</div>
-      <p class="heard" id="pres" style="margin-top:10px"></p>
-      ${ex ? `<div class="example">${playBtn(ex.it)}<div>${IT(ex.it)}<span class="hu">${esc(ex.hu)}</span></div></div>` : ''}
-    </div></section>
+  sessionShell(`<div class="task-kind"><span class="tag new">Új</span>${item.k === 's' ? 'mondat' : 'kifejezés'}</div>`, `
+    <section class="word-card">
+      ${art(item.unit.img)}
+      <div class="word-body">
+        <div class="big" lang="it">${esc(item.it)}</div>
+        <div class="mean">${esc(item.hu)}</div>
+        <div class="tools">${playBtn(item.it)}${playBtn(item.it, 'Lassan', '', '0.6')}
+          ${srOK() && state.settings.speak ? `<button class="btn" id="practice" style="min-height:44px">${ICON.mic.replace('<svg', '<svg width="18" height="18"')} Mondd ki</button>` : ''}</div>
+        <p class="heard" id="pres"></p>
+        ${ex ? `<div class="example">${playBtn(ex.it)}<div>${IT(ex.it)}<span class="hu">${esc(ex.hu)}</span></div></div>` : ''}
+      </div>
+    </section>
     <p class="hint">Hallgasd meg és mondd ki hangosan. Két feladat múlva rákérdezek.</p>
-    <button class="btn primary block lg" id="go" style="margin-top:18px">Megvan</button>`);
-  if (state.settings.autoplay) setTimeout(() => say(item.it, null, $('.word-card .icon-btn')), 300);
+    <button class="btn cta block lg" id="go" style="margin-top:18px">Megvan</button>`, item.unit);
+  if (state.settings.autoplay) setTimeout(() => say(item.it, null, $('.word-card .tools .icon-btn')), 300);
   insertAhead({ kind: 'check', id: item.id }, 2);
   const go = $('#go'); go.focus({ preventScroll: true }); go.onclick = nextStep;
   const pr = $('#practice');
@@ -517,8 +581,7 @@ function renderIntro(item) {
       const alts = await listenOnce();
       const best = Math.max(0, ...alts.map(a => similarity(stripAccents(norm(a)), stripAccents(norm(item.it)))));
       out.innerHTML = !alts.length ? 'Nem hallottam semmit, próbáld újra.'
-        : best >= 0.85 ? '<b class="c-em">Szépen érthető.</b>'
-        : `Ezt hallottam: ${IT(alts[0])}`;
+        : best >= 0.85 ? '<b class="c-salvia">Szépen érthető.</b>' : `Ezt hallottam: ${IT(alts[0])}`;
       if (alts.length) chime(best >= 0.85 ? 'ok' : 'hard');
     } catch (e) { out.textContent = 'A mikrofon nem érhető el.'; }
     pr.disabled = false;
@@ -545,7 +608,7 @@ function multipleChoice(item, step, { promptHtml, answerField, modeText }) {
   const isIt = answerField === 'it';
   sessionShell(kind(step, modeText), `
     ${promptHtml}
-    <div class="choices">${options.map((o, i) => `<button class="choice ${isIt ? 'is-it' : ''}" data-v="${esc(o)}" ${isIt ? 'lang="it"' : ''}><span class="k">${i + 1}</span><span>${esc(o)}</span></button>`).join('')}</div>`);
+    <div class="choices">${options.map((o, i) => `<button class="choice ${isIt ? 'is-it' : ''}" data-v="${esc(o)}" ${isIt ? 'lang="it"' : ''}><span class="k">${i + 1}</span><span>${esc(o)}</span></button>`).join('')}</div>`, item.unit);
   const btns = $$('.choice');
   let answered = false;
   const answer = b => {
@@ -565,9 +628,9 @@ const MODES = {
   mcItHu(item, step) {
     multipleChoice(item, step, {
       modeText: 'Mit jelent?', answerField: 'hu',
-      promptHtml: `<div style="display:flex;align-items:center;gap:12px;margin-bottom:20px"><h2 class="task-q it" lang="it" style="flex:1;margin:0">${esc(item.it)}</h2>${playBtn(item.it)}</div>`
+      promptHtml: `<div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:26px"><h2 class="task-q it" lang="it" style="flex:1;margin:0">${esc(item.it)}</h2>${playBtn(item.it)}</div>`
     });
-    if (state.settings.autoplay) say(item.it);
+    if (state.settings.autoplay) say(item.it, null, $('.enter .icon-btn'));
   },
   mcHuIt(item, step) {
     multipleChoice(item, step, { modeText: 'Hogy mondod olaszul?', answerField: 'it', promptHtml: `<h2 class="task-q">${esc(item.hu)}</h2>` });
@@ -590,7 +653,7 @@ const MODES = {
       <h2 class="task-q">${esc(item.hu)}</h2>
       <div class="tiles-answer" id="ans" aria-label="Válaszod"></div>
       <div class="tiles-pool" id="pool">${tiles.map(t => `<button class="wtile" lang="it" data-i="${t.i}">${esc(t.w)}</button>`).join('')}</div>
-      <button class="btn primary block lg" id="check" disabled>Ellenőrzés</button>`);
+      <button class="btn cta block lg" id="check" disabled>Ellenőrzés</button>`, item.unit);
     const ans = $('#ans'), pool = $('#pool'), check = $('#check');
     const chosen = [];
     const redraw = () => {
@@ -617,7 +680,7 @@ const MODES = {
         <button class="icon-btn lg" id="mic" aria-label="Felvétel indítása">${ICON.mic}</button>
         <p class="heard" id="heard">Nyomd meg, és mondd ki.</p>
       </div>
-      <button class="btn quiet block" id="cant">Most nem tudok beszélni</button>`);
+      <button class="btn quiet block" id="cant">Most nem tudok beszélni</button>`, item.unit);
     const mic = $('#mic'), heard = $('#heard');
     $('#cant').onclick = () => { session.noSpeak = true; typedExercise(item, step, false); };
     mic.onclick = async () => {
@@ -656,8 +719,8 @@ function typedExercise(item, step, dictation) {
     <form id="f" autocomplete="off">
       <input class="answer-input" id="inp" lang="it" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done" placeholder="Válaszod olaszul" aria-label="Válaszod olaszul">
       <div class="accents">${accents.map(a => `<button type="button" data-a="${a}" aria-label="${a} beszúrása">${a}</button>`).join('')}</div>
-      <div class="input-actions"><button type="button" class="btn quiet" id="idk">Nem tudom</button><button class="btn primary lg" id="check">Ellenőrzés</button></div>
-    </form>`);
+      <div class="input-actions"><button type="button" class="btn quiet" id="idk">Nem tudom</button><button class="btn cta lg" id="check">Ellenőrzés</button></div>
+    </form>`, item.unit);
   const inp = $('#inp'), f = $('#f');
   setTimeout(() => inp.focus({ preventScroll: true }), 60);
   if (dictation) setTimeout(() => say(item.it, null, $('.icon-btn.lg')), 300);
@@ -686,26 +749,31 @@ function renderSummary() {
   const mins = Math.max(1, Math.round((Date.now() - s.started) / 60000));
   const tomorrow = Object.values(state.cards).filter(c => c.due <= today() + 1).length;
   session = null;
-  document.body.classList.remove('in-session');
-  closeSheet();
-  chime('done');
-  const line = acc >= 90 ? 'Ottimo lavoro.' : acc >= 70 ? 'Bel lavoro.' : 'Avanti così.';
-  const sub = acc >= 90 ? 'Szinte minden elsőre ment. Az ütemező ennek megfelelően ritkítja az ismétléseket.'
+  show('home');
+  enterSession();
+  const stamped = s.stamps[s.stamps.length - 1];
+  chime(stamped ? 'stamp' : 'done');
+  const line = stamped ? 'Timbro!' : acc >= 90 ? 'Ottimo lavoro.' : acc >= 70 ? 'Bel lavoro.' : 'Avanti così.';
+  const sub = stamped ? `Befejezted a(z) ${stamped.index + 1}. leckét, a pecsét bekerült az útleveledbe.`
+    : acc >= 90 ? 'Szinte minden elsőre ment. Az ütemező ennek megfelelően ritkítja az ismétléseket.'
     : acc >= 70 ? 'Jó tempó. A hibás szavak hamarabb jönnek vissza, így rögzülnek.'
     : 'Sok volt az új vagy nehéz anyag. Holnap kevesebb újat érdemes felvenni.';
+  const showUnit = stamped || currentUnit();
   app.innerHTML = `
+    <div class="backdrop" aria-hidden="true"><img src="${imgUrl(showUnit.img)}" alt="" onerror="this.remove()"></div>
     <section class="finale">
-      <div class="tile-frame"><div class="tile-inner"><span><b>${acc}%</b><small>elsőre jó</small></span></div></div>
+      <div class="stamp">${stampSvg(showUnit, stamped ? today() : null)}</div>
       <h1 lang="it">${line}</h1>
-      <p>${sub}</p>
-      <div class="finale-stats">
-        <div><b class="c-em">${s.newCount}</b><span>új kifejezés</span></div>
-        <div><b class="c-sa">${mins}</b><span>perc</span></div>
-        <div><b class="c-go">${streak()}</b><span>napos sorozat</span></div>
+      <p class="lead">${esc(sub)}</p>
+      <div class="trio">
+        <div><b class="c-salvia">${acc}%</b><span>elsőre jó</span></div>
+        <div><b>${s.newCount}</b><span>új kifejezés</span></div>
+        <div><b class="c-ochre">${streak()}</b><span>napos sorozat</span></div>
       </div>
-      <p class="small" style="margin:-8px auto 22px;color:var(--muted)">Holnapra ${tomorrow} ismétlés esedékes${s.best >= 5 ? `, a leghosszabb jó sorozatod ma ${s.best} volt` : ''}.</p>
-      <button class="btn primary block lg" id="home">Kész</button>
+      <p class="hint" style="margin:-8px auto 24px">${mins} perc. Holnapra ${tomorrow} ismétlés esedékes${s.best >= 5 ? `, a leghosszabb jó sorozatod ${s.best} volt` : ''}.</p>
+      <button class="btn cta block lg" id="home">Kész</button>
     </section>`;
+  if (!stamped) $('.stamp').style.opacity = '.35';
   $('#home').onclick = () => show('home');
 }
 
@@ -714,7 +782,8 @@ function renderLibrary(openId) {
   const cu = currentUnit();
   const open = openId || cu.id;
   app.innerHTML = `
-    <div class="section-h" style="margin-top:6px"><h2>Tananyag</h2><span>${ORDER.length} kifejezés</span></div>
+    <h1 class="page-title" lang="it">Le lezioni</h1>
+    <p class="page-sub">${PACK.units.length} lecke, ${ORDER.length} kifejezés, mindegyik hanggal</p>
     <div class="legend">
       <span><span class="lvl"><i></i><i></i><i></i></span>új</span>
       <span><span class="lvl l1"><i></i><i></i><i></i></span>tanulod</span>
@@ -722,19 +791,18 @@ function renderLibrary(openId) {
       <span><span class="lvl l3"><i></i><i></i><i></i></span>tartós</span>
     </div>
     ${PACK.units.map((u, ui) => {
-      const started = u.items.filter(i => state.cards[i.id]).length;
-      const cls = started === u.items.length ? 'done' : u === cu ? 'now' : started ? 'started' : 'locked';
-      const head = ui === 0 || PACK.units[ui - 1].level !== u.level ? `<div class="level-h"><span>${u.level}</span>${u.level === 'A1' ? 'Alapok' : 'Haladó kezdő'}</div>` : '';
-      return head + `<details class="unit" id="u-${u.id}" ${u.id === open ? 'open' : ''}>
-        <summary class="stop-row ${cls}" style="padding:12px 16px">
-          <span class="medal">${cls === 'done' ? ICON.check.replace('stroke-width="3"', 'stroke-width="3" width="20" height="20"') : u.index + 1}</span>
-          <span class="stop-txt">${IT(u.title)}<span class="hu">${esc(u.hu)}</span></span>
-          <span class="stop-meta">${started}/${u.items.length}</span>
+      const st = startedIn(u);
+      const head = ui === 0 || PACK.units[ui - 1].level !== u.level ? `<div class="level-h"><b>${u.level}</b><span>${u.level === 'A1' ? 'Alapok' : 'Haladó kezdő'}</span></div>` : '';
+      return head + `<details class="unit ${u === cu ? 'now' : ''}" id="u-${u.id}" ${u.id === open ? 'open' : ''}>
+        <summary>
+          ${art(u.img, { cls: 'thumb' + (st ? '' : ' dim') })}
+          <span class="unit-t">${IT(u.title)}<span class="hu">${u.index + 1}. ${esc(u.hu)}</span></span>
+          <span class="unit-meta">${state.stamps[u.id] ? '✓' : `${st}/${u.items.length}`}</span>
         </summary>
         <div class="unit-body">
           <div class="unit-actions">
             <button class="btn" data-grammar="${u.id}">Nyelvtan</button>
-            ${u === cu ? '' : started < u.items.length ? `<button class="btn quiet" data-focus="${u.id}">Ezzel folytatom</button>` : ''}
+            ${u === cu ? '' : st < u.items.length ? `<button class="btn quiet" data-focus="${u.id}">Ezzel folytatom</button>` : ''}
           </div>
           ${u.items.map(i => `<div class="item-row"><span class="lvl l${level(state.cards[i.id])}" title="${['új', 'tanulod', 'rögzül', 'tartós'][level(state.cards[i.id])]}"><i></i><i></i><i></i></span>
             <div>${IT(i.it)}<span class="hu">${esc(i.hu)}</span></div>${playBtn(i.it)}</div>`).join('')}
@@ -759,7 +827,6 @@ function renderStats() {
   const forecast = Array.from({ length: 7 }, (_, i) => cards.filter(c => i === 0 ? c.due <= t : c.due === t + i).length);
   const fmax = Math.max(1, ...forecast);
   const mature = cards.filter(c => c.s >= 21).length;
-
   const WEEKS = 16;
   const start = t - ((weekday(t) + 6) % 7) - (WEEKS - 1) * 7;
   const heat = Array.from({ length: WEEKS * 7 }, (_, i) => {
@@ -767,74 +834,88 @@ function renderStats() {
     const h = d > t ? 'future' : n >= 60 ? 'h4' : n >= 30 ? 'h3' : n >= 10 ? 'h2' : n > 0 ? 'h1' : '';
     return `<i class="${h} ${d === t ? 'today' : ''}" title="${n} válasz"></i>`;
   }).join('');
-  const activeDays = Object.keys(state.days).filter(d => +d > t - 30 && state.days[d]).length;
+  const got = Object.keys(state.stamps).length;
 
   app.innerHTML = `
-    <div class="section-h" style="margin-top:6px"><h2>Haladás</h2><span>${activeDays} aktív nap az elmúlt 30-ból</span></div>
-    <div class="stat-hero">
-      <div><b class="c-sa">${cards.length}</b><span>elkezdett kifejezés a ${ORDER.length}-ból</span></div>
-      <div><b class="c-em">${mature}</b><span>tartós tudás (3+ hét)</span></div>
-      <div><b class="${retention != null && retention < state.settings.targetR * 100 - 5 ? 'c-bu' : 'c-sa'}">${retention == null ? '–' : retention + '%'}</b><span>megtartás 30 nap alatt, cél ${Math.round(state.settings.targetR * 100)}%</span></div>
-      <div><b class="c-go">${streak()}</b><span>napos sorozat</span></div>
+    <h1 class="page-title" lang="it">I progressi</h1>
+    <p class="page-sub">Amit eddig felépítettél</p>
+    <div class="big-stats">
+      <div><b>${cards.length}</b><span>elkezdett kifejezés a ${ORDER.length}-ból</span></div>
+      <div><b class="c-salvia">${mature}</b><span>tartós tudás (3+ hét)</span></div>
+      <div><b class="${retention != null && retention < state.settings.targetR * 100 - 5 ? 'c-campari' : ''}">${retention == null ? '–' : retention + '%'}</b><span>megtartás 30 nap alatt, cél ${Math.round(state.settings.targetR * 100)}%</span></div>
+      <div><b class="c-ochre">${streak()}</b><span>napos sorozat</span></div>
     </div>
 
-    <div class="section-h"><h2>Gyakorlás</h2><span>utolsó ${WEEKS} hét</span></div>
+    <div class="sec-h"><h2 lang="it">Il passaporto</h2><span>${got}/${PACK.units.length} pecsét</span></div>
+    <div class="passport">${PACK.units.map((u, i) => state.stamps[u.id]
+      ? `<div class="slot got c${i % 3}" title="${esc(u.hu)}">${stampSvg(u, state.stamps[u.id])}</div>`
+      : `<div class="slot" title="${esc(u.hu)}"><span class="empty">${u.index + 1}</span></div>`).join('')}</div>
+    <p class="hint">Egy lecke pecsétje akkor jár, ha minden kifejezését elkezdted.</p>
+
+    <div class="sec-h"><h2 lang="it">La costanza</h2><span>utolsó ${WEEKS} hét</span></div>
     <div class="panel">
       <div class="heat" aria-label="Napi aktivitás hőtérképe">${heat}</div>
-      <div class="heat-legend">kevés <i style="background:var(--surface)"></i><i style="background:var(--h1)"></i><i style="background:var(--h2)"></i><i style="background:var(--h3)"></i><i style="background:var(--h4)"></i> sok</div>
+      <div class="heat-legend">kevés <i style="background:var(--line)"></i><i style="background:rgba(219,165,69,.28)"></i><i style="background:rgba(219,165,69,.52)"></i><i style="background:rgba(219,165,69,.78)"></i><i style="background:var(--ochre)"></i> sok</div>
     </div>
 
-    <div class="section-h"><h2>Előttünk álló hét</h2><span>esedékes ismétlések</span></div>
+    <div class="sec-h"><h2 lang="it">La settimana</h2><span>esedékes ismétlések</span></div>
     <div class="panel">
       <div class="bars">${forecast.map((v, i) => `<div class="b ${i === 0 ? 'now' : ''}"><em>${v || ''}</em><i style="height:${Math.round(100 * v / fmax)}%"></i><small>${i === 0 ? 'ma' : WD[weekday(t + i)]}</small></div>`).join('')}</div>
     </div>
 
-    <div class="section-h"><h2>Hogyan olvasd</h2></div>
-    <p class="explain">A <b>megtartás</b> azt mutatja, az ismétlések hány százalékánál emlékeztél (a nehezen felidézett is számít). Ha tartósan a cél felett vagy, vehetsz fel több újat. Ha alatta, vegyél fel kevesebbet. Egy kifejezés akkor <b>tartós</b>, ha három hét szünet után is 90% eséllyel tudod.</p>`;
+    <p class="explain" style="margin-top:22px">A <b>megtartás</b> azt mutatja, az ismétlések hány százalékánál emlékeztél (a nehezen felidézett is számít). Ha tartósan a cél felett vagy, vehetsz fel több újat; ha alatta, kevesebbet. Egy kifejezés akkor <b>tartós</b>, ha három hét szünet után is 90% eséllyel tudod.</p>`;
 }
 
 /* ---------- Beállítások ---------- */
+function applyTheme() {
+  let t = state.settings.theme || 'dark';
+  if (t === 'system') t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  document.documentElement.dataset.theme = t;
+  const m = $('meta[name=theme-color]'); if (m) m.content = t === 'dark' ? '#0c1310' : '#f4f4f1';
+}
+
 function renderSettings() {
   const st = state.settings;
   const seg = (key, opts) => `<div class="seg" role="group">${opts.map(([v, l]) => `<button data-k="${key}" data-v="${v}" aria-pressed="${String(st[key]) === String(v)}">${l}</button>`).join('')}</div>`;
   const sw = key => `<label class="switch"><input type="checkbox" data-k="${key}" ${st[key] ? 'checked' : ''}><span></span></label>`;
   app.innerHTML = `
-    <div class="section-h" style="margin-top:6px"><h2>Beállítások</h2></div>
-    ${!itVoice ? '<div class="notice">A leckék hangja felvételről szól, az mindenhol működik. A beszélgetőtárs szabad mondatait viszont a telefon felolvasója mondja, és ezen az eszközön nem találtam olasz hangot. Androidon a Google Speech Services, iPhone-on a Beállítások → Kisegítő lehetőségek → Felolvasott tartalom → Hangok menüben tölthetsz le olaszt.</div>' : ''}
+    <h1 class="page-title" lang="it">Impostazioni</h1>
+    <p class="page-sub">Beállítások</p>
     ${!srOK() ? '<div class="notice">Ez a böngésző nem ismeri fel a beszédet, ezért a kimondós feladatok kimaradnak. Chrome-ban és Safariban működik.</div>' : ''}
     <div class="panel">
       <div class="setting"><label>Megjelenés</label>${seg('theme', [['dark', 'Sötét'], ['light', 'Világos'], ['system', 'Rendszer']])}</div>
       <div class="setting"><label>Új kifejezés naponta<span class="sub">8-cal kb. 15 perc/nap hosszú távon</span></label>${seg('newPerDay', [[5, '5'], [8, '8'], [12, '12'], [20, '20']])}</div>
       <div class="setting"><label>Megtartási cél<span class="sub">Magasabb cél, több ismétlés</span></label>${seg('targetR', [[0.85, '85%'], [0.9, '90%'], [0.95, '95%']])}</div>
-      <div class="setting"><label>Felolvasás tempója</label>${seg('rate', [[0.75, 'Lassú'], [0.9, 'Közepes'], [1, 'Élő']])}</div>
-      <div class="setting"><label>Automatikus felolvasás</label>${sw('autoplay')}</div>
+      <div class="setting"><label>Hang tempója</label>${seg('rate', [[0.75, 'Lassú'], [0.9, 'Közepes'], [1, 'Élő']])}</div>
+      <div class="setting"><label>Automatikus lejátszás</label>${sw('autoplay')}</div>
       <div class="setting"><label>Kimondós feladatok<span class="sub">Mikrofon kell hozzá</span></label>${sw('speak')}</div>
       <div class="setting"><label>Hangjelzés válasz után</label>${sw('sound')}</div>
     </div>
 
-    <div class="section-h"><h2>Hogyan működik</h2></div>
+    <div class="sec-h"><h2 lang="it">Il compagno</h2><span>AI beszélgetőtárs</span></div>
+    <div class="panel">${keyForm()}</div>
+
+    <div class="sec-h"><h2 lang="it">Come funziona</h2></div>
     <ol class="how">
       <li><b>Ütemezés:</b> FSRS-4.5, ugyanaz az algoritmus, mint az Ankiban. Minden kifejezést akkor hoz vissza, amikor a beállított eséllyel még emlékszel rá.</li>
       <li><b>Nehezedő feladatok:</b> ahogy egy szó erősödik, a választásból kirakás, gépelés, diktálás, végül kimondás lesz.</li>
-      <li><b>Hibák:</b> a rossz válasz pár feladat múlva könnyebb formában visszajön. Ékezet- és névelőhiba félig jónak számít.</li>
+      <li><b>Hang:</b> minden kifejezés természetes olasz hangon, felvételről szól, offline is.</li>
       <li><b>Adatok:</b> minden a böngésződben marad. Eszközváltáshoz exportáld, majd importáld.</li>
     </ol>
 
-    <div class="section-h"><h2>Adatok</h2></div>
-    <div class="panel" style="display:flex;gap:8px;flex-wrap:wrap">
+    <div class="sec-h"><h2 lang="it">I dati</h2></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
       <button class="btn" id="exp">Haladás exportálása</button>
       <label class="btn" style="cursor:pointer">Importálás<input type="file" id="imp" accept="application/json" hidden></label>
-      <button class="btn danger" id="reset" style="margin-left:auto">Haladás törlése</button>
+      <button class="btn danger" id="reset">Haladás törlése</button>
     </div>
-    <div class="section-h"><h2>Beszélgetőtárs</h2></div>
-    <div class="panel">${keyForm()}</div>
-    <p class="foot">Viva Voce, olasz A1–A2, ${ORDER.length} kifejezés</p>`;
+    <p class="foot">Viva Voce · olasz A1–A2 · ${ORDER.length} kifejezés · illusztrációk: Higgsfield, hang: Kokoro</p>`;
   bindKeyForm(() => renderSettings());
   $$('.seg button').forEach(b => b.onclick = () => {
     st[b.dataset.k] = isNaN(+b.dataset.v) ? b.dataset.v : +b.dataset.v; saveState();
-    if (b.dataset.k === 'theme') applyTheme();
     $$(`.seg button[data-k="${b.dataset.k}"]`).forEach(x => x.setAttribute('aria-pressed', x === b));
-    if (b.dataset.k === 'rate') say('Ciao, come stai?');
+    if (b.dataset.k === 'theme') applyTheme();
+    if (b.dataset.k === 'rate') say('Ciao', +b.dataset.v);
   });
   $$('input[type=checkbox][data-k]').forEach(c => c.onchange = () => { st[c.dataset.k] = c.checked; saveState(); if (c.dataset.k === 'sound' && c.checked) chime('ok'); });
   $('#exp').onclick = () => {
@@ -856,16 +937,9 @@ function renderSettings() {
   };
   $('#reset').onclick = () => {
     if (!confirm('Biztosan törlöd az összes haladást? Ez nem vonható vissza.')) return;
-    localStorage.removeItem(STORE_KEY); state = loadState(); paintStreak(); show('home');
+    const theme = state.settings.theme;
+    localStorage.removeItem(STORE_KEY); state = loadState(); state.settings.theme = theme; saveState(); paintStreak(); show('home');
   };
-}
-
-/* ---------- Téma ---------- */
-function applyTheme() {
-  let t = state.settings.theme || 'dark';
-  if (t === 'system') t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-  document.documentElement.dataset.theme = t;
-  const m = $('meta[name=theme-color]'); if (m) m.content = t === 'dark' ? '#0b1324' : '#f8fafc';
 }
 
 /* ---------- Beszélgetőtárs (Claude API, a felhasználó saját kulcsával) ---------- */
@@ -890,15 +964,13 @@ const ROLES = {
   u18: 'Sztrájk van, az ügyintézővel intézed a visszatérítést'
 };
 const getKey = () => { try { return localStorage.getItem(KEY_STORE) || ''; } catch (e) { return ''; } };
-let talk = null; // { unit, msgs: [{role, content}], view: [...] }
 
 function keyForm() {
-  const has = !!getKey();
-  return has
+  return getKey()
     ? `<div class="setting"><label>Claude API-kulcs<span class="sub">Csak ebben a böngészőben van elmentve, az exportba nem kerül bele.</span></label><button class="btn danger" id="keyDel">Kulcs törlése</button></div>`
-    : `<p class="explain" style="margin-bottom:12px">A beszélgetéshez saját Claude API-kulcs kell (<a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener" style="color:var(--sapphire)">console.anthropic.com</a>). A kulcs csak ebben a böngészőben tárolódik, a kérések közvetlenül az Anthropichoz mennek. Egy 10 perces beszélgetés a Haiku modellel jellemzően 1 cent alatti.</p>
-       <form id="keyForm" class="key-form"><input class="answer-input key-input" id="keyInp" type="password" autocomplete="off" spellcheck="false" placeholder="sk-ant-…" aria-label="Claude API-kulcs"><button class="btn primary">Mentés</button></form>
-       <p class="heard small-err" id="keyErr"></p>`;
+    : `<p class="explain" style="margin-bottom:12px">A beszélgetéshez saját Claude API-kulcs kell (<a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">console.anthropic.com</a>). A kulcs csak ebben a böngészőben tárolódik, a kérések közvetlenül az Anthropichoz mennek. Egy 10 perces beszélgetés a Haiku modellel jellemzően 1 cent alatti.</p>
+       <form id="keyForm" class="key-form"><input class="answer-input key-input" id="keyInp" type="password" autocomplete="off" spellcheck="false" placeholder="sk-ant-…" aria-label="Claude API-kulcs"><button class="btn cta">Mentés</button></form>
+       <p class="small-err" id="keyErr"></p>`;
 }
 function bindKeyForm(after) {
   const del = $('#keyDel');
@@ -916,23 +988,20 @@ function bindKeyForm(after) {
 function renderTalk() {
   if (talk) return renderChat();
   const key = getKey();
-  const started = PACK.units.filter(u => u.items.some(i => state.cards[i.id]));
+  const started = PACK.units.filter(u => startedIn(u));
   const cu = currentUnit();
   const avail = started.length ? started : [cu];
   app.innerHTML = `
-    <section class="tile-frame"><div class="tile-inner">
-      <h1 class="greeting" lang="it">Parliamo!</h1>
-      <p class="greeting-hu">Beszéljünk!</p>
-      <p class="explain" style="margin-top:14px">Valós helyzetet játszol el egy olasz partnerrel, a már tanult szavaiddal. Minden válaszod után megmutatja, hogyan mondanád helyesen, és miért. Beszélhetsz vagy gépelhetsz.</p>
-    </div></section>
+    <section class="talk-hero">${art(PACK.units[16].img, { big: true })}<h1 lang="it">Parliamo.</h1></section>
+    <p class="explain" style="margin-top:6px">Valós helyzetet játszol el egy olasz partnerrel, a már tanult szavaiddal. Minden mondatod után megmutatja, hogyan mondanád helyesen, és miért. Beszélhetsz vagy gépelhetsz.</p>
     ${key ? `
-      <div class="section-h"><h2>Válassz helyzetet</h2><span>${avail.length} elérhető</span></div>
+      <div class="sec-h"><h2 lang="it">Le scene</h2><span>${avail.length + 1} elérhető</span></div>
       <div class="scenes">
-        ${avail.map(u => `<button class="scene" data-u="${u.id}"><span class="lvl-tag">${u.level}</span><span class="scene-t">${IT(u.title)}<span class="hu">${esc(ROLES[u.id] || u.hu)}</span></span></button>`).join('')}
-        <button class="scene" data-u="free"><span class="lvl-tag">${cu.level}</span><span class="scene-t">${IT('Chiacchierata libera')}<span class="hu">Szabad beszélgetés bármiről</span></span></button>
+        ${avail.map(u => `<button class="scene" data-u="${u.id}">${art(u.img, { cls: 'thumb' })}<span class="scene-t">${IT(u.title)}<span class="hu">${esc(ROLES[u.id] || u.hu)}</span></span><span class="lvl-chip">${u.level}</span></button>`).join('')}
+        <button class="scene" data-u="free">${art(PACK.hero, { cls: 'thumb' })}<span class="scene-t">${IT('Chiacchierata libera')}<span class="hu">Szabad beszélgetés bármiről</span></span><span class="lvl-chip">${cu.level}</span></button>
       </div>
-      ${started.length < PACK.units.length ? `<p class="hint">Minden elkezdett lecke új helyzetet nyit meg.</p>` : ''}`
-    : `<div class="section-h"><h2>Beállítás</h2></div><div class="panel">${keyForm()}</div>`}`;
+      ${started.length < PACK.units.length ? '<p class="hint">Minden elkezdett lecke új helyzetet nyit meg.</p>' : ''}`
+    : `<div class="sec-h"><h2 lang="it">Prima di iniziare</h2></div><div class="panel">${keyForm()}</div>`}`;
   if (!key) return bindKeyForm(renderTalk);
   $$('.scene').forEach(b => b.onclick = () => startTalk(b.dataset.u));
 }
@@ -941,7 +1010,6 @@ function knownVocab(limit = 120) {
   const ids = ORDER.filter(id => state.cards[id]);
   return (ids.length ? ids : currentUnit().items.map(i => i.id)).slice(-limit).map(id => ITEMS[id].it);
 }
-
 function systemPrompt(u) {
   const level = u ? u.level : currentUnit().level;
   const scene = u ? `${ROLES[u.id] || u.hu} (lesson theme: ${u.title} / ${u.hu}). Play the Italian counterpart in this situation.` : 'A relaxed free chat with a friendly Italian from Bologna. You pick everyday topics.';
@@ -959,16 +1027,14 @@ Stay in character. Never break the JSON format.`;
 function startTalk(uid) {
   const u = uid === 'free' ? null : PACK.units.find(x => x.id === uid);
   talk = { unit: u, msgs: [{ role: 'user', content: '(A jelenet kezdődik. Szólalj meg először.)' }], view: [], busy: false, hints: [] };
-  document.body.classList.add('in-session');
+  enterSession();
   renderChat();
   askClaude();
 }
-
 function parseReply(text) {
   try { const m = text.match(/\{[\s\S]*\}/); const o = JSON.parse(m ? m[0] : text); if (o.reply) return o; } catch (e) {}
   return { reply: text.trim(), hu: '', correction: null, hints: [] };
 }
-
 async function askClaude() {
   talk.busy = true; paintChat();
   try {
@@ -995,14 +1061,13 @@ async function askClaude() {
     talk.hints = Array.isArray(o.hints) ? o.hints.slice(0, 3) : [];
     talk.busy = false;
     paintChat();
-    if (state.settings.autoplay) say(o.reply, null, $('.bubble.ai:last-of-type .icon-btn'));
+    if (state.settings.autoplay) { const bs = $$('.bubble.ai .icon-btn'); say(o.reply, null, bs[bs.length - 1]); }
   } catch (e) {
     talk.busy = false;
     talk.error = e.message && !/fetch/i.test(e.message) ? e.message : 'Nincs kapcsolat. Ellenőrizd a netet.';
     paintChat();
   }
 }
-
 function sendTalk(text) {
   text = text.trim();
   if (!text || talk.busy) return;
@@ -1012,13 +1077,12 @@ function sendTalk(text) {
   const d = today(); state.days[d] = (state.days[d] || 0) + 1; saveState(); paintStreak();
   askClaude();
 }
-
 function renderChat() {
   const u = talk.unit;
   app.innerHTML = `
     <div class="session-bar">
       <button class="quit" id="quit" aria-label="Beszélgetés vége">${ICON.x}</button>
-      <div class="chat-title">${IT(u ? u.title : 'Chiacchierata libera')}<span class="hu">${esc(u ? ROLES[u.id] || u.hu : 'Szabad beszélgetés')}</span></div>
+      <div class="chat-head">${art(u ? u.img : PACK.hero, { cls: 'thumb' })}<div>${IT(u ? u.title : 'Chiacchierata libera')}<span class="hu">${esc(u ? ROLES[u.id] || u.hu : 'Szabad beszélgetés')}</span></div></div>
     </div>
     <div class="chat" id="chat"></div>
     <div class="composer">
@@ -1026,7 +1090,7 @@ function renderChat() {
       <form id="cf" class="cf" autocomplete="off">
         ${srOK() && state.settings.speak ? `<button type="button" class="icon-btn" id="cmic" aria-label="Diktálás olaszul">${ICON.mic}</button>` : ''}
         <input class="answer-input" id="cin" lang="it" autocapitalize="sentences" autocorrect="off" spellcheck="false" enterkeyhint="send" placeholder="Írj vagy mondd olaszul" aria-label="Üzenet olaszul">
-        <button class="btn primary" id="csend" aria-label="Küldés">Küldés</button>
+        <button class="btn cta" id="csend">Küldés</button>
       </form>
     </div>`;
   $('#quit').onclick = () => { talk = null; stopAudio(); show('talk'); };
@@ -1039,11 +1103,10 @@ function renderChat() {
   };
   paintChat();
 }
-
 function paintChat() {
   const chat = $('#chat'); if (!chat) return;
-  chat.innerHTML = talk.view.map((m, i) => m.who === 'ai'
-    ? `<div class="bubble ai">${playBtn(m.text)}<div><p class="it" lang="it">${esc(m.text)}</p>${m.hu ? `<details class="tr"><summary>Fordítás</summary><p class="hu">${esc(m.hu)}</p></details>` : ''}</div></div>`
+  chat.innerHTML = talk.view.map(m => m.who === 'ai'
+    ? `<div class="bubble ai">${playBtn(m.text)}<div>${IT(m.text, 'p')}${m.hu ? `<details class="tr"><summary>Fordítás</summary><p class="hu">${esc(m.hu)}</p></details>` : ''}</div></div>`
     : `<div class="bubble me"><p lang="it">${esc(m.text)}</p>${m.fix ? `<div class="fix"><span class="fix-l">Helyesen:</span> ${IT(m.fix.fixed)} ${playBtn(m.fix.fixed, 'Meghallgatom', 'sm')}<p>${esc(m.fix.why || '')}</p></div>` : m.ok ? '<div class="okmark">✓ Helyes</div>' : ''}</div>`
   ).join('') + (talk.busy ? '<div class="bubble ai typing"><i></i><i></i><i></i></div>' : '')
     + (talk.error ? `<div class="notice">${esc(talk.error)} <button class="btn quiet" id="retry">Újra</button></div>` : '');
@@ -1053,7 +1116,7 @@ function paintChat() {
     h.innerHTML = talk.hints.length && !talk.busy ? `<span class="hint-l">Ötlet:</span>${talk.hints.map(x => `<button class="chip" lang="it">${esc(x)}</button>`).join('')}` : '';
     $$('.chip', h).forEach(c => c.onclick = () => { $('#cin').value = c.textContent; $('#cin').focus(); });
   }
-  $('#csend') && ($('#csend').disabled = talk.busy);
+  const sb = $('#csend'); if (sb) sb.disabled = talk.busy;
   requestAnimationFrame(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }));
 }
 
@@ -1064,6 +1127,7 @@ function paintChat() {
     app.innerHTML = '<div class="notice">A tananyag nem töltődött be. Ha a fájlt közvetlenül nyitottad meg, indíts helyi szervert (lásd README), vagy használd a GitHub Pages címet.</div>';
     return;
   }
+  saveState();
   paintStreak();
   applyTheme();
   matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => { if (state.settings.theme === 'system') applyTheme(); });

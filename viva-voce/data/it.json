@@ -3,7 +3,7 @@
  "name": "Olasz",
  "native": "Italiano",
  "tts": "it-IT",
- "version": 2,
+ "version": 3,
  "units": [
   {
    "id": "u1",
@@ -151,7 +151,8 @@
      "hu": "Budapesti vagyok."
     }
    ],
-   "level": "A1"
+   "level": "A1",
+   "img": "https://d8j0ntlcm91z4.cloudfront.net/user_34pR8I3Vz7iLMGbJF4kKPhJPBZy/hf_20261024_092258_140e3934-224d-4e87-9b4d-dfbbe71f328c"
   },
   {
    "id": "u2",
@@ -287,7 +288,8 @@
      "hu": "Egy pohár vizet."
     }
    ],
-   "level": "A1"
+   "level": "A1",
+   "img": "https://d8j0ntlcm91z4.cloudfront.net/user_34pR8I3Vz7iLMGbJF4kKPhJPBZy/hf_20261024_092300_e98a9d8e-34c1-4d8e-8a35-ab306fdd5417"
   },
   {
    "id": "u3",
@@ -428,7 +430,8 @@
      "hu": "Harminchárom éves vagyok."
     }
    ],
-   "level": "A1"
+   "level": "A1",
+   "img": "https://d8j0ntlcm91z4.cloudfront.net/user_34pR8I3Vz7iLMGbJF4kKPhJPBZy/hf_20261024_092259_ec0bc5bd-0c8a-434e-9f7c-ca50c933b3e0"
   },
   {
    "id": "u4",
@@ -579,7 +582,8 @@
      "hu": "A repülőtérre megyek."
     }
    ],
-   "level": "A1"
+   "level": "A1",
+   "img": "https://d8j0ntlcm91z4.cloudfront.net/user_34pR8I3Vz7iLMGbJF4kKPhJPBZy/hf_20261024_092259_00dc3fb1-5b39-44b2-b459-3c84922f26ef"
   },
   {
    "id": "u5",
@@ -718,7 +722,8 @@
      "hu": "Kérhetnénk a számlát?"
     }
    ],
-   "level": "A1"
+   "level": "A1",
+   "img": "https://d8j0ntlcm91z4.cloudfront.net/user_34pR8I3Vz7iLMGbJF4kKPhJPBZy/hf_20261024_092259_1ccccc88-7c33-46ab-acc4-4d49a9e36e2c"
   },
   {
    "id": "u6",
@@ -848,7 +853,8 @@
      "hu": "A bolt vasárnap zárva van."
     }
    ],
-   "level": "A1"
+   "level": "A1",
+   "img": "https://d8j0ntlcm91z4.cloudfront.net/user_34pR8I3Vz7iLMGbJF4kKPhJPBZy/hf_20261024_092351_0af8439c-7ff4-4835-a849-0debef4a1143"
   },
   {
    "id": "u7",
@@ -984,7 +990,8 @@
      "hu": "A projekt jól halad."
     }
    ],
-   "level": "A1"
+   "level": "A1",
+   "img": "https://d8j0ntlcm91z4.cloudfront.net/user_34pR8I3Vz7iLMGbJF4kKPhJPBZy/hf_20261024_092300_f8959941-5ca8-4370-9965-387992a65e2b"
   },
   {
    "id": "u8",
@@ -1117,7 +1124,8 @@
      "hu": "Milyen szép város!"
     }
    ],
-   "level": "A1"
+   "level": "A1",
+   "img": "https://d8j0ntlcm91z4.cloudfront.net/user_34pR8I3Vz7iLMGbJF4kKPhJPBZy/hf_20261024_092351_4bdbef90-dace-4e38-97d0-8cd97aefffed"
   },
   {
    "id": "u9",
@@ -1253,7 +1261,8 @@
      "hu": "Nem szeretek főzni."
     }
    ],
-   "level": "A1"
+   "level": "A1",
+   "img": "https://d8j0ntlcm91z4.cloudfront.net/user_34pR8I3Vz7iLMGbJF4kKPhJPBZy/hf_20261024_092351_314d1f47-007d-4d43-acf0-51d0e6f5d359"
   },
   {
    "id": "u10",
@@ -1395,7 +1404,8 @@
      "hu": "Láttunk egy jó filmet."
     }
    ],
-   "level": "A1"
+   "level": "A1",
+   "img": "https://d8j0ntlcm91z4.cloudfront.net/user_34pR8I3Vz7iLMGbJF4kKPhJPBZy/hf_20261024_092259_cedc2724-b806-4476-b934-1d58122102af"
   },
   {
    "id": "u11",
@@ -1531,7 +1541,8 @@
      "it": "A che ora ti alzi?",
      "hu": "Hánykor kelsz?"
     }
-   ]
+   ],
+   "img": "https://d8j0ntlcm91z4.cloudfront.net/user_34pR8I3Vz7iLMGbJF4kKPhJPBZy/hf_20261024_092351_31b65560-c3a3-4b38-b499-540f553cad0f"
   },
   {
    "id": "u12",
@@ -1670,7 +1681,8 @@
      "it": "Mentre leggevo, è arrivato Marco.",
      "hu": "Miközben olvastam, megérkezett Marco."
     }
-   ]
+   ],
+   "img": "https://d8j0ntlcm91z4.cloudfront.net/user_34pR8I3Vz7iLMGbJF4kKPhJPBZy/hf_20261024_092401_c0787785-f56c-472f-8f88-9ce198593104"
   },
   {
    "id": "u13",
@@ -1800,7 +1812,8 @@
      "it": "Al tuo posto, prenderei il treno.",
      "hu": "A helyedben vonattal mennék."
     }
-   ]
+   ],
+   "img": "https://d8j0ntlcm91z4.cloudfront.net/user_34pR8I3Vz7iLMGbJF4kKPhJPBZy/hf_20261024_092401_46239c7f-d501-465b-84d8-1c18388eac2f"
   },
   {
    "id": "u14",
@@ -1939,7 +1952,8 @@
      "it": "Se ho tempo, ti chiamerò.",
      "hu": "Ha lesz időm, felhívlak."
     }
-   ]
+   ],
+   "img": "https://d8j0ntlcm91z4.cloudfront.net/user_34pR8I3Vz7iLMGbJF4kKPhJPBZy/hf_20261024_092400_cb39a4ac-d40e-4440-a0f1-ac5dfca33da3"
   },
   {
    "id": "u15",
@@ -2072,7 +2086,8 @@
      "it": "Le rispondo entro venerdì.",
      "hu": "Péntekig válaszolok Önnek."
     }
-   ]
+   ],
+   "img": "https://d8j0ntlcm91z4.cloudfront.net/user_34pR8I3Vz7iLMGbJF4kKPhJPBZy/hf_20261024_092401_50d44c85-f80c-442f-b9fa-2dae14c6d209"
   },
   {
    "id": "u16",
@@ -2202,7 +2217,8 @@
      "it": "Vorrei prendere un appuntamento.",
      "hu": "Szeretnék időpontot kérni."
     }
-   ]
+   ],
+   "img": "https://d8j0ntlcm91z4.cloudfront.net/user_34pR8I3Vz7iLMGbJF4kKPhJPBZy/hf_20261024_092437_3c50d5b1-e4d8-4260-9cbb-3c4a75599d89"
   },
   {
    "id": "u17",
@@ -2332,7 +2348,8 @@
      "it": "Comunque, ne parliamo domani.",
      "hu": "Mindenesetre holnap megbeszéljük."
     }
-   ]
+   ],
+   "img": "https://d8j0ntlcm91z4.cloudfront.net/user_34pR8I3Vz7iLMGbJF4kKPhJPBZy/hf_20261024_092437_badd5eb6-7ead-4da8-98d5-96760ccd5881"
   },
   {
    "id": "u18",
@@ -2462,7 +2479,9 @@
      "it": "Ho diritto a un rimborso?",
      "hu": "Jár nekem visszatérítés?"
     }
-   ]
+   ],
+   "img": "https://d8j0ntlcm91z4.cloudfront.net/user_34pR8I3Vz7iLMGbJF4kKPhJPBZy/hf_20261024_092437_b2e62ef3-ffdb-4223-b520-260a64b3c493"
   }
- ]
+ ],
+ "hero": "https://d8j0ntlcm91z4.cloudfront.net/user_34pR8I3Vz7iLMGbJF4kKPhJPBZy/hf_20261024_092259_1296577f-41f2-4377-9e80-031a0b24218c"
 }

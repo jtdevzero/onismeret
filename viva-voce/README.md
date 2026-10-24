@@ -22,6 +22,8 @@ Nyelvtanuló webapp, ami azt csinálja, amit a Duolingo nem: **tényleg hosszú 
 - **Statisztika:** valódi megtartási arány (30 nap), 7 napos előrejelzés, 16 hetes aktivitási hőtérkép.
 - **Beszélgetőtárs (Beszélj fül):** szerepjáték olaszul a leckék helyzeteiben (kávézó, orvos, ügyféltárgyalás…), a már tanult szókinccsel. Minden mondatod után kijavítja, és magyarul elmagyarázza a hibát. Saját Claude API-kulccsal működik (`claude-haiku-5-5`), a kulcs csak a böngészőben tárolódik, a kérés közvetlenül az Anthropichoz megy.
 - **Téma:** sötét alapból, választható világos vagy rendszer szerinti.
+- **Illusztrációk:** minden leckéhez saját, festett olasz plakát-illusztráció (Higgsfield, GPT Image), a főoldalon nagy képpel.
+- **Útlevél:** minden befejezett leckéért pecsét (*timbro*) jár, a Haladás fülön gyűlnek.
 
 ## Futtatás
 
@@ -66,8 +68,9 @@ A tananyag a `data/it.json`-ban van:
 
 ```
 index.html            váz
-style.css             megjelenés: maiolica csempekeret, olasz szöveg Cardo dőlt, magyar Inter
-fonts/                Cardo és Inter helyben (SIL OFL), nincs külső kérés
+style.css             „Notte italiana” arculat: éjszakai palackzöld, elefántcsont, okker; olasz szöveg Bodoni dőlt
+fonts/                Bodoni Moda és Instrument Sans helyben (SIL OFL)
+audio/it/             333 előre felvett hangfájl (Kokoro, if_sara)
 fsrs.js               FSRS-4.5 ütemező (Node-ban is tesztelhető)
 app.js                nézetek, gyakorlattípusok, hang, tárolás
 data/it.json          olasz A1 csomag: 10 lecke, 189 kifejezés és mondat
