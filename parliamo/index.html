@@ -4148,9 +4148,9 @@ function intonationHtml(r){
     <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Hanglejtés-görbe${r.model?": minta és saját":""}" style="width:100%;height:auto;background:var(--sunk);border-radius:10px">
       <line x1="0" x2="${W}" y1="${H/2}" y2="${H/2}" stroke="currentColor" stroke-opacity=".15"/>
       ${r.model?`<polyline points="${path(r.model)}" fill="none" stroke="var(--cobalt)" stroke-width="3" stroke-linejoin="round"/>`:""}
-      <polyline points="${path(r.me)}" fill="none" stroke="var(--lemon)" stroke-width="3" stroke-linejoin="round" stroke-dasharray="${r.model?"6 4":"0"}"/>
+      <polyline points="${path(r.me)}" fill="none" stroke="var(--ok)" stroke-width="3" stroke-linejoin="round" stroke-dasharray="${r.model?"6 4":"0"}"/>
     </svg>
-    <div class="row small" style="gap:.8rem">${r.model?`<span><b style="color:var(--cobalt)">━</b> minta</span>`:""}<span><b style="color:var(--lemon)">┅</b> te</span>${r.model?`<span class="pill">Hasonlóság: ${Math.max(0,Math.round(r.sim*100))}%</span>`:""}</div>
+    <div class="row small" style="gap:.8rem">${r.model?`<span><b style="color:var(--cobalt)">━</b> minta</span>`:""}<span><b style="color:var(--ok)">┅</b> te</span>${r.model?`<span class="pill">Hasonlóság: ${Math.max(0,Math.round(r.sim*100))}%</span>`:""}</div>
     ${r.model?tips.map(t=>`<p class="small">${esc(t)}</p>`).join(""):`<p class="small muted">Ehhez a mondathoz nincs felvett minta, ezért csak a saját görbédet látod.</p>`}
     <p class="small muted">A görbe a hangmagasság változását mutatja, nem értékeli a kiejtést. Mindkét görbe a saját beszédhangod átlagához igazodik.</p></div>`;
 }
