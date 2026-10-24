@@ -45,6 +45,24 @@ async function handlePush(path, req, env, cors) {
   return json({ ok: status >= 200 && status < 300, status }, 200, cors);
 }
 
+/* Haladás-szinkron: egyetlen tanuló állapota a KV-ban ("sync:main").
+   A rev mezővel a szerver visszautasítja az elavult írást (409), ilyenkor a kliens összefésüli és újraküldi. */
+const MAX_STATE = 1500000;
+async function handleSync(path, req, env, cors) {
+  if (!env.PUSH) return json({ error: "push_unavailable" }, 501, cors);
+  const rec = await env.PUSH.get("sync:main", "json");
+  if (path === "/sync/get") return json(rec || { rev: 0, state: null }, 200, cors);
+  const raw = await req.text();
+  if (raw.length > MAX_STATE) return json({ error: "too_big" }, 413, cors);
+  let body;
+  try { body = JSON.parse(raw); } catch { return json({ error: "bad_request" }, 400, cors); }
+  if (!body || typeof body.state !== "object" || body.state === null || Array.isArray(body.state) || typeof body.state.xp !== "number") return json({ error: "bad_request" }, 400, cors);
+  const rev = rec ? rec.rev : 0;
+  if ((parseInt(body.base, 10) || 0) !== rev) return json({ error: "conflict", rev }, 409, cors);
+  await env.PUSH.put("sync:main", JSON.stringify({ rev: rev + 1, at: Date.now(), state: body.state }));
+  return json({ rev: rev + 1 }, 200, cors);
+}
+
 export default {
   async scheduled(event, env, ctx) {
     if (env.PUSH) ctx.waitUntil(runReminders(env.PUSH, PUSH_SUBJECT));
@@ -63,10 +81,11 @@ export default {
     };
     if (req.method === "OPTIONS") return new Response(null, { status: originOk ? 204 : 403, headers: cors });
     const path = new URL(req.url).pathname;
-    if (req.method !== "POST" || !["/chat", "/push/key", "/push/subscribe", "/push/unsubscribe", "/push/test"].includes(path)) return json({ error: "not_found" }, 404, cors);
+    if (req.method !== "POST" || !["/chat", "/push/key", "/push/subscribe", "/push/unsubscribe", "/push/test", "/sync/get", "/sync/put"].includes(path)) return json({ error: "not_found" }, 404, cors);
     if (!originOk) return json({ error: "origin" }, 403, cors);
     if (!env.APP_PASSWORD || !safeEqual(req.headers.get("x-app-key") || "", env.APP_PASSWORD)) return json({ error: "unauthorized" }, 401, cors);
     if (path.startsWith("/push/")) return handlePush(path, req, env, cors);
+    if (path.startsWith("/sync/")) return handleSync(path, req, env, cors);
     if (env.LIMITER) {
       const { success } = await env.LIMITER.limit({ key: "parliamo" });
       if (!success) return json({ error: "rate_limited" }, 429, cors);

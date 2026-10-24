@@ -24,3 +24,5 @@ jobs:
           fi
       - name: Tesztek (linkek, séma, pontozás, felület)
         run: npm test
+      - name: Parliamo böngészős végpontteszt
+        run: node parliamo/tests/run.js
