@@ -10,6 +10,11 @@ compatibility_date = "2026-09-01"
 # Vesszővel elválasztva: honnan hívhatja a szervert böngésző.
 ALLOWED_ORIGINS = "https://jtdevzero.github.io"
 MODEL = "claude-opus-5-5"
+# Havi kemény AI-költségkorlát dollárban (0 = nincs). Elérésekor a szerver a hónap végéig nem hív AI-t.
+MONTHLY_BUDGET_USD = "0"
+# Árak a költségbecsléshez ($ / millió token), Claude Opus 5.5 szerint.
+PRICE_IN_PER_MTOK = "4"
+PRICE_OUT_PER_MTOK = "20"
 
 # Napi emlékeztető: óránként ellenőrzi, kinek van most a beállított órája.
 [triggers]

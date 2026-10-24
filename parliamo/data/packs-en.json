@@ -1,0 +1,1909 @@
+{
+ "packs": [
+  {
+   "id": "doctor",
+   "title": "Orvosnál",
+   "desc": "Tünetek, vizsgálat, recept.",
+   "items": [
+    {
+     "it": "an appointment",
+     "hu": "időpont",
+     "ex": "I'd like to make an appointment with Dr Lee.",
+     "exhu": "Szeretnék időpontot kérni Dr. Lee-hez."
+    },
+    {
+     "it": "a symptom",
+     "hu": "tünet",
+     "ex": "What are your symptoms?",
+     "exhu": "Milyen tünetei vannak?"
+    },
+    {
+     "it": "a sore throat",
+     "hu": "torokfájás",
+     "ex": "I've had a sore throat since Monday.",
+     "exhu": "Hétfő óta fáj a torkom."
+    },
+    {
+     "it": "a temperature",
+     "hu": "láz",
+     "ex": "Have you got a temperature?",
+     "exhu": "Van láza?"
+    },
+    {
+     "it": "a headache",
+     "hu": "fejfájás",
+     "ex": "I keep getting headaches in the afternoon.",
+     "exhu": "Délutánonként rendszeresen fáj a fejem."
+    },
+    {
+     "it": "dizzy",
+     "hu": "szédülő",
+     "ex": "I feel dizzy when I stand up.",
+     "exhu": "Szédülök, amikor felállok."
+    },
+    {
+     "it": "to cough",
+     "hu": "köhögni",
+     "ex": "I've been coughing all night.",
+     "exhu": "Egész éjjel köhögtem."
+    },
+    {
+     "it": "a rash",
+     "hu": "kiütés",
+     "ex": "I've got a rash on my arm.",
+     "exhu": "Kiütés van a karomon."
+    },
+    {
+     "it": "swollen",
+     "hu": "dagadt",
+     "ex": "My ankle is swollen.",
+     "exhu": "Bedagadt a bokám."
+    },
+    {
+     "it": "a prescription",
+     "hu": "recept",
+     "ex": "I'll give you a prescription for antibiotics.",
+     "exhu": "Felírok egy antibiotikumot."
+    },
+    {
+     "it": "a pharmacy",
+     "hu": "gyógyszertár",
+     "ex": "You can pick it up at any pharmacy.",
+     "exhu": "Bármelyik gyógyszertárban kiválthatja."
+    },
+    {
+     "it": "a side effect",
+     "hu": "mellékhatás",
+     "ex": "Are there any side effects?",
+     "exhu": "Vannak mellékhatásai?"
+    },
+    {
+     "it": "twice a day",
+     "hu": "naponta kétszer",
+     "ex": "Take one tablet twice a day after meals.",
+     "exhu": "Naponta kétszer egy tablettát vegyen be étkezés után."
+    },
+    {
+     "it": "allergic to",
+     "hu": "allergiás valamire",
+     "ex": "I'm allergic to penicillin.",
+     "exhu": "Allergiás vagyok a penicillinre."
+    },
+    {
+     "it": "a blood test",
+     "hu": "vérvétel, vérvizsgálat",
+     "ex": "We need to do a blood test.",
+     "exhu": "Vérvizsgálatot kell végeznünk."
+    },
+    {
+     "it": "to examine",
+     "hu": "megvizsgálni",
+     "ex": "Let me examine your chest.",
+     "exhu": "Hadd vizsgáljam meg a mellkasát."
+    },
+    {
+     "it": "a sick note",
+     "hu": "orvosi igazolás",
+     "ex": "Can I get a sick note for work?",
+     "exhu": "Kaphatok orvosi igazolást a munkahelyemre?"
+    },
+    {
+     "it": "to recover",
+     "hu": "felépülni",
+     "ex": "You should recover in a few days.",
+     "exhu": "Pár nap alatt fel kell épülnie."
+    },
+    {
+     "it": "an emergency",
+     "hu": "vészhelyzet",
+     "ex": "In an emergency, call 112.",
+     "exhu": "Vészhelyzetben hívja a 112-t."
+    },
+    {
+     "it": "It hurts here.",
+     "hu": "Itt fáj.",
+     "ex": "It hurts here when I breathe in.",
+     "exhu": "Itt fáj, amikor belélegzem."
+    }
+   ]
+  },
+  {
+   "id": "office",
+   "title": "Ügyintézés és hivatal",
+   "desc": "Űrlapok, igazolások, határidők.",
+   "items": [
+    {
+     "it": "a form",
+     "hu": "űrlap",
+     "ex": "Please fill in this form.",
+     "exhu": "Kérem, töltse ki ezt az űrlapot."
+    },
+    {
+     "it": "to fill in",
+     "hu": "kitölteni",
+     "ex": "Fill in your name and address here.",
+     "exhu": "Ide írja a nevét és a címét."
+    },
+    {
+     "it": "to sign",
+     "hu": "aláírni",
+     "ex": "Sign at the bottom of the page.",
+     "exhu": "Az oldal alján írja alá."
+    },
+    {
+     "it": "an ID card",
+     "hu": "személyi igazolvány",
+     "ex": "Can I see your ID card, please?",
+     "exhu": "Láthatnám a személyi igazolványát?"
+    },
+    {
+     "it": "proof of address",
+     "hu": "lakcímigazolás",
+     "ex": "You'll need proof of address.",
+     "exhu": "Lakcímigazolásra lesz szüksége."
+    },
+    {
+     "it": "a deadline",
+     "hu": "határidő",
+     "ex": "The deadline is the end of March.",
+     "exhu": "A határidő március vége."
+    },
+    {
+     "it": "to apply for",
+     "hu": "igényelni, pályázni",
+     "ex": "I'd like to apply for a residence permit.",
+     "exhu": "Tartózkodási engedélyt szeretnék igényelni."
+    },
+    {
+     "it": "to renew",
+     "hu": "megújítani",
+     "ex": "I need to renew my passport.",
+     "exhu": "Meg kell újítanom az útlevelemet."
+    },
+    {
+     "it": "a fee",
+     "hu": "díj",
+     "ex": "There's a small fee for the certificate.",
+     "exhu": "Az igazolásnak kis díja van."
+    },
+    {
+     "it": "a copy",
+     "hu": "másolat",
+     "ex": "Bring a copy of your contract.",
+     "exhu": "Hozza magával a szerződése másolatát."
+    },
+    {
+     "it": "to register",
+     "hu": "bejelentkezni, regisztrálni",
+     "ex": "You must register within thirty days.",
+     "exhu": "Harminc napon belül be kell jelentkeznie."
+    },
+    {
+     "it": "an appointment slot",
+     "hu": "szabad időpont",
+     "ex": "The next appointment slot is on Tuesday.",
+     "exhu": "A következő szabad időpont kedden van."
+    },
+    {
+     "it": "a queue",
+     "hu": "sor",
+     "ex": "There's a long queue at the counter.",
+     "exhu": "Hosszú sor áll a pultnál."
+    },
+    {
+     "it": "to approve",
+     "hu": "jóváhagyni",
+     "ex": "Your application has been approved.",
+     "exhu": "A kérelmét jóváhagyták."
+    },
+    {
+     "it": "to reject",
+     "hu": "elutasítani",
+     "ex": "Why was my application rejected?",
+     "exhu": "Miért utasították el a kérelmemet?"
+    },
+    {
+     "it": "a reference number",
+     "hu": "ügyszám",
+     "ex": "Please quote your reference number.",
+     "exhu": "Kérem, adja meg az ügyszámát."
+    },
+    {
+     "it": "in person",
+     "hu": "személyesen",
+     "ex": "You have to come in person.",
+     "exhu": "Személyesen kell bejönnie."
+    },
+    {
+     "it": "to be valid",
+     "hu": "érvényes",
+     "ex": "The permit is valid for one year.",
+     "exhu": "Az engedély egy évig érvényes."
+    },
+    {
+     "it": "a stamp",
+     "hu": "pecsét",
+     "ex": "It isn't official without a stamp.",
+     "exhu": "Pecsét nélkül nem hivatalos."
+    },
+    {
+     "it": "to process",
+     "hu": "feldolgozni, elintézni",
+     "ex": "It takes about two weeks to process.",
+     "exhu": "Nagyjából két hét az ügyintézés."
+    }
+   ]
+  },
+  {
+   "id": "it",
+   "title": "IT és szoftver",
+   "desc": "Fejlesztés, hibák, rendszerek.",
+   "items": [
+    {
+     "it": "a bug",
+     "hu": "programhiba",
+     "ex": "We found a bug in the login page.",
+     "exhu": "Hibát találtunk a bejelentkező oldalon."
+    },
+    {
+     "it": "to fix",
+     "hu": "kijavítani",
+     "ex": "Can you fix it before the release?",
+     "exhu": "Ki tudod javítani a kiadás előtt?"
+    },
+    {
+     "it": "a release",
+     "hu": "kiadás",
+     "ex": "The next release is planned for Friday.",
+     "exhu": "A következő kiadás péntekre van tervezve."
+    },
+    {
+     "it": "to deploy",
+     "hu": "élesíteni, telepíteni",
+     "ex": "We deploy to production every Tuesday.",
+     "exhu": "Minden kedden élesítünk."
+    },
+    {
+     "it": "a server",
+     "hu": "szerver",
+     "ex": "The server went down last night.",
+     "exhu": "A szerver tegnap éjjel leállt."
+    },
+    {
+     "it": "to crash",
+     "hu": "összeomlani",
+     "ex": "The app keeps crashing on older phones.",
+     "exhu": "Az app régebbi telefonokon folyton összeomlik."
+    },
+    {
+     "it": "a feature",
+     "hu": "funkció",
+     "ex": "Users have requested a dark mode feature.",
+     "exhu": "A felhasználók sötét módot kértek."
+    },
+    {
+     "it": "a requirement",
+     "hu": "követelmény",
+     "ex": "Let's go through the requirements first.",
+     "exhu": "Nézzük át először a követelményeket."
+    },
+    {
+     "it": "to test",
+     "hu": "tesztelni",
+     "ex": "Have you tested it on Safari?",
+     "exhu": "Kipróbáltad Safariban?"
+    },
+    {
+     "it": "a database",
+     "hu": "adatbázis",
+     "ex": "The data is stored in a database.",
+     "exhu": "Az adatokat adatbázisban tároljuk."
+    },
+    {
+     "it": "a backup",
+     "hu": "biztonsági mentés",
+     "ex": "Do we have a recent backup?",
+     "exhu": "Van friss biztonsági mentésünk?"
+    },
+    {
+     "it": "to update",
+     "hu": "frissíteni",
+     "ex": "Please update to the latest version.",
+     "exhu": "Kérlek, frissíts a legújabb verzióra."
+    },
+    {
+     "it": "a password",
+     "hu": "jelszó",
+     "ex": "Never share your password.",
+     "exhu": "Soha ne add ki a jelszavadat."
+    },
+    {
+     "it": "to log in",
+     "hu": "bejelentkezni",
+     "ex": "I can't log in to my account.",
+     "exhu": "Nem tudok bejelentkezni a fiókomba."
+    },
+    {
+     "it": "a workaround",
+     "hu": "kerülőmegoldás",
+     "ex": "There's a workaround until we fix it.",
+     "exhu": "Van kerülőmegoldás, amíg kijavítjuk."
+    },
+    {
+     "it": "a code review",
+     "hu": "kódátnézés",
+     "ex": "I've left some comments in the code review.",
+     "exhu": "Írtam pár megjegyzést a kódátnézésben."
+    },
+    {
+     "it": "to merge",
+     "hu": "beolvasztani",
+     "ex": "Can I merge my branch now?",
+     "exhu": "Beolvaszthatom most az ágamat?"
+    },
+    {
+     "it": "a deadline is tight",
+     "hu": "szoros a határidő",
+     "ex": "The deadline is tight, so let's prioritise.",
+     "exhu": "Szoros a határidő, úgyhogy rangsoroljunk."
+    },
+    {
+     "it": "user-friendly",
+     "hu": "felhasználóbarát",
+     "ex": "The new interface is much more user-friendly.",
+     "exhu": "Az új felület sokkal felhasználóbarátabb."
+    },
+    {
+     "it": "to troubleshoot",
+     "hu": "hibát elhárítani",
+     "ex": "Let's troubleshoot the connection problem.",
+     "exhu": "Hárítsuk el a kapcsolódási hibát."
+    }
+   ]
+  },
+  {
+   "id": "money",
+   "title": "Pénzügy és bank",
+   "desc": "Számla, utalás, hitel.",
+   "items": [
+    {
+     "it": "a bank account",
+     "hu": "bankszámla",
+     "ex": "I'd like to open a bank account.",
+     "exhu": "Szeretnék bankszámlát nyitni."
+    },
+    {
+     "it": "to transfer",
+     "hu": "átutalni",
+     "ex": "I transferred the money yesterday.",
+     "exhu": "Tegnap átutaltam a pénzt."
+    },
+    {
+     "it": "a balance",
+     "hu": "egyenleg",
+     "ex": "What's my current balance?",
+     "exhu": "Mennyi a jelenlegi egyenlegem?"
+    },
+    {
+     "it": "to withdraw",
+     "hu": "pénzt felvenni",
+     "ex": "I need to withdraw some cash.",
+     "exhu": "Fel kell vennem egy kis készpénzt."
+    },
+    {
+     "it": "a fee",
+     "hu": "díj, költség",
+     "ex": "Is there a fee for international transfers?",
+     "exhu": "Van díja a nemzetközi utalásnak?"
+    },
+    {
+     "it": "a loan",
+     "hu": "kölcsön, hitel",
+     "ex": "They applied for a loan to buy a flat.",
+     "exhu": "Hitelt igényeltek lakásvásárlásra."
+    },
+    {
+     "it": "interest rate",
+     "hu": "kamatláb",
+     "ex": "The interest rate is fixed for five years.",
+     "exhu": "A kamat öt évre rögzített."
+    },
+    {
+     "it": "a mortgage",
+     "hu": "jelzáloghitel",
+     "ex": "We pay our mortgage every month.",
+     "exhu": "Havonta fizetjük a jelzáloghitelt."
+    },
+    {
+     "it": "to save up",
+     "hu": "összespórolni",
+     "ex": "I'm saving up for a new car.",
+     "exhu": "Új autóra gyűjtök."
+    },
+    {
+     "it": "a budget",
+     "hu": "költségvetés",
+     "ex": "We need to stick to our budget.",
+     "exhu": "Tartanunk kell magunkat a költségvetéshez."
+    },
+    {
+     "it": "an invoice",
+     "hu": "számla (kiállított)",
+     "ex": "Please send the invoice by email.",
+     "exhu": "Kérem, küldje el a számlát e-mailben."
+    },
+    {
+     "it": "a receipt",
+     "hu": "nyugta",
+     "ex": "Keep the receipt in case you return it.",
+     "exhu": "Tartsa meg a nyugtát, ha visszahozná."
+    },
+    {
+     "it": "to afford",
+     "hu": "megengedheti magának",
+     "ex": "We can't afford a holiday this year.",
+     "exhu": "Idén nem engedhetünk meg magunknak nyaralást."
+    },
+    {
+     "it": "a debit card",
+     "hu": "bankkártya",
+     "ex": "Can I pay by debit card?",
+     "exhu": "Fizethetek bankkártyával?"
+    },
+    {
+     "it": "overdrawn",
+     "hu": "túllépett (számla)",
+     "ex": "My account is overdrawn.",
+     "exhu": "Túlléptem a számlámat."
+    },
+    {
+     "it": "to invest",
+     "hu": "befektetni",
+     "ex": "She invests part of her salary.",
+     "exhu": "A fizetése egy részét befekteti."
+    },
+    {
+     "it": "tax",
+     "hu": "adó",
+     "ex": "How much tax do I have to pay?",
+     "exhu": "Mennyi adót kell fizetnem?"
+    },
+    {
+     "it": "an exchange rate",
+     "hu": "árfolyam",
+     "ex": "What's the exchange rate today?",
+     "exhu": "Mennyi ma az árfolyam?"
+    },
+    {
+     "it": "a refund",
+     "hu": "visszatérítés",
+     "ex": "I'd like a refund, please.",
+     "exhu": "Szeretném visszakapni a pénzt."
+    },
+    {
+     "it": "to owe",
+     "hu": "tartozni",
+     "ex": "How much do I owe you?",
+     "exhu": "Mennyivel tartozom?"
+    }
+   ]
+  },
+  {
+   "id": "airport",
+   "title": "Utazás és repülőtér",
+   "desc": "Becsekkolás, poggyász, késés.",
+   "items": [
+    {
+     "it": "to check in",
+     "hu": "becsekkolni",
+     "ex": "You can check in online 24 hours before.",
+     "exhu": "24 órával előtte online becsekkolhat."
+    },
+    {
+     "it": "a boarding pass",
+     "hu": "beszállókártya",
+     "ex": "Have your boarding pass ready.",
+     "exhu": "Készítse elő a beszállókártyáját."
+    },
+    {
+     "it": "hand luggage",
+     "hu": "kézipoggyász",
+     "ex": "Only one piece of hand luggage is allowed.",
+     "exhu": "Csak egy kézipoggyász engedélyezett."
+    },
+    {
+     "it": "to drop off",
+     "hu": "leadni",
+     "ex": "Where can I drop off my suitcase?",
+     "exhu": "Hol adhatom le a bőröndömet?"
+    },
+    {
+     "it": "a gate",
+     "hu": "beszállókapu",
+     "ex": "Boarding is at gate 12.",
+     "exhu": "A beszállás a 12-es kapunál van."
+    },
+    {
+     "it": "delayed",
+     "hu": "késik",
+     "ex": "Our flight is delayed by two hours.",
+     "exhu": "A járatunk két órát késik."
+    },
+    {
+     "it": "cancelled",
+     "hu": "törölt",
+     "ex": "The flight was cancelled due to fog.",
+     "exhu": "A járatot köd miatt törölték."
+    },
+    {
+     "it": "a connecting flight",
+     "hu": "csatlakozó járat",
+     "ex": "I might miss my connecting flight.",
+     "exhu": "Lehet, hogy lekésem a csatlakozást."
+    },
+    {
+     "it": "security",
+     "hu": "biztonsági ellenőrzés",
+     "ex": "The queue at security was huge.",
+     "exhu": "Óriási sor volt a biztonsági ellenőrzésnél."
+    },
+    {
+     "it": "to board",
+     "hu": "beszállni",
+     "ex": "We're now boarding all passengers.",
+     "exhu": "Most minden utas beszállhat."
+    },
+    {
+     "it": "an aisle seat",
+     "hu": "folyosó melletti ülés",
+     "ex": "Could I have an aisle seat?",
+     "exhu": "Kaphatnék folyosó melletti ülést?"
+    },
+    {
+     "it": "a window seat",
+     "hu": "ablak melletti ülés",
+     "ex": "I always book a window seat.",
+     "exhu": "Mindig ablak melletti helyet foglalok."
+    },
+    {
+     "it": "excess baggage",
+     "hu": "túlsúly",
+     "ex": "You'll have to pay for excess baggage.",
+     "exhu": "Fizetnie kell a túlsúlyért."
+    },
+    {
+     "it": "customs",
+     "hu": "vám",
+     "ex": "Do I have anything to declare at customs?",
+     "exhu": "Kell bármit elvámolnom?"
+    },
+    {
+     "it": "baggage claim",
+     "hu": "poggyászkiadás",
+     "ex": "Let's meet at baggage claim.",
+     "exhu": "Találkozzunk a poggyászkiadónál."
+    },
+    {
+     "it": "lost luggage",
+     "hu": "elveszett poggyász",
+     "ex": "Where's the lost luggage desk?",
+     "exhu": "Hol van az elveszett poggyászok pultja?"
+    },
+    {
+     "it": "a layover",
+     "hu": "átszállási várakozás",
+     "ex": "We have a four-hour layover in Doha.",
+     "exhu": "Négyórás átszállás van Dohában."
+    },
+    {
+     "it": "jet lag",
+     "hu": "időeltolódás okozta fáradtság",
+     "ex": "I always get terrible jet lag.",
+     "exhu": "Mindig borzasztó jet lagem van."
+    },
+    {
+     "it": "a one-way ticket",
+     "hu": "csak oda jegy",
+     "ex": "A one-way ticket to Dublin, please.",
+     "exhu": "Egy csak oda jegyet Dublinba, kérem."
+    },
+    {
+     "it": "to take off",
+     "hu": "felszállni (gép)",
+     "ex": "The plane took off on time.",
+     "exhu": "A gép időben felszállt."
+    }
+   ]
+  },
+  {
+   "id": "hotel",
+   "title": "Szálloda",
+   "desc": "Foglalás, panasz, kijelentkezés.",
+   "items": [
+    {
+     "it": "a reservation",
+     "hu": "foglalás",
+     "ex": "I have a reservation under the name Kovács.",
+     "exhu": "Kovács névre van foglalásom."
+    },
+    {
+     "it": "a double room",
+     "hu": "franciaágyas szoba",
+     "ex": "We'd like a double room for two nights.",
+     "exhu": "Két éjszakára szeretnénk franciaágyas szobát."
+    },
+    {
+     "it": "a single room",
+     "hu": "egyágyas szoba",
+     "ex": "Is there a single room available?",
+     "exhu": "Van szabad egyágyas szoba?"
+    },
+    {
+     "it": "breakfast included",
+     "hu": "reggelivel",
+     "ex": "Is breakfast included?",
+     "exhu": "A reggeli benne van az árban?"
+    },
+    {
+     "it": "to check out",
+     "hu": "kijelentkezni",
+     "ex": "What time do we have to check out?",
+     "exhu": "Hánykor kell kijelentkeznünk?"
+    },
+    {
+     "it": "a key card",
+     "hu": "kulcskártya",
+     "ex": "My key card doesn't work.",
+     "exhu": "Nem működik a kulcskártyám."
+    },
+    {
+     "it": "room service",
+     "hu": "szobaszerviz",
+     "ex": "Can I order room service?",
+     "exhu": "Rendelhetek szobaszervizt?"
+    },
+    {
+     "it": "a view",
+     "hu": "kilátás",
+     "ex": "Could we have a room with a sea view?",
+     "exhu": "Kaphatnánk tengerre néző szobát?"
+    },
+    {
+     "it": "noisy",
+     "hu": "zajos",
+     "ex": "The room next to the lift is very noisy.",
+     "exhu": "A lift melletti szoba nagyon zajos."
+    },
+    {
+     "it": "the air conditioning",
+     "hu": "légkondi",
+     "ex": "The air conditioning isn't working.",
+     "exhu": "Nem működik a légkondi."
+    },
+    {
+     "it": "towels",
+     "hu": "törölközők",
+     "ex": "Could we have some extra towels?",
+     "exhu": "Kaphatnánk még pár törölközőt?"
+    },
+    {
+     "it": "a wake-up call",
+     "hu": "ébresztés",
+     "ex": "I'd like a wake-up call at six.",
+     "exhu": "Hatkor kérnék ébresztést."
+    },
+    {
+     "it": "to upgrade",
+     "hu": "jobb kategóriába tenni",
+     "ex": "Is it possible to upgrade our room?",
+     "exhu": "Lehetne jobb szobát kapnunk?"
+    },
+    {
+     "it": "reception",
+     "hu": "recepció",
+     "ex": "Please leave your key at reception.",
+     "exhu": "Kérem, hagyja a kulcsot a recepción."
+    },
+    {
+     "it": "a deposit",
+     "hu": "kaució, előleg",
+     "ex": "We take a deposit on arrival.",
+     "exhu": "Érkezéskor kauciót kérünk."
+    },
+    {
+     "it": "to store luggage",
+     "hu": "csomagot megőrizni",
+     "ex": "Can you store our luggage until five?",
+     "exhu": "Megőriznék a csomagjainkat ötig?"
+    },
+    {
+     "it": "late checkout",
+     "hu": "késői kijelentkezés",
+     "ex": "Could we have a late checkout?",
+     "exhu": "Kaphatnánk késői kijelentkezést?"
+    },
+    {
+     "it": "a complaint",
+     "hu": "panasz",
+     "ex": "I'd like to make a complaint.",
+     "exhu": "Panaszt szeretnék tenni."
+    },
+    {
+     "it": "fully booked",
+     "hu": "teltház",
+     "ex": "Sorry, we're fully booked tonight.",
+     "exhu": "Sajnos ma este teltház van."
+    },
+    {
+     "it": "Wi-Fi password",
+     "hu": "wifijelszó",
+     "ex": "What's the Wi-Fi password?",
+     "exhu": "Mi a wifijelszó?"
+    }
+   ]
+  },
+  {
+   "id": "restaurant",
+   "title": "Étterem és rendelés",
+   "desc": "Asztalfoglalás, rendelés, számla.",
+   "items": [
+    {
+     "it": "to book a table",
+     "hu": "asztalt foglalni",
+     "ex": "I'd like to book a table for four.",
+     "exhu": "Négy főre szeretnék asztalt foglalni."
+    },
+    {
+     "it": "a starter",
+     "hu": "előétel",
+     "ex": "We'll share a starter.",
+     "exhu": "Egy előételt megosztunk."
+    },
+    {
+     "it": "a main course",
+     "hu": "főétel",
+     "ex": "What would you recommend as a main course?",
+     "exhu": "Mit ajánlana főételnek?"
+    },
+    {
+     "it": "a dessert",
+     "hu": "desszert",
+     "ex": "Have you got room for dessert?",
+     "exhu": "Belefér még egy desszert?"
+    },
+    {
+     "it": "vegetarian",
+     "hu": "vegetáriánus",
+     "ex": "Do you have any vegetarian dishes?",
+     "exhu": "Van vegetáriánus ételük?"
+    },
+    {
+     "it": "gluten-free",
+     "hu": "gluténmentes",
+     "ex": "Is the pasta gluten-free?",
+     "exhu": "Gluténmentes a tészta?"
+    },
+    {
+     "it": "rare / medium / well done",
+     "hu": "véres / közepes / átsütött",
+     "ex": "I'd like my steak medium, please.",
+     "exhu": "Közepesen átsütve kérem a steaket."
+    },
+    {
+     "it": "still or sparkling",
+     "hu": "szénsavmentes vagy szénsavas",
+     "ex": "Still or sparkling water?",
+     "exhu": "Szénsavmentes vagy szénsavas vizet?"
+    },
+    {
+     "it": "to order",
+     "hu": "rendelni",
+     "ex": "Are you ready to order?",
+     "exhu": "Rendelnének?"
+    },
+    {
+     "it": "the bill",
+     "hu": "számla",
+     "ex": "Could we have the bill, please?",
+     "exhu": "Kérhetnénk a számlát?"
+    },
+    {
+     "it": "a tip",
+     "hu": "borravaló",
+     "ex": "Is the tip included?",
+     "exhu": "Benne van a borravaló?"
+    },
+    {
+     "it": "spicy",
+     "hu": "csípős",
+     "ex": "Is this dish very spicy?",
+     "exhu": "Nagyon csípős ez az étel?"
+    },
+    {
+     "it": "a side dish",
+     "hu": "köret",
+     "ex": "It comes with a side dish of your choice.",
+     "exhu": "Választható körettel jár."
+    },
+    {
+     "it": "to share",
+     "hu": "megosztani",
+     "ex": "Shall we share a pizza?",
+     "exhu": "Megosszunk egy pizzát?"
+    },
+    {
+     "it": "the menu",
+     "hu": "étlap",
+     "ex": "Could I see the menu, please?",
+     "exhu": "Megnézhetném az étlapot?"
+    },
+    {
+     "it": "a takeaway",
+     "hu": "elvitelre",
+     "ex": "Can I get this as a takeaway?",
+     "exhu": "Elvitelre kérhetem?"
+    },
+    {
+     "it": "delicious",
+     "hu": "nagyon finom",
+     "ex": "The soup was absolutely delicious.",
+     "exhu": "A leves isteni volt."
+    },
+    {
+     "it": "to split the bill",
+     "hu": "külön fizetni",
+     "ex": "Can we split the bill?",
+     "exhu": "Fizethetünk külön?"
+    },
+    {
+     "it": "cold",
+     "hu": "hideg",
+     "ex": "Excuse me, my food is cold.",
+     "exhu": "Elnézést, kihűlt az ételem."
+    },
+    {
+     "it": "I'm full.",
+     "hu": "Jóllaktam.",
+     "ex": "No dessert for me, thanks. I'm full.",
+     "exhu": "Desszertet nem kérek, köszönöm. Jóllaktam."
+    }
+   ]
+  },
+  {
+   "id": "shopping",
+   "title": "Bevásárlás és reklamáció",
+   "desc": "Méretek, csere, garancia.",
+   "items": [
+    {
+     "it": "a size",
+     "hu": "méret",
+     "ex": "Have you got this in a smaller size?",
+     "exhu": "Ez megvan kisebb méretben?"
+    },
+    {
+     "it": "to try on",
+     "hu": "felpróbálni",
+     "ex": "Can I try this on?",
+     "exhu": "Felpróbálhatom?"
+    },
+    {
+     "it": "a fitting room",
+     "hu": "próbafülke",
+     "ex": "Where are the fitting rooms?",
+     "exhu": "Hol vannak a próbafülkék?"
+    },
+    {
+     "it": "on sale",
+     "hu": "akciós",
+     "ex": "These shoes are on sale.",
+     "exhu": "Ez a cipő akciós."
+    },
+    {
+     "it": "a discount",
+     "hu": "kedvezmény",
+     "ex": "Is there a student discount?",
+     "exhu": "Van diákkedvezmény?"
+    },
+    {
+     "it": "to exchange",
+     "hu": "kicserélni",
+     "ex": "Can I exchange it for a different colour?",
+     "exhu": "Kicserélhetem más színre?"
+    },
+    {
+     "it": "to return",
+     "hu": "visszavinni",
+     "ex": "I'd like to return this jacket.",
+     "exhu": "Vissza szeretném hozni ezt a kabátot."
+    },
+    {
+     "it": "faulty",
+     "hu": "hibás",
+     "ex": "The kettle I bought is faulty.",
+     "exhu": "Hibás a vízforraló, amit vettem."
+    },
+    {
+     "it": "a guarantee",
+     "hu": "garancia",
+     "ex": "It's still under guarantee.",
+     "exhu": "Még garanciális."
+    },
+    {
+     "it": "out of stock",
+     "hu": "elfogyott",
+     "ex": "Sorry, it's out of stock.",
+     "exhu": "Sajnos elfogyott."
+    },
+    {
+     "it": "to order online",
+     "hu": "online rendelni",
+     "ex": "You can order it online.",
+     "exhu": "Online megrendelheti."
+    },
+    {
+     "it": "cash or card",
+     "hu": "készpénz vagy kártya",
+     "ex": "Cash or card?",
+     "exhu": "Készpénz vagy kártya?"
+    },
+    {
+     "it": "a bargain",
+     "hu": "jó vétel",
+     "ex": "It was a real bargain.",
+     "exhu": "Igazi jó vétel volt."
+    },
+    {
+     "it": "too tight",
+     "hu": "túl szűk",
+     "ex": "These jeans are too tight.",
+     "exhu": "Ez a farmer túl szűk."
+    },
+    {
+     "it": "to fit",
+     "hu": "jó (méretben)",
+     "ex": "Does it fit?",
+     "exhu": "Jó rád?"
+    },
+    {
+     "it": "to suit",
+     "hu": "jól áll",
+     "ex": "That colour really suits you.",
+     "exhu": "Ez a szín nagyon jól áll neked."
+    },
+    {
+     "it": "a checkout",
+     "hu": "pénztár",
+     "ex": "Please pay at the checkout.",
+     "exhu": "Kérem, fizessen a pénztárnál."
+    },
+    {
+     "it": "a carrier bag",
+     "hu": "szatyor",
+     "ex": "Do you need a carrier bag?",
+     "exhu": "Kér szatyrot?"
+    },
+    {
+     "it": "delivery",
+     "hu": "kiszállítás",
+     "ex": "How long does delivery take?",
+     "exhu": "Mennyi idő a kiszállítás?"
+    },
+    {
+     "it": "to browse",
+     "hu": "nézelődni",
+     "ex": "I'm just browsing, thanks.",
+     "exhu": "Csak nézelődöm, köszönöm."
+    }
+   ]
+  },
+  {
+   "id": "flat",
+   "title": "Lakás és bérlés",
+   "desc": "Bérleti díj, rezsi, javítás.",
+   "items": [
+    {
+     "it": "to rent",
+     "hu": "bérelni",
+     "ex": "We rent a two-bedroom flat.",
+     "exhu": "Egy kétszobás lakást bérelünk."
+    },
+    {
+     "it": "a landlord",
+     "hu": "főbérlő",
+     "ex": "I'll call the landlord about the heating.",
+     "exhu": "Felhívom a főbérlőt a fűtés miatt."
+    },
+    {
+     "it": "a tenant",
+     "hu": "bérlő",
+     "ex": "The previous tenant left last month.",
+     "exhu": "Az előző bérlő múlt hónapban költözött ki."
+    },
+    {
+     "it": "a lease",
+     "hu": "bérleti szerződés",
+     "ex": "The lease is for twelve months.",
+     "exhu": "A bérleti szerződés tizenkét hónapra szól."
+    },
+    {
+     "it": "a deposit",
+     "hu": "kaució",
+     "ex": "The deposit is two months' rent.",
+     "exhu": "A kaució kéthavi bérleti díj."
+    },
+    {
+     "it": "bills",
+     "hu": "rezsi",
+     "ex": "Are bills included in the rent?",
+     "exhu": "A rezsi benne van a bérleti díjban?"
+    },
+    {
+     "it": "furnished",
+     "hu": "bútorozott",
+     "ex": "Is the flat furnished?",
+     "exhu": "Bútorozott a lakás?"
+    },
+    {
+     "it": "a leak",
+     "hu": "szivárgás",
+     "ex": "There's a leak under the sink.",
+     "exhu": "Szivárog a mosogató alatt."
+    },
+    {
+     "it": "to repair",
+     "hu": "megjavítani",
+     "ex": "When can someone repair the boiler?",
+     "exhu": "Mikor tudja valaki megjavítani a kazánt?"
+    },
+    {
+     "it": "the heating",
+     "hu": "fűtés",
+     "ex": "The heating doesn't come on.",
+     "exhu": "Nem kapcsol be a fűtés."
+    },
+    {
+     "it": "a neighbour",
+     "hu": "szomszéd",
+     "ex": "Our neighbours are very friendly.",
+     "exhu": "Nagyon kedvesek a szomszédaink."
+    },
+    {
+     "it": "to move in",
+     "hu": "beköltözni",
+     "ex": "When can we move in?",
+     "exhu": "Mikor költözhetünk be?"
+    },
+    {
+     "it": "to move out",
+     "hu": "kiköltözni",
+     "ex": "We're moving out at the end of May.",
+     "exhu": "Május végén költözünk ki."
+    },
+    {
+     "it": "a viewing",
+     "hu": "lakásmegtekintés",
+     "ex": "Can we arrange a viewing for Saturday?",
+     "exhu": "Megbeszélhetünk szombatra egy megtekintést?"
+    },
+    {
+     "it": "spacious",
+     "hu": "tágas",
+     "ex": "The living room is very spacious.",
+     "exhu": "A nappali nagyon tágas."
+    },
+    {
+     "it": "a balcony",
+     "hu": "erkély",
+     "ex": "It has a small balcony.",
+     "exhu": "Van egy kis erkélye."
+    },
+    {
+     "it": "to share a flat",
+     "hu": "lakást megosztani",
+     "ex": "I share a flat with two friends.",
+     "exhu": "Két barátommal lakom együtt."
+    },
+    {
+     "it": "notice",
+     "hu": "felmondási idő",
+     "ex": "You have to give one month's notice.",
+     "exhu": "Egy hónap a felmondási idő."
+    },
+    {
+     "it": "damp",
+     "hu": "nyirkos, penészes",
+     "ex": "The bathroom is a bit damp.",
+     "exhu": "A fürdőszoba kicsit nyirkos."
+    },
+    {
+     "it": "the rent is due",
+     "hu": "esedékes a bérleti díj",
+     "ex": "The rent is due on the first of the month.",
+     "exhu": "A bérleti díj minden hónap elsején esedékes."
+    }
+   ]
+  },
+  {
+   "id": "meeting",
+   "title": "Munkahelyi megbeszélés",
+   "desc": "Napirend, vélemény, teendők.",
+   "items": [
+    {
+     "it": "an agenda",
+     "hu": "napirend",
+     "ex": "Let's stick to the agenda.",
+     "exhu": "Tartsuk magunkat a napirendhez."
+    },
+    {
+     "it": "to chair a meeting",
+     "hu": "megbeszélést vezetni",
+     "ex": "Who's chairing the meeting today?",
+     "exhu": "Ki vezeti ma a megbeszélést?"
+    },
+    {
+     "it": "to kick off",
+     "hu": "elkezdeni",
+     "ex": "Let's kick off with the sales figures.",
+     "exhu": "Kezdjük az eladási adatokkal."
+    },
+    {
+     "it": "to point out",
+     "hu": "rámutatni",
+     "ex": "I'd like to point out one risk.",
+     "exhu": "Egy kockázatra szeretnék rámutatni."
+    },
+    {
+     "it": "to agree with",
+     "hu": "egyetérteni",
+     "ex": "I completely agree with Sarah.",
+     "exhu": "Teljesen egyetértek Sarah-val."
+    },
+    {
+     "it": "to disagree",
+     "hu": "nem érteni egyet",
+     "ex": "I'm afraid I disagree.",
+     "exhu": "Attól tartok, nem értek egyet."
+    },
+    {
+     "it": "to clarify",
+     "hu": "tisztázni",
+     "ex": "Could you clarify what you mean?",
+     "exhu": "Pontosítanád, mire gondolsz?"
+    },
+    {
+     "it": "action points",
+     "hu": "teendők",
+     "ex": "Let's summarise the action points.",
+     "exhu": "Foglaljuk össze a teendőket."
+    },
+    {
+     "it": "to follow up",
+     "hu": "utánajárni, követni",
+     "ex": "I'll follow up with the client.",
+     "exhu": "Utánajárok az ügyfélnél."
+    },
+    {
+     "it": "a deadline",
+     "hu": "határidő",
+     "ex": "Can we move the deadline to Friday?",
+     "exhu": "Áttehetjük a határidőt péntekre?"
+    },
+    {
+     "it": "to postpone",
+     "hu": "elhalasztani",
+     "ex": "We need to postpone the launch.",
+     "exhu": "El kell halasztanunk az indulást."
+    },
+    {
+     "it": "on track",
+     "hu": "terv szerint halad",
+     "ex": "The project is on track.",
+     "exhu": "A projekt terv szerint halad."
+    },
+    {
+     "it": "behind schedule",
+     "hu": "késésben",
+     "ex": "We're two weeks behind schedule.",
+     "exhu": "Két hét késésben vagyunk."
+    },
+    {
+     "it": "to brainstorm",
+     "hu": "ötletelni",
+     "ex": "Let's brainstorm some ideas.",
+     "exhu": "Ötleteljünk egy kicsit."
+    },
+    {
+     "it": "a stakeholder",
+     "hu": "érintett fél",
+     "ex": "We should involve all stakeholders.",
+     "exhu": "Minden érintettet be kellene vonnunk."
+    },
+    {
+     "it": "to wrap up",
+     "hu": "lezárni",
+     "ex": "Let's wrap up here.",
+     "exhu": "Zárjuk le itt."
+    },
+    {
+     "it": "any other business",
+     "hu": "egyebek",
+     "ex": "Is there any other business?",
+     "exhu": "Van még egyéb?"
+    },
+    {
+     "it": "to take minutes",
+     "hu": "jegyzőkönyvet vezetni",
+     "ex": "Could you take minutes today?",
+     "exhu": "Vezetnéd ma a jegyzőkönyvet?"
+    },
+    {
+     "it": "to be on the same page",
+     "hu": "egyetértésben lenni",
+     "ex": "Let's make sure we're on the same page.",
+     "exhu": "Győződjünk meg róla, hogy egyetértünk."
+    },
+    {
+     "it": "Sorry to interrupt, but…",
+     "hu": "Bocs, hogy közbevágok, de…",
+     "ex": "Sorry to interrupt, but we're running out of time.",
+     "exhu": "Bocs, hogy közbevágok, de fogy az időnk."
+    }
+   ]
+  },
+  {
+   "id": "interview",
+   "title": "Állásinterjú",
+   "desc": "Erősségek, tapasztalat, kérdések.",
+   "items": [
+    {
+     "it": "a candidate",
+     "hu": "jelölt",
+     "ex": "We've interviewed five candidates.",
+     "exhu": "Öt jelöltet hallgattunk meg."
+    },
+    {
+     "it": "experience",
+     "hu": "tapasztalat",
+     "ex": "I have five years of experience in sales.",
+     "exhu": "Öt év értékesítési tapasztalatom van."
+    },
+    {
+     "it": "a strength",
+     "hu": "erősség",
+     "ex": "What would you say is your greatest strength?",
+     "exhu": "Mit mondanál a legnagyobb erősségednek?"
+    },
+    {
+     "it": "a weakness",
+     "hu": "gyengeség",
+     "ex": "My weakness is that I find it hard to delegate.",
+     "exhu": "A gyengeségem, hogy nehezen delegálok."
+    },
+    {
+     "it": "a team player",
+     "hu": "csapatjátékos",
+     "ex": "I'm a real team player.",
+     "exhu": "Igazi csapatjátékos vagyok."
+    },
+    {
+     "it": "to be responsible for",
+     "hu": "felelős valamiért",
+     "ex": "I was responsible for a budget of two million.",
+     "exhu": "Kétmilliós költségvetésért feleltem."
+    },
+    {
+     "it": "an achievement",
+     "hu": "eredmény",
+     "ex": "My biggest achievement was launching a new product.",
+     "exhu": "A legnagyobb eredményem egy új termék bevezetése volt."
+    },
+    {
+     "it": "to manage",
+     "hu": "irányítani",
+     "ex": "I managed a team of six people.",
+     "exhu": "Hatfős csapatot irányítottam."
+    },
+    {
+     "it": "a challenge",
+     "hu": "kihívás",
+     "ex": "Tell me about a challenge you faced.",
+     "exhu": "Mesélj egy kihívásról, amivel szembesültél."
+    },
+    {
+     "it": "to handle pressure",
+     "hu": "bírni a nyomást",
+     "ex": "I handle pressure well.",
+     "exhu": "Jól bírom a nyomást."
+    },
+    {
+     "it": "a notice period",
+     "hu": "felmondási idő",
+     "ex": "My notice period is one month.",
+     "exhu": "Egy hónap a felmondási időm."
+    },
+    {
+     "it": "salary expectations",
+     "hu": "fizetési elvárás",
+     "ex": "What are your salary expectations?",
+     "exhu": "Mik a fizetési elvárásaid?"
+    },
+    {
+     "it": "to be promoted",
+     "hu": "előléptetik",
+     "ex": "I was promoted after two years.",
+     "exhu": "Két év után előléptettek."
+    },
+    {
+     "it": "a reference",
+     "hu": "ajánlás",
+     "ex": "I can provide two references.",
+     "exhu": "Két ajánlást tudok adni."
+    },
+    {
+     "it": "flexible working",
+     "hu": "rugalmas munkavégzés",
+     "ex": "Do you offer flexible working?",
+     "exhu": "Van lehetőség rugalmas munkavégzésre?"
+    },
+    {
+     "it": "career goals",
+     "hu": "karriercélok",
+     "ex": "Where do you see yourself in five years?",
+     "exhu": "Hol látod magad öt év múlva?"
+    },
+    {
+     "it": "to be keen on",
+     "hu": "nagyon szeretné",
+     "ex": "I'm really keen on this role.",
+     "exhu": "Nagyon szeretném ezt a pozíciót."
+    },
+    {
+     "it": "a skill",
+     "hu": "készség",
+     "ex": "Communication is one of my key skills.",
+     "exhu": "A kommunikáció az egyik fő készségem."
+    },
+    {
+     "it": "a trial period",
+     "hu": "próbaidő",
+     "ex": "There's a three-month trial period.",
+     "exhu": "Háromhónapos próbaidő van."
+    },
+    {
+     "it": "Do you have any questions for us?",
+     "hu": "Van kérdésed felénk?",
+     "ex": "Do you have any questions for us?",
+     "exhu": "Van esetleg kérdésed felénk?"
+    }
+   ]
+  },
+  {
+   "id": "phone",
+   "title": "Telefon és e-mail",
+   "desc": "Hívás, üzenet, hivatalos levél.",
+   "items": [
+    {
+     "it": "to call back",
+     "hu": "visszahívni",
+     "ex": "Could you call me back in ten minutes?",
+     "exhu": "Visszahívnál tíz perc múlva?"
+    },
+    {
+     "it": "to hold on",
+     "hu": "kitartani, várni",
+     "ex": "Hold on, I'll put you through.",
+     "exhu": "Egy pillanat, kapcsolom."
+    },
+    {
+     "it": "to put through",
+     "hu": "kapcsolni",
+     "ex": "Could you put me through to sales?",
+     "exhu": "Kapcsolná az értékesítést?"
+    },
+    {
+     "it": "to leave a message",
+     "hu": "üzenetet hagyni",
+     "ex": "Would you like to leave a message?",
+     "exhu": "Szeretne üzenetet hagyni?"
+    },
+    {
+     "it": "a bad line",
+     "hu": "rossz vonal",
+     "ex": "Sorry, it's a bad line.",
+     "exhu": "Elnézést, rossz a vonal."
+    },
+    {
+     "it": "to hang up",
+     "hu": "letenni (telefont)",
+     "ex": "Don't hang up, I'm still here.",
+     "exhu": "Ne tedd le, még itt vagyok."
+    },
+    {
+     "it": "Speaking.",
+     "hu": "Én vagyok az. (telefonon)",
+     "ex": "Is that Mr Green? – Speaking.",
+     "exhu": "Mr Greennel beszélek? – Igen, én vagyok."
+    },
+    {
+     "it": "I'm calling about…",
+     "hu": "…ügyében hívom",
+     "ex": "I'm calling about your invoice.",
+     "exhu": "A számlája ügyében hívom."
+    },
+    {
+     "it": "Dear Sir or Madam",
+     "hu": "Tisztelt Hölgyem/Uram",
+     "ex": "Dear Sir or Madam, I am writing to complain.",
+     "exhu": "Tisztelt Hölgyem/Uram, panaszt szeretnék tenni."
+    },
+    {
+     "it": "I look forward to hearing from you.",
+     "hu": "Várom válaszát.",
+     "ex": "I look forward to hearing from you soon.",
+     "exhu": "Mielőbbi válaszát várom."
+    },
+    {
+     "it": "Please find attached",
+     "hu": "Mellékelten küldöm",
+     "ex": "Please find attached the report.",
+     "exhu": "Mellékelten küldöm a jelentést."
+    },
+    {
+     "it": "to reply",
+     "hu": "válaszolni",
+     "ex": "Sorry for the late reply.",
+     "exhu": "Elnézést a késői válaszért."
+    },
+    {
+     "it": "to forward",
+     "hu": "továbbítani",
+     "ex": "I'll forward your email to my manager.",
+     "exhu": "Továbbítom az e-mailedet a vezetőmnek."
+    },
+    {
+     "it": "to cc",
+     "hu": "másolatot küldeni",
+     "ex": "Could you cc me on that email?",
+     "exhu": "Engem is betennél másolatba?"
+    },
+    {
+     "it": "a subject line",
+     "hu": "tárgysor",
+     "ex": "Write a clear subject line.",
+     "exhu": "Írj egyértelmű tárgysort."
+    },
+    {
+     "it": "Kind regards",
+     "hu": "Üdvözlettel",
+     "ex": "Kind regards, Anna",
+     "exhu": "Üdvözlettel: Anna"
+    },
+    {
+     "it": "Just a quick reminder",
+     "hu": "Csak egy gyors emlékeztető",
+     "ex": "Just a quick reminder about tomorrow's meeting.",
+     "exhu": "Csak egy gyors emlékeztető a holnapi megbeszélésről."
+    },
+    {
+     "it": "to get in touch",
+     "hu": "felvenni a kapcsolatot",
+     "ex": "Feel free to get in touch if you have questions.",
+     "exhu": "Nyugodtan keress, ha kérdésed van."
+    },
+    {
+     "it": "an out-of-office reply",
+     "hu": "automatikus távollét-üzenet",
+     "ex": "I got an out-of-office reply.",
+     "exhu": "Automatikus távollét-üzenetet kaptam."
+    },
+    {
+     "it": "Could you spell that?",
+     "hu": "Betűzné?",
+     "ex": "Could you spell your surname, please?",
+     "exhu": "Betűzné a vezetéknevét?"
+    }
+   ]
+  },
+  {
+   "id": "sport",
+   "title": "Egészség és sport",
+   "desc": "Edzés, étrend, életmód.",
+   "items": [
+    {
+     "it": "to work out",
+     "hu": "edzeni",
+     "ex": "I work out three times a week.",
+     "exhu": "Hetente háromszor edzek."
+    },
+    {
+     "it": "a gym",
+     "hu": "edzőterem",
+     "ex": "I joined a gym near my office.",
+     "exhu": "Beiratkoztam egy edzőterembe az irodám mellett."
+    },
+    {
+     "it": "to warm up",
+     "hu": "bemelegíteni",
+     "ex": "Always warm up before running.",
+     "exhu": "Futás előtt mindig melegíts be."
+    },
+    {
+     "it": "to stretch",
+     "hu": "nyújtani",
+     "ex": "Stretch for five minutes afterwards.",
+     "exhu": "Utána nyújts öt percig."
+    },
+    {
+     "it": "fit",
+     "hu": "fitt, jó formában",
+     "ex": "She's very fit for her age.",
+     "exhu": "A korához képest nagyon fitt."
+    },
+    {
+     "it": "to lose weight",
+     "hu": "fogyni",
+     "ex": "He's trying to lose weight.",
+     "exhu": "Próbál fogyni."
+    },
+    {
+     "it": "a healthy diet",
+     "hu": "egészséges étrend",
+     "ex": "A healthy diet is just as important as exercise.",
+     "exhu": "Az egészséges étrend ugyanolyan fontos, mint a mozgás."
+    },
+    {
+     "it": "to cut down on",
+     "hu": "kevesebbet fogyasztani",
+     "ex": "I'm cutting down on sugar.",
+     "exhu": "Kevesebb cukrot eszem."
+    },
+    {
+     "it": "to give up",
+     "hu": "abbahagyni",
+     "ex": "He gave up smoking last year.",
+     "exhu": "Tavaly leszokott a dohányzásról."
+    },
+    {
+     "it": "an injury",
+     "hu": "sérülés",
+     "ex": "He's out for a month with a knee injury.",
+     "exhu": "Egy hónapig kiesik térdsérüléssel."
+    },
+    {
+     "it": "to sprain",
+     "hu": "kificamítani",
+     "ex": "I sprained my ankle playing football.",
+     "exhu": "Focizás közben kificamítottam a bokámat."
+    },
+    {
+     "it": "stamina",
+     "hu": "állóképesség",
+     "ex": "Swimming builds stamina.",
+     "exhu": "Az úszás fejleszti az állóképességet."
+    },
+    {
+     "it": "to train for",
+     "hu": "készülni valamire",
+     "ex": "I'm training for a half marathon.",
+     "exhu": "Félmaratonra készülök."
+    },
+    {
+     "it": "a personal trainer",
+     "hu": "személyi edző",
+     "ex": "My personal trainer is very strict.",
+     "exhu": "A személyi edzőm nagyon szigorú."
+    },
+    {
+     "it": "to be out of breath",
+     "hu": "kifulladni",
+     "ex": "I was out of breath after the stairs.",
+     "exhu": "A lépcső után kifulladtam."
+    },
+    {
+     "it": "muscles",
+     "hu": "izmok",
+     "ex": "My muscles are sore after yesterday.",
+     "exhu": "Izomlázam van a tegnapi után."
+    },
+    {
+     "it": "to get enough sleep",
+     "hu": "eleget aludni",
+     "ex": "Make sure you get enough sleep.",
+     "exhu": "Ügyelj rá, hogy eleget aludj."
+    },
+    {
+     "it": "stress",
+     "hu": "stressz",
+     "ex": "Exercise helps me deal with stress.",
+     "exhu": "A mozgás segít kezelni a stresszt."
+    },
+    {
+     "it": "a step count",
+     "hu": "lépésszám",
+     "ex": "My goal is ten thousand steps a day.",
+     "exhu": "A célom napi tízezer lépés."
+    },
+    {
+     "it": "to keep in shape",
+     "hu": "formában tartani magát",
+     "ex": "I cycle to work to keep in shape.",
+     "exhu": "Biciklivel járok dolgozni, hogy formában maradjak."
+    }
+   ]
+  },
+  {
+   "id": "weather",
+   "title": "Időjárás és természet",
+   "desc": "Előrejelzés, évszakok, környezet.",
+   "items": [
+    {
+     "it": "a forecast",
+     "hu": "előrejelzés",
+     "ex": "What's the forecast for tomorrow?",
+     "exhu": "Mi a holnapi előrejelzés?"
+    },
+    {
+     "it": "sunny spells",
+     "hu": "napos időszakok",
+     "ex": "Expect sunny spells in the afternoon.",
+     "exhu": "Délután napos időszakok várhatók."
+    },
+    {
+     "it": "a shower",
+     "hu": "zápor",
+     "ex": "There might be a few showers later.",
+     "exhu": "Később lehet néhány zápor."
+    },
+    {
+     "it": "pouring",
+     "hu": "zuhog",
+     "ex": "It's pouring with rain.",
+     "exhu": "Zuhog az eső."
+    },
+    {
+     "it": "chilly",
+     "hu": "hűvös",
+     "ex": "It's a bit chilly this morning.",
+     "exhu": "Kicsit hűvös van ma reggel."
+    },
+    {
+     "it": "humid",
+     "hu": "párás",
+     "ex": "It's hot and humid in August.",
+     "exhu": "Augusztusban meleg és párás az idő."
+    },
+    {
+     "it": "a heatwave",
+     "hu": "hőhullám",
+     "ex": "We're in the middle of a heatwave.",
+     "exhu": "Hőhullám közepén vagyunk."
+    },
+    {
+     "it": "freezing",
+     "hu": "fagyos",
+     "ex": "It's freezing outside.",
+     "exhu": "Kint fagy van."
+    },
+    {
+     "it": "a storm",
+     "hu": "vihar",
+     "ex": "The storm knocked down several trees.",
+     "exhu": "A vihar több fát kidöntött."
+    },
+    {
+     "it": "foggy",
+     "hu": "ködös",
+     "ex": "Drive carefully, it's foggy.",
+     "exhu": "Óvatosan vezess, köd van."
+    },
+    {
+     "it": "to clear up",
+     "hu": "kitisztul",
+     "ex": "It should clear up by noon.",
+     "exhu": "Délre ki kell tisztulnia."
+    },
+    {
+     "it": "a degree",
+     "hu": "fok",
+     "ex": "It's minus five degrees.",
+     "exhu": "Mínusz öt fok van."
+    },
+    {
+     "it": "climate change",
+     "hu": "klímaváltozás",
+     "ex": "Climate change affects us all.",
+     "exhu": "A klímaváltozás mindannyiunkat érint."
+    },
+    {
+     "it": "pollution",
+     "hu": "szennyezés",
+     "ex": "Air pollution is a big problem in cities.",
+     "exhu": "A légszennyezés nagy gond a városokban."
+    },
+    {
+     "it": "to recycle",
+     "hu": "újrahasznosítani",
+     "ex": "We recycle paper and plastic.",
+     "exhu": "Újrahasznosítjuk a papírt és a műanyagot."
+    },
+    {
+     "it": "a drought",
+     "hu": "aszály",
+     "ex": "The drought ruined the harvest.",
+     "exhu": "Az aszály tönkretette a termést."
+    },
+    {
+     "it": "a flood",
+     "hu": "árvíz",
+     "ex": "The river flooded the village.",
+     "exhu": "A folyó elárasztotta a falut."
+    },
+    {
+     "it": "the countryside",
+     "hu": "vidék",
+     "ex": "We spent the weekend in the countryside.",
+     "exhu": "A hétvégét vidéken töltöttük."
+    },
+    {
+     "it": "a hike",
+     "hu": "túra",
+     "ex": "Let's go for a hike if it's dry.",
+     "exhu": "Menjünk túrázni, ha nem esik."
+    },
+    {
+     "it": "It looks like rain.",
+     "hu": "Esőre áll.",
+     "ex": "Take an umbrella, it looks like rain.",
+     "exhu": "Vigyél esernyőt, esőre áll."
+    }
+   ]
+  },
+  {
+   "id": "feelings",
+   "title": "Érzelmek és kapcsolatok",
+   "desc": "Hangulat, vita, támogatás.",
+   "items": [
+    {
+     "it": "upset",
+     "hu": "felzaklatott, szomorú",
+     "ex": "She was upset about the news.",
+     "exhu": "Felzaklatta a hír."
+    },
+    {
+     "it": "relieved",
+     "hu": "megkönnyebbült",
+     "ex": "I was so relieved when I passed.",
+     "exhu": "Annyira megkönnyebbültem, amikor átmentem."
+    },
+    {
+     "it": "disappointed",
+     "hu": "csalódott",
+     "ex": "He was disappointed with the result.",
+     "exhu": "Csalódott volt az eredmény miatt."
+    },
+    {
+     "it": "nervous",
+     "hu": "ideges, izgul",
+     "ex": "I always get nervous before exams.",
+     "exhu": "Vizsgák előtt mindig izgulok."
+    },
+    {
+     "it": "proud of",
+     "hu": "büszke valamire",
+     "ex": "I'm really proud of you.",
+     "exhu": "Nagyon büszke vagyok rád."
+    },
+    {
+     "it": "grateful",
+     "hu": "hálás",
+     "ex": "I'm grateful for your help.",
+     "exhu": "Hálás vagyok a segítségedért."
+    },
+    {
+     "it": "jealous",
+     "hu": "féltékeny",
+     "ex": "Don't be jealous of his success.",
+     "exhu": "Ne légy féltékeny a sikerére."
+    },
+    {
+     "it": "to get on with",
+     "hu": "kijönni valakivel",
+     "ex": "I get on well with my sister.",
+     "exhu": "Jól kijövök a húgommal."
+    },
+    {
+     "it": "to fall out with",
+     "hu": "összeveszni valakivel",
+     "ex": "They fell out over money.",
+     "exhu": "Összevesztek a pénzen."
+    },
+    {
+     "it": "to make up",
+     "hu": "kibékülni",
+     "ex": "They argued but made up the next day.",
+     "exhu": "Összevesztek, de másnap kibékültek."
+    },
+    {
+     "it": "to rely on",
+     "hu": "számítani valakire",
+     "ex": "You can always rely on me.",
+     "exhu": "Mindig számíthatsz rám."
+    },
+    {
+     "it": "to cheer up",
+     "hu": "felvidítani",
+     "ex": "This song always cheers me up.",
+     "exhu": "Ez a dal mindig felvidít."
+    },
+    {
+     "it": "to miss someone",
+     "hu": "hiányzik valaki",
+     "ex": "I miss you so much.",
+     "exhu": "Nagyon hiányzol."
+    },
+    {
+     "it": "lonely",
+     "hu": "magányos",
+     "ex": "He felt lonely after moving abroad.",
+     "exhu": "Magányos volt, miután külföldre költözött."
+    },
+    {
+     "it": "to be fed up with",
+     "hu": "elege van valamiből",
+     "ex": "I'm fed up with this weather.",
+     "exhu": "Elegem van ebből az időből."
+    },
+    {
+     "it": "to calm down",
+     "hu": "megnyugodni",
+     "ex": "Calm down, it's not a big deal.",
+     "exhu": "Nyugi, nem nagy ügy."
+    },
+    {
+     "it": "embarrassed",
+     "hu": "zavarban van",
+     "ex": "I was so embarrassed when I fell.",
+     "exhu": "Nagyon kínos volt, amikor elestem."
+    },
+    {
+     "it": "to apologise",
+     "hu": "bocsánatot kérni",
+     "ex": "I want to apologise for yesterday.",
+     "exhu": "Bocsánatot szeretnék kérni a tegnapiért."
+    },
+    {
+     "it": "to trust",
+     "hu": "megbízni",
+     "ex": "I trust her completely.",
+     "exhu": "Teljesen megbízom benne."
+    },
+    {
+     "it": "I know how you feel.",
+     "hu": "Tudom, mit érzel.",
+     "ex": "I know how you feel, I've been there too.",
+     "exhu": "Tudom, mit érzel, én is jártam így."
+    }
+   ]
+  }
+ ]
+}

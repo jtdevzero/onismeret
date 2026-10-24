@@ -1,8 +1,8 @@
 /* Parliamo service worker. GENERÁLT FÁJL (parliamo/build.py), ne szerkeszd kézzel.
    Az app váza és a tananyag telepítéskor a gyorsítótárba kerül; a hangok és képek az első használatkor
    (vagy a Beállítások „Letöltés offline használatra” gombjával). Az AI-kérések nem mennek át rajta. */
-const SHELL = 'parliamo-shell-f306cfaaca';
-const MEDIA = 'parliamo-media-5dbee9b55b';
+const SHELL = 'parliamo-shell-0f06ef9308';
+const MEDIA = 'parliamo-media-1a9501465b';
 const PRECACHE = [
 "./",
 "index.html",
@@ -16,6 +16,7 @@ const PRECACHE = [
 "icons/icon-192.png",
 "icons/icon-512.png",
 "icons/icon-maskable-512.png",
+"data/accents-en.json",
 "data/drills-en.json",
 "data/drills-es.json",
 "data/drills-it.json",
@@ -23,6 +24,8 @@ const PRECACHE = [
 "data/es.json",
 "data/exam-en.json",
 "data/it.json",
+"data/offline-en.json",
+"data/packs-en.json",
 "data/podcasts-en.json",
 "data/pron-en.json",
 "data/stories-en.json",
@@ -31,8 +34,8 @@ const PRECACHE = [
 "data/verbs-en.json",
 "data/verbs-es.json",
 "data/verbs-it.json",
-"img/hero.jpg",
-"img/hero-en.jpg"
+"img/hero.webp",
+"img/hero-en.webp"
 ];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(SHELL).then(c => c.addAll(PRECACHE)).then(() => self.skipWaiting()));

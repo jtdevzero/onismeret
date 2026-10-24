@@ -33,6 +33,10 @@ HEAD = f"""<!doctype html>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Parliamo">
 <link rel="stylesheet" href="fonts/fonts.css">
+<link rel="preload" href="fonts/figtree-latin.woff2" as="font" type="font/woff2" crossorigin>
+<script>/* A tananyag letöltése már a szkript előtt indul (a nyelvet a mentett állapotból olvassa). */
+(function(){{var l='en';try{{l=(JSON.parse(localStorage.getItem('parliamo.v1'))||{{}}).settings.lang||'en';}}catch(e){{}}if(!/^(en|it|es)$/.test(l))l='en';
+var k=document.createElement('link');k.rel='preload';k.as='fetch';k.href='data/'+l+'.json';k.crossOrigin='anonymous';document.head.appendChild(k);}})();</script>
 <style>:root{{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}}body{{margin:0;font:14px system-ui,sans-serif}}img{{max-width:100%}}[hidden]{{display:none!important}}</style>
 </head>
 <body>
@@ -107,9 +111,9 @@ def main():
     shell += sorted(p.relative_to(HERE).as_posix() for p in (HERE / 'fonts').glob('*.woff2'))
     shell += sorted(p.relative_to(HERE).as_posix() for p in (HERE / 'icons').glob('*.png'))
     shell += sorted(p.relative_to(HERE).as_posix() for p in (HERE / 'data').glob('*.json'))
-    shell += ['img/hero.jpg', 'img/hero-en.jpg']
+    shell += ['img/hero.webp', 'img/hero-en.webp']
     shell_files = [HERE / 'index.html'] + [HERE / s for s in shell if s not in ('./', 'index.html')]
-    media_files = sorted((HERE / 'audio').glob('*.json')) + sorted((HERE / 'img').glob('*.jpg'))
+    media_files = sorted((HERE / 'audio').glob('*.json')) + sorted((HERE / 'img').glob('*.webp'))
     sw = (SW.replace('__SHELL__', digest(shell_files))
             .replace('__MEDIA__', digest(media_files))
             .replace('__LIST__', '[\n' + ',\n'.join(f'"{s}"' for s in shell) + '\n]'))
