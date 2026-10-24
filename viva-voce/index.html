@@ -5,12 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Viva Voce</title>
 <meta name="description" content="Olasz nyelvtanulás FSRS ismétléssel, valós mondatokkal és kiejtésgyakorlással.">
-<meta name="theme-color" content="#f8fafc">
+<meta name="theme-color" content="#0b1324">
+<script>
+/* Téma beállítása még a rajzolás előtt, hogy ne villanjon. Alapból sötét. */
+(function () {
+  var t = 'dark';
+  try { t = (JSON.parse(localStorage.getItem('vivavoce.v1')) || {}).settings.theme || 'dark'; } catch (e) {}
+  if (t === 'system') t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  document.documentElement.dataset.theme = t;
+  document.querySelector('meta[name=theme-color]').content = t === 'dark' ? '#0b1324' : '#f8fafc';
+})();
+</script>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <link rel="stylesheet" href="fonts/fonts.css">
-<link rel="stylesheet" href="style.css?v=2">
+<link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
 <header class="top">
@@ -36,6 +46,9 @@
   <button data-view="library">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h9a4 4 0 0 1 4 4v12H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h10"/></svg><span>Tananyag</span>
   </button>
+  <button data-view="talk">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9.5h8M8 12.5h5"/></svg><span>Beszélj</span>
+  </button>
   <button data-view="stats">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V10"/><path d="M12 20V4"/><path d="M19 20v-7"/></svg><span>Haladás</span>
   </button>
@@ -47,7 +60,7 @@
 <div id="sheet" class="sheet" hidden></div>
 
 <noscript><p class="loading">A Viva Voce JavaScriptet igényel.</p></noscript>
-<script src="fsrs.js?v=2"></script>
-<script src="app.js?v=2"></script>
+<script src="fsrs.js?v=3"></script>
+<script src="app.js?v=3"></script>
 </body>
 </html>

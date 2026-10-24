@@ -2,7 +2,9 @@
 'use strict';
 
 const STORE_KEY = 'vivavoce.v1';
-const PACK_URL = 'data/it.json?v=2';
+const PACK_URL = 'data/it.json?v=3';
+const KEY_STORE = 'vivavoce.apikey';
+const AI_MODEL = 'claude-haiku-5-5';
 const { review: fsrsReview, retrievability, dayIndex, DAY } = window.FSRS;
 
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -11,7 +13,7 @@ const app = $('#app');
 const sheet = $('#sheet');
 
 /* ---------- Állapot ---------- */
-const DEFAULT_SETTINGS = { newPerDay: 8, targetR: 0.9, rate: 0.9, speak: true, autoplay: true, sound: true, reviewLimit: 150 };
+const DEFAULT_SETTINGS = { newPerDay: 8, targetR: 0.9, rate: 0.9, speak: true, autoplay: true, sound: true, reviewLimit: 150, theme: 'dark' };
 let state = loadState();
 let PACK = null, ITEMS = {}, ORDER = [];
 let session = null;
@@ -220,8 +222,9 @@ function rate(id, grade) {
 }
 
 /* ---------- Navigáció ---------- */
-const VIEWS = { home: renderHome, library: renderLibrary, stats: renderStats, settings: renderSettings };
+const VIEWS = { home: renderHome, library: renderLibrary, talk: renderTalk, stats: renderStats, settings: renderSettings };
 function show(view, arg) {
+  if (view !== 'talk') talk = null;
   document.body.classList.remove('in-session', 'sheet-open');
   closeSheet();
   $$('.tabbar button').forEach(b => b.dataset.view === view ? b.setAttribute('aria-current', 'page') : b.removeAttribute('aria-current'));
@@ -279,13 +282,14 @@ function renderHome() {
       </div>
     </section>
 
-    <div class="section-h"><h2>Útvonal</h2><span>A1 · ${PACK.units.length} lecke</span></div>
+    <div class="section-h"><h2>Útvonal</h2><span>${PACK.units.length} lecke, A1–A2</span></div>
     <div class="path">
-      ${PACK.units.map(x => {
+      ${PACK.units.map((x, xi) => {
+        const lvlHead = xi === 0 || PACK.units[xi - 1].level !== x.level ? `<div class="level-h"><span>${x.level}</span>${x.level === 'A1' ? 'Alapok' : 'Haladó kezdő'}</div>` : '';
         const started = x.items.filter(i => state.cards[i.id]).length;
         const cls = started === x.items.length ? 'done' : x === u ? 'now' : started ? 'started' : 'locked';
         const meta = cls === 'done' ? 'kész' : cls === 'now' ? `${started}/${x.items.length}` : started ? `${started}/${x.items.length}` : '';
-        return `<button class="stop-row ${cls}" data-unit="${x.id}" aria-label="${x.index + 1}. lecke: ${esc(x.hu)}">
+        return lvlHead + `<button class="stop-row ${cls}" data-unit="${x.id}" aria-label="${x.index + 1}. lecke: ${esc(x.hu)}">
           <span class="medal">${cls === 'done' ? ICON.check.replace('stroke-width="3"', 'stroke-width="3" width="22" height="22"') : x.index + 1}</span>
           <span class="stop-txt">${IT(x.title)}<span class="hu">${esc(x.hu)}</span></span>
           <span class="stop-meta">${meta}</span>
@@ -306,7 +310,7 @@ function showGrammar(u, back) {
   document.body.classList.add('in-session');
   app.innerHTML = `
     <div class="session-bar"><button class="quit" id="back" aria-label="Vissza">${ICON.back}</button></div>
-    <div class="grammar-head">${IT(u.title)}<span class="hu">${u.index + 1}. lecke, ${esc(u.hu.toLowerCase())}</span></div>
+    <div class="grammar-head">${IT(u.title)}<span class="hu">${u.level}, ${u.index + 1}. lecke: ${esc(u.hu.toLowerCase())}</span></div>
     <div style="margin-top:8px">${grammarHtml(u)}</div>
     <button class="btn block" id="back2" style="margin-top:20px">Vissza</button>`;
   $('#back').onclick = $('#back2').onclick = back;
@@ -439,7 +443,7 @@ function beginExercise(item) {
 
 /* ---------- Képernyők a körön belül ---------- */
 function renderUnitIntro(u) {
-  sessionShell(`<div class="task-kind"><span class="pill new">Új lecke</span>${u.index + 1}. a tízből</div>`, `
+  sessionShell(`<div class="task-kind"><span class="pill new">Új lecke</span>${u.level}, ${u.index + 1}. lecke</div>`, `
     <div class="grammar-head">${IT(u.title)}<span class="hu">${esc(u.hu)}</span></div>
     <div style="margin-top:6px">${grammarHtml(u)}</div>
     <button class="btn primary block lg" id="go" style="margin-top:18px">Kezdjük</button>`);
@@ -675,10 +679,11 @@ function renderLibrary(openId) {
       <span><span class="lvl l2"><i></i><i></i><i></i></span>rögzül</span>
       <span><span class="lvl l3"><i></i><i></i><i></i></span>tartós</span>
     </div>
-    ${PACK.units.map(u => {
+    ${PACK.units.map((u, ui) => {
       const started = u.items.filter(i => state.cards[i.id]).length;
       const cls = started === u.items.length ? 'done' : u === cu ? 'now' : started ? 'started' : 'locked';
-      return `<details class="unit" id="u-${u.id}" ${u.id === open ? 'open' : ''}>
+      const head = ui === 0 || PACK.units[ui - 1].level !== u.level ? `<div class="level-h"><span>${u.level}</span>${u.level === 'A1' ? 'Alapok' : 'Haladó kezdő'}</div>` : '';
+      return head + `<details class="unit" id="u-${u.id}" ${u.id === open ? 'open' : ''}>
         <summary class="stop-row ${cls}" style="padding:12px 16px">
           <span class="medal">${cls === 'done' ? ICON.check.replace('stroke-width="3"', 'stroke-width="3" width="20" height="20"') : u.index + 1}</span>
           <span class="stop-txt">${IT(u.title)}<span class="hu">${esc(u.hu)}</span></span>
@@ -734,7 +739,7 @@ function renderStats() {
     <div class="section-h"><h2>Gyakorlás</h2><span>utolsó ${WEEKS} hét</span></div>
     <div class="panel">
       <div class="heat" aria-label="Napi aktivitás hőtérképe">${heat}</div>
-      <div class="heat-legend">kevés <i style="background:var(--surface)"></i><i style="background:#bfe5d3"></i><i style="background:#6cc49d"></i><i style="background:#059669"></i><i style="background:var(--emerald)"></i> sok</div>
+      <div class="heat-legend">kevés <i style="background:var(--surface)"></i><i style="background:var(--h1)"></i><i style="background:var(--h2)"></i><i style="background:var(--h3)"></i><i style="background:var(--h4)"></i> sok</div>
     </div>
 
     <div class="section-h"><h2>Előttünk álló hét</h2><span>esedékes ismétlések</span></div>
@@ -756,6 +761,7 @@ function renderSettings() {
     ${!ttsOK() ? '<div class="notice">Ezen az eszközön nincs olasz felolvasóhang, ezért a hallás utáni feladatok kimaradnak. Androidon a Google Speech Services, iPhone-on a Beállítások → Kisegítő lehetőségek → Felolvasott tartalom → Hangok menüben tölthetsz le olasz hangot.</div>' : ''}
     ${!srOK() ? '<div class="notice">Ez a böngésző nem ismeri fel a beszédet, ezért a kimondós feladatok kimaradnak. Chrome-ban és Safariban működik.</div>' : ''}
     <div class="panel">
+      <div class="setting"><label>Megjelenés</label>${seg('theme', [['dark', 'Sötét'], ['light', 'Világos'], ['system', 'Rendszer']])}</div>
       <div class="setting"><label>Új kifejezés naponta<span class="sub">8-cal kb. 15 perc/nap hosszú távon</span></label>${seg('newPerDay', [[5, '5'], [8, '8'], [12, '12'], [20, '20']])}</div>
       <div class="setting"><label>Megtartási cél<span class="sub">Magasabb cél, több ismétlés</span></label>${seg('targetR', [[0.85, '85%'], [0.9, '90%'], [0.95, '95%']])}</div>
       <div class="setting"><label>Felolvasás tempója</label>${seg('rate', [[0.75, 'Lassú'], [0.9, 'Közepes'], [1, 'Élő']])}</div>
@@ -778,9 +784,13 @@ function renderSettings() {
       <label class="btn" style="cursor:pointer">Importálás<input type="file" id="imp" accept="application/json" hidden></label>
       <button class="btn danger" id="reset" style="margin-left:auto">Haladás törlése</button>
     </div>
-    <p class="foot">Viva Voce, olasz A1 · ${ORDER.length} kifejezés</p>`;
+    <div class="section-h"><h2>Beszélgetőtárs</h2></div>
+    <div class="panel">${keyForm()}</div>
+    <p class="foot">Viva Voce, olasz A1–A2, ${ORDER.length} kifejezés</p>`;
+  bindKeyForm(() => renderSettings());
   $$('.seg button').forEach(b => b.onclick = () => {
-    st[b.dataset.k] = +b.dataset.v; saveState();
+    st[b.dataset.k] = isNaN(+b.dataset.v) ? b.dataset.v : +b.dataset.v; saveState();
+    if (b.dataset.k === 'theme') applyTheme();
     $$(`.seg button[data-k="${b.dataset.k}"]`).forEach(x => x.setAttribute('aria-pressed', x === b));
     if (b.dataset.k === 'rate') say('Ciao, come stai?');
   });
@@ -799,13 +809,210 @@ function renderSettings() {
       if (!data.cards) throw new Error();
       if (!confirm('Felülírjam a mostani haladást az importált fájllal?')) return;
       localStorage.setItem(STORE_KEY, JSON.stringify(data));
-      state = loadState(); paintStreak(); show('home');
+      state = loadState(); paintStreak(); applyTheme(); show('home');
     } catch (err) { alert('Ez a fájl nem Viva Voce mentés.'); }
   };
   $('#reset').onclick = () => {
     if (!confirm('Biztosan törlöd az összes haladást? Ez nem vonható vissza.')) return;
     localStorage.removeItem(STORE_KEY); state = loadState(); paintStreak(); show('home');
   };
+}
+
+/* ---------- Téma ---------- */
+function applyTheme() {
+  let t = state.settings.theme || 'dark';
+  if (t === 'system') t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  document.documentElement.dataset.theme = t;
+  const m = $('meta[name=theme-color]'); if (m) m.content = t === 'dark' ? '#0b1324' : '#f8fafc';
+}
+
+/* ---------- Beszélgetőtárs (Claude API, a felhasználó saját kulcsával) ---------- */
+const ROLES = {
+  u1: 'Egy római bárban megismerkedsz valakivel',
+  u2: 'Rendelsz a kávézóban, a barista kiszolgál',
+  u3: 'Egy baráttal egyeztetsz időpontot',
+  u4: 'Jegyet veszel a Termini pályaudvaron',
+  u5: 'Vacsorázol egy trattoriában, a pincér kiszolgál',
+  u6: 'Vásárolsz a piacon, az árus alkudozik',
+  u7: 'Első megbeszélés egy olasz ügyféllel',
+  u8: 'Utat kérdezel egy járókelőtől',
+  u9: 'Hétvégi programot terveztek egy baráttal',
+  u10: 'Egy barát a múlt hétvégédről kérdez',
+  u11: 'Egy kolléga a napi rutinodról kérdez',
+  u12: 'Egy idős olasz néni a gyerekkoráról mesél, te kérdezel',
+  u13: 'Szívességet kérsz a szálloda recepcióján',
+  u14: 'Egy barát a jövő évi terveidről kérdez',
+  u15: 'Telefonon egyeztetsz egy olasz cég asszisztensével',
+  u16: 'Orvosnál vagy, elmondod a panaszaidat',
+  u17: 'Egy kollégával vitatkoztok egy új ötletről',
+  u18: 'Sztrájk van, az ügyintézővel intézed a visszatérítést'
+};
+const getKey = () => { try { return localStorage.getItem(KEY_STORE) || ''; } catch (e) { return ''; } };
+let talk = null; // { unit, msgs: [{role, content}], view: [...] }
+
+function keyForm() {
+  const has = !!getKey();
+  return has
+    ? `<div class="setting"><label>Claude API-kulcs<span class="sub">Csak ebben a böngészőben van elmentve, az exportba nem kerül bele.</span></label><button class="btn danger" id="keyDel">Kulcs törlése</button></div>`
+    : `<p class="explain" style="margin-bottom:12px">A beszélgetéshez saját Claude API-kulcs kell (<a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener" style="color:var(--sapphire)">console.anthropic.com</a>). A kulcs csak ebben a böngészőben tárolódik, a kérések közvetlenül az Anthropichoz mennek. Egy 10 perces beszélgetés a Haiku modellel jellemzően 1 cent alatti.</p>
+       <form id="keyForm" class="key-form"><input class="answer-input key-input" id="keyInp" type="password" autocomplete="off" spellcheck="false" placeholder="sk-ant-…" aria-label="Claude API-kulcs"><button class="btn primary">Mentés</button></form>
+       <p class="heard small-err" id="keyErr"></p>`;
+}
+function bindKeyForm(after) {
+  const del = $('#keyDel');
+  if (del) del.onclick = () => { if (!confirm('Törlöd az API-kulcsot ebből a böngészőből?')) return; try { localStorage.removeItem(KEY_STORE); } catch (e) {} after(); };
+  const f = $('#keyForm');
+  if (f) f.onsubmit = e => {
+    e.preventDefault();
+    const v = $('#keyInp').value.trim();
+    if (!/^sk-ant-/.test(v)) { $('#keyErr').textContent = 'Ez nem Claude API-kulcsnak tűnik (sk-ant- kezdetű).'; return; }
+    try { localStorage.setItem(KEY_STORE, v); } catch (err) {}
+    after();
+  };
+}
+
+function renderTalk() {
+  if (talk) return renderChat();
+  const key = getKey();
+  const started = PACK.units.filter(u => u.items.some(i => state.cards[i.id]));
+  const cu = currentUnit();
+  const avail = started.length ? started : [cu];
+  app.innerHTML = `
+    <section class="tile-frame"><div class="tile-inner">
+      <h1 class="greeting" lang="it">Parliamo!</h1>
+      <p class="greeting-hu">Beszéljünk!</p>
+      <p class="explain" style="margin-top:14px">Valós helyzetet játszol el egy olasz partnerrel, a már tanult szavaiddal. Minden válaszod után megmutatja, hogyan mondanád helyesen, és miért. Beszélhetsz vagy gépelhetsz.</p>
+    </div></section>
+    ${key ? `
+      <div class="section-h"><h2>Válassz helyzetet</h2><span>${avail.length} elérhető</span></div>
+      <div class="scenes">
+        ${avail.map(u => `<button class="scene" data-u="${u.id}"><span class="lvl-tag">${u.level}</span><span class="scene-t">${IT(u.title)}<span class="hu">${esc(ROLES[u.id] || u.hu)}</span></span></button>`).join('')}
+        <button class="scene" data-u="free"><span class="lvl-tag">${cu.level}</span><span class="scene-t">${IT('Chiacchierata libera')}<span class="hu">Szabad beszélgetés bármiről</span></span></button>
+      </div>
+      ${started.length < PACK.units.length ? `<p class="hint">Minden elkezdett lecke új helyzetet nyit meg.</p>` : ''}`
+    : `<div class="section-h"><h2>Beállítás</h2></div><div class="panel">${keyForm()}</div>`}`;
+  if (!key) return bindKeyForm(renderTalk);
+  $$('.scene').forEach(b => b.onclick = () => startTalk(b.dataset.u));
+}
+
+function knownVocab(limit = 120) {
+  const ids = ORDER.filter(id => state.cards[id]);
+  return (ids.length ? ids : currentUnit().items.map(i => i.id)).slice(-limit).map(id => ITEMS[id].it);
+}
+
+function systemPrompt(u) {
+  const level = u ? u.level : currentUnit().level;
+  const scene = u ? `${ROLES[u.id] || u.hu} (lesson theme: ${u.title} / ${u.hu}). Play the Italian counterpart in this situation.` : 'A relaxed free chat with a friendly Italian from Bologna. You pick everyday topics.';
+  return `You are a warm, natural Italian conversation partner inside a language-learning app. The learner is a Hungarian speaker at CEFR level ${level}.
+Scene: ${scene}
+Respond ONLY with one JSON object and nothing else:
+{"reply": "...", "hu": "...", "correction": null, "hints": ["...", "..."]}
+- reply: your next line in Italian, in character, 1–2 short sentences at ${level} level. Prefer words the learner knows: ${knownVocab().join(', ')}. Usually end with a question so the conversation continues.
+- hu: Hungarian translation of reply.
+- correction: if the learner's LAST message contains a grammar, vocabulary, accent or spelling mistake (ignore capitalisation and punctuation), return {"fixed": "<the full corrected Italian sentence>", "why": "<one short explanation in Hungarian>"}. If the learner wrote in Hungarian or English, put the Italian version in fixed and why = "Így mondanád olaszul.". If it was correct, or there is no learner message yet, use null.
+- hints: two short, different things the learner could say next, in Italian, at their level.
+Stay in character. Never break the JSON format.`;
+}
+
+function startTalk(uid) {
+  const u = uid === 'free' ? null : PACK.units.find(x => x.id === uid);
+  talk = { unit: u, msgs: [{ role: 'user', content: '(A jelenet kezdődik. Szólalj meg először.)' }], view: [], busy: false, hints: [] };
+  document.body.classList.add('in-session');
+  renderChat();
+  askClaude();
+}
+
+function parseReply(text) {
+  try { const m = text.match(/\{[\s\S]*\}/); const o = JSON.parse(m ? m[0] : text); if (o.reply) return o; } catch (e) {}
+  return { reply: text.trim(), hu: '', correction: null, hints: [] };
+}
+
+async function askClaude() {
+  talk.busy = true; paintChat();
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-api-key': getKey(), 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+      body: JSON.stringify({ model: AI_MODEL, max_tokens: 700, system: systemPrompt(talk.unit), messages: talk.msgs })
+    });
+    if (!res.ok) {
+      const msg = res.status === 401 ? 'Az API-kulcs érvénytelen. Ellenőrizd a Beállításokban.'
+        : res.status === 429 || res.status === 529 ? 'A szolgáltatás most túlterhelt. Várj pár másodpercet, és küldd újra.'
+        : res.status === 400 ? 'A kérés hibás volt (lehet, hogy elfogyott a keret a fiókodon).'
+        : `Hiba történt (${res.status}).`;
+      throw new Error(msg);
+    }
+    const data = await res.json();
+    const text = (data.content || []).filter(c => c.type === 'text').map(c => c.text).join('');
+    talk.msgs.push({ role: 'assistant', content: text });
+    const o = parseReply(text);
+    const lastUser = [...talk.view].reverse().find(v => v.who === 'me');
+    if (lastUser && o.correction && o.correction.fixed && norm(o.correction.fixed) !== norm(lastUser.text)) lastUser.fix = o.correction;
+    else if (lastUser) lastUser.ok = true;
+    talk.view.push({ who: 'ai', text: o.reply, hu: o.hu });
+    talk.hints = Array.isArray(o.hints) ? o.hints.slice(0, 3) : [];
+    talk.busy = false;
+    paintChat();
+    if (state.settings.autoplay) say(o.reply, null, $('.bubble.ai:last-of-type .icon-btn'));
+  } catch (e) {
+    talk.busy = false;
+    talk.error = e.message && !/fetch/i.test(e.message) ? e.message : 'Nincs kapcsolat. Ellenőrizd a netet.';
+    paintChat();
+  }
+}
+
+function sendTalk(text) {
+  text = text.trim();
+  if (!text || talk.busy) return;
+  talk.error = null;
+  talk.view.push({ who: 'me', text });
+  talk.msgs.push({ role: 'user', content: text });
+  const d = today(); state.days[d] = (state.days[d] || 0) + 1; saveState(); paintStreak();
+  askClaude();
+}
+
+function renderChat() {
+  const u = talk.unit;
+  app.innerHTML = `
+    <div class="session-bar">
+      <button class="quit" id="quit" aria-label="Beszélgetés vége">${ICON.x}</button>
+      <div class="chat-title">${IT(u ? u.title : 'Chiacchierata libera')}<span class="hu">${esc(u ? ROLES[u.id] || u.hu : 'Szabad beszélgetés')}</span></div>
+    </div>
+    <div class="chat" id="chat"></div>
+    <div class="composer">
+      <div class="hints" id="hints"></div>
+      <form id="cf" class="cf" autocomplete="off">
+        ${srOK() && state.settings.speak ? `<button type="button" class="icon-btn" id="cmic" aria-label="Diktálás olaszul">${ICON.mic}</button>` : ''}
+        <input class="answer-input" id="cin" lang="it" autocapitalize="sentences" autocorrect="off" spellcheck="false" enterkeyhint="send" placeholder="Írj vagy mondd olaszul" aria-label="Üzenet olaszul">
+        <button class="btn primary" id="csend" aria-label="Küldés">Küldés</button>
+      </form>
+    </div>`;
+  $('#quit').onclick = () => { talk = null; stopAudio(); show('talk'); };
+  $('#cf').onsubmit = e => { e.preventDefault(); const i = $('#cin'); sendTalk(i.value); i.value = ''; };
+  const mic = $('#cmic');
+  if (mic) mic.onclick = async () => {
+    mic.classList.add('rec-small'); mic.disabled = true;
+    try { const a = await listenOnce(); if (a[0]) $('#cin').value = a[0]; } catch (e) { /* nincs mikrofon */ }
+    mic.classList.remove('rec-small'); mic.disabled = false; $('#cin').focus();
+  };
+  paintChat();
+}
+
+function paintChat() {
+  const chat = $('#chat'); if (!chat) return;
+  chat.innerHTML = talk.view.map((m, i) => m.who === 'ai'
+    ? `<div class="bubble ai">${playBtn(m.text)}<div><p class="it" lang="it">${esc(m.text)}</p>${m.hu ? `<details class="tr"><summary>Fordítás</summary><p class="hu">${esc(m.hu)}</p></details>` : ''}</div></div>`
+    : `<div class="bubble me"><p lang="it">${esc(m.text)}</p>${m.fix ? `<div class="fix"><span class="fix-l">Helyesen:</span> ${IT(m.fix.fixed)} ${playBtn(m.fix.fixed, 'Meghallgatom', 'sm')}<p>${esc(m.fix.why || '')}</p></div>` : m.ok ? '<div class="okmark">✓ Helyes</div>' : ''}</div>`
+  ).join('') + (talk.busy ? '<div class="bubble ai typing"><i></i><i></i><i></i></div>' : '')
+    + (talk.error ? `<div class="notice">${esc(talk.error)} <button class="btn quiet" id="retry">Újra</button></div>` : '');
+  const r = $('#retry'); if (r) r.onclick = () => { talk.error = null; askClaude(); };
+  const h = $('#hints');
+  if (h) {
+    h.innerHTML = talk.hints.length && !talk.busy ? `<span class="hint-l">Ötlet:</span>${talk.hints.map(x => `<button class="chip" lang="it">${esc(x)}</button>`).join('')}` : '';
+    $$('.chip', h).forEach(c => c.onclick = () => { $('#cin').value = c.textContent; $('#cin').focus(); });
+  }
+  $('#csend') && ($('#csend').disabled = talk.busy);
+  requestAnimationFrame(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }));
 }
 
 /* ---------- Indítás ---------- */
@@ -816,6 +1023,8 @@ function renderSettings() {
     return;
   }
   paintStreak();
+  applyTheme();
+  matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => { if (state.settings.theme === 'system') applyTheme(); });
   show('home');
   if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js').catch(() => {});
 })();

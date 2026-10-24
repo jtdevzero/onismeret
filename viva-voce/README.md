@@ -1,6 +1,6 @@
 # Viva Voce
 
-Nyelvtanuló webapp, ami azt csinálja, amit a Duolingo nem: **tényleg hosszú távú memóriára optimalizál**, valós mondatokkal és kiejtésgyakorlással. Nincs szív, reklám, liga vagy fizetőfal. Első nyelvcsomag: **olasz, A1, magyarul**.
+Nyelvtanuló webapp, ami azt csinálja, amit a Duolingo nem: **tényleg hosszú távú memóriára optimalizál**, valós mondatokkal és kiejtésgyakorlással. Nincs szív, reklám, liga vagy fizetőfal. Első nyelvcsomag: **olasz A1–A2, magyarul** (18 lecke, 333 kifejezés és mondat).
 
 ## Miben más
 
@@ -19,7 +19,9 @@ Nyelvtanuló webapp, ami azt csinálja, amit a Duolingo nem: **tényleg hosszú 
 - **Napi kör:** először az esedékes ismétlések (a leginkább felejtőben lévők elöl), közéjük keverve a napi új anyag (alapból 8).
 - **Új kifejezés:** bemutatás hanggal és példamondattal → két feladat múlva ellenőrzés → ettől kezdve az FSRS ütemezi.
 - **Automatikus értékelés:** rossz = 1, ékezet- vagy névelőhiba, kis elírás = 2, jó = 3, gyors és hibátlan gépelés = 4.
-- **Statisztika:** valódi megtartási arány (30 nap), 7 napos előrejelzés, aktivitás.
+- **Statisztika:** valódi megtartási arány (30 nap), 7 napos előrejelzés, 16 hetes aktivitási hőtérkép.
+- **Beszélgetőtárs (Beszélj fül):** szerepjáték olaszul a leckék helyzeteiben (kávézó, orvos, ügyféltárgyalás…), a már tanult szókinccsel. Minden mondatod után kijavítja, és magyarul elmagyarázza a hibát. Saját Claude API-kulccsal működik (`claude-haiku-5-5`), a kulcs csak a böngészőben tárolódik, a kérés közvetlenül az Anthropichoz megy.
+- **Téma:** sötét alapból, választható világos vagy rendszer szerinti.
 
 ## Futtatás
 
@@ -73,10 +75,11 @@ sw.js, manifest.webmanifest, icons/   PWA / offline
 
 ## Ütemterv
 
-- [ ] A2 olasz csomag (feltételes mód, imperfetto, reflexív igék)
-- [ ] Több nyelv választható a beállításokban
-- [ ] Opcionális AI beszélgetőtárs a leckék szókincsével
-- [ ] Szinkron eszközök között
+- [x] A2 olasz csomag (visszaható igék, imperfetto, feltételes mód, jövő idő, névmások)
+- [x] AI beszélgetőtárs a leckék szókincsével
+- [x] Sötét téma
+- [ ] Második nyelv a nyelvválasztóval
+- [ ] Szinkron eszközök között (szerver kell hozzá; addig export/import)
 
 ## Licenc
 
