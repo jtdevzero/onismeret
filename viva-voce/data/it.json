@@ -1,0 +1,317 @@
+{
+  "lang": "it",
+  "name": "Olasz",
+  "native": "Italiano",
+  "tts": "it-IT",
+  "version": 1,
+  "units": [
+    {
+      "id": "u1",
+      "title": "Saluti",
+      "hu": "Köszönés és bemutatkozás",
+      "grammar": [
+        { "h": "Kiejtés: a legfontosabb 5 szabály", "p": "c + e/i = cs (ciao: csao) · c + a/o/u vagy ch = k (che: ke) · g + e/i = dzs (gelato: dzselato), gh = g · gli ≈ lyi (famiglia: famílya) · gn = ny (gnocchi: nyokki). A dupla mássalhangzót tényleg hosszan ejtsd: pala ≠ palla." },
+        { "h": "Tegezés és magázás", "p": "Barátnak: Come stai? (tu). Ismeretlennek, üzletben: Come sta? (Lei). A magázás mindig egyes szám harmadik személy, mint a magyarban az „Ön”." },
+        { "h": "essere = lenni", "p": "io sono (vagyok) · tu sei (vagy) · lui/lei/Lei è (van). Sono ungherese. Sei di Roma?" }
+      ],
+      "items": [
+        { "id": "u1-w1", "k": "w", "it": "ciao", "hu": "szia" },
+        { "id": "u1-w2", "k": "w", "it": "buongiorno", "hu": "jó napot" },
+        { "id": "u1-w3", "k": "w", "it": "buonasera", "hu": "jó estét" },
+        { "id": "u1-w4", "k": "w", "it": "grazie", "hu": "köszönöm" },
+        { "id": "u1-w5", "k": "w", "it": "prego", "hu": "szívesen; tessék" },
+        { "id": "u1-w6", "k": "w", "it": "per favore", "hu": "kérem (szépen)", "alt": ["per piacere"] },
+        { "id": "u1-w7", "k": "w", "it": "sì", "hu": "igen" },
+        { "id": "u1-w8", "k": "w", "it": "no", "hu": "nem" },
+        { "id": "u1-w9", "k": "w", "it": "scusi", "hu": "elnézést (magázva)", "alt": ["mi scusi"] },
+        { "id": "u1-w10", "k": "w", "it": "arrivederci", "hu": "viszontlátásra" },
+        { "id": "u1-w11", "k": "w", "it": "mi chiamo", "hu": "a nevem …" },
+        { "id": "u1-w12", "k": "w", "it": "piacere", "hu": "örvendek" },
+        { "id": "u1-s1", "k": "s", "it": "Come ti chiami?", "hu": "Hogy hívnak?" },
+        { "id": "u1-s2", "k": "s", "it": "Mi chiamo Marco.", "hu": "Marcónak hívnak." },
+        { "id": "u1-s3", "k": "s", "it": "Piacere di conoscerti.", "hu": "Örülök, hogy megismertelek." },
+        { "id": "u1-s4", "k": "s", "it": "Come stai?", "hu": "Hogy vagy?" },
+        { "id": "u1-s5", "k": "s", "it": "Sto bene, grazie.", "hu": "Jól vagyok, köszönöm." },
+        { "id": "u1-s6", "k": "s", "it": "Di dove sei?", "hu": "Honnan való vagy?" },
+        { "id": "u1-s7", "k": "s", "it": "Sono ungherese.", "hu": "Magyar vagyok." },
+        { "id": "u1-s8", "k": "s", "it": "Sono di Budapest.", "hu": "Budapesti vagyok." }
+      ]
+    },
+    {
+      "id": "u2",
+      "title": "Al bar",
+      "hu": "Kávézóban",
+      "grammar": [
+        { "h": "Nemek", "p": "A főnevek hím- vagy nőneműek. Általában: -o végű hímnem (il caffè kivétel), -a végű nőnem. Az -e végűeknél meg kell tanulni, ezért mindig névelővel tanuld a szót." },
+        { "h": "Határozott névelő (a, az)", "p": "il – hímnem, mássalhangzó előtt (il latte) · lo – hímnem, s+mássalhangzó vagy z előtt (lo zucchero) · la – nőnem (la tazza) · l' – magánhangzó előtt (l'acqua)." },
+        { "h": "Határozatlan névelő (egy)", "p": "un caffè · uno zucchero · una tazza · un'acqua. Rendelni így a legegyszerűbb: Vorrei + un/una + ital." }
+      ],
+      "items": [
+        { "id": "u2-w1", "k": "w", "it": "il caffè", "hu": "a kávé" },
+        { "id": "u2-w2", "k": "w", "it": "il cornetto", "hu": "a croissant" },
+        { "id": "u2-w3", "k": "w", "it": "l'acqua", "hu": "a víz" },
+        { "id": "u2-w4", "k": "w", "it": "il latte", "hu": "a tej" },
+        { "id": "u2-w5", "k": "w", "it": "lo zucchero", "hu": "a cukor" },
+        { "id": "u2-w6", "k": "w", "it": "il bicchiere", "hu": "a pohár" },
+        { "id": "u2-w7", "k": "w", "it": "la tazza", "hu": "a csésze" },
+        { "id": "u2-w8", "k": "w", "it": "il conto", "hu": "a számla" },
+        { "id": "u2-w9", "k": "w", "it": "la carta", "hu": "a kártya; a papír" },
+        { "id": "u2-w10", "k": "w", "it": "senza", "hu": "nélkül" },
+        { "id": "u2-w11", "k": "w", "it": "vorrei", "hu": "szeretnék" },
+        { "id": "u2-w12", "k": "w", "it": "quanto costa", "hu": "mennyibe kerül" },
+        { "id": "u2-s1", "k": "s", "it": "Vorrei un caffè, per favore.", "hu": "Egy kávét kérnék." },
+        { "id": "u2-s2", "k": "s", "it": "Un cornetto e un cappuccino.", "hu": "Egy croissant és egy cappuccino." },
+        { "id": "u2-s3", "k": "s", "it": "Quanto costa?", "hu": "Mennyibe kerül?" },
+        { "id": "u2-s4", "k": "s", "it": "Il conto, per favore.", "hu": "A számlát, legyen szíves." },
+        { "id": "u2-s5", "k": "s", "it": "Senza zucchero, grazie.", "hu": "Cukor nélkül, köszönöm." },
+        { "id": "u2-s6", "k": "s", "it": "Posso pagare con la carta?", "hu": "Fizethetek kártyával?" },
+        { "id": "u2-s7", "k": "s", "it": "Un bicchiere d'acqua.", "hu": "Egy pohár vizet." }
+      ]
+    },
+    {
+      "id": "u3",
+      "title": "Numeri e tempo",
+      "hu": "Számok és idő",
+      "grammar": [
+        { "h": "avere = birtokolni, -ja van", "p": "io ho · tu hai · lui/lei/Lei ha. A h néma: ho = o. Az életkort avere-vel mondod: Ho trentatré anni (szó szerint: harminchárom évem van)." },
+        { "h": "Az idő", "p": "Che ore sono? – Sono le tre (többes szám!). Kivétel: È l'una (egy óra), è mezzogiorno (dél)." }
+      ],
+      "items": [
+        { "id": "u3-w1", "k": "w", "it": "uno", "hu": "egy" },
+        { "id": "u3-w2", "k": "w", "it": "due", "hu": "kettő" },
+        { "id": "u3-w3", "k": "w", "it": "tre", "hu": "három" },
+        { "id": "u3-w4", "k": "w", "it": "quattro", "hu": "négy" },
+        { "id": "u3-w5", "k": "w", "it": "cinque", "hu": "öt" },
+        { "id": "u3-w6", "k": "w", "it": "sei", "hu": "hat" },
+        { "id": "u3-w7", "k": "w", "it": "sette", "hu": "hét (szám)" },
+        { "id": "u3-w8", "k": "w", "it": "otto", "hu": "nyolc" },
+        { "id": "u3-w9", "k": "w", "it": "nove", "hu": "kilenc" },
+        { "id": "u3-w10", "k": "w", "it": "dieci", "hu": "tíz" },
+        { "id": "u3-w11", "k": "w", "it": "oggi", "hu": "ma" },
+        { "id": "u3-w12", "k": "w", "it": "domani", "hu": "holnap" },
+        { "id": "u3-w13", "k": "w", "it": "ieri", "hu": "tegnap" },
+        { "id": "u3-w14", "k": "w", "it": "adesso", "hu": "most", "alt": ["ora"] },
+        { "id": "u3-s1", "k": "s", "it": "Che ore sono?", "hu": "Hány óra van?" },
+        { "id": "u3-s2", "k": "s", "it": "Sono le tre.", "hu": "Három óra van." },
+        { "id": "u3-s3", "k": "s", "it": "È l'una.", "hu": "Egy óra van." },
+        { "id": "u3-s4", "k": "s", "it": "A che ora apre?", "hu": "Hánykor nyit?" },
+        { "id": "u3-s5", "k": "s", "it": "Ci vediamo domani.", "hu": "Holnap találkozunk." },
+        { "id": "u3-s6", "k": "s", "it": "Ho trentatré anni.", "hu": "Harminchárom éves vagyok." }
+      ]
+    },
+    {
+      "id": "u4",
+      "title": "In viaggio",
+      "hu": "Utazás",
+      "grammar": [
+        { "h": "andare = menni", "p": "io vado · tu vai · lui/lei/Lei va. Rendhagyó, ezért külön tanuld." },
+        { "h": "Elöljáró + névelő összeolvad", "p": "a + il = al (al bar) · a + l' = all' (all'aeroporto) · a + la = alla (alla stazione). Ugyanígy di, da, in, su: del, dal, nel, sul." },
+        { "h": "c'è / ci sono = van / vannak (valahol)", "p": "C'è un bar qui? – Van itt egy bár? · Ci sono due treni. – Két vonat van." }
+      ],
+      "items": [
+        { "id": "u4-w1", "k": "w", "it": "il treno", "hu": "a vonat" },
+        { "id": "u4-w2", "k": "w", "it": "la stazione", "hu": "a pályaudvar" },
+        { "id": "u4-w3", "k": "w", "it": "il biglietto", "hu": "a jegy" },
+        { "id": "u4-w4", "k": "w", "it": "l'aeroporto", "hu": "a repülőtér" },
+        { "id": "u4-w5", "k": "w", "it": "l'albergo", "hu": "a szálloda", "alt": ["l'hotel"] },
+        { "id": "u4-w6", "k": "w", "it": "la camera", "hu": "a (szálloda)szoba" },
+        { "id": "u4-w7", "k": "w", "it": "la valigia", "hu": "a bőrönd" },
+        { "id": "u4-w8", "k": "w", "it": "dove", "hu": "hol; hová" },
+        { "id": "u4-w9", "k": "w", "it": "a destra", "hu": "jobbra" },
+        { "id": "u4-w10", "k": "w", "it": "a sinistra", "hu": "balra" },
+        { "id": "u4-w11", "k": "w", "it": "sempre dritto", "hu": "egyenesen előre", "alt": ["sempre diritto"] },
+        { "id": "u4-w12", "k": "w", "it": "lontano", "hu": "messze" },
+        { "id": "u4-w13", "k": "w", "it": "vicino", "hu": "közel" },
+        { "id": "u4-s1", "k": "s", "it": "Dov'è la stazione?", "hu": "Hol van a pályaudvar?", "alt": ["Dove è la stazione?"] },
+        { "id": "u4-s2", "k": "s", "it": "Un biglietto per Roma, per favore.", "hu": "Egy jegyet Rómába, kérem." },
+        { "id": "u4-s3", "k": "s", "it": "A che ora parte il treno?", "hu": "Hánykor indul a vonat?" },
+        { "id": "u4-s4", "k": "s", "it": "Ho una prenotazione.", "hu": "Van egy foglalásom." },
+        { "id": "u4-s5", "k": "s", "it": "È lontano da qui?", "hu": "Messze van innen?" },
+        { "id": "u4-s6", "k": "s", "it": "Giri a destra.", "hu": "Forduljon jobbra." },
+        { "id": "u4-s7", "k": "s", "it": "Vado all'aeroporto.", "hu": "A repülőtérre megyek." }
+      ]
+    },
+    {
+      "id": "u5",
+      "title": "Al ristorante",
+      "hu": "Étteremben",
+      "grammar": [
+        { "h": "-are igék ragozása", "p": "parlare (beszélni): parlo · parli · parla · parliamo · parlate · parlano. A legtöbb ige ilyen, ez a minta mindent visz." },
+        { "h": "-ere igék ragozása", "p": "prendere (venni, kérni): prendo · prendi · prende · prendiamo · prendete · prendono. Rendeléskor: Prendo… = Én … kérek." },
+        { "h": "Fokozás -issimo", "p": "buono → buonissimo (nagyon finom), bello → bellissimo. Az olasz így erősít: gyakori és természetes." }
+      ],
+      "items": [
+        { "id": "u5-w1", "k": "w", "it": "il tavolo", "hu": "az asztal" },
+        { "id": "u5-w2", "k": "w", "it": "il menù", "hu": "az étlap" },
+        { "id": "u5-w3", "k": "w", "it": "il vino", "hu": "a bor" },
+        { "id": "u5-w4", "k": "w", "it": "la carne", "hu": "a hús" },
+        { "id": "u5-w5", "k": "w", "it": "il pesce", "hu": "a hal" },
+        { "id": "u5-w6", "k": "w", "it": "le verdure", "hu": "a zöldségek" },
+        { "id": "u5-w7", "k": "w", "it": "il pane", "hu": "a kenyér" },
+        { "id": "u5-w8", "k": "w", "it": "il dolce", "hu": "a desszert" },
+        { "id": "u5-w9", "k": "w", "it": "buono", "hu": "jó; finom" },
+        { "id": "u5-w10", "k": "w", "it": "la colazione", "hu": "a reggeli" },
+        { "id": "u5-w11", "k": "w", "it": "il pranzo", "hu": "az ebéd" },
+        { "id": "u5-w12", "k": "w", "it": "la cena", "hu": "a vacsora" },
+        { "id": "u5-s1", "k": "s", "it": "Un tavolo per due, per favore.", "hu": "Egy asztalt két főre, kérem." },
+        { "id": "u5-s2", "k": "s", "it": "Cosa ci consiglia?", "hu": "Mit ajánl nekünk?" },
+        { "id": "u5-s3", "k": "s", "it": "Prendo la pasta al pomodoro.", "hu": "A paradicsomos tésztát kérem." },
+        { "id": "u5-s4", "k": "s", "it": "Sono vegetariano.", "hu": "Vegetáriánus vagyok.", "alt": ["Sono vegetariana."] },
+        { "id": "u5-s5", "k": "s", "it": "Un bicchiere di vino rosso.", "hu": "Egy pohár vörösbort." },
+        { "id": "u5-s6", "k": "s", "it": "Era tutto buonissimo.", "hu": "Minden nagyon finom volt." },
+        { "id": "u5-s7", "k": "s", "it": "Possiamo avere il conto?", "hu": "Kérhetnénk a számlát?" }
+      ]
+    },
+    {
+      "id": "u6",
+      "title": "Fare la spesa",
+      "hu": "Bevásárlás",
+      "grammar": [
+        { "h": "Többes szám", "p": "-o → -i (il negozio → i negozi) · -a → -e (la mela → le mele) · -e → -i, nemtől függetlenül (il pane → i pani, la chiave → le chiavi). Ékezetes végű szavak nem változnak: il caffè → i caffè." },
+        { "h": "Többes névelők", "p": "il → i · lo / l' (hímnem) → gli · la / l' (nőnem) → le. i pomodori, gli zuccheri, le mele." },
+        { "h": "Mennyiség + di", "p": "un chilo di pomodori · un bicchiere di vino · un po' di pane. A di után nincs névelő." }
+      ],
+      "items": [
+        { "id": "u6-w1", "k": "w", "it": "il negozio", "hu": "a bolt" },
+        { "id": "u6-w2", "k": "w", "it": "il mercato", "hu": "a piac" },
+        { "id": "u6-w3", "k": "w", "it": "il prezzo", "hu": "az ár" },
+        { "id": "u6-w4", "k": "w", "it": "caro", "hu": "drága" },
+        { "id": "u6-w5", "k": "w", "it": "economico", "hu": "olcsó" },
+        { "id": "u6-w6", "k": "w", "it": "la frutta", "hu": "a gyümölcs" },
+        { "id": "u6-w7", "k": "w", "it": "il formaggio", "hu": "a sajt" },
+        { "id": "u6-w8", "k": "w", "it": "un chilo", "hu": "egy kiló" },
+        { "id": "u6-w9", "k": "w", "it": "la taglia", "hu": "a (ruha)méret" },
+        { "id": "u6-w10", "k": "w", "it": "aperto", "hu": "nyitva" },
+        { "id": "u6-w11", "k": "w", "it": "chiuso", "hu": "zárva" },
+        { "id": "u6-w12", "k": "w", "it": "troppo", "hu": "túl; túl sok" },
+        { "id": "u6-s1", "k": "s", "it": "Quanto costano le mele?", "hu": "Mennyibe kerül az alma?" },
+        { "id": "u6-s2", "k": "s", "it": "Vorrei un chilo di pomodori.", "hu": "Szeretnék egy kiló paradicsomot." },
+        { "id": "u6-s3", "k": "s", "it": "È troppo caro.", "hu": "Túl drága." },
+        { "id": "u6-s4", "k": "s", "it": "Avete una taglia più grande?", "hu": "Van nagyobb méretük?" },
+        { "id": "u6-s5", "k": "s", "it": "Posso provarlo?", "hu": "Felpróbálhatom?" },
+        { "id": "u6-s6", "k": "s", "it": "Il negozio è chiuso la domenica.", "hu": "A bolt vasárnap zárva van." }
+      ]
+    },
+    {
+      "id": "u7",
+      "title": "Lavoro",
+      "hu": "Munka és üzlet",
+      "grammar": [
+        { "h": "Üzletben magázz", "p": "Lei + egyes szám 3. személy: Lei lavora qui? (Ön itt dolgozik?). E-mailben a Lei-t és a Le-t sokan nagybetűvel írják udvariasságból." },
+        { "h": "Le = Önnek", "p": "Le mando la proposta. – Elküldöm Önnek az ajánlatot. Tegezve: Ti mando… (Neked küldöm)." },
+        { "h": "Foglalkozás névelő nélkül", "p": "Sono consulente. · Sono ingegnere. Az essere után a foglalkozás elé nem kell névelő." }
+      ],
+      "items": [
+        { "id": "u7-w1", "k": "w", "it": "il lavoro", "hu": "a munka" },
+        { "id": "u7-w2", "k": "w", "it": "la riunione", "hu": "a megbeszélés" },
+        { "id": "u7-w3", "k": "w", "it": "il cliente", "hu": "az ügyfél" },
+        { "id": "u7-w4", "k": "w", "it": "l'azienda", "hu": "a cég" },
+        { "id": "u7-w5", "k": "w", "it": "il progetto", "hu": "a projekt" },
+        { "id": "u7-w6", "k": "w", "it": "la proposta", "hu": "az ajánlat; a javaslat" },
+        { "id": "u7-w7", "k": "w", "it": "il contratto", "hu": "a szerződés" },
+        { "id": "u7-w8", "k": "w", "it": "la scadenza", "hu": "a határidő" },
+        { "id": "u7-w9", "k": "w", "it": "l'ufficio", "hu": "az iroda" },
+        { "id": "u7-w10", "k": "w", "it": "il collega", "hu": "a kolléga" },
+        { "id": "u7-w11", "k": "w", "it": "lavorare", "hu": "dolgozni" },
+        { "id": "u7-w12", "k": "w", "it": "il consulente", "hu": "a tanácsadó" },
+        { "id": "u7-s1", "k": "s", "it": "Che lavoro fai?", "hu": "Mivel foglalkozol?" },
+        { "id": "u7-s2", "k": "s", "it": "Sono consulente aziendale.", "hu": "Üzleti tanácsadó vagyok." },
+        { "id": "u7-s3", "k": "s", "it": "Lavoro con aziende internazionali.", "hu": "Nemzetközi cégekkel dolgozom." },
+        { "id": "u7-s4", "k": "s", "it": "Possiamo fissare una riunione?", "hu": "Egyeztethetünk egy megbeszélést?" },
+        { "id": "u7-s5", "k": "s", "it": "Le mando la proposta domani.", "hu": "Holnap elküldöm Önnek az ajánlatot." },
+        { "id": "u7-s6", "k": "s", "it": "Qual è la scadenza?", "hu": "Mi a határidő?" },
+        { "id": "u7-s7", "k": "s", "it": "Il progetto va bene.", "hu": "A projekt jól halad." }
+      ]
+    },
+    {
+      "id": "u8",
+      "title": "La città e la casa",
+      "hu": "Város és otthon",
+      "grammar": [
+        { "h": "Melléknév egyeztetése", "p": "A melléknév nemben és számban igazodik: piccolo / piccola / piccoli / piccole. Az -e végűek csak számban: grande / grandi. Általában a főnév után áll: una casa piccola." },
+        { "h": "Birtokos névmás + névelő", "p": "il mio (enyém, hímnem), la mia (nőnem): la mia casa. Olaszul a névelő ott marad a birtokos előtt." },
+        { "h": "abitare = lakni", "p": "Abito a Budapest (városnál a) · Abito in Ungheria (országnál in)." }
+      ],
+      "items": [
+        { "id": "u8-w1", "k": "w", "it": "la casa", "hu": "a ház; az otthon" },
+        { "id": "u8-w2", "k": "w", "it": "l'appartamento", "hu": "a lakás" },
+        { "id": "u8-w3", "k": "w", "it": "la strada", "hu": "az utca; az út" },
+        { "id": "u8-w4", "k": "w", "it": "la piazza", "hu": "a tér" },
+        { "id": "u8-w5", "k": "w", "it": "la chiesa", "hu": "a templom" },
+        { "id": "u8-w6", "k": "w", "it": "il museo", "hu": "a múzeum" },
+        { "id": "u8-w7", "k": "w", "it": "la farmacia", "hu": "a gyógyszertár" },
+        { "id": "u8-w8", "k": "w", "it": "la banca", "hu": "a bank" },
+        { "id": "u8-w9", "k": "w", "it": "grande", "hu": "nagy" },
+        { "id": "u8-w10", "k": "w", "it": "piccolo", "hu": "kicsi" },
+        { "id": "u8-w11", "k": "w", "it": "bello", "hu": "szép" },
+        { "id": "u8-w12", "k": "w", "it": "qui", "hu": "itt", "alt": ["qua"] },
+        { "id": "u8-s1", "k": "s", "it": "Abito a Budapest.", "hu": "Budapesten lakom." },
+        { "id": "u8-s2", "k": "s", "it": "C'è una farmacia qui vicino?", "hu": "Van a közelben gyógyszertár?" },
+        { "id": "u8-s3", "k": "s", "it": "Il museo è in piazza.", "hu": "A múzeum a téren van." },
+        { "id": "u8-s4", "k": "s", "it": "La mia casa è piccola ma bella.", "hu": "Az otthonom kicsi, de szép." },
+        { "id": "u8-s5", "k": "s", "it": "Ci sono molti turisti.", "hu": "Sok turista van." },
+        { "id": "u8-s6", "k": "s", "it": "Che bella città!", "hu": "Milyen szép város!" }
+      ]
+    },
+    {
+      "id": "u9",
+      "title": "Tempo libero",
+      "hu": "Szabadidő",
+      "grammar": [
+        { "h": "piacere = tetszik", "p": "Fordítva működik, mint a magyar „szeretem”: Mi piace la musica (nekem tetszik a zene). Többes számnál: Mi piacciono i film. Igével mindig egyes szám: Mi piace viaggiare." },
+        { "h": "Tagadás", "p": "Egyszerűen non az ige elé: Non mi piace cucinare. Non lavoro oggi." },
+        { "h": "Gyakoriság", "p": "tre volte a settimana (hetente háromszor) · ogni giorno (minden nap) · a volte (néha)." }
+      ],
+      "items": [
+        { "id": "u9-w1", "k": "w", "it": "il tempo libero", "hu": "a szabadidő" },
+        { "id": "u9-w2", "k": "w", "it": "mi piace", "hu": "tetszik nekem; szeretem" },
+        { "id": "u9-w3", "k": "w", "it": "leggere", "hu": "olvasni" },
+        { "id": "u9-w4", "k": "w", "it": "la musica", "hu": "a zene" },
+        { "id": "u9-w5", "k": "w", "it": "il cinema", "hu": "a mozi" },
+        { "id": "u9-w6", "k": "w", "it": "la palestra", "hu": "az edzőterem" },
+        { "id": "u9-w7", "k": "w", "it": "il fine settimana", "hu": "a hétvége", "alt": ["il weekend"] },
+        { "id": "u9-w8", "k": "w", "it": "il mare", "hu": "a tenger" },
+        { "id": "u9-w9", "k": "w", "it": "la montagna", "hu": "a hegy; a hegyvidék" },
+        { "id": "u9-w10", "k": "w", "it": "viaggiare", "hu": "utazni" },
+        { "id": "u9-w11", "k": "w", "it": "cucinare", "hu": "főzni" },
+        { "id": "u9-w12", "k": "w", "it": "insieme", "hu": "együtt" },
+        { "id": "u9-s1", "k": "s", "it": "Mi piace la musica.", "hu": "Szeretem a zenét." },
+        { "id": "u9-s2", "k": "s", "it": "Mi piacciono i film italiani.", "hu": "Szeretem az olasz filmeket." },
+        { "id": "u9-s3", "k": "s", "it": "Cosa fai nel fine settimana?", "hu": "Mit csinálsz hétvégén?" },
+        { "id": "u9-s4", "k": "s", "it": "Vado in palestra tre volte a settimana.", "hu": "Hetente háromszor járok edzőterembe.", "alt": ["Vado in palestra tre volte alla settimana."] },
+        { "id": "u9-s5", "k": "s", "it": "Andiamo al mare insieme?", "hu": "Elmegyünk együtt a tengerre?" },
+        { "id": "u9-s6", "k": "s", "it": "Non mi piace cucinare.", "hu": "Nem szeretek főzni." }
+      ]
+    },
+    {
+      "id": "u10",
+      "title": "Il passato",
+      "hu": "Mit csináltál? (múlt idő)",
+      "grammar": [
+        { "h": "passato prossimo = a beszélt múlt idő", "p": "avere vagy essere jelen ideje + befejezett melléknévi igenév. ho mangiato (ettem), ho lavorato (dolgoztam). -are → -ato, -ere → -uto, -ire → -ito." },
+        { "h": "Mikor essere?", "p": "Mozgás- és állapotváltozást jelentő igéknél: andare, venire, partire, arrivare, essere, stare. Ilyenkor a végződés egyezik az alannyal: sono andato (férfi) / sono andata (nő)." },
+        { "h": "Gyakori rendhagyók", "p": "fare → fatto · vedere → visto · essere → stato · prendere → preso · leggere → letto." }
+      ],
+      "items": [
+        { "id": "u10-w1", "k": "w", "it": "ho mangiato", "hu": "ettem" },
+        { "id": "u10-w2", "k": "w", "it": "ho visto", "hu": "láttam" },
+        { "id": "u10-w3", "k": "w", "it": "sono andato", "hu": "mentem", "alt": ["sono andata"] },
+        { "id": "u10-w4", "k": "w", "it": "ho fatto", "hu": "csináltam" },
+        { "id": "u10-w5", "k": "w", "it": "ho lavorato", "hu": "dolgoztam" },
+        { "id": "u10-w6", "k": "w", "it": "sono stato", "hu": "voltam", "alt": ["sono stata"] },
+        { "id": "u10-w7", "k": "w", "it": "ieri sera", "hu": "tegnap este" },
+        { "id": "u10-w8", "k": "w", "it": "la settimana scorsa", "hu": "múlt héten" },
+        { "id": "u10-w9", "k": "w", "it": "già", "hu": "már" },
+        { "id": "u10-w10", "k": "w", "it": "ancora", "hu": "még" },
+        { "id": "u10-w11", "k": "w", "it": "mai", "hu": "soha; valaha" },
+        { "id": "u10-w12", "k": "w", "it": "finalmente", "hu": "végre" },
+        { "id": "u10-s1", "k": "s", "it": "Cosa hai fatto ieri?", "hu": "Mit csináltál tegnap?" },
+        { "id": "u10-s2", "k": "s", "it": "Ieri sera sono andato al cinema.", "hu": "Tegnap este moziba mentem.", "alt": ["Ieri sera sono andata al cinema."] },
+        { "id": "u10-s3", "k": "s", "it": "Ho lavorato tutto il giorno.", "hu": "Egész nap dolgoztam." },
+        { "id": "u10-s4", "k": "s", "it": "Sei mai stato in Italia?", "hu": "Voltál már Olaszországban?", "alt": ["Sei mai stata in Italia?"] },
+        { "id": "u10-s5", "k": "s", "it": "Non ho ancora mangiato.", "hu": "Még nem ettem." },
+        { "id": "u10-s6", "k": "s", "it": "Abbiamo visto un bel film.", "hu": "Láttunk egy jó filmet." }
+      ]
+    }
+  ]
+}
