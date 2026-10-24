@@ -12,6 +12,10 @@ jobs:
         with:
           node-version: 20
           cache: npm
+          # A worker lockfile-ja is a kulcs része, így az ottani npm ci is a gyorsítótárból dolgozik.
+          cache-dependency-path: |
+            package-lock.json
+            parliamo/worker/package-lock.json
       - name: Függőségek a lockfile szerint
         run: |
           npm ci
