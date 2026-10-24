@@ -406,7 +406,9 @@ function mockProxy(store) {
   }
   await p.waitForSelector('#seRes .stat');
   ok(await p.evaluate(() => S.spk[S.spk.length - 1].fmt === 'cam' && SE.ans.filter(a => a.partner).length === 2) && await p.locator('text=/ 5').count() >= 3, 'páros feladat AI-társsal, Cambridge-szempontok 0–5 skálán');
-  await p.evaluate(() => go('gyakorlas')); await p.click('[data-d="colloc"]'); await p.waitForSelector('[data-col]');
+  let failOnce = true; await p.route('**/data/colloc-en.json', r => { if (failOnce) { failOnce = false; return r.abort(); } return r.continue(); });
+  await p.evaluate(() => go('gyakorlas')); await p.click('[data-d="colloc"]'); await p.waitForSelector('#xRetry'); ok(true, 'letöltési hibánál üzenet és Újra gomb');
+  await p.click('#xRetry'); await p.waitForSelector('[data-col]');
   ok(await p.locator('[data-col]').count() === 12 && await p.evaluate(() => AUDIO_IDX['make a decision'] === 'col-en-make'), '12 kollokációcsoport felvett hanggal');
   await p.click('[data-col="make"]'); await p.click('#colGo');
   for (let k = 0; k < 10; k++) { const i = await p.evaluate(() => { const it = QZ.items[QZ.i]; return it._o.indexOf(it.a); }); await p.click(`[data-o="${i}"]`); await p.click('#qgo'); }

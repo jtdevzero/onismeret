@@ -785,8 +785,11 @@ const EXTRA={
 };
 function loadExtra(n){
   const l=lang(),k=l+":"+n;
-  if(!EXTRA_P[k])EXTRA_P[k]=fetch(`data/${n==="core"?"core":n}-${l}.json`).then(r=>r.ok?r.json():null).catch(()=>null)
-    .then(d=>{if(lang()===l&&EXTRA_P[k]){EXTRA[n](d,l);EXTRA_DONE[k]=1;}return d;});
+  if(!EXTRA_P[k])EXTRA_P[k]=fetch(`data/${n}-${l}.json`).then(r=>r.ok?r.json():r.status===404?false:null).catch(()=>null)
+    .then(d=>{
+      /* null: network error, try again next time; false: this language has no such file. */
+      if(d===null){delete EXTRA_P[k];return null;}
+      if(lang()===l&&EXTRA_P[k]){EXTRA[n](d||null,l);EXTRA_DONE[k]=1;}return d;});
   return EXTRA_P[k];
 }
 const extraReady=n=>!!EXTRA_DONE[lang()+":"+n];
@@ -794,7 +797,7 @@ const extraReady=n=>!!EXTRA_DONE[lang()+":"+n];
 function withExtra(n,fn){
   if(extraReady(n))return fn();
   const nav=NAVN;view.innerHTML=`<div class="card row"><span class="thinking"><i></i><i></i><i></i></span><span class="muted">Betöltés…</span></div>`;
-  loadExtra(n).then(()=>{if(NAVN===nav)fn();});
+  loadExtra(n).then(d=>{if(NAVN!==nav)return;if(d===null){view.innerHTML=`<div class="notice stack"><span>Nem sikerült betölteni ezt a részt. Ellenőrizd a netkapcsolatot.</span><div><button class="btn" id="xRetry">Újra</button></div></div>`;$("#xRetry").onclick=()=>withExtra(n,fn);return;}fn();});
 }
 /* Drop progress that belongs to the first-round course (its card and lesson ids no longer exist). */
 function pruneState(){
