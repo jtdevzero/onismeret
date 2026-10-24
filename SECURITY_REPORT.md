@@ -69,7 +69,7 @@ Titkot sehol nem találtam, sem a fájlokban, sem a git-előzményben. **Kulcsot
 | Lint / típusellenőrzés | nincs beállítva (sima JS, nincs TypeScript) | szintaxis-ellenőrzés a buildben, nincs hiba |
 | Parliamo indulás (helyben, angol) | ~190 ms, 17 kérés, 913 KB (gzip ~250 KB) | ugyanannyi (szándékosan, lásd O2) |
 | Hanglejtés-elemzés, 5 s hang | – | ~110 ms (asztali gép) |
-| CI futásidő | 5 p 27 s | a PR első futása után mérhető (worker-tesztek +, npm-gyorsítótár −) |
+| CI futásidő | 5 p 27 s | 5 p 31 s, ill. 5 p 37 s (első futás üres gyorsítótárral, közben új worker-tesztlépés is került bele) |
 
 ---
 
@@ -432,7 +432,7 @@ Titkot sehol nem találtam, sem a fájlokban, sem a git-előzményben. **Kulcsot
 ### O4. Build és CI
 - **Állapot:** ✅ Javítva
 - **Mit változtattam:** a worker lockfile-ja is bekerült az npm-gyorsítótár kulcsába, így a második `npm ci` is a gyorsítótárból dolgozik.
-- **Mérés:** a kiinduló CI-idő 5 p 27 s. A PR első futása után összevethető.
+- **Mérés:** kiinduló CI-idő 5 p 27 s; a PR első két futása 5 p 31 s és 5 p 37 s. Ez gyakorlatilag ugyanannyi, pedig közben új lépés (worker `npm ci` + tesztek) is bekerült. Az első futás még üres gyorsítótárral indult, a valódi nyereség a későbbi futásokon látszik. A nagyobb tétel a Playwright böngésző telepítése (lásd javaslatok).
 - **Fájlok:** `.github/workflows/test.yml`
 
 ### O5. Egyszerűsítés
