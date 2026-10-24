@@ -1,8 +1,8 @@
 /* Parliamo service worker. GENERÁLT FÁJL (parliamo/build.py), ne szerkeszd kézzel.
    Az app váza és a tananyag telepítéskor a gyorsítótárba kerül; a hangok és képek az első használatkor
    (vagy a Beállítások „Letöltés offline használatra” gombjával). Az AI-kérések nem mennek át rajta. */
-const SHELL = 'parliamo-shell-9bd69f95d7';
-const MEDIA = 'parliamo-media-0ad39af541';
+const SHELL = 'parliamo-shell-d63d9a67d7';
+const MEDIA = 'parliamo-media-9929c19704';
 const PRECACHE = [
 "./",
 "index.html",
@@ -21,7 +21,10 @@ const PRECACHE = [
 "icons/icon-512.png",
 "icons/icon-maskable-512.png",
 "data/accents-en.json",
+"data/colloc-en.json",
 "data/core-en.json",
+"data/core-es.json",
+"data/core-it.json",
 "data/drills-en.json",
 "data/drills-es.json",
 "data/drills-it.json",
@@ -31,6 +34,8 @@ const PRECACHE = [
 "data/exam-es.json",
 "data/exam-it.json",
 "data/grammar-en.json",
+"data/grammar-es.json",
+"data/grammar-it.json",
 "data/it.json",
 "data/mock-en.json",
 "data/offline-en.json",
@@ -44,6 +49,9 @@ const PRECACHE = [
 "data/pron-es.json",
 "data/pron-it.json",
 "data/serials-en.json",
+"data/serials-es.json",
+"data/serials-it.json",
+"data/speaking-en.json",
 "data/stories-en.json",
 "data/stories-es.json",
 "data/stories-it.json",

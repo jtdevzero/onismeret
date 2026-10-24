@@ -1,0 +1,3688 @@
+{
+ "groups": [
+  {
+   "id": "make",
+   "title": "Make",
+   "desc": "Make + főnév: döntés, hiba, erőfeszítés…",
+   "items": [
+    {
+     "id": "make-1",
+     "it": "make a decision",
+     "hu": "döntést hoz",
+     "ex": "We need to make a decision by Friday.",
+     "exhu": "Péntekig döntést kell hoznunk.",
+     "q": "We need to ___ a decision by Friday.",
+     "a": "make",
+     "o": [
+      "make",
+      "do",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "make-2",
+     "it": "make a mistake",
+     "hu": "hibázik",
+     "ex": "Everyone can make a mistake sometimes.",
+     "exhu": "Bárki hibázhat néha.",
+     "q": "Everyone can ___ a mistake sometimes.",
+     "a": "make",
+     "o": [
+      "make",
+      "do",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "make-3",
+     "it": "make an effort",
+     "hu": "erőfeszítést tesz",
+     "ex": "Please make an effort to arrive on time.",
+     "exhu": "Kérlek, igyekezz időben érkezni.",
+     "q": "Please ___ an effort to arrive on time.",
+     "a": "make",
+     "o": [
+      "make",
+      "do",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "make-4",
+     "it": "make progress",
+     "hu": "halad, fejlődik",
+     "ex": "Students who practise daily make progress quickly.",
+     "exhu": "Aki naponta gyakorol, gyorsan fejlődik.",
+     "q": "Students who practise daily ___ progress quickly.",
+     "a": "make",
+     "o": [
+      "make",
+      "do",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "make-5",
+     "it": "make money",
+     "hu": "pénzt keres",
+     "ex": "It's hard to make money from a hobby.",
+     "exhu": "Nehéz pénzt keresni egy hobbiból.",
+     "q": "It's hard to ___ money from a hobby.",
+     "a": "make",
+     "o": [
+      "make",
+      "do",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "make-6",
+     "it": "make a complaint",
+     "hu": "panaszt tesz",
+     "ex": "I'd like to make a complaint about the service.",
+     "exhu": "Panaszt szeretnék tenni a kiszolgálás miatt.",
+     "q": "I'd like to ___ a complaint about the service.",
+     "a": "make",
+     "o": [
+      "make",
+      "do",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "make-7",
+     "it": "make an excuse",
+     "hu": "kifogást keres",
+     "ex": "Don't make an excuse; just tell me the truth.",
+     "exhu": "Ne keress kifogást, csak mondd el az igazat.",
+     "q": "Don't ___ an excuse; just tell me the truth.",
+     "a": "make",
+     "o": [
+      "make",
+      "do",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "make-8",
+     "it": "make a suggestion",
+     "hu": "javasol valamit",
+     "ex": "Can I make a suggestion about the menu?",
+     "exhu": "Javasolhatok valamit a menüvel kapcsolatban?",
+     "q": "Can I ___ a suggestion about the menu?",
+     "a": "make",
+     "o": [
+      "make",
+      "do",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "make-9",
+     "it": "make a difference",
+     "hu": "számít, változást hoz",
+     "ex": "Small changes can make a difference.",
+     "exhu": "Apró változtatások is számíthatnak.",
+     "q": "Small changes can ___ a difference.",
+     "a": "make",
+     "o": [
+      "make",
+      "do",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "make-10",
+     "it": "make sense",
+     "hu": "értelme van",
+     "ex": "His explanation didn't make sense to me.",
+     "exhu": "A magyarázatának nem volt értelme számomra.",
+     "q": "His explanation didn't ___ sense to me.",
+     "a": "make",
+     "o": [
+      "make",
+      "do",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "make-11",
+     "it": "make friends",
+     "hu": "barátokat szerez",
+     "ex": "It's easy to make friends at university.",
+     "exhu": "Az egyetemen könnyű barátokat szerezni.",
+     "q": "It's easy to ___ friends at university.",
+     "a": "make",
+     "o": [
+      "make",
+      "do",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "make-12",
+     "it": "make a profit",
+     "hu": "nyereséget termel",
+     "ex": "The shop started to make a profit in its second year.",
+     "exhu": "A bolt a második évben kezdett nyereséget termelni.",
+     "q": "The shop started to ___ a profit in its second year.",
+     "a": "make",
+     "o": [
+      "make",
+      "do",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "make-13",
+     "it": "make room",
+     "hu": "helyet csinál",
+     "ex": "Could you make room for one more person?",
+     "exhu": "Tudnál helyet csinálni még egy embernek?",
+     "q": "Could you ___ room for one more person?",
+     "a": "make",
+     "o": [
+      "make",
+      "do",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "make-14",
+     "it": "make an appointment",
+     "hu": "időpontot kér",
+     "ex": "I need to make an appointment with the dentist.",
+     "exhu": "Időpontot kell kérnem a fogorvoshoz.",
+     "q": "I need to ___ an appointment with the dentist.",
+     "a": "make",
+     "o": [
+      "make",
+      "do",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "make-15",
+     "it": "make a phone call",
+     "hu": "telefonál",
+     "ex": "Excuse me, I have to make a phone call.",
+     "exhu": "Elnézést, telefonálnom kell.",
+     "q": "Excuse me, I have to ___ a phone call.",
+     "a": "make",
+     "o": [
+      "make",
+      "do",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "make-16",
+     "it": "make a choice",
+     "hu": "választ",
+     "ex": "You'll have to make a choice between the two jobs.",
+     "exhu": "Választanod kell a két állás között.",
+     "q": "You'll have to ___ a choice between the two jobs.",
+     "a": "make",
+     "o": [
+      "make",
+      "do",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "make-17",
+     "it": "make a living",
+     "hu": "megélhetést teremt",
+     "ex": "She tries to make a living as a painter.",
+     "exhu": "Festőként próbál megélni.",
+     "q": "She tries to ___ a living as a painter.",
+     "a": "make",
+     "o": [
+      "make",
+      "do",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "make-18",
+     "it": "make a noise",
+     "hu": "zajt csap",
+     "ex": "Try not to make a noise when you come in.",
+     "exhu": "Próbálj nem zajongani, amikor bejössz.",
+     "q": "Try not to ___ a noise when you come in.",
+     "a": "make",
+     "o": [
+      "make",
+      "do",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "make-19",
+     "it": "make plans",
+     "hu": "terveket sző",
+     "ex": "Let's make plans for the summer.",
+     "exhu": "Tervezzük meg a nyarat.",
+     "q": "Let's ___ plans for the summer.",
+     "a": "make",
+     "o": [
+      "make",
+      "do",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "make-20",
+     "it": "make an offer",
+     "hu": "ajánlatot tesz",
+     "ex": "They decided to make an offer on the house.",
+     "exhu": "Úgy döntöttek, ajánlatot tesznek a házra.",
+     "q": "They decided to ___ an offer on the house.",
+     "a": "make",
+     "o": [
+      "make",
+      "do",
+      "take",
+      "have"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "do",
+   "title": "Do",
+   "desc": "Do + főnév: házi feladat, kutatás, szívesség…",
+   "items": [
+    {
+     "id": "do-1",
+     "it": "do homework",
+     "hu": "házi feladatot ír",
+     "ex": "I always do homework straight after school.",
+     "exhu": "Mindig rögtön iskola után megírom a házit.",
+     "q": "I always ___ homework straight after school.",
+     "a": "do",
+     "o": [
+      "do",
+      "make",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "do-2",
+     "it": "do business",
+     "hu": "üzletel",
+     "ex": "It's a pleasure to do business with you.",
+     "exhu": "Öröm önnel üzletelni.",
+     "q": "It's a pleasure to ___ business with you.",
+     "a": "do",
+     "o": [
+      "do",
+      "make",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "do-3",
+     "it": "do research",
+     "hu": "kutat",
+     "ex": "Scientists do research to test new ideas.",
+     "exhu": "A tudósok kutatnak, hogy új ötleteket teszteljenek.",
+     "q": "Scientists ___ research to test new ideas.",
+     "a": "do",
+     "o": [
+      "do",
+      "make",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "do-4",
+     "it": "do the washing-up",
+     "hu": "elmosogat",
+     "ex": "Whose turn is it to do the washing-up?",
+     "exhu": "Ki a soros a mosogatásban?",
+     "q": "Whose turn is it to ___ the washing-up?",
+     "a": "do",
+     "o": [
+      "do",
+      "make",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "do-5",
+     "it": "do someone a favour",
+     "hu": "szívességet tesz",
+     "ex": "Could you do me a favour and post this letter?",
+     "exhu": "Megtennél egy szívességet, és feladnád ezt a levelet?",
+     "q": "Could you ___ me a favour and post this letter?",
+     "a": "do",
+     "o": [
+      "do",
+      "make",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "do-6",
+     "it": "do harm",
+     "hu": "kárt okoz",
+     "ex": "A little chocolate won't do any harm.",
+     "exhu": "Egy kis csokoládé nem árt.",
+     "q": "A little chocolate won't ___ any harm.",
+     "a": "do",
+     "o": [
+      "do",
+      "make",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "do-7",
+     "it": "do your best",
+     "hu": "mindent megtesz",
+     "ex": "Just do your best in the exam.",
+     "exhu": "Csak tedd meg a tőled telhetőt a vizsgán.",
+     "q": "Just ___ your best in the exam.",
+     "a": "do",
+     "o": [
+      "do",
+      "make",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "do-8",
+     "it": "do damage",
+     "hu": "kárt tesz",
+     "ex": "The storm will do damage to the crops.",
+     "exhu": "A vihar kárt tesz majd a termésben.",
+     "q": "The storm will ___ damage to the crops.",
+     "a": "do",
+     "o": [
+      "do",
+      "make",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "do-9",
+     "it": "do exercise",
+     "hu": "edz, testmozgást végez",
+     "ex": "Doctors advise us to do exercise every day.",
+     "exhu": "Az orvosok azt tanácsolják, hogy naponta mozogjunk.",
+     "q": "Doctors advise us to ___ exercise every day.",
+     "a": "do",
+     "o": [
+      "do",
+      "make",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "do-10",
+     "it": "do the shopping",
+     "hu": "bevásárol",
+     "ex": "I usually do the shopping on Saturdays.",
+     "exhu": "Általában szombaton vásárolok be.",
+     "q": "I usually ___ the shopping on Saturdays.",
+     "a": "do",
+     "o": [
+      "do",
+      "make",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "do-11",
+     "it": "do a course",
+     "hu": "tanfolyamot végez",
+     "ex": "She wants to do a course in photography.",
+     "exhu": "Fotós tanfolyamot szeretne elvégezni.",
+     "q": "She wants to ___ a course in photography.",
+     "a": "do",
+     "o": [
+      "do",
+      "make",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "do-12",
+     "it": "do well",
+     "hu": "jól teljesít",
+     "ex": "I hope you do well in your interview.",
+     "exhu": "Remélem, jól sikerül az interjúd.",
+     "q": "I hope you ___ well in your interview.",
+     "a": "do",
+     "o": [
+      "do",
+      "make",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "do-13",
+     "it": "do a good job",
+     "hu": "jó munkát végez",
+     "ex": "The builders always do a good job.",
+     "exhu": "Az építők mindig jó munkát végeznek.",
+     "q": "The builders always ___ a good job.",
+     "a": "do",
+     "o": [
+      "do",
+      "make",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "do-14",
+     "it": "do the cooking",
+     "hu": "főz",
+     "ex": "My partner and I take turns to do the cooking.",
+     "exhu": "A párommal felváltva főzünk.",
+     "q": "My partner and I take turns to ___ the cooking.",
+     "a": "do",
+     "o": [
+      "do",
+      "make",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "do-15",
+     "it": "do overtime",
+     "hu": "túlórázik",
+     "ex": "Nurses often have to do overtime.",
+     "exhu": "Az ápolóknak gyakran túlórázniuk kell.",
+     "q": "Nurses often have to ___ overtime.",
+     "a": "do",
+     "o": [
+      "do",
+      "make",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "do-16",
+     "it": "do someone good",
+     "hu": "jót tesz valakinek",
+     "ex": "A holiday will do you good.",
+     "exhu": "Jót fog tenni neked egy nyaralás.",
+     "q": "A holiday will ___ you good.",
+     "a": "do",
+     "o": [
+      "do",
+      "make",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "do-17",
+     "it": "do the dishes",
+     "hu": "elmosogat",
+     "ex": "If you cook, I'll do the dishes.",
+     "exhu": "Ha te főzöl, én mosogatok.",
+     "q": "If you cook, I'll ___ the dishes.",
+     "a": "do",
+     "o": [
+      "do",
+      "make",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "do-18",
+     "it": "do an experiment",
+     "hu": "kísérletet végez",
+     "ex": "We had to do an experiment in the chemistry lab.",
+     "exhu": "Kísérletet kellett végeznünk a kémialaborban.",
+     "q": "We had to ___ an experiment in the chemistry lab.",
+     "a": "do",
+     "o": [
+      "do",
+      "make",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "do-19",
+     "it": "do the paperwork",
+     "hu": "elintézi a papírmunkát",
+     "ex": "I hate having to do the paperwork.",
+     "exhu": "Utálom, hogy nekem kell intéznem a papírmunkát.",
+     "q": "I hate having to ___ the paperwork.",
+     "a": "do",
+     "o": [
+      "do",
+      "make",
+      "take",
+      "have"
+     ]
+    },
+    {
+     "id": "do-20",
+     "it": "do the ironing",
+     "hu": "vasal",
+     "ex": "I usually do the ironing on Sundays.",
+     "exhu": "Általában vasárnap vasalok.",
+     "q": "I usually ___ the ironing on Sundays.",
+     "a": "do",
+     "o": [
+      "do",
+      "make",
+      "take",
+      "have"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "take",
+   "title": "Take",
+   "desc": "Take + főnév: szünet, kockázat, részvétel…",
+   "items": [
+    {
+     "id": "take-1",
+     "it": "take a break",
+     "hu": "szünetet tart",
+     "ex": "Let's take a break and get some coffee.",
+     "exhu": "Tartsunk szünetet, és igyunk egy kávét.",
+     "q": "Let's ___ a break and get some coffee.",
+     "a": "take",
+     "o": [
+      "take",
+      "make",
+      "do",
+      "have"
+     ]
+    },
+    {
+     "id": "take-2",
+     "it": "take a photo",
+     "hu": "fényképet készít",
+     "ex": "Could you take a photo of us?",
+     "exhu": "Lefényképeznél minket?",
+     "q": "Could you ___ a photo of us?",
+     "a": "take",
+     "o": [
+      "take",
+      "make",
+      "do",
+      "have"
+     ]
+    },
+    {
+     "id": "take-3",
+     "it": "take part",
+     "hu": "részt vesz",
+     "ex": "Over a thousand runners will take part in the race.",
+     "exhu": "Több mint ezer futó vesz részt a versenyen.",
+     "q": "Over a thousand runners will ___ part in the race.",
+     "a": "take",
+     "o": [
+      "take",
+      "make",
+      "do",
+      "have"
+     ]
+    },
+    {
+     "id": "take-4",
+     "it": "take place",
+     "hu": "megtörténik, sor kerül rá",
+     "ex": "The wedding will take place in June.",
+     "exhu": "Az esküvőre júniusban kerül sor.",
+     "q": "The wedding will ___ place in June.",
+     "a": "take",
+     "o": [
+      "take",
+      "make",
+      "do",
+      "have"
+     ]
+    },
+    {
+     "id": "take-5",
+     "it": "take a risk",
+     "hu": "kockáztat",
+     "ex": "Sometimes you have to take a risk to succeed.",
+     "exhu": "Néha kockáztatni kell a sikerhez.",
+     "q": "Sometimes you have to ___ a risk to succeed.",
+     "a": "take",
+     "o": [
+      "take",
+      "make",
+      "do",
+      "have"
+     ]
+    },
+    {
+     "id": "take-6",
+     "it": "take advantage of",
+     "hu": "kihasznál",
+     "ex": "You should take advantage of the good weather.",
+     "exhu": "Ki kellene használnod a jó időt.",
+     "q": "You should ___ advantage of the good weather.",
+     "a": "take",
+     "o": [
+      "take",
+      "make",
+      "do",
+      "have"
+     ]
+    },
+    {
+     "id": "take-7",
+     "it": "take care",
+     "hu": "vigyáz",
+     "ex": "Take care when you cross the road.",
+     "exhu": "Vigyázz, amikor átkelsz az úton.",
+     "q": "___ care when you cross the road.",
+     "a": "Take",
+     "o": [
+      "Take",
+      "Make",
+      "Do",
+      "Have"
+     ]
+    },
+    {
+     "id": "take-8",
+     "it": "take notes",
+     "hu": "jegyzetel",
+     "ex": "Remember to take notes during the lecture.",
+     "exhu": "Ne felejts el jegyzetelni az előadáson.",
+     "q": "Remember to ___ notes during the lecture.",
+     "a": "take",
+     "o": [
+      "take",
+      "make",
+      "do",
+      "have"
+     ]
+    },
+    {
+     "id": "take-9",
+     "it": "take responsibility",
+     "hu": "felelősséget vállal",
+     "ex": "Managers must take responsibility for their decisions.",
+     "exhu": "A vezetőknek felelősséget kell vállalniuk a döntéseikért.",
+     "q": "Managers must ___ responsibility for their decisions.",
+     "a": "take",
+     "o": [
+      "take",
+      "make",
+      "do",
+      "have"
+     ]
+    },
+    {
+     "id": "take-10",
+     "it": "take an exam",
+     "hu": "vizsgát tesz",
+     "ex": "I'm going to take an exam in June.",
+     "exhu": "Júniusban vizsgázom.",
+     "q": "I'm going to ___ an exam in June.",
+     "a": "take",
+     "o": [
+      "take",
+      "make",
+      "do",
+      "have"
+     ]
+    },
+    {
+     "id": "take-11",
+     "it": "take a seat",
+     "hu": "helyet foglal",
+     "ex": "Please take a seat; the doctor will see you soon.",
+     "exhu": "Kérem, foglaljon helyet, a doktor hamarosan fogadja.",
+     "q": "Please ___ a seat; the doctor will see you soon.",
+     "a": "take",
+     "o": [
+      "take",
+      "make",
+      "do",
+      "have"
+     ]
+    },
+    {
+     "id": "take-12",
+     "it": "take time",
+     "hu": "időbe telik",
+     "ex": "Learning a language will take time.",
+     "exhu": "Egy nyelv megtanulása időbe telik.",
+     "q": "Learning a language will ___ time.",
+     "a": "take",
+     "o": [
+      "take",
+      "make",
+      "do",
+      "have"
+     ]
+    },
+    {
+     "id": "take-13",
+     "it": "take action",
+     "hu": "lépéseket tesz",
+     "ex": "The government must take action now.",
+     "exhu": "A kormánynak most kell lépnie.",
+     "q": "The government must ___ action now.",
+     "a": "take",
+     "o": [
+      "take",
+      "make",
+      "do",
+      "have"
+     ]
+    },
+    {
+     "id": "take-14",
+     "it": "take a look",
+     "hu": "megnéz, ránéz",
+     "ex": "Can you take a look at my essay?",
+     "exhu": "Ránéznél az esszémre?",
+     "q": "Can you ___ a look at my essay?",
+     "a": "take",
+     "o": [
+      "take",
+      "make",
+      "do",
+      "have"
+     ]
+    },
+    {
+     "id": "take-15",
+     "it": "take medicine",
+     "hu": "gyógyszert szed",
+     "ex": "Don't forget to take medicine after meals.",
+     "exhu": "Ne felejtsd el étkezés után bevenni a gyógyszert.",
+     "q": "Don't forget to ___ medicine after meals.",
+     "a": "take",
+     "o": [
+      "take",
+      "make",
+      "do",
+      "have"
+     ]
+    },
+    {
+     "id": "take-16",
+     "it": "take a shower",
+     "hu": "lezuhanyozik",
+     "ex": "I usually take a shower in the morning.",
+     "exhu": "Általában reggel zuhanyozom.",
+     "q": "I usually ___ a shower in the morning.",
+     "a": "take",
+     "o": [
+      "take",
+      "make",
+      "do",
+      "have"
+     ]
+    },
+    {
+     "id": "take-17",
+     "it": "take turns",
+     "hu": "felváltva csinál",
+     "ex": "The children take turns on the swing.",
+     "exhu": "A gyerekek felváltva hintáznak.",
+     "q": "The children ___ turns on the swing.",
+     "a": "take",
+     "o": [
+      "take",
+      "make",
+      "do",
+      "have"
+     ]
+    },
+    {
+     "id": "take-18",
+     "it": "take offence",
+     "hu": "megsértődik",
+     "ex": "Please don't take offence; it was only a joke.",
+     "exhu": "Kérlek, ne sértődj meg, csak vicc volt.",
+     "q": "Please don't ___ offence; it was only a joke.",
+     "a": "take",
+     "o": [
+      "take",
+      "make",
+      "do",
+      "have"
+     ]
+    },
+    {
+     "id": "take-19",
+     "it": "take into account",
+     "hu": "figyelembe vesz",
+     "ex": "We must take into account the cost of travel.",
+     "exhu": "Figyelembe kell vennünk az utazás költségét.",
+     "q": "We must ___ into account the cost of travel.",
+     "a": "take",
+     "o": [
+      "take",
+      "make",
+      "do",
+      "have"
+     ]
+    },
+    {
+     "id": "take-20",
+     "it": "take the lead",
+     "hu": "átveszi a vezetést",
+     "ex": "Our team managed to take the lead in the second half.",
+     "exhu": "A csapatunknak a második félidőben sikerült átvennie a vezetést.",
+     "q": "Our team managed to ___ the lead in the second half.",
+     "a": "take",
+     "o": [
+      "take",
+      "make",
+      "do",
+      "have"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "have",
+   "title": "Have",
+   "desc": "Have + főnév: pillantás, próba, beszélgetés…",
+   "items": [
+    {
+     "id": "have-1",
+     "it": "have a look",
+     "hu": "megnéz",
+     "ex": "Can I have a look at your photos?",
+     "exhu": "Megnézhetem a fotóidat?",
+     "q": "Can I ___ a look at your photos?",
+     "a": "have",
+     "o": [
+      "have",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "have-2",
+     "it": "have a go",
+     "hu": "megpróbál",
+     "ex": "Why don't you have a go at fixing it yourself?",
+     "exhu": "Miért nem próbálod meg magad megjavítani?",
+     "q": "Why don't you ___ a go at fixing it yourself?",
+     "a": "have",
+     "o": [
+      "have",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "have-3",
+     "it": "have fun",
+     "hu": "jól szórakozik",
+     "ex": "I hope you have fun at the party.",
+     "exhu": "Remélem, jól érzed magad a bulin.",
+     "q": "I hope you ___ fun at the party.",
+     "a": "have",
+     "o": [
+      "have",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "have-4",
+     "it": "have a word",
+     "hu": "beszél valakivel pár szót",
+     "ex": "Could I have a word with you in private?",
+     "exhu": "Válthatnék veled pár szót négyszemközt?",
+     "q": "Could I ___ a word with you in private?",
+     "a": "have",
+     "o": [
+      "have",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "have-5",
+     "it": "have a rest",
+     "hu": "pihen",
+     "ex": "You look tired; go and have a rest.",
+     "exhu": "Fáradtnak tűnsz, menj, pihenj egy kicsit.",
+     "q": "You look tired; go and ___ a rest.",
+     "a": "have",
+     "o": [
+      "have",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "have-6",
+     "it": "have a party",
+     "hu": "bulit tart",
+     "ex": "We're going to have a party for her birthday.",
+     "exhu": "Bulit tartunk a születésnapjára.",
+     "q": "We're going to ___ a party for her birthday.",
+     "a": "have",
+     "o": [
+      "have",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "have-7",
+     "it": "have breakfast",
+     "hu": "reggelizik",
+     "ex": "I never have breakfast before nine.",
+     "exhu": "Kilenc előtt sosem reggelizem.",
+     "q": "I never ___ breakfast before nine.",
+     "a": "have",
+     "o": [
+      "have",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "have-8",
+     "it": "have a chat",
+     "hu": "beszélget",
+     "ex": "Let's have a chat over coffee.",
+     "exhu": "Beszélgessünk egy kávé mellett.",
+     "q": "Let's ___ a chat over coffee.",
+     "a": "have",
+     "o": [
+      "have",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "have-9",
+     "it": "have an argument",
+     "hu": "veszekszik",
+     "ex": "They often have an argument about money.",
+     "exhu": "Gyakran veszekednek a pénzen.",
+     "q": "They often ___ an argument about money.",
+     "a": "have",
+     "o": [
+      "have",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "have-10",
+     "it": "have a good time",
+     "hu": "jól érzi magát",
+     "ex": "Did you have a good time in Rome?",
+     "exhu": "Jól érezted magad Rómában?",
+     "q": "Did you ___ a good time in Rome?",
+     "a": "have",
+     "o": [
+      "have",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "have-11",
+     "it": "have difficulty",
+     "hu": "nehézsége van",
+     "ex": "Many learners have difficulty with phrasal verbs.",
+     "exhu": "Sok tanulónak gondot okoznak a phrasal verbök.",
+     "q": "Many learners ___ difficulty with phrasal verbs.",
+     "a": "have",
+     "o": [
+      "have",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "have-12",
+     "it": "have an effect",
+     "hu": "hatással van",
+     "ex": "Lack of sleep can have an effect on your memory.",
+     "exhu": "Az alváshiány hatással lehet a memóriádra.",
+     "q": "Lack of sleep can ___ an effect on your memory.",
+     "a": "have",
+     "o": [
+      "have",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "have-13",
+     "it": "have a point",
+     "hu": "van benne valami",
+     "ex": "You have a point — we should leave earlier.",
+     "exhu": "Van benne valami, korábban kellene indulnunk.",
+     "q": "You ___ a point — we should leave earlier.",
+     "a": "have",
+     "o": [
+      "have",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "have-14",
+     "it": "have a headache",
+     "hu": "fáj a feje",
+     "ex": "I have a headache, so I'm going to bed.",
+     "exhu": "Fáj a fejem, ezért lefekszem.",
+     "q": "I ___ a headache, so I'm going to bed.",
+     "a": "have",
+     "o": [
+      "have",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "have-15",
+     "it": "have second thoughts",
+     "hu": "meggondolja magát, kételkedni kezd",
+     "ex": "I'm starting to have second thoughts about the trip.",
+     "exhu": "Kezdek kételkedni az utazásban.",
+     "q": "I'm starting to ___ second thoughts about the trip.",
+     "a": "have",
+     "o": [
+      "have",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "have-16",
+     "it": "have no idea",
+     "hu": "fogalma sincs",
+     "ex": "I have no idea where my keys are.",
+     "exhu": "Fogalmam sincs, hol a kulcsom.",
+     "q": "I ___ no idea where my keys are.",
+     "a": "have",
+     "o": [
+      "have",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "have-17",
+     "it": "have a bath",
+     "hu": "megfürdik",
+     "ex": "I like to have a bath after a long day.",
+     "exhu": "Szeretek egy hosszú nap után megfürdeni.",
+     "q": "I like to ___ a bath after a long day.",
+     "a": "have",
+     "o": [
+      "have",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "have-18",
+     "it": "have a baby",
+     "hu": "gyereke születik",
+     "ex": "My sister is going to have a baby in May.",
+     "exhu": "A nővéremnek májusban születik gyereke.",
+     "q": "My sister is going to ___ a baby in May.",
+     "a": "have",
+     "o": [
+      "have",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "have-19",
+     "it": "have a dream",
+     "hu": "álmot lát, álma van",
+     "ex": "I sometimes have a dream about flying.",
+     "exhu": "Néha azt álmodom, hogy repülök.",
+     "q": "I sometimes ___ a dream about flying.",
+     "a": "have",
+     "o": [
+      "have",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "have-20",
+     "it": "have lunch",
+     "hu": "ebédel",
+     "ex": "Shall we have lunch together tomorrow?",
+     "exhu": "Ebédeljünk együtt holnap?",
+     "q": "Shall we ___ lunch together tomorrow?",
+     "a": "have",
+     "o": [
+      "have",
+      "make",
+      "do",
+      "take"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "get",
+   "title": "Get",
+   "desc": "Get + szó: házasság, eltévedés, készülődés…",
+   "items": [
+    {
+     "id": "get-1",
+     "it": "get married",
+     "hu": "megházasodik",
+     "ex": "They plan to get married next year.",
+     "exhu": "Jövőre tervezik, hogy összeházasodnak.",
+     "q": "They plan to ___ married next year.",
+     "a": "get",
+     "o": [
+      "get",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "get-2",
+     "it": "get lost",
+     "hu": "eltéved",
+     "ex": "It's easy to get lost in the old town.",
+     "exhu": "Az óvárosban könnyű eltévedni.",
+     "q": "It's easy to ___ lost in the old town.",
+     "a": "get",
+     "o": [
+      "get",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "get-3",
+     "it": "get ready",
+     "hu": "elkészül, készülődik",
+     "ex": "It takes me ten minutes to get ready.",
+     "exhu": "Tíz perc alatt elkészülök.",
+     "q": "It takes me ten minutes to ___ ready.",
+     "a": "get",
+     "o": [
+      "get",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "get-4",
+     "it": "get started",
+     "hu": "nekikezd",
+     "ex": "Let's get started — we have a lot to do.",
+     "exhu": "Kezdjünk neki, sok a dolgunk.",
+     "q": "Let's ___ started — we have a lot to do.",
+     "a": "get",
+     "o": [
+      "get",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "get-5",
+     "it": "get dressed",
+     "hu": "felöltözik",
+     "ex": "I get dressed after breakfast.",
+     "exhu": "Reggeli után öltözöm fel.",
+     "q": "I ___ dressed after breakfast.",
+     "a": "get",
+     "o": [
+      "get",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "get-6",
+     "it": "get rid of",
+     "hu": "megszabadul valamitől",
+     "ex": "We need to get rid of these old boxes.",
+     "exhu": "Meg kell szabadulnunk ezektől a régi dobozoktól.",
+     "q": "We need to ___ rid of these old boxes.",
+     "a": "get",
+     "o": [
+      "get",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "get-7",
+     "it": "get the impression",
+     "hu": "az a benyomása támad",
+     "ex": "I get the impression that he's unhappy.",
+     "exhu": "Az a benyomásom, hogy boldogtalan.",
+     "q": "I ___ the impression that he's unhappy.",
+     "a": "get",
+     "o": [
+      "get",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "get-8",
+     "it": "get a job",
+     "hu": "állást kap",
+     "ex": "She hopes to get a job in marketing.",
+     "exhu": "Abban reménykedik, hogy marketinges állást kap.",
+     "q": "She hopes to ___ a job in marketing.",
+     "a": "get",
+     "o": [
+      "get",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "get-9",
+     "it": "get in touch",
+     "hu": "felveszi a kapcsolatot",
+     "ex": "Please get in touch if you have any questions.",
+     "exhu": "Kérem, vegye fel velünk a kapcsolatot, ha kérdése van.",
+     "q": "Please ___ in touch if you have any questions.",
+     "a": "get",
+     "o": [
+      "get",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "get-10",
+     "it": "get the hang of",
+     "hu": "rájön a nyitjára",
+     "ex": "Driving is hard at first, but you'll get the hang of it.",
+     "exhu": "A vezetés eleinte nehéz, de rá fogsz jönni a nyitjára.",
+     "q": "Driving is hard at first, but you'll ___ the hang of it.",
+     "a": "get",
+     "o": [
+      "get",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "get-11",
+     "it": "get on well",
+     "hu": "jól kijön valakivel",
+     "ex": "I get on well with my colleagues.",
+     "exhu": "Jól kijövök a kollégáimmal.",
+     "q": "I ___ on well with my colleagues.",
+     "a": "get",
+     "o": [
+      "get",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "get-12",
+     "it": "get used to",
+     "hu": "hozzászokik",
+     "ex": "It took me months to get used to the cold.",
+     "exhu": "Hónapokba telt, mire hozzászoktam a hideghez.",
+     "q": "It took me months to ___ used to the cold.",
+     "a": "get",
+     "o": [
+      "get",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "get-13",
+     "it": "get permission",
+     "hu": "engedélyt kap",
+     "ex": "You need to get permission to film here.",
+     "exhu": "Engedélyt kell kérned, hogy itt forgass.",
+     "q": "You need to ___ permission to film here.",
+     "a": "get",
+     "o": [
+      "get",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "get-14",
+     "it": "get better",
+     "hu": "javul, jobban lesz",
+     "ex": "I hope you get better soon.",
+     "exhu": "Remélem, hamar jobban leszel.",
+     "q": "I hope you ___ better soon.",
+     "a": "get",
+     "o": [
+      "get",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "get-15",
+     "it": "get angry",
+     "hu": "mérges lesz",
+     "ex": "There's no need to get angry about it.",
+     "exhu": "Nincs miért mérgesnek lenni emiatt.",
+     "q": "There's no need to ___ angry about it.",
+     "a": "get",
+     "o": [
+      "get",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "get-16",
+     "it": "get home",
+     "hu": "hazaér",
+     "ex": "What time did you get home last night?",
+     "exhu": "Hánykor értél haza tegnap este?",
+     "q": "What time did you ___ home last night?",
+     "a": "get",
+     "o": [
+      "get",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "get-17",
+     "it": "get a chance",
+     "hu": "lehetőséget kap",
+     "ex": "If you get a chance, visit the castle.",
+     "exhu": "Ha alkalmad nyílik rá, nézd meg a várat.",
+     "q": "If you ___ a chance, visit the castle.",
+     "a": "get",
+     "o": [
+      "get",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "get-18",
+     "it": "get stuck",
+     "hu": "elakad",
+     "ex": "I always get stuck on the last question.",
+     "exhu": "Mindig elakadok az utolsó kérdésnél.",
+     "q": "I always ___ stuck on the last question.",
+     "a": "get",
+     "o": [
+      "get",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "get-19",
+     "it": "get involved",
+     "hu": "bekapcsolódik",
+     "ex": "Parents are encouraged to get involved in school life.",
+     "exhu": "A szülőket arra biztatják, hogy kapcsolódjanak be az iskola életébe.",
+     "q": "Parents are encouraged to ___ involved in school life.",
+     "a": "get",
+     "o": [
+      "get",
+      "make",
+      "do",
+      "take"
+     ]
+    },
+    {
+     "id": "get-20",
+     "it": "get the message",
+     "hu": "megérti az üzenetet",
+     "ex": "I hope they get the message this time.",
+     "exhu": "Remélem, ezúttal megértik az üzenetet.",
+     "q": "I hope they ___ the message this time.",
+     "a": "get",
+     "o": [
+      "get",
+      "make",
+      "do",
+      "take"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "adjnoun",
+   "title": "Melléknév + főnév",
+   "desc": "heavy rain, strong coffee, close friend…",
+   "items": [
+    {
+     "id": "adjnoun-1",
+     "it": "heavy rain",
+     "hu": "heves eső",
+     "ex": "Heavy rain caused flooding in the valley.",
+     "exhu": "A heves eső áradást okozott a völgyben.",
+     "q": "___ rain caused flooding in the valley.",
+     "a": "Heavy",
+     "o": [
+      "Heavy",
+      "Strong",
+      "Big",
+      "Hard"
+     ]
+    },
+    {
+     "id": "adjnoun-2",
+     "it": "strong wind",
+     "hu": "erős szél",
+     "ex": "A strong wind blew the tent away.",
+     "exhu": "Az erős szél elfújta a sátrat.",
+     "q": "A ___ wind blew the tent away.",
+     "a": "strong",
+     "o": [
+      "strong",
+      "heavy",
+      "hard",
+      "powerful"
+     ]
+    },
+    {
+     "id": "adjnoun-3",
+     "it": "heavy traffic",
+     "hu": "nagy forgalom",
+     "ex": "We were delayed by heavy traffic.",
+     "exhu": "A nagy forgalom miatt késtünk.",
+     "q": "We were delayed by ___ traffic.",
+     "a": "heavy",
+     "o": [
+      "heavy",
+      "strong",
+      "big",
+      "thick"
+     ]
+    },
+    {
+     "id": "adjnoun-4",
+     "it": "strong coffee",
+     "hu": "erős kávé",
+     "ex": "I need a cup of strong coffee.",
+     "exhu": "Egy csésze erős kávéra van szükségem.",
+     "q": "I need a cup of ___ coffee.",
+     "a": "strong",
+     "o": [
+      "strong",
+      "heavy",
+      "hard",
+      "thick"
+     ]
+    },
+    {
+     "id": "adjnoun-5",
+     "it": "high temperature",
+     "hu": "magas láz, hőmérséklet",
+     "ex": "The child has a high temperature.",
+     "exhu": "A gyereknek magas láza van.",
+     "q": "The child has a ___ temperature.",
+     "a": "high",
+     "o": [
+      "high",
+      "tall",
+      "big",
+      "strong"
+     ]
+    },
+    {
+     "id": "adjnoun-6",
+     "it": "deep sleep",
+     "hu": "mély alvás",
+     "ex": "He fell into a deep sleep.",
+     "exhu": "Mély álomba merült.",
+     "q": "He fell into a ___ sleep.",
+     "a": "deep",
+     "o": [
+      "deep",
+      "heavy",
+      "strong",
+      "low"
+     ]
+    },
+    {
+     "id": "adjnoun-7",
+     "it": "bitter disappointment",
+     "hu": "keserű csalódás",
+     "ex": "Losing the final was a bitter disappointment.",
+     "exhu": "A döntő elvesztése keserű csalódás volt.",
+     "q": "Losing the final was a ___ disappointment.",
+     "a": "bitter",
+     "o": [
+      "bitter",
+      "sour",
+      "hard",
+      "sharp"
+     ]
+    },
+    {
+     "id": "adjnoun-8",
+     "it": "close friend",
+     "hu": "közeli barát",
+     "ex": "She's a close friend of mine.",
+     "exhu": "Közeli barátom.",
+     "q": "She's a ___ friend of mine.",
+     "a": "close",
+     "o": [
+      "close",
+      "near",
+      "tight",
+      "deep"
+     ]
+    },
+    {
+     "id": "adjnoun-9",
+     "it": "serious injury",
+     "hu": "súlyos sérülés",
+     "ex": "He escaped without serious injury.",
+     "exhu": "Súlyos sérülés nélkül megúszta.",
+     "q": "He escaped without ___ injury.",
+     "a": "serious",
+     "o": [
+      "serious",
+      "heavy",
+      "hard",
+      "grave"
+     ]
+    },
+    {
+     "id": "adjnoun-10",
+     "it": "great success",
+     "hu": "nagy siker",
+     "ex": "The concert was a great success.",
+     "exhu": "A koncert nagy siker volt.",
+     "q": "The concert was a ___ success.",
+     "a": "great",
+     "o": [
+      "great",
+      "high",
+      "strong",
+      "large"
+     ]
+    },
+    {
+     "id": "adjnoun-11",
+     "it": "heavy smoker",
+     "hu": "erős dohányos",
+     "ex": "My grandfather was a heavy smoker.",
+     "exhu": "A nagyapám erős dohányos volt.",
+     "q": "My grandfather was a ___ smoker.",
+     "a": "heavy",
+     "o": [
+      "heavy",
+      "strong",
+      "hard",
+      "big"
+     ]
+    },
+    {
+     "id": "adjnoun-12",
+     "it": "strong accent",
+     "hu": "erős akcentus",
+     "ex": "He speaks English with a strong accent.",
+     "exhu": "Erős akcentussal beszél angolul.",
+     "q": "He speaks English with a ___ accent.",
+     "a": "strong",
+     "o": [
+      "strong",
+      "heavy",
+      "thick",
+      "hard"
+     ]
+    },
+    {
+     "id": "adjnoun-13",
+     "it": "high price",
+     "hu": "magas ár",
+     "ex": "We paid a high price for the tickets.",
+     "exhu": "Magas árat fizettünk a jegyekért.",
+     "q": "We paid a ___ price for the tickets.",
+     "a": "high",
+     "o": [
+      "high",
+      "expensive",
+      "tall",
+      "big"
+     ]
+    },
+    {
+     "id": "adjnoun-14",
+     "it": "low income",
+     "hu": "alacsony jövedelem",
+     "ex": "Families on a low income receive extra support.",
+     "exhu": "Az alacsony jövedelmű családok extra támogatást kapnak.",
+     "q": "Families on a ___ income receive extra support.",
+     "a": "low",
+     "o": [
+      "low",
+      "small",
+      "short",
+      "little"
+     ]
+    },
+    {
+     "id": "adjnoun-15",
+     "it": "broad smile",
+     "hu": "széles mosoly",
+     "ex": "She greeted us with a broad smile.",
+     "exhu": "Széles mosollyal üdvözölt minket.",
+     "q": "She greeted us with a ___ smile.",
+     "a": "broad",
+     "o": [
+      "broad",
+      "large",
+      "long",
+      "fat"
+     ]
+    },
+    {
+     "id": "adjnoun-16",
+     "it": "sharp increase",
+     "hu": "meredek emelkedés",
+     "ex": "There has been a sharp increase in prices.",
+     "exhu": "Meredeken emelkedtek az árak.",
+     "q": "There has been a ___ increase in prices.",
+     "a": "sharp",
+     "o": [
+      "sharp",
+      "strong",
+      "steep",
+      "heavy"
+     ]
+    },
+    {
+     "id": "adjnoun-17",
+     "it": "narrow escape",
+     "hu": "hajszálon múló megmenekülés",
+     "ex": "We had a narrow escape when the tree fell.",
+     "exhu": "Hajszálon múlt, hogy megmenekültünk, amikor a fa kidőlt.",
+     "q": "We had a ___ escape when the tree fell.",
+     "a": "narrow",
+     "o": [
+      "narrow",
+      "thin",
+      "small",
+      "close"
+     ]
+    },
+    {
+     "id": "adjnoun-18",
+     "it": "rough idea",
+     "hu": "hozzávetőleges elképzelés",
+     "ex": "Can you give me a rough idea of the cost?",
+     "exhu": "Meg tudod mondani nagyjából, mennyibe kerül?",
+     "q": "Can you give me a ___ idea of the cost?",
+     "a": "rough",
+     "o": [
+      "rough",
+      "hard",
+      "raw",
+      "near"
+     ]
+    },
+    {
+     "id": "adjnoun-19",
+     "it": "fast food",
+     "hu": "gyorsétel",
+     "ex": "Too much fast food is bad for you.",
+     "exhu": "A túl sok gyorsétel egészségtelen.",
+     "q": "Too much ___ food is bad for you.",
+     "a": "fast",
+     "o": [
+      "fast",
+      "quick",
+      "rapid",
+      "speedy"
+     ]
+    },
+    {
+     "id": "adjnoun-20",
+     "it": "light meal",
+     "hu": "könnyű étkezés",
+     "ex": "I'd like a light meal before the flight.",
+     "exhu": "Egy könnyű étkezést szeretnék a repülés előtt.",
+     "q": "I'd like a ___ meal before the flight.",
+     "a": "light",
+     "o": [
+      "light",
+      "easy",
+      "small",
+      "thin"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "advadj",
+   "title": "Határozószó + melléknév",
+   "desc": "highly unlikely, deeply concerned…",
+   "items": [
+    {
+     "id": "advadj-1",
+     "it": "highly unlikely",
+     "hu": "nagyon valószínűtlen",
+     "ex": "It is highly unlikely that it will snow.",
+     "exhu": "Nagyon valószínűtlen, hogy esni fog a hó.",
+     "q": "It is ___ unlikely that it will snow.",
+     "a": "highly",
+     "o": [
+      "highly",
+      "deeply",
+      "strongly",
+      "greatly"
+     ]
+    },
+    {
+     "id": "advadj-2",
+     "it": "deeply concerned",
+     "hu": "mélységesen aggódó",
+     "ex": "We are deeply concerned about the situation.",
+     "exhu": "Mélységesen aggódunk a helyzet miatt.",
+     "q": "We are ___ concerned about the situation.",
+     "a": "deeply",
+     "o": [
+      "deeply",
+      "highly",
+      "strongly",
+      "bitterly"
+     ]
+    },
+    {
+     "id": "advadj-3",
+     "it": "bitterly disappointed",
+     "hu": "keservesen csalódott",
+     "ex": "The fans were bitterly disappointed.",
+     "exhu": "A szurkolók keservesen csalódtak.",
+     "q": "The fans were ___ disappointed.",
+     "a": "bitterly",
+     "o": [
+      "bitterly",
+      "highly",
+      "fully",
+      "strongly"
+     ]
+    },
+    {
+     "id": "advadj-4",
+     "it": "fully aware",
+     "hu": "teljesen tisztában van",
+     "ex": "I am fully aware of the risks.",
+     "exhu": "Teljesen tisztában vagyok a kockázatokkal.",
+     "q": "I am ___ aware of the risks.",
+     "a": "fully",
+     "o": [
+      "fully",
+      "highly",
+      "deeply",
+      "greatly"
+     ]
+    },
+    {
+     "id": "advadj-5",
+     "it": "utterly ridiculous",
+     "hu": "teljesen nevetséges",
+     "ex": "The idea is utterly ridiculous.",
+     "exhu": "Az ötlet teljesen nevetséges.",
+     "q": "The idea is ___ ridiculous.",
+     "a": "utterly",
+     "o": [
+      "utterly",
+      "highly",
+      "deeply",
+      "very much"
+     ]
+    },
+    {
+     "id": "advadj-6",
+     "it": "perfectly normal",
+     "hu": "teljesen normális",
+     "ex": "It's perfectly normal to feel nervous.",
+     "exhu": "Teljesen normális, hogy izgulsz.",
+     "q": "It's ___ normal to feel nervous.",
+     "a": "perfectly",
+     "o": [
+      "perfectly",
+      "highly",
+      "deeply",
+      "strongly"
+     ]
+    },
+    {
+     "id": "advadj-7",
+     "it": "seriously injured",
+     "hu": "súlyosan megsérült",
+     "ex": "Two people were seriously injured in the crash.",
+     "exhu": "Két ember súlyosan megsérült a balesetben.",
+     "q": "Two people were ___ injured in the crash.",
+     "a": "seriously",
+     "o": [
+      "seriously",
+      "heavily",
+      "strongly",
+      "deeply"
+     ]
+    },
+    {
+     "id": "advadj-8",
+     "it": "painfully slow",
+     "hu": "fájdalmasan lassú",
+     "ex": "The internet connection was painfully slow.",
+     "exhu": "Az internetkapcsolat fájdalmasan lassú volt.",
+     "q": "The internet connection was ___ slow.",
+     "a": "painfully",
+     "o": [
+      "painfully",
+      "highly",
+      "deeply",
+      "bitterly"
+     ]
+    },
+    {
+     "id": "advadj-9",
+     "it": "widely available",
+     "hu": "széles körben elérhető",
+     "ex": "The vaccine is now widely available.",
+     "exhu": "Az oltás már széles körben elérhető.",
+     "q": "The vaccine is now ___ available.",
+     "a": "widely",
+     "o": [
+      "widely",
+      "highly",
+      "broadly",
+      "greatly"
+     ]
+    },
+    {
+     "id": "advadj-10",
+     "it": "highly recommended",
+     "hu": "melegen ajánlott",
+     "ex": "This restaurant comes highly recommended.",
+     "exhu": "Ezt az éttermet melegen ajánlják.",
+     "q": "This restaurant comes ___ recommended.",
+     "a": "highly",
+     "o": [
+      "highly",
+      "deeply",
+      "strongly",
+      "widely"
+     ]
+    },
+    {
+     "id": "advadj-11",
+     "it": "deeply grateful",
+     "hu": "mélységesen hálás",
+     "ex": "I am deeply grateful for your help.",
+     "exhu": "Mélységesen hálás vagyok a segítségedért.",
+     "q": "I am ___ grateful for your help.",
+     "a": "deeply",
+     "o": [
+      "deeply",
+      "highly",
+      "strongly",
+      "greatly"
+     ]
+    },
+    {
+     "id": "advadj-12",
+     "it": "entirely possible",
+     "hu": "teljesen lehetséges",
+     "ex": "It's entirely possible that he forgot.",
+     "exhu": "Teljesen lehetséges, hogy elfelejtette.",
+     "q": "It's ___ possible that he forgot.",
+     "a": "entirely",
+     "o": [
+      "entirely",
+      "highly",
+      "deeply",
+      "strongly"
+     ]
+    },
+    {
+     "id": "advadj-13",
+     "it": "totally unacceptable",
+     "hu": "teljesen elfogadhatatlan",
+     "ex": "This behaviour is totally unacceptable.",
+     "exhu": "Ez a viselkedés teljesen elfogadhatatlan.",
+     "q": "This behaviour is ___ unacceptable.",
+     "a": "totally",
+     "o": [
+      "totally",
+      "highly",
+      "deeply",
+      "strongly"
+     ]
+    },
+    {
+     "id": "advadj-14",
+     "it": "absolutely delicious",
+     "hu": "isteni finom",
+     "ex": "The cake was absolutely delicious.",
+     "exhu": "A torta isteni finom volt.",
+     "q": "The cake was ___ delicious.",
+     "a": "absolutely",
+     "o": [
+      "absolutely",
+      "very",
+      "highly",
+      "deeply"
+     ]
+    },
+    {
+     "id": "advadj-15",
+     "it": "slightly different",
+     "hu": "kicsit más",
+     "ex": "My version is slightly different from yours.",
+     "exhu": "Az én változatom kicsit más, mint a tiéd.",
+     "q": "My version is ___ different from yours.",
+     "a": "slightly",
+     "o": [
+      "slightly",
+      "lightly",
+      "highly",
+      "deeply"
+     ]
+    },
+    {
+     "id": "advadj-16",
+     "it": "readily available",
+     "hu": "könnyen hozzáférhető",
+     "ex": "Information is readily available online.",
+     "exhu": "Az információ könnyen hozzáférhető az interneten.",
+     "q": "Information is ___ available online.",
+     "a": "readily",
+     "o": [
+      "readily",
+      "highly",
+      "deeply",
+      "easy"
+     ]
+    },
+    {
+     "id": "advadj-17",
+     "it": "vastly improved",
+     "hu": "jelentősen javult",
+     "ex": "The service has vastly improved.",
+     "exhu": "A szolgáltatás jelentősen javult.",
+     "q": "The service has ___ improved.",
+     "a": "vastly",
+     "o": [
+      "vastly",
+      "highly",
+      "deeply",
+      "widely"
+     ]
+    },
+    {
+     "id": "advadj-18",
+     "it": "strongly opposed",
+     "hu": "határozottan ellenez",
+     "ex": "Local residents are strongly opposed to the plan.",
+     "exhu": "A helyi lakosok határozottan ellenzik a tervet.",
+     "q": "Local residents are ___ opposed to the plan.",
+     "a": "strongly",
+     "o": [
+      "strongly",
+      "highly",
+      "deeply",
+      "heavily"
+     ]
+    },
+    {
+     "id": "advadj-19",
+     "it": "happily married",
+     "hu": "boldog házasságban él",
+     "ex": "They have been happily married for thirty years.",
+     "exhu": "Harminc éve élnek boldog házasságban.",
+     "q": "They have been ___ married for thirty years.",
+     "a": "happily",
+     "o": [
+      "happily",
+      "highly",
+      "deeply",
+      "fully"
+     ]
+    },
+    {
+     "id": "advadj-20",
+     "it": "fiercely competitive",
+     "hu": "kiélezetten versengő",
+     "ex": "The market is fiercely competitive.",
+     "exhu": "A piac kiélezetten versengő.",
+     "q": "The market is ___ competitive.",
+     "a": "fiercely",
+     "o": [
+      "fiercely",
+      "highly",
+      "deeply",
+      "bitterly"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "verbprep",
+   "title": "Ige + elöljárószó",
+   "desc": "depend on, consist of, insist on…",
+   "items": [
+    {
+     "id": "verbprep-1",
+     "it": "depend on",
+     "hu": "függ valamitől",
+     "ex": "Our plans depend on the weather.",
+     "exhu": "A terveink az időjárástól függenek.",
+     "q": "Our plans depend ___ the weather.",
+     "a": "on",
+     "o": [
+      "on",
+      "of",
+      "in",
+      "for"
+     ]
+    },
+    {
+     "id": "verbprep-2",
+     "it": "consist of",
+     "hu": "áll valamiből",
+     "ex": "The team consists of five people.",
+     "exhu": "A csapat öt emberből áll.",
+     "q": "The team consists ___ five people.",
+     "a": "of",
+     "o": [
+      "of",
+      "on",
+      "in",
+      "for"
+     ]
+    },
+    {
+     "id": "verbprep-3",
+     "it": "insist on",
+     "hu": "ragaszkodik valamihez",
+     "ex": "She insisted on paying for dinner.",
+     "exhu": "Ragaszkodott hozzá, hogy ő fizesse a vacsorát.",
+     "q": "She insisted ___ paying for dinner.",
+     "a": "on",
+     "o": [
+      "on",
+      "of",
+      "in",
+      "for"
+     ]
+    },
+    {
+     "id": "verbprep-4",
+     "it": "rely on",
+     "hu": "számít valakire",
+     "ex": "You can always rely on me.",
+     "exhu": "Mindig számíthatsz rám.",
+     "q": "You can always rely ___ me.",
+     "a": "on",
+     "o": [
+      "on",
+      "of",
+      "in",
+      "for"
+     ]
+    },
+    {
+     "id": "verbprep-5",
+     "it": "apologise for",
+     "hu": "bocsánatot kér valamiért",
+     "ex": "He apologised for being late.",
+     "exhu": "Bocsánatot kért a késésért.",
+     "q": "He apologised ___ being late.",
+     "a": "for",
+     "o": [
+      "for",
+      "on",
+      "of",
+      "in"
+     ]
+    },
+    {
+     "id": "verbprep-6",
+     "it": "belong to",
+     "hu": "valakié",
+     "ex": "This bag belongs to my sister.",
+     "exhu": "Ez a táska a nővéremé.",
+     "q": "This bag belongs ___ my sister.",
+     "a": "to",
+     "o": [
+      "to",
+      "on",
+      "of",
+      "in"
+     ]
+    },
+    {
+     "id": "verbprep-7",
+     "it": "concentrate on",
+     "hu": "összpontosít valamire",
+     "ex": "I can't concentrate on my work.",
+     "exhu": "Nem tudok a munkámra koncentrálni.",
+     "q": "I can't concentrate ___ my work.",
+     "a": "on",
+     "o": [
+      "on",
+      "of",
+      "in",
+      "for"
+     ]
+    },
+    {
+     "id": "verbprep-8",
+     "it": "succeed in",
+     "hu": "sikerül neki",
+     "ex": "She succeeded in passing the exam.",
+     "exhu": "Sikerült letennie a vizsgát.",
+     "q": "She succeeded ___ passing the exam.",
+     "a": "in",
+     "o": [
+      "in",
+      "on",
+      "of",
+      "for"
+     ]
+    },
+    {
+     "id": "verbprep-9",
+     "it": "complain about",
+     "hu": "panaszkodik valamire",
+     "ex": "Guests complained about the noise.",
+     "exhu": "A vendégek panaszkodtak a zajra.",
+     "q": "Guests complained ___ the noise.",
+     "a": "about",
+     "o": [
+      "about",
+      "on",
+      "of",
+      "in"
+     ]
+    },
+    {
+     "id": "verbprep-10",
+     "it": "approve of",
+     "hu": "helyesel",
+     "ex": "My parents don't approve of my new hairstyle.",
+     "exhu": "A szüleim nem helyeslik az új frizurámat.",
+     "q": "My parents don't approve ___ my new hairstyle.",
+     "a": "of",
+     "o": [
+      "of",
+      "on",
+      "in",
+      "for"
+     ]
+    },
+    {
+     "id": "verbprep-11",
+     "it": "suffer from",
+     "hu": "szenved valamiben",
+     "ex": "Many people suffer from hay fever.",
+     "exhu": "Sokan szenvednek szénanáthában.",
+     "q": "Many people suffer ___ hay fever.",
+     "a": "from",
+     "o": [
+      "from",
+      "on",
+      "of",
+      "in"
+     ]
+    },
+    {
+     "id": "verbprep-12",
+     "it": "accuse of",
+     "hu": "vádol valamivel",
+     "ex": "They accused him of lying.",
+     "exhu": "Hazugsággal vádolták.",
+     "q": "They accused him ___ lying.",
+     "a": "of",
+     "o": [
+      "of",
+      "on",
+      "in",
+      "for"
+     ]
+    },
+    {
+     "id": "verbprep-13",
+     "it": "believe in",
+     "hu": "hisz valamiben",
+     "ex": "Do you believe in ghosts?",
+     "exhu": "Hiszel a szellemekben?",
+     "q": "Do you believe ___ ghosts?",
+     "a": "in",
+     "o": [
+      "in",
+      "on",
+      "of",
+      "for"
+     ]
+    },
+    {
+     "id": "verbprep-14",
+     "it": "cope with",
+     "hu": "megbirkózik valamivel",
+     "ex": "How do you cope with stress?",
+     "exhu": "Hogyan birkózol meg a stresszel?",
+     "q": "How do you cope ___ stress?",
+     "a": "with",
+     "o": [
+      "with",
+      "on",
+      "of",
+      "in"
+     ]
+    },
+    {
+     "id": "verbprep-15",
+     "it": "look forward to",
+     "hu": "alig várja",
+     "ex": "I look forward to hearing from you.",
+     "exhu": "Várom válaszát.",
+     "q": "I look forward ___ hearing from you.",
+     "a": "to",
+     "o": [
+      "to",
+      "on",
+      "of",
+      "in"
+     ]
+    },
+    {
+     "id": "verbprep-16",
+     "it": "focus on",
+     "hu": "összpontosít",
+     "ex": "Let's focus on the main problem.",
+     "exhu": "Összpontosítsunk a fő problémára.",
+     "q": "Let's focus ___ the main problem.",
+     "a": "on",
+     "o": [
+      "on",
+      "of",
+      "in",
+      "for"
+     ]
+    },
+    {
+     "id": "verbprep-17",
+     "it": "refer to",
+     "hu": "utal valamire",
+     "ex": "Which document are you referring to?",
+     "exhu": "Melyik dokumentumra utalsz?",
+     "q": "Which document are you referring ___?",
+     "a": "to",
+     "o": [
+      "to",
+      "on",
+      "of",
+      "in"
+     ]
+    },
+    {
+     "id": "verbprep-18",
+     "it": "object to",
+     "hu": "kifogásol",
+     "ex": "Many residents object to the new road.",
+     "exhu": "Sok lakos kifogásolja az új utat.",
+     "q": "Many residents object ___ the new road.",
+     "a": "to",
+     "o": [
+      "to",
+      "on",
+      "of",
+      "in"
+     ]
+    },
+    {
+     "id": "verbprep-19",
+     "it": "result in",
+     "hu": "eredményez",
+     "ex": "The mistake resulted in a huge loss.",
+     "exhu": "A hiba hatalmas veszteséget eredményezett.",
+     "q": "The mistake resulted ___ a huge loss.",
+     "a": "in",
+     "o": [
+      "in",
+      "on",
+      "of",
+      "for"
+     ]
+    },
+    {
+     "id": "verbprep-20",
+     "it": "deal with",
+     "hu": "foglalkozik valamivel, kezel",
+     "ex": "I'll deal with the problem tomorrow.",
+     "exhu": "Holnap foglalkozom a problémával.",
+     "q": "I'll deal ___ the problem tomorrow.",
+     "a": "with",
+     "o": [
+      "with",
+      "on",
+      "of",
+      "in"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "adjprep",
+   "title": "Melléknév + elöljárószó",
+   "desc": "afraid of, interested in, good at…",
+   "items": [
+    {
+     "id": "adjprep-1",
+     "it": "afraid of",
+     "hu": "fél valamitől",
+     "ex": "My son is afraid of the dark.",
+     "exhu": "A fiam fél a sötétben.",
+     "q": "My son is afraid ___ the dark.",
+     "a": "of",
+     "o": [
+      "of",
+      "on",
+      "in",
+      "for"
+     ]
+    },
+    {
+     "id": "adjprep-2",
+     "it": "interested in",
+     "hu": "érdeklődik valami iránt",
+     "ex": "Are you interested in history?",
+     "exhu": "Érdekel a történelem?",
+     "q": "Are you interested ___ history?",
+     "a": "in",
+     "o": [
+      "in",
+      "on",
+      "of",
+      "for"
+     ]
+    },
+    {
+     "id": "adjprep-3",
+     "it": "good at",
+     "hu": "jó valamiben",
+     "ex": "She's very good at maths.",
+     "exhu": "Nagyon jó matekból.",
+     "q": "She's very good ___ maths.",
+     "a": "at",
+     "o": [
+      "at",
+      "on",
+      "of",
+      "in"
+     ]
+    },
+    {
+     "id": "adjprep-4",
+     "it": "responsible for",
+     "hu": "felelős valamiért",
+     "ex": "Who is responsible for this mess?",
+     "exhu": "Ki felelős ezért a rendetlenségért?",
+     "q": "Who is responsible ___ this mess?",
+     "a": "for",
+     "o": [
+      "for",
+      "on",
+      "of",
+      "in"
+     ]
+    },
+    {
+     "id": "adjprep-5",
+     "it": "proud of",
+     "hu": "büszke valamire",
+     "ex": "We're very proud of you.",
+     "exhu": "Nagyon büszkék vagyunk rád.",
+     "q": "We're very proud ___ you.",
+     "a": "of",
+     "o": [
+      "of",
+      "on",
+      "in",
+      "for"
+     ]
+    },
+    {
+     "id": "adjprep-6",
+     "it": "keen on",
+     "hu": "lelkesedik valamiért",
+     "ex": "I'm not very keen on horror films.",
+     "exhu": "Nem vagyok oda a horrorfilmekért.",
+     "q": "I'm not very keen ___ horror films.",
+     "a": "on",
+     "o": [
+      "on",
+      "of",
+      "in",
+      "for"
+     ]
+    },
+    {
+     "id": "adjprep-7",
+     "it": "aware of",
+     "hu": "tudatában van",
+     "ex": "Are you aware of the new rules?",
+     "exhu": "Tudsz az új szabályokról?",
+     "q": "Are you aware ___ the new rules?",
+     "a": "of",
+     "o": [
+      "of",
+      "on",
+      "in",
+      "for"
+     ]
+    },
+    {
+     "id": "adjprep-8",
+     "it": "capable of",
+     "hu": "képes valamire",
+     "ex": "He is capable of great things.",
+     "exhu": "Nagy dolgokra képes.",
+     "q": "He is capable ___ great things.",
+     "a": "of",
+     "o": [
+      "of",
+      "on",
+      "in",
+      "for"
+     ]
+    },
+    {
+     "id": "adjprep-9",
+     "it": "similar to",
+     "hu": "hasonló valamihez",
+     "ex": "Your bag is similar to mine.",
+     "exhu": "A táskád hasonlít az enyémre.",
+     "q": "Your bag is similar ___ mine.",
+     "a": "to",
+     "o": [
+      "to",
+      "on",
+      "of",
+      "in"
+     ]
+    },
+    {
+     "id": "adjprep-10",
+     "it": "different from",
+     "hu": "különbözik valamitől",
+     "ex": "City life is very different from village life.",
+     "exhu": "A városi élet nagyon különbözik a falusitól.",
+     "q": "City life is very different ___ village life.",
+     "a": "from",
+     "o": [
+      "from",
+      "on",
+      "of",
+      "in"
+     ]
+    },
+    {
+     "id": "adjprep-11",
+     "it": "famous for",
+     "hu": "híres valamiről",
+     "ex": "Hungary is famous for its thermal baths.",
+     "exhu": "Magyarország a gyógyfürdőiről híres.",
+     "q": "Hungary is famous ___ its thermal baths.",
+     "a": "for",
+     "o": [
+      "for",
+      "on",
+      "of",
+      "in"
+     ]
+    },
+    {
+     "id": "adjprep-12",
+     "it": "tired of",
+     "hu": "elege van valamiből",
+     "ex": "I'm tired of waiting.",
+     "exhu": "Elegem van a várakozásból.",
+     "q": "I'm tired ___ waiting.",
+     "a": "of",
+     "o": [
+      "of",
+      "on",
+      "in",
+      "for"
+     ]
+    },
+    {
+     "id": "adjprep-13",
+     "it": "married to",
+     "hu": "házas valakivel",
+     "ex": "She is married to a doctor.",
+     "exhu": "Egy orvos a férje.",
+     "q": "She is married ___ a doctor.",
+     "a": "to",
+     "o": [
+      "to",
+      "on",
+      "of",
+      "in"
+     ]
+    },
+    {
+     "id": "adjprep-14",
+     "it": "fond of",
+     "hu": "kedvel valamit",
+     "ex": "I'm very fond of my grandmother.",
+     "exhu": "Nagyon szeretem a nagymamámat.",
+     "q": "I'm very fond ___ my grandmother.",
+     "a": "of",
+     "o": [
+      "of",
+      "on",
+      "in",
+      "for"
+     ]
+    },
+    {
+     "id": "adjprep-15",
+     "it": "jealous of",
+     "hu": "féltékeny valakire",
+     "ex": "He's jealous of his brother's success.",
+     "exhu": "Féltékeny a bátyja sikerére.",
+     "q": "He's jealous ___ his brother's success.",
+     "a": "of",
+     "o": [
+      "of",
+      "on",
+      "in",
+      "for"
+     ]
+    },
+    {
+     "id": "adjprep-16",
+     "it": "satisfied with",
+     "hu": "elégedett valamivel",
+     "ex": "Are you satisfied with the result?",
+     "exhu": "Elégedett vagy az eredménnyel?",
+     "q": "Are you satisfied ___ the result?",
+     "a": "with",
+     "o": [
+      "with",
+      "on",
+      "of",
+      "in"
+     ]
+    },
+    {
+     "id": "adjprep-17",
+     "it": "involved in",
+     "hu": "részt vesz valamiben",
+     "ex": "She is involved in several projects.",
+     "exhu": "Több projektben is részt vesz.",
+     "q": "She is involved ___ several projects.",
+     "a": "in",
+     "o": [
+      "in",
+      "on",
+      "of",
+      "for"
+     ]
+    },
+    {
+     "id": "adjprep-18",
+     "it": "short of",
+     "hu": "híján van valaminek",
+     "ex": "We're a bit short of time.",
+     "exhu": "Kicsit szűkében vagyunk az időnek.",
+     "q": "We're a bit short ___ time.",
+     "a": "of",
+     "o": [
+      "of",
+      "on",
+      "in",
+      "for"
+     ]
+    },
+    {
+     "id": "adjprep-19",
+     "it": "worried about",
+     "hu": "aggódik valami miatt",
+     "ex": "I'm worried about my exam.",
+     "exhu": "Aggódom a vizsgám miatt.",
+     "q": "I'm worried ___ my exam.",
+     "a": "about",
+     "o": [
+      "about",
+      "on",
+      "of",
+      "in"
+     ]
+    },
+    {
+     "id": "adjprep-20",
+     "it": "sensitive to",
+     "hu": "érzékeny valamire",
+     "ex": "My skin is sensitive to the sun.",
+     "exhu": "A bőröm érzékeny a napra.",
+     "q": "My skin is sensitive ___ the sun.",
+     "a": "to",
+     "o": [
+      "to",
+      "on",
+      "of",
+      "in"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "work",
+   "title": "Munka és üzlet",
+   "desc": "meet a deadline, run a business…",
+   "items": [
+    {
+     "id": "work-1",
+     "it": "meet a deadline",
+     "hu": "betartja a határidőt",
+     "ex": "We worked all night to meet the deadline.",
+     "exhu": "Egész éjjel dolgoztunk, hogy tartsuk a határidőt.",
+     "q": "We worked all night to ___ the deadline.",
+     "a": "meet",
+     "o": [
+      "meet",
+      "reach",
+      "make",
+      "keep"
+     ]
+    },
+    {
+     "id": "work-2",
+     "it": "launch a product",
+     "hu": "piacra dob egy terméket",
+     "ex": "The company will launch a new product in spring.",
+     "exhu": "A cég tavasszal új terméket dob piacra.",
+     "q": "The company will ___ a new product in spring.",
+     "a": "launch",
+     "o": [
+      "launch",
+      "start",
+      "throw",
+      "open"
+     ]
+    },
+    {
+     "id": "work-3",
+     "it": "hold a meeting",
+     "hu": "megbeszélést tart",
+     "ex": "We hold a meeting every Monday morning.",
+     "exhu": "Minden hétfő reggel megbeszélést tartunk.",
+     "q": "We ___ a meeting every Monday morning.",
+     "a": "hold",
+     "o": [
+      "hold",
+      "make",
+      "do",
+      "keep"
+     ]
+    },
+    {
+     "id": "work-4",
+     "it": "reach an agreement",
+     "hu": "megállapodásra jut",
+     "ex": "After hours of talks, they managed to reach an agreement.",
+     "exhu": "Többórás tárgyalás után sikerült megállapodniuk.",
+     "q": "After hours of talks, they managed to ___ an agreement.",
+     "a": "reach",
+     "o": [
+      "reach",
+      "get",
+      "arrive",
+      "meet"
+     ]
+    },
+    {
+     "id": "work-5",
+     "it": "raise prices",
+     "hu": "emeli az árakat",
+     "ex": "Many shops had to raise prices this year.",
+     "exhu": "Sok bolt idén kénytelen volt árat emelni.",
+     "q": "Many shops had to ___ prices this year.",
+     "a": "raise",
+     "o": [
+      "raise",
+      "rise",
+      "lift",
+      "grow"
+     ]
+    },
+    {
+     "id": "work-6",
+     "it": "cut costs",
+     "hu": "csökkenti a költségeket",
+     "ex": "The firm is trying to cut costs.",
+     "exhu": "A cég próbálja csökkenteni a költségeit.",
+     "q": "The firm is trying to ___ costs.",
+     "a": "cut",
+     "o": [
+      "cut",
+      "break",
+      "drop",
+      "fall"
+     ]
+    },
+    {
+     "id": "work-7",
+     "it": "run a business",
+     "hu": "vállalkozást vezet",
+     "ex": "My aunt runs a business selling flowers.",
+     "exhu": "A nagynéném virágkereskedést vezet.",
+     "q": "My aunt ___ a business selling flowers.",
+     "a": "runs",
+     "o": [
+      "runs",
+      "drives",
+      "leads",
+      "makes"
+     ]
+    },
+    {
+     "id": "work-8",
+     "it": "apply for a job",
+     "hu": "állásra jelentkezik",
+     "ex": "I'm going to apply for a job at the bank.",
+     "exhu": "Jelentkezni fogok egy állásra a bankban.",
+     "q": "I'm going to ___ for a job at the bank.",
+     "a": "apply",
+     "o": [
+      "apply",
+      "ask",
+      "request",
+      "demand"
+     ]
+    },
+    {
+     "id": "work-9",
+     "it": "earn a salary",
+     "hu": "fizetést keres",
+     "ex": "Nurses earn a modest salary.",
+     "exhu": "Az ápolók szerény fizetést keresnek.",
+     "q": "Nurses ___ a modest salary.",
+     "a": "earn",
+     "o": [
+      "earn",
+      "win",
+      "gain",
+      "make up"
+     ]
+    },
+    {
+     "id": "work-10",
+     "it": "draw up a contract",
+     "hu": "szerződést készít",
+     "ex": "Our lawyer will draw up a contract.",
+     "exhu": "Az ügyvédünk elkészíti a szerződést.",
+     "q": "Our lawyer will ___ up a contract.",
+     "a": "draw",
+     "o": [
+      "draw",
+      "write",
+      "make",
+      "put"
+     ]
+    },
+    {
+     "id": "work-11",
+     "it": "submit a report",
+     "hu": "jelentést nyújt be",
+     "ex": "Please submit a report by Friday.",
+     "exhu": "Kérem, péntekig nyújtsa be a jelentést.",
+     "q": "Please ___ a report by Friday.",
+     "a": "submit",
+     "o": [
+      "submit",
+      "give in to",
+      "send off to",
+      "hand on"
+     ]
+    },
+    {
+     "id": "work-12",
+     "it": "set a target",
+     "hu": "célt tűz ki",
+     "ex": "The manager set a target of 100 sales a month.",
+     "exhu": "A vezető havi 100 eladást tűzött ki célul.",
+     "q": "The manager ___ a target of 100 sales a month.",
+     "a": "set",
+     "o": [
+      "set",
+      "put",
+      "make",
+      "place"
+     ]
+    },
+    {
+     "id": "work-13",
+     "it": "attend a conference",
+     "hu": "konferencián vesz részt",
+     "ex": "She will attend a conference in Vienna.",
+     "exhu": "Konferencián vesz részt Bécsben.",
+     "q": "She will ___ a conference in Vienna.",
+     "a": "attend",
+     "o": [
+      "attend",
+      "assist",
+      "visit",
+      "join in"
+     ]
+    },
+    {
+     "id": "work-14",
+     "it": "close a deal",
+     "hu": "megköt egy üzletet",
+     "ex": "We finally managed to close the deal.",
+     "exhu": "Végül sikerült megkötnünk az üzletet.",
+     "q": "We finally managed to ___ the deal.",
+     "a": "close",
+     "o": [
+      "close",
+      "shut",
+      "end",
+      "finish"
+     ]
+    },
+    {
+     "id": "work-15",
+     "it": "hire staff",
+     "hu": "munkaerőt vesz fel",
+     "ex": "The hotel needs to hire staff for the summer.",
+     "exhu": "A szállodának munkaerőt kell felvennie nyárra.",
+     "q": "The hotel needs to ___ staff for the summer.",
+     "a": "hire",
+     "o": [
+      "hire",
+      "rent",
+      "lend",
+      "borrow"
+     ]
+    },
+    {
+     "id": "work-16",
+     "it": "go bankrupt",
+     "hu": "csődbe megy",
+     "ex": "Many small shops go bankrupt every year.",
+     "exhu": "Sok kis bolt megy csődbe minden évben.",
+     "q": "Many small shops ___ bankrupt every year.",
+     "a": "go",
+     "o": [
+      "go",
+      "get",
+      "make",
+      "become to"
+     ]
+    },
+    {
+     "id": "work-17",
+     "it": "give a presentation",
+     "hu": "prezentációt tart",
+     "ex": "I have to give a presentation tomorrow.",
+     "exhu": "Holnap prezentációt kell tartanom.",
+     "q": "I have to ___ a presentation tomorrow.",
+     "a": "give",
+     "o": [
+      "give",
+      "hold",
+      "do on",
+      "say"
+     ]
+    },
+    {
+     "id": "work-18",
+     "it": "place an order",
+     "hu": "rendelést lead",
+     "ex": "I'd like to place an order for ten boxes.",
+     "exhu": "Tíz dobozra szeretnék rendelést leadni.",
+     "q": "I'd like to ___ an order for ten boxes.",
+     "a": "place",
+     "o": [
+      "place",
+      "put",
+      "set",
+      "lay"
+     ]
+    },
+    {
+     "id": "work-19",
+     "it": "handle complaints",
+     "hu": "panaszokat kezel",
+     "ex": "She handles complaints from customers.",
+     "exhu": "Ő kezeli az ügyfelek panaszait.",
+     "q": "She ___ complaints from customers.",
+     "a": "handles",
+     "o": [
+      "handles",
+      "holds",
+      "takes on",
+      "touches"
+     ]
+    },
+    {
+     "id": "work-20",
+     "it": "negotiate a contract",
+     "hu": "szerződést tárgyal",
+     "ex": "The union will negotiate a new contract.",
+     "exhu": "A szakszervezet új szerződésről tárgyal.",
+     "q": "The union will ___ a new contract.",
+     "a": "negotiate",
+     "o": [
+      "negotiate",
+      "discuss about",
+      "argue",
+      "bargain on"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "academic",
+   "title": "C1: írott és tudományos nyelv",
+   "desc": "pose a threat, raise awareness, draw a conclusion…",
+   "items": [
+    {
+     "id": "academic-1",
+     "it": "pose a threat",
+     "hu": "fenyegetést jelent",
+     "ex": "Rising sea levels pose a threat to coastal cities.",
+     "exhu": "Az emelkedő tengerszint fenyegetést jelent a part menti városokra.",
+     "q": "Rising sea levels ___ a threat to coastal cities.",
+     "a": "pose",
+     "o": [
+      "pose",
+      "make",
+      "put",
+      "give"
+     ]
+    },
+    {
+     "id": "academic-2",
+     "it": "raise awareness",
+     "hu": "felhívja a figyelmet",
+     "ex": "The campaign aims to raise awareness of mental health.",
+     "exhu": "A kampány célja, hogy felhívja a figyelmet a mentális egészségre.",
+     "q": "The campaign aims to ___ awareness of mental health.",
+     "a": "raise",
+     "o": [
+      "raise",
+      "rise",
+      "lift",
+      "grow"
+     ]
+    },
+    {
+     "id": "academic-3",
+     "it": "draw a conclusion",
+     "hu": "következtetést von le",
+     "ex": "It is too early to draw a conclusion.",
+     "exhu": "Még túl korai következtetést levonni.",
+     "q": "It is too early to ___ a conclusion.",
+     "a": "draw",
+     "o": [
+      "draw",
+      "make out",
+      "pull",
+      "take up"
+     ]
+    },
+    {
+     "id": "academic-4",
+     "it": "play a role",
+     "hu": "szerepet játszik",
+     "ex": "Diet plays a role in preventing disease.",
+     "exhu": "Az étrend szerepet játszik a betegségek megelőzésében.",
+     "q": "Diet ___ a role in preventing disease.",
+     "a": "plays",
+     "o": [
+      "plays",
+      "makes",
+      "does",
+      "takes"
+     ]
+    },
+    {
+     "id": "academic-5",
+     "it": "bear in mind",
+     "hu": "szem előtt tart",
+     "ex": "Bear in mind that prices may change.",
+     "exhu": "Tartsd szem előtt, hogy az árak változhatnak.",
+     "q": "___ in mind that prices may change.",
+     "a": "Bear",
+     "o": [
+      "Bear",
+      "Keep on",
+      "Hold up",
+      "Carry"
+     ]
+    },
+    {
+     "id": "academic-6",
+     "it": "shed light on",
+     "hu": "fényt derít valamire",
+     "ex": "New evidence may shed light on the case.",
+     "exhu": "Új bizonyítékok fényt deríthetnek az ügyre.",
+     "q": "New evidence may ___ light on the case.",
+     "a": "shed",
+     "o": [
+      "shed",
+      "throw on",
+      "put",
+      "make"
+     ]
+    },
+    {
+     "id": "academic-7",
+     "it": "address an issue",
+     "hu": "foglalkozik egy problémával",
+     "ex": "The report fails to address the issue of cost.",
+     "exhu": "A jelentés nem foglalkozik a költségek kérdésével.",
+     "q": "The report fails to ___ the issue of cost.",
+     "a": "address",
+     "o": [
+      "address",
+      "speak",
+      "direct",
+      "attend"
+     ]
+    },
+    {
+     "id": "academic-8",
+     "it": "conduct research",
+     "hu": "kutatást végez",
+     "ex": "The university will conduct research into the virus.",
+     "exhu": "Az egyetem kutatást végez a vírussal kapcsolatban.",
+     "q": "The university will ___ research into the virus.",
+     "a": "conduct",
+     "o": [
+      "conduct",
+      "lead to",
+      "drive",
+      "make on"
+     ]
+    },
+    {
+     "id": "academic-9",
+     "it": "reach a consensus",
+     "hu": "konszenzusra jut",
+     "ex": "The committee failed to reach a consensus.",
+     "exhu": "A bizottság nem jutott konszenzusra.",
+     "q": "The committee failed to ___ a consensus.",
+     "a": "reach",
+     "o": [
+      "reach",
+      "arrive",
+      "get to",
+      "achieve to"
+     ]
+    },
+    {
+     "id": "academic-10",
+     "it": "gain insight",
+     "hu": "betekintést nyer",
+     "ex": "The study helps us gain insight into children's learning.",
+     "exhu": "A tanulmány segít betekintést nyerni a gyerekek tanulásába.",
+     "q": "The study helps us ___ insight into children's learning.",
+     "a": "gain",
+     "o": [
+      "gain",
+      "win",
+      "earn",
+      "take out"
+     ]
+    },
+    {
+     "id": "academic-11",
+     "it": "meet the needs",
+     "hu": "kielégíti az igényeket",
+     "ex": "Schools must meet the needs of all pupils.",
+     "exhu": "Az iskoláknak minden tanuló igényeit ki kell elégíteniük.",
+     "q": "Schools must ___ the needs of all pupils.",
+     "a": "meet",
+     "o": [
+      "meet",
+      "fill",
+      "reach",
+      "fit"
+     ]
+    },
+    {
+     "id": "academic-12",
+     "it": "face a challenge",
+     "hu": "kihívással néz szembe",
+     "ex": "Small businesses face a challenge from online retailers.",
+     "exhu": "A kisvállalkozások kihívással néznek szembe az online kereskedők miatt.",
+     "q": "Small businesses ___ a challenge from online retailers.",
+     "a": "face",
+     "o": [
+      "face",
+      "front",
+      "meet up",
+      "see"
+     ]
+    },
+    {
+     "id": "academic-13",
+     "it": "fulfil a requirement",
+     "hu": "teljesít egy követelményt",
+     "ex": "Applicants must fulfil every requirement.",
+     "exhu": "A jelentkezőknek minden követelményt teljesíteniük kell.",
+     "q": "Applicants must ___ every requirement.",
+     "a": "fulfil",
+     "o": [
+      "fulfil",
+      "fill in",
+      "complete up",
+      "realise"
+     ]
+    },
+    {
+     "id": "academic-14",
+     "it": "exert pressure",
+     "hu": "nyomást gyakorol",
+     "ex": "Lobby groups exert pressure on politicians.",
+     "exhu": "Az érdekcsoportok nyomást gyakorolnak a politikusokra.",
+     "q": "Lobby groups ___ pressure on politicians.",
+     "a": "exert",
+     "o": [
+      "exert",
+      "do",
+      "give",
+      "make"
+     ]
+    },
+    {
+     "id": "academic-15",
+     "it": "set a precedent",
+     "hu": "precedenst teremt",
+     "ex": "The ruling could set a precedent for future cases.",
+     "exhu": "Az ítélet precedenst teremthet a jövőbeli ügyekhez.",
+     "q": "The ruling could ___ a precedent for future cases.",
+     "a": "set",
+     "o": [
+      "set",
+      "make up",
+      "put",
+      "lay"
+     ]
+    },
+    {
+     "id": "academic-16",
+     "it": "strike a balance",
+     "hu": "egyensúlyt talál",
+     "ex": "It is hard to strike a balance between work and family.",
+     "exhu": "Nehéz egyensúlyt találni a munka és a család között.",
+     "q": "It is hard to ___ a balance between work and family.",
+     "a": "strike",
+     "o": [
+      "strike",
+      "hit on",
+      "make",
+      "find out"
+     ]
+    },
+    {
+     "id": "academic-17",
+     "it": "come to terms with",
+     "hu": "megbékél valamivel",
+     "ex": "It took him years to come to terms with the loss.",
+     "exhu": "Évekbe telt, mire megbékélt a veszteséggel.",
+     "q": "It took him years to ___ to terms with the loss.",
+     "a": "come",
+     "o": [
+      "come",
+      "go",
+      "get",
+      "make"
+     ]
+    },
+    {
+     "id": "academic-18",
+     "it": "run the risk",
+     "hu": "megkockáztatja",
+     "ex": "If you don't book now, you run the risk of missing out.",
+     "exhu": "Ha most nem foglalsz, megkockáztatod, hogy lemaradsz.",
+     "q": "If you don't book now, you ___ the risk of missing out.",
+     "a": "run",
+     "o": [
+      "run",
+      "take on",
+      "make",
+      "go"
+     ]
+    },
+    {
+     "id": "academic-19",
+     "it": "lay the foundations",
+     "hu": "lefekteti az alapokat",
+     "ex": "These early years lay the foundations for later learning.",
+     "exhu": "Ezek a korai évek fektetik le a későbbi tanulás alapjait.",
+     "q": "These early years ___ the foundations for later learning.",
+     "a": "lay",
+     "o": [
+      "lay",
+      "lie",
+      "put on",
+      "set up"
+     ]
+    },
+    {
+     "id": "academic-20",
+     "it": "draw attention to",
+     "hu": "felhívja a figyelmet valamire",
+     "ex": "The article draws attention to the lack of housing.",
+     "exhu": "A cikk felhívja a figyelmet a lakáshiányra.",
+     "q": "The article ___ attention to the lack of housing.",
+     "a": "draws",
+     "o": [
+      "draws",
+      "pulls",
+      "makes",
+      "gives"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "speak",
+   "title": "Say, tell, speak, talk",
+   "desc": "tell the truth, speak a language, talk nonsense…",
+   "items": [
+    {
+     "id": "speak-1",
+     "it": "tell the truth",
+     "hu": "igazat mond",
+     "ex": "Promise me you'll tell the truth.",
+     "exhu": "Ígérd meg, hogy igazat mondasz.",
+     "q": "Promise me you'll ___ the truth.",
+     "a": "tell",
+     "o": [
+      "tell",
+      "say",
+      "speak",
+      "talk"
+     ]
+    },
+    {
+     "id": "speak-2",
+     "it": "tell a lie",
+     "hu": "hazudik",
+     "ex": "He was afraid to tell a lie to his mother.",
+     "exhu": "Félt hazudni az anyjának.",
+     "q": "He was afraid to ___ a lie to his mother.",
+     "a": "tell",
+     "o": [
+      "tell",
+      "say",
+      "speak",
+      "talk"
+     ]
+    },
+    {
+     "id": "speak-3",
+     "it": "tell a story",
+     "hu": "mesél egy történetet",
+     "ex": "Grandpa loves to tell a story about the war.",
+     "exhu": "Nagyapa imád történeteket mesélni a háborúról.",
+     "q": "Grandpa loves to ___ a story about the war.",
+     "a": "tell",
+     "o": [
+      "tell",
+      "say",
+      "speak",
+      "talk"
+     ]
+    },
+    {
+     "id": "speak-4",
+     "it": "tell a joke",
+     "hu": "viccet mesél",
+     "ex": "Can you tell a joke in English?",
+     "exhu": "Tudsz viccet mesélni angolul?",
+     "q": "Can you ___ a joke in English?",
+     "a": "tell",
+     "o": [
+      "tell",
+      "say",
+      "speak",
+      "talk"
+     ]
+    },
+    {
+     "id": "speak-5",
+     "it": "say goodbye",
+     "hu": "elköszön",
+     "ex": "I didn't have time to say goodbye.",
+     "exhu": "Nem volt időm elköszönni.",
+     "q": "I didn't have time to ___ goodbye.",
+     "a": "say",
+     "o": [
+      "say",
+      "tell",
+      "speak",
+      "talk"
+     ]
+    },
+    {
+     "id": "speak-6",
+     "it": "say sorry",
+     "hu": "bocsánatot kér",
+     "ex": "It's never too late to say sorry.",
+     "exhu": "Soha nem késő bocsánatot kérni.",
+     "q": "It's never too late to ___ sorry.",
+     "a": "say",
+     "o": [
+      "say",
+      "tell",
+      "speak",
+      "talk"
+     ]
+    },
+    {
+     "id": "speak-7",
+     "it": "say thank you",
+     "hu": "megköszön",
+     "ex": "Don't forget to say thank you.",
+     "exhu": "Ne felejts el köszönetet mondani.",
+     "q": "Don't forget to ___ thank you.",
+     "a": "say",
+     "o": [
+      "say",
+      "tell",
+      "speak",
+      "talk"
+     ]
+    },
+    {
+     "id": "speak-8",
+     "it": "speak a language",
+     "hu": "beszél egy nyelvet",
+     "ex": "How many languages do you speak?",
+     "exhu": "Hány nyelven beszélsz?",
+     "q": "How many languages do you ___?",
+     "a": "speak",
+     "o": [
+      "speak",
+      "say",
+      "tell",
+      "talk"
+     ]
+    },
+    {
+     "id": "speak-9",
+     "it": "speak your mind",
+     "hu": "kimondja, amit gondol",
+     "ex": "Don't be afraid to speak your mind.",
+     "exhu": "Ne félj kimondani, amit gondolsz.",
+     "q": "Don't be afraid to ___ your mind.",
+     "a": "speak",
+     "o": [
+      "speak",
+      "say",
+      "tell",
+      "talk"
+     ]
+    },
+    {
+     "id": "speak-10",
+     "it": "talk nonsense",
+     "hu": "hülyeségeket beszél",
+     "ex": "Don't talk nonsense!",
+     "exhu": "Ne beszélj hülyeségeket!",
+     "q": "Don't ___ nonsense!",
+     "a": "talk",
+     "o": [
+      "talk",
+      "say",
+      "tell",
+      "speak"
+     ]
+    },
+    {
+     "id": "speak-11",
+     "it": "tell the difference",
+     "hu": "megkülönböztet",
+     "ex": "I can't tell the difference between the twins.",
+     "exhu": "Nem tudom megkülönböztetni az ikreket.",
+     "q": "I can't ___ the difference between the twins.",
+     "a": "tell",
+     "o": [
+      "tell",
+      "say",
+      "speak",
+      "talk"
+     ]
+    },
+    {
+     "id": "speak-12",
+     "it": "tell the time",
+     "hu": "megmondja, hány óra",
+     "ex": "My son is learning to tell the time.",
+     "exhu": "A fiam tanulja leolvasni az órát.",
+     "q": "My son is learning to ___ the time.",
+     "a": "tell",
+     "o": [
+      "tell",
+      "say",
+      "speak",
+      "talk"
+     ]
+    },
+    {
+     "id": "speak-13",
+     "it": "speak up",
+     "hu": "hangosabban beszél, megszólal",
+     "ex": "Could you speak up a little? I can't hear you.",
+     "exhu": "Tudnál kicsit hangosabban beszélni? Nem hallak.",
+     "q": "Could you ___ up a little? I can't hear you.",
+     "a": "speak",
+     "o": [
+      "speak",
+      "say",
+      "tell",
+      "talk"
+     ]
+    },
+    {
+     "id": "speak-14",
+     "it": "say no",
+     "hu": "nemet mond",
+     "ex": "It's hard to say no to my boss.",
+     "exhu": "Nehéz nemet mondani a főnökömnek.",
+     "q": "It's hard to ___ no to my boss.",
+     "a": "say",
+     "o": [
+      "say",
+      "tell",
+      "speak",
+      "talk"
+     ]
+    },
+    {
+     "id": "speak-15",
+     "it": "talk business",
+     "hu": "üzletről beszél",
+     "ex": "Let's eat first and talk business later.",
+     "exhu": "Előbb együnk, aztán beszéljünk az üzletről.",
+     "q": "Let's eat first and ___ business later.",
+     "a": "talk",
+     "o": [
+      "talk",
+      "say",
+      "tell",
+      "speak"
+     ]
+    },
+    {
+     "id": "speak-16",
+     "it": "tell a secret",
+     "hu": "elárul egy titkot",
+     "ex": "Can I tell you a secret?",
+     "exhu": "Elárulhatok egy titkot?",
+     "q": "Can I ___ you a secret?",
+     "a": "tell",
+     "o": [
+      "tell",
+      "say",
+      "speak",
+      "talk"
+     ]
+    },
+    {
+     "id": "speak-17",
+     "it": "speak in public",
+     "hu": "nyilvánosan beszél",
+     "ex": "Many people are afraid to speak in public.",
+     "exhu": "Sokan félnek nyilvánosan beszélni.",
+     "q": "Many people are afraid to ___ in public.",
+     "a": "speak",
+     "o": [
+      "speak",
+      "say",
+      "tell",
+      "talk"
+     ]
+    },
+    {
+     "id": "speak-18",
+     "it": "talk shop",
+     "hu": "munkáról beszél (szabadidőben)",
+     "ex": "Please don't talk shop at dinner.",
+     "exhu": "Kérlek, ne a munkáról beszéljetek vacsoránál.",
+     "q": "Please don't ___ shop at dinner.",
+     "a": "talk",
+     "o": [
+      "talk",
+      "say",
+      "tell",
+      "speak"
+     ]
+    },
+    {
+     "id": "speak-19",
+     "it": "speak volumes",
+     "hu": "sokat elárul",
+     "ex": "Actions speak volumes about a person.",
+     "exhu": "A tettek sokat elárulnak egy emberről.",
+     "q": "Actions ___ volumes about a person.",
+     "a": "speak",
+     "o": [
+      "speak",
+      "say",
+      "tell",
+      "talk"
+     ]
+    },
+    {
+     "id": "speak-20",
+     "it": "talk sense",
+     "hu": "értelmesen beszél",
+     "ex": "At last someone is starting to talk sense.",
+     "exhu": "Végre valaki értelmesen kezd beszélni.",
+     "q": "At last someone is starting to ___ sense.",
+     "a": "talk",
+     "o": [
+      "talk",
+      "say",
+      "tell",
+      "speak"
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,11 +1,13 @@
 /* ============ GRAMMAR ============ */
 function tbl(head,rows,emCol){return `<div class="tbl-wrap"><table><tr>${head.map(h=>`<th>${h}</th>`).join("")}</tr>${rows.map(r=>`<tr>${r.map((c,i)=>`<td class="${i===0?"muted":emCol&&i>=emCol?"em":""}">${c}</td>`).join("")}</tr>`).join("")}</table></div>`;}
-function renderGrammar(){
-  if(lang()==="en"&&XT.gram.length)return renderHandbook();
-  if(lang()==="en")return grammarPage(LESSONS.map(L=>[`${esc(L.t)} <span class="small muted" style="font-family:var(--body)">· ${esc(L.hu)} · ${L.level}</span>`,L.notes.map(n=>`<p>${n}</p>`).join("")]),"Az összes lecke nyelvtani magyarázata egy helyen.");
+function renderGrammar(){withExtra("grammar",renderGrammarNow);}
+const lessonNotes=()=>LESSONS.map(L=>[`${esc(L.t)} <span class="small muted" style="font-family:var(--body)">· ${esc(L.hu)} · ${L.level}</span>`,L.notes.map(n=>`<p>${n}</p>`).join("")]);
+function renderGrammarNow(){
+  if(XT.gram.length)return renderHandbook();
+  if(lang()!=="it")return grammarPage(LESSONS.map(L=>[`${esc(L.t)} <span class="small muted" style="font-family:var(--body)">· ${esc(L.hu)} · ${L.level}</span>`,L.notes.map(n=>`<p>${n}</p>`).join("")]),"Az összes lecke nyelvtani magyarázata egy helyen.");
   return renderGrammarIt();
 }
-function renderGrammarIt(){
+function renderGrammarIt(pre){
   const V=n=>VERBS.find(v=>v.inf===n);
   const conj=names=>tbl(["",...names],PRON.map((p,i)=>[p,...names.map(n=>V(n).pres[i])]));
   const sections=[
@@ -21,7 +23,7 @@ function renderGrammarIt(){
   ["Tagadás és kérdés",`<p>Tagadás: <b>non</b> az ige elé: <i>Non parlo francese.</i> Kettős tagadás kötelező: <i>Non vedo niente</i> (semmit sem látok), <i>Non vado mai</i> (sosem megyek), <i>Non c'è nessuno</i> (nincs ott senki).</p><p>Az eldöntendő kérdés szórendje nem változik, csak a hanglejtés emelkedik: <i>Parli italiano?</i> Kérdőszavak: <i>chi</i> (ki), <i>che cosa</i> (mi), <i>dove</i> (hol), <i>quando</i> (mikor), <i>perché</i> (miért, és a válaszban: mert), <i>come</i> (hogyan), <i>quanto/quanta/quanti/quante</i> (mennyi), <i>quale</i> (melyik).</p>`],
   ["Számok",`${tbl(["","","",""],[[0,"zero",11,"undici"],[1,"uno",12,"dodici"],[2,"due",13,"tredici"],[3,"tre",14,"quattordici"],[4,"quattro",15,"quindici"],[5,"cinque",16,"sedici"],[6,"sei",17,"diciassette"],[7,"sette",18,"diciotto"],[8,"otto",19,"diciannove"],[9,"nove",20,"venti"],[10,"dieci",100,"cento"]].map(r=>[r[0],"<b>"+r[1]+"</b>",r[2],"<b>"+r[3]+"</b>"]))}<p>Tízesek: trenta, quaranta, cinquanta, sessanta, settanta, ottanta, novanta. Összetett számok egybeírva: <i>trentadue</i> (32), <i>ventuno</i> (21, nem „ventiuno”), <i>quarantotto</i> (48), <i>sessantatré</i> (63). Százasok: <i>duecento, trecento</i>; ezer: <i>mille</i>, kétezer: <i>duemila</i>.</p>`]
   ];
-  grammarPage(sections,"Az A1–A2 szint nyelvtana magyarázattal és táblázatokkal.");
+  grammarPage(sections,pre?"Témánként táblázattal, magyarázattal és gyakorlóval; lent a kiejtés, a ragozás és a névelők összefoglalója.":"Az A1–A2 szint nyelvtana magyarázattal és táblázatokkal.",pre);
 }
 function grammarPage(sections,intro,pre){
   view.innerHTML=`<div class="stack"><div><span class="label">${LG().name} kézikönyv</span><h1>Nyelvtan</h1><p class="muted">${intro} Ha elakadsz, kérdezz alul a tanártól.</p></div>

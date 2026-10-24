@@ -4,15 +4,15 @@
 let MK=null;
 const MK_NAME={reading:"Olvasás",mc:"Szókitöltés",wf:"Szóképzés",kwt:"Mondatátalakítás",listening:"Hallás",writing:"Írás"};
 const mkHist=id=>(S.mock||(S.mock={}))[id]||[];
-function renderMocks(){
-  stopViews();
+function renderMocks(){stopViews();withExtra("mock",renderMocksNow);}
+function renderMocksNow(){
   subShell(["Gyakorlás",()=>go("gyakorlas")],"Próbavizsga","Teljes, időre mért próbavizsga",`<p class="muted">Egy ülésben, visszaszámlálóval, mint a valódi vizsgán: olvasás, nyelvhelyesség, hallás és írás. A részek között szabadon lépkedhetsz. Ha lejár az idő, a vizsga automatikusan beadódik. Az írást az AI vizsgáztató pontozza.</p>
     <div class="drills">${XT.mock.map((m,i)=>{const h=mkHist(m.id),last=h[h.length-1];return `<button class="drill" data-mk="${m.id}"><span class="dico c${i%4+1}">${I.star}</span><b>${esc(m.title)}</b><span class="small muted">${m.minutes} perc · ${m.parts.length} rész</span>${last?`<span class="small"><span class="pill ${last.pct>=60?"ok":"bad"}">Legutóbb ${last.pct}% · ${last.scale}</span></span>`:""}</button>`;}).join("")}</div>
     <p class="small muted">Tipp: csendes helyen, fülhallgatóval csináld, és ne nézd meg közben a szótárt.</p>`);
   view.querySelectorAll("[data-mk]").forEach(b=>b.onclick=()=>startMock(b.dataset.mk));
 }
 function startMock(id){
-  const m=XT.mock.find(x=>x.id===id);if(!m)return;prefetch("mock-en-"+id);
+  const m=XT.mock.find(x=>x.id===id);if(!m)return;prefetch(`mock-${lang()}-${id}`);
   /* Answer options are shuffled once per sitting (the data keeps the right answer first). */
   const ord={};m.parts.forEach((p,pi)=>(p.questions||p.items||[]).forEach((q,qi)=>{if(q.o)ord[pi+"-"+qi]=shuffle(q.o.map((_,j)=>j));}));
   MK={m,pi:0,ans:{},ord,left:m.minutes*60,end:Date.now()+m.minutes*60000,plays:0,text:"",timer:null,done:false,quit:0};
@@ -62,10 +62,12 @@ function mkMark(){
       else{given=String(a||"").trim();good=!!given&&kwtOk(given,q);}
       if(good)ok++;else logMiss("mock:"+p.type,q.q,given,q.o?q.o[q.a]:q.a);
       q._r={good,given};});
-    parts.push({type:p.type,title:p.title,ok,n:qs.length,pct:Math.round(ok/qs.length*100)});});
+    parts.push({pi,type:p.type,title:p.title,ok,n:qs.length,pct:Math.round(ok/qs.length*100)});});
   return parts;
 }
 /* Rough Cambridge English Scale: 60% is the pass mark of the exam's own level. */
+/* IELTS Academic reading: the usual raw-score-to-band table, with our score scaled to 40 questions. */
+function mkBand(pct){const r=Math.round(pct*0.4),T=[[39,9],[37,8.5],[35,8],[33,7.5],[30,7],[27,6.5],[23,6],[19,5.5],[15,5],[13,4.5],[10,4],[8,3.5],[6,3]];const b=(T.find(([n])=>r>=n)||[0,2.5])[1];return {s:b.toFixed(1),grade:"kb. IELTS "+b.toFixed(1)};}
 function mkScale(level,pct){const base=level==="C1"?180:160,s=Math.round(base+(pct-60)),grade=level==="C1"?(s>=200?"C2 (A)":s>=180?"C1":s>=160?"B2":"B2 alatt"):(s>=180?"C1 (A)":s>=160?"B2":s>=140?"B1":"B1 alatt");return {s:Math.max(level==="C1"?140:120,Math.min(level==="C1"?210:190,s)),grade};}
 async function submitMock(auto){
   if(!MK||MK.done)return;MK.done=true;clearInterval(MK.timer);MK.timer=null;MK.playing=false;try{player.pause();speechSynthesis.cancel();}catch(e){}
@@ -87,14 +89,14 @@ Csak egy JSON objektumot adj vissza:
     else wres={err:aiMissing()};}
   if(MK!==mk)return;
   if(wp){const w=wres&&wres.scores?Math.round(CRIT.reduce((a,[k])=>a+(Number(wres.scores[k])||0),0)/20*100):0;parts.push({type:"writing",title:wp.title,ok:null,n:null,pct:w,pending:!(wres&&wres.scores)});}
-  const scored=parts.filter(p=>!p.pending),pct=scored.length?Math.round(scored.reduce((a,p)=>a+p.pct,0)/scored.length):0,sc=mkScale(m.level,pct);
+  const scored=parts.filter(p=>!p.pending),pct=scored.length?Math.round(scored.reduce((a,p)=>a+p.pct,0)/scored.length):0,sc=m.ielts?mkBand(pct):mkScale(m.level,pct);
   S.mock=S.mock||{};const h=S.mock[m.id]||(S.mock[m.id]=[]);h.push({at:Date.now(),pct,scale:sc.s,grade:sc.grade,parts:parts.map(p=>({t:p.type,pct:p.pct})),secs:used});if(h.length>10)h.splice(0,h.length-10);
   parts.forEach(p=>{if(p.pending)return;const k=p.type==="reading"?"read":p.type==="listening"?"listen":p.type==="writing"?"write":null;if(k)skillLog(k,m.level,p.pct,"mock");});
   incEv("exam");incEv("tests");addXP(30);save();if(pct>=60)confetti();
-  const qrev=p=>{const pi=m.parts.indexOf(m.parts.find(x=>x.type===p.type));const qs=m.parts[pi].questions||m.parts[pi].items;const bad=qs.filter(q=>q._r&&!q._r.good);
+  const qrev=p=>{const pi=p.pi;const qs=m.parts[pi].questions||m.parts[pi].items;const bad=qs.filter(q=>q._r&&!q._r.good);
     return bad.length?`<details class="g"><summary>${esc(p.title)}: ${bad.length} hibás válasz</summary><div class="gb err-list">${bad.map(q=>`<div><span ${LA()}>${q.q.includes("___")?blankify(q.q.replace(/\(([A-Z]+)\)\s*$/,"($1)")):esc(q.q)}</span><div>${q._r.given?`<s ${LA()}>${esc(q._r.given)}</s> → `:"<span class='muted'>(nincs válasz)</span> → "}<ins ${LA()}>${esc(q.o?q.o[q.a]:q.a)}</ins></div>${q.why?`<div class="small muted">${esc(q.why)}</div>`:""}</div>`).join("")}</div></details>`:"";};
-  $("#mkRes").innerHTML=`<div class="stack"><div class="card"><div class="stats" style="grid-template-columns:repeat(3,minmax(0,1fr))"><div class="stat"><span class="label">Összesen</span><b class="tnum">${pct}%</b></div><div class="stat"><span class="label">Becsült skála</span><b class="tnum">${sc.s}</b></div><div class="stat"><span class="label">Eredmény</span><b>${esc(sc.grade)}</b></div></div>
-    <p class="small muted" style="margin-top:.6rem">Idő: ${mkTime(used)} · A Cambridge-skála becslés: a vizsga saját szintjén kb. 60% a sikeres határ.</p></div>
+  $("#mkRes").innerHTML=`<div class="stack"><div class="card"><div class="stats" style="grid-template-columns:repeat(3,minmax(0,1fr))"><div class="stat"><span class="label">Összesen</span><b class="tnum">${pct}%</b></div><div class="stat"><span class="label">${m.ielts?"Becsült sáv":"Becsült skála"}</span><b class="tnum">${sc.s}</b></div><div class="stat"><span class="label">Eredmény</span><b>${esc(sc.grade)}</b></div></div>
+    <p class="small muted" style="margin-top:.6rem">Idő: ${mkTime(used)} · ${m.ielts?"Az IELTS-sáv becslés a szokásos olvasási átváltótábla alapján készül.":"A Cambridge-skála becslés: a vizsga saját szintjén kb. 60% a sikeres határ."}</p></div>
     <div class="card stack">${parts.map(p=>`<div><div class="row" style="justify-content:space-between"><b>${esc(p.title)}</b><span class="pill ${p.pending?"":p.pct>=60?"ok":"bad"}">${p.pending?"nincs pontozva":p.ok!=null?`${p.ok}/${p.n} · ${p.pct}%`:p.pct+"%"}</span></div><div class="meter"><i style="width:${p.pct}%"></i></div></div>`).join("")}</div>
     ${parts.filter(p=>p.ok!=null).map(qrev).join("")}
     ${wp?(wres&&wres.scores?`<h3>Írás: a vizsgáztató értékelése</h3>${essayHtml(wres)}`:`<div class="notice">${esc(wres&&wres.err?wres.err:"Az írásrész túl rövid volt az értékeléshez (legalább 40 szó kell).")}</div>`):""}

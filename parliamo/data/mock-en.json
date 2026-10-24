@@ -768,6 +768,1617 @@
      "etype": "C1 Advanced essay"
     }
    ]
+  },
+  {
+   "id": "b2-2",
+   "title": "B2 First jellegű próbavizsga 2.",
+   "level": "B2",
+   "minutes": 75,
+   "parts": [
+    {
+     "type": "reading",
+     "title": "Olvasott szöveg értése",
+     "name": "The four-day school week",
+     "text": "When a small rural district in Colorado announced that its schools would close every Friday, many parents were horrified. Who would look after the children? Would they fall behind? Five years later, the four-day week has become so popular that more than a hundred districts in the state have followed the same path.\n\nThe original reason was money. Running buses and heating buildings one day less each week saved the district around seven per cent of its budget, which allowed it to keep teachers it would otherwise have lost. Recruitment also improved: teachers were attracted by the promise of a long weekend, and fewer of them left for better-paid jobs in the cities.\n\nThe effect on learning is harder to measure. Some studies have found small drops in test scores, particularly in maths, while others show no difference at all. Researchers point out that the school day becomes longer when the week is shorter, and tired pupils may not get as much out of the final hour.\n\nFamilies are divided. For parents who work on Fridays, the extra day can mean paying for childcare. Yet many pupils use the time well, taking part-time jobs, helping on family farms or attending sports clubs. Some schools now offer optional Friday activities for those who need them.\n\nWhat seems clear is that the four-day week works best where the community supports it. As one headteacher put it, \"It isn't a magic solution. It's a trade-off, and every town has to decide whether it's worth it.\"",
+     "questions": [
+      {
+       "q": "How did parents first react to the plan?",
+       "o": [
+        "They were shocked.",
+        "They welcomed it.",
+        "They ignored it.",
+        "They voted for it."
+       ],
+       "a": 0,
+       "why": "\"many parents were horrified\""
+      },
+      {
+       "q": "What was the main reason for introducing the four-day week?",
+       "o": [
+        "To save money",
+        "To improve test results",
+        "To give pupils more free time",
+        "To reduce traffic"
+       ],
+       "a": 0,
+       "why": "\"The original reason was money.\""
+      },
+      {
+       "q": "How did the change affect teachers?",
+       "o": [
+        "It became easier to keep them.",
+        "Many left for the cities.",
+        "Their salaries fell.",
+        "They had to work on Fridays."
+       ],
+       "a": 0,
+       "why": "\"fewer of them left for better-paid jobs\""
+      },
+      {
+       "q": "What do researchers say about the longer school day?",
+       "o": [
+        "Pupils may be less effective at the end of it.",
+        "It improves maths results.",
+        "It has no effect at all.",
+        "Teachers prefer it."
+       ],
+       "a": 0,
+       "why": "\"tired pupils may not get as much out of the final hour\""
+      },
+      {
+       "q": "What is the headteacher's view?",
+       "o": [
+        "Whether it works depends on the community.",
+        "Every school should adopt it.",
+        "It solves most problems.",
+        "It should be stopped."
+       ],
+       "a": 0,
+       "why": "\"every town has to decide whether it's worth it\""
+      }
+     ]
+    },
+    {
+     "type": "mc",
+     "title": "Nyelvhelyesség: szókitöltés",
+     "items": [
+      {
+       "q": "I can't ___ up with this noise any longer.",
+       "a": "put",
+       "o": [
+        "put",
+        "stand",
+        "get",
+        "take"
+       ],
+       "why": "put up with = elviselni."
+      },
+      {
+       "q": "The new manager ___ a good impression on everyone.",
+       "a": "made",
+       "o": [
+        "made",
+        "did",
+        "gave",
+        "took"
+       ],
+       "why": "make an impression."
+      },
+      {
+       "q": "She ran out of money, so she had to ___ a loan.",
+       "a": "take out",
+       "o": [
+        "take out",
+        "make up",
+        "bring in",
+        "set off"
+       ],
+       "why": "take out a loan = kölcsönt felvenni."
+      },
+      {
+       "q": "Despite ___ tired, he finished the race.",
+       "a": "being",
+       "o": [
+        "being",
+        "he was",
+        "to be",
+        "been"
+       ],
+       "why": "despite + -ing."
+      },
+      {
+       "q": "You'd better ___ an umbrella; it looks like rain.",
+       "a": "take",
+       "o": [
+        "take",
+        "to take",
+        "taking",
+        "took"
+       ],
+       "why": "had better + alapalak."
+      },
+      {
+       "q": "This is the ___ film I've ever seen.",
+       "a": "funniest",
+       "o": [
+        "funniest",
+        "funnier",
+        "most funny",
+        "more funny"
+       ],
+       "why": "Felsőfok: funny → funniest."
+      }
+     ]
+    },
+    {
+     "type": "wf",
+     "title": "Nyelvhelyesség: szóképzés",
+     "items": [
+      {
+       "q": "There has been a sharp ___ in the number of visitors. (GROW)",
+       "a": "growth",
+       "why": "-th főnévképző: grow → growth."
+      },
+      {
+       "q": "The hotel staff were extremely ___. (HELP)",
+       "a": "helpful",
+       "why": "-ful melléknévképző."
+      },
+      {
+       "q": "It is ___ to drive without insurance. (LEGAL, ellentét)",
+       "a": "illegal",
+       "why": "il- fosztóképző l előtt."
+      },
+      {
+       "q": "Her ___ to the team was enormous. (CONTRIBUTE)",
+       "a": "contribution",
+       "why": "-ion főnévképző."
+      },
+      {
+       "q": "The results were ___ disappointing. (DEEP)",
+       "a": "deeply",
+       "why": "-ly határozószó."
+      },
+      {
+       "q": "We were impressed by the ___ of the building. (HIGH)",
+       "a": "height",
+       "why": "high → height (rendhagyó)."
+      }
+     ]
+    },
+    {
+     "type": "kwt",
+     "title": "Nyelvhelyesség: mondatátalakítás",
+     "items": [
+      {
+       "q": "It's a pity I didn't go to the party. (WISH)",
+       "a": "I wish I had gone to the party.",
+       "accept": [
+        "i wish i had gone to the party",
+        "i wish i'd gone to the party"
+       ],
+       "why": "wish + past perfect: múltbeli sajnálat."
+      },
+      {
+       "q": "They say he is very rich. (SAID)",
+       "a": "He is said to be very rich.",
+       "accept": [
+        "he is said to be very rich",
+        "he's said to be very rich"
+       ],
+       "why": "Személyes szenvedő: be said to."
+      },
+      {
+       "q": "I haven't seen Mark for ages. (SINCE)",
+       "a": "It's ages since I last saw Mark.",
+       "accept": [
+        "it's ages since i last saw mark",
+        "it is ages since i last saw mark",
+        "it's ages since i saw mark",
+        "it has been ages since i saw mark",
+        "it's been ages since i saw mark",
+        "it's been ages since i last saw mark"
+       ],
+       "why": "It's + időtartam + since + múlt idő."
+      },
+      {
+       "q": "Although it rained, we enjoyed the trip. (SPITE)",
+       "a": "In spite of the rain, we enjoyed the trip.",
+       "accept": [
+        "in spite of the rain we enjoyed the trip",
+        "in spite of the rain, we enjoyed the trip",
+        "in spite of the fact that it rained we enjoyed the trip",
+        "in spite of the fact that it rained, we enjoyed the trip"
+       ],
+       "why": "in spite of + főnév."
+      },
+      {
+       "q": "Somebody stole my bike last night. (HAD)",
+       "a": "I had my bike stolen last night.",
+       "accept": [
+        "i had my bike stolen last night"
+       ],
+       "why": "have something done: elszenvedett esemény."
+      }
+     ]
+    },
+    {
+     "type": "listening",
+     "title": "Hallott szöveg értése",
+     "name": "A new language at sixty",
+     "cast": {
+      "A": {
+       "name": "Host",
+       "g": "m",
+       "acc": "uk"
+      },
+      "B": {
+       "name": "Margaret",
+       "g": "f",
+       "acc": "uk"
+      }
+     },
+     "lines": [
+      {
+       "s": "A",
+       "it": "Margaret, you started learning Japanese at sixty. What made you decide to do it?",
+       "hu": "Margaret, hatvan évesen kezdett japánul tanulni. Mi vette rá?"
+      },
+      {
+       "s": "B",
+       "it": "My grandson moved to Osaka for work, and I wanted to be able to talk to his new family.",
+       "hu": "Az unokám munka miatt Oszakába költözött, és szerettem volna beszélni az új családjával."
+      },
+      {
+       "s": "A",
+       "it": "Was it as difficult as people say?",
+       "hu": "Olyan nehéz volt, mint mondják?"
+      },
+      {
+       "s": "B",
+       "it": "The writing system was the hardest part. Speaking came more quickly than I expected.",
+       "hu": "Az írásrendszer volt a legnehezebb. A beszéd gyorsabban ment, mint vártam."
+      },
+      {
+       "s": "A",
+       "it": "How did you study?",
+       "hu": "Hogyan tanult?"
+      },
+      {
+       "s": "B",
+       "it": "Twenty minutes every morning with an app, and a weekly conversation class at the library.",
+       "hu": "Minden reggel húsz percet egy appal, és heti egy társalgási órát a könyvtárban."
+      },
+      {
+       "s": "A",
+       "it": "Did you ever think about giving up?",
+       "hu": "Gondolt valaha arra, hogy feladja?"
+      },
+      {
+       "s": "B",
+       "it": "After about three months, yes. Then I watched a children's programme and understood a whole scene, and that kept me going.",
+       "hu": "Körülbelül három hónap után igen. Aztán megnéztem egy gyerekműsort, és megértettem egy egész jelenetet, és ez tartotta bennem a lelket."
+      },
+      {
+       "s": "A",
+       "it": "And have you visited Japan?",
+       "hu": "És járt már Japánban?"
+      },
+      {
+       "s": "B",
+       "it": "Last spring. I ordered dinner for the whole family in Japanese. My grandson was speechless.",
+       "hu": "Tavaly tavasszal. Japánul rendeltem vacsorát az egész családnak. Az unokám szóhoz sem jutott."
+      }
+     ],
+     "questions": [
+      {
+       "q": "Why did Margaret start learning Japanese?",
+       "o": [
+        "To communicate with her grandson's new family",
+        "To find a job in Japan",
+        "Because she was bored after retiring",
+        "For a university course"
+       ],
+       "a": 0,
+       "why": "\"I wanted to be able to talk to his new family\""
+      },
+      {
+       "q": "What did she find most difficult?",
+       "o": [
+        "Writing",
+        "Speaking",
+        "Listening",
+        "Grammar"
+       ],
+       "a": 0,
+       "why": "\"The writing system was the hardest part.\""
+      },
+      {
+       "q": "What motivated her to continue?",
+       "o": [
+        "Understanding a scene in a TV programme",
+        "Passing an exam",
+        "Her teacher's encouragement",
+        "A trip to Osaka"
+       ],
+       "a": 0,
+       "why": "\"understood a whole scene, and that kept me going\""
+      },
+      {
+       "q": "How did her grandson react in the restaurant?",
+       "o": [
+        "He was too surprised to speak.",
+        "He corrected her.",
+        "He laughed at her.",
+        "He ordered for her."
+       ],
+       "a": 0,
+       "why": "\"My grandson was speechless.\""
+      }
+     ]
+    },
+    {
+     "type": "writing",
+     "title": "Íráskészség",
+     "task": "You see this announcement on an English-language website: \"Reviews wanted! Have you used a learning app, website or online course recently? Write a review explaining what you used it for, what you liked and disliked, and whether you would recommend it to others.\" Write your review. (140–190 words)",
+     "etype": "B2 First review"
+    }
+   ]
+  },
+  {
+   "id": "b2-3",
+   "title": "B2 First jellegű próbavizsga 3.",
+   "level": "B2",
+   "minutes": 75,
+   "parts": [
+    {
+     "type": "reading",
+     "title": "Olvasott szöveg értése",
+     "name": "Why we keep things we never use",
+     "text": "Open almost any kitchen drawer and you will find it: the strange tool nobody remembers buying, the charger for a phone thrown away years ago, the takeaway menus from restaurants that have long since closed. Most of us own far more than we need, and yet the idea of getting rid of things makes many people uncomfortable.\n\nPsychologists have a name for part of this behaviour: the endowment effect. Once we own something, we value it more highly than we would if we were thinking of buying it. In one famous experiment, people who had been given a coffee mug asked for about twice as much money to sell it as others were willing to pay for the same mug.\n\nMemories play a role too. A ticket from a concert or a jumper knitted by a grandparent is not really about the object itself. Throwing it away can feel like throwing away a piece of our past. And then there is the classic thought: \"I might need it one day.\" Occasionally we do, which convinces us that keeping everything is sensible.\n\nThe decluttering movement argues that this habit has a cost. Crowded homes can be stressful, and searching for lost items wastes time. Its supporters suggest simple rules, such as removing one object for every new one that comes in, or photographing sentimental items before letting them go.\n\nCritics reply that there is nothing wrong with a little mess, and that a perfectly tidy home can become an obsession of its own. Perhaps the real question is not how much we own, but whether our possessions make our lives easier or harder.",
+     "questions": [
+      {
+       "q": "What point does the writer make in the first paragraph?",
+       "o": [
+        "People keep many useless objects.",
+        "Kitchens are badly designed.",
+        "Old phones are valuable.",
+        "Restaurants close too often."
+       ],
+       "a": 0,
+       "why": "\"Most of us own far more than we need\""
+      },
+      {
+       "q": "What did the mug experiment show?",
+       "o": [
+        "Owners valued the mug more than buyers did.",
+        "People prefer cheap mugs.",
+        "Most people refuse to sell things.",
+        "Buyers paid twice the normal price."
+       ],
+       "a": 0,
+       "why": "\"asked for about twice as much money to sell it\""
+      },
+      {
+       "q": "Why do people keep sentimental objects?",
+       "o": [
+        "They connect them to the past.",
+        "They are worth a lot of money.",
+        "They are useful every day.",
+        "They are hard to replace."
+       ],
+       "a": 0,
+       "why": "\"Throwing it away can feel like throwing away a piece of our past.\""
+      },
+      {
+       "q": "What is one rule suggested by the decluttering movement?",
+       "o": [
+        "Get rid of something when you buy something new.",
+        "Never buy sentimental items.",
+        "Throw away all old photos.",
+        "Clean the house every day."
+       ],
+       "a": 0,
+       "why": "\"removing one object for every new one that comes in\""
+      },
+      {
+       "q": "What is the writer's conclusion?",
+       "o": [
+        "What matters is whether possessions help us.",
+        "Everyone should declutter immediately.",
+        "Mess is always harmful.",
+        "Tidy homes are an obsession."
+       ],
+       "a": 0,
+       "why": "\"whether our possessions make our lives easier or harder\""
+      }
+     ]
+    },
+    {
+     "type": "mc",
+     "title": "Nyelvhelyesség: szókitöltés",
+     "items": [
+      {
+       "q": "The meeting has been ___ off until next week.",
+       "a": "put",
+       "o": [
+        "put",
+        "called",
+        "set",
+        "taken"
+       ],
+       "why": "put off = elhalasztani."
+      },
+      {
+       "q": "He apologised ___ being late.",
+       "a": "for",
+       "o": [
+        "for",
+        "about",
+        "of",
+        "on"
+       ],
+       "why": "apologise for."
+      },
+      {
+       "q": "I'm not used to ___ up so early.",
+       "a": "getting",
+       "o": [
+        "getting",
+        "get",
+        "got",
+        "have got"
+       ],
+       "why": "be used to + -ing."
+      },
+      {
+       "q": "If I ___ you, I'd accept the offer.",
+       "a": "were",
+       "o": [
+        "were",
+        "am",
+        "would be",
+        "had been"
+       ],
+       "why": "Második feltételes: if I were you."
+      },
+      {
+       "q": "She has a good ___ of humour.",
+       "a": "sense",
+       "o": [
+        "sense",
+        "feeling",
+        "taste",
+        "mind"
+       ],
+       "why": "sense of humour."
+      },
+      {
+       "q": "We ___ our holiday in Spain last summer.",
+       "a": "spent",
+       "o": [
+        "spent",
+        "passed",
+        "made",
+        "took"
+       ],
+       "why": "spend time/holiday."
+      }
+     ]
+    },
+    {
+     "type": "wf",
+     "title": "Nyelvhelyesség: szóképzés",
+     "items": [
+      {
+       "q": "The film was a huge ___. (SUCCEED)",
+       "a": "success",
+       "why": "succeed → success."
+      },
+      {
+       "q": "He was ___ about the results. (OPTIMISM)",
+       "a": "optimistic",
+       "why": "-istic melléknév."
+      },
+      {
+       "q": "The ___ between the two cities is 200 km. (DISTANT)",
+       "a": "distance",
+       "why": "distant → distance."
+      },
+      {
+       "q": "It was ___ of you to forget her birthday. (CARE)",
+       "a": "careless",
+       "why": "-less: nemtörődöm."
+      },
+      {
+       "q": "They live in a very ___ area. (PEACE)",
+       "a": "peaceful",
+       "why": "-ful melléknév."
+      },
+      {
+       "q": "The ___ of the river caused serious damage. (FLOOD)",
+       "a": "flooding",
+       "why": "-ing főnév: áradás."
+      }
+     ]
+    },
+    {
+     "type": "kwt",
+     "title": "Nyelvhelyesség: mondatátalakítás",
+     "items": [
+      {
+       "q": "\"I'll call you tomorrow,\" said Anna. (WOULD)",
+       "a": "Anna said she would call me the next day.",
+       "accept": [
+        "anna said she would call me the next day",
+        "anna said that she would call me the next day",
+        "anna said she would call me the following day",
+        "anna said that she would call me the following day"
+       ],
+       "why": "Függő beszéd: will → would, tomorrow → the next day."
+      },
+      {
+       "q": "It wasn't necessary for you to bring food. (NEED)",
+       "a": "You didn't need to bring food.",
+       "accept": [
+        "you didn't need to bring food",
+        "you did not need to bring food",
+        "you needn't have brought food"
+       ],
+       "why": "didn't need to / needn't have."
+      },
+      {
+       "q": "The film was so boring that we left early. (SUCH)",
+       "a": "It was such a boring film that we left early.",
+       "accept": [
+        "it was such a boring film that we left early"
+       ],
+       "why": "such a + melléknév + főnév + that."
+      },
+      {
+       "q": "I started working here five years ago. (BEEN)",
+       "a": "I have been working here for five years.",
+       "accept": [
+        "i have been working here for five years",
+        "i've been working here for five years"
+       ],
+       "why": "have been + -ing + for."
+      },
+      {
+       "q": "Perhaps she missed the train. (MAY)",
+       "a": "She may have missed the train.",
+       "accept": [
+        "she may have missed the train"
+       ],
+       "why": "may have + past participle: múltbeli lehetőség."
+      }
+     ]
+    },
+    {
+     "type": "listening",
+     "title": "Hallott szöveg értése",
+     "name": "Working from a campervan",
+     "cast": {
+      "A": {
+       "name": "Host",
+       "g": "f",
+       "acc": "us"
+      },
+      "B": {
+       "name": "Dan",
+       "g": "m",
+       "acc": "us"
+      }
+     },
+     "lines": [
+      {
+       "s": "A",
+       "it": "Dan, you've spent the last year working from a campervan. Why?",
+       "hu": "Dan, az elmúlt évben egy lakóautóból dolgoztál. Miért?"
+      },
+      {
+       "s": "B",
+       "it": "My company went fully remote, and I realised I was paying a lot of rent for a flat I only used to sleep in.",
+       "hu": "A cégem teljesen távmunkára állt át, és rájöttem, hogy rengeteg bért fizetek egy lakásért, amit csak alvásra használok."
+      },
+      {
+       "s": "A",
+       "it": "What's the biggest challenge?",
+       "hu": "Mi a legnagyobb kihívás?"
+      },
+      {
+       "s": "B",
+       "it": "Internet, without a doubt. I've had to plan my routes around places with a good signal.",
+       "hu": "Kétségkívül az internet. Az útvonalaimat a jó térerejű helyekhez kellett igazítanom."
+      },
+      {
+       "s": "A",
+       "it": "Do you ever feel lonely?",
+       "hu": "Szoktál magányos lenni?"
+      },
+      {
+       "s": "B",
+       "it": "Sometimes, especially in winter. That's why I join co-working spaces in the towns I pass through.",
+       "hu": "Néha, főleg télen. Ezért beülök a közösségi irodákba azokban a városokban, amelyeken átutazom."
+      },
+      {
+       "s": "A",
+       "it": "Has it saved you money?",
+       "hu": "Spóroltál vele?"
+      },
+      {
+       "s": "B",
+       "it": "Less than I hoped. Fuel and repairs add up quickly. But I've seen more of the country than in the previous ten years.",
+       "hu": "Kevesebbet, mint reméltem. Az üzemanyag és a javítások gyorsan összeadódnak. De többet láttam az országból, mint az előző tíz évben."
+      },
+      {
+       "s": "A",
+       "it": "Would you recommend it?",
+       "hu": "Ajánlanád?"
+      },
+      {
+       "s": "B",
+       "it": "Only if you're very organised. Freedom sounds great until your laptop battery dies before an important meeting.",
+       "hu": "Csak ha nagyon szervezett vagy. A szabadság jól hangzik, amíg le nem merül a laptopod egy fontos megbeszélés előtt."
+      }
+     ],
+     "questions": [
+      {
+       "q": "Why did Dan decide to live in a campervan?",
+       "o": [
+        "He was paying too much for a flat he rarely used.",
+        "His company moved abroad.",
+        "He lost his job.",
+        "He wanted to write a travel book."
+       ],
+       "a": 0,
+       "why": "\"paying a lot of rent for a flat I only used to sleep in\""
+      },
+      {
+       "q": "What is his biggest problem?",
+       "o": [
+        "Finding a good internet connection",
+        "Finding places to park",
+        "Cooking meals",
+        "Cold weather"
+       ],
+       "a": 0,
+       "why": "\"Internet, without a doubt.\""
+      },
+      {
+       "q": "How does he deal with loneliness?",
+       "o": [
+        "He works in shared offices.",
+        "He travels with friends.",
+        "He calls his family every day.",
+        "He avoids winter travel."
+       ],
+       "a": 0,
+       "why": "\"I join co-working spaces\""
+      },
+      {
+       "q": "What does he say about money?",
+       "o": [
+        "He saved less than expected.",
+        "He saved a lot.",
+        "He spent nothing on repairs.",
+        "Fuel is cheap."
+       ],
+       "a": 0,
+       "why": "\"Less than I hoped.\""
+      }
+     ]
+    },
+    {
+     "type": "writing",
+     "title": "Íráskészség",
+     "task": "In your English class you have been talking about technology and young people. Now your teacher has asked you to write an essay: \"Young people today spend too much time online. Do you agree?\" Write about: 1. education, 2. friendships, 3. your own idea. (140–190 words)",
+     "etype": "B2 First essay"
+    }
+   ]
+  },
+  {
+   "id": "c1-2",
+   "title": "C1 Advanced jellegű próbavizsga 2.",
+   "level": "C1",
+   "minutes": 90,
+   "parts": [
+    {
+     "type": "reading",
+     "title": "Olvasott szöveg értése",
+     "name": "The myth of multitasking",
+     "text": "We like to think of ourselves as accomplished jugglers, answering emails while listening to a podcast and keeping half an eye on a group chat. Yet a substantial body of research suggests that what we call multitasking is, for the most part, an illusion. The brain does not genuinely perform two demanding tasks at once; it switches rapidly between them, and each switch carries a cost.\n\nThese costs are small enough to escape notice, which is precisely what makes them insidious. A fraction of a second lost here, a moment of reorientation there, and over the course of a day the cumulative effect can be considerable. Studies in which participants alternate between simple tasks consistently show slower performance and more errors than when the same tasks are completed one after the other.\n\nIntriguingly, those who consider themselves skilled multitaskers often perform worst. In one widely cited experiment, heavy media multitaskers were more easily distracted by irrelevant information and slower to switch between tasks than their less habitual counterparts. Confidence, it seems, is no guarantee of competence.\n\nThis is not to say that all combinations are equally problematic. Walking while talking, or listening to familiar music while doing routine housework, poses little difficulty, because at least one of the activities requires minimal conscious attention. The trouble begins when two tasks compete for the same mental resources, such as reading and listening to speech.\n\nThe practical implications are hardly revolutionary, but they are frequently ignored. Grouping similar tasks, silencing notifications during periods of concentrated work and resisting the urge to check messages the moment they arrive may feel inefficient. In reality, they allow us to do one thing properly rather than several things badly.",
+     "questions": [
+      {
+       "q": "What does the writer claim about multitasking in the first paragraph?",
+       "o": [
+        "The brain actually alternates between tasks.",
+        "Most people are good at it.",
+        "It is essential in modern life.",
+        "It improves concentration."
+       ],
+       "a": 0,
+       "why": "\"it switches rapidly between them\""
+      },
+      {
+       "q": "Why are the costs of switching described as 'insidious'?",
+       "o": [
+        "They are too small to notice individually.",
+        "They are impossible to measure.",
+        "They only affect older people.",
+        "They increase over the years."
+       ],
+       "a": 0,
+       "why": "\"small enough to escape notice\""
+      },
+      {
+       "q": "What did the experiment with heavy media multitaskers reveal?",
+       "o": [
+        "They were more easily distracted.",
+        "They were faster at switching.",
+        "They made fewer errors.",
+        "They were more confident and more accurate."
+       ],
+       "a": 0,
+       "why": "\"more easily distracted by irrelevant information\""
+      },
+      {
+       "q": "According to the writer, when is doing two things at once least problematic?",
+       "o": [
+        "When one activity needs little attention",
+        "When both tasks are new",
+        "When the tasks involve language",
+        "When the person is confident"
+       ],
+       "a": 0,
+       "why": "\"at least one of the activities requires minimal conscious attention\""
+      },
+      {
+       "q": "How does the writer view the practical advice in the final paragraph?",
+       "o": [
+        "It is simple but often not followed.",
+        "It is completely new.",
+        "It is unrealistic.",
+        "It is only for office workers."
+       ],
+       "a": 0,
+       "why": "\"hardly revolutionary, but they are frequently ignored\""
+      }
+     ]
+    },
+    {
+     "type": "mc",
+     "title": "Nyelvhelyesség: szókitöltés",
+     "items": [
+      {
+       "q": "The proposal was met with ___ opposition.",
+       "a": "fierce",
+       "o": [
+        "fierce",
+        "hard",
+        "heavy",
+        "thick"
+       ],
+       "why": "fierce opposition: erős ellenállás (kollokáció)."
+      },
+      {
+       "q": "She ___ no attempt to hide her disappointment.",
+       "a": "made",
+       "o": [
+        "made",
+        "did",
+        "took",
+        "gave"
+       ],
+       "why": "make an attempt."
+      },
+      {
+       "q": "The report ___ light on several problems.",
+       "a": "shed",
+       "o": [
+        "shed",
+        "threw out",
+        "cast off",
+        "put"
+       ],
+       "why": "shed light on = rávilágít."
+      },
+      {
+       "q": "It's a ___ conclusion that the plan will be approved.",
+       "a": "foregone",
+       "o": [
+        "foregone",
+        "forgone",
+        "forecast",
+        "foreseen"
+       ],
+       "why": "a foregone conclusion = előre eldöntött."
+      },
+      {
+       "q": "He was ___ aware of the risks involved.",
+       "a": "fully",
+       "o": [
+        "fully",
+        "highly",
+        "deeply",
+        "greatly"
+       ],
+       "why": "fully aware."
+      },
+      {
+       "q": "The decision was taken ___ consultation with staff.",
+       "a": "in",
+       "o": [
+        "in",
+        "on",
+        "by",
+        "under"
+       ],
+       "why": "in consultation with."
+      }
+     ]
+    },
+    {
+     "type": "wf",
+     "title": "Nyelvhelyesség: szóképzés",
+     "items": [
+      {
+       "q": "The government's response was widely criticised as ___. (ADEQUATE)",
+       "a": "inadequate",
+       "why": "in- fosztóképző."
+      },
+      {
+       "q": "There is growing ___ that the policy has failed. (RECOGNISE)",
+       "a": "recognition",
+       "why": "-ition főnévképző."
+      },
+      {
+       "q": "The changes were introduced with little ___. (CONSULT)",
+       "a": "consultation",
+       "why": "-ation főnévképző."
+      },
+      {
+       "q": "His behaviour was completely ___. (EXCUSE)",
+       "a": "inexcusable",
+       "why": "in- + -able."
+      },
+      {
+       "q": "She spoke with remarkable ___. (CLEAR)",
+       "a": "clarity",
+       "why": "clear → clarity."
+      },
+      {
+       "q": "The scheme has been a ___ success. (QUALIFY)",
+       "a": "qualified",
+       "why": "qualified success = részleges siker."
+      }
+     ]
+    },
+    {
+     "type": "kwt",
+     "title": "Nyelvhelyesség: mondatátalakítás",
+     "items": [
+      {
+       "q": "I had never seen such a beautiful sunset before. (TIME)",
+       "a": "It was the first time I had ever seen such a beautiful sunset.",
+       "accept": [
+        "it was the first time i had ever seen such a beautiful sunset",
+        "it was the first time i had seen such a beautiful sunset",
+        "it was the first time i'd ever seen such a beautiful sunset",
+        "it was the first time i'd seen such a beautiful sunset"
+       ],
+       "why": "It was the first time + past perfect."
+      },
+      {
+       "q": "We only realised the danger when we reached the bridge. (UNTIL)",
+       "a": "It was not until we reached the bridge that we realised the danger.",
+       "accept": [
+        "it was not until we reached the bridge that we realised the danger",
+        "it wasn't until we reached the bridge that we realised the danger",
+        "not until we reached the bridge did we realise the danger"
+       ],
+       "why": "Kiemelés: It was not until ... that."
+      },
+      {
+       "q": "People believe that the painting was stolen in 1990. (BELIEVED)",
+       "a": "The painting is believed to have been stolen in 1990.",
+       "accept": [
+        "the painting is believed to have been stolen in 1990"
+       ],
+       "why": "be believed to have been + 3. alak."
+      },
+      {
+       "q": "She regrets not studying harder at school. (WISHES)",
+       "a": "She wishes she had studied harder at school.",
+       "accept": [
+        "she wishes she had studied harder at school",
+        "she wishes she'd studied harder at school"
+       ],
+       "why": "wish + past perfect."
+      },
+      {
+       "q": "The concert was cancelled because of the storm. (ACCOUNT)",
+       "a": "The concert was cancelled on account of the storm.",
+       "accept": [
+        "the concert was cancelled on account of the storm"
+       ],
+       "why": "on account of = miatt."
+      }
+     ]
+    },
+    {
+     "type": "listening",
+     "title": "Hallott szöveg értése",
+     "name": "The return of the night train",
+     "cast": {
+      "A": {
+       "name": "Host",
+       "g": "f",
+       "acc": "uk"
+      },
+      "B": {
+       "name": "Professor Lang",
+       "g": "m",
+       "acc": "uk"
+      }
+     },
+     "lines": [
+      {
+       "s": "A",
+       "it": "Professor Lang, night trains seemed to be dying out a decade ago. Why are they coming back?",
+       "hu": "Lang professzor, egy évtizede úgy tűnt, kihalnak az éjszakai vonatok. Miért térnek vissza?"
+      },
+      {
+       "s": "B",
+       "it": "Largely because travellers have become more conscious of the environmental cost of short-haul flights.",
+       "hu": "Főleg azért, mert az utazók jobban tudatában vannak a rövid repülőutak környezeti árának."
+      },
+      {
+       "s": "A",
+       "it": "But aren't they still more expensive than flying?",
+       "hu": "De nem drágábbak még mindig a repülésnél?"
+      },
+      {
+       "s": "B",
+       "it": "Often, yes. Though if you factor in a hotel night you'd otherwise pay for, the comparison becomes rather more favourable.",
+       "hu": "Gyakran igen. De ha beszámítjuk a szállodai éjszakát, amit egyébként kifizetnénk, az összevetés jóval kedvezőbb lesz."
+      },
+      {
+       "s": "A",
+       "it": "What's held the revival back?",
+       "hu": "Mi fékezte az újjáéledést?"
+      },
+      {
+       "s": "B",
+       "it": "Mainly a shortage of modern sleeping cars, and the complexity of agreeing timetables across several national rail networks.",
+       "hu": "Főleg a korszerű hálókocsik hiánya, és az, hogy bonyolult több nemzeti vasúthálózat menetrendjét összehangolni."
+      },
+      {
+       "s": "A",
+       "it": "Is it mainly a romantic choice, then?",
+       "hu": "Akkor ez főleg romantikus választás?"
+      },
+      {
+       "s": "B",
+       "it": "There's certainly an element of nostalgia, but I'd argue the main appeal is practical: you arrive in the city centre, rested, at the start of the working day.",
+       "hu": "Van benne kétségkívül némi nosztalgia, de szerintem a fő vonzereje gyakorlati: pihenten érkezel a városközpontba, a munkanap elején."
+      },
+      {
+       "s": "A",
+       "it": "And the future?",
+       "hu": "És a jövő?"
+      },
+      {
+       "s": "B",
+       "it": "Cautiously optimistic. Demand clearly exists; the question is whether governments are prepared to invest before it peaks.",
+       "hu": "Óvatosan derűlátó vagyok. A kereslet egyértelműen megvan; a kérdés az, hogy a kormányok hajlandók-e befektetni, mielőtt az a csúcsra ér."
+      }
+     ],
+     "questions": [
+      {
+       "q": "What is the main reason for the return of night trains?",
+       "o": [
+        "Concern about the environmental impact of flying",
+        "Lower ticket prices",
+        "Faster trains",
+        "Government advertising"
+       ],
+       "a": 0,
+       "why": "\"more conscious of the environmental cost of short-haul flights\""
+      },
+      {
+       "q": "When does the cost comparison become more favourable?",
+       "o": [
+        "When the saved hotel night is included",
+        "When booked a year ahead",
+        "When travelling in groups",
+        "When flying is delayed"
+       ],
+       "a": 0,
+       "why": "\"if you factor in a hotel night\""
+      },
+      {
+       "q": "What has slowed down the revival?",
+       "o": [
+        "Lack of modern carriages and complex timetables",
+        "Lack of passenger interest",
+        "Strikes",
+        "High fuel prices"
+       ],
+       "a": 0,
+       "why": "\"a shortage of modern sleeping cars, and the complexity of agreeing timetables\""
+      },
+      {
+       "q": "What does the professor see as the main attraction?",
+       "o": [
+        "Practical arrival in the city centre",
+        "Nostalgia",
+        "Luxury food",
+        "Beautiful views"
+       ],
+       "a": 0,
+       "why": "\"the main appeal is practical\""
+      }
+     ]
+    },
+    {
+     "type": "writing",
+     "title": "Íráskészség",
+     "task": "Your class has watched a documentary about how cities could reduce car use. You have made the notes below: possible measures — better public transport, cycle lanes, charging drivers to enter the city centre. Write an essay discussing two of the measures in your notes. Explain which measure would be more effective, giving reasons to support your opinion. (220–260 words)",
+     "etype": "C1 Advanced essay"
+    }
+   ]
+  },
+  {
+   "id": "c1-3",
+   "title": "C1 Advanced jellegű próbavizsga 3.",
+   "level": "C1",
+   "minutes": 90,
+   "parts": [
+    {
+     "type": "reading",
+     "title": "Olvasott szöveg értése",
+     "name": "In praise of boredom",
+     "text": "Few experiences are as universally disparaged as boredom. We fill every idle moment with our phones, treat waiting rooms as an opportunity to clear our inboxes, and regard a child who complains of having nothing to do as a problem to be solved. Yet a growing number of researchers argue that boredom, far from being a pointless discomfort, may serve a genuine purpose.\n\nThe argument runs roughly as follows. Boredom is an unpleasant signal that our current activity is failing to engage us. Like hunger, it prompts us to look for something more rewarding. Without it, we might remain stuck in unproductive situations indefinitely. In this sense, boredom is less an absence of feeling than a nudge towards change.\n\nThere is also evidence linking boredom with creativity. In one study, participants who first completed a deliberately tedious task, copying numbers from a telephone directory, subsequently came up with more inventive uses for a pair of plastic cups than those who had skipped the dull activity. The researchers suggested that a wandering mind, freed from external stimulation, is more inclined to make unusual connections.\n\nNone of this means that boredom is always beneficial. Chronic boredom has been associated with poorer mental health and risky behaviour, particularly among adolescents. The distinction appears to lie between brief, occasional boredom, which can be productive, and a persistent sense that life lacks meaning.\n\nWhat may be lost in an age of constant entertainment is the first kind. If every pause is instantly filled, the mind never has the chance to drift. The challenge, perhaps, is not to eliminate boredom, but to tolerate it long enough to see where it leads.",
+     "questions": [
+      {
+       "q": "How does the writer describe common attitudes to boredom?",
+       "o": [
+        "Almost everyone sees it as negative.",
+        "Most people enjoy it.",
+        "Children rarely experience it.",
+        "It is considered healthy."
+       ],
+       "a": 0,
+       "why": "\"universally disparaged\""
+      },
+      {
+       "q": "What comparison is made in the second paragraph?",
+       "o": [
+        "Boredom works like hunger as a signal.",
+        "Boredom is similar to tiredness.",
+        "Boredom is like a disease.",
+        "Boredom resembles happiness."
+       ],
+       "a": 0,
+       "why": "\"Like hunger, it prompts us to look for something more rewarding.\""
+      },
+      {
+       "q": "What did the study with plastic cups suggest?",
+       "o": [
+        "A dull task beforehand can boost creativity.",
+        "Copying numbers improves memory.",
+        "Creative people are rarely bored.",
+        "Plastic cups are hard to use creatively."
+       ],
+       "a": 0,
+       "why": "\"came up with more inventive uses\""
+      },
+      {
+       "q": "What distinction does the writer draw in the fourth paragraph?",
+       "o": [
+        "Between occasional and chronic boredom",
+        "Between adults and children",
+        "Between work and leisure",
+        "Between creative and uncreative people"
+       ],
+       "a": 0,
+       "why": "\"between brief, occasional boredom ... and a persistent sense\""
+      },
+      {
+       "q": "What is the writer's final suggestion?",
+       "o": [
+        "We should learn to put up with boredom.",
+        "We should avoid boredom completely.",
+        "Phones cure boredom.",
+        "Boredom should be studied more."
+       ],
+       "a": 0,
+       "why": "\"to tolerate it long enough to see where it leads\""
+      }
+     ]
+    },
+    {
+     "type": "mc",
+     "title": "Nyelvhelyesség: szókitöltés",
+     "items": [
+      {
+       "q": "The minister refused to ___ responsibility for the failure.",
+       "a": "accept",
+       "o": [
+        "accept",
+        "receive",
+        "admit",
+        "agree"
+       ],
+       "why": "accept responsibility."
+      },
+      {
+       "q": "Her argument doesn't ___ up to close examination.",
+       "a": "stand",
+       "o": [
+        "stand",
+        "hold",
+        "keep",
+        "bear"
+       ],
+       "why": "stand up to scrutiny/examination."
+      },
+      {
+       "q": "The company is on the ___ of bankruptcy.",
+       "a": "verge",
+       "o": [
+        "verge",
+        "border",
+        "edge of",
+        "limit"
+       ],
+       "why": "on the verge of = valaminek a szélén."
+      },
+      {
+       "q": "They reached a decision ___ lengthy discussion.",
+       "a": "after",
+       "o": [
+        "after",
+        "since",
+        "following on",
+        "upon to"
+       ],
+       "why": "after lengthy discussion."
+      },
+      {
+       "q": "This view is ___ held among scientists.",
+       "a": "widely",
+       "o": [
+        "widely",
+        "largely",
+        "broadly to",
+        "greatly"
+       ],
+       "why": "widely held view."
+      },
+      {
+       "q": "He has a ___ interest in the outcome.",
+       "a": "vested",
+       "o": [
+        "vested",
+        "invested",
+        "dressed",
+        "fixed"
+       ],
+       "why": "vested interest = személyes érdekeltség."
+      }
+     ]
+    },
+    {
+     "type": "wf",
+     "title": "Nyelvhelyesség: szóképzés",
+     "items": [
+      {
+       "q": "The results of the trial were ___. (CONCLUDE, ellentét)",
+       "a": "inconclusive",
+       "why": "in- + -ive."
+      },
+      {
+       "q": "Her ___ to detail is remarkable. (ATTEND)",
+       "a": "attention",
+       "why": "attend → attention."
+      },
+      {
+       "q": "The city has undergone a dramatic ___. (TRANSFORM)",
+       "a": "transformation",
+       "why": "-ation főnévképző."
+      },
+      {
+       "q": "These figures are ___ misleading. (POTENTIAL)",
+       "a": "potentially",
+       "why": "-ly határozószó."
+      },
+      {
+       "q": "He showed great ___ in difficult circumstances. (RESILIENT)",
+       "a": "resilience",
+       "why": "-ence főnévképző."
+      },
+      {
+       "q": "The plan was rejected as ___. (PRACTICE)",
+       "a": "impractical",
+       "why": "im- + -ical."
+      }
+     ]
+    },
+    {
+     "type": "kwt",
+     "title": "Nyelvhelyesség: mondatátalakítás",
+     "items": [
+      {
+       "q": "I'd prefer you not to smoke in here. (RATHER)",
+       "a": "I'd rather you didn't smoke in here.",
+       "accept": [
+        "i'd rather you didn't smoke in here",
+        "i would rather you didn't smoke in here",
+        "i would rather you did not smoke in here"
+       ],
+       "why": "would rather + alany + múlt idő."
+      },
+      {
+       "q": "He didn't apologise, which surprised me. (FAILURE)",
+       "a": "His failure to apologise surprised me.",
+       "accept": [
+        "his failure to apologise surprised me"
+       ],
+       "why": "Főnevesítés: failure to do."
+      },
+      {
+       "q": "As soon as she arrived, the meeting started. (SOONER)",
+       "a": "No sooner had she arrived than the meeting started.",
+       "accept": [
+        "no sooner had she arrived than the meeting started"
+       ],
+       "why": "Inverzió: No sooner had ... than."
+      },
+      {
+       "q": "It's possible that the letter got lost in the post. (MIGHT)",
+       "a": "The letter might have got lost in the post.",
+       "accept": [
+        "the letter might have got lost in the post",
+        "the letter might have been lost in the post",
+        "the letter might have gotten lost in the post"
+       ],
+       "why": "might have + 3. alak."
+      },
+      {
+       "q": "Nobody expected the team to win. (CONTRARY)",
+       "a": "Contrary to expectations, the team won.",
+       "accept": [
+        "contrary to expectations the team won",
+        "contrary to expectations, the team won",
+        "contrary to all expectations, the team won",
+        "contrary to all expectations the team won"
+       ],
+       "why": "contrary to expectations = várakozásokkal ellentétben."
+      }
+     ]
+    },
+    {
+     "type": "listening",
+     "title": "Hallott szöveg értése",
+     "name": "Rewilding a farm",
+     "cast": {
+      "A": {
+       "name": "Host",
+       "g": "m",
+       "acc": "us"
+      },
+      "B": {
+       "name": "Clara",
+       "g": "f",
+       "acc": "uk"
+      }
+     },
+     "lines": [
+      {
+       "s": "A",
+       "it": "Clara, your family farmed this land for three generations. Why did you decide to let it go wild?",
+       "hu": "Clara, a családod három generáción át gazdálkodott ezen a földön. Miért döntöttél úgy, hogy hagyod elvadulni?"
+      },
+      {
+       "s": "B",
+       "it": "Frankly, we were losing money every year. The soil was exhausted, and conventional farming simply wasn't viable any more.",
+       "hu": "Őszintén szólva minden évben veszteséges voltunk. A talaj kimerült, és a hagyományos gazdálkodás egyszerűen nem volt többé életképes."
+      },
+      {
+       "s": "A",
+       "it": "How did your neighbours react?",
+       "hu": "Hogyan reagáltak a szomszédaitok?"
+      },
+      {
+       "s": "B",
+       "it": "With considerable suspicion at first. To many of them, an untidy field is a sign of failure rather than a choice.",
+       "hu": "Eleinte jókora gyanakvással. Sokuk szemében egy rendezetlen mező a kudarc jele, nem pedig választás."
+      },
+      {
+       "s": "A",
+       "it": "What changed their minds?",
+       "hu": "Mi győzte meg őket?"
+      },
+      {
+       "s": "B",
+       "it": "Within five years, we had species returning that hadn't been seen locally for decades, including turtle doves and several rare butterflies.",
+       "hu": "Öt éven belül olyan fajok tértek vissza, amelyeket évtizedek óta nem láttak a környéken, köztük vadgerlék és több ritka lepke."
+      },
+      {
+       "s": "A",
+       "it": "Does the farm make money now?",
+       "hu": "Hoz most pénzt a gazdaság?"
+      },
+      {
+       "s": "B",
+       "it": "Through eco-tourism and the sale of meat from free-roaming cattle, yes, though the income is more modest than people imagine.",
+       "hu": "Az ökoturizmusból és a szabadon legelő marhák húsának eladásából igen, bár a bevétel szerényebb, mint az emberek gondolják."
+      },
+      {
+       "s": "A",
+       "it": "Would you advise others to follow your example?",
+       "hu": "Tanácsolnád másoknak, hogy kövessék a példádat?"
+      },
+      {
+       "s": "B",
+       "it": "Only after careful thought. Rewilding isn't a shortcut to profit; it's a long-term commitment that requires patience and a willingness to give up control.",
+       "hu": "Csak alapos megfontolás után. Az újravadítás nem rövidítés a nyereséghez; hosszú távú elköteleződés, amihez türelem kell, és hajlandóság lemondani az irányításról."
+      }
+     ],
+     "questions": [
+      {
+       "q": "Why did Clara stop conventional farming?",
+       "o": [
+        "It was no longer profitable.",
+        "She wanted to move to the city.",
+        "The government paid her.",
+        "Her neighbours complained."
+       ],
+       "a": 0,
+       "why": "\"we were losing money every year\""
+      },
+      {
+       "q": "How did the neighbours first see the project?",
+       "o": [
+        "As a sign of failure",
+        "As an exciting experiment",
+        "As a tourist attraction",
+        "As a good investment"
+       ],
+       "a": 0,
+       "why": "\"an untidy field is a sign of failure\""
+      },
+      {
+       "q": "What changed the neighbours' opinion?",
+       "o": [
+        "The return of rare wildlife",
+        "Higher profits",
+        "A newspaper article",
+        "Government support"
+       ],
+       "a": 0,
+       "why": "\"species returning that hadn't been seen locally for decades\""
+      },
+      {
+       "q": "What does Clara say about rewilding as a business?",
+       "o": [
+        "It requires patience and is not a quick profit.",
+        "It is the easiest way to get rich.",
+        "It needs no investment.",
+        "It should be avoided."
+       ],
+       "a": 0,
+       "why": "\"Rewilding isn't a shortcut to profit\""
+      }
+     ]
+    },
+    {
+     "type": "writing",
+     "title": "Íráskészség",
+     "task": "A website is inviting readers to write a proposal on how their local area could better support older residents. Write a proposal describing the current situation, suggesting two or three practical improvements and explaining how they would benefit the community. (220–260 words)",
+     "etype": "C1 Advanced proposal"
+    }
+   ]
+  },
+  {
+   "id": "ielts",
+   "title": "IELTS Academic jellegű olvasásvizsga",
+   "level": "C1",
+   "minutes": 45,
+   "ielts": true,
+   "parts": [
+    {
+     "type": "reading",
+     "title": "1. szöveg",
+     "name": "The history of the pencil",
+     "text": "The modern pencil owes its existence to a chance discovery in the 1560s, when a large deposit of unusually pure graphite was found in Borrowdale, in the north of England. Local shepherds reportedly used it to mark their sheep, and it soon became clear that the material left a darker, cleaner line than lead, which had been used for writing since Roman times.\n\nBecause pure graphite was soft and brittle, early users wrapped it in string or sheepskin. The idea of enclosing it in wood is generally credited to Italian craftsmen, who hollowed out sticks of juniper and inserted a graphite core. The design proved so practical that it has changed remarkably little since.\n\nThe Borrowdale mine was so valuable that it was guarded and flooded between extraction periods to deter thieves. When supplies elsewhere were cut off during the Napoleonic Wars, the French engineer Nicolas-Jacques Conté developed a method of mixing powdered graphite with clay and firing the mixture in a kiln. By varying the proportion of clay, manufacturers could produce pencils of differing hardness, a system still used today.\n\nDespite the arrival of ballpoint pens and digital devices, the pencil has retained a surprising number of loyal users, from architects and artists to astronauts, who value its reliability in conditions where ink might fail.",
+     "questions": [
+      {
+       "q": "What was special about the graphite found in Borrowdale?",
+       "o": [
+        "It was exceptionally pure.",
+        "It was very hard.",
+        "It was mixed with lead.",
+        "It was found underwater."
+       ],
+       "a": 0,
+       "why": "\"unusually pure graphite\""
+      },
+      {
+       "q": "Why did early users wrap graphite in string or sheepskin?",
+       "o": [
+        "Because it broke easily",
+        "To make it darker",
+        "To hide it from thieves",
+        "Because it was hot"
+       ],
+       "a": 0,
+       "why": "\"soft and brittle\""
+      },
+      {
+       "q": "What is said about the wooden pencil design?",
+       "o": [
+        "It has hardly changed.",
+        "It was invented in England.",
+        "It was quickly replaced.",
+        "It used oak wood."
+       ],
+       "a": 0,
+       "why": "\"changed remarkably little since\""
+      },
+      {
+       "q": "What did Conté's method make possible?",
+       "o": [
+        "Pencils of different hardness",
+        "Cheaper wooden cases",
+        "Pencils without graphite",
+        "Coloured pencils"
+       ],
+       "a": 0,
+       "why": "\"pencils of differing hardness\""
+      },
+      {
+       "q": "Why do astronauts value pencils, according to the text?",
+       "o": [
+        "They work where ink may not.",
+        "They are lighter than pens.",
+        "They can be erased.",
+        "They are cheap."
+       ],
+       "a": 0,
+       "why": "\"reliability in conditions where ink might fail\""
+      }
+     ]
+    },
+    {
+     "type": "reading",
+     "title": "2. szöveg",
+     "name": "Urban heat islands",
+     "text": "On a summer afternoon, the centre of a large city can be several degrees warmer than the surrounding countryside. This phenomenon, known as the urban heat island effect, arises mainly because materials such as asphalt and concrete absorb solar radiation during the day and release it slowly at night. The lack of vegetation compounds the problem, since plants cool their surroundings through the evaporation of water from their leaves.\n\nThe consequences extend beyond discomfort. Higher temperatures increase demand for air conditioning, which in turn raises energy consumption and emissions. During heatwaves, the effect can be deadly: elderly people and those with heart or lung conditions are particularly vulnerable, and studies of past heatwaves have found significantly higher death rates in the hottest urban districts.\n\nCities have experimented with a range of countermeasures. Reflective 'cool roofs' painted in light colours can lower roof surface temperatures considerably. Green roofs, covered with plants, offer additional benefits such as absorbing rainwater, although they are more expensive to install and maintain. Planting street trees remains one of the most cost-effective options, provided that species are chosen carefully to withstand drought.\n\nUrban planners increasingly argue that such measures should be coordinated rather than introduced piecemeal. A single green roof makes little difference; a network of parks, trees and reflective surfaces across an entire district can measurably reduce temperatures.",
+     "questions": [
+      {
+       "q": "What is the main cause of the urban heat island effect?",
+       "o": [
+        "Building materials storing and releasing heat",
+        "Air pollution",
+        "Traffic noise",
+        "High population density alone"
+       ],
+       "a": 0,
+       "why": "\"absorb solar radiation during the day and release it slowly at night\""
+      },
+      {
+       "q": "How do plants help to cool cities?",
+       "o": [
+        "By releasing water through their leaves",
+        "By reflecting sunlight",
+        "By blocking wind",
+        "By absorbing traffic fumes"
+       ],
+       "a": 0,
+       "why": "\"evaporation of water from their leaves\""
+      },
+      {
+       "q": "Which group is mentioned as especially at risk during heatwaves?",
+       "o": [
+        "Elderly people",
+        "Children",
+        "Office workers",
+        "Tourists"
+       ],
+       "a": 0,
+       "why": "\"elderly people ... are particularly vulnerable\""
+      },
+      {
+       "q": "What disadvantage of green roofs is mentioned?",
+       "o": [
+        "Higher cost",
+        "They reflect too much light",
+        "They attract insects",
+        "They increase flooding"
+       ],
+       "a": 0,
+       "why": "\"more expensive to install and maintain\""
+      },
+      {
+       "q": "What do planners recommend?",
+       "o": [
+        "Coordinating measures across whole areas",
+        "Building more air conditioning",
+        "Introducing one measure at a time",
+        "Moving people out of cities"
+       ],
+       "a": 0,
+       "why": "\"should be coordinated rather than introduced piecemeal\""
+      }
+     ]
+    },
+    {
+     "type": "reading",
+     "title": "3. szöveg",
+     "name": "Can animals count?",
+     "text": "For much of the twentieth century, claims that animals could count were treated with suspicion, largely because of the case of Clever Hans, a horse that appeared to solve arithmetic problems by tapping its hoof. It was later shown that Hans was responding to tiny, unconscious cues from his questioners, who relaxed when he reached the correct number. The episode made researchers extremely cautious about interpreting animal behaviour.\n\nModern studies, however, use carefully controlled methods to rule out such cues. Experiments have shown that a wide range of species possess what scientists call 'number sense': the ability to judge which of two groups contains more items. Fish, for example, prefer to join the larger of two shoals, and honeybees can be trained to choose the card showing a particular number of shapes.\n\nThis ability is generally approximate rather than exact. Animals distinguish easily between three and six objects, but find it much harder to tell twelve from thirteen. Interestingly, human infants show a similar pattern before they learn to use number words, suggesting that this approximate system may be an ancient and widely shared feature of animal brains.\n\nWhat appears to be uniquely human is the use of symbols to represent exact quantities. Some chimpanzees have learned to associate numerals with quantities after extensive training, but there is little evidence that any animal spontaneously develops such a system. Counting, in the precise sense, may therefore depend on language and culture as much as on biology.",
+     "questions": [
+      {
+       "q": "What did the case of Clever Hans show?",
+       "o": [
+        "The horse was reacting to people's signals.",
+        "Horses can do arithmetic.",
+        "Animals cannot learn anything.",
+        "Researchers had cheated."
+       ],
+       "a": 0,
+       "why": "\"responding to tiny, unconscious cues from his questioners\""
+      },
+      {
+       "q": "What is 'number sense'?",
+       "o": [
+        "Judging which group is larger",
+        "Using number words",
+        "Writing numerals",
+        "Doing exact calculations"
+       ],
+       "a": 0,
+       "why": "\"the ability to judge which of two groups contains more items\""
+      },
+      {
+       "q": "Which comparison do animals find difficult?",
+       "o": [
+        "Twelve and thirteen",
+        "Three and six",
+        "One and five",
+        "Two and ten"
+       ],
+       "a": 0,
+       "why": "\"much harder to tell twelve from thirteen\""
+      },
+      {
+       "q": "What do human infants and animals have in common?",
+       "o": [
+        "An approximate sense of quantity",
+        "The ability to use symbols",
+        "Knowledge of number words",
+        "Exact counting skills"
+       ],
+       "a": 0,
+       "why": "\"human infants show a similar pattern\""
+      },
+      {
+       "q": "What does the writer conclude about exact counting?",
+       "o": [
+        "It may depend on language and culture.",
+        "Many animals do it naturally.",
+        "It is purely biological.",
+        "Chimpanzees invented it."
+       ],
+       "a": 0,
+       "why": "\"may therefore depend on language and culture\""
+      }
+     ]
+    }
+   ]
   }
  ]
 }

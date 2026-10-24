@@ -3,14 +3,14 @@
    every line can be played on its own, words are tappable and two questions close each chapter. */
 let SER=null;
 const serOf=id=>(S.ser||(S.ser={}))[id]||{};
-function renderSerials(){
-  stopViews();
+function renderSerials(){stopViews();withExtra("serials",renderSerialsNow);}
+function renderSerialsNow(){
   subShell(["Gyakorlás",()=>go("gyakorlas")],"Folytatásos történetek","Fejezetről fejezetre",`<p class="muted">Hosszabb, hangos történetek fejezetekre bontva. Minden fejezet végén két kérdés vár, és csak utána nyílik a következő. Koppints bármelyik szóra a jelentéséért.</p>
     <div class="lgrid">${XT.ser.map(s=>{const d=Object.keys(serOf(s.id)).length;return `<button class="lcard" data-ser="${s.id}"><div class="pic"><img src="img/${s.img}.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"><span class="badge"><span class="pill ${d===s.chapters.length?"ok":""}">${d===s.chapters.length?"✓ Kész":d?d+"/"+s.chapters.length:s.level}</span></span></div><div class="body"><b>${esc(s.title)}</b><span class="small muted">${esc(s.hu)} · ${s.level} · ${s.chapters.length} fejezet</span></div></button>`;}).join("")}</div>`);
   view.querySelectorAll("[data-ser]").forEach(b=>b.onclick=()=>openSerial(b.dataset.ser));
 }
 function openSerial(id){
-  const s=XT.ser.find(x=>x.id===id);if(!s)return;stopViews();prefetch("ser-en-"+id);const d=serOf(id);
+  const s=XT.ser.find(x=>x.id===id);if(!s)return;stopViews();prefetch(`ser-${lang()}-${id}`);const d=serOf(id);
   subShell(["Történetek",renderSerials],`Folytatásos történet · ${s.level}`,esc(s.title),`${pic(s.img)}<p class="muted">${esc(s.desc)}</p>
     <div class="stack" style="gap:.5rem">${s.chapters.map((ch,k)=>{const open=k===0||d[k-1],r=d[k];return `<button class="btn ${r?"soft":open?"":"ghost"} block" data-ch="${k}" ${open?"":"disabled"} style="justify-content:space-between;text-align:left"><span>${k+1}. ${esc(ch.title)} <span class="small muted">· ${esc(ch.hu)}</span></span><span>${r?`✓ ${r.ok}/${r.n}`:open?"→":"🔒"}</span></button>`;}).join("")}</div>`);
   view.querySelectorAll("[data-ch]").forEach(b=>b.onclick=()=>{SER={s,k:+b.dataset.ch,i:-1,playing:false,showHu:false,ans:{},stage:"read"};drawChapter();});

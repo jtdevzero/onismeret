@@ -1,0 +1,658 @@
+{
+ "ielts": [
+  {
+   "t": "Home and free time",
+   "p1": [
+    "Do you live in a house or a flat?",
+    "What do you like most about the area where you live?",
+    "What do you usually do at the weekend?",
+    "Have your free-time activities changed since you were a child?"
+   ],
+   "cue": {
+    "q": "Describe a place in your town or city where you like to spend time.",
+    "say": [
+     "where it is",
+     "how often you go there",
+     "what you do there",
+     "and explain why you like it"
+    ]
+   },
+   "p3": [
+    "Why do some people prefer to spend their free time at home?",
+    "How have cities changed in the way they provide spaces for young people?",
+    "Should local governments spend more money on parks and public spaces? Why?"
+   ]
+  },
+  {
+   "t": "Work and study",
+   "p1": [
+    "Do you work or are you a student?",
+    "What do you find most interesting about your work or studies?",
+    "Would you like to change anything about your daily routine?",
+    "Do you prefer working alone or with other people?"
+   ],
+   "cue": {
+    "q": "Describe a skill you learned that has been useful to you.",
+    "say": [
+     "what the skill is",
+     "when and how you learned it",
+     "how difficult it was",
+     "and explain why it has been useful"
+    ]
+   },
+   "p3": [
+    "Which skills will be most important for young people in the future?",
+    "Is it better to learn a skill from a teacher or by yourself online?",
+    "Should schools focus more on practical skills than on academic subjects?"
+   ]
+  },
+  {
+   "t": "Travel",
+   "p1": [
+    "Do you enjoy travelling?",
+    "What kind of places do you like to visit?",
+    "How do you usually travel when you go on holiday?",
+    "Is there a country you would really like to visit? Why?"
+   ],
+   "cue": {
+    "q": "Describe a journey you remember well.",
+    "say": [
+     "where you went",
+     "who you travelled with",
+     "what happened during the journey",
+     "and explain why you remember it so well"
+    ]
+   },
+   "p3": [
+    "How has tourism changed in the last twenty years?",
+    "What problems can mass tourism cause for local people?",
+    "Do you think people will travel more or less in the future? Why?"
+   ]
+  },
+  {
+   "t": "Technology",
+   "p1": [
+    "How often do you use your phone during the day?",
+    "What apps do you use most?",
+    "Did you use computers a lot when you were at school?",
+    "Is there any technology you would find it hard to live without?"
+   ],
+   "cue": {
+    "q": "Describe a piece of technology that has changed your life.",
+    "say": [
+     "what it is",
+     "when you started using it",
+     "how you use it",
+     "and explain how it has changed your life"
+    ]
+   },
+   "p3": [
+    "Do you think people spend too much time on their phones?",
+    "How has technology changed the way families communicate?",
+    "Should children's use of technology be limited? Who should decide?"
+   ]
+  },
+  {
+   "t": "Food and health",
+   "p1": [
+    "What kind of food do you like?",
+    "Do you prefer eating at home or in restaurants?",
+    "Did you eat differently when you were a child?",
+    "Do you think you have a healthy lifestyle?"
+   ],
+   "cue": {
+    "q": "Describe a meal you enjoyed with other people.",
+    "say": [
+     "where you had it",
+     "who you were with",
+     "what you ate",
+     "and explain why you enjoyed it"
+    ]
+   },
+   "p3": [
+    "Why do many people find it hard to eat healthily?",
+    "Should governments tax unhealthy food?",
+    "How important is it for families to eat together?"
+   ]
+  },
+  {
+   "t": "People and relationships",
+   "p1": [
+    "Do you have a large family?",
+    "Who are you closest to in your family?",
+    "How often do you meet your friends?",
+    "Do you prefer to have a few close friends or many friends?"
+   ],
+   "cue": {
+    "q": "Describe a person who has influenced you.",
+    "say": [
+     "who the person is",
+     "how you know them",
+     "what they are like",
+     "and explain how they have influenced you"
+    ]
+   },
+   "p3": [
+    "What qualities make someone a good role model?",
+    "Do young people today have different role models from those of their parents?",
+    "Is it easier or harder to make friends as an adult?"
+   ]
+  },
+  {
+   "t": "Books and reading",
+   "p1": [
+    "Do you enjoy reading?",
+    "What kind of books did you read as a child?",
+    "Do you prefer paper books or e-books?",
+    "Where do you usually read?"
+   ],
+   "cue": {
+    "q": "Describe a book or article that made you think.",
+    "say": [
+     "what it was about",
+     "when you read it",
+     "why you chose it",
+     "and explain how it changed your thinking"
+    ]
+   },
+   "p3": [
+    "Why do fewer young people read books for pleasure today?",
+    "Should schools let children choose what they read?",
+    "Will printed books disappear in the future?"
+   ]
+  },
+  {
+   "t": "Weather and seasons",
+   "p1": [
+    "What's the weather like where you live?",
+    "Which season do you like best?",
+    "Does the weather affect your mood?",
+    "What do you like to do on rainy days?"
+   ],
+   "cue": {
+    "q": "Describe a day when the weather affected your plans.",
+    "say": [
+     "when it happened",
+     "what you had planned",
+     "what the weather was like",
+     "and explain how you felt about it"
+    ]
+   },
+   "p3": [
+    "How is climate change affecting the weather in your country?",
+    "What can individuals do to reduce their impact on the environment?",
+    "Should rich countries do more to help poorer ones adapt to climate change?"
+   ]
+  },
+  {
+   "t": "Music",
+   "p1": [
+    "What kind of music do you listen to?",
+    "Did you learn to play an instrument as a child?",
+    "Do you listen to music while you work or study?",
+    "Have you ever been to a live concert?"
+   ],
+   "cue": {
+    "q": "Describe a song or piece of music that is special to you.",
+    "say": [
+     "what it is",
+     "when you first heard it",
+     "what it sounds like",
+     "and explain why it is special to you"
+    ]
+   },
+   "p3": [
+    "Why is music important in different cultures?",
+    "Should music be a compulsory subject at school?",
+    "How has the way people listen to music changed?"
+   ]
+  },
+  {
+   "t": "Shopping",
+   "p1": [
+    "Do you enjoy shopping?",
+    "Do you prefer shopping online or in shops?",
+    "What was the last thing you bought?",
+    "Are there any markets near where you live?"
+   ],
+   "cue": {
+    "q": "Describe something you bought that you were really happy with.",
+    "say": [
+     "what it was",
+     "where you bought it",
+     "why you bought it",
+     "and explain why you were so happy with it"
+    ]
+   },
+   "p3": [
+    "Why do people buy things they don't need?",
+    "How has online shopping affected town centres?",
+    "Do advertisements influence young people too much?"
+   ]
+  },
+  {
+   "t": "Sport and exercise",
+   "p1": [
+    "Do you do any sport or exercise?",
+    "Did you enjoy PE lessons at school?",
+    "Do you prefer watching sport or doing it?",
+    "What sports are popular in your country?"
+   ],
+   "cue": {
+    "q": "Describe a sporting event you watched or took part in.",
+    "say": [
+     "what the event was",
+     "where and when it happened",
+     "who you were with",
+     "and explain why it was memorable"
+    ]
+   },
+   "p3": [
+    "Why do some people dislike exercise?",
+    "Are professional athletes paid too much?",
+    "What can governments do to encourage people to be more active?"
+   ]
+  },
+  {
+   "t": "Neighbourhoods",
+   "p1": [
+    "How long have you lived in your neighbourhood?",
+    "Do you know your neighbours well?",
+    "What facilities are there near your home?",
+    "Would you like to move somewhere else? Why?"
+   ],
+   "cue": {
+    "q": "Describe a neighbour or local person you know.",
+    "say": [
+     "who they are",
+     "how you met them",
+     "what you do together or talk about",
+     "and explain what you think of them"
+    ]
+   },
+   "p3": [
+    "Why do people in cities often not know their neighbours?",
+    "What makes a community strong?",
+    "Should young people be encouraged to stay in their home towns?"
+   ]
+  },
+  {
+   "t": "Learning languages",
+   "p1": [
+    "How many languages can you speak?",
+    "When did you start learning English?",
+    "What do you find most difficult about English?",
+    "Would you like to learn another language?"
+   ],
+   "cue": {
+    "q": "Describe a time when you had to use a foreign language.",
+    "say": [
+     "where you were",
+     "who you were talking to",
+     "what you needed to say",
+     "and explain how it went"
+    ]
+   },
+   "p3": [
+    "Why do some people learn languages more easily than others?",
+    "Will translation apps make language learning unnecessary?",
+    "At what age should children start learning a foreign language?"
+   ]
+  },
+  {
+   "t": "Celebrations",
+   "p1": [
+    "What celebrations are important in your country?",
+    "How do you usually celebrate your birthday?",
+    "Do you prefer big parties or small gatherings?",
+    "Have celebrations changed since you were a child?"
+   ],
+   "cue": {
+    "q": "Describe a celebration you enjoyed.",
+    "say": [
+     "what was being celebrated",
+     "where it took place",
+     "who was there",
+     "and explain why you enjoyed it"
+    ]
+   },
+   "p3": [
+    "Why are traditional festivals important?",
+    "Have celebrations become too commercial?",
+    "How do celebrations bring communities together?"
+   ]
+  },
+  {
+   "t": "Transport",
+   "p1": [
+    "How do you usually get to work or school?",
+    "Is public transport good where you live?",
+    "Do you have a driving licence?",
+    "Do you enjoy long journeys?"
+   ],
+   "cue": {
+    "q": "Describe a form of transport you enjoy using.",
+    "say": [
+     "what it is",
+     "how often you use it",
+     "where you travel with it",
+     "and explain why you enjoy it"
+    ]
+   },
+   "p3": [
+    "How could cities reduce traffic congestion?",
+    "Should public transport be free?",
+    "Will self-driving cars be common in the future?"
+   ]
+  },
+  {
+   "t": "Films and TV",
+   "p1": [
+    "How often do you watch films?",
+    "Do you prefer watching films at home or at the cinema?",
+    "What kind of TV programmes do you like?",
+    "Did you watch a lot of TV as a child?"
+   ],
+   "cue": {
+    "q": "Describe a film you would recommend to others.",
+    "say": [
+     "what it is called and what kind of film it is",
+     "what it is about",
+     "when you saw it",
+     "and explain why you would recommend it"
+    ]
+   },
+   "p3": [
+    "Why are films based on true stories so popular?",
+    "Do violent films influence young people?",
+    "How has streaming changed the film industry?"
+   ]
+  },
+  {
+   "t": "Nature",
+   "p1": [
+    "Do you spend much time outdoors?",
+    "Is there a park or natural area near where you live?",
+    "Did you spend a lot of time in nature as a child?",
+    "Do you prefer the mountains or the sea?"
+   ],
+   "cue": {
+    "q": "Describe a natural place you have visited.",
+    "say": [
+     "where it is",
+     "when you went there",
+     "what you did there",
+     "and explain how you felt about it"
+    ]
+   },
+   "p3": [
+    "Why is it important for children to spend time in nature?",
+    "Should some natural areas be closed to tourists?",
+    "What can be done to protect wildlife?"
+   ]
+  },
+  {
+   "t": "Clothes and fashion",
+   "p1": [
+    "What kind of clothes do you usually wear?",
+    "Do you care about fashion?",
+    "Do you have to wear a uniform at work or school?",
+    "Where do you usually buy clothes?"
+   ],
+   "cue": {
+    "q": "Describe an item of clothing you like to wear.",
+    "say": [
+     "what it is",
+     "where you got it",
+     "when you wear it",
+     "and explain why you like it"
+    ]
+   },
+   "p3": [
+    "Why do young people follow fashion trends?",
+    "What are the environmental problems of cheap fashion?",
+    "Should schools have uniforms?"
+   ]
+  },
+  {
+   "t": "Childhood",
+   "p1": [
+    "Where did you grow up?",
+    "What games did you play as a child?",
+    "What was your favourite subject at primary school?",
+    "Do you think childhood is different today?"
+   ],
+   "cue": {
+    "q": "Describe a happy memory from your childhood.",
+    "say": [
+     "what happened",
+     "where you were",
+     "who was with you",
+     "and explain why it is a happy memory"
+    ]
+   },
+   "p3": [
+    "Is it harder to be a child today than in the past?",
+    "How much freedom should children have?",
+    "What is the most important thing parents can teach their children?"
+   ]
+  },
+  {
+   "t": "The future",
+   "p1": [
+    "What are your plans for next year?",
+    "Do you like making plans or do you prefer to be spontaneous?",
+    "Where would you like to live in the future?",
+    "What job would you like to do in ten years?"
+   ],
+   "cue": {
+    "q": "Describe a goal you would like to achieve in the future.",
+    "say": [
+     "what the goal is",
+     "why you want to achieve it",
+     "what you need to do",
+     "and explain how you will feel when you achieve it"
+    ]
+   },
+   "p3": [
+    "Is it important to have long-term goals?",
+    "How will work change in the next twenty years?",
+    "Are young people today optimistic about the future?"
+   ]
+  }
+ ],
+ "cam": [
+  {
+   "id": "c-learn",
+   "level": "B2",
+   "t": "Learning",
+   "p1": [
+    "Where are you from?",
+    "What do you enjoy studying?",
+    "How do you prefer to learn new things?"
+   ],
+   "pics": {
+    "a": "sp-c-learn-a",
+    "b": "sp-c-learn-b",
+    "q": "Here are two photographs of people learning in different ways. Compare the photographs, and say what the people might find enjoyable about learning in these ways.",
+    "follow": "Which way of learning would you prefer? Why?"
+   },
+   "collab": {
+    "q": "Why might people want to learn something new as adults?",
+    "prompts": [
+     "to get a better job",
+     "to meet new people",
+     "to keep their mind active",
+     "to travel more easily",
+     "for fun"
+    ],
+    "decide": "Now decide which reason is the most important."
+   },
+   "p4": [
+    "Is it better to learn alone or in a group?",
+    "Should employers pay for their staff to learn new skills?",
+    "Do you think people will study at university less in the future?"
+   ]
+  },
+  {
+   "id": "c-holiday",
+   "level": "B2",
+   "t": "Holidays",
+   "p1": [
+    "What do you usually do in the summer?",
+    "Do you prefer holidays in your own country or abroad?",
+    "Tell us about a place you would like to visit."
+   ],
+   "pics": {
+    "a": "sp-c-holiday-a",
+    "b": "sp-c-holiday-b",
+    "q": "Here are two photographs of people on holiday. Compare the photographs, and say why the people might have chosen these holidays.",
+    "follow": "Which holiday would you prefer? Why?"
+   },
+   "collab": {
+    "q": "What should a town do to attract more tourists?",
+    "prompts": [
+     "build a new hotel",
+     "organise a festival",
+     "improve public transport",
+     "advertise online",
+     "open a museum"
+    ],
+    "decide": "Now decide which two ideas would be most effective."
+   },
+   "p4": [
+    "Is tourism always good for a town?",
+    "Why do some people prefer not to travel?",
+    "How might holidays change in the future?"
+   ]
+  },
+  {
+   "id": "c-work",
+   "level": "B2",
+   "t": "Work",
+   "p1": [
+    "Do you work or study?",
+    "What would be your ideal job?",
+    "Do you prefer to plan your day or be flexible?"
+   ],
+   "pics": {
+    "a": "sp-c-work-a",
+    "b": "sp-c-work-b",
+    "q": "Here are two photographs of people working in different places. Compare the photographs, and say what might be difficult about working in these places.",
+    "follow": "Where would you prefer to work? Why?"
+   },
+   "collab": {
+    "q": "What makes a job satisfying?",
+    "prompts": [
+     "a good salary",
+     "friendly colleagues",
+     "flexible hours",
+     "the chance to learn",
+     "helping other people"
+    ],
+    "decide": "Now decide which factor is the most important for young people."
+   },
+   "p4": [
+    "Is it important to enjoy your job?",
+    "Should people be able to work from home if they want to?",
+    "Is it better to stay in one job or change jobs often?"
+   ]
+  },
+  {
+   "id": "c-city",
+   "level": "C1",
+   "t": "City and countryside",
+   "p1": [
+    "Where do you live at the moment?",
+    "What do you like about your area?",
+    "If you could change one thing about your town, what would it be?"
+   ],
+   "pics": {
+    "a": "sp-c-city-a",
+    "b": "sp-c-city-b",
+    "q": "Here are two photographs of people spending time in different environments. Compare the photographs, and say what the advantages of each environment might be and how the people might be feeling.",
+    "follow": "Where would you rather live? Why?"
+   },
+   "collab": {
+    "q": "How could life in cities be improved?",
+    "prompts": [
+     "more green spaces",
+     "fewer cars",
+     "cheaper housing",
+     "more cultural events",
+     "better safety"
+    ],
+    "decide": "Now decide which improvement would make the biggest difference."
+   },
+   "p4": [
+    "Why do young people tend to move to cities?",
+    "Can technology make rural life more attractive?",
+    "Should governments limit the growth of large cities?"
+   ]
+  },
+  {
+   "id": "c-tech",
+   "level": "C1",
+   "t": "Technology and communication",
+   "p1": [
+    "How do you usually keep in touch with friends?",
+    "How much time do you spend online each day?",
+    "Has technology made your life easier?"
+   ],
+   "pics": {
+    "a": "sp-c-tech-a",
+    "b": "sp-c-tech-b",
+    "q": "Here are two photographs of people communicating in different ways. Compare the photographs, and say what the people might gain from communicating in these ways and what problems they might have.",
+    "follow": "Which way of communicating do you find more satisfying? Why?"
+   },
+   "collab": {
+    "q": "How has technology changed everyday life?",
+    "prompts": [
+     "shopping",
+     "friendships",
+     "work",
+     "education",
+     "health"
+    ],
+    "decide": "Now decide in which area technology has had the most positive effect."
+   },
+   "p4": [
+    "Are people more or less sociable because of technology?",
+    "Should there be limits on how much personal data companies can collect?",
+    "Is it possible to be too dependent on technology?"
+   ]
+  },
+  {
+   "id": "c-health",
+   "level": "C1",
+   "t": "Health and lifestyle",
+   "p1": [
+    "What do you do to relax?",
+    "Do you think you have a healthy lifestyle?",
+    "How do you usually spend your evenings?"
+   ],
+   "pics": {
+    "a": "sp-c-health-a",
+    "b": "sp-c-health-b",
+    "q": "Here are two photographs of people keeping fit in different ways. Compare the photographs, and say why the people might have chosen these activities and how they might benefit from them.",
+    "follow": "Which activity would suit you better? Why?"
+   },
+   "collab": {
+    "q": "What could be done to encourage people to lead healthier lives?",
+    "prompts": [
+     "free gym membership",
+     "healthier school meals",
+     "cycling lanes",
+     "health education",
+     "shorter working hours"
+    ],
+    "decide": "Now decide which two measures would be most effective."
+   },
+   "p4": [
+    "Is it the government's responsibility to keep people healthy?",
+    "Why do people find it hard to change unhealthy habits?",
+    "Has modern life made people more stressed?"
+   ]
+  }
+ ]
+}

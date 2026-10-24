@@ -25,10 +25,12 @@ function renderStats(){
     <div class="bars">${fc.map((v,i)=>`<div class="bcol"><span class="small tnum">${v}</span><i style="height:${Math.max(3,v/fmax*100)}%"></i><span class="small muted">${dn[i]}</span></div>`).join("")}</div></div>
   <div class="card stack"><h3>Aktivitás az elmúlt 16 hétben</h3><div class="heat days">${heat}</div><div class="row small muted" style="justify-content:space-between"><span>16 hete</span><span>ma</span></div></div>
   ${milestonesCard()}
+  ${goalCard()}
   ${skillsCard()}
+  ${reportCard()}
   ${vsizeCard()}
   ${analysisCard()}
   </div>`;
-  bindAnalysis();if($("#vtGo"))$("#vtGo").onclick=startVT;window.scrollTo(0,0);
+  bindAnalysis();bindGoal(renderStats);if($("#repGo"))$("#repGo").onclick=renderReport;if($("#vtGo"))$("#vtGo").onclick=startVT;window.scrollTo(0,0);
 }
 

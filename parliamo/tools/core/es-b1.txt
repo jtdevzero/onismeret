@@ -1,0 +1,259 @@
+# B1 – spanyol alapszavak (szó|magyar)
+el medio ambiente|környezet
+la contaminación|szennyezés
+el clima|éghajlat
+la basura|szemét
+el reciclaje|újrahasznosítás
+la energía|energia
+la naturaleza|természet
+el animal|állat
+la planta|növény
+la sociedad|társadalom
+la cultura|kultúra
+la tradición|hagyomány
+la política|politika
+el gobierno|kormány
+la ley|törvény
+el derecho|jog
+la obligación|kötelesség
+la libertad|szabadság
+la paz|béke
+la guerra|háború
+la historia|történelem; történet
+la economía|gazdaság
+la empresa|cég, vállalat
+el negocio|üzlet, vállalkozás
+el paro|munkanélküliség
+el éxito|siker
+el fracaso|kudarc
+el objetivo|cél
+el proyecto|projekt
+la solución|megoldás
+la decisión|döntés
+la opinión|vélemény
+el punto de vista|nézőpont
+la ventaja|előny
+la desventaja|hátrány
+la posibilidad|lehetőség
+la oportunidad|alkalom, lehetőség
+el riesgo|kockázat
+el peligro|veszély
+la seguridad|biztonság
+el miedo|félelem
+la esperanza|remény
+el sueño|álom
+el recuerdo|emlék
+la experiencia|tapasztalat
+el conocimiento|tudás
+la habilidad|képesség
+la calidad|minőség
+la cantidad|mennyiség
+el resultado|eredmény
+el desarrollo|fejlődés
+el crecimiento|növekedés
+el cambio climático|éghajlatváltozás
+la mejora|javulás
+la investigación|kutatás
+la ciencia|tudomány
+la tecnología|technológia
+la herramienta|eszköz
+la red|hálózat
+las redes sociales|közösségi média
+el móvil|mobiltelefon
+la aplicación|alkalmazás
+el propósito|cél, szándék
+la relación|kapcsolat
+la confianza|bizalom
+el respeto|tisztelet
+los celos|féltékenység
+el sentimiento|érzés
+la emoción|érzelem
+el humor|hangulat; humor
+el estrés|stressz
+el aburrimiento|unalom
+el cansancio|fáradtság
+el carácter|jellem
+la personalidad|személyiség
+el comportamiento|viselkedés
+la costumbre|szokás
+el estilo de vida|életmód
+la dieta|étrend
+la alimentación|táplálkozás
+la actividad|tevékenység
+el tiempo libre|szabadidő
+la afición|hobbi
+el voluntariado|önkéntes munka
+la asociación|egyesület
+la comunidad|közösség
+la generación|nemzedék
+la juventud|ifjúság
+la infancia|gyermekkor
+el anciano|idős ember
+la jubilación|nyugdíjazás
+el alquiler|bérleti díj
+la hipoteca|jelzáloghitel
+la factura|számla
+el gasto|kiadás
+el ahorro|megtakarítás
+la deuda|adósság
+el impuesto|adó
+el sueldo mínimo|minimálbér
+la crisis|válság
+la protesta|tiltakozás
+la huelga|sztrájk
+el voto|szavazat
+las elecciones|választások
+el ciudadano|állampolgár
+el extranjero|külföldi; külföld
+la inmigración|bevándorlás
+el permiso|engedély
+el documento|irat
+el formulario|űrlap
+la firma|aláírás
+el currículum|önéletrajz
+la formación|képzés
+el título|diploma; cím
+la asignatura|tantárgy
+la conferencia|konferencia; előadás
+el tema|téma
+el argumento|érv
+la discusión|vita
+el debate|vita (nyilvános)
+la comparación|összehasonlítás
+el ejemplo|példa
+la regla|szabály
+la excepción|kivétel
+la condición|feltétel
+la situación|helyzet
+el caso|eset
+la causa|ok
+la consecuencia|következmény
+el efecto|hatás
+el esfuerzo|erőfeszítés
+la paciencia|türelem
+el valor|bátorság; érték
+el orgullo|büszkeség
+la vergüenza|szégyen
+la culpa|hiba, bűnösség
+la excusa|kifogás
+el consejo|tanács
+la ayuda|segítség
+el apoyo|támogatás
+enfrentarse|szembenézni
+resolver|megoldani
+mejorar|javítani, javulni
+empeorar|romlani
+aumentar|növekedni, növelni
+disminuir|csökkenni
+reducir|csökkenteni
+crecer|nőni
+desarrollar|fejleszteni
+crear|teremteni
+producir|termelni
+organizar|megszervezni
+gestionar|kezelni, intézni
+participar|részt venni
+contribuir|hozzájárulni
+compartir|megosztani
+proteger|védeni
+evitar|elkerülni
+arriesgar|kockáztatni
+permitir|megengedni
+impedir|megakadályozni
+convencer|meggyőzni
+discutir|vitatkozni, megvitatni
+criticar|bírálni
+quejarse|panaszkodni
+disculparse|bocsánatot kérni
+agradecer|megköszönni
+prometer|megígérni
+aceptar|elfogadni
+rechazar|visszautasítani
+admitir|beismerni
+negar|tagadni
+demostrar|bizonyítani
+comparar|összehasonlítani
+considerar|figyelembe venni
+darse cuenta|ráébredni
+preocuparse|aggódni
+enfadarse|mérgessé válni
+acostumbrarse|hozzászokni
+encargarse|gondoskodni valamiről
+mudarse|elköltözni
+matricularse|beiratkozni
+graduarse|diplomát szerezni
+despedir|elbocsátani
+contratar|alkalmazni
+ganar|keresni; nyerni
+invertir|befektetni
+prestar|kölcsönadni
+devolver|visszaadni
+arreglar|megjavítani
+romper|eltörni
+sustituir|helyettesíteni
+faltar|hiányozni
+bastar|elég lenni
+suceder|történni
+parecer|tűnni
+convertirse|válni valamivé
+conseguir|elérni, sikerül
+fracasar|kudarcot vallani
+actual|jelenlegi
+reciente|nemrégi
+anterior|előző
+siguiente|következő
+principal|fő
+público|nyilvános, köz-
+privado|magán
+social|társadalmi
+económico|gazdasági
+ambiental|környezeti
+político|politikai
+cultural|kulturális
+eficaz|hatékony
+útil|hasznos
+inútil|haszontalan
+grave|súlyos
+serio|komoly
+peligroso|veszélyes
+sano|egészséges
+complicado|bonyolult
+sencillo|egyszerű
+claro|világos
+evidente|nyilvánvaló
+probable|valószínű
+raro|furcsa; ritka
+común|gyakori, közös
+normal|normális
+extraño|furcsa
+sorprendente|meglepő
+decepcionado|csalódott
+satisfecho|elégedett
+orgulloso|büszke
+agradecido|hálás
+responsable|felelős
+honesto|becsületes
+generoso|nagylelkű
+egoísta|önző
+optimista|derűlátó
+pesimista|borúlátó
+independiente|független
+a pesar de|annak ellenére
+no obstante|mindazonáltal
+en cambio|ezzel szemben
+además|ezenkívül
+de hecho|valójában
+de todos modos|mindenesetre
+obviamente|nyilvánvalóan
+sobre todo|főleg
+al menos|legalább
+alrededor de|körülbelül
+apenas|alig
+aunque|bár
+para que|azért, hogy
+a menos que|hacsak nem
+gracias a|-nak köszönhetően
+a causa de|miatt
+en mi opinión|véleményem szerint
+en realidad|valójában
+de acuerdo|egyetértek; rendben

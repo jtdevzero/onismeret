@@ -102,7 +102,11 @@ function bindWebSettings(){
         if(l==="en"){files.push("data/writing-en.json","data/vocabtest-en.json","audio/vb-en.json","audio/pron-en.json","audio/acc-en.json","audio/dl-en.json","data/podcasts-en.json","data/pron-en.json","data/exam-en.json","data/accents-en.json","data/packs-en.json","data/offline-en.json");}
         const [pdl,pkl]=await Promise.all([`data/podcasts-${l}.json`,`data/packs-${l}.json`].map(u=>fetch(u).then(r=>r.ok?r.json():null).catch(()=>null)));
         (pdl?pdl.podcasts:[]).forEach(p=>files.push("audio/pod-"+p.id+".json","img/pod-"+p.id+".webp"));(pkl?pkl.packs:[]).forEach(p=>files.push(`audio/pk-${l}-${p.id}.json`));
-        if(l!=="en")vb.verbs.forEach(v=>files.push("audio/vb-"+(l==="es"?"es-":"")+v.inf+".json"));}
+        if(l!=="en")vb.verbs.forEach(v=>files.push("audio/vb-"+(l==="es"?"es-":"")+v.inf+".json"));
+        const [sel,mkl,cll,crl,spl]=await Promise.all(["serials","mock","colloc","core","speaking"].map(n=>fetch(`data/${n}-${l}.json`).then(r=>r.ok?r.json():null).catch(()=>null)));
+        (sel?sel.serials:[]).forEach(x=>files.push(`audio/ser-${l}-${x.id}.json`,`img/${x.img}.webp`));(mkl?mkl.mocks:[]).filter(m=>m.parts.some(p=>p.lines)).forEach(m=>files.push(`audio/mock-${l}-${m.id}.json`));
+        (cll?cll.groups:[]).forEach(g=>files.push(`audio/col-${l}-${g.id}.json`));(spl?spl.cam:[]).forEach(c=>files.push(`img/${c.pics.a}.webp`,`img/${c.pics.b}.webp`));
+        const on=(S.core||{})[l]||{};if(crl)files.push(...new Set(crl.levels.filter(L=>on[L.level]).flatMap(L=>L.words.map(w=>`audio/${w.b}.json`))));}
       let k=0;for(const f of files){await fetch(f).catch(()=>{});k++;m.textContent=`${k} / ${files.length}`;}
       m.textContent="Kész, az app net nélkül is működik.";}catch(err){m.textContent="A letöltés megszakadt. Próbáld újra, amikor van net.";}};
   $("#sExport").onclick=e=>{e.preventDefault();const out=JSON.parse(JSON.stringify(S));out.settings.pass="";

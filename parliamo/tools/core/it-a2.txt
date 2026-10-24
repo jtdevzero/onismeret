@@ -1,0 +1,271 @@
+# A2 – olasz alapszavak (szó|magyar)
+il viaggio|utazás
+la valigia|bőrönd
+l'albergo|szálloda
+la prenotazione|foglalás
+il passaporto|útlevél
+la frontiera|határ
+il volo|repülőjárat
+il binario|vágány
+l'orario|menetrend; nyitvatartás
+il ritardo|késés
+la fermata|megálló
+il traffico|forgalom
+il semaforo|közlekedési lámpa
+l'incrocio|kereszteződés
+il ponte|híd
+il parcheggio|parkoló
+la benzina|benzin
+la mappa|térkép
+il centro|központ
+la periferia|külváros
+il quartiere|városrész, negyed
+il museo|múzeum
+la chiesa|templom
+il castello|vár
+il teatro|színház
+il cinema|mozi
+il concerto|koncert
+la mostra|kiállítás
+il parco|park
+il giardino|kert
+il fiume|folyó
+il lago|tó
+la spiaggia|strand
+il bosco|erdő
+la campagna|vidék
+l'isola|sziget
+il cielo|ég
+la nuvola|felhő
+il vento|szél
+la neve|hó
+la temperatura|hőmérséklet
+la stagione|évszak
+la primavera|tavasz
+l'estate|nyár
+l'autunno|ősz
+l'inverno|tél
+il compleanno|születésnap
+il matrimonio|esküvő; házasság
+l'ospite|vendég
+il vicino|szomszéd
+il collega|kolléga
+il capo|főnök
+il cliente|ügyfél, vevő
+il cameriere|pincér
+l'insegnante|tanár
+lo studente|diák, egyetemista
+l'impiegato|alkalmazott, hivatalnok
+il commesso|eladó
+l'infermiere|ápoló
+l'avvocato|ügyvéd
+l'ingegnere|mérnök
+il cuoco|szakács
+la riunione|megbeszélés
+il contratto|szerződés
+lo stipendio|fizetés
+il colloquio|állásinterjú
+la carriera|karrier
+il corso|tanfolyam
+l'esame|vizsga
+la lezione|óra, lecke
+il compito|házi feladat
+l'università|egyetem
+la biblioteca|könyvtár
+il giornale|újság
+la rivista|folyóirat
+la notizia|hír
+la lettera|levél
+il messaggio|üzenet
+il computer|számítógép
+lo schermo|képernyő
+la password|jelszó
+il sito|weboldal
+la foto|fénykép
+la musica|zene
+la canzone|dal
+il film|film
+lo sport|sport
+la partita|meccs
+la squadra|csapat
+il calcio|labdarúgás
+la palestra|edzőterem
+la piscina|uszoda
+la corsa|futás
+il vestito|ruha; öltöny
+la camicia|ing
+i pantaloni|nadrág
+la gonna|szoknya
+la giacca|kabát, zakó
+le scarpe|cipő
+il cappello|kalap
+la borsa|táska
+la taglia|méret (ruha)
+il colore|szín
+la salute|egészség
+la malattia|betegség
+il dolore|fájdalom
+la febbre|láz
+il raffreddore|nátha
+la medicina|gyógyszer
+la ricetta|recept
+l'appuntamento|időpont, randevú
+il dentista|fogorvos
+il corpo|test
+il braccio|kar
+la gamba|láb
+la schiena|hát
+lo stomaco|gyomor
+il cuore|szív
+il dente|fog
+il capello|hajszál
+la faccia|arc
+la bocca|száj
+il naso|orr
+l'orecchio|fül
+prenotare|lefoglalni
+viaggiare|utazni
+visitare|meglátogatni
+noleggiare|bérelni
+perdere|elveszíteni; lekésni
+dimenticare|elfelejteni
+ricordare|emlékezni
+pensare|gondolni
+credere|hinni
+sperare|remélni
+decidere|eldönteni
+scegliere|választani
+provare|próbálni
+cambiare|változtatni, cserélni
+cominciare|kezdeni
+finire|befejezni
+continuare|folytatni
+aiutare|segíteni
+spiegare|elmagyarázni
+chiedere|kérdezni, kérni
+rispondere|válaszolni
+raccontare|elmesélni
+insegnare|tanítani
+imparare|megtanulni
+preparare|elkészíteni
+lavare|mosni
+pulire|takarítani
+mettere|tenni
+portare|vinni, hozni; viselni
+mandare|küldeni
+ricevere|kapni
+vendere|eladni
+spendere|költeni (pénzt)
+risparmiare|spórolni
+correre|futni
+camminare|sétálni
+nuotare|úszni
+ballare|táncolni
+cantare|énekelni
+suonare|játszani (hangszeren); csengetni
+riposare|pihenni
+svegliarsi|felébredni
+alzarsi|felkelni
+vestirsi|felöltözni
+lavarsi|megmosakodni
+sentirsi|érezni magát
+divertirsi|szórakozni
+annoiarsi|unatkozni
+sposarsi|összeházasodni
+incontrare|találkozni
+salutare|köszönni
+invitare|meghívni
+festeggiare|ünnepelni
+piovere|esni (eső)
+nevicare|havazni
+importante|fontos
+interessante|érdekes
+noioso|unalmas
+divertente|szórakoztató, vicces
+simpatico|szimpatikus
+antipatico|ellenszenves
+gentile|kedves, udvarias
+bravo|ügyes
+pigro|lusta
+timido|félénk
+tranquillo|nyugodt
+nervoso|ideges
+preoccupato|aggódó
+arrabbiato|mérges
+triste|szomorú
+sorpreso|meglepett
+pieno|tele
+vuoto|üres
+pulito|tiszta
+sporco|piszkos
+veloce|gyors
+lento|lassú
+vicino|közeli
+lontano|távoli
+libero|szabad
+occupato|foglalt
+aperto|nyitva
+chiuso|zárva
+pronto|kész
+sicuro|biztos; biztonságos
+possibile|lehetséges
+necessario|szükséges
+diverso|különböző
+uguale|egyforma
+speciale|különleges
+tipico|jellegzetes
+famoso|híres
+moderno|modern
+antico|ősi, régi
+già|már
+ancora|még
+presto|korán; hamar
+tardi|későn
+subito|azonnal
+poi|aztán
+prima|előtt, előbb
+dopo|után
+durante|alatt (idő)
+fino a|-ig
+da|-tól, óta
+mentre|miközben
+allora|akkor, hát
+quindi|tehát
+però|azonban
+forse|talán
+purtroppo|sajnos
+finalmente|végre
+di solito|általában
+qualche volta|néha
+insieme|együtt
+da solo|egyedül
+abbastanza|elég
+troppo|túl, túl sok
+niente|semmi
+nessuno|senki
+qualcosa|valami
+qualcuno|valaki
+ogni|minden (egyes)
+altro|más, másik
+lo sconto|kedvezmény
+la ricevuta|nyugta
+il resto|visszajáró
+la carta di credito|bankkártya
+il bancomat|bankautomata
+la posta|posta
+il pacco|csomag
+l'indirizzo|cím
+il problema|probléma
+l'idea|ötlet
+la domanda|kérdés
+la risposta|válasz
+l'errore|hiba
+la verità|igazság
+la differenza|különbség
+il motivo|ok
+il modo|mód
+la volta|alkalom
+la fine|vég
+l'inizio|kezdet
+il futuro|jövő
+il passato|múlt

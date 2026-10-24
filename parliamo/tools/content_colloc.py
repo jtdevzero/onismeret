@@ -1,0 +1,298 @@
+"""Angol kollokációk (B2–C1): 12 csoport × 20 szókapcsolat, magyar jelentéssel, példamondattal és lyukas gyakorlóval.
+A gyakorló kérdése a példamondat, a kulcsszó helyén ___.
+Futtatás: python3 parliamo/tools/content_colloc.py  →  data/colloc-en.json"""
+import json, os, re
+D = os.path.join(os.path.dirname(__file__), "..", "data")
+
+VERBS = ["make", "do", "take", "have", "get"]
+PREPS = ["on", "of", "in", "for", "to", "with", "about", "from", "at"]
+SPEAK = ["say", "tell", "speak", "talk"]
+
+# (id, cím, leírás, kulcskészlet vagy None, elemek)
+# kulcskészletes csoportnál: (kifejezés, magyar, példa, példa magyarul, kulcs)
+# saját opciós csoportnál: (kifejezés, magyar, példa, példa magyarul, kulcs, [3 rossz opció])
+G = [
+ ("make", "Make", "Make + főnév: döntés, hiba, erőfeszítés…", VERBS, [
+  ("make a decision", "döntést hoz", "We need to make a decision by Friday.", "Péntekig döntést kell hoznunk.", "make"),
+  ("make a mistake", "hibázik", "Everyone can make a mistake sometimes.", "Bárki hibázhat néha.", "make"),
+  ("make an effort", "erőfeszítést tesz", "Please make an effort to arrive on time.", "Kérlek, igyekezz időben érkezni.", "make"),
+  ("make progress", "halad, fejlődik", "Students who practise daily make progress quickly.", "Aki naponta gyakorol, gyorsan fejlődik.", "make"),
+  ("make money", "pénzt keres", "It's hard to make money from a hobby.", "Nehéz pénzt keresni egy hobbiból.", "make"),
+  ("make a complaint", "panaszt tesz", "I'd like to make a complaint about the service.", "Panaszt szeretnék tenni a kiszolgálás miatt.", "make"),
+  ("make an excuse", "kifogást keres", "Don't make an excuse; just tell me the truth.", "Ne keress kifogást, csak mondd el az igazat.", "make"),
+  ("make a suggestion", "javasol valamit", "Can I make a suggestion about the menu?", "Javasolhatok valamit a menüvel kapcsolatban?", "make"),
+  ("make a difference", "számít, változást hoz", "Small changes can make a difference.", "Apró változtatások is számíthatnak.", "make"),
+  ("make sense", "értelme van", "His explanation didn't make sense to me.", "A magyarázatának nem volt értelme számomra.", "make"),
+  ("make friends", "barátokat szerez", "It's easy to make friends at university.", "Az egyetemen könnyű barátokat szerezni.", "make"),
+  ("make a profit", "nyereséget termel", "The shop started to make a profit in its second year.", "A bolt a második évben kezdett nyereséget termelni.", "make"),
+  ("make room", "helyet csinál", "Could you make room for one more person?", "Tudnál helyet csinálni még egy embernek?", "make"),
+  ("make an appointment", "időpontot kér", "I need to make an appointment with the dentist.", "Időpontot kell kérnem a fogorvoshoz.", "make"),
+  ("make a phone call", "telefonál", "Excuse me, I have to make a phone call.", "Elnézést, telefonálnom kell.", "make"),
+  ("make a choice", "választ", "You'll have to make a choice between the two jobs.", "Választanod kell a két állás között.", "make"),
+  ("make a living", "megélhetést teremt", "She tries to make a living as a painter.", "Festőként próbál megélni.", "make"),
+  ("make a noise", "zajt csap", "Try not to make a noise when you come in.", "Próbálj nem zajongani, amikor bejössz.", "make"),
+  ("make plans", "terveket sző", "Let's make plans for the summer.", "Tervezzük meg a nyarat.", "make"),
+  ("make an offer", "ajánlatot tesz", "They decided to make an offer on the house.", "Úgy döntöttek, ajánlatot tesznek a házra.", "make")]),
+ ("do", "Do", "Do + főnév: házi feladat, kutatás, szívesség…", VERBS, [
+  ("do homework", "házi feladatot ír", "I always do homework straight after school.", "Mindig rögtön iskola után megírom a házit.", "do"),
+  ("do business", "üzletel", "It's a pleasure to do business with you.", "Öröm önnel üzletelni.", "do"),
+  ("do research", "kutat", "Scientists do research to test new ideas.", "A tudósok kutatnak, hogy új ötleteket teszteljenek.", "do"),
+  ("do the washing-up", "elmosogat", "Whose turn is it to do the washing-up?", "Ki a soros a mosogatásban?", "do"),
+  ("do someone a favour", "szívességet tesz", "Could you do me a favour and post this letter?", "Megtennél egy szívességet, és feladnád ezt a levelet?", "do"),
+  ("do harm", "kárt okoz", "A little chocolate won't do any harm.", "Egy kis csokoládé nem árt.", "do"),
+  ("do your best", "mindent megtesz", "Just do your best in the exam.", "Csak tedd meg a tőled telhetőt a vizsgán.", "do"),
+  ("do damage", "kárt tesz", "The storm will do damage to the crops.", "A vihar kárt tesz majd a termésben.", "do"),
+  ("do exercise", "edz, testmozgást végez", "Doctors advise us to do exercise every day.", "Az orvosok azt tanácsolják, hogy naponta mozogjunk.", "do"),
+  ("do the shopping", "bevásárol", "I usually do the shopping on Saturdays.", "Általában szombaton vásárolok be.", "do"),
+  ("do a course", "tanfolyamot végez", "She wants to do a course in photography.", "Fotós tanfolyamot szeretne elvégezni.", "do"),
+  ("do well", "jól teljesít", "I hope you do well in your interview.", "Remélem, jól sikerül az interjúd.", "do"),
+  ("do a good job", "jó munkát végez", "The builders always do a good job.", "Az építők mindig jó munkát végeznek.", "do"),
+  ("do the cooking", "főz", "My partner and I take turns to do the cooking.", "A párommal felváltva főzünk.", "do"),
+  ("do overtime", "túlórázik", "Nurses often have to do overtime.", "Az ápolóknak gyakran túlórázniuk kell.", "do"),
+  ("do someone good", "jót tesz valakinek", "A holiday will do you good.", "Jót fog tenni neked egy nyaralás.", "do"),
+  ("do the dishes", "elmosogat", "If you cook, I'll do the dishes.", "Ha te főzöl, én mosogatok.", "do"),
+  ("do an experiment", "kísérletet végez", "We had to do an experiment in the chemistry lab.", "Kísérletet kellett végeznünk a kémialaborban.", "do"),
+  ("do the paperwork", "elintézi a papírmunkát", "I hate having to do the paperwork.", "Utálom, hogy nekem kell intéznem a papírmunkát.", "do"),
+  ("do the ironing", "vasal", "I usually do the ironing on Sundays.", "Általában vasárnap vasalok.", "do")]),
+ ("take", "Take", "Take + főnév: szünet, kockázat, részvétel…", VERBS, [
+  ("take a break", "szünetet tart", "Let's take a break and get some coffee.", "Tartsunk szünetet, és igyunk egy kávét.", "take"),
+  ("take a photo", "fényképet készít", "Could you take a photo of us?", "Lefényképeznél minket?", "take"),
+  ("take part", "részt vesz", "Over a thousand runners will take part in the race.", "Több mint ezer futó vesz részt a versenyen.", "take"),
+  ("take place", "megtörténik, sor kerül rá", "The wedding will take place in June.", "Az esküvőre júniusban kerül sor.", "take"),
+  ("take a risk", "kockáztat", "Sometimes you have to take a risk to succeed.", "Néha kockáztatni kell a sikerhez.", "take"),
+  ("take advantage of", "kihasznál", "You should take advantage of the good weather.", "Ki kellene használnod a jó időt.", "take"),
+  ("take care", "vigyáz", "Take care when you cross the road.", "Vigyázz, amikor átkelsz az úton.", "Take"),
+  ("take notes", "jegyzetel", "Remember to take notes during the lecture.", "Ne felejts el jegyzetelni az előadáson.", "take"),
+  ("take responsibility", "felelősséget vállal", "Managers must take responsibility for their decisions.", "A vezetőknek felelősséget kell vállalniuk a döntéseikért.", "take"),
+  ("take an exam", "vizsgát tesz", "I'm going to take an exam in June.", "Júniusban vizsgázom.", "take"),
+  ("take a seat", "helyet foglal", "Please take a seat; the doctor will see you soon.", "Kérem, foglaljon helyet, a doktor hamarosan fogadja.", "take"),
+  ("take time", "időbe telik", "Learning a language will take time.", "Egy nyelv megtanulása időbe telik.", "take"),
+  ("take action", "lépéseket tesz", "The government must take action now.", "A kormánynak most kell lépnie.", "take"),
+  ("take a look", "megnéz, ránéz", "Can you take a look at my essay?", "Ránéznél az esszémre?", "take"),
+  ("take medicine", "gyógyszert szed", "Don't forget to take medicine after meals.", "Ne felejtsd el étkezés után bevenni a gyógyszert.", "take"),
+  ("take a shower", "lezuhanyozik", "I usually take a shower in the morning.", "Általában reggel zuhanyozom.", "take"),
+  ("take turns", "felváltva csinál", "The children take turns on the swing.", "A gyerekek felváltva hintáznak.", "take"),
+  ("take offence", "megsértődik", "Please don't take offence; it was only a joke.", "Kérlek, ne sértődj meg, csak vicc volt.", "take"),
+  ("take into account", "figyelembe vesz", "We must take into account the cost of travel.", "Figyelembe kell vennünk az utazás költségét.", "take"),
+  ("take the lead", "átveszi a vezetést", "Our team managed to take the lead in the second half.", "A csapatunknak a második félidőben sikerült átvennie a vezetést.", "take")]),
+ ("have", "Have", "Have + főnév: pillantás, próba, beszélgetés…", VERBS, [
+  ("have a look", "megnéz", "Can I have a look at your photos?", "Megnézhetem a fotóidat?", "have"),
+  ("have a go", "megpróbál", "Why don't you have a go at fixing it yourself?", "Miért nem próbálod meg magad megjavítani?", "have"),
+  ("have fun", "jól szórakozik", "I hope you have fun at the party.", "Remélem, jól érzed magad a bulin.", "have"),
+  ("have a word", "beszél valakivel pár szót", "Could I have a word with you in private?", "Válthatnék veled pár szót négyszemközt?", "have"),
+  ("have a rest", "pihen", "You look tired; go and have a rest.", "Fáradtnak tűnsz, menj, pihenj egy kicsit.", "have"),
+  ("have a party", "bulit tart", "We're going to have a party for her birthday.", "Bulit tartunk a születésnapjára.", "have"),
+  ("have breakfast", "reggelizik", "I never have breakfast before nine.", "Kilenc előtt sosem reggelizem.", "have"),
+  ("have a chat", "beszélget", "Let's have a chat over coffee.", "Beszélgessünk egy kávé mellett.", "have"),
+  ("have an argument", "veszekszik", "They often have an argument about money.", "Gyakran veszekednek a pénzen.", "have"),
+  ("have a good time", "jól érzi magát", "Did you have a good time in Rome?", "Jól érezted magad Rómában?", "have"),
+  ("have difficulty", "nehézsége van", "Many learners have difficulty with phrasal verbs.", "Sok tanulónak gondot okoznak a phrasal verbök.", "have"),
+  ("have an effect", "hatással van", "Lack of sleep can have an effect on your memory.", "Az alváshiány hatással lehet a memóriádra.", "have"),
+  ("have a point", "van benne valami", "You have a point — we should leave earlier.", "Van benne valami, korábban kellene indulnunk.", "have"),
+  ("have a headache", "fáj a feje", "I have a headache, so I'm going to bed.", "Fáj a fejem, ezért lefekszem.", "have"),
+  ("have second thoughts", "meggondolja magát, kételkedni kezd", "I'm starting to have second thoughts about the trip.", "Kezdek kételkedni az utazásban.", "have"),
+  ("have no idea", "fogalma sincs", "I have no idea where my keys are.", "Fogalmam sincs, hol a kulcsom.", "have"),
+  ("have a bath", "megfürdik", "I like to have a bath after a long day.", "Szeretek egy hosszú nap után megfürdeni.", "have"),
+  ("have a baby", "gyereke születik", "My sister is going to have a baby in May.", "A nővéremnek májusban születik gyereke.", "have"),
+  ("have a dream", "álmot lát, álma van", "I sometimes have a dream about flying.", "Néha azt álmodom, hogy repülök.", "have"),
+  ("have lunch", "ebédel", "Shall we have lunch together tomorrow?", "Ebédeljünk együtt holnap?", "have")]),
+ ("get", "Get", "Get + szó: házasság, eltévedés, készülődés…", VERBS, [
+  ("get married", "megházasodik", "They plan to get married next year.", "Jövőre tervezik, hogy összeházasodnak.", "get"),
+  ("get lost", "eltéved", "It's easy to get lost in the old town.", "Az óvárosban könnyű eltévedni.", "get"),
+  ("get ready", "elkészül, készülődik", "It takes me ten minutes to get ready.", "Tíz perc alatt elkészülök.", "get"),
+  ("get started", "nekikezd", "Let's get started — we have a lot to do.", "Kezdjünk neki, sok a dolgunk.", "get"),
+  ("get dressed", "felöltözik", "I get dressed after breakfast.", "Reggeli után öltözöm fel.", "get"),
+  ("get rid of", "megszabadul valamitől", "We need to get rid of these old boxes.", "Meg kell szabadulnunk ezektől a régi dobozoktól.", "get"),
+  ("get the impression", "az a benyomása támad", "I get the impression that he's unhappy.", "Az a benyomásom, hogy boldogtalan.", "get"),
+  ("get a job", "állást kap", "She hopes to get a job in marketing.", "Abban reménykedik, hogy marketinges állást kap.", "get"),
+  ("get in touch", "felveszi a kapcsolatot", "Please get in touch if you have any questions.", "Kérem, vegye fel velünk a kapcsolatot, ha kérdése van.", "get"),
+  ("get the hang of", "rájön a nyitjára", "Driving is hard at first, but you'll get the hang of it.", "A vezetés eleinte nehéz, de rá fogsz jönni a nyitjára.", "get"),
+  ("get on well", "jól kijön valakivel", "I get on well with my colleagues.", "Jól kijövök a kollégáimmal.", "get"),
+  ("get used to", "hozzászokik", "It took me months to get used to the cold.", "Hónapokba telt, mire hozzászoktam a hideghez.", "get"),
+  ("get permission", "engedélyt kap", "You need to get permission to film here.", "Engedélyt kell kérned, hogy itt forgass.", "get"),
+  ("get better", "javul, jobban lesz", "I hope you get better soon.", "Remélem, hamar jobban leszel.", "get"),
+  ("get angry", "mérges lesz", "There's no need to get angry about it.", "Nincs miért mérgesnek lenni emiatt.", "get"),
+  ("get home", "hazaér", "What time did you get home last night?", "Hánykor értél haza tegnap este?", "get"),
+  ("get a chance", "lehetőséget kap", "If you get a chance, visit the castle.", "Ha alkalmad nyílik rá, nézd meg a várat.", "get"),
+  ("get stuck", "elakad", "I always get stuck on the last question.", "Mindig elakadok az utolsó kérdésnél.", "get"),
+  ("get involved", "bekapcsolódik", "Parents are encouraged to get involved in school life.", "A szülőket arra biztatják, hogy kapcsolódjanak be az iskola életébe.", "get"),
+  ("get the message", "megérti az üzenetet", "I hope they get the message this time.", "Remélem, ezúttal megértik az üzenetet.", "get")]),
+ ("adjnoun", "Melléknév + főnév", "heavy rain, strong coffee, close friend…", None, [
+  ("heavy rain", "heves eső", "Heavy rain caused flooding in the valley.", "A heves eső áradást okozott a völgyben.", "Heavy", ["Strong", "Big", "Hard"]),
+  ("strong wind", "erős szél", "A strong wind blew the tent away.", "Az erős szél elfújta a sátrat.", "strong", ["heavy", "hard", "powerful"]),
+  ("heavy traffic", "nagy forgalom", "We were delayed by heavy traffic.", "A nagy forgalom miatt késtünk.", "heavy", ["strong", "big", "thick"]),
+  ("strong coffee", "erős kávé", "I need a cup of strong coffee.", "Egy csésze erős kávéra van szükségem.", "strong", ["heavy", "hard", "thick"]),
+  ("high temperature", "magas láz, hőmérséklet", "The child has a high temperature.", "A gyereknek magas láza van.", "high", ["tall", "big", "strong"]),
+  ("deep sleep", "mély alvás", "He fell into a deep sleep.", "Mély álomba merült.", "deep", ["heavy", "strong", "low"]),
+  ("bitter disappointment", "keserű csalódás", "Losing the final was a bitter disappointment.", "A döntő elvesztése keserű csalódás volt.", "bitter", ["sour", "hard", "sharp"]),
+  ("close friend", "közeli barát", "She's a close friend of mine.", "Közeli barátom.", "close", ["near", "tight", "deep"]),
+  ("serious injury", "súlyos sérülés", "He escaped without serious injury.", "Súlyos sérülés nélkül megúszta.", "serious", ["heavy", "hard", "grave"]),
+  ("great success", "nagy siker", "The concert was a great success.", "A koncert nagy siker volt.", "great", ["high", "strong", "large"]),
+  ("heavy smoker", "erős dohányos", "My grandfather was a heavy smoker.", "A nagyapám erős dohányos volt.", "heavy", ["strong", "hard", "big"]),
+  ("strong accent", "erős akcentus", "He speaks English with a strong accent.", "Erős akcentussal beszél angolul.", "strong", ["heavy", "thick", "hard"]),
+  ("high price", "magas ár", "We paid a high price for the tickets.", "Magas árat fizettünk a jegyekért.", "high", ["expensive", "tall", "big"]),
+  ("low income", "alacsony jövedelem", "Families on a low income receive extra support.", "Az alacsony jövedelmű családok extra támogatást kapnak.", "low", ["small", "short", "little"]),
+  ("broad smile", "széles mosoly", "She greeted us with a broad smile.", "Széles mosollyal üdvözölt minket.", "broad", ["large", "long", "fat"]),
+  ("sharp increase", "meredek emelkedés", "There has been a sharp increase in prices.", "Meredeken emelkedtek az árak.", "sharp", ["strong", "steep", "heavy"]),
+  ("narrow escape", "hajszálon múló megmenekülés", "We had a narrow escape when the tree fell.", "Hajszálon múlt, hogy megmenekültünk, amikor a fa kidőlt.", "narrow", ["thin", "small", "close"]),
+  ("rough idea", "hozzávetőleges elképzelés", "Can you give me a rough idea of the cost?", "Meg tudod mondani nagyjából, mennyibe kerül?", "rough", ["hard", "raw", "near"]),
+  ("fast food", "gyorsétel", "Too much fast food is bad for you.", "A túl sok gyorsétel egészségtelen.", "fast", ["quick", "rapid", "speedy"]),
+  ("light meal", "könnyű étkezés", "I'd like a light meal before the flight.", "Egy könnyű étkezést szeretnék a repülés előtt.", "light", ["easy", "small", "thin"])]),
+ ("advadj", "Határozószó + melléknév", "highly unlikely, deeply concerned…", None, [
+  ("highly unlikely", "nagyon valószínűtlen", "It is highly unlikely that it will snow.", "Nagyon valószínűtlen, hogy esni fog a hó.", "highly", ["deeply", "strongly", "greatly"]),
+  ("deeply concerned", "mélységesen aggódó", "We are deeply concerned about the situation.", "Mélységesen aggódunk a helyzet miatt.", "deeply", ["highly", "strongly", "bitterly"]),
+  ("bitterly disappointed", "keservesen csalódott", "The fans were bitterly disappointed.", "A szurkolók keservesen csalódtak.", "bitterly", ["highly", "fully", "strongly"]),
+  ("fully aware", "teljesen tisztában van", "I am fully aware of the risks.", "Teljesen tisztában vagyok a kockázatokkal.", "fully", ["highly", "deeply", "greatly"]),
+  ("utterly ridiculous", "teljesen nevetséges", "The idea is utterly ridiculous.", "Az ötlet teljesen nevetséges.", "utterly", ["highly", "deeply", "very much"]),
+  ("perfectly normal", "teljesen normális", "It's perfectly normal to feel nervous.", "Teljesen normális, hogy izgulsz.", "perfectly", ["highly", "deeply", "strongly"]),
+  ("seriously injured", "súlyosan megsérült", "Two people were seriously injured in the crash.", "Két ember súlyosan megsérült a balesetben.", "seriously", ["heavily", "strongly", "deeply"]),
+  ("painfully slow", "fájdalmasan lassú", "The internet connection was painfully slow.", "Az internetkapcsolat fájdalmasan lassú volt.", "painfully", ["highly", "deeply", "bitterly"]),
+  ("widely available", "széles körben elérhető", "The vaccine is now widely available.", "Az oltás már széles körben elérhető.", "widely", ["highly", "broadly", "greatly"]),
+  ("highly recommended", "melegen ajánlott", "This restaurant comes highly recommended.", "Ezt az éttermet melegen ajánlják.", "highly", ["deeply", "strongly", "widely"]),
+  ("deeply grateful", "mélységesen hálás", "I am deeply grateful for your help.", "Mélységesen hálás vagyok a segítségedért.", "deeply", ["highly", "strongly", "greatly"]),
+  ("entirely possible", "teljesen lehetséges", "It's entirely possible that he forgot.", "Teljesen lehetséges, hogy elfelejtette.", "entirely", ["highly", "deeply", "strongly"]),
+  ("totally unacceptable", "teljesen elfogadhatatlan", "This behaviour is totally unacceptable.", "Ez a viselkedés teljesen elfogadhatatlan.", "totally", ["highly", "deeply", "strongly"]),
+  ("absolutely delicious", "isteni finom", "The cake was absolutely delicious.", "A torta isteni finom volt.", "absolutely", ["very", "highly", "deeply"]),
+  ("slightly different", "kicsit más", "My version is slightly different from yours.", "Az én változatom kicsit más, mint a tiéd.", "slightly", ["lightly", "highly", "deeply"]),
+  ("readily available", "könnyen hozzáférhető", "Information is readily available online.", "Az információ könnyen hozzáférhető az interneten.", "readily", ["highly", "deeply", "easy"]),
+  ("vastly improved", "jelentősen javult", "The service has vastly improved.", "A szolgáltatás jelentősen javult.", "vastly", ["highly", "deeply", "widely"]),
+  ("strongly opposed", "határozottan ellenez", "Local residents are strongly opposed to the plan.", "A helyi lakosok határozottan ellenzik a tervet.", "strongly", ["highly", "deeply", "heavily"]),
+  ("happily married", "boldog házasságban él", "They have been happily married for thirty years.", "Harminc éve élnek boldog házasságban.", "happily", ["highly", "deeply", "fully"]),
+  ("fiercely competitive", "kiélezetten versengő", "The market is fiercely competitive.", "A piac kiélezetten versengő.", "fiercely", ["highly", "deeply", "bitterly"])]),
+ ("verbprep", "Ige + elöljárószó", "depend on, consist of, insist on…", PREPS, [
+  ("depend on", "függ valamitől", "Our plans depend on the weather.", "A terveink az időjárástól függenek.", "on"),
+  ("consist of", "áll valamiből", "The team consists of five people.", "A csapat öt emberből áll.", "of"),
+  ("insist on", "ragaszkodik valamihez", "She insisted on paying for dinner.", "Ragaszkodott hozzá, hogy ő fizesse a vacsorát.", "on"),
+  ("rely on", "számít valakire", "You can always rely on me.", "Mindig számíthatsz rám.", "on"),
+  ("apologise for", "bocsánatot kér valamiért", "He apologised for being late.", "Bocsánatot kért a késésért.", "for"),
+  ("belong to", "valakié", "This bag belongs to my sister.", "Ez a táska a nővéremé.", "to"),
+  ("concentrate on", "összpontosít valamire", "I can't concentrate on my work.", "Nem tudok a munkámra koncentrálni.", "on"),
+  ("succeed in", "sikerül neki", "She succeeded in passing the exam.", "Sikerült letennie a vizsgát.", "in"),
+  ("complain about", "panaszkodik valamire", "Guests complained about the noise.", "A vendégek panaszkodtak a zajra.", "about"),
+  ("approve of", "helyesel", "My parents don't approve of my new hairstyle.", "A szüleim nem helyeslik az új frizurámat.", "of"),
+  ("suffer from", "szenved valamiben", "Many people suffer from hay fever.", "Sokan szenvednek szénanáthában.", "from"),
+  ("accuse of", "vádol valamivel", "They accused him of lying.", "Hazugsággal vádolták.", "of"),
+  ("believe in", "hisz valamiben", "Do you believe in ghosts?", "Hiszel a szellemekben?", "in"),
+  ("cope with", "megbirkózik valamivel", "How do you cope with stress?", "Hogyan birkózol meg a stresszel?", "with"),
+  ("look forward to", "alig várja", "I look forward to hearing from you.", "Várom válaszát.", "to"),
+  ("focus on", "összpontosít", "Let's focus on the main problem.", "Összpontosítsunk a fő problémára.", "on"),
+  ("refer to", "utal valamire", "Which document are you referring to?", "Melyik dokumentumra utalsz?", "to"),
+  ("object to", "kifogásol", "Many residents object to the new road.", "Sok lakos kifogásolja az új utat.", "to"),
+  ("result in", "eredményez", "The mistake resulted in a huge loss.", "A hiba hatalmas veszteséget eredményezett.", "in"),
+  ("deal with", "foglalkozik valamivel, kezel", "I'll deal with the problem tomorrow.", "Holnap foglalkozom a problémával.", "with")]),
+ ("adjprep", "Melléknév + elöljárószó", "afraid of, interested in, good at…", PREPS, [
+  ("afraid of", "fél valamitől", "My son is afraid of the dark.", "A fiam fél a sötétben.", "of"),
+  ("interested in", "érdeklődik valami iránt", "Are you interested in history?", "Érdekel a történelem?", "in"),
+  ("good at", "jó valamiben", "She's very good at maths.", "Nagyon jó matekból.", "at"),
+  ("responsible for", "felelős valamiért", "Who is responsible for this mess?", "Ki felelős ezért a rendetlenségért?", "for"),
+  ("proud of", "büszke valamire", "We're very proud of you.", "Nagyon büszkék vagyunk rád.", "of"),
+  ("keen on", "lelkesedik valamiért", "I'm not very keen on horror films.", "Nem vagyok oda a horrorfilmekért.", "on"),
+  ("aware of", "tudatában van", "Are you aware of the new rules?", "Tudsz az új szabályokról?", "of"),
+  ("capable of", "képes valamire", "He is capable of great things.", "Nagy dolgokra képes.", "of"),
+  ("similar to", "hasonló valamihez", "Your bag is similar to mine.", "A táskád hasonlít az enyémre.", "to"),
+  ("different from", "különbözik valamitől", "City life is very different from village life.", "A városi élet nagyon különbözik a falusitól.", "from"),
+  ("famous for", "híres valamiről", "Hungary is famous for its thermal baths.", "Magyarország a gyógyfürdőiről híres.", "for"),
+  ("tired of", "elege van valamiből", "I'm tired of waiting.", "Elegem van a várakozásból.", "of"),
+  ("married to", "házas valakivel", "She is married to a doctor.", "Egy orvos a férje.", "to"),
+  ("fond of", "kedvel valamit", "I'm very fond of my grandmother.", "Nagyon szeretem a nagymamámat.", "of"),
+  ("jealous of", "féltékeny valakire", "He's jealous of his brother's success.", "Féltékeny a bátyja sikerére.", "of"),
+  ("satisfied with", "elégedett valamivel", "Are you satisfied with the result?", "Elégedett vagy az eredménnyel?", "with"),
+  ("involved in", "részt vesz valamiben", "She is involved in several projects.", "Több projektben is részt vesz.", "in"),
+  ("short of", "híján van valaminek", "We're a bit short of time.", "Kicsit szűkében vagyunk az időnek.", "of"),
+  ("worried about", "aggódik valami miatt", "I'm worried about my exam.", "Aggódom a vizsgám miatt.", "about"),
+  ("sensitive to", "érzékeny valamire", "My skin is sensitive to the sun.", "A bőröm érzékeny a napra.", "to")]),
+ ("work", "Munka és üzlet", "meet a deadline, run a business…", None, [
+  ("meet a deadline", "betartja a határidőt", "We worked all night to meet the deadline.", "Egész éjjel dolgoztunk, hogy tartsuk a határidőt.", "meet", ["reach", "make", "keep"]),
+  ("launch a product", "piacra dob egy terméket", "The company will launch a new product in spring.", "A cég tavasszal új terméket dob piacra.", "launch", ["start", "throw", "open"]),
+  ("hold a meeting", "megbeszélést tart", "We hold a meeting every Monday morning.", "Minden hétfő reggel megbeszélést tartunk.", "hold", ["make", "do", "keep"]),
+  ("reach an agreement", "megállapodásra jut", "After hours of talks, they managed to reach an agreement.", "Többórás tárgyalás után sikerült megállapodniuk.", "reach", ["get", "arrive", "meet"]),
+  ("raise prices", "emeli az árakat", "Many shops had to raise prices this year.", "Sok bolt idén kénytelen volt árat emelni.", "raise", ["rise", "lift", "grow"]),
+  ("cut costs", "csökkenti a költségeket", "The firm is trying to cut costs.", "A cég próbálja csökkenteni a költségeit.", "cut", ["break", "drop", "fall"]),
+  ("run a business", "vállalkozást vezet", "My aunt runs a business selling flowers.", "A nagynéném virágkereskedést vezet.", "runs", ["drives", "leads", "makes"]),
+  ("apply for a job", "állásra jelentkezik", "I'm going to apply for a job at the bank.", "Jelentkezni fogok egy állásra a bankban.", "apply", ["ask", "request", "demand"]),
+  ("earn a salary", "fizetést keres", "Nurses earn a modest salary.", "Az ápolók szerény fizetést keresnek.", "earn", ["win", "gain", "make up"]),
+  ("draw up a contract", "szerződést készít", "Our lawyer will draw up a contract.", "Az ügyvédünk elkészíti a szerződést.", "draw", ["write", "make", "put"]),
+  ("submit a report", "jelentést nyújt be", "Please submit a report by Friday.", "Kérem, péntekig nyújtsa be a jelentést.", "submit", ["give in to", "send off to", "hand on"]),
+  ("set a target", "célt tűz ki", "The manager set a target of 100 sales a month.", "A vezető havi 100 eladást tűzött ki célul.", "set", ["put", "make", "place"]),
+  ("attend a conference", "konferencián vesz részt", "She will attend a conference in Vienna.", "Konferencián vesz részt Bécsben.", "attend", ["assist", "visit", "join in"]),
+  ("close a deal", "megköt egy üzletet", "We finally managed to close the deal.", "Végül sikerült megkötnünk az üzletet.", "close", ["shut", "end", "finish"]),
+  ("hire staff", "munkaerőt vesz fel", "The hotel needs to hire staff for the summer.", "A szállodának munkaerőt kell felvennie nyárra.", "hire", ["rent", "lend", "borrow"]),
+  ("go bankrupt", "csődbe megy", "Many small shops go bankrupt every year.", "Sok kis bolt megy csődbe minden évben.", "go", ["get", "make", "become to"]),
+  ("give a presentation", "prezentációt tart", "I have to give a presentation tomorrow.", "Holnap prezentációt kell tartanom.", "give", ["hold", "do on", "say"]),
+  ("place an order", "rendelést lead", "I'd like to place an order for ten boxes.", "Tíz dobozra szeretnék rendelést leadni.", "place", ["put", "set", "lay"]),
+  ("handle complaints", "panaszokat kezel", "She handles complaints from customers.", "Ő kezeli az ügyfelek panaszait.", "handles", ["holds", "takes on", "touches"]),
+  ("negotiate a contract", "szerződést tárgyal", "The union will negotiate a new contract.", "A szakszervezet új szerződésről tárgyal.", "negotiate", ["discuss about", "argue", "bargain on"])]),
+ ("academic", "C1: írott és tudományos nyelv", "pose a threat, raise awareness, draw a conclusion…", None, [
+  ("pose a threat", "fenyegetést jelent", "Rising sea levels pose a threat to coastal cities.", "Az emelkedő tengerszint fenyegetést jelent a part menti városokra.", "pose", ["make", "put", "give"]),
+  ("raise awareness", "felhívja a figyelmet", "The campaign aims to raise awareness of mental health.", "A kampány célja, hogy felhívja a figyelmet a mentális egészségre.", "raise", ["rise", "lift", "grow"]),
+  ("draw a conclusion", "következtetést von le", "It is too early to draw a conclusion.", "Még túl korai következtetést levonni.", "draw", ["make out", "pull", "take up"]),
+  ("play a role", "szerepet játszik", "Diet plays a role in preventing disease.", "Az étrend szerepet játszik a betegségek megelőzésében.", "plays", ["makes", "does", "takes"]),
+  ("bear in mind", "szem előtt tart", "Bear in mind that prices may change.", "Tartsd szem előtt, hogy az árak változhatnak.", "Bear", ["Keep on", "Hold up", "Carry"]),
+  ("shed light on", "fényt derít valamire", "New evidence may shed light on the case.", "Új bizonyítékok fényt deríthetnek az ügyre.", "shed", ["throw on", "put", "make"]),
+  ("address an issue", "foglalkozik egy problémával", "The report fails to address the issue of cost.", "A jelentés nem foglalkozik a költségek kérdésével.", "address", ["speak", "direct", "attend"]),
+  ("conduct research", "kutatást végez", "The university will conduct research into the virus.", "Az egyetem kutatást végez a vírussal kapcsolatban.", "conduct", ["lead to", "drive", "make on"]),
+  ("reach a consensus", "konszenzusra jut", "The committee failed to reach a consensus.", "A bizottság nem jutott konszenzusra.", "reach", ["arrive", "get to", "achieve to"]),
+  ("gain insight", "betekintést nyer", "The study helps us gain insight into children's learning.", "A tanulmány segít betekintést nyerni a gyerekek tanulásába.", "gain", ["win", "earn", "take out"]),
+  ("meet the needs", "kielégíti az igényeket", "Schools must meet the needs of all pupils.", "Az iskoláknak minden tanuló igényeit ki kell elégíteniük.", "meet", ["fill", "reach", "fit"]),
+  ("face a challenge", "kihívással néz szembe", "Small businesses face a challenge from online retailers.", "A kisvállalkozások kihívással néznek szembe az online kereskedők miatt.", "face", ["front", "meet up", "see"]),
+  ("fulfil a requirement", "teljesít egy követelményt", "Applicants must fulfil every requirement.", "A jelentkezőknek minden követelményt teljesíteniük kell.", "fulfil", ["fill in", "complete up", "realise"]),
+  ("exert pressure", "nyomást gyakorol", "Lobby groups exert pressure on politicians.", "Az érdekcsoportok nyomást gyakorolnak a politikusokra.", "exert", ["do", "give", "make"]),
+  ("set a precedent", "precedenst teremt", "The ruling could set a precedent for future cases.", "Az ítélet precedenst teremthet a jövőbeli ügyekhez.", "set", ["make up", "put", "lay"]),
+  ("strike a balance", "egyensúlyt talál", "It is hard to strike a balance between work and family.", "Nehéz egyensúlyt találni a munka és a család között.", "strike", ["hit on", "make", "find out"]),
+  ("come to terms with", "megbékél valamivel", "It took him years to come to terms with the loss.", "Évekbe telt, mire megbékélt a veszteséggel.", "come", ["go", "get", "make"]),
+  ("run the risk", "megkockáztatja", "If you don't book now, you run the risk of missing out.", "Ha most nem foglalsz, megkockáztatod, hogy lemaradsz.", "run", ["take on", "make", "go"]),
+  ("lay the foundations", "lefekteti az alapokat", "These early years lay the foundations for later learning.", "Ezek a korai évek fektetik le a későbbi tanulás alapjait.", "lay", ["lie", "put on", "set up"]),
+  ("draw attention to", "felhívja a figyelmet valamire", "The article draws attention to the lack of housing.", "A cikk felhívja a figyelmet a lakáshiányra.", "draws", ["pulls", "makes", "gives"])]),
+ ("speak", "Say, tell, speak, talk", "tell the truth, speak a language, talk nonsense…", SPEAK, [
+  ("tell the truth", "igazat mond", "Promise me you'll tell the truth.", "Ígérd meg, hogy igazat mondasz.", "tell"),
+  ("tell a lie", "hazudik", "He was afraid to tell a lie to his mother.", "Félt hazudni az anyjának.", "tell"),
+  ("tell a story", "mesél egy történetet", "Grandpa loves to tell a story about the war.", "Nagyapa imád történeteket mesélni a háborúról.", "tell"),
+  ("tell a joke", "viccet mesél", "Can you tell a joke in English?", "Tudsz viccet mesélni angolul?", "tell"),
+  ("say goodbye", "elköszön", "I didn't have time to say goodbye.", "Nem volt időm elköszönni.", "say"),
+  ("say sorry", "bocsánatot kér", "It's never too late to say sorry.", "Soha nem késő bocsánatot kérni.", "say"),
+  ("say thank you", "megköszön", "Don't forget to say thank you.", "Ne felejts el köszönetet mondani.", "say"),
+  ("speak a language", "beszél egy nyelvet", "How many languages do you speak?", "Hány nyelven beszélsz?", "speak"),
+  ("speak your mind", "kimondja, amit gondol", "Don't be afraid to speak your mind.", "Ne félj kimondani, amit gondolsz.", "speak"),
+  ("talk nonsense", "hülyeségeket beszél", "Don't talk nonsense!", "Ne beszélj hülyeségeket!", "talk"),
+  ("tell the difference", "megkülönböztet", "I can't tell the difference between the twins.", "Nem tudom megkülönböztetni az ikreket.", "tell"),
+  ("tell the time", "megmondja, hány óra", "My son is learning to tell the time.", "A fiam tanulja leolvasni az órát.", "tell"),
+  ("speak up", "hangosabban beszél, megszólal", "Could you speak up a little? I can't hear you.", "Tudnál kicsit hangosabban beszélni? Nem hallak.", "speak"),
+  ("say no", "nemet mond", "It's hard to say no to my boss.", "Nehéz nemet mondani a főnökömnek.", "say"),
+  ("talk business", "üzletről beszél", "Let's eat first and talk business later.", "Előbb együnk, aztán beszéljünk az üzletről.", "talk"),
+  ("tell a secret", "elárul egy titkot", "Can I tell you a secret?", "Elárulhatok egy titkot?", "tell"),
+  ("speak in public", "nyilvánosan beszél", "Many people are afraid to speak in public.", "Sokan félnek nyilvánosan beszélni.", "speak"),
+  ("talk shop", "munkáról beszél (szabadidőben)", "Please don't talk shop at dinner.", "Kérlek, ne a munkáról beszéljetek vacsoránál.", "talk"),
+  ("speak volumes", "sokat elárul", "Actions speak volumes about a person.", "A tettek sokat elárulnak egy emberről.", "speak"),
+  ("talk sense", "értelmesen beszél", "At last someone is starting to talk sense.", "Végre valaki értelmesen kezd beszélni.", "talk")]),
+]
+
+
+def gap(ex, key):
+    m = re.search(r"\b" + re.escape(key) + r"\b", ex)
+    assert m, (ex, key)
+    return ex[:m.start()] + "___" + ex[m.end():]
+
+
+def main():
+    groups = []
+    for gid, title, desc, keyset, items in G:
+        assert len(items) == 20, (gid, len(items))
+        out = []
+        for i, it in enumerate(items):
+            phrase, hu, ex, exhu, key = it[:5]
+            if keyset:
+                low = key.lower()
+                assert low in keyset, (gid, key)
+                opts = [k.capitalize() if key[0].isupper() else k for k in keyset if k != low][:3]
+                o = [key] + opts
+            else:
+                o = [key] + it[5]
+            assert len(set(o)) == 4, (gid, o)
+            out.append({"id": f"{gid}-{i+1}", "it": phrase, "hu": hu, "ex": ex, "exhu": exhu, "q": gap(ex, key), "a": key, "o": o})
+        groups.append({"id": gid, "title": title, "desc": desc, "items": out})
+    json.dump({"groups": groups}, open(os.path.join(D, "colloc-en.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    print("kollokáció:", len(groups), "csoport,", sum(len(g["items"]) for g in groups), "szókapcsolat")
+
+
+if __name__ == "__main__":
+    main()

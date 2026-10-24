@@ -16,7 +16,7 @@ function renderHome(){
   <details class="g"><summary>További gyakorlás és tervezés</summary><div class="gb stack">
     ${missCount()?`<div class="card next"><div><h3>Gyakorolj a hibáidból</h3><p class="small muted">${missCount()} kifejezés vár újabb próbára.</p></div><button class="btn soft" id="hMiss">Hibakör</button></div>`:""}
     <div class="row"><button class="btn ghost" data-go="gyakorlas">Gyakorlók készségenként →</button><button class="btn ghost" data-go="stat">Részletes haladás →</button></div>
-    ${planCard()}${weekCard()}${chalCard()}
+    ${goalCard()}${planCard()}${weekCard()}${chalCard()}
   </div></details>
   <div class="home-secondary">
     <div class="card wotd"><div class="row" style="justify-content:space-between"><div><span class="label">${LG().wotd}</span><div class="word" ${LA()}>${esc(w.it)}</div><div>${esc(w.hu)}</div></div>${spkBtn(w.it)}</div></div>
@@ -38,7 +38,7 @@ function renderHome(){
   </div>`;
   $("#hRound").onclick=startDailyJourney;
   $("#hLesson").onclick=()=>{dailyActive=false;route="leckek";render();const li=L?LESSONS.indexOf(L):nl;if(li!==null)openLesson(li);};
-  bindPlan();bindWeek();
+  bindPlan();bindWeek();bindGoal(renderHome);
   if($("#hMiss"))$("#hMiss").onclick=()=>{dailyActive=false;startRound("miss");};
   if(IS_WEB)bindWebSettings();
   bindAISetup(view);
