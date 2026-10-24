@@ -4,7 +4,7 @@ const LANGS={
   en:{code:"EN",name:"Angol",nat:"English",adj:"angol",adv:"angolul",teacher:"angoltanár",tts:"en-GB",vbPron:[""],art:/^(to|the|a|an)\s/,
     ok:["Spot on!","Perfect!","Nice one!","Exactly!"],fin:["Brilliant!","Well done!","You made it!"],wotd:"Word of the day",
     hello:"Good morning! Kezdjük?",goalDone:"Brilliant! Megvan a mai cél.",goalLeft:n=>"Keep going! Még "+n+" XP a célig.",range:"A1–C1",
-    levels:["A1","A2","B1","B2","C1"],hero:"hero-en",drills:["read","miss","pod","pron","acc","exam","wcourse","build","ai","speak","story","conj","tenses","articles","preps","phrasal","cond","dict"],write:"Write here in English…",native:"egy angol anyanyelvű",
+    levels:["A1","A2","B1","B2","C1"],hero:"hero-en",drills:["mock","examiner","journal","serial","read","miss","pod","pron","acc","exam","wcourse","build","ai","speak","story","conj","tenses","articles","preps","phrasal","cond","dict"],write:"Write here in English…",native:"egy angol anyanyelvű",
     ask:"Mi a különbség a present perfect és a past simple között?",free:["Free chat","Emma, egy barátságos londoni angoltanár, aki kötetlenül beszélget a tanulóval"]},
   it:{code:"IT",name:"Olasz",nat:"Italiano",adj:"olasz",adv:"olaszul",teacher:"olasztanár",tts:"it-IT",vbPron:["io","tu","lui","noi","voi","loro"],art:/^(il|lo|la|l'|i|gli|le)\s?/,
     ok:["Esatto!","Giusto!","Perfetto!","Bravo!"],fin:["Fantastico!","Molto bene!","Ce l'hai fatta!"],wotd:"La parola del giorno",
@@ -21,7 +21,7 @@ const LANGS={
 const lang=()=>LANGS[S.settings.lang]?S.settings.lang:"en";
 const langOf=id=>id.startsWith("en-")?"en":id.startsWith("es-")?"es":"it";
 const LG=()=>LANGS[lang()];
-let XT={pods:[],pron:[],exam:null,acc:[],packs:[],off:{reads:[],dialogs:[]},writing:[],vt:null}, LESSONS=[], STORIES=[], VB=null, POOL=[], WORDS=[], TRACKS=null, SCEN=[], CDRILLS={};
+let XT={pods:[],pron:[],exam:null,acc:[],packs:[],off:{reads:[],dialogs:[]},writing:[],vt:null,gram:[],mock:[],ser:[]}, CORE=null, LESSONS=[], STORIES=[], VB=null, POOL=[], WORDS=[], TRACKS=null, SCEN=[], CDRILLS={};
 const AUDIO_IDX={};
 const vbKey=(i,f)=>LG().vbPron[i]?LG().vbPron[i]+" "+f:f;
 const vbBundle=v=>lang()==="en"?"vb-en":lang()==="es"?"vb-es-"+v.inf:"vb-"+v.inf;
@@ -31,8 +31,10 @@ async function loadCourse(){
   const [pack,st,vb,dr]=await Promise.all([get(`data/${l}.json`),get(`data/stories-${l}.json`).catch(()=>({stories:[]})),get(`data/verbs-${l}.json`).catch(()=>null),get(`data/drills-${l}.json`).catch(()=>({}))]);
   CDRILLS=dr||{};
   const opt=n=>get(`data/${n}-${l}.json`).catch(()=>null),en=n=>l==="en"?opt(n):Promise.resolve(null);
-  const [pods,prs,exam,packs,acc,off,wr,vt]=await Promise.all([opt("podcasts"),opt("pron"),opt("exam"),opt("packs"),en("accents"),en("offline"),en("writing"),en("vocabtest")]);
-  XT={pods:pods?pods.podcasts:[],pron:prs?prs.sets:[],exam:exam||null,acc:acc?acc.items:[],packs:packs?packs.packs:[],off:off||{reads:[],dialogs:[]},writing:wr?wr.modules:[],vt:vt||null};
+  const [pods,prs,exam,packs,acc,off,wr,vt,core,gram,mock,ser]=await Promise.all([opt("podcasts"),opt("pron"),opt("exam"),opt("packs"),en("accents"),en("offline"),en("writing"),en("vocabtest"),en("core"),en("grammar"),en("mock"),en("serials")]);
+  XT={pods:pods?pods.podcasts:[],pron:prs?prs.sets:[],exam:exam||null,acc:acc?acc.items:[],packs:packs?packs.packs:[],off:off||{reads:[],dialogs:[]},writing:wr?wr.modules:[],vt:vt||null,
+    gram:gram?gram.topics:[],mock:mock?mock.mocks:[],ser:ser?ser.serials:[]};
+  CORE=core;
   for(const k of Object.keys(AUDIO_IDX))delete AUDIO_IDX[k];
   TRACKS=pack.tracks||null;
   LESSONS=pack.units.map(u=>{
@@ -50,6 +52,9 @@ async function loadCourse(){
   XT.packs.forEach(pk=>pk.items.forEach(x=>{AUDIO_IDX[x.it]=AUDIO_IDX[x.it]||`pk-${l}-${pk.id}`;AUDIO_IDX[x.ex]=AUDIO_IDX[x.ex]||`pk-${l}-${pk.id}`;}));
   XT.off.dialogs.forEach(d=>d.turns.forEach(t=>AUDIO_IDX[t.p]=AUDIO_IDX[t.p]||"dl-en"));
   XT.pron.forEach(st=>[...st.pairs.flat(),...st.sentences].forEach(t=>AUDIO_IDX[t]=AUDIO_IDX[t]||"pron-"+l));
+  XT.ser.forEach(se=>se.chapters.forEach(ch=>ch.lines.forEach(x=>AUDIO_IDX[x.it]=AUDIO_IDX[x.it]||"ser-en-"+se.id)));
+  XT.mock.forEach(m=>m.parts.forEach(pt=>(pt.lines||[]).forEach(x=>AUDIO_IDX[x.it]=AUDIO_IDX[x.it]||"mock-en-"+m.id)));
+  if(CORE)CORE.levels.forEach(L=>L.words.forEach(w=>AUDIO_IDX[w.it]=AUDIO_IDX[w.it]||w.b));
   if(VB)VB.verbs.forEach(v=>Object.values(v.forms).forEach(fs=>fs.forEach((f,i)=>AUDIO_IDX[vbKey(i,f)]=vbBundle(v))));
   SCEN=l==="it"?SCENARIOS.map(x=>Object.assign({img:"sc-"+x.id,av:x.id==="libero"?"teacher":"sc-"+x.id},x))
     :LESSONS.filter(L=>L.role).map(L=>({id:L.id,t:L.t,d:L.role,role:`${L.role} (a lecke témája: ${L.t}). Te játszod az ${LANGS[l].adv} beszélő másik felet ebben a helyzetben.`,img:L.id,av:L.id}))
@@ -63,10 +68,10 @@ async function loadCourse(){
 function pruneState(){
   if(!POOL.length)return;
   const ids=new Set(POOL.map(c=>c.id)),l=lang();let dropped=false;
-  for(const k of Object.keys(S.cards))if((langOf(k)===l&&!ids.has(k)&&!k.includes("-own-"))||S.cards[k].s==null){delete S.cards[k];dropped=true;}
+  for(const k of Object.keys(S.cards))if((langOf(k)===l&&!ids.has(k)&&!k.includes("-own-")&&!k.includes("-core-"))||S.cards[k].s==null){delete S.cards[k];dropped=true;}
   for(const k of Object.keys(S.lessons))if(!/^(u\d+|en-[ubac]\d+|es-u\d+)$/.test(k)){delete S.lessons[k];dropped=true;}
-  for(const k of ["stories","miss","log","ai","rounds","ev","chal","own","hard","pods","exam","certs","plan"])if(!S[k])S[k]={};if(!Array.isArray(S.mlog))S.mlog=[];
-  for(const k of Object.keys(S.miss))if(langOf(k)===l&&!ids.has(k)&&!k.includes("-own-")){delete S.miss[k];dropped=true;}
+  for(const k of ["stories","miss","log","ai","rounds","ev","chal","own","hard","pods","exam","certs","plan","core","gram","mock","ser","sk"])if(!S[k])S[k]={};if(!Array.isArray(S.mlog))S.mlog=[];
+  for(const k of Object.keys(S.miss))if(langOf(k)===l&&!ids.has(k)&&!k.includes("-own-")&&!k.includes("-core-")){delete S.miss[k];dropped=true;}
   if(dropped)save();
 }
 

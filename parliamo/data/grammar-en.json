@@ -1,0 +1,2144 @@
+{
+ "topics": [
+  {
+   "id": "pres",
+   "title": "Present simple vagy present continuous?",
+   "level": "A2",
+   "intro": "Az angolban két jelen idő van. A present simple a rendszeres, általános dolgokra, a present continuous az éppen most zajló vagy ideiglenes dolgokra való. A magyar ezt nem különbözteti meg, ezért ez az egyik leggyakoribb hiba.",
+   "table": {
+    "head": [
+     "",
+     "Present simple",
+     "Present continuous"
+    ],
+    "rows": [
+     [
+      "Szerkezet",
+      "I work, she works",
+      "I am working, she is working"
+     ],
+     [
+      "Tagadás",
+      "I don't work, she doesn't work",
+      "I'm not working"
+     ],
+     [
+      "Kérdés",
+      "Do you work? Does she work?",
+      "Are you working?"
+     ],
+     [
+      "Mikor",
+      "rendszeres, igazság, menetrend",
+      "most, ideiglenes, megbeszélt jövő"
+     ],
+     [
+      "Jelzőszavak",
+      "always, usually, every day",
+      "now, at the moment, this week"
+     ]
+    ]
+   },
+   "points": [
+    "Rendszeres: I go to the gym on Mondays.",
+    "Általános igazság: Water boils at 100 degrees.",
+    "Most zajlik: I'm reading a great book at the moment.",
+    "Ideiglenes: She's staying with her parents this month.",
+    "Állapotigék (know, like, want, believe, understand) általában nem állnak -ing alakban: I know him. (nem: I'm knowing)"
+   ],
+   "mistakes": [
+    "I am work here. → I work here.",
+    "She work in a bank. → She works in a bank. (-s egyes szám 3. személyben!)",
+    "I'm understanding. → I understand."
+   ],
+   "drill": [
+    {
+     "q": "Listen! Somebody ___ at the door.",
+     "a": "is knocking",
+     "o": [
+      "is knocking",
+      "knocks",
+      "knock"
+     ],
+     "why": "Most történik: present continuous."
+    },
+    {
+     "q": "She ___ to work by bus every day.",
+     "a": "goes",
+     "o": [
+      "goes",
+      "is going",
+      "go"
+     ],
+     "why": "Rendszeres cselekvés, egyes szám 3. személy: goes."
+    },
+    {
+     "q": "I ___ what you mean.",
+     "a": "understand",
+     "o": [
+      "understand",
+      "am understanding",
+      "understands"
+     ],
+     "why": "Az understand állapotige, nem áll -ing alakban."
+    },
+    {
+     "q": "We ___ in a hotel until our flat is ready.",
+     "a": "are staying",
+     "o": [
+      "are staying",
+      "stay",
+      "stays"
+     ],
+     "why": "Ideiglenes helyzet: present continuous."
+    },
+    {
+     "q": "___ you usually have breakfast at home?",
+     "a": "Do",
+     "o": [
+      "Do",
+      "Are",
+      "Does"
+     ],
+     "why": "Present simple kérdés: Do you…?"
+    }
+   ]
+  },
+  {
+   "id": "past",
+   "title": "Past simple és past continuous",
+   "level": "B1",
+   "intro": "A past simple a lezárt múltbeli eseményekre, a past continuous a múltban épp folyamatban lévő háttérre való. Történetmesélésnél a kettő együtt jár: a háttér folyamatos, a közbejövő esemény egyszerű.",
+   "table": {
+    "head": [
+     "",
+     "Past simple",
+     "Past continuous"
+    ],
+    "rows": [
+     [
+      "Szerkezet",
+      "I worked, I went",
+      "I was working, they were working"
+     ],
+     [
+      "Tagadás",
+      "I didn't work",
+      "I wasn't working"
+     ],
+     [
+      "Kérdés",
+      "Did you work?",
+      "Were you working?"
+     ],
+     [
+      "Mikor",
+      "lezárt esemény, egymás utáni lépések",
+      "folyamatban lévő háttér egy adott pillanatban"
+     ]
+    ]
+   },
+   "points": [
+    "Egymás utáni események: I got up, had a shower and left.",
+    "Háttér + esemény: I was cooking when the phone rang.",
+    "Két párhuzamos háttér: While I was working, he was watching TV.",
+    "Did után alapalak: Did you see? (nem: Did you saw?)"
+   ],
+   "mistakes": [
+    "Did you went? → Did you go?",
+    "I was go → I went / I was going",
+    "When I was arriving… → When I arrived… (rövid esemény)"
+   ],
+   "drill": [
+    {
+     "q": "I ___ TV when you called.",
+     "a": "was watching",
+     "o": [
+      "was watching",
+      "watched",
+      "watch"
+     ],
+     "why": "Háttér a hívás pillanatában: past continuous."
+    },
+    {
+     "q": "Yesterday I ___ my keys.",
+     "a": "lost",
+     "o": [
+      "lost",
+      "was losing",
+      "lose"
+     ],
+     "why": "Lezárt esemény: past simple."
+    },
+    {
+     "q": "Did you ___ the news?",
+     "a": "hear",
+     "o": [
+      "hear",
+      "heard",
+      "hearing"
+     ],
+     "why": "A did után alapalak."
+    },
+    {
+     "q": "While she ___, it started to rain.",
+     "a": "was walking",
+     "o": [
+      "was walking",
+      "walked",
+      "walks"
+     ],
+     "why": "A while után folyamatos háttér."
+    },
+    {
+     "q": "When the film ended, we ___ home.",
+     "a": "went",
+     "o": [
+      "went",
+      "were going",
+      "go"
+     ],
+     "why": "Egymás utáni események: past simple."
+    }
+   ]
+  },
+  {
+   "id": "perf",
+   "title": "Present perfect vagy past simple?",
+   "level": "B1",
+   "intro": "A present perfect (have + 3. alak) a múltat a jelenhez köti: tapasztalat, eredmény, még tartó időszak. A past simple egy lezárt, megnevezett múltbeli időponthoz tartozik. A magyarban mindkettő múlt idő, ezért ezt sokáig keverik a tanulók.",
+   "table": {
+    "head": [
+     "",
+     "Present perfect",
+     "Past simple"
+    ],
+    "rows": [
+     [
+      "Szerkezet",
+      "I have seen, she has gone",
+      "I saw, she went"
+     ],
+     [
+      "Időhatározó",
+      "ever, never, already, yet, just, for, since, so far",
+      "yesterday, last year, in 2010, ago, when…"
+     ],
+     [
+      "Jelentés",
+      "tapasztalat / eredmény most / még tart",
+      "lezárt, ismert múltbeli időpont"
+     ]
+    ]
+   },
+   "points": [
+    "Tapasztalat: Have you ever been to Japan?",
+    "Eredmény most: I've lost my phone. (most sincs meg)",
+    "Még tartó időszak: I've lived here for ten years. (most is itt lakom)",
+    "Megnevezett múlt: I lost my phone yesterday. (nem: I've lost… yesterday)"
+   ],
+   "mistakes": [
+    "I have seen him yesterday. → I saw him yesterday.",
+    "I live here since 2015. → I've lived here since 2015.",
+    "Did you ever…? → Have you ever…?"
+   ],
+   "drill": [
+    {
+     "q": "I ___ to Paris three times.",
+     "a": "have been",
+     "o": [
+      "have been",
+      "went",
+      "was"
+     ],
+     "why": "Tapasztalat, nincs időpont: present perfect."
+    },
+    {
+     "q": "We ___ the film last night.",
+     "a": "saw",
+     "o": [
+      "saw",
+      "have seen",
+      "see"
+     ],
+     "why": "Megnevezett múlt (last night): past simple."
+    },
+    {
+     "q": "She has worked here ___ 2019.",
+     "a": "since",
+     "o": [
+      "since",
+      "for",
+      "ago"
+     ],
+     "why": "since + kezdőpont."
+    },
+    {
+     "q": "Have you finished your homework ___?",
+     "a": "yet",
+     "o": [
+      "yet",
+      "already",
+      "ago"
+     ],
+     "why": "Kérdésben a yet: már?"
+    },
+    {
+     "q": "He ___ his leg, so he can't play today.",
+     "a": "has broken",
+     "o": [
+      "has broken",
+      "broke",
+      "breaks"
+     ],
+     "why": "Eredmény most (nem tud játszani): present perfect."
+    }
+   ]
+  },
+  {
+   "id": "perfcont",
+   "title": "Present perfect continuous",
+   "level": "B1",
+   "intro": "A present perfect continuous (have been + -ing) a múltban kezdődött és most is tartó (vagy épp befejeződött) tevékenység időtartamát hangsúlyozza: Mióta? Mennyi ideje?",
+   "table": {
+    "head": [
+     "",
+     "Present perfect continuous",
+     "Present perfect simple"
+    ],
+    "rows": [
+     [
+      "Szerkezet",
+      "I have been working",
+      "I have worked"
+     ],
+     [
+      "Hangsúly",
+      "a tevékenység, az időtartam",
+      "az eredmény, a mennyiség"
+     ],
+     [
+      "Példa",
+      "I've been writing emails all morning.",
+      "I've written ten emails."
+     ]
+    ]
+   },
+   "points": [
+    "Mióta tart: How long have you been learning English?",
+    "Látható nyom: You look tired. Have you been running?",
+    "Állapotigékkel simple marad: I've known her for years. (nem: I've been knowing)"
+   ],
+   "mistakes": [
+    "I am learning English for two years. → I've been learning English for two years.",
+    "How long are you waiting? → How long have you been waiting?"
+   ],
+   "drill": [
+    {
+     "q": "I ___ for you for an hour!",
+     "a": "have been waiting",
+     "o": [
+      "have been waiting",
+      "am waiting",
+      "wait"
+     ],
+     "why": "Múltban kezdődött és most is tart."
+    },
+    {
+     "q": "She's tired because she ___ all day.",
+     "a": "has been working",
+     "o": [
+      "has been working",
+      "works",
+      "worked"
+     ],
+     "why": "Tevékenység látható következménye."
+    },
+    {
+     "q": "I've ___ three chapters so far.",
+     "a": "read",
+     "o": [
+      "read",
+      "been reading",
+      "reading"
+     ],
+     "why": "Mennyiség, eredmény: simple."
+    },
+    {
+     "q": "How long have you ___ each other?",
+     "a": "known",
+     "o": [
+      "known",
+      "been knowing",
+      "knew"
+     ],
+     "why": "A know állapotige."
+    },
+    {
+     "q": "It ___ since this morning.",
+     "a": "has been raining",
+     "o": [
+      "has been raining",
+      "is raining",
+      "rains"
+     ],
+     "why": "since + tart: present perfect continuous."
+    }
+   ]
+  },
+  {
+   "id": "pastperf",
+   "title": "Past perfect",
+   "level": "B2",
+   "intro": "A past perfect (had + 3. alak) a múlt előtti múlt: ami egy másik múltbeli esemény előtt már megtörtént. Történetmesélésben segít világossá tenni a sorrendet.",
+   "table": {
+    "head": [
+     "",
+     "Példa"
+    ],
+    "rows": [
+     [
+      "Szerkezet",
+      "had + 3. alak: I had finished, she had left"
+     ],
+     [
+      "Kérdés",
+      "Had you seen it before?"
+     ],
+     [
+      "Folyamatos",
+      "had been + -ing: I had been waiting for an hour when he arrived."
+     ]
+    ]
+   },
+   "points": [
+    "Sorrend: When we arrived, the film had already started.",
+    "Függő beszédben: She said she had lost her keys.",
+    "Harmadik feltételes: If I had known, I would have come.",
+    "Ha a sorrend egyértelmű (after, before), past simple is jó: After he left, I went to bed."
+   ],
+   "mistakes": [
+    "When I arrived, she already left. → When I arrived, she had already left.",
+    "I had went → I had gone"
+   ],
+   "drill": [
+    {
+     "q": "When we got to the station, the train ___.",
+     "a": "had left",
+     "o": [
+      "had left",
+      "left",
+      "has left"
+     ],
+     "why": "Az érkezésünk előtt már elment."
+    },
+    {
+     "q": "She was tired because she ___ well.",
+     "a": "hadn't slept",
+     "o": [
+      "hadn't slept",
+      "didn't sleep",
+      "hasn't slept"
+     ],
+     "why": "Az előző éjszaka a fáradtság előtt volt."
+    },
+    {
+     "q": "I ___ never seen snow before I moved to Canada.",
+     "a": "had",
+     "o": [
+      "had",
+      "have",
+      "was"
+     ],
+     "why": "Múlt előtti tapasztalat."
+    },
+    {
+     "q": "He told me he ___ the job.",
+     "a": "had got",
+     "o": [
+      "had got",
+      "has got",
+      "gets"
+     ],
+     "why": "Függő beszédben a múlt még régebbre tolódik."
+    },
+    {
+     "q": "They had ___ for hours when the rescue team found them.",
+     "a": "been walking",
+     "o": [
+      "been walking",
+      "walked",
+      "walking"
+     ],
+     "why": "had been + -ing: időtartam a múltban."
+    }
+   ]
+  },
+  {
+   "id": "future",
+   "title": "A jövő: will, going to, present continuous",
+   "level": "B1",
+   "intro": "Az angolban nincs egyetlen jövő idő. A will spontán döntés, ígéret és jóslat; a going to szándék és látható jel; a present continuous megbeszélt program; a present simple menetrend.",
+   "table": {
+    "head": [
+     "Forma",
+     "Mikor",
+     "Példa"
+    ],
+    "rows": [
+     [
+      "will",
+      "spontán döntés, ígéret, vélemény a jövőről",
+      "I'll help you. I think it will rain."
+     ],
+     [
+      "going to",
+      "szándék, terv; látható jel",
+      "I'm going to learn Spanish. Look at the clouds – it's going to rain."
+     ],
+     [
+      "present continuous",
+      "megbeszélt program (időponttal)",
+      "I'm meeting Tom at six."
+     ],
+     [
+      "present simple",
+      "menetrend",
+      "The train leaves at 8.15."
+     ]
+    ]
+   },
+   "points": [
+    "Spontán: The phone's ringing. – I'll get it!",
+    "Szándék: We're going to buy a new car next year.",
+    "Megbeszélt: She's flying to Rome on Friday.",
+    "Időhatározói mellékmondatban nincs will: When I get home, I'll call you. (nem: When I will get home)"
+   ],
+   "mistakes": [
+    "When I will arrive, I call you. → When I arrive, I'll call you.",
+    "I will meet Tom tomorrow (ha már megbeszéltétek) → I'm meeting Tom tomorrow."
+   ],
+   "drill": [
+    {
+     "q": "It's cold in here. – I ___ close the window.",
+     "a": "'ll",
+     "o": [
+      "'ll",
+      "'m going to",
+      "'m closing"
+     ],
+     "why": "Spontán döntés: will."
+    },
+    {
+     "q": "Look at those clouds! It ___ rain.",
+     "a": "'s going to",
+     "o": [
+      "'s going to",
+      "will",
+      "rains"
+     ],
+     "why": "Látható jel: going to."
+    },
+    {
+     "q": "I ___ my dentist at 3 tomorrow. It's in my calendar.",
+     "a": "'m seeing",
+     "o": [
+      "'m seeing",
+      "'ll see",
+      "see"
+     ],
+     "why": "Megbeszélt program: present continuous."
+    },
+    {
+     "q": "The film ___ at 8 p.m. tonight.",
+     "a": "starts",
+     "o": [
+      "starts",
+      "will start",
+      "is starting"
+     ],
+     "why": "Menetrend: present simple."
+    },
+    {
+     "q": "I'll call you when I ___ home.",
+     "a": "get",
+     "o": [
+      "get",
+      "will get",
+      "am getting"
+     ],
+     "why": "A when után jelen idő áll a jövő helyett."
+    }
+   ]
+  },
+  {
+   "id": "cond",
+   "title": "Feltételes mondatok: 0, 1, 2",
+   "level": "B1",
+   "intro": "A feltételes mondatok aszerint különböznek, mennyire valószínű a feltétel. A legfontosabb szabály: az if-es tagmondatba nem kerül will vagy would.",
+   "table": {
+    "head": [
+     "Típus",
+     "If-tagmondat",
+     "Főmondat",
+     "Jelentés"
+    ],
+    "rows": [
+     [
+      "0",
+      "present simple",
+      "present simple",
+      "mindig igaz: If you heat ice, it melts."
+     ],
+     [
+      "1",
+      "present simple",
+      "will + alapalak",
+      "valós lehetőség: If it rains, I'll stay home."
+     ],
+     [
+      "2",
+      "past simple",
+      "would + alapalak",
+      "képzeletbeli, valószínűtlen: If I had money, I'd travel."
+     ]
+    ]
+   },
+   "points": [
+    "Az if-mondat lehet elöl vagy hátul: I'll stay home if it rains.",
+    "Második típusban a to be: If I were you… (were minden személyben, főleg tanácsnál)",
+    "unless = if not: Unless you hurry, you'll miss the bus."
+   ],
+   "mistakes": [
+    "If it will rain, I stay home. → If it rains, I'll stay home.",
+    "If I would have money… → If I had money…"
+   ],
+   "drill": [
+    {
+     "q": "If you ___ water to 100°C, it boils.",
+     "a": "heat",
+     "o": [
+      "heat",
+      "will heat",
+      "heated"
+     ],
+     "why": "Általános igazság: 0. típus."
+    },
+    {
+     "q": "If it ___ tomorrow, we'll cancel the picnic.",
+     "a": "rains",
+     "o": [
+      "rains",
+      "will rain",
+      "rained"
+     ],
+     "why": "1. típus: if + present simple."
+    },
+    {
+     "q": "If I ___ rich, I'd buy a house by the sea.",
+     "a": "were",
+     "o": [
+      "were",
+      "am",
+      "will be"
+     ],
+     "why": "2. típus: képzeletbeli jelen."
+    },
+    {
+     "q": "What ___ you do if you lost your job?",
+     "a": "would",
+     "o": [
+      "would",
+      "will",
+      "do"
+     ],
+     "why": "2. típus főmondata: would."
+    },
+    {
+     "q": "___ you study, you won't pass.",
+     "a": "Unless",
+     "o": [
+      "Unless",
+      "If",
+      "When"
+     ],
+     "why": "unless = ha nem."
+    }
+   ]
+  },
+  {
+   "id": "cond3",
+   "title": "Harmadik és vegyes feltételes",
+   "level": "B2",
+   "intro": "A harmadik feltételes a múltról szól, ami már nem változtatható meg: mi lett volna, ha. A vegyes feltételes a múltbeli feltétel jelenbeli következményét mutatja.",
+   "table": {
+    "head": [
+     "Típus",
+     "If-tagmondat",
+     "Főmondat",
+     "Példa"
+    ],
+    "rows": [
+     [
+      "3",
+      "had + 3. alak",
+      "would have + 3. alak",
+      "If I had known, I would have helped."
+     ],
+     [
+      "Vegyes",
+      "had + 3. alak",
+      "would + alapalak",
+      "If I had taken the job, I would be rich now."
+     ]
+    ]
+   },
+   "points": [
+    "Bánat, kritika: If you had listened, you wouldn't have made that mistake.",
+    "could / might have: If we had left earlier, we might have caught the train.",
+    "Kiejtésben: would have = would've /wʊdəv/, gyakran rövidül: I'd have."
+   ],
+   "mistakes": [
+    "If I would have known… → If I had known…",
+    "If I had knew → If I had known"
+   ],
+   "drill": [
+    {
+     "q": "If I ___ about the party, I would have come.",
+     "a": "had known",
+     "o": [
+      "had known",
+      "knew",
+      "would know"
+     ],
+     "why": "3. típus: if + had + 3. alak."
+    },
+    {
+     "q": "She would have passed if she ___ harder.",
+     "a": "had studied",
+     "o": [
+      "had studied",
+      "studied",
+      "would study"
+     ],
+     "why": "Múltbeli feltétel."
+    },
+    {
+     "q": "If he hadn't missed the bus, he ___ late.",
+     "a": "wouldn't have been",
+     "o": [
+      "wouldn't have been",
+      "wouldn't be",
+      "won't be"
+     ],
+     "why": "3. típus főmondata."
+    },
+    {
+     "q": "If I had saved money, I ___ a car now.",
+     "a": "would have",
+     "o": [
+      "would have",
+      "would have had",
+      "will have"
+     ],
+     "why": "Vegyes: múltbeli feltétel, jelenbeli következmény."
+    },
+    {
+     "q": "We ___ caught the train if we had hurried.",
+     "a": "might have",
+     "o": [
+      "might have",
+      "might",
+      "had"
+     ],
+     "why": "might have + 3. alak: lehet, hogy…"
+    }
+   ]
+  },
+  {
+   "id": "passive",
+   "title": "Szenvedő szerkezet",
+   "level": "B1",
+   "intro": "A szenvedő szerkezetben a cselekvés tárgya kerül előre, és a be megfelelő alakja + 3. alak áll. Akkor használjuk, ha a cselekvő ismeretlen, mindegy, vagy a cselekvés a fontos.",
+   "table": {
+    "head": [
+     "Idő",
+     "Cselekvő (aktív)",
+     "Szenvedő"
+    ],
+    "rows": [
+     [
+      "Present simple",
+      "They make cars here.",
+      "Cars are made here."
+     ],
+     [
+      "Past simple",
+      "Someone stole my bike.",
+      "My bike was stolen."
+     ],
+     [
+      "Present perfect",
+      "They have finished the road.",
+      "The road has been finished."
+     ],
+     [
+      "Future",
+      "They will open the shop.",
+      "The shop will be opened."
+     ],
+     [
+      "Modális",
+      "You must sign the form.",
+      "The form must be signed."
+     ]
+    ]
+   },
+   "points": [
+    "Cselekvő by-jal: The book was written by Agatha Christie.",
+    "Hivatalos szövegben gyakori: Applications must be submitted by Friday.",
+    "Kauzatív: I had my hair cut. (levágattam, nem én vágtam)"
+   ],
+   "mistakes": [
+    "The house was build in 1900. → The house was built in 1900.",
+    "English speaks here. → English is spoken here."
+   ],
+   "drill": [
+    {
+     "q": "This bridge ___ in 1849.",
+     "a": "was built",
+     "o": [
+      "was built",
+      "built",
+      "is built"
+     ],
+     "why": "Múltbeli szenvedő."
+    },
+    {
+     "q": "Coffee ___ in Brazil.",
+     "a": "is grown",
+     "o": [
+      "is grown",
+      "grows",
+      "was grow"
+     ],
+     "why": "Általános tény szenvedőben."
+    },
+    {
+     "q": "The results will ___ next week.",
+     "a": "be announced",
+     "o": [
+      "be announced",
+      "announced",
+      "announce"
+     ],
+     "why": "will be + 3. alak."
+    },
+    {
+     "q": "My car has ___ stolen!",
+     "a": "been",
+     "o": [
+      "been",
+      "be",
+      "being"
+     ],
+     "why": "Present perfect szenvedő: has been + 3. alak."
+    },
+    {
+     "q": "I'm having my car ___ tomorrow.",
+     "a": "repaired",
+     "o": [
+      "repaired",
+      "repair",
+      "to repair"
+     ],
+     "why": "have something done: megcsináltatni."
+    }
+   ]
+  },
+  {
+   "id": "reported",
+   "title": "Függő beszéd",
+   "level": "B2",
+   "intro": "Ha elmondjuk, mit mondott valaki, az igeidő általában egyet hátralép (backshift), és a névmások, időhatározók is változnak.",
+   "table": {
+    "head": [
+     "Egyenes beszéd",
+     "Függő beszéd"
+    ],
+    "rows": [
+     [
+      "\"I am tired.\"",
+      "She said (that) she was tired."
+     ],
+     [
+      "\"I have finished.\"",
+      "He said he had finished."
+     ],
+     [
+      "\"I will call you.\"",
+      "She said she would call me."
+     ],
+     [
+      "\"I can swim.\"",
+      "He said he could swim."
+     ],
+     [
+      "\"Where do you live?\"",
+      "She asked me where I lived."
+     ]
+    ]
+   },
+   "points": [
+    "say vagy tell: said (that)…, told me (that)… – a tell után kell valaki: He told me… (nem: He told that…)",
+    "Kérdésben nincs kérdő szórend: She asked where I lived. (nem: where did I live)",
+    "Kérés, utasítás: He asked me to wait. She told me not to worry.",
+    "Időhatározók: today → that day, tomorrow → the next day, here → there."
+   ],
+   "mistakes": [
+    "She said me… → She told me… / She said…",
+    "He asked where did I work. → He asked where I worked."
+   ],
+   "drill": [
+    {
+     "q": "\"I'm busy.\" → She said she ___ busy.",
+     "a": "was",
+     "o": [
+      "was",
+      "is",
+      "has been"
+     ],
+     "why": "Backshift: am → was."
+    },
+    {
+     "q": "He ___ me that he was leaving.",
+     "a": "told",
+     "o": [
+      "told",
+      "said",
+      "asked"
+     ],
+     "why": "A tell után személy áll."
+    },
+    {
+     "q": "She asked me where I ___.",
+     "a": "lived",
+     "o": [
+      "lived",
+      "did live",
+      "do live"
+     ],
+     "why": "Függő kérdésben állító szórend."
+    },
+    {
+     "q": "\"Don't be late.\" → He told us ___ late.",
+     "a": "not to be",
+     "o": [
+      "not to be",
+      "don't be",
+      "to not being"
+     ],
+     "why": "Tiltás: told + not to."
+    },
+    {
+     "q": "\"I will help.\" → She said she ___ help.",
+     "a": "would",
+     "o": [
+      "would",
+      "will",
+      "can"
+     ],
+     "why": "will → would."
+    }
+   ]
+  },
+  {
+   "id": "modals1",
+   "title": "Kötelesség és engedély: must, have to, can",
+   "level": "A2",
+   "intro": "A must és a have to is kötelességet fejez ki, de a tagadó alakjuk egészen mást jelent: mustn't = tilos, don't have to = nem kell (de szabad).",
+   "table": {
+    "head": [
+     "Forma",
+     "Jelentés",
+     "Példa"
+    ],
+    "rows": [
+     [
+      "must",
+      "kötelesség (gyakran belső vagy szabály)",
+      "I must call my mum."
+     ],
+     [
+      "have to",
+      "kötelesség (külső)",
+      "I have to wear a uniform."
+     ],
+     [
+      "mustn't",
+      "tilos",
+      "You mustn't smoke here."
+     ],
+     [
+      "don't have to",
+      "nem kell",
+      "You don't have to come."
+     ],
+     [
+      "can / can't",
+      "szabad / nem szabad",
+      "You can park here. You can't park here."
+     ],
+     [
+      "should",
+      "tanács",
+      "You should see a doctor."
+     ]
+    ]
+   },
+   "points": [
+    "A must-nak nincs múlt ideje: I had to work yesterday.",
+    "Kérdés: Do I have to…? / Can I…? / May I…? (udvariasabb)",
+    "need to / needn't: You needn't worry."
+   ],
+   "mistakes": [
+    "You don't must… → You mustn't… / You don't have to…",
+    "I must to go. → I must go.",
+    "Yesterday I must work. → Yesterday I had to work."
+   ],
+   "drill": [
+    {
+     "q": "You ___ smoke in the hospital. It's forbidden.",
+     "a": "mustn't",
+     "o": [
+      "mustn't",
+      "don't have to",
+      "can"
+     ],
+     "why": "Tilalom: mustn't."
+    },
+    {
+     "q": "It's Sunday, so I ___ get up early.",
+     "a": "don't have to",
+     "o": [
+      "don't have to",
+      "mustn't",
+      "can't"
+     ],
+     "why": "Nem kötelező: don't have to."
+    },
+    {
+     "q": "Yesterday I ___ work until nine.",
+     "a": "had to",
+     "o": [
+      "had to",
+      "must",
+      "have to"
+     ],
+     "why": "A must múltja: had to."
+    },
+    {
+     "q": "___ I open the window?",
+     "a": "Can",
+     "o": [
+      "Can",
+      "Must",
+      "Have"
+     ],
+     "why": "Engedélykérés."
+    },
+    {
+     "q": "You look ill. You ___ go home.",
+     "a": "should",
+     "o": [
+      "should",
+      "mustn't",
+      "can't"
+     ],
+     "why": "Tanács: should."
+    }
+   ]
+  },
+  {
+   "id": "modals2",
+   "title": "Következtetés: must, might, can't (have)",
+   "level": "B2",
+   "intro": "A módbeli igékkel azt is kifejezzük, mennyire vagyunk biztosak valamiben. Múltbeli következtetéshez have + 3. alak jön.",
+   "table": {
+    "head": [
+     "Biztosság",
+     "Jelen",
+     "Múlt"
+    ],
+    "rows": [
+     [
+      "szinte biztos, hogy igen",
+      "She must be at home.",
+      "She must have left."
+     ],
+     [
+      "lehetséges",
+      "He might / may / could be ill.",
+      "He might have missed the bus."
+     ],
+     [
+      "szinte biztos, hogy nem",
+      "It can't be true.",
+      "She can't have seen us."
+     ]
+    ]
+   },
+   "points": [
+    "A must ellentéte itt can't (nem mustn't!): He can't be hungry, he's just eaten.",
+    "should have: kritika, bánat: You should have told me.",
+    "Kiejtés: must have = /mʌstəv/, can't have = /kɑːntəv/."
+   ],
+   "mistakes": [
+    "He mustn't be at home (ha következtetés) → He can't be at home.",
+    "She must left → She must have left."
+   ],
+   "drill": [
+    {
+     "q": "The lights are on. They ___ be at home.",
+     "a": "must",
+     "o": [
+      "must",
+      "can't",
+      "mustn't"
+     ],
+     "why": "Biztos következtetés."
+    },
+    {
+     "q": "He ___ be hungry – he's just had lunch.",
+     "a": "can't",
+     "o": [
+      "can't",
+      "mustn't",
+      "must"
+     ],
+     "why": "Biztos tagadó következtetés: can't."
+    },
+    {
+     "q": "She's late. She ___ have missed the train.",
+     "a": "might",
+     "o": [
+      "might",
+      "must to",
+      "can"
+     ],
+     "why": "Lehetőség a múltban."
+    },
+    {
+     "q": "The ground is wet. It must ___ rained.",
+     "a": "have",
+     "o": [
+      "have",
+      "had",
+      "has"
+     ],
+     "why": "must have + 3. alak."
+    },
+    {
+     "q": "You ___ have told me! I would have helped.",
+     "a": "should",
+     "o": [
+      "should",
+      "must",
+      "can't"
+     ],
+     "why": "Kritika: should have."
+    }
+   ]
+  },
+  {
+   "id": "articles",
+   "title": "Névelők: a / an / the / semmi",
+   "level": "A2–B2",
+   "intro": "A magyarban is van névelő, de máshol használjuk. Az angol a / an az első említés, a the a már ismert vagy egyedi dolog; általánosításnál többes számban és megszámlálhatatlan főnévnél nincs névelő.",
+   "table": {
+    "head": [
+     "Eset",
+     "Névelő",
+     "Példa"
+    ],
+    "rows": [
+     [
+      "első említés, egy a sok közül",
+      "a / an",
+      "I saw a dog."
+     ],
+     [
+      "már említett, ismert",
+      "the",
+      "The dog was black."
+     ],
+     [
+      "egyedi dolog",
+      "the",
+      "the sun, the internet, the Danube"
+     ],
+     [
+      "általánosítás többes számban",
+      "–",
+      "Dogs are friendly. I like music."
+     ],
+     [
+      "foglalkozás",
+      "a / an",
+      "She's a doctor."
+     ],
+     [
+      "étkezések, sportok, nyelvek",
+      "–",
+      "have lunch, play tennis, speak English"
+     ]
+    ]
+   },
+   "points": [
+    "an magánhangzó-HANG előtt: an hour, an umbrella, de a university (/juː/), a European.",
+    "Országok: Hungary – de the UK, the USA, the Netherlands.",
+    "Hangszerek: play the piano.",
+    "Intézmények funkcióban: go to school / bed / work (névelő nélkül)."
+   ],
+   "mistakes": [
+    "I like the music. (általában) → I like music.",
+    "She is doctor. → She's a doctor.",
+    "I go to the school every day. (diákként) → I go to school every day."
+   ],
+   "drill": [
+    {
+     "q": "She's ___ engineer.",
+     "a": "an",
+     "o": [
+      "an",
+      "a",
+      "the"
+     ],
+     "why": "Foglalkozás, magánhangzó előtt: an."
+    },
+    {
+     "q": "___ life is beautiful.",
+     "a": "–",
+     "o": [
+      "–",
+      "The",
+      "A"
+     ],
+     "why": "Általánosítás: nincs névelő."
+    },
+    {
+     "q": "Can you close ___ door, please?",
+     "a": "the",
+     "o": [
+      "the",
+      "a",
+      "–"
+     ],
+     "why": "Mindketten tudjuk, melyik ajtó."
+    },
+    {
+     "q": "I play ___ guitar.",
+     "a": "the",
+     "o": [
+      "the",
+      "a",
+      "–"
+     ],
+     "why": "Hangszer: the."
+    },
+    {
+     "q": "He's ___ honest man.",
+     "a": "an",
+     "o": [
+      "an",
+      "a",
+      "the"
+     ],
+     "why": "Az h néma: /ˈɒnɪst/, magánhangzó-hang: an."
+    }
+   ]
+  },
+  {
+   "id": "quant",
+   "title": "Megszámlálható és megszámlálhatatlan, mennyiségek",
+   "level": "A2",
+   "intro": "Egyes főnevek nem számolhatók (water, money, advice, information, furniture, news), ezért nincs többes számuk és a / an sem állhat előttük. A mennyiségszavak is ehhez igazodnak.",
+   "table": {
+    "head": [
+     "",
+     "Megszámlálható",
+     "Megszámlálhatatlan"
+    ],
+    "rows": [
+     [
+      "Sok",
+      "many books, a lot of books",
+      "much money, a lot of money"
+     ],
+     [
+      "Kevés",
+      "a few friends (néhány), few (alig)",
+      "a little time (egy kevés), little (alig)"
+     ],
+     [
+      "Kérdés",
+      "How many apples?",
+      "How much water?"
+     ],
+     [
+      "Egy darab",
+      "a chair",
+      "a piece of furniture, a piece of advice"
+     ]
+    ]
+   },
+   "points": [
+    "Kijelentésben a lot of természetesebb: I have a lot of friends.",
+    "some kijelentésben, any kérdésben és tagadásban: some milk, any milk?",
+    "Magyarul számolható, angolul nem: advice, information, news, furniture, luggage, homework."
+   ],
+   "mistakes": [
+    "an advice → a piece of advice / some advice",
+    "informations → information",
+    "The news are… → The news is…"
+   ],
+   "drill": [
+    {
+     "q": "How ___ money do you need?",
+     "a": "much",
+     "o": [
+      "much",
+      "many",
+      "few"
+     ],
+     "why": "money megszámlálhatatlan."
+    },
+    {
+     "q": "Can I give you some ___?",
+     "a": "advice",
+     "o": [
+      "advice",
+      "advices",
+      "an advice"
+     ],
+     "why": "Az advice megszámlálhatatlan."
+    },
+    {
+     "q": "There are only ___ eggs left.",
+     "a": "a few",
+     "o": [
+      "a few",
+      "a little",
+      "much"
+     ],
+     "why": "Megszámlálható: a few."
+    },
+    {
+     "q": "We've got ___ time, let's hurry.",
+     "a": "little",
+     "o": [
+      "little",
+      "few",
+      "many"
+     ],
+     "why": "Alig van idő (megszámlálhatatlan)."
+    },
+    {
+     "q": "The news ___ very good today.",
+     "a": "is",
+     "o": [
+      "is",
+      "are",
+      "were"
+     ],
+     "why": "A news egyes számú."
+    }
+   ]
+  },
+  {
+   "id": "compare",
+   "title": "Fokozás",
+   "level": "A2",
+   "intro": "Rövid melléknevek -er, -est végződést kapnak, a hosszabbak more, most szót. Néhány rendhagyó alakot külön meg kell tanulni.",
+   "table": {
+    "head": [
+     "Alapfok",
+     "Középfok",
+     "Felsőfok"
+    ],
+    "rows": [
+     [
+      "cheap",
+      "cheaper",
+      "the cheapest"
+     ],
+     [
+      "big",
+      "bigger",
+      "the biggest"
+     ],
+     [
+      "happy",
+      "happier",
+      "the happiest"
+     ],
+     [
+      "expensive",
+      "more expensive",
+      "the most expensive"
+     ],
+     [
+      "good",
+      "better",
+      "the best"
+     ],
+     [
+      "bad",
+      "worse",
+      "the worst"
+     ],
+     [
+      "far",
+      "further / farther",
+      "the furthest"
+     ]
+    ]
+   },
+   "points": [
+    "Összehasonlítás: than – She's taller than me.",
+    "Egyenlőség: as … as – He's as tall as his father. Not as … as: It's not as cold as yesterday.",
+    "Fokozás erősítése: much / far / a bit cheaper.",
+    "Párhuzam: the more, the better."
+   ],
+   "mistakes": [
+    "more cheap → cheaper",
+    "more better → better",
+    "She's taller as me. → She's taller than me."
+   ],
+   "drill": [
+    {
+     "q": "This hotel is ___ than the other one.",
+     "a": "cheaper",
+     "o": [
+      "cheaper",
+      "more cheap",
+      "cheapest"
+     ],
+     "why": "Rövid melléknév: -er."
+    },
+    {
+     "q": "It's the ___ film I've ever seen.",
+     "a": "worst",
+     "o": [
+      "worst",
+      "baddest",
+      "worse"
+     ],
+     "why": "bad – worse – worst."
+    },
+    {
+     "q": "She's as tall ___ her brother.",
+     "a": "as",
+     "o": [
+      "as",
+      "than",
+      "like"
+     ],
+     "why": "as … as."
+    },
+    {
+     "q": "This exercise is ___ difficult than the first.",
+     "a": "more",
+     "o": [
+      "more",
+      "most",
+      "much"
+     ],
+     "why": "Hosszú melléknév: more."
+    },
+    {
+     "q": "The ___ you practise, the better you get.",
+     "a": "more",
+     "o": [
+      "more",
+      "most",
+      "much"
+     ],
+     "why": "the more…, the better…"
+    }
+   ]
+  },
+  {
+   "id": "relative",
+   "title": "Vonatkozó mellékmondatok",
+   "level": "B1",
+   "intro": "A vonatkozó névmás (who, which, that, where, whose) köti össze a főnevet a róla szóló mellékmondattal. A magyar „aki, ami, ahol, akinek a…” megfelelői.",
+   "table": {
+    "head": [
+     "Névmás",
+     "Mire",
+     "Példa"
+    ],
+    "rows": [
+     [
+      "who",
+      "emberre",
+      "the woman who called"
+     ],
+     [
+      "which",
+      "dologra",
+      "the car which I bought"
+     ],
+     [
+      "that",
+      "emberre és dologra (nem vesszős mondatban)",
+      "the book that changed my life"
+     ],
+     [
+      "where",
+      "helyre",
+      "the city where I was born"
+     ],
+     [
+      "whose",
+      "birtokos",
+      "the man whose dog bit me"
+     ]
+    ]
+   },
+   "points": [
+    "Tárgyként elhagyható: the film (that) we saw.",
+    "Vesszős (kiegészítő) mellékmondatban nincs that: My brother, who lives in Paris, is a chef.",
+    "Elöljáró a végén (beszélt nyelv): the man I was talking to."
+   ],
+   "mistakes": [
+    "The man which… → The man who…",
+    "the city which I was born → the city where I was born",
+    "My brother, that lives… → My brother, who lives…"
+   ],
+   "drill": [
+    {
+     "q": "The woman ___ lives next door is a doctor.",
+     "a": "who",
+     "o": [
+      "who",
+      "which",
+      "where"
+     ],
+     "why": "Emberre: who."
+    },
+    {
+     "q": "This is the hotel ___ we stayed last year.",
+     "a": "where",
+     "o": [
+      "where",
+      "which",
+      "who"
+     ],
+     "why": "Helyre: where."
+    },
+    {
+     "q": "I met a man ___ car had broken down.",
+     "a": "whose",
+     "o": [
+      "whose",
+      "who",
+      "which"
+     ],
+     "why": "Birtok: whose."
+    },
+    {
+     "q": "The book ___ I'm reading is great.",
+     "a": "that",
+     "o": [
+      "that",
+      "who",
+      "where"
+     ],
+     "why": "Dologra: that / which."
+    },
+    {
+     "q": "Budapest, ___ is the capital, has two parts.",
+     "a": "which",
+     "o": [
+      "which",
+      "that",
+      "where"
+     ],
+     "why": "Vesszős mellékmondatban which."
+    }
+   ]
+  },
+  {
+   "id": "gerund",
+   "title": "-ing vagy to + ige",
+   "level": "B1",
+   "intro": "Bizonyos igék után -ing alak, mások után to + ige áll. Ezt szinte csak megtanulni lehet, de vannak csoportok, amik segítenek.",
+   "table": {
+    "head": [
+     "Után",
+     "Alak",
+     "Példák"
+    ],
+    "rows": [
+     [
+      "enjoy, finish, mind, avoid, suggest, keep, miss, practise",
+      "-ing",
+      "I enjoy reading."
+     ],
+     [
+      "want, decide, hope, plan, need, promise, afford, manage",
+      "to + ige",
+      "I decided to stay."
+     ],
+     [
+      "elöljárószó után",
+      "-ing",
+      "I'm interested in learning. Thanks for coming."
+     ],
+     [
+      "like, love, hate, start, begin",
+      "mindkettő",
+      "I like swimming / to swim."
+     ],
+     [
+      "stop, remember, forget, try",
+      "mindkettő, más jelentéssel",
+      "stop smoking / stop to smoke"
+     ]
+    ]
+   },
+   "points": [
+    "Az -ing lehet alany: Swimming is good for you.",
+    "look forward to + -ing: I'm looking forward to seeing you. (a to itt elöljáró!)",
+    "would like + to: I'd like to come."
+   ],
+   "mistakes": [
+    "I enjoy to read. → I enjoy reading.",
+    "I'm looking forward to see you. → …to seeing you.",
+    "I want going. → I want to go."
+   ],
+   "drill": [
+    {
+     "q": "I don't mind ___ for you.",
+     "a": "waiting",
+     "o": [
+      "waiting",
+      "to wait",
+      "wait"
+     ],
+     "why": "mind + -ing."
+    },
+    {
+     "q": "We've decided ___ a new car.",
+     "a": "to buy",
+     "o": [
+      "to buy",
+      "buying",
+      "buy"
+     ],
+     "why": "decide + to."
+    },
+    {
+     "q": "I'm looking forward to ___ you.",
+     "a": "seeing",
+     "o": [
+      "seeing",
+      "see",
+      "to see"
+     ],
+     "why": "look forward to + -ing."
+    },
+    {
+     "q": "Thanks for ___ me.",
+     "a": "helping",
+     "o": [
+      "helping",
+      "to help",
+      "help"
+     ],
+     "why": "Elöljárószó után -ing."
+    },
+    {
+     "q": "He stopped ___ to check the map.",
+     "a": "to look",
+     "o": [
+      "to look",
+      "looking",
+      "look"
+     ],
+     "why": "stop to = megáll, hogy…"
+    }
+   ]
+  },
+  {
+   "id": "questions",
+   "title": "Kérdések és question tag",
+   "level": "A2–B1",
+   "intro": "Az angol kérdésben segédige kell (do, does, did, vagy a be / have / modális ige), és felcserélődik a szórend. A question tag („ugye?”) a mondat végén ellenkező előjelű.",
+   "table": {
+    "head": [
+     "Típus",
+     "Példa"
+    ],
+    "rows": [
+     [
+      "Eldöntendő",
+      "Do you like it? Are you ready? Can she swim?"
+     ],
+     [
+      "Kérdőszavas",
+      "Where do you live? What did she say?"
+     ],
+     [
+      "Alanyra kérdez (nincs do)",
+      "Who called you? What happened?"
+     ],
+     [
+      "Question tag",
+      "It's cold, isn't it? You don't smoke, do you?"
+     ],
+     [
+      "Udvarias, beágyazott",
+      "Could you tell me where the station is?"
+     ]
+    ]
+   },
+   "points": [
+    "Ha az alanyra kérdezünk, nincs do: Who lives here? (nem: Who does live here?)",
+    "Beágyazott kérdésben állító szórend: Do you know what time it is?",
+    "I am → aren't I? (I'm late, aren't I?)"
+   ],
+   "mistakes": [
+    "Where you live? → Where do you live?",
+    "Who did call you? → Who called you?",
+    "Can you tell me where is the station? → …where the station is?"
+   ],
+   "drill": [
+    {
+     "q": "Where ___ you work?",
+     "a": "do",
+     "o": [
+      "do",
+      "are",
+      "does"
+     ],
+     "why": "Present simple kérdés: do."
+    },
+    {
+     "q": "Who ___ the window?",
+     "a": "broke",
+     "o": [
+      "broke",
+      "did break",
+      "breaked"
+     ],
+     "why": "Alanyra kérdez: nincs did."
+    },
+    {
+     "q": "You're coming tonight, ___?",
+     "a": "aren't you",
+     "o": [
+      "aren't you",
+      "are you",
+      "don't you"
+     ],
+     "why": "Állító mondat → tagadó tag."
+    },
+    {
+     "q": "She doesn't eat meat, ___?",
+     "a": "does she",
+     "o": [
+      "does she",
+      "doesn't she",
+      "is she"
+     ],
+     "why": "Tagadó mondat → állító tag."
+    },
+    {
+     "q": "Do you know what time ___?",
+     "a": "it is",
+     "o": [
+      "it is",
+      "is it",
+      "does it"
+     ],
+     "why": "Beágyazott kérdés: állító szórend."
+    }
+   ]
+  },
+  {
+   "id": "preps",
+   "title": "Elöljárók: idő és hely",
+   "level": "A2",
+   "intro": "Az in / on / at az angol egyik legtöbb fejtörést okozó része. Időben: at a pontos időpont, on a nap, in a hosszabb időszak. Helyen: at pont, on felület, in belül.",
+   "table": {
+    "head": [
+     "",
+     "at",
+     "on",
+     "in"
+    ],
+    "rows": [
+     [
+      "Idő",
+      "at 7 o'clock, at night, at the weekend",
+      "on Monday, on 3rd May, on my birthday",
+      "in May, in 2020, in summer, in the morning"
+     ],
+     [
+      "Hely",
+      "at the station, at home, at work",
+      "on the table, on the wall, on the bus",
+      "in the box, in London, in the car"
+     ]
+    ]
+   },
+   "points": [
+    "Járművek: on the bus / train / plane, de in the car / taxi.",
+    "Nincs elöljáró: next week, last year, this morning, tomorrow.",
+    "arrive in (városban, országban), arrive at (épületben, állomáson)."
+   ],
+   "mistakes": [
+    "in Monday → on Monday",
+    "at the summer → in summer",
+    "I arrived to London. → I arrived in London."
+   ],
+   "drill": [
+    {
+     "q": "The meeting is ___ Tuesday.",
+     "a": "on",
+     "o": [
+      "on",
+      "in",
+      "at"
+     ],
+     "why": "Napok előtt on."
+    },
+    {
+     "q": "I was born ___ 1990.",
+     "a": "in",
+     "o": [
+      "in",
+      "on",
+      "at"
+     ],
+     "why": "Évszám előtt in."
+    },
+    {
+     "q": "See you ___ six o'clock.",
+     "a": "at",
+     "o": [
+      "at",
+      "on",
+      "in"
+     ],
+     "why": "Pontos idő: at."
+    },
+    {
+     "q": "She's ___ the bus.",
+     "a": "on",
+     "o": [
+      "on",
+      "in",
+      "at"
+     ],
+     "why": "Buszon: on the bus."
+    },
+    {
+     "q": "We arrived ___ the airport late.",
+     "a": "at",
+     "o": [
+      "at",
+      "in",
+      "to"
+     ],
+     "why": "arrive at + épület, hely."
+    }
+   ]
+  },
+  {
+   "id": "usedto",
+   "title": "used to, be used to, get used to",
+   "level": "B2",
+   "intro": "Három hasonló szerkezet, három jelentés. A used to + ige régi szokás; a be used to + -ing hozzászokottság; a get used to + -ing a hozzászokás folyamata.",
+   "table": {
+    "head": [
+     "Szerkezet",
+     "Jelentés",
+     "Példa"
+    ],
+    "rows": [
+     [
+      "used to + alapalak",
+      "régen (de már nem)",
+      "I used to smoke."
+     ],
+     [
+      "be used to + -ing / főnév",
+      "hozzá van szokva",
+      "I'm used to getting up early."
+     ],
+     [
+      "get used to + -ing / főnév",
+      "hozzászokik",
+      "I'm getting used to driving on the left."
+     ],
+     [
+      "would + alapalak",
+      "régi ismétlődő cselekvés (nem állapot)",
+      "Every summer we would go to the lake."
+     ]
+    ]
+   },
+   "points": [
+    "Kérdés és tagadás: Did you use to…? I didn't use to like coffee.",
+    "Jelen szokásra nincs used to: I usually get up at 7. (nem: I use to)"
+   ],
+   "mistakes": [
+    "I use to play tennis every week. → I usually play tennis every week.",
+    "I'm used to get up early. → I'm used to getting up early."
+   ],
+   "drill": [
+    {
+     "q": "I ___ live in Szeged, but now I live in Pécs.",
+     "a": "used to",
+     "o": [
+      "used to",
+      "am used to",
+      "use to"
+     ],
+     "why": "Régi állapot: used to."
+    },
+    {
+     "q": "She's used to ___ long hours.",
+     "a": "working",
+     "o": [
+      "working",
+      "work",
+      "worked"
+     ],
+     "why": "be used to + -ing."
+    },
+    {
+     "q": "It took me months to get used to ___ on the left.",
+     "a": "driving",
+     "o": [
+      "driving",
+      "drive",
+      "drove"
+     ],
+     "why": "get used to + -ing."
+    },
+    {
+     "q": "Did you ___ to play the piano?",
+     "a": "use",
+     "o": [
+      "use",
+      "used",
+      "using"
+     ],
+     "why": "Did után use to."
+    },
+    {
+     "q": "When we were kids, we ___ play in the street every evening.",
+     "a": "would",
+     "o": [
+      "would",
+      "were used to",
+      "use to"
+     ],
+     "why": "Régi ismétlődő cselekvés: would."
+    }
+   ]
+  },
+  {
+   "id": "wish",
+   "title": "Wish és if only",
+   "level": "B2",
+   "intro": "A wish-sel azt fejezzük ki, amit másképp szeretnénk. Jelenről múlt idővel, múltról past perfecttel beszélünk, mások zavaró viselkedéséről would-dal.",
+   "table": {
+    "head": [
+     "Mire",
+     "Szerkezet",
+     "Példa"
+    ],
+    "rows": [
+     [
+      "jelen helyzet",
+      "wish + past simple",
+      "I wish I had more time."
+     ],
+     [
+      "múlt",
+      "wish + past perfect",
+      "I wish I had studied harder."
+     ],
+     [
+      "zavaró szokás, más változzon",
+      "wish + would",
+      "I wish you would stop talking."
+     ],
+     [
+      "képesség",
+      "wish + could",
+      "I wish I could swim."
+     ]
+    ]
+   },
+   "points": [
+    "Az if only erősebb: If only I had listened!",
+    "A to be-nél were is áll: I wish I were taller.",
+    "Saját magunkra nem használunk would-ot: I wish I had… (nem: I wish I would have)"
+   ],
+   "mistakes": [
+    "I wish I have a car. → I wish I had a car.",
+    "I wish I didn't say that. (múlt) → I wish I hadn't said that."
+   ],
+   "drill": [
+    {
+     "q": "I wish I ___ more money.",
+     "a": "had",
+     "o": [
+      "had",
+      "have",
+      "would have"
+     ],
+     "why": "Jelen helyzet: wish + past simple."
+    },
+    {
+     "q": "I wish I ___ that. It was a mistake.",
+     "a": "hadn't said",
+     "o": [
+      "hadn't said",
+      "didn't say",
+      "don't say"
+     ],
+     "why": "Múlt: wish + past perfect."
+    },
+    {
+     "q": "I wish you ___ stop interrupting me!",
+     "a": "would",
+     "o": [
+      "would",
+      "will",
+      "had"
+     ],
+     "why": "Zavaró szokás: would."
+    },
+    {
+     "q": "If only I ___ speak Japanese!",
+     "a": "could",
+     "o": [
+      "could",
+      "can",
+      "will"
+     ],
+     "why": "Képesség: could."
+    },
+    {
+     "q": "I wish it ___ summer already.",
+     "a": "were",
+     "o": [
+      "were",
+      "is",
+      "will be"
+     ],
+     "why": "wish + were."
+    }
+   ]
+  },
+  {
+   "id": "phrasal",
+   "title": "Phrasal verbs (kétszavas igék)",
+   "level": "B1",
+   "intro": "A phrasal verb ige + határozószó (vagy elöljáró), és a jelentése gyakran nem következik a részekből: give up = feladni, abbahagyni. A beszélt angolban nagyon gyakoriak.",
+   "table": {
+    "head": [
+     "Típus",
+     "Szórend",
+     "Példa"
+    ],
+    "rows": [
+     [
+      "nem választható szét",
+      "ige + szócska + tárgy",
+      "look after the kids, get on the bus"
+     ],
+     [
+      "szétválasztható",
+      "főnév mindkét helyen, névmás csak középen",
+      "turn off the light / turn the light off / turn it off"
+     ],
+     [
+      "tárgyatlan",
+      "nincs tárgy",
+      "The plane took off. Grow up!"
+     ]
+    ]
+   },
+   "points": [
+    "Névmás mindig középen: Pick it up. (nem: Pick up it.)",
+    "Hármas: look forward to, get on with, run out of.",
+    "Gyakori: find out (kideríteni), turn down (elutasítani), put off (elhalasztani), come up with (kitalálni)."
+   ],
+   "mistakes": [
+    "Turn off it. → Turn it off.",
+    "I'm looking forward to see you. → …to seeing you."
+   ],
+   "drill": [
+    {
+     "q": "Please turn ___ off when you leave.",
+     "a": "it",
+     "o": [
+      "it",
+      "them",
+      "–"
+     ],
+     "why": "Névmás középen: turn it off."
+    },
+    {
+     "q": "We've run out ___ milk.",
+     "a": "of",
+     "o": [
+      "of",
+      "from",
+      "off"
+     ],
+     "why": "run out of = kifogy."
+    },
+    {
+     "q": "She finally gave ___ smoking.",
+     "a": "up",
+     "o": [
+      "up",
+      "in",
+      "off"
+     ],
+     "why": "give up = leszokni."
+    },
+    {
+     "q": "Can you look ___ my cat this weekend?",
+     "a": "after",
+     "o": [
+      "after",
+      "for",
+      "at"
+     ],
+     "why": "look after = vigyázni."
+    },
+    {
+     "q": "They had to put ___ the meeting until Friday.",
+     "a": "off",
+     "o": [
+      "off",
+      "on",
+      "up"
+     ],
+     "why": "put off = elhalasztani."
+    }
+   ]
+  }
+ ]
+}

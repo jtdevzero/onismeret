@@ -15,6 +15,7 @@ function renderCards(){
   <button class="btn block lemon" id="startC" ${due.length+nl?"":"disabled"}>${due.length+nl?`Ismétlés indítása (${due.length+nl})`:"Mára nincs több kártya"}</button>
   ${!avail.length&&!due.length?`<p class="small muted">Fejezz be egy újabb leckét, és a szavai itt jelennek meg.</p>`:""}
   ${ownCard()}
+  ${coreCard()}
   ${packsCard()}
   <div class="sec-head"><h2>Szótár</h2><span class="small muted tnum">${POOL.length} elem</span></div>
   <input id="q" placeholder="Keresés ${LG().adv} vagy magyarul…" aria-label="Keresés a szótárban">
@@ -24,13 +25,13 @@ function renderCards(){
   $("#startC").onclick=startCards;if($("#startCar"))$("#startCar").onclick=startCar;
   const drawDict=()=>{const q=deacc(norm($("#q").value));const t=today();
     const rows=POOL.filter(c=>!q||deacc(norm(c.it)).includes(q)||deacc(norm(c.hu)).includes(q)).slice(0,80);
-    $("#dict").innerHTML=rows.length?rows.map(c=>{const s=S.cards[c.id];const pill=c.own&&!s?`<span class="pill now">Saját</span>`:!s?`<span class="pill">L${c.li+1}</span>`:s.ivl>=21?`<span class="pill ok">megy</span>`:s.due<=t?`<span class="pill now">esedékes</span>`:`<span class="pill">${ivlLabel({ivl:s.due-t})} múlva</span>`;
+    $("#dict").innerHTML=rows.length?rows.map(c=>{const s=S.cards[c.id];const pill=c.core&&!s?`<span class="pill">${c.core}</span>`:c.own&&!s?`<span class="pill now">Saját</span>`:!s?`<span class="pill">L${c.li+1}</span>`:s.ivl>=21?`<span class="pill ok">megy</span>`:s.due<=t?`<span class="pill now">esedékes</span>`:`<span class="pill">${ivlLabel({ivl:s.due-t})} múlva</span>`;
       return `<div class="dict-row">${spkBtn(c.it)}<div style="min-width:0"><div class="it" ${LA()}>${esc(c.it)}</div><div class="small muted">${esc(c.hu)}</div></div>${pill}</div>`;}).join(""):`<p class="muted">Nincs találat.</p>`;};
-  $("#q").oninput=drawDict;drawDict();bindOwn();bindPacks();
+  $("#q").oninput=drawDict;drawDict();bindOwn();bindPacks();bindCore();
 }
 function startCards(){
   const due=shuffle(dueList()), nw=newAvail().slice(0,newLeft());
-  prefetch(...new Set([...due,...nw].slice(0,40).map(c=>LESSONS[c.li]&&LESSONS[c.li].id).filter(Boolean)));
+  prefetch(...new Set([...due,...nw].slice(0,40).map(c=>AUDIO_IDX[c.it]).filter(Boolean)));
   CS={q:[...due,...nw].map(c=>({c,dir:S.settings.dir==="mix"?(Math.random()<.5?"it":"hu"):S.settings.dir,isNew:!S.cards[c.id]})),done:0,flip:false};
   drawCard();
 }

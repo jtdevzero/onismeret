@@ -24,7 +24,7 @@ ${hist}
 Csak egy JSON objektumot adj vissza:
 {"score":1-től 10-ig egész szám a célszinthez mérve,"level":"becsült szint (A1–C2)","summary":"2-3 mondat magyarul","good":["legfeljebb 3 konkrét erősség magyarul"],"fixes":[{"wrong":"a tanuló hibás mondatrésze","right":"helyesen","why":"rövid magyar magyarázat"}],"next":"egy konkrét tipp magyarul a következő beszélgetéshez"}
 A fixes legfeljebb 6 elem legyen, a visszatérő hibákkal kezdve.`;
-  try{const r=await sample.json(prompt,{modelTier:"default"});T.sum=r;addXP(3);if($("#chat"))drawChat();const el=$("#csum");if(el)el.scrollIntoView({block:"start",behavior:"smooth"});}
+  try{const r=await sample.json(prompt,{modelTier:"default"});T.sum=r;addXP(3);skillLog("speak",T.level,(+r.score||0)*10,"chat");save();if($("#chat"))drawChat();const el=$("#csum");if(el)el.scrollIntoView({block:"start",behavior:"smooth"});}
   catch(e){toast(aiErr(e));if(b){b.disabled=false;b.textContent="Értékelés";}}
 }
 

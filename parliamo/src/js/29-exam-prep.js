@@ -59,7 +59,7 @@ Csak egy JSON objektumot adj vissza:
   subShell(back,`Olvasott szöveg értése · ${EX.level}`,"",`<article class="card stack" ${LA()}><h2>${esc(d.title||"")}</h2>${d.text.split(/\n\s*\n/).map(p=>`<p>${esc(p)}</p>`).join("")}</article>
     ${d.questions.map((q,k)=>{const a=EX.ans[k];return `<div class="card stack" style="gap:.6rem"><span class="label">${k+1}. kérdés</span><b ${LA()}>${esc(q.q)}</b><div class="opts">${q.o.map((o,j)=>`<button class="opt ${a!==undefined?(j===q.a?"right":j===a?"wrong":""):""}" data-q="${k}" data-j="${j}" ${a!==undefined?"disabled":""} ${LA()}>${esc(o)}</button>`).join("")}</div>${a!==undefined?`<p class="small">${esc(q.why)}</p>`:""}</div>`;}).join("")}
     ${all?`<div class="card"><h3>Eredmény: ${ok} / ${d.questions.length}</h3><p class="small muted">${ok>=4?"Ez vizsgaszinten is jó eredmény.":"Olvasd újra a magyarázatokat: a vizsgán a rossz válaszok gyakran a szöveg szavait ismétlik, de mást állítanak."}</p><div class="row"><button class="btn" id="xNew">Új szöveg</button></div></div>`:""}`,`${ok} / ${d.questions.length}`);
-  view.querySelectorAll("[data-q]").forEach(b=>b.onclick=()=>{const k=+b.dataset.q,j=+b.dataset.j,q=d.questions[k];EX.ans[k]=j;const good=j===q.a;examStat("read",good);
+  view.querySelectorAll("[data-q]").forEach(b=>b.onclick=()=>{const k=+b.dataset.q,j=+b.dataset.j,q=d.questions[k];EX.ans[k]=j;const good=j===q.a;examStat("read",good);if(d.questions.every((_,x)=>EX.ans[x]!==undefined))skillLog("read",EX.level,d.questions.filter((q,x)=>EX.ans[x]===q.a).length/d.questions.length*100,"exam");
     if(good){addXP(3);fx("ok");}else{fx("bad");logMiss("exam:read",q.q,q.o[j],q.o[q.a]);save();}const y=window.scrollY;drawReading();window.scrollTo(0,y);});
   if($("#xNew"))$("#xNew").onclick=()=>{EX.data=null;drawReading();};
 }
@@ -86,7 +86,7 @@ Pontozd ${lang()==="en"?"a Cambridge B2 First írásbeli":"az európai nyelvvizs
 Minden szemponthoz írj 1–2 mondatos, konkrét magyar indoklást. Sorold fel a legfontosabb nyelvi hibákat (legfeljebb 8). Végül írj egy mintaválaszt ugyanerre a feladatra a célszinten, a feladat szóhatárán belül.
 Csak egy JSON objektumot adj vissza:
 {"scores":{"content":0,"communicative":0,"organisation":0,"language":0},"comments":{"content":"","communicative":"","organisation":"","language":""},"band":"becsült eredmény","summary":"2-3 mondatos összegzés magyarul","errors":[{"wrong":"","right":"","why":""}],"model":"mintaválasz ${LG().adv}"}`;
-    try{const r=await sample.json(prompt,{modelTier:"default"});EX.res=r;addXP(10);examStat("write",true);
+    try{const r=await sample.json(prompt,{modelTier:"default"});EX.res=r;addXP(10);examStat("write",true);skillLog("write","B2",CRIT.reduce((a,[k])=>a+(Number((r.scores||{})[k])||0),0)/20*100,"essay");
       (Array.isArray(r.errors)?r.errors:[]).slice(0,8).forEach(e=>logMiss("exam:write",e.wrong,e.wrong,e.right+" – "+(e.why||"")));save();
       if(EX&&EX.k==="write"&&$("#xres"))$("#xres").innerHTML=essayHtml(r);}
     catch(e){if($("#xres"))$("#xres").innerHTML=`<div class="notice">${esc(aiErr(e))}</div>`;}

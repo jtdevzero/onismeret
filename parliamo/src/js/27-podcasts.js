@@ -39,7 +39,7 @@ function drawPod(){
     <div class="row"><button class="btn ghost" id="pdBackL">← Újrahallgatom</button><button class="btn block ${all?"lemon":""}" id="pdFin" ${all?"":"disabled"} style="flex:1">Eredmény és szószedet</button></div>`,`${PD.ok} / ${p.questions.length}`);
     view.querySelectorAll("[data-q]").forEach(b=>b.onclick=()=>{const k=+b.dataset.q,j=+b.dataset.j;PD.ans[k]=j;const q=p.questions[k];if(j===q.a){PD.ok++;fx("ok");}else{fx("bad");logMiss("podcast",q.q,q.o[j],q.o[q.a]);}drawPod();});
     $("#pdBackL").onclick=()=>{PD.stage="listen";PD.showT=true;drawPod();};
-    $("#pdFin").onclick=()=>{PD.stage="done";const n=p.questions.length,xp=10+PD.ok*3;const first=!S.pods[p.id];S.pods[p.id]={ok:PD.ok,n,day:today()};if(first)incEv("stories");incEv("pods");addXP(xp);PD.xp=xp;confetti();drawPod();};
+    $("#pdFin").onclick=()=>{PD.stage="done";const n=p.questions.length,xp=10+PD.ok*3;const first=!S.pods[p.id];S.pods[p.id]={ok:PD.ok,n,day:today()};skillLog("listen",p.level,PD.ok/n*100,"pod");if(first)incEv("stories");incEv("pods");addXP(xp);PD.xp=xp;confetti();drawPod();};
     return;
   }
   subShell(back,`Podcast · ${p.level}`,esc(p.title),`

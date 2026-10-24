@@ -55,7 +55,7 @@ function startRound(kind){
     const u=new Set(unlocked());shuffle(POOL.filter(c=>c.ph&&u.has(c.li))).slice(0,8).forEach(c=>q.push(exFor(c,"speak")));
   }
   if(!q.length){toast(kind==="miss"?"Nincs javítandó hiba. Szép munka!":"Mára nincs több feladat.");return;}
-  prefetch(...new Set(q.map(e=>LESSONS[e.li]&&LESSONS[e.li].id).filter(Boolean)));
+  prefetch(...new Set(q.map(e=>AUDIO_IDX[e.it||(e.c&&e.c.it)]).filter(Boolean)));
   P={kind,li:null,queue:q,i:0,ok:0,n:0,xp:0,st:{},graded:{}};
   renderEx();
 }

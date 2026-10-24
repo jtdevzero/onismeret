@@ -32,6 +32,6 @@ function addOwn(w){
 function rebuildOwn(){
   POOL=POOL.filter(c=>!c.own);
   ownList().forEach(w=>POOL.push({id:w.id,it:w.it,hu:w.hu,alt:w.alt||[],li:OWN_LI(),ph:w.it.trim().split(/\s+/).length>3?1:0,own:1}));
-  WORDS=POOL.filter(c=>!c.ph);
+  rebuildCore();
 }
 

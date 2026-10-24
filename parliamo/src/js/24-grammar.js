@@ -1,6 +1,7 @@
 /* ============ GRAMMAR ============ */
 function tbl(head,rows,emCol){return `<div class="tbl-wrap"><table><tr>${head.map(h=>`<th>${h}</th>`).join("")}</tr>${rows.map(r=>`<tr>${r.map((c,i)=>`<td class="${i===0?"muted":emCol&&i>=emCol?"em":""}">${c}</td>`).join("")}</tr>`).join("")}</table></div>`;}
 function renderGrammar(){
+  if(lang()==="en"&&XT.gram.length)return renderHandbook();
   if(lang()==="en")return grammarPage(LESSONS.map(L=>[`${esc(L.t)} <span class="small muted" style="font-family:var(--body)">· ${esc(L.hu)} · ${L.level}</span>`,L.notes.map(n=>`<p>${n}</p>`).join("")]),"Az összes lecke nyelvtani magyarázata egy helyen.");
   return renderGrammarIt();
 }
@@ -22,9 +23,9 @@ function renderGrammarIt(){
   ];
   grammarPage(sections,"Az A1–A2 szint nyelvtana magyarázattal és táblázatokkal.");
 }
-function grammarPage(sections,intro){
+function grammarPage(sections,intro,pre){
   view.innerHTML=`<div class="stack"><div><span class="label">${LG().name} kézikönyv</span><h1>Nyelvtan</h1><p class="muted">${intro} Ha elakadsz, kérdezz alul a tanártól.</p></div>
-  ${sections.map(([t,b],i)=>`<details class="g" ${i===0?"open":""}><summary>${t}</summary><div class="gb">${b}</div></details>`).join("")}
+  ${pre||""}${sections.map(([t,b],i)=>`<details class="g" ${i===0&&!pre?"open":""}><summary>${t}</summary><div class="gb">${b}</div></details>`).join("")}
   <div class="card stack"><div><h3>Kérdezz a tanártól</h3><p class="small muted">Bármilyen nyelvtani vagy szóhasználati kérdés, magyarul. Például: „${LG().ask}”</p></div>
   <textarea id="gq" style="min-height:5rem" placeholder="Írd ide a kérdésed…" aria-label="Kérdés a tanárnak"></textarea><div><button class="btn" id="gask">Kérdezek</button></div><div id="gans" class="prewrap"></div></div></div>`;
   let ctrl=null;
