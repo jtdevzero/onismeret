@@ -1,15 +1,19 @@
 /* Parliamo AI-szerver.
    A webapp ide küldi a beszélgetést, a szerver hozzáteszi a titkos Claude API-kulcsot, és csak a válasz szövegét adja vissza.
-   Védelem: engedélyezett eredet (ALLOWED_ORIGINS), belépőkód (APP_PASSWORD), percenkénti korlát, méretkorlát. */
+   Védelem: engedélyezett eredet (ALLOWED_ORIGINS), belépőkód (APP_PASSWORD), percenkénti korlát a hívásokra és a hibás
+   belépőkódokra (IP-címenként), méretkorlát, push csak ismert push-szolgáltatások címére. */
 import Anthropic from "@anthropic-ai/sdk";
-import { publicKey, subscribe, unsubscribe, sendPush, runReminders } from "./push.js";
+import { publicKey, subscribe, unsubscribe, sendPush, runReminders, validSub } from "./push.js";
 
 const MAX_MESSAGES = 40;
 const MAX_CHARS = 40000;
+const MAX_BODY = 200000; /* bájt; a 40 000 karakteres üzenetkorlát JSON-ban is bőven elfér benne */
 const PUSH_SUBJECT = "https://jtdevzero.github.io/onismeret/parliamo/";
 
+/* Minden válasz: JSON, nem szippantható más típusnak, és semmilyen köztes tár (proxy, böngésző) nem tárolja. */
+const SECURITY_HEADERS = { "X-Content-Type-Options": "nosniff", "Cache-Control": "no-store", "Referrer-Policy": "no-referrer" };
 function json(data, status, headers) {
-  return new Response(JSON.stringify(data), { status, headers: { ...headers, "content-type": "application/json" } });
+  return new Response(JSON.stringify(data), { status, headers: { ...headers, ...SECURITY_HEADERS, "content-type": "application/json" } });
 }
 
 /* Időben állandó összehasonlítás, hogy a kód ne legyen kitalálható a válaszidőből. */
@@ -40,7 +44,7 @@ async function handlePush(path, req, env, cors) {
   if (path === "/push/key") return json({ key: await publicKey(env.PUSH) }, 200, cors);
   if (path === "/push/subscribe") return (await subscribe(env.PUSH, body)) ? json({ ok: true }, 200, cors) : json({ error: "bad_request" }, 400, cors);
   if (path === "/push/unsubscribe") { await unsubscribe(env.PUSH, body.endpoint); return json({ ok: true }, 200, cors); }
-  if (!body.subscription || typeof body.subscription.endpoint !== "string") return json({ error: "bad_request" }, 400, cors);
+  if (!validSub(body.subscription)) return json({ error: "bad_request" }, 400, cors);
   const status = await sendPush(env.PUSH, body.subscription, { title: "Parliamo", body: "Így fog kinézni a napi emlékeztető.", url: "./#ma" }, PUSH_SUBJECT).catch(() => 0);
   return json({ ok: status >= 200 && status < 300, status }, 200, cors);
 }
@@ -136,11 +140,25 @@ export default {
       "Access-Control-Max-Age": "86400",
       Vary: "Origin",
     };
-    if (req.method === "OPTIONS") return new Response(null, { status: originOk ? 204 : 403, headers: cors });
+    if (req.method === "OPTIONS") return new Response(null, { status: originOk ? 204 : 403, headers: { ...cors, ...SECURITY_HEADERS } });
     const path = new URL(req.url).pathname;
     if (req.method !== "POST" || !["/chat", "/push/key", "/push/subscribe", "/push/unsubscribe", "/push/test", "/sync/get", "/sync/put", "/sync/backups", "/sync/backup-get", "/sync/backup-now", "/usage"].includes(path)) return json({ error: "not_found" }, 404, cors);
     if (!originOk) return json({ error: "origin" }, 403, cors);
-    if (!env.APP_PASSWORD || !safeEqual(req.headers.get("x-app-key") || "", env.APP_PASSWORD)) return json({ error: "unauthorized" }, 401, cors);
+    if (!env.APP_PASSWORD) return json({ error: "server_config" }, 500, cors);
+    if (!safeEqual(req.headers.get("x-app-key") || "", env.APP_PASSWORD)) {
+      /* A hibás belépőkódokat IP-címenként korlátozzuk, hogy a kód ne legyen végigpróbálgatható. */
+      if (env.AUTH_LIMITER) {
+        const { success } = await env.AUTH_LIMITER.limit({ key: "fail:" + (req.headers.get("CF-Connecting-IP") || "unknown") });
+        if (!success) return json({ error: "rate_limited" }, 429, cors);
+      }
+      return json({ error: "unauthorized" }, 401, cors);
+    }
+    const len = parseInt(req.headers.get("content-length") || "0", 10);
+    if (len > (path === "/sync/put" ? MAX_STATE : MAX_BODY)) return json({ error: "too_big" }, 413, cors);
+    if (path === "/push/test" && env.LIMITER) {
+      const { success } = await env.LIMITER.limit({ key: "push-test" });
+      if (!success) return json({ error: "rate_limited" }, 429, cors);
+    }
     if (path.startsWith("/push/")) return handlePush(path, req, env, cors);
     if (path.startsWith("/sync/")) return handleSync(path, req, env, cors);
     if (path === "/usage") return handleUsage(env, cors);
@@ -150,7 +168,7 @@ export default {
     }
 
     let body;
-    try { body = await req.json(); } catch { return json({ error: "bad_request" }, 400, cors); }
+    try { const raw = await req.text(); if (raw.length > MAX_BODY) return json({ error: "too_big" }, 413, cors); body = JSON.parse(raw); } catch { return json({ error: "bad_request" }, 400, cors); }
     const messages = cleanMessages(body && body.messages);
     if (!messages) return json({ error: "bad_request" }, 400, cors);
 

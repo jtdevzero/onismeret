@@ -4,7 +4,8 @@
   "type": "module",
   "description": "A Parliamo webapp AI-szervere: a Claude API-kulcsot a szerveren tartja, a böngésző csak a belépőkódot ismeri.",
   "scripts": {
-    "deploy": "wrangler deploy"
+    "deploy": "wrangler deploy",
+    "test": "node --test test/worker.test.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "0.132.0"
