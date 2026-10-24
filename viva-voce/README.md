@@ -41,7 +41,8 @@ Settings → Pages → *Deploy from a branch* → `main` / root. Telefonon a bö
 
 ### Hang
 
-- **Felolvasás:** a rendszer olasz hangját használja. Ha nincs, Androidon a Google Speech Services-ben, iOS-en a Kisegítő lehetőségek → Felolvasott tartalom → Hangok menüben tölthető le.
+- **Leckék:** minden kifejezés előre felvett hangfájl (`audio/it/<id>.mp3`), a [Kokoro](https://github.com/thewh1teagle/kokoro-onnx) neurális modell olasz női hangjával (`if_sara`). Minden telefonon szól, offline is.
+- **Beszélgetőtárs:** a szabad mondatokat a rendszer olasz felolvasója mondja.
 - **Beszédfelismerés:** Chrome-ban és Safariban működik (Firefoxban nem), mikrofon-engedély kell.
 
 ## Új nyelv vagy tananyag hozzáadása

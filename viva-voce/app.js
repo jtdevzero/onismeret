@@ -2,7 +2,7 @@
 'use strict';
 
 const STORE_KEY = 'vivavoce.v1';
-const PACK_URL = 'data/it.json?v=3';
+const PACK_URL = 'data/it.json?v=4';
 const KEY_STORE = 'vivavoce.apikey';
 const AI_MODEL = 'claude-haiku-5-5';
 const { review: fsrsReview, retrievability, dayIndex, DAY } = window.FSRS;
@@ -90,18 +90,60 @@ function pickVoice() {
   itVoice = it.find(v => /google|natural|premium|enhanced|neural|alice|federica|luca/i.test(v.name)) || it[0] || null;
 }
 if ('speechSynthesis' in window) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
-const ttsOK = () => 'speechSynthesis' in window && !!itVoice;
-const stopAudio = () => { if ('speechSynthesis' in window) speechSynthesis.cancel(); };
+/* A tananyag minden kifejezéséhez előre felvett hangfájl tartozik (audio/<nyelv>/<id>.mp3, Kokoro neurális hang).
+   Ez minden telefonon szól, a némító kapcsoló sem némítja. A böngésző felolvasója csak az AI-beszélgetés
+   szabad szövegeihez kell, tartaléknak. */
+const AUDIO_BY_TEXT = {};
+const player = new Audio();
+player.preload = 'auto';
+let playerBtn = null;
+const ttsOK = () => true; // a tananyag hangja mindig megvan
+const clearSpeaking = () => { if (playerBtn) playerBtn.classList.remove('speaking'); playerBtn = null; };
+player.addEventListener('ended', clearSpeaking);
+
+function stopAudio() {
+  try { player.pause(); } catch (e) {}
+  clearSpeaking();
+  if ('speechSynthesis' in window && (speechSynthesis.speaking || speechSynthesis.pending)) speechSynthesis.cancel();
+}
+
+/* iPhone: a hang csak akkor indulhat magától, ha egyszer már egy érintésre elindult. Az első érintéskor feloldjuk. */
+let unlocked = false;
+function unlockAudio() {
+  if (unlocked) return; unlocked = true;
+  player.src = 'audio/silence.mp3';
+  player.play().then(() => player.pause()).catch(() => { unlocked = false; });
+  try { actx = actx || new (window.AudioContext || window.webkitAudioContext)(); if (actx.state === 'suspended') actx.resume(); } catch (e) {}
+  if ('speechSynthesis' in window) { const u = new SpeechSynthesisUtterance(''); u.volume = 0; speechSynthesis.speak(u); }
+}
+document.addEventListener('pointerdown', unlockAudio, { capture: true });
+document.addEventListener('keydown', unlockAudio, { capture: true });
 
 function say(text, rate, btn) {
-  if (!('speechSynthesis' in window)) return;
   stopAudio();
+  const r = rate || state.settings.rate;
+  const id = AUDIO_BY_TEXT[text];
+  if (id) {
+    player.src = `audio/${PACK.lang}/${id}.mp3`;
+    player.playbackRate = Math.max(0.5, r / 0.9);
+    player.preservesPitch = player.webkitPreservesPitch = true;
+    if (btn) { playerBtn = btn; btn.classList.add('speaking'); }
+    player.play().catch(() => { clearSpeaking(); ttsSay(text, r, btn); });
+    return;
+  }
+  ttsSay(text, r, btn);
+}
+
+function ttsSay(text, rate, btn) {
+  if (!('speechSynthesis' in window)) return;
   const u = new SpeechSynthesisUtterance(text);
   u.lang = (PACK && PACK.tts) || 'it-IT';
+  if (!itVoice) pickVoice();
   if (itVoice) u.voice = itVoice;
-  u.rate = rate || state.settings.rate;
+  u.rate = rate;
   if (btn) { btn.classList.add('speaking'); u.onend = u.onerror = () => btn.classList.remove('speaking'); }
-  speechSynthesis.speak(u);
+  // Chrome/Android: a cancel utáni azonnali speak néha elvész, ezért egy pillanatot várunk
+  setTimeout(() => speechSynthesis.speak(u), 60);
 }
 
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -166,7 +208,7 @@ async function loadPack() {
   ITEMS = {}; ORDER = [];
   PACK.units.forEach((u, ui) => {
     u.index = ui;
-    u.items.forEach(it => { it.unit = u; ITEMS[it.id] = it; ORDER.push(it.id); });
+    u.items.forEach(it => { it.unit = u; ITEMS[it.id] = it; ORDER.push(it.id); AUDIO_BY_TEXT[it.it] = it.id; });
   });
   for (const id of Object.keys(state.cards)) if (!ITEMS[id]) delete state.cards[id];
 }
@@ -758,7 +800,7 @@ function renderSettings() {
   const sw = key => `<label class="switch"><input type="checkbox" data-k="${key}" ${st[key] ? 'checked' : ''}><span></span></label>`;
   app.innerHTML = `
     <div class="section-h" style="margin-top:6px"><h2>Beállítások</h2></div>
-    ${!ttsOK() ? '<div class="notice">Ezen az eszközön nincs olasz felolvasóhang, ezért a hallás utáni feladatok kimaradnak. Androidon a Google Speech Services, iPhone-on a Beállítások → Kisegítő lehetőségek → Felolvasott tartalom → Hangok menüben tölthetsz le olasz hangot.</div>' : ''}
+    ${!itVoice ? '<div class="notice">A leckék hangja felvételről szól, az mindenhol működik. A beszélgetőtárs szabad mondatait viszont a telefon felolvasója mondja, és ezen az eszközön nem találtam olasz hangot. Androidon a Google Speech Services, iPhone-on a Beállítások → Kisegítő lehetőségek → Felolvasott tartalom → Hangok menüben tölthetsz le olaszt.</div>' : ''}
     ${!srOK() ? '<div class="notice">Ez a böngésző nem ismeri fel a beszédet, ezért a kimondós feladatok kimaradnak. Chrome-ban és Safariban működik.</div>' : ''}
     <div class="panel">
       <div class="setting"><label>Megjelenés</label>${seg('theme', [['dark', 'Sötét'], ['light', 'Világos'], ['system', 'Rendszer']])}</div>
