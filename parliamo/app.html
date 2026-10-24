@@ -2297,7 +2297,7 @@ function nextPron(){
   else if(PR.mode==="speak"){const pr=rnd(st.pairs),t=Math.random()<.5?0:1;PR.q={pair:pr,t};}
   else{PR.q={sent:st.sentences[PR.si%st.sentences.length]};PR.si++;}
   drawPron();
-  if(PR.mode==="hear")setTimeout(()=>PR&&say(PR.q.pair[PR.q.t]),250);
+  if(PR.mode==="hear"){const q=PR.q;setTimeout(()=>{if(PR&&PR.q===q&&q.pair)say(q.pair[q.t]);},250);}
 }
 function drawPron(){
   const {st,q,res}=PR;const sp=canSpeak();
