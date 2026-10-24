@@ -1,8 +1,8 @@
 /* Parliamo service worker. GENERÁLT FÁJL (parliamo/build.py), ne szerkeszd kézzel.
    Az app váza és a tananyag telepítéskor a gyorsítótárba kerül; a hangok és képek az első használatkor
    (vagy a Beállítások „Letöltés offline használatra” gombjával). Az AI-kérések nem mennek át rajta. */
-const SHELL = 'parliamo-shell-653d878827';
-const MEDIA = 'parliamo-media-d9fa8aaa57';
+const SHELL = 'parliamo-shell-c5dafe3515';
+const MEDIA = 'parliamo-media-9687b9565a';
 const PRECACHE = [
 "./",
 "index.html",
@@ -16,11 +16,17 @@ const PRECACHE = [
 "icons/icon-192.png",
 "icons/icon-512.png",
 "icons/icon-maskable-512.png",
+"data/drills-en.json",
+"data/drills-es.json",
+"data/drills-it.json",
 "data/en.json",
+"data/es.json",
 "data/it.json",
 "data/stories-en.json",
+"data/stories-es.json",
 "data/stories-it.json",
 "data/verbs-en.json",
+"data/verbs-es.json",
 "data/verbs-it.json",
 "img/hero.jpg",
 "img/hero-en.jpg"
@@ -46,4 +52,18 @@ self.addEventListener('fetch', e => {
     if (r.ok) { const cp = r.clone(); caches.open(SHELL).then(c => c.put(req, cp)); }
     return r;
   }).catch(() => caches.match(req, { ignoreSearch: true }).then(r => r || (req.mode === 'navigate' ? caches.match('index.html') : undefined))));
+});
+/* napi emlékeztető (a saját szerver küldi, lásd worker/) */
+self.addEventListener('push', e => {
+  let m = { title: 'Parliamo', body: 'A napi köröd vár.', url: './#ma' };
+  try { m = Object.assign(m, e.data ? e.data.json() : {}); } catch (err) {}
+  e.waitUntil(self.registration.showNotification(m.title, { body: m.body, icon: 'icons/icon-192.png', badge: 'icons/icon-192.png', tag: 'parliamo-daily', data: { url: m.url } }));
+});
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  const url = new URL((e.notification.data && e.notification.data.url) || './', self.registration.scope).href;
+  e.waitUntil(clients.matchAll({ type: 'window', includeUncontrolled: true }).then(ws => {
+    for (const w of ws) if (w.url.startsWith(self.registration.scope)) return w.focus();
+    return clients.openWindow(url);
+  }));
 });
