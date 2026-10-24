@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Társasest</title>
+<meta name="description" content="Buli- és társasjátékok egy telefonon: Impostor, Én még soha nem, Ki a legvalószínűbb, Szóbomba, Vérfarkas mesélő, Kódnevek.">
+<meta name="theme-color" content="#15111d">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="style.css?v=1">
+</head>
+<body>
+<header class="top">
+  <button class="back" id="back" aria-label="Vissza" hidden>‹</button>
+  <h1 class="brand" id="title">Társasest</h1>
+  <button class="icon-btn" id="settingsBtn" aria-label="Beállítások">⚙︎</button>
+</header>
+<main id="app" aria-live="polite"><p class="muted center">Betöltés…</p></main>
+<script src="data.js?v=1"></script>
+<script src="app.js?v=1"></script>
+<script>
+if ('serviceWorker' in navigator && location.protocol !== 'file:') navigator.serviceWorker.register('sw.js');
+</script>
+</body>
+</html>
