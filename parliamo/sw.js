@@ -1,13 +1,17 @@
 /* Parliamo service worker. GENERÁLT FÁJL (parliamo/build.py), ne szerkeszd kézzel.
    Az app váza és a tananyag telepítéskor a gyorsítótárba kerül; a hangok és képek az első használatkor
    (vagy a Beállítások „Letöltés offline használatra” gombjával). Az AI-kérések nem mennek át rajta. */
-const SHELL = 'parliamo-shell-0f06ef9308';
-const MEDIA = 'parliamo-media-1a9501465b';
+const SHELL = 'parliamo-shell-b4b1bd0b2f';
+const MEDIA = 'parliamo-media-fef6db844c';
 const PRECACHE = [
 "./",
 "index.html",
 "manifest.webmanifest",
 "fonts/fonts.css",
+"fonts/atkinson-hyperlegible-latin-400-normal.woff2",
+"fonts/atkinson-hyperlegible-latin-700-normal.woff2",
+"fonts/atkinson-hyperlegible-latin-ext-400-normal.woff2",
+"fonts/atkinson-hyperlegible-latin-ext-700-normal.woff2",
 "fonts/figtree-latin-ext.woff2",
 "fonts/figtree-latin.woff2",
 "fonts/young-serif-latin-ext.woff2",
@@ -23,17 +27,27 @@ const PRECACHE = [
 "data/en.json",
 "data/es.json",
 "data/exam-en.json",
+"data/exam-es.json",
+"data/exam-it.json",
 "data/it.json",
 "data/offline-en.json",
 "data/packs-en.json",
+"data/packs-es.json",
+"data/packs-it.json",
 "data/podcasts-en.json",
+"data/podcasts-es.json",
+"data/podcasts-it.json",
 "data/pron-en.json",
+"data/pron-es.json",
+"data/pron-it.json",
 "data/stories-en.json",
 "data/stories-es.json",
 "data/stories-it.json",
 "data/verbs-en.json",
 "data/verbs-es.json",
 "data/verbs-it.json",
+"data/vocabtest-en.json",
+"data/writing-en.json",
 "img/hero.webp",
 "img/hero-en.webp"
 ];
@@ -69,7 +83,7 @@ self.addEventListener('notificationclick', e => {
   e.notification.close();
   const url = new URL((e.notification.data && e.notification.data.url) || './', self.registration.scope).href;
   e.waitUntil(clients.matchAll({ type: 'window', includeUncontrolled: true }).then(ws => {
-    for (const w of ws) if (w.url.startsWith(self.registration.scope)) return w.focus();
+    for (const w of ws) if (w.url.startsWith(self.registration.scope)) return w.focus().then(c => (c || w).navigate ? (c || w).navigate(url) : c).catch(() => w.focus());
     return clients.openWindow(url);
   }));
 });

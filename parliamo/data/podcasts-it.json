@@ -1,0 +1,532 @@
+{
+ "podcasts": [
+  {
+   "id": "it-p1",
+   "level": "A2",
+   "title": "Al mercato",
+   "hu": "A piacon",
+   "desc": "Giulia zöldséget vásárol a piacon, és alkudozik egy kicsit.",
+   "cast": {
+    "A": {
+     "name": "Giulia",
+     "g": "f"
+    },
+    "B": {
+     "name": "Signor Bruno",
+     "g": "m"
+    }
+   },
+   "lines": [
+    {
+     "s": "B",
+     "it": "Buongiorno, signora! Cosa le do oggi?",
+     "hu": "Jó napot, asszonyom! Mit adhatok ma?"
+    },
+    {
+     "s": "A",
+     "it": "Buongiorno! Vorrei un chilo di pomodori, per favore.",
+     "hu": "Jó napot! Egy kiló paradicsomot kérnék."
+    },
+    {
+     "s": "B",
+     "it": "Questi sono di Pachino, dolcissimi. Altro?",
+     "hu": "Ezek pachinói paradicsomok, nagyon édesek. Még valamit?"
+    },
+    {
+     "s": "A",
+     "it": "Sì, mezzo chilo di zucchine e un po' di basilico.",
+     "hu": "Igen, fél kiló cukkinit és egy kis bazsalikomot."
+    },
+    {
+     "s": "B",
+     "it": "Il basilico glielo regalo io. Le zucchine sono un euro e cinquanta.",
+     "hu": "A bazsalikomot ajándékba adom. A cukkini másfél euró."
+    },
+    {
+     "s": "A",
+     "it": "Grazie mille! E le pesche quanto costano?",
+     "hu": "Köszönöm szépen! És mennyibe kerül a barack?"
+    },
+    {
+     "s": "B",
+     "it": "Tre euro al chilo, ma sono le ultime della stagione.",
+     "hu": "Három euró kilója, de ezek az idény utolsó barackjai."
+    },
+    {
+     "s": "A",
+     "it": "Un po' care... me le fa a due e cinquanta?",
+     "hu": "Kicsit drága... odaadná két ötvenért?"
+    },
+    {
+     "s": "B",
+     "it": "Per lei, va bene. Quante ne vuole?",
+     "hu": "Önnek rendben. Mennyit kér?"
+    },
+    {
+     "s": "A",
+     "it": "Un chilo. Quanto le devo in tutto?",
+     "hu": "Egy kilót. Mennyivel tartozom összesen?"
+    },
+    {
+     "s": "B",
+     "it": "Sono sette euro tondi tondi.",
+     "hu": "Pontosan hét euró."
+    },
+    {
+     "s": "A",
+     "it": "Ecco a lei. Buona giornata!",
+     "hu": "Tessék. Szép napot!"
+    }
+   ],
+   "questions": [
+    {
+     "q": "Mennyi paradicsomot kér Giulia?",
+     "o": [
+      "Egy kilót",
+      "Fél kilót",
+      "Két kilót"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Mit kap ajándékba?",
+     "o": [
+      "Bazsalikomot",
+      "Cukkinit",
+      "Barackot"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Mennyiért kapja meg végül a barackot kilónként?",
+     "o": [
+      "2,50 euróért",
+      "3 euróért",
+      "2 euróért"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Mennyit fizet összesen?",
+     "o": [
+      "7 eurót",
+      "10 eurót",
+      "5,50 eurót"
+     ],
+     "a": 0
+    }
+   ],
+   "vocab": [
+    {
+     "it": "Cosa le do?",
+     "hu": "Mit adhatok? (bolti udvarias)"
+    },
+    {
+     "it": "mezzo chilo",
+     "hu": "fél kiló"
+    },
+    {
+     "it": "glielo regalo",
+     "hu": "ajándékba adom önnek"
+    },
+    {
+     "it": "Quanto le devo?",
+     "hu": "Mennyivel tartozom?"
+    },
+    {
+     "it": "tondo tondo",
+     "hu": "pontosan, kerek összeg"
+    }
+   ]
+  },
+  {
+   "id": "it-p2",
+   "level": "B1",
+   "title": "Un colloquio di lavoro",
+   "hu": "Állásinterjú",
+   "desc": "Marco egy milánói cégnél jelentkezik projektmenedzsernek.",
+   "cast": {
+    "A": {
+     "name": "Dottoressa Ferri",
+     "g": "f"
+    },
+    "B": {
+     "name": "Marco",
+     "g": "m"
+    }
+   },
+   "lines": [
+    {
+     "s": "A",
+     "it": "Si accomodi, Marco. Mi parli un po' di lei.",
+     "hu": "Foglaljon helyet, Marco. Meséljen egy kicsit magáról."
+    },
+    {
+     "s": "B",
+     "it": "Grazie. Ho trentadue anni e lavoro nel settore da sette anni.",
+     "hu": "Köszönöm. Harminckét éves vagyok, és hét éve dolgozom a szakmában."
+    },
+    {
+     "s": "A",
+     "it": "Perché vuole lasciare il suo lavoro attuale?",
+     "hu": "Miért szeretné otthagyni a jelenlegi munkahelyét?"
+    },
+    {
+     "s": "B",
+     "it": "Cerco nuove sfide e mi piacerebbe lavorare in un ambiente internazionale.",
+     "hu": "Új kihívásokat keresek, és szívesen dolgoznék nemzetközi közegben."
+    },
+    {
+     "s": "A",
+     "it": "Qual è stato il progetto più difficile che ha gestito?",
+     "hu": "Melyik volt a legnehezebb projekt, amit vezetett?"
+    },
+    {
+     "s": "B",
+     "it": "Il lancio di un'app in tre paesi contemporaneamente. Abbiamo avuto molti problemi, ma l'abbiamo consegnata in tempo.",
+     "hu": "Egy alkalmazás bevezetése egyszerre három országban. Sok gondunk volt, de időben leszállítottuk."
+    },
+    {
+     "s": "A",
+     "it": "E come gestisce lo stress?",
+     "hu": "És hogyan kezeli a stresszt?"
+    },
+    {
+     "s": "B",
+     "it": "Cerco di organizzarmi bene e, quando posso, vado a correre.",
+     "hu": "Igyekszem jól megszervezni magam, és amikor tudok, futni megyek."
+    },
+    {
+     "s": "A",
+     "it": "Lei parla altre lingue?",
+     "hu": "Beszél más nyelveket?"
+    },
+    {
+     "s": "B",
+     "it": "Sì, l'inglese molto bene e un po' di tedesco.",
+     "hu": "Igen, nagyon jól angolul és egy kicsit németül."
+    },
+    {
+     "s": "A",
+     "it": "Benissimo. Le faremo sapere entro venerdì.",
+     "hu": "Nagyszerű. Péntekig jelentkezünk."
+    },
+    {
+     "s": "B",
+     "it": "La ringrazio per il suo tempo.",
+     "hu": "Köszönöm, hogy időt szánt rám."
+    }
+   ],
+   "questions": [
+    {
+     "q": "Hány éve dolgozik Marco a szakmában?",
+     "o": [
+      "Hét éve",
+      "Harminckét éve",
+      "Három éve"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Miért akar munkahelyet váltani?",
+     "o": [
+      "Új kihívásokat keres",
+      "Többet akar keresni",
+      "Költözik"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Hogyan kezeli a stresszt?",
+     "o": [
+      "Szervezéssel és futással",
+      "Jógával",
+      "Sok kávéval"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Mikorra jeleznek vissza neki?",
+     "o": [
+      "Péntekig",
+      "Holnapig",
+      "Egy hónapon belül"
+     ],
+     "a": 0
+    }
+   ],
+   "vocab": [
+    {
+     "it": "Si accomodi.",
+     "hu": "Foglaljon helyet."
+    },
+    {
+     "it": "una sfida",
+     "hu": "kihívás"
+    },
+    {
+     "it": "gestire",
+     "hu": "kezelni, irányítani"
+    },
+    {
+     "it": "contemporaneamente",
+     "hu": "egyszerre"
+    },
+    {
+     "it": "Le faremo sapere.",
+     "hu": "Értesítjük."
+    }
+   ]
+  },
+  {
+   "id": "it-p3",
+   "level": "B1",
+   "title": "Una vacanza in Sicilia",
+   "hu": "Nyaralás Szicíliában",
+   "desc": "Két barát mesél egymásnak a nyári utazásáról.",
+   "cast": {
+    "A": {
+     "name": "Sara",
+     "g": "f"
+    },
+    "B": {
+     "name": "Luca",
+     "g": "m"
+    }
+   },
+   "lines": [
+    {
+     "s": "A",
+     "it": "Allora, com'è andata la Sicilia?",
+     "hu": "Na, milyen volt Szicília?"
+    },
+    {
+     "s": "B",
+     "it": "Benissimo! Abbiamo girato l'isola in macchina per due settimane.",
+     "hu": "Remek! Két hétig autóval jártuk be a szigetet."
+    },
+    {
+     "s": "A",
+     "it": "Che invidia! Dove siete stati?",
+     "hu": "De irigyellek! Hol jártatok?"
+    },
+    {
+     "s": "B",
+     "it": "Prima a Palermo, poi a Cefalù, e alla fine siamo saliti sull'Etna.",
+     "hu": "Előbb Palermóban, aztán Cefalùban, a végén pedig felmentünk az Etnára."
+    },
+    {
+     "s": "A",
+     "it": "Sull'Etna? Non avevi paura?",
+     "hu": "Az Etnára? Nem féltél?"
+    },
+    {
+     "s": "B",
+     "it": "Un po', ma con la guida era tutto sicuro. Il panorama era incredibile.",
+     "hu": "Egy kicsit, de vezetővel minden biztonságos volt. A kilátás hihetetlen volt."
+    },
+    {
+     "s": "A",
+     "it": "E il cibo? Ho sentito che si mangia benissimo.",
+     "hu": "És az ételek? Azt hallottam, nagyon jól lehet enni."
+    },
+    {
+     "s": "B",
+     "it": "Altroché! Ho mangiato arancine ogni giorno e cannoli a colazione.",
+     "hu": "De még mennyire! Minden nap arancinát ettem, reggelire pedig cannolót."
+    },
+    {
+     "s": "A",
+     "it": "A colazione? Sei impazzito!",
+     "hu": "Reggelire? Megőrültél!"
+    },
+    {
+     "s": "B",
+     "it": "In Sicilia è normale. Fa troppo caldo per un cappuccino!",
+     "hu": "Szicíliában ez normális. Túl meleg van egy cappuccinóhoz!"
+    },
+    {
+     "s": "A",
+     "it": "L'anno prossimo vengo anch'io.",
+     "hu": "Jövőre én is megyek."
+    },
+    {
+     "s": "B",
+     "it": "Perfetto, ti faccio da guida.",
+     "hu": "Tökéletes, én leszek az idegenvezetőd."
+    }
+   ],
+   "questions": [
+    {
+     "q": "Mennyi ideig utaztak Szicíliában?",
+     "o": [
+      "Két hétig",
+      "Egy hétig",
+      "Egy hónapig"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Hová mentek fel a végén?",
+     "o": [
+      "Az Etnára",
+      "Palermóba",
+      "Egy toronyba"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Mit evett Luca reggelire?",
+     "o": [
+      "Cannolót",
+      "Arancinát",
+      "Cappuccinót"
+     ],
+     "a": 0
+    }
+   ],
+   "vocab": [
+    {
+     "it": "girare",
+     "hu": "bejárni, körbejárni"
+    },
+    {
+     "it": "Che invidia!",
+     "hu": "De irigyellek!"
+    },
+    {
+     "it": "altroché",
+     "hu": "de még mennyire"
+    },
+    {
+     "it": "impazzire",
+     "hu": "megőrülni"
+    },
+    {
+     "it": "fare da guida",
+     "hu": "idegenvezetőként szolgálni"
+    }
+   ]
+  },
+  {
+   "id": "it-p4",
+   "level": "B2",
+   "title": "Lavorare da casa",
+   "hu": "Otthoni munka",
+   "desc": "Két kolléga vitatkozik a távmunka előnyeiről és hátrányairól.",
+   "cast": {
+    "A": {
+     "name": "Chiara",
+     "g": "f"
+    },
+    "B": {
+     "name": "Paolo",
+     "g": "m"
+    }
+   },
+   "lines": [
+    {
+     "s": "A",
+     "it": "Da quando lavoro da casa, risparmio due ore al giorno di viaggio.",
+     "hu": "Mióta otthonról dolgozom, napi két óra utazást spórolok meg."
+    },
+    {
+     "s": "B",
+     "it": "Sì, ma non ti senti isolata? Io ho bisogno di vedere i colleghi.",
+     "hu": "Igen, de nem érzed magad elszigeteltnek? Nekem szükségem van rá, hogy lássam a kollégákat."
+    },
+    {
+     "s": "A",
+     "it": "A volte sì, però sono molto più concentrata.",
+     "hu": "Néha igen, de sokkal koncentráltabb vagyok."
+    },
+    {
+     "s": "B",
+     "it": "Io invece a casa mi distraggo facilmente: la lavatrice, il frigo, il divano...",
+     "hu": "Én viszont otthon könnyen elterelődik a figyelmem: a mosógép, a hűtő, a kanapé..."
+    },
+    {
+     "s": "A",
+     "it": "Basta darsi delle regole. Io inizio sempre alle otto e mezza in punto.",
+     "hu": "Elég, ha szabályokat állít fel az ember. Én mindig pontban fél kilenckor kezdek."
+    },
+    {
+     "s": "B",
+     "it": "Sarà, ma le idee migliori nascono davanti alla macchinetta del caffè.",
+     "hu": "Lehet, de a legjobb ötletek a kávéautomata előtt születnek."
+    },
+    {
+     "s": "A",
+     "it": "Non ti do torto. Forse la soluzione è un modello ibrido.",
+     "hu": "Ebben igazad van. Talán a hibrid modell a megoldás."
+    },
+    {
+     "s": "B",
+     "it": "Esatto: due giorni in ufficio per le riunioni e tre a casa per concentrarsi.",
+     "hu": "Pontosan: két nap az irodában a megbeszélésekre, három otthon az elmélyült munkára."
+    },
+    {
+     "s": "A",
+     "it": "Dovremmo proporlo al capo.",
+     "hu": "Javasolnunk kellene a főnöknek."
+    },
+    {
+     "s": "B",
+     "it": "Scriviamo una mail insieme, così è più convincente.",
+     "hu": "Írjunk közösen egy e-mailt, úgy meggyőzőbb."
+    }
+   ],
+   "questions": [
+    {
+     "q": "Mennyi időt spórol meg Chiara naponta?",
+     "o": [
+      "Két órát",
+      "Fél órát",
+      "Négy órát"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Paolo szerint hol születnek a legjobb ötletek?",
+     "o": [
+      "A kávéautomata előtt",
+      "Otthon a kanapén",
+      "Megbeszéléseken"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Mit javasolnak végül?",
+     "o": [
+      "Hibrid modellt",
+      "Teljes távmunkát",
+      "Napi irodai munkát"
+     ],
+     "a": 0
+    }
+   ],
+   "vocab": [
+    {
+     "it": "risparmiare",
+     "hu": "megtakarítani"
+    },
+    {
+     "it": "distrarsi",
+     "hu": "elterelődik a figyelme"
+    },
+    {
+     "it": "in punto",
+     "hu": "pontosan (időpont)"
+    },
+    {
+     "it": "Non ti do torto.",
+     "hu": "Ebben igazad van."
+    },
+    {
+     "it": "convincente",
+     "hu": "meggyőző"
+    }
+   ]
+  }
+ ]
+}

@@ -12,10 +12,12 @@ Angol, olasz és spanyol nyelvtanuló webapp, magyarul tanítva. Telepíthető a
   - **Kiejtés magyaroknak:** 7 hangpár-csoport (th, w/v, rövid és hosszú i, æ, ʌ, szóvégi zöngés hangok, szóhangsúly). Hallás alapján választasz, aztán kimondod: az app megmondja, ha a párját hallotta (think helyett sink), a mondatoknál pedig szavanként jelöli, mit nem értett.
   - **Brit vagy amerikai?** 20 mondat mindkét akcentussal felvéve: hallás alapján döntöd el, melyiket hallod, és a magyarázat megmutatja a különbséget. (Ausztrál és indiai hang a helyi hangkészletben nincs.)
   - **Témakörös szócsomagok:** 15 csomag (orvos, ügyintézés, IT, pénzügy, repülőtér, szálloda, étterem, vásárlás, lakás, megbeszélés, állásinterjú, telefon és e-mail, sport, időjárás, érzelmek), egyenként 20 kifejezés felvett hanggal és példamondattal; egy gombbal a kártyák közé tehetők.
+  - **Íráskurzus (angol, B1–C1):** hivatalos e-mail, panaszlevél, véleményesszé és beszámoló: felépítés, fordulatok, minta, kötőszó-gyakorló, aztán részenként írod meg, és az AI részenként pontoz és javít.
+  - **Podcast-gyakorlók:** lyukas szöveg, mondatonkénti diktálás szavankénti visszajelzéssel, 1,25×-ös tempó; a podcastok és a történetek szövegében is koppintható minden szó.
   - **Mondatépítő:** magyar mondatot kapsz, kimondod vagy beírod, az AI szóban javít (a szóbeli vizsga fordítós feladatára).
   - **Vizsgafelkészítő** (B2 First / IELTS jelleggel): feleletválasztós szókitöltés, szóképzés, mondatátalakítás, AI-olvasásértés és esszé, amit az AI a négy hivatalos szempont szerint pontoz, mintaválasszal.
-  - Olasz (A1–B1): 30 lecke, 549 kifejezés, 9 történet, 25 ige öt igeidőben, gyakorlók: kötőmód, imperfetto vagy passato prossimo, névelők, elöljárók.
-  - Spanyol (A1–B1): 18 lecke, 324 kifejezés, 4 történet, 25 ige öt igeidőben, gyakorlók: ser vagy estar, indefinido vagy imperfecto, por vagy para.
+  - Olasz (A1–B1): 30 lecke, 549 kifejezés, 9 történet, 25 ige öt igeidőben, 4 podcast, kiejtés magyaroknak (dupla mássalhangzók, gli és gn, c/ch/g/gh, nyitott-zárt e/o, hangsúly), 8 szócsomag (120 kifejezés), CILS-jellegű vizsgafeladatok; gyakorlók: kötőmód, imperfetto vagy passato prossimo, névelők, elöljárók.
+  - Spanyol (A1–B1): 18 lecke, 324 kifejezés, 4 történet, 25 ige öt igeidőben, 4 podcast, kiejtés magyaroknak (r/rr, ñ, b/v, j/g/h, hangsúly), 8 szócsomag (120 kifejezés), DELE-jellegű vizsgafeladatok; gyakorlók: ser vagy estar, indefinido vagy imperfecto, por vagy para.
 - **Bevezető és szintfelmérő:** első indításkor nyelv- és célválasztás, majd egy 2–3 perces szintfelmérő, ami kihagyja, amit már tudsz.
 - **Útlevél-pecsétek** minden befejezett leckéért, **heti kihívások** (3 hetente, +50 XP mindegyikért), hangjelzés és rezgés a válaszoknál.
 - **Olvasó:** AI-szöveg a szintedre bármilyen témában; koppints egy szóra a jelentéséért, és egy gombbal kártyára teheted.
@@ -24,6 +26,11 @@ Angol, olasz és spanyol nyelvtanuló webapp, magyarul tanítva. Telepíthető a
 - **Napi kör:** egy gombbal az esedékes ismétlések és az új szavak, kb. 10 perc.
 - **Fokozatos nehézség:** egy kifejezés előbb választós feladatban jön elő, aztán kirakósban, gépelve, diktálva, végül kimondva, ahogy egyre jobban megy.
 - **FSRS-4.5 ütemező, személyre szabva:** választható megtartási cél (85/90/95%), nehéznek jelölhető kártyák, és ha a valós emlékezésed eltér a céltól, az időközök maguktól igazodnak.
+- **Hangos ismétlés autóban:** kéz és képernyő nélküli kártyaismétlés: magyarul felolvassa a jelentést, vár, kimondja a választ, és hangra értékelhetsz („tudtam”, „könnyű”, „újra”).
+- **Szókincsbecslés (angol):** 3 perces teszt gyakorisági sávokkal és kitalált szavakkal; megbecsüli, hány szót ismersz és milyen szinten állsz, az eredmények grafikonon.
+- **Testreszabás:** téma (automatikus, világos, sötét), betűméret, könnyen olvasható betűtípus (Atkinson Hyperlegible).
+- **Eszközellenőrzés:** egy oldalon megnézi a hangot, a felolvasót, a mikrofont, az értesítéseket, az AI-kapcsolatot, a szinkront és az offline tárolást, és megmondja, mit kell beállítani.
+- **Gyorsindítás:** a telepített app ikonját hosszan nyomva napi kör, mai terv, podcast vagy autós mód; az értesítés a mai tervre visz.
 - **Kéthetes terv a hibáidból:** az AI 14 napos, napi 10 perces tervet állít össze; az elején és a végén ugyanaz a felmérés méri a javulást.
 - **Haladási térkép és oklevél:** szintenként mérföldkövek, szintzáró teszt (80%-tól oklevél, képként menthető).
 - **Heti terv:** minden napra egy fő feladat, az app követi a teljesítést; az értesítés a napi tervet mondja, vasárnap heti összefoglalót küld.
@@ -86,22 +93,22 @@ npx wrangler deploy
 
 ## Fejlesztés
 
-A forrás egyetlen fájl: `src/app.html`. Ugyanez fut claude.ai artifactként is (ott a fiókos AI és a szinkron érhető el); a webapp felismeri, hogy önállóan fut, és a saját AI-szervert, a helyi tárolást és a beszédfelismerést használja.
+A forrás a `src/` mappában van, részekre bontva: `head.html`, `styles.css`, `shell.html`, `tail.html` és a `js/` mappa számozott moduljai (betöltési sorrendben). A `build.py` ezekből rakja össze az egyfájlos `app.html`-t, ez fut claude.ai artifactként is (ott a fiókos AI és a szinkron érhető el), valamint a webapp `index.html`-jét; a webapp felismeri, hogy önállóan fut, és a saját AI-szervert, a helyi tárolást és a beszédfelismerést használja.
 
 ```bash
-python3 parliamo/build.py      # src/app.html → index.html + sw.js
+python3 parliamo/build.py      # src/ → app.html + index.html + sw.js
 node parliamo/tests/run.js     # böngészős végpontteszt (a CI is futtatja)
 cd parliamo && python3 -m http.server 8000   # majd: http://localhost:8000
 ```
 
 ```
-src/app.html          a teljes app (HTML, CSS, JS)
-index.html, sw.js     generált fájlok (build.py)
+src/                  az app forrása: head.html, styles.css, shell.html, js/NN-*.js modulok, tail.html
+app.html, index.html, sw.js   generált fájlok (build.py)
 data/                 tananyag: en/it/es.json, stories-*.json, verbs-*.json, drills-*.json, podcasts-en, pron-en, exam-en, accents-en, packs-en, offline-en
-tools/                a saját tananyag forrása: content_en.py (haladó angol, történetek, gyakorlók), content_en2.py (C1, podcastok, kiejtés, vizsga), content_en3.py (akcentus, szócsomagok, offline anyag), content_es.py (spanyol), content_drills.py
+tools/                a saját tananyag forrása: content_its.py (olasz és spanyol extrák), content_en4.py (íráskurzus, szókincsteszt), content_en.py (haladó angol, történetek, gyakorlók), content_en2.py (C1, podcastok, kiejtés, vizsga), content_en3.py (akcentus, szócsomagok, offline anyag), content_es.py (spanyol), content_drills.py
 audio/                felvett hangok (Kokoro neurális hang), leckénként / történetenként / igénként egy base64 JSON-csomag
 img/                  lecke- és helyzetillusztrációk (webp)
-fonts/                Young Serif és Figtree helyben (SIL OFL)
+fonts/                Young Serif, Figtree és Atkinson Hyperlegible helyben (SIL OFL)
 icons/, manifest.webmanifest   telepíthető app
 worker/               AI-szerver (Cloudflare Worker)
 tests/                böngészős végpontteszt

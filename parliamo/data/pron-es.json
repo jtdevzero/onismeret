@@ -1,0 +1,149 @@
+{
+ "sets": [
+  {
+   "id": "rr",
+   "title": "r és rr",
+   "tip": "Az egyszerű r egyetlen pergés (pero = de), a dupla rr és a szó eleji r hosszan pergetett (perro = kutya). A magyar r-hez hasonló, de az rr-t erősebben és hosszabban kell pergetni.",
+   "pairs": [
+    [
+     "pero",
+     "perro"
+    ],
+    [
+     "caro",
+     "carro"
+    ],
+    [
+     "coro",
+     "corro"
+    ],
+    [
+     "para",
+     "parra"
+    ],
+    [
+     "moro",
+     "morro"
+    ],
+    [
+     "cero",
+     "cerro"
+    ]
+   ],
+   "sentences": [
+    "El perro de mi vecino corre mucho.",
+    "El carro es caro, pero bonito.",
+    "Rápido corren los carros del ferrocarril."
+   ]
+  },
+  {
+   "id": "ny",
+   "title": "ñ",
+   "tip": "Az ñ ugyanaz, mint a magyar ny: año (anyo) = év. Az ano egészen mást jelent, ezért ne hagyd el a hullámot a kiejtésben sem!",
+   "pairs": [
+    [
+     "cana",
+     "caña"
+    ],
+    [
+     "pena",
+     "peña"
+    ],
+    [
+     "mono",
+     "moño"
+    ],
+    [
+     "una",
+     "uña"
+    ]
+   ],
+   "sentences": [
+    "Mañana es mi cumpleaños.",
+    "El niño español come piña.",
+    "Tengo una araña en la montaña."
+   ]
+  },
+  {
+   "id": "bv",
+   "mode": "sent",
+   "title": "b és v",
+   "tip": "A spanyolban a b és a v ugyanúgy hangzik! Szó elején és m után zárt b (vino = bino), két magánhangzó között puha, ajkakkal képzett hang. Ne ejts magyaros v-t!",
+   "pairs": [
+    [
+     "vaca",
+     "baca"
+    ],
+    [
+     "vello",
+     "bello"
+    ],
+    [
+     "votar",
+     "botar"
+    ]
+   ],
+   "sentences": [
+    "Vivo en Valencia con mi abuela.",
+    "Bebemos vino en el bar.",
+    "La vaca vive en el valle."
+   ]
+  },
+  {
+   "id": "jg",
+   "title": "j, g és h",
+   "tip": "A j (és a g e/i előtt) torokhang, mint a magyar „ch” a „technika” szóban (jamón, gente). A h néma: hola = ola.",
+   "pairs": [
+    [
+     "jamón",
+     "amón"
+    ],
+    [
+     "gente",
+     "ente"
+    ],
+    [
+     "hola",
+     "ola"
+    ],
+    [
+     "ojo",
+     "oyo"
+    ]
+   ],
+   "sentences": [
+    "El joven come jamón con gente simpática.",
+    "Hoy hace mucho calor.",
+    "Mi hijo juega en el jardín."
+   ]
+  },
+  {
+   "id": "acento",
+   "title": "Szóhangsúly és ékezet",
+   "tip": "A spanyol ékezet hangsúlyt jelöl, nem hosszúságot! papá (apa) – papa (pápa / krumpli). Magánhangzóra vagy n, s végű szónál az utolsó előtti szótag a hangsúlyos, egyébként az utolsó.",
+   "pairs": [
+    [
+     "papa",
+     "papá"
+    ],
+    [
+     "esta",
+     "está"
+    ],
+    [
+     "hablo",
+     "habló"
+    ],
+    [
+     "termino",
+     "terminó"
+    ]
+   ],
+   "sentences": [
+    "Mi papá está en casa.",
+    "Ayer habló con el médico.",
+    "El tren terminó su recorrido."
+   ]
+  }
+ ]
+}

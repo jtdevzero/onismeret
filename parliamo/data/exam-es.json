@@ -1,0 +1,178 @@
+{
+ "mc": {
+  "title": "Szókitöltés (DELE jelleggel)",
+  "desc": "Melyik szó illik a mondatba? Ser/estar, igeidők, kötőmód, elöljárók.",
+  "items": [
+   {
+    "q": "Madrid ___ la capital de España.",
+    "a": "es",
+    "o": [
+     "es",
+     "está",
+     "hay",
+     "tiene"
+    ],
+    "why": "Állandó tulajdonság, azonosítás: ser."
+   },
+   {
+    "q": "La sopa ___ fría.",
+    "a": "está",
+    "o": [
+     "está",
+     "es",
+     "hay",
+     "tiene"
+    ],
+    "why": "Pillanatnyi állapot: estar."
+   },
+   {
+    "q": "Ayer ___ al cine con mis amigos.",
+    "a": "fui",
+    "o": [
+     "fui",
+     "iba",
+     "voy",
+     "iré"
+    ],
+    "why": "Lezárt múltbeli esemény konkrét időponttal: indefinido."
+   },
+   {
+    "q": "Cuando era niño, ___ en un pueblo.",
+    "a": "vivía",
+    "o": [
+     "vivía",
+     "viví",
+     "vivo",
+     "viviré"
+    ],
+    "why": "Múltbeli háttér, állapot: imperfecto."
+   },
+   {
+    "q": "Espero que ___ un buen viaje.",
+    "a": "tengas",
+    "o": [
+     "tengas",
+     "tienes",
+     "tendrás",
+     "tenías"
+    ],
+    "why": "Az esperar que után kötőmód (subjuntivo) áll."
+   },
+   {
+    "q": "Si tuviera dinero, ___ una casa en la playa.",
+    "a": "compraría",
+    "o": [
+     "compraría",
+     "compro",
+     "compraré",
+     "compraba"
+    ],
+    "why": "Irreális feltétel: si + subjuntivo imperfecto, főmondatban condicional."
+   },
+   {
+    "q": "Este regalo es ___ ti.",
+    "a": "para",
+    "o": [
+     "para",
+     "por",
+     "de",
+     "a"
+    ],
+    "why": "Címzett: para."
+   },
+   {
+    "q": "Te llamo ___ teléfono esta tarde.",
+    "a": "por",
+    "o": [
+     "por",
+     "para",
+     "con",
+     "en"
+    ],
+    "why": "Eszköz, csatorna: por teléfono."
+   },
+   {
+    "q": "No creo que ___ razón.",
+    "a": "tenga",
+    "o": [
+     "tenga",
+     "tiene",
+     "tendrá",
+     "tuvo"
+    ],
+    "why": "Tagadott véleménynyilvánítás után kötőmód áll."
+   },
+   {
+    "q": "¿Has visto mis llaves? No ___ encuentro.",
+    "a": "las",
+    "o": [
+     "las",
+     "les",
+     "los",
+     "la"
+    ],
+    "why": "Nőnemű többes számú tárgy: las."
+   }
+  ]
+ },
+ "wf": {
+  "title": "Szóképzés",
+  "desc": "Képezd a megfelelő szót a nagybetűs alapszóból.",
+  "items": [
+   {
+    "q": "La ___ del puente duró dos años. (CONSTRUIR)",
+    "a": "construcción",
+    "why": "-ción főnévképző."
+   },
+   {
+    "q": "Es una persona muy ___. (AMABILIDAD)",
+    "a": "amable",
+    "why": "Melléknév kell."
+   },
+   {
+    "q": "Habla español ___. (PERFECTO)",
+    "a": "perfectamente",
+    "why": "-mente határozószó-képző."
+   },
+   {
+    "q": "El ___ es un problema grave. (DESEMPLEADO)",
+    "a": "desempleo",
+    "why": "Főnév: desempleo = munkanélküliség."
+   },
+   {
+    "q": "Esta respuesta es ___. (CORRECTA, ellentéte)",
+    "a": "incorrecta",
+    "why": "in- fosztóképző."
+   },
+   {
+    "q": "Fue una película muy ___. (DIVERTIR)",
+    "a": "divertida",
+    "why": "Melléknév nőnemben (película)."
+   },
+   {
+    "q": "Su ___ me sorprendió. (REACCIONAR)",
+    "a": "reacción",
+    "why": "-ción főnévképző."
+   },
+   {
+    "q": "Necesitamos más ___ en el equipo. (COMUNICAR)",
+    "a": "comunicación",
+    "why": "-ción főnévképző."
+   }
+  ]
+ },
+ "essays": [
+  {
+   "type": "DELE B1 – correo informal",
+   "task": "Escribe un correo a un amigo: cuéntale tu fin de semana e invítalo a una fiesta. (100–120 palabras)"
+  },
+  {
+   "type": "DELE B2 – texto de opinión",
+   "task": "¿Las redes sociales nos acercan o nos alejan de los demás? Escribe un texto de opinión con argumentos. (180–220 palabras)"
+  },
+  {
+   "type": "DELE B1 – carta formal",
+   "task": "Escribe una reclamación a una tienda online porque recibiste un producto equivocado. Pide una solución. (100–120 palabras)"
+  }
+ ]
+}

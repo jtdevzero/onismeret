@@ -1,0 +1,489 @@
+{
+ "podcasts": [
+  {
+   "id": "es-p1",
+   "level": "A2",
+   "title": "En la cafetería",
+   "hu": "A kávézóban",
+   "desc": "Ana és Diego reggeliznek egy madridi kávézóban.",
+   "cast": {
+    "A": {
+     "name": "Ana",
+     "g": "f"
+    },
+    "B": {
+     "name": "Diego",
+     "g": "m"
+    }
+   },
+   "lines": [
+    {
+     "s": "B",
+     "it": "¿Qué vas a tomar?",
+     "hu": "Mit kérsz?"
+    },
+    {
+     "s": "A",
+     "it": "Un café con leche y una tostada con tomate.",
+     "hu": "Egy tejeskávét és egy pirítóst paradicsommal."
+    },
+    {
+     "s": "B",
+     "it": "Yo quiero churros con chocolate. ¡Hoy es sábado!",
+     "hu": "Én churrost kérek csokoládéval. Ma szombat van!"
+    },
+    {
+     "s": "A",
+     "it": "¿Churros otra vez? Los comiste el domingo pasado.",
+     "hu": "Megint churros? Múlt vasárnap is azt ettél."
+    },
+    {
+     "s": "B",
+     "it": "Es que aquí los hacen muy bien.",
+     "hu": "Csak itt nagyon jól csinálják."
+    },
+    {
+     "s": "A",
+     "it": "Bueno. Oye, ¿qué hacemos esta tarde?",
+     "hu": "Jó. Figyelj, mit csinálunk ma délután?"
+    },
+    {
+     "s": "B",
+     "it": "Podemos ir al Retiro si hace buen tiempo.",
+     "hu": "Mehetünk a Retiróba, ha jó idő lesz."
+    },
+    {
+     "s": "A",
+     "it": "Vale, y después tomamos algo en La Latina.",
+     "hu": "Rendben, és utána iszunk valamit La Latinában."
+    },
+    {
+     "s": "B",
+     "it": "Perfecto. ¡Camarero, la cuenta, por favor!",
+     "hu": "Tökéletes. Pincér, a számlát legyen szíves!"
+    },
+    {
+     "s": "A",
+     "it": "Hoy pago yo, que tú pagaste la última vez.",
+     "hu": "Ma én fizetek, mert legutóbb te fizettél."
+    }
+   ],
+   "questions": [
+    {
+     "q": "Mit kér Ana?",
+     "o": [
+      "Tejeskávét és pirítóst",
+      "Churrost",
+      "Narancslevet"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Hová mennek délután, ha jó idő lesz?",
+     "o": [
+      "A Retiróba",
+      "Moziba",
+      "Múzeumba"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Ki fizet ma?",
+     "o": [
+      "Ana",
+      "Diego",
+      "Felezik"
+     ],
+     "a": 0
+    }
+   ],
+   "vocab": [
+    {
+     "it": "¿Qué vas a tomar?",
+     "hu": "Mit kérsz? (étel, ital)"
+    },
+    {
+     "it": "una tostada",
+     "hu": "pirítós"
+    },
+    {
+     "it": "Es que…",
+     "hu": "Csak hát…, ugyanis…"
+    },
+    {
+     "it": "tomar algo",
+     "hu": "inni valamit"
+    },
+    {
+     "it": "la cuenta",
+     "hu": "számla"
+    }
+   ]
+  },
+  {
+   "id": "es-p2",
+   "level": "B1",
+   "title": "Buscando piso",
+   "hu": "Lakáskeresés",
+   "desc": "Lucía lakást néz Barcelonában egy ingatlanossal.",
+   "cast": {
+    "A": {
+     "name": "Lucía",
+     "g": "f"
+    },
+    "B": {
+     "name": "Javier",
+     "g": "m"
+    }
+   },
+   "lines": [
+    {
+     "s": "B",
+     "it": "Este es el salón. Como ves, tiene mucha luz.",
+     "hu": "Ez a nappali. Ahogy látod, nagyon világos."
+    },
+    {
+     "s": "A",
+     "it": "Es precioso. ¿Cuántos dormitorios tiene?",
+     "hu": "Gyönyörű. Hány hálószobás?"
+    },
+    {
+     "s": "B",
+     "it": "Dos, y un baño completo. La cocina está reformada.",
+     "hu": "Kettő, és egy teljes fürdőszoba. A konyhát felújították."
+    },
+    {
+     "s": "A",
+     "it": "¿Y cuánto es el alquiler?",
+     "hu": "És mennyi a bérleti díj?"
+    },
+    {
+     "s": "B",
+     "it": "Novecientos euros al mes, gastos de comunidad incluidos.",
+     "hu": "Havi kilencszáz euró, a közös költséggel együtt."
+    },
+    {
+     "s": "A",
+     "it": "¿Hay que pagar fianza?",
+     "hu": "Kell kauciót fizetni?"
+    },
+    {
+     "s": "B",
+     "it": "Sí, dos meses. Y el contrato es de un año como mínimo.",
+     "hu": "Igen, két havit. És a szerződés legalább egy évre szól."
+    },
+    {
+     "s": "A",
+     "it": "¿Se admiten mascotas? Tengo un gato.",
+     "hu": "Lehet háziállatot tartani? Van egy macskám."
+    },
+    {
+     "s": "B",
+     "it": "Tendría que preguntárselo al propietario, pero creo que sí.",
+     "hu": "Meg kellene kérdeznem a tulajdonost, de azt hiszem, igen."
+    },
+    {
+     "s": "A",
+     "it": "Me interesa mucho. ¿Puedo pensarlo hasta mañana?",
+     "hu": "Nagyon érdekel. Gondolkodhatok rajta holnapig?"
+    },
+    {
+     "s": "B",
+     "it": "Claro, pero no tardes mucho: hay otras tres personas interesadas.",
+     "hu": "Persze, de ne várj sokáig: még hárman érdeklődnek."
+    }
+   ],
+   "questions": [
+    {
+     "q": "Hány hálószobás a lakás?",
+     "o": [
+      "Kettő",
+      "Egy",
+      "Három"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Mennyi a bérleti díj?",
+     "o": [
+      "900 euró",
+      "1200 euró",
+      "700 euró"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Milyen háziállata van Lucíának?",
+     "o": [
+      "Macskája",
+      "Kutyája",
+      "Nincs"
+     ],
+     "a": 0
+    }
+   ],
+   "vocab": [
+    {
+     "it": "el alquiler",
+     "hu": "bérleti díj"
+    },
+    {
+     "it": "la fianza",
+     "hu": "kaució"
+    },
+    {
+     "it": "reformado",
+     "hu": "felújított"
+    },
+    {
+     "it": "los gastos de comunidad",
+     "hu": "közös költség"
+    },
+    {
+     "it": "No tardes.",
+     "hu": "Ne késlekedj."
+    }
+   ]
+  },
+  {
+   "id": "es-p3",
+   "level": "B1",
+   "title": "Un viaje a México",
+   "hu": "Utazás Mexikóba",
+   "desc": "Pablo a mexikói útjáról mesél egy barátnőjének.",
+   "cast": {
+    "A": {
+     "name": "Marta",
+     "g": "f"
+    },
+    "B": {
+     "name": "Pablo",
+     "g": "m"
+    }
+   },
+   "lines": [
+    {
+     "s": "A",
+     "it": "¿Qué tal por México? ¡Cuéntamelo todo!",
+     "hu": "Milyen volt Mexikó? Mesélj el mindent!"
+    },
+    {
+     "s": "B",
+     "it": "Increíble. Estuvimos tres semanas y no paramos ni un día.",
+     "hu": "Hihetetlen. Három hetet voltunk, és egy napot sem pihentünk."
+    },
+    {
+     "s": "A",
+     "it": "¿Qué fue lo que más te gustó?",
+     "hu": "Mi tetszett a legjobban?"
+    },
+    {
+     "s": "B",
+     "it": "Las pirámides de Teotihuacán. Subimos a la del Sol al amanecer.",
+     "hu": "Teotihuacán piramisai. Napfelkeltekor felmentünk a Nap-piramisra."
+    },
+    {
+     "s": "A",
+     "it": "¡Qué envidia! ¿Y la comida?",
+     "hu": "De irigyellek! És az ételek?"
+    },
+    {
+     "s": "B",
+     "it": "Riquísima, pero muy picante. El primer día lloré con unos tacos.",
+     "hu": "Isteni, de nagyon csípős. Az első napon sírtam egy tacótól."
+    },
+    {
+     "s": "A",
+     "it": "Ja, ja. ¿Te entendían bien con tu español?",
+     "hu": "Haha. Jól megértették a spanyolodat?"
+    },
+    {
+     "s": "B",
+     "it": "Sí, aunque allí usan otras palabras. Por ejemplo, dicen «carro» en vez de «coche».",
+     "hu": "Igen, bár ott más szavakat használnak. Például carrót mondanak coche helyett."
+    },
+    {
+     "s": "A",
+     "it": "¡Qué curioso! ¿Volverías?",
+     "hu": "Milyen érdekes! Visszamennél?"
+    },
+    {
+     "s": "B",
+     "it": "Sin duda. La próxima vez quiero ir a Oaxaca.",
+     "hu": "Kétségtelenül. Legközelebb Oaxacába akarok menni."
+    }
+   ],
+   "questions": [
+    {
+     "q": "Mennyi ideig volt Pablo Mexikóban?",
+     "o": [
+      "Három hétig",
+      "Egy hétig",
+      "Két hónapig"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Mikor mentek fel a Nap-piramisra?",
+     "o": [
+      "Napfelkeltekor",
+      "Este",
+      "Délben"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Hogy mondják Mexikóban az autót?",
+     "o": [
+      "carro",
+      "coche",
+      "auto"
+     ],
+     "a": 0
+    }
+   ],
+   "vocab": [
+    {
+     "it": "¡Cuéntamelo todo!",
+     "hu": "Mesélj el mindent!"
+    },
+    {
+     "it": "al amanecer",
+     "hu": "napfelkeltekor"
+    },
+    {
+     "it": "picante",
+     "hu": "csípős"
+    },
+    {
+     "it": "en vez de",
+     "hu": "helyett"
+    },
+    {
+     "it": "sin duda",
+     "hu": "kétségtelenül"
+    }
+   ]
+  },
+  {
+   "id": "es-p4",
+   "level": "B2",
+   "title": "Redes sociales",
+   "hu": "Közösségi média",
+   "desc": "Két barát vitatkozik arról, mennyire hasznos a közösségi média.",
+   "cast": {
+    "A": {
+     "name": "Carmen",
+     "g": "f"
+    },
+    "B": {
+     "name": "Raúl",
+     "g": "m"
+    }
+   },
+   "lines": [
+    {
+     "s": "A",
+     "it": "He decidido borrarme de las redes sociales durante un mes.",
+     "hu": "Úgy döntöttem, egy hónapra kilépek a közösségi médiából."
+    },
+    {
+     "s": "B",
+     "it": "¿En serio? ¿Y cómo te vas a enterar de las cosas?",
+     "hu": "Komolyan? És hogyan fogsz értesülni a dolgokról?"
+    },
+    {
+     "s": "A",
+     "it": "Como antes: leyendo el periódico y hablando con la gente.",
+     "hu": "Mint régen: újságot olvasok, és beszélgetek az emberekkel."
+    },
+    {
+     "s": "B",
+     "it": "Yo no podría. Para mi trabajo son imprescindibles.",
+     "hu": "Én nem tudnám. A munkámhoz nélkülözhetetlenek."
+    },
+    {
+     "s": "A",
+     "it": "Lo entiendo, pero yo perdía horas mirando vídeos sin sentido.",
+     "hu": "Megértem, de én órákat vesztegettem értelmetlen videókra."
+    },
+    {
+     "s": "B",
+     "it": "Eso depende de cómo las uses. Hay que poner límites.",
+     "hu": "Az attól függ, hogyan használod. Határokat kell szabni."
+    },
+    {
+     "s": "A",
+     "it": "Sí, pero las aplicaciones están diseñadas para engancharnos.",
+     "hu": "Igen, de az alkalmazásokat arra tervezték, hogy rászoktassanak."
+    },
+    {
+     "s": "B",
+     "it": "Tienes razón en eso. Quizás yo también debería probar.",
+     "hu": "Ebben igazad van. Talán nekem is ki kellene próbálnom."
+    },
+    {
+     "s": "A",
+     "it": "Hagamos un trato: un mes sin redes y luego lo comentamos.",
+     "hu": "Kössünk alkut: egy hónap közösségi média nélkül, aztán megbeszéljük."
+    },
+    {
+     "s": "B",
+     "it": "Trato hecho. Aunque no te prometo nada.",
+     "hu": "Áll az alku. Bár nem ígérek semmit."
+    }
+   ],
+   "questions": [
+    {
+     "q": "Mennyi időre lép ki Carmen a közösségi médiából?",
+     "o": [
+      "Egy hónapra",
+      "Egy hétre",
+      "Egy évre"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Raúl szerint mitől függ, hasznos-e?",
+     "o": [
+      "Hogyan használjuk",
+      "Melyik alkalmazás",
+      "Hány éves valaki"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Mit kötnek a végén?",
+     "o": [
+      "Alkut",
+      "Fogadást pénzben",
+      "Semmit"
+     ],
+     "a": 0
+    }
+   ],
+   "vocab": [
+    {
+     "it": "borrarse de",
+     "hu": "kilépni (regisztrációból)"
+    },
+    {
+     "it": "enterarse de",
+     "hu": "értesülni valamiről"
+    },
+    {
+     "it": "imprescindible",
+     "hu": "nélkülözhetetlen"
+    },
+    {
+     "it": "enganchar",
+     "hu": "rászoktatni, beszippantani"
+    },
+    {
+     "it": "Trato hecho.",
+     "hu": "Áll az alku."
+    }
+   ]
+  }
+ ]
+}
