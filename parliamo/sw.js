@@ -2,7 +2,7 @@
    Az app váza és a tananyag telepítéskor a gyorsítótárba kerül; a hangok és képek az első használatkor
    (vagy a Beállítások „Letöltés offline használatra” gombjával). Az AI-kérések nem mennek át rajta. */
 const SHELL = 'parliamo-shell-8c37ceff8e';
-const MEDIA = 'parliamo-media-6d09f5395b';
+const MEDIA = 'parliamo-media-984b94a7b0';
 const PRECACHE = [
 "./",
 "index.html",
