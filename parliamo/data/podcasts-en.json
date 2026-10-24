@@ -1,1 +1,1397 @@
-{"podcasts":[{"id":"en-p1","level":"A2","title":"Morning routines","hu":"Reggeli rutinok","desc":"Két kolléga arról beszélget, hogyan kezdik a napot.","cast":{"A":{"name":"Emma","g":"f"},"B":{"name":"Jack","g":"m"}},"lines":[{"s":"A","it":"Hi Jack. You always look so awake in the morning. What's your secret?","hu":"Szia Jack. Reggelente mindig olyan éber vagy. Mi a titkod?"},{"s":"B","it":"Honestly? I go to bed early. Usually before eleven.","hu":"Őszintén? Korán fekszem. Általában tizenegy előtt."},{"s":"A","it":"Before eleven! I'm usually still watching TV at midnight.","hu":"Tizenegy előtt! Én éjfélkor általában még tévézek."},{"s":"B","it":"That's the problem. Then I get up at half past six and go for a short run.","hu":"Ez a gond. Aztán fél hétkor kelek, és futok egy rövidet."},{"s":"A","it":"A run? Every day?","hu":"Futás? Minden nap?"},{"s":"B","it":"Not every day. Three or four times a week. On the other days I just walk the dog.","hu":"Nem minden nap. Hetente háromszor-négyszer. A többi napon csak kutyát sétáltatok."},{"s":"A","it":"And what do you have for breakfast?","hu":"És mit reggelizel?"},{"s":"B","it":"Porridge with some fruit, and a big cup of coffee. I never skip breakfast.","hu":"Zabkását gyümölccsel, és egy nagy bögre kávét. Sosem hagyom ki a reggelit."},{"s":"A","it":"I often skip it. I just grab a coffee on the way to work.","hu":"Én gyakran kihagyom. Munkába menet veszek egy kávét."},{"s":"B","it":"Maybe that's why you're always tired by eleven o'clock!","hu":"Talán ezért vagy tizenegyre mindig fáradt!"},{"s":"A","it":"Maybe you're right. I'll try your routine next week.","hu":"Talán igazad van. Jövő héten kipróbálom a rutinodat."},{"s":"B","it":"Good luck. The first three days are the hardest.","hu":"Sok sikert. Az első három nap a legnehezebb."}],"questions":[{"q":"Mikor fekszik le általában Jack?","o":["Tizenegy előtt","Éjfélkor","Tízkor"],"a":0},{"q":"Milyen gyakran fut Jack?","o":["Hetente 3-4-szer","Minden nap","Soha"],"a":0},{"q":"Mit csinál Emma reggeli helyett?","o":["Kávét vesz munkába menet","Gyümölcsöt eszik","Fut"],"a":0},{"q":"Mi Jack szerint a legnehezebb?","o":["Az első három nap","A korai kelés","A futás"],"a":0}],"vocab":[{"it":"awake","hu":"éber"},{"it":"to skip","hu":"kihagyni"},{"it":"porridge","hu":"zabkása"},{"it":"to grab","hu":"gyorsan venni, felkapni"},{"it":"routine","hu":"rutin, napirend"}]},{"id":"en-p2","level":"B1","title":"Working from home","hu":"Otthoni munka","desc":"Egy rövid riport arról, hogyan változott meg a munka.","cast":{"N":{"name":"Host","g":"f"},"S":{"name":"Sam","g":"m"}},"lines":[{"s":"N","it":"Welcome to Everyday English. Today we're talking about working from home. My guest is Sam, a software developer from Leeds.","hu":"Üdv az Everyday Englishben. Ma az otthoni munkáról beszélgetünk. A vendégem Sam, egy leedsi szoftverfejlesztő."},{"s":"S","it":"Thanks for having me.","hu":"Köszönöm a meghívást."},{"s":"N","it":"Sam, how long have you been working from home?","hu":"Sam, mióta dolgozol otthonról?"},{"s":"S","it":"For about four years now. At first it was strange, but now I can't imagine going back to the office every day.","hu":"Nagyjából négy éve. Eleinte furcsa volt, de most el sem tudom képzelni, hogy minden nap bejárjak az irodába."},{"s":"N","it":"What do you like most about it?","hu":"Mit szeretsz benne a legjobban?"},{"s":"S","it":"Definitely not having to commute. I used to spend almost two hours a day on the train.","hu":"Egyértelműen azt, hogy nem kell ingáznom. Régen majdnem napi két órát töltöttem a vonaton."},{"s":"N","it":"And are there any downsides?","hu":"És vannak hátrányai?"},{"s":"S","it":"Yes, it can get lonely. I miss chatting with colleagues over lunch. So now I go to the office twice a week.","hu":"Igen, néha magányos. Hiányoznak az ebéd közbeni beszélgetések a kollégákkal. Ezért most hetente kétszer bejárok."},{"s":"N","it":"That sounds like a good balance. Any tips for people who are new to it?","hu":"Ez jó egyensúlynak hangzik. Van tipped azoknak, akik most kezdik?"},{"s":"S","it":"Have a separate space for work, even if it's just a corner of a room. And take proper breaks. Go outside, get some fresh air.","hu":"Legyen külön munkahelyed, akár csak egy sarok a szobában. És tarts rendes szüneteket. Menj ki, szívj friss levegőt."},{"s":"N","it":"Great advice. Thanks, Sam.","hu":"Remek tanács. Köszönöm, Sam."},{"s":"S","it":"My pleasure.","hu":"Szívesen."}],"questions":[{"q":"Mióta dolgozik Sam otthonról?","o":["Kb. négy éve","Egy éve","Tíz éve"],"a":0},{"q":"Mit szeret a legjobban?","o":["Hogy nem kell ingáznia","A csendet","A rugalmas fizetést"],"a":0},{"q":"Mi a hátránya szerinte?","o":["Néha magányos","Drága","Zajos"],"a":0},{"q":"Milyen gyakran jár be most?","o":["Hetente kétszer","Soha","Minden nap"],"a":0}],"vocab":[{"it":"to commute","hu":"ingázni"},{"it":"a downside","hu":"hátrány"},{"it":"lonely","hu":"magányos"},{"it":"a balance","hu":"egyensúly"},{"it":"a proper break","hu":"rendes szünet"}]},{"id":"en-p3","level":"B1","title":"A trip to Scotland","hu":"Utazás Skóciába","desc":"Egy utazó meséli el skóciai kalandját.","cast":{"N":{"name":"Host","g":"f"},"L":{"name":"Lucy","g":"f"}},"lines":[{"s":"N","it":"Lucy, you've just come back from Scotland. How was it?","hu":"Lucy, most jöttél vissza Skóciából. Milyen volt?"},{"s":"L","it":"Amazing, but not quite what I expected.","hu":"Csodálatos, de nem egészen olyan, amilyenre számítottam."},{"s":"N","it":"Oh? What did you expect?","hu":"Ó? Mire számítottál?"},{"s":"L","it":"Rain, mainly! Everyone told me it rains all the time. But we had sunshine for five days in a row.","hu":"Főleg esőre! Mindenki azt mondta, hogy állandóan esik. De öt napig egyfolytában sütött a nap."},{"s":"N","it":"Lucky you. Where did you go?","hu":"Szerencsés vagy. Hová mentél?"},{"s":"L","it":"We started in Edinburgh, then hired a car and drove up to the Highlands.","hu":"Edinburgh-ban kezdtünk, aztán béreltünk egy autót, és felmentünk a Felföldre."},{"s":"N","it":"Driving on the left must have been a challenge.","hu":"A bal oldali közlekedés biztos kihívás volt."},{"s":"L","it":"It was terrifying at first, especially on the narrow roads. But I got used to it after a day or two.","hu":"Eleinte rémisztő volt, főleg a keskeny utakon. De egy-két nap után megszoktam."},{"s":"N","it":"What was the highlight?","hu":"Mi volt a csúcspont?"},{"s":"L","it":"Probably the Isle of Skye. The landscape was unbelievable, and we saw dolphins from the ferry.","hu":"Talán a Skye-sziget. A táj hihetetlen volt, és a kompról delfineket láttunk."},{"s":"N","it":"Would you go back?","hu":"Visszamennél?"},{"s":"L","it":"Definitely. Next time I want to go in winter and see the northern lights.","hu":"Mindenképp. Legközelebb télen szeretnék menni, és megnézni az északi fényt."}],"questions":[{"q":"Mire számított Lucy?","o":["Sok esőre","Hóra","Hőségre"],"a":0},{"q":"Hogyan jutottak el a Felföldre?","o":["Bérelt autóval","Vonattal","Busszal"],"a":0},{"q":"Mi volt az utazás csúcspontja?","o":["A Skye-sziget","Edinburgh vára","Egy koncert"],"a":0},{"q":"Mit szeretne legközelebb?","o":["Télen menni és látni az északi fényt","Nyáron táborozni","Vonattal utazni"],"a":0}],"vocab":[{"it":"in a row","hu":"egymás után, sorban"},{"it":"to hire a car","hu":"autót bérelni"},{"it":"terrifying","hu":"rémisztő"},{"it":"the highlight","hu":"csúcspont, fénypont"},{"it":"a ferry","hu":"komp"}]},{"id":"en-p4","level":"B2","title":"The science of habits","hu":"A szokások tudománya","desc":"Rövid előadás arról, hogyan alakulnak ki és hogyan változtathatók meg a szokások.","cast":{"N":{"name":"Host","g":"f"},"D":{"name":"Dr Patel","g":"m"}},"lines":[{"s":"N","it":"Dr Patel, why is it so hard to change our habits?","hu":"Dr. Patel, miért olyan nehéz megváltoztatni a szokásainkat?"},{"s":"D","it":"Because habits are designed to save energy. Once a behaviour becomes automatic, the brain no longer has to think about it.","hu":"Mert a szokások energiát spórolnak. Ha egy viselkedés automatikussá válik, az agynak már nem kell gondolkodnia rajta."},{"s":"N","it":"So how does a habit actually form?","hu":"És hogyan alakul ki valójában egy szokás?"},{"s":"D","it":"Researchers often describe a loop: a cue, a routine, and a reward. The cue triggers the behaviour, and the reward makes us want to repeat it.","hu":"A kutatók gyakran egy körről beszélnek: jelzés, rutin és jutalom. A jelzés elindítja a viselkedést, a jutalom miatt pedig meg akarjuk ismételni."},{"s":"N","it":"Can you give an example?","hu":"Tudna példát mondani?"},{"s":"D","it":"Sure. You feel bored at work, that's the cue. You check your phone, that's the routine. And you get a little burst of novelty, which is the reward.","hu":"Persze. Unatkozol a munkában, ez a jelzés. Megnézed a telefonod, ez a rutin. És kapsz egy kis újdonságélményt, ez a jutalom."},{"s":"N","it":"That sounds very familiar. So what's the best way to break a bad habit?","hu":"Ez nagyon ismerős. Mi a legjobb módja egy rossz szokás elhagyásának?"},{"s":"D","it":"Rather than trying to rely on willpower, it's more effective to change the environment. If your phone is in another room, you simply won't check it as often.","hu":"Ahelyett, hogy az akaraterőre támaszkodnánk, hatékonyabb a környezetet megváltoztatni. Ha a telefonod a másik szobában van, egyszerűen ritkábban nézed meg."},{"s":"N","it":"And for building good habits, like learning a language?","hu":"És jó szokások kialakítására, mint például a nyelvtanulás?"},{"s":"D","it":"Make it small and attach it to something you already do. For example, ten minutes of vocabulary every morning with your first coffee.","hu":"Legyen kicsi, és kösd valamihez, amit már úgyis csinálsz. Például tíz perc szótanulás minden reggel az első kávéhoz."},{"s":"N","it":"How long does it take for something to become automatic?","hu":"Mennyi idő alatt válik valami automatikussá?"},{"s":"D","it":"It varies enormously. One well-known study found an average of around sixty-six days, but for some people it was much faster, and for others much slower.","hu":"Nagyon változó. Egy ismert kutatás átlagosan nagyjából hatvanhat napot talált, de volt, akinél sokkal gyorsabb, másnál sokkal lassabb volt."}],"questions":[{"q":"Miért nehéz szokást változtatni?","o":["Mert a szokások energiát spórolnak az agynak","Mert lusták vagyunk","Mert a szokások örökletesek"],"a":0},{"q":"Mi a szokáskör három eleme?","o":["Jelzés, rutin, jutalom","Cél, terv, eredmény","Akarat, idő, pénz"],"a":0},{"q":"Mit javasol a rossz szokások ellen?","o":["A környezet megváltoztatását","Több akaraterőt","Büntetést"],"a":0},{"q":"Mennyi idő alatt alakul ki átlagosan egy szokás az említett kutatásban?","o":["Kb. 66 nap","21 nap","Egy év"],"a":0}],"vocab":[{"it":"a cue","hu":"jelzés, kiváltó inger"},{"it":"a reward","hu":"jutalom"},{"it":"willpower","hu":"akaraterő"},{"it":"to rely on","hu":"támaszkodni valamire"},{"it":"enormously","hu":"rendkívül, óriási mértékben"}]},{"id":"en-p5","level":"B2","title":"Is AI changing the job market?","hu":"Megváltoztatja az MI a munkaerőpiacot?","desc":"Két szakértő vitája a mesterséges intelligencia hatásáról.","cast":{"N":{"name":"Host","g":"f"},"R":{"name":"Rachel","g":"f"},"T":{"name":"Tom","g":"m"}},"lines":[{"s":"N","it":"Today we're asking whether artificial intelligence will take our jobs. Rachel, you're optimistic.","hu":"Ma azt kérdezzük, elveszi-e a mesterséges intelligencia a munkánkat. Rachel, ön optimista."},{"s":"R","it":"I am. Every major technology has destroyed some jobs and created others. I think AI will mostly change how we work rather than replace us.","hu":"Igen. Minden nagy technológia megszüntetett bizonyos munkákat, és újakat teremtett. Szerintem az MI főleg azt változtatja meg, hogyan dolgozunk, nem helyettesít minket."},{"s":"N","it":"Tom, you're less convinced.","hu":"Tom, ön kevésbé meggyőződéses."},{"s":"T","it":"Admittedly, history is on Rachel's side. That said, this time the change is happening much faster, and it affects office jobs that were considered safe.","hu":"Kétségtelen, hogy a történelem Rachelt igazolja. Ugyanakkor most sokkal gyorsabb a változás, és olyan irodai munkákat is érint, amelyeket biztonságosnak tartottunk."},{"s":"R","it":"But speed isn't necessarily a bad thing if people are given the chance to retrain.","hu":"De a gyorsaság nem feltétlenül rossz, ha az emberek lehetőséget kapnak az átképzésre."},{"s":"T","it":"That's a big if. Retraining takes time and money, and not everyone has access to it.","hu":"Ez egy nagy „ha”. Az átképzés időbe és pénzbe kerül, és nem mindenki fér hozzá."},{"s":"N","it":"So what should governments do?","hu":"Mit kellene tenniük a kormányoknak?"},{"s":"T","it":"Invest heavily in education, and make sure the benefits of productivity gains are shared fairly.","hu":"Sokat fektetni az oktatásba, és gondoskodni arról, hogy a termelékenységnövekedés előnyei igazságosan oszoljanak meg."},{"s":"R","it":"On that, I completely agree. Where we differ is on how worried we should be.","hu":"Ebben teljesen egyetértek. Abban térünk el, mennyire kellene aggódnunk."},{"s":"N","it":"And what advice would you give our listeners?","hu":"És mit tanácsolnának a hallgatóinknak?"},{"s":"R","it":"Learn to use these tools rather than fear them. The people who benefit most will be those who combine AI with human skills.","hu":"Tanulják meg használni ezeket az eszközöket ahelyett, hogy félnének tőlük. Azok járnak a legjobban, akik az MI-t emberi készségekkel ötvözik."},{"s":"T","it":"And invest in the skills that are hardest to automate: communication, creativity and judgement.","hu":"És fektessenek a legnehezebben automatizálható készségekbe: kommunikáció, kreativitás és ítélőképesség."}],"questions":[{"q":"Mi Rachel fő álláspontja?","o":["Az MI inkább átalakítja a munkát, mint helyettesít","Az MI minden munkát elvesz","Az MI nem hat a munkára"],"a":0},{"q":"Mi aggasztja Tomot?","o":["A változás gyorsasága és az irodai munkák érintettsége","A gépek ára","Az áramfogyasztás"],"a":0},{"q":"Miben értenek egyet?","o":["Az oktatásba kell fektetni és igazságosan elosztani az előnyöket","Be kell tiltani az MI-t","Semmiben"],"a":0},{"q":"Milyen készségeket javasol Tom?","o":["Kommunikáció, kreativitás, ítélőképesség","Programozás","Gépírás"],"a":0}],"vocab":[{"it":"to retrain","hu":"átképezni (magát)"},{"it":"convinced","hu":"meggyőződött"},{"it":"productivity gains","hu":"termelékenységnövekedés"},{"it":"judgement","hu":"ítélőképesség"},{"it":"to automate","hu":"automatizálni"}]},{"id":"en-p6","level":"C1","title":"The art of small talk","hu":"A csevegés művészete","desc":"Miért fontos a small talk a brit kultúrában, és hogyan csináld jól.","cast":{"N":{"name":"Host","g":"f"},"O":{"name":"Oliver","g":"m"}},"lines":[{"s":"N","it":"Oliver, why do the British talk about the weather so much?","hu":"Oliver, miért beszélnek a britek annyit az időjárásról?"},{"s":"O","it":"It's not really about the weather. It's a social ritual, a safe way of saying 'I'm friendly and I'm open to a chat' without being intrusive.","hu":"Valójában nem az időjárásról szól. Társas rituálé, biztonságos módja annak, hogy azt mondjuk: „barátságos vagyok, és nyitott egy beszélgetésre” anélkül, hogy tolakodóak lennénk."},{"s":"N","it":"So the content doesn't matter much?","hu":"Tehát a tartalom nem nagyon számít?"},{"s":"O","it":"Hardly at all. What matters is the rhythm. Someone makes a comment, you agree and add a little something, and you pass the ball back.","hu":"Szinte egyáltalán nem. A ritmus számít. Valaki tesz egy megjegyzést, te egyetértesz, hozzáteszel valamit, és visszadobod a labdát."},{"s":"N","it":"Can you show us?","hu":"Megmutatnád?"},{"s":"O","it":"Of course. 'Bit chilly this morning, isn't it?' And you'd say something like, 'Freezing! Apparently it's going to warm up at the weekend, though.'","hu":"Persze. „Kicsit hűvös ma reggel, nem?” Te pedig valami ilyesmit mondanál: „Fagyos! Állítólag hétvégére azért melegszik.”"},{"s":"N","it":"And what are the common mistakes learners make?","hu":"És milyen gyakori hibákat követnek el a tanulók?"},{"s":"O","it":"Being too direct, mainly. Answering a casual question with a long, detailed answer, or asking very personal questions too early, like how much someone earns.","hu":"Főleg a túlzott egyenességet. Ha egy hétköznapi kérdésre hosszú, részletes választ adnak, vagy túl korán kérdeznek nagyon személyes dolgokat, például hogy mennyit keres valaki."},{"s":"N","it":"So 'How are you?' isn't really a question?","hu":"Szóval a „How are you?” nem igazi kérdés?"},{"s":"O","it":"In most contexts, no. 'Fine, thanks, and you?' is the expected answer, even if you've had a terrible week.","hu":"A legtöbb helyzetben nem. A „Fine, thanks, and you?” a várt válasz, még ha borzalmas heted is volt."},{"s":"N","it":"Any final tips?","hu":"Valami utolsó tipp?"},{"s":"O","it":"Listen more than you speak, show genuine interest, and have a few safe topics up your sleeve: travel, food, weekend plans. And don't be afraid of a little self-deprecating humour.","hu":"Többet hallgass, mint beszélj, mutass őszinte érdeklődést, és legyen pár biztonságos témád tartalékban: utazás, étel, hétvégi tervek. És ne félj egy kis önironikus humortól."}],"questions":[{"q":"Miről szól valójában az időjárásról való beszélgetés?","o":["Társas rituálé, barátságos jelzés","Pontos időjárási információ","Panaszkodás"],"a":0},{"q":"Mi számít leginkább a small talkban?","o":["A ritmus, a labda visszadobása","A tartalom pontossága","A nyelvtan"],"a":0},{"q":"Mi a gyakori hiba?","o":["A túlzott egyenesség és a túl személyes kérdések","A túl rövid válasz","Az időjárás említése"],"a":0},{"q":"Mi a várt válasz a How are you?-ra?","o":["Fine, thanks, and you?","Részletes beszámoló","Semmi"],"a":0}],"vocab":[{"it":"intrusive","hu":"tolakodó"},{"it":"a ritual","hu":"rituálé, szertartás"},{"it":"chilly","hu":"hűvös"},{"it":"up your sleeve","hu":"tartalékban"},{"it":"self-deprecating","hu":"önironikus, önmagát kicsinyítő"}]}]}
+{
+ "podcasts": [
+  {
+   "id": "en-p1",
+   "level": "A2",
+   "title": "Morning routines",
+   "hu": "Reggeli rutinok",
+   "desc": "Két kolléga arról beszélget, hogyan kezdik a napot.",
+   "cast": {
+    "A": {
+     "name": "Emma",
+     "g": "f"
+    },
+    "B": {
+     "name": "Jack",
+     "g": "m"
+    }
+   },
+   "lines": [
+    {
+     "s": "A",
+     "it": "Hi Jack. You always look so awake in the morning. What's your secret?",
+     "hu": "Szia Jack. Reggelente mindig olyan éber vagy. Mi a titkod?"
+    },
+    {
+     "s": "B",
+     "it": "Honestly? I go to bed early. Usually before eleven.",
+     "hu": "Őszintén? Korán fekszem. Általában tizenegy előtt."
+    },
+    {
+     "s": "A",
+     "it": "Before eleven! I'm usually still watching TV at midnight.",
+     "hu": "Tizenegy előtt! Én éjfélkor általában még tévézek."
+    },
+    {
+     "s": "B",
+     "it": "That's the problem. Then I get up at half past six and go for a short run.",
+     "hu": "Ez a gond. Aztán fél hétkor kelek, és futok egy rövidet."
+    },
+    {
+     "s": "A",
+     "it": "A run? Every day?",
+     "hu": "Futás? Minden nap?"
+    },
+    {
+     "s": "B",
+     "it": "Not every day. Three or four times a week. On the other days I just walk the dog.",
+     "hu": "Nem minden nap. Hetente háromszor-négyszer. A többi napon csak kutyát sétáltatok."
+    },
+    {
+     "s": "A",
+     "it": "And what do you have for breakfast?",
+     "hu": "És mit reggelizel?"
+    },
+    {
+     "s": "B",
+     "it": "Porridge with some fruit, and a big cup of coffee. I never skip breakfast.",
+     "hu": "Zabkását gyümölccsel, és egy nagy bögre kávét. Sosem hagyom ki a reggelit."
+    },
+    {
+     "s": "A",
+     "it": "I often skip it. I just grab a coffee on the way to work.",
+     "hu": "Én gyakran kihagyom. Munkába menet veszek egy kávét."
+    },
+    {
+     "s": "B",
+     "it": "Maybe that's why you're always tired by eleven o'clock!",
+     "hu": "Talán ezért vagy tizenegyre mindig fáradt!"
+    },
+    {
+     "s": "A",
+     "it": "Maybe you're right. I'll try your routine next week.",
+     "hu": "Talán igazad van. Jövő héten kipróbálom a rutinodat."
+    },
+    {
+     "s": "B",
+     "it": "Good luck. The first three days are the hardest.",
+     "hu": "Sok sikert. Az első három nap a legnehezebb."
+    }
+   ],
+   "questions": [
+    {
+     "q": "Mikor fekszik le általában Jack?",
+     "o": [
+      "Tizenegy előtt",
+      "Éjfélkor",
+      "Tízkor"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Milyen gyakran fut Jack?",
+     "o": [
+      "Hetente 3-4-szer",
+      "Minden nap",
+      "Soha"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Mit csinál Emma reggeli helyett?",
+     "o": [
+      "Kávét vesz munkába menet",
+      "Gyümölcsöt eszik",
+      "Fut"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Mi Jack szerint a legnehezebb?",
+     "o": [
+      "Az első három nap",
+      "A korai kelés",
+      "A futás"
+     ],
+     "a": 0
+    }
+   ],
+   "vocab": [
+    {
+     "it": "awake",
+     "hu": "éber"
+    },
+    {
+     "it": "to skip",
+     "hu": "kihagyni"
+    },
+    {
+     "it": "porridge",
+     "hu": "zabkása"
+    },
+    {
+     "it": "to grab",
+     "hu": "gyorsan venni, felkapni"
+    },
+    {
+     "it": "routine",
+     "hu": "rutin, napirend"
+    }
+   ]
+  },
+  {
+   "id": "en-p2",
+   "level": "B1",
+   "title": "Working from home",
+   "hu": "Otthoni munka",
+   "desc": "Egy rövid riport arról, hogyan változott meg a munka.",
+   "cast": {
+    "N": {
+     "name": "Host",
+     "g": "f"
+    },
+    "S": {
+     "name": "Sam",
+     "g": "m"
+    }
+   },
+   "lines": [
+    {
+     "s": "N",
+     "it": "Welcome to Everyday English. Today we're talking about working from home. My guest is Sam, a software developer from Leeds.",
+     "hu": "Üdv az Everyday Englishben. Ma az otthoni munkáról beszélgetünk. A vendégem Sam, egy leedsi szoftverfejlesztő."
+    },
+    {
+     "s": "S",
+     "it": "Thanks for having me.",
+     "hu": "Köszönöm a meghívást."
+    },
+    {
+     "s": "N",
+     "it": "Sam, how long have you been working from home?",
+     "hu": "Sam, mióta dolgozol otthonról?"
+    },
+    {
+     "s": "S",
+     "it": "For about four years now. At first it was strange, but now I can't imagine going back to the office every day.",
+     "hu": "Nagyjából négy éve. Eleinte furcsa volt, de most el sem tudom képzelni, hogy minden nap bejárjak az irodába."
+    },
+    {
+     "s": "N",
+     "it": "What do you like most about it?",
+     "hu": "Mit szeretsz benne a legjobban?"
+    },
+    {
+     "s": "S",
+     "it": "Definitely not having to commute. I used to spend almost two hours a day on the train.",
+     "hu": "Egyértelműen azt, hogy nem kell ingáznom. Régen majdnem napi két órát töltöttem a vonaton."
+    },
+    {
+     "s": "N",
+     "it": "And are there any downsides?",
+     "hu": "És vannak hátrányai?"
+    },
+    {
+     "s": "S",
+     "it": "Yes, it can get lonely. I miss chatting with colleagues over lunch. So now I go to the office twice a week.",
+     "hu": "Igen, néha magányos. Hiányoznak az ebéd közbeni beszélgetések a kollégákkal. Ezért most hetente kétszer bejárok."
+    },
+    {
+     "s": "N",
+     "it": "That sounds like a good balance. Any tips for people who are new to it?",
+     "hu": "Ez jó egyensúlynak hangzik. Van tipped azoknak, akik most kezdik?"
+    },
+    {
+     "s": "S",
+     "it": "Have a separate space for work, even if it's just a corner of a room. And take proper breaks. Go outside, get some fresh air.",
+     "hu": "Legyen külön munkahelyed, akár csak egy sarok a szobában. És tarts rendes szüneteket. Menj ki, szívj friss levegőt."
+    },
+    {
+     "s": "N",
+     "it": "Great advice. Thanks, Sam.",
+     "hu": "Remek tanács. Köszönöm, Sam."
+    },
+    {
+     "s": "S",
+     "it": "My pleasure.",
+     "hu": "Szívesen."
+    }
+   ],
+   "questions": [
+    {
+     "q": "Mióta dolgozik Sam otthonról?",
+     "o": [
+      "Kb. négy éve",
+      "Egy éve",
+      "Tíz éve"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Mit szeret a legjobban?",
+     "o": [
+      "Hogy nem kell ingáznia",
+      "A csendet",
+      "A rugalmas fizetést"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Mi a hátránya szerinte?",
+     "o": [
+      "Néha magányos",
+      "Drága",
+      "Zajos"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Milyen gyakran jár be most?",
+     "o": [
+      "Hetente kétszer",
+      "Soha",
+      "Minden nap"
+     ],
+     "a": 0
+    }
+   ],
+   "vocab": [
+    {
+     "it": "to commute",
+     "hu": "ingázni"
+    },
+    {
+     "it": "a downside",
+     "hu": "hátrány"
+    },
+    {
+     "it": "lonely",
+     "hu": "magányos"
+    },
+    {
+     "it": "a balance",
+     "hu": "egyensúly"
+    },
+    {
+     "it": "a proper break",
+     "hu": "rendes szünet"
+    }
+   ]
+  },
+  {
+   "id": "en-p3",
+   "level": "B1",
+   "title": "A trip to Scotland",
+   "hu": "Utazás Skóciába",
+   "desc": "Egy utazó meséli el skóciai kalandját.",
+   "cast": {
+    "N": {
+     "name": "Host",
+     "g": "f"
+    },
+    "L": {
+     "name": "Lucy",
+     "g": "f"
+    }
+   },
+   "lines": [
+    {
+     "s": "N",
+     "it": "Lucy, you've just come back from Scotland. How was it?",
+     "hu": "Lucy, most jöttél vissza Skóciából. Milyen volt?"
+    },
+    {
+     "s": "L",
+     "it": "Amazing, but not quite what I expected.",
+     "hu": "Csodálatos, de nem egészen olyan, amilyenre számítottam."
+    },
+    {
+     "s": "N",
+     "it": "Oh? What did you expect?",
+     "hu": "Ó? Mire számítottál?"
+    },
+    {
+     "s": "L",
+     "it": "Rain, mainly! Everyone told me it rains all the time. But we had sunshine for five days in a row.",
+     "hu": "Főleg esőre! Mindenki azt mondta, hogy állandóan esik. De öt napig egyfolytában sütött a nap."
+    },
+    {
+     "s": "N",
+     "it": "Lucky you. Where did you go?",
+     "hu": "Szerencsés vagy. Hová mentél?"
+    },
+    {
+     "s": "L",
+     "it": "We started in Edinburgh, then hired a car and drove up to the Highlands.",
+     "hu": "Edinburgh-ban kezdtünk, aztán béreltünk egy autót, és felmentünk a Felföldre."
+    },
+    {
+     "s": "N",
+     "it": "Driving on the left must have been a challenge.",
+     "hu": "A bal oldali közlekedés biztos kihívás volt."
+    },
+    {
+     "s": "L",
+     "it": "It was terrifying at first, especially on the narrow roads. But I got used to it after a day or two.",
+     "hu": "Eleinte rémisztő volt, főleg a keskeny utakon. De egy-két nap után megszoktam."
+    },
+    {
+     "s": "N",
+     "it": "What was the highlight?",
+     "hu": "Mi volt a csúcspont?"
+    },
+    {
+     "s": "L",
+     "it": "Probably the Isle of Skye. The landscape was unbelievable, and we saw dolphins from the ferry.",
+     "hu": "Talán a Skye-sziget. A táj hihetetlen volt, és a kompról delfineket láttunk."
+    },
+    {
+     "s": "N",
+     "it": "Would you go back?",
+     "hu": "Visszamennél?"
+    },
+    {
+     "s": "L",
+     "it": "Definitely. Next time I want to go in winter and see the northern lights.",
+     "hu": "Mindenképp. Legközelebb télen szeretnék menni, és megnézni az északi fényt."
+    }
+   ],
+   "questions": [
+    {
+     "q": "Mire számított Lucy?",
+     "o": [
+      "Sok esőre",
+      "Hóra",
+      "Hőségre"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Hogyan jutottak el a Felföldre?",
+     "o": [
+      "Bérelt autóval",
+      "Vonattal",
+      "Busszal"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Mi volt az utazás csúcspontja?",
+     "o": [
+      "A Skye-sziget",
+      "Edinburgh vára",
+      "Egy koncert"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Mit szeretne legközelebb?",
+     "o": [
+      "Télen menni és látni az északi fényt",
+      "Nyáron táborozni",
+      "Vonattal utazni"
+     ],
+     "a": 0
+    }
+   ],
+   "vocab": [
+    {
+     "it": "in a row",
+     "hu": "egymás után, sorban"
+    },
+    {
+     "it": "to hire a car",
+     "hu": "autót bérelni"
+    },
+    {
+     "it": "terrifying",
+     "hu": "rémisztő"
+    },
+    {
+     "it": "the highlight",
+     "hu": "csúcspont, fénypont"
+    },
+    {
+     "it": "a ferry",
+     "hu": "komp"
+    }
+   ]
+  },
+  {
+   "id": "en-p4",
+   "level": "B2",
+   "title": "The science of habits",
+   "hu": "A szokások tudománya",
+   "desc": "Rövid előadás arról, hogyan alakulnak ki és hogyan változtathatók meg a szokások.",
+   "cast": {
+    "N": {
+     "name": "Host",
+     "g": "f"
+    },
+    "D": {
+     "name": "Dr Patel",
+     "g": "m"
+    }
+   },
+   "lines": [
+    {
+     "s": "N",
+     "it": "Dr Patel, why is it so hard to change our habits?",
+     "hu": "Dr. Patel, miért olyan nehéz megváltoztatni a szokásainkat?"
+    },
+    {
+     "s": "D",
+     "it": "Because habits are designed to save energy. Once a behaviour becomes automatic, the brain no longer has to think about it.",
+     "hu": "Mert a szokások energiát spórolnak. Ha egy viselkedés automatikussá válik, az agynak már nem kell gondolkodnia rajta."
+    },
+    {
+     "s": "N",
+     "it": "So how does a habit actually form?",
+     "hu": "És hogyan alakul ki valójában egy szokás?"
+    },
+    {
+     "s": "D",
+     "it": "Researchers often describe a loop: a cue, a routine, and a reward. The cue triggers the behaviour, and the reward makes us want to repeat it.",
+     "hu": "A kutatók gyakran egy körről beszélnek: jelzés, rutin és jutalom. A jelzés elindítja a viselkedést, a jutalom miatt pedig meg akarjuk ismételni."
+    },
+    {
+     "s": "N",
+     "it": "Can you give an example?",
+     "hu": "Tudna példát mondani?"
+    },
+    {
+     "s": "D",
+     "it": "Sure. You feel bored at work, that's the cue. You check your phone, that's the routine. And you get a little burst of novelty, which is the reward.",
+     "hu": "Persze. Unatkozol a munkában, ez a jelzés. Megnézed a telefonod, ez a rutin. És kapsz egy kis újdonságélményt, ez a jutalom."
+    },
+    {
+     "s": "N",
+     "it": "That sounds very familiar. So what's the best way to break a bad habit?",
+     "hu": "Ez nagyon ismerős. Mi a legjobb módja egy rossz szokás elhagyásának?"
+    },
+    {
+     "s": "D",
+     "it": "Rather than trying to rely on willpower, it's more effective to change the environment. If your phone is in another room, you simply won't check it as often.",
+     "hu": "Ahelyett, hogy az akaraterőre támaszkodnánk, hatékonyabb a környezetet megváltoztatni. Ha a telefonod a másik szobában van, egyszerűen ritkábban nézed meg."
+    },
+    {
+     "s": "N",
+     "it": "And for building good habits, like learning a language?",
+     "hu": "És jó szokások kialakítására, mint például a nyelvtanulás?"
+    },
+    {
+     "s": "D",
+     "it": "Make it small and attach it to something you already do. For example, ten minutes of vocabulary every morning with your first coffee.",
+     "hu": "Legyen kicsi, és kösd valamihez, amit már úgyis csinálsz. Például tíz perc szótanulás minden reggel az első kávéhoz."
+    },
+    {
+     "s": "N",
+     "it": "How long does it take for something to become automatic?",
+     "hu": "Mennyi idő alatt válik valami automatikussá?"
+    },
+    {
+     "s": "D",
+     "it": "It varies enormously. One well-known study found an average of around sixty-six days, but for some people it was much faster, and for others much slower.",
+     "hu": "Nagyon változó. Egy ismert kutatás átlagosan nagyjából hatvanhat napot talált, de volt, akinél sokkal gyorsabb, másnál sokkal lassabb volt."
+    }
+   ],
+   "questions": [
+    {
+     "q": "Miért nehéz szokást változtatni?",
+     "o": [
+      "Mert a szokások energiát spórolnak az agynak",
+      "Mert lusták vagyunk",
+      "Mert a szokások örökletesek"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Mi a szokáskör három eleme?",
+     "o": [
+      "Jelzés, rutin, jutalom",
+      "Cél, terv, eredmény",
+      "Akarat, idő, pénz"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Mit javasol a rossz szokások ellen?",
+     "o": [
+      "A környezet megváltoztatását",
+      "Több akaraterőt",
+      "Büntetést"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Mennyi idő alatt alakul ki átlagosan egy szokás az említett kutatásban?",
+     "o": [
+      "Kb. 66 nap",
+      "21 nap",
+      "Egy év"
+     ],
+     "a": 0
+    }
+   ],
+   "vocab": [
+    {
+     "it": "a cue",
+     "hu": "jelzés, kiváltó inger"
+    },
+    {
+     "it": "a reward",
+     "hu": "jutalom"
+    },
+    {
+     "it": "willpower",
+     "hu": "akaraterő"
+    },
+    {
+     "it": "to rely on",
+     "hu": "támaszkodni valamire"
+    },
+    {
+     "it": "enormously",
+     "hu": "rendkívül, óriási mértékben"
+    }
+   ]
+  },
+  {
+   "id": "en-p5",
+   "level": "B2",
+   "title": "Is AI changing the job market?",
+   "hu": "Megváltoztatja az MI a munkaerőpiacot?",
+   "desc": "Két szakértő vitája a mesterséges intelligencia hatásáról.",
+   "cast": {
+    "N": {
+     "name": "Host",
+     "g": "f"
+    },
+    "R": {
+     "name": "Rachel",
+     "g": "f"
+    },
+    "T": {
+     "name": "Tom",
+     "g": "m"
+    }
+   },
+   "lines": [
+    {
+     "s": "N",
+     "it": "Today we're asking whether artificial intelligence will take our jobs. Rachel, you're optimistic.",
+     "hu": "Ma azt kérdezzük, elveszi-e a mesterséges intelligencia a munkánkat. Rachel, ön optimista."
+    },
+    {
+     "s": "R",
+     "it": "I am. Every major technology has destroyed some jobs and created others. I think AI will mostly change how we work rather than replace us.",
+     "hu": "Igen. Minden nagy technológia megszüntetett bizonyos munkákat, és újakat teremtett. Szerintem az MI főleg azt változtatja meg, hogyan dolgozunk, nem helyettesít minket."
+    },
+    {
+     "s": "N",
+     "it": "Tom, you're less convinced.",
+     "hu": "Tom, ön kevésbé meggyőződéses."
+    },
+    {
+     "s": "T",
+     "it": "Admittedly, history is on Rachel's side. That said, this time the change is happening much faster, and it affects office jobs that were considered safe.",
+     "hu": "Kétségtelen, hogy a történelem Rachelt igazolja. Ugyanakkor most sokkal gyorsabb a változás, és olyan irodai munkákat is érint, amelyeket biztonságosnak tartottunk."
+    },
+    {
+     "s": "R",
+     "it": "But speed isn't necessarily a bad thing if people are given the chance to retrain.",
+     "hu": "De a gyorsaság nem feltétlenül rossz, ha az emberek lehetőséget kapnak az átképzésre."
+    },
+    {
+     "s": "T",
+     "it": "That's a big if. Retraining takes time and money, and not everyone has access to it.",
+     "hu": "Ez egy nagy „ha”. Az átképzés időbe és pénzbe kerül, és nem mindenki fér hozzá."
+    },
+    {
+     "s": "N",
+     "it": "So what should governments do?",
+     "hu": "Mit kellene tenniük a kormányoknak?"
+    },
+    {
+     "s": "T",
+     "it": "Invest heavily in education, and make sure the benefits of productivity gains are shared fairly.",
+     "hu": "Sokat fektetni az oktatásba, és gondoskodni arról, hogy a termelékenységnövekedés előnyei igazságosan oszoljanak meg."
+    },
+    {
+     "s": "R",
+     "it": "On that, I completely agree. Where we differ is on how worried we should be.",
+     "hu": "Ebben teljesen egyetértek. Abban térünk el, mennyire kellene aggódnunk."
+    },
+    {
+     "s": "N",
+     "it": "And what advice would you give our listeners?",
+     "hu": "És mit tanácsolnának a hallgatóinknak?"
+    },
+    {
+     "s": "R",
+     "it": "Learn to use these tools rather than fear them. The people who benefit most will be those who combine AI with human skills.",
+     "hu": "Tanulják meg használni ezeket az eszközöket ahelyett, hogy félnének tőlük. Azok járnak a legjobban, akik az MI-t emberi készségekkel ötvözik."
+    },
+    {
+     "s": "T",
+     "it": "And invest in the skills that are hardest to automate: communication, creativity and judgement.",
+     "hu": "És fektessenek a legnehezebben automatizálható készségekbe: kommunikáció, kreativitás és ítélőképesség."
+    }
+   ],
+   "questions": [
+    {
+     "q": "Mi Rachel fő álláspontja?",
+     "o": [
+      "Az MI inkább átalakítja a munkát, mint helyettesít",
+      "Az MI minden munkát elvesz",
+      "Az MI nem hat a munkára"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Mi aggasztja Tomot?",
+     "o": [
+      "A változás gyorsasága és az irodai munkák érintettsége",
+      "A gépek ára",
+      "Az áramfogyasztás"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Miben értenek egyet?",
+     "o": [
+      "Az oktatásba kell fektetni és igazságosan elosztani az előnyöket",
+      "Be kell tiltani az MI-t",
+      "Semmiben"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Milyen készségeket javasol Tom?",
+     "o": [
+      "Kommunikáció, kreativitás, ítélőképesség",
+      "Programozás",
+      "Gépírás"
+     ],
+     "a": 0
+    }
+   ],
+   "vocab": [
+    {
+     "it": "to retrain",
+     "hu": "átképezni (magát)"
+    },
+    {
+     "it": "convinced",
+     "hu": "meggyőződött"
+    },
+    {
+     "it": "productivity gains",
+     "hu": "termelékenységnövekedés"
+    },
+    {
+     "it": "judgement",
+     "hu": "ítélőképesség"
+    },
+    {
+     "it": "to automate",
+     "hu": "automatizálni"
+    }
+   ]
+  },
+  {
+   "id": "en-p6",
+   "level": "C1",
+   "title": "The art of small talk",
+   "hu": "A csevegés művészete",
+   "desc": "Miért fontos a small talk a brit kultúrában, és hogyan csináld jól.",
+   "cast": {
+    "N": {
+     "name": "Host",
+     "g": "f"
+    },
+    "O": {
+     "name": "Oliver",
+     "g": "m"
+    }
+   },
+   "lines": [
+    {
+     "s": "N",
+     "it": "Oliver, why do the British talk about the weather so much?",
+     "hu": "Oliver, miért beszélnek a britek annyit az időjárásról?"
+    },
+    {
+     "s": "O",
+     "it": "It's not really about the weather. It's a social ritual, a safe way of saying 'I'm friendly and I'm open to a chat' without being intrusive.",
+     "hu": "Valójában nem az időjárásról szól. Társas rituálé, biztonságos módja annak, hogy azt mondjuk: „barátságos vagyok, és nyitott egy beszélgetésre” anélkül, hogy tolakodóak lennénk."
+    },
+    {
+     "s": "N",
+     "it": "So the content doesn't matter much?",
+     "hu": "Tehát a tartalom nem nagyon számít?"
+    },
+    {
+     "s": "O",
+     "it": "Hardly at all. What matters is the rhythm. Someone makes a comment, you agree and add a little something, and you pass the ball back.",
+     "hu": "Szinte egyáltalán nem. A ritmus számít. Valaki tesz egy megjegyzést, te egyetértesz, hozzáteszel valamit, és visszadobod a labdát."
+    },
+    {
+     "s": "N",
+     "it": "Can you show us?",
+     "hu": "Megmutatnád?"
+    },
+    {
+     "s": "O",
+     "it": "Of course. 'Bit chilly this morning, isn't it?' And you'd say something like, 'Freezing! Apparently it's going to warm up at the weekend, though.'",
+     "hu": "Persze. „Kicsit hűvös ma reggel, nem?” Te pedig valami ilyesmit mondanál: „Fagyos! Állítólag hétvégére azért melegszik.”"
+    },
+    {
+     "s": "N",
+     "it": "And what are the common mistakes learners make?",
+     "hu": "És milyen gyakori hibákat követnek el a tanulók?"
+    },
+    {
+     "s": "O",
+     "it": "Being too direct, mainly. Answering a casual question with a long, detailed answer, or asking very personal questions too early, like how much someone earns.",
+     "hu": "Főleg a túlzott egyenességet. Ha egy hétköznapi kérdésre hosszú, részletes választ adnak, vagy túl korán kérdeznek nagyon személyes dolgokat, például hogy mennyit keres valaki."
+    },
+    {
+     "s": "N",
+     "it": "So 'How are you?' isn't really a question?",
+     "hu": "Szóval a „How are you?” nem igazi kérdés?"
+    },
+    {
+     "s": "O",
+     "it": "In most contexts, no. 'Fine, thanks, and you?' is the expected answer, even if you've had a terrible week.",
+     "hu": "A legtöbb helyzetben nem. A „Fine, thanks, and you?” a várt válasz, még ha borzalmas heted is volt."
+    },
+    {
+     "s": "N",
+     "it": "Any final tips?",
+     "hu": "Valami utolsó tipp?"
+    },
+    {
+     "s": "O",
+     "it": "Listen more than you speak, show genuine interest, and have a few safe topics up your sleeve: travel, food, weekend plans. And don't be afraid of a little self-deprecating humour.",
+     "hu": "Többet hallgass, mint beszélj, mutass őszinte érdeklődést, és legyen pár biztonságos témád tartalékban: utazás, étel, hétvégi tervek. És ne félj egy kis önironikus humortól."
+    }
+   ],
+   "questions": [
+    {
+     "q": "Miről szól valójában az időjárásról való beszélgetés?",
+     "o": [
+      "Társas rituálé, barátságos jelzés",
+      "Pontos időjárási információ",
+      "Panaszkodás"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Mi számít leginkább a small talkban?",
+     "o": [
+      "A ritmus, a labda visszadobása",
+      "A tartalom pontossága",
+      "A nyelvtan"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Mi a gyakori hiba?",
+     "o": [
+      "A túlzott egyenesség és a túl személyes kérdések",
+      "A túl rövid válasz",
+      "Az időjárás említése"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Mi a várt válasz a How are you?-ra?",
+     "o": [
+      "Fine, thanks, and you?",
+      "Részletes beszámoló",
+      "Semmi"
+     ],
+     "a": 0
+    }
+   ],
+   "vocab": [
+    {
+     "it": "intrusive",
+     "hu": "tolakodó"
+    },
+    {
+     "it": "a ritual",
+     "hu": "rituálé, szertartás"
+    },
+    {
+     "it": "chilly",
+     "hu": "hűvös"
+    },
+    {
+     "it": "up your sleeve",
+     "hu": "tartalékban"
+    },
+    {
+     "it": "self-deprecating",
+     "hu": "önironikus, önmagát kicsinyítő"
+    }
+   ]
+  },
+  {
+   "id": "en-p7",
+   "level": "B1",
+   "title": "Lost in translation",
+   "hu": "Elveszve a fordításban",
+   "desc": "Egy londoni és egy New York-i kolléga a brit és az amerikai szóhasználaton nevet.",
+   "cast": {
+    "A": {
+     "name": "Oliver",
+     "g": "m",
+     "acc": "uk"
+    },
+    "B": {
+     "name": "Megan",
+     "g": "f",
+     "acc": "us"
+    }
+   },
+   "questions": [
+    {
+     "q": "Mit jelent a brit angolban a chips?",
+     "o": [
+      "Sült krumpli",
+      "Burgonyachips",
+      "Keksz"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Mi a brit first floor amerikai megfelelője?",
+     "o": [
+      "Second floor",
+      "Ground floor",
+      "First floor"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Mennyi idő a fortnight?",
+     "o": [
+      "Két hét",
+      "Egy hónap",
+      "Tíz nap"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Mit kér végül Megan?",
+     "o": [
+      "Kávét",
+      "Teát",
+      "Vizet"
+     ],
+     "a": 0
+    }
+   ],
+   "lines": [
+    {
+     "s": "A",
+     "it": "So, how was your first week in London?",
+     "hu": "Na, milyen volt az első heted Londonban?"
+    },
+    {
+     "s": "B",
+     "it": "Great, but confusing. I asked for the restroom and people looked at me strangely.",
+     "hu": "Nagyszerű, de zavarba ejtő. A mosdót kerestem, és furcsán néztek rám."
+    },
+    {
+     "s": "A",
+     "it": "Ha! Here we say the toilet, or the loo if you're being informal.",
+     "hu": "Ha! Itt toilet-nek mondjuk, vagy közvetlenebbül loo-nak."
+    },
+    {
+     "s": "B",
+     "it": "And yesterday I wanted fries, but the menu said chips.",
+     "hu": "Tegnap sült krumplit akartam, de az étlapon chips állt."
+    },
+    {
+     "s": "A",
+     "it": "Right. And what you call chips, we call crisps.",
+     "hu": "Igen. Amit ti chipsnek hívtok, azt mi crispsnek."
+    },
+    {
+     "s": "B",
+     "it": "That explains a lot. I also took the elevator to the wrong floor.",
+     "hu": "Ez sok mindent megmagyaráz. A liftbe is rossz emeletre mentem."
+    },
+    {
+     "s": "A",
+     "it": "The lift, you mean. And our ground floor is your first floor.",
+     "hu": "A liftbe, úgy érted. És a mi földszintünk nálatok az első emelet."
+    },
+    {
+     "s": "B",
+     "it": "So when you say first floor, it's actually one level up?",
+     "hu": "Szóval ha first floort mondasz, az valójában egy szinttel feljebb van?"
+    },
+    {
+     "s": "A",
+     "it": "Exactly. Don't worry, you'll get used to it in a fortnight.",
+     "hu": "Pontosan. Ne aggódj, két hét alatt megszokod."
+    },
+    {
+     "s": "B",
+     "it": "A fortnight? I'm going to need a dictionary.",
+     "hu": "Fortnight? Ehhez szótár kell."
+    },
+    {
+     "s": "A",
+     "it": "Two weeks. Fancy a cup of tea while you learn?",
+     "hu": "Két hét. Van kedved egy teához, amíg tanulsz?"
+    },
+    {
+     "s": "B",
+     "it": "Sure, but I'm getting coffee. Some habits don't change.",
+     "hu": "Persze, de én kávét kérek. Bizonyos szokások nem változnak."
+    }
+   ],
+   "vocab": [
+    {
+     "it": "the loo",
+     "hu": "vécé (brit, közvetlen)"
+    },
+    {
+     "it": "crisps",
+     "hu": "burgonyachips (brit)"
+    },
+    {
+     "it": "the lift",
+     "hu": "lift (brit)"
+    },
+    {
+     "it": "a fortnight",
+     "hu": "két hét (brit)"
+    },
+    {
+     "it": "Fancy a…?",
+     "hu": "Van kedved egy…? (brit)"
+    }
+   ]
+  },
+  {
+   "id": "en-p8",
+   "level": "B2",
+   "title": "The job offer",
+   "hu": "Az állásajánlat",
+   "desc": "Egy amerikai fejvadász telefonon ajánl állást egy manchesteri mérnöknek.",
+   "cast": {
+    "A": {
+     "name": "Ryan",
+     "g": "m",
+     "acc": "us"
+    },
+    "B": {
+     "name": "Charlotte",
+     "g": "f",
+     "acc": "uk"
+    }
+   },
+   "questions": [
+    {
+     "q": "Hány fős csapatot vezetne Charlotte?",
+     "o": [
+      "Nyolcat",
+      "Hármat",
+      "Tizenkettőt"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Milyen a munkarend?",
+     "o": [
+      "Hibrid, heti 3 nap iroda",
+      "Teljesen távmunka",
+      "Minden nap iroda"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Mit fedezne a cég?",
+     "o": [
+      "A költözést",
+      "Az autót",
+      "A lakbért"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Mikorra válaszol Charlotte?",
+     "o": [
+      "A hét végéig",
+      "Holnapig",
+      "Egy hónapon belül"
+     ],
+     "a": 0
+    }
+   ],
+   "lines": [
+    {
+     "s": "A",
+     "it": "Hi Charlotte, this is Ryan from Brightpath Recruiting. Is now a good time?",
+     "hu": "Szia Charlotte, Ryan vagyok a Brightpath Recruitingtől. Most alkalmas?"
+    },
+    {
+     "s": "B",
+     "it": "Yes, I've got a few minutes before my next meeting.",
+     "hu": "Igen, van pár percem a következő megbeszélésem előtt."
+    },
+    {
+     "s": "A",
+     "it": "Great. A client in Boston is looking for a senior engineer, and your profile really stood out.",
+     "hu": "Remek. Egy bostoni ügyfél vezető mérnököt keres, és a profilod nagyon kitűnt."
+    },
+    {
+     "s": "B",
+     "it": "That's flattering. What would the role involve?",
+     "hu": "Ez hízelgő. Mivel járna a munka?"
+    },
+    {
+     "s": "A",
+     "it": "Leading a team of eight and working closely with the product department.",
+     "hu": "Egy nyolcfős csapat vezetése és szoros együttműködés a termékosztállyal."
+    },
+    {
+     "s": "B",
+     "it": "Would I have to relocate, or is it remote?",
+     "hu": "Költöznöm kellene, vagy távmunka?"
+    },
+    {
+     "s": "A",
+     "it": "It's hybrid. Three days in the office, but they'd cover your relocation costs.",
+     "hu": "Hibrid. Heti három nap az irodában, de a költözés költségeit fedeznék."
+    },
+    {
+     "s": "B",
+     "it": "I see. And what sort of salary are we talking about?",
+     "hu": "Értem. És nagyjából milyen fizetésről beszélünk?"
+    },
+    {
+     "s": "A",
+     "it": "The range is quite competitive, plus stock options and a signing bonus.",
+     "hu": "A sáv elég versenyképes, plusz részvényopció és belépési bónusz."
+    },
+    {
+     "s": "B",
+     "it": "It sounds interesting, but I'd need to think it over and talk to my family.",
+     "hu": "Érdekesen hangzik, de át kell gondolnom, és beszélnem kell a családommal."
+    },
+    {
+     "s": "A",
+     "it": "Of course. Shall I send you the job description by email?",
+     "hu": "Persze. Elküldjem e-mailben a munkaköri leírást?"
+    },
+    {
+     "s": "B",
+     "it": "Please do. I'll get back to you by the end of the week.",
+     "hu": "Kérlek. A hét végéig jelentkezem."
+    }
+   ],
+   "vocab": [
+    {
+     "it": "to stand out",
+     "hu": "kitűnni"
+    },
+    {
+     "it": "to relocate",
+     "hu": "átköltözni (munka miatt)"
+    },
+    {
+     "it": "a signing bonus",
+     "hu": "belépési bónusz"
+    },
+    {
+     "it": "to think it over",
+     "hu": "átgondolni"
+    },
+    {
+     "it": "to get back to someone",
+     "hu": "visszajelezni valakinek"
+    }
+   ]
+  },
+  {
+   "id": "en-p9",
+   "level": "B2",
+   "title": "Two kitchens",
+   "hu": "Két konyha",
+   "desc": "Egy brit és egy amerikai szakács főzési kifejezéseken vitatkozik.",
+   "cast": {
+    "A": {
+     "name": "Harry",
+     "g": "m",
+     "acc": "uk"
+    },
+    "B": {
+     "name": "Ashley",
+     "g": "f",
+     "acc": "us"
+    }
+   },
+   "questions": [
+    {
+     "q": "Hány fokra kell előmelegíteni a sütőt (Celsius)?",
+     "o": [
+      "180",
+      "350",
+      "200"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Mi a plain flour amerikai neve?",
+     "o": [
+      "All-purpose flour",
+      "Bread flour",
+      "Cake flour"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Mivel mérnek sok amerikai receptben?",
+     "o": [
+      "Csészével",
+      "Grammal",
+      "Kanállal"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Mivel tálalja Harry a crumble-t?",
+     "o": [
+      "Vaníliasodóval",
+      "Fagylalttal",
+      "Tejszínnel"
+     ],
+     "a": 0
+    }
+   ],
+   "lines": [
+    {
+     "s": "A",
+     "it": "Right, today we're making a classic British crumble with American guest chef Ashley.",
+     "hu": "Nos, ma egy klasszikus brit crumble-t készítünk Ashley amerikai vendégséffel."
+    },
+    {
+     "s": "B",
+     "it": "Thanks, Harry. Back home we'd call this a crisp, but let's not argue.",
+     "hu": "Köszönöm, Harry. Otthon crispnek hívnánk, de ne vitatkozzunk."
+    },
+    {
+     "s": "A",
+     "it": "Too late. First, preheat the oven to one hundred and eighty degrees.",
+     "hu": "Késő. Először melegítsd elő a sütőt száznyolcvan fokra."
+    },
+    {
+     "s": "B",
+     "it": "That's Celsius, folks. In Fahrenheit, it's about three hundred and fifty.",
+     "hu": "Ez Celsius, emberek. Fahrenheitben nagyjából háromszázötven."
+    },
+    {
+     "s": "A",
+     "it": "Next, we need two hundred grams of plain flour.",
+     "hu": "Ezután kétszáz gramm finomliszt kell."
+    },
+    {
+     "s": "B",
+     "it": "We'd say all-purpose flour. And most Americans measure in cups, not grams.",
+     "hu": "Mi all-purpose flournak mondjuk. És a legtöbb amerikai csészével mér, nem grammal."
+    },
+    {
+     "s": "A",
+     "it": "Cups? How do you get it exactly right?",
+     "hu": "Csészével? Hogyan lesz az pontos?"
+    },
+    {
+     "s": "B",
+     "it": "Honestly, we don't always. That's part of the charm.",
+     "hu": "Őszintén? Nem mindig. Ez is a varázsához tartozik."
+    },
+    {
+     "s": "A",
+     "it": "Then rub in the butter until it looks like breadcrumbs.",
+     "hu": "Aztán dörzsöld bele a vajat, amíg morzsás nem lesz."
+    },
+    {
+     "s": "B",
+     "it": "And slice the apples thinly. Do you peel them?",
+     "hu": "Az almát pedig vékonyra szeleteld. Meghámozod?"
+    },
+    {
+     "s": "A",
+     "it": "Always. Serve it with custard, of course.",
+     "hu": "Mindig. És persze vaníliasodóval tálald."
+    },
+    {
+     "s": "B",
+     "it": "Or a scoop of vanilla ice cream. That's how we'd do it.",
+     "hu": "Vagy egy gombóc vaníliafagyival. Mi így csinálnánk."
+    }
+   ],
+   "vocab": [
+    {
+     "it": "to preheat",
+     "hu": "előmelegíteni"
+    },
+    {
+     "it": "plain flour",
+     "hu": "finomliszt (brit)"
+    },
+    {
+     "it": "to rub in",
+     "hu": "beledörzsölni"
+    },
+    {
+     "it": "to peel",
+     "hu": "meghámozni"
+    },
+    {
+     "it": "custard",
+     "hu": "vaníliasodó"
+    }
+   ]
+  },
+  {
+   "id": "en-p10",
+   "level": "C1",
+   "title": "Trust in the news",
+   "hu": "Bizalom a hírekben",
+   "desc": "Rádióvita egy brit műsorvezető és egy amerikai médiakutató között.",
+   "cast": {
+    "A": {
+     "name": "Eleanor",
+     "g": "f",
+     "acc": "uk"
+    },
+    "B": {
+     "name": "Dr Carter",
+     "g": "m",
+     "acc": "us"
+    }
+   },
+   "questions": [
+    {
+     "q": "Dr. Carter szerint az algoritmusok…",
+     "o": [
+      "Felerősítik, amire amúgy is kattintunk",
+      "Egyedül felelősek mindenért",
+      "Nem számítanak"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Mit helyeztek egyes lapok a pontosság elé?",
+     "o": [
+      "A gyorsaságot",
+      "A hirdetéseket",
+      "A politikát"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Mi ad okot az optimizmusra?",
+     "o": [
+      "Nőnek a minőségi előfizetések",
+      "Csökken a közösségi média",
+      "Új törvények"
+     ],
+     "a": 0
+    }
+   ],
+   "lines": [
+    {
+     "s": "A",
+     "it": "Trust in traditional media has fallen sharply. Dr Carter, why is that?",
+     "hu": "A hagyományos médiába vetett bizalom meredeken csökkent. Dr. Carter, mi ennek az oka?"
+    },
+    {
+     "s": "B",
+     "it": "Partly because people now curate their own news feeds, often without realising it.",
+     "hu": "Részben azért, mert ma mindenki maga állítja össze a hírfolyamát, gyakran észrevétlenül."
+    },
+    {
+     "s": "A",
+     "it": "So algorithms are to blame?",
+     "hu": "Tehát az algoritmusok a hibásak?"
+    },
+    {
+     "s": "B",
+     "it": "That would be oversimplifying. Algorithms amplify what we already click on.",
+     "hu": "Ez túlzott egyszerűsítés lenne. Az algoritmusok azt erősítik fel, amire amúgy is kattintunk."
+    },
+    {
+     "s": "A",
+     "it": "But surely newspapers bear some responsibility too?",
+     "hu": "De azért az újságok is felelősek valamennyire, nem?"
+    },
+    {
+     "s": "B",
+     "it": "Absolutely. Chasing clicks has led some outlets to prioritise speed over accuracy.",
+     "hu": "Feltétlenül. A kattintások hajszolása miatt egyes lapok a gyorsaságot a pontosság elé helyezték."
+    },
+    {
+     "s": "A",
+     "it": "What can ordinary listeners do about it?",
+     "hu": "Mit tehetnek ez ellen az átlagos hallgatók?"
+    },
+    {
+     "s": "B",
+     "it": "Check the source, look for a second outlet, and be wary of headlines that provoke outrage.",
+     "hu": "Nézzék meg a forrást, keressenek egy második hírforrást, és legyenek óvatosak a felháborodást keltő címekkel."
+    },
+    {
+     "s": "A",
+     "it": "Is there any reason for optimism?",
+     "hu": "Van ok az optimizmusra?"
+    },
+    {
+     "s": "B",
+     "it": "There is. Subscriptions to quality journalism are actually growing in many countries.",
+     "hu": "Van. A minőségi újságírásra való előfizetések sok országban valójában nőnek."
+    },
+    {
+     "s": "A",
+     "it": "So people are willing to pay for news they can trust.",
+     "hu": "Tehát az emberek hajlandók fizetni a megbízható hírekért."
+    },
+    {
+     "s": "B",
+     "it": "Precisely. Trust has become the most valuable thing a newsroom can offer.",
+     "hu": "Pontosan. A bizalom lett a legértékesebb, amit egy szerkesztőség kínálhat."
+    }
+   ],
+   "vocab": [
+    {
+     "it": "to curate",
+     "hu": "összeválogatni"
+    },
+    {
+     "it": "to oversimplify",
+     "hu": "túlegyszerűsíteni"
+    },
+    {
+     "it": "to amplify",
+     "hu": "felerősíteni"
+    },
+    {
+     "it": "an outlet",
+     "hu": "médium, hírforrás"
+    },
+    {
+     "it": "to be wary of",
+     "hu": "óvatosnak lenni valamivel"
+    }
+   ]
+  }
+ ]
+}

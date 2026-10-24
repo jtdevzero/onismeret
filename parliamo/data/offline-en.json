@@ -1,0 +1,663 @@
+{
+ "reads": [
+  {
+   "id": "r1",
+   "level": "B1",
+   "title": "The four-day week",
+   "hu": "A négynapos munkahét",
+   "text": "A growing number of companies are experimenting with a four-day working week. Employees work around thirty-two hours instead of forty, but their salary stays the same.\n\nThe results of recent trials have been surprisingly positive. Most workers said they felt less stressed and slept better. Many companies reported that productivity stayed the same or even increased, because people wasted less time in long meetings.\n\nHowever, the model does not suit every business. Hospitals, shops and restaurants need staff every day, so they would have to hire more people. Critics also worry that some employees might simply squeeze five days of work into four, which could make them more tired, not less.\n\nStill, after the trials ended, more than ninety per cent of the companies decided to continue with the shorter week.",
+   "gloss": {
+    "experimenting": "kísérletezik",
+    "salary": "fizetés",
+    "trials": "kísérletek, próbaidőszakok",
+    "productivity": "termelékenység",
+    "wasted": "elpazarolt",
+    "suit": "megfelel, illik",
+    "hire": "felvenni (munkára)",
+    "critics": "kritikusok",
+    "squeeze": "belepréselni",
+    "continue": "folytatni"
+   },
+   "questions": [
+    {
+     "q": "How many hours do people usually work in a four-day week?",
+     "o": [
+      "About 32",
+      "About 40",
+      "About 24"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Why did productivity stay the same in many companies?",
+     "o": [
+      "People spent less time in long meetings",
+      "They hired more staff",
+      "Salaries went up"
+     ],
+     "a": 0
+    },
+    {
+     "q": "What did most companies do after the trials?",
+     "o": [
+      "Continued with the shorter week",
+      "Went back to five days",
+      "Reduced salaries"
+     ],
+     "a": 0
+    }
+   ]
+  },
+  {
+   "id": "r2",
+   "level": "B1",
+   "title": "Why we forget names",
+   "hu": "Miért felejtjük el a neveket?",
+   "text": "Have you ever met someone at a party and forgotten their name thirty seconds later? You are not alone. Psychologists say this happens to almost everyone.\n\nOne reason is attention. When we meet a new person, we are often busy thinking about what to say next or how we look, so the name never really enters our memory.\n\nAnother reason is that names are arbitrary. A word like 'baker' tells you something about a person, but a name like 'Mark' does not. Our brains find it much easier to remember information that has meaning.\n\nThe good news is that there are simple tricks. Repeat the name immediately: 'Nice to meet you, Mark.' Then connect it to something you already know, like a friend with the same name. Finally, use it again at the end of the conversation.",
+   "gloss": {
+    "psychologists": "pszichológusok",
+    "attention": "figyelem",
+    "enters": "bekerül",
+    "arbitrary": "önkényes",
+    "meaning": "jelentés",
+    "tricks": "trükkök",
+    "immediately": "azonnal",
+    "connect": "összekapcsolni"
+   },
+   "questions": [
+    {
+     "q": "According to the text, why do we often not hear names properly?",
+     "o": [
+      "We are thinking about other things",
+      "Names are too long",
+      "Parties are too loud"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Why is 'baker' easier to remember than 'Mark'?",
+     "o": [
+      "It has meaning",
+      "It is shorter",
+      "It is more common"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Which trick is NOT mentioned?",
+     "o": [
+      "Writing the name down",
+      "Repeating the name",
+      "Connecting it to someone you know"
+     ],
+     "a": 0
+    }
+   ]
+  },
+  {
+   "id": "r3",
+   "level": "B2",
+   "title": "The return of the night train",
+   "hu": "Az éjszakai vonat visszatérése",
+   "text": "Ten years ago, night trains in Europe seemed to be heading for extinction. Cheap flights had made them look slow and old-fashioned, and many routes were cut.\n\nToday, the picture is very different. New sleeper services connect cities such as Vienna, Paris, Amsterdam and Budapest, and tickets often sell out weeks in advance. Part of the reason is environmental: a train journey produces a fraction of the emissions of a short-haul flight.\n\nBut climate concerns are not the whole story. Travellers say they enjoy falling asleep in one country and waking up in another, without the stress of airport security. For business travellers, an overnight train can also save the cost of a hotel.\n\nThe main obstacles are price and comfort. A private compartment can cost more than a plane ticket, and older carriages are cramped. Operators are now investing in modern cabins, hoping that comfort will win over those who still prefer to fly.",
+   "gloss": {
+    "extinction": "kihalás",
+    "routes": "útvonalak",
+    "sleeper": "hálókocsis",
+    "sell out": "elfogy",
+    "in advance": "előre",
+    "emissions": "kibocsátás",
+    "short-haul": "rövid távú",
+    "obstacles": "akadályok",
+    "compartment": "fülke",
+    "cramped": "szűkös"
+   },
+   "questions": [
+    {
+     "q": "Why did night trains almost disappear?",
+     "o": [
+      "Cheap flights made them seem slow",
+      "They were too expensive to build",
+      "Nobody needed to travel at night"
+     ],
+     "a": 0
+    },
+    {
+     "q": "What advantage for business travellers is mentioned?",
+     "o": [
+      "Saving the cost of a hotel",
+      "Free Wi-Fi",
+      "Faster journeys"
+     ],
+     "a": 0
+    },
+    {
+     "q": "What are operators doing to attract more passengers?",
+     "o": [
+      "Investing in modern cabins",
+      "Lowering all prices",
+      "Adding more stops"
+     ],
+     "a": 0
+    }
+   ]
+  },
+  {
+   "id": "r4",
+   "level": "B2",
+   "title": "Learning a language as an adult",
+   "hu": "Nyelvtanulás felnőttként",
+   "text": "It is often said that children learn languages more easily than adults. There is some truth in this, especially when it comes to pronunciation: people who start young are more likely to sound like native speakers.\n\nHowever, adults have important advantages. They already understand how grammar works in their first language, they can use dictionaries and apps, and they usually have clear reasons for learning, such as work or travel. Studies show that, in the early stages, adults actually progress faster than children.\n\nThe biggest difference is time. A child may hear a new language for thousands of hours, while an adult often studies for a couple of hours a week. Researchers therefore recommend small daily habits: ten minutes of listening, a few sentences spoken aloud, and regular review of vocabulary.\n\nIn short, age matters less than consistency.",
+   "gloss": {
+    "pronunciation": "kiejtés",
+    "native speakers": "anyanyelvi beszélők",
+    "advantages": "előnyök",
+    "stages": "szakaszok",
+    "progress": "haladni",
+    "therefore": "ezért",
+    "habits": "szokások",
+    "review": "ismétlés",
+    "consistency": "következetesség"
+   },
+   "questions": [
+    {
+     "q": "In which area do children clearly have an advantage?",
+     "o": [
+      "Pronunciation",
+      "Grammar",
+      "Vocabulary"
+     ],
+     "a": 0
+    },
+    {
+     "q": "What do studies say about the early stages?",
+     "o": [
+      "Adults progress faster",
+      "Children progress faster",
+      "There is no difference"
+     ],
+     "a": 0
+    },
+    {
+     "q": "What is the main message of the text?",
+     "o": [
+      "Consistency matters more than age",
+      "Adults cannot learn languages",
+      "Only apps can help adults"
+     ],
+     "a": 0
+    }
+   ]
+  },
+  {
+   "id": "r5",
+   "level": "C1",
+   "title": "The paradox of choice",
+   "hu": "A választás paradoxona",
+   "text": "Conventional wisdom holds that more choice makes us happier. If a supermarket offers fifty kinds of jam instead of five, surely every shopper will find exactly what they want.\n\nYet a famous experiment suggested otherwise. Shoppers who were shown a display of twenty-four jams were far less likely to buy anything than those who saw only six. Faced with too many options, people struggled to decide and often walked away empty-handed.\n\nPsychologists argue that abundant choice carries hidden costs. It raises our expectations, makes us more likely to regret our decision, and shifts the blame onto ourselves when things go wrong: with so many alternatives, a poor outcome feels like our own fault.\n\nThat said, later studies have painted a more nuanced picture. The effect appears strongest when options are hard to compare or when we lack clear preferences. Experts who know exactly what they are looking for tend to welcome a wider range.",
+   "gloss": {
+    "conventional wisdom": "általános vélekedés",
+    "suggested otherwise": "mást sugallt",
+    "display": "bemutató, kínálat",
+    "empty-handed": "üres kézzel",
+    "abundant": "bőséges",
+    "expectations": "elvárások",
+    "regret": "megbánni",
+    "shifts the blame": "áthárítja a felelősséget",
+    "nuanced": "árnyalt",
+    "preferences": "preferenciák, kívánságok"
+   },
+   "questions": [
+    {
+     "q": "What happened in the jam experiment?",
+     "o": [
+      "Fewer people bought jam when there were more options",
+      "More people bought jam when there were more options",
+      "Nobody bought any jam"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Which hidden cost of choice is mentioned?",
+     "o": [
+      "We are more likely to regret our decision",
+      "Products become more expensive",
+      "Shops become crowded"
+     ],
+     "a": 0
+    },
+    {
+     "q": "According to later studies, who welcomes more choice?",
+     "o": [
+      "People with clear preferences",
+      "Young shoppers",
+      "Nobody"
+     ],
+     "a": 0
+    }
+   ]
+  },
+  {
+   "id": "r6",
+   "level": "C1",
+   "title": "Remote work and the city",
+   "hu": "Távmunka és a város",
+   "text": "When offices emptied during the pandemic, many commentators predicted the decline of big cities. If people could work from anywhere, why would they pay high rents to live close to the office?\n\nThe reality has turned out to be more complicated. Some workers did move to smaller towns, attracted by cheaper housing and more space. Yet most major cities have retained their appeal, largely because of what they offer outside working hours: culture, restaurants, and the chance to meet new people.\n\nWhat has changed is the rhythm of city life. City-centre cafés and sandwich shops that depended on office workers are struggling, especially on Mondays and Fridays, when fewer people commute. Meanwhile, residential neighbourhoods have seen a boom in local businesses.\n\nUrban planners are now debating how to repurpose half-empty office buildings. Converting them into flats is one option, but it is expensive and technically challenging, so progress has been slow.",
+   "gloss": {
+    "commentators": "kommentátorok",
+    "predicted": "megjósolták",
+    "decline": "hanyatlás",
+    "retained": "megőrizték",
+    "appeal": "vonzerő",
+    "commute": "ingázik",
+    "residential": "lakó- (negyed)",
+    "boom": "fellendülés",
+    "repurpose": "más célra hasznosítani",
+    "converting": "átalakítás"
+   },
+   "questions": [
+    {
+     "q": "Why have most big cities kept their appeal?",
+     "o": [
+      "Because of what they offer outside work",
+      "Because rents have fallen",
+      "Because offices reopened fully"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Which businesses are struggling?",
+     "o": [
+      "City-centre cafés that served office workers",
+      "Neighbourhood shops",
+      "Restaurants in small towns"
+     ],
+     "a": 0
+    },
+    {
+     "q": "Why is converting offices into flats slow?",
+     "o": [
+      "It is expensive and technically difficult",
+      "Nobody wants to live there",
+      "It is illegal"
+     ],
+     "a": 0
+    }
+   ]
+  }
+ ],
+ "dialogs": [
+  {
+   "id": "d1",
+   "level": "A2",
+   "title": "At the café",
+   "hu": "A kávézóban",
+   "img": "en-u3",
+   "turns": [
+    {
+     "p": "Hi there! What can I get you?",
+     "phu": "Szia! Mit adhatok?",
+     "opts": [
+      {
+       "t": "Could I have a flat white, please?",
+       "ok": true,
+       "fb": "Udvarias és természetes."
+      },
+      {
+       "t": "Give me a coffee.",
+       "ok": false,
+       "fb": "Nyelvtanilag jó, de túl nyers. Mondd inkább: Could I have…, please?"
+      },
+      {
+       "t": "I would like that you give me a coffee.",
+       "ok": false,
+       "fb": "Tükörfordítás a magyarból. Helyesen: I'd like a coffee, please."
+      }
+     ]
+    },
+    {
+     "p": "Sure. Eat in or take away?",
+     "phu": "Persze. Itt fogyasztod vagy elvitelre?",
+     "opts": [
+      {
+       "t": "To take away, please.",
+       "ok": true,
+       "fb": "Pontos válasz."
+      },
+      {
+       "t": "For go.",
+       "ok": false,
+       "fb": "Az amerikaiak to go-t mondanak, a for go nem létezik."
+      },
+      {
+       "t": "I take it away.",
+       "ok": false,
+       "fb": "Érthető, de nem így mondjuk. To take away, please."
+      }
+     ]
+    },
+    {
+     "p": "Anything else? We've got fresh croissants.",
+     "phu": "Még valamit? Van friss croissant.",
+     "opts": [
+      {
+       "t": "Oh, go on then, I'll have one.",
+       "ok": true,
+       "fb": "Nagyon természetes brit fordulat: na jó, kérek egyet."
+      },
+      {
+       "t": "No, thank you, that's all.",
+       "ok": true,
+       "fb": "Udvarias és egyértelmű."
+      },
+      {
+       "t": "No. Nothing.",
+       "ok": false,
+       "fb": "Túl kurta. Tegyél hozzá egy thank you-t."
+      }
+     ]
+    },
+    {
+     "p": "That's four pounds twenty, please.",
+     "phu": "Az négy font húsz lesz.",
+     "opts": [
+      {
+       "t": "Can I pay by card?",
+       "ok": true,
+       "fb": "Helyes."
+      },
+      {
+       "t": "Can I pay with card?",
+       "ok": false,
+       "fb": "Érthető, de by card a megszokott."
+      },
+      {
+       "t": "How much it costs?",
+       "ok": false,
+       "fb": "Az árat már megmondta, és a kérdés szórendje is hibás: How much does it cost?"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d2",
+   "level": "B1",
+   "title": "A problem with your order",
+   "hu": "Gond a rendeléssel",
+   "img": "en-a5",
+   "turns": [
+    {
+     "p": "Customer service, Jenny speaking. How can I help?",
+     "phu": "Ügyfélszolgálat, Jenny vagyok. Miben segíthetek?",
+     "opts": [
+      {
+       "t": "Hi, I'm calling about an order I placed last week.",
+       "ok": true,
+       "fb": "Jó nyitás: rögtön elmondod, miért hívsz."
+      },
+      {
+       "t": "Hello, I have a problem.",
+       "ok": true,
+       "fb": "Rendben, de érdemes rögtön konkretizálni."
+      },
+      {
+       "t": "Hello, I want to complain you.",
+       "ok": false,
+       "fb": "Complain about something / to someone. Helyesen: I'd like to make a complaint."
+      }
+     ]
+    },
+    {
+     "p": "I'm sorry to hear that. What seems to be the problem?",
+     "phu": "Sajnálattal hallom. Mi a probléma?",
+     "opts": [
+      {
+       "t": "The jacket arrived, but it's the wrong size.",
+       "ok": true,
+       "fb": "Világos és pontos."
+      },
+      {
+       "t": "The jacket is arrived in wrong size.",
+       "ok": false,
+       "fb": "Az arrive nem szenvedő: The jacket arrived in the wrong size."
+      },
+      {
+       "t": "Your company is terrible.",
+       "ok": false,
+       "fb": "Ettől nem kapsz gyorsabb segítséget. Maradj tárgyszerű."
+      }
+     ]
+    },
+    {
+     "p": "Could I have your order number, please?",
+     "phu": "Megadná a rendelésszámot?",
+     "opts": [
+      {
+       "t": "Yes, it's 4-7-2-9-1.",
+       "ok": true,
+       "fb": "A számokat angolul egyenként szokás mondani."
+      },
+      {
+       "t": "Of course, just a second, let me find it.",
+       "ok": true,
+       "fb": "Természetes időnyerés."
+      },
+      {
+       "t": "I don't know it.",
+       "ok": false,
+       "fb": "Ha nincs meg, ajánlj mást: I don't have it with me, but my email is…"
+      }
+     ]
+    },
+    {
+     "p": "Thanks. Would you prefer an exchange or a refund?",
+     "phu": "Köszönöm. Cserét vagy visszatérítést szeretne?",
+     "opts": [
+      {
+       "t": "An exchange would be great, if you have it in a medium.",
+       "ok": true,
+       "fb": "Udvarias és konkrét."
+      },
+      {
+       "t": "I'd rather have a refund, please.",
+       "ok": true,
+       "fb": "Helyes: I'd rather + főnév."
+      },
+      {
+       "t": "I prefer that you give me the money back.",
+       "ok": false,
+       "fb": "Tükörfordítás. Mondd: I'd prefer a refund."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d3",
+   "level": "B2",
+   "title": "Asking for a pay rise",
+   "hu": "Fizetésemelést kérsz",
+   "img": "en-b4",
+   "turns": [
+    {
+     "p": "Come in. You wanted to talk to me about something?",
+     "phu": "Gyere be. Beszélni szerettél volna velem?",
+     "opts": [
+      {
+       "t": "Yes, thanks for making time. I'd like to discuss my salary.",
+       "ok": true,
+       "fb": "Udvarias, egyenes nyitás."
+      },
+      {
+       "t": "Yes. I want more money.",
+       "ok": false,
+       "fb": "Túl nyers. Tompítsd: I'd like to discuss my salary."
+      },
+      {
+       "t": "Yes, I would like to discuss about my salary.",
+       "ok": false,
+       "fb": "A discuss után nincs about: discuss my salary."
+      }
+     ]
+    },
+    {
+     "p": "I see. What makes you think it's the right time?",
+     "phu": "Értem. Miből gondolod, hogy most van itt az ideje?",
+     "opts": [
+      {
+       "t": "Over the past year I've taken on two major clients and led the new project.",
+       "ok": true,
+       "fb": "Konkrét eredményekkel érvelsz, ez a leghatásosabb."
+      },
+      {
+       "t": "Because everybody else got a rise.",
+       "ok": false,
+       "fb": "Mások helyzete gyenge érv. A saját eredményeidről beszélj."
+      },
+      {
+       "t": "Because I am working here since three years.",
+       "ok": false,
+       "fb": "Present perfect és for kell: I've been working here for three years."
+      }
+     ]
+    },
+    {
+     "p": "That's true, your work has been excellent. But budgets are tight this year.",
+     "phu": "Ez igaz, kiváló volt a munkád. De idén szűkös a költségvetés.",
+     "opts": [
+      {
+       "t": "I understand. Would it be possible to review it in six months?",
+       "ok": true,
+       "fb": "Rugalmas, de nem adod fel: időpontot kérsz a felülvizsgálatra."
+      },
+      {
+       "t": "I appreciate that. Could we look at other benefits, such as extra training?",
+       "ok": true,
+       "fb": "Jó alternatíva: nem pénzbeli juttatás."
+      },
+      {
+       "t": "Then I will leave.",
+       "ok": false,
+       "fb": "Ultimátum ilyen korán ritkán működik."
+      }
+     ]
+    },
+    {
+     "p": "Let me talk to HR and I'll get back to you next week.",
+     "phu": "Beszélek a HR-rel, és jövő héten visszajelzek.",
+     "opts": [
+      {
+       "t": "That sounds fair. Thank you for considering it.",
+       "ok": true,
+       "fb": "Pozitív, profi lezárás."
+      },
+      {
+       "t": "OK, but don't forget.",
+       "ok": false,
+       "fb": "Kicsit tiszteletlenül hangzik. Inkább: I look forward to hearing from you."
+      },
+      {
+       "t": "Thanks, I'm looking forward to hear from you.",
+       "ok": false,
+       "fb": "Look forward to + -ing: looking forward to hearing from you."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d4",
+   "level": "B1",
+   "title": "Meeting a new neighbour",
+   "hu": "Új szomszéd",
+   "img": "en-u2",
+   "turns": [
+    {
+     "p": "Hi! I think we're neighbours. I've just moved in next door.",
+     "phu": "Szia! Azt hiszem, szomszédok vagyunk. Most költöztem be a szomszédba.",
+     "opts": [
+      {
+       "t": "Oh, welcome! I'm Dóra. Nice to meet you.",
+       "ok": true,
+       "fb": "Barátságos, természetes."
+      },
+      {
+       "t": "Welcome! How do you do?",
+       "ok": false,
+       "fb": "A How do you do? nagyon formális, szomszédnak furcsa."
+      },
+      {
+       "t": "Yes. I know.",
+       "ok": false,
+       "fb": "Túl rideg. Üdvözöld és mutatkozz be."
+      }
+     ]
+    },
+    {
+     "p": "Nice to meet you too. Have you lived here long?",
+     "phu": "Én is örülök. Régóta laksz itt?",
+     "opts": [
+      {
+       "t": "About five years now. It's a lovely area.",
+       "ok": true,
+       "fb": "Jó válasz, és a beszélgetést is viszed tovább."
+      },
+      {
+       "t": "I live here since five years.",
+       "ok": false,
+       "fb": "Helyesen: I've lived here for five years."
+      },
+      {
+       "t": "Five.",
+       "ok": false,
+       "fb": "Túl rövid, és nem derül ki, mi öt."
+      }
+     ]
+    },
+    {
+     "p": "Is there a good supermarket nearby?",
+     "phu": "Van jó szupermarket a közelben?",
+     "opts": [
+      {
+       "t": "Yes, there's one just round the corner, next to the bakery.",
+       "ok": true,
+       "fb": "Pontos útbaigazítás."
+      },
+      {
+       "t": "Yes, it is a supermarket near.",
+       "ok": false,
+       "fb": "Létezésre there is kell: There's a supermarket nearby."
+      },
+      {
+       "t": "I don't go shopping.",
+       "ok": false,
+       "fb": "Ez nem segít. Próbálj útbaigazítást adni."
+      }
+     ]
+    },
+    {
+     "p": "Great, thanks. Well, let me know if you ever need anything.",
+     "phu": "Szuper, köszi. Szólj, ha bármire szükséged van.",
+     "opts": [
+      {
+       "t": "You too! See you around.",
+       "ok": true,
+       "fb": "Kedves, kötetlen búcsú."
+      },
+      {
+       "t": "Thanks, same here. Pop round for a coffee sometime.",
+       "ok": true,
+       "fb": "Nagyon természetes brit fordulat: ugorj át egyszer egy kávéra."
+      },
+      {
+       "t": "I don't need anything.",
+       "ok": false,
+       "fb": "Ez udvariassági fordulat volt, nem kérdés. Köszönd meg."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -101,8 +101,26 @@ const REMINDERS = [
   "Az ismétlések akkor működnek a legjobban, ha nem maradnak ki. Gyere vissza 10 percre!",
 ];
 
-/* Óránként fut: akinek most van a beállított órája, és ma még nem gyakorolt, kap egy emlékeztetőt. */
-export async function runReminders(kv, subject) {
+const WACT = { round: "napi kör", lesson: "új lecke", cards: "kártyák", pod: "podcast", exam: "vizsgafeladat", pron: "kiejtés", chat: "beszélgetés", read: "olvasás", build: "mondatépítő" };
+
+/* Vasárnapi heti összefoglaló a szinkronizált haladásból (ha van). */
+export function weeklySummary(state, tz, now = Date.now()) {
+  if (!state || !state.days) return "";
+  const today = Math.floor((now + tz * 60000) / 864e5);
+  let xp = 0, days = 0;
+  for (let d = today - 6; d <= today; d++) { const v = state.days[d] || 0; xp += v; if (v) days++; }
+  return `Heti összefoglaló: ${xp} XP, ${days} aktív nap a 7-ből.` + (days >= 5 ? " Szép munka!" : " Jövő héten jöhet több is!");
+}
+export function todayPlan(state, tz, now = Date.now()) {
+  const w = state && state.settings && state.settings.wplan;
+  if (!w) return "";
+  const k = w[new Date(now + tz * 60000).getUTCDay()];
+  return WACT[k] ? `A mai terved: ${WACT[k]}.` : "";
+}
+
+/* Óránként fut: akinek most van a beállított órája, és ma még nem gyakorolt, kap egy emlékeztetőt.
+   Vasárnap a heti összefoglalót mindenképp elküldi; ha van heti terv, az emlékeztető a mai feladatot is megmondja. */
+export async function runReminders(kv, subject, state) {
   let cursor;
   do {
     const page = await kv.list({ prefix: "sub:", cursor });
@@ -110,8 +128,11 @@ export async function runReminders(kv, subject) {
       const rec = await kv.get(k.name, "json");
       if (!rec) continue;
       const { hour, day } = localParts(rec.tz);
-      if (hour !== rec.hour || rec.lastDay === day || rec.sentDay === day) continue;
-      const status = await sendPush(kv, rec.sub, { title: "Parliamo", body: REMINDERS[new Date().getUTCDate() % REMINDERS.length], url: "./#ma" }, subject).catch(() => 0);
+      const sunday = new Date(Date.now() + rec.tz * 60000).getUTCDay() === 0;
+      const summary = sunday ? weeklySummary(state, rec.tz) : "";
+      if (hour !== rec.hour || rec.sentDay === day || (rec.lastDay === day && !summary)) continue;
+      const nudge = rec.lastDay === day ? "" : (todayPlan(state, rec.tz) + " " + REMINDERS[new Date().getUTCDate() % REMINDERS.length]).trim();
+      const status = await sendPush(kv, rec.sub, { title: "Parliamo", body: [summary, nudge].filter(Boolean).join(" "), url: "./#ma" }, subject).catch(() => 0);
       if (status === 404 || status === 410) await kv.delete(k.name);
       else await kv.put(k.name, JSON.stringify({ ...rec, sentDay: day }));
     }

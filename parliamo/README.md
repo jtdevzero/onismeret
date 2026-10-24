@@ -8,8 +8,11 @@ Angol, olasz és spanyol nyelvtanuló webapp, magyarul tanítva. Telepíthető a
 
 - **Három nyelv**, a fejléc nyelvválasztójával váltható. Új felhasználónak az angol az alapértelmezett. A leckék és a kártyák nyelvenként külön haladnak, az XP és a napi sorozat közös.
   - Angol (A1–C1): általános ág (12 lecke), haladó B2 ág (8 lecke: phrasal verbs, feltételes mondatok, szenvedő szerkezet, függő beszéd, panasz, used to, módbeli igék, érvelés), haladó C1 ág (8 lecke: óvatos fogalmazás, idiómák, formális és kötetlen stílus, inverzió, kollokációk, kiemelő szerkezetek, múltbeli következtetés, érvelés) és üzleti ág (10 lecke), 8 hangos történet, 50 rendhagyó ige, 5 célzott gyakorló (igeidők, névelők, elöljárók, phrasal verbs, feltételes mondatok).
-  - **Podcastok:** 6 hosszabb, felvett hangú beszélgetés A2-től C1-ig, rejthető szöveggel és fordítással, tempóváltással, kérdésekkel és szószedettel.
+  - **Podcastok:** 10 hosszabb, felvett hangú beszélgetés A2-től C1-ig (ebből 4 brit és amerikai szereplőkkel), rejthető szöveggel és fordítással, tempóváltással, kérdésekkel és szószedettel.
   - **Kiejtés magyaroknak:** 7 hangpár-csoport (th, w/v, rövid és hosszú i, æ, ʌ, szóvégi zöngés hangok, szóhangsúly). Hallás alapján választasz, aztán kimondod: az app megmondja, ha a párját hallotta (think helyett sink), a mondatoknál pedig szavanként jelöli, mit nem értett.
+  - **Brit vagy amerikai?** 20 mondat mindkét akcentussal felvéve: hallás alapján döntöd el, melyiket hallod, és a magyarázat megmutatja a különbséget. (Ausztrál és indiai hang a helyi hangkészletben nincs.)
+  - **Témakörös szócsomagok:** 15 csomag (orvos, ügyintézés, IT, pénzügy, repülőtér, szálloda, étterem, vásárlás, lakás, megbeszélés, állásinterjú, telefon és e-mail, sport, időjárás, érzelmek), egyenként 20 kifejezés felvett hanggal és példamondattal; egy gombbal a kártyák közé tehetők.
+  - **Mondatépítő:** magyar mondatot kapsz, kimondod vagy beírod, az AI szóban javít (a szóbeli vizsga fordítós feladatára).
   - **Vizsgafelkészítő** (B2 First / IELTS jelleggel): feleletválasztós szókitöltés, szóképzés, mondatátalakítás, AI-olvasásértés és esszé, amit az AI a négy hivatalos szempont szerint pontoz, mintaválasszal.
   - Olasz (A1–B1): 30 lecke, 549 kifejezés, 9 történet, 25 ige öt igeidőben, gyakorlók: kötőmód, imperfetto vagy passato prossimo, névelők, elöljárók.
   - Spanyol (A1–B1): 18 lecke, 324 kifejezés, 4 történet, 25 ige öt igeidőben, gyakorlók: ser vagy estar, indefinido vagy imperfecto, por vagy para.
@@ -21,6 +24,12 @@ Angol, olasz és spanyol nyelvtanuló webapp, magyarul tanítva. Telepíthető a
 - **Napi kör:** egy gombbal az esedékes ismétlések és az új szavak, kb. 10 perc.
 - **Fokozatos nehézség:** egy kifejezés előbb választós feladatban jön elő, aztán kirakósban, gépelve, diktálva, végül kimondva, ahogy egyre jobban megy.
 - **FSRS-4.5 ütemező, személyre szabva:** választható megtartási cél (85/90/95%), nehéznek jelölhető kártyák, és ha a valós emlékezésed eltér a céltól, az időközök maguktól igazodnak.
+- **Kéthetes terv a hibáidból:** az AI 14 napos, napi 10 perces tervet állít össze; az elején és a végén ugyanaz a felmérés méri a javulást.
+- **Haladási térkép és oklevél:** szintenként mérföldkövek, szintzáró teszt (80%-tól oklevél, képként menthető).
+- **Heti terv:** minden napra egy fő feladat, az app követi a teljesítést; az értesítés a napi tervet mondja, vasárnap heti összefoglalót küld.
+- **Net és AI nélkül is:** 6 kész olvasmány beépített szótárral és 4 választós párbeszéd visszajelzéssel.
+- **AI-költségfigyelés:** a szerver naplózza a havi használatot, a Beállításokban látod a becsült költséget; választható figyelmeztetési küszöb, és a szerveren kemény havi korlát (MONTHLY_BUDGET_USD).
+- **Biztonsági mentés:** szinkron mellett a szerver hetente automatikusan ment (utolsó 4), gombnyomásra visszaállítható.
 - **Havi hibaelemzés:** az app naplózza a hibáidat (leckék, gyakorlók, vizsga, beszélgetés, kiejtés); a Statisztikában az AI csoportosítja a visszatérő mintákat, és ezekből személyre szabott gyakorlót készít.
 - **A hibáim:** külön kör az elrontott kifejezésekből, a legtöbbször rontottakkal kezdve.
 - **Kiejtés:** kimondod a mondatot, a böngésző beszédfelismerése ellenőrzi (Chrome-ban és Safariban).
@@ -40,7 +49,7 @@ Az AI-funkciók (tanár, AI-történet, nyelvtani kérdések) egy kis saját sze
 - percenként legfeljebb 20 kérést enged,
 - csak beszélgetést továbbít, méretkorláttal, és csak a válasz szövegét adja vissza.
 
-A szerver tárolja a szinkronizált haladást is (ugyanabban a KV-tárolóban, a belépőkód mögött), és küldi a napi emlékeztetőt (Web Push): a feliratkozásokat egy Cloudflare KV tárolóban tartja, óránként ellenőrzi, kinek van most a beállított órája, és csak annak küld, aki aznap még nem gyakorolt. A push-kulcspárt első használatkor maga generálja.
+A szerver naplózza a havi AI-használatot (opcionális kemény korlát: `MONTHLY_BUDGET_USD` változó a `wrangler.toml`-ban), tárolja a szinkronizált haladást és a heti mentéseket is (ugyanabban a KV-tárolóban, a belépőkód mögött), és küldi a napi emlékeztetőt (Web Push): a feliratkozásokat egy Cloudflare KV tárolóban tartja, óránként ellenőrzi, kinek van most a beállított órája, és csak annak küld, aki aznap még nem gyakorolt. A push-kulcspárt első használatkor maga generálja.
 
 A szerver a `worker/` mappában van (Cloudflare Workers, ingyenes csomag elég). Modell: `claude-opus-5-5` (a `worker/wrangler.toml` `MODEL` sorában átírható). Biztonsági elutasításnál a szerver automatikusan tartalék modellt próbál (`fallbacks: "default"`).
 
@@ -88,10 +97,10 @@ cd parliamo && python3 -m http.server 8000   # majd: http://localhost:8000
 ```
 src/app.html          a teljes app (HTML, CSS, JS)
 index.html, sw.js     generált fájlok (build.py)
-data/                 tananyag: en/it/es.json, stories-*.json, verbs-*.json, drills-*.json, podcasts-en, pron-en, exam-en
-tools/                a saját tananyag forrása: content_en.py (haladó angol, történetek, gyakorlók), content_en2.py (C1, podcastok, kiejtés, vizsga), content_es.py (spanyol), content_drills.py
+data/                 tananyag: en/it/es.json, stories-*.json, verbs-*.json, drills-*.json, podcasts-en, pron-en, exam-en, accents-en, packs-en, offline-en
+tools/                a saját tananyag forrása: content_en.py (haladó angol, történetek, gyakorlók), content_en2.py (C1, podcastok, kiejtés, vizsga), content_en3.py (akcentus, szócsomagok, offline anyag), content_es.py (spanyol), content_drills.py
 audio/                felvett hangok (Kokoro neurális hang), leckénként / történetenként / igénként egy base64 JSON-csomag
-img/                  lecke- és helyzetillusztrációk
+img/                  lecke- és helyzetillusztrációk (webp)
 fonts/                Young Serif és Figtree helyben (SIL OFL)
 icons/, manifest.webmanifest   telepíthető app
 worker/               AI-szerver (Cloudflare Worker)

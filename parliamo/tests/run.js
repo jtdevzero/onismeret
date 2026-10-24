@@ -10,7 +10,7 @@ const PROXY = 'https://mock.workers.dev';
 let pass = 0, fail = 0;
 const ok = (cond, name, info) => { if (cond) { pass++; console.log('  ✓', name); } else { fail++; console.log('  ✗', name, info !== undefined ? '→ ' + JSON.stringify(info) : ''); } };
 
-const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.json': 'application/json', '.css': 'text/css', '.svg': 'image/svg+xml', '.jpg': 'image/jpeg', '.png': 'image/png', '.woff2': 'font/woff2', '.webmanifest': 'application/manifest+json' };
+const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.json': 'application/json', '.css': 'text/css', '.svg': 'image/svg+xml', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.png': 'image/png', '.woff2': 'font/woff2', '.webmanifest': 'application/manifest+json' };
 const server = http.createServer((req, res) => {
   const u = decodeURIComponent(new URL(req.url, 'http://x').pathname);
   const f = path.join(ROOT, u.endsWith('/') ? u + 'index.html' : u);
@@ -21,6 +21,11 @@ const server = http.createServer((req, res) => {
 
 /* Ál-AI: a prompt tartalma alapján ad vissza a kért JSON-szerkezetet. */
 function aiReply(prompt) {
+  if (/kéthetes \(14 napos\)/.test(prompt)) {
+    const it = k => ({ q: `Item ${k} ___ here.`, a: 'right', o: ['right', 'wrong', 'other'], why: 'Mert.' });
+    return { title: 'Névelők és igeidők', goal: 'Biztosan használod a névelőket.', days: Array.from({ length: 14 }, (_, d) => ({ t: `Nap ${d + 1}`, ex: 'Magyarázat.', items: [1, 2, 3, 4, 5].map(it) })), test: Array.from({ length: 10 }, (_, k) => it(k)) };
+  }
+  if (/Döntsd el, hogy a válasz helyes/.test(prompt)) return { ok: false, fix: 'Corrected sentence.', why: 'Kis hiba.' };
   if (/olvasásértési/.test(prompt)) return { title: 'Working from home', text: 'Para one about remote work.\n\nPara two about offices.', questions: Array.from({ length: 5 }, (_, i) => ({ q: 'Question ' + (i + 1) + '?', o: ['Right', 'Wrong A', 'Wrong B', 'Wrong C'], a: 0, why: 'Mert a szöveg ezt mondja.' })) };
   if (/vizsgáztató/.test(prompt)) return { scores: { content: 4, communicative: 3, organisation: 4, language: 3 }, comments: { content: 'Jó.', communicative: 'Rendben.', organisation: 'Világos.', language: 'Néhány hiba.' }, band: 'B2', summary: 'Összességében jó.', errors: [{ wrong: 'more better', right: 'better', why: 'Dupla fokozás.' }], model: 'A model answer.' };
   if (/elemezd egy magyar/.test(prompt)) return { summary: 'A névelőkkel gyűlik meg a bajod.', patterns: [{ title: 'Névelők', explain: 'A magyar mindig tesz névelőt.', examples: ['I like music.'] }], drill: [{ q: 'I like ___ music.', a: '–', o: ['–', 'the', 'a'], why: 'Általánosságban nincs névelő.' }, { q: 'She is ___ engineer.', a: 'an', o: ['an', 'a', 'the'], why: 'Foglalkozás előtt a/an.' }, { q: 'Bad item without blank', a: 'x', o: ['y'] }] };
@@ -36,6 +41,10 @@ function mockProxy(store) {
     if (req.headers()['x-app-key'] !== 'titok') return send(401, { error: 'unauthorized' });
     if (p === '/chat') { const r = aiReply(body.messages.map(m => m.content).join('\n')); return send(200, { text: typeof r === 'string' ? r : JSON.stringify(r) }); }
     if (p === '/sync/get') return send(200, store.rec || { rev: 0, state: null });
+    if (p === '/usage') return send(200, { month: '2026-10', calls: 42, in: 900000, out: 200000, cost: 7.6, months: [{ month: '2026-10', cost: 7.6 }, { month: '2026-09', cost: 3.1 }], budget: 0 });
+    if (p === '/sync/backups') return send(200, { list: (store.backups || []).map(b => ({ key: b.key, at: b.at, xp: b.state.xp })) });
+    if (p === '/sync/backup-now') { store.backups = [...(store.backups || []), { key: 'backup:' + Date.now(), at: Date.now(), state: store.rec.state }]; return send(200, { ok: true }); }
+    if (p === '/sync/backup-get') { const b = (store.backups || []).find(x => x.key === body.key); return b ? send(200, { state: b.state }) : send(404, {}); }
     if (p === '/sync/put') { const rev = store.rec ? store.rec.rev : 0; if (body.base !== rev) return send(409, { error: 'conflict', rev }); store.rec = { rev: rev + 1, state: body.state }; store.puts++; return send(200, { rev: rev + 1 }); }
     return send(404, { error: 'not_found' });
   };
@@ -50,7 +59,7 @@ function mockProxy(store) {
     const ctx = await browser.newContext({ viewport: { width: w, height: 860 }, serviceWorkers: 'block' });
     await ctx.route(PROXY + '/**', mockProxy(store));
     const p = await ctx.newPage(); p._errs = [];
-    p.on('pageerror', e => p._errs.push(e.message)); p.on('console', m => { if (m.type() === 'error' && !/Failed to load resource/.test(m.text())) p._errs.push(m.text()); });
+    p.on('pageerror', e => p._errs.push(e.message + (process.env.PSTACK ? ' @ ' + e.stack.split('\n').slice(1, 3).join(' ') : ''))); p.on('console', m => { if (m.type() === 'error' && !/Failed to load resource/.test(m.text())) p._errs.push(m.text()); });
     return { ctx, p };
   };
   const answerAll = async p => {
@@ -106,7 +115,7 @@ function mockProxy(store) {
 
   console.log('\n4. Podcastok');
   await p.evaluate(() => { go('gyakorlas'); }); await p.click('[data-d="pod"]');
-  ok(await p.locator('[data-p]').count() === 6, '6 epizód');
+  ok(await p.locator('[data-p]').count() === 10, '10 epizód');
   await p.click('[data-p="en-p1"]');
   ok(await p.evaluate(() => !!document.querySelector('#pdLines [aria-hidden="true"]')), 'a szöveg alapból rejtve');
   await p.click('#pdT'); ok(await p.evaluate(() => !document.querySelector('#pdLines [aria-hidden="true"]')), 'szöveg mutatása');
@@ -196,6 +205,64 @@ function mockProxy(store) {
   await C.p.waitForFunction(() => T.msgs.filter(m => m.r === 'me').length === 2 && !T.busy, null, { timeout: 40000 });
   ok(await C.p.evaluate(() => T.msgs.filter(m => m.r === 'me').map(m => m.it).join('|')) === 'I live in Budapest.|I like it here.', 'kéz nélkül: a tanár válasza után magától hallgat és küld');
   ok(C.p._errs.length === 0, 'nincs JS-hiba (beszéd)', C.p._errs.slice(0, 3));
+
+  console.log('\n11. Akcentus, szócsomagok, mondatépítő');
+  await p.evaluate(() => switchLang('en')); await p.waitForFunction(() => lang() === 'en' && XT.packs.length > 0);
+  await p.evaluate(() => go('gyakorlas')); await p.click('[data-d="acc"]');
+  const acc = await p.evaluate(() => AC.q.acc); await p.click(`[data-a="${acc}"]`);
+  ok(await p.evaluate(() => AC.ok === 1) && await p.locator('#acUk').count() === 1, 'brit/amerikai: pontoz, és mindkét változat meghallgatható');
+  ok(await p.evaluate(async () => { const d = await loadBundle('acc-en'); return !!(d && d['uk:' + XT.acc[0].it] && d['us:' + XT.acc[0].it]); }), 'mindkét akcentus fel van véve');
+  await p.evaluate(() => go('kartyak')); ok(await p.locator('[data-pk]').count() === 15, '15 szócsomag a Kártyák oldalon');
+  await p.click('[data-pk="doctor"]'); const before = await p.evaluate(() => ownList().length); await p.click('#pkAdd');
+  ok(await p.evaluate(b => ownList().length === b + 20 && POOL.filter(c => c.own).length === ownList().length, before), 'csomag felvétele: 20 új kártya');
+  ok(await p.evaluate(() => AUDIO_IDX['a sore throat'] === 'pk-en-doctor'), 'a csomag szavai felvett hangot kapnak');
+  await p.evaluate(() => go('gyakorlas')); await p.click('[data-d="build"]');
+  await p.fill('#sbIn', await p.evaluate(() => SB.c.it)); await p.click('#sbGo');
+  ok(await p.evaluate(() => SB.ok === 1), 'mondatépítő: pontos válasz AI nélkül is elfogadva');
+  await p.click('#sbNext'); await p.fill('#sbIn', 'something quite different'); await p.click('#sbGo'); await p.waitForSelector('#sbNext');
+  ok(await p.evaluate(() => SB.n === 2 && SB.res.fix === 'Corrected sentence.'), 'mondatépítő: eltérő válasznál az AI javít');
+
+  console.log('\n12. Kéthetes terv, térkép, oklevél, heti terv');
+  await p.evaluate(() => go('stat')); await p.click('#aPlan'); await p.waitForFunction(() => !!S.plan.en);
+  ok(await p.evaluate(() => S.plan.en.days.length === 14 && S.plan.en.test.length === 10), 'terv: 14 nap és 10 kérdéses felmérés');
+  await p.evaluate(() => go('ma')); await p.click('#plGo');
+  const answerQuiz = async right => { for (let k = 0; k < 20; k++) { if (!(await p.evaluate(() => !!QZ))) break; const i = await p.evaluate(r => { const it = QZ.items[QZ.i]; return r ? it._o.indexOf(it.a) : it._o.findIndex(x => x !== it.a); }, right); await p.click(`[data-o="${i}"]`); await p.click('#qgo'); } };
+  await answerQuiz(false);
+  ok(await p.evaluate(() => S.plan.en.pre === 0), 'kezdő felmérés eredménye elmentve');
+  await p.click('#plNext'); await answerQuiz(true);
+  ok(await p.evaluate(() => S.plan.en.days[0].done && (S.ev[today()] || {}).plan === 1), '1. nap teljesítve');
+  await p.evaluate(() => { S.plan.en.start = today() - 13; S.plan.en.days.forEach(d => d.done = true); save(); go('ma'); }); await p.click('#plGo'); await answerQuiz(true);
+  ok(await p.evaluate(() => S.plan.en.post === 10), 'zárófelmérés: javulás mérve (0 → 10)');
+  await p.evaluate(() => go('terkep'));
+  ok(await p.locator('.mile').count() >= 4, 'térkép: szintenkénti mérföldkövek');
+  await p.evaluate(() => { levelLessons('A1').forEach(x => S.lessons[x.L.id] = { done: true, best: 100, day: today() }); save(); renderMap(); });
+  await p.click('[data-test="A1"]'); await answerQuiz(true);
+  ok(await p.evaluate(() => S.certs['en-A1'] && S.certs['en-A1'].score === 100), 'szintzáró teszt: oklevél megszerezve');
+  await p.click('#tCert'); ok(await p.locator('svg[aria-label*="oklevél"]').count() === 1, 'oklevél megjelenik');
+  await p.evaluate(() => go('ma')); await p.click('#wEdit'); await p.click('#wSave');
+  ok(await p.evaluate(() => Object.keys(S.settings.wplan).length === 7) && await p.locator('.wcell').count() === 7, 'heti terv elmentve, 7 nap látszik');
+  await p.evaluate(() => { const k = S.settings.wplan[(today() + 4) % 7]; const a = WACT.find(x => x[0] === k); if (a && a[2]) incEv(a[2]); save(); renderHome(); });
+  ok(await p.evaluate(() => { const k = S.settings.wplan[(today() + 4) % 7]; return k === 'free' || wDone(today()) === true; }), 'a mai terv teljesítése látszik');
+
+  console.log('\n13. Offline olvasmány és párbeszéd');
+  await p.evaluate(() => go('gyakorlas')); await p.click('[data-d="read"]'); await p.click('[data-or="r1"]');
+  await p.click('.w >> text=productivity'); await p.waitForSelector('#wpop:not([hidden])');
+  ok(await p.locator('#wpop').textContent().then(t => /termelékenység/.test(t)), 'kész olvasmány: szótár AI nélkül');
+  await p.evaluate(() => go('tanar')); await p.click('[data-dl="d1"]');
+  for (let k = 0; k < 4; k++) { await p.click('[data-j="1"]'); const okNow = await p.evaluate(() => DL.d.turns[DL.i].opts[DL.pick].ok); if (!okNow) { const j = await p.evaluate(() => DL.d.turns[DL.i].opts.findIndex(o => o.ok)); await p.click(`[data-j="${j}"]`); } await p.click('#dlNext'); }
+  ok(await p.evaluate(() => S.dlg.d1 && S.dlg.d1.n === 4), 'kész párbeszéd végigvihető, visszajelzéssel');
+
+  console.log('\n14. AI-költség és szerveres mentések');
+  await p.evaluate(() => { S.settings.budget = 8; save(); go('ma'); }); await p.click('details.g summary'); await p.waitForFunction(() => /\$7\.60/.test(document.querySelector('#sUse').textContent));
+  ok(true, 'havi AI-használat megjelenik');
+  await p.evaluate(() => renderHome()); ok(await p.locator('.notice', { hasText: 'AI-költség' }).count() === 1, '80% felett figyelmeztet a kezdőlapon');
+  await p.click('details.g summary'); await p.click('#sBkNow'); await p.waitForSelector('[data-bk]');
+  const xpBefore = await p.evaluate(() => S.xp);
+  await p.evaluate(async () => { S.xp += 500; save(); await cloudSync(); });
+  await p.evaluate(() => { renderHome(); document.querySelector('details.g').open = true; }); await p.waitForSelector('[data-bk]');
+  await p.click('[data-bk]'); await p.click('[data-bk]'); await p.waitForFunction(x => S.xp === x && !cloudBusy, xpBefore);
+  ok(await p.evaluate(x => S.xp === x, xpBefore), 'visszaállítás mentésből');
+  ok(store.rec.state.xp === xpBefore, 'a visszaállított állapot a szerverre is felkerül', store.rec.state.xp);
 
   ok(p._errs.length === 0 && B.p._errs.length === 0, 'nincs JS-hiba', [...p._errs, ...B.p._errs].slice(0, 5));
   await browser.close(); server.close();
