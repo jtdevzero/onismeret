@@ -1,0 +1,266 @@
+# B1 – olasz alapszavak (szó|magyar)
+l'ambiente|környezet
+l'inquinamento|szennyezés
+il clima|éghajlat
+il rifiuto|hulladék
+il riciclaggio|újrahasznosítás
+l'energia|energia
+la natura|természet
+l'animale|állat
+la pianta|növény
+la società|társadalom
+la cultura|kultúra
+la tradizione|hagyomány
+la politica|politika
+il governo|kormány
+la legge|törvény
+il diritto|jog
+il dovere|kötelesség
+la libertà|szabadság
+la pace|béke
+la guerra|háború
+la storia|történelem; történet
+l'economia|gazdaság
+l'azienda|cég, vállalat
+l'impresa|vállalkozás
+il mercato del lavoro|munkaerőpiac
+la disoccupazione|munkanélküliség
+il successo|siker
+il fallimento|kudarc; csőd
+l'obiettivo|cél
+il progetto|projekt, terv
+la soluzione|megoldás
+la decisione|döntés
+l'opinione|vélemény
+il punto di vista|nézőpont
+il vantaggio|előny
+lo svantaggio|hátrány
+la possibilità|lehetőség
+l'occasione|alkalom
+il rischio|kockázat
+il pericolo|veszély
+la sicurezza|biztonság
+la paura|félelem
+la speranza|remény
+il sogno|álom
+il ricordo|emlék
+l'esperienza|tapasztalat
+la conoscenza|tudás, ismeret
+l'abilità|képesség
+la qualità|minőség
+la quantità|mennyiség
+il risultato|eredmény
+lo sviluppo|fejlődés
+la crescita|növekedés
+il cambiamento|változás
+il miglioramento|javulás
+la ricerca|kutatás
+la scienza|tudomány
+la tecnologia|technológia
+lo strumento|eszköz
+la rete|hálózat
+il social network|közösségi oldal
+lo smartphone|okostelefon
+l'applicazione|alkalmazás
+lo scopo|cél, rendeltetés
+il mezzo|eszköz; közép
+la relazione|kapcsolat; beszámoló
+il rapporto|kapcsolat, viszony
+la fiducia|bizalom
+il rispetto|tisztelet
+la gelosia|féltékenység
+il sentimento|érzés
+l'emozione|érzelem
+l'umore|hangulat
+lo stress|stressz
+la noia|unalom
+la fatica|fáradság
+il carattere|jellem
+la personalità|személyiség
+il comportamento|viselkedés
+l'abitudine|szokás
+lo stile di vita|életmód
+la dieta|étrend, diéta
+l'alimentazione|táplálkozás
+l'attività|tevékenység
+il tempo libero|szabadidő
+l'hobby|hobbi
+il volontariato|önkéntes munka
+l'associazione|egyesület
+la comunità|közösség
+la generazione|nemzedék
+la gioventù|ifjúság
+l'infanzia|gyermekkor
+l'anziano|idős ember
+la pensione|nyugdíj; panzió
+l'affitto|lakbér
+il mutuo|jelzáloghitel
+la bolletta|közüzemi számla
+la spesa|bevásárlás; kiadás
+il risparmio|megtakarítás
+il debito|adósság
+la tassa|adó, illeték
+il reddito|jövedelem
+la crisi|válság
+la protesta|tiltakozás
+lo sciopero|sztrájk
+il voto|szavazat; jegy (iskolai)
+le elezioni|választások
+il cittadino|állampolgár
+lo straniero|külföldi
+l'immigrazione|bevándorlás
+il permesso|engedély
+il documento|irat, dokumentum
+il modulo|űrlap
+la firma|aláírás
+la domanda di lavoro|álláspályázat
+il curriculum|önéletrajz
+la formazione|képzés
+la laurea|diploma (egyetemi)
+il titolo di studio|végzettség
+la materia|tantárgy
+la conferenza|konferencia; előadás
+l'argomento|téma; érv
+la discussione|vita, megbeszélés
+il dibattito|vita (nyilvános)
+il confronto|összehasonlítás
+l'esempio|példa
+la regola|szabály
+l'eccezione|kivétel
+la condizione|feltétel; állapot
+la situazione|helyzet
+il caso|eset; véletlen
+la causa|ok
+la conseguenza|következmény
+l'effetto|hatás
+lo sforzo|erőfeszítés
+la pazienza|türelem
+il coraggio|bátorság
+l'orgoglio|büszkeség
+la vergogna|szégyen
+la colpa|hiba, bűn
+la scusa|bocsánatkérés; kifogás
+il consiglio|tanács
+l'aiuto|segítség
+il sostegno|támogatás
+affrontare|szembenézni
+risolvere|megoldani
+migliorare|javítani, javulni
+peggiorare|romlani
+aumentare|növekedni, növelni
+diminuire|csökkenni
+ridurre|csökkenteni
+crescere|nőni
+sviluppare|fejleszteni
+creare|teremteni
+produrre|termelni
+organizzare|megszervezni
+gestire|kezelni, irányítani
+partecipare|részt venni
+contribuire|hozzájárulni
+condividere|megosztani
+proteggere|védeni
+evitare|elkerülni
+rischiare|kockáztatni
+permettere|megengedni
+impedire|megakadályozni
+convincere|meggyőzni
+discutere|megvitatni
+criticare|bírálni
+lamentarsi|panaszkodni
+scusarsi|bocsánatot kérni
+ringraziare|megköszönni
+promettere|megígérni
+accettare|elfogadni
+rifiutare|visszautasítani
+ammettere|beismerni
+negare|tagadni
+dimostrare|bizonyítani
+confrontare|összehasonlítani
+considerare|figyelembe venni, tartani valaminek
+rendersi conto|ráébredni
+accorgersi|észrevenni
+preoccuparsi|aggódni
+arrabbiarsi|mérgessé válni
+abituarsi|hozzászokni
+occuparsi|foglalkozni
+trasferirsi|elköltözni
+iscriversi|beiratkozni
+laurearsi|diplomát szerezni
+licenziare|elbocsátani
+assumere|alkalmazni, felvenni
+guadagnare|keresni (pénzt)
+investire|befektetni
+prestare|kölcsönadni
+restituire|visszaadni
+riparare|megjavítani
+rompere|eltörni
+sostituire|helyettesíteni
+mancare|hiányozni
+bastare|elég lenni
+succedere|történni
+sembrare|tűnni
+diventare|válni valamivé
+riuscire|sikerülni
+fallire|kudarcot vallani
+attuale|mai, jelenlegi
+recente|nemrégi
+precedente|előző
+successivo|következő
+principale|fő
+pubblico|nyilvános, köz-
+privato|magán
+sociale|társadalmi
+economico|gazdasági
+ambientale|környezeti
+politico|politikai
+culturale|kulturális
+efficace|hatékony
+utile|hasznos
+inutile|haszontalan
+grave|súlyos
+serio|komoly
+pericoloso|veszélyes
+sano|egészséges
+complicato|bonyolult
+semplice|egyszerű
+chiaro|világos
+evidente|nyilvánvaló
+probabile|valószínű
+raro|ritka
+comune|gyakori, közös
+normale|normális
+strano|furcsa
+sorprendente|meglepő
+deluso|csalódott
+soddisfatto|elégedett
+orgoglioso|büszke
+grato|hálás
+responsabile|felelős
+onesto|becsületes
+generoso|nagylelkű
+egoista|önző
+ottimista|derűlátó
+pessimista|borúlátó
+indipendente|független
+nonostante|annak ellenére, hogy
+tuttavia|mindazonáltal
+invece|ehelyett, viszont
+inoltre|ezenkívül
+infatti|valóban, ugyanis
+comunque|mindenesetre
+ovviamente|nyilvánvalóan
+soprattutto|főleg
+almeno|legalább
+circa|körülbelül
+appena|épp hogy, amint
+ormai|már (immár)
+eppure|mégis
+sebbene|bár
+affinché|azért, hogy
+a meno che|hacsak nem
+grazie a|-nak köszönhetően
+a causa di|miatt
+secondo me|szerintem
+in realtà|valójában
+d'accordo|egyetértek; rendben

@@ -1,0 +1,424 @@
+{
+ "serials": [
+  {
+   "id": "s1",
+   "level": "A2–B1",
+   "title": "La carta perdida",
+   "hu": "Az elveszett levél",
+   "img": "es-u12",
+   "desc": "Lucía egy sevillai antikváriumban talál egy hatvan éve el nem küldött szerelmes levelet, és elhatározza, hogy megkeresi a címzettjét.",
+   "cast": {
+    "N": {
+     "name": "",
+     "g": "f"
+    },
+    "A": {
+     "name": "Lucía",
+     "g": "f"
+    },
+    "B": {
+     "name": "Pablo",
+     "g": "m"
+    }
+   },
+   "chapters": [
+    {
+     "title": "El libro viejo",
+     "hu": "A régi könyv",
+     "lines": [
+      {
+       "s": "N",
+       "it": "Lucía trabajaba en una pequeña librería de segunda mano en Sevilla.",
+       "hu": "Lucía egy kis antikváriumban dolgozott Sevillában."
+      },
+      {
+       "s": "N",
+       "it": "Un martes por la tarde, abrió una caja de libros antiguos.",
+       "hu": "Egy kedd délután kinyitott egy doboz régi könyvet."
+      },
+      {
+       "s": "N",
+       "it": "Dentro de una novela encontró un sobre amarillo.",
+       "hu": "Az egyik regényben egy sárga borítékot talált."
+      },
+      {
+       "s": "A",
+       "it": "Pablo, mira esto. Es una carta de mil novecientos sesenta y cinco.",
+       "hu": "Pablo, nézd ezt. Egy 1965-ös levél."
+      },
+      {
+       "s": "B",
+       "it": "¿Está abierta?",
+       "hu": "Fel van bontva?"
+      },
+      {
+       "s": "A",
+       "it": "No. Nunca la enviaron. Tiene sello, pero no tiene matasellos.",
+       "hu": "Nem. Sosem adták fel. Van rajta bélyeg, de nincs lebélyegezve."
+      },
+      {
+       "s": "B",
+       "it": "¿A quién va dirigida?",
+       "hu": "Kinek szól?"
+      },
+      {
+       "s": "A",
+       "it": "A una tal Carmen Ruiz, calle de la Feria, número doce.",
+       "hu": "Egy bizonyos Carmen Ruiznak, Feria utca 12."
+      }
+     ],
+     "questions": [
+      {
+       "q": "Mit talált Lucía a regényben?",
+       "o": [
+        "Egy borítékot",
+        "Egy fényképet",
+        "Pénzt"
+       ],
+       "a": 0
+      },
+      {
+       "q": "Miért nem érkezett meg a levél?",
+       "o": [
+        "Sosem adták fel",
+        "Rossz volt a cím",
+        "Elveszett a postán"
+       ],
+       "a": 0
+      }
+     ]
+    },
+    {
+     "title": "La calle de la Feria",
+     "hu": "A Feria utca",
+     "lines": [
+      {
+       "s": "N",
+       "it": "El sábado, Lucía y Pablo fueron a la calle de la Feria.",
+       "hu": "Szombaton Lucía és Pablo elmentek a Feria utcába."
+      },
+      {
+       "s": "N",
+       "it": "En el número doce ya no había una casa, sino una panadería.",
+       "hu": "A 12-es szám alatt már nem ház volt, hanem egy pékség."
+      },
+      {
+       "s": "B",
+       "it": "Hace sesenta años de esto. Es normal que todo haya cambiado.",
+       "hu": "Ennek hatvan éve. Természetes, hogy minden megváltozott."
+      },
+      {
+       "s": "A",
+       "it": "Vamos a preguntar. A lo mejor alguien la conocía.",
+       "hu": "Kérdezzük meg. Talán valaki ismerte."
+      },
+      {
+       "s": "N",
+       "it": "La panadera era una señora mayor y muy simpática.",
+       "hu": "A pékné idős és nagyon kedves asszony volt."
+      },
+      {
+       "s": "A",
+       "it": "Perdone, ¿conoce a una mujer llamada Carmen Ruiz?",
+       "hu": "Elnézést, ismer egy Carmen Ruiz nevű asszonyt?"
+      },
+      {
+       "s": "N",
+       "it": "La señora se quedó en silencio un momento.",
+       "hu": "Az asszony egy pillanatra elhallgatott."
+      },
+      {
+       "s": "N",
+       "it": "\"Carmen era mi tía. Vivía aquí antes de casarse.\"",
+       "hu": "„Carmen a nagynéném volt. Itt lakott, mielőtt férjhez ment.”"
+      }
+     ],
+     "questions": [
+      {
+       "q": "Mi van most a 12-es szám alatt?",
+       "o": [
+        "Egy pékség",
+        "Egy könyvtár",
+        "Egy park"
+       ],
+       "a": 0
+      },
+      {
+       "q": "Ki volt Carmen a pékné számára?",
+       "o": [
+        "A nagynénje",
+        "Az anyja",
+        "A szomszédja"
+       ],
+       "a": 0
+      }
+     ]
+    },
+    {
+     "title": "Una historia de amor",
+     "hu": "Egy szerelmi történet",
+     "lines": [
+      {
+       "s": "N",
+       "it": "La panadera, que se llamaba Elena, les invitó a un café.",
+       "hu": "A pékné, akit Elenának hívtak, meghívta őket egy kávéra."
+      },
+      {
+       "s": "N",
+       "it": "\"Mi tía estaba enamorada de un chico del barrio. Se llamaba Antonio.\"",
+       "hu": "„A nagynéném szerelmes volt egy fiúba a negyedből. Antoniónak hívták.”"
+      },
+      {
+       "s": "N",
+       "it": "\"Un día, Antonio se fue a trabajar a Alemania y no volvió a escribir.\"",
+       "hu": "„Egy nap Antonio Németországba ment dolgozni, és nem írt többet.”"
+      },
+      {
+       "s": "A",
+       "it": "Pero sí escribió. La carta está aquí. Nunca la envió.",
+       "hu": "De igenis írt. Itt a levél. Csak sosem adta fel."
+      },
+      {
+       "s": "B",
+       "it": "¿Y qué pasó con Carmen?",
+       "hu": "És mi lett Carmennel?"
+      },
+      {
+       "s": "N",
+       "it": "\"Pensó que Antonio la había olvidado. Dos años después se casó con otro hombre.\"",
+       "hu": "„Azt hitte, Antonio elfelejtette. Két évvel később hozzáment egy másik férfihoz.”"
+      },
+      {
+       "s": "A",
+       "it": "¡Qué triste! ¿Todavía vive?",
+       "hu": "Milyen szomorú! Él még?"
+      },
+      {
+       "s": "N",
+       "it": "\"Sí. Tiene ochenta y cinco años y vive en Cádiz.\"",
+       "hu": "„Igen. Nyolcvanöt éves, és Cádizban él.”"
+      }
+     ],
+     "questions": [
+      {
+       "q": "Hová ment Antonio dolgozni?",
+       "o": [
+        "Németországba",
+        "Franciaországba",
+        "Madridba"
+       ],
+       "a": 0
+      },
+      {
+       "q": "Miért ment Carmen férjhez máshoz?",
+       "o": [
+        "Azt hitte, Antonio elfelejtette",
+        "A szülei kényszerítették",
+        "Antonio meghalt"
+       ],
+       "a": 0
+      }
+     ]
+    },
+    {
+     "title": "¿Abrir la carta?",
+     "hu": "Felbontsuk a levelet?",
+     "lines": [
+      {
+       "s": "N",
+       "it": "Esa noche, Lucía no podía dejar de pensar en la carta.",
+       "hu": "Aznap este Lucía nem tudta abbahagyni a levélre gondolást."
+      },
+      {
+       "s": "B",
+       "it": "¿Vamos a abrirla?",
+       "hu": "Felbontjuk?"
+      },
+      {
+       "s": "A",
+       "it": "No. No es nuestra. Es de Carmen.",
+       "hu": "Nem. Nem a miénk. Carmené."
+      },
+      {
+       "s": "B",
+       "it": "Tienes razón. Pero ¿y si le hace daño leerla ahora?",
+       "hu": "Igazad van. De mi van, ha most fájni fog neki elolvasni?"
+      },
+      {
+       "s": "A",
+       "it": "Eso no lo podemos decidir nosotros. Ella tiene derecho a saber la verdad.",
+       "hu": "Ezt nem mi dönthetjük el. Joga van megtudni az igazságot."
+      },
+      {
+       "s": "N",
+       "it": "Lucía llamó a Elena y le contó su idea.",
+       "hu": "Lucía felhívta Elenát, és elmondta neki az ötletét."
+      },
+      {
+       "s": "N",
+       "it": "\"Voy a hablar con mi tía primero. Si quiere, os espera el domingo.\"",
+       "hu": "„Előbb beszélek a nagynénémmel. Ha akarja, vasárnap vár titeket.”"
+      },
+      {
+       "s": "A",
+       "it": "Gracias, Elena. Esperaremos su respuesta.",
+       "hu": "Köszönjük, Elena. Várjuk a válaszát."
+      }
+     ],
+     "questions": [
+      {
+       "q": "Miért nem bontották fel a levelet?",
+       "o": [
+        "Mert Carmené",
+        "Mert le volt ragasztva",
+        "Mert féltek"
+       ],
+       "a": 0
+      },
+      {
+       "q": "Mit tesz először Elena?",
+       "o": [
+        "Beszél a nagynénjével",
+        "Elviszi a levelet",
+        "Felbontja a levelet"
+       ],
+       "a": 0
+      }
+     ]
+    },
+    {
+     "title": "Cádiz",
+     "hu": "Cádiz",
+     "lines": [
+      {
+       "s": "N",
+       "it": "El domingo por la mañana, cogieron el tren a Cádiz.",
+       "hu": "Vasárnap reggel vonatra ültek Cádiz felé."
+      },
+      {
+       "s": "N",
+       "it": "Carmen vivía en una casa blanca cerca del mar.",
+       "hu": "Carmen egy fehér házban lakott a tenger közelében."
+      },
+      {
+       "s": "N",
+       "it": "Era una mujer pequeña, con el pelo blanco y una sonrisa tranquila.",
+       "hu": "Alacsony asszony volt, fehér hajjal és nyugodt mosollyal."
+      },
+      {
+       "s": "A",
+       "it": "Señora Carmen, esta carta es para usted. La encontramos en un libro.",
+       "hu": "Carmen asszony, ez a levél önnek szól. Egy könyvben találtuk."
+      },
+      {
+       "s": "N",
+       "it": "Carmen reconoció la letra inmediatamente.",
+       "hu": "Carmen azonnal felismerte a kézírást."
+      },
+      {
+       "s": "N",
+       "it": "Abrió el sobre despacio y empezó a leer en silencio.",
+       "hu": "Lassan felbontotta a borítékot, és csendben olvasni kezdett."
+      },
+      {
+       "s": "N",
+       "it": "Después de un largo rato, levantó la mirada. Tenía lágrimas en los ojos.",
+       "hu": "Hosszú idő után felnézett. Könnyes volt a szeme."
+      },
+      {
+       "s": "N",
+       "it": "\"Me pedía que me fuera con él a Alemania. Me esperó en la estación.\"",
+       "hu": "„Azt kérte, menjek vele Németországba. Várt rám az állomáson.”"
+      }
+     ],
+     "questions": [
+      {
+       "q": "Mit ismert fel Carmen?",
+       "o": [
+        "A kézírást",
+        "A borítékot",
+        "A bélyeget"
+       ],
+       "a": 0
+      },
+      {
+       "q": "Mit kért Antonio a levélben?",
+       "o": [
+        "Hogy Carmen menjen vele",
+        "Hogy Carmen felejtse el",
+        "Pénzt"
+       ],
+       "a": 0
+      }
+     ]
+    },
+    {
+     "title": "El final",
+     "hu": "A vég",
+     "lines": [
+      {
+       "s": "A",
+       "it": "Lo siento mucho, Carmen. Quizás no debimos traérsela.",
+       "hu": "Nagyon sajnálom, Carmen. Talán nem kellett volna elhoznunk."
+      },
+      {
+       "s": "N",
+       "it": "\"No, hija. Me habéis dado un regalo. Toda mi vida pensé que no me quería.\"",
+       "hu": "„Nem, kislányom. Ajándékot adtatok nekem. Egész életemben azt hittem, nem szeretett.”"
+      },
+      {
+       "s": "N",
+       "it": "\"Tuve una buena vida, un buen marido y tres hijos. No me arrepiento.\"",
+       "hu": "„Jó életem volt, jó férjem és három gyerekem. Nem bánok semmit.”"
+      },
+      {
+       "s": "N",
+       "it": "\"Pero ahora sé que el primer amor también fue verdadero.\"",
+       "hu": "„De most már tudom, hogy az első szerelem is igazi volt.”"
+      },
+      {
+       "s": "B",
+       "it": "¿Sabe qué pasó con Antonio?",
+       "hu": "Tudja, mi lett Antonióval?"
+      },
+      {
+       "s": "N",
+       "it": "\"No. Pero quizás podáis ayudarme a encontrarlo. Solo para darle las gracias.\"",
+       "hu": "„Nem. De talán segíthettek megtalálni. Csak hogy megköszönjem neki.”"
+      },
+      {
+       "s": "A",
+       "it": "Claro que sí. Empezaremos mañana mismo.",
+       "hu": "Persze. Már holnap elkezdjük."
+      },
+      {
+       "s": "N",
+       "it": "En el tren de vuelta, Lucía miraba el mar y sonreía. La carta, por fin, había llegado.",
+       "hu": "A visszaúton Lucía a tengert nézte és mosolygott. A levél végre megérkezett."
+      }
+     ],
+     "questions": [
+      {
+       "q": "Hogyan érez Carmen a levél után?",
+       "o": [
+        "Hálás",
+        "Mérges",
+        "Közömbös"
+       ],
+       "a": 0
+      },
+      {
+       "q": "Mit kér Carmen a végén?",
+       "o": [
+        "Hogy segítsenek megtalálni Antoniót",
+        "Hogy vigyék vissza a levelet",
+        "Hogy ne meséljék el senkinek"
+       ],
+       "a": 0
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

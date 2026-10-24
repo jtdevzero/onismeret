@@ -1,0 +1,1125 @@
+{
+ "topics": [
+  {
+   "id": "art",
+   "title": "Névelők: il, lo, la, l', i, gli, le",
+   "level": "A1",
+   "intro": "Az olasz névelőt a főnév neme, száma és az utána következő szó kezdőhangja határozza meg. A magyarban egy névelő van (a/az), ezért ez eleinte sok figyelmet kíván.",
+   "table": {
+    "head": [
+     "",
+     "Határozott egyes",
+     "Határozott többes",
+     "Határozatlan"
+    ],
+    "rows": [
+     [
+      "hímnem, mássalhangzó",
+      "il libro",
+      "i libri",
+      "un libro"
+     ],
+     [
+      "hímnem, s+mássalh., z, gn, ps",
+      "lo studente",
+      "gli studenti",
+      "uno studente"
+     ],
+     [
+      "hímnem, magánhangzó",
+      "l'amico",
+      "gli amici",
+      "un amico"
+     ],
+     [
+      "nőnem, mássalhangzó",
+      "la casa",
+      "le case",
+      "una casa"
+     ],
+     [
+      "nőnem, magánhangzó",
+      "l'amica",
+      "le amiche",
+      "un'amica"
+     ]
+    ]
+   },
+   "points": [
+    "A névelő a közvetlenül utána jövő szóhoz igazodik: lo zio, de il mio zio.",
+    "Rokonnév előtt birtokos névmással egyes számban nincs névelő: mia madre, tuo fratello.",
+    "Általános értelemben is kell névelő: Il caffè fa bene. (A kávé jót tesz.)"
+   ],
+   "mistakes": [
+    "il studente → lo studente",
+    "la amica → l'amica",
+    "un'amico → un amico (hímnemnél nincs aposztróf)"
+   ],
+   "drill": [
+    {
+     "q": "___ zaino è pesante.",
+     "a": "Lo",
+     "o": [
+      "Lo",
+      "Il",
+      "La"
+     ],
+     "why": "z előtt lo."
+    },
+    {
+     "q": "Ho comprato ___ arancia.",
+     "a": "un'",
+     "o": [
+      "un'",
+      "un",
+      "uno"
+     ],
+     "why": "Nőnemű, magánhangzóval kezdődik: un'."
+    },
+    {
+     "q": "___ studenti sono in aula.",
+     "a": "Gli",
+     "o": [
+      "Gli",
+      "I",
+      "Le"
+     ],
+     "why": "s+mássalhangzó előtt többes számban gli."
+    },
+    {
+     "q": "Mi piace ___ musica classica.",
+     "a": "la",
+     "o": [
+      "la",
+      "il",
+      "–"
+     ],
+     "why": "Általános értelemben is kell névelő."
+    },
+    {
+     "q": "Questa è ___ madre.",
+     "a": "mia",
+     "o": [
+      "mia",
+      "la mia",
+      "il mio"
+     ],
+     "why": "Rokonnév egyes számban: névelő nélkül."
+    }
+   ]
+  },
+  {
+   "id": "pres",
+   "title": "Jelen idő: szabályos igék",
+   "level": "A1",
+   "intro": "Az olasz igék három csoportba tartoznak: -are, -ere, -ire. A végződésből kiderül a személy, ezért az alanyi névmást általában elhagyjuk, mint a magyarban.",
+   "table": {
+    "head": [
+     "",
+     "parlare",
+     "prendere",
+     "dormire",
+     "capire"
+    ],
+    "rows": [
+     [
+      "io",
+      "parlo",
+      "prendo",
+      "dormo",
+      "capisco"
+     ],
+     [
+      "tu",
+      "parli",
+      "prendi",
+      "dormi",
+      "capisci"
+     ],
+     [
+      "lui/lei",
+      "parla",
+      "prende",
+      "dorme",
+      "capisce"
+     ],
+     [
+      "noi",
+      "parliamo",
+      "prendiamo",
+      "dormiamo",
+      "capiamo"
+     ],
+     [
+      "voi",
+      "parlate",
+      "prendete",
+      "dormite",
+      "capite"
+     ],
+     [
+      "loro",
+      "parlano",
+      "prendono",
+      "dormono",
+      "capiscono"
+     ]
+    ]
+   },
+   "points": [
+    "A -care, -gare igék megtartják a kemény hangot: cerchi, paghiamo.",
+    "Néhány -ire ige -isc- betoldást kap: capire, finire, preferire, pulire.",
+    "A jelen idő közeli jövőre is használható: Domani parto. (Holnap indulok.)"
+   ],
+   "mistakes": [
+    "io parla → io parlo",
+    "loro parlono → loro parlano",
+    "tu capi → tu capisci"
+   ],
+   "drill": [
+    {
+     "q": "Noi ___ italiano ogni giorno.",
+     "a": "parliamo",
+     "o": [
+      "parliamo",
+      "parlamo",
+      "parlate"
+     ],
+     "why": "noi: -iamo."
+    },
+    {
+     "q": "Loro ___ alle otto.",
+     "a": "partono",
+     "o": [
+      "partono",
+      "partano",
+      "parteno"
+     ],
+     "why": "-ire ige, loro: -ono."
+    },
+    {
+     "q": "Tu ___ la lezione?",
+     "a": "capisci",
+     "o": [
+      "capisci",
+      "capi",
+      "capite"
+     ],
+     "why": "capire: -isc-."
+    },
+    {
+     "q": "Marco ___ il treno.",
+     "a": "prende",
+     "o": [
+      "prende",
+      "prendi",
+      "prenda"
+     ],
+     "why": "lui: -e."
+    },
+    {
+     "q": "Io ___ molto la sera.",
+     "a": "studio",
+     "o": [
+      "studio",
+      "studia",
+      "studi"
+     ],
+     "why": "io: -o."
+    }
+   ]
+  },
+  {
+   "id": "irr",
+   "title": "Gyakori rendhagyó igék",
+   "level": "A1",
+   "intro": "Az essere, avere, andare, fare, stare, venire, volere, potere, dovere a leggyakoribb igék, és rendhagyóak. Ezeket érdemes táblázatból, hangosan megtanulni.",
+   "table": {
+    "head": [
+     "",
+     "essere",
+     "avere",
+     "andare",
+     "fare"
+    ],
+    "rows": [
+     [
+      "io",
+      "sono",
+      "ho",
+      "vado",
+      "faccio"
+     ],
+     [
+      "tu",
+      "sei",
+      "hai",
+      "vai",
+      "fai"
+     ],
+     [
+      "lui/lei",
+      "è",
+      "ha",
+      "va",
+      "fa"
+     ],
+     [
+      "noi",
+      "siamo",
+      "abbiamo",
+      "andiamo",
+      "facciamo"
+     ],
+     [
+      "voi",
+      "siete",
+      "avete",
+      "andate",
+      "fate"
+     ],
+     [
+      "loro",
+      "sono",
+      "hanno",
+      "vanno",
+      "fanno"
+     ]
+    ]
+   },
+   "points": [
+    "Az avere sok magyar 'van' kifejezésben szerepel: ho fame, ho freddo, ho 20 anni.",
+    "A volere, potere, dovere után főnévi igenév jön: Voglio mangiare.",
+    "Az 'h' az avere alakjaiban néma: ho [o], hanno [anno]."
+   ],
+   "mistakes": [
+    "Sono 25 anni → Ho 25 anni",
+    "Sono fame → Ho fame",
+    "Io vo → Io vado"
+   ],
+   "drill": [
+    {
+     "q": "Quanti anni ___?",
+     "a": "hai",
+     "o": [
+      "hai",
+      "sei",
+      "fai"
+     ],
+     "why": "Kor: avere."
+    },
+    {
+     "q": "Noi ___ al cinema stasera.",
+     "a": "andiamo",
+     "o": [
+      "andiamo",
+      "andamo",
+      "vadiamo"
+     ],
+     "why": "andare, noi."
+    },
+    {
+     "q": "Che cosa ___ i tuoi genitori?",
+     "a": "fanno",
+     "o": [
+      "fanno",
+      "faccono",
+      "fano"
+     ],
+     "why": "fare, loro: fanno."
+    },
+    {
+     "q": "Io ___ molto stanco oggi.",
+     "a": "sono",
+     "o": [
+      "sono",
+      "ho",
+      "sto"
+     ],
+     "why": "Állapot melléknévvel: essere."
+    },
+    {
+     "q": "Ragazzi, ___ fame?",
+     "a": "avete",
+     "o": [
+      "avete",
+      "siete",
+      "hanno"
+     ],
+     "why": "fame: avere, voi."
+    }
+   ]
+  },
+  {
+   "id": "pp",
+   "title": "Passato prossimo",
+   "level": "A2",
+   "intro": "Befejezett múltbeli cselekvésekre a passato prossimót használjuk: avere vagy essere jelen ideje + participio. A nehézség az, hogy mikor kell essere.",
+   "table": {
+    "head": [
+     "Főnévi igenév",
+     "Participio",
+     "Példa"
+    ],
+    "rows": [
+     [
+      "-are",
+      "-ato",
+      "ho mangiato"
+     ],
+     [
+      "-ere",
+      "-uto",
+      "ho venduto"
+     ],
+     [
+      "-ire",
+      "-ito",
+      "sono partito/a"
+     ],
+     [
+      "fare",
+      "fatto",
+      "ho fatto"
+     ],
+     [
+      "vedere",
+      "visto",
+      "ho visto"
+     ],
+     [
+      "prendere",
+      "preso",
+      "ho preso"
+     ]
+    ]
+   },
+   "points": [
+    "Essere-vel: mozgás és változás igéi (andare, venire, arrivare, partire, uscire, nascere, morire), valamint az essere, stare, piacere és a visszaható igék.",
+    "Essere mellett a participio egyezik: Anna è andata, siamo arrivati.",
+    "Avere mellett nincs egyezés: Anna ha mangiato."
+   ],
+   "mistakes": [
+    "Ho andato → Sono andato",
+    "Maria è arrivato → Maria è arrivata",
+    "Ho fatuto → Ho fatto"
+   ],
+   "drill": [
+    {
+     "q": "Ieri Giulia ___ al mare.",
+     "a": "è andata",
+     "o": [
+      "è andata",
+      "ha andato",
+      "è andato"
+     ],
+     "why": "andare: essere + egyezés."
+    },
+    {
+     "q": "Noi ___ una pizza.",
+     "a": "abbiamo mangiato",
+     "o": [
+      "abbiamo mangiato",
+      "siamo mangiati",
+      "abbiamo mangiata"
+     ],
+     "why": "mangiare: avere."
+    },
+    {
+     "q": "Che cosa ___ sabato?",
+     "a": "hai fatto",
+     "o": [
+      "hai fatto",
+      "sei fatto",
+      "hai fatuto"
+     ],
+     "why": "fare: fatto."
+    },
+    {
+     "q": "I ragazzi ___ tardi.",
+     "a": "sono tornati",
+     "o": [
+      "sono tornati",
+      "hanno tornato",
+      "sono tornato"
+     ],
+     "why": "tornare: essere, többes szám."
+    },
+    {
+     "q": "Mi ___ il film.",
+     "a": "è piaciuto",
+     "o": [
+      "è piaciuto",
+      "ha piaciuto",
+      "sono piaciuto"
+     ],
+     "why": "piacere: essere."
+    }
+   ]
+  },
+  {
+   "id": "imp",
+   "title": "Imperfetto vagy passato prossimo?",
+   "level": "B1",
+   "intro": "Az imperfetto a háttér, a leírás és a szokás ideje, a passato prossimo az egyszeri, lezárt eseményé. Egy történetben gyakran együtt állnak: amíg valami tartott (imperfetto), történt valami (passato prossimo).",
+   "table": {
+    "head": [
+     "",
+     "Imperfetto",
+     "Passato prossimo"
+    ],
+    "rows": [
+     [
+      "Mire",
+      "leírás, szokás, háttér",
+      "egyszeri esemény"
+     ],
+     [
+      "Jelzőszavak",
+      "sempre, di solito, mentre",
+      "ieri, una volta, all'improvviso"
+     ],
+     [
+      "Példa",
+      "Da bambino giocavo a calcio.",
+      "Ieri ho giocato a calcio."
+     ]
+    ]
+   },
+   "points": [
+    "Képzés: -avo, -evo, -ivo (parlavo, prendevo, dormivo).",
+    "Rendhagyó: essere → ero, eri, era, eravamo, eravate, erano; fare → facevo.",
+    "Mentre leggevo, è squillato il telefono. (Miközben olvastam, megcsörrent a telefon.)"
+   ],
+   "mistakes": [
+    "Ieri ero al cinema e vedevo un film → ho visto (egyszeri esemény)",
+    "Da bambino sono andato sempre al mare → andavo (szokás)"
+   ],
+   "drill": [
+    {
+     "q": "Quando ero piccolo, ___ in campagna.",
+     "a": "abitavo",
+     "o": [
+      "abitavo",
+      "ho abitato",
+      "abito"
+     ],
+     "why": "Gyerekkori háttér: imperfetto."
+    },
+    {
+     "q": "Mentre ___, è arrivato Luca.",
+     "a": "cucinavo",
+     "o": [
+      "cucinavo",
+      "ho cucinato",
+      "cucino"
+     ],
+     "why": "mentre + imperfetto."
+    },
+    {
+     "q": "Ieri sera ___ un bel film.",
+     "a": "abbiamo visto",
+     "o": [
+      "abbiamo visto",
+      "vedevamo",
+      "vediamo"
+     ],
+     "why": "Egyszeri esemény."
+    },
+    {
+     "q": "Il cielo ___ grigio e faceva freddo.",
+     "a": "era",
+     "o": [
+      "era",
+      "è stato",
+      "è"
+     ],
+     "why": "Leírás: imperfetto."
+    },
+    {
+     "q": "All'improvviso ___ a piovere.",
+     "a": "è cominciato",
+     "o": [
+      "è cominciato",
+      "cominciava",
+      "comincia"
+     ],
+     "why": "all'improvviso: passato prossimo."
+    }
+   ]
+  },
+  {
+   "id": "prep",
+   "title": "Névelős elöljárók",
+   "level": "A2",
+   "intro": "A di, a, da, in, su elöljárók összeolvadnak a határozott névelővel. A magyar ragoknak felelnek meg, de a használatukat helyzetenként kell megtanulni.",
+   "table": {
+    "head": [
+     "",
+     "il",
+     "lo",
+     "la",
+     "i",
+     "gli",
+     "le"
+    ],
+    "rows": [
+     [
+      "di",
+      "del",
+      "dello",
+      "della",
+      "dei",
+      "degli",
+      "delle"
+     ],
+     [
+      "a",
+      "al",
+      "allo",
+      "alla",
+      "ai",
+      "agli",
+      "alle"
+     ],
+     [
+      "da",
+      "dal",
+      "dallo",
+      "dalla",
+      "dai",
+      "dagli",
+      "dalle"
+     ],
+     [
+      "in",
+      "nel",
+      "nello",
+      "nella",
+      "nei",
+      "negli",
+      "nelle"
+     ],
+     [
+      "su",
+      "sul",
+      "sullo",
+      "sulla",
+      "sui",
+      "sugli",
+      "sulle"
+     ]
+    ]
+   },
+   "points": [
+    "Városnév előtt a: Vado a Roma. Ország előtt in: Vado in Italia.",
+    "Személyhez da: Vado dal medico.",
+    "A con és a per ma már nem olvad össze."
+   ],
+   "mistakes": [
+    "Vado in Roma → Vado a Roma",
+    "Vado al dottore → Vado dal dottore (személyhez da)",
+    "in il cassetto → nel cassetto"
+   ],
+   "drill": [
+    {
+     "q": "Il libro è ___ tavolo.",
+     "a": "sul",
+     "o": [
+      "sul",
+      "su il",
+      "nel"
+     ],
+     "why": "su + il = sul."
+    },
+    {
+     "q": "Vado ___ dentista domani.",
+     "a": "dal",
+     "o": [
+      "dal",
+      "al",
+      "nel"
+     ],
+     "why": "Személyhez: da."
+    },
+    {
+     "q": "Abito ___ Milano.",
+     "a": "a",
+     "o": [
+      "a",
+      "in",
+      "da"
+     ],
+     "why": "Város: a."
+    },
+    {
+     "q": "Le chiavi sono ___ borsa.",
+     "a": "nella",
+     "o": [
+      "nella",
+      "in la",
+      "alla"
+     ],
+     "why": "in + la = nella."
+    },
+    {
+     "q": "Il profumo ___ fiori è intenso.",
+     "a": "dei",
+     "o": [
+      "dei",
+      "di i",
+      "degli"
+     ],
+     "why": "di + i = dei."
+    }
+   ]
+  },
+  {
+   "id": "pron",
+   "title": "Tárgyas és részes névmások",
+   "level": "A2",
+   "intro": "A hangsúlytalan névmások az ige elé kerülnek: Lo vedo. (Látom őt.) A magyarban ez gyakran ragként jelenik meg, ezért sokan kihagyják.",
+   "table": {
+    "head": [
+     "",
+     "Tárgyeset",
+     "Részeset"
+    ],
+    "rows": [
+     [
+      "engem/nekem",
+      "mi",
+      "mi"
+     ],
+     [
+      "téged/neked",
+      "ti",
+      "ti"
+     ],
+     [
+      "őt (ffi)/neki",
+      "lo",
+      "gli"
+     ],
+     [
+      "őt (nő)/neki",
+      "la",
+      "le"
+     ],
+     [
+      "minket/nekünk",
+      "ci",
+      "ci"
+     ],
+     [
+      "titeket/nektek",
+      "vi",
+      "vi"
+     ],
+     [
+      "őket/nekik",
+      "li / le",
+      "gli"
+     ]
+    ]
+   },
+   "points": [
+    "A névmás a ragozott ige elé kerül: La chiamo domani.",
+    "Főnévi igenévhez hozzáírjuk: Voglio chiamarla. (vagy: La voglio chiamare.)",
+    "Passato prossimóban lo/la után egyezik a participio: L'ho vista."
+   ],
+   "mistakes": [
+    "Vedo lui → Lo vedo (hangsúlytalan)",
+    "Gli ho telefonato a Maria → Le ho telefonato",
+    "L'ho visto (Annát) → L'ho vista"
+   ],
+   "drill": [
+    {
+     "q": "Conosci Marco? Sì, ___ conosco bene.",
+     "a": "lo",
+     "o": [
+      "lo",
+      "gli",
+      "la"
+     ],
+     "why": "Tárgy, hímnem: lo."
+    },
+    {
+     "q": "Hai scritto a Laura? Sì, ___ ho scritto.",
+     "a": "le",
+     "o": [
+      "le",
+      "la",
+      "gli"
+     ],
+     "why": "Részeset, nőnem: le."
+    },
+    {
+     "q": "Hai visto le ragazze? Sì, ___ ho viste.",
+     "a": "le",
+     "o": [
+      "le",
+      "li",
+      "gli"
+     ],
+     "why": "Tárgy, nőnem többes: le."
+    },
+    {
+     "q": "Puoi aiutar___?",
+     "a": "mi",
+     "o": [
+      "mi",
+      "me",
+      "io"
+     ],
+     "why": "Főnévi igenévhez írva: aiutarmi."
+    },
+    {
+     "q": "Ai bambini piace il gelato? Sì, ___ piace molto.",
+     "a": "gli",
+     "o": [
+      "gli",
+      "li",
+      "loro gli"
+     ],
+     "why": "Részeset többes szám: gli."
+    }
+   ]
+  },
+  {
+   "id": "rifl",
+   "title": "Visszaható igék",
+   "level": "A2",
+   "intro": "Sok mindennapi tevékenység visszaható ige: alzarsi (felkelni), lavarsi (mosakodni), chiamarsi (hívják valahogy). A visszaható névmás az ige elé kerül.",
+   "table": {
+    "head": [
+     "",
+     "alzarsi"
+    ],
+    "rows": [
+     [
+      "io",
+      "mi alzo"
+     ],
+     [
+      "tu",
+      "ti alzi"
+     ],
+     [
+      "lui/lei",
+      "si alza"
+     ],
+     [
+      "noi",
+      "ci alziamo"
+     ],
+     [
+      "voi",
+      "vi alzate"
+     ],
+     [
+      "loro",
+      "si alzano"
+     ]
+    ]
+   },
+   "points": [
+    "Passato prossimóban essere-vel állnak: Mi sono alzato alle sette.",
+    "Mi chiamo Anna = Annának hívnak.",
+    "Testrésznél nincs birtokos névmás: Mi lavo le mani. (Megmosom a kezem.)"
+   ],
+   "mistakes": [
+    "Io alzo alle sette → Io mi alzo alle sette",
+    "Mi ho svegliato → Mi sono svegliato",
+    "Lavo le mie mani → Mi lavo le mani"
+   ],
+   "drill": [
+    {
+     "q": "Come ti ___?",
+     "a": "chiami",
+     "o": [
+      "chiami",
+      "chiama",
+      "chiamo"
+     ],
+     "why": "tu: ti chiami."
+    },
+    {
+     "q": "Noi ___ alle sette.",
+     "a": "ci svegliamo",
+     "o": [
+      "ci svegliamo",
+      "si svegliamo",
+      "svegliamo"
+     ],
+     "why": "noi: ci."
+    },
+    {
+     "q": "Stamattina Paola ___ tardi.",
+     "a": "si è alzata",
+     "o": [
+      "si è alzata",
+      "ha alzata",
+      "si ha alzato"
+     ],
+     "why": "Visszaható: essere + egyezés."
+    },
+    {
+     "q": "I bambini ___ al parco.",
+     "a": "si divertono",
+     "o": [
+      "si divertono",
+      "divertono",
+      "ci divertono"
+     ],
+     "why": "loro: si."
+    },
+    {
+     "q": "Prima di mangiare mi lavo ___ mani.",
+     "a": "le",
+     "o": [
+      "le",
+      "mie",
+      "le mie"
+     ],
+     "why": "Testrésznél csak névelő."
+    }
+   ]
+  },
+  {
+   "id": "fut",
+   "title": "Jövő idő (futuro semplice)",
+   "level": "B1",
+   "intro": "A futuro semplice a jövőről és a jelenre vonatkozó feltevésről szól. Közeli, biztos jövőre a beszélt nyelv gyakran a jelen időt használja.",
+   "table": {
+    "head": [
+     "",
+     "parlare",
+     "prendere",
+     "partire"
+    ],
+    "rows": [
+     [
+      "io",
+      "parlerò",
+      "prenderò",
+      "partirò"
+     ],
+     [
+      "tu",
+      "parlerai",
+      "prenderai",
+      "partirai"
+     ],
+     [
+      "lui/lei",
+      "parlerà",
+      "prenderà",
+      "partirà"
+     ],
+     [
+      "noi",
+      "parleremo",
+      "prenderemo",
+      "partiremo"
+     ],
+     [
+      "voi",
+      "parlerete",
+      "prenderete",
+      "partirete"
+     ],
+     [
+      "loro",
+      "parleranno",
+      "prenderanno",
+      "partiranno"
+     ]
+    ]
+   },
+   "points": [
+    "Az -are igék -er- tővel képzik: parlerò (nem parlarò).",
+    "Rendhagyó tövek: essere → sarò, avere → avrò, andare → andrò, fare → farò, venire → verrò.",
+    "Feltevés: Sarà a casa. (Biztos otthon van.)"
+   ],
+   "mistakes": [
+    "Domani parlarò → parlerò",
+    "Io averò → avrò",
+    "Quando arrivo a Roma, ti chiamo / Quando arriverò a Roma, ti chiamerò (mindkettő jó)"
+   ],
+   "drill": [
+    {
+     "q": "L'anno prossimo ___ in Spagna.",
+     "a": "andremo",
+     "o": [
+      "andremo",
+      "anderemo",
+      "andiamo"
+     ],
+     "why": "andare: andr-."
+    },
+    {
+     "q": "Domani ___ bel tempo.",
+     "a": "farà",
+     "o": [
+      "farà",
+      "fara",
+      "fa"
+     ],
+     "why": "fare: far-."
+    },
+    {
+     "q": "Ti ___ appena arrivo.",
+     "a": "chiamerò",
+     "o": [
+      "chiamerò",
+      "chiamarò",
+      "chiamo"
+     ],
+     "why": "-are: -erò."
+    },
+    {
+     "q": "Dov'è Luca? ___ in ufficio.",
+     "a": "Sarà",
+     "o": [
+      "Sarà",
+      "È stato",
+      "Era"
+     ],
+     "why": "Feltevés: futuro."
+    },
+    {
+     "q": "Ragazzi, quando ___ tempo?",
+     "a": "avrete",
+     "o": [
+      "avrete",
+      "averete",
+      "avete"
+     ],
+     "why": "avere: avr-."
+    }
+   ]
+  },
+  {
+   "id": "cong",
+   "title": "Kötőmód (congiuntivo presente)",
+   "level": "B1",
+   "intro": "A congiuntivót vélemény, érzés, kívánság és bizonytalanság után használjuk, általában che után: Penso che sia vero. A magyar ezt nem jelöli külön, ezért sokszor kimarad.",
+   "table": {
+    "head": [
+     "",
+     "parlare",
+     "prendere",
+     "essere",
+     "avere"
+    ],
+    "rows": [
+     [
+      "che io",
+      "parli",
+      "prenda",
+      "sia",
+      "abbia"
+     ],
+     [
+      "che tu",
+      "parli",
+      "prenda",
+      "sia",
+      "abbia"
+     ],
+     [
+      "che lui/lei",
+      "parli",
+      "prenda",
+      "sia",
+      "abbia"
+     ],
+     [
+      "che noi",
+      "parliamo",
+      "prendiamo",
+      "siamo",
+      "abbiamo"
+     ],
+     [
+      "che voi",
+      "parliate",
+      "prendiate",
+      "siate",
+      "abbiate"
+     ],
+     [
+      "che loro",
+      "parlino",
+      "prendano",
+      "siano",
+      "abbiano"
+     ]
+    ]
+   },
+   "points": [
+    "Kiváltói: penso che, credo che, spero che, voglio che, è importante che, sebbene, affinché.",
+    "Ha a két tagmondat alanya ugyanaz, főnévi igenév jön: Spero di venire.",
+    "Biztos tényeknél kijelentő mód: So che è vero."
+   ],
+   "mistakes": [
+    "Penso che è vero → Penso che sia vero",
+    "Spero che io vengo → Spero di venire",
+    "So che sia vero → So che è vero"
+   ],
+   "drill": [
+    {
+     "q": "Penso che Marco ___ ragione.",
+     "a": "abbia",
+     "o": [
+      "abbia",
+      "ha",
+      "avrà"
+     ],
+     "why": "penso che + congiuntivo."
+    },
+    {
+     "q": "È importante che tu ___ presto.",
+     "a": "arrivi",
+     "o": [
+      "arrivi",
+      "arriva",
+      "arrivare"
+     ],
+     "why": "è importante che."
+    },
+    {
+     "q": "Spero che voi ___ bene.",
+     "a": "stiate",
+     "o": [
+      "stiate",
+      "state",
+      "stare"
+     ],
+     "why": "stare: stia, stiate."
+    },
+    {
+     "q": "Credo che loro ___ già partiti.",
+     "a": "siano",
+     "o": [
+      "siano",
+      "sono",
+      "sarebbero"
+     ],
+     "why": "credo che + essere."
+    },
+    {
+     "q": "So che lui ___ qui.",
+     "a": "è",
+     "o": [
+      "è",
+      "sia",
+      "fosse"
+     ],
+     "why": "Biztos tény: kijelentő mód."
+    }
+   ]
+  }
+ ]
+}

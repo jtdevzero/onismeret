@@ -1,0 +1,243 @@
+# A1 – spanyol alapszavak (szó|magyar)
+hola|szia
+buenos días|jó reggelt, jó napot
+buenas tardes|jó napot (délután)
+buenas noches|jó estét, jó éjszakát
+adiós|viszlát
+gracias|köszönöm
+de nada|szívesen
+por favor|kérem
+perdón|bocsánat
+sí|igen
+no|nem
+la persona|személy
+el hombre|férfi
+la mujer|nő
+el niño|gyerek, kisfiú
+la niña|kislány
+el chico|fiú, srác
+la chica|lány
+el amigo|barát
+la amiga|barátnő
+la familia|család
+la madre|anya
+el padre|apa
+el hermano|fiútestvér
+la hermana|lánytestvér
+el hijo|fia valakinek
+la hija|lánya valakinek
+el marido|férj
+la esposa|feleség
+el abuelo|nagyapa
+la abuela|nagymama
+la casa|ház, otthon
+el piso|lakás; emelet
+la habitación|szoba
+la cocina|konyha
+el baño|fürdőszoba
+la puerta|ajtó
+la ventana|ablak
+la cama|ágy
+la mesa|asztal
+la silla|szék
+la ciudad|város
+el país|ország
+el pueblo|falu
+la calle|utca
+la plaza|tér
+la tienda|bolt
+el mercado|piac
+el supermercado|szupermarket
+el banco|bank; pad
+el hospital|kórház
+la escuela|iskola
+la oficina|iroda
+la estación|pályaudvar
+el aeropuerto|repülőtér
+el tren|vonat
+el autobús|busz
+el coche|autó
+la bicicleta|kerékpár
+el billete|jegy
+la comida|étel; ebéd
+el agua|víz
+el café|kávé
+el té|tea
+la leche|tej
+el vino|bor
+la cerveza|sör
+el pan|kenyér
+el queso|sajt
+la carne|hús
+el pescado|hal (étel)
+el pollo|csirke
+el huevo|tojás
+la fruta|gyümölcs
+la manzana|alma
+la naranja|narancs
+la verdura|zöldség
+la ensalada|saláta
+la sal|só
+el azúcar|cukor
+el desayuno|reggeli
+la cena|vacsora
+el restaurante|étterem
+el bar|bár
+la cuenta|számla
+el día|nap
+la noche|éjszaka
+la mañana|reggel, délelőtt
+la tarde|délután
+hoy|ma
+mañana|holnap
+ayer|tegnap
+la semana|hét
+el mes|hónap
+el año|év
+la hora|óra (idő)
+el minuto|perc
+ahora|most
+siempre|mindig
+nunca|soha
+a menudo|gyakran
+lunes|hétfő
+martes|kedd
+miércoles|szerda
+jueves|csütörtök
+viernes|péntek
+sábado|szombat
+domingo|vasárnap
+uno|egy
+dos|kettő
+tres|három
+cuatro|négy
+cinco|öt
+seis|hat
+siete|hét
+ocho|nyolc
+nueve|kilenc
+diez|tíz
+veinte|húsz
+cien|száz
+mil|ezer
+ser|lenni (állandó)
+estar|lenni (állapot, hely)
+tener|birtokolni, van neki
+hacer|csinálni
+ir|menni
+venir|jönni
+decir|mondani
+hablar|beszélni
+comer|enni
+beber|inni
+dormir|aludni
+trabajar|dolgozni
+estudiar|tanulni
+vivir|élni, lakni
+querer|akarni; szeretni
+poder|tudni, -hat, -het
+deber|kell
+saber|tudni (ismeret)
+conocer|ismerni
+ver|látni
+mirar|nézni
+oír|hallani
+escuchar|hallgatni
+leer|olvasni
+escribir|írni
+entender|érteni
+llamar|hívni
+comprar|vásárolni
+pagar|fizetni
+costar|kerülni (ár)
+abrir|kinyitni
+cerrar|bezárni
+tomar|venni, inni
+dar|adni
+buscar|keresni
+encontrar|találni
+esperar|várni; remélni
+llegar|megérkezni
+salir|kimenni, elindulni
+volver|visszatérni
+entrar|belépni
+gustar|tetszeni
+cocinar|főzni
+jugar|játszani
+grande|nagy
+pequeño|kicsi
+bueno|jó
+malo|rossz
+bonito|szép
+feo|csúnya
+nuevo|új
+viejo|öreg, régi
+joven|fiatal
+caliente|forró, meleg
+frío|hideg
+caro|drága
+barato|olcsó
+fácil|könnyű
+difícil|nehéz
+feliz|boldog
+cansado|fáradt
+contento|elégedett
+largo|hosszú
+corto|rövid
+alto|magas
+bajo|alacsony
+primero|első
+último|utolsó
+rojo|piros
+azul|kék
+verde|zöld
+amarillo|sárga
+blanco|fehér
+negro|fekete
+aquí|itt
+allí|ott
+dónde|hol
+cuándo|mikor
+cómo|hogyan
+por qué|miért
+porque|mert
+qué|mi
+quién|ki
+cuánto|mennyi
+cuál|melyik
+muy|nagyon
+mucho|sok
+poco|kevés
+todo|minden
+también|is
+pero|de
+y|és
+o|vagy
+con|-val, -vel
+sin|nélkül
+para|számára, -ért
+la mano|kéz
+la cabeza|fej
+el ojo|szem
+el pie|láb (lábfej)
+el médico|orvos
+la farmacia|gyógyszertár
+el teléfono|telefon
+el libro|könyv
+el idioma|nyelv
+la palabra|szó
+el nombre|név
+el trabajo|munka
+el tiempo|idő; időjárás
+el sol|nap (égitest)
+la lluvia|eső
+el mar|tenger
+la montaña|hegy
+el perro|kutya
+el gato|macska
+el regalo|ajándék
+la fiesta|ünnep, buli
+las vacaciones|szabadság, vakáció
+la llave|kulcs
+el dinero|pénz
+el precio|ár

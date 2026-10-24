@@ -1,0 +1,424 @@
+{
+ "serials": [
+  {
+   "id": "s1",
+   "level": "A2–B1",
+   "title": "Il segreto della trattoria",
+   "hu": "A vendéglő titka",
+   "img": "sc-rist",
+   "desc": "Giulia megörökli a nagymamája római vendéglőjét. A régi receptfüzetben egy furcsa üzenetet talál.",
+   "cast": {
+    "N": {
+     "name": "",
+     "g": "m"
+    },
+    "A": {
+     "name": "Giulia",
+     "g": "f"
+    },
+    "B": {
+     "name": "Marco",
+     "g": "m"
+    }
+   },
+   "chapters": [
+    {
+     "title": "L'eredità",
+     "hu": "Az örökség",
+     "lines": [
+      {
+       "s": "N",
+       "it": "Giulia aveva trent'anni e lavorava in un ufficio a Milano.",
+       "hu": "Giulia harmincéves volt, és egy milánói irodában dolgozott."
+      },
+      {
+       "s": "N",
+       "it": "Un giorno ricevette una lettera da un notaio di Roma.",
+       "hu": "Egy nap levelet kapott egy római közjegyzőtől."
+      },
+      {
+       "s": "A",
+       "it": "La nonna mi ha lasciato la trattoria? Non ci posso credere!",
+       "hu": "A nagymama rám hagyta a vendéglőt? El sem hiszem!"
+      },
+      {
+       "s": "N",
+       "it": "La trattoria si chiamava Da Rosa ed era in un piccolo vicolo di Trastevere.",
+       "hu": "A vendéglőt Da Rosának hívták, és egy kis trasteverei sikátorban volt."
+      },
+      {
+       "s": "N",
+       "it": "Giulia prese il treno il giorno dopo.",
+       "hu": "Giulia másnap vonatra ült."
+      },
+      {
+       "s": "B",
+       "it": "Buongiorno. Sono Marco, il cuoco. Lavoravo con tua nonna da quindici anni.",
+       "hu": "Jó napot. Marco vagyok, a szakács. Tizenöt évig dolgoztam a nagymamáddal."
+      },
+      {
+       "s": "A",
+       "it": "Piacere, Marco. Non so niente di ristoranti.",
+       "hu": "Örvendek, Marco. Semmit sem tudok az éttermekről."
+      },
+      {
+       "s": "B",
+       "it": "Non preoccuparti. Tua nonna diceva sempre che il segreto è nel quaderno.",
+       "hu": "Ne aggódj. A nagymamád mindig azt mondta, hogy a titok a füzetben van."
+      }
+     ],
+     "questions": [
+      {
+       "q": "Mit kapott Giulia a közjegyzőtől?",
+       "o": [
+        "Egy levelet",
+        "Egy csomagot",
+        "Egy telefonhívást"
+       ],
+       "a": 0
+      },
+      {
+       "q": "Ki Marco?",
+       "o": [
+        "A vendéglő szakácsa",
+        "Giulia testvére",
+        "A közjegyző"
+       ],
+       "a": 0
+      }
+     ]
+    },
+    {
+     "title": "Il quaderno",
+     "hu": "A füzet",
+     "lines": [
+      {
+       "s": "N",
+       "it": "Quella sera Giulia trovò un vecchio quaderno in cucina.",
+       "hu": "Aznap este Giulia egy régi füzetet talált a konyhában."
+      },
+      {
+       "s": "N",
+       "it": "Dentro c'erano le ricette della nonna, scritte a mano.",
+       "hu": "Benne voltak a nagymama kézzel írt receptjei."
+      },
+      {
+       "s": "A",
+       "it": "Marco, guarda! Sull'ultima pagina c'è un messaggio.",
+       "hu": "Marco, nézd! Az utolsó oldalon van egy üzenet."
+      },
+      {
+       "s": "B",
+       "it": "Cosa dice?",
+       "hu": "Mit ír?"
+      },
+      {
+       "s": "A",
+       "it": "\"Il sugo vero si trova dove il sole tocca la fontana.\"",
+       "hu": "„Az igazi szósz ott található, ahol a nap megérinti a szökőkutat.”"
+      },
+      {
+       "s": "B",
+       "it": "Che strano. Tua nonna amava i giochi e gli indovinelli.",
+       "hu": "Furcsa. A nagymamád szerette a játékokat és a találós kérdéseket."
+      },
+      {
+       "s": "A",
+       "it": "Forse vuole dirmi qualcosa di importante.",
+       "hu": "Talán valami fontosat akar mondani nekem."
+      },
+      {
+       "s": "N",
+       "it": "Giulia non riuscì a dormire tutta la notte.",
+       "hu": "Giulia egész éjjel nem tudott aludni."
+      }
+     ],
+     "questions": [
+      {
+       "q": "Mi volt a füzetben?",
+       "o": [
+        "A nagymama receptjei",
+        "Régi fényképek",
+        "Számlák"
+       ],
+       "a": 0
+      },
+      {
+       "q": "Hol volt az üzenet?",
+       "o": [
+        "Az utolsó oldalon",
+        "Az első oldalon",
+        "Egy borítékban"
+       ],
+       "a": 0
+      }
+     ]
+    },
+    {
+     "title": "La fontana",
+     "hu": "A szökőkút",
+     "lines": [
+      {
+       "s": "N",
+       "it": "La mattina dopo, Giulia e Marco andarono in piazza.",
+       "hu": "Másnap reggel Giulia és Marco kimentek a térre."
+      },
+      {
+       "s": "B",
+       "it": "Questa è la fontana più vecchia del quartiere.",
+       "hu": "Ez a negyed legrégebbi szökőkútja."
+      },
+      {
+       "s": "A",
+       "it": "Alle dieci il sole tocca solo un lato della fontana.",
+       "hu": "Tízkor a nap csak a szökőkút egyik oldalát éri."
+      },
+      {
+       "s": "N",
+       "it": "Davanti a quel lato c'era un piccolo negozio di spezie.",
+       "hu": "Azzal az oldallal szemben egy kis fűszerbolt állt."
+      },
+      {
+       "s": "B",
+       "it": "Il negozio del signor Bruno! Tua nonna veniva qui ogni settimana.",
+       "hu": "Bruno úr boltja! A nagymamád minden héten idejárt."
+      },
+      {
+       "s": "N",
+       "it": "Il signor Bruno era un uomo anziano con gli occhi gentili.",
+       "hu": "Bruno úr idős ember volt kedves szemekkel."
+      },
+      {
+       "s": "A",
+       "it": "Buongiorno. Sono la nipote di Rosa.",
+       "hu": "Jó napot. Rosa unokája vagyok."
+      },
+      {
+       "s": "N",
+       "it": "L'uomo sorrise e disse: \"Ti stavo aspettando.\"",
+       "hu": "A férfi elmosolyodott, és azt mondta: „Már vártalak.”"
+      }
+     ],
+     "questions": [
+      {
+       "q": "Mi állt a szökőkút napos oldalával szemben?",
+       "o": [
+        "Egy fűszerbolt",
+        "Egy pékség",
+        "Egy templom"
+       ],
+       "a": 0
+      },
+      {
+       "q": "Mit mondott Bruno úr?",
+       "o": [
+        "Hogy már várta Giuliát",
+        "Hogy zárva van",
+        "Hogy nem ismeri Rosát"
+       ],
+       "a": 0
+      }
+     ]
+    },
+    {
+     "title": "La scatola",
+     "hu": "A doboz",
+     "lines": [
+      {
+       "s": "N",
+       "it": "Il signor Bruno prese una scatola di legno da uno scaffale.",
+       "hu": "Bruno úr egy fadobozt vett le egy polcról."
+      },
+      {
+       "s": "N",
+       "it": "\"Rosa me l'ha data un anno fa. Mi ha detto di darla solo a te.\"",
+       "hu": "„Rosa egy éve adta nekem. Azt mondta, csak neked adjam oda.”"
+      },
+      {
+       "s": "A",
+       "it": "Dentro ci sono delle spezie e un'altra lettera.",
+       "hu": "Benne fűszerek vannak és még egy levél."
+      },
+      {
+       "s": "N",
+       "it": "Nella lettera la nonna spiegava la ricetta del suo famoso sugo.",
+       "hu": "A levélben a nagymama elmagyarázta a híres szósza receptjét."
+      },
+      {
+       "s": "B",
+       "it": "Ho provato a fare quel sugo per anni. Non era mai uguale.",
+       "hu": "Évekig próbáltam elkészíteni azt a szószt. Sosem lett ugyanolyan."
+      },
+      {
+       "s": "A",
+       "it": "Mancava questa miscela di spezie. Era questo il segreto.",
+       "hu": "Ez a fűszerkeverék hiányzott. Ez volt a titok."
+      },
+      {
+       "s": "N",
+       "it": "Ma alla fine della lettera c'era ancora una frase.",
+       "hu": "De a levél végén még volt egy mondat."
+      },
+      {
+       "s": "A",
+       "it": "\"Il segreto più importante non è nella ricetta.\"",
+       "hu": "„A legfontosabb titok nem a receptben van.”"
+      }
+     ],
+     "questions": [
+      {
+       "q": "Mi volt a dobozban?",
+       "o": [
+        "Fűszerek és egy levél",
+        "Pénz és kulcsok",
+        "Egy régi könyv"
+       ],
+       "a": 0
+      },
+      {
+       "q": "Mi hiányzott Marco szószából?",
+       "o": [
+        "A fűszerkeverék",
+        "A paradicsom",
+        "A só"
+       ],
+       "a": 0
+      }
+     ]
+    },
+    {
+     "title": "La riapertura",
+     "hu": "Az újranyitás",
+     "lines": [
+      {
+       "s": "N",
+       "it": "Per due settimane Giulia e Marco lavorarono giorno e notte.",
+       "hu": "Két hétig Giulia és Marco éjjel-nappal dolgozott."
+      },
+      {
+       "s": "N",
+       "it": "Pulirono la cucina, dipinsero le pareti e scrissero un nuovo menù.",
+       "hu": "Kitakarították a konyhát, kifestették a falakat, és új étlapot írtak."
+      },
+      {
+       "s": "A",
+       "it": "Ho paura. E se non viene nessuno?",
+       "hu": "Félek. Mi lesz, ha senki sem jön?"
+      },
+      {
+       "s": "B",
+       "it": "Verranno. In questo quartiere tutti volevano bene a Rosa.",
+       "hu": "Jönni fognak. Ebben a negyedben mindenki szerette Rosát."
+      },
+      {
+       "s": "N",
+       "it": "La sera della riapertura, la trattoria era piena.",
+       "hu": "Az újranyitás estéjén tele volt a vendéglő."
+      },
+      {
+       "s": "N",
+       "it": "C'erano i vicini, il signor Bruno e molti vecchi clienti.",
+       "hu": "Ott voltak a szomszédok, Bruno úr és sok régi vendég."
+      },
+      {
+       "s": "B",
+       "it": "Assaggia il sugo, Giulia. È proprio come quello di tua nonna.",
+       "hu": "Kóstold meg a szószt, Giulia. Pont olyan, mint a nagymamádé."
+      },
+      {
+       "s": "A",
+       "it": "È perfetto. Ma la cosa più bella è vedere tutte queste persone insieme.",
+       "hu": "Tökéletes. De a legszebb az, hogy ennyi embert együtt látok."
+      }
+     ],
+     "questions": [
+      {
+       "q": "Mit csináltak két hétig?",
+       "o": [
+        "Felújították a vendéglőt",
+        "Szabadságon voltak",
+        "Receptet kerestek"
+       ],
+       "a": 0
+      },
+      {
+       "q": "Milyen volt az újranyitás estéje?",
+       "o": [
+        "Tele volt a vendéglő",
+        "Senki sem jött",
+        "Elmaradt"
+       ],
+       "a": 0
+      }
+     ]
+    },
+    {
+     "title": "La decisione",
+     "hu": "A döntés",
+     "lines": [
+      {
+       "s": "N",
+       "it": "Una settimana dopo, il capo di Giulia la chiamò da Milano.",
+       "hu": "Egy héttel később Giulia főnöke felhívta Milánóból."
+      },
+      {
+       "s": "N",
+       "it": "\"Quando torni? Abbiamo bisogno di te in ufficio.\"",
+       "hu": "„Mikor jössz vissza? Szükségünk van rád az irodában.”"
+      },
+      {
+       "s": "A",
+       "it": "Marco, devo decidere. Milano o Roma?",
+       "hu": "Marco, döntenem kell. Milánó vagy Róma?"
+      },
+      {
+       "s": "B",
+       "it": "Cosa ti dice il cuore?",
+       "hu": "Mit súg a szíved?"
+      },
+      {
+       "s": "N",
+       "it": "Giulia aprì di nuovo il quaderno e rilesse l'ultima frase della nonna.",
+       "hu": "Giulia újra kinyitotta a füzetet, és újra elolvasta a nagymama utolsó mondatát."
+      },
+      {
+       "s": "A",
+       "it": "Adesso capisco. Il segreto più importante sono le persone.",
+       "hu": "Most már értem. A legfontosabb titok az emberek."
+      },
+      {
+       "s": "N",
+       "it": "Il giorno dopo, Giulia scrisse una lettera di dimissioni.",
+       "hu": "Másnap Giulia felmondólevelet írt."
+      },
+      {
+       "s": "A",
+       "it": "Resto qui, Marco. La trattoria Da Rosa continua.",
+       "hu": "Itt maradok, Marco. A Da Rosa vendéglő tovább működik."
+      }
+     ],
+     "questions": [
+      {
+       "q": "Mit döntött Giulia?",
+       "o": [
+        "Rómában marad",
+        "Visszamegy Milánóba",
+        "Eladja a vendéglőt"
+       ],
+       "a": 0
+      },
+      {
+       "q": "Mi volt a legfontosabb titok?",
+       "o": [
+        "Az emberek",
+        "A szósz",
+        "A fűszerek"
+       ],
+       "a": 0
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

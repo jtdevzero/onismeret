@@ -510,3 +510,10 @@ section[aria-labelledby="practiceRecommended"]>.drills{grid-template-columns:rep
   .onb-lang .pill{font-size:.65rem;padding-inline:.4rem}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* Monthly report: print only the report itself */
+@media print{
+  .skip,header.top,#nav,#bnav,.no-print,#toast{display:none!important}
+  body{background:#fff!important;color:#000!important}
+  .report .card{break-inside:avoid;box-shadow:none;border:1px solid #ccc}
+}

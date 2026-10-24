@@ -1,0 +1,1068 @@
+{
+ "topics": [
+  {
+   "id": "art",
+   "title": "Névelők és nemek",
+   "level": "A1",
+   "intro": "A spanyolban a főnév hím- vagy nőnemű, és a névelő is ehhez igazodik: el, la, los, las; un, una, unos, unas. Az -o végű szavak többnyire hímneműek, az -a végűek nőneműek, de vannak kivételek.",
+   "table": {
+    "head": [
+     "",
+     "Határozott",
+     "Határozatlan"
+    ],
+    "rows": [
+     [
+      "hímnem egyes",
+      "el libro",
+      "un libro"
+     ],
+     [
+      "nőnem egyes",
+      "la casa",
+      "una casa"
+     ],
+     [
+      "hímnem többes",
+      "los libros",
+      "unos libros"
+     ],
+     [
+      "nőnem többes",
+      "las casas",
+      "unas casas"
+     ]
+    ]
+   },
+   "points": [
+    "Kivételek: el día, el mapa, el problema; la mano, la foto, la radio.",
+    "Hangsúlyos a- előtt a nőnemű szó egyes számban el-t kap: el agua, el águila (de las aguas).",
+    "a + el = al, de + el = del: Voy al cine. Vengo del trabajo."
+   ],
+   "mistakes": [
+    "la problema → el problema",
+    "el mano → la mano",
+    "Voy a el parque → Voy al parque"
+   ],
+   "drill": [
+    {
+     "q": "___ problema es muy serio.",
+     "a": "El",
+     "o": [
+      "El",
+      "La",
+      "Lo"
+     ],
+     "why": "problema hímnemű."
+    },
+    {
+     "q": "Me duele ___ mano.",
+     "a": "la",
+     "o": [
+      "la",
+      "el",
+      "lo"
+     ],
+     "why": "mano nőnemű."
+    },
+    {
+     "q": "___ agua está fría.",
+     "a": "El",
+     "o": [
+      "El",
+      "La",
+      "Lo"
+     ],
+     "why": "Hangsúlyos a-: el agua."
+    },
+    {
+     "q": "Vamos ___ cine esta noche.",
+     "a": "al",
+     "o": [
+      "al",
+      "a el",
+      "en el"
+     ],
+     "why": "a + el = al."
+    },
+    {
+     "q": "Necesito ___ fotos para el pasaporte.",
+     "a": "unas",
+     "o": [
+      "unas",
+      "unos",
+      "uns"
+     ],
+     "why": "foto nőnemű, többes."
+    }
+   ]
+  },
+  {
+   "id": "pres",
+   "title": "Jelen idő: szabályos igék",
+   "level": "A1",
+   "intro": "A spanyol igék három csoportba tartoznak: -ar, -er, -ir. Az alanyi névmást általában elhagyjuk, mert a végződés megmutatja a személyt.",
+   "table": {
+    "head": [
+     "",
+     "hablar",
+     "comer",
+     "vivir"
+    ],
+    "rows": [
+     [
+      "yo",
+      "hablo",
+      "como",
+      "vivo"
+     ],
+     [
+      "tú",
+      "hablas",
+      "comes",
+      "vives"
+     ],
+     [
+      "él/ella/usted",
+      "habla",
+      "come",
+      "vive"
+     ],
+     [
+      "nosotros",
+      "hablamos",
+      "comemos",
+      "vivimos"
+     ],
+     [
+      "vosotros",
+      "habláis",
+      "coméis",
+      "vivís"
+     ],
+     [
+      "ellos/ustedes",
+      "hablan",
+      "comen",
+      "viven"
+     ]
+    ]
+   },
+   "points": [
+    "Usted (ön) és ustedes (önök) harmadik személyű alakkal áll.",
+    "Latin-Amerikában vosotros helyett ustedes.",
+    "Jelen idő közeli jövőre is: Mañana viajo a Madrid."
+   ],
+   "mistakes": [
+    "yo hablar → yo hablo",
+    "ellos vivan → ellos viven",
+    "usted hablas → usted habla"
+   ],
+   "drill": [
+    {
+     "q": "Nosotros ___ español en clase.",
+     "a": "hablamos",
+     "o": [
+      "hablamos",
+      "hablemos",
+      "habláis"
+     ],
+     "why": "nosotros: -amos."
+    },
+    {
+     "q": "Mis padres ___ en Sevilla.",
+     "a": "viven",
+     "o": [
+      "viven",
+      "vivan",
+      "vivien"
+     ],
+     "why": "-ir, ellos: -en."
+    },
+    {
+     "q": "¿Usted ___ carne?",
+     "a": "come",
+     "o": [
+      "come",
+      "comes",
+      "coma"
+     ],
+     "why": "usted: 3. személy."
+    },
+    {
+     "q": "Yo ___ en una oficina.",
+     "a": "trabajo",
+     "o": [
+      "trabajo",
+      "trabaja",
+      "trabajar"
+     ],
+     "why": "yo: -o."
+    },
+    {
+     "q": "¿Vosotros ___ mucho?",
+     "a": "leéis",
+     "o": [
+      "leéis",
+      "leen",
+      "leís"
+     ],
+     "why": "vosotros, -er: -éis."
+    }
+   ]
+  },
+  {
+   "id": "serestar",
+   "title": "Ser vagy estar?",
+   "level": "A1",
+   "intro": "Mindkettő 'lenni', de a ser az állandó tulajdonságot, az identitást, a származást írja le, az estar az állapotot, a helyet és az ideiglenes jellemzőt.",
+   "table": {
+    "head": [
+     "",
+     "ser",
+     "estar"
+    ],
+    "rows": [
+     [
+      "Mire",
+      "ki, mi, milyen (állandó), honnan, mikor",
+      "hol, hogy van, állapot"
+     ],
+     [
+      "Példa",
+      "Soy húngaro. Es médico.",
+      "Estoy cansado. Madrid está en España."
+     ],
+     [
+      "Melléknévvel",
+      "Es aburrido. (unalmas ember)",
+      "Está aburrido. (unatkozik)"
+     ]
+    ]
+   },
+   "points": [
+    "Hely mindig estar: El banco está cerca. Esemény helye viszont ser: La fiesta es en mi casa.",
+    "Idő és dátum: ser: Son las tres. Es lunes.",
+    "Foglalkozás: ser: Es profesora."
+   ],
+   "mistakes": [
+    "Soy cansado → Estoy cansado",
+    "El museo es en el centro → está en el centro",
+    "Está médico → Es médico"
+   ],
+   "drill": [
+    {
+     "q": "Mi hermana ___ enfermera.",
+     "a": "es",
+     "o": [
+      "es",
+      "está",
+      "esta"
+     ],
+     "why": "Foglalkozás: ser."
+    },
+    {
+     "q": "Hoy ___ muy cansada.",
+     "a": "estoy",
+     "o": [
+      "estoy",
+      "soy",
+      "estás"
+     ],
+     "why": "Állapot: estar."
+    },
+    {
+     "q": "¿Dónde ___ los servicios?",
+     "a": "están",
+     "o": [
+      "están",
+      "son",
+      "estan"
+     ],
+     "why": "Hely: estar."
+    },
+    {
+     "q": "___ las nueve y media.",
+     "a": "Son",
+     "o": [
+      "Son",
+      "Están",
+      "Es"
+     ],
+     "why": "Idő: ser."
+    },
+    {
+     "q": "La sopa ___ fría; caliéntala.",
+     "a": "está",
+     "o": [
+      "está",
+      "es",
+      "esta"
+     ],
+     "why": "Pillanatnyi állapot: estar."
+    }
+   ]
+  },
+  {
+   "id": "irr",
+   "title": "Tőhangváltó és rendhagyó igék",
+   "level": "A1",
+   "intro": "Sok gyakori ige tőhangja változik hangsúlyos helyzetben: e → ie (querer), o → ue (poder), e → i (pedir). A nosotros és vosotros alak szabályos marad.",
+   "table": {
+    "head": [
+     "",
+     "querer",
+     "poder",
+     "pedir",
+     "tener"
+    ],
+    "rows": [
+     [
+      "yo",
+      "quiero",
+      "puedo",
+      "pido",
+      "tengo"
+     ],
+     [
+      "tú",
+      "quieres",
+      "puedes",
+      "pides",
+      "tienes"
+     ],
+     [
+      "él/ella",
+      "quiere",
+      "puede",
+      "pide",
+      "tiene"
+     ],
+     [
+      "nosotros",
+      "queremos",
+      "podemos",
+      "pedimos",
+      "tenemos"
+     ],
+     [
+      "vosotros",
+      "queréis",
+      "podéis",
+      "pedís",
+      "tenéis"
+     ],
+     [
+      "ellos",
+      "quieren",
+      "pueden",
+      "piden",
+      "tienen"
+     ]
+    ]
+   },
+   "points": [
+    "Egyes szám első személyben rendhagyó: hago, pongo, salgo, tengo, vengo, digo, sé, conozco.",
+    "Tener que + főnévi igenév = kell: Tengo que trabajar.",
+    "Ir a + főnévi igenév = közeli jövő: Voy a viajar."
+   ],
+   "mistakes": [
+    "yo tieno → yo tengo",
+    "nosotros queremos ✓ / nosotros quieremos ✗",
+    "yo hace → yo hago"
+   ],
+   "drill": [
+    {
+     "q": "¿___ ayudarme, por favor?",
+     "a": "Puedes",
+     "o": [
+      "Puedes",
+      "Podes",
+      "Pudes"
+     ],
+     "why": "poder: o → ue."
+    },
+    {
+     "q": "Yo ___ un café con leche.",
+     "a": "quiero",
+     "o": [
+      "quiero",
+      "quero",
+      "queremos"
+     ],
+     "why": "querer: e → ie."
+    },
+    {
+     "q": "Nosotros ___ salir temprano.",
+     "a": "tenemos que",
+     "o": [
+      "tenemos que",
+      "tienemos que",
+      "tenemos de"
+     ],
+     "why": "nosotros szabályos."
+    },
+    {
+     "q": "Yo ___ los deberes por la tarde.",
+     "a": "hago",
+     "o": [
+      "hago",
+      "hace",
+      "haco"
+     ],
+     "why": "hacer: hago."
+    },
+    {
+     "q": "En el restaurante siempre ___ paella.",
+     "a": "pido",
+     "o": [
+      "pido",
+      "pedo",
+      "pide"
+     ],
+     "why": "pedir: e → i."
+    }
+   ]
+  },
+  {
+   "id": "indef",
+   "title": "Pretérito indefinido",
+   "level": "A2",
+   "intro": "Az indefinido a múltbeli, lezárt, egyszeri eseményeké: ayer, el año pasado, en 2010. A spanyolországi beszédben a mai napra a pretérito perfecto (he comido) gyakoribb.",
+   "table": {
+    "head": [
+     "",
+     "hablar",
+     "comer",
+     "vivir"
+    ],
+    "rows": [
+     [
+      "yo",
+      "hablé",
+      "comí",
+      "viví"
+     ],
+     [
+      "tú",
+      "hablaste",
+      "comiste",
+      "viviste"
+     ],
+     [
+      "él/ella",
+      "habló",
+      "comió",
+      "vivió"
+     ],
+     [
+      "nosotros",
+      "hablamos",
+      "comimos",
+      "vivimos"
+     ],
+     [
+      "vosotros",
+      "hablasteis",
+      "comisteis",
+      "vivisteis"
+     ],
+     [
+      "ellos",
+      "hablaron",
+      "comieron",
+      "vivieron"
+     ]
+    ]
+   },
+   "points": [
+    "Rendhagyók: ser/ir → fui, fuiste, fue; hacer → hice, hizo; tener → tuve; estar → estuve.",
+    "Az ékezet fontos: hablo (beszélek) ≠ habló (beszélt).",
+    "Ser és ir indefinidója azonos: Fui a Madrid. / Fue un día bonito."
+   ],
+   "mistakes": [
+    "Ayer yo hablo con él → hablé",
+    "Él hizó → hizo",
+    "Ayer he ido al cine → fui (ayer mellett indefinido)"
+   ],
+   "drill": [
+    {
+     "q": "Ayer ___ con mi madre por teléfono.",
+     "a": "hablé",
+     "o": [
+      "hablé",
+      "hablo",
+      "habló"
+     ],
+     "why": "yo, indefinido: -é."
+    },
+    {
+     "q": "El verano pasado ___ a Grecia.",
+     "a": "fuimos",
+     "o": [
+      "fuimos",
+      "íbamos",
+      "vamos"
+     ],
+     "why": "ir: fuimos."
+    },
+    {
+     "q": "¿Qué ___ el fin de semana?",
+     "a": "hiciste",
+     "o": [
+      "hiciste",
+      "haciste",
+      "hacías"
+     ],
+     "why": "hacer: hiciste."
+    },
+    {
+     "q": "Mis abuelos ___ en Cuba diez años.",
+     "a": "vivieron",
+     "o": [
+      "vivieron",
+      "vivían",
+      "vivaron"
+     ],
+     "why": "Lezárt időszak: indefinido."
+    },
+    {
+     "q": "Ella ___ un examen ayer.",
+     "a": "tuvo",
+     "o": [
+      "tuvo",
+      "tenió",
+      "tenía"
+     ],
+     "why": "tener: tuvo."
+    }
+   ]
+  },
+  {
+   "id": "imperf",
+   "title": "Indefinido vagy imperfecto?",
+   "level": "B1",
+   "intro": "Az imperfecto a háttér, a leírás és a múltbeli szokás ideje; az indefinido az egyszeri, lezárt eseményé. Egy történetben: Llovía cuando salí. (Esett, amikor kimentem.)",
+   "table": {
+    "head": [
+     "",
+     "Imperfecto",
+     "Indefinido"
+    ],
+    "rows": [
+     [
+      "Mire",
+      "leírás, szokás, háttér",
+      "egyszeri esemény"
+     ],
+     [
+      "Jelzőszavak",
+      "siempre, de niño, mientras",
+      "ayer, una vez, de repente"
+     ],
+     [
+      "Képzés",
+      "-aba / -ía",
+      "-é / -í"
+     ]
+    ]
+   },
+   "points": [
+    "Imperfecto: hablaba, comía, vivía. Rendhagyó csak három: ser (era), ir (iba), ver (veía).",
+    "Mientras + imperfecto: Mientras cocinaba, sonó el teléfono.",
+    "Kor és idő a múltban imperfecto: Tenía diez años. Eran las tres."
+   ],
+   "mistakes": [
+    "De niño fui al colegio en bici → iba (szokás)",
+    "Ayer veía una película → vi (egyszeri)",
+    "Tuve diez años → Tenía diez años"
+   ],
+   "drill": [
+    {
+     "q": "Cuando era pequeño, ___ en un pueblo.",
+     "a": "vivía",
+     "o": [
+      "vivía",
+      "viví",
+      "vivo"
+     ],
+     "why": "Gyerekkori háttér."
+    },
+    {
+     "q": "Mientras ___, llegó Ana.",
+     "a": "comíamos",
+     "o": [
+      "comíamos",
+      "comimos",
+      "comemos"
+     ],
+     "why": "mientras + imperfecto."
+    },
+    {
+     "q": "Ayer ___ una película muy buena.",
+     "a": "vi",
+     "o": [
+      "vi",
+      "veía",
+      "veo"
+     ],
+     "why": "Egyszeri esemény."
+    },
+    {
+     "q": "___ las once cuando volví a casa.",
+     "a": "Eran",
+     "o": [
+      "Eran",
+      "Fueron",
+      "Son"
+     ],
+     "why": "Idő a múltban: imperfecto."
+    },
+    {
+     "q": "De repente ___ a llover.",
+     "a": "empezó",
+     "o": [
+      "empezó",
+      "empezaba",
+      "empieza"
+     ],
+     "why": "de repente: indefinido."
+    }
+   ]
+  },
+  {
+   "id": "porpara",
+   "title": "Por vagy para?",
+   "level": "A2",
+   "intro": "Mindkettő jelentheti, hogy 'ért' vagy 'miatt', de a para a célt, a rendeltetést és a határidőt, a por az okot, az utat, az eszközt és a cserét fejezi ki.",
+   "table": {
+    "head": [
+     "",
+     "para",
+     "por"
+    ],
+    "rows": [
+     [
+      "Mire",
+      "cél, címzett, irány, határidő",
+      "ok, útvonal, eszköz, csere, időtartam"
+     ],
+     [
+      "Példa",
+      "Estudio para aprobar.",
+      "Gracias por la ayuda."
+     ],
+     [
+      "Hely",
+      "Salgo para Madrid. (oda)",
+      "Paseo por el parque. (benne, át)"
+     ]
+    ]
+   },
+   "points": [
+    "Para + főnévi igenév = azért, hogy: Trabajo para viajar.",
+    "Por + ok: Lo hice por ti. (Miattad tettem.)",
+    "Kifejezések: por favor, por fin, por ejemplo, por la mañana."
+   ],
+   "mistakes": [
+    "Gracias para todo → Gracias por todo",
+    "Estudio por aprender → para aprender",
+    "Este regalo es por ti → para ti (címzett)"
+   ],
+   "drill": [
+    {
+     "q": "Este libro es ___ ti.",
+     "a": "para",
+     "o": [
+      "para",
+      "por",
+      "a"
+     ],
+     "why": "Címzett: para."
+    },
+    {
+     "q": "Gracias ___ venir.",
+     "a": "por",
+     "o": [
+      "por",
+      "para",
+      "de"
+     ],
+     "why": "Ok: por."
+    },
+    {
+     "q": "Paseamos ___ la playa.",
+     "a": "por",
+     "o": [
+      "por",
+      "para",
+      "en"
+     ],
+     "why": "Útvonal: por."
+    },
+    {
+     "q": "Necesito el informe ___ el lunes.",
+     "a": "para",
+     "o": [
+      "para",
+      "por",
+      "hasta"
+     ],
+     "why": "Határidő: para."
+    },
+    {
+     "q": "Estudio español ___ trabajar en México.",
+     "a": "para",
+     "o": [
+      "para",
+      "por",
+      "de"
+     ],
+     "why": "Cél: para."
+    }
+   ]
+  },
+  {
+   "id": "pron",
+   "title": "Tárgyas és részes névmások",
+   "level": "A2",
+   "intro": "A hangsúlytalan névmások a ragozott ige elé kerülnek: Lo veo. (Látom.) Részes eset: le, les. Ha a kettő találkozik, le/les helyett se áll: Se lo doy.",
+   "table": {
+    "head": [
+     "",
+     "Tárgyeset",
+     "Részeset"
+    ],
+    "rows": [
+     [
+      "engem/nekem",
+      "me",
+      "me"
+     ],
+     [
+      "téged/neked",
+      "te",
+      "te"
+     ],
+     [
+      "őt/neki",
+      "lo / la",
+      "le"
+     ],
+     [
+      "minket/nekünk",
+      "nos",
+      "nos"
+     ],
+     [
+      "titeket/nektek",
+      "os",
+      "os"
+     ],
+     [
+      "őket/nekik",
+      "los / las",
+      "les"
+     ]
+    ]
+   },
+   "points": [
+    "Főnévi igenévhez és felszólításhoz hozzáírjuk: Quiero verlo. Dímelo.",
+    "le + lo → se lo: Se lo explico a Juan.",
+    "Gustar típusú igéknél részeset: Me gusta, le gustan."
+   ],
+   "mistakes": [
+    "Le lo doy → Se lo doy",
+    "Veo a él → Lo veo",
+    "Yo gusta el café → Me gusta el café"
+   ],
+   "drill": [
+    {
+     "q": "¿Conoces a Pedro? Sí, ___ conozco.",
+     "a": "lo",
+     "o": [
+      "lo",
+      "le",
+      "la"
+     ],
+     "why": "Tárgy, hímnem: lo."
+    },
+    {
+     "q": "¿Le diste el regalo a Ana? Sí, ___ di.",
+     "a": "se lo",
+     "o": [
+      "se lo",
+      "le lo",
+      "la lo"
+     ],
+     "why": "le + lo = se lo."
+    },
+    {
+     "q": "A mis padres ___ gusta viajar.",
+     "a": "les",
+     "o": [
+      "les",
+      "los",
+      "le"
+     ],
+     "why": "Részeset, többes: les."
+    },
+    {
+     "q": "Quiero comprar___.",
+     "a": "lo",
+     "o": [
+      "lo",
+      "le",
+      "él"
+     ],
+     "why": "Főnévi igenévhez írva."
+    },
+    {
+     "q": "¿Las llaves? No ___ encuentro.",
+     "a": "las",
+     "o": [
+      "las",
+      "les",
+      "los"
+     ],
+     "why": "Tárgy, nőnem többes: las."
+    }
+   ]
+  },
+  {
+   "id": "fut",
+   "title": "Jövő idő és ir a + főnévi igenév",
+   "level": "A2",
+   "intro": "A közeli, tervezett jövőre a beszélt nyelv az ir a + főnévi igenév szerkezetet használja (Voy a cenar). A futuro simple (cenaré) előrejelzésre, ígéretre és feltevésre szolgál.",
+   "table": {
+    "head": [
+     "",
+     "hablar",
+     "comer",
+     "vivir"
+    ],
+    "rows": [
+     [
+      "yo",
+      "hablaré",
+      "comeré",
+      "viviré"
+     ],
+     [
+      "tú",
+      "hablarás",
+      "comerás",
+      "vivirás"
+     ],
+     [
+      "él/ella",
+      "hablará",
+      "comerá",
+      "vivirá"
+     ],
+     [
+      "nosotros",
+      "hablaremos",
+      "comeremos",
+      "viviremos"
+     ],
+     [
+      "vosotros",
+      "hablaréis",
+      "comeréis",
+      "viviréis"
+     ],
+     [
+      "ellos",
+      "hablarán",
+      "comerán",
+      "vivirán"
+     ]
+    ]
+   },
+   "points": [
+    "A végződés a teljes főnévi igenévhez járul: hablar + é.",
+    "Rendhagyó tövek: tener → tendré, hacer → haré, poder → podré, salir → saldré, decir → diré.",
+    "Feltevés: Estará en casa. (Biztos otthon van.)"
+   ],
+   "mistakes": [
+    "Voy cenar → Voy a cenar",
+    "Teneré → Tendré",
+    "Mañana haceré → haré"
+   ],
+   "drill": [
+    {
+     "q": "Esta noche ___ a cenar fuera.",
+     "a": "vamos",
+     "o": [
+      "vamos",
+      "iremos a",
+      "vamos de"
+     ],
+     "why": "ir a + főnévi igenév."
+    },
+    {
+     "q": "El año que viene ___ más tiempo.",
+     "a": "tendré",
+     "o": [
+      "tendré",
+      "teneré",
+      "tengo"
+     ],
+     "why": "tener: tendr-."
+    },
+    {
+     "q": "Mañana ___ sol en el sur.",
+     "a": "hará",
+     "o": [
+      "hará",
+      "hacerá",
+      "hace"
+     ],
+     "why": "hacer: har-."
+    },
+    {
+     "q": "¿Dónde está Luis? ___ en el trabajo.",
+     "a": "Estará",
+     "o": [
+      "Estará",
+      "Estuvo",
+      "Estaba"
+     ],
+     "why": "Feltevés: futuro."
+    },
+    {
+     "q": "Te lo ___ mañana.",
+     "a": "diré",
+     "o": [
+      "diré",
+      "deciré",
+      "digo a"
+     ],
+     "why": "decir: dir-."
+    }
+   ]
+  },
+  {
+   "id": "subj",
+   "title": "Kötőmód (presente de subjuntivo)",
+   "level": "B1",
+   "intro": "A subjuntivót kívánság, érzés, kétely és tanács után használjuk, általában que után: Quiero que vengas. A magyar ezt külön nem jelöli, ezért gyakori hiba.",
+   "table": {
+    "head": [
+     "",
+     "hablar",
+     "comer",
+     "ser",
+     "tener"
+    ],
+    "rows": [
+     [
+      "que yo",
+      "hable",
+      "coma",
+      "sea",
+      "tenga"
+     ],
+     [
+      "que tú",
+      "hables",
+      "comas",
+      "seas",
+      "tengas"
+     ],
+     [
+      "que él",
+      "hable",
+      "coma",
+      "sea",
+      "tenga"
+     ],
+     [
+      "que nosotros",
+      "hablemos",
+      "comamos",
+      "seamos",
+      "tengamos"
+     ],
+     [
+      "que vosotros",
+      "habléis",
+      "comáis",
+      "seáis",
+      "tengáis"
+     ],
+     [
+      "que ellos",
+      "hablen",
+      "coman",
+      "sean",
+      "tengan"
+     ]
+    ]
+   },
+   "points": [
+    "Kiváltói: quiero que, espero que, es importante que, no creo que, ojalá, cuando (jövőre), para que.",
+    "Ha a két alany azonos, főnévi igenév: Quiero ir. (nem: Quiero que yo vaya)",
+    "Creo que + kijelentő mód, no creo que + subjuntivo."
+   ],
+   "mistakes": [
+    "Quiero que vienes → Quiero que vengas",
+    "Cuando llegaré, te llamo → Cuando llegue, te llamo",
+    "Creo que sea verdad → Creo que es verdad"
+   ],
+   "drill": [
+    {
+     "q": "Espero que ___ bien.",
+     "a": "estés",
+     "o": [
+      "estés",
+      "estás",
+      "estar"
+     ],
+     "why": "espero que + subjuntivo."
+    },
+    {
+     "q": "Es importante que ___ temprano.",
+     "a": "lleguemos",
+     "o": [
+      "lleguemos",
+      "llegamos",
+      "llegar"
+     ],
+     "why": "es importante que."
+    },
+    {
+     "q": "Cuando ___ a casa, te llamo.",
+     "a": "llegue",
+     "o": [
+      "llegue",
+      "llego",
+      "llegaré"
+     ],
+     "why": "Jövőre utaló cuando + subjuntivo."
+    },
+    {
+     "q": "No creo que ___ verdad.",
+     "a": "sea",
+     "o": [
+      "sea",
+      "es",
+      "será"
+     ],
+     "why": "no creo que + subjuntivo."
+    },
+    {
+     "q": "Creo que Ana ___ razón.",
+     "a": "tiene",
+     "o": [
+      "tiene",
+      "tenga",
+      "tendría"
+     ],
+     "why": "creo que + kijelentő mód."
+    }
+   ]
+  }
+ ]
+}

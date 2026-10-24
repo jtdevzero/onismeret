@@ -14,6 +14,7 @@ function renderCards(){
   ${POOL.some(c=>S.cards[c.id])?`<button class="btn block soft" id="startCar">${I.spk.replace("<svg",'<svg style="width:18px;height:18px"')} Hangos ismétlés (autóban, kéz nélkül)</button>`:""}
   <button class="btn block lemon" id="startC" ${due.length+nl?"":"disabled"}>${due.length+nl?`Ismétlés indítása (${due.length+nl})`:"Mára nincs több kártya"}</button>
   ${!avail.length&&!due.length?`<p class="small muted">Fejezz be egy újabb leckét, és a szavai itt jelennek meg.</p>`:""}
+  ${fixCard()}
   ${ownCard()}
   ${coreCard()}
   ${packsCard()}
@@ -27,7 +28,7 @@ function renderCards(){
     const rows=POOL.filter(c=>!q||deacc(norm(c.it)).includes(q)||deacc(norm(c.hu)).includes(q)).slice(0,80);
     $("#dict").innerHTML=rows.length?rows.map(c=>{const s=S.cards[c.id];const pill=c.core&&!s?`<span class="pill">${c.core}</span>`:c.own&&!s?`<span class="pill now">Saját</span>`:!s?`<span class="pill">L${c.li+1}</span>`:s.ivl>=21?`<span class="pill ok">megy</span>`:s.due<=t?`<span class="pill now">esedékes</span>`:`<span class="pill">${ivlLabel({ivl:s.due-t})} múlva</span>`;
       return `<div class="dict-row">${spkBtn(c.it)}<div style="min-width:0"><div class="it" ${LA()}>${esc(c.it)}</div><div class="small muted">${esc(c.hu)}</div></div>${pill}</div>`;}).join(""):`<p class="muted">Nincs találat.</p>`;};
-  $("#q").oninput=drawDict;drawDict();bindOwn();bindPacks();bindCore();
+  $("#q").oninput=drawDict;drawDict();bindOwn();bindPacks();bindCore();bindFix();
 }
 function startCards(){
   const due=shuffle(dueList()), nw=newAvail().slice(0,newLeft());

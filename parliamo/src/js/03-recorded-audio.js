@@ -2,9 +2,16 @@
 /* Neural-voice recordings ship as base64 bundles (one per unit, story and verb) and are decoded on demand. */
 const BUNDLES={}, CLIPS={};
 const player=new Audio();
+/* The claude.ai artifact holds a limited number of files, so there the bundles are merged into a few larger packs
+   (tools/artifact_audio.py writes audio/packs.json: bundle name → pack). The web app keeps the small per-bundle files,
+   which the service worker caches one by one. Without a pack map the per-bundle file is used everywhere. */
+let PACKMAP=null;const PACKS={};
+const packMap=()=>PACKMAP||(PACKMAP=IS_WEB?Promise.resolve(null):fetch("audio/packs.json").then(r=>r.ok?r.json():null).catch(()=>null));
+const getJSON=u=>fetch(u).then(r=>r.ok?r.json():null).catch(()=>null);
 function loadBundle(name){
   if(!name)return Promise.resolve(null);
-  if(!BUNDLES[name])BUNDLES[name]=fetch("audio/"+name+".json").then(r=>r.ok?r.json():null).catch(()=>null);
+  if(!BUNDLES[name])BUNDLES[name]=packMap().then(m=>{const p=m&&m[name];if(!p)return getJSON("audio/"+name+".json");
+    if(!PACKS[p])PACKS[p]=getJSON("audio/"+p+".json");return PACKS[p].then(d=>(d&&d[name])||null);});
   return BUNDLES[name];
 }
 function clipUrl(text,data){

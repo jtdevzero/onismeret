@@ -1,0 +1,245 @@
+# A1 – olasz alapszavak (szó|magyar)
+ciao|szia
+buongiorno|jó napot, jó reggelt
+buonasera|jó estét
+arrivederci|viszontlátásra
+grazie|köszönöm
+prego|szívesen; tessék
+per favore|kérem
+scusi|elnézést (magázva)
+sì|igen
+no|nem
+la persona|személy
+l'uomo|férfi
+la donna|nő
+il bambino|gyerek, kisfiú
+la bambina|kislány
+il ragazzo|fiú, srác
+la ragazza|lány
+l'amico|barát
+l'amica|barátnő
+la famiglia|család
+la madre|anya
+il padre|apa
+il fratello|fiútestvér
+la sorella|lánytestvér
+il figlio|fia valakinek
+la figlia|lánya valakinek
+il marito|férj
+la moglie|feleség
+il nonno|nagyapa
+la nonna|nagymama
+la casa|ház, otthon
+l'appartamento|lakás
+la camera|szoba
+la cucina|konyha
+il bagno|fürdőszoba
+la porta|ajtó
+la finestra|ablak
+il letto|ágy
+il tavolo|asztal
+la sedia|szék
+la città|város
+il paese|ország; falu
+la strada|út, utca
+la piazza|tér
+il negozio|üzlet, bolt
+il mercato|piac
+il supermercato|szupermarket
+la banca|bank
+l'ospedale|kórház
+la scuola|iskola
+l'ufficio|iroda
+la stazione|pályaudvar
+l'aeroporto|repülőtér
+il treno|vonat
+l'autobus|busz
+la macchina|autó
+la bicicletta|kerékpár
+il biglietto|jegy
+il cibo|étel
+l'acqua|víz
+il caffè|kávé
+il tè|tea
+il latte|tej
+il vino|bor
+la birra|sör
+il pane|kenyér
+la pasta|tészta
+la pizza|pizza
+il formaggio|sajt
+la carne|hús
+il pesce|hal
+il pollo|csirke
+l'uovo|tojás
+la frutta|gyümölcs
+la mela|alma
+l'arancia|narancs
+la verdura|zöldség
+l'insalata|saláta
+il sale|só
+lo zucchero|cukor
+la colazione|reggeli
+il pranzo|ebéd
+la cena|vacsora
+il ristorante|étterem
+il bar|bár, kávézó
+il conto|számla
+il giorno|nap
+la notte|éjszaka
+la mattina|reggel, délelőtt
+il pomeriggio|délután
+la sera|este
+oggi|ma
+domani|holnap
+ieri|tegnap
+la settimana|hét
+il mese|hónap
+l'anno|év
+l'ora|óra (idő)
+il minuto|perc
+adesso|most
+sempre|mindig
+mai|soha
+spesso|gyakran
+lunedì|hétfő
+martedì|kedd
+mercoledì|szerda
+giovedì|csütörtök
+venerdì|péntek
+sabato|szombat
+domenica|vasárnap
+uno|egy
+due|kettő
+tre|három
+quattro|négy
+cinque|öt
+sei|hat
+sette|hét
+otto|nyolc
+nove|kilenc
+dieci|tíz
+venti|húsz
+cento|száz
+mille|ezer
+essere|lenni
+avere|birtokolni, van neki
+fare|csinálni
+andare|menni
+venire|jönni
+stare|lenni, maradni
+dire|mondani
+parlare|beszélni
+mangiare|enni
+bere|inni
+dormire|aludni
+lavorare|dolgozni
+studiare|tanulni
+abitare|lakni
+vivere|élni
+volere|akarni
+potere|tudni, -hat, -het
+dovere|kell, muszáj
+sapere|tudni (ismeret)
+conoscere|ismerni
+vedere|látni
+guardare|nézni
+sentire|hallani, érezni
+ascoltare|hallgatni
+leggere|olvasni
+scrivere|írni
+capire|érteni
+chiamare|hívni
+comprare|vásárolni
+pagare|fizetni
+costare|kerülni (ár)
+aprire|kinyitni
+chiudere|bezárni
+prendere|venni, fogni
+dare|adni
+cercare|keresni
+trovare|találni
+aspettare|várni
+arrivare|megérkezni
+partire|elindulni, elutazni
+tornare|visszatérni
+uscire|kimenni
+entrare|belépni
+piacere|tetszeni
+amare|szeretni
+cucinare|főzni
+giocare|játszani
+grande|nagy
+piccolo|kicsi
+buono|jó (minőség)
+bello|szép
+brutto|csúnya
+nuovo|új
+vecchio|öreg, régi
+giovane|fiatal
+caldo|meleg
+freddo|hideg
+caro|drága; kedves
+economico|olcsó
+facile|könnyű
+difficile|nehéz
+felice|boldog
+stanco|fáradt
+contento|elégedett
+lungo|hosszú
+corto|rövid
+alto|magas
+basso|alacsony
+primo|első
+ultimo|utolsó
+rosso|piros
+blu|kék
+verde|zöld
+giallo|sárga
+bianco|fehér
+nero|fekete
+qui|itt
+lì|ott
+dove|hol
+quando|mikor
+come|hogyan
+perché|miért; mert
+che cosa|mi
+chi|ki
+quanto|mennyi
+quale|melyik
+molto|nagyon, sok
+poco|kevés
+tutto|minden
+anche|is
+ma|de
+e|és
+o|vagy
+con|-val, -vel
+senza|nélkül
+per|-ért, számára
+la mano|kéz
+la testa|fej
+l'occhio|szem
+il piede|láb (lábfej)
+il medico|orvos
+la farmacia|gyógyszertár
+il telefono|telefon
+il libro|könyv
+la lingua|nyelv
+la parola|szó
+il nome|név
+il lavoro|munka
+il tempo|idő; időjárás
+il sole|nap (égitest)
+la pioggia|eső
+il mare|tenger
+la montagna|hegy
+il cane|kutya
+il gatto|macska
+il regalo|ajándék
+la festa|ünnep, buli
+le vacanze|szabadság, vakáció
+la chiave|kulcs
+i soldi|pénz
+il prezzo|ár
