@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Parliamo webapp build.
 
-A forrás a src/app.html: ugyanez a fájl fut claude.ai artifactként is (ott a claude.ai adja köré a <head>-et).
-Ez a szkript elkészíti belőle az önálló webappot:
-  index.html  teljes dokumentum: CSP, manifest, helyi betűk, service worker regisztráció
+A forrás a src/ mappában van, részekre bontva:
+  src/head.html, src/styles.css, src/shell.html, src/js/NN-*.js (számsorrendben), src/tail.html
+Ez a szkript összerakja belőlük:
+  app.html    egyetlen fájl, ez fut claude.ai artifactként (ott a claude.ai adja köré a <head>-et)
+  index.html  az önálló webapp teljes dokumentuma: CSP, manifest, helyi betűk, service worker regisztráció
   sw.js       offline működés; a verzió a fájlok tartalmából számolt hash
 Futtatás: python3 parliamo/build.py
 """
@@ -26,7 +28,7 @@ HEAD = f"""<!doctype html>
 <meta http-equiv="Content-Security-Policy" content="{CSP}">
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#1F4FD6">
-<meta name="description" content="Olasz és angol nyelvtanulás magyarul: leckék felvett hanggal, ismétlés, történetek, kiejtés és AI-tanár.">
+<meta name="description" content="Angol, olasz és spanyol nyelvtanulás magyarul: leckék felvett hanggal, ismétlés, podcastok, kiejtés, vizsgafelkészítő és AI-tanár.">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/logo.svg" type="image/svg+xml"><link rel="alternate icon" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -85,7 +87,7 @@ self.addEventListener('notificationclick', e => {
   e.notification.close();
   const url = new URL((e.notification.data && e.notification.data.url) || './', self.registration.scope).href;
   e.waitUntil(clients.matchAll({ type: 'window', includeUncontrolled: true }).then(ws => {
-    for (const w of ws) if (w.url.startsWith(self.registration.scope)) return w.focus();
+    for (const w of ws) if (w.url.startsWith(self.registration.scope)) return w.focus().then(c => (c || w).navigate ? (c || w).navigate(url) : c).catch(() => w.focus());
     return clients.openWindow(url);
   }));
 });
@@ -100,8 +102,20 @@ def digest(paths):
     return h.hexdigest()[:10]
 
 
+GENERATED = '<!-- GENERÁLT FÁJL: a parliamo/src/ részeiből a build.py rakja össze. Ne szerkeszd kézzel. -->\n'
+
+
+def assemble():
+    src = HERE / 'src'
+    read = lambda p: p.read_text(encoding='utf-8')
+    js = ''.join(read(p) for p in sorted((src / 'js').glob('*.js')))
+    return (read(src / 'head.html') + '<style>\n' + read(src / 'styles.css') + '</style>\n' + read(src / 'shell.html')
+            + '<script>\n' + js + '</script>' + read(src / 'tail.html'))
+
+
 def main():
-    app = (HERE / 'src' / 'app.html').read_text(encoding='utf-8')
+    app = assemble()
+    (HERE / 'app.html').write_text(GENERATED + app, encoding='utf-8')
     # A claude.ai-os változat a Google Fontsot tölti; a webapp a helyi betűket (fonts/fonts.css).
     app = re.sub(r'<link rel="preconnect"[^>]*>\n?', '', app)
     app = re.sub(r'<link rel="stylesheet" href="https://fonts\.googleapis\.com[^>]*>\n?', '', app)
@@ -118,7 +132,7 @@ def main():
             .replace('__MEDIA__', digest(media_files))
             .replace('__LIST__', '[\n' + ',\n'.join(f'"{s}"' for s in shell) + '\n]'))
     (HERE / 'sw.js').write_text(sw, encoding='utf-8')
-    print('index.html és sw.js kész')
+    print('app.html, index.html és sw.js kész')
 
 
 if __name__ == '__main__':

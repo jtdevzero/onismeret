@@ -1,0 +1,170 @@
+{
+ "sets": [
+  {
+   "id": "doppie",
+   "title": "Dupla mássalhangzók",
+   "tip": "Az olaszban a dupla mássalhangzót tényleg hosszabban ejted, és ez megváltoztatja a jelentést: pala (lapát) – palla (labda). A magyarban is van ilyen (kasza – kassza), csak figyelni kell rá.",
+   "pairs": [
+    [
+     "pala",
+     "palla"
+    ],
+    [
+     "caro",
+     "carro"
+    ],
+    [
+     "sete",
+     "sette"
+    ],
+    [
+     "nono",
+     "nonno"
+    ],
+    [
+     "copia",
+     "coppia"
+    ],
+    [
+     "fato",
+     "fatto"
+    ],
+    [
+     "capello",
+     "cappello"
+    ],
+    [
+     "sono",
+     "sonno"
+    ]
+   ],
+   "sentences": [
+    "Il nonno ha sette anni più della nonna.",
+    "Ho sonno, ma sono contento.",
+    "Mi piace il tuo cappello nuovo."
+   ]
+  },
+  {
+   "id": "gli",
+   "title": "gli és gn",
+   "tip": "A gli lágy, ly-szerű hang (figlio), mintha a magyar „lyuk” régies kiejtése lenne. A gn a magyar ny (bagno = bany-nyo). Ne ejtsd g-vel!",
+   "pairs": [
+    [
+     "figlio",
+     "filo"
+    ],
+    [
+     "voglio",
+     "volo"
+    ],
+    [
+     "moglie",
+     "mole"
+    ],
+    [
+     "bagno",
+     "banno"
+    ],
+    [
+     "sogno",
+     "sono"
+    ],
+    [
+     "legna",
+     "lena"
+    ]
+   ],
+   "sentences": [
+    "Mio figlio vuole una famiglia grande.",
+    "Ho sognato un bagno in montagna.",
+    "Voglio una bottiglia d'acqua."
+   ]
+  },
+  {
+   "id": "cci",
+   "title": "c, ch, g, gh",
+   "tip": "e és i előtt a c = cs, a g = dzs (cena, gelato). A h keményít: che = ke, ghi = gi. A sci = si (scienza).",
+   "pairs": [
+    [
+     "ceci",
+     "chechi"
+    ],
+    [
+     "cena",
+     "chena"
+    ],
+    [
+     "gelo",
+     "ghelo"
+    ],
+    [
+     "giro",
+     "ghiro"
+    ],
+    [
+     "pesce",
+     "pesche"
+    ],
+    [
+     "cucina",
+     "cuchina"
+    ]
+   ],
+   "sentences": [
+    "Ceniamo con pesce e funghi.",
+    "Il gelato al cioccolato è il mio preferito.",
+    "Chi cerca trova."
+   ]
+  },
+  {
+   "id": "vocali",
+   "mode": "sent",
+   "title": "Nyitott és zárt e, o",
+   "tip": "Az olasz e és o lehet nyitott vagy zárt: pèsca (barack) – pésca (horgászat). A magyar e nyitott, ezért a zárt é-t kicsit a magyar é felé kell vinni, de rövidebben.",
+   "pairs": [
+    [
+     "pesca",
+     "pèsca"
+    ],
+    [
+     "venti",
+     "vènti"
+    ],
+    [
+     "botte",
+     "bòtte"
+    ]
+   ],
+   "sentences": [
+    "Questa pesca è dolcissima.",
+    "Oggi ci sono venti gradi.",
+    "Il vento soffia forte."
+   ]
+  },
+  {
+   "id": "accento",
+   "mode": "sent",
+   "title": "Szóhangsúly",
+   "tip": "A magyar mindig az első szótagot hangsúlyozza, az olasz legtöbbször az utolsó előttit (amico), de van kivétel: telefono, città. A rossz hangsúly megnehezíti a megértést.",
+   "pairs": [
+    [
+     "ancora",
+     "ancòra"
+    ],
+    [
+     "capitano",
+     "capitàno"
+    ],
+    [
+     "principi",
+     "princìpi"
+    ]
+   ],
+   "sentences": [
+    "Telefono ancora a mia madre.",
+    "La città è molto bella di sera.",
+    "Abito vicino all'università."
+   ]
+  }
+ ]
+}

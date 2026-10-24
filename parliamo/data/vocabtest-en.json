@@ -1,0 +1,132 @@
+{
+ "bands": [
+  {
+   "from": 0,
+   "to": 1000,
+   "words": [
+    "house",
+    "water",
+    "friend",
+    "money",
+    "important",
+    "begin",
+    "small",
+    "morning"
+   ]
+  },
+  {
+   "from": 1000,
+   "to": 2000,
+   "words": [
+    "borrow",
+    "climb",
+    "honest",
+    "journey",
+    "wedding",
+    "neighbour",
+    "guilty",
+    "remind"
+   ]
+  },
+  {
+   "from": 2000,
+   "to": 3000,
+   "words": [
+    "ancient",
+    "ladder",
+    "flexible",
+    "sufficient",
+    "swallow",
+    "grateful",
+    "rumour",
+    "decline"
+   ]
+  },
+  {
+   "from": 3000,
+   "to": 5000,
+   "words": [
+    "reluctant",
+    "thorough",
+    "stubborn",
+    "wrist",
+    "cunning",
+    "mortgage",
+    "prey",
+    "endorse"
+   ]
+  },
+  {
+   "from": 5000,
+   "to": 7000,
+   "words": [
+    "lenient",
+    "brittle",
+    "wane",
+    "sturdy",
+    "gaunt",
+    "haggle",
+    "smug",
+    "quaint"
+   ]
+  },
+  {
+   "from": 7000,
+   "to": 10000,
+   "words": [
+    "cajole",
+    "trite",
+    "wry",
+    "tepid",
+    "fickle",
+    "quell",
+    "laconic",
+    "dour"
+   ]
+  }
+ ],
+ "pseudo": [
+  "plound",
+  "crumper",
+  "flarsh",
+  "mendly",
+  "brastle",
+  "sprunt",
+  "glimber",
+  "prandal",
+  "stoffle",
+  "wrember",
+  "cleaming",
+  "abbertise",
+  "plintful",
+  "sporm",
+  "nolder",
+  "trembry"
+ ],
+ "levels": [
+  [
+   1000,
+   "A1"
+  ],
+  [
+   2000,
+   "A2"
+  ],
+  [
+   3250,
+   "B1"
+  ],
+  [
+   5000,
+   "B2"
+  ],
+  [
+   7500,
+   "C1"
+  ],
+  [
+   99999,
+   "C2"
+  ]
+ ]
+}

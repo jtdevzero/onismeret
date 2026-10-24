@@ -132,7 +132,7 @@ export async function runReminders(kv, subject, state) {
       const summary = sunday ? weeklySummary(state, rec.tz) : "";
       if (hour !== rec.hour || rec.sentDay === day || (rec.lastDay === day && !summary)) continue;
       const nudge = rec.lastDay === day ? "" : (todayPlan(state, rec.tz) + " " + REMINDERS[new Date().getUTCDate() % REMINDERS.length]).trim();
-      const status = await sendPush(kv, rec.sub, { title: "Parliamo", body: [summary, nudge].filter(Boolean).join(" "), url: "./#ma" }, subject).catch(() => 0);
+      const status = await sendPush(kv, rec.sub, { title: "Parliamo", body: [summary, nudge].filter(Boolean).join(" "), url: "./#terv" }, subject).catch(() => 0);
       if (status === 404 || status === 410) await kv.delete(k.name);
       else await kv.put(k.name, JSON.stringify({ ...rec, sentDay: day }));
     }

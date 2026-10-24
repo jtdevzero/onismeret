@@ -1,0 +1,780 @@
+{
+ "packs": [
+  {
+   "id": "doctor",
+   "title": "En el médico",
+   "desc": "Tünetek, vizsgálat, gyógyszer.",
+   "items": [
+    {
+     "it": "el dolor de cabeza",
+     "hu": "fejfájás",
+     "ex": "Tengo dolor de cabeza desde ayer.",
+     "exhu": "Tegnap óta fáj a fejem."
+    },
+    {
+     "it": "la fiebre",
+     "hu": "láz",
+     "ex": "¿Tiene fiebre?",
+     "exhu": "Van láza?"
+    },
+    {
+     "it": "la tos",
+     "hu": "köhögés",
+     "ex": "Tengo una tos muy fuerte.",
+     "exhu": "Nagyon erős köhögésem van."
+    },
+    {
+     "it": "estar resfriado",
+     "hu": "megfázott",
+     "ex": "Estoy resfriado.",
+     "exhu": "Megfáztam."
+    },
+    {
+     "it": "la receta",
+     "hu": "recept",
+     "ex": "Le doy una receta.",
+     "exhu": "Adok egy receptet."
+    },
+    {
+     "it": "la farmacia",
+     "hu": "gyógyszertár",
+     "ex": "¿Hay una farmacia cerca?",
+     "exhu": "Van a közelben gyógyszertár?"
+    },
+    {
+     "it": "cada ocho horas",
+     "hu": "nyolcóránként",
+     "ex": "Tome una pastilla cada ocho horas.",
+     "exhu": "Nyolcóránként vegyen be egy tablettát."
+    },
+    {
+     "it": "soy alérgico a",
+     "hu": "allergiás vagyok valamire",
+     "ex": "Soy alérgico a los frutos secos.",
+     "exhu": "Allergiás vagyok a diófélékre."
+    },
+    {
+     "it": "me duele aquí",
+     "hu": "itt fáj",
+     "ex": "Me duele aquí cuando camino.",
+     "exhu": "Itt fáj, amikor járok."
+    },
+    {
+     "it": "las urgencias",
+     "hu": "sürgősségi osztály",
+     "ex": "Fuimos a urgencias.",
+     "exhu": "Elmentünk a sürgősségire."
+    },
+    {
+     "it": "pedir cita",
+     "hu": "időpontot kérni",
+     "ex": "Quiero pedir cita con el médico.",
+     "exhu": "Időpontot szeretnék kérni az orvoshoz."
+    },
+    {
+     "it": "mareado",
+     "hu": "szédülő",
+     "ex": "Me siento mareado.",
+     "exhu": "Szédülök."
+    },
+    {
+     "it": "curarse",
+     "hu": "meggyógyulni",
+     "ex": "Se curará en una semana.",
+     "exhu": "Egy hét alatt meggyógyul."
+    },
+    {
+     "it": "la baja médica",
+     "hu": "betegszabadság",
+     "ex": "Estoy de baja médica.",
+     "exhu": "Betegszabadságon vagyok."
+    },
+    {
+     "it": "descansar",
+     "hu": "pihenni",
+     "ex": "Tiene que descansar.",
+     "exhu": "Pihennie kell."
+    }
+   ]
+  },
+  {
+   "id": "restaurant",
+   "title": "En el restaurante",
+   "desc": "Foglalás, rendelés, számla.",
+   "items": [
+    {
+     "it": "reservar una mesa",
+     "hu": "asztalt foglalni",
+     "ex": "Quiero reservar una mesa para cuatro.",
+     "exhu": "Négy főre szeretnék asztalt foglalni."
+    },
+    {
+     "it": "la carta",
+     "hu": "étlap",
+     "ex": "¿Nos trae la carta, por favor?",
+     "exhu": "Hozná az étlapot?"
+    },
+    {
+     "it": "el menú del día",
+     "hu": "napi menü",
+     "ex": "El menú del día cuesta doce euros.",
+     "exhu": "A napi menü tizenkét euró."
+    },
+    {
+     "it": "de primero",
+     "hu": "első fogásnak",
+     "ex": "De primero quiero gazpacho.",
+     "exhu": "Első fogásnak gazpachót kérek."
+    },
+    {
+     "it": "de segundo",
+     "hu": "második fogásnak",
+     "ex": "De segundo, pollo asado.",
+     "exhu": "Második fogásnak sült csirkét."
+    },
+    {
+     "it": "de postre",
+     "hu": "desszertnek",
+     "ex": "¿Qué hay de postre?",
+     "exhu": "Mi van desszertnek?"
+    },
+    {
+     "it": "agua con gas",
+     "hu": "szénsavas víz",
+     "ex": "Una botella de agua con gas.",
+     "exhu": "Egy üveg szénsavas vizet."
+    },
+    {
+     "it": "la cuenta",
+     "hu": "számla",
+     "ex": "La cuenta, por favor.",
+     "exhu": "A számlát kérem."
+    },
+    {
+     "it": "la propina",
+     "hu": "borravaló",
+     "ex": "¿Dejamos propina?",
+     "exhu": "Hagyjunk borravalót?"
+    },
+    {
+     "it": "¿Qué me recomienda?",
+     "hu": "Mit ajánl?",
+     "ex": "¿Qué me recomienda de la casa?",
+     "exhu": "Mit ajánl a ház specialitásai közül?"
+    },
+    {
+     "it": "sin gluten",
+     "hu": "gluténmentes",
+     "ex": "¿Tienen platos sin gluten?",
+     "exhu": "Van gluténmentes ételük?"
+    },
+    {
+     "it": "para llevar",
+     "hu": "elvitelre",
+     "ex": "¿Me lo pone para llevar?",
+     "exhu": "Elvitelre csomagolná?"
+    },
+    {
+     "it": "riquísimo",
+     "hu": "nagyon finom",
+     "ex": "La paella estaba riquísima.",
+     "exhu": "A paella nagyon finom volt."
+    },
+    {
+     "it": "las tapas",
+     "hu": "tapas, kis falatok",
+     "ex": "Pedimos unas tapas para compartir.",
+     "exhu": "Rendelünk néhány tapast megosztásra."
+    },
+    {
+     "it": "pagar a medias",
+     "hu": "felezni",
+     "ex": "¿Pagamos a medias?",
+     "exhu": "Felezzük?"
+    }
+   ]
+  },
+  {
+   "id": "travel",
+   "title": "De viaje",
+   "desc": "Vonat, repülő, szállás.",
+   "items": [
+    {
+     "it": "el billete",
+     "hu": "jegy",
+     "ex": "Un billete para Sevilla, por favor.",
+     "exhu": "Egy jegyet Sevillába, kérem."
+    },
+    {
+     "it": "ida y vuelta",
+     "hu": "oda-vissza",
+     "ex": "¿Ida y vuelta o solo ida?",
+     "exhu": "Oda-vissza vagy csak oda?"
+    },
+    {
+     "it": "el andén",
+     "hu": "peron",
+     "ex": "El tren sale del andén cuatro.",
+     "exhu": "A vonat a négyes peronról indul."
+    },
+    {
+     "it": "con retraso",
+     "hu": "késéssel",
+     "ex": "El vuelo llega con retraso.",
+     "exhu": "A járat késéssel érkezik."
+    },
+    {
+     "it": "perder el tren",
+     "hu": "lekésni a vonatot",
+     "ex": "Casi perdemos el tren.",
+     "exhu": "Majdnem lekéstük a vonatot."
+    },
+    {
+     "it": "la tarjeta de embarque",
+     "hu": "beszállókártya",
+     "ex": "Aquí tiene mi tarjeta de embarque.",
+     "exhu": "Itt a beszállókártyám."
+    },
+    {
+     "it": "el equipaje de mano",
+     "hu": "kézipoggyász",
+     "ex": "Solo llevo equipaje de mano.",
+     "exhu": "Csak kézipoggyászom van."
+    },
+    {
+     "it": "facturar",
+     "hu": "feladni (poggyászt)",
+     "ex": "Tengo que facturar la maleta.",
+     "exhu": "Fel kell adnom a bőröndöt."
+    },
+    {
+     "it": "la habitación doble",
+     "hu": "kétágyas szoba",
+     "ex": "¿Tienen una habitación doble?",
+     "exhu": "Van kétágyas szobájuk?"
+    },
+    {
+     "it": "el desayuno incluido",
+     "hu": "reggelivel",
+     "ex": "¿El desayuno está incluido?",
+     "exhu": "A reggeli benne van?"
+    },
+    {
+     "it": "alquilar un coche",
+     "hu": "autót bérelni",
+     "ex": "Queremos alquilar un coche.",
+     "exhu": "Autót szeretnénk bérelni."
+    },
+    {
+     "it": "Me he perdido.",
+     "hu": "Eltévedtem.",
+     "ex": "Perdone, me he perdido.",
+     "exhu": "Elnézést, eltévedtem."
+    },
+    {
+     "it": "¿Está lejos?",
+     "hu": "Messze van?",
+     "ex": "¿Está lejos la playa?",
+     "exhu": "Messze van a strand?"
+    },
+    {
+     "it": "a pie",
+     "hu": "gyalog",
+     "ex": "Se puede ir a pie.",
+     "exhu": "Gyalog is el lehet menni."
+    },
+    {
+     "it": "la oficina de turismo",
+     "hu": "turistainformáció",
+     "ex": "¿Dónde está la oficina de turismo?",
+     "exhu": "Hol van a turistainformáció?"
+    }
+   ]
+  },
+  {
+   "id": "work",
+   "title": "En el trabajo",
+   "desc": "Megbeszélés, e-mail, határidő.",
+   "items": [
+    {
+     "it": "la reunión",
+     "hu": "megbeszélés",
+     "ex": "Tenemos una reunión a las diez.",
+     "exhu": "Tízkor megbeszélésünk van."
+    },
+    {
+     "it": "el plazo",
+     "hu": "határidő",
+     "ex": "El plazo termina el viernes.",
+     "exhu": "A határidő pénteken jár le."
+    },
+    {
+     "it": "el compañero",
+     "hu": "kolléga",
+     "ex": "Mi compañero está de vacaciones.",
+     "exhu": "A kollégám szabadságon van."
+    },
+    {
+     "it": "el sueldo",
+     "hu": "fizetés",
+     "ex": "Me han subido el sueldo.",
+     "exhu": "Megemelték a fizetésemet."
+    },
+    {
+     "it": "aplazar",
+     "hu": "elhalasztani",
+     "ex": "¿Podemos aplazar la reunión?",
+     "exhu": "Elhalaszthatjuk a megbeszélést?"
+    },
+    {
+     "it": "adjunto",
+     "hu": "mellékelten",
+     "ex": "Le envío adjunto el informe.",
+     "exhu": "Mellékelten küldöm a jelentést."
+    },
+    {
+     "it": "Un saludo",
+     "hu": "Üdvözlettel",
+     "ex": "Un saludo, María",
+     "exhu": "Üdvözlettel: María"
+    },
+    {
+     "it": "el jefe",
+     "hu": "főnök",
+     "ex": "Tengo que hablar con mi jefe.",
+     "exhu": "Beszélnem kell a főnökömmel."
+    },
+    {
+     "it": "hacer horas extra",
+     "hu": "túlórázni",
+     "ex": "Esta semana hago horas extra.",
+     "exhu": "Ezen a héten túlórázom."
+    },
+    {
+     "it": "el contrato",
+     "hu": "szerződés",
+     "ex": "Firmé el contrato ayer.",
+     "exhu": "Tegnap aláírtam a szerződést."
+    },
+    {
+     "it": "teletrabajar",
+     "hu": "távmunkában dolgozni",
+     "ex": "Los viernes teletrabajo.",
+     "exhu": "Péntekenként távmunkában dolgozom."
+    },
+    {
+     "it": "la entrevista",
+     "hu": "interjú",
+     "ex": "Mañana tengo una entrevista.",
+     "exhu": "Holnap interjúm van."
+    },
+    {
+     "it": "estar de baja",
+     "hu": "táppénzen van",
+     "ex": "Ana está de baja esta semana.",
+     "exhu": "Ana ezen a héten táppénzen van."
+    },
+    {
+     "it": "el horario",
+     "hu": "munkaidő, órarend",
+     "ex": "Tengo un horario flexible.",
+     "exhu": "Rugalmas a munkaidőm."
+    },
+    {
+     "it": "Le confirmo.",
+     "hu": "Visszaigazolom.",
+     "ex": "Le confirmo la cita para el lunes.",
+     "exhu": "Visszaigazolom a hétfői időpontot."
+    }
+   ]
+  },
+  {
+   "id": "home",
+   "title": "La casa",
+   "desc": "Lakás, bérlés, javítás.",
+   "items": [
+    {
+     "it": "el alquiler",
+     "hu": "bérleti díj",
+     "ex": "El alquiler es muy caro.",
+     "exhu": "A bérleti díj nagyon drága."
+    },
+    {
+     "it": "el casero",
+     "hu": "főbérlő",
+     "ex": "Voy a llamar al casero.",
+     "exhu": "Felhívom a főbérlőt."
+    },
+    {
+     "it": "amueblado",
+     "hu": "bútorozott",
+     "ex": "El piso está amueblado.",
+     "exhu": "A lakás bútorozott."
+    },
+    {
+     "it": "las facturas",
+     "hu": "számlák (rezsi)",
+     "ex": "Las facturas van aparte.",
+     "exhu": "A rezsi külön fizetendő."
+    },
+    {
+     "it": "la fianza",
+     "hu": "kaució",
+     "ex": "Hay que pagar un mes de fianza.",
+     "exhu": "Egyhavi kauciót kell fizetni."
+    },
+    {
+     "it": "mudarse",
+     "hu": "költözni",
+     "ex": "Me mudo el mes que viene.",
+     "exhu": "Jövő hónapban költözöm."
+    },
+    {
+     "it": "la calefacción",
+     "hu": "fűtés",
+     "ex": "La calefacción no funciona.",
+     "exhu": "Nem működik a fűtés."
+    },
+    {
+     "it": "gotear",
+     "hu": "csöpögni",
+     "ex": "El grifo gotea.",
+     "exhu": "Csöpög a csap."
+    },
+    {
+     "it": "el fontanero",
+     "hu": "vízvezeték-szerelő",
+     "ex": "Hay que llamar al fontanero.",
+     "exhu": "Ki kell hívni a vízvezeték-szerelőt."
+    },
+    {
+     "it": "el vecino",
+     "hu": "szomszéd",
+     "ex": "Mis vecinos son muy ruidosos.",
+     "exhu": "A szomszédaim nagyon hangosak."
+    },
+    {
+     "it": "la terraza",
+     "hu": "terasz",
+     "ex": "El piso tiene una terraza grande.",
+     "exhu": "A lakásnak nagy terasza van."
+    },
+    {
+     "it": "el ascensor",
+     "hu": "lift",
+     "ex": "El edificio no tiene ascensor.",
+     "exhu": "Az épületben nincs lift."
+    },
+    {
+     "it": "limpiar",
+     "hu": "takarítani",
+     "ex": "Los sábados limpiamos la casa.",
+     "exhu": "Szombatonként kitakarítunk."
+    },
+    {
+     "it": "la lavadora",
+     "hu": "mosógép",
+     "ex": "La lavadora está rota.",
+     "exhu": "Elromlott a mosógép."
+    },
+    {
+     "it": "compartir piso",
+     "hu": "lakást megosztani",
+     "ex": "Comparto piso con dos amigos.",
+     "exhu": "Két barátommal lakom együtt."
+    }
+   ]
+  },
+  {
+   "id": "shopping",
+   "title": "De compras",
+   "desc": "Méret, csere, akció.",
+   "items": [
+    {
+     "it": "la talla",
+     "hu": "méret (ruha)",
+     "ex": "¿Qué talla usa?",
+     "exhu": "Milyen méretet hord?"
+    },
+    {
+     "it": "el número",
+     "hu": "méret (cipő)",
+     "ex": "Calzo el treinta y nueve.",
+     "exhu": "39-es cipőt hordok."
+    },
+    {
+     "it": "probarse",
+     "hu": "felpróbálni",
+     "ex": "¿Puedo probármelo?",
+     "exhu": "Felpróbálhatom?"
+    },
+    {
+     "it": "el probador",
+     "hu": "próbafülke",
+     "ex": "¿Dónde están los probadores?",
+     "exhu": "Hol vannak a próbafülkék?"
+    },
+    {
+     "it": "las rebajas",
+     "hu": "leárazás",
+     "ex": "En enero hay rebajas.",
+     "exhu": "Januárban vannak a leárazások."
+    },
+    {
+     "it": "el descuento",
+     "hu": "kedvezmény",
+     "ex": "¿Me hace un descuento?",
+     "exhu": "Ad kedvezményt?"
+    },
+    {
+     "it": "cambiar",
+     "hu": "kicserélni",
+     "ex": "¿Puedo cambiarlo por otra talla?",
+     "exhu": "Kicserélhetem másik méretre?"
+    },
+    {
+     "it": "el tique",
+     "hu": "blokk, nyugta",
+     "ex": "Guarde el tique, por favor.",
+     "exhu": "Kérem, őrizze meg a blokkot."
+    },
+    {
+     "it": "¿Cuánto cuesta?",
+     "hu": "Mennyibe kerül?",
+     "ex": "¿Cuánto cuesta esta camisa?",
+     "exhu": "Mennyibe kerül ez az ing?"
+    },
+    {
+     "it": "me queda pequeño",
+     "hu": "kicsi rám",
+     "ex": "Este jersey me queda pequeño.",
+     "exhu": "Ez a pulóver kicsi rám."
+    },
+    {
+     "it": "me queda bien",
+     "hu": "jó rám, jól áll",
+     "ex": "¿Me queda bien este color?",
+     "exhu": "Jól áll ez a szín?"
+    },
+    {
+     "it": "pagar con tarjeta",
+     "hu": "kártyával fizetni",
+     "ex": "¿Puedo pagar con tarjeta?",
+     "exhu": "Fizethetek kártyával?"
+    },
+    {
+     "it": "Solo estoy mirando.",
+     "hu": "Csak nézelődöm.",
+     "ex": "Gracias, solo estoy mirando.",
+     "exhu": "Köszönöm, csak nézelődöm."
+    },
+    {
+     "it": "la bolsa",
+     "hu": "szatyor",
+     "ex": "¿Necesita una bolsa?",
+     "exhu": "Kér szatyrot?"
+    },
+    {
+     "it": "una ganga",
+     "hu": "jó vétel",
+     "ex": "¡Estos zapatos son una ganga!",
+     "exhu": "Ez a cipő igazi jó vétel!"
+    }
+   ]
+  },
+  {
+   "id": "feelings",
+   "title": "Emociones",
+   "desc": "Érzések és kapcsolatok.",
+   "items": [
+    {
+     "it": "contento",
+     "hu": "elégedett, boldog",
+     "ex": "Estoy muy contento con el resultado.",
+     "exhu": "Nagyon elégedett vagyok az eredménnyel."
+    },
+    {
+     "it": "triste",
+     "hu": "szomorú",
+     "ex": "Hoy estoy un poco triste.",
+     "exhu": "Ma kicsit szomorú vagyok."
+    },
+    {
+     "it": "enfadado",
+     "hu": "dühös",
+     "ex": "¿Por qué estás enfadado?",
+     "exhu": "Miért vagy dühös?"
+    },
+    {
+     "it": "preocupado",
+     "hu": "aggódó",
+     "ex": "Estoy preocupado por mi madre.",
+     "exhu": "Aggódom az anyám miatt."
+    },
+    {
+     "it": "cansado",
+     "hu": "fáradt",
+     "ex": "Estoy agotado, muy cansado.",
+     "exhu": "Kimerült, nagyon fáradt vagyok."
+    },
+    {
+     "it": "enamorado",
+     "hu": "szerelmes",
+     "ex": "Está enamorado de su vecina.",
+     "exhu": "Szerelmes a szomszédjába."
+    },
+    {
+     "it": "echar de menos",
+     "hu": "hiányzik valaki",
+     "ex": "Te echo de menos.",
+     "exhu": "Hiányzol."
+    },
+    {
+     "it": "llevarse bien",
+     "hu": "jól kijönni",
+     "ex": "Me llevo bien con mis compañeros.",
+     "exhu": "Jól kijövök a kollégáimmal."
+    },
+    {
+     "it": "discutir",
+     "hu": "vitatkozni",
+     "ex": "Discutieron por una tontería.",
+     "exhu": "Egy butaságon vitatkoztak."
+    },
+    {
+     "it": "hacer las paces",
+     "hu": "kibékülni",
+     "ex": "Al final hicieron las paces.",
+     "exhu": "Végül kibékültek."
+    },
+    {
+     "it": "confiar en",
+     "hu": "megbízni valakiben",
+     "ex": "Confío en ti.",
+     "exhu": "Megbízom benned."
+    },
+    {
+     "it": "aburrirse",
+     "hu": "unatkozni",
+     "ex": "Me aburro mucho los domingos.",
+     "exhu": "Vasárnaponként nagyon unatkozom."
+    },
+    {
+     "it": "Lo siento.",
+     "hu": "Sajnálom.",
+     "ex": "Lo siento mucho, de verdad.",
+     "exhu": "Igazán nagyon sajnálom."
+    },
+    {
+     "it": "¡Qué bien!",
+     "hu": "De jó!",
+     "ex": "¡Qué bien que hayas venido!",
+     "exhu": "De jó, hogy eljöttél!"
+    },
+    {
+     "it": "tener ganas de",
+     "hu": "kedve van valamihez",
+     "ex": "Tengo muchas ganas de verte.",
+     "exhu": "Nagyon szeretnélek látni."
+    }
+   ]
+  },
+  {
+   "id": "city",
+   "title": "En la ciudad",
+   "desc": "Útbaigazítás, közlekedés, hivatal.",
+   "items": [
+    {
+     "it": "todo recto",
+     "hu": "egyenesen",
+     "ex": "Siga todo recto.",
+     "exhu": "Menjen egyenesen."
+    },
+    {
+     "it": "girar a la derecha",
+     "hu": "jobbra fordulni",
+     "ex": "En el semáforo, gire a la derecha.",
+     "exhu": "A lámpánál forduljon jobbra."
+    },
+    {
+     "it": "a la izquierda",
+     "hu": "balra",
+     "ex": "El banco está a la izquierda.",
+     "exhu": "A bank balra van."
+    },
+    {
+     "it": "la esquina",
+     "hu": "sarok",
+     "ex": "La tienda está en la esquina.",
+     "exhu": "Az üzlet a sarkon van."
+    },
+    {
+     "it": "la parada",
+     "hu": "megálló",
+     "ex": "¿Dónde está la parada del autobús?",
+     "exhu": "Hol van a buszmegálló?"
+    },
+    {
+     "it": "el abono",
+     "hu": "bérlet",
+     "ex": "Tengo el abono de transporte.",
+     "exhu": "Van közlekedési bérletem."
+    },
+    {
+     "it": "el ayuntamiento",
+     "hu": "városháza",
+     "ex": "Tengo que ir al ayuntamiento.",
+     "exhu": "El kell mennem a városházára."
+    },
+    {
+     "it": "Correos",
+     "hu": "posta",
+     "ex": "Correos cierra a las dos.",
+     "exhu": "A posta kettőkor zár."
+    },
+    {
+     "it": "el formulario",
+     "hu": "űrlap",
+     "ex": "Rellene este formulario.",
+     "exhu": "Töltse ki ezt az űrlapot."
+    },
+    {
+     "it": "la cola",
+     "hu": "sor",
+     "ex": "Hay una cola enorme.",
+     "exhu": "Óriási a sor."
+    },
+    {
+     "it": "el aparcamiento",
+     "hu": "parkoló",
+     "ex": "¿Hay aparcamiento cerca?",
+     "exhu": "Van parkoló a közelben?"
+    },
+    {
+     "it": "cerca de aquí",
+     "hu": "itt a közelben",
+     "ex": "¿Hay un cajero cerca de aquí?",
+     "exhu": "Van itt a közelben bankautomata?"
+    },
+    {
+     "it": "a cinco minutos",
+     "hu": "öt percre",
+     "ex": "La estación está a cinco minutos.",
+     "exhu": "Az állomás öt percre van."
+    },
+    {
+     "it": "la calle peatonal",
+     "hu": "sétálóutca",
+     "ex": "Es una calle peatonal.",
+     "exhu": "Ez egy sétálóutca."
+    },
+    {
+     "it": "el DNI",
+     "hu": "személyi igazolvány",
+     "ex": "¿Me enseña su DNI?",
+     "exhu": "Megmutatná a személyi igazolványát?"
+    }
+   ]
+  }
+ ]
+}

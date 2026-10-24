@@ -1,0 +1,178 @@
+{
+ "mc": {
+  "title": "Szókitöltés (CILS / PLIDA jelleggel)",
+  "desc": "Melyik szó illik a mondatba? Elöljárók, igeidők, kötőszavak.",
+  "items": [
+   {
+    "q": "Vado ___ Roma la settimana prossima.",
+    "a": "a",
+    "o": [
+     "a",
+     "in",
+     "da",
+     "per"
+    ],
+    "why": "Városnév előtt a: vado a Roma."
+   },
+   {
+    "q": "Abito ___ Italia da tre anni.",
+    "a": "in",
+    "o": [
+     "in",
+     "a",
+     "di",
+     "su"
+    ],
+    "why": "Ország előtt in: in Italia."
+   },
+   {
+    "q": "Ieri ___ andata al cinema con Paolo.",
+    "a": "sono",
+    "o": [
+     "sono",
+     "ho",
+     "ero",
+     "sarò"
+    ],
+    "why": "Az andare essere-vel képez passato prossimót."
+   },
+   {
+    "q": "Se avessi tempo, ___ un viaggio.",
+    "a": "farei",
+    "o": [
+     "farei",
+     "faccio",
+     "farò",
+     "facevo"
+    ],
+    "why": "Irreális feltétel: se + congiuntivo imperfetto, főmondatban condizionale."
+   },
+   {
+    "q": "Penso che Marco ___ ragione.",
+    "a": "abbia",
+    "o": [
+     "abbia",
+     "ha",
+     "avrà",
+     "aveva"
+    ],
+    "why": "A pensare che után kötőmód (congiuntivo) áll."
+   },
+   {
+    "q": "Quando ero piccolo, ___ sempre al mare.",
+    "a": "andavo",
+    "o": [
+     "andavo",
+     "sono andato",
+     "andrò",
+     "vado"
+    ],
+    "why": "Múltbeli szokás: imperfetto."
+   },
+   {
+    "q": "Non ho ___ fame.",
+    "a": "più",
+    "o": [
+     "più",
+     "mai",
+     "niente",
+     "nessuno"
+    ],
+    "why": "non… più = már nem."
+   },
+   {
+    "q": "Il libro ___ ti ho parlato è bellissimo.",
+    "a": "di cui",
+    "o": [
+     "di cui",
+     "che",
+     "a cui",
+     "quale"
+    ],
+    "why": "parlare di qualcosa → di cui."
+   },
+   {
+    "q": "Benché ___ stanco, è uscito.",
+    "a": "fosse",
+    "o": [
+     "fosse",
+     "era",
+     "è",
+     "sarebbe"
+    ],
+    "why": "A benché után kötőmód áll."
+   },
+   {
+    "q": "Te ___ ho già detto mille volte!",
+    "a": "l'",
+    "o": [
+     "l'",
+     "lo",
+     "la",
+     "gli"
+    ],
+    "why": "te lo ho → te l'ho (a lo összevonódik)."
+   }
+  ]
+ },
+ "wf": {
+  "title": "Szóképzés",
+  "desc": "Képezd a megfelelő szót a nagybetűs alapszóból.",
+  "items": [
+   {
+    "q": "La ___ del ponte è durata due anni. (COSTRUIRE)",
+    "a": "costruzione",
+    "why": "-zione főnévképző."
+   },
+   {
+    "q": "È una persona molto ___. (GENTILEZZA)",
+    "a": "gentile",
+    "why": "Melléknév kell."
+   },
+   {
+    "q": "Parla ___ tre lingue. (CORRENTE)",
+    "a": "correntemente",
+    "why": "-mente határozószó-képző."
+   },
+   {
+    "q": "La ___ è il problema principale della città. (DISOCCUPATO)",
+    "a": "disoccupazione",
+    "why": "-zione főnévképző."
+   },
+   {
+    "q": "Questo esercizio è davvero ___. (UTILE, ellentéte)",
+    "a": "inutile",
+    "why": "in- fosztóképző."
+   },
+   {
+    "q": "Abbiamo fatto una lunga ___ in montagna. (CAMMINARE)",
+    "a": "camminata",
+    "why": "-ata főnévképző (cselekvés)."
+   },
+   {
+    "q": "La sua ___ mi ha sorpreso. (REAGIRE)",
+    "a": "reazione",
+    "why": "-zione főnévképző."
+   },
+   {
+    "q": "È un film molto ___. (DIVERTIRE)",
+    "a": "divertente",
+    "why": "-ente melléknévképző."
+   }
+  ]
+ },
+ "essays": [
+  {
+   "type": "CILS B1 – lettera informale",
+   "task": "Scrivi una mail a un amico italiano: raccontagli le tue ultime vacanze e invitalo a venire a trovarti. (100–120 parole)"
+  },
+  {
+   "type": "CILS B2 – testo argomentativo",
+   "task": "Oggi molte persone lavorano da casa. Quali sono i vantaggi e gli svantaggi? Esprimi la tua opinione. (180–200 parole)"
+  },
+  {
+   "type": "CILS B1 – lettera formale",
+   "task": "Scrivi una mail a un albergo per lamentarti di un problema durante il tuo soggiorno e chiedere un rimborso. (100–120 parole)"
+  }
+ ]
+}

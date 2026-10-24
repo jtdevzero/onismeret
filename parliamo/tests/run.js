@@ -21,6 +21,7 @@ const server = http.createServer((req, res) => {
 
 /* Ál-AI: a prompt tartalma alapján ad vissza a kért JSON-szerkezetet. */
 function aiReply(prompt) {
+  if (/részenként írta meg/.test(prompt)) return { parts: [1, 2, 3].map(() => ({ score: 4, comment: 'Jó rész.', corrected: 'Fixed part.' })), summary: 'Összességében jó.', tip: 'Használj több kötőszót.' };
   if (/kéthetes \(14 napos\)/.test(prompt)) {
     const it = k => ({ q: `Item ${k} ___ here.`, a: 'right', o: ['right', 'wrong', 'other'], why: 'Mert.' });
     return { title: 'Névelők és igeidők', goal: 'Biztosan használod a névelőket.', days: Array.from({ length: 14 }, (_, d) => ({ t: `Nap ${d + 1}`, ex: 'Magyarázat.', items: [1, 2, 3, 4, 5].map(it) })), test: Array.from({ length: 10 }, (_, k) => it(k)) };
@@ -181,7 +182,7 @@ function mockProxy(store) {
   console.log('\n9. Más nyelvek');
   await p.evaluate(() => switchLang('es')); await p.waitForFunction(() => lang() === 'es' && LESSONS.length > 0);
   await p.evaluate(() => go('gyakorlas'));
-  ok(await p.locator('[data-d="pod"]').count() === 0 && await p.locator('[data-d="serestar"]').count() === 1, 'spanyolban a saját gyakorlók');
+  ok(await p.locator('[data-d="pod"]').count() === 1 && await p.locator('[data-d="serestar"]').count() === 1 && await p.locator('[data-d="acc"]').count() === 0, 'spanyolban a saját gyakorlók és a podcastok');
   ok(await p.evaluate(() => !!S.lessons['en-c1']), 'nyelvváltás nem törli az angol haladást');
 
   console.log('\n10. Beszédfelismerés (ál-mikrofonnal): kiejtés és kéz nélküli beszélgetés');
@@ -204,6 +205,9 @@ function mockProxy(store) {
   await C.p.click('#cHands');
   await C.p.waitForFunction(() => T.msgs.filter(m => m.r === 'me').length === 2 && !T.busy, null, { timeout: 40000 });
   ok(await C.p.evaluate(() => T.msgs.filter(m => m.r === 'me').map(m => m.it).join('|')) === 'I live in Budapest.|I like it here.', 'kéz nélkül: a tanár válasza után magától hallgat és küld');
+  await C.p.evaluate(() => { POOL.slice(0, 3).forEach(c => { S.cards[c.id] = sched(null, 2, c.id); S.cards[c.id].due = today(); }); save(); window.__heard = ['tudtam', 'újra', 'könnyű']; go('kartyak'); });
+  await C.p.click('#startCar'); await C.p.waitForFunction(() => !CAR, null, { timeout: 60000 });
+  ok(await C.p.evaluate(() => { const c = POOL.slice(0, 3).map(x => S.cards[x.id]); return c[0].ivl >= 1 && c[1].ivl === 0 && c[2].ivl >= c[0].ivl; }), 'autós mód: hangra értékel (tudtam / újra / könnyű)');
   ok(C.p._errs.length === 0, 'nincs JS-hiba (beszéd)', C.p._errs.slice(0, 3));
 
   console.log('\n11. Akcentus, szócsomagok, mondatépítő');
@@ -263,6 +267,65 @@ function mockProxy(store) {
   await p.click('[data-bk]'); await p.click('[data-bk]'); await p.waitForFunction(x => S.xp === x && !cloudBusy, xpBefore);
   ok(await p.evaluate(x => S.xp === x, xpBefore), 'visszaállítás mentésből');
   ok(store.rec.state.xp === xpBefore, 'a visszaállított állapot a szerverre is felkerül', store.rec.state.xp);
+
+  console.log('\n15. Olasz és spanyol extrák');
+  await p.evaluate(() => switchLang('es')); await p.waitForFunction(() => lang() === 'es' && XT.packs.length > 0);
+  ok(await p.evaluate(() => XT.pods.length === 4 && XT.pron.length === 5 && XT.packs.length === 8 && !!XT.exam.mc), 'spanyol: 4 podcast, 5 kiejtési csoport, 8 csomag, vizsga');
+  ok(await p.evaluate(async () => { const d = await loadBundle('pron-es'); return !!(d && d.perro); }), 'spanyol kiejtés felvett hanggal');
+  await p.evaluate(() => go('gyakorlas')); await p.click('[data-d="pron"]'); await p.click('[data-s="rr"]');
+  await p.click(`[data-j="${await p.evaluate(() => PR.q.t)}"]`); ok(await p.evaluate(() => PR.ok === 1), 'spanyol hangpár (pero – perro) gyakorló');
+  await p.click('#sbBack'); await p.click('[data-s="bv"]'); ok(await p.evaluate(() => PR.mode === 'sent'), 'b/v: csak mondatos mód (ugyanúgy hangzanak)');
+  await p.evaluate(() => go('gyakorlas')); await p.click('[data-d="exam"]');
+  ok(await p.locator('.label', { hasText: 'DELE' }).count() >= 1 && await p.locator('[data-x="kwt"]').count() === 0, 'spanyol vizsga: DELE, mondatátalakítás nélkül');
+  await p.click('[data-x="mc"]'); await p.click('[data-o="0"]'); ok(await p.evaluate(() => D.k === 'exam-mc' && D.n === 1), 'DELE szókitöltés');
+  await p.evaluate(() => go('kartyak')); await p.click('[data-pk="restaurant"]'); await p.click('#pkAdd');
+  ok(await p.evaluate(() => ownList().some(w => w.it === 'la propina') && AUDIO_IDX['la propina'] === 'pk-es-restaurant'), 'spanyol szócsomag felvéve, hanggal');
+  await p.evaluate(() => switchLang('it')); await p.waitForFunction(() => lang() === 'it' && XT.pods.length > 0);
+  ok(await p.evaluate(() => XT.pods.length === 4 && XT.pron.some(s => s.id === 'doppie')), 'olasz: podcastok és dupla mássalhangzók');
+
+  console.log('\n16. Podcast: koppintható szavak, lyukas szöveg, diktálás');
+  await p.evaluate(() => switchLang('en')); await p.waitForFunction(() => lang() === 'en' && XT.writing.length > 0);
+  await p.evaluate(() => go('gyakorlas')); await p.click('[data-d="pod"]'); await p.click('[data-p="en-p1"]'); await p.click('#pdT');
+  await p.click('#pdLines .w >> text=awake'); await p.waitForSelector('#wpop:not([hidden])');
+  ok(/éber/.test(await p.locator('#wpop').textContent()), 'podcast szövegében a szóra koppintva jön a jelentés');
+  await p.click('#pdGap');
+  await p.evaluate(() => { const g = gapsFor(PD.p); document.querySelectorAll('.gapin').forEach(inp => { const k = +inp.dataset.g; inp.value = PD.p.lines[k].it.split(' ')[g[k]].replace(/[^\p{L}']/gu, ''); inp.dispatchEvent(new Event('input')); }); });
+  await p.click('#gpChk'); ok(await p.locator('.feedback.ok').count() === 1 && await p.locator('.gapin.bad').count() === 0, 'lyukas szöveg: helyes kitöltés elfogadva');
+  await p.click('#gpBack'); await p.click('#pdDict'); await p.fill('#pdIn', await p.evaluate(() => PD.p.lines[0].it)); await p.click('#pdChkL');
+  ok(await p.evaluate(() => PD.dok === 1), 'diktálás: hibátlan mondat');
+  await p.click('#pdNextL'); await p.fill('#pdIn', 'totally wrong words'); await p.click('#pdChkL');
+  ok(await p.evaluate(() => PD.dok === 1 && !PD.dres.ok) && await p.locator('.feedback.bad').count() === 1, 'diktálás: hibás mondatnál szavanként jelöl');
+  await p.evaluate(() => go('gyakorlas')); await p.click('[data-d="story"]'); await p.click('[data-st] >> nth=0').catch(() => {});
+
+  console.log('\n17. Íráskurzus');
+  await p.evaluate(() => go('gyakorlas')); await p.click('[data-d="wcourse"]');
+  ok(await p.locator('[data-wc]').count() === 4, '4 írásmodul');
+  await p.click('[data-wc="complaint"]'); ok(await p.locator('.sugg button').count() >= 9, 'felépítés és fordulatok');
+  await p.click('#wcTab [data-v="drill"]'); await p.click('#wcDrill');
+  for (let k = 0; k < 5; k++) { const i = await p.evaluate(() => { const it = QZ.items[QZ.i]; return it._o.indexOf(it.a); }); await p.click(`[data-o="${i}"]`); await p.click('#qgo'); }
+  ok(await p.evaluate(() => WC && WC.tab === 'write'), 'kötőszó-gyakorló után az írás jön');
+  for (let i = 0; i < 3; i++) await p.fill(`[data-wp="${i}"]`, 'This is my part number ' + i + ' and it is long enough.');
+  await p.click('#wcSend'); await p.waitForSelector('text=12 / 15 pont');
+  ok(await p.evaluate(() => S.wc.complaint.score === 12), 'részenkénti AI-javítás és pontszám');
+
+  console.log('\n18. Szókincsbecslés, testreszabás, eszközellenőrzés, gyorsindítás');
+  await p.evaluate(() => go('stat')); await p.click('#vtGo');
+  for (let k = 0; k < 64; k++) { const real = await p.evaluate(() => VT && VT.items[VT.i].b >= 0); if (real === null) break; await p.click(`[data-y="${real ? 1 : 0}"]`); }
+  ok(await p.evaluate(() => S.vsize[S.vsize.length - 1].size === 10000 && S.vsize[S.vsize.length - 1].level === 'C2'), 'szókincsteszt: tökéletes válaszokra 10 000 szó, C2');
+  ok(await p.evaluate(() => { const X = XT.vt, items = X.bands.flatMap((b, bi) => b.words.map(w => ({ w, b: bi }))).concat(X.pseudo.map(w => ({ w, b: -1 }))); const yes = items.map(() => true); return vtScore(items, yes, X).size === 0; }), 'aki mindenre igent mond, annak 0 a becslés');
+  await p.evaluate(() => go('ma')); await p.click('details.g summary'); await p.click('#sTheme [data-v="dark"]');
+  ok(await p.evaluate(() => document.documentElement.dataset.theme === 'dark'), 'sötét téma kézzel');
+  await p.click('details.g summary').catch(() => {}); await p.evaluate(() => { document.querySelector('details.g').open = true; }); await p.click('#sFs [data-v="xl"]');
+  await p.evaluate(() => { document.querySelector('details.g').open = true; }); await p.click('#sRead [data-v="1"]');
+  ok(await p.evaluate(() => document.documentElement.dataset.fs === 'xl' && document.documentElement.dataset.read === '1' && getComputedStyle(document.body).fontFamily.includes('Atkinson')), 'nagy betű és könnyen olvasható betűtípus');
+  ok(await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'nagy betűvel sincs vízszintes görgetés');
+  await p.evaluate(() => { S.settings.theme = 'auto'; S.settings.fs = 'm'; S.settings.readable = false; save(); applyPrefs(); });
+  await p.evaluate(() => go('ellenorzes')); await p.waitForFunction(() => document.querySelector('#ck-ai') && document.querySelector('#ck-ai').classList.contains('ok'), null, { timeout: 15000 });
+  ok(await p.locator('.chkrow').count() >= 8, 'eszközellenőrzés: minden sor, az AI-kapcsolat működik');
+  await p.goto(URL0 + '#podcast'); await p.waitForSelector('[data-p]');
+  ok(await p.locator('[data-p]').count() === 10, 'gyorsindítás: #podcast a podcastokat nyitja');
+  const man = await p.evaluate(() => fetch('manifest.webmanifest').then(r => r.json()));
+  ok(man.shortcuts && man.shortcuts.length === 4, 'a telepített app ikonján 4 gyorsindító');
 
   ok(p._errs.length === 0 && B.p._errs.length === 0, 'nincs JS-hiba', [...p._errs, ...B.p._errs].slice(0, 5));
   await browser.close(); server.close();
