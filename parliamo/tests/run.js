@@ -406,7 +406,9 @@ function mockProxy(store) {
   }
   await p.waitForSelector('#seRes .stat');
   ok(await p.evaluate(() => S.spk[S.spk.length - 1].fmt === 'cam' && SE.ans.filter(a => a.partner).length === 2) && await p.locator('text=/ 5').count() >= 3, 'páros feladat AI-társsal, Cambridge-szempontok 0–5 skálán');
-  await p.evaluate(() => go('gyakorlas')); await p.click('[data-d="colloc"]'); await p.waitForSelector('[data-col]');
+  let failOnce = true; await p.route('**/data/colloc-en.json', r => { if (failOnce) { failOnce = false; return r.abort(); } return r.continue(); });
+  await p.evaluate(() => go('gyakorlas')); await p.click('[data-d="colloc"]'); await p.waitForSelector('#xRetry'); ok(true, 'letöltési hibánál üzenet és Újra gomb');
+  await p.click('#xRetry'); await p.waitForSelector('[data-col]');
   ok(await p.locator('[data-col]').count() === 12 && await p.evaluate(() => AUDIO_IDX['make a decision'] === 'col-en-make'), '12 kollokációcsoport felvett hanggal');
   await p.click('[data-col="make"]'); await p.click('#colGo');
   for (let k = 0; k < 10; k++) { const i = await p.evaluate(() => { const it = QZ.items[QZ.i]; return it._o.indexOf(it.a); }); await p.click(`[data-o="${i}"]`); await p.click('#qgo'); }
@@ -424,6 +426,22 @@ function mockProxy(store) {
   });
   await p.click('[data-d="shadow"]'); await p.waitForSelector('[data-sh]'); await p.click('[data-sh]');
   await p.click('#shRec'); await p.click('#shRec'); await p.waitForSelector('#shCmp');
+  await p.waitForFunction(() => /zöngés/.test(($('#shInto') || {}).textContent || ''));
+  ok(true, 'hanglejtés: dekódolhatatlan felvételnél barátságos üzenet, nem hiba');
+  ok(await p.evaluate(async () => {
+    const sr = 16000, x = new Float32Array(sr), y = new Float32Array(sr); let ph = 0;
+    for (let i = 0; i < sr; i++) { x[i] = Math.sin(2 * Math.PI * 200 * i / sr); ph += 2 * Math.PI * (150 + 100 * i / sr) / sr; y[i] = Math.sin(ph); }
+    const t = pitchTrack(x).filter(Boolean).sort((a, b) => a - b), med = t[t.length >> 1];
+    const up = contour(pitchTrack(y)), st = contourStats(up);
+    /* 16-bit mono WAV of the rising glide, decoded the same way as a real recording */
+    const wav = new DataView(new ArrayBuffer(44 + sr * 2)), w = (o, s) => [...s].forEach((c, i) => wav.setUint8(o + i, c.charCodeAt(0)));
+    w(0, 'RIFF'); wav.setUint32(4, 36 + sr * 2, true); w(8, 'WAVEfmt '); wav.setUint32(16, 16, true); wav.setUint16(20, 1, true); wav.setUint16(22, 1, true);
+    wav.setUint32(24, sr, true); wav.setUint32(28, sr * 2, true); wav.setUint16(32, 2, true); wav.setUint16(34, 16, true); w(36, 'data'); wav.setUint32(40, sr * 2, true);
+    for (let i = 0; i < sr; i++) wav.setInt16(44 + i * 2, y[i] * 30000, true);
+    const r = await analyseIntonation('no such line', new Blob([wav.buffer], { type: 'audio/wav' }));
+    const html = intonationHtml(r);
+    return Math.abs(med - 200) < 5 && st.end === 'up' && contourSim(up, up) > 0.99 && r && r.meS.end === 'up' && !r.model && /<svg/.test(html) && /nincs felvett minta/.test(html);
+  }), 'hanglejtés: 200 Hz-es hangot 200 Hz-nek mér, emelkedő dallamot emelkedőnek, WAV-ból is');
   await p.click('#shNext'); ok(await p.evaluate(() => SH && SH.n === 1 && SH.i === 1), 'árnyékolás: felvétel, összehasonlítás, következő mondat');
   await p.evaluate(() => { S.mlog.push({ d: today(), l: 'en', k: 'examiner', q: 'I am agree', a: 'I am agree', c: 'I agree – Az agree ige.' }); save(); go('kartyak'); });
   await p.waitForSelector('#fixGo'); await p.click('#fixGo'); await p.waitForSelector('[data-fix]');

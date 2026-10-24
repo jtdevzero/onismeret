@@ -4,7 +4,7 @@ function planDay(p){return Math.min(13,Math.max(0,today()-p.start));}
 function planCard(){
   const p=planOf();if(!p)return "";
   const d=planDay(p),doneN=p.days.filter(x=>x.done).length,dayIt=p.days[d];
-  if(p.post!=null)return `<div class="card next"><div><span class="label">Kéthetes terv kész</span><h3>${esc(p.title)}</h3><p class="small muted">Előtte ${p.pre}/${p.test.length}, utána ${p.post}/${p.test.length}.</p></div><button class="btn soft" data-go="stat">Részletek</button></div>`;
+  if(p.post!=null)return `<div class="card next"><div><span class="label">Kéthetes terv kész</span><h3>${esc(p.title)}</h3><p class="small muted">Előtte ${esc(p.pre)}/${p.test.length}, utána ${esc(p.post)}/${p.test.length}.</p></div><button class="btn soft" data-go="stat">Részletek</button></div>`;
   if(p.pre==null)return `<div class="card next" style="border:2px solid var(--lemon)"><div><span class="label">Új kéthetes terv</span><h3>${esc(p.title)}</h3><p class="small muted">Kezdd egy rövid felméréssel, hogy a végén látszódjon, mennyit javultál.</p></div><button class="btn lemon" id="plGo">Felmérés</button></div>`;
   const allDone=doneN>=p.days.length||d>=13&&dayIt.done;
   return `<div class="card next" style="border:2px solid var(--lemon)"><div><span class="label">Kéthetes terv · ${d+1}. nap · ${doneN}/${p.days.length} kész</span><h3>${esc(allDone?"Jöhet a zárófelmérés":dayIt.t)}</h3><p class="small muted">${esc(p.title)}</p></div><button class="btn lemon" id="plGo">${allDone?"Zárófelmérés":dayIt.done?"Újra":"Mai rész"}</button></div>`;
@@ -17,7 +17,7 @@ function openPlan(back){
     intro:`<p>${esc(p.goal||"")}</p><p class="small muted">${p.test.length} kérdés. Ne izgulj, ez csak a kiindulópont.</p>`,
     onDone:(ok,n)=>{p.pre=ok;save();planResult(`Kiindulópont: ${ok} / ${n}`,"Holnaptól minden nap egy rövid rész vár a kezdőlapon. Ma már nekiállhatsz az első napnak is.",true);}});
   if(finishAll&&p.post==null)return runQuiz({kind:"plan",label:"Kéthetes terv",title:"Zárófelmérés",items:p.test.map(x=>Object.assign({},x)),backLabel:"Kezdőlap",
-    onDone:(ok,n)=>{p.post=ok;addXP(30);save();confetti();planResult(`Előtte ${p.pre} / ${n}, most ${ok} / ${n}`,ok>p.pre?`${ok-p.pre} kérdéssel többet tudtál, mint két hete. Szép munka!`:ok===p.pre?"Ugyanannyi lett, mint az elején. Érdemes a gyenge pontokat újra átnézni.":"Most kevesebb ment. Nézd át a napi magyarázatokat még egyszer.",false);}});
+    onDone:(ok,n)=>{p.post=ok;addXP(30);save();confetti();planResult(`Előtte ${esc(p.pre)} / ${n}, most ${ok} / ${n}`,ok>p.pre?`${ok-p.pre} kérdéssel többet tudtál, mint két hete. Szép munka!`:ok===p.pre?"Ugyanannyi lett, mint az elején. Érdemes a gyenge pontokat újra átnézni.":"Most kevesebb ment. Nézd át a napi magyarázatokat még egyszer.",false);}});
   const d=planDay(p),day=p.days[d];
   runQuiz({kind:"plan",label:`Kéthetes terv · ${d+1}. nap`,title:day.t,items:day.items.map(x=>Object.assign({},x)),backLabel:"Kezdőlap",
     intro:`<p>${esc(day.ex)}</p>`,onDone:(ok,n)=>{day.done=true;day.score=ok+"/"+n;addXP(5+ok);incEv("plan");save();planResult(`${d+1}. nap kész: ${ok} / ${n}`,d<13?"Holnap jön a következő rész.":"Minden nap megvan. Jöhet a zárófelmérés.",false);}});

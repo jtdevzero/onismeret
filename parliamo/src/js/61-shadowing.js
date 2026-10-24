@@ -1,6 +1,7 @@
 /* ============ SHADOWING ============ */
 /* Line by line: listen to the recording, repeat it, and the app records you (MediaRecorder) and plays the model and your
-   version back to back. Nothing leaves the device; the recordings live only until the next line. */
+   version back to back, with both intonation curves drawn over each other (65-intonation.js). Nothing leaves the device;
+   the recordings live only until the next line. */
 let SH=null;
 const canRecord=()=>!!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia&&window.MediaRecorder);
 function shSources(){
@@ -22,7 +23,7 @@ function drawShadow(){
   subShell(["Árnyékolás",renderShadow],`Árnyékolás · ${esc(src.sub)}`,"",`<div class="pbar"><div class="track"><div class="fill" style="width:${i/src.lines.length*100}%"></div></div><span class="small muted tnum">${i+1}/${src.lines.length}</span></div>
     <div class="card stack" style="padding:1.4rem 1.1rem;min-height:7rem"><span class="label">${SH.hide?"Csak hallás után":"Mondd utána"}</span><div class="big-q" style="font-size:1.35rem" ${LA()}>${SH.hide?"• • •":esc(line)}</div></div>
     <div class="row" style="flex-wrap:wrap"><button class="btn soft" id="shPlay">▶ Minta</button><button class="btn soft" id="shSlow">▶ Lassan</button>${canRecord()?`<button class="btn ${SH.rec?"":"lemon"}" id="shRec" aria-pressed="${!!SH.rec}">${SH.rec?"■ Leállítás":"● Felvétel"}</button>`:""}<button class="btn ghost" id="shHide" aria-pressed="${SH.hide}">${SH.hide?"Szöveg mutatása":"Szöveg elrejtése"}</button></div>
-    ${SH.url?`<div class="card stack"><b>Összehasonlítás</b><p class="small muted">Előbb a minta, aztán a te felvételed szól. Figyeld a hangsúlyt, a tempót és a szóvégeket.</p><div class="row"><button class="btn" id="shCmp">▶ Minta + saját</button><button class="btn ghost" id="shMine">▶ Csak a sajátom</button></div></div>`:""}
+    ${SH.url?`<div class="card stack"><b>Összehasonlítás</b><p class="small muted">Előbb a minta, aztán a te felvételed szól. Figyeld a hangsúlyt, a tempót és a szóvégeket.</p><div class="row"><button class="btn" id="shCmp">▶ Minta + saját</button><button class="btn ghost" id="shMine">▶ Csak a sajátom</button></div><div id="shInto">${SH.into===undefined?`<p class="small muted">A hanglejtés kirajzolása…</p>`:intonationHtml(SH.into)}</div></div>`:""}
     <div class="row" style="justify-content:space-between"><button class="btn ghost" id="shPrev" ${i?"":"disabled"}>← Előző</button><button class="btn" id="shNext">${last?"Befejezés":"Következő →"}</button></div>`);
   $("#shPlay").onclick=()=>say(line);$("#shSlow").onclick=()=>say(line,true);
   $("#shHide").onclick=()=>{SH.hide=!SH.hide;drawShadow();};
@@ -40,14 +41,15 @@ async function shRecord(line){
   if(SH!==cur)return shCleanup(cur);
   const chunks=[],rec=new MediaRecorder(cur.stream);cur.rec=rec;
   rec.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data);};
-  rec.onstop=()=>{if(SH!==cur)return;if(cur.url)URL.revokeObjectURL(cur.url);cur.url=chunks.length?URL.createObjectURL(new Blob(chunks,{type:rec.mimeType||"audio/webm"})):null;cur.rec=null;drawShadow();if(cur.url)setTimeout(()=>{if(SH===cur)$("#shCmp")&&$("#shCmp").click();},200);};
+  rec.onstop=()=>{if(SH!==cur)return;if(cur.url)URL.revokeObjectURL(cur.url);const blob=chunks.length?new Blob(chunks,{type:rec.mimeType||"audio/webm"}):null;cur.url=blob?URL.createObjectURL(blob):null;cur.into=undefined;cur.rec=null;drawShadow();
+    if(blob)analyseIntonation(line,blob).catch(()=>null).then(r=>{if(SH!==cur||cur.src.lines[cur.i]!==line)return;cur.into=r;const el=$("#shInto");if(el)el.innerHTML=intonationHtml(r);});if(cur.url)setTimeout(()=>{if(SH===cur)$("#shCmp")&&$("#shCmp").click();},200);};
   rec.start();drawShadow();
   /* Long enough for the line at a calm pace, then it stops by itself. */
   const ms=Math.min(15000,2000+line.split(/\s+/).length*550);setTimeout(()=>{if(SH===cur&&cur.rec===rec)shStop();},ms);
 }
 function shStop(){if(SH&&SH.rec&&SH.rec.state!=="inactive")try{SH.rec.stop();}catch(e){}}
 function shPlayMine(){if(!SH||!SH.url)return;try{speechSynthesis.cancel();player.pause();player.src=SH.url;player.playbackRate=1;player.onended=null;player.play().catch(()=>{});}catch(e){}}
-function shReset(){if(!SH)return;shStop();if(SH.url){URL.revokeObjectURL(SH.url);SH.url=null;}SH.spoke=0;}
+function shReset(){if(!SH)return;shStop();if(SH.url){URL.revokeObjectURL(SH.url);SH.url=null;}SH.into=undefined;SH.spoke=0;}
 function shCleanup(s){if(!s)return;try{if(s.rec&&s.rec.state!=="inactive")s.rec.stop();}catch(e){}if(s.stream)s.stream.getTracks().forEach(t=>t.stop());if(s.url)URL.revokeObjectURL(s.url);}
 function shFinish(){
   const s=SH,n=s.n;S.shadow=S.shadow||{};S.shadow[s.src.id]=Math.max(S.shadow[s.src.id]||0,n);drillStat("shadow",true);incEv("drills");addXP(Math.max(3,n));save();

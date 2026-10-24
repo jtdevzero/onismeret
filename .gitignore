@@ -1,2 +1,8 @@
 node_modules/
 parliamo/tests/artifacts/
+
+# Helyi titkok: soha ne kerüljenek a repóba.
+.env
+.env.*
+*.pem
+*.key

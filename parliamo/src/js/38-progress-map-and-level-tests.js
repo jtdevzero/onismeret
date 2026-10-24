@@ -6,7 +6,7 @@ function renderMap(){
   levels.forEach((l,k)=>{
     const ls_=levelLessons(l),done=ls_.filter(x=>ls(x.i)&&ls(x.i).done).length,pct=done/ls_.length,cert=S.certs[certKey(l)],open=pct>=0.7;
     html+=`<div class="mapband"><div class="mapnodes">${ls_.map(({L,i})=>{const s=ls(i),d=s&&s.done;return `<button class="mnode ${d?"done":s&&s.placed?"placed":i===nextLesson()?"cur":""}" data-l="${i}" title="${esc(L.t)}" aria-label="${i+1}. lecke: ${esc(L.t)}${d?", kész":s&&s.placed?", szintfelmérő alapján átugorva":""}">${d?"✓":s&&s.placed?"↗":i+1}</button>`;}).join('<i class="mline"></i>')}</div>
-      <div class="mile ${cert?"ok":open?"open":""}"><div><span class="label">${l} szint · ${done}/${ls_.length} lecke</span><h3>${cert?`${l} oklevél megszerezve`:open?`${l} szintzáró teszt`:`${l} mérföldkő`}</h3><p class="small muted">${cert?`${new Date(cert.at).toLocaleDateString("hu-HU")} · ${cert.score}%`:open?"15 kérdés a szint leckéiből. 80%-tól jár az oklevél.":"A szintzáró a szint leckéinek 70%-a után nyílik meg."}</p></div>
+      <div class="mile ${cert?"ok":open?"open":""}"><div><span class="label">${l} szint · ${done}/${ls_.length} lecke</span><h3>${cert?`${l} oklevél megszerezve`:open?`${l} szintzáró teszt`:`${l} mérföldkő`}</h3><p class="small muted">${cert?`${new Date(cert.at).toLocaleDateString("hu-HU")} · ${esc(cert.score)}%`:open?"15 kérdés a szint leckéiből. 80%-tól jár az oklevél.":"A szintzáró a szint leckéinek 70%-a után nyílik meg."}</p></div>
       ${cert?`<button class="btn soft" data-cert="${l}">Oklevél</button>`:open?`<button class="btn lemon" data-test="${l}">Teszt</button>`:`<span class="pill">${Math.round(pct*100)}%</span>`}</div></div>`;});
   view.innerHTML=`<div class="stack"><div class="row"><button class="btn ghost" data-go="leckek">← Leckék</button></div>
     <div><span class="label">${LG().name} · ${LG().range}</span><h1>Haladási térkép</h1><p class="muted">Az útvonalad szintenként. A ↗ jelű leckéket a szintfelmérő alapján átugrottad; ezekért még nem jár teljesítés vagy pecsét. Az oklevél az app feladatainak teljesítését jelzi, nem hivatalos nyelvvizsga.</p></div>
@@ -32,7 +32,7 @@ function certSvg(l,c){
   <text x="400" y="170" text-anchor="middle" font-family="Young Serif, Georgia, serif" font-size="44" fill="#14204A">Oklevél</text>
   <text x="400" y="215" text-anchor="middle" font-family="Figtree, system-ui, sans-serif" font-size="18" fill="#5A6788" letter-spacing="3">PARLIAMO · ${esc(LG().name.toUpperCase())} NYELV</text>
   <text x="400" y="320" text-anchor="middle" font-family="Young Serif, Georgia, serif" font-size="110" fill="#1F4FD6">${l}</text>
-  <text x="400" y="380" text-anchor="middle" font-family="Figtree, system-ui, sans-serif" font-size="20" fill="#14204A">szintzáró teszt sikeresen teljesítve · ${c.score}%</text>
+  <text x="400" y="380" text-anchor="middle" font-family="Figtree, system-ui, sans-serif" font-size="20" fill="#14204A">szintzáró teszt sikeresen teljesítve · ${esc(c.score)}%</text>
   <text x="400" y="470" text-anchor="middle" font-family="Figtree, system-ui, sans-serif" font-size="16" fill="#5A6788">${new Date(c.at).toLocaleDateString("hu-HU",{year:"numeric",month:"long",day:"numeric"})}</text></svg>`;
 }
 function showCert(l){
