@@ -11,6 +11,16 @@ compatibility_date = "2026-09-01"
 ALLOWED_ORIGINS = "https://jtdevzero.github.io"
 MODEL = "claude-opus-5-5"
 
+# Napi emlékeztető: óránként ellenőrzi, kinek van most a beállított órája.
+[triggers]
+crons = ["0 * * * *"]
+
+# A push-feliratkozások tárolója (KV). Az id-t a GitHub Actions telepítés automatikusan beírja;
+# gépről: `npx wrangler kv namespace create parliamo-push`, majd az id ide.
+# [[kv_namespaces]]
+# binding = "PUSH"
+# id = "..."
+
 # Legfeljebb 20 kérés percenként, hogy egy kiszivárgott belépőkóddal se lehessen nagy számlát csinálni.
 [[ratelimits]]
 name = "LIMITER"

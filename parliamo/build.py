@@ -28,7 +28,7 @@ HEAD = f"""<!doctype html>
 <meta name="theme-color" content="#1F4FD6">
 <meta name="description" content="Olasz és angol nyelvtanulás magyarul: leckék felvett hanggal, ismétlés, történetek, kiejtés és AI-tanár.">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="icons/icon-192.png">
+<link rel="icon" href="icons/logo.svg" type="image/svg+xml"><link rel="alternate icon" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Parliamo">
@@ -70,6 +70,20 @@ self.addEventListener('fetch', e => {
     if (r.ok) { const cp = r.clone(); caches.open(SHELL).then(c => c.put(req, cp)); }
     return r;
   }).catch(() => caches.match(req, { ignoreSearch: true }).then(r => r || (req.mode === 'navigate' ? caches.match('index.html') : undefined))));
+});
+/* napi emlékeztető (a saját szerver küldi, lásd worker/) */
+self.addEventListener('push', e => {
+  let m = { title: 'Parliamo', body: 'A napi köröd vár.', url: './#ma' };
+  try { m = Object.assign(m, e.data ? e.data.json() : {}); } catch (err) {}
+  e.waitUntil(self.registration.showNotification(m.title, { body: m.body, icon: 'icons/icon-192.png', badge: 'icons/icon-192.png', tag: 'parliamo-daily', data: { url: m.url } }));
+});
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  const url = new URL((e.notification.data && e.notification.data.url) || './', self.registration.scope).href;
+  e.waitUntil(clients.matchAll({ type: 'window', includeUncontrolled: true }).then(ws => {
+    for (const w of ws) if (w.url.startsWith(self.registration.scope)) return w.focus();
+    return clients.openWindow(url);
+  }));
 });
 """
 
