@@ -63,7 +63,8 @@ A tananyag a `data/it.json`-ban van:
 
 ```
 index.html            váz
-style.css             megjelenés (világos, slate + smaragd/zafír/burgundi, arany kiemelés)
+style.css             megjelenés: maiolica csempekeret, olasz szöveg Cardo dőlt, magyar Inter
+fonts/                Cardo és Inter helyben (SIL OFL), nincs külső kérés
 fsrs.js               FSRS-4.5 ütemező (Node-ban is tesztelhető)
 app.js                nézetek, gyakorlattípusok, hang, tárolás
 data/it.json          olasz A1 csomag: 10 lecke, 189 kifejezés és mondat
