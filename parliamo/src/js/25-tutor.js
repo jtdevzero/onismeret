@@ -4,13 +4,15 @@ function defLevel(){const n=nextLesson();return n===null?LG().levels[LG().levels
 function renderTutor(){
   if(!T.level)T.level=defLevel();
   if(T.wPrompt===null)T.wPrompt=today()%WRITING.length;
-  view.innerHTML=`<div class="stack"><div><span class="label">Beszélgetés és írás</span><h1>AI tanár</h1><p class="muted">Gyakorold az élő nyelvet: szerepjáték valós helyzetekben, minden üzenetedre javítással, és fogalmazás részletes visszajelzéssel.</p></div>
+  view.innerHTML=`<div class="stack"><div><span class="label">Beszélgetés és írás</span><h1>AI tanár</h1><div style="margin-block:.5rem">${aiAccessBadge()}</div><p class="muted">Gyakorold az élő nyelvet: szerepjáték valós helyzetekben, minden üzenetedre javítással, és fogalmazás részletes visszajelzéssel.</p></div>
+  <div id="aiConnectionHint">${!aiConfigured()?aiSetupNotice():""}</div>
   <div class="row" style="justify-content:space-between"><span class="seg" id="ttab"><button data-v="chat" aria-pressed="${T.tab==="chat"}">Beszélgetés</button><button data-v="write" aria-pressed="${T.tab==="write"}">Írás</button></span>
   <span class="seg" id="lvl">${LG().levels.map(l=>`<button data-v="${l}" aria-pressed="${T.level===l}">${l}</button>`).join("")}</span></div>
   <div id="tbody" class="stack"></div></div>`;
   $("#ttab").querySelectorAll("button").forEach(b=>b.onclick=()=>{T.tab=b.dataset.v;renderTutor();});
   $("#lvl").querySelectorAll("button").forEach(b=>b.onclick=()=>{T.level=b.dataset.v;renderTutor();});
-  getSample().then(s=>{if(!s&&$("#tbody"))$("#tbody").insertAdjacentHTML("afterbegin",`<div class="notice">${aiMissing()} A többi funkció enélkül is működik${XT.off.dialogs.length?", és lent kész párbeszédeket is találsz":""}.</div>`);});
+  bindAISetup(view,()=>renderTutor());
+  if(!IS_WEB)getSample().then(sample=>{if(!sample&&$("#aiConnectionHint"))$("#aiConnectionHint").innerHTML=aiSetupNotice();});
   T.tab==="chat"?(T.sc?drawChat():drawScenarios()):drawWriting();
 }
 function drawScenarios(){
@@ -45,7 +47,7 @@ function drawChat(){
 const LVL={A1:"A1: nagyon rövid, egyszerű mondatok, csak jelen idő, gyakori szavak",A2:"A2: egyszerű mondatok, jelen és múlt idő, mindennapi szókincs",B1:"B1: természetes, de világos beszéd, többféle igeidő",B2:"B2: természetes, üzleti helyzetekben is magabiztos nyelvhasználat",C1:"C1: árnyalt, idiomatikus, profi üzleti nyelv"};
 async function sendChat(text){
   const sample=await getSample();
-  if(!sample){toast(aiMissing());return;}
+  if(!sample){const hint=$("#aiConnectionHint");if(hint){hint.innerHTML=aiSetupNotice();bindAISetup(hint,()=>renderTutor());hint.scrollIntoView({block:"nearest"});}else toast(aiMissing());return;}
   const start=text===null;
   if(!start)T.msgs.push({r:"me",it:text});T.busy=true;drawChat();
   const hist=start?"(még nincs, a jelenet most kezdődik)":T.msgs.map(m=>(m.r==="me"?"Tanuló: ":"Te: ")+m.it).join("\n");
@@ -82,7 +84,7 @@ function drawWriting(){
 }
 async function sendWriting(){
   const text=$("#wtext").value.trim();if(text.split(/\s+/).length<3){toast("Írj legalább egy-két mondatot.");return;}
-  const sample=await getSample();if(!sample){$("#wres").innerHTML=`<div class="notice">${aiMissing()}</div>`;return;}
+  const sample=await getSample();if(!sample){$("#wres").innerHTML=aiSetupNotice();bindAISetup($("#wres"),()=>renderTutor());return;}
   $("#wsend").disabled=true;$("#wres").innerHTML=`<div class="card row"><span class="thinking"><i></i><i></i><i></i></span><span class="muted">A tanár javítja a szövegedet…</span></div>`;
   const prompt=`${LG().teacher[0].toUpperCase()+LG().teacher.slice(1)}ként javítsd egy magyar anyanyelvű tanuló fogalmazását. A tanuló célszintje: ${T.level}.
 A feladat ez volt: "${WRITING[T.wPrompt]}"
@@ -99,8 +101,8 @@ Legfeljebb 8 hibát sorolj fel, a legfontosabbakkal kezdve. Ha nincs hiba, az er
 function drawWRes(){
   const r=T.wRes||{};const errs=Array.isArray(r.errors)?r.errors:[];
   $("#wres").innerHTML=`<div class="stack">
-  <div class="card"><div class="stats" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="stat"><span class="label">Pontszám</span><b class="tnum">${esc(r.score)} / 10</b></div><div class="stat"><span class="label">Becsült szint</span><b>${esc(r.level)}</b></div></div>${r.praise?`<p style="margin-top:.8rem">${esc(r.praise)}</p>`:""}</div>
-  ${errs.length?`<div class="card stack"><h3>Hibák (${errs.length})</h3><div class="err-list">${errs.map(e=>`<div><s>${esc(e.wrong)}</s> → <ins>${esc(e.right)}</ins><div class="small muted">${esc(e.why)}</div></div>`).join("")}</div></div>`:`<div class="card"><h3>Nem találtam hibát. Complimenti!</h3></div>`}
+  <div class="card"><div class="stats" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="stat"><span class="label">Pontszám</span><b class="tnum">${esc(r.score)} / 10</b></div><div class="stat"><span class="label">Tájékoztató AI-becslés</span><b>${esc(r.level)}</b></div></div>${r.praise?`<p style="margin-top:.8rem">${esc(r.praise)}</p>`:""}</div>
+  ${errs.length?`<div class="card stack"><h3>Hibák (${errs.length})</h3><div class="err-list">${errs.map(e=>`<div><s>${esc(e.wrong)}</s> → <ins>${esc(e.right)}</ins><div class="small muted">${esc(e.why)}</div></div>`).join("")}</div></div>`:`<div class="card"><h3>Az AI nem jelzett hibát.</h3></div>`}
   <div class="card stack"><div class="row" style="justify-content:space-between"><h3>Javított szöveg</h3>${spkBtn(r.corrected||"")}</div><p class="prewrap">${esc(r.corrected)}</p></div>
   <div class="card stack"><div class="row" style="justify-content:space-between"><h3>Így mondaná ${LG().native}</h3>${spkBtn(r.natural||"")}</div><p class="prewrap">${esc(r.natural)}</p></div>
   ${r.tip?`<div class="notice"><b>Tipp:</b> ${esc(r.tip)}</div>`:""}</div>`;

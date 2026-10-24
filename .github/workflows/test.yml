@@ -26,3 +26,11 @@ jobs:
         run: npm test
       - name: Parliamo böngészős végpontteszt
         run: node parliamo/tests/run.js
+      - name: Parliamo tanulási útvonal és visszajelzés
+        run: |
+          node parliamo/tests/guided-session.js
+          node parliamo/tests/daily-async.js
+          node parliamo/tests/onboarding-placement.js
+          node parliamo/tests/ai-setup-review.js
+          node parliamo/tests/speech-feedback.js
+          node parliamo/tests/practice-feedback.test.js

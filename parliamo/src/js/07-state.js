@@ -1,7 +1,10 @@
 /* ============ STATE ============ */
 const LS="parliamo.v1";
-function fresh(){return {v:1,xp:0,days:{},lessons:{},cards:{},stories:{},miss:{},log:{},ai:{},rounds:{},ev:{},chal:{},own:{},hard:{},pods:{},exam:{},certs:{},plan:{},mlog:[],onboarded:false,newToday:{day:0,n:0},drills:{},settings:{goal:50,newPerDay:10,dir:"mix",rate:0.95,ret:0.9,lang:"en",proxy:"",pass:"",cloud:false,theme:"auto",fs:"m",readable:false},updatedAt:0};}
-function migrate(s){const old=s&&s.xp>0&&s.onboarded===undefined;const f=fresh();s=Object.assign(f,s||{});if(old)s.onboarded=true;s.settings=Object.assign(fresh().settings,s.settings||{});return s;}
+function fresh(){return {v:1,xp:0,days:{},lessons:{},cards:{},stories:{},miss:{},log:{},ai:{},rounds:{},ev:{},chal:{},own:{},hard:{},pods:{},exam:{},certs:{},plan:{},mlog:[],onboarded:false,newToday:{day:0,n:0},drills:{},dailySessions:{},evidence:[],settings:{goal:50,newPerDay:10,dir:"mix",rate:0.95,ret:0.9,lang:"en",proxy:"",pass:"",cloud:false,theme:"auto",fs:"m",readable:false},updatedAt:0};}
+function migrate(s){const old=s&&s.xp>0&&s.onboarded===undefined;const f=fresh();s=Object.assign(f,s||{});if(old)s.onboarded=true;s.settings=Object.assign(fresh().settings,s.settings||{});
+  for(const rec of Object.values(s.lessons||{}))if(rec&&rec.placed&&rec.done&&!rec.best)rec.done=false;
+  if(!Array.isArray(s.evidence))s.evidence=[];if(!s.dailySessions||typeof s.dailySessions!=="object")s.dailySessions={};
+  return s;}
 let S=fresh();
 try{const raw=localStorage.getItem(LS);if(raw)S=migrate(JSON.parse(raw));}catch(e){}
 let sync="local", docRef=null, rTimer=null, rBusy=false, rAgain=false;
@@ -44,7 +47,7 @@ function getSample(){
   if(IS_WEB)return Promise.resolve(proxySample());
   if(!sampleP)sampleP=claude.use("sample").catch(()=>null);return sampleP;
 }
-const aiMissing=()=>IS_WEB?"Az AI-tanárhoz állítsd be az AI-kapcsolatot: Ma oldal → Beállítások → AI-kapcsolat.":"Az AI-tanár csak a claude.ai-on megnyitott oldalon érhető el.";
+const aiMissing=()=>IS_WEB?"Ehhez AI-kapcsolat szükséges. Az AI-tanár oldalon közvetlenül beállíthatod. A leckék és az ismétlés enélkül is használható.":"Az AI-tanár csak a claude.ai-on megnyitott oldalon érhető el.";
 function aiErr(e){const c=e&&e.code;if(c==="bad_key")return "Hibás belépőkód. Ellenőrizd a Beállításokban az AI-kapcsolatot.";if(c==="network")return "Nem érem el az AI-szervert. Ellenőrizd a netet és a szerver címét.";if(c==="refused")return "Erre a kérésre a tanár nem válaszolt. Fogalmazd meg másképp.";if(c==="not_granted")return "Nem engedélyezted az AI-tanárt ebben a nézetben. Töltsd újra az oldalt, ha mégis használnád.";if(c==="budget")return "Elérted a szerveren beállított havi AI-keretet. A következő hónapban újra működik, vagy emeld a keretet (MONTHLY_BUDGET_USD).";if(c==="rate_limited")return "Túl sok kérés ment el egyszerre. Várj fél percet, és próbáld újra.";return "Nem jött válasz a tanártól. Próbáld újra.";}
 
 function today(){return dayNum();}
@@ -53,10 +56,10 @@ function addXP(n){S.xp+=n;const d=today();S.days[d]=(S.days[d]||0)+n;save();chec
 function streak(){let d=today(),n=0;if(!S.days[d])d--;while(S.days[d]){n++;d--;}return n;}
 const ls=i=>S.lessons[LESSONS[i].id];
 function doneCount(){return LESSONS.filter((_,i)=>ls(i)&&ls(i).done).length;}
-function nextLesson(){const i=LESSONS.findIndex((_,i)=>!(ls(i)&&ls(i).done));return i<0?null:i;}
+function nextLesson(){const i=LESSONS.findIndex((_,i)=>!(ls(i)&&(ls(i).done||ls(i).placed)));return i<0?null:i;}
 
 /* cards */
-function unlocked(){const d=LESSONS.map((_,i)=>i).filter(i=>ls(i)&&ls(i).done);return (d.length?d:[0]).concat([OWN_LI()]);}
+function unlocked(){const d=LESSONS.map((_,i)=>i).filter(i=>ls(i)&&(ls(i).done||ls(i).placed));return (d.length?d:[0]).concat([OWN_LI()]);}
 function dueList(){const t=today();return POOL.filter(c=>S.cards[c.id]&&S.cards[c.id].due<=t);}
 function newLeft(){const t=today();const used=S.newToday.day===t?S.newToday.n:0;return Math.max(0,S.settings.newPerDay-used);}
 function newAvail(){const u=new Set(unlocked());return POOL.filter(c=>u.has(c.li)&&!S.cards[c.id]);}

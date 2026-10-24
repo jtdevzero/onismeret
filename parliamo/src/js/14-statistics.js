@@ -24,6 +24,7 @@ function renderStats(){
   <div class="card stack"><h3>Ismétlések a következő 7 napban</h3>
     <div class="bars">${fc.map((v,i)=>`<div class="bcol"><span class="small tnum">${v}</span><i style="height:${Math.max(3,v/fmax*100)}%"></i><span class="small muted">${dn[i]}</span></div>`).join("")}</div></div>
   <div class="card stack"><h3>Aktivitás az elmúlt 16 hétben</h3><div class="heat days">${heat}</div><div class="row small muted" style="justify-content:space-between"><span>16 hete</span><span>ma</span></div></div>
+  ${milestonesCard()}
   ${skillsCard()}
   ${vsizeCard()}
   ${analysisCard()}

@@ -15,7 +15,7 @@ function flag(l){
 function openLangMenu(){
   let m=$("#langMenu");if(m){m.remove();return;}
   m=document.createElement("div");m.id="langMenu";m.className="langmenu";m.setAttribute("role","menu");
-  m.innerHTML=Object.entries(LANGS).map(([k,L])=>{const done=Object.keys(S.lessons).filter(id=>langOf(id)===k).length;
+  m.innerHTML=Object.entries(LANGS).map(([k,L])=>{const done=Object.keys(S.lessons).filter(id=>langOf(id)===k&&S.lessons[id].done).length;
     return `<button role="menuitemradio" aria-checked="${k===lang()}" data-lang="${k}">${flag(k)}<span><b>${L.name}</b><span class="small muted">${L.nat} · ${L.range}${done?` · ${done} lecke kész`:""}</span></span>${k===lang()?'<span class="pill now">Most</span>':""}</button>`;}).join("");
   document.body.appendChild(m);
   const r=$("#langBtn").getBoundingClientRect();m.style.top=(r.bottom+8)+"px";m.style.right=Math.max(12,innerWidth-r.right)+"px";
@@ -23,6 +23,7 @@ function openLangMenu(){
   setTimeout(()=>document.addEventListener("click",function off(e){if(!e.target.closest("#langMenu,#langBtn")){m.remove();document.removeEventListener("click",off);}}),0);
 }
 async function switchLang(to){
+  dailyActive=false;stopViews();
   S.settings.lang=to;save();
   P=null;CS=null;D=null;ST=null;T={tab:"chat",sc:null,msgs:[],level:null,busy:false,wPrompt:null,wRes:null,wText:""};
   view.innerHTML=`<div class="card row"><span class="thinking"><i></i><i></i><i></i></span><span class="muted">${LG().name} tananyag betöltése…</span></div>`;
@@ -31,7 +32,7 @@ async function switchLang(to){
 }
 document.addEventListener("click",e=>{if(e.target.closest("#langBtn"))openLangMenu();});
 window.addEventListener("hashchange",()=>{const h=(location.hash||"").slice(1);if(S.onboarded&&LESSONS.length)quickAction(h);});
-function go(r){route=r;P=null;CS=null;D=null;ST=null;PL=null;stopViews();try{history.replaceState(null,"","#"+r);}catch(e){}render();window.scrollTo(0,0);try{view.focus({preventScroll:true});}catch(e){}}
+function go(r){dailyActive=false;route=r;P=null;CS=null;D=null;ST=null;PL=null;stopViews();try{history.replaceState(null,"","#"+r);}catch(e){}render();window.scrollTo(0,0);try{view.focus({preventScroll:true});}catch(e){}}
 function render(){
   $("#nav").innerHTML=navHtml();$("#bnav").innerHTML=navHtml();renderChips();
   const rt=(ROUTES.find(x=>x[0]===route)||[0,{stat:"Statisztika",utlevel:"Útlevél",terkep:"Térkép",ellenorzes:"Eszközellenőrzés"}[route]||"Ma"])[1];document.title="Parliamo · "+rt;document.documentElement.lang="hu";

@@ -4,15 +4,15 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Figtree:wght@400;500;600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
 <style>
-/* Layout: app shell — sticky header, single content column (max 860px); on phones a bottom tab bar. Maiolica palette: cobalt glaze + lemon on cool white. */
+/* Learning workspace: quiet paper surfaces, cobalt focus and a lemon action accent. */
 :root{
-  --bg:#F3F6FB; --surface:#FFFFFF; --sunk:#E9EEF7; --ink:#13203B; --muted:#5A6684; --line:#D9E0EE;
-  --cobalt:#1F4FD6; --cobalt-ink:#FFFFFF; --cobalt-soft:#E3EBFF;
+  --bg:#F7F7F2; --surface:#FFFFFF; --sunk:#EFEEE8; --ink:#1C2B3A; --muted:#596875; --line:#DFE4E4;
+  --cobalt:#244FC8; --cobalt-ink:#FFFFFF; --cobalt-soft:#EAF0FF;
   --lemon:#F2C230; --lemon-soft:#FFF3C7; --lemon-ink:#3B2E00;
   --ok:#1B8053; --ok-soft:#DDF3E8; --bad:#C2352B; --bad-soft:#FBE3E0;
   --display:"Young Serif", Georgia, "Times New Roman", serif;
   --body:"Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --r:14px;
+  --r:18px;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#0C1322; --surface:#141E33; --sunk:#1A2640; --ink:#E7ECF7; --muted:#9AA6C4; --line:#26334F;
@@ -28,29 +28,29 @@
 *{box-sizing:border-box}
 html[data-fs="l"]{font-size:112.5%}html[data-fs="xl"]{font-size:125%}
 html[data-read]{--body:"Atkinson Hyperlegible", Verdana, system-ui, sans-serif;--display:"Atkinson Hyperlegible", Verdana, system-ui, sans-serif;letter-spacing:.01em;word-spacing:.06em}
-body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:1rem;line-height:1.5;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:1rem;line-height:1.6;-webkit-font-smoothing:antialiased}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--surface)}
 h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.2;text-wrap:balance;margin:0}
-h1{font-size:1.9rem} h2{font-size:1.45rem} h3{font-size:1.15rem}
+h1{font-size:2.15rem;letter-spacing:-.035em} h2{font-size:1.45rem;letter-spacing:-.025em} h3{font-family:var(--body);font-size:1.08rem;font-weight:700;line-height:1.4}
 p{margin:0}
 button{font:inherit;color:inherit;cursor:pointer}
 button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--lemon);outline-offset:2px}
-input,textarea,select{font:inherit;color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:.7rem .85rem;width:100%}
+input,textarea,select{font:inherit;color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:.75rem .9rem;width:100%;min-height:46px}
 textarea{resize:vertical;min-height:9rem;line-height:1.55}
-input:focus,textarea:focus{border-color:var(--cobalt);outline:none}
+input:focus,textarea:focus,select:focus{border-color:var(--cobalt);box-shadow:0 0 0 3px var(--cobalt-soft)}
 .it{font-style:normal}
 .muted{color:var(--muted)}
 .small{font-size:.875rem}
-.label{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.label{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
 .tnum{font-variant-numeric:tabular-nums}
 
 /* header */
 .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
-.top-in{max-width:980px;margin:0 auto;display:flex;align-items:center;gap:1rem;padding-block:.65rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.brand{display:flex;align-items:center;gap:.55rem;font-family:var(--display);font-size:1.35rem;background:none;border:0;padding:0}
+.top-in{max-width:1160px;margin:0 auto;display:flex;align-items:center;gap:1rem;padding-block:.8rem;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
+.brand{display:flex;align-items:center;gap:.6rem;font-family:var(--display);font-size:1.35rem;letter-spacing:-.04em;background:none;border:0;padding:0;min-height:44px;flex-shrink:0}
 .tile-mark{width:30px;height:30px;flex:none}
 .nav{display:flex;gap:.25rem;margin-left:auto}
-.nav button{display:flex;align-items:center;gap:.4rem;background:none;border:0;padding:.5rem .7rem;border-radius:10px;color:var(--muted);font-weight:600;font-size:.92rem}
+.nav button{display:flex;align-items:center;gap:.4rem;background:none;border:0;padding:.65rem .7rem;border-radius:12px;color:var(--muted);font-weight:600;font-size:.85rem;white-space:nowrap;min-height:44px}
 .nav button svg{width:18px;height:18px}
 .nav button[aria-current="page"]{background:var(--cobalt-soft);color:var(--cobalt)}
 .nav button:hover{color:var(--ink)}
@@ -59,7 +59,7 @@ input:focus,textarea:focus{border-color:var(--cobalt);outline:none}
 .chip{display:inline-flex;align-items:center;gap:.3rem;padding:.25rem .6rem;border-radius:999px;background:var(--sunk);font-weight:700;font-size:.85rem}
 .chip svg{width:15px;height:15px}
 .chip.streak{background:var(--lemon-soft);color:var(--lemon-ink)}
-.chip.langsw{border:1.5px solid var(--line);background:var(--surface);gap:.35rem;cursor:pointer;font-size:.78rem;letter-spacing:.04em}
+.chip.langsw{border:1.5px solid var(--line);background:var(--surface);gap:.35rem;cursor:pointer;font-size:.78rem;letter-spacing:.04em;min-height:44px}
 .chip.langsw b{color:var(--ink)}
 .flag{width:20px;height:14px;border-radius:3px;flex:none;box-shadow:0 0 0 1px rgba(0,0,0,.08)}
 .langmenu{position:fixed;z-index:60;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:6px;min-width:250px;display:flex;flex-direction:column;gap:2px;animation:pop .16s ease-out}
@@ -69,29 +69,29 @@ input:focus,textarea:focus{border-color:var(--cobalt);outline:none}
 .langmenu .flag{width:28px;height:19px}
 @keyframes pop{from{opacity:0;transform:translateY(-4px) scale(.98)}to{opacity:1;transform:none}}
 
-main{max-width:860px;margin:0 auto;padding-block:1.5rem 6rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+main{max-width:1040px;margin:0 auto;padding-block:2.4rem 6rem;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
 .stack{display:flex;flex-direction:column;gap:1rem}
 .row{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}
 .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
 .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:1.15rem 1.2rem;min-width:0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:1.35rem 1.4rem;min-width:0}
 .card.flat{background:transparent}
 .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;margin-top:.75rem}
 
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;border-radius:12px;padding:.7rem 1.15rem;font-weight:700;border:1.5px solid transparent;background:var(--cobalt);color:var(--cobalt-ink);transition:transform .08s}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;border-radius:12px;padding:.75rem 1.2rem;font-weight:700;line-height:1.4;min-height:46px;border:1.5px solid transparent;background:var(--cobalt);color:var(--cobalt-ink);transition:transform .12s,background .12s,box-shadow .12s}
 .btn:active{transform:translateY(1px)}
 .btn.ghost{background:transparent;border-color:var(--line);color:var(--ink)}
 .btn.soft{background:var(--cobalt-soft);color:var(--cobalt)}
 .btn.lemon{background:var(--lemon);color:#2A2000}
 .btn[disabled]{opacity:.45;cursor:not-allowed}
 .btn.block{width:100%}
-.icon-btn{display:inline-grid;place-items:center;width:38px;height:38px;border-radius:50%;border:1.5px solid var(--line);background:var(--surface);color:var(--cobalt);flex:none}
+.icon-btn{display:inline-grid;place-items:center;width:44px;height:44px;border-radius:50%;border:1.5px solid var(--line);background:var(--surface);color:var(--cobalt);flex:none}
 .icon-btn svg{width:19px;height:19px}
-.icon-btn.sm{width:30px;height:30px}.icon-btn.sm svg{width:16px;height:16px}
+.icon-btn.sm{width:40px;height:40px}.icon-btn.sm svg{width:17px;height:17px}
 .icon-btn.big{width:72px;height:72px;background:var(--cobalt);color:var(--cobalt-ink);border:0}
 .icon-btn.big svg{width:32px;height:32px}
 .seg{display:inline-flex;background:var(--sunk);border-radius:11px;padding:3px;gap:2px;flex-wrap:wrap}
-.seg button{border:0;background:none;padding:.4rem .8rem;border-radius:9px;font-weight:600;font-size:.88rem;color:var(--muted)}
+.seg button{border:0;background:none;padding:.5rem .8rem;border-radius:9px;font-weight:600;font-size:.88rem;color:var(--muted);min-height:42px}
 .seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
 
 /* home */
@@ -144,18 +144,19 @@ main{max-width:860px;margin:0 auto;padding-block:1.5rem 6rem;padding-left:max(16
 .pbar{display:flex;align-items:center;gap:.8rem}
 .pbar .track{flex:1;height:10px;background:var(--sunk);border-radius:99px;overflow:hidden}
 .pbar .fill{height:100%;background:var(--ok);border-radius:99px;transition:width .3s}
-.close{border:0;background:none;font-size:1.6rem;line-height:1;color:var(--muted);padding:.2rem .4rem}
+.close{border:0;background:none;font-size:1.6rem;line-height:1;color:var(--muted);padding:.2rem .4rem;min-width:44px;min-height:44px;border-radius:50%}
 .q{font-family:var(--display);font-size:1.6rem;line-height:1.25}
 .q .blank{display:inline-block;min-width:3.2em;border-bottom:3px solid var(--cobalt);margin:0 .15em}
 .opts{display:grid;gap:.6rem}
-.opt{text-align:left;padding:.85rem 1rem;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);font-weight:600;display:flex;gap:.75rem;align-items:center}
+.opt{text-align:left;padding:.95rem 1.1rem;border-radius:14px;border:1.5px solid var(--line);background:var(--surface);font-weight:600;display:flex;gap:.75rem;align-items:center;min-height:54px;overflow-wrap:anywhere}
+.opt:hover:not(:disabled):not(.right):not(.wrong){border-color:var(--cobalt);background:var(--cobalt-soft)}
 .opt kbd{font:600 .75rem var(--body);border:1px solid var(--line);border-radius:6px;padding:.05rem .4rem;color:var(--muted)}
 .opt[aria-pressed="true"]{border-color:var(--cobalt);background:var(--cobalt-soft)}
 .opt.right{border-color:var(--ok);background:var(--ok-soft)}
 .opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
 .tiles{display:flex;flex-wrap:wrap;gap:.5rem;min-height:3.2rem}
 .answer-line{border-bottom:2px solid var(--line);padding-bottom:.6rem}
-.tilebtn{padding:.5rem .8rem;border-radius:10px;border:1.5px solid var(--line);border-bottom-width:3px;background:var(--surface);font-weight:600}
+.tilebtn{padding:.5rem .8rem;border-radius:10px;border:1.5px solid var(--line);border-bottom-width:3px;background:var(--surface);font-weight:600;min-height:44px}
 .tilebtn.used{visibility:hidden}
 .match{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
 .match .opt{justify-content:center;text-align:center}
@@ -180,7 +181,7 @@ main{max-width:860px;margin:0 auto;padding-block:1.5rem 6rem;padding-left:max(16
 
 /* practice */
 .drills{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem}
-.drill{text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.3rem}
+.drill{text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:1.2rem;display:flex;flex-direction:column;gap:.4rem;min-width:0}
 .drill:hover{border-color:var(--cobalt)}
 .drill b{font-size:1.05rem}
 .big-q{font-family:var(--display);font-size:2rem;line-height:1.2}
@@ -213,7 +214,7 @@ details.g .gb{padding-bottom:1.1rem;display:flex;flex-direction:column;gap:.8rem
 .msg .tr{font-size:.88rem;color:var(--muted)}
 .msg .fix{background:var(--lemon-soft);color:var(--lemon-ink);border-radius:10px;padding:.5rem .7rem;font-size:.9rem}
 .sugg{display:flex;flex-wrap:wrap;gap:.4rem}
-.sugg button{border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:.35rem .8rem;font-size:.88rem}
+.sugg button{border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:.5rem .9rem;font-size:.88rem;min-height:44px}
 .composer{display:flex;gap:.5rem;position:sticky;bottom:calc(76px + env(safe-area-inset-bottom,0px));background:var(--bg);padding-block:.6rem}
 .thinking{display:inline-flex;gap:4px}
 .thinking i{width:7px;height:7px;border-radius:50%;background:var(--muted);animation:b 1s infinite}
@@ -226,11 +227,11 @@ details.g .gb{padding-bottom:1.1rem;display:flex;flex-direction:column;gap:.8rem
 .notice{background:var(--lemon-soft);color:var(--lemon-ink);border-radius:12px;padding:.8rem 1rem;font-size:.92rem}
 
 /* ===== illustrated layer ===== */
-:root{--coral:#E2604A;--shadow:0 14px 34px -16px rgba(19,32,59,.38);
+:root{--coral:#E2604A;--shadow:0 12px 30px -18px rgba(19,32,59,.24);
   --tile:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' fill='%231F4FD6'/%3E%3Cpath d='M24 5l6 13-6 6-6-6zM24 43l-6-13 6-6 6 6zM5 24l13-6 6 6-6 6zM43 24l-13 6-6-6 6-6z' fill='%23F2C230'/%3E%3Ccircle cx='24' cy='24' r='3' fill='%23F7F3E8'/%3E%3Cpath d='M0 0h9a9 9 0 0 1-9 9zM48 0v9a9 9 0 0 1-9-9zM0 48v-9a9 9 0 0 1 9 9zM48 48h-9a9 9 0 0 1 9-9z' fill='%23F7F3E8'/%3E%3C/svg%3E")}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--shadow:0 14px 34px -16px rgba(0,0,0,.7)}}
 :root[data-theme="dark"]{--shadow:0 14px 34px -16px rgba(0,0,0,.7)}
-.tileband{height:8px;background:var(--tile);background-size:16px 16px;opacity:.9}
+.tileband{height:3px;background:linear-gradient(90deg,var(--cobalt) 0 76%,var(--lemon) 76% 94%,var(--coral) 94%);opacity:1}
 .pic{position:relative;overflow:hidden;background:var(--cobalt)}
 .pic::before{content:"";position:absolute;inset:0;background:var(--tile);background-size:40px 40px;opacity:.35}
 .pic img{position:relative;display:block;width:100%;height:100%;object-fit:cover}
@@ -246,14 +247,14 @@ details.g .gb{padding-bottom:1.1rem;display:flex;flex-direction:column;gap:.8rem
 .banner.slim h1{font-size:1.9rem}
 .lgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1rem}
 .lcard{text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden;padding:0;display:flex;flex-direction:column;transition:transform .18s ease,box-shadow .18s ease,border-color .18s}
-.lcard:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:transparent}
-.lcard .pic{aspect-ratio:4/3;max-width:100%}
+.lcard:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:var(--cobalt)}
+.lcard .pic{aspect-ratio:16/10;max-width:100%}
 .lcard .pic img{transition:transform .5s ease}
 .lcard:hover .pic img{transform:scale(1.05)}
 .lcard .num{position:absolute;top:10px;left:10px;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-family:var(--display);font-size:1.15rem;background:var(--surface);color:var(--ink);box-shadow:0 4px 12px rgba(0,0,0,.18)}
 .lcard .badge{position:absolute;top:10px;right:10px}
-.lcard .body{padding:.85rem 1rem 1.05rem;display:flex;flex-direction:column;gap:.2rem}
-.lcard .body b{font-family:var(--display);font-weight:400;font-size:1.15rem;line-height:1.2}
+.lcard .body{padding:1rem 1.1rem 1.2rem;display:flex;flex-direction:column;gap:.3rem}
+.lcard .body b{font-family:var(--body);font-weight:700;font-size:1.08rem;line-height:1.4}
 .lcard.done .num{background:var(--ok);color:#fff}
 .lcard.cur{outline:3px solid var(--lemon);outline-offset:-1px}
 .lcard.cur .num{background:var(--lemon);color:#2A2000}
@@ -265,12 +266,12 @@ details.g .gb{padding-bottom:1.1rem;display:flex;flex-direction:column;gap:.8rem
 .feature{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);overflow:hidden;padding:0;border-radius:20px}
 .feature .pic{min-height:190px}
 .feature .fbody{padding:1.2rem 1.3rem;display:flex;flex-direction:column;gap:.45rem;justify-content:center}
-.btn{box-shadow:0 6px 16px -8px color-mix(in srgb,var(--cobalt) 70%,transparent)}
+.btn{box-shadow:0 4px 10px -7px color-mix(in srgb,var(--cobalt) 60%,transparent)}
 .btn.ghost,.btn.soft{box-shadow:none}
 .btn.lemon{box-shadow:0 6px 16px -8px rgba(160,120,0,.7)}
 .btn:hover:not([disabled]){filter:brightness(1.06)}
 .drill{transition:transform .18s ease,box-shadow .18s ease}
-.drill:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:transparent}
+.drill:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:var(--cobalt)}
 .dico{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;margin-bottom:.35rem}
 .dico svg{width:22px;height:22px}
 .dico.c1{background:var(--cobalt-soft);color:var(--cobalt)} .dico.c2{background:var(--lemon-soft);color:var(--lemon-ink)} .dico.c3{background:var(--bad-soft);color:var(--coral)} .dico.c4{background:var(--ok-soft);color:var(--ok)}
@@ -286,7 +287,7 @@ details.g .gb{padding-bottom:1.1rem;display:flex;flex-direction:column;gap:.8rem
 .chat-head p{color:rgba(255,255,255,.85)}
 .chat-head .btn.ghost{color:#fff;border-color:rgba(255,255,255,.55);background:rgba(255,255,255,.08);backdrop-filter:blur(6px)}
 .lhead-img{border-radius:20px;overflow:hidden;aspect-ratio:21/9;max-width:100%;box-shadow:var(--shadow)}
-.fc{background:var(--surface);background-image:radial-gradient(circle at 100% 0,var(--lemon-soft) 0 90px,transparent 91px),radial-gradient(circle at 0 100%,var(--cobalt-soft) 0 70px,transparent 71px);box-shadow:var(--shadow)}
+.fc{background:var(--surface);background-image:radial-gradient(circle at 100% 0,var(--lemon-soft) 0 60px,transparent 61px);box-shadow:var(--shadow);min-height:290px}
 .wotd{background:var(--cobalt) var(--tile);background-size:44px 44px}
 .wotd>*{position:relative}
 .wotd::before{content:"";position:absolute;inset:0;background:linear-gradient(100deg,var(--cobalt) 45%,color-mix(in srgb,var(--cobalt) 40%,transparent))}
@@ -311,14 +312,14 @@ details.g .gb{padding-bottom:1.1rem;display:flex;flex-direction:column;gap:.8rem
 .chal.ok .meter i{background:var(--ok)}
 .chal.ok span:first-child{color:var(--ok);font-weight:700}
 body.onb .bottomnav,body.onb .nav,body.onb #chips{visibility:hidden}
-.onb-wrap{max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:.9rem;text-align:center;align-items:stretch;padding-block:1rem}
+.onb-wrap{max-width:540px;margin:0 auto;display:flex;flex-direction:column;gap:1.1rem;text-align:center;align-items:stretch;padding-block:1.5rem}
 .onb-wrap>h1,.onb-wrap>h2,.onb-wrap>p,.onb-wrap>.label{align-self:center}
-.logo-big{align-self:center;width:96px;height:96px;filter:drop-shadow(0 12px 24px rgba(31,79,214,.3))}
+.logo-big{align-self:center;width:76px;height:76px;filter:drop-shadow(0 8px 16px rgba(31,79,214,.15));margin-bottom:.5rem}
 .logo-big svg{width:100%;height:100%}
 .logo-big.small{width:56px;height:40px;filter:none}
 .dots{display:flex;gap:6px;justify-content:center}.dots i{width:28px;height:5px;border-radius:9px;background:var(--sunk)}.dots i.on{background:var(--cobalt)}
 .onb-langs{display:flex;flex-direction:column;gap:.6rem}
-.onb-lang{display:flex;align-items:center;gap:.9rem;text-align:left;background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:1rem 1.1rem;transition:transform .12s,border-color .12s}
+.onb-lang{display:flex;align-items:center;gap:.9rem;text-align:left;background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:1.15rem 1.2rem;transition:transform .12s,border-color .12s}
 .onb-lang:hover{border-color:var(--cobalt);transform:translateY(-2px)}
 .onb-lang>span:nth-child(2),.onb-lang>span:first-child:not(.pill){display:flex;flex-direction:column;flex:1;min-width:0}
 .onb-lang .flag{width:36px;height:24px}
@@ -328,13 +329,14 @@ body.onb .bottomnav,body.onb .nav,body.onb #chips{visibility:hidden}
 .w.sel{background:var(--lemon-soft);box-shadow:0 0 0 2px var(--lemon)}
 .wpop{position:absolute;z-index:40;width:280px;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:.8rem .9rem;display:flex;flex-direction:column;gap:.45rem;animation:pop .14s ease-out}
 .bottomnav{display:none}
-@media (max-width:760px){
+@media (max-width:980px){
   h1{font-size:1.6rem}
   .nav{display:none}
-  .bottomnav{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
-  .bottomnav button{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:2px;padding:.5rem 0 .45rem;font-size:.66rem;font-weight:600;color:var(--muted)}
+  .bottomnav{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--surface);border-top:1px solid var(--line);padding-top:4px;padding-bottom:max(4px,env(safe-area-inset-bottom,0px));padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px);box-shadow:0 -8px 24px -20px rgba(19,32,59,.35)}
+  .bottomnav button{border:0;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:.5rem 0 .45rem;font-size:.66rem;font-weight:600;color:var(--muted);min-height:58px;position:relative}
   .bottomnav svg{width:22px;height:22px}
   .bottomnav button[aria-current="page"]{color:var(--cobalt)}
+  .bottomnav button[aria-current="page"]::before{content:"";position:absolute;top:2px;left:calc(50% - 14px);width:28px;height:3px;border-radius:9px;background:var(--cobalt)}
   .chips{margin-left:auto}
   .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
   .grid2,.grid3,.drills,.scen,.wlist{grid-template-columns:minmax(0,1fr)}
@@ -348,7 +350,7 @@ body.onb .bottomnav,body.onb .nav,body.onb #chips{visibility:hidden}
   .q{font-size:1.35rem}
   .fc .front{font-size:1.8rem}
 }
-@media (min-width:761px){.composer{bottom:0}}
+@media (min-width:981px){.composer{bottom:0}}
 .map{display:flex;flex-direction:column;gap:1.2rem}.mapband{display:flex;flex-direction:column;gap:.8rem}
 .mapnodes{display:flex;flex-wrap:wrap;align-items:center;gap:.35rem .1rem}.mline{width:14px;height:3px;background:var(--line);border-radius:2px}
 .mnode{width:40px;height:40px;border-radius:50%;border:2px solid var(--line);background:var(--surface);font-weight:700;color:var(--muted)}
@@ -365,6 +367,154 @@ body.onb .bottomnav,body.onb .nav,body.onb #chips{visibility:hidden}
 .carbtns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.6rem}.carbtns .btn{min-height:76px;font-size:1.15rem}
 .linkish{background:none;border:0;padding:0;color:var(--cobalt);text-align:left;font:inherit;cursor:pointer}
 .skip{position:absolute;left:-9999px;top:8px;z-index:100;background:var(--ink);color:var(--bg);padding:.6rem 1rem;border-radius:10px;font-weight:700}.skip:focus{left:16px}
+
+/* Daily learning: one prominent next action, quieter supporting information. */
+.home-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:.4rem 1rem;padding:.25rem 0 .4rem}
+.home-head>h1,.home-head>p,.home-head>.label{flex-basis:100%}
+.home-head h1{font-size:clamp(1.85rem,4vw,2.6rem);margin-top:.35rem}
+.home-head p{max-width:54ch;margin-top:.5rem}
+.home-kicker{display:block;color:var(--muted);font-size:.7rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase}
+.daily-focus{position:relative;isolation:isolate;overflow:hidden;border:0;border-radius:24px;padding:2rem 2.2rem;background:#193FA4;color:#fff;box-shadow:0 14px 36px -24px rgba(16,46,125,.65)}
+.daily-focus::after{content:"";position:absolute;z-index:-1;pointer-events:none;right:-85px;top:-135px;width:330px;height:330px;border:1px solid rgba(255,255,255,.14);border-radius:50%;box-shadow:0 0 0 42px rgba(255,255,255,.035),0 0 0 86px rgba(255,255,255,.025)}
+.daily-focus h2{font-size:clamp(1.8rem,4vw,2.45rem);line-height:1.15;letter-spacing:-.035em;max-width:23ch}
+.daily-focus h3{color:#fff}
+.daily-focus p{max-width:60ch}
+.daily-focus .label,.daily-focus .home-kicker{color:#C9D7FF}
+.daily-focus .muted{color:#DFE7FF}
+.daily-focus>.row{justify-content:space-between;gap:1.2rem}
+.daily-focus .btn{background:#fff;color:#193FA4;box-shadow:none}
+.daily-focus .btn.lemon{background:var(--lemon);color:#302500;box-shadow:0 5px 14px -9px rgba(0,0,0,.4)}
+.daily-focus .btn.ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.4)}
+.daily-focus .meter{background:rgba(255,255,255,.18)}
+.daily-focus .meter i{background:var(--lemon)}
+.daily-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.75rem;padding:0;margin:1.6rem 0;list-style:none}
+.daily-step{display:flex;align-items:center;gap:.75rem;min-width:0;padding:1rem;border:1px solid var(--line);border-radius:14px;background:var(--surface);text-align:left}
+.daily-step>span:first-child{display:grid;place-items:center;flex:none;width:30px;height:30px;border-radius:50%;background:var(--cobalt-soft);color:var(--cobalt);font-size:.8rem;font-weight:700}
+.daily-step>div{display:flex;flex-direction:column;min-width:0}
+.daily-step b{display:block;font-size:.9rem;font-weight:700;line-height:1.4}
+.daily-step small{display:block;color:var(--muted);font-size:.77rem;line-height:1.5;margin-top:.2rem}
+.daily-focus .daily-step{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.17);color:#fff}
+.daily-focus .daily-step>span:first-child{background:rgba(255,255,255,.12);color:#fff}
+.daily-focus .daily-step small{color:#D5E0FF}
+.daily-focus .daily-step.is-done{background:rgba(160,234,199,.12);border-color:rgba(160,234,199,.4)}
+.daily-focus .daily-step.is-done>span:first-child{background:#DDF3E8;color:#14613E}
+.daily-step.is-done{border-color:var(--ok);background:var(--ok-soft)}
+.daily-step.is-done>span:first-child{background:var(--ok);color:var(--surface)}
+.home-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem;padding:1.15rem 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.home-summary>div{min-width:0}
+.home-summary>div+div{padding-left:1rem;border-left:1px solid var(--line)}
+.home-summary b{display:block;color:var(--ink);font-family:var(--body);font-weight:700;font-size:1.2rem;line-height:1.3}
+.home-summary small,.home-summary .label,.home-summary>div>span{display:block;color:var(--muted);font-size:.8rem;letter-spacing:0;text-transform:none;margin-top:.15rem}
+.home-secondary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;align-items:start}
+.home-secondary>.card,.home-secondary>details{height:100%}
+.home-secondary>.feature{display:flex;flex-direction:column}
+.home-secondary>.feature .pic{aspect-ratio:2/1;min-height:0}
+.home-secondary>.feature .fbody{padding:1.2rem}
+.home-secondary .wotd .word{font-size:1.75rem}
+.home-secondary .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+.home-secondary .card h3{margin-bottom:.25rem}
+.home-secondary details.g .gb{padding-top:.25rem}
+.home-secondary .btn{font-size:.88rem}
+
+/* Practice groups and availability use the same visual language as the daily path. */
+.practice-tools{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;padding:.4rem 0 .65rem}
+.practice-tools>button{border:1px solid var(--line);border-radius:999px;background:var(--surface);padding:.6rem 1rem;font-size:.88rem;font-weight:600;min-height:44px}
+.practice-tools>button[aria-pressed="true"]{background:var(--cobalt);border-color:var(--cobalt);color:var(--cobalt-ink)}
+.practice-tools.stack{align-items:stretch;padding:0;gap:.75rem}
+.practice-group{padding-top:1.4rem;border-top:1px solid var(--line)}
+.practice-group.g{padding:0 1.25rem}
+.practice-group.g summary{font-family:var(--body);font-size:1rem;font-weight:700;padding:1.15rem 0}
+.practice-group.g summary .pill{margin-left:.4rem;font-size:.7rem;font-weight:600}
+.practice-group.g .gb{max-width:none;padding-bottom:1.25rem}
+.practice-group>h2{font-family:var(--body);font-size:1.15rem;font-weight:700;letter-spacing:-.015em;margin-bottom:1rem}
+.practice-group>.sec-head{margin-top:0;margin-bottom:.9rem}
+.practice-group .drills{gap:.8rem}
+section[aria-labelledby="practiceRecommended"]>.drills{grid-template-columns:repeat(3,minmax(0,1fr))}
+.practice-group .drill{position:relative;box-shadow:none}
+.practice-group .drill .dico{width:38px;height:38px;border-radius:11px}
+.practice-group .drill .small{font-size:.85rem}
+.access-badge{display:inline-flex;align-items:center;gap:.35rem;align-self:flex-start;width:fit-content;max-width:100%;padding:.25rem .6rem;border:1px solid var(--line);border-radius:999px;background:var(--sunk);color:var(--muted);font-size:.69rem;font-weight:600;line-height:1.4;letter-spacing:.01em}
+.access-badge.ai{background:var(--lemon-soft);color:var(--lemon-ink);border-color:transparent}
+.access-badge.ready,.access-badge.offline,.access-badge.ok{background:var(--ok-soft);color:var(--ok);border-color:transparent}
+.daily-focus .access-badge{background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.17);color:#fff}
+.milestone-list{display:flex;flex-direction:column;gap:0;list-style:none;padding:0;margin:0}
+.milestone-item{display:flex;align-items:flex-start;gap:.75rem;padding:.85rem 0;border-bottom:1px solid var(--line);font-size:.91rem}
+.milestone-item:last-child{border-bottom:0;padding-bottom:0}
+.milestone-item>svg{width:20px;height:20px;flex:none;color:var(--ok);margin-top:.15rem}
+.milestone-item b{font-size:.9rem}
+.milestone-item small{display:block;color:var(--muted);font-size:.77rem;margin-top:.15rem}
+.lesson.placed .n,.lcard.placed .num{background:var(--cobalt-soft);color:var(--cobalt)}
+.lesson.placed,.lcard.placed{border-style:dashed}
+.lcard.placed .meter i{background:var(--cobalt)}
+.correction-editor{display:grid;gap:.65rem;padding:1rem;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.correction-editor label{display:flex;flex-direction:column;gap:.3rem;font-size:.8rem;color:var(--muted);font-weight:600}
+.correction-editor input,.correction-editor textarea{font-size:.95rem;color:var(--ink);font-weight:400}
+.speech-compare{display:grid;gap:.75rem;padding:1.1rem;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+.speech-compare>div+div{padding-top:.75rem;border-top:1px solid var(--line)}
+.speech-compare .label{display:block;margin-bottom:.3rem}
+
+@media (min-width:981px) and (max-width:1120px){
+  .top-in{gap:.6rem;padding-inline:20px}
+  .nav{gap:0}
+  .nav button{padding-inline:.5rem;font-size:.8rem}
+  .chip{font-size:.77rem;padding-inline:.45rem}
+}
+@media (max-width:760px){
+  main{padding:1.4rem max(18px,env(safe-area-inset-right,0px)) 6.5rem max(18px,env(safe-area-inset-left,0px))}
+  .top-in{padding:.55rem max(18px,env(safe-area-inset-right,0px)) .55rem max(18px,env(safe-area-inset-left,0px));gap:.6rem}
+  .home-head{align-items:flex-start;flex-direction:column;gap:.6rem}
+  .home-head h1{font-size:1.75rem}
+  .home-head p{font-size:.9rem;margin-top:.3rem}
+  .daily-focus{padding:1.5rem;border-radius:20px}
+  .daily-focus h2{font-size:1.7rem}
+  .daily-focus>p{font-size:.9rem;line-height:1.5;margin-top:.35rem}
+  .daily-focus>.row{gap:.75rem}
+  .daily-focus>.row>.small{font-size:.76rem}
+  .daily-steps{grid-template-columns:1fr;gap:.5rem;margin:1rem 0}
+  .daily-step{padding:.75rem .85rem;gap:.7rem}
+  .daily-step>div{flex-direction:column;align-items:flex-start;gap:.1rem;flex:1}
+  .daily-step b{font-size:.85rem}
+  .daily-step small{font-size:.74rem;margin:0;text-align:left;line-height:1.35}
+  .daily-focus>.btn,.daily-focus>.row>.btn{width:100%}
+  .home-secondary{grid-template-columns:1fr}
+  .home-summary{grid-template-columns:repeat(2,minmax(0,1fr));gap:.9rem 1rem}
+  .home-summary>div:nth-child(3){border-left:0;padding-left:0}
+  .card{padding:1.15rem}
+  .player{gap:1.1rem;min-height:70vh}
+  .q{line-height:1.4}
+  .banner{min-height:230px}
+  .banner.slim{min-height:180px}
+  .lcard .pic{aspect-ratio:16/9}
+  .btn{padding-inline:1rem}
+  .practice-tools{gap:.4rem}
+  .practice-tools>button{font-size:.8rem;padding:.55rem .8rem}
+  section[aria-labelledby="practiceRecommended"]>.drills{grid-template-columns:1fr}
+  .sec-head{flex-wrap:wrap;gap:.35rem .8rem}
+  .composer{bottom:calc(74px + env(safe-area-inset-bottom,0px))}
+  .icon-btn.sm{width:44px;height:44px}
+  .dict-row{grid-template-columns:44px minmax(0,1fr) auto}
+  .phr>div{grid-template-columns:44px minmax(0,1fr)}
+  .wpop{width:min(280px,calc(100vw - 36px))}
+}
+@media (max-width:380px){
+  main{padding-top:1rem}
+  .top-in{padding-inline:12px;gap:.35rem}
+  .brand{font-size:1.15rem;gap:.4rem}
+  .tile-mark{width:27px;height:27px}
+  .chips{gap:.25rem}
+  .chip{font-size:.72rem;padding-inline:.4rem}
+  .home-head{gap:.2rem}
+  .home-head h1{font-size:1.6rem;margin-top:.2rem}
+  .home-head p{line-height:1.4}
+  .daily-focus{padding:1.2rem}
+  .daily-focus h2{font-size:1.6rem}
+  .daily-focus>.label{font-size:.65rem}
+  .daily-step{padding:.55rem .75rem}
+  .daily-step>div{flex-direction:column;gap:.1rem}
+  .daily-step small{text-align:left}
+  .onb-lang{padding:.9rem;gap:.6rem}
+  .onb-lang .pill{font-size:.65rem;padding-inline:.4rem}
+}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
@@ -742,8 +892,11 @@ function toast(msg){let t=$("#toast");if(!t){t=document.createElement("div");t.i
 
 /* ============ STATE ============ */
 const LS="parliamo.v1";
-function fresh(){return {v:1,xp:0,days:{},lessons:{},cards:{},stories:{},miss:{},log:{},ai:{},rounds:{},ev:{},chal:{},own:{},hard:{},pods:{},exam:{},certs:{},plan:{},mlog:[],onboarded:false,newToday:{day:0,n:0},drills:{},settings:{goal:50,newPerDay:10,dir:"mix",rate:0.95,ret:0.9,lang:"en",proxy:"",pass:"",cloud:false,theme:"auto",fs:"m",readable:false},updatedAt:0};}
-function migrate(s){const old=s&&s.xp>0&&s.onboarded===undefined;const f=fresh();s=Object.assign(f,s||{});if(old)s.onboarded=true;s.settings=Object.assign(fresh().settings,s.settings||{});return s;}
+function fresh(){return {v:1,xp:0,days:{},lessons:{},cards:{},stories:{},miss:{},log:{},ai:{},rounds:{},ev:{},chal:{},own:{},hard:{},pods:{},exam:{},certs:{},plan:{},mlog:[],onboarded:false,newToday:{day:0,n:0},drills:{},dailySessions:{},evidence:[],settings:{goal:50,newPerDay:10,dir:"mix",rate:0.95,ret:0.9,lang:"en",proxy:"",pass:"",cloud:false,theme:"auto",fs:"m",readable:false},updatedAt:0};}
+function migrate(s){const old=s&&s.xp>0&&s.onboarded===undefined;const f=fresh();s=Object.assign(f,s||{});if(old)s.onboarded=true;s.settings=Object.assign(fresh().settings,s.settings||{});
+  for(const rec of Object.values(s.lessons||{}))if(rec&&rec.placed&&rec.done&&!rec.best)rec.done=false;
+  if(!Array.isArray(s.evidence))s.evidence=[];if(!s.dailySessions||typeof s.dailySessions!=="object")s.dailySessions={};
+  return s;}
 let S=fresh();
 try{const raw=localStorage.getItem(LS);if(raw)S=migrate(JSON.parse(raw));}catch(e){}
 let sync="local", docRef=null, rTimer=null, rBusy=false, rAgain=false;
@@ -786,7 +939,7 @@ function getSample(){
   if(IS_WEB)return Promise.resolve(proxySample());
   if(!sampleP)sampleP=claude.use("sample").catch(()=>null);return sampleP;
 }
-const aiMissing=()=>IS_WEB?"Az AI-tanárhoz állítsd be az AI-kapcsolatot: Ma oldal → Beállítások → AI-kapcsolat.":"Az AI-tanár csak a claude.ai-on megnyitott oldalon érhető el.";
+const aiMissing=()=>IS_WEB?"Ehhez AI-kapcsolat szükséges. Az AI-tanár oldalon közvetlenül beállíthatod. A leckék és az ismétlés enélkül is használható.":"Az AI-tanár csak a claude.ai-on megnyitott oldalon érhető el.";
 function aiErr(e){const c=e&&e.code;if(c==="bad_key")return "Hibás belépőkód. Ellenőrizd a Beállításokban az AI-kapcsolatot.";if(c==="network")return "Nem érem el az AI-szervert. Ellenőrizd a netet és a szerver címét.";if(c==="refused")return "Erre a kérésre a tanár nem válaszolt. Fogalmazd meg másképp.";if(c==="not_granted")return "Nem engedélyezted az AI-tanárt ebben a nézetben. Töltsd újra az oldalt, ha mégis használnád.";if(c==="budget")return "Elérted a szerveren beállított havi AI-keretet. A következő hónapban újra működik, vagy emeld a keretet (MONTHLY_BUDGET_USD).";if(c==="rate_limited")return "Túl sok kérés ment el egyszerre. Várj fél percet, és próbáld újra.";return "Nem jött válasz a tanártól. Próbáld újra.";}
 
 function today(){return dayNum();}
@@ -795,10 +948,10 @@ function addXP(n){S.xp+=n;const d=today();S.days[d]=(S.days[d]||0)+n;save();chec
 function streak(){let d=today(),n=0;if(!S.days[d])d--;while(S.days[d]){n++;d--;}return n;}
 const ls=i=>S.lessons[LESSONS[i].id];
 function doneCount(){return LESSONS.filter((_,i)=>ls(i)&&ls(i).done).length;}
-function nextLesson(){const i=LESSONS.findIndex((_,i)=>!(ls(i)&&ls(i).done));return i<0?null:i;}
+function nextLesson(){const i=LESSONS.findIndex((_,i)=>!(ls(i)&&(ls(i).done||ls(i).placed)));return i<0?null:i;}
 
 /* cards */
-function unlocked(){const d=LESSONS.map((_,i)=>i).filter(i=>ls(i)&&ls(i).done);return (d.length?d:[0]).concat([OWN_LI()]);}
+function unlocked(){const d=LESSONS.map((_,i)=>i).filter(i=>ls(i)&&(ls(i).done||ls(i).placed));return (d.length?d:[0]).concat([OWN_LI()]);}
 function dueList(){const t=today();return POOL.filter(c=>S.cards[c.id]&&S.cards[c.id].due<=t);}
 function newLeft(){const t=today();const used=S.newToday.day===t?S.newToday.n:0;return Math.max(0,S.settings.newPerDay-used);}
 function newAvail(){const u=new Set(unlocked());return POOL.filter(c=>u.has(c.li)&&!S.cards[c.id]);}
@@ -829,7 +982,7 @@ function flag(l){
 function openLangMenu(){
   let m=$("#langMenu");if(m){m.remove();return;}
   m=document.createElement("div");m.id="langMenu";m.className="langmenu";m.setAttribute("role","menu");
-  m.innerHTML=Object.entries(LANGS).map(([k,L])=>{const done=Object.keys(S.lessons).filter(id=>langOf(id)===k).length;
+  m.innerHTML=Object.entries(LANGS).map(([k,L])=>{const done=Object.keys(S.lessons).filter(id=>langOf(id)===k&&S.lessons[id].done).length;
     return `<button role="menuitemradio" aria-checked="${k===lang()}" data-lang="${k}">${flag(k)}<span><b>${L.name}</b><span class="small muted">${L.nat} · ${L.range}${done?` · ${done} lecke kész`:""}</span></span>${k===lang()?'<span class="pill now">Most</span>':""}</button>`;}).join("");
   document.body.appendChild(m);
   const r=$("#langBtn").getBoundingClientRect();m.style.top=(r.bottom+8)+"px";m.style.right=Math.max(12,innerWidth-r.right)+"px";
@@ -837,6 +990,7 @@ function openLangMenu(){
   setTimeout(()=>document.addEventListener("click",function off(e){if(!e.target.closest("#langMenu,#langBtn")){m.remove();document.removeEventListener("click",off);}}),0);
 }
 async function switchLang(to){
+  dailyActive=false;stopViews();
   S.settings.lang=to;save();
   P=null;CS=null;D=null;ST=null;T={tab:"chat",sc:null,msgs:[],level:null,busy:false,wPrompt:null,wRes:null,wText:""};
   view.innerHTML=`<div class="card row"><span class="thinking"><i></i><i></i><i></i></span><span class="muted">${LG().name} tananyag betöltése…</span></div>`;
@@ -845,7 +999,7 @@ async function switchLang(to){
 }
 document.addEventListener("click",e=>{if(e.target.closest("#langBtn"))openLangMenu();});
 window.addEventListener("hashchange",()=>{const h=(location.hash||"").slice(1);if(S.onboarded&&LESSONS.length)quickAction(h);});
-function go(r){route=r;P=null;CS=null;D=null;ST=null;PL=null;stopViews();try{history.replaceState(null,"","#"+r);}catch(e){}render();window.scrollTo(0,0);try{view.focus({preventScroll:true});}catch(e){}}
+function go(r){dailyActive=false;route=r;P=null;CS=null;D=null;ST=null;PL=null;stopViews();try{history.replaceState(null,"","#"+r);}catch(e){}render();window.scrollTo(0,0);try{view.focus({preventScroll:true});}catch(e){}}
 function render(){
   $("#nav").innerHTML=navHtml();$("#bnav").innerHTML=navHtml();renderChips();
   const rt=(ROUTES.find(x=>x[0]===route)||[0,{stat:"Statisztika",utlevel:"Útlevél",terkep:"Térkép",ellenorzes:"Eszközellenőrzés"}[route]||"Ma"])[1];document.title="Parliamo · "+rt;document.documentElement.lang="hu";
@@ -854,48 +1008,30 @@ function render(){
 
 /* ============ HOME ============ */
 function renderHome(){
-  const d=new Date(), t=today(), x=S.days[t]||0, goal=S.settings.goal, pct=Math.min(1,x/goal);
-  const C=2*Math.PI*50, nl=nextLesson(), due=dueList().length, nw=Math.min(newLeft(),newAvail().length);
-  const w=WORDS[t%WORDS.length];
-  let strip="";for(let i=13;i>=0;i--){const v=S.days[t-i]||0;const l=v===0?"":v<goal/2?"l1":v<goal?"l2":"l3";strip+=`<i class="${l} ${i===0?"today":""}" title="${v} XP"></i>`;}
-  const done=doneCount();
+  const nl=nextLesson(),s=dailySession(),steps=dailySteps(),finished=steps.every(x=>x[0]),started=steps.some(x=>x[0]);
+  const w=WORDS[today()%WORDS.length],L=LESSONS.find(l=>l.id===s.lessonId);
   view.innerHTML=`<div class="stack">
-  <section class="banner">${pic(LG().hero)}
-    <div class="in">
-      <div class="ring" role="img" aria-label="Mai cél: ${x} / ${goal} XP">
-        <svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="50" fill="rgba(9,18,44,.35)" stroke="rgba(255,255,255,.25)" stroke-width="11"/><circle cx="60" cy="60" r="50" fill="none" stroke="${pct>=1?"#4CC38A":"#F2C230"}" stroke-width="11" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-pct)}"/></svg>
-        <div class="v"><div><b class="tnum">${x}</b><div class="small muted">/ ${goal} XP</div></div></div>
-      </div>
-      <div class="stack" style="gap:.35rem;flex:1;min-width:min(100%,260px)">
-        <span class="label">${lang()==="en"?d.toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long"}):DAYS_IT[d.getDay()]+", "+d.getDate()+" "+MONTHS_IT[d.getMonth()]}</span>
-        <h1>${x===0?LG().hello:pct>=1?LG().goalDone:LG().goalLeft(goal-x)}</h1>
-        <p>${due?due+" kártya vár ismétlésre. ":""}${nl!==null?"Következő lecke: "+esc(LESSONS[nl].hu)+".":"Minden leckét befejeztél. Jöhet a beszélgetés az AI-tanárral."}</p>
-      </div>
-    </div>
+  <header class="home-head"><span class="home-kicker">${LG().name} · ${new Date().toLocaleDateString("hu-HU",{month:"long",day:"numeric"})}</span><h1>Egy kis gyakorlás. Minden nap.</h1><p class="muted">Ma is egy lépéssel közelebb az önálló nyelvhasználathoz.</p></header>
+  <section class="daily-focus" aria-labelledby="dailyTitle"><span class="label">A mai útvonalad · kb. 10–15 perc</span><h2 id="dailyTitle">${finished?"A mai gyakorlásod elkészült.":started?"Folytassuk, ahol tartottál.":"Tíz perc, ami összeadódik."}</h2><p>Rövid ismétlés, egy lecke, végül egy saját válasz. Lépésről lépésre végigvezetünk.</p>
+    <div class="daily-steps">${steps.map(([done,title,detail],i)=>`<div class="daily-step ${done?"is-done":""}"><span>${done?(done==="none"?"–":"✓"):i+1}</span><div><b>${esc(title)}</b><small>${esc(detail)}</small></div></div>`).join("")}</div>
+    <div class="row"><button class="btn lemon" id="hRound">${finished?"Mai kör áttekintése":started?"Mai gyakorlás folytatása":"Mai gyakorlás indítása"} →</button><span class="small">Bármikor megállhatsz, innen folytatjuk.</span></div>
   </section>
-  ${budgetWarn()}
-  ${roundCard(due,nw)}
-  ${planCard()}
-  ${weekCard()}
-  ${chalCard()}
-  <div class="card feature">${pic(LESSONS[nl!==null?nl:LESSONS.length-1].id)}<div class="fbody"><span class="label">Lecke ${nl!==null?nl+1:LESSONS.length} / ${LESSONS.length}</span><h2>${esc(nl!==null?LESSONS[nl].t:"Ripasso")}</h2><p class="muted">${esc(nl!==null?LESSONS[nl].goal:"Ismételd át bármelyik leckét.")}</p>
-    <div><button class="btn lemon" id="hLesson">${nl!==null?(ls(nl)?"Folytatás":"Indítás"):"Leckék"} →</button></div></div></div>
-  ${missCount()?`<div class="card next"><div><span class="label">A hibáim</span><h3><span class="tnum">${missCount()}</span> kifejezés vár javításra</h3><p class="small muted">Amit eddig elrontottál, a legtöbbször rontottakkal kezdve.</p></div><button class="btn soft" id="hMiss">Hibakör</button></div>`:""}
-  <div class="card wotd"><div class="row" style="justify-content:space-between"><div><span class="label">${LG().wotd}</span><div class="word" ${LA()}>${esc(w.it)}</div><div>${esc(w.hu)}</div></div>${spkBtn(w.it)}</div></div>
-  <div class="card"><div class="stats">
-    <div class="stat"><span class="label">Sorozat</span><b class="tnum">${streak()} nap</b></div>
-    <div class="stat"><span class="label">Összes XP</span><b class="tnum">${S.xp}</b></div>
-    <div class="stat"><span class="label">Tanult elem</span><b class="tnum">${learnedCount()}</b></div>
-    <div class="stat"><span class="label">${LG().name} kurzus</span><b class="tnum">${Math.round(done/LESSONS.length*100)}%</b></div>
-  </div><div class="days" aria-label="Az elmúlt 14 nap aktivitása">${strip}</div><div class="row small muted" style="justify-content:space-between;margin-top:.3rem"><span>14 napja</span><span>ma</span></div>
-  <div style="margin-top:.8rem"><button class="btn ghost" data-go="stat">Részletes statisztika →</button></div></div>
-  <div class="sec-head"><h2>Gyors gyakorlás</h2></div>
-  <div class="grid3">
-    <button class="drill" data-drill="conj"><span class="dico c1">${I.gyakorlas}</span><b>Igeedző</b><span class="small muted">${lang()==="en"?"50 rendhagyó ige":"25 ige, 5 igeidő"}</span></button>
-    <button class="drill" data-drill="story"><span class="dico c2">${I.spk}</span><b>Történetek</b><span class="small muted">${STORIES.length} hangos párbeszéd</span></button>
-    <button class="drill" data-drill="ai"><span class="dico c3">${I.tanar}</span><b>Napi AI-történet</b><span class="small muted">A saját szavaidból</span></button>
+  <div class="home-summary"><div><b class="tnum">${streak()} nap</b><span>tanulási sorozat</span></div><div><b class="tnum">${doneCount()}</b><span>elvégzett lecke</span></div><div><b class="tnum">${dueList().length}</b><span>esedékes ismétlés</span></div><div><b class="tnum">${S.days[today()]||0} / ${S.settings.goal}</b><span>mai XP</span></div></div>
+  <div class="home-secondary">
+    ${milestonesCard()}
+    <section class="card stack"><span class="label">${L?"A mai leckéd":"Leckék"}</span><h3>${esc(L?L.hu:"Vedd elő, amit gyakorolnál")}</h3><p class="small muted">${esc(L?L.goal:"A már elvégzett és átugrott leckéket is bármikor újra megnyithatod.")}</p><div><button class="btn ghost" id="hLesson">Lecke megnyitása →</button></div></section>
   </div>
-  <details class="g"><summary>Beállítások</summary><div class="gb">
+  <details class="g"><summary>További gyakorlás és tervezés</summary><div class="gb stack">
+    ${missCount()?`<div class="card next"><div><h3>Gyakorolj a hibáidból</h3><p class="small muted">${missCount()} kifejezés vár újabb próbára.</p></div><button class="btn soft" id="hMiss">Hibakör</button></div>`:""}
+    <div class="row"><button class="btn ghost" data-go="gyakorlas">Gyakorlók készségenként →</button><button class="btn ghost" data-go="stat">Részletes haladás →</button></div>
+    ${planCard()}${weekCard()}${chalCard()}
+  </div></details>
+  <div class="home-secondary">
+    <div class="card wotd"><div class="row" style="justify-content:space-between"><div><span class="label">${LG().wotd}</span><div class="word" ${LA()}>${esc(w.it)}</div><div>${esc(w.hu)}</div></div>${spkBtn(w.it)}</div></div>
+    <section class="card stack"><span class="label">Ha beszélgetnél</span><h3>Próbáld ki az AI-tanárt</h3><p class="small muted">Szerepjátékok és magyar magyarázatok. Külön AI-kapcsolatot igényel; a napi gyakorlás enélkül is működik.</p><div class="row">${aiAccessBadge()}<button class="btn ghost" data-go="tanar">AI-tanár →</button></div></section>
+  </div>
+  ${budgetWarn()}
+  <details class="g" id="homeSettings"><summary>Beállítások</summary><div class="gb">
     <label class="stack" style="gap:.3rem"><span class="label">Napi cél</span><span class="seg" id="sGoal">${[20,50,100].map(g=>`<button data-v="${g}" aria-pressed="${S.settings.goal===g}">${g} XP</button>`).join("")}</span></label>
     <label class="stack" style="gap:.3rem"><span class="label">Új kártyák naponta</span><span class="seg" id="sNew">${[5,10,20].map(g=>`<button data-v="${g}" aria-pressed="${S.settings.newPerDay===g}">${g}</button>`).join("")}</span></label>
     <label class="stack" style="gap:.3rem"><span class="label">Hangjelzések és rezgés</span><span class="seg" id="sSound"><button data-v="1" aria-pressed="${S.settings.sound!==false}">Be</button><button data-v="0" aria-pressed="${S.settings.sound===false}">Ki</button></span></label>
@@ -903,29 +1039,28 @@ function renderHome(){
     ${prefsCard()}
     <label class="stack" style="gap:.3rem"><span class="label">Ismétlés célja (megtartás)</span><span class="seg" id="sRet">${[[0.85,"Lazább · 85%"],[0.9,"Normál · 90%"],[0.95,"Szigorú · 95%"]].map(([g,l])=>`<button data-v="${g}" aria-pressed="${(S.settings.ret||0.9)===g}">${l}</button>`).join("")}</span><span class="small muted">Magasabb célnál gyakrabban jönnek vissza a kártyák, de jobban megmaradnak.</span></label>
     <label class="stack" style="gap:.3rem"><span class="label">Felolvasás tempója</span><span class="seg" id="sRate">${[[0.8,"Lassú"],[0.95,"Normál"],[1.1,"Gyors"]].map(([g,l])=>`<button data-v="${g}" aria-pressed="${S.settings.rate===g}">${l}</button>`).join("")}</span></label>
-    <p class="small muted">${sync==="cloud"?"A haladásodat a fiókodba mentem, így más eszközön is megvan.":IS_WEB&&S.settings.cloud?"A haladásod ebben a böngészőben és a saját szervereden is megvan.":"A haladás ebben a böngészőben van elmentve."}${voicesChecked&&!itVoice?" A böngésződben nincs olasz hang, ezért a felolvasás más hanggal szólhat. Telepíts olasz hangcsomagot a rendszerbeállításokban.":""}</p>
+    <p class="small muted">${sync==="cloud"?"A haladásodat a fiókodba mentem, így más eszközön is megvan.":IS_WEB&&S.settings.cloud?"A haladásod ebben a böngészőben és a saját szervereden is megvan.":"A haladás ebben a böngészőben van elmentve."}${voicesChecked&&!itVoice?" A böngésződben nincs a tanult nyelvhez megfelelő hang. Telepíts hozzá hangcsomagot a rendszerbeállításokban.":""}</p>
     ${IS_WEB?webSettings():""}
     <div><button class="btn ghost" id="sReset">Haladás törlése</button></div>
   </div></details>
   </div>`;
-  if($("#hRound"))$("#hRound").onclick=()=>startRound("daily");
+  $("#hRound").onclick=startDailyJourney;
+  $("#hLesson").onclick=()=>{dailyActive=false;route="leckek";render();const li=L?LESSONS.indexOf(L):nl;if(li!==null)openLesson(li);};
   bindPlan();bindWeek();
-  if($("#hMiss"))$("#hMiss").onclick=()=>startRound("miss");
+  if($("#hMiss"))$("#hMiss").onclick=()=>{dailyActive=false;startRound("miss");};
   if(IS_WEB)bindWebSettings();
-  $("#hLesson").onclick=()=>{route="leckek";render();if(nl!==null)openLesson(nl);};
-  view.querySelectorAll("[data-drill]").forEach(b=>b.onclick=()=>{route="gyakorlas";render();startDrill(b.dataset.drill);});
+  bindAISetup(view);
   const segs=[["#sTheme","theme",String],["#sFs","fs",String],["#sRead","readable",v=>v==="1"],["#sRet","ret",Number],["#sGoal","goal",Number],["#sNew","newPerDay",Number],["#sRate","rate",Number],["#sSound","sound",v=>v==="1"]];
-  segs.forEach(([id,k,f])=>$(id).querySelectorAll("button").forEach(b=>b.onclick=e=>{e.preventDefault();S.settings[k]=f(b.dataset.v);save();applyPrefs();renderHome();view.querySelector("details.g").open=true;}));
-  let armed=false;$("#sReset").onclick=()=>{if(!armed){armed=true;$("#sReset").textContent="Biztosan? Kattints újra a törléshez";$("#sReset").style.color="var(--bad)";return;}const st=S.settings;S=fresh();S.settings=st;save();toast("A haladásod törölve.");renderHome();};
+  segs.forEach(([id,k,f])=>$(id).querySelectorAll("button").forEach(b=>b.onclick=e=>{e.preventDefault();S.settings[k]=f(b.dataset.v);save();applyPrefs();renderHome();$("#homeSettings").open=true;}));
+  let armed=false;$("#sReset").onclick=()=>{if(!armed){armed=true;$("#sReset").textContent="Biztosan? Kattints újra a törléshez";$("#sReset").style.color="var(--bad)";return;}const st=S.settings;S=fresh();S.settings=st;dailyActive=false;save();toast("A haladásod törölve.");renderHome();};
 }
-
 /* ============ LESSONS ============ */
 function renderLessons(){
   const nl=nextLesson();
   view.innerHTML=`<div class="stack"><div><span class="label">${LG().name} · ${LG().range} · ${doneCount()} / ${LESSONS.length} kész</span><h1>Leckék</h1><p class="muted">Minden lecke egy rövid magyarázattal indul, aztán 15–20 feladat következik. Egy befejezett lecke szavai bekerülnek a szókártyáid közé, és pecsétet kapsz az útleveledbe.</p><div class="row" style="margin-top:.6rem"><button class="btn ghost" data-go="terkep">Haladási térkép</button><button class="btn ghost" id="lPlace">Szintfelmérő</button><button class="btn ghost" data-go="utlevel">Útlevél</button></div></div>
-  <div class="lgrid">${LESSONS.map((L,i)=>{const s=ls(i);const cls=s&&s.done?"done":i===nl?"cur":"";
+  <div class="lgrid">${LESSONS.map((L,i)=>{const s=ls(i);const cls=s&&s.done?"done":s&&s.placed?"placed":i===nl?"cur":"";
     const head=TRACKS&&(i===0||LESSONS[i-1].track!==L.track)?`<h2 style="grid-column:1/-1;margin-top:${i?"1rem":"0"}">${esc(TRACKS[L.track]||L.track)}</h2>`:"";
-    return head+`<button class="lcard ${cls}" data-l="${i}"><div class="pic"><img src="img/${L.id}.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"><span class="num">${s&&s.done?"✓":i+1}</span><span class="badge">${s&&s.done?`<span class="pill ok">${s.best}%</span>`:i===nl?`<span class="pill now">Következő</span>`:`<span class="pill">${L.level}</span>`}</span></div>
+    return head+`<button class="lcard ${cls}" data-l="${i}"><div class="pic"><img src="img/${L.id}.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"><span class="num">${s&&s.done?"✓":i+1}</span><span class="badge">${s&&s.done?`<span class="pill ok">${s.best}%</span>`:s&&s.placed?`<span class="pill">Átugorva</span>`:i===nl?`<span class="pill now">Következő</span>`:`<span class="pill">${L.level}</span>`}</span></div>
       <div class="body"><b>${esc(L.t)}</b><span class="small muted">${esc(L.hu)} · ${L.words.length} szó, ${L.phrases.length} kifejezés</span>${s&&s.done?`<div class="meter"><i style="width:${s.best}%"></i></div>`:""}</div></button>`;}).join("")}</div></div>`;
   view.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>openLesson(+b.dataset.l));
   $("#lPlace").onclick=()=>startPlacement(false);
@@ -938,7 +1073,7 @@ function openLesson(li){
   <div class="card"><h3 style="margin-bottom:.6rem">Tudnivalók</h3><div class="notes">${L.notes.map(n=>`<p>${n}</p>`).join("")}</div></div>
   <div class="card"><h3 style="margin-bottom:.3rem">Kifejezések</h3><div class="phr">${L.phrases.map(p=>`<div>${spkBtn(p[0])}<div style="min-width:0"><div class="it" ${LA()}>${esc(p[0])}</div><div class="small muted">${esc(p[1])}</div></div></div>`).join("")}</div></div>
   <div class="card"><h3 style="margin-bottom:.3rem">Szavak</h3><div class="wlist">${L.words.map(w=>`<div><button class="icon-btn" style="width:30px;height:30px" data-say="${esc(w[0])}" aria-label="Meghallgatás">${I.spk}</button><span class="it" ${LA()}>${esc(w[0])}</span><span class="small muted">${esc(w[1])}</span></div>`).join("")}</div></div>
-  <button class="btn block lemon" id="startL">Gyakorlás indítása</button>
+  ${ls(li)&&ls(li).placed&&!ls(li).done?'<p class="notice">Ezt a leckét a szintfelmérő alapján átugrottad. Bármikor elvégezheted; utána befejezett leckeként jelenik meg.</p>':""}<button class="btn block lemon" id="startL">Gyakorlás indítása</button>
   </div>`;
   $("#back").onclick=()=>renderLessons();
   $("#startL").onclick=()=>startLesson(li);
@@ -958,7 +1093,7 @@ function startLesson(li){
   pick(ph,2).forEach(p=>ex.push({t:"listen",ans:p.it,it:p.it,hu:p.hu,opts:shuffle([p.it,...pick(ph.filter(x=>x.it!==p.it),3).map(x=>x.it)])}));
   pick(ph,1).forEach(p=>ex.push({t:"type",q:p.hu,sub:"Fordítsd le "+LG().adj+"ra",ans:[p.it,...p.alt],it:p.it,cid:p.id}));
   if(L.grammar.length<3)pick(ph,2).forEach(p=>ex.push({t:"mc",q:p.it,sub:"Mit jelent a mondat?",say:p.it,ans:p.hu,opts:distract(p,"hu",ph.length>3?ph:POOL.filter(c=>c.ph))}));
-  pick(L.grammar,5).forEach(g=>ex.push(g[2]?{t:"mc",q:g[0],blank:1,sub:"Válaszd ki a helyes alakot",ans:g[1],opts:shuffle(g[2].slice())}:{t:"type",q:g[0],blank:1,sub:"Írd be a helyes alakot",ans:[g[1]]}));
+  pick(L.grammar,5).forEach(g=>ex.push(g[2]?{t:"mc",q:g[0],blank:1,sub:"Válaszd ki a helyes alakot",ans:g[1],opts:shuffle(g[2].slice()),why:g[3]||""}:{t:"type",q:g[0],blank:1,sub:"Írd be a helyes alakot",ans:[g[1]],why:g[3]||""}));
   P={kind:"lesson",li,queue:[ex[0],...shuffle(ex.slice(1))],i:0,ok:0,n:0,xp:0,st:{}};
   renderEx();
 }
@@ -980,21 +1115,22 @@ function renderEx(){
   if(e.t==="dict"){body=`<div class="stack"><span class="label">Írd le, amit hallasz</span><div class="listen">${spkBtn(e.ans[0],"big")}<button class="icon-btn" data-say="${esc(e.ans[0])}" data-slow aria-label="Lassan">${I.slow}</button></div></div>
     <input id="ans" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Írd le ${LG().adv}…" aria-label="Válasz">`;}
   if(e.t==="speak"){body=`<div class="stack"><span class="label">Mondd ki hangosan</span><div class="row" style="flex-wrap:nowrap">${spkBtn(e.ans)}<div class="q">${esc(e.ans)}</div></div><p class="small muted">${esc(e.hu||"")}</p></div>
-    <div class="stack" style="align-items:center;gap:.6rem"><button class="icon-btn big" id="mic" aria-label="Felvétel indítása"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg></button><span class="small muted" id="heard">Koppints a mikrofonra, és mondd ki a mondatot.</span><button class="btn ghost" id="skipSpeak" style="font-size:.85rem">Most nem tudok beszélni</button></div>`;}
+    <div class="stack" style="align-items:center;gap:.6rem"><button class="icon-btn big" id="mic" aria-label="Felvétel indítása"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg></button><span class="small muted" id="heard">Koppints a mikrofonra, és mondd ki a mondatot. A felismert szöveget ellenőrizzük; ez nem kiejtésmérés.</span><button class="btn ghost" id="skipSpeak" style="font-size:.85rem">Most nem tudok beszélni</button></div>`;}
   view.innerHTML=`<div class="player">
     <div class="pbar"><button class="close" id="quit" aria-label="Kilépés">×</button><div class="track"><div class="fill" style="width:${P.i/P.queue.length*100}%"></div></div><span class="small muted tnum">${P.i+1}/${P.queue.length}</span></div>
-    ${body}
+    ${e.retry?'<p class="small muted" role="status">Visszakérdezés · ezt már gyakoroltuk. Az eredeti pontosságodat és az XP-t nem módosítja.</p>':""}${body}
     <div class="pfoot"><div id="fb"></div><button class="btn block" id="go" ${e.t==="match"?"hidden":""} disabled>Ellenőrzés</button></div>
   </div>`;
-  const li=P.li, kind=P.kind; $("#quit").onclick=()=>{P=null;if(kind==="lesson")openLesson(li);else render();};
+  const li=P.li, kind=P.kind; $("#quit").onclick=()=>{P=null;if(dailyActive){go("ma");return;}if(kind==="lesson")openLesson(li);else render();};
   const goBtn=$("#go");
   if(e.t==="intro"){goBtn.disabled=false;goBtn.textContent="Megvan, tovább";P.st.done=true;setTimeout(()=>say(e.c.it),250);}
   if(e.t==="dict"){const inp=$("#ans");inp.oninput=()=>goBtn.disabled=!inp.value.trim();setTimeout(()=>{say(e.ans[0]);inp.focus();},250);}
   if(e.t==="speak"){
-    $("#mic").onclick=async()=>{const h=$("#heard");h.textContent="Hallgatlak…";$("#mic").disabled=true;
-      try{const alts=await listen();P.st.heard=alts;h.textContent="Ezt hallottam: „"+alts[0]+"”";goBtn.disabled=false;}
-      catch(err){h.textContent=err==="no-speech"?"Nem hallottam semmit. Próbáld újra.":"A mikrofon nem érhető el. Engedélyezd a böngészőben, vagy hagyd ki.";}
-      $("#mic").disabled=false;};
+    const session=P,state=P.st;
+    $("#mic").onclick=async()=>{const h=$("#heard"),mic=$("#mic");h.textContent="Hallgatlak…";mic.disabled=true;
+      try{const alts=await listen();if(P!==session||P.st!==state)return;state.heard=alts;h.textContent="Ezt ismerte fel a böngésző: „"+alts[0]+"”";goBtn.disabled=false;}
+      catch(err){if(P!==session||P.st!==state)return;h.textContent=err==="no-speech"?"Nem hallottam semmit. Próbáld újra.":"A mikrofon nem érhető el. Engedélyezd a böngészőben, vagy hagyd ki.";}
+      if(P===session&&P.st===state)mic.disabled=false;};
     $("#skipSpeak").onclick=()=>{P.st.done=true;nextEx();};
   }
   if(e.t==="mc"||e.t==="listen"){view.querySelectorAll("[data-o]").forEach(b=>b.onclick=()=>{if(P.st.done)return;view.querySelectorAll("[data-o]").forEach(x=>x.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed","true");P.st.sel=+b.dataset.o;goBtn.disabled=false;if(e.t==="mc"&&!e.say&&e.it)say(e.opts[P.st.sel]);});}
@@ -1011,33 +1147,64 @@ function renderEx(){
     view.querySelectorAll("[data-ml]").forEach(b=>b.onclick=()=>{view.querySelectorAll("[data-ml]").forEach(x=>x.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed","true");P.st.mL=+b.dataset.ml;say(e.pairs[P.st.mL].it);});
     view.querySelectorAll("[data-mr]").forEach(b=>b.onclick=()=>{if(P.st.mL===null)return;const l=view.querySelector(`[data-ml="${P.st.mL}"]`);
       if(+b.dataset.mr===P.st.mL){l.classList.add("right","gone");b.classList.add("right","gone");P.st.matched++;P.st.mL=null;
-        if(P.st.matched===e.pairs.length){P.st.done=true;const ok=P.st.miss<=1;P.n++;if(ok){P.ok++;P.xp+=2;}showFb(ok,null,ok?"Minden pár a helyén.":"Kész, de "+P.st.miss+" tévesztéssel.");goBtn.hidden=false;goBtn.disabled=false;goBtn.textContent="Tovább";goBtn.focus();}}
+        if(P.st.matched===e.pairs.length){P.st.done=true;const ok=P.st.miss<=1;recordExerciseResult(e,ok,null,false);showFb(ok,null,(ok?"Minden pár a helyén.":"Kész, de "+P.st.miss+" tévesztéssel. A hibás párokat hallgasd meg újra; pár feladat múlva visszakérdezek."));goBtn.hidden=false;goBtn.disabled=false;goBtn.textContent="Tovább";goBtn.focus();}}
       else{P.st.miss++;b.classList.add("wrong");l.classList.add("wrong");setTimeout(()=>{b.classList.remove("wrong");l.classList.remove("wrong");},500);}});
   }
   goBtn.onclick=()=>{if(P.st.done)return nextEx();evaluate();};
 }
 function showFb(ok,ans,extra){$("#fb").innerHTML=`<div class="feedback ${ok?"ok":"bad"}" role="status"><b>${ok?rnd(LG().ok):"Nem egészen."}</b>${ans?`<span>Helyes válasz: <span class="ans">${esc(ans)}</span></span>`:""}${extra?`<span class="small">${esc(extra)}</span>`:""}</div>`;}
+/* A retry is feedback, not a second graded attempt. This keeps accuracy, XP and FSRS honest. */
+function queueExerciseRetry(e){
+  if(e.retry||e.retried)return;
+  e.retried=true;
+  const retry=easier(e);retry.retry=true;retry.retried=true;
+  P.queue.splice(Math.min(P.i+4,P.queue.length),0,retry);
+}
+function recordExerciseResult(e,ok,warn,fast){
+  if(e.retry){P.retryN=(P.retryN||0)+1;if(ok)P.retryOk=(P.retryOk||0)+1;return;}
+  P.n++;if(ok){P.ok++;P.xp+=2;}else queueExerciseRetry(e);
+  if(e.cid)itemResult(e,ok,warn,fast);
+}
+function exerciseExplanation(e){
+  if(e.why)return String(e.why);
+  const known=e.cid&&POOL.find(c=>c.id===e.cid);
+  if(e.blank){
+    const matching=Object.values(CDRILLS).flatMap(d=>d.items||[]).find(x=>norm(x.q)===norm(e.q));
+    if(matching&&matching.why)return matching.why;
+    const answer=Array.isArray(e.ans)?e.ans[0]:e.ans;
+    return "A teljes mondat: "+e.q.replace("___",answer)+". Figyeld meg a hiányzó alak helyét és a környező szavakat.";
+  }
+  if(known)return "Ezt a párt idézd fel együtt: „"+known.it+"” — "+known.hu+".";
+  if(e.t==="listen"||e.t==="dict")return e.hu?"Jelentése: "+e.hu:"Hallgasd meg újra a mintát, és figyeld meg a szavak sorrendjét.";
+  if(e.t==="order")return "A mintamondat szórendjét követjük. Olvasd el egyben, majd mondd ki hangosan.";
+  if(e.t==="speak")return "A mintamondatot a felismert szöveggel hasonlítjuk össze; a hangképzést és a hanglejtést ez nem méri.";
+  return e.q?"Jegyezd meg együtt: „"+e.q+"” — "+(Array.isArray(e.ans)?e.ans[0]:e.ans)+".":"Nézd meg a mintaválaszt, majd próbáld felidézni segítség nélkül.";
+}
 function evaluate(){
+  if(!P||P.st.done)return;
   const e=P.queue[P.i];let ok=false,warn=null;
   if(e.t==="mc"||e.t==="listen"){ok=e.opts[P.st.sel]===e.ans;view.querySelectorAll("[data-o]").forEach(b=>{const o=e.opts[+b.dataset.o];if(o===e.ans)b.classList.add("right");else if(+b.dataset.o===P.st.sel)b.classList.add("wrong");});}
   if(e.t==="type"||e.t==="dict"){const r=check($("#ans").value,e.ans);ok=r.ok;warn=r.warn;$("#ans").readOnly=true;}
-  if(e.t==="speak"){const sc=speechScore(e.ans,P.st.heard||[]);ok=sc>=0.75;if(ok&&sc<0.95)warn="Majdnem tökéletes. Hallgasd meg még egyszer, és figyelj a kiejtésre.";}
-  if(e.t==="order"){const s=P.st.picked.map(i=>e.tiles.find(t=>t.i===i).w).join(" ");ok=norm(s)===norm(e.ans);}
-  P.st.done=true;P.n++;
+  if(e.t==="speak"){const sc=speechScore(e.ans,P.st.heard||[]);ok=sc>=0.75;if(ok&&sc<0.95)warn="A felismert szöveg részben egyezik a mintával. Hasonlítsd össze a két mondatot, majd próbáld újra.";}
+  if(e.t==="order"){const text=P.st.picked.map(i=>e.tiles.find(t=>t.i===i).w).join(" ");ok=norm(text)===norm(e.ans);}
+  P.st.done=true;
   const fast=(e.t==="type"||e.t==="dict")&&Date.now()-P.st.t0<8000;
-  if(e.cid)itemResult(e,ok,warn,fast);fx(ok?"ok":"bad");
-  if(!ok){const given=e.t==="mc"||e.t==="listen"?e.opts[P.st.sel]:e.t==="order"?P.st.picked.map(i=>e.tiles.find(t=>t.i===i).w).join(" "):e.t==="speak"?(P.st.heard||[])[0]:($("#ans")||{}).value;logMiss(P.kind,e.q||e.hu||e.it,given,Array.isArray(e.ans)?e.ans[0]:e.ans);}
-  if(ok){P.ok++;P.xp+=2;}else if(!e.retry){P.queue.splice(Math.min(P.i+4,P.queue.length),0,easier(e));}
-  let extra=warn;if(e.t==="listen"||e.t==="dict")extra=(extra?extra+" ":"")+"Jelentése: "+e.hu;
+  recordExerciseResult(e,ok,warn,fast);fx(ok?"ok":"bad");
+  if(!ok&&!e.retry){const given=e.t==="mc"||e.t==="listen"?e.opts[P.st.sel]:e.t==="order"?P.st.picked.map(i=>e.tiles.find(t=>t.i===i).w).join(" "):e.t==="speak"?(P.st.heard||[])[0]:($("#ans")||{}).value;logMiss(P.kind,e.q||e.hu||e.it,given,Array.isArray(e.ans)?e.ans[0]:e.ans);}
+  let extra=warn||"";
+  if(!ok||e.t==="listen"||e.t==="dict"||e.t==="speak")extra+=(extra?" ":"")+exerciseExplanation(e);
+  if(!ok&&!e.retry)extra+=" Néhány feladat múlva újra előkerül.";
+  if(e.retry&&ok)extra+=(extra?" ":"")+"Most már sikerült a visszakérdezés.";
   showFb(ok,ok?null:(Array.isArray(e.ans)?e.ans[0]:e.ans),extra);
-  if(e.blank){const q=view.querySelector(".q");if(q)q.innerHTML=esc(e.q).replace("___",`<b style="color:var(--${ok?"ok":"bad"})">${esc(e.ans)}</b>`);}
-  const sp=e.it||(e.blank?e.q.replace(/\s*\(.*?\)\s*$/,"").replace("___",e.ans):null);
+  if(e.blank){const q=view.querySelector(".q");if(q)q.innerHTML=esc(e.q).replace("___",`<b style="color:var(--${ok?"ok":"bad"})">${esc(Array.isArray(e.ans)?e.ans[0]:e.ans)}</b>`);}
+  const answer=Array.isArray(e.ans)?e.ans[0]:e.ans;
+  const sp=e.it||(e.blank?e.q.replace(/\s*\(.*?\)\s*$/,"").replace("___",answer):null);
   if(sp&&!/^Írd|^Hogy van/.test(e.q))say(sp);
   const g=$("#go");g.textContent="Tovább";g.disabled=false;g.focus();
 }
 function nextEx(){P.i++;if(P.i>=P.queue.length)return P.kind==="lesson"?finishLesson():finishRound();renderEx();}
 function finishLesson(){
-  const acc=Math.round(P.ok/P.n*100), prev=ls(P.li), firstTime=!(prev&&prev.done);
+  const acc=P.n?Math.round(P.ok/P.n*100):0, prev=ls(P.li), firstTime=!(prev&&prev.done);
   const bonus=acc>=90?10:0, xp=P.xp+bonus;
   S.lessons[LESSONS[P.li].id]={done:true,best:Math.max(acc,prev?prev.best||0:0),day:prev&&prev.day&&!prev.placed?prev.day:today()};
   if(firstTime||(prev&&prev.placed))incEv("lessons");addXP(xp);
@@ -1050,6 +1217,7 @@ function finishLesson(){
   confetti();
   $("#again").onclick=()=>startLesson(li);
   $("#cont").onclick=()=>{const n=nextLesson();if(n!==null)openLesson(n);else renderLessons();};
+  if(typeof dailyLessonFinished==="function")dailyLessonFinished(li,acc);
 }
 
 /* ============ FLASHCARDS ============ */
@@ -1119,11 +1287,44 @@ document.addEventListener("keydown",e=>{
 });
 
 /* ============ PRACTICE ============ */
-const DRILLS=[["mock","Próbavizsga","Teljes, időre mért B2 First és C1 Advanced jellegű vizsga: olvasás, nyelvhelyesség, hallás, írás, a végén becsült Cambridge-pontszámmal."],["examiner","Szóbeli vizsgáztató","IELTS-jellegű szóbeli három részben. Beszélsz vagy írsz, az AI vizsgáztató sávpontszámot ad, és mintaválaszokat mutat."],["journal","Napló","Pár mondat naponta. Az AI kijavítja, magyarul elmagyarázza a hibákat, és a javításokból kártya lehet."],["serial","Folytatásos történetek","Hatfejezetes hangos történetek B1, B2 és C1 szinten, fejezetenként kérdésekkel."],["wcourse","Íráskurzus","Hivatalos e-mail, panaszlevél, esszé és beszámoló lépésenként: felépítés, minta, kötőszavak, aztán az AI részenként javítja a szövegedet."],["acc","Brit vagy amerikai?","Ugyanaz a mondat két akcentussal: hallás alapján döntsd el, melyiket hallod, és tanuld meg a különbségeket."],["build","Mondatépítő","Magyar mondatot kapsz, és kimondod a tanult nyelven. A szóbeli vizsga fordítós feladatára készít fel."],["pod","Podcastok","Hosszabb, természetes tempójú beszélgetések A2-től C1-ig, kérdésekkel és szószedettel."],["pron","Kiejtés magyaroknak","A magyarok tipikus angol hibái: th, w/v, rövid és hosszú i, æ, szóvégi zöngés hangok, hangsúly."],["exam","Vizsgafelkészítő","B2 First és IELTS jellegű feladatok: szókitöltés, szóképzés, mondatátalakítás, olvasás, esszé értékeléssel."],["read","Olvasó","AI-szöveg a szintedre, bármilyen témában. Koppints a szavakra a jelentésükért, és vedd fel őket a kártyáid közé."],["miss","A hibáim","Az elrontott kifejezések külön köre, a legtöbbször rontottakkal kezdve."],["ai","Napi AI-történet","Minden nap új rövid párbeszéd csak a már tanult szavaidból, kérdésekkel."],["speak","Kiejtés","Mondd ki a mondatokat, és az app ellenőrzi, mennyire érthető a kiejtésed."],["story","Történetek","9 hangos párbeszéd A1-től B1-ig, értésellenőrző kérdésekkel."],["conj","Igeedző","25 gyakori ige öt igeidőben, minden alak felvett hanggal."],["art","Névelők","il, lo, l', la, un, uno, una, i, gli, le: gyors döntések."],["prep","Névelős elöljárók","al, nella, dello, sugli: összevonások mondatban."],["dict","Diktálás","Hallgasd meg a mondatot, és írd le."],["num","Számok","Hallás után vagy betűvel, 0-tól 100-ig."]];
+const DRILLS=[["mock","Próbavizsga","Teljes, időre mért B2 First és C1 Advanced jellegű vizsga: olvasás, nyelvhelyesség, hallás, írás, a végén tájékoztató gyakorlási eredménnyel."],["examiner","Szóbeli vizsgáztató","IELTS-jellegű szóbeli három részben. Beszélsz vagy írsz, az AI szöveges visszajelzést és mintaválaszokat ad."],["journal","Napló","Pár mondat naponta. Az AI kijavítja, magyarul elmagyarázza a hibákat, és a javításokból kártya lehet."],["serial","Folytatásos történetek","Hatfejezetes hangos történetek B1, B2 és C1 szinten, fejezetenként kérdésekkel."],["wcourse","Íráskurzus","Hivatalos e-mail, panaszlevél, esszé és beszámoló lépésenként: felépítés, minta, kötőszavak, aztán az AI részenként javítja a szövegedet."],["acc","Brit vagy amerikai?","Ugyanaz a mondat két akcentussal: hallás alapján döntsd el, melyiket hallod, és tanuld meg a különbségeket."],["build","Mondatépítő","Magyar mondatot kapsz, és kimondod a tanult nyelven. A szóbeli vizsga fordítós feladatára készít fel."],["pod","Podcastok","Hosszabb, természetes tempójú beszélgetések A2-től C1-ig, kérdésekkel és szószedettel."],["pron","Kiejtés magyaroknak","A magyarok tipikus angol hibái: th, w/v, rövid és hosszú i, æ, szóvégi zöngés hangok, hangsúly."],["exam","Vizsgafelkészítő","B2 First és IELTS jellegű feladatok: szókitöltés, szóképzés, mondatátalakítás, olvasás, esszé értékeléssel."],["read","Olvasó","AI-szöveg a szintedre, bármilyen témában. Koppints a szavakra a jelentésükért, és vedd fel őket a kártyáid közé."],["miss","A hibáim","Az elrontott kifejezések külön köre, a legtöbbször rontottakkal kezdve."],["ai","Napi AI-történet","Minden nap új rövid párbeszéd csak a már tanult szavaidból, kérdésekkel."],["speak","Hangos ismétlés","Mondd ki a mondatokat, majd hasonlítsd össze a mintát a felismert szöveggel."],["story","Történetek","9 hangos párbeszéd A1-től B1-ig, értésellenőrző kérdésekkel."],["conj","Igeedző","25 gyakori ige öt igeidőben, minden alak felvett hanggal."],["art","Névelők","il, lo, l', la, un, uno, una, i, gli, le: gyors döntések."],["prep","Névelős elöljárók","al, nella, dello, sugli: összevonások mondatban."],["dict","Diktálás","Hallgasd meg a mondatot, és írd le."],["num","Számok","Hallás után vagy betűvel, 0-tól 100-ig."]];
+/* One destination per practice; recommendations use a separate selector so links remain unique. */
+const PRACTICE_GROUPS=[
+  ["words","Szókincs","Szavak és kifejezések felidézése.",["miss","phrasal","num"]],
+  ["listen","Hallásértés","Hallgasd meg, értsd meg, idézd fel.",["pod","serial","story","acc","dict"]],
+  ["speak","Beszéd","Mondj ki önállóan is mondatokat.",["build","speak","pron","examiner"]],
+  ["write","Írás","Rövid szövegek és olvasmányok.",["journal","wcourse","read","ai"]],
+  ["grammar","Nyelvtan","Egy-egy nyelvtani pont célzott gyakorlása.",["conj","art","prep","tenses","articles","preps","cond","cong","impp","serestar","pretimp","porpara"]],
+  ["exam","Vizsga","Vizsgatípusú gyakorlás, tájékoztató visszajelzéssel.",["mock","exam"]]
+];
+function practiceAccess(k){
+  const needsAI=["examiner","journal","ai"].includes(k)||(k==="read"&&!XT.off.reads.length);
+  if(needsAI)return typeof aiAccessBadge==="function"?aiAccessBadge():'<span class="access-badge">AI-beállítás szükséges</span>';
+  const optionalAI=["build","wcourse","mock","exam","read"].includes(k);
+  return `<span class="access-badge">Azonnal használható${optionalAI?" · AI-val bővíthető":""}</span>`;
+}
+function practiceTile(item,i,recommended=false){
+  let [k,t,d]=item;const s=S.drills[k];
+  if(k==="conj"&&lang()==="en"){t="Rendhagyó igék";d="50 gyakori rendhagyó ige 2. és 3. alakja, felvett hanggal.";}
+  if(k==="conj"&&lang()==="es")d="25 gyakori ige öt igeidőben.";
+  if(k==="story")d=`${STORIES.length} hangos párbeszéd ${STORIES.length?STORIES[0].level+"–"+STORIES[STORIES.length-1].level:""}, értésellenőrző kérdésekkel.`;
+  const icon=({mock:I.star,examiner:I.mic,journal:I.tanar,serial:I.spk,read:I.nyelvtan,pod:I.spk,pron:I.mic,exam:I.star,acc:I.spk,build:I.mic,wcourse:I.tanar,miss:I.kartyak,ai:I.tanar,speak:I.mic,story:I.spk,conj:I.gyakorlas,art:I.nyelvtan,prep:I.leckek,dict:I.spk,num:I.star}[k])||I.nyelvtan;
+  return `<button class="drill" ${recommended?'data-recommend':'data-d'}="${esc(k)}"><span class="dico c${i%4+1}">${icon}</span><b>${esc(t)}</b><span class="small muted">${esc(d)}</span>${practiceAccess(k)}${k==="miss"?`<span class="small"><span class="pill ${missCount()?"bad":"ok"}">${missCount()?missCount()+" vár javításra":"Nincs hiba"}</span></span>`:""}${s&&s.n?`<span class="small"><span class="pill ${s.ok/s.n>=.8?"ok":""}">${Math.round(s.ok/s.n*100)}% · ${s.n} válasz</span></span>`:""}</button>`;
+}
 function renderPractice(){
-  view.innerHTML=`<div class="stack"><div><span class="label">Célzott gyakorlók</span><h1>Gyakorlás</h1><p class="muted">Rövid, ismételhető gyakorlatok egy-egy nehéz pontra. Minden helyes válasz 1 XP, a diktálás 3 XP.</p></div>
-  <div class="drills">${drillList().map(([k,t,d],i)=>{const s=S.drills[k];if(k==="conj"&&lang()==="en"){t="Rendhagyó igék";d="50 gyakori rendhagyó ige 2. és 3. alakja, felvett hanggal.";}if(k==="story")d=`${STORIES.length} hangos párbeszéd ${STORIES.length?STORIES[0].level+"–"+STORIES[STORIES.length-1].level:""}, értésellenőrző kérdésekkel.`;if(k==="conj"&&lang()==="es")d="25 gyakori ige öt igeidőben.";return `<button class="drill" data-d="${k}"><span class="dico c${i%4+1}">${({mock:I.star,examiner:I.mic,journal:I.tanar,serial:I.spk,read:I.nyelvtan,pod:I.spk,pron:I.mic,exam:I.star,acc:I.spk,build:I.mic,wcourse:I.tanar,miss:I.kartyak,ai:I.tanar,speak:I.mic,story:I.spk,conj:I.gyakorlas,art:I.nyelvtan,prep:I.leckek,dict:I.spk,num:I.star}[k])||I.nyelvtan}</span><b>${t}</b><span class="small muted">${d}</span>${k==="miss"?`<span class="small"><span class="pill ${missCount()?"bad":"ok"}">${missCount()?missCount()+" vár javításra":"Nincs hiba"}</span></span>`:""}${s&&s.n?`<span class="small"><span class="pill ${s.ok/s.n>=.8?"ok":""}">${Math.round(s.ok/s.n*100)}% · ${s.n} válasz</span></span>`:""}</button>`;}).join("")}</div></div>`;
-  view.querySelectorAll("[data-d]").forEach(b=>b.onclick=()=>startDrill(b.dataset.d));
+  const items=drillList(),available=new Map(items.map(d=>[d[0],d]));
+  const recommend=[...(missCount()?["miss"]:[]),"story","dict","build","conj"].filter(k=>available.has(k)).slice(0,3);
+  const assigned=new Set(PRACTICE_GROUPS.flatMap(g=>g[3]));
+  const groups=PRACTICE_GROUPS.map(g=>g.slice());
+  const extra=items.filter(d=>!assigned.has(d[0])).map(d=>d[0]);if(extra.length)groups[4]=[...groups[4].slice(0,3),[...groups[4][3],...extra]];
+  view.innerHTML=`<div class="stack"><div class="home-head"><span class="label">Azt gyakorold, amire most szükséged van</span><h1>Gyakorlás</h1><p class="muted">Válassz az ajánlottakból, vagy nyiss meg egy készséget. A kész hanganyagokhoz és feladatokhoz nem kell AI-kapcsolat.</p></div>
+    ${recommend.length?`<section class="stack" aria-labelledby="practiceRecommended"><div class="sec-head"><h2 id="practiceRecommended">Most ezt ajánlom</h2><span class="small muted">Rövid, önálló gyakorlatok</span></div><div class="drills">${recommend.map((k,i)=>practiceTile(available.get(k),i,true)).join("")}</div></section>`:""}
+    <div class="sec-head"><h2>Válassz készséget</h2><button class="linkish small" id="practiceExpand">Összes megnyitása</button></div>
+    <div class="stack practice-tools">${groups.map(([id,title,desc,keys])=>{const found=keys.filter(k=>available.has(k));return found.length?`<details class="g practice-group" id="practice-${id}"><summary><span>${title} <span class="pill">${found.length}</span></span></summary><div class="gb"><p class="small muted">${desc}</p><div class="drills">${found.map((k,i)=>practiceTile(available.get(k),i)).join("")}</div></div></details>`:"";}).join("")}</div>
+    <p class="small muted">A beszédfelismerés a felismert szövegről ad visszajelzést. A szint- és vizsgaeredmények gyakorlási becslések.</p></div>`;
+  view.querySelectorAll("[data-d], [data-recommend]").forEach(b=>b.onclick=()=>startDrill(b.dataset.d||b.dataset.recommend));
+  $("#practiceExpand").onclick=()=>{const gs=[...view.querySelectorAll(".practice-group")],open=gs.some(g=>!g.open);gs.forEach(g=>g.open=open);$("#practiceExpand").textContent=open?"Összes becsukása":"Összes megnyitása";};
+  if(typeof bindAISetup==="function")bindAISetup(view);
 }
 function drillList(){
   return LG().drills.map(k=>{const d=DRILLS.find(x=>x[0]===k);if(d)return d.slice();const c=CDRILLS[k];return c?[k,c.title,c.desc]:null;})
@@ -1244,15 +1445,17 @@ function itemResult(e,ok,warn,fast){
   else if(P.kind==="miss"&&!e.retry){S.miss[id]=(S.miss[id]||1)-1;if(S.miss[id]<=0)delete S.miss[id];incEv("fixes");}
   if(P.kind==="daily"&&!e.retry&&!P.graded[id]){
     P.graded[id]=1;const g=!ok?1:warn?2:fast?4:3,isNew=!S.cards[id];
-    S.cards[id]=sched(S.cards[id],g-1,id);logReview(g>1);incEv("reviews");
+    const prev=S.cards[id];
+    if(ok&&prev&&prev.last&&Date.now()-prev.last>=7*864e5)recordEvidence("recall",id,e.t==="type"&&!warn?"Egy hét után is felidézted":"Egy hét után is helyesen válaszoltál",(POOL.find(c=>c.id===id)||{}).it||e.it||e.q||"");
+    S.cards[id]=sched(prev,g-1,id);logReview(g>1);incEv("reviews");
     if(isNew){const t=today();if(S.newToday.day!==t)S.newToday={day:t,n:0};S.newToday.n++;}
   }
   save();
 }
-function startRound(kind){
+function startRound(kind,limits={}){
   const q=[];
   if(kind==="daily"){
-    const due=dueList().sort((a,b)=>S.cards[a.id].due-S.cards[b.id].due).slice(0,25), nw=newAvail().slice(0,Math.min(newLeft(),10));
+    const due=dueList().sort((a,b)=>S.cards[a.id].due-S.cards[b.id].due).slice(0,limits.review??25), nw=newAvail().slice(0,Math.min(newLeft(),limits.newCards??10));
     due.forEach(c=>q.push(exFor(c,stageOf(S.cards[c.id]))));
     nw.forEach((c,k)=>{const pos=Math.min(q.length,k*3);q.splice(pos,0,{t:"intro",c,li:c.li});q.splice(Math.min(q.length,pos+3),0,exFor(c,0));});
   }
@@ -1272,7 +1475,7 @@ function finishRound(){
   const kind=P.kind, acc=P.n?Math.round(P.ok/P.n*100):100, bonus=kind==="daily"?10:0, xp=P.xp+bonus;
   if(kind==="daily"){S.rounds[today()]=(S.rounds[today()]||0)+1;incEv("rounds");}
   addXP(xp);P=null;
-  const title={daily:"Napi kör kész",miss:"Hibakör kész",speak:"Kiejtésgyakorlás kész"}[kind];
+  const title={daily:"Napi kör kész",miss:"Hibakör kész",speak:"Hangos gyakorlás kész"}[kind];
   view.innerHTML=`<div class="player" style="justify-content:center;text-align:center;align-items:center">
     <span class="label">${title}</span><h1>${LG().fin[acc>=90?0:acc>=70?1:2]}</h1>
     <div class="stats" style="width:100%;max-width:420px;grid-template-columns:repeat(2,minmax(0,1fr))"><div class="card stat"><span class="label">Pontosság</span><b class="tnum">${acc}%</b></div><div class="card stat"><span class="label">Szerzett XP</span><b class="tnum">+${xp}</b></div></div>
@@ -1281,6 +1484,7 @@ function finishRound(){
   confetti();
   if($("#rMiss"))$("#rMiss").onclick=()=>startRound("miss");
   if($("#rAi"))$("#rAi").onclick=()=>{route="gyakorlas";aiStory();};
+  dailyRoundFinished(kind);
 }
 /* Speech recognition only exists outside the artifact frame (the frame refuses the microphone). */
 const canSpeak=()=>IS_WEB&&!!(window.SpeechRecognition||window.webkitSpeechRecognition);
@@ -1294,12 +1498,7 @@ function listen(){
     r.start();
   });
 }
-function speechScore(target,alts){
-  const tw=deacc(norm(target)).split(" ").filter(Boolean);let best=0;
-  for(const a of alts){const aw=new Set(deacc(norm(a)).split(" "));best=Math.max(best,tw.filter(w=>aw.has(w)).length/tw.length);}
-  return best;
-}
-
+function speechScore(target,alts){return speechDetail(target,alts).score;}
 /* ============ STATISTICS ============ */
 function renderStats(){
   const t=today(), pc=packCards(), mature=pc.filter(c=>c.ivl>=21).length, learning=pc.length-mature, unseen=POOL.length-pc.length;
@@ -1326,6 +1525,7 @@ function renderStats(){
   <div class="card stack"><h3>Ismétlések a következő 7 napban</h3>
     <div class="bars">${fc.map((v,i)=>`<div class="bcol"><span class="small tnum">${v}</span><i style="height:${Math.max(3,v/fmax*100)}%"></i><span class="small muted">${dn[i]}</span></div>`).join("")}</div></div>
   <div class="card stack"><h3>Aktivitás az elmúlt 16 hétben</h3><div class="heat days">${heat}</div><div class="row small muted" style="justify-content:space-between"><span>16 hete</span><span>ma</span></div></div>
+  ${milestonesCard()}
   ${skillsCard()}
   ${vsizeCard()}
   ${analysisCard()}
@@ -1367,12 +1567,34 @@ Az "it" mező mindig a ${A} szöveget tartalmazza.`;
 function playAi(data){playStoryObj(Object.assign({id:"ai-"+lang()+"-"+today(),level:defLevel(),img:LG().hero,unlock:null},data));}
 
 /* ============ WEB APP SETTINGS ============ */
-function webSettings(){
-  return `<div class="card stack" style="gap:.6rem"><span class="label">AI-kapcsolat</span>
-    <p class="small muted">A saját AI-szervered címe és a belépőkód a telepítési útmutatóból. A Claude API-kulcs a szerveren marad, ide nem kell beírni.</p>
-    <input id="sProxy" inputmode="url" autocomplete="off" placeholder="https://parliamo-ai.fiokod.workers.dev" value="${esc(S.settings.proxy)}" aria-label="AI-szerver címe">
-    <input id="sPass" type="password" autocomplete="off" placeholder="Belépőkód" value="${esc(S.settings.pass)}" aria-label="Belépőkód">
-    <div class="row"><button class="btn soft" id="sAiSave">Mentés és próba</button><span class="small" id="sAiMsg" role="status"></span></div></div>
+let AI_CHECK=null;
+function aiConfigured(){return !IS_WEB||!!(S.settings.proxy&&S.settings.pass);}
+function aiChecked(){return AI_CHECK&&AI_CHECK.proxy===S.settings.proxy&&AI_CHECK.pass===S.settings.pass?AI_CHECK:null;}
+function aiAccessBadge(){
+  const check=aiChecked(),label=!IS_WEB?"AI az alkalmazáson keresztül":!aiConfigured()?"AI-beállítás szükséges":check?(check.ok?"AI-kapcsolat ellenőrizve":"AI-kapcsolati hiba"):"AI beállítva · próba szükséges";
+  return `<span class="access-badge ${check&&check.ok?"ok":""}" data-ai-status>${label}</span>`;
+}
+function aiSetupNotice(){
+  if(!IS_WEB)return `<div class="notice">${aiMissing()}</div>`;
+  return `<div class="notice stack" style="gap:.6rem"><div><b>Az AI-tanárhoz külön kapcsolat szükséges.</b><p class="small">A leckék, a kész hanganyagok és az ismétlés AI nélkül is használhatók. Az AI a saját szervereden keresztül működik, és használati költsége lehet.</p></div><div><button class="btn soft" data-ai-setup>AI-kapcsolat beállítása</button></div></div>`;
+}
+function bindAISetup(root=view,back){root.querySelectorAll("[data-ai-setup]").forEach(b=>b.onclick=()=>openAISettings(back));}
+function openAISettings(back){
+  const returnTo=typeof back==="function"?back:()=>render();
+  view.innerHTML=`<div class="player"><div><button class="btn ghost" id="aiSetupBack">← Vissza</button></div><div class="stack" style="gap:.5rem"><span class="label">Beállítások</span><h1>AI-kapcsolat</h1><p class="muted">Add meg a telepítéskor kapott szervercímet és belépőkódot. A próba egy rövid AI-kérést küld.</p></div>${webSettings(true)}<div class="card stack"><h3>AI nélkül is tanulhatsz</h3><p class="small muted">A leckék, az ismétlőkártyák és a kész hanganyagok külön AI-kapcsolat nélkül működnek. A saját AI-szerver telepítésének lépéseit a projekt útmutatója írja le.</p><a href="https://github.com/jtdevzero/onismeret/tree/main/parliamo#readme" target="_blank" rel="noopener noreferrer">Telepítési útmutató ↗</a></div></div>`;
+  $("#aiSetupBack").onclick=returnTo;bindWebSettings();window.scrollTo(0,0);view.focus({preventScroll:true});
+}
+function aiConnectionSettings(){
+  return `<div class="card stack" style="gap:.8rem"><div class="row" style="justify-content:space-between"><h3>AI-kapcsolat</h3>${aiAccessBadge()}</div>
+    <p class="small muted">A saját AI-szervered címe és a belépőkód a telepítési útmutatóból. A Claude API-kulcs a szerveren marad, ide nem kell beírni. A címet és a belépőkódot ez a böngésző megjegyzi.</p>
+    <label class="stack" style="gap:.3rem" for="sProxy"><span class="small">AI-szerver címe</span><input id="sProxy" type="url" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://parliamo-ai.fiokod.workers.dev" value="${esc(S.settings.proxy)}" aria-describedby="sProxyHelp"></label>
+    <p class="small muted" id="sProxyHelp">A telepítéskor kapott HTTPS-címet használd (workers.dev), vagy az alkalmazás saját címét.</p>
+    <label class="stack" style="gap:.3rem" for="sPass"><span class="small">Belépőkód</span><input id="sPass" type="password" autocomplete="off" placeholder="A szerver belépőkódja" value="${esc(S.settings.pass)}"></label>
+    <div class="row"><button class="btn" id="sAiSave">Mentés és kapcsolat ellenőrzése</button><span class="small" id="sAiMsg" role="status" aria-live="polite"></span></div></div>`;
+}
+function webSettings(aiOnly=false){
+  const connection=aiConnectionSettings();if(aiOnly)return connection;
+  return connection+`
   <div class="card stack" style="gap:.6rem"><span class="label">Napi emlékeztető</span>
     <p class="small muted">Értesítést kapsz a telefonodra a választott órában, ha aznap még nem gyakoroltál. iPhone-on előbb add hozzá az appot a kezdőképernyőhöz.</p>
     <div class="row"><label class="row" style="gap:.4rem"><span class="small">Időpont</span><select id="sRemH" style="width:auto">${Array.from({length:24},(_,h)=>`<option value="${h}" ${(S.settings.remind&&S.settings.remind.hour||18)===h?"selected":""}>${String(h).padStart(2,"0")}:00</option>`).join("")}</select></label>
@@ -1407,24 +1629,39 @@ async function pushSync(){
   const sub=await pushSub();await proxyPost("/push/subscribe",{subscription:sub.toJSON(),hour:r.hour,tz:-new Date().getTimezoneOffset(),lastDay:S.days[today()]?localDay():""});
 }
 const pushMsg=e=>({unsupported:"Ez a böngésző nem támogatja az értesítéseket. iPhone-on add hozzá az appot a kezdőképernyőhöz, és onnan nyisd meg.",no_proxy:"Előbb állítsd be az AI-kapcsolatot (szerver címe és belépőkód).",push_unavailable:"A szerveren még nincs bekapcsolva ez a funkció (tároló). Futtasd újra a telepítést (lásd az útmutatót).",too_big:"A haladásod túl nagy a szinkronhoz. Mentsd fájlba a Beállításokban.",denied:"Az értesítések le vannak tiltva a böngészőben. Engedélyezd az oldal beállításaiban."}[e&&e.code]||aiErr(e));
+function refreshWebSettings(){renderHome();const panel=$("#sProxy")&&$("#sProxy").closest("details");if(panel)panel.open=true;}
+function refreshAIBadges(){view.querySelectorAll("[data-ai-status]").forEach(el=>{const holder=document.createElement("span");holder.innerHTML=aiAccessBadge();el.replaceWith(holder.firstElementChild);});}
 function bindWebSettings(){
+  [$("#sProxy"),$("#sPass")].filter(Boolean).forEach(input=>input.oninput=()=>view.querySelectorAll("[data-ai-status]").forEach(el=>{el.textContent="Nem mentett módosítások";el.classList.remove("ok");}));
+  const saveAI=$("#sAiSave");
+  if(saveAI)saveAI.onclick=async e=>{
+    e.preventDefault();const m=$("#sAiMsg"),address=$("#sProxy").value.trim(),pass=$("#sPass").value;
+    m.style.color="var(--bad)";AI_CHECK=null;refreshAIBadges();
+    if(!address||!pass){m.textContent="Add meg a szerver címét és a belépőkódot.";return;}
+    let url;try{url=new URL(address);if(url.username||url.password||url.search||url.hash||!(url.origin===location.origin||(url.protocol==="https:"&&url.hostname.endsWith(".workers.dev"))))throw 0;}
+    catch(err){m.textContent="Érvényes HTTPS-címet adj meg: a saját workers.dev szervered vagy az alkalmazás saját címe használható.";return;}
+    S.settings.proxy=url.href.replace(/\/+$/,"");S.settings.pass=pass;save();
+    const proxy=S.settings.proxy,sample=proxySample(),controller=new AbortController();
+    const timeout=setTimeout(()=>controller.abort(),15000);saveAI.disabled=true;m.style.color="";m.textContent="Kapcsolat ellenőrzése…";
+    const snapshot={proxy,pass,ok:false};
+    try{const response=await sample("Válaszolj egyetlen szóval: ok",{modelTier:"quick",signal:controller.signal});if(!response.text.trim())throw {code:"error"};snapshot.ok=true;m.style.color="var(--ok)";m.textContent="A kapcsolat működik. Visszatérhetsz a gyakorláshoz.";}
+    catch(err){m.style.color="var(--bad)";m.textContent=err&&err.code==="aborted"?"A szerver 15 másodperc alatt nem válaszolt. Ellenőrizd a címet és próbáld újra.":aiErr(err);}
+    finally{clearTimeout(timeout);AI_CHECK=snapshot;saveAI.disabled=false;refreshAIBadges();}
+  };
+  if(!$("#sRemOn"))return;
   bindUsage();
   const msg=$("#sRemMsg");
   $("#sRemOn").onclick=async e=>{e.preventDefault();msg.style.color="";msg.textContent="Beállítom…";
     try{if(!("Notification" in window))throw {code:"unsupported"};if(Notification.permission!=="granted"&&(await Notification.requestPermission())!=="granted")throw {code:"denied"};
-      S.settings.remind={on:true,hour:+$("#sRemH").value};save();await pushSync();renderHome();view.querySelector("details.g").open=true;$("#sRemMsg").style.color="var(--ok)";}
+      S.settings.remind={on:true,hour:+$("#sRemH").value};save();await pushSync();refreshWebSettings();$("#sRemMsg").style.color="var(--ok)";}
     catch(err){S.settings.remind={on:false,hour:+$("#sRemH").value};save();msg.style.color="var(--bad)";msg.textContent=pushMsg(err);}};
   if($("#sRemOff"))$("#sRemOff").onclick=async e=>{e.preventDefault();try{const reg=await navigator.serviceWorker.ready;const sub=await reg.pushManager.getSubscription();if(sub){await proxyPost("/push/unsubscribe",{endpoint:sub.endpoint}).catch(()=>{});await sub.unsubscribe();}}catch(err){}
-    S.settings.remind={on:false,hour:S.settings.remind.hour};save();renderHome();view.querySelector("details.g").open=true;};
+    S.settings.remind={on:false,hour:S.settings.remind.hour};save();refreshWebSettings();};
   if($("#sRemTest"))$("#sRemTest").onclick=async e=>{e.preventDefault();msg.textContent="Küldöm…";try{const sub=await pushSub();const r=await proxyPost("/push/test",{subscription:sub.toJSON()});msg.textContent=r.ok?"Elküldve. Pár másodpercen belül meg kell jelennie.":"A küldés nem sikerült ("+r.status+").";}catch(err){msg.textContent=pushMsg(err);}};
   $("#sSync").querySelectorAll("button").forEach(b=>b.onclick=async e=>{e.preventDefault();const on=b.dataset.v==="1";
     if(on&&(!S.settings.proxy||!S.settings.pass)){$("#sSyncMsg").textContent=pushMsg({code:"no_proxy"});return;}
-    S.settings.cloud=on;cloudErr="";save();renderHome();view.querySelector("details.g").open=true;if(on){$("#sSyncMsg").textContent="Szinkronizálok…";await cloudSync();}});
+    S.settings.cloud=on;cloudErr="";save();refreshWebSettings();if(on){$("#sSyncMsg").textContent="Szinkronizálok…";await cloudSync();}});
   if($("#sSyncNow"))$("#sSyncNow").onclick=async e=>{e.preventDefault();$("#sSyncMsg").textContent="Szinkronizálok…";await cloudSync();};
-  $("#sAiSave").onclick=async e=>{e.preventDefault();S.settings.proxy=$("#sProxy").value.trim();S.settings.pass=$("#sPass").value;save();
-    const m=$("#sAiMsg"),s=proxySample();if(!s){m.textContent="Add meg a címet és a kódot.";return;}
-    m.textContent="Próba…";try{await s("Válaszolj egyetlen szóval: ok",{modelTier:"quick"});m.style.color="var(--ok)";m.textContent="Működik.";}
-    catch(err){m.style.color="var(--bad)";m.textContent=aiErr(err);}};
   $("#sOffline").onclick=async e=>{e.preventDefault();const m=$("#sOffMsg");m.textContent="Összeállítom a listát…";
     try{const files=[...Object.keys(LANGS).flatMap(l=>[`data/${l}.json`,`data/stories-${l}.json`,`data/verbs-${l}.json`]),...Object.keys(LANGS).map(l=>`data/drills-${l}.json`),"img/hero.webp","img/hero-en.webp","img/hero-es.webp","img/teacher.webp",...SCENARIOS.map(x=>"img/sc-"+x.id+".webp")];
       for(const l of Object.keys(LANGS)){const [pk,st,vb]=await Promise.all([`data/${l}.json`,`data/stories-${l}.json`,`data/verbs-${l}.json`].map(u=>fetch(u).then(r=>r.json())));
@@ -1493,63 +1730,142 @@ function chalCard(){
 }
 
 /* ============ ONBOARDING & PLACEMENT ============ */
+let OB=null;
 function renderOnboarding(step){
   document.body.classList.add("onb");
-  const dots=n=>`<div class="dots">${[0,1,2].map(i=>`<i class="${i<=n?"on":""}"></i>`).join("")}</div>`;
+  const dots=n=>`<div class="dots" aria-label="${n+1}. lépés a háromból">${[0,1,2].map(i=>`<i class="${i<=n?"on":""}"></i>`).join("")}</div>`;
   if(!step){
-    view.innerHTML=`<div class="onb-wrap"><div class="logo-big">${LOGO}</div><h1>Üdv a Parliamóban!</h1><p class="muted">Tanulj nyelvet magyarul, napi 10 percben: felvett hang, okos ismétlés, történetek és AI-tanár.</p>${dots(0)}
-      <h2 style="margin-top:.6rem">Melyik nyelvet tanulnád?</h2>
-      <div class="onb-langs">${Object.entries(LANGS).map(([k,L])=>`<button class="onb-lang" data-l="${k}">${flag(k)}<span><b>${L.name}</b><span class="small muted">${L.nat} · ${L.range}</span></span>${k==="en"?'<span class="pill now">Ajánlott</span>':""}</button>`).join("")}</div></div>`;
-    view.querySelectorAll("[data-l]").forEach(b=>b.onclick=async()=>{fx("tap");S.settings.lang=b.dataset.l;save();view.innerHTML=`<div class="card row"><span class="thinking"><i></i><i></i><i></i></span></div>`;await loadCourse();renderOnboarding("goal");});
-    return;
+    view.innerHTML=`<div class="onb-wrap"><div class="logo-big">${LOGO}</div><span class="label">Egy kis gyakorlás, minden nap</span><h1>Mit szeretnél megtanulni?</h1><p class="muted">Próbálj ki egy egyperces leckét. A magyarázat magyarul segít, a hang és a felidézés a tudást építi.</p>${dots(0)}
+      <div class="onb-langs">${Object.entries(LANGS).map(([k,L])=>`<button class="onb-lang" data-l="${k}">${flag(k)}<span><b>${L.name}</b><span class="small muted">${L.nat} · ${L.range}</span></span><span aria-hidden="true">→</span></button>`).join("")}</div>
+      <p class="small muted">A leckék és az ismétlés AI-kapcsolat nélkül is használhatók.</p></div>`;
+    view.querySelectorAll("[data-l]").forEach(b=>b.onclick=async()=>{
+      fx("tap");S.settings.lang=b.dataset.l;save();
+      view.innerHTML=`<div class="card row" role="status"><span class="thinking"><i></i><i></i><i></i></span><span>A tananyag betöltése…</span></div>`;
+      try{await loadCourse();renderOnboarding("level");}catch(e){view.innerHTML=`<div class="onb-wrap"><h1>Nem sikerült betölteni a tananyagot</h1><p class="muted">Ellenőrizd az internetkapcsolatot, és próbáld újra.</p><button class="btn" id="onbRetry">Újrapróbálom</button></div>`;$("#onbRetry").onclick=()=>renderOnboarding();}
+    });return;
   }
   if(step==="goal"){
-    view.innerHTML=`<div class="onb-wrap"><div class="logo-big small">${flag(lang())}</div>${dots(1)}<h2>Mennyi időd van naponta?</h2><p class="muted">Később a Beállításokban bármikor átállíthatod.</p>
-      <div class="onb-langs">${[[20,"Laza","kb. 5 perc"],[50,"Rendszeres","kb. 10–15 perc"],[100,"Komoly","kb. 25–30 perc"]].map(([g,t,d])=>`<button class="onb-lang" data-g="${g}"><span><b>${t}</b><span class="small muted">${d} · ${g} XP</span></span>${g===50?'<span class="pill now">Ajánlott</span>':""}</button>`).join("")}</div></div>`;
-    view.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>{fx("tap");S.settings.goal=+b.dataset.g;save();renderOnboarding("level");});
-    return;
+    view.innerHTML=`<div class="onb-wrap"><div class="logo-big small">${flag(lang())}</div>${dots(2)}<h1>Mennyi idő fér bele naponta?</h1><p class="muted">Már kipróbáltad a tanulást. Válassz egy kényelmes ritmust; később bármikor átállíthatod.</p>
+      <div class="onb-langs">${[[20,"Kis lépések","kb. 5 perc"],[50,"Napi lendület","kb. 10–15 perc"],[100,"Több időm van","kb. 25–30 perc"]].map(([g,t,d])=>`<button class="onb-lang" data-g="${g}"><span><b>${t}</b><span class="small muted">${d}</span></span>${g===50?'<span class="pill now">Ajánlott</span>':""}</button>`).join("")}</div></div>`;
+    view.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>{fx("tap");S.settings.goal=+b.dataset.g;finishOnboarding();});return;
   }
   if(step==="level"){
-    view.innerHTML=`<div class="onb-wrap"><div class="logo-big small">${flag(lang())}</div>${dots(2)}<h2>Mennyire beszélsz ${LG().adv}?</h2>
-      <div class="onb-langs"><button class="onb-lang" data-v="new"><span><b>Most kezdem</b><span class="small muted">Az első leckétől indulunk.</span></span></button>
-      <button class="onb-lang" data-v="test"><span><b>Tudok már valamennyit</b><span class="small muted">Rövid szintfelmérő, 2–3 perc. Utána kihagyhatod, amit már tudsz.</span></span><span class="pill now">Szintfelmérő</span></button></div></div>`;
-    view.querySelectorAll("[data-v]").forEach(b=>b.onclick=()=>{fx("tap");if(b.dataset.v==="test")startPlacement(true);else finishOnboarding();});
+    view.innerHTML=`<div class="onb-wrap"><div class="logo-big small">${flag(lang())}</div>${dots(1)}<h1>Honnan induljunk?</h1><p class="muted">Mennyit tanultál már ${LG().adv}?</p>
+      <div class="onb-langs"><button class="onb-lang" data-v="new"><span><b>Most kezdem</b><span class="small muted">Próbáljunk ki egy rövid mintaleckét, kb. 1 percben.</span></span><span aria-hidden="true">→</span></button>
+      <button class="onb-lang" data-v="test"><span><b>Tudok már valamennyit</b><span class="small muted">Változatos feladatokkal keresünk egy jó kezdőpontot. Szintenként kb. 2 perc.</span></span><span class="pill">Szintfelmérő</span></button></div></div>`;
+    view.querySelectorAll("[data-v]").forEach(b=>b.onclick=()=>{fx("tap");if(b.dataset.v==="test")startPlacement(true);else startOnboardingSample();});
   }
 }
-function finishOnboarding(){S.onboarded=true;save();document.body.classList.remove("onb");route="ma";render();}
-/* Placement: three questions per level band; two right moves you up, otherwise the test stops there. */
+function finishOnboarding(){OB=null;S.onboarded=true;save();document.body.classList.remove("onb");route="ma";render();}
+/* The first success comes before choosing a daily goal. This tiny real exercise uses the course's first phrase. */
+function startOnboardingSample(){
+  const c=POOL.find(c=>c.li===0&&c.ph)||POOL.find(c=>c.li===0);
+  if(!c)return renderOnboarding("goal");
+  OB={c,step:0,ok:0,n:0,attempted:false};drawOnboardingSample();
+}
+function drawOnboardingSample(){
+  const {c,step}=OB;
+  if(step===0){
+    view.innerHTML=`<div class="onb-wrap"><span class="label">Az első perced · 1 / 3</span><h1>Egy mondat, amit már ma használhatsz</h1><div class="card fc"><div class="front" ${LA()}>${esc(c.it)}</div>${spkBtn(c.it)}<div class="back">${esc(c.hu)}</div></div><p class="muted">Hallgasd meg, majd mondd ki hangosan. A következő feladatban már te idézed fel.</p><button class="btn block" id="sampleStart">Megvan, próbáljuk ki →</button></div>`;
+    $("#sampleStart").onclick=()=>{OB.step=1;drawOnboardingSample();};return;
+  }
+  if(step===3){
+    S.onboardingSample=S.onboardingSample||{};S.onboardingSample[lang()]={at:Date.now(),ok:OB.ok,n:OB.n};save();
+    view.innerHTML=`<div class="onb-wrap"><span class="label">Az első gyakorlás kész</span><h1>Megvan az első lépés!</h1><div class="card stack"><p class="it" ${LA()}>${esc(c.it)}</p><p class="muted">${esc(c.hu)}</p>${spkBtn(c.it)}</div><p class="muted">Ezt a mondatot meghallgattad, felismerted és leírtad. A későbbi ismétlés segít, hogy meg is maradjon.</p><button class="btn block" id="sampleGoal">Beállítom a napi ritmusom →</button></div>`;
+    $("#sampleGoal").onclick=()=>renderOnboarding("goal");return;
+  }
+  const opts=step===1?distract(c,"hu",POOL.filter(x=>!!x.ph===!!c.ph)):null;
+  view.innerHTML=`<div class="onb-wrap"><span class="label">Az első perced · ${step+1} / 3</span><h1>${step===1?"Mit jelent a mondat?":"Most idézd fel önállóan"}</h1>
+    <div class="card"><p class="q" ${step===1?LA():""}>${esc(step===1?c.it:c.hu)}</p></div>
+    ${step===1?`<div class="opts">${opts.map((o,i)=>`<button class="opt" data-sample-o="${i}">${esc(o)}</button>`).join("")}</div>`:`<form id="sampleForm" class="stack"><label for="sampleAnswer">Írd le ${LG().adv}.</label><input id="sampleAnswer" autocomplete="off" autocapitalize="off" spellcheck="false" ${LA()}><button class="btn block" id="sampleCheck" disabled>Ellenőrzés</button></form>`}
+    <div id="sampleFeedback" role="status"></div><button class="btn block" id="sampleNext" hidden>Tovább →</button></div>`;
+  const answer=given=>{
+    if(OB.attempted)return;OB.attempted=true;OB.n++;
+    const good=step===1?given===c.hu:check(given,[c.it,...(c.alt||[])]).ok;if(good)OB.ok++;
+    fx(good?"ok":"bad");
+    $("#sampleFeedback").innerHTML=`<div class="feedback ${good?"ok":"bad"}"><b>${good?"Így van!":"Nézzük meg együtt."}</b><span ${LA()}>${esc(c.it)}</span><span>${esc(c.hu)}</span>${!good&&step===2?'<span class="small">Olvasd el, mondd ki, majd írd le még egyszer.</span>':""}</div>`;
+    view.querySelectorAll("[data-sample-o]").forEach(b=>{b.disabled=true;if(opts[+b.dataset.sampleO]===c.hu)b.classList.add("right");});
+    if(step===2){
+      if(!good){OB.attempted=false;$("#sampleCheck").textContent="Újra megpróbálom";$("#sampleAnswer").value="";$("#sampleCheck").disabled=true;$("#sampleAnswer").focus();return;}
+      $("#sampleAnswer").readOnly=true;$("#sampleCheck").hidden=true;
+    }
+    $("#sampleNext").hidden=false;$("#sampleNext").focus();
+  };
+  if(opts)view.querySelectorAll("[data-sample-o]").forEach(b=>b.onclick=()=>answer(opts[+b.dataset.sampleO]));
+  if(step===2){$("#sampleAnswer").oninput=()=>$("#sampleCheck").disabled=!$("#sampleAnswer").value.trim();$("#sampleForm").onsubmit=e=>{e.preventDefault();answer($("#sampleAnswer").value);};}
+  $("#sampleNext").onclick=()=>{OB.step++;OB.attempted=false;drawOnboardingSample();};
+}
+/* Six items per band: recognition, listening and two independent written answers. A course starting point, not a CEFR certificate. */
+let PL=null;
 function startPlacement(fromOnb){
   const levels=LG().levels.filter(lv=>LESSONS.some(L=>L.level===lv));
-  PL={fromOnb,levels,li:0,qs:[],i:0,ok:0,reached:null};nextPlacementLevel();
+  PL={fromOnb,levels,li:0,qs:[],i:0,ok:0,typed:0,reached:null,results:[],withoutAudio:false};nextPlacementLevel();
 }
-let PL=null;
+function placementItems(level){
+  const lessonIds=shuffle(LESSONS.map((L,i)=>L.level===level?i:-1).filter(i=>i>=0)),out=[],seen=new Set();
+  // Round-robin across lessons prevents a single familiar topic from deciding the whole band.
+  for(let round=0;out.length<6&&round<6;round++)for(const li of lessonIds){
+    const candidates=shuffle(POOL.filter(c=>c.li===li&&!seen.has(c.id)&&!!c.ph===(out.length%2===0)));
+    const c=candidates[0]||POOL.find(c=>c.li===li&&!seen.has(c.id));
+    if(c){out.push(c);seen.add(c.id);}if(out.length===6)break;
+  }
+  return out;
+}
 function nextPlacementLevel(){
-  const lv=PL.levels[PL.li];const idx=new Set(LESSONS.map((L,i)=>L.level===lv?i:-1).filter(i=>i>=0));
-  const items=shuffle(POOL.filter(c=>idx.has(c.li))).slice(0,3);
-  PL.qs=items.map((c,k)=>!c.ph&&k%2?exFor(c,2):exFor(c,1));PL.i=0;PL.ok=0;drawPlacement();
+  const items=placementItems(PL.levels[PL.li]);
+  PL.qs=items.map((c,k)=>{
+    const typed=k===1||k===4,listen=k===2;
+    return {c,t:typed?"type":listen?"listen":"mc",weight:typed?2:1,
+      q:typed||k===5?c.hu:c.it,ans:typed?[c.it,...(c.alt||[])]:listen||k===5?c.it:c.hu,
+      opts:typed?null:distract(c,listen||k===5?"it":"hu",POOL.filter(x=>!!x.ph===!!c.ph)),reverse:k===5};
+  });
+  PL.i=0;PL.ok=0;PL.typed=0;drawPlacement();
 }
 function drawPlacement(){
-  const e=PL.qs[PL.i],total=PL.levels.length*3,done=PL.li*3+PL.i;
-  view.innerHTML=`<div class="player"><div class="pbar"><button class="close" id="quit" aria-label="Kilépés">×</button><div class="track"><div class="fill" style="width:${done/total*100}%"></div></div><span class="small muted">${PL.levels[PL.li]}</span></div>
-    <div class="stack"><span class="label">Szintfelmérő · ${esc(e.sub||"")}</span><div class="row" style="flex-wrap:nowrap">${e.say?spkBtn(e.say):""}<div class="q">${esc(e.q)}</div></div></div>
-    <div class="opts">${e.opts.map((o,i)=>`<button class="opt" data-o="${i}"><kbd>${i+1}</kbd>${esc(o)}</button>`).join("")}<button class="opt" data-o="-1" style="color:var(--muted)">Nem tudom</button></div></div>`;
-  $("#quit").onclick=()=>{PL=null;if(S.onboarded)render();else finishOnboarding();};
-  view.querySelectorAll("[data-o]").forEach(b=>b.onclick=()=>{const k=+b.dataset.o;if(k>=0&&e.opts[k]===e.ans)PL.ok++;fx("tap");PL.i++;
+  const e=PL.qs[PL.i],done=PL.li*6+PL.i,total=PL.levels.length*6;
+  if(!e)return endPlacement();
+  const prompt=e.t==="type"?"Írd le önállóan "+LG().adv:e.t==="listen"?"Válaszd ki, amit hallasz":e.reverse?"Hogy mondod "+LG().adv+"?":"Mit jelent?";
+  view.innerHTML=`<div class="player"><div class="pbar"><button class="close" id="quit" aria-label="Kilépés a szintfelmérőből">×</button><div class="track"><div class="fill" style="width:${done/total*100}%"></div></div><span class="small muted">${PL.levels[PL.li]} · ${PL.i+1}/${PL.qs.length}</span></div>
+    <div class="stack"><span class="label">Kezdőpont keresése · ${prompt}</span>${e.t==="listen"?`<div class="listen">${spkBtn(e.c.it,"big")}<button class="btn ghost" id="placeNoAudio">Hang nélkül folytatom</button></div>`:`<div class="q" ${e.t==="mc"&&!e.reverse?LA():""}>${esc(e.q)}</div>`}</div>
+    ${e.t==="type"?`<form id="placeForm" class="stack"><label class="small muted" for="placeAnswer">Válasz ${LG().adv}</label><input id="placeAnswer" autocomplete="off" autocapitalize="off" spellcheck="false" ${LA()}><button class="btn" id="placeSubmit" disabled>Válasz elküldése</button></form>`:`<div class="opts">${e.opts.map((o,i)=>`<button class="opt" data-o="${i}">${esc(o)}</button>`).join("")}</div>`}
+    <button class="btn ghost" id="placeUnknown">Nem tudom</button><p class="small muted">A feladatok a kurzus kezdőpontját segítenek kiválasztani. A beszédkészségedet ez a felmérő nem méri.</p></div>`;
+  $("#quit").onclick=()=>{const from=PL.fromOnb;PL=null;if(from)renderOnboarding("level");else render();};
+  const submit=correct=>{
+    if(!PL)return;
+    if(correct){PL.ok+=e.weight;if(e.t==="type")PL.typed++;}fx("tap");PL.i++;
     if(PL.i<PL.qs.length)return drawPlacement();
-    if(PL.ok>=2){PL.reached=PL.levels[PL.li];PL.li++;if(PL.li<PL.levels.length)return nextPlacementLevel();}
-    endPlacement();});
+    const max=PL.qs.reduce((n,q)=>n+q.weight,0),passed=PL.ok/max>=0.75&&PL.typed>=1;
+    PL.results.push({level:PL.levels[PL.li],score:PL.ok,max,typed:PL.typed,passed});
+    if(passed){PL.reached=PL.levels[PL.li];PL.li++;if(PL.li<PL.levels.length)return nextPlacementLevel();}
+    endPlacement();
+  };
+  view.querySelectorAll("[data-o]").forEach(b=>b.onclick=()=>submit(e.opts[+b.dataset.o]===e.ans));
+  $("#placeUnknown").onclick=()=>submit(false);
+  if(e.t==="type"){
+    $("#placeAnswer").oninput=()=>$("#placeSubmit").disabled=!$("#placeAnswer").value.trim();
+    $("#placeForm").onsubmit=ev=>{ev.preventDefault();submit(check($("#placeAnswer").value,e.ans).ok);};
+  }
+  if(e.t==="listen")$("#placeNoAudio").onclick=()=>{PL.withoutAudio=true;e.t="mc";e.q=e.c.it;e.ans=e.c.hu;e.opts=distract(e.c,"hu",POOL.filter(x=>!!x.ph===!!e.c.ph));drawPlacement();};
 }
 function endPlacement(){
-  const lv=PL.reached,fromOnb=PL.fromOnb;PL=null;
-  const order=LG().levels, cut=lv?order.indexOf(lv):-1;let skipped=0;
-  if(cut>=0)LESSONS.forEach((L,i)=>{if(order.indexOf(L.level)<=cut&&!(ls(i)&&ls(i).done)){S.lessons[L.id]={done:true,best:0,placed:true,day:today()};skipped++;}});
-  S.placed=S.placed||{};S.placed[lang()]=lv||"kezdő";save();
+  const result=PL,lv=result.reached,fromOnb=result.fromOnb,order=LG().levels;
+  // Keep the highest available band open for practice even if every sampled band was passed.
+  const startIdx=Math.min(result.li,result.levels.length-1),startLevel=result.levels[startIdx]||result.levels[0],cut=order.indexOf(startLevel)-1;
+  PL=null;let skipped=0;
+  LESSONS.forEach((L,i)=>{
+    const prev=ls(i),below=order.indexOf(L.level)<=cut;
+    if(prev&&prev.done&&!prev.placed)return;
+    if(below){S.lessons[L.id]=Object.assign({},prev,{done:false,placed:true,day:today()});skipped++;}
+    else if(prev&&prev.placed)delete S.lessons[L.id];
+  });
+  S.placed=S.placed||{};S.placed[lang()]=lv||"kezdő";
+  S.placement=S.placement||{};S.placement[lang()]={at:Date.now(),startLevel,results:result.results,withoutAudio:result.withoutAudio};save();
   const next=nextLesson();
-  view.innerHTML=`<div class="onb-wrap"><div class="logo-big small">${flag(lang())}</div><span class="label">Szintfelmérő eredménye</span><h1>${lv?`A szinted: ${lv}`:"Kezdjük az alapoktól"}</h1>
-    <p class="muted">${lv?`${skipped} leckét megjelöltem késznek, ezek szavai is bekerülnek az ismétlésbe. A következő lecke: ${next!==null?esc(LESSONS[next].t):"mind kész"}.`:"Az első leckétől indulunk, így biztos lesz az alap."}</p>
-    <button class="btn lemon block" id="go1">Kezdjük!</button></div>`;
-  confetti();
-  $("#go1").onclick=()=>{if(fromOnb)finishOnboarding();else{route="leckek";render();}};
+  view.innerHTML=`<div class="onb-wrap"><div class="logo-big small">${flag(lang())}</div><span class="label">Javasolt kezdőpont</span><h1>Kezdjünk a ${esc(startLevel)} szinten</h1>
+    <p class="muted">Ez rövid, kurzuson belüli becslés, nem hivatalos nyelvi szintminősítés. A következő gyakorlatok segítenek pontosítani.${result.withoutAudio?" A hangos feladatokat írásos változattal helyettesítetted, ezért a hallásértésedet sem mértük.":""}</p>
+    <div class="card stack"><p>${skipped?`${skipped} leckét átugrottként jelöltünk. Ezek bármikor megnyithatók és elvégezhetők; nem számítanak befejezett leckének.`:"Az alapoktól építkezünk; bármelyik leckébe belenézhetsz."}</p><p class="small muted">${next!==null?"Első javasolt lecke: "+esc(LESSONS[next].hu):"Válassz egy leckét az ismétléshez."}</p></div>
+    <button class="btn block" id="go1">${fromOnb?"Kiválasztom a napi ritmusom":"Tovább a leckékhez"} →</button></div>`;
+  $("#go1").onclick=()=>{if(fromOnb)renderOnboarding("goal");else{route="leckek";render();}};
 }
 /* ============ OWN WORDS ============ */
 const OWN_LI=()=>LESSONS.length;
@@ -1769,13 +2085,15 @@ function defLevel(){const n=nextLesson();return n===null?LG().levels[LG().levels
 function renderTutor(){
   if(!T.level)T.level=defLevel();
   if(T.wPrompt===null)T.wPrompt=today()%WRITING.length;
-  view.innerHTML=`<div class="stack"><div><span class="label">Beszélgetés és írás</span><h1>AI tanár</h1><p class="muted">Gyakorold az élő nyelvet: szerepjáték valós helyzetekben, minden üzenetedre javítással, és fogalmazás részletes visszajelzéssel.</p></div>
+  view.innerHTML=`<div class="stack"><div><span class="label">Beszélgetés és írás</span><h1>AI tanár</h1><div style="margin-block:.5rem">${aiAccessBadge()}</div><p class="muted">Gyakorold az élő nyelvet: szerepjáték valós helyzetekben, minden üzenetedre javítással, és fogalmazás részletes visszajelzéssel.</p></div>
+  <div id="aiConnectionHint">${!aiConfigured()?aiSetupNotice():""}</div>
   <div class="row" style="justify-content:space-between"><span class="seg" id="ttab"><button data-v="chat" aria-pressed="${T.tab==="chat"}">Beszélgetés</button><button data-v="write" aria-pressed="${T.tab==="write"}">Írás</button></span>
   <span class="seg" id="lvl">${LG().levels.map(l=>`<button data-v="${l}" aria-pressed="${T.level===l}">${l}</button>`).join("")}</span></div>
   <div id="tbody" class="stack"></div></div>`;
   $("#ttab").querySelectorAll("button").forEach(b=>b.onclick=()=>{T.tab=b.dataset.v;renderTutor();});
   $("#lvl").querySelectorAll("button").forEach(b=>b.onclick=()=>{T.level=b.dataset.v;renderTutor();});
-  getSample().then(s=>{if(!s&&$("#tbody"))$("#tbody").insertAdjacentHTML("afterbegin",`<div class="notice">${aiMissing()} A többi funkció enélkül is működik${XT.off.dialogs.length?", és lent kész párbeszédeket is találsz":""}.</div>`);});
+  bindAISetup(view,()=>renderTutor());
+  if(!IS_WEB)getSample().then(sample=>{if(!sample&&$("#aiConnectionHint"))$("#aiConnectionHint").innerHTML=aiSetupNotice();});
   T.tab==="chat"?(T.sc?drawChat():drawScenarios()):drawWriting();
 }
 function drawScenarios(){
@@ -1810,7 +2128,7 @@ function drawChat(){
 const LVL={A1:"A1: nagyon rövid, egyszerű mondatok, csak jelen idő, gyakori szavak",A2:"A2: egyszerű mondatok, jelen és múlt idő, mindennapi szókincs",B1:"B1: természetes, de világos beszéd, többféle igeidő",B2:"B2: természetes, üzleti helyzetekben is magabiztos nyelvhasználat",C1:"C1: árnyalt, idiomatikus, profi üzleti nyelv"};
 async function sendChat(text){
   const sample=await getSample();
-  if(!sample){toast(aiMissing());return;}
+  if(!sample){const hint=$("#aiConnectionHint");if(hint){hint.innerHTML=aiSetupNotice();bindAISetup(hint,()=>renderTutor());hint.scrollIntoView({block:"nearest"});}else toast(aiMissing());return;}
   const start=text===null;
   if(!start)T.msgs.push({r:"me",it:text});T.busy=true;drawChat();
   const hist=start?"(még nincs, a jelenet most kezdődik)":T.msgs.map(m=>(m.r==="me"?"Tanuló: ":"Te: ")+m.it).join("\n");
@@ -1847,7 +2165,7 @@ function drawWriting(){
 }
 async function sendWriting(){
   const text=$("#wtext").value.trim();if(text.split(/\s+/).length<3){toast("Írj legalább egy-két mondatot.");return;}
-  const sample=await getSample();if(!sample){$("#wres").innerHTML=`<div class="notice">${aiMissing()}</div>`;return;}
+  const sample=await getSample();if(!sample){$("#wres").innerHTML=aiSetupNotice();bindAISetup($("#wres"),()=>renderTutor());return;}
   $("#wsend").disabled=true;$("#wres").innerHTML=`<div class="card row"><span class="thinking"><i></i><i></i><i></i></span><span class="muted">A tanár javítja a szövegedet…</span></div>`;
   const prompt=`${LG().teacher[0].toUpperCase()+LG().teacher.slice(1)}ként javítsd egy magyar anyanyelvű tanuló fogalmazását. A tanuló célszintje: ${T.level}.
 A feladat ez volt: "${WRITING[T.wPrompt]}"
@@ -1864,8 +2182,8 @@ Legfeljebb 8 hibát sorolj fel, a legfontosabbakkal kezdve. Ha nincs hiba, az er
 function drawWRes(){
   const r=T.wRes||{};const errs=Array.isArray(r.errors)?r.errors:[];
   $("#wres").innerHTML=`<div class="stack">
-  <div class="card"><div class="stats" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="stat"><span class="label">Pontszám</span><b class="tnum">${esc(r.score)} / 10</b></div><div class="stat"><span class="label">Becsült szint</span><b>${esc(r.level)}</b></div></div>${r.praise?`<p style="margin-top:.8rem">${esc(r.praise)}</p>`:""}</div>
-  ${errs.length?`<div class="card stack"><h3>Hibák (${errs.length})</h3><div class="err-list">${errs.map(e=>`<div><s>${esc(e.wrong)}</s> → <ins>${esc(e.right)}</ins><div class="small muted">${esc(e.why)}</div></div>`).join("")}</div></div>`:`<div class="card"><h3>Nem találtam hibát. Complimenti!</h3></div>`}
+  <div class="card"><div class="stats" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="stat"><span class="label">Pontszám</span><b class="tnum">${esc(r.score)} / 10</b></div><div class="stat"><span class="label">Tájékoztató AI-becslés</span><b>${esc(r.level)}</b></div></div>${r.praise?`<p style="margin-top:.8rem">${esc(r.praise)}</p>`:""}</div>
+  ${errs.length?`<div class="card stack"><h3>Hibák (${errs.length})</h3><div class="err-list">${errs.map(e=>`<div><s>${esc(e.wrong)}</s> → <ins>${esc(e.right)}</ins><div class="small muted">${esc(e.why)}</div></div>`).join("")}</div></div>`:`<div class="card"><h3>Az AI nem jelzett hibát.</h3></div>`}
   <div class="card stack"><div class="row" style="justify-content:space-between"><h3>Javított szöveg</h3>${spkBtn(r.corrected||"")}</div><p class="prewrap">${esc(r.corrected)}</p></div>
   <div class="card stack"><div class="row" style="justify-content:space-between"><h3>Így mondaná ${LG().native}</h3>${spkBtn(r.natural||"")}</div><p class="prewrap">${esc(r.natural)}</p></div>
   ${r.tip?`<div class="notice"><b>Tipp:</b> ${esc(r.tip)}</div>`:""}</div>`;
@@ -1885,11 +2203,22 @@ function logMiss(k,q,given,correct){
   S.mlog.push({d:today(),l:lang(),k:String(k),q:String(q||"").slice(0,160),a:String(given||"").slice(0,120),c:String(correct||"").slice(0,200)});
   if(S.mlog.length>400)S.mlog.splice(0,S.mlog.length-400);
 }
-/* Word-level match between what was meant and the best recognised alternative. */
+/* Align the recognised words in order. Recognition checks text, never pronunciation.
+   Each token can match once, so reordered or repeated words cannot get a perfect score. */
 function speechDetail(target,alts){
-  const words=target.split(/\s+/).filter(Boolean);let best={words:words.map(w=>({w,ok:false})),score:0,heard:alts[0]||""};
-  for(const a of alts){const aw=new Set(deacc(norm(a)).split(" "));const res=words.map(w=>({w,ok:!deacc(norm(w))||aw.has(deacc(norm(w)))}));
-    const sc=res.filter(x=>x.ok).length/Math.max(1,res.length);if(sc>best.score)best={words:res,score:sc,heard:a};}
+  const words=String(target||"").split(/\s+/).filter(w=>norm(w)),tw=words.map(w=>deacc(norm(w)));
+  const heard=Array.isArray(alts)?alts.filter(a=>typeof a==="string"):[];
+  let best={words:words.map(w=>({w,ok:false})),score:0,heard:heard[0]||"",missing:words.slice(),extra:[]};
+  if(!tw.length)return best;
+  for(const a of heard){
+    const aw=deacc(norm(a)).split(" ").filter(Boolean),n=tw.length,m=aw.length;
+    const dp=Array.from({length:n+1},()=>new Uint16Array(m+1));
+    for(let i=n-1;i>=0;i--)for(let j=m-1;j>=0;j--)dp[i][j]=tw[i]===aw[j]?dp[i+1][j+1]+1:Math.max(dp[i+1][j],dp[i][j+1]);
+    const matched=new Set(),used=new Set();let i=0,j=0;
+    while(i<n&&j<m){if(tw[i]===aw[j]){matched.add(i++);used.add(j++);}else if(dp[i+1][j]>=dp[i][j+1])i++;else j++;}
+    const sc=matched.size/Math.max(n,m,1),res=words.map((w,k)=>({w,ok:matched.has(k)}));
+    if(sc>best.score||(sc===best.score&&a===heard[0]))best={words:res,score:sc,heard:a,missing:res.filter(w=>!w.ok).map(w=>w.w),extra:aw.filter((_,k)=>!used.has(k))};
+  }
   return best;
 }
 const micMsg=e=>e==="not-allowed"||e==="service-not-allowed"?"A mikrofon le van tiltva. Engedélyezd a böngésző beállításaiban.":e==="no-speech"?"Nem hallottam semmit. Próbáld újra, kicsit hangosabban.":"A beszédfelismerés most nem működik. Próbáld újra.";
@@ -1956,7 +2285,7 @@ async function playPod(from){
 /* ============ PRONUNCIATION FOR HUNGARIANS ============ */
 function renderPron(){
   view.innerHTML=`<div class="stack"><div class="row"><button class="btn ghost" id="prBack">← Gyakorlás</button></div>
-  <div><span class="label">Kiejtés magyaroknak</span><h1>Hangpárok</h1><p class="muted">A magyar anyanyelvűek tipikus ${LG().adj} kiejtési hibái, egyenként. Először hallás alapján különböztesd meg a párokat, aztán mondd ki őket${canSpeak()?", és az app megmondja, melyiket hallotta":""}.</p></div>
+  <div><span class="label">Kiejtés magyaroknak</span><h1>Hangpárok</h1><p class="muted">A magyar anyanyelvűek tipikus ${LG().adj} kiejtési hibái, egyenként. Először hallás alapján különböztesd meg a párokat, aztán mondd ki őket${canSpeak()?", és megnézheted, melyik szó került a felismert szövegbe":""}.</p></div>
   <div class="drills">${XT.pron.map((st,i)=>{const s=S.drills["pr-"+st.id];return `<button class="drill" data-s="${st.id}"><span class="dico c${i%4+1}">${I.mic}</span><b>${esc(st.title)}</b><span class="small muted">${esc(st.pairs.slice(0,3).map(p=>p.join(" – ")).join(", "))}</span>${s&&s.n?`<span class="small"><span class="pill ${s.ok/s.n>=.8?"ok":""}">${Math.round(s.ok/s.n*100)}% · ${s.n} válasz</span></span>`:""}</button>`;}).join("")}</div></div>`;
   $("#prBack").onclick=renderPractice;
   view.querySelectorAll("[data-s]").forEach(b=>b.onclick=()=>openPron(b.dataset.s));
@@ -1981,26 +2310,26 @@ function drawPron(){
   }else if(PR.mode==="speak"){
     const w=q.pair[q.t],o=q.pair[1-q.t];
     body=`<div class="card stack" style="align-items:center;text-align:center;padding:1.6rem 1rem"><span class="label">Mondd ki</span><div class="big-q" ${LA()}>${esc(w)}</div><span class="small muted">és ne így: <span ${LA()}>${esc(o)}</span></span><div class="row" style="justify-content:center">${spkBtn(w)}${sp?`<button class="btn lemon" id="prMic">${I.mic.replace("<svg",'<svg style="width:18px;height:18px"')} Mondom</button>`:""}</div></div>
-    ${!sp?`<p class="small muted">A beszédfelismerés ebben a böngészőben nem érhető el (Chrome-ban és Safariban működik). Mondd ki hangosan utána, és értékeld magad.</p><div class="row"><button class="btn soft" data-self="1">Ment</button><button class="btn ghost" data-self="0">Még gyakorlom</button></div>`:""}
-    ${res?`<div class="feedback ${res.ok?"ok":"bad"}" role="status"><b>${res.ok?rnd(LG().ok):res.partner?"Ezt hallottam: "+esc(o):"Nem egészen."}</b>${res.heard?`<span class="small" style="color:var(--ink)">A felismert szöveg: „${esc(res.heard)}”</span>`:""}${!res.ok?`<span class="small" style="color:var(--ink)">${esc(st.tip)}</span>`:""}</div><button class="btn block" id="prNext">Következő</button>`:""}`;
+    ${!sp?`<p class="small muted">A beszédfelismerés ezen az eszközön nem érhető el. Mondd ki hangosan utána, és értékeld magad.</p><div class="row"><button class="btn soft" data-self="1">Ment</button><button class="btn ghost" data-self="0">Még gyakorlom</button></div>`:""}
+    ${res?`<div class="feedback ${res.ok?"ok":"bad"}" role="status"><b>${res.self?(res.ok?"Önértékelés: ment":"Önértékelés: még gyakorlom"):res.ok?"A felismert szó egyezik.":res.partner?"A másik szó került az átiratba.":"A felismert szó eltér."}</b>${res.heard?`<span class="small" style="color:var(--ink)">A felismert szöveg: „${esc(res.heard)}”</span>`:""}${!res.ok?`<span class="small" style="color:var(--ink)">${esc(st.tip)}</span>`:""}<span class="small" style="color:var(--ink)">A szövegegyezés nem méri a hangképzést, hangsúlyt vagy intonációt.</span></div><button class="btn block" id="prNext">Következő</button>`:""}`;
   }else{
     body=`<div class="card stack" style="padding:1.4rem 1.1rem"><span class="label">Mondd ki a mondatot</span><div class="big-q" style="font-size:1.5rem" ${LA()}>${res&&res.words?res.words.map(x=>`<span style="color:var(--${x.ok?"ok":"bad"});${x.ok?"":"text-decoration:underline wavy"}">${esc(x.w)}</span>`).join(" "):esc(q.sent)}</div>
       <div class="row">${spkBtn(q.sent)}<button class="icon-btn" data-say="${esc(q.sent)}" data-slow aria-label="Lassan">${I.slow}</button>${sp?`<button class="btn lemon" id="prMic">${I.mic.replace("<svg",'<svg style="width:18px;height:18px"')} Mondom</button>`:""}</div></div>
-    ${!sp?`<p class="small muted">Hallgasd meg, aztán mondd utána hangosan (shadowing). A beszédfelismerés Chrome-ban és Safariban szavanként is visszajelez.</p><div class="row"><button class="btn soft" data-self="1">Ment</button><button class="btn ghost" data-self="0">Még gyakorlom</button></div>`:""}
-    ${res?`<div class="feedback ${res.ok?"ok":"bad"}" role="status"><b>${res.ok?rnd(LG().ok):"A pirossal jelölt szavakat nem értettem."}</b>${res.heard?`<span class="small" style="color:var(--ink)">A felismert szöveg: „${esc(res.heard)}”</span>`:""}</div><button class="btn block" id="prNext">Következő mondat</button>`:""}`;
+    ${!sp?`<p class="small muted">Hallgasd meg, aztán mondd utána hangosan (shadowing). A mikrofonos szövegellenőrzés ezen az eszközön nem érhető el.</p><div class="row"><button class="btn soft" data-self="1">Ment</button><button class="btn ghost" data-self="0">Még gyakorlom</button></div>`:""}
+    ${res?`<div class="feedback ${res.ok?"ok":"bad"}" role="status"><b>${res.self?(res.ok?"Önértékelés: ment":"Önértékelés: még gyakorlom"):res.ok?"A felismert szöveg nagyrészt egyezik.":"Az aláhúzott szavak kimaradtak vagy eltérő helyen szerepelnek az átiratban."}</b>${res.heard?`<span class="small" style="color:var(--ink)">A felismert szöveg: „${esc(res.heard)}”</span>`:""}${!res.self?`<span class="small" style="color:var(--ink)">Szövegegyezés: ${Math.round((res.score||0)*100)}%. A hangképzést, hangsúlyt és intonációt ez nem értékeli.</span>`:""}</div><button class="btn block" id="prNext">Következő mondat</button>`:""}`;
   }
-  subShell(["Hangpárok",renderPron],"Kiejtés magyaroknak",esc(st.title),`<details class="g" ${PR.n?"":"open"}><summary>Hogyan képezd?</summary><div class="gb"><p>${esc(st.tip)}</p>${st.id==="stress"?`<div class="tbl-wrap"><table><tr><th>Főnév</th><th>Ige</th></tr>${st.pairs.map(p=>`<tr><td ${LA()}>${esc(p[0])}</td><td ${LA()}>${esc(p[1])}</td></tr>`).join("")}</table></div>`:st.mode==="sent"?`<p class="small" ${LA()}>${st.pairs.map(p=>esc(p.join(" – "))).join(" · ")}</p><p class="small muted">Ezeket a párokat a felvett hang sem mindig választja szét, ezért itt mondatokkal gyakorolsz.</p>`:""}</div></details>${modes}${body}`,`${PR.ok} / ${PR.n}`);
+  subShell(["Hangpárok",renderPron],"Kiejtés magyaroknak",esc(st.title),`<details class="g" ${PR.n?"":"open"}><summary>Hogyan képezd?</summary><div class="gb"><p>${esc(st.tip)}</p>${st.id==="stress"?`<div class="tbl-wrap"><table><tr><th>Főnév</th><th>Ige</th></tr>${st.pairs.map(p=>`<tr><td ${LA()}>${esc(p[0])}</td><td ${LA()}>${esc(p[1])}</td></tr>`).join("")}</table></div>`:st.mode==="sent"?`<p class="small" ${LA()}>${st.pairs.map(p=>esc(p.join(" – "))).join(" · ")}</p><p class="small muted">Ezeket a párokat a felvett hang sem mindig választja szét, ezért itt mondatokkal gyakorolsz.</p>`:""}</div></details>${modes}${PR.mode!=="hear"?`<p class="small muted">A mikrofon a felismert szöveget ellenőrzi. A hangképzést és a hangsúlyt a hangmintával összehasonlítva gyakorold.</p>`:""}${body}`,`${PR.ok} / ${PR.n}`);
   $("#prMode").querySelectorAll("button").forEach(b=>b.onclick=()=>{PR.mode=b.dataset.v;nextPron();});
   if($("#prPlay"))$("#prPlay").onclick=()=>say(q.pair[q.t]);
   if($("#prNext"))$("#prNext").onclick=nextPron;
   view.querySelectorAll("[data-j]").forEach(b=>b.onclick=()=>{const j=+b.dataset.j;pronResult({pick:j,ok:j===q.t},q.pair[j],q.pair[q.t]);});
   view.querySelectorAll("[data-self]").forEach(b=>b.onclick=()=>pronResult({ok:b.dataset.self==="1",self:true},"",""));
-  if($("#prMic"))$("#prMic").onclick=async()=>{const m=$("#prMic");m.disabled=true;m.textContent="Hallgatlak…";
-    try{const alts=await listen();
-      if(PR.mode==="speak"){const w=q.pair[q.t],o=q.pair[1-q.t],has=x=>alts.some(a=>deacc(norm(a)).split(" ").includes(deacc(norm(x))));
-        const ok=has(w)&&!(!deacc(norm(alts[0])).split(" ").includes(deacc(norm(w)))&&has(o)),partner=!ok&&has(o);pronResult({ok,partner,heard:alts[0]},alts[0],w);}
-      else{const d=speechDetail(q.sent,alts);pronResult({ok:d.score>=0.85,words:d.words,heard:d.heard},d.heard,q.sent);}}
-    catch(e){toast(micMsg(e));drawPron();}};
+  if($("#prMic"))$("#prMic").onclick=async()=>{const cur=PR,mode=cur.mode,m=$("#prMic");m.disabled=true;m.textContent="Hallgatlak…";
+    try{const alts=await listen();if(PR!==cur||PR.mode!==mode||PR.res)return;
+      if(mode==="speak"){const w=q.pair[q.t],o=q.pair[1-q.t],d=speechDetail(w,alts),partner=!d.score&&speechDetail(o,alts).score===1;
+        pronResult({ok:d.score===1,partner,heard:d.heard,score:d.score},d.heard,w);}
+      else{const d=speechDetail(q.sent,alts);pronResult({ok:d.score>=0.85,words:d.words,heard:d.heard,score:d.score},d.heard,q.sent);}}
+    catch(e){if(PR===cur&&PR.mode===mode){toast(micMsg(e));drawPron();}}};
 }
 function pronResult(r,given,correct){
   if(PR.res)return;PR.res=r;PR.n++;if(r.ok){PR.ok++;addXP(1);fx("ok");}else{fx("bad");if(!r.self)logMiss("pron:"+PR.st.id,correct,given,correct);save();}
@@ -2197,6 +2526,26 @@ function mergeState(a,b){
   per("core",()=>true);per("gram",(v,w)=>(v.d||0)>=(w.d||0));per("ser",()=>true);per("mock",(v,w)=>(v.length||0)>=(w.length||0));
   const cat=(k,key,max)=>{const seen=new Set();o[k]=[...(a[k]||[]),...(b[k]||[])].filter(x=>{const id=key(x);return !seen.has(id)&&seen.add(id);}).sort((x,y)=>(x.at||0)-(y.at||0)).slice(-max);};
   cat("journal",x=>x.at,120);cat("spk",x=>x.at,60);
+  cat("evidence",x=>x.id,80);
+  o.dailySessions=Object.assign({},older.dailySessions||{});
+  for(const [l,v] of Object.entries(newer.dailySessions||{})){
+    const w=o.dailySessions[l];
+    if(!w||v.day>w.day){o.dailySessions[l]=v;continue;}if(v.day<w.day)continue;
+    const top=(v.at||0)>=(w.at||0)?v:w,other=top===v?w:v,sameLesson=top.lessonId===other.lessonId;
+    const sameOutput=!top.outputItemId||!other.outputItemId||top.outputItemId===other.outputItemId;
+    o.dailySessions[l]=Object.assign({},top,{review:v.review===true||w.review===true?true:v.review||w.review,
+      lesson:sameLesson?(v.lesson===true||w.lesson===true?true:v.lesson||w.lesson):top.lesson,
+      output:sameLesson&&sameOutput?(v.output||w.output):top.output,
+      outputItemId:top.outputItemId||(sameLesson?other.outputItemId:undefined),
+      outputHelp:sameLesson&&sameOutput?!!(v.outputHelp||w.outputHelp):!!top.outputHelp,
+      celebrated:!!(v.celebrated||w.celebrated)});
+  }
+  o.evidence=(o.evidence||[]).map(e=>{
+    const s=o.dailySessions[e.l],parts=e.id.split("|");
+    if(e.kind==="output"&&s&&s.outputHelp&&s.day===+parts[1]&&s.outputItemId===(e.key||parts[3]))return Object.assign({},e,{kind:"practice",id:[e.l,s.day,"practice",e.key||parts[3]].join("|"),title:"Mondatot gyakoroltál segítséggel"});
+    return e;
+  }).filter((e,i,a)=>a.findIndex(x=>x.id===e.id)===i);
+  o.onboardingSample=Object.assign({},older.onboardingSample||{},newer.onboardingSample||{});
   o.sk={};for(const k of ["read","listen","write","speak"]){const seen=new Set();o.sk[k]=[...((a.sk||{})[k]||[]),...((b.sk||{})[k]||[])].filter(x=>{const id=x.at+"|"+x.src;return !seen.has(id)&&seen.add(id);}).sort((x,y)=>x.at-y.at).slice(-40);}
   o.ev=Object.assign({},older.ev||{});for(const [d,e] of Object.entries(newer.ev||{})){const m=Object.assign({},o.ev[d]||{});for(const [k,n] of Object.entries(e))m[k]=Math.max(m[k]||0,n);o.ev[d]=m;}
   o.own={};for(const l of new Set([...Object.keys(a.own||{}),...Object.keys(b.own||{})])){const seen=new Set();o.own[l]=[...((newer.own||{})[l]||[]),...((older.own||{})[l]||[])].filter(w=>!seen.has(w.id)&&seen.add(w.id));}
@@ -2209,15 +2558,23 @@ function mergeState(a,b){
 }
 function cloudCopy(){const o=JSON.parse(JSON.stringify(S));DEVICE_KEYS.forEach(k=>delete o.settings[k]);return o;}
 function queueCloud(){if(!IS_WEB||!S.settings.cloud||cloudBusy)return;clearTimeout(cloudT);cloudT=setTimeout(()=>cloudSync(),4000);}
+function learningViewActive(){
+  return !!(P||CS||D||ST||PD||PR||EX||PL||MK||SE||JR||SER||QZ||SB||AC||WC||CAR||DL||VT||dailyActive||
+    route==="tanar"&&(T.sc||T.busy)||view.querySelector("#aiSetupBack,#jrCardReview")||
+    view.contains(document.activeElement)&&document.activeElement.matches("input,textarea"));
+}
 async function cloudSync(){
   if(!IS_WEB||!S.settings.cloud||cloudBusy)return;
+  // Merging replaces state objects: wait until an exercise no longer holds references into them.
+  if(learningViewActive()){queueCloud();return;}
   clearTimeout(cloudT);cloudT=null;cloudBusy=true;
   try{
     for(let n=0;n<3;n++){
       const r=await proxyPost("/sync/get");
+      if(learningViewActive()){cloudBusy=false;queueCloud();return;}
       if(r.state){const before=JSON.stringify(S),lang0=lang();S=migrate(mergeState(S,r.state));
         if(JSON.stringify(S)!==before){try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}queueRemote();
-          if(lang()!==lang0)await loadCourse();else{rebuildOwn();}if(!P&&!CS&&!D&&!ST&&!PD&&!PR&&!EX&&!PL&&!MK&&!SE&&!JR&&!SER&&S.onboarded&&!(route==="tanar"&&T.sc))render();else renderChips();}}
+          if(lang()!==lang0)await loadCourse();else{rebuildOwn();}if(!learningViewActive()&&S.onboarded&&!view.querySelector("details[open]"))render();else renderChips();}}
       try{const w=await proxyPost("/sync/put",{state:cloudCopy(),base:r.rev||0});cloudRev=w.rev;cloudAt=Date.now();cloudErr="";break;}
       catch(e){if(e&&e.code==="conflict")continue;throw e;}
     }
@@ -2387,11 +2744,11 @@ function renderMap(){
   const levels=LG().levels.filter(l=>levelLessons(l).length);let html="";
   levels.forEach((l,k)=>{
     const ls_=levelLessons(l),done=ls_.filter(x=>ls(x.i)&&ls(x.i).done).length,pct=done/ls_.length,cert=S.certs[certKey(l)],open=pct>=0.7;
-    html+=`<div class="mapband"><div class="mapnodes">${ls_.map(({L,i})=>{const s=ls(i),d=s&&s.done;return `<button class="mnode ${d?"done":i===nextLesson()?"cur":""}" data-l="${i}" title="${esc(L.t)}" aria-label="${i+1}. lecke: ${esc(L.t)}${d?", kész":""}">${d?"✓":i+1}</button>`;}).join('<i class="mline"></i>')}</div>
+    html+=`<div class="mapband"><div class="mapnodes">${ls_.map(({L,i})=>{const s=ls(i),d=s&&s.done;return `<button class="mnode ${d?"done":s&&s.placed?"placed":i===nextLesson()?"cur":""}" data-l="${i}" title="${esc(L.t)}" aria-label="${i+1}. lecke: ${esc(L.t)}${d?", kész":s&&s.placed?", szintfelmérő alapján átugorva":""}">${d?"✓":s&&s.placed?"↗":i+1}</button>`;}).join('<i class="mline"></i>')}</div>
       <div class="mile ${cert?"ok":open?"open":""}"><div><span class="label">${l} szint · ${done}/${ls_.length} lecke</span><h3>${cert?`${l} oklevél megszerezve`:open?`${l} szintzáró teszt`:`${l} mérföldkő`}</h3><p class="small muted">${cert?`${new Date(cert.at).toLocaleDateString("hu-HU")} · ${cert.score}%`:open?"15 kérdés a szint leckéiből. 80%-tól jár az oklevél.":"A szintzáró a szint leckéinek 70%-a után nyílik meg."}</p></div>
       ${cert?`<button class="btn soft" data-cert="${l}">Oklevél</button>`:open?`<button class="btn lemon" data-test="${l}">Teszt</button>`:`<span class="pill">${Math.round(pct*100)}%</span>`}</div></div>`;});
   view.innerHTML=`<div class="stack"><div class="row"><button class="btn ghost" data-go="leckek">← Leckék</button></div>
-    <div><span class="label">${LG().name} · ${LG().range}</span><h1>Haladási térkép</h1><p class="muted">Az útvonalad szintenként. Minden szint végén szintzáró teszt vár, és ha sikerül, oklevelet kapsz.</p></div>
+    <div><span class="label">${LG().name} · ${LG().range}</span><h1>Haladási térkép</h1><p class="muted">Az útvonalad szintenként. A ↗ jelű leckéket a szintfelmérő alapján átugrottad; ezekért még nem jár teljesítés vagy pecsét. Az oklevél az app feladatainak teljesítését jelzi, nem hivatalos nyelvvizsga.</p></div>
     <div class="map">${html}</div></div>`;
   view.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>{route="leckek";render();openLesson(+b.dataset.l);});
   view.querySelectorAll("[data-test]").forEach(b=>b.onclick=()=>levelTest(b.dataset.test));
@@ -2764,11 +3121,144 @@ async function renderCheck(){
 
 /* ============ QUICK ACTIONS (home-screen shortcuts, notification link) ============ */
 function quickAction(h){
-  const a={kor:()=>startRound("daily"),terv:()=>{const k=wplan()[(today()+4)%7];if(k&&k!=="free"){render();const b=$("#wGo");if(b)return b.click();}startRound("daily");},
+  const a={kor:()=>{render();startDailyJourney();},terv:()=>{const k=wplan()[(today()+4)%7];if(k&&k!=="free"){render();const b=$("#wGo");if(b)return b.click();}startRound("daily");},
     podcast:()=>{route="gyakorlas";render();renderPods();},auto:()=>{route="kartyak";render();startCar();},ellenorzes:()=>{route="ellenorzes";render();}}[h];
   if(!a)return false;try{history.replaceState(null,"","#ma");}catch(e){}route="ma";a();return true;
 }
 
+/* A resumable daily path. Its stages record completed work, never inferred fluency. */
+let dailyActive=false;
+function dailySession(){
+  S.dailySessions=S.dailySessions||{};
+  let s=S.dailySessions[lang()];
+  if(!s||s.day!==today()){
+    const li=nextLesson();
+    s={day:today(),lessonId:li===null?null:LESSONS[li].id,review:false,lesson:false,output:false,at:Date.now()};
+    S.dailySessions[lang()]=s;
+  }
+  const li=nextLesson(),current=LESSONS.findIndex(l=>l.id===s.lessonId);
+  if(!s.lesson&&((!s.startedAt&&!s.review)||current>=0&&ls(current)&&ls(current).placed)){
+    const nextId=li===null?null:LESSONS[li].id;
+    if(nextId!==s.lessonId){s.lessonId=nextId;delete s.outputItemId;delete s.outputHelp;}
+  }
+  return s;
+}
+function saveDaily(){dailySession().at=Date.now();save();}
+function dailySteps(){
+  const s=dailySession(),L=LESSONS.find(l=>l.id===s.lessonId);
+  return [
+    [s.review,"Rövid ismétlés",s.review==="none"?"Most nincs esedékes kártya":s.review?"Az ismétlőkör elkészült":"Néhány esedékes kártya és új szó"],
+    [s.lesson,"Egy lecke",s.lesson==="none"?"A kijelölt leckéket már végigvetted":s.lesson?"A mai lecke elkészült":L?L.hu:"Szabad ismétlés"],
+    [s.output,"Önálló válasz",s.output?"Válaszgyakorlat elkészült":"Egy mondat felidézése segítség nélkül"]
+  ];
+}
+function startDailyJourney(){dailyActive=true;dailySession().startedAt=dailySession().startedAt||Date.now();saveDaily();continueDaily();}
+function continueDaily(){
+  dailyActive=true;
+  const s=dailySession();
+  if(!s.review){
+    if(dueList().length||Math.min(newLeft(),newAvail().length))return startRound("daily",{review:S.settings.goal===20?3:6,newCards:S.settings.goal===20?1:2});
+    s.review="none";saveDaily();
+  }
+  if(!s.lesson){
+    const li=LESSONS.findIndex(l=>l.id===s.lessonId);
+    if(li>=0)return openDailyLesson(li);
+    s.lesson="none";saveDaily();
+  }
+  if(!s.output)return drawDailyOutput();
+  finishDailyJourney();
+}
+function openDailyLesson(li){
+  openLesson(li);
+  const back=$("#back");if(back){back.textContent="← Mai gyakorlás";back.onclick=()=>{dailyActive=false;go("ma");};}
+  const start=$("#startL");if(start)start.textContent="A mai lecke indítása";
+  view.insertAdjacentHTML("afterbegin",'<p class="small muted" style="margin-bottom:1rem">Mai gyakorlás · 2/3 · Olvasd át a tudnivalókat, majd próbáld ki a leckét.</p>');
+}
+function dailyRoundFinished(kind){
+  if(!dailyActive||kind!=="daily")return;
+  dailySession().review=true;saveDaily();
+  attachDailyContinue("Tovább a mai leckéhez");
+}
+function dailyLessonFinished(li,acc){
+  if(!dailyActive||dailySession().lessonId!==LESSONS[li].id)return;
+  dailySession().lesson=true;saveDaily();
+  attachDailyContinue("Jöhet az önálló válasz");
+}
+function attachDailyContinue(label){
+  const actions=view.querySelector(".player > .row:last-child");
+  if(!actions)return;
+  actions.innerHTML=`<button class="btn ghost" id="dailyPause">Most befejezem</button><button class="btn lemon" id="dailyContinue">${esc(label)}</button>`;
+  $("#dailyPause").onclick=()=>go("ma");
+  $("#dailyContinue").onclick=continueDaily;
+}
+function dailyOutputItem(){
+  const s=dailySession();
+  let c=POOL.find(c=>c.id===s.outputItemId);
+  if(!c){
+    const li=LESSONS.findIndex(l=>l.id===s.lessonId),u=new Set(unlocked());
+    c=POOL.find(c=>c.ph&&c.li===li)||POOL.find(c=>c.ph&&u.has(c.li))||POOL.find(c=>u.has(c.li));
+    if(c){s.outputItemId=c.id;saveDaily();}
+  }
+  return c;
+}
+function drawDailyOutput(){
+  const c=dailyOutputItem();
+  if(!c){dailySession().output="none";saveDaily();return finishDailyJourney();}
+  const s=dailySession();
+  view.innerHTML=`<div class="player"><div class="row"><button class="btn ghost" id="dailyBack">← Mai gyakorlás</button><span class="label">3/3 · Önálló válasz</span></div>
+    <h1>Most te következel.</h1><p class="muted">Hogyan mondanád ${LG().adv}? Először segítség nélkül próbáld meg. A válaszodat leírhatod vagy mikrofonba mondhatod.</p>
+    <div class="card"><h2>${esc(c.hu)}</h2></div>
+    <label class="stack"><span class="label">A válaszod</span><input id="dailyAnswer" ${LA()} autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="${esc(LG().write)}"></label>
+    <div class="row"><button class="btn" id="dailyCheck" disabled>Ellenőrzés</button>${canSpeak()?'<button class="btn ghost" id="dailyMic">Mikrofon</button>':""}<button class="btn ghost" id="dailyHint">Mutass segítséget</button></div>
+    <div id="dailyFeedback" aria-live="polite"></div></div>`;
+  const answer=$("#dailyAnswer"),checkBtn=$("#dailyCheck"),feedback=$("#dailyFeedback");
+  answer.oninput=()=>checkBtn.disabled=!answer.value.trim();
+  $("#dailyBack").onclick=()=>go("ma");
+  $("#dailyHint").onclick=()=>{s.outputHelp=true;saveDaily();feedback.innerHTML=`<div class="notice">${spkBtn(c.it)} <span ${LA()}>${esc(c.it)}</span><p class="small">Olvasd el, majd mondd ki és írd le újra. Ezt segített gyakorlásként mentjük.</p></div>`;};
+  checkBtn.onclick=()=>{
+    const r=check(answer.value,[c.it,...(c.alt||[])]);
+    if(!r.ok){s.outputHelp=true;saveDaily();feedback.innerHTML=`<div class="feedback bad"><b>Próbáld újra.</b><span>Így mondhatod: <span ${LA()}>${esc(c.it)}</span></span><span class="small">Figyeld meg a szórendet és az ige alakját, majd írd le újra.</span></div>`;answer.focus();return;}
+    s.output=true;
+    recordEvidence(s.outputHelp?"practice":"output",c.id,s.outputHelp?"Mondatot gyakoroltál segítséggel":"Segítség nélkül felidézted",c.it);
+    saveDaily();fx("ok");
+    feedback.innerHTML=`<div class="feedback ok"><b>${s.outputHelp?"Megvan, begyakoroltad.":"Sikerült önállóan!"}</b><span ${LA()}>${esc(c.it)}</span>${r.warn?`<span>${esc(r.warn)}</span>`:""}</div><button class="btn block" id="dailyFinish" style="margin-top:1rem">Mai gyakorlás befejezése</button>`;
+    checkBtn.disabled=true;answer.readOnly=true;$("#dailyHint").disabled=true;
+    if($("#dailyMic"))$("#dailyMic").disabled=true;
+    $("#dailyFinish").onclick=finishDailyJourney;
+  };
+  answer.onkeydown=e=>{if(e.key==="Enter"&&!checkBtn.disabled)checkBtn.click();};
+  const mic=$("#dailyMic");if(mic)mic.onclick=async()=>{
+    mic.disabled=true;feedback.textContent="Hallgatlak…";
+    try{const alts=await listen();if(!answer.isConnected||s.output||answer.readOnly)return;answer.value=alts[0]||"";checkBtn.disabled=!answer.value.trim();feedback.textContent="Ezt ismerte fel a böngésző: „"+answer.value+"”. A szöveget ellenőrizzük; a kiejtést ebből nem pontozzuk.";}
+    catch(e){if(answer.isConnected&&!s.output)feedback.textContent="A mikrofon most nem érhető el. Írd be a válaszodat.";}
+    if(mic.isConnected&&!s.output)mic.disabled=false;
+  };
+}
+function finishDailyJourney(){
+  dailyActive=false;
+  const s=dailySession();
+  view.innerHTML=`<div class="player"><span class="label">Mai gyakorlás kész</span><h1>Ma is tettél egy lépést.</h1><p class="muted">A következő alkalommal innen folytatjuk. A tanult kifejezések az ismétlésben újra előkerülnek.</p>
+    <div class="daily-steps">${dailySteps().map(([done,title,detail],i)=>`<div class="daily-step is-done"><span>${done==="none"?"–":"✓"}</span><div><b>${esc(title)}</b><small>${esc(detail)}</small></div></div>`).join("")}</div>
+    ${milestonesCard()}<button class="btn lemon" data-go="ma">Vissza a kezdőlapra</button></div>`;
+  if(!s.celebrated){s.celebrated=true;saveDaily();confetti();}
+  window.scrollTo(0,0);
+}
+function recordEvidence(kind,key,title,detail){
+  S.evidence=Array.isArray(S.evidence)?S.evidence:[];
+  const id=[lang(),today(),kind,key].join("|");
+  if(S.evidence.some(e=>e.id===id))return;
+  S.evidence.push({id,key,l:lang(),kind,title:String(title),detail:String(detail||""),at:Date.now()});
+  S.evidence=S.evidence.slice(-80);
+}
+function milestonesCard(){
+  const evidence=(S.evidence||[]).filter(e=>e.l===lang()).slice(-3).reverse();
+  const completed=LESSONS.filter((L,i)=>ls(i)&&ls(i).done);
+  const pod=XT.pods.find(p=>S.pods[p.id]&&S.pods[p.id].n&&S.pods[p.id].ok===S.pods[p.id].n);
+  const entries=evidence.map(e=>({title:e.title,detail:e.detail}));
+  if(entries.length<3&&completed.length)entries.push({title:completed.length+" leckét végiggyakoroltál",detail:completed[completed.length-1].hu});
+  if(entries.length<3&&pod)entries.push({title:"Egy podcast összes kérdésére jól válaszoltál",detail:pod.title||pod.t||"Hallásértés"});
+  return `<section class="card stack"><span class="label">Amit már megcsináltál</span><h3>Kézzelfogható haladás</h3>${entries.length?`<div class="milestone-list">${entries.slice(0,3).map(e=>`<div class="milestone-item"><span aria-hidden="true">✓</span><div><b>${esc(e.title)}</b><p class="small muted">${esc(e.detail)}</p></div></div>`).join("")}</div>`:'<p class="small muted">Az első önálló válaszod, befejezett leckéd és egy hét után felidézett kifejezésed itt fog megjelenni.</p>'}</section>`;
+}
 /* ============ CORE VOCABULARY (English, A1–B2) ============ */
 /* The ~3000 most useful words by level. A level that is switched on feeds the new-card queue (after lesson and own words),
    so the daily new-card limit still decides how fast they come. */
@@ -2845,8 +3335,8 @@ function openTopic(id){
 }
 /* ============ AI SPEAKING EXAMINER (IELTS-style, B2–C1) ============ */
 /* Three parts like the IELTS speaking test: a short interview, a two-minute long turn from a cue card, and a discussion.
-   Answers are spoken (continuous speech recognition, editable) or typed. The AI scores the transcript; pronunciation can
-   only be estimated from it, and the result says so. */
+   Answers are spoken (continuous speech recognition, editable) or typed. AI feedback covers the transcript only;
+   pronunciation and spoken fluency are not assessed without audio. */
 const SE_SETS=[
   {t:"Home and free time",p1:["Do you live in a house or a flat?","What do you like most about the area where you live?","What do you usually do at the weekend?","Have your free-time activities changed since you were a child?"],
    cue:{q:"Describe a place in your town or city where you like to spend time.",say:["where it is","how often you go there","what you do there","and explain why you like it"]},
@@ -2871,10 +3361,10 @@ let SE=null;
 const seSteps=set=>[...set.p1.map(q=>({part:1,q})),{part:2,q:set.cue.q,say:set.cue.say},...set.p3.map(q=>({part:3,q}))];
 function renderExaminer(){
   stopViews();const hist=(S.spk||[]).filter(x=>x.l===lang()).slice(-5).reverse();
-  subShell(["Gyakorlás",()=>go("gyakorlas")],"Szóbeli vizsgáztató","IELTS-jellegű szóbeli vizsga",`<p class="muted">Három rész, mint az IELTS szóbelin (és nagyjából a B2 First / C1 Advanced szóbelin): rövid interjú, kétperces önálló beszéd egy témakártyáról, végül vita. ${canSpeak()?"Mondd a válaszaidat a mikrofonba, vagy írd be őket.":"Ebben a böngészőben nincs beszédfelismerés, ezért írd be a válaszaidat úgy, ahogy mondanád."} A végén az AI vizsgáztató sávpontszámot ad (folyékonyság, szókincs, nyelvtan, kiejtés) és mintaválaszokat.</p>
+  subShell(["Gyakorlás",()=>go("gyakorlas")],"Szóbeli vizsgáztató","IELTS-jellegű szóbeli vizsga",`<p class="muted">Háromrészes, IELTS-jellegű gyakorlás: rövid interjú, kétperces önálló beszéd egy témakártyáról, végül vita. ${canSpeak()?"Mondd a válaszaidat a mikrofonba, vagy írd be őket.":"Ebben a böngészőben nincs beszédfelismerés, ezért írd be a válaszaidat úgy, ahogy mondanád."} A végén az AI az átirat szókincséről, nyelvtanáról és gondolatmenetéről ad gyakorlási visszajelzést és mintaválaszokat.</p>
     <div class="card stack"><h3>Válassz témát</h3><div class="drills">${SE_SETS.map((s,i)=>`<button class="drill" data-se="${i}"><b>${esc(s.t)}</b><span class="small muted">${esc(s.cue.q)}</span></button>`).join("")}</div></div>
-    ${hist.length?`<div class="card stack"><h3>Korábbi eredmények</h3>${hist.map(h=>`<div class="row" style="justify-content:space-between"><span>${new Date(h.at).toLocaleDateString("hu-HU")} · ${esc(h.t)}</span><span class="pill ${(+h.band||0)>=6.5?"ok":""}">${esc(h.band)} · ${esc(h.cefr||"")}</span></div>`).join("")}</div>`:""}
-    <p class="small muted">A kiejtést az AI csak a beszédfelismerés átirata alapján tudja becsülni: a félrehallott szavak jelzik, hol nem volt érthető a kiejtés.</p>`);
+    ${hist.length?`<div class="card stack"><h3>Korábbi gyakorlási becslések</h3>${hist.map(h=>`<div class="row" style="justify-content:space-between"><span>${new Date(h.at).toLocaleDateString("hu-HU")} · ${esc(h.t)}</span><span class="pill ${(+h.band||0)>=6.5?"ok":""}">kb. ${esc(h.band)} · ${esc(h.cefr||"")}</span></div>`).join("")}</div>`:""}
+    <p class="small muted">Az értékelés az átiratot használja. A kiejtést és a beszéd folyékonyságát nem méri; az esetleges sáv- és KER-becslés tájékoztató gyakorlási visszajelzés, nem vizsgaeredmény.</p>`);
   view.querySelectorAll("[data-se]").forEach(b=>b.onclick=()=>{const set=SE_SETS[+b.dataset.se];SE={set,steps:seSteps(set),i:0,ans:[],text:"",secs:0,prep:0,res:null};drawSE();});
 }
 function drawSE(){
@@ -2898,7 +3388,7 @@ function seStart(){
   const r=new SRC();r.lang=LG().tts;r.continuous=true;r.interimResults=true;r.maxAlternatives=1;
   const base=($("#seText")?$("#seText").value.trim():SE.text);let got=false;
   SE.rec=r;SE.recording=true;SE.t0=Date.now();try{player.pause();speechSynthesis.cancel();}catch(e){}
-  r.onresult=e=>{got=true;let fin="",int="";for(const res of e.results){if(res.isFinal===false)int+=res[0].transcript;else fin+=res[0].transcript+" ";}
+  r.onresult=e=>{if(!SE||SE.rec!==r)return;got=true;let fin="",int="";for(const res of e.results){if(res.isFinal===false)int+=res[0].transcript;else fin+=res[0].transcript+" ";}
     SE.text=((base?base+" ":"")+fin).replace(/\s+/g," ").trim();const ta=$("#seText");if(ta){ta.value=SE.text+(int?" "+int.trim():"");ta.dispatchEvent(new Event("input"));}};
   r.onerror=e=>{if(e.error!=="no-speech"&&e.error!=="aborted")toast(micMsg(e.error));};
   r.onend=()=>{if(!SE||SE.rec!==r)return;if(SE.recording&&got){SE.secs+=(Date.now()-SE.t0)/1000;return seStart();}seStop(true);};
@@ -2911,34 +3401,36 @@ function seStop(ended){
   const b=$("#seMic");if(b){b.setAttribute("aria-pressed","false");b.lastChild.textContent=" Beszéd";}
 }
 async function scoreSE(){
-  const back=["Szóbeli vizsgáztató",renderExaminer];
+  const cur=SE;if(!cur)return;const back=["Szóbeli vizsgáztató",renderExaminer];
   subShell(back,"Szóbeli vizsgáztató","Értékelés",`<div id="seRes"><div class="card row"><span class="thinking"><i></i><i></i><i></i></span><span class="muted">A vizsgáztató értékel…</span></div></div>`);
-  const sample=await getSample();if(!sample){$("#seRes").innerHTML=`<div class="notice">${aiMissing()}</div>`;return;}
-  const spoken=SE.ans.filter(a=>a.secs>5),words=spoken.reduce((n,a)=>n+a.text.split(/\s+/).length,0),secs=spoken.reduce((n,a)=>n+a.secs,0),wpm=secs?Math.round(words/secs*60):null;
-  const tr=SE.ans.map(a=>`[${a.part}. rész] Kérdés: ${a.q}\nVálasz${a.secs>5?` (beszéd, ${a.secs} mp)`:" (beírva)"}: ${a.text}`).join("\n\n");
+  const sample=await getSample();if(SE!==cur)return;if(!sample){$("#seRes").innerHTML=`<div class="notice">${aiMissing()}</div>`;return;}
+  const spoken=cur.ans.filter(a=>a.secs>5),words=spoken.reduce((n,a)=>n+a.text.split(/\s+/).length,0),secs=spoken.reduce((n,a)=>n+a.secs,0),wpm=secs?Math.round(words/secs*60):null;
+  const tr=cur.ans.map(a=>`[${a.part}. rész] Kérdés: ${a.q}\nVálasz${a.secs>5?` (beszéd, ${a.secs} mp)`:" (beírva)"}: ${a.text}`).join("\n\n");
   const prompt=`Tapasztalt IELTS szóbeli vizsgáztatóként értékeld egy magyar anyanyelvű vizsgázó szóbeli vizsgáját. A válaszok átiratát látod (beszédfelismerés vagy beírás).
-Téma: ${SE.set.t}
+Téma: ${cur.set.t}
 ${wpm?`Mért beszédtempó a kimondott válaszoknál: kb. ${wpm} szó/perc.`:"A válaszokat a vizsgázó beírta, tempót nem mértünk."}
 
 ${tr}
 
-Pontozd az IELTS Speaking négy szempontja szerint (0–9, fél sávokkal): Fluency and Coherence, Lexical Resource, Grammatical Range and Accuracy, Pronunciation. A kiejtést csak az átirat alapján tudod becsülni (félrehallott, értelmetlen szavak a kiejtési gondra utalnak); ha a válaszok beírtak, a kiejtést hagyd null-on. Adj összesített sávot és KER-szintet (B1/B2/C1/C2).
-Minden szemponthoz 1–2 mondatos, konkrét magyar indoklás. Sorold fel a legfontosabb nyelvi hibákat (legfeljebb 8). Válassz ki két választ, és írj rájuk 7.5-ös szintű mintaválaszt angolul.
+Adj tájékoztató nyelvi gyakorlási becslést 0–9-es skálán a szöveg gondolatmenetéről (a fluency mezőben csak koherencia), szókincséről és nyelvtanáról. Nem látod és nem hallod az eredeti hangot: a kiejtést, hangsúlyt, intonációt, szüneteket és tényleges beszédfolyékonyságot nem értékelheted. A pronunciation értéke mindig null legyen, magyarázata: „Hanganyag nélkül nem értékelhető.” A hibás átirat nem bizonyít kiejtési hibát. A közölt szó/perc csak tájékoztató adat, önmagában nem minősíti a folyékonyságot.
+Az összesített band és cefr kizárólag az átirat nyelvhasználatának durva becslése; ne nevezd hivatalos IELTS-pontszámnak vagy megállapított KER-szintnek. Kevés vagy nem értékelhető szövegnél hagyd őket üresen.
+Minden szemponthoz 1–2 mondatos, konkrét magyar indoklás. Sorold fel a legfontosabb nyelvi hibákat (legfeljebb 8). Válassz ki két választ, és írj rájuk természetesebb, részletesebb mintaválaszt angolul.
 Csak egy JSON objektumot adj vissza:
-{"band":"6.5","cefr":"B2","scores":{"fluency":6.5,"lexical":6,"grammar":6,"pronunciation":6},"comments":{"fluency":"","lexical":"","grammar":"","pronunciation":""},"summary":"2-3 mondat magyarul","strengths":["legfeljebb 3 erősség magyarul"],"errors":[{"wrong":"","right":"","why":""}],"better":[{"q":"a kérdés","answer":"mintaválasz angolul"}],"tip":"egy konkrét tipp magyarul"}`;
-  try{const r=await sample.json(prompt,{modelTier:"default"});if(!SE)return;SE.res=r;
-    const band=parseFloat(r.band)||0;S.spk=S.spk||[];S.spk.push({at:Date.now(),l:lang(),t:SE.set.t,band:String(r.band||""),cefr:String(r.cefr||"")});if(S.spk.length>60)S.spk.splice(0,S.spk.length-60);
+{"band":"6.5","cefr":"B2","scores":{"fluency":6.5,"lexical":6,"grammar":6,"pronunciation":null},"comments":{"fluency":"","lexical":"","grammar":"","pronunciation":""},"summary":"2-3 mondat magyarul","strengths":["legfeljebb 3 erősség magyarul"],"errors":[{"wrong":"","right":"","why":""}],"better":[{"q":"a kérdés","answer":"mintaválasz angolul"}],"tip":"egy konkrét tipp magyarul"}`;
+  try{const r=await sample.json(prompt,{modelTier:"default"});if(SE!==cur)return;
+    r.scores=Object.assign({},r.scores,{pronunciation:null});r.comments=Object.assign({},r.comments,{pronunciation:"Hanganyag nélkül nem értékelhető."});SE.res=r;
+    const band=parseFloat(r.band)||0;S.spk=S.spk||[];S.spk.push({at:Date.now(),l:lang(),t:SE.set.t,band:String(r.band||""),cefr:String(r.cefr||""),basis:"transcript"});if(S.spk.length>60)S.spk.splice(0,S.spk.length-60);
     (Array.isArray(r.errors)?r.errors:[]).slice(0,8).forEach(e=>logMiss("examiner",e.wrong,e.wrong,e.right+" – "+(e.why||"")));
-    if(band)skillLog("speak",band>=8.5?"C2":band>=7?"C1":band>=5.5?"B2":band>=4?"B1":"A2",band>=8.5?60+(band-8.5)*80:band>=7?60+(band-7)*26:band>=5.5?60+(band-5.5)*26:band>=4?60+(band-4)*26:40,"examiner");
+    /* Transcript feedback does not establish a measured speaking skill level. */
     incEv("drills");drillStat("examiner",band>=6.5);addXP(15);save();
     if($("#seRes"))$("#seRes").innerHTML=seHtml(r);}
-  catch(e){if($("#seRes"))$("#seRes").innerHTML=`<div class="notice">${esc(aiErr(e))}</div><button class="btn" id="seRetry">Újra</button>`;if($("#seRetry"))$("#seRetry").onclick=scoreSE;}
+  catch(e){if(SE!==cur)return;if($("#seRes"))$("#seRes").innerHTML=`<div class="notice">${esc(aiErr(e))}</div><button class="btn" id="seRetry">Újra</button>`;if($("#seRetry"))$("#seRetry").onclick=scoreSE;}
 }
-const SE_CRIT=[["fluency","Folyékonyság és koherencia"],["lexical","Szókincs"],["grammar","Nyelvtani változatosság és pontosság"],["pronunciation","Kiejtés (becslés)"]];
+const SE_CRIT=[["fluency","A szöveg koherenciája"],["lexical","Szókincs"],["grammar","Nyelvtani változatosság és pontosság"],["pronunciation","Kiejtés"]];
 function seHtml(r){
   const sc=r.scores||{},cm=r.comments||{},errs=Array.isArray(r.errors)?r.errors:[],better=Array.isArray(r.better)?r.better:[];
-  return `<div class="stack"><div class="card"><div class="stats" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="stat"><span class="label">IELTS sáv</span><b class="tnum">${esc(r.band||"–")}</b></div><div class="stat"><span class="label">KER-szint</span><b>${esc(r.cefr||"–")}</b></div></div>${r.summary?`<p style="margin-top:.8rem">${esc(r.summary)}</p>`:""}</div>
-  <div class="card stack">${SE_CRIT.map(([k,l])=>{const v=sc[k];return `<div><div class="row" style="justify-content:space-between"><b>${l}</b><span class="pill ${(+v||0)>=7?"ok":(+v||0)&&(+v)<5.5?"bad":""}">${v==null?"–":esc(v)} / 9</span></div><div class="meter"><i style="width:${(+v||0)/9*100}%"></i></div><p class="small muted">${esc(cm[k]||"")}</p></div>`;}).join("")}</div>
+  return `<div class="stack"><div class="card"><div class="stats" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="stat"><span class="label">Becsült nyelvi sáv</span><b class="tnum">${r.band?"kb. "+esc(r.band):"–"}</b></div><div class="stat"><span class="label">Tájékoztató KER-becslés</span><b>${esc(r.cefr||"–")}</b></div></div><p class="small muted" style="margin-top:.8rem">Az átirat nyelvhasználatának AI-becslése, nem hivatalos IELTS- vagy KER-eredmény. A tényleges beszédfolyékonyságot és a kiejtést nem értékeli.</p>${r.summary?`<p style="margin-top:.8rem">${esc(r.summary)}</p>`:""}</div>
+  <div class="card stack">${SE_CRIT.map(([k,l])=>{const v=k==="pronunciation"?null:sc[k];if(k==="pronunciation")return `<div><b>${l}</b><p class="small muted">Hanganyag nélkül nem értékelhető.</p></div>`;return `<div><div class="row" style="justify-content:space-between"><b>${l}</b><span class="pill ${(+v||0)>=7?"ok":(+v||0)&&(+v)<5.5?"bad":""}">${v==null?"–":esc(v)} / 9</span></div><div class="meter"><i style="width:${(+v||0)/9*100}%"></i></div><p class="small muted">${esc(cm[k]||"")}</p></div>`;}).join("")}</div>
   ${Array.isArray(r.strengths)&&r.strengths.length?`<div class="card stack"><h3>Erősségek</h3><ul style="padding-left:1.1rem">${r.strengths.map(s=>`<li>${esc(s)}</li>`).join("")}</ul></div>`:""}
   ${errs.length?`<div class="card stack"><h3>Hibák (${errs.length})</h3><div class="err-list">${errs.map(e=>`<div><s ${LA()}>${esc(e.wrong)}</s> → <ins ${LA()}>${esc(e.right)}</ins><div class="small muted">${esc(e.why)}</div></div>`).join("")}</div></div>`:""}
   ${better.map(b=>`<div class="card stack"><span class="label">Mintaválasz</span><b ${LA()}>${esc(b.q)}</b><p class="prewrap" ${LA()}>${esc(b.answer)}</p>${spkBtn(String(b.answer||""))}</div>`).join("")}
@@ -3101,7 +3593,8 @@ function renderJournal(keep){
   if(!keep)stopViews();const list=jrList(),t=today(),done=list.some(e=>e.d===t);
   JR=JR||{text:"",res:null,prompt:JR_PROMPTS[t%JR_PROMPTS.length]};
   let streak=0;for(let d=t-(done?0:1);list.some(e=>e.d===d);d--)streak++;
-  subShell(["Gyakorlás",()=>go("gyakorlas")],"Napló","Napi bejegyzés",`<p class="muted">Írj pár mondatot ${LG().adv} a napodról vagy a mai témáról. Az AI kijavítja, magyarul elmagyarázza a hibákat, és megmutatja, hogyan mondaná egy anyanyelvi. A hibáid bekerülnek a havi hibaelemzésbe, és egy gombbal kártyát csinálhatsz belőlük.</p>
+  subShell(["Gyakorlás",()=>go("gyakorlas")],"Napló","Napi bejegyzés",`<p class="muted">Írj pár mondatot ${LG().adv} a napodról vagy a mai témáról. Az AI kijavítja, magyarul elmagyarázza a hibákat, és megmutatja, hogyan mondaná egy anyanyelvi. A hibáid bekerülnek a havi hibaelemzésbe, és átnézés után kártyát csinálhatsz belőlük.</p>
+    <div class="row">${aiAccessBadge()}</div>${!aiConfigured()?aiSetupNotice():""}
     <div class="card"><div class="stats" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="stat"><span class="label">Bejegyzések</span><b class="tnum">${list.length}</b></div><div class="stat"><span class="label">Napok sorozatban</span><b class="tnum">${streak}</b></div></div></div>
     <div class="card stack"><span class="label">Mai téma (nem kötelező)</span><p ${LA()}>${esc(JR.prompt)}</p><div><button class="btn ghost" id="jrOther">Másik téma</button></div></div>
     <textarea id="jrText" style="min-height:200px" ${LA()} placeholder="${LG().write}" aria-label="Napló ${LG().adv}">${esc(JR.text)}</textarea>
@@ -3110,11 +3603,11 @@ function renderJournal(keep){
     ${list.length?`<div class="sec-head"><h2>Korábbi bejegyzések</h2></div>${list.slice(-10).reverse().map(e=>`<details class="g"><summary>${new Date(e.at).toLocaleDateString("hu-HU")} · ${e.n||0} hiba${e.lv?" · "+esc(e.lv):""}</summary><div class="gb stack"><p class="prewrap" ${LA()}>${esc(e.fixed||e.text)}</p>${(e.errs||[]).length?`<div class="err-list">${e.errs.map(x=>`<div><s ${LA()}>${esc(x.wrong)}</s> → <ins ${LA()}>${esc(x.right)}</ins></div>`).join("")}</div>`:""}</div></details>`).join("")}`:""}`);
   const ta=$("#jrText"),wc=()=>{const n=ta.value.trim()?ta.value.trim().split(/\s+/).length:0;$("#jrWc").textContent=n+" szó";};ta.oninput=()=>{JR.text=ta.value;wc();};wc();
   $("#jrOther").onclick=()=>{JR.prompt=rnd(JR_PROMPTS.filter(p=>p!==JR.prompt));renderJournal(true);};
-  $("#jrSend").onclick=sendJournal;bindJrCards();
+  $("#jrSend").onclick=sendJournal;bindJrCards();bindAISetup(view,()=>renderJournal(true));
 }
 async function sendJournal(){
   const text=$("#jrText").value.trim();if(text.split(/\s+/).length<15){toast("Írj legalább 15 szót.");return;}
-  const sample=await getSample();if(!sample){$("#jrRes").innerHTML=`<div class="notice">${aiMissing()}</div>`;return;}
+  const sample=await getSample();if(!sample){$("#jrRes").innerHTML=aiSetupNotice();bindAISetup($("#jrRes"),()=>renderJournal(true));return;}
   $("#jrSend").disabled=true;$("#jrRes").innerHTML=`<div class="card row"><span class="thinking"><i></i><i></i><i></i></span><span class="muted">A tanár javítja a naplódat…</span></div>`;
   const prompt=`${LG().teacher[0].toUpperCase()+LG().teacher.slice(1)}ként javítsd ki egy magyar anyanyelvű tanuló ${LG().adv} írt naplóbejegyzését. Légy pontos, de bátorító.
 A bejegyzés:
@@ -3122,9 +3615,9 @@ A bejegyzés:
 
 Javítsd ki a nyelvtani, szóhasználati és helyesírási hibákat úgy, hogy a tanuló mondanivalója megmaradjon. Minden hibát külön sorolj fel rövid magyar magyarázattal (legfeljebb 10). Írj egy természetesebb, anyanyelvi változatot is ugyanarról. Becsüld meg a szöveg szintjét (A1–C2). Adj 3 hasznos ${LG().adj} kifejezést, ami ehhez a témához illik.
 Csak egy JSON objektumot adj vissza:
-{"corrected":"a kijavított szöveg","errors":[{"wrong":"hibás rész","right":"javított rész","why":"rövid magyar magyarázat"}],"natural":"természetesebb változat","level":"B1","praise":"egy mondat dicséret magyarul","tip":"egy konkrét tipp magyarul","words":[{"it":"kifejezés","hu":"jelentés"}]}`;
+{"corrected":"a kijavított szöveg","errors":[{"wrong":"hibás rész","right":"javított rész","hu":"a javított kifejezés magyar jelentése","why":"rövid magyar magyarázat"}],"natural":"természetesebb változat","level":"B1","praise":"egy mondat dicséret magyarul","tip":"egy konkrét tipp magyarul","words":[{"it":"kifejezés","hu":"jelentés"}]}`;
   try{const r=await sample.json(prompt,{modelTier:"default"});if(!JR)return;
-    const errs=(Array.isArray(r.errors)?r.errors:[]).filter(e=>e&&e.wrong&&e.right).slice(0,10).map(e=>({wrong:String(e.wrong),right:String(e.right),why:String(e.why||"")}));r.errors=errs;
+    const errs=(Array.isArray(r.errors)?r.errors:[]).filter(e=>e&&e.wrong&&e.right).slice(0,10).map(e=>({wrong:String(e.wrong),right:String(e.right),why:String(e.why||""),hu:String(e.hu||"")}));r.errors=errs;
     JR.res=r;S.journal=S.journal||[];S.journal.push({at:Date.now(),d:today(),l:lang(),text,fixed:String(r.corrected||""),errs:errs.map(e=>({wrong:e.wrong,right:e.right})),n:errs.length,lv:String(r.level||"")});if(S.journal.length>120)S.journal.splice(0,S.journal.length-120);
     errs.forEach(e=>logMiss("journal",e.wrong,e.wrong,e.right+" – "+e.why));
     const words=text.split(/\s+/).length;if(r.level)skillLog("write",String(r.level),Math.max(30,85-errs.length/words*400),"journal");
@@ -3134,16 +3627,38 @@ Csak egy JSON objektumot adj vissza:
 }
 function jrHtml(r,text){
   const errs=r.errors||[],words=Array.isArray(r.words)?r.words.filter(w=>w&&w.it):[];
-  return `<div class="stack"><div class="card stack"><div class="row" style="justify-content:space-between"><h3>Javított szöveg</h3><span class="pill">${esc(r.level||"")} · ${errs.length} hiba</span></div><p class="prewrap" ${LA()}>${esc(r.corrected||text)}</p>${r.praise?`<p class="small">${esc(r.praise)}</p>`:""}</div>
-    ${errs.length?`<div class="card stack"><h3>Hibák</h3><div class="err-list">${errs.map(e=>`<div><s ${LA()}>${esc(e.wrong)}</s> → <ins ${LA()}>${esc(e.right)}</ins><div class="small muted">${esc(e.why)}</div></div>`).join("")}</div><button class="btn soft" id="jrCards">A javítások kártyára (${errs.length})</button></div>`:""}
+  return `<div class="stack"><div class="card stack"><div class="row" style="justify-content:space-between"><h3>Javított szöveg</h3><span class="pill">AI-becslés: ${esc(r.level||"nincs szint")} · ${errs.length} javítás</span></div><p class="prewrap" ${LA()}>${esc(r.corrected||text)}</p>${r.praise?`<p class="small">${esc(r.praise)}</p>`:""}</div>
+    ${errs.length?`<div class="card stack"><h3>Hibák</h3><div class="err-list">${errs.map(e=>`<div><s ${LA()}>${esc(e.wrong)}</s> → <ins ${LA()}>${esc(e.right)}</ins><div class="small muted">${esc(e.why)}</div></div>`).join("")}</div><button class="btn soft" id="jrCards">Javítások átnézése és kártyára mentése (${errs.length})</button></div>`:""}
     ${r.natural?`<div class="card stack"><h3>Így mondaná egy anyanyelvi</h3><p class="prewrap" ${LA()}>${esc(r.natural)}</p></div>`:""}
     ${words.length?`<div class="card stack"><h3>Hasznos kifejezések</h3>${words.map(w=>`<div class="dict-row">${spkBtn(String(w.it),"sm")}<div style="min-width:0"><div class="it" ${LA()}>${esc(w.it)}</div><div class="small muted">${esc(w.hu)}</div></div><button class="btn ghost" data-jw="${esc(w.it)}" data-jh="${esc(w.hu)}" style="padding:.35rem .6rem;font-size:.8rem">+ Kártya</button></div>`).join("")}</div>`:""}
+    <div id="jrCardReview" hidden></div>
     ${r.tip?`<div class="notice"><b>Tipp:</b> ${esc(r.tip)}</div>`:""}</div>`;
 }
+/* AI suggestions are drafts: each card needs an explicit check and a Hungarian meaning. */
+function openJournalCardReview(cards){
+  const target=$("#jrCardReview");if(!target)return;
+  target.hidden=false;
+  target.innerHTML=`<div class="card stack"><h3>Kártyák átnézése</h3><p class="small muted">Az AI javaslatait mentés előtt ellenőrizd. Javíthatod a kifejezést és a magyar jelentést, és kihagyhatod, amit nem szeretnél tanulni.</p>
+    ${cards.map((c,i)=>`<div class="stack" data-jr-card="${i}" style="gap:.5rem;border-top:1px solid var(--line);padding-top:.8rem"><label class="row" style="flex-wrap:nowrap;justify-content:flex-start"><input type="checkbox" data-jr-select checked style="width:20px;height:20px;flex:none"><b>${i+1}. kártya mentése</b></label>
+      ${c.wrong?`<p class="small muted">Eredetileg: <s ${LA()}>${esc(c.wrong)}</s></p>`:""}
+      <label class="stack" style="gap:.25rem"><span class="small">Kifejezés ${LG().adv}</span><input data-jr-it value="${esc(c.it)}" ${LA()}></label>
+      <label class="stack" style="gap:.25rem"><span class="small">Magyar jelentés</span><input data-jr-hu value="${esc(c.hu||"")}" placeholder="Mit jelent magyarul?"></label>
+      ${c.why?`<p class="small muted">${esc(c.why)}</p>`:""}</div>`).join("")}
+    <p id="jrCardMsg" class="small" role="status" aria-live="polite"></p><div class="row"><button class="btn" id="jrSaveCards">Kijelölt kártyák mentése</button><button class="btn ghost" id="jrCancelCards">Mégsem</button></div></div>`;
+  $("#jrCancelCards").onclick=()=>{target.hidden=true;};
+  $("#jrSaveCards").onclick=()=>{
+    const rows=[...target.querySelectorAll("[data-jr-card]")].filter(row=>row.querySelector("[data-jr-select]").checked),msg=$("#jrCardMsg");
+    if(!rows.length){msg.textContent="Jelölj ki legalább egy kártyát.";return;}
+    for(const row of rows){for(const key of ["it","hu"]){const input=row.querySelector(`[data-jr-${key}]`);input.removeAttribute("aria-invalid");if(!input.value.trim()){input.setAttribute("aria-invalid","true");input.focus();msg.textContent=key==="hu"?"Add meg a kijelölt kártya magyar jelentését.":"Add meg a kijelölt kártya kifejezését.";return;}}}
+    let n=0;rows.forEach(row=>{const it=row.querySelector("[data-jr-it]").value.trim(),hu=row.querySelector("[data-jr-hu]").value.trim();if(ownList().some(x=>norm(x.it)===norm(it)))return;
+      ownList().push({id:`${lang()}-own-${Date.now().toString(36)}${Math.random().toString(36).slice(2,6)}`,it,hu,alt:[],note:"Napló · ellenőrzött javaslat"});n++;});
+    save();rebuildOwn();fx("ok");msg.textContent=n?`${n} kártya elmentve. Az ismétlésben is megjelennek.`:"Ezek a kifejezések már a kártyáid között vannak.";$("#jrSaveCards").disabled=true;toast(n?`${n} kártya elmentve.`:"A kártyák már megvannak.");
+  };
+  target.scrollIntoView({block:"nearest"});target.querySelector("input").focus({preventScroll:true});
+}
 function bindJrCards(){
-  const add=(it,hu,note)=>{if(ownList().some(x=>norm(x.it)===norm(it)))return 0;ownList().push({id:`${lang()}-own-${Date.now().toString(36)}${Math.random().toString(36).slice(2,6)}`,it,hu,alt:[],note});return 1;};
-  if($("#jrCards"))$("#jrCards").onclick=()=>{const errs=(JR&&JR.res&&JR.res.errors)||[];let n=0;errs.forEach(e=>{n+=add(e.right,e.why?e.why.slice(0,80):"javítás: "+e.wrong,"Napló");});save();rebuildOwn();fx("ok");toast(n?n+" javítás felvéve a kártyák közé.":"Ezek már a kártyáid között vannak.");$("#jrCards").disabled=true;};
-  view.querySelectorAll("[data-jw]").forEach(b=>b.onclick=()=>{const n=add(b.dataset.jw,b.dataset.jh,"Napló");save();rebuildOwn();toast(n?"Felvéve: "+b.dataset.jw:"Már a kártyáid között van.");b.disabled=true;});
+  if($("#jrCards"))$("#jrCards").onclick=()=>{const errs=(JR&&JR.res&&JR.res.errors)||[];openJournalCardReview(errs.map(e=>({it:e.right,hu:e.hu||"",wrong:e.wrong,why:e.why})));};
+  view.querySelectorAll("[data-jw]").forEach(b=>b.onclick=()=>openJournalCardReview([{it:b.dataset.jw,hu:b.dataset.jh||""}]));
 }
 /* ============ SKILL LEVELS ============ */
 /* A separate level estimate for reading, listening, writing and speaking. Every scored task logs its level and result;
@@ -3158,24 +3673,25 @@ function skillLog(k,lv,pct,src){
 /* 60% on a task of a level puts you in the middle of that level, 100% at its top, 0% a level below. */
 const skillX=e=>{const i=CEFR.indexOf(e.lv);return Math.max(0,Math.min(5.99,e.p>=60?i+0.5+(e.p-60)/80:i-1+e.p/60*1.5));};
 function skillEst(k){
-  const a=((S.sk||{})[k]||[]).filter(e=>e.l===lang()).slice(-8);if(!a.length)return null;
+  const all=((S.sk||{})[k]||[]).filter(e=>e.l===lang()&&CEFR.includes(e.lv)&&Number.isFinite(e.p));
+  const a=all.slice(-8);if(!a.length)return null;
   let w=0,x=0;a.forEach((e,j)=>{x+=skillX(e)*(j+1);w+=j+1;});x/=w;
-  return {x,lv:CEFR[Math.floor(x)],frac:x-Math.floor(x),n:((S.sk||{})[k]||[]).filter(e=>e.l===lang()).length};
+  return {x,lv:CEFR[Math.floor(x)],frac:x-Math.floor(x),n:all.length,used:a.length};
 }
 function skillsCard(){
   const est=SKILLS.map(([k])=>skillEst(k)),have=est.filter(Boolean);
   const weak=have.length>1?SKILLS[est.indexOf(have.reduce((m,e)=>e.x<m.x?e:m))]:null;
-  return `<div class="card stack"><div class="row" style="justify-content:space-between"><h3>Készségszintek</h3><span class="small muted">A1–C2</span></div>
-    <p class="small muted">Külön becslés a négy készségre, a legutóbbi pontozott feladataid alapján.</p>
-    ${SKILLS.map(([k,l,src],i)=>{const e=est[i];return `<div><div class="row" style="justify-content:space-between"><b>${l}</b>${e?`<span class="pill ${e.x>=3?"ok":""}">${e.lv}${e.frac>=0.66?"+":e.frac<0.33?"−":""}</span>`:'<span class="pill">nincs adat</span>'}</div>
-      <div class="meter" role="img" aria-label="${l}: ${e?e.lv:"nincs adat"}"><i style="width:${e?e.x/6*100:0}%"></i></div><p class="small muted">${e?`${e.n} eredmény alapján`:`Ebből lesz adat: ${src}.`}</p></div>`;}).join("")}
+  return `<div class="card stack"><div class="row" style="justify-content:space-between"><h3>Készségek · gyakorlási becslés</h3><span class="small muted">A1–C2</span></div>
+    <p class="small muted">A legutóbbi, legfeljebb nyolc pontozott feladat alapján. A jelzés a következő gyakorlás kiválasztását segíti; nem hitelesített KER-szintmérés.</p>
+    ${SKILLS.map(([k,l,src],i)=>{const e=est[i];return `<div><div class="row" style="justify-content:space-between"><b>${l}</b>${e?`<span class="pill">kb. ${e.lv}${e.used<3?" · kevés adat":""}</span>`:'<span class="pill">nincs adat</span>'}</div>
+      <div class="meter" role="img" aria-label="${l}: ${e?"tájékoztató becslés, "+e.lv:"nincs adat"}"><i style="width:${e?e.x/6*100:0}%"></i></div><p class="small muted">${e?`A legutóbbi ${e.used} feladatból · összesen ${e.n} eredmény`:`Ebből lesz adat: ${src}.`}${k==="speak"?" A szöveges visszajelzés a nyelvhasználatot jelzi; a kiejtést és a beszédtempót nem méri.":""}</p></div>`;}).join("")}
     <div class="row small muted" style="justify-content:space-between">${CEFR.map(c=>`<span>${c}</span>`).join("")}</div>
-    ${weak?`<div class="notice"><b>Leggyengébb most:</b> ${weak[1].toLowerCase()}. ${esc(weak[2])} segít a legtöbbet.</div>`:""}</div>`;
+    ${weak?`<div class="notice"><b>Javasolt következő fókusz:</b> ${weak[1].toLowerCase()}. Próbáld ezeket: ${esc(weak[2])}.</div>`:""}</div>`;
 }
 /* ============ BOOT ============ */
 (async function(){const h=(location.hash||"").slice(1);if(ROUTES.some(r=>r[0]===h)||["stat","utlevel","terkep","ellenorzes"].includes(h))route=h;applyPrefs();
   view.innerHTML=`<div class="card row"><span class="thinking"><i></i><i></i><i></i></span><span class="muted">A tananyag betöltése…</span></div>`;
   try{await loadCourse();}catch(e){view.innerHTML=`<div class="notice">Nem sikerült betölteni a tananyagot. Töltsd újra az oldalt.</div>`;return;}
-  renderChips();if(IS_WEB&&S.settings.cloud)cloudSync();if(IS_WEB&&S.settings.budget)loadUsage().then(u=>{if(u&&route==="ma"&&!P&&!CS&&!D&&S.onboarded)renderHome();});if(!S.onboarded)return renderOnboarding();
+  renderChips();if(IS_WEB&&S.settings.cloud)cloudSync();if(IS_WEB&&S.settings.budget)loadUsage().then(u=>{if(u&&route==="ma"&&!learningViewActive()&&!view.querySelector("details[open]")&&S.onboarded)renderHome();});if(!S.onboarded)return renderOnboarding();
   render();quickAction(h);})();
 </script>

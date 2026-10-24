@@ -8,7 +8,8 @@ function renderJournal(keep){
   if(!keep)stopViews();const list=jrList(),t=today(),done=list.some(e=>e.d===t);
   JR=JR||{text:"",res:null,prompt:JR_PROMPTS[t%JR_PROMPTS.length]};
   let streak=0;for(let d=t-(done?0:1);list.some(e=>e.d===d);d--)streak++;
-  subShell(["Gyakorlás",()=>go("gyakorlas")],"Napló","Napi bejegyzés",`<p class="muted">Írj pár mondatot ${LG().adv} a napodról vagy a mai témáról. Az AI kijavítja, magyarul elmagyarázza a hibákat, és megmutatja, hogyan mondaná egy anyanyelvi. A hibáid bekerülnek a havi hibaelemzésbe, és egy gombbal kártyát csinálhatsz belőlük.</p>
+  subShell(["Gyakorlás",()=>go("gyakorlas")],"Napló","Napi bejegyzés",`<p class="muted">Írj pár mondatot ${LG().adv} a napodról vagy a mai témáról. Az AI kijavítja, magyarul elmagyarázza a hibákat, és megmutatja, hogyan mondaná egy anyanyelvi. A hibáid bekerülnek a havi hibaelemzésbe, és átnézés után kártyát csinálhatsz belőlük.</p>
+    <div class="row">${aiAccessBadge()}</div>${!aiConfigured()?aiSetupNotice():""}
     <div class="card"><div class="stats" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="stat"><span class="label">Bejegyzések</span><b class="tnum">${list.length}</b></div><div class="stat"><span class="label">Napok sorozatban</span><b class="tnum">${streak}</b></div></div></div>
     <div class="card stack"><span class="label">Mai téma (nem kötelező)</span><p ${LA()}>${esc(JR.prompt)}</p><div><button class="btn ghost" id="jrOther">Másik téma</button></div></div>
     <textarea id="jrText" style="min-height:200px" ${LA()} placeholder="${LG().write}" aria-label="Napló ${LG().adv}">${esc(JR.text)}</textarea>
@@ -17,11 +18,11 @@ function renderJournal(keep){
     ${list.length?`<div class="sec-head"><h2>Korábbi bejegyzések</h2></div>${list.slice(-10).reverse().map(e=>`<details class="g"><summary>${new Date(e.at).toLocaleDateString("hu-HU")} · ${e.n||0} hiba${e.lv?" · "+esc(e.lv):""}</summary><div class="gb stack"><p class="prewrap" ${LA()}>${esc(e.fixed||e.text)}</p>${(e.errs||[]).length?`<div class="err-list">${e.errs.map(x=>`<div><s ${LA()}>${esc(x.wrong)}</s> → <ins ${LA()}>${esc(x.right)}</ins></div>`).join("")}</div>`:""}</div></details>`).join("")}`:""}`);
   const ta=$("#jrText"),wc=()=>{const n=ta.value.trim()?ta.value.trim().split(/\s+/).length:0;$("#jrWc").textContent=n+" szó";};ta.oninput=()=>{JR.text=ta.value;wc();};wc();
   $("#jrOther").onclick=()=>{JR.prompt=rnd(JR_PROMPTS.filter(p=>p!==JR.prompt));renderJournal(true);};
-  $("#jrSend").onclick=sendJournal;bindJrCards();
+  $("#jrSend").onclick=sendJournal;bindJrCards();bindAISetup(view,()=>renderJournal(true));
 }
 async function sendJournal(){
   const text=$("#jrText").value.trim();if(text.split(/\s+/).length<15){toast("Írj legalább 15 szót.");return;}
-  const sample=await getSample();if(!sample){$("#jrRes").innerHTML=`<div class="notice">${aiMissing()}</div>`;return;}
+  const sample=await getSample();if(!sample){$("#jrRes").innerHTML=aiSetupNotice();bindAISetup($("#jrRes"),()=>renderJournal(true));return;}
   $("#jrSend").disabled=true;$("#jrRes").innerHTML=`<div class="card row"><span class="thinking"><i></i><i></i><i></i></span><span class="muted">A tanár javítja a naplódat…</span></div>`;
   const prompt=`${LG().teacher[0].toUpperCase()+LG().teacher.slice(1)}ként javítsd ki egy magyar anyanyelvű tanuló ${LG().adv} írt naplóbejegyzését. Légy pontos, de bátorító.
 A bejegyzés:
@@ -29,9 +30,9 @@ A bejegyzés:
 
 Javítsd ki a nyelvtani, szóhasználati és helyesírási hibákat úgy, hogy a tanuló mondanivalója megmaradjon. Minden hibát külön sorolj fel rövid magyar magyarázattal (legfeljebb 10). Írj egy természetesebb, anyanyelvi változatot is ugyanarról. Becsüld meg a szöveg szintjét (A1–C2). Adj 3 hasznos ${LG().adj} kifejezést, ami ehhez a témához illik.
 Csak egy JSON objektumot adj vissza:
-{"corrected":"a kijavított szöveg","errors":[{"wrong":"hibás rész","right":"javított rész","why":"rövid magyar magyarázat"}],"natural":"természetesebb változat","level":"B1","praise":"egy mondat dicséret magyarul","tip":"egy konkrét tipp magyarul","words":[{"it":"kifejezés","hu":"jelentés"}]}`;
+{"corrected":"a kijavított szöveg","errors":[{"wrong":"hibás rész","right":"javított rész","hu":"a javított kifejezés magyar jelentése","why":"rövid magyar magyarázat"}],"natural":"természetesebb változat","level":"B1","praise":"egy mondat dicséret magyarul","tip":"egy konkrét tipp magyarul","words":[{"it":"kifejezés","hu":"jelentés"}]}`;
   try{const r=await sample.json(prompt,{modelTier:"default"});if(!JR)return;
-    const errs=(Array.isArray(r.errors)?r.errors:[]).filter(e=>e&&e.wrong&&e.right).slice(0,10).map(e=>({wrong:String(e.wrong),right:String(e.right),why:String(e.why||"")}));r.errors=errs;
+    const errs=(Array.isArray(r.errors)?r.errors:[]).filter(e=>e&&e.wrong&&e.right).slice(0,10).map(e=>({wrong:String(e.wrong),right:String(e.right),why:String(e.why||""),hu:String(e.hu||"")}));r.errors=errs;
     JR.res=r;S.journal=S.journal||[];S.journal.push({at:Date.now(),d:today(),l:lang(),text,fixed:String(r.corrected||""),errs:errs.map(e=>({wrong:e.wrong,right:e.right})),n:errs.length,lv:String(r.level||"")});if(S.journal.length>120)S.journal.splice(0,S.journal.length-120);
     errs.forEach(e=>logMiss("journal",e.wrong,e.wrong,e.right+" – "+e.why));
     const words=text.split(/\s+/).length;if(r.level)skillLog("write",String(r.level),Math.max(30,85-errs.length/words*400),"journal");
@@ -41,14 +42,36 @@ Csak egy JSON objektumot adj vissza:
 }
 function jrHtml(r,text){
   const errs=r.errors||[],words=Array.isArray(r.words)?r.words.filter(w=>w&&w.it):[];
-  return `<div class="stack"><div class="card stack"><div class="row" style="justify-content:space-between"><h3>Javított szöveg</h3><span class="pill">${esc(r.level||"")} · ${errs.length} hiba</span></div><p class="prewrap" ${LA()}>${esc(r.corrected||text)}</p>${r.praise?`<p class="small">${esc(r.praise)}</p>`:""}</div>
-    ${errs.length?`<div class="card stack"><h3>Hibák</h3><div class="err-list">${errs.map(e=>`<div><s ${LA()}>${esc(e.wrong)}</s> → <ins ${LA()}>${esc(e.right)}</ins><div class="small muted">${esc(e.why)}</div></div>`).join("")}</div><button class="btn soft" id="jrCards">A javítások kártyára (${errs.length})</button></div>`:""}
+  return `<div class="stack"><div class="card stack"><div class="row" style="justify-content:space-between"><h3>Javított szöveg</h3><span class="pill">AI-becslés: ${esc(r.level||"nincs szint")} · ${errs.length} javítás</span></div><p class="prewrap" ${LA()}>${esc(r.corrected||text)}</p>${r.praise?`<p class="small">${esc(r.praise)}</p>`:""}</div>
+    ${errs.length?`<div class="card stack"><h3>Hibák</h3><div class="err-list">${errs.map(e=>`<div><s ${LA()}>${esc(e.wrong)}</s> → <ins ${LA()}>${esc(e.right)}</ins><div class="small muted">${esc(e.why)}</div></div>`).join("")}</div><button class="btn soft" id="jrCards">Javítások átnézése és kártyára mentése (${errs.length})</button></div>`:""}
     ${r.natural?`<div class="card stack"><h3>Így mondaná egy anyanyelvi</h3><p class="prewrap" ${LA()}>${esc(r.natural)}</p></div>`:""}
     ${words.length?`<div class="card stack"><h3>Hasznos kifejezések</h3>${words.map(w=>`<div class="dict-row">${spkBtn(String(w.it),"sm")}<div style="min-width:0"><div class="it" ${LA()}>${esc(w.it)}</div><div class="small muted">${esc(w.hu)}</div></div><button class="btn ghost" data-jw="${esc(w.it)}" data-jh="${esc(w.hu)}" style="padding:.35rem .6rem;font-size:.8rem">+ Kártya</button></div>`).join("")}</div>`:""}
+    <div id="jrCardReview" hidden></div>
     ${r.tip?`<div class="notice"><b>Tipp:</b> ${esc(r.tip)}</div>`:""}</div>`;
 }
+/* AI suggestions are drafts: each card needs an explicit check and a Hungarian meaning. */
+function openJournalCardReview(cards){
+  const target=$("#jrCardReview");if(!target)return;
+  target.hidden=false;
+  target.innerHTML=`<div class="card stack"><h3>Kártyák átnézése</h3><p class="small muted">Az AI javaslatait mentés előtt ellenőrizd. Javíthatod a kifejezést és a magyar jelentést, és kihagyhatod, amit nem szeretnél tanulni.</p>
+    ${cards.map((c,i)=>`<div class="stack" data-jr-card="${i}" style="gap:.5rem;border-top:1px solid var(--line);padding-top:.8rem"><label class="row" style="flex-wrap:nowrap;justify-content:flex-start"><input type="checkbox" data-jr-select checked style="width:20px;height:20px;flex:none"><b>${i+1}. kártya mentése</b></label>
+      ${c.wrong?`<p class="small muted">Eredetileg: <s ${LA()}>${esc(c.wrong)}</s></p>`:""}
+      <label class="stack" style="gap:.25rem"><span class="small">Kifejezés ${LG().adv}</span><input data-jr-it value="${esc(c.it)}" ${LA()}></label>
+      <label class="stack" style="gap:.25rem"><span class="small">Magyar jelentés</span><input data-jr-hu value="${esc(c.hu||"")}" placeholder="Mit jelent magyarul?"></label>
+      ${c.why?`<p class="small muted">${esc(c.why)}</p>`:""}</div>`).join("")}
+    <p id="jrCardMsg" class="small" role="status" aria-live="polite"></p><div class="row"><button class="btn" id="jrSaveCards">Kijelölt kártyák mentése</button><button class="btn ghost" id="jrCancelCards">Mégsem</button></div></div>`;
+  $("#jrCancelCards").onclick=()=>{target.hidden=true;};
+  $("#jrSaveCards").onclick=()=>{
+    const rows=[...target.querySelectorAll("[data-jr-card]")].filter(row=>row.querySelector("[data-jr-select]").checked),msg=$("#jrCardMsg");
+    if(!rows.length){msg.textContent="Jelölj ki legalább egy kártyát.";return;}
+    for(const row of rows){for(const key of ["it","hu"]){const input=row.querySelector(`[data-jr-${key}]`);input.removeAttribute("aria-invalid");if(!input.value.trim()){input.setAttribute("aria-invalid","true");input.focus();msg.textContent=key==="hu"?"Add meg a kijelölt kártya magyar jelentését.":"Add meg a kijelölt kártya kifejezését.";return;}}}
+    let n=0;rows.forEach(row=>{const it=row.querySelector("[data-jr-it]").value.trim(),hu=row.querySelector("[data-jr-hu]").value.trim();if(ownList().some(x=>norm(x.it)===norm(it)))return;
+      ownList().push({id:`${lang()}-own-${Date.now().toString(36)}${Math.random().toString(36).slice(2,6)}`,it,hu,alt:[],note:"Napló · ellenőrzött javaslat"});n++;});
+    save();rebuildOwn();fx("ok");msg.textContent=n?`${n} kártya elmentve. Az ismétlésben is megjelennek.`:"Ezek a kifejezések már a kártyáid között vannak.";$("#jrSaveCards").disabled=true;toast(n?`${n} kártya elmentve.`:"A kártyák már megvannak.");
+  };
+  target.scrollIntoView({block:"nearest"});target.querySelector("input").focus({preventScroll:true});
+}
 function bindJrCards(){
-  const add=(it,hu,note)=>{if(ownList().some(x=>norm(x.it)===norm(it)))return 0;ownList().push({id:`${lang()}-own-${Date.now().toString(36)}${Math.random().toString(36).slice(2,6)}`,it,hu,alt:[],note});return 1;};
-  if($("#jrCards"))$("#jrCards").onclick=()=>{const errs=(JR&&JR.res&&JR.res.errors)||[];let n=0;errs.forEach(e=>{n+=add(e.right,e.why?e.why.slice(0,80):"javítás: "+e.wrong,"Napló");});save();rebuildOwn();fx("ok");toast(n?n+" javítás felvéve a kártyák közé.":"Ezek már a kártyáid között vannak.");$("#jrCards").disabled=true;};
-  view.querySelectorAll("[data-jw]").forEach(b=>b.onclick=()=>{const n=add(b.dataset.jw,b.dataset.jh,"Napló");save();rebuildOwn();toast(n?"Felvéve: "+b.dataset.jw:"Már a kártyáid között van.");b.disabled=true;});
+  if($("#jrCards"))$("#jrCards").onclick=()=>{const errs=(JR&&JR.res&&JR.res.errors)||[];openJournalCardReview(errs.map(e=>({it:e.right,hu:e.hu||"",wrong:e.wrong,why:e.why})));};
+  view.querySelectorAll("[data-jw]").forEach(b=>b.onclick=()=>openJournalCardReview([{it:b.dataset.jw,hu:b.dataset.jh||""}]));
 }

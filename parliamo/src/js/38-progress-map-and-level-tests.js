@@ -5,11 +5,11 @@ function renderMap(){
   const levels=LG().levels.filter(l=>levelLessons(l).length);let html="";
   levels.forEach((l,k)=>{
     const ls_=levelLessons(l),done=ls_.filter(x=>ls(x.i)&&ls(x.i).done).length,pct=done/ls_.length,cert=S.certs[certKey(l)],open=pct>=0.7;
-    html+=`<div class="mapband"><div class="mapnodes">${ls_.map(({L,i})=>{const s=ls(i),d=s&&s.done;return `<button class="mnode ${d?"done":i===nextLesson()?"cur":""}" data-l="${i}" title="${esc(L.t)}" aria-label="${i+1}. lecke: ${esc(L.t)}${d?", kész":""}">${d?"✓":i+1}</button>`;}).join('<i class="mline"></i>')}</div>
+    html+=`<div class="mapband"><div class="mapnodes">${ls_.map(({L,i})=>{const s=ls(i),d=s&&s.done;return `<button class="mnode ${d?"done":s&&s.placed?"placed":i===nextLesson()?"cur":""}" data-l="${i}" title="${esc(L.t)}" aria-label="${i+1}. lecke: ${esc(L.t)}${d?", kész":s&&s.placed?", szintfelmérő alapján átugorva":""}">${d?"✓":s&&s.placed?"↗":i+1}</button>`;}).join('<i class="mline"></i>')}</div>
       <div class="mile ${cert?"ok":open?"open":""}"><div><span class="label">${l} szint · ${done}/${ls_.length} lecke</span><h3>${cert?`${l} oklevél megszerezve`:open?`${l} szintzáró teszt`:`${l} mérföldkő`}</h3><p class="small muted">${cert?`${new Date(cert.at).toLocaleDateString("hu-HU")} · ${cert.score}%`:open?"15 kérdés a szint leckéiből. 80%-tól jár az oklevél.":"A szintzáró a szint leckéinek 70%-a után nyílik meg."}</p></div>
       ${cert?`<button class="btn soft" data-cert="${l}">Oklevél</button>`:open?`<button class="btn lemon" data-test="${l}">Teszt</button>`:`<span class="pill">${Math.round(pct*100)}%</span>`}</div></div>`;});
   view.innerHTML=`<div class="stack"><div class="row"><button class="btn ghost" data-go="leckek">← Leckék</button></div>
-    <div><span class="label">${LG().name} · ${LG().range}</span><h1>Haladási térkép</h1><p class="muted">Az útvonalad szintenként. Minden szint végén szintzáró teszt vár, és ha sikerül, oklevelet kapsz.</p></div>
+    <div><span class="label">${LG().name} · ${LG().range}</span><h1>Haladási térkép</h1><p class="muted">Az útvonalad szintenként. A ↗ jelű leckéket a szintfelmérő alapján átugrottad; ezekért még nem jár teljesítés vagy pecsét. Az oklevél az app feladatainak teljesítését jelzi, nem hivatalos nyelvvizsga.</p></div>
     <div class="map">${html}</div></div>`;
   view.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>{route="leckek";render();openLesson(+b.dataset.l);});
   view.querySelectorAll("[data-test]").forEach(b=>b.onclick=()=>levelTest(b.dataset.test));

@@ -63,6 +63,13 @@ function mockProxy(store) {
     await ctx.route(PROXY + '/**', mockProxy(store));
     const p = await ctx.newPage(); p._errs = [];
     p.on('pageerror', e => p._errs.push(e.message + (process.env.PSTACK ? ' @ ' + e.stack.split('\n').slice(1, 3).join(' ') : ''))); p.on('console', m => { if (m.type() === 'error' && !/Failed to load resource/.test(m.text())) p._errs.push(m.text()); });
+    // Grouped practice and secondary settings are intentionally collapsed. Reveal the target panel before clicking.
+    const click=p.click.bind(p);
+    p.click=async (selector,options)=>{
+      const el=p.locator(selector).first();
+      if(await el.count())await el.evaluate(el=>{for(let d=el.parentElement;d;d=d.parentElement)if(d.tagName==='DETAILS')d.open=true;});
+      return click(selector,options);
+    };
     return { ctx, p };
   };
   const answerAll = async p => {
@@ -83,7 +90,9 @@ function mockProxy(store) {
   const { ctx, p } = await open();
   await p.goto(URL0); await p.waitForSelector('[data-l="en"]');
   ok(await p.locator('a.skip').count() === 1, 'van „Ugrás a tartalomhoz” link');
-  await p.click('[data-l="en"]'); await p.waitForSelector('[data-g="50"]'); await p.click('[data-g="50"]'); await p.click('[data-v="new"]');
+  await p.click('[data-l="en"]'); await p.click('[data-v="new"]'); await p.click('#sampleStart');
+  const sampleAnswer=await p.evaluate(()=>OB.c.hu);await p.locator('[data-sample-o]',{hasText:sampleAnswer}).click();await p.click('#sampleNext');
+  await p.fill('#sampleAnswer',await p.evaluate(()=>OB.c.it));await p.click('#sampleCheck');await p.click('#sampleNext');await p.click('#sampleGoal');await p.click('[data-g="50"]');
   await p.waitForSelector('#hRound');
   ok(await p.evaluate(() => S.onboarded && lang() === 'en'), 'bevezető után angol, kész');
   ok(await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'nincs vízszintes görgetés telefonméretben');
@@ -168,7 +177,7 @@ function mockProxy(store) {
   ok(iv[1] < iv[0] && iv[2] < iv[1], 'magasabb megtartási cél és a nehéz kártya rövidebb időközt ad', iv);
 
   console.log('\n8. Szinkron két eszköz között');
-  await p.evaluate(() => go('ma')); await p.click('details.g summary'); await p.click('#sSync [data-v="1"]');
+  await p.evaluate(() => go('ma')); await p.click('#homeSettings > summary'); await p.click('#sSync [data-v="1"]');
   await p.waitForFunction(() => cloudRev > 0);
   ok(store.rec && store.rec.state.lessons['en-c1'] && !('pass' in store.rec.state.settings), 'feltöltve, a belépőkód nélkül');
   const B = await open(1280);
@@ -199,9 +208,9 @@ function mockProxy(store) {
   await C.p.evaluate(() => { PR.q = { pair: ['think', 'sink'], t: 0 }; drawPron(); window.__heard = ['sink']; });
   await C.p.click('#prMic'); await C.p.waitForFunction(() => PR.res);
   ok(await C.p.evaluate(() => PR.res.partner && !PR.res.ok), 'a párjának hallott szót felismeri (think → sink)');
-  await C.p.evaluate(() => { PR.q = { pair: ['think', 'sink'], t: 0 }; PR.res = null; drawPron(); window.__heard = ['I think so']; });
+  await C.p.evaluate(() => { PR.q = { pair: ['think', 'sink'], t: 0 }; PR.res = null; drawPron(); window.__heard = ['think']; });
   await C.p.click('#prMic'); await C.p.waitForFunction(() => PR.res);
-  ok(await C.p.evaluate(() => PR.res.ok), 'helyes kiejtés elfogadva');
+  ok(await C.p.evaluate(() => PR.res.ok), 'a kért szó felismert szövege egyezik');
   await C.p.evaluate(() => go('tanar')); await C.p.click('[data-s="free"]'); await C.p.waitForSelector('#cHands');
   await C.p.evaluate(() => { window.__heard = ['I live in Budapest.', 'I like it here.']; });
   await C.p.click('#cHands');
@@ -232,6 +241,8 @@ function mockProxy(store) {
   await p.evaluate(() => go('stat')); await p.click('#aPlan'); await p.waitForFunction(() => !!S.plan.en);
   ok(await p.evaluate(() => S.plan.en.days.length === 14 && S.plan.en.test.length === 10), 'terv: 14 nap és 10 kérdéses felmérés');
   await p.evaluate(() => go('ma')); await p.click('#plGo');
+  await p.evaluate(async () => { await cloudSync(); });
+  ok(await p.evaluate(() => !!QZ && !cloudBusy), 'szinkron nem szakítja meg az aktív felmérést');
   const answerQuiz = async right => { for (let k = 0; k < 20; k++) { if (!(await p.evaluate(() => !!QZ))) break; const i = await p.evaluate(r => { const it = QZ.items[QZ.i]; return r ? it._o.indexOf(it.a) : it._o.findIndex(x => x !== it.a); }, right); await p.click(`[data-o="${i}"]`); await p.click('#qgo'); } };
   await answerQuiz(false);
   ok(await p.evaluate(() => S.plan.en.pre === 0), 'kezdő felmérés eredménye elmentve');
@@ -259,13 +270,13 @@ function mockProxy(store) {
   ok(await p.evaluate(() => S.dlg.d1 && S.dlg.d1.n === 4), 'kész párbeszéd végigvihető, visszajelzéssel');
 
   console.log('\n14. AI-költség és szerveres mentések');
-  await p.evaluate(() => { S.settings.budget = 8; save(); go('ma'); }); await p.click('details.g summary'); await p.waitForFunction(() => /\$7\.60/.test(document.querySelector('#sUse').textContent));
+  await p.evaluate(() => { S.settings.budget = 8; save(); go('ma'); }); await p.click('#homeSettings > summary'); await p.waitForFunction(() => /\$7\.60/.test(document.querySelector('#sUse').textContent));
   ok(true, 'havi AI-használat megjelenik');
   await p.evaluate(() => renderHome()); ok(await p.locator('.notice', { hasText: 'AI-költség' }).count() === 1, '80% felett figyelmeztet a kezdőlapon');
-  await p.click('details.g summary'); await p.click('#sBkNow'); await p.waitForSelector('[data-bk]');
+  await p.click('#homeSettings > summary'); await p.click('#sBkNow'); await p.waitForSelector('[data-bk]');
   const xpBefore = await p.evaluate(() => S.xp);
   await p.evaluate(async () => { S.xp += 500; save(); await cloudSync(); });
-  await p.evaluate(() => { renderHome(); document.querySelector('details.g').open = true; }); await p.waitForSelector('[data-bk]');
+  await p.evaluate(() => { renderHome(); document.querySelector('#homeSettings').open = true; }); await p.waitForSelector('[data-bk]');
   await p.click('[data-bk]'); await p.click('[data-bk]'); await p.waitForFunction(x => S.xp === x && !cloudBusy, xpBefore);
   ok(await p.evaluate(x => S.xp === x, xpBefore), 'visszaállítás mentésből');
   ok(store.rec.state.xp === xpBefore, 'a visszaállított állapot a szerverre is felkerül', store.rec.state.xp);
@@ -315,10 +326,10 @@ function mockProxy(store) {
   for (let k = 0; k < 64; k++) { const real = await p.evaluate(() => VT && VT.items[VT.i].b >= 0); if (real === null) break; await p.click(`[data-y="${real ? 1 : 0}"]`); }
   ok(await p.evaluate(() => S.vsize[S.vsize.length - 1].size === 10000 && S.vsize[S.vsize.length - 1].level === 'C2'), 'szókincsteszt: tökéletes válaszokra 10 000 szó, C2');
   ok(await p.evaluate(() => { const X = XT.vt, items = X.bands.flatMap((b, bi) => b.words.map(w => ({ w, b: bi }))).concat(X.pseudo.map(w => ({ w, b: -1 }))); const yes = items.map(() => true); return vtScore(items, yes, X).size === 0; }), 'aki mindenre igent mond, annak 0 a becslés');
-  await p.evaluate(() => go('ma')); await p.click('details.g summary'); await p.click('#sTheme [data-v="dark"]');
+  await p.evaluate(() => go('ma')); await p.click('#homeSettings > summary'); await p.click('#sTheme [data-v="dark"]');
   ok(await p.evaluate(() => document.documentElement.dataset.theme === 'dark'), 'sötét téma kézzel');
-  await p.click('details.g summary').catch(() => {}); await p.evaluate(() => { document.querySelector('details.g').open = true; }); await p.click('#sFs [data-v="xl"]');
-  await p.evaluate(() => { document.querySelector('details.g').open = true; }); await p.click('#sRead [data-v="1"]');
+  await p.click('#homeSettings > summary').catch(() => {}); await p.evaluate(() => { document.querySelector('#homeSettings').open = true; }); await p.click('#sFs [data-v="xl"]');
+  await p.evaluate(() => { document.querySelector('#homeSettings').open = true; }); await p.click('#sRead [data-v="1"]');
   ok(await p.evaluate(() => document.documentElement.dataset.fs === 'xl' && document.documentElement.dataset.read === '1' && getComputedStyle(document.body).fontFamily.includes('Atkinson')), 'nagy betű és könnyen olvasható betűtípus');
   ok(await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'nagy betűvel sincs vízszintes görgetés');
   await p.evaluate(() => { S.settings.theme = 'auto'; S.settings.fs = 'm'; S.settings.readable = false; save(); applyPrefs(); });
@@ -348,7 +359,7 @@ function mockProxy(store) {
   ok(true, 'szóbeli: a beszéd a válaszmezőbe kerül');
   for (let k = 0; k < 8; k++) { if (k) await p.fill('#seText', 'This is my answer number ' + k + ' and I think it is quite good.'); await p.click('#seNext'); }
   await p.waitForSelector('#seRes .stat');
-  ok(await p.evaluate(() => S.spk.length === 1 && S.spk[0].band === '6.5' && skillEst('speak') && S.sk.speak.some(e => e.src === 'examiner' && e.lv === 'B2')), 'szóbeli: sávpontszám, előzmény, beszédkészség-szint');
+  ok(await p.evaluate(() => S.spk.length === 1 && S.spk[0].band === '6.5' && !(S.sk.speak||[]).some(e => e.src === 'examiner')), 'szóbeli: gyakorlási becslés és előzmény, mért beszédszint nélkül');
   await p.evaluate(() => go('gyakorlas')); await p.click('[data-d="mock"]'); await p.click('[data-mk="b2"]');
   ok(await p.locator('#mkClock').count() === 1 && await p.locator('[data-mp]').count() === 6, 'próbavizsga: visszaszámláló és 6 rész');
   await p.evaluate(() => { MK.m.parts.forEach((pt, pi) => (pt.questions || pt.items || []).forEach((q, k) => { MK.ans[pi + '-' + k] = q.o ? q.a : q.a; })); MK.text = Array(60).fill('word').join(' '); MK.pi = 5; drawMock(); });
@@ -366,9 +377,9 @@ function mockProxy(store) {
   ok(await p.evaluate(jp => JR.prompt !== jp && document.querySelector('#jrText').value === 'draft', jp), 'napló: másik téma, a piszkozat megmarad');
   await p.fill('#jrText', 'Yesterday I goed in the cinema with my friends and we watched a very funny film about a dog.'); await p.click('#jrSend'); await p.waitForSelector('#jrCards');
   ok(await p.evaluate(() => S.journal.length === 1 && S.mlog.some(m => m.k === 'journal') && skillEst('write')), 'napló: javítás, hibanapló, írás-szint');
-  await p.click('#jrCards'); ok(await p.evaluate(() => ownList().some(w => w.it === 'I went')), 'napló: a javítás kártya lesz');
+  await p.click('#jrCards'); await p.locator('[data-jr-hu]').nth(0).fill('mentem'); await p.locator('[data-jr-hu]').nth(1).fill('a moziba'); await p.click('#jrSaveCards'); ok(await p.evaluate(() => ownList().some(w => w.it === 'I went')), 'napló: a javítás kártya lesz');
   ok(await p.evaluate(() => { const a = { updatedAt: 1, journal: [{ at: 1, text: 'a' }], sk: { read: [{ at: 1, src: 'x' }] } }, b = { updatedAt: 2, journal: [{ at: 1, text: 'a' }, { at: 2, text: 'b' }], sk: { read: [{ at: 2, src: 'y' }] } }; const m = mergeState(a, b); return m.journal.length === 2 && m.sk.read.length === 2; }), 'szinkron: napló és készségek összefésülése');
-  await p.evaluate(() => go('stat')); ok(await p.locator('text=Készségszintek').count() === 1 && await p.evaluate(() => !!(skillEst('read') && skillEst('listen'))), 'statisztika: négy készség külön szinttel');
+  await p.evaluate(() => go('stat')); ok(await p.locator('text=Készségek · gyakorlási becslés').count() === 1 && await p.evaluate(() => !!(skillEst('read') && skillEst('listen'))), 'statisztika: négy készség külön szinttel');
   ok(await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'az új nézetekben sincs vízszintes görgetés');
 
   ok(p._errs.length === 0 && B.p._errs.length === 0, 'nincs JS-hiba', [...p._errs, ...B.p._errs].slice(0, 5));

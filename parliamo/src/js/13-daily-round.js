@@ -35,15 +35,17 @@ function itemResult(e,ok,warn,fast){
   else if(P.kind==="miss"&&!e.retry){S.miss[id]=(S.miss[id]||1)-1;if(S.miss[id]<=0)delete S.miss[id];incEv("fixes");}
   if(P.kind==="daily"&&!e.retry&&!P.graded[id]){
     P.graded[id]=1;const g=!ok?1:warn?2:fast?4:3,isNew=!S.cards[id];
-    S.cards[id]=sched(S.cards[id],g-1,id);logReview(g>1);incEv("reviews");
+    const prev=S.cards[id];
+    if(ok&&prev&&prev.last&&Date.now()-prev.last>=7*864e5)recordEvidence("recall",id,e.t==="type"&&!warn?"Egy hét után is felidézted":"Egy hét után is helyesen válaszoltál",(POOL.find(c=>c.id===id)||{}).it||e.it||e.q||"");
+    S.cards[id]=sched(prev,g-1,id);logReview(g>1);incEv("reviews");
     if(isNew){const t=today();if(S.newToday.day!==t)S.newToday={day:t,n:0};S.newToday.n++;}
   }
   save();
 }
-function startRound(kind){
+function startRound(kind,limits={}){
   const q=[];
   if(kind==="daily"){
-    const due=dueList().sort((a,b)=>S.cards[a.id].due-S.cards[b.id].due).slice(0,25), nw=newAvail().slice(0,Math.min(newLeft(),10));
+    const due=dueList().sort((a,b)=>S.cards[a.id].due-S.cards[b.id].due).slice(0,limits.review??25), nw=newAvail().slice(0,Math.min(newLeft(),limits.newCards??10));
     due.forEach(c=>q.push(exFor(c,stageOf(S.cards[c.id]))));
     nw.forEach((c,k)=>{const pos=Math.min(q.length,k*3);q.splice(pos,0,{t:"intro",c,li:c.li});q.splice(Math.min(q.length,pos+3),0,exFor(c,0));});
   }
@@ -63,7 +65,7 @@ function finishRound(){
   const kind=P.kind, acc=P.n?Math.round(P.ok/P.n*100):100, bonus=kind==="daily"?10:0, xp=P.xp+bonus;
   if(kind==="daily"){S.rounds[today()]=(S.rounds[today()]||0)+1;incEv("rounds");}
   addXP(xp);P=null;
-  const title={daily:"Napi kör kész",miss:"Hibakör kész",speak:"Kiejtésgyakorlás kész"}[kind];
+  const title={daily:"Napi kör kész",miss:"Hibakör kész",speak:"Hangos gyakorlás kész"}[kind];
   view.innerHTML=`<div class="player" style="justify-content:center;text-align:center;align-items:center">
     <span class="label">${title}</span><h1>${LG().fin[acc>=90?0:acc>=70?1:2]}</h1>
     <div class="stats" style="width:100%;max-width:420px;grid-template-columns:repeat(2,minmax(0,1fr))"><div class="card stat"><span class="label">Pontosság</span><b class="tnum">${acc}%</b></div><div class="card stat"><span class="label">Szerzett XP</span><b class="tnum">+${xp}</b></div></div>
@@ -72,6 +74,7 @@ function finishRound(){
   confetti();
   if($("#rMiss"))$("#rMiss").onclick=()=>startRound("miss");
   if($("#rAi"))$("#rAi").onclick=()=>{route="gyakorlas";aiStory();};
+  dailyRoundFinished(kind);
 }
 /* Speech recognition only exists outside the artifact frame (the frame refuses the microphone). */
 const canSpeak=()=>IS_WEB&&!!(window.SpeechRecognition||window.webkitSpeechRecognition);
@@ -85,9 +88,4 @@ function listen(){
     r.start();
   });
 }
-function speechScore(target,alts){
-  const tw=deacc(norm(target)).split(" ").filter(Boolean);let best=0;
-  for(const a of alts){const aw=new Set(deacc(norm(a)).split(" "));best=Math.max(best,tw.filter(w=>aw.has(w)).length/tw.length);}
-  return best;
-}
-
+function speechScore(target,alts){return speechDetail(target,alts).score;}
