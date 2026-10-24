@@ -1115,8 +1115,8 @@ function renderLessons(){
   view.innerHTML=`<div class="stack"><div><span class="label">${LG().name} · ${LG().range} · ${doneCount()} / ${LESSONS.length} kész</span><h1>Leckék</h1><p class="muted">Minden lecke egy rövid magyarázattal indul, aztán 15–20 feladat következik. Egy befejezett lecke szavai bekerülnek a szókártyáid közé, és pecsétet kapsz az útleveledbe.</p><div class="row" style="margin-top:.6rem"><button class="btn ghost" data-go="terkep">Haladási térkép</button><button class="btn ghost" id="lPlace">Szintfelmérő</button><button class="btn ghost" data-go="utlevel">Útlevél</button></div></div>
   <div class="lgrid">${LESSONS.map((L,i)=>{const s=ls(i);const cls=s&&s.done?"done":s&&s.placed?"placed":i===nl?"cur":"";
     const head=TRACKS&&(i===0||LESSONS[i-1].track!==L.track)?`<h2 style="grid-column:1/-1;margin-top:${i?"1rem":"0"}">${esc(TRACKS[L.track]||L.track)}</h2>`:"";
-    return head+`<button class="lcard ${cls}" data-l="${i}"><div class="pic"><img src="img/${L.id}.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"><span class="num">${s&&s.done?"✓":i+1}</span><span class="badge">${s&&s.done?`<span class="pill ok">${s.best}%</span>`:s&&s.placed?`<span class="pill">Átugorva</span>`:i===nl?`<span class="pill now">Következő</span>`:`<span class="pill">${L.level}</span>`}</span></div>
-      <div class="body"><b>${esc(L.t)}</b><span class="small muted">${esc(L.hu)} · ${L.words.length} szó, ${L.phrases.length} kifejezés</span>${s&&s.done?`<div class="meter"><i style="width:${s.best}%"></i></div>`:""}</div></button>`;}).join("")}</div></div>`;
+    return head+`<button class="lcard ${cls}" data-l="${i}"><div class="pic"><img src="img/${L.id}.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"><span class="num">${s&&s.done?"✓":i+1}</span><span class="badge">${s&&s.done?`<span class="pill ok">${esc(s.best)}%</span>`:s&&s.placed?`<span class="pill">Átugorva</span>`:i===nl?`<span class="pill now">Következő</span>`:`<span class="pill">${L.level}</span>`}</span></div>
+      <div class="body"><b>${esc(L.t)}</b><span class="small muted">${esc(L.hu)} · ${L.words.length} szó, ${L.phrases.length} kifejezés</span>${s&&s.done?`<div class="meter"><i style="width:${esc(s.best)}%"></i></div>`:""}</div></button>`;}).join("")}</div></div>`;
   view.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>openLesson(+b.dataset.l));
   $("#lPlace").onclick=()=>startPlacement(false);
 }
@@ -2040,7 +2040,7 @@ function renderStories(){
   view.innerHTML=`<div class="stack"><div class="row"><button class="btn ghost" id="sBack">← Gyakorlás</button></div>
   <div><span class="label">Hangos párbeszédek</span><h1>Történetek</h1><p class="muted">Rövid jelenetek két hanggal. Hallgasd meg mondatonként, koppints a mondatra a fordításért, és válaszolj a közbeékelt kérdésekre.</p></div>
   <div class="lgrid">${STORIES.map(st=>{const done=S.stories[st.id];const li=LESSONS.findIndex(l=>l.id===st.unlock);const ready=li<0||(ls(li)&&ls(li).done);
-    return `<button class="lcard scard ${done?"done":""}" data-st="${st.id}">${pic(st.img||st.unlock)}<div class="body"><b>${esc(st.title)}</b><span class="small muted">${esc(st.hu)}</span><span class="row" style="gap:.35rem;margin-top:.3rem"><span class="pill">${st.level}</span>${done?`<span class="pill ok">Kész · ${done.score}</span>`:ready?"":`<span class="pill">a ${li+1}. lecke után ajánlott</span>`}</span></div></button>`;}).join("")}</div></div>`;
+    return `<button class="lcard scard ${done?"done":""}" data-st="${st.id}">${pic(st.img||st.unlock)}<div class="body"><b>${esc(st.title)}</b><span class="small muted">${esc(st.hu)}</span><span class="row" style="gap:.35rem;margin-top:.3rem"><span class="pill">${st.level}</span>${done?`<span class="pill ok">Kész · ${esc(done.score)}</span>`:ready?"":`<span class="pill">a ${li+1}. lecke után ajánlott</span>`}</span></div></button>`;}).join("")}</div></div>`;
   $("#sBack").onclick=()=>renderPractice();
   view.querySelectorAll("[data-st]").forEach(b=>b.onclick=()=>playStory(b.dataset.st));
   window.scrollTo(0,0);
@@ -2755,7 +2755,7 @@ function planDay(p){return Math.min(13,Math.max(0,today()-p.start));}
 function planCard(){
   const p=planOf();if(!p)return "";
   const d=planDay(p),doneN=p.days.filter(x=>x.done).length,dayIt=p.days[d];
-  if(p.post!=null)return `<div class="card next"><div><span class="label">Kéthetes terv kész</span><h3>${esc(p.title)}</h3><p class="small muted">Előtte ${p.pre}/${p.test.length}, utána ${p.post}/${p.test.length}.</p></div><button class="btn soft" data-go="stat">Részletek</button></div>`;
+  if(p.post!=null)return `<div class="card next"><div><span class="label">Kéthetes terv kész</span><h3>${esc(p.title)}</h3><p class="small muted">Előtte ${esc(p.pre)}/${p.test.length}, utána ${esc(p.post)}/${p.test.length}.</p></div><button class="btn soft" data-go="stat">Részletek</button></div>`;
   if(p.pre==null)return `<div class="card next" style="border:2px solid var(--lemon)"><div><span class="label">Új kéthetes terv</span><h3>${esc(p.title)}</h3><p class="small muted">Kezdd egy rövid felméréssel, hogy a végén látszódjon, mennyit javultál.</p></div><button class="btn lemon" id="plGo">Felmérés</button></div>`;
   const allDone=doneN>=p.days.length||d>=13&&dayIt.done;
   return `<div class="card next" style="border:2px solid var(--lemon)"><div><span class="label">Kéthetes terv · ${d+1}. nap · ${doneN}/${p.days.length} kész</span><h3>${esc(allDone?"Jöhet a zárófelmérés":dayIt.t)}</h3><p class="small muted">${esc(p.title)}</p></div><button class="btn lemon" id="plGo">${allDone?"Zárófelmérés":dayIt.done?"Újra":"Mai rész"}</button></div>`;
@@ -2768,7 +2768,7 @@ function openPlan(back){
     intro:`<p>${esc(p.goal||"")}</p><p class="small muted">${p.test.length} kérdés. Ne izgulj, ez csak a kiindulópont.</p>`,
     onDone:(ok,n)=>{p.pre=ok;save();planResult(`Kiindulópont: ${ok} / ${n}`,"Holnaptól minden nap egy rövid rész vár a kezdőlapon. Ma már nekiállhatsz az első napnak is.",true);}});
   if(finishAll&&p.post==null)return runQuiz({kind:"plan",label:"Kéthetes terv",title:"Zárófelmérés",items:p.test.map(x=>Object.assign({},x)),backLabel:"Kezdőlap",
-    onDone:(ok,n)=>{p.post=ok;addXP(30);save();confetti();planResult(`Előtte ${p.pre} / ${n}, most ${ok} / ${n}`,ok>p.pre?`${ok-p.pre} kérdéssel többet tudtál, mint két hete. Szép munka!`:ok===p.pre?"Ugyanannyi lett, mint az elején. Érdemes a gyenge pontokat újra átnézni.":"Most kevesebb ment. Nézd át a napi magyarázatokat még egyszer.",false);}});
+    onDone:(ok,n)=>{p.post=ok;addXP(30);save();confetti();planResult(`Előtte ${esc(p.pre)} / ${n}, most ${ok} / ${n}`,ok>p.pre?`${ok-p.pre} kérdéssel többet tudtál, mint két hete. Szép munka!`:ok===p.pre?"Ugyanannyi lett, mint az elején. Érdemes a gyenge pontokat újra átnézni.":"Most kevesebb ment. Nézd át a napi magyarázatokat még egyszer.",false);}});
   const d=planDay(p),day=p.days[d];
   runQuiz({kind:"plan",label:`Kéthetes terv · ${d+1}. nap`,title:day.t,items:day.items.map(x=>Object.assign({},x)),backLabel:"Kezdőlap",
     intro:`<p>${esc(day.ex)}</p>`,onDone:(ok,n)=>{day.done=true;day.score=ok+"/"+n;addXP(5+ok);incEv("plan");save();planResult(`${d+1}. nap kész: ${ok} / ${n}`,d<13?"Holnap jön a következő rész.":"Minden nap megvan. Jöhet a zárófelmérés.",false);}});
@@ -2810,7 +2810,7 @@ function renderMap(){
   levels.forEach((l,k)=>{
     const ls_=levelLessons(l),done=ls_.filter(x=>ls(x.i)&&ls(x.i).done).length,pct=done/ls_.length,cert=S.certs[certKey(l)],open=pct>=0.7;
     html+=`<div class="mapband"><div class="mapnodes">${ls_.map(({L,i})=>{const s=ls(i),d=s&&s.done;return `<button class="mnode ${d?"done":s&&s.placed?"placed":i===nextLesson()?"cur":""}" data-l="${i}" title="${esc(L.t)}" aria-label="${i+1}. lecke: ${esc(L.t)}${d?", kész":s&&s.placed?", szintfelmérő alapján átugorva":""}">${d?"✓":s&&s.placed?"↗":i+1}</button>`;}).join('<i class="mline"></i>')}</div>
-      <div class="mile ${cert?"ok":open?"open":""}"><div><span class="label">${l} szint · ${done}/${ls_.length} lecke</span><h3>${cert?`${l} oklevél megszerezve`:open?`${l} szintzáró teszt`:`${l} mérföldkő`}</h3><p class="small muted">${cert?`${new Date(cert.at).toLocaleDateString("hu-HU")} · ${cert.score}%`:open?"15 kérdés a szint leckéiből. 80%-tól jár az oklevél.":"A szintzáró a szint leckéinek 70%-a után nyílik meg."}</p></div>
+      <div class="mile ${cert?"ok":open?"open":""}"><div><span class="label">${l} szint · ${done}/${ls_.length} lecke</span><h3>${cert?`${l} oklevél megszerezve`:open?`${l} szintzáró teszt`:`${l} mérföldkő`}</h3><p class="small muted">${cert?`${new Date(cert.at).toLocaleDateString("hu-HU")} · ${esc(cert.score)}%`:open?"15 kérdés a szint leckéiből. 80%-tól jár az oklevél.":"A szintzáró a szint leckéinek 70%-a után nyílik meg."}</p></div>
       ${cert?`<button class="btn soft" data-cert="${l}">Oklevél</button>`:open?`<button class="btn lemon" data-test="${l}">Teszt</button>`:`<span class="pill">${Math.round(pct*100)}%</span>`}</div></div>`;});
   view.innerHTML=`<div class="stack"><div class="row"><button class="btn ghost" data-go="leckek">← Leckék</button></div>
     <div><span class="label">${LG().name} · ${LG().range}</span><h1>Haladási térkép</h1><p class="muted">Az útvonalad szintenként. A ↗ jelű leckéket a szintfelmérő alapján átugrottad; ezekért még nem jár teljesítés vagy pecsét. Az oklevél az app feladatainak teljesítését jelzi, nem hivatalos nyelvvizsga.</p></div>
@@ -2836,7 +2836,7 @@ function certSvg(l,c){
   <text x="400" y="170" text-anchor="middle" font-family="Young Serif, Georgia, serif" font-size="44" fill="#14204A">Oklevél</text>
   <text x="400" y="215" text-anchor="middle" font-family="Figtree, system-ui, sans-serif" font-size="18" fill="#5A6788" letter-spacing="3">PARLIAMO · ${esc(LG().name.toUpperCase())} NYELV</text>
   <text x="400" y="320" text-anchor="middle" font-family="Young Serif, Georgia, serif" font-size="110" fill="#1F4FD6">${l}</text>
-  <text x="400" y="380" text-anchor="middle" font-family="Figtree, system-ui, sans-serif" font-size="20" fill="#14204A">szintzáró teszt sikeresen teljesítve · ${c.score}%</text>
+  <text x="400" y="380" text-anchor="middle" font-family="Figtree, system-ui, sans-serif" font-size="20" fill="#14204A">szintzáró teszt sikeresen teljesítve · ${esc(c.score)}%</text>
   <text x="400" y="470" text-anchor="middle" font-family="Figtree, system-ui, sans-serif" font-size="16" fill="#5A6788">${new Date(c.at).toLocaleDateString("hu-HU",{year:"numeric",month:"long",day:"numeric"})}</text></svg>`;
 }
 function showCert(l){
@@ -2927,7 +2927,7 @@ function budgetWarn(){
 async function bindUsage(){
   if($("#sBudgetSave"))$("#sBudgetSave").onclick=e=>{e.preventDefault();const v=parseFloat(String($("#sBudget").value).replace(",","."));S.settings.budget=v>0?v:0;save();toast(v>0?"Keret elmentve.":"Figyelmeztetés kikapcsolva.");};
   const u=await loadUsage(),el=$("#sUse");
-  if(el)el.innerHTML=u?`<b style="color:var(--ink)">${fmtUsd(u.cost)}</b> becsült költség · ${u.calls} kérés · ${Math.round(u.in/1000)}k bemeneti és ${Math.round(u.out/1000)}k kimeneti token${u.budget?` · szerverkorlát: ${fmtUsd(u.budget)}`:""}${(u.months||[]).length>1?`<br>Korábban: ${u.months.slice(1).map(m=>`${m.month}: ${fmtUsd(m.cost)}`).join(" · ")}`:""}`:S.settings.proxy?"A szerver még nem ad használati adatot. Futtasd újra a telepítést.":el.innerHTML;
+  if(el)el.innerHTML=u?`<b style="color:var(--ink)">${fmtUsd(u.cost)}</b> becsült költség · ${esc(u.calls)} kérés · ${Math.round(u.in/1000)}k bemeneti és ${Math.round(u.out/1000)}k kimeneti token${u.budget?` · szerverkorlát: ${fmtUsd(u.budget)}`:""}${(u.months||[]).length>1?`<br>Korábban: ${u.months.slice(1).map(m=>`${esc(m.month)}: ${fmtUsd(m.cost)}`).join(" · ")}`:""}`:S.settings.proxy?"A szerver még nem ad használati adatot. Futtasd újra a telepítést.":el.innerHTML;
   if(!S.settings.cloud)return;
   const draw=async()=>{try{const r=await proxyPost("/sync/backups"),bk=$("#sBk");if(!bk)return;bk.innerHTML=r.list.length?r.list.map(x=>`<div class="row" style="justify-content:space-between"><span>${new Date(x.at).toLocaleString("hu-HU",{year:"numeric",month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"})} · ${x.xp} XP</span><button class="btn ghost" data-bk="${esc(x.key)}" style="padding:.3rem .7rem">Visszaállítás</button></div>`).join(""):"Még nincs mentés.";
     bk.querySelectorAll("[data-bk]").forEach(b=>{let armed=false;b.onclick=async e=>{e.preventDefault();if(!armed){armed=true;b.textContent="Biztosan? A mostani haladás felülíródik";b.style.color="var(--bad)";return;}
@@ -3001,7 +3001,7 @@ function renderWCourse(){
   const mods=XT.writing;
   view.innerHTML=`<div class="stack"><div class="row"><button class="btn ghost" id="wcBack">← Gyakorlás</button></div>
   <div><span class="label">B1–C1 · lépésenként</span><h1>Íráskurzus</h1><p class="muted">Négy szövegtípus a vizsgákról és a munkából. Mindegyiknél megtanulod a felépítést és a fordulatokat, megnézed a mintát, gyakorlod a kötőszavakat, aztán megírod a sajátodat, és az AI részenként javítja.</p></div>
-  <div class="drills">${mods.map((m,i)=>{const d=(S.wc||{})[m.id];return `<button class="drill" data-wc="${m.id}"><span class="dico c${i%4+1}">${I.tanar}</span><b ${LA()}>${esc(m.title)}</b><span class="small muted">${esc(m.hu)} · ${m.level}</span>${d?`<span class="small"><span class="pill ${d.score>=12?"ok":""}">${d.score}/15 pont</span></span>`:""}</button>`;}).join("")}</div></div>`;
+  <div class="drills">${mods.map((m,i)=>{const d=(S.wc||{})[m.id];return `<button class="drill" data-wc="${m.id}"><span class="dico c${i%4+1}">${I.tanar}</span><b ${LA()}>${esc(m.title)}</b><span class="small muted">${esc(m.hu)} · ${m.level}</span>${d?`<span class="small"><span class="pill ${d.score>=12?"ok":""}">${esc(d.score)}/15 pont</span></span>`:""}</button>`;}).join("")}</div></div>`;
   $("#wcBack").onclick=renderPractice;
   view.querySelectorAll("[data-wc]").forEach(b=>b.onclick=()=>{WC={m:mods.find(x=>x.id===b.dataset.wc),tab:"learn",txt:{},res:null};drawWC();});
 }
