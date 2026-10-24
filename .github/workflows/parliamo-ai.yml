@@ -32,7 +32,7 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: parliamo/worker
-          wranglerVersion: "4.148.0"
+          wranglerVersion: "4.152.0"
           secrets: |
             ANTHROPIC_API_KEY
             APP_PASSWORD
