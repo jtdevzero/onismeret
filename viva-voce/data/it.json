@@ -3,7 +3,7 @@
  "name": "Olasz",
  "native": "Italiano",
  "tts": "it-IT",
- "version": 3,
+ "version": 4,
  "units": [
   {
    "id": "u1",
@@ -2481,6 +2481,1627 @@
     }
    ],
    "img": "https://d8j0ntlcm91z4.cloudfront.net/user_34pR8I3Vz7iLMGbJF4kKPhJPBZy/hf_20261024_092437_b2e62ef3-ffdb-4223-b520-260a64b3c493"
+  },
+  {
+   "id": "u19",
+   "level": "B1",
+   "title": "Spero che…",
+   "hu": "Remélem, hogy… (kötőmód)",
+   "grammar": [
+    {
+     "h": "congiuntivo = kötőmód",
+     "p": "Vélemény, remény, kívánság, érzelem után áll, ha a mellékmondatnak más az alanya: Spero che tu stia bene. Penso che sia vero. A magyar „hogy” után ilyenkor nem kell külön alak, az olaszban kötelező."
+    },
+    {
+     "h": "Képzés jelen időben",
+     "p": "-are igék: parli, parli, parli, parliamo, parliate, parlino. -ere/-ire: prenda, prenda, prenda, prendiamo, prendiate, prendano. Az egyes szám három alakja azonos, ezért gyakran kiírják az alanyt: che tu venga."
+    },
+    {
+     "h": "Gyakori rendhagyók",
+     "p": "essere → sia · avere → abbia · andare → vada · fare → faccia · venire → venga · sapere → sappia · stare → stia."
+    },
+    {
+     "h": "Mikor NEM kell",
+     "p": "Ha a két mondatrésznek ugyanaz az alanya, főnévi igenév jön: Spero di venire (remélem, eljövök). Ha biztos tényt mondasz: So che è vero."
+    }
+   ],
+   "items": [
+    {
+     "id": "u19-w1",
+     "k": "w",
+     "it": "spero che",
+     "hu": "remélem, hogy"
+    },
+    {
+     "id": "u19-w2",
+     "k": "w",
+     "it": "credo che",
+     "hu": "úgy hiszem, hogy"
+    },
+    {
+     "id": "u19-w3",
+     "k": "w",
+     "it": "bisogna che",
+     "hu": "szükséges, hogy"
+    },
+    {
+     "id": "u19-w4",
+     "k": "w",
+     "it": "è importante che",
+     "hu": "fontos, hogy"
+    },
+    {
+     "id": "u19-w5",
+     "k": "w",
+     "it": "sembra che",
+     "hu": "úgy tűnik, hogy"
+    },
+    {
+     "id": "u19-w6",
+     "k": "w",
+     "it": "voglio che",
+     "hu": "azt akarom, hogy"
+    },
+    {
+     "id": "u19-w7",
+     "k": "w",
+     "it": "prima che",
+     "hu": "mielőtt"
+    },
+    {
+     "id": "u19-w8",
+     "k": "w",
+     "it": "nonostante",
+     "hu": "annak ellenére, hogy"
+    },
+    {
+     "id": "u19-w9",
+     "k": "w",
+     "it": "purché",
+     "hu": "feltéve, hogy"
+    },
+    {
+     "id": "u19-w10",
+     "k": "w",
+     "it": "temere",
+     "hu": "félni; tartani valamitől"
+    },
+    {
+     "id": "u19-w11",
+     "k": "w",
+     "it": "dubitare",
+     "hu": "kételkedni"
+    },
+    {
+     "id": "u19-w12",
+     "k": "w",
+     "it": "la verità",
+     "hu": "az igazság"
+    },
+    {
+     "id": "u19-s1",
+     "k": "s",
+     "it": "Spero che tu stia bene.",
+     "hu": "Remélem, jól vagy."
+    },
+    {
+     "id": "u19-s2",
+     "k": "s",
+     "it": "Credo che abbia ragione.",
+     "hu": "Úgy hiszem, igaza van."
+    },
+    {
+     "id": "u19-s3",
+     "k": "s",
+     "it": "È importante che tu venga.",
+     "hu": "Fontos, hogy eljöjj."
+    },
+    {
+     "id": "u19-s4",
+     "k": "s",
+     "it": "Bisogna che partiamo presto.",
+     "hu": "Korán kell indulnunk."
+    },
+    {
+     "id": "u19-s5",
+     "k": "s",
+     "it": "Voglio che tu sappia la verità.",
+     "hu": "Azt akarom, hogy tudd az igazat."
+    },
+    {
+     "id": "u19-s6",
+     "k": "s",
+     "it": "Sembra che piova.",
+     "hu": "Úgy tűnik, esik."
+    }
+   ],
+   "img": "https://d8j0ntlcm91z4.cloudfront.net/user_34pR8I3Vz7iLMGbJF4kKPhJPBZy/hf_20261024_101018_7c2e3c48-bef6-4c6f-81eb-44704e31e179"
+  },
+  {
+   "id": "u20",
+   "level": "B1",
+   "title": "Era già partito",
+   "hu": "Történetmesélés (régmúlt)",
+   "grammar": [
+    {
+     "h": "trapassato prossimo = régmúlt",
+     "p": "Ami egy másik múltbeli esemény előtt történt: Quando sono arrivato, il treno era già partito. Képzés: avere/essere imperfetto + melléknévi igenév: avevo dimenticato, era partito."
+    },
+    {
+     "h": "Az idővonal",
+     "p": "Háttér: imperfetto (pioveva). Esemény: passato prossimo (è arrivato). Ami még előbb volt: trapassato (era già uscito)."
+    },
+    {
+     "h": "Mesélő kötőszavak",
+     "p": "all'improvviso (hirtelen) · nel frattempo (közben) · dopo che (miután) · alla fine (végül) · prima di + főnévi igenév (mielőtt)."
+    }
+   ],
+   "items": [
+    {
+     "id": "u20-w1",
+     "k": "w",
+     "it": "era già partito",
+     "hu": "már elindult (régmúlt)"
+    },
+    {
+     "id": "u20-w2",
+     "k": "w",
+     "it": "avevo dimenticato",
+     "hu": "elfelejtettem (korábban)"
+    },
+    {
+     "id": "u20-w3",
+     "k": "w",
+     "it": "all'improvviso",
+     "hu": "hirtelen"
+    },
+    {
+     "id": "u20-w4",
+     "k": "w",
+     "it": "nel frattempo",
+     "hu": "közben"
+    },
+    {
+     "id": "u20-w5",
+     "k": "w",
+     "it": "alla fine",
+     "hu": "végül"
+    },
+    {
+     "id": "u20-w6",
+     "k": "w",
+     "it": "dopo che",
+     "hu": "miután"
+    },
+    {
+     "id": "u20-w7",
+     "k": "w",
+     "it": "prima di",
+     "hu": "mielőtt"
+    },
+    {
+     "id": "u20-w8",
+     "k": "w",
+     "it": "raccontare",
+     "hu": "elmesélni"
+    },
+    {
+     "id": "u20-w9",
+     "k": "w",
+     "it": "succedere",
+     "hu": "történni"
+    },
+    {
+     "id": "u20-w10",
+     "k": "w",
+     "it": "accorgersi",
+     "hu": "észrevenni"
+    },
+    {
+     "id": "u20-w11",
+     "k": "w",
+     "it": "ricordarsi",
+     "hu": "emlékezni"
+    },
+    {
+     "id": "u20-w12",
+     "k": "w",
+     "it": "dimenticare",
+     "hu": "elfelejteni"
+    },
+    {
+     "id": "u20-s1",
+     "k": "s",
+     "it": "Quando sono arrivato, il treno era già partito.",
+     "hu": "Mire odaértem, a vonat már elment.",
+     "alt": [
+      "Quando sono arrivata, il treno era già partito."
+     ]
+    },
+    {
+     "id": "u20-s2",
+     "k": "s",
+     "it": "Avevo dimenticato le chiavi a casa.",
+     "hu": "Otthon felejtettem a kulcsokat."
+    },
+    {
+     "id": "u20-s3",
+     "k": "s",
+     "it": "All'improvviso si è messo a piovere.",
+     "hu": "Hirtelen eleredt az eső."
+    },
+    {
+     "id": "u20-s4",
+     "k": "s",
+     "it": "Nel frattempo, Marco preparava la cena.",
+     "hu": "Közben Marco a vacsorát készítette."
+    },
+    {
+     "id": "u20-s5",
+     "k": "s",
+     "it": "Cosa è successo?",
+     "hu": "Mi történt?",
+     "alt": [
+      "Cos'è successo?"
+     ]
+    },
+    {
+     "id": "u20-s6",
+     "k": "s",
+     "it": "Alla fine è andato tutto bene.",
+     "hu": "Végül minden jól ment."
+    }
+   ],
+   "img": "https://d8j0ntlcm91z4.cloudfront.net/user_34pR8I3Vz7iLMGbJF4kKPhJPBZy/hf_20261024_101018_7b8f5cd0-d7ef-4ee8-ac69-d03a7468f71d"
+  },
+  {
+   "id": "u21",
+   "level": "B1",
+   "title": "Affari",
+   "hu": "Üzleti olasz",
+   "grammar": [
+    {
+     "h": "Formális levél és megszólítás",
+     "p": "Gentile Dottor Rossi / Gentile Signora Bianchi (Kedves …). Zárás: Cordiali saluti. A Lei-t és a Le-t üzleti levélben nagybetűvel írják."
+    },
+    {
+     "h": "Számok és változás",
+     "p": "crescere del dieci per cento (tíz százalékkal nőni) · diminuire (csökkenni) · rispetto all'anno scorso (tavalyhoz képest)."
+    },
+    {
+     "h": "Udvarias feltételes mód",
+     "p": "Avrei bisogno… · Sarebbe possibile… · Le dispiacerebbe… (Nem bánná, ha…)"
+    }
+   ],
+   "items": [
+    {
+     "id": "u21-w1",
+     "k": "w",
+     "it": "il preventivo",
+     "hu": "az árajánlat"
+    },
+    {
+     "id": "u21-w2",
+     "k": "w",
+     "it": "la fattura",
+     "hu": "a számla (kiállított)"
+    },
+    {
+     "id": "u21-w3",
+     "k": "w",
+     "it": "il fatturato",
+     "hu": "az árbevétel"
+    },
+    {
+     "id": "u21-w4",
+     "k": "w",
+     "it": "lo stipendio",
+     "hu": "a fizetés"
+    },
+    {
+     "id": "u21-w5",
+     "k": "w",
+     "it": "il colloquio",
+     "hu": "az állásinterjú"
+    },
+    {
+     "id": "u21-w6",
+     "k": "w",
+     "it": "la candidatura",
+     "hu": "a jelentkezés"
+    },
+    {
+     "id": "u21-w7",
+     "k": "w",
+     "it": "assumere",
+     "hu": "felvenni (munkára)"
+    },
+    {
+     "id": "u21-w8",
+     "k": "w",
+     "it": "la trattativa",
+     "hu": "a tárgyalás (alku)"
+    },
+    {
+     "id": "u21-w9",
+     "k": "w",
+     "it": "la strategia",
+     "hu": "a stratégia"
+    },
+    {
+     "id": "u21-w10",
+     "k": "w",
+     "it": "il fornitore",
+     "hu": "a beszállító"
+    },
+    {
+     "id": "u21-w11",
+     "k": "w",
+     "it": "i prossimi passi",
+     "hu": "a következő lépések"
+    },
+    {
+     "id": "u21-w12",
+     "k": "w",
+     "it": "cordiali saluti",
+     "hu": "üdvözlettel"
+    },
+    {
+     "id": "u21-s1",
+     "k": "s",
+     "it": "Le invio il preventivo entro venerdì.",
+     "hu": "Péntekig elküldöm Önnek az árajánlatot."
+    },
+    {
+     "id": "u21-s2",
+     "k": "s",
+     "it": "Il fatturato è cresciuto del dieci per cento.",
+     "hu": "Az árbevétel tíz százalékkal nőtt."
+    },
+    {
+     "id": "u21-s3",
+     "k": "s",
+     "it": "Dobbiamo rivedere la strategia.",
+     "hu": "Át kell néznünk a stratégiát."
+    },
+    {
+     "id": "u21-s4",
+     "k": "s",
+     "it": "Avrei bisogno della fattura.",
+     "hu": "Szükségem lenne a számlára."
+    },
+    {
+     "id": "u21-s5",
+     "k": "s",
+     "it": "Ho un colloquio domani mattina.",
+     "hu": "Holnap reggel állásinterjúm van."
+    },
+    {
+     "id": "u21-s6",
+     "k": "s",
+     "it": "Quali sono i prossimi passi?",
+     "hu": "Mik a következő lépések?"
+    }
+   ],
+   "img": "https://d8j0ntlcm91z4.cloudfront.net/user_34pR8I3Vz7iLMGbJF4kKPhJPBZy/hf_20261024_101018_5c614f27-1136-4d94-9239-e00c00bce3a7"
+  },
+  {
+   "id": "u22",
+   "level": "B1",
+   "title": "In riunione",
+   "hu": "Megbeszélés és prezentáció",
+   "grammar": [
+    {
+     "h": "Kapcsolódás témákhoz",
+     "p": "Per quanto riguarda… (Ami … illeti) · A proposito di… (Ha már …-ról van szó) · In sintesi… (Összefoglalva…)."
+    },
+    {
+     "h": "Udvarias egyet nem értés",
+     "p": "Capisco il punto, però… · Non sono del tutto d'accordo. · Forse potremmo… (Talán …-hatnánk)."
+    },
+    {
+     "h": "fare il punto",
+     "p": "Szó szerint „pontot tenni”: áttekinteni, hol tartunk. Facciamo il punto della situazione."
+    }
+   ],
+   "items": [
+    {
+     "id": "u22-w1",
+     "k": "w",
+     "it": "l'ordine del giorno",
+     "hu": "a napirend"
+    },
+    {
+     "id": "u22-w2",
+     "k": "w",
+     "it": "la presentazione",
+     "hu": "a prezentáció"
+    },
+    {
+     "id": "u22-w3",
+     "k": "w",
+     "it": "i risultati",
+     "hu": "az eredmények"
+    },
+    {
+     "id": "u22-w4",
+     "k": "w",
+     "it": "fare il punto",
+     "hu": "áttekinteni a helyzetet"
+    },
+    {
+     "id": "u22-w5",
+     "k": "w",
+     "it": "per quanto riguarda",
+     "hu": "ami … illeti"
+    },
+    {
+     "id": "u22-w6",
+     "k": "w",
+     "it": "in sintesi",
+     "hu": "összefoglalva"
+    },
+    {
+     "id": "u22-w7",
+     "k": "w",
+     "it": "rimandare",
+     "hu": "elhalasztani"
+    },
+    {
+     "id": "u22-w8",
+     "k": "w",
+     "it": "proporre",
+     "hu": "javasolni"
+    },
+    {
+     "id": "u22-w9",
+     "k": "w",
+     "it": "prendere appunti",
+     "hu": "jegyzetelni"
+    },
+    {
+     "id": "u22-w10",
+     "k": "w",
+     "it": "concordare",
+     "hu": "megegyezni"
+    },
+    {
+     "id": "u22-w11",
+     "k": "w",
+     "it": "in linea con",
+     "hu": "összhangban …-val"
+    },
+    {
+     "id": "u22-w12",
+     "k": "w",
+     "it": "il verbale",
+     "hu": "a jegyzőkönyv"
+    },
+    {
+     "id": "u22-s1",
+     "k": "s",
+     "it": "Facciamo il punto della situazione.",
+     "hu": "Tekintsük át, hol tartunk."
+    },
+    {
+     "id": "u22-s2",
+     "k": "s",
+     "it": "Per quanto riguarda i costi, siamo in linea.",
+     "hu": "Ami a költségeket illeti, a terv szerint haladunk."
+    },
+    {
+     "id": "u22-s3",
+     "k": "s",
+     "it": "In sintesi, il progetto funziona.",
+     "hu": "Összefoglalva: a projekt működik."
+    },
+    {
+     "id": "u22-s4",
+     "k": "s",
+     "it": "Possiamo rimandare la riunione a lunedì?",
+     "hu": "Elhalaszthatjuk a megbeszélést hétfőre?"
+    },
+    {
+     "id": "u22-s5",
+     "k": "s",
+     "it": "Vorrei fare una proposta.",
+     "hu": "Szeretnék tenni egy javaslatot."
+    },
+    {
+     "id": "u22-s6",
+     "k": "s",
+     "it": "Capisco il punto, però non sono d'accordo.",
+     "hu": "Értem a lényeget, de nem értek egyet."
+    }
+   ],
+   "img": "https://d8j0ntlcm91z4.cloudfront.net/user_34pR8I3Vz7iLMGbJF4kKPhJPBZy/hf_20261024_101019_1c3e2ef2-2e9d-496e-9f0f-757e943bc27c"
+  },
+  {
+   "id": "u23",
+   "level": "B1",
+   "title": "Emozioni",
+   "hu": "Érzelmek",
+   "grammar": [
+    {
+     "h": "sentirsi = érezni magát",
+     "p": "Mi sento bene / male / stanco. Mi sento giù = le vagyok törve."
+    },
+    {
+     "h": "Érzelem + di + főnévi igenév",
+     "p": "Sono felice di vederti. Ho paura di sbagliare. Sono orgoglioso di te."
+    },
+    {
+     "h": "Melléknév egyeztetés",
+     "p": "Nő mondja: sono preoccupata, delusa, orgogliosa. Férfi: preoccupato, deluso, orgoglioso."
+    }
+   ],
+   "items": [
+    {
+     "id": "u23-w1",
+     "k": "w",
+     "it": "felice",
+     "hu": "boldog"
+    },
+    {
+     "id": "u23-w2",
+     "k": "w",
+     "it": "triste",
+     "hu": "szomorú"
+    },
+    {
+     "id": "u23-w3",
+     "k": "w",
+     "it": "arrabbiato",
+     "hu": "dühös",
+     "alt": [
+      "arrabbiata"
+     ]
+    },
+    {
+     "id": "u23-w4",
+     "k": "w",
+     "it": "preoccupato",
+     "hu": "aggódó",
+     "alt": [
+      "preoccupata"
+     ]
+    },
+    {
+     "id": "u23-w5",
+     "k": "w",
+     "it": "deluso",
+     "hu": "csalódott",
+     "alt": [
+      "delusa"
+     ]
+    },
+    {
+     "id": "u23-w6",
+     "k": "w",
+     "it": "sorpreso",
+     "hu": "meglepett",
+     "alt": [
+      "sorpresa"
+     ]
+    },
+    {
+     "id": "u23-w7",
+     "k": "w",
+     "it": "orgoglioso",
+     "hu": "büszke",
+     "alt": [
+      "orgogliosa"
+     ]
+    },
+    {
+     "id": "u23-w8",
+     "k": "w",
+     "it": "nervoso",
+     "hu": "ideges",
+     "alt": [
+      "nervosa"
+     ]
+    },
+    {
+     "id": "u23-w9",
+     "k": "w",
+     "it": "rilassato",
+     "hu": "nyugodt; laza",
+     "alt": [
+      "rilassata"
+     ]
+    },
+    {
+     "id": "u23-w10",
+     "k": "w",
+     "it": "avere paura",
+     "hu": "félni"
+    },
+    {
+     "id": "u23-w11",
+     "k": "w",
+     "it": "sentirsi",
+     "hu": "érezni magát"
+    },
+    {
+     "id": "u23-w12",
+     "k": "w",
+     "it": "la gioia",
+     "hu": "az öröm"
+    },
+    {
+     "id": "u23-s1",
+     "k": "s",
+     "it": "Sono molto orgoglioso di te.",
+     "hu": "Nagyon büszke vagyok rád.",
+     "alt": [
+      "Sono molto orgogliosa di te."
+     ]
+    },
+    {
+     "id": "u23-s2",
+     "k": "s",
+     "it": "Mi sento un po' giù.",
+     "hu": "Kicsit le vagyok törve."
+    },
+    {
+     "id": "u23-s3",
+     "k": "s",
+     "it": "Non ti preoccupare.",
+     "hu": "Ne aggódj."
+    },
+    {
+     "id": "u23-s4",
+     "k": "s",
+     "it": "Che bella sorpresa!",
+     "hu": "Milyen kellemes meglepetés!"
+    },
+    {
+     "id": "u23-s5",
+     "k": "s",
+     "it": "Ho paura di sbagliare.",
+     "hu": "Félek, hogy hibázom."
+    },
+    {
+     "id": "u23-s6",
+     "k": "s",
+     "it": "Ero così felice di vederti.",
+     "hu": "Annyira örültem, hogy láttalak."
+    }
+   ],
+   "img": "https://d8j0ntlcm91z4.cloudfront.net/user_34pR8I3Vz7iLMGbJF4kKPhJPBZy/hf_20261024_101158_ad95f187-0aaf-429c-9281-da02876c8a1f"
+  },
+  {
+   "id": "u24",
+   "level": "B1",
+   "title": "Relazioni",
+   "hu": "Kapcsolatok",
+   "grammar": [
+    {
+     "h": "Kölcsönös visszaható igék",
+     "p": "ci conosciamo (ismerjük egymást), ci siamo conosciuti (megismerkedtünk), si sposano (összeházasodnak)."
+    },
+    {
+     "h": "mancare = hiányozni",
+     "p": "Fordítva működik, mint a piacere: Mi manchi (te hiányzol nekem). Mi mancano i miei amici."
+    },
+    {
+     "h": "fidarsi di",
+     "p": "Mi fido di te. – Megbízom benned. A di elöljáró kötelező."
+    }
+   ],
+   "items": [
+    {
+     "id": "u24-w1",
+     "k": "w",
+     "it": "il fidanzato",
+     "hu": "a vőlegény; a barát (párkapcsolatban)",
+     "alt": [
+      "la fidanzata"
+     ]
+    },
+    {
+     "id": "u24-w2",
+     "k": "w",
+     "it": "sposarsi",
+     "hu": "összeházasodni"
+    },
+    {
+     "id": "u24-w3",
+     "k": "w",
+     "it": "innamorarsi",
+     "hu": "beleszeretni"
+    },
+    {
+     "id": "u24-w4",
+     "k": "w",
+     "it": "l'amicizia",
+     "hu": "a barátság"
+    },
+    {
+     "id": "u24-w5",
+     "k": "w",
+     "it": "fidarsi",
+     "hu": "megbízni (valakiben)"
+    },
+    {
+     "id": "u24-w6",
+     "k": "w",
+     "it": "litigare",
+     "hu": "veszekedni"
+    },
+    {
+     "id": "u24-w7",
+     "k": "w",
+     "it": "fare pace",
+     "hu": "kibékülni"
+    },
+    {
+     "id": "u24-w8",
+     "k": "w",
+     "it": "conoscersi",
+     "hu": "megismerkedni"
+    },
+    {
+     "id": "u24-w9",
+     "k": "w",
+     "it": "andare d'accordo",
+     "hu": "kijönni (egymással)"
+    },
+    {
+     "id": "u24-w10",
+     "k": "w",
+     "it": "il rapporto",
+     "hu": "a kapcsolat"
+    },
+    {
+     "id": "u24-w11",
+     "k": "w",
+     "it": "mi manchi",
+     "hu": "hiányzol"
+    },
+    {
+     "id": "u24-w12",
+     "k": "w",
+     "it": "la famiglia",
+     "hu": "a család"
+    },
+    {
+     "id": "u24-s1",
+     "k": "s",
+     "it": "Mi manchi tanto.",
+     "hu": "Nagyon hiányzol."
+    },
+    {
+     "id": "u24-s2",
+     "k": "s",
+     "it": "Andiamo molto d'accordo.",
+     "hu": "Nagyon jól kijövünk egymással."
+    },
+    {
+     "id": "u24-s3",
+     "k": "s",
+     "it": "Ci siamo conosciuti a Roma.",
+     "hu": "Rómában ismerkedtünk meg.",
+     "alt": [
+      "Ci siamo conosciute a Roma."
+     ]
+    },
+    {
+     "id": "u24-s4",
+     "k": "s",
+     "it": "Abbiamo litigato, ma abbiamo fatto pace.",
+     "hu": "Összevesztünk, de kibékültünk."
+    },
+    {
+     "id": "u24-s5",
+     "k": "s",
+     "it": "Mi fido di te.",
+     "hu": "Megbízom benned."
+    },
+    {
+     "id": "u24-s6",
+     "k": "s",
+     "it": "Ci sposiamo l'anno prossimo.",
+     "hu": "Jövőre összeházasodunk."
+    }
+   ],
+   "img": "https://d8j0ntlcm91z4.cloudfront.net/user_34pR8I3Vz7iLMGbJF4kKPhJPBZy/hf_20261024_101157_33c203e2-9651-47a2-9371-c0394d6a5a44"
+  },
+  {
+   "id": "u25",
+   "level": "B1",
+   "title": "Casa nuova",
+   "hu": "Albérlet és költözés",
+   "grammar": [
+    {
+     "h": "Kérdések lakásnézésnél",
+     "p": "È arredato? (bútorozott?) · Le spese sono incluse? (benne van a rezsi?) · Quanto è la caparra? (mennyi a kaució?)"
+    },
+    {
+     "h": "Méret olaszul",
+     "p": "monolocale (garzon) · bilocale (2 helyiség: nappali + háló) · trilocale. Négyzetméter: metri quadri (mq)."
+    },
+    {
+     "h": "Panasz udvariasan",
+     "p": "Il riscaldamento non funziona. Potrebbe mandare qualcuno? – Nem működik a fűtés. Tudna küldeni valakit?"
+    }
+   ],
+   "items": [
+    {
+     "id": "u25-w1",
+     "k": "w",
+     "it": "l'affitto",
+     "hu": "a bérleti díj"
+    },
+    {
+     "id": "u25-w2",
+     "k": "w",
+     "it": "l'agenzia",
+     "hu": "az ingatlaniroda"
+    },
+    {
+     "id": "u25-w3",
+     "k": "w",
+     "it": "il trasloco",
+     "hu": "a költözés"
+    },
+    {
+     "id": "u25-w4",
+     "k": "w",
+     "it": "arredato",
+     "hu": "bútorozott"
+    },
+    {
+     "id": "u25-w5",
+     "k": "w",
+     "it": "il riscaldamento",
+     "hu": "a fűtés"
+    },
+    {
+     "id": "u25-w6",
+     "k": "w",
+     "it": "le spese",
+     "hu": "a rezsi; a költségek"
+    },
+    {
+     "id": "u25-w7",
+     "k": "w",
+     "it": "il proprietario",
+     "hu": "a tulajdonos"
+    },
+    {
+     "id": "u25-w8",
+     "k": "w",
+     "it": "l'inquilino",
+     "hu": "a bérlő"
+    },
+    {
+     "id": "u25-w9",
+     "k": "w",
+     "it": "la caparra",
+     "hu": "a kaució"
+    },
+    {
+     "id": "u25-w10",
+     "k": "w",
+     "it": "traslocare",
+     "hu": "költözni"
+    },
+    {
+     "id": "u25-w11",
+     "k": "w",
+     "it": "il quartiere",
+     "hu": "a környék; a negyed"
+    },
+    {
+     "id": "u25-w12",
+     "k": "w",
+     "it": "il bilocale",
+     "hu": "a kétszobás lakás"
+    },
+    {
+     "id": "u25-s1",
+     "k": "s",
+     "it": "L'affitto è di ottocento euro al mese.",
+     "hu": "A bérleti díj havi nyolcszáz euró."
+    },
+    {
+     "id": "u25-s2",
+     "k": "s",
+     "it": "L'appartamento è arredato?",
+     "hu": "Bútorozott a lakás?"
+    },
+    {
+     "id": "u25-s3",
+     "k": "s",
+     "it": "Le spese sono incluse?",
+     "hu": "Benne van a rezsi?"
+    },
+    {
+     "id": "u25-s4",
+     "k": "s",
+     "it": "Quando posso visitarlo?",
+     "hu": "Mikor nézhetem meg?"
+    },
+    {
+     "id": "u25-s5",
+     "k": "s",
+     "it": "Il riscaldamento non funziona.",
+     "hu": "Nem működik a fűtés."
+    },
+    {
+     "id": "u25-s6",
+     "k": "s",
+     "it": "Cerchiamo un bilocale in centro.",
+     "hu": "Kétszobás lakást keresünk a belvárosban."
+    }
+   ],
+   "img": "https://d8j0ntlcm91z4.cloudfront.net/user_34pR8I3Vz7iLMGbJF4kKPhJPBZy/hf_20261024_101156_d53c7fef-b246-4366-991b-594071f62119"
+  },
+  {
+   "id": "u26",
+   "level": "B1",
+   "title": "Benessere",
+   "hu": "Egészséges életmód",
+   "grammar": [
+    {
+     "h": "cercare di = igyekezni",
+     "p": "Cerco di mangiare sano. Cerco di dormire otto ore."
+    },
+    {
+     "h": "Tanács feltételes móddal",
+     "p": "Dovresti dormire di più. – Többet kellene aludnod. Faresti bene a… – Jól tennéd, ha…"
+    },
+    {
+     "h": "ultimamente",
+     "p": "Mostanában. Ultimamente sono stressato. Jelen idővel áll, ha a helyzet még tart."
+    }
+   ],
+   "items": [
+    {
+     "id": "u26-w1",
+     "k": "w",
+     "it": "allenarsi",
+     "hu": "edzeni"
+    },
+    {
+     "id": "u26-w2",
+     "k": "w",
+     "it": "la corsa",
+     "hu": "a futás"
+    },
+    {
+     "id": "u26-w3",
+     "k": "w",
+     "it": "mangiare sano",
+     "hu": "egészségesen étkezni"
+    },
+    {
+     "id": "u26-w4",
+     "k": "w",
+     "it": "dormire bene",
+     "hu": "jól aludni"
+    },
+    {
+     "id": "u26-w5",
+     "k": "w",
+     "it": "lo stress",
+     "hu": "a stressz"
+    },
+    {
+     "id": "u26-w6",
+     "k": "w",
+     "it": "rilassarsi",
+     "hu": "pihenni; ellazulni"
+    },
+    {
+     "id": "u26-w7",
+     "k": "w",
+     "it": "fare una passeggiata",
+     "hu": "sétálni egyet"
+    },
+    {
+     "id": "u26-w8",
+     "k": "w",
+     "it": "la meditazione",
+     "hu": "a meditáció"
+    },
+    {
+     "id": "u26-w9",
+     "k": "w",
+     "it": "l'energia",
+     "hu": "az energia"
+    },
+    {
+     "id": "u26-w10",
+     "k": "w",
+     "it": "sano",
+     "hu": "egészséges"
+    },
+    {
+     "id": "u26-w11",
+     "k": "w",
+     "it": "ultimamente",
+     "hu": "mostanában"
+    },
+    {
+     "id": "u26-w12",
+     "k": "w",
+     "it": "dovresti",
+     "hu": "kellene (neked)"
+    },
+    {
+     "id": "u26-s1",
+     "k": "s",
+     "it": "Cerco di mangiare sano.",
+     "hu": "Igyekszem egészségesen étkezni."
+    },
+    {
+     "id": "u26-s2",
+     "k": "s",
+     "it": "Dovresti dormire di più.",
+     "hu": "Többet kellene aludnod."
+    },
+    {
+     "id": "u26-s3",
+     "k": "s",
+     "it": "Faccio una passeggiata ogni sera.",
+     "hu": "Minden este sétálok egyet."
+    },
+    {
+     "id": "u26-s4",
+     "k": "s",
+     "it": "Ultimamente sono molto stressato.",
+     "hu": "Mostanában nagyon stresszes vagyok.",
+     "alt": [
+      "Ultimamente sono molto stressata."
+     ]
+    },
+    {
+     "id": "u26-s5",
+     "k": "s",
+     "it": "Lo sport mi aiuta a rilassarmi.",
+     "hu": "A sport segít ellazulni."
+    },
+    {
+     "id": "u26-s6",
+     "k": "s",
+     "it": "Mi alleno prima di andare al lavoro.",
+     "hu": "Munka előtt edzek."
+    }
+   ],
+   "img": "https://d8j0ntlcm91z4.cloudfront.net/user_34pR8I3Vz7iLMGbJF4kKPhJPBZy/hf_20261024_101157_819af594-f301-4a3c-804e-adf584d81615"
+  },
+  {
+   "id": "u27",
+   "level": "B1",
+   "title": "Notizie",
+   "hu": "Hírek és társadalom",
+   "grammar": [
+    {
+     "h": "Változás kifejezése",
+     "p": "aumentare / crescere (nőni) · diminuire / calare (csökkenni). Múlt időben essere-vel: i prezzi sono aumentati."
+    },
+    {
+     "h": "Forrás megjelölése",
+     "p": "secondo i dati (az adatok szerint) · secondo il giornale (az újság szerint) · pare che + kötőmód (úgy tűnik, hogy)."
+    },
+    {
+     "h": "Hírnyelv",
+     "p": "Gyakori a szenvedő szerkezet: è stato annunciato (bejelentették), sono state approvate (elfogadták)."
+    }
+   ],
+   "items": [
+    {
+     "id": "u27-w1",
+     "k": "w",
+     "it": "la notizia",
+     "hu": "a hír"
+    },
+    {
+     "id": "u27-w2",
+     "k": "w",
+     "it": "il giornale",
+     "hu": "az újság"
+    },
+    {
+     "id": "u27-w3",
+     "k": "w",
+     "it": "il governo",
+     "hu": "a kormány"
+    },
+    {
+     "id": "u27-w4",
+     "k": "w",
+     "it": "le elezioni",
+     "hu": "a választások"
+    },
+    {
+     "id": "u27-w5",
+     "k": "w",
+     "it": "l'economia",
+     "hu": "a gazdaság"
+    },
+    {
+     "id": "u27-w6",
+     "k": "w",
+     "it": "l'ambiente",
+     "hu": "a környezet"
+    },
+    {
+     "id": "u27-w7",
+     "k": "w",
+     "it": "la crisi",
+     "hu": "a válság"
+    },
+    {
+     "id": "u27-w8",
+     "k": "w",
+     "it": "aumentare",
+     "hu": "nőni; emelkedni"
+    },
+    {
+     "id": "u27-w9",
+     "k": "w",
+     "it": "diminuire",
+     "hu": "csökkenni"
+    },
+    {
+     "id": "u27-w10",
+     "k": "w",
+     "it": "secondo i dati",
+     "hu": "az adatok szerint"
+    },
+    {
+     "id": "u27-w11",
+     "k": "w",
+     "it": "il cittadino",
+     "hu": "az állampolgár"
+    },
+    {
+     "id": "u27-w12",
+     "k": "w",
+     "it": "la disoccupazione",
+     "hu": "a munkanélküliség"
+    },
+    {
+     "id": "u27-s1",
+     "k": "s",
+     "it": "Hai sentito la notizia?",
+     "hu": "Hallottad a hírt?"
+    },
+    {
+     "id": "u27-s2",
+     "k": "s",
+     "it": "I prezzi sono aumentati molto.",
+     "hu": "Sokat emelkedtek az árak."
+    },
+    {
+     "id": "u27-s3",
+     "k": "s",
+     "it": "L'ambiente è un tema importante.",
+     "hu": "A környezet fontos téma."
+    },
+    {
+     "id": "u27-s4",
+     "k": "s",
+     "it": "Secondo i dati, la disoccupazione è diminuita.",
+     "hu": "Az adatok szerint csökkent a munkanélküliség."
+    },
+    {
+     "id": "u27-s5",
+     "k": "s",
+     "it": "Il governo ha annunciato nuove misure.",
+     "hu": "A kormány új intézkedéseket jelentett be."
+    },
+    {
+     "id": "u27-s6",
+     "k": "s",
+     "it": "Leggo il giornale ogni mattina.",
+     "hu": "Minden reggel olvasom az újságot."
+    }
+   ],
+   "img": "https://d8j0ntlcm91z4.cloudfront.net/user_34pR8I3Vz7iLMGbJF4kKPhJPBZy/hf_20261024_101508_c8cc211d-f844-4c4d-b4c5-fae89357e046"
+  },
+  {
+   "id": "u28",
+   "level": "B1",
+   "title": "Cultura",
+   "hu": "Kultúra: film, könyv, kiállítás",
+   "grammar": [
+    {
+     "h": "Ajánlás kérése",
+     "p": "Mi consigli un buon libro? (Ajánlasz egy jó könyvet?) · Cosa mi consigli di vedere?"
+    },
+    {
+     "h": "Vélemény melléknévvel",
+     "p": "emozionante (megható; izgalmas) · noioso (unalmas) · divertente (vicces; szórakoztató) · complicato (bonyolult)."
+    },
+    {
+     "h": "fino a = -ig",
+     "p": "La mostra è aperta fino a domenica. – A kiállítás vasárnapig van nyitva."
+    }
+   ],
+   "items": [
+    {
+     "id": "u28-w1",
+     "k": "w",
+     "it": "la mostra",
+     "hu": "a kiállítás"
+    },
+    {
+     "id": "u28-w2",
+     "k": "w",
+     "it": "l'opera",
+     "hu": "az opera; a mű"
+    },
+    {
+     "id": "u28-w3",
+     "k": "w",
+     "it": "il concerto",
+     "hu": "a koncert"
+    },
+    {
+     "id": "u28-w4",
+     "k": "w",
+     "it": "il regista",
+     "hu": "a rendező"
+    },
+    {
+     "id": "u28-w5",
+     "k": "w",
+     "it": "lo scrittore",
+     "hu": "az író",
+     "alt": [
+      "la scrittrice"
+     ]
+    },
+    {
+     "id": "u28-w6",
+     "k": "w",
+     "it": "la trama",
+     "hu": "a cselekmény"
+    },
+    {
+     "id": "u28-w7",
+     "k": "w",
+     "it": "consigliare",
+     "hu": "ajánlani"
+    },
+    {
+     "id": "u28-w8",
+     "k": "w",
+     "it": "emozionante",
+     "hu": "megható; izgalmas"
+    },
+    {
+     "id": "u28-w9",
+     "k": "w",
+     "it": "noioso",
+     "hu": "unalmas"
+    },
+    {
+     "id": "u28-w10",
+     "k": "w",
+     "it": "divertente",
+     "hu": "szórakoztató"
+    },
+    {
+     "id": "u28-w11",
+     "k": "w",
+     "it": "il biglietto d'ingresso",
+     "hu": "a belépőjegy"
+    },
+    {
+     "id": "u28-w12",
+     "k": "w",
+     "it": "la recensione",
+     "hu": "a kritika"
+    },
+    {
+     "id": "u28-s1",
+     "k": "s",
+     "it": "Mi consigli un buon libro?",
+     "hu": "Ajánlasz egy jó könyvet?"
+    },
+    {
+     "id": "u28-s2",
+     "k": "s",
+     "it": "La mostra è aperta fino a domenica.",
+     "hu": "A kiállítás vasárnapig van nyitva."
+    },
+    {
+     "id": "u28-s3",
+     "k": "s",
+     "it": "La trama è un po' complicata.",
+     "hu": "A cselekmény kicsit bonyolult."
+    },
+    {
+     "id": "u28-s4",
+     "k": "s",
+     "it": "Il film era emozionante.",
+     "hu": "A film megható volt."
+    },
+    {
+     "id": "u28-s5",
+     "k": "s",
+     "it": "Chi è il regista?",
+     "hu": "Ki a rendező?"
+    },
+    {
+     "id": "u28-s6",
+     "k": "s",
+     "it": "Andiamo all'opera stasera?",
+     "hu": "Elmegyünk ma este az operába?"
+    }
+   ],
+   "img": "https://d8j0ntlcm91z4.cloudfront.net/user_34pR8I3Vz7iLMGbJF4kKPhJPBZy/hf_20261024_101507_6c8a84b5-397d-4454-bf0a-594ad63b4af1"
+  },
+  {
+   "id": "u29",
+   "level": "B1",
+   "title": "Se potessi…",
+   "hu": "Ha tehetném… (feltételes mondat)",
+   "grammar": [
+    {
+     "h": "Nem valós feltétel",
+     "p": "se + kötőmód múlt (congiuntivo imperfetto) + feltételes mód: Se avessi tempo, viaggerei. – Ha lenne időm, utaznék."
+    },
+    {
+     "h": "Képzés",
+     "p": "-are: parlassi, parlassi, parlasse · -ere: prendessi · -ire: dormissi. Rendhagyó: essere → fossi, fosse · fare → facessi · dare → dessi · stare → stessi."
+    },
+    {
+     "h": "Tanács",
+     "p": "Se fossi in te… (A helyedben…) + feltételes mód: Se fossi in te, accetterei."
+    }
+   ],
+   "items": [
+    {
+     "id": "u29-w1",
+     "k": "w",
+     "it": "se avessi",
+     "hu": "ha lenne (nekem)"
+    },
+    {
+     "id": "u29-w2",
+     "k": "w",
+     "it": "se fossi",
+     "hu": "ha lennék"
+    },
+    {
+     "id": "u29-w3",
+     "k": "w",
+     "it": "se potessi",
+     "hu": "ha tehetném"
+    },
+    {
+     "id": "u29-w4",
+     "k": "w",
+     "it": "il sogno",
+     "hu": "az álom"
+    },
+    {
+     "id": "u29-w5",
+     "k": "w",
+     "it": "realizzare",
+     "hu": "megvalósítani"
+    },
+    {
+     "id": "u29-w6",
+     "k": "w",
+     "it": "vincere",
+     "hu": "nyerni"
+    },
+    {
+     "id": "u29-w7",
+     "k": "w",
+     "it": "la lotteria",
+     "hu": "a lottó"
+    },
+    {
+     "id": "u29-w8",
+     "k": "w",
+     "it": "trasferirsi",
+     "hu": "elköltözni (máshová)"
+    },
+    {
+     "id": "u29-w9",
+     "k": "w",
+     "it": "cambiare vita",
+     "hu": "új életet kezdeni"
+    },
+    {
+     "id": "u29-w10",
+     "k": "w",
+     "it": "il coraggio",
+     "hu": "a bátorság"
+    },
+    {
+     "id": "u29-w11",
+     "k": "w",
+     "it": "rischiare",
+     "hu": "kockáztatni"
+    },
+    {
+     "id": "u29-w12",
+     "k": "w",
+     "it": "la scelta",
+     "hu": "a döntés; a választás"
+    },
+    {
+     "id": "u29-s1",
+     "k": "s",
+     "it": "Se avessi più tempo, imparerei a suonare il piano.",
+     "hu": "Ha több időm lenne, megtanulnék zongorázni."
+    },
+    {
+     "id": "u29-s2",
+     "k": "s",
+     "it": "Se fossi in te, accetterei l'offerta.",
+     "hu": "A helyedben elfogadnám az ajánlatot."
+    },
+    {
+     "id": "u29-s3",
+     "k": "s",
+     "it": "Se vincessi alla lotteria, viaggerei per il mondo.",
+     "hu": "Ha megnyerném a lottót, beutaznám a világot."
+    },
+    {
+     "id": "u29-s4",
+     "k": "s",
+     "it": "Mi trasferirei in Italia, se potessi.",
+     "hu": "Olaszországba költöznék, ha tehetném."
+    },
+    {
+     "id": "u29-s5",
+     "k": "s",
+     "it": "Ci vuole coraggio per cambiare vita.",
+     "hu": "Bátorság kell ahhoz, hogy új életet kezdj."
+    },
+    {
+     "id": "u29-s6",
+     "k": "s",
+     "it": "Qual è il tuo sogno?",
+     "hu": "Mi az álmod?"
+    }
+   ],
+   "img": "https://d8j0ntlcm91z4.cloudfront.net/user_34pR8I3Vz7iLMGbJF4kKPhJPBZy/hf_20261024_101508_2bb5355c-f480-4621-834d-0568a9cac2dc"
+  },
+  {
+   "id": "u30",
+   "level": "B1",
+   "title": "Ha detto che…",
+   "hu": "Érvelés és függő beszéd",
+   "grammar": [
+    {
+     "h": "Függő beszéd",
+     "p": "Ha detto che arriva tardi (most is igaz) → Ha detto che sarebbe arrivato tardi (múltbeli bejelentés jövőjéről: feltételes múlt)."
+    },
+    {
+     "h": "Érvelés szerkezete",
+     "p": "da un lato… dall'altro (egyrészt… másrészt) · inoltre (ráadásul) · tuttavia (mégis; azonban) · infatti (és valóban)."
+    },
+    {
+     "h": "Álláspont",
+     "p": "dal mio punto di vista (az én szemszögemből) · sostenere che (állítani, hogy) · ammettere (elismerni)."
+    }
+   ],
+   "items": [
+    {
+     "id": "u30-w1",
+     "k": "w",
+     "it": "ha detto che",
+     "hu": "azt mondta, hogy"
+    },
+    {
+     "id": "u30-w2",
+     "k": "w",
+     "it": "da un lato",
+     "hu": "egyrészt"
+    },
+    {
+     "id": "u30-w3",
+     "k": "w",
+     "it": "dall'altro lato",
+     "hu": "másrészt",
+     "alt": [
+      "dall'altro"
+     ]
+    },
+    {
+     "id": "u30-w4",
+     "k": "w",
+     "it": "inoltre",
+     "hu": "ráadásul"
+    },
+    {
+     "id": "u30-w5",
+     "k": "w",
+     "it": "tuttavia",
+     "hu": "azonban"
+    },
+    {
+     "id": "u30-w6",
+     "k": "w",
+     "it": "infatti",
+     "hu": "és valóban"
+    },
+    {
+     "id": "u30-w7",
+     "k": "w",
+     "it": "sostenere",
+     "hu": "állítani; támogatni"
+    },
+    {
+     "id": "u30-w8",
+     "k": "w",
+     "it": "ammettere",
+     "hu": "elismerni"
+    },
+    {
+     "id": "u30-w9",
+     "k": "w",
+     "it": "convincere",
+     "hu": "meggyőzni"
+    },
+    {
+     "id": "u30-w10",
+     "k": "w",
+     "it": "il punto di vista",
+     "hu": "a nézőpont"
+    },
+    {
+     "id": "u30-w11",
+     "k": "w",
+     "it": "la ragione",
+     "hu": "az ész; az igaz"
+    },
+    {
+     "id": "u30-w12",
+     "k": "w",
+     "it": "secondo lui",
+     "hu": "szerinte"
+    },
+    {
+     "id": "u30-s1",
+     "k": "s",
+     "it": "Ha detto che sarebbe arrivato tardi.",
+     "hu": "Azt mondta, hogy későn fog érkezni."
+    },
+    {
+     "id": "u30-s2",
+     "k": "s",
+     "it": "Da un lato ha ragione, dall'altro no.",
+     "hu": "Egyrészt igaza van, másrészt nincs."
+    },
+    {
+     "id": "u30-s3",
+     "k": "s",
+     "it": "Tuttavia, il problema rimane.",
+     "hu": "A probléma azonban megmarad."
+    },
+    {
+     "id": "u30-s4",
+     "k": "s",
+     "it": "Mi hai convinto.",
+     "hu": "Meggyőztél."
+    },
+    {
+     "id": "u30-s5",
+     "k": "s",
+     "it": "Dal mio punto di vista, è una buona scelta.",
+     "hu": "Az én szemszögemből jó döntés."
+    },
+    {
+     "id": "u30-s6",
+     "k": "s",
+     "it": "Inoltre, costa meno.",
+     "hu": "Ráadásul olcsóbb."
+    }
+   ],
+   "img": "https://d8j0ntlcm91z4.cloudfront.net/user_34pR8I3Vz7iLMGbJF4kKPhJPBZy/hf_20261024_101507_1a480d3c-46a8-4118-b00c-c02a6ccd074c"
   }
  ],
  "hero": "https://d8j0ntlcm91z4.cloudfront.net/user_34pR8I3Vz7iLMGbJF4kKPhJPBZy/hf_20261024_092259_1296577f-41f2-4377-9e80-031a0b24218c"

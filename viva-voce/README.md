@@ -1,6 +1,6 @@
 # Viva Voce
 
-Nyelvtanuló webapp, ami azt csinálja, amit a Duolingo nem: **tényleg hosszú távú memóriára optimalizál**, valós mondatokkal és kiejtésgyakorlással. Nincs szív, reklám, liga vagy fizetőfal. Első nyelvcsomag: **olasz A1–A2, magyarul** (18 lecke, 333 kifejezés és mondat).
+Nyelvtanuló webapp, ami azt csinálja, amit a Duolingo nem: **tényleg hosszú távú memóriára optimalizál**, valós mondatokkal és kiejtésgyakorlással. Nincs szív, reklám, liga vagy fizetőfal. Első nyelvcsomag: **olasz A1–B1, magyarul**: 30 lecke, 549 kifejezés és mondat, 9 hangos történet, 25 ige teljes ragozása.
 
 ## Miben más
 
@@ -24,6 +24,10 @@ Nyelvtanuló webapp, ami azt csinálja, amit a Duolingo nem: **tényleg hosszú 
 - **Téma:** sötét alapból, választható világos vagy rendszer szerinti.
 - **Illusztrációk:** minden leckéhez saját, festett olasz plakát-illusztráció (Higgsfield, GPT Image), a főoldalon nagy képpel.
 - **Útlevél:** minden befejezett leckéért pecsét (*timbro*) jár, a Haladás fülön gyűlnek.
+- **Történetek (Gyakorlás fül):** 9 hangos párbeszédes történet két hanggal (A1–B1), közben értésellenőrző kérdésekkel. A szöveg mindig olaszul jelenik meg, a fordítás koppintásra.
+- **Igeedző:** 25 gyakori ige 5 igeidőben (jelen, passato prossimo, imperfetto, jövő, feltételes), minden alak hanggal. A kérdéseket a saját hibaarányod alapján súlyozza, és a teljes ragozási táblát mutatja.
+- **A hibáim:** külön kör a valaha elrontott kifejezésekből, a legtöbbször rontottakkal kezdve.
+- **Napi cél és emlékeztető:** percben mért cél (csak az aktív tanulási idő számít), naptárbejegyzésként letölthető napi emlékeztető (.ics), heti összefoglaló a múlt héthez képest.
 
 ## Futtatás
 
@@ -70,10 +74,13 @@ A tananyag a `data/it.json`-ban van:
 index.html            váz
 style.css             „Notte italiana” arculat: éjszakai palackzöld, elefántcsont, okker; olasz szöveg Bodoni dőlt
 fonts/                Bodoni Moda és Instrument Sans helyben (SIL OFL)
-audio/it/             333 előre felvett hangfájl (Kokoro, if_sara)
+audio/it/             előre felvett hangfájlok (Kokoro: if_sara, im_nicola)
 fsrs.js               FSRS-4.5 ütemező (Node-ban is tesztelhető)
 app.js                nézetek, gyakorlattípusok, hang, tárolás
-data/it.json          olasz A1 csomag: 10 lecke, 189 kifejezés és mondat
+data/it.json          olasz A1–B1 csomag: 30 lecke, 549 kifejezés és mondat
+data/stories-it.json  9 történet kérdésekkel
+data/verbs-it.json    25 ige × 5 igeidő ragozása
+audio/it/st, vb/      a történetek és az igealakok hangja
 sw.js, manifest.webmanifest, icons/   PWA / offline
 ```
 
@@ -82,6 +89,7 @@ sw.js, manifest.webmanifest, icons/   PWA / offline
 - [x] A2 olasz csomag (visszaható igék, imperfetto, feltételes mód, jövő idő, névmások)
 - [x] AI beszélgetőtárs a leckék szókincsével
 - [x] Sötét téma
+- [x] B1 szint, történetek, igeedző, hibakör, napi cél
 - [ ] Második nyelv a nyelvválasztóval
 - [ ] Szinkron eszközök között (szerver kell hozzá; addig export/import)
 

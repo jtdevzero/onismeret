@@ -1,6 +1,6 @@
 /* Offline működés: az app-héj cache-ből jön, a tananyag hálózatról frissül, ha van net. */
-const CACHE = 'vivavoce-v5';
-const SHELL = ['./', 'index.html', 'style.css?v=5', 'fsrs.js?v=5', 'app.js?v=5', 'data/it.json?v=5', 'audio/silence.mp3', 'fonts/fonts.css', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png'];
+const CACHE = 'vivavoce-v6';
+const SHELL = ['./', 'index.html', 'style.css?v=6', 'fsrs.js?v=6', 'app.js?v=6', 'data/it.json?v=6', 'data/stories-it.json?v=6', 'data/verbs-it.json?v=6', 'audio/silence.mp3', 'fonts/fonts.css', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));

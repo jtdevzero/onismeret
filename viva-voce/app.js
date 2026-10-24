@@ -2,7 +2,7 @@
 'use strict';
 
 const STORE_KEY = 'vivavoce.v1';
-const PACK_URL = 'data/it.json?v=5';
+const PACK_URL = 'data/it.json?v=6';
 const KEY_STORE = 'vivavoce.apikey';
 const AI_MODEL = 'claude-haiku-5-5';
 const { review: fsrsReview, retrievability, dayIndex, DAY } = window.FSRS;
@@ -13,7 +13,7 @@ const app = $('#app');
 const sheet = $('#sheet');
 
 /* ---------- Állapot ---------- */
-const DEFAULT_SETTINGS = { newPerDay: 8, targetR: 0.9, rate: 0.9, speak: true, autoplay: true, sound: true, reviewLimit: 150, theme: 'dark' };
+const DEFAULT_SETTINGS = { newPerDay: 8, targetR: 0.9, rate: 0.9, speak: true, autoplay: true, sound: true, reviewLimit: 150, theme: 'dark', goalMin: 10, remindAt: '19:00' };
 let state = loadState();
 let PACK = null, ITEMS = {}, ORDER = [];
 let session = null;
@@ -24,6 +24,7 @@ function loadState() {
   try { s = JSON.parse(localStorage.getItem(STORE_KEY)) || {}; } catch (e) { s = {}; }
   return {
     cards: s.cards || {}, log: s.log || [], days: s.days || {}, focus: s.focus || null, stamps: s.stamps || {},
+    time: s.time || {}, stories: s.stories || {}, drill: s.drill || {}, goalHit: s.goalHit || {},
     settings: Object.assign({}, DEFAULT_SETTINGS, s.settings || {})
   };
 }
@@ -101,7 +102,7 @@ function pickVoice() {
 }
 if ('speechSynthesis' in window) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
 
-const AUDIO_BY_TEXT = {};
+const AUDIO_URL = {}; // olasz szöveg → hangfájl
 const player = new Audio();
 player.preload = 'auto';
 let playerBtn = null;
@@ -129,9 +130,9 @@ document.addEventListener('keydown', unlockAudio, { capture: true });
 function say(text, rate, btn) {
   stopAudio();
   const r = rate || state.settings.rate;
-  const id = AUDIO_BY_TEXT[text];
-  if (id) {
-    player.src = `audio/${PACK.lang}/${id}.mp3`;
+  const url = AUDIO_URL[text];
+  if (url) {
+    player.src = url;
     player.playbackRate = Math.max(0.5, r / 0.9);
     player.preservesPitch = player.webkitPreservesPitch = true;
     if (btn) { playerBtn = btn; btn.classList.add('speaking'); }
@@ -230,13 +231,22 @@ function stampSvg(u, day) {
 }
 
 /* ---------- Tananyag ---------- */
+let STORIES = [], VERBS = null;
 async function loadPack() {
-  const res = await fetch(PACK_URL);
-  PACK = await res.json();
+  const [p, st, vb] = await Promise.all([PACK_URL, 'data/stories-it.json?v=6', 'data/verbs-it.json?v=6'].map(u => fetch(u).then(r => r.json()).catch(() => null)));
+  if (!p) throw new Error('pack');
+  PACK = p;
+  STORIES = st ? st.stories : [];
+  VERBS = vb;
+  STORIES.forEach(s => s.lines.forEach((l, i) => { if (l.it) AUDIO_URL[l.it] = AUDIO_URL[l.it] || `audio/${PACK.lang}/st/${s.id}-${i}.mp3`; }));
+  if (VERBS) {
+    const P = ['io', 'tu', 'lui', 'noi', 'voi', 'loro'];
+    VERBS.verbs.forEach(v => Object.entries(v.forms).forEach(([t, fs]) => fs.forEach((f, i) => { AUDIO_URL[`${P[i]} ${f}`] = `audio/${PACK.lang}/vb/${v.inf}-${t}-${i}.mp3`; })));
+  }
   ITEMS = {}; ORDER = [];
   PACK.units.forEach((u, ui) => {
     u.index = ui;
-    u.items.forEach(it => { it.unit = u; ITEMS[it.id] = it; ORDER.push(it.id); AUDIO_BY_TEXT[it.it] = it.id; });
+    u.items.forEach(it => { it.unit = u; ITEMS[it.id] = it; ORDER.push(it.id); AUDIO_URL[it.it] = `audio/${PACK.lang}/${it.id}.mp3`; });
   });
   for (const id of Object.keys(state.cards)) if (!ITEMS[id]) delete state.cards[id];
   // korábbi haladásból is járjon a pecsét
@@ -300,9 +310,9 @@ function rate(id, grade) {
 }
 
 /* ---------- Navigáció ---------- */
-const VIEWS = { home: renderHome, library: renderLibrary, talk: renderTalk, stats: renderStats, settings: renderSettings };
+const VIEWS = { home: renderHome, library: renderLibrary, practice: renderPractice, stats: renderStats, settings: renderSettings };
 function show(view, arg) {
-  if (view !== 'talk') talk = null;
+  if (view !== 'practice') talk = null;
   document.body.classList.remove('in-session', 'sheet-open');
   document.body.className = document.body.className.replace(/\bview-\w+/g, '').trim();
   document.body.classList.add('view-' + view);
@@ -329,7 +339,8 @@ function renderHome() {
   const doneToday = state.days[today()] || 0;
   const left = due + nl;
   const planned = doneToday + left + Math.ceil(nl * 1.3);
-  const pct = left === 0 ? 100 : Math.round(100 * doneToday / Math.max(1, planned));
+  const minsToday = Math.floor((state.time[today()] || 0) / 60);
+  const pct = Math.min(100, Math.round(100 * minsToday / state.settings.goalMin));
   const learned = Object.keys(state.cards).length;
   const hour = new Date().getHours();
   const greet = hour < 5 ? ['Buonanotte', 'Jó éjszakát'] : hour < 13 ? ['Buongiorno', 'Jó reggelt'] : hour < 18 ? ['Buon pomeriggio', 'Szép délutánt'] : ['Buonasera', 'Jó estét'];
@@ -354,7 +365,7 @@ function renderHome() {
         <h1 class="hero-greet" lang="it">${greet[0]}</h1>
         <p class="hero-sub">${greet[1]}</p>
         <div class="plan">${plan}
-          ${learned ? `<div class="daybar"><i data-w="${pct}"></i></div><div class="daybar-l"><span>Ma ${doneToday} válasz</span><span>${streak()} napos sorozat</span></div>` : ''}
+          ${learned ? `<div class="daybar"><i data-w="${pct}"></i></div><div class="daybar-l"><span>${minsToday >= state.settings.goalMin ? 'Napi cél teljesítve' : `Napi cél: ${minsToday}/${state.settings.goalMin} perc`}</span><span>${streak()} napos sorozat</span></div>` : ''}
         </div>
       </div>
     </section>
@@ -370,6 +381,7 @@ function renderHome() {
       </div>
     </button>
     <div class="under-feature"><button class="btn" id="grammar">Nyelvtan</button><button class="btn quiet" id="words">Szavak</button></div>
+    ${homeStoryTeaser()}
 
     <div class="sec-h"><h2 lang="it">Il percorso</h2><span>${Object.keys(state.stamps).length}/${PACK.units.length} pecsét</span></div>
     <div class="rail" id="rail">
@@ -397,6 +409,7 @@ function renderHome() {
   $('#feature').onclick = $('#words').onclick = () => show('library', u.id);
   $('#grammar').onclick = () => showGrammar(u, () => show('home'));
   $$('.poster').forEach(b => b.onclick = () => show('library', b.dataset.unit));
+  const tz = $('#teaser'); if (tz) tz.onclick = () => startStory(tz.dataset.s);
   const now = $('.poster.now'); if (now) $('#rail').scrollLeft = Math.max(0, now.offsetLeft - 20);
 }
 
@@ -416,9 +429,9 @@ function showGrammar(u, back) {
 }
 
 /* ---------- Tanulási kör ---------- */
-function startSession(extraNew = 0) {
-  const due = dueCards();
-  const news = nextNewItems(extraNew || newLeftToday());
+function startSession(extraNew = 0, only = null) {
+  const due = only || dueCards();
+  const news = only ? [] : nextNewItems(extraNew || newLeftToday());
   const queue = [];
   const seenUnits = new Set(Object.keys(state.cards).map(id => ITEMS[id] && ITEMS[id].unit.id));
   let ni = 0;
@@ -434,7 +447,7 @@ function startSession(extraNew = 0) {
   });
   while (ni < news.length) pushNew();
   if (!queue.length) return show('home');
-  session = { queue, pos: 0, correct: 0, rated: 0, combo: 0, best: 0, noSpeak: false, newCount: news.length, started: Date.now(), stamps: [] };
+  session = { only: !!only, queue, pos: 0, correct: 0, rated: 0, combo: 0, best: 0, noSpeak: false, newCount: news.length, started: Date.now(), stamps: [] };
   enterSession();
   nextStep();
 }
@@ -792,7 +805,7 @@ function renderLibrary(openId) {
     </div>
     ${PACK.units.map((u, ui) => {
       const st = startedIn(u);
-      const head = ui === 0 || PACK.units[ui - 1].level !== u.level ? `<div class="level-h"><b>${u.level}</b><span>${u.level === 'A1' ? 'Alapok' : 'Haladó kezdő'}</span></div>` : '';
+      const head = ui === 0 || PACK.units[ui - 1].level !== u.level ? `<div class="level-h"><b>${u.level}</b><span>${({ A1: 'Alapok', A2: 'Haladó kezdő', B1: 'Középhaladó' })[u.level]}</span></div>` : '';
       return head + `<details class="unit ${u === cu ? 'now' : ''}" id="u-${u.id}" ${u.id === open ? 'open' : ''}>
         <summary>
           ${art(u.img, { cls: 'thumb' + (st ? '' : ' dim') })}
@@ -846,6 +859,9 @@ function renderStats() {
       <div><b class="c-ochre">${streak()}</b><span>napos sorozat</span></div>
     </div>
 
+    <div class="sec-h"><h2 lang="it">Questa settimana</h2><span>heti összefoglaló</span></div>
+    ${weekSummary()}
+
     <div class="sec-h"><h2 lang="it">Il passaporto</h2><span>${got}/${PACK.units.length} pecsét</span></div>
     <div class="passport">${PACK.units.map((u, i) => state.stamps[u.id]
       ? `<div class="slot got c${i % 3}" title="${esc(u.hu)}">${stampSvg(u, state.stamps[u.id])}</div>`
@@ -892,6 +908,14 @@ function renderSettings() {
       <div class="setting"><label>Hangjelzés válasz után</label>${sw('sound')}</div>
     </div>
 
+    <div class="sec-h"><h2 lang="it">L'obiettivo</h2><span>napi cél és emlékeztető</span></div>
+    <div class="panel">
+      <div class="setting"><label>Napi cél<span class="sub">Csak a valódi tanulási idő számít</span></label>${seg('goalMin', [[5, '5'], [10, '10'], [15, '15'], [20, '20']])}</div>
+      <div class="setting"><label for="remindAt">Emlékeztető időpontja</label><input type="time" id="remindAt" class="time-in" value="${esc(st.remindAt)}"></div>
+      <div class="setting" style="display:block"><button class="btn block" id="remind">Napi emlékeztető a naptárba</button>
+        <p class="sub" style="margin-top:8px;font-size:13px;color:var(--muted)">Letölt egy naptárbejegyzést, ami minden nap ekkor szól. iPhone-on és Androidon is egy koppintással hozzáadható, szerver és fiók nélkül.</p></div>
+    </div>
+
     <div class="sec-h"><h2 lang="it">Il compagno</h2><span>AI beszélgetőtárs</span></div>
     <div class="panel">${keyForm()}</div>
 
@@ -909,8 +933,10 @@ function renderSettings() {
       <label class="btn" style="cursor:pointer">Importálás<input type="file" id="imp" accept="application/json" hidden></label>
       <button class="btn danger" id="reset">Haladás törlése</button>
     </div>
-    <p class="foot">Viva Voce · olasz A1–A2 · ${ORDER.length} kifejezés · illusztrációk: Higgsfield, hang: Kokoro</p>`;
+    <p class="foot">Viva Voce · olasz A1–B1 · ${ORDER.length} kifejezés · illusztrációk: Higgsfield, hang: Kokoro</p>`;
   bindKeyForm(() => renderSettings());
+  $('#remindAt').onchange = e => { st.remindAt = e.target.value || '19:00'; saveState(); };
+  $('#remind').onclick = downloadReminder;
   $$('.seg button').forEach(b => b.onclick = () => {
     st[b.dataset.k] = isNaN(+b.dataset.v) ? b.dataset.v : +b.dataset.v; saveState();
     $$(`.seg button[data-k="${b.dataset.k}"]`).forEach(x => x.setAttribute('aria-pressed', x === b));
@@ -961,7 +987,19 @@ const ROLES = {
   u15: 'Telefonon egyeztetsz egy olasz cég asszisztensével',
   u16: 'Orvosnál vagy, elmondod a panaszaidat',
   u17: 'Egy kollégával vitatkoztok egy új ötletről',
-  u18: 'Sztrájk van, az ügyintézővel intézed a visszatérítést'
+  u18: 'Sztrájk van, az ügyintézővel intézed a visszatérítést',
+  u19: 'Egy barát a terveidről és reményeidről kérdez',
+  u20: 'Elmeséled egy barátnak, mi történt veled a múlt héten',
+  u21: 'Árajánlatról tárgyalsz egy milánói ügyféllel',
+  u22: 'Megbeszélést vezetsz, a kolléga ellenvetéseket tesz',
+  u23: 'Egy barát elmondja, mi bántja, te reagálsz',
+  u24: 'Egy régi barát a párkapcsolatodról és a családodról kérdez',
+  u25: 'Albérletet nézel, a tulajdonossal egyeztetsz',
+  u26: 'Edzővel beszéled meg az életmódodat',
+  u27: 'Kollégával beszélgetsz a heti hírekről',
+  u28: 'Egy baráttal filmet vagy kiállítást választotok',
+  u29: 'Egy barát azt kérdezi, mit tennél, ha mindent megtehetnél',
+  u30: 'Vitázol egy döntésről, érvekkel és ellenérvekkel'
 };
 const getKey = () => { try { return localStorage.getItem(KEY_STORE) || ''; } catch (e) { return ''; } };
 
@@ -985,26 +1023,6 @@ function bindKeyForm(after) {
   };
 }
 
-function renderTalk() {
-  if (talk) return renderChat();
-  const key = getKey();
-  const started = PACK.units.filter(u => startedIn(u));
-  const cu = currentUnit();
-  const avail = started.length ? started : [cu];
-  app.innerHTML = `
-    <section class="talk-hero">${art(PACK.units[16].img, { big: true })}<h1 lang="it">Parliamo.</h1></section>
-    <p class="explain" style="margin-top:6px">Valós helyzetet játszol el egy olasz partnerrel, a már tanult szavaiddal. Minden mondatod után megmutatja, hogyan mondanád helyesen, és miért. Beszélhetsz vagy gépelhetsz.</p>
-    ${key ? `
-      <div class="sec-h"><h2 lang="it">Le scene</h2><span>${avail.length + 1} elérhető</span></div>
-      <div class="scenes">
-        ${avail.map(u => `<button class="scene" data-u="${u.id}">${art(u.img, { cls: 'thumb' })}<span class="scene-t">${IT(u.title)}<span class="hu">${esc(ROLES[u.id] || u.hu)}</span></span><span class="lvl-chip">${u.level}</span></button>`).join('')}
-        <button class="scene" data-u="free">${art(PACK.hero, { cls: 'thumb' })}<span class="scene-t">${IT('Chiacchierata libera')}<span class="hu">Szabad beszélgetés bármiről</span></span><span class="lvl-chip">${cu.level}</span></button>
-      </div>
-      ${started.length < PACK.units.length ? '<p class="hint">Minden elkezdett lecke új helyzetet nyit meg.</p>' : ''}`
-    : `<div class="sec-h"><h2 lang="it">Prima di iniziare</h2></div><div class="panel">${keyForm()}</div>`}`;
-  if (!key) return bindKeyForm(renderTalk);
-  $$('.scene').forEach(b => b.onclick = () => startTalk(b.dataset.u));
-}
 
 function knownVocab(limit = 120) {
   const ids = ORDER.filter(id => state.cards[id]);
@@ -1093,7 +1111,7 @@ function renderChat() {
         <button class="btn cta" id="csend">Küldés</button>
       </form>
     </div>`;
-  $('#quit').onclick = () => { talk = null; stopAudio(); show('talk'); };
+  $('#quit').onclick = () => { talk = null; stopAudio(); show('practice'); };
   $('#cf').onsubmit = e => { e.preventDefault(); const i = $('#cin'); sendTalk(i.value); i.value = ''; };
   const mic = $('#cmic');
   if (mic) mic.onclick = async () => {
@@ -1118,6 +1136,353 @@ function paintChat() {
   }
   const sb = $('#csend'); if (sb) sb.disabled = talk.busy;
   requestAnimationFrame(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }));
+}
+
+/* ---------- Gyakorlás fül: történetek, beszélgetés, igeedző, hibák ---------- */
+const storyUnlocked = s => { const u = PACK.units.find(x => x.id === s.unlock); return !u || startedIn(u) > 0; };
+const unitById = id => PACK.units.find(u => u.id === id);
+function mistakeItems() {
+  const cut = Date.now() - 30 * DAY;
+  const recentBad = new Set(state.log.filter(l => l[0] >= cut && l[2] === 1).map(l => l[1]));
+  return Object.entries(state.cards)
+    .filter(([id, c]) => ITEMS[id] && (c.lapses > 0 || recentBad.has(id)))
+    .sort((a, b) => (b[1].lapses || 0) - (a[1].lapses || 0) || a[1].s - b[1].s)
+    .map(([id]) => id);
+}
+function homeStoryTeaser() {
+  const s = STORIES.find(x => storyUnlocked(x) && !state.stories[x.id]);
+  if (!s) return '';
+  return `<button class="teaser" id="teaser" data-s="${s.id}">
+    ${art(unitById(s.img) && unitById(s.img).img, { cls: 'thumb' })}
+    <span class="scene-t"><span class="hu" style="color:var(--ochre);font-weight:600;font-size:12.5px">Új történet · ${s.level}</span>${IT(s.title)}<span class="hu">${esc(s.hu)}, hanggal, kb. 3 perc</span></span>
+  </button>`;
+}
+
+function renderPractice() {
+  if (talk) return renderChat();
+  const key = getKey();
+  const started = PACK.units.filter(u => startedIn(u));
+  const cu = currentUnit();
+  const avail = started.length ? started : [cu];
+  const mist = mistakeItems().length;
+  app.innerHTML = `
+    <h1 class="page-title" lang="it">La pratica</h1>
+    <p class="page-sub">Történetek, beszélgetés és célzott gyakorlás a napi kör mellé</p>
+
+    <div class="sec-h"><h2 lang="it">Le storie</h2><span>${Object.keys(state.stories).length}/${STORIES.length} meghallgatva</span></div>
+    <div class="rail">
+      ${STORIES.map(s => {
+        const ok = storyUnlocked(s), done = state.stories[s.id];
+        const u = unitById(s.img);
+        return `<button class="poster ${ok ? '' : 'locked'}" data-story="${s.id}" ${ok ? '' : 'aria-disabled="true"'}>
+          <div style="position:relative">${art(u && u.img, { cls: ok ? '' : 'dim' })}
+            <span class="poster-n" style="font-size:15px">${s.level}</span>
+            ${done ? `<span class="poster-mark">${ICON.check}</span>` : ''}
+          </div>
+          ${IT(s.title)}<span class="hu">${ok ? esc(s.hu) : `Feloldás: ${unitById(s.unlock).index + 1}. lecke`}</span>
+        </button>`;
+      }).join('')}
+    </div>
+
+    <div class="sec-h"><h2 lang="it">Allenamento</h2><span>célzott gyakorlás</span></div>
+    <div class="scenes">
+      <button class="scene" id="drill">${art(cu.img, { cls: 'thumb' })}<span class="scene-t">${IT('Coniugazioni')}<span class="hu">Igeedző: ${VERBS ? VERBS.verbs.length : 0} ige, 5 igeidő, a gyenge pontjaidra súlyozva</span></span></button>
+      <button class="scene" id="mist" ${mist ? '' : 'disabled style="opacity:.5"'}>${art(PACK.units[19] ? PACK.units[19].img : cu.img, { cls: 'thumb' })}<span class="scene-t">${IT('I miei errori')}<span class="hu">${mist ? `A hibáim: ${mist} kifejezés, amit már elrontottál` : 'Még nincs elrontott kifejezésed'}</span></span></button>
+    </div>
+
+    <div class="sec-h"><h2 lang="it">Conversazione</h2><span>AI beszélgetőtárs</span></div>
+    ${key ? `<div class="scenes">
+        ${avail.map(u => `<button class="scene" data-u="${u.id}">${art(u.img, { cls: 'thumb' })}<span class="scene-t">${IT(u.title)}<span class="hu">${esc(ROLES[u.id] || u.hu)}</span></span><span class="lvl-chip">${u.level}</span></button>`).join('')}
+        <button class="scene" data-u="free">${art(PACK.hero, { cls: 'thumb' })}<span class="scene-t">${IT('Chiacchierata libera')}<span class="hu">Szabad beszélgetés bármiről</span></span><span class="lvl-chip">${cu.level}</span></button>
+      </div>`
+    : `<div class="panel">${keyForm()}</div>`}`;
+  if (!key) bindKeyForm(renderPractice);
+  $$('.scene[data-u]').forEach(b => b.onclick = () => startTalk(b.dataset.u));
+  $$('[data-story]').forEach(b => b.onclick = () => { const s = STORIES.find(x => x.id === b.dataset.story); if (storyUnlocked(s)) startStory(s.id); });
+  $('#drill').onclick = () => renderDrillSetup();
+  const m = $('#mist'); if (m && mist) m.onclick = () => startSession(0, mistakeItems().slice(0, 15));
+}
+
+/* ---------- Történet lejátszó ---------- */
+let story = null;
+function startStory(id) {
+  const s = STORIES.find(x => x.id === id);
+  story = { s, pos: -1, first: 0, total: s.lines.filter(l => l.q).length, tries: 0 };
+  enterSession();
+  const u = unitById(s.img);
+  app.innerHTML = `
+    <div class="session-bar"><button class="quit" id="quit" aria-label="Kilépés">${ICON.x}</button><div class="progress"><i id="sp" style="width:0%"></i></div><span class="combo"></span></div>
+    <section class="story-head">
+      <div class="g-art art"><img src="${imgUrl(u.img, true)}" alt="" onerror="this.remove()"></div>
+      <div class="task-kind"><span class="tag new">${s.level}</span>Történet</div>
+      <h1 class="it story-title" lang="it">${esc(s.title)}</h1>
+      <p class="hu">${esc(s.hu)} · szereplők: ${Object.entries(s.cast).filter(([k]) => k !== 'N').map(([, c]) => esc(c.name)).join(', ')}</p>
+    </section>
+    <div class="story" id="story"></div>
+    <div class="story-next"><button class="btn cta block lg" id="snext">Kezdjük</button></div>`;
+  $('#quit').onclick = () => { story = null; show('practice'); };
+  $('#snext').onclick = storyStep;
+  window.scrollTo(0, 0);
+}
+function storyStep() {
+  const st = story; if (!st) return;
+  st.pos++;
+  const { s } = st;
+  $('#sp').style.width = Math.round(100 * st.pos / s.lines.length) + '%';
+  if (st.pos >= s.lines.length) return storyEnd();
+  const l = s.lines[st.pos];
+  const box = $('#story');
+  const btn = $('#snext');
+  if (l.q) {
+    btn.disabled = true; btn.textContent = 'Válaszolj a kérdésre';
+    const opts = shuffle(l.o.map((o, i) => ({ o, ok: i === l.a })));
+    const el = document.createElement('div');
+    el.className = 'squiz rise';
+    el.innerHTML = `<p class="squiz-q">${esc(l.q)}</p><div class="choices">${opts.map((x, i) => `<button class="choice" data-ok="${x.ok ? 1 : 0}"><span class="k">${i + 1}</span><span>${esc(x.o)}</span></button>`).join('')}</div>`;
+    box.appendChild(el);
+    let tries = 0;
+    $$('.choice', el).forEach(b => b.onclick = () => {
+      if (b.disabled) return;
+      tries++;
+      if (b.dataset.ok === '1') {
+        b.classList.add('right'); chime('ok');
+        $$('.choice', el).forEach(x => x.disabled = true);
+        if (tries === 1) st.first++;
+        btn.disabled = false; btn.textContent = 'Tovább'; btn.focus({ preventScroll: true });
+      } else { b.classList.add('wrong'); b.disabled = true; chime('bad'); }
+    });
+  } else {
+    btn.textContent = 'Tovább';
+    const who = s.cast[l.s];
+    const el = document.createElement('div');
+    el.className = `sline rise ${l.s === 'N' ? 'narr' : who.g === 'm' ? 'm' : 'f'}`;
+    el.innerHTML = l.s === 'N'
+      ? `<p class="it" lang="it">${esc(l.it)}</p><p class="hu tr-hu">${esc(l.hu)}</p>`
+      : `<span class="who">${esc(who.name)}</span><div class="sbub">${playBtn(l.it)}<div><p class="it" lang="it">${esc(l.it)}</p><p class="hu tr-hu">${esc(l.hu)}</p></div></div>`;
+    el.onclick = e => { if (!e.target.closest('.icon-btn')) el.classList.toggle('show-hu'); };
+    box.appendChild(el);
+    say(l.it, null, $('.icon-btn', el));
+  }
+  requestAnimationFrame(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }));
+}
+function storyEnd() {
+  const { s, first, total } = story;
+  story = null;
+  state.stories[s.id] = { day: today(), score: first, of: total };
+  const d = today(); state.days[d] = (state.days[d] || 0) + 1;
+  saveState(); paintStreak();
+  chime('done');
+  app.innerHTML = `
+    <section class="finale">
+      <div class="g-art art" style="height:260px;margin:-30px -20px 10px"><img src="${imgUrl(unitById(s.img).img, true)}" alt="" onerror="this.remove()"></div>
+      <h1 lang="it">Fine.</h1>
+      <p class="lead">${first === total ? 'Minden kérdést elsőre eltaláltál. Ezt a történetet már érted olaszul.' : `${total} kérdésből ${first}-at/et találtál el elsőre. Hallgasd meg újra később, a második körre sokkal több marad meg.`}</p>
+      <div class="trio"><div><b class="c-salvia">${first}/${total}</b><span>elsőre jó</span></div><div><b>${s.lines.filter(l => l.it).length}</b><span>mondat</span></div><div><b class="c-ochre">${s.level}</b><span>szint</span></div></div>
+      <button class="btn cta block lg" id="done">Kész</button>
+      <button class="btn quiet block" id="again" style="margin-top:8px">Újra meghallgatom</button>
+    </section>`;
+  $('#done').onclick = () => show('practice');
+  $('#again').onclick = () => startStory(s.id);
+}
+
+/* ---------- Igeedző ---------- */
+const P6 = ['io', 'tu', 'lui/lei', 'noi', 'voi', 'loro'];
+const P6a = ['io', 'tu', 'lui', 'noi', 'voi', 'loro'];
+let drill = null;
+function drillWeak() {
+  return Object.entries(state.drill).filter(([, v]) => v.n >= 2).map(([k, v]) => ({ k, rate: v.ok / v.n, n: v.n })).sort((a, b) => a.rate - b.rate).slice(0, 4);
+}
+function renderDrillSetup() {
+  enterSession();
+  const T = VERBS.tenses;
+  const sel = drill && drill.cfg || { tenses: ['pres', 'pass'], set: 'A1' };
+  const weak = drillWeak();
+  app.innerHTML = `
+    <div class="session-bar"><button class="quit" id="back" aria-label="Vissza">${ICON.back}</button></div>
+    <h1 class="page-title" lang="it">Coniugazioni</h1>
+    <p class="page-sub">15 gyors feladat. Amit gyakran elrontasz, azt többször kérdezem.</p>
+    <div class="sec-h" style="margin-top:22px"><h2 lang="it" style="font-size:22px">Igeidők</h2></div>
+    <div class="chips" id="tch">${Object.entries(T).map(([k, v]) => `<button class="chipsel" data-t="${k}" aria-pressed="${sel.tenses.includes(k)}">${esc(v)}</button>`).join('')}</div>
+    <div class="sec-h" style="margin-top:22px"><h2 lang="it" style="font-size:22px">Igék</h2></div>
+    <div class="seg" id="vset"><button data-v="A1" aria-pressed="${sel.set === 'A1'}">Alap (${VERBS.verbs.filter(v => v.level === 'A1').length})</button><button data-v="all" aria-pressed="${sel.set === 'all'}">Mind (${VERBS.verbs.length})</button></div>
+    ${weak.length ? `<div class="sec-h" style="margin-top:26px"><h2 lang="it" style="font-size:22px">Punti deboli</h2><span>gyenge pontjaid</span></div>
+      <div class="weak">${weak.map(w => { const [inf, t] = w.k.split('|'); return `<div><span class="it">${esc(inf)}</span><span class="hu">${esc(T[t])}</span><b class="c-campari">${Math.round(w.rate * 100)}%</b></div>`; }).join('')}</div>` : ''}
+    <button class="btn cta block lg" id="go" style="margin-top:28px">Indítás</button>`;
+  $('#back').onclick = () => show('practice');
+  $$('#tch .chipsel').forEach(b => b.onclick = () => { b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') !== 'true'); });
+  $$('#vset button').forEach(b => b.onclick = () => $$('#vset button').forEach(x => x.setAttribute('aria-pressed', x === b)));
+  $('#go').onclick = () => {
+    const tenses = $$('#tch .chipsel').filter(b => b.getAttribute('aria-pressed') === 'true').map(b => b.dataset.t);
+    if (!tenses.length) return;
+    startDrill({ tenses, set: $('#vset [aria-pressed="true"]').dataset.v });
+  };
+}
+function startDrill(cfg) {
+  const verbs = VERBS.verbs.filter(v => cfg.set === 'all' || v.level === 'A1');
+  const cands = [];
+  verbs.forEach(v => cfg.tenses.forEach(t => { for (let p = 0; p < 6; p++) {
+    const st = state.drill[`${v.inf}|${t}`];
+    const w = st ? 1 + 4 * (1 - st.ok / st.n) : 1.6;
+    cands.push({ v, t, p, w });
+  } }));
+  const picked = [];
+  const used = new Set();
+  while (picked.length < 15 && cands.length) {
+    const sum = cands.reduce((a, c) => a + c.w, 0);
+    let r = Math.random() * sum, i = 0;
+    while ((r -= cands[i].w) > 0) i++;
+    const c = cands.splice(i, 1)[0];
+    const key = c.v.inf + c.t;
+    if (used.has(key) && cands.length > 30) continue; // egy ige-idő párból egy kör alatt egy elég
+    used.add(key); picked.push(c);
+  }
+  drill = { cfg, q: picked, pos: 0, ok: 0, first: 0, started: Date.now() };
+  drillStep();
+}
+function drillStep() {
+  const d = drill;
+  closeSheet();
+  if (d.pos >= d.q.length) return drillEnd();
+  const c = d.q[d.pos];
+  const T = VERBS.tenses;
+  enterSession();
+  app.innerHTML = `
+    <div class="session-bar"><button class="quit" id="quit" aria-label="Kilépés">${ICON.x}</button><div class="progress"><i style="width:${Math.round(100 * d.pos / d.q.length)}%"></i></div><span class="combo">${d.pos + 1}/${d.q.length}</span></div>
+    <div class="enter">
+      <div class="task-kind"><span class="tag ${c.retry ? 'again' : 'rev'}">${c.retry ? 'Még egyszer' : 'Ragozd'}</span>${esc(T[c.t])}</div>
+      <div class="drill-card">
+        <span class="it drill-inf" lang="it">${esc(c.v.inf)}</span>
+        <span class="hu">${esc(c.v.hu)}</span>
+        <div class="drill-p"><span class="pron">${P6[c.p]}</span><span class="hu">${esc(T[c.t])}</span></div>
+      </div>
+      <form id="f" autocomplete="off">
+        <input class="answer-input" id="inp" lang="it" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done" placeholder="${P6a[c.p]} …" aria-label="Ragozott alak">
+        <div class="accents">${['à', 'è', 'é', 'ì', 'ò', 'ù'].map(a => `<button type="button" data-a="${a}">${a}</button>`).join('')}</div>
+        <div class="input-actions"><button type="button" class="btn quiet" id="idk">Nem tudom</button><button class="btn cta lg" id="check">Ellenőrzés</button></div>
+      </form>
+    </div>`;
+  $('#quit').onclick = () => { drill = null; show('practice'); };
+  const inp = $('#inp'), f = $('#f');
+  setTimeout(() => inp.focus({ preventScroll: true }), 60);
+  $('.accents', f).onclick = e => { const b = e.target.closest('[data-a]'); if (!b) return; const s = inp.selectionStart ?? inp.value.length; inp.value = inp.value.slice(0, s) + b.dataset.a + inp.value.slice(inp.selectionEnd ?? s); inp.focus(); inp.setSelectionRange(s + 1, s + 1); };
+  const submit = given => {
+    const target = c.v.forms[c.t][c.p];
+    const alts = [target, (c.v.alt[c.t] || [])[c.p]].filter(Boolean);
+    let g = 1, note = '';
+    if (given != null) {
+      const n = norm(given).replace(/^(io|tu|lui|lei|noi|voi|loro) /, '');
+      if (alts.some(a => norm(a) === n)) g = 3;
+      else if (alts.some(a => stripAccents(norm(a)) === stripAccents(n))) { g = 2; note = 'Az ékezet számít: <b>è</b>, <b>ò</b>, <b>à</b> a jövő idő és a harmadik személy jele.'; }
+    }
+    inp.readOnly = true; inp.classList.add(g >= 2 ? 'right' : 'wrong');
+    $('.accents', f).remove(); $('.input-actions', f).remove();
+    const key = `${c.v.inf}|${c.t}`;
+    if (!c.retry) {
+      const st = state.drill[key] || { n: 0, ok: 0 };
+      st.n++; if (g >= 2) st.ok++;
+      state.drill[key] = st;
+      if (g >= 2) d.first++;
+      const day = today(); state.days[day] = (state.days[day] || 0) + 1;
+      saveState(); paintStreak();
+    }
+    if (g >= 2) d.ok++; else d.q.push(Object.assign({}, c, { retry: true }));
+    const cls = g === 3 ? 'ok' : g === 2 ? 'hard' : 'bad';
+    chime(cls);
+    const forms = c.v.forms[c.t];
+    sheet.className = `sheet ${cls}`;
+    sheet.innerHTML = `<div class="wrap">
+      <div class="sheet-head"><h3 lang="it">${g === 3 ? pick(['Esatto!', 'Perfetto!', 'Giusto!']) : g === 2 ? 'Quasi!' : 'Peccato…'}</h3>${playBtn(`${P6a[c.p]} ${target}`)}</div>
+      ${note ? `<p class="note">${note}</p>` : ''}
+      <table class="conj">${forms.map((x, i) => `<tr class="${i === c.p ? 'on' : ''}"><td>${P6[i]}</td><td class="it" lang="it">${esc(x)}</td></tr>`).join('')}</table>
+      ${c.v.aux === 'essere' && c.t === 'pass' ? '<p class="note">Essere-vel ragozódik, ezért a végződés egyezik: nő mondja: <b>sono andata</b>, többes nőnem: <b>siamo andate</b>.</p>' : ''}
+      <div class="actions"><button class="btn ${g === 1 ? 'bad' : 'cta'} lg" id="next">Tovább</button></div></div>`;
+    sheet.hidden = false; document.body.classList.add('sheet-open');
+    if (g < 3 || state.settings.autoplay) say(`${P6a[c.p]} ${target}`, null, $('.sheet .icon-btn'));
+    const nb = $('#next'); nb.focus({ preventScroll: true }); nb.onclick = () => { d.pos++; drillStep(); };
+  };
+  f.onsubmit = e => { e.preventDefault(); if (!inp.value.trim()) return inp.focus(); submit(inp.value); };
+  $('#idk').onclick = () => submit(null);
+}
+function drillEnd() {
+  const d = drill;
+  const total = d.q.filter(x => !x.retry).length;
+  drill = { cfg: d.cfg };
+  chime('done');
+  const weak = drillWeak();
+  app.innerHTML = `
+    <section class="finale">
+      <h1 lang="it">${d.first === total ? 'Perfetto.' : d.first / total >= .7 ? 'Bene così.' : 'Ancora un po’.'}</h1>
+      <p class="lead">${total} alakból ${d.first} ment elsőre. A rontott alakokat a kör végén újra kérdeztem, és a következő körben is gyakrabban jönnek.</p>
+      <div class="trio"><div><b class="c-salvia">${Math.round(100 * d.first / total)}%</b><span>elsőre jó</span></div><div><b>${total}</b><span>alak</span></div><div><b class="c-ochre">${Math.max(1, Math.round((Date.now() - d.started) / 60000))}</b><span>perc</span></div></div>
+      ${weak.length ? `<div class="weak" style="text-align:left;margin-bottom:22px">${weak.map(w => { const [inf, t] = w.k.split('|'); return `<div><span class="it">${esc(inf)}</span><span class="hu">${esc(VERBS.tenses[t])}</span><b class="c-campari">${Math.round(w.rate * 100)}%</b></div>`; }).join('')}</div>` : ''}
+      <button class="btn cta block lg" id="again">Még egy kör</button>
+      <button class="btn quiet block" id="done" style="margin-top:8px">Kész</button>
+    </section>`;
+  $('#again').onclick = () => startDrill(d.cfg);
+  $('#done').onclick = () => show('practice');
+}
+
+/* ---------- Időmérés és napi cél ---------- */
+let lastAct = Date.now();
+['pointerdown', 'keydown'].forEach(ev => document.addEventListener(ev, () => { lastAct = Date.now(); }, { capture: true, passive: true }));
+setInterval(() => {
+  const active = document.visibilityState === 'visible' && Date.now() - lastAct < 90000 && (document.body.classList.contains('in-session'));
+  if (!active) return;
+  const d = today();
+  state.time[d] = (state.time[d] || 0) + 5;
+  if (!state.goalHit[d] && state.time[d] >= state.settings.goalMin * 60) {
+    state.goalHit[d] = 1;
+    toast(`Napi cél teljesítve: ${state.settings.goalMin} perc. Bravo!`);
+    chime('stamp');
+  }
+  if (state.time[d] % 30 === 0) saveState();
+}, 5000);
+function toast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast'; t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.classList.add('out'), 2600);
+  setTimeout(() => t.remove(), 3200);
+}
+
+/* Napi emlékeztető naptárfájlként: minden telefonon működik, szerver nélkül */
+function downloadReminder() {
+  const [h, m] = (state.settings.remindAt || '19:00').split(':').map(Number);
+  const d = new Date(); d.setHours(h, m, 0, 0);
+  const pad = n => String(n).padStart(2, '0');
+  const dt = `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}T${pad(h)}${pad(m)}00`;
+  const url = location.href.split('#')[0].split('?')[0];
+  const ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Viva Voce//HU', 'BEGIN:VEVENT',
+    `UID:vivavoce-daily-${Date.now()}@vivavoce`, `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').slice(0, 15)}Z`,
+    `DTSTART:${dt}`, 'DURATION:PT' + state.settings.goalMin + 'M', 'RRULE:FREQ=DAILY',
+    `SUMMARY:Viva Voce: ${state.settings.goalMin} perc olasz`, `DESCRIPTION:Andiamo! ${url}`, `URL:${url}`,
+    'BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:Ideje egy kis olasznak', 'TRIGGER:PT0M', 'END:VALARM',
+    'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([ics], { type: 'text/calendar' }));
+  a.download = 'viva-voce-emlekezteto.ics';
+  a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+
+/* Heti összefoglaló a Haladás fülre */
+function weekSummary() {
+  const t = today();
+  const wd = (weekday(t) + 6) % 7; // hétfő = 0
+  const thisStart = t - wd, lastStart = thisStart - 7;
+  const sum = (a, b, obj) => { let s = 0; for (let d = a; d <= b; d++) s += obj[d] || 0; return s; };
+  const minsThis = Math.round(sum(thisStart, t, state.time) / 60), minsLast = Math.round(sum(lastStart, lastStart + wd, state.time) / 60);
+  const msStart = (thisStart) * DAY;
+  const newThis = Object.values(state.cards).filter(c => c.intro >= thisStart).length;
+  const revs = state.log.filter(l => dayIndex(l[0]) >= thisStart && !l[3]);
+  const acc = revs.length ? Math.round(100 * revs.filter(l => l[2] >= 2).length / revs.length) : null;
+  let best = null; for (let d = thisStart; d <= t; d++) if ((state.time[d] || 0) > ((best != null && state.time[best]) || 0)) best = d;
+  const goalDays = Array.from({ length: wd + 1 }, (_, i) => thisStart + i).filter(d => (state.time[d] || 0) >= state.settings.goalMin * 60).length;
+  const delta = minsThis - minsLast;
+  return `<div class="week">
+    <div class="week-row"><div><b>${minsThis}</b><span>perc a héten</span></div><div><b class="${delta >= 0 ? 'c-salvia' : 'c-campari'}">${delta >= 0 ? '+' : ''}${delta}</b><span>perc a múlt hét azonos napjaihoz képest</span></div></div>
+    <div class="week-row"><div><b>${newThis}</b><span>új kifejezés</span></div><div><b>${acc == null ? '–' : acc + '%'}</b><span>ismétlés pontosság</span></div></div>
+    <p class="explain" style="margin-top:12px">${goalDays}/${wd + 1} napon teljesült a napi cél${best != null && state.time[best] ? `, a legerősebb napod: ${['hétfő', 'kedd', 'szerda', 'csütörtök', 'péntek', 'szombat', 'vasárnap'][(weekday(best) + 6) % 7]}` : ''}.</p>
+  </div>`;
 }
 
 /* ---------- Indítás ---------- */
