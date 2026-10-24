@@ -1,6 +1,11 @@
 # Viva Voce
 
-Nyelvtanuló webapp, ami azt csinálja, amit a Duolingo nem: **tényleg hosszú távú memóriára optimalizál**, valós mondatokkal és kiejtésgyakorlással. Nincs szív, reklám, liga vagy fizetőfal. Első nyelvcsomag: **olasz A1–B1, magyarul**: 30 lecke, 549 kifejezés és mondat, 9 hangos történet, 25 ige teljes ragozása.
+Nyelvtanuló webapp, ami azt csinálja, amit a Duolingo nem: **tényleg hosszú távú memóriára optimalizál**, valós mondatokkal és kiejtésgyakorlással. Nincs szív, reklám, liga vagy fizetőfal. Két nyelv, magyarul tanítva, a fejlécben egy koppintással váltható:
+
+- **Olasz A1–B1:** 30 lecke, 549 kifejezés és mondat, 9 hangos történet, 25 ige teljes ragozása.
+- **Angol:** általános ág (A1–B1, 12 lecke) és üzleti ág (B2–C1, 10 lecke: networking, megbeszélés, prezentáció, tárgyalás, e-mail, hívások, pénzügy, projektvezetés, visszajelzés, idiómák), összesen 396 kifejezés, 4 történet, 50 rendhagyó ige.
+
+A haladás nyelvenként külön tárolódik, a napi sorozat és a napi cél közös.
 
 ## Miben más
 
@@ -80,6 +85,8 @@ app.js                nézetek, gyakorlattípusok, hang, tárolás
 data/it.json          olasz A1–B1 csomag: 30 lecke, 549 kifejezés és mondat
 data/stories-it.json  9 történet kérdésekkel
 data/verbs-it.json    25 ige × 5 igeidő ragozása
+data/en.json, stories-en.json, verbs-en.json   angol csomag
+audio/en/             angol hang (Kokoro: af_heart, am_michael)
 audio/it/st, vb/      a történetek és az igealakok hangja
 sw.js, manifest.webmanifest, icons/   PWA / offline
 ```
@@ -90,7 +97,7 @@ sw.js, manifest.webmanifest, icons/   PWA / offline
 - [x] AI beszélgetőtárs a leckék szókincsével
 - [x] Sötét téma
 - [x] B1 szint, történetek, igeedző, hibakör, napi cél
-- [ ] Második nyelv a nyelvválasztóval
+- [x] Angol: általános és üzleti ág, nyelvváltó
 - [ ] Szinkron eszközök között (szerver kell hozzá; addig export/import)
 
 ## Licenc

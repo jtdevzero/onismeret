@@ -1,0 +1,404 @@
+{
+ "lang": "en",
+ "stories": [
+  {
+   "id": "en-s1",
+   "level": "A1",
+   "unlock": "en-u2",
+   "img": "en-u2",
+   "title": "Coffee in London",
+   "hu": "Kávé Londonban",
+   "cast": {
+    "N": {
+     "name": "Narrator",
+     "g": "f"
+    },
+    "S": {
+     "name": "Sam",
+     "g": "m"
+    },
+    "A": {
+     "name": "Anna",
+     "g": "f"
+    }
+   },
+   "lines": [
+    {
+     "s": "N",
+     "it": "It's Monday morning. Anna is in a small café in London.",
+     "hu": "Hétfő reggel van. Anna egy kis londoni kávézóban van."
+    },
+    {
+     "s": "S",
+     "it": "Morning! What can I get you?",
+     "hu": "Jó reggelt! Mit adhatok?"
+    },
+    {
+     "s": "A",
+     "it": "Can I have a flat white, please?",
+     "hu": "Kérhetek egy flat white-ot?"
+    },
+    {
+     "s": "S",
+     "it": "Sure. Anything else?",
+     "hu": "Persze. Még valamit?"
+    },
+    {
+     "s": "A",
+     "it": "Yes, a croissant, please.",
+     "hu": "Igen, egy croissant-t, kérem."
+    },
+    {
+     "q": "Mit kér Anna?",
+     "o": [
+      "Egy flat white-ot és egy croissant-t",
+      "Egy teát",
+      "Egy pohár vizet"
+     ],
+     "a": 0
+    },
+    {
+     "s": "S",
+     "it": "For here or to go?",
+     "hu": "Itt fogyasztja vagy elviszi?"
+    },
+    {
+     "s": "A",
+     "it": "To go, please. I'm late for work!",
+     "hu": "Elvitelre. Késésben vagyok a munkából!"
+    },
+    {
+     "q": "Miért viszi el a kávét Anna?",
+     "o": [
+      "Mert késésben van",
+      "Mert nincs szabad asztal",
+      "Mert esik az eső"
+     ],
+     "a": 0
+    },
+    {
+     "s": "S",
+     "it": "That's four pounds fifty.",
+     "hu": "Négy font ötven lesz."
+    },
+    {
+     "s": "A",
+     "it": "Can I pay by card?",
+     "hu": "Fizethetek kártyával?"
+    },
+    {
+     "s": "S",
+     "it": "Of course. Have a great day!",
+     "hu": "Persze. Legyen szép napja!"
+    },
+    {
+     "s": "N",
+     "it": "Anna runs to the bus stop with her coffee.",
+     "hu": "Anna a kávéjával a buszmegállóhoz szalad."
+    },
+    {
+     "q": "Mennyibe kerül a reggeli?",
+     "o": [
+      "Négy font ötvenbe",
+      "Két fontba",
+      "Tíz fontba"
+     ],
+     "a": 0
+    }
+   ]
+  },
+  {
+   "id": "en-s2",
+   "level": "A1",
+   "unlock": "en-u4",
+   "img": "en-u4",
+   "title": "Lost in London",
+   "hu": "Eltévedve Londonban",
+   "cast": {
+    "N": {
+     "name": "Narrator",
+     "g": "f"
+    },
+    "P": {
+     "name": "Peter",
+     "g": "m"
+    },
+    "W": {
+     "name": "Local",
+     "g": "f"
+    }
+   },
+   "lines": [
+    {
+     "s": "N",
+     "it": "Peter is a tourist. He is looking for the British Museum.",
+     "hu": "Peter turista. A British Múzeumot keresi."
+    },
+    {
+     "s": "P",
+     "it": "Excuse me, where is the British Museum?",
+     "hu": "Elnézést, hol van a British Múzeum?"
+    },
+    {
+     "s": "W",
+     "it": "Oh, it's not far. Go straight on and turn left at the bank.",
+     "hu": "Ó, nincs messze. Menjen egyenesen, és a banknál forduljon balra."
+    },
+    {
+     "s": "P",
+     "it": "Straight on and left at the bank. Is it far from here?",
+     "hu": "Egyenesen, és a banknál balra. Messze van innen?"
+    },
+    {
+     "s": "W",
+     "it": "About ten minutes on foot.",
+     "hu": "Gyalog kb. tíz perc."
+    },
+    {
+     "q": "Merre kell fordulnia Peternek?",
+     "o": [
+      "A banknál balra",
+      "A banknál jobbra",
+      "Az állomásnál balra"
+     ],
+     "a": 0
+    },
+    {
+     "s": "P",
+     "it": "Is there a station near here?",
+     "hu": "Van itt a közelben állomás?"
+    },
+    {
+     "s": "W",
+     "it": "Yes, the station is opposite the museum.",
+     "hu": "Igen, az állomás a múzeummal szemben van."
+    },
+    {
+     "q": "Hol van az állomás?",
+     "o": [
+      "A múzeummal szemben",
+      "A bank mellett",
+      "Nagyon messze"
+     ],
+     "a": 0
+    },
+    {
+     "s": "P",
+     "it": "Thank you so much!",
+     "hu": "Nagyon köszönöm!"
+    },
+    {
+     "s": "W",
+     "it": "You're welcome. Enjoy London!",
+     "hu": "Szívesen. Érezze jól magát Londonban!"
+    },
+    {
+     "q": "Milyen messze van gyalog a múzeum?",
+     "o": [
+      "Kb. tíz percre",
+      "Egy órára",
+      "Két percre"
+     ],
+     "a": 0
+    }
+   ]
+  },
+  {
+   "id": "en-s3",
+   "level": "B2",
+   "unlock": "en-b1",
+   "img": "en-b1",
+   "title": "The networking event",
+   "hu": "Kapcsolatépítés",
+   "cast": {
+    "N": {
+     "name": "Narrator",
+     "g": "f"
+    },
+    "S": {
+     "name": "Sarah",
+     "g": "f"
+    },
+    "T": {
+     "name": "Tamás",
+     "g": "m"
+    }
+   },
+   "lines": [
+    {
+     "s": "N",
+     "it": "Tamás is at a tech conference in London. During the coffee break, a woman smiles at him.",
+     "hu": "Tamás egy londoni tech-konferencián van. A kávészünetben egy nő rámosolyog."
+    },
+    {
+     "s": "S",
+     "it": "Hi, I don't think we've met. I'm Sarah.",
+     "hu": "Szia, azt hiszem, még nem találkoztunk. Sarah vagyok."
+    },
+    {
+     "s": "T",
+     "it": "Nice to meet you, Sarah. I'm Tamás, from Budapest.",
+     "hu": "Örülök, Sarah. Tamás vagyok, Budapestről."
+    },
+    {
+     "s": "S",
+     "it": "So, what brings you to the conference?",
+     "hu": "És mi hozott a konferenciára?"
+    },
+    {
+     "s": "T",
+     "it": "I'm an ERP consultant. I'm here to see what's new in automation.",
+     "hu": "ERP-tanácsadó vagyok. Azért jöttem, hogy lássam, mi az újdonság az automatizálásban."
+    },
+    {
+     "q": "Miért van Tamás a konferencián?",
+     "o": [
+      "Az automatizálás újdonságai miatt",
+      "Előadást tart",
+      "Állást keres"
+     ],
+     "a": 0
+    },
+    {
+     "s": "S",
+     "it": "That's interesting. How did you get into consulting?",
+     "hu": "Érdekes. Hogyan kerültél a tanácsadásba?"
+    },
+    {
+     "s": "T",
+     "it": "Through logistics, actually. I started in a warehouse and ended up fixing their systems.",
+     "hu": "Valójában a logisztikán keresztül. Egy raktárban kezdtem, és végül a rendszereiket javítottam."
+    },
+    {
+     "s": "S",
+     "it": "We're in the same boat! I started in operations too.",
+     "hu": "Ugyanabban a cipőben járunk! Én is az operáción kezdtem."
+    },
+    {
+     "q": "Mi a közös bennük?",
+     "o": [
+      "Mindketten operatív területen kezdtek",
+      "Mindketten Budapesten élnek",
+      "Ugyanannál a cégnél dolgoznak"
+     ],
+     "a": 0
+    },
+    {
+     "s": "S",
+     "it": "Here's my card. Let's keep in touch.",
+     "hu": "Itt a névjegyem. Tartsuk a kapcsolatot."
+    },
+    {
+     "s": "T",
+     "it": "Definitely. I'll drop you a line next week.",
+     "hu": "Mindenképpen. Jövő héten írok pár sort."
+    },
+    {
+     "q": "Mit ígér Tamás?",
+     "o": [
+      "Jövő héten ír Sarah-nak",
+      "Ma este felhívja",
+      "Elküldi az önéletrajzát"
+     ],
+     "a": 0
+    }
+   ]
+  },
+  {
+   "id": "en-s4",
+   "level": "B2",
+   "unlock": "en-b4",
+   "img": "en-b4",
+   "title": "Meeting halfway",
+   "hu": "Félúton",
+   "cast": {
+    "N": {
+     "name": "Narrator",
+     "g": "f"
+    },
+    "M": {
+     "name": "Mark",
+     "g": "m"
+    },
+    "L": {
+     "name": "Laura",
+     "g": "f"
+    }
+   },
+   "lines": [
+    {
+     "s": "N",
+     "it": "Laura is negotiating a software contract with Mark, a client in Manchester.",
+     "hu": "Laura szoftverszerződésről tárgyal Markkal, egy manchesteri ügyféllel."
+    },
+    {
+     "s": "M",
+     "it": "Laura, I've looked at your proposal. To be honest, it's a bit more than we were expecting.",
+     "hu": "Laura, megnéztem az ajánlatát. Őszintén szólva kicsit több, mint amire számítottunk."
+    },
+    {
+     "s": "L",
+     "it": "I understand. What figure did you have in mind?",
+     "hu": "Értem. Milyen összegre gondolt?"
+    },
+    {
+     "s": "M",
+     "it": "Around fifteen percent lower.",
+     "hu": "Körülbelül tizenöt százalékkal kevesebbre."
+    },
+    {
+     "q": "Mit kér Mark?",
+     "o": [
+      "Kb. 15%-kal alacsonyabb árat",
+      "Hosszabb határidőt",
+      "Több funkciót"
+     ],
+     "a": 0
+    },
+    {
+     "s": "L",
+     "it": "I'm afraid that's not something we can do. However, if you commit to a two-year contract, we could offer ten percent.",
+     "hu": "Sajnos ezt nem tudjuk vállalni. Viszont ha kétéves szerződést vállalnak, tíz százalékot tudnánk adni."
+    },
+    {
+     "s": "M",
+     "it": "Two years… I'll need to check with my team.",
+     "hu": "Két év… Egyeztetnem kell a csapatommal."
+    },
+    {
+     "s": "L",
+     "it": "Of course. And training for your staff would be included.",
+     "hu": "Természetesen. És a munkatársaik képzése is benne lenne."
+    },
+    {
+     "q": "Mit kér Laura a kedvezményért cserébe?",
+     "o": [
+      "Kétéves szerződést",
+      "Előre fizetést",
+      "Kevesebb felhasználót"
+     ],
+     "a": 0
+    },
+    {
+     "s": "M",
+     "it": "Could we meet halfway? Twelve percent, and we sign this week.",
+     "hu": "Találkozhatnánk félúton? Tizenkét százalék, és ezen a héten aláírunk."
+    },
+    {
+     "s": "L",
+     "it": "Twelve percent with a two-year contract… I think we have a deal.",
+     "hu": "Tizenkét százalék kétéves szerződéssel… Azt hiszem, megegyeztünk."
+    },
+    {
+     "q": "Miben egyeznek meg?",
+     "o": [
+      "12% kedvezmény, kétéves szerződés",
+      "15% kedvezmény",
+      "10% kedvezmény, egyéves szerződés"
+     ],
+     "a": 0
+    }
+   ]
+  }
+ ]
+}
