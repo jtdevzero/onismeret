@@ -1,0 +1,20 @@
+# Parliamo AI-szerver (Cloudflare Worker).
+# Titkos értékek, amiket NEM ide kell írni, hanem `wrangler secret put` paranccsal vagy a GitHub Actions titkaiként adsz meg:
+#   ANTHROPIC_API_KEY  a Claude API-kulcsod
+#   APP_PASSWORD       a belépőkód, amit a webapp Beállításainál megadsz
+name = "parliamo-ai"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+
+[vars]
+# Vesszővel elválasztva: honnan hívhatja a szervert böngésző.
+ALLOWED_ORIGINS = "https://jtdevzero.github.io"
+MODEL = "claude-opus-5-5"
+
+# Legfeljebb 20 kérés percenként, hogy egy kiszivárgott belépőkóddal se lehessen nagy számlát csinálni.
+[[ratelimits]]
+name = "LIMITER"
+namespace_id = "1001"
+  [ratelimits.simple]
+  limit = 20
+  period = 60

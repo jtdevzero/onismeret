@@ -16,8 +16,9 @@ jobs:
       - name: Generált fájlok egyeznek a forrással
         run: |
           python3 tools/build.py
+          python3 parliamo/build.py
           if ! git diff --quiet; then
-            echo "A build után generálatlan módosítás maradt. Futtasd helyben: python3 tools/build.py"
+            echo "A build után generálatlan módosítás maradt. Futtasd helyben: python3 tools/build.py és python3 parliamo/build.py"
             git diff --stat
             exit 1
           fi
