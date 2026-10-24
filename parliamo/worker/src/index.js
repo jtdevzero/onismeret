@@ -39,8 +39,11 @@ function cleanMessages(list) {
 
 async function handlePush(path, req, env, cors) {
   if (!env.PUSH) return json({ error: "push_unavailable" }, 501, cors);
+  /* A Content-Length fejléc hiányozhat (darabolt küldés), ezért a valódi méretet is ellenőrizzük. */
+  const raw = await req.text();
+  if (raw.length > MAX_BODY) return json({ error: "too_big" }, 413, cors);
   let body = {};
-  try { body = await req.json(); } catch { /* üres törzs is jó a kulcskéréshez */ }
+  try { body = JSON.parse(raw) || {}; } catch { /* üres törzs is jó a kulcskéréshez */ }
   if (path === "/push/key") return json({ key: await publicKey(env.PUSH) }, 200, cors);
   if (path === "/push/subscribe") return (await subscribe(env.PUSH, body)) ? json({ ok: true }, 200, cors) : json({ error: "bad_request" }, 400, cors);
   if (path === "/push/unsubscribe") { await unsubscribe(env.PUSH, body.endpoint); return json({ ok: true }, 200, cors); }
@@ -105,6 +108,7 @@ async function handleSync(path, req, env, cors) {
     return json({ ok: true }, 200, cors);
   }
   const raw = await req.text();
+  if (raw.length > MAX_STATE) return json({ error: "too_big" }, 413, cors);
   if (path === "/sync/backup-get") {
     let key = "";
     try { key = JSON.parse(raw).key; } catch { /* lent kezeljük */ }
@@ -112,7 +116,6 @@ async function handleSync(path, req, env, cors) {
     const b = await env.PUSH.get(key, "json");
     return b ? json({ state: b.state }, 200, cors) : json({ error: "not_found" }, 404, cors);
   }
-  if (raw.length > MAX_STATE) return json({ error: "too_big" }, 413, cors);
   let body;
   try { body = JSON.parse(raw); } catch { return json({ error: "bad_request" }, 400, cors); }
   if (!body || typeof body.state !== "object" || body.state === null || Array.isArray(body.state) || typeof body.state.xp !== "number") return json({ error: "bad_request" }, 400, cors);

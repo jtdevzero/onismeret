@@ -48,6 +48,9 @@ test("biztonsági fejlécek minden válaszon", async () => {
 test("túl nagy kérés: 413", async () => {
   const big = JSON.stringify({ messages: [{ role: "user", content: "x".repeat(250000) }] });
   assert.equal((await call(env(), "/chat", { body: big })).status, 413);
+  /* Content-Length nélkül is: a push- és a szinkronútvonal a valódi törzsméretet nézi. */
+  assert.equal((await call(env(), "/push/subscribe", { body: big })).status, 413);
+  assert.equal((await call(env(), "/sync/backup-get", { body: JSON.stringify({ key: "backup:1", pad: "x".repeat(3e6) }) })).status, 413);
 });
 
 test("hibás üzenetformátum: 400 (AI-hívás nélkül)", async () => {
