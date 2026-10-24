@@ -1,7 +1,7 @@
 /* ============ AI SPEAKING EXAMINER (IELTS-style, B2–C1) ============ */
 /* Three parts like the IELTS speaking test: a short interview, a two-minute long turn from a cue card, and a discussion.
-   Answers are spoken (continuous speech recognition, editable) or typed. The AI scores the transcript; pronunciation can
-   only be estimated from it, and the result says so. */
+   Answers are spoken (continuous speech recognition, editable) or typed. AI feedback covers the transcript only;
+   pronunciation and spoken fluency are not assessed without audio. */
 const SE_SETS=[
   {t:"Home and free time",p1:["Do you live in a house or a flat?","What do you like most about the area where you live?","What do you usually do at the weekend?","Have your free-time activities changed since you were a child?"],
    cue:{q:"Describe a place in your town or city where you like to spend time.",say:["where it is","how often you go there","what you do there","and explain why you like it"]},
@@ -26,10 +26,10 @@ let SE=null;
 const seSteps=set=>[...set.p1.map(q=>({part:1,q})),{part:2,q:set.cue.q,say:set.cue.say},...set.p3.map(q=>({part:3,q}))];
 function renderExaminer(){
   stopViews();const hist=(S.spk||[]).filter(x=>x.l===lang()).slice(-5).reverse();
-  subShell(["Gyakorlás",()=>go("gyakorlas")],"Szóbeli vizsgáztató","IELTS-jellegű szóbeli vizsga",`<p class="muted">Három rész, mint az IELTS szóbelin (és nagyjából a B2 First / C1 Advanced szóbelin): rövid interjú, kétperces önálló beszéd egy témakártyáról, végül vita. ${canSpeak()?"Mondd a válaszaidat a mikrofonba, vagy írd be őket.":"Ebben a böngészőben nincs beszédfelismerés, ezért írd be a válaszaidat úgy, ahogy mondanád."} A végén az AI vizsgáztató sávpontszámot ad (folyékonyság, szókincs, nyelvtan, kiejtés) és mintaválaszokat.</p>
+  subShell(["Gyakorlás",()=>go("gyakorlas")],"Szóbeli vizsgáztató","IELTS-jellegű szóbeli vizsga",`<p class="muted">Háromrészes, IELTS-jellegű gyakorlás: rövid interjú, kétperces önálló beszéd egy témakártyáról, végül vita. ${canSpeak()?"Mondd a válaszaidat a mikrofonba, vagy írd be őket.":"Ebben a böngészőben nincs beszédfelismerés, ezért írd be a válaszaidat úgy, ahogy mondanád."} A végén az AI az átirat szókincséről, nyelvtanáról és gondolatmenetéről ad gyakorlási visszajelzést és mintaválaszokat.</p>
     <div class="card stack"><h3>Válassz témát</h3><div class="drills">${SE_SETS.map((s,i)=>`<button class="drill" data-se="${i}"><b>${esc(s.t)}</b><span class="small muted">${esc(s.cue.q)}</span></button>`).join("")}</div></div>
-    ${hist.length?`<div class="card stack"><h3>Korábbi eredmények</h3>${hist.map(h=>`<div class="row" style="justify-content:space-between"><span>${new Date(h.at).toLocaleDateString("hu-HU")} · ${esc(h.t)}</span><span class="pill ${(+h.band||0)>=6.5?"ok":""}">${esc(h.band)} · ${esc(h.cefr||"")}</span></div>`).join("")}</div>`:""}
-    <p class="small muted">A kiejtést az AI csak a beszédfelismerés átirata alapján tudja becsülni: a félrehallott szavak jelzik, hol nem volt érthető a kiejtés.</p>`);
+    ${hist.length?`<div class="card stack"><h3>Korábbi gyakorlási becslések</h3>${hist.map(h=>`<div class="row" style="justify-content:space-between"><span>${new Date(h.at).toLocaleDateString("hu-HU")} · ${esc(h.t)}</span><span class="pill ${(+h.band||0)>=6.5?"ok":""}">kb. ${esc(h.band)} · ${esc(h.cefr||"")}</span></div>`).join("")}</div>`:""}
+    <p class="small muted">Az értékelés az átiratot használja. A kiejtést és a beszéd folyékonyságát nem méri; az esetleges sáv- és KER-becslés tájékoztató gyakorlási visszajelzés, nem vizsgaeredmény.</p>`);
   view.querySelectorAll("[data-se]").forEach(b=>b.onclick=()=>{const set=SE_SETS[+b.dataset.se];SE={set,steps:seSteps(set),i:0,ans:[],text:"",secs:0,prep:0,res:null};drawSE();});
 }
 function drawSE(){
@@ -53,7 +53,7 @@ function seStart(){
   const r=new SRC();r.lang=LG().tts;r.continuous=true;r.interimResults=true;r.maxAlternatives=1;
   const base=($("#seText")?$("#seText").value.trim():SE.text);let got=false;
   SE.rec=r;SE.recording=true;SE.t0=Date.now();try{player.pause();speechSynthesis.cancel();}catch(e){}
-  r.onresult=e=>{got=true;let fin="",int="";for(const res of e.results){if(res.isFinal===false)int+=res[0].transcript;else fin+=res[0].transcript+" ";}
+  r.onresult=e=>{if(!SE||SE.rec!==r)return;got=true;let fin="",int="";for(const res of e.results){if(res.isFinal===false)int+=res[0].transcript;else fin+=res[0].transcript+" ";}
     SE.text=((base?base+" ":"")+fin).replace(/\s+/g," ").trim();const ta=$("#seText");if(ta){ta.value=SE.text+(int?" "+int.trim():"");ta.dispatchEvent(new Event("input"));}};
   r.onerror=e=>{if(e.error!=="no-speech"&&e.error!=="aborted")toast(micMsg(e.error));};
   r.onend=()=>{if(!SE||SE.rec!==r)return;if(SE.recording&&got){SE.secs+=(Date.now()-SE.t0)/1000;return seStart();}seStop(true);};
@@ -66,34 +66,36 @@ function seStop(ended){
   const b=$("#seMic");if(b){b.setAttribute("aria-pressed","false");b.lastChild.textContent=" Beszéd";}
 }
 async function scoreSE(){
-  const back=["Szóbeli vizsgáztató",renderExaminer];
+  const cur=SE;if(!cur)return;const back=["Szóbeli vizsgáztató",renderExaminer];
   subShell(back,"Szóbeli vizsgáztató","Értékelés",`<div id="seRes"><div class="card row"><span class="thinking"><i></i><i></i><i></i></span><span class="muted">A vizsgáztató értékel…</span></div></div>`);
-  const sample=await getSample();if(!sample){$("#seRes").innerHTML=`<div class="notice">${aiMissing()}</div>`;return;}
-  const spoken=SE.ans.filter(a=>a.secs>5),words=spoken.reduce((n,a)=>n+a.text.split(/\s+/).length,0),secs=spoken.reduce((n,a)=>n+a.secs,0),wpm=secs?Math.round(words/secs*60):null;
-  const tr=SE.ans.map(a=>`[${a.part}. rész] Kérdés: ${a.q}\nVálasz${a.secs>5?` (beszéd, ${a.secs} mp)`:" (beírva)"}: ${a.text}`).join("\n\n");
+  const sample=await getSample();if(SE!==cur)return;if(!sample){$("#seRes").innerHTML=`<div class="notice">${aiMissing()}</div>`;return;}
+  const spoken=cur.ans.filter(a=>a.secs>5),words=spoken.reduce((n,a)=>n+a.text.split(/\s+/).length,0),secs=spoken.reduce((n,a)=>n+a.secs,0),wpm=secs?Math.round(words/secs*60):null;
+  const tr=cur.ans.map(a=>`[${a.part}. rész] Kérdés: ${a.q}\nVálasz${a.secs>5?` (beszéd, ${a.secs} mp)`:" (beírva)"}: ${a.text}`).join("\n\n");
   const prompt=`Tapasztalt IELTS szóbeli vizsgáztatóként értékeld egy magyar anyanyelvű vizsgázó szóbeli vizsgáját. A válaszok átiratát látod (beszédfelismerés vagy beírás).
-Téma: ${SE.set.t}
+Téma: ${cur.set.t}
 ${wpm?`Mért beszédtempó a kimondott válaszoknál: kb. ${wpm} szó/perc.`:"A válaszokat a vizsgázó beírta, tempót nem mértünk."}
 
 ${tr}
 
-Pontozd az IELTS Speaking négy szempontja szerint (0–9, fél sávokkal): Fluency and Coherence, Lexical Resource, Grammatical Range and Accuracy, Pronunciation. A kiejtést csak az átirat alapján tudod becsülni (félrehallott, értelmetlen szavak a kiejtési gondra utalnak); ha a válaszok beírtak, a kiejtést hagyd null-on. Adj összesített sávot és KER-szintet (B1/B2/C1/C2).
-Minden szemponthoz 1–2 mondatos, konkrét magyar indoklás. Sorold fel a legfontosabb nyelvi hibákat (legfeljebb 8). Válassz ki két választ, és írj rájuk 7.5-ös szintű mintaválaszt angolul.
+Adj tájékoztató nyelvi gyakorlási becslést 0–9-es skálán a szöveg gondolatmenetéről (a fluency mezőben csak koherencia), szókincséről és nyelvtanáról. Nem látod és nem hallod az eredeti hangot: a kiejtést, hangsúlyt, intonációt, szüneteket és tényleges beszédfolyékonyságot nem értékelheted. A pronunciation értéke mindig null legyen, magyarázata: „Hanganyag nélkül nem értékelhető.” A hibás átirat nem bizonyít kiejtési hibát. A közölt szó/perc csak tájékoztató adat, önmagában nem minősíti a folyékonyságot.
+Az összesített band és cefr kizárólag az átirat nyelvhasználatának durva becslése; ne nevezd hivatalos IELTS-pontszámnak vagy megállapított KER-szintnek. Kevés vagy nem értékelhető szövegnél hagyd őket üresen.
+Minden szemponthoz 1–2 mondatos, konkrét magyar indoklás. Sorold fel a legfontosabb nyelvi hibákat (legfeljebb 8). Válassz ki két választ, és írj rájuk természetesebb, részletesebb mintaválaszt angolul.
 Csak egy JSON objektumot adj vissza:
-{"band":"6.5","cefr":"B2","scores":{"fluency":6.5,"lexical":6,"grammar":6,"pronunciation":6},"comments":{"fluency":"","lexical":"","grammar":"","pronunciation":""},"summary":"2-3 mondat magyarul","strengths":["legfeljebb 3 erősség magyarul"],"errors":[{"wrong":"","right":"","why":""}],"better":[{"q":"a kérdés","answer":"mintaválasz angolul"}],"tip":"egy konkrét tipp magyarul"}`;
-  try{const r=await sample.json(prompt,{modelTier:"default"});if(!SE)return;SE.res=r;
-    const band=parseFloat(r.band)||0;S.spk=S.spk||[];S.spk.push({at:Date.now(),l:lang(),t:SE.set.t,band:String(r.band||""),cefr:String(r.cefr||"")});if(S.spk.length>60)S.spk.splice(0,S.spk.length-60);
+{"band":"6.5","cefr":"B2","scores":{"fluency":6.5,"lexical":6,"grammar":6,"pronunciation":null},"comments":{"fluency":"","lexical":"","grammar":"","pronunciation":""},"summary":"2-3 mondat magyarul","strengths":["legfeljebb 3 erősség magyarul"],"errors":[{"wrong":"","right":"","why":""}],"better":[{"q":"a kérdés","answer":"mintaválasz angolul"}],"tip":"egy konkrét tipp magyarul"}`;
+  try{const r=await sample.json(prompt,{modelTier:"default"});if(SE!==cur)return;
+    r.scores=Object.assign({},r.scores,{pronunciation:null});r.comments=Object.assign({},r.comments,{pronunciation:"Hanganyag nélkül nem értékelhető."});SE.res=r;
+    const band=parseFloat(r.band)||0;S.spk=S.spk||[];S.spk.push({at:Date.now(),l:lang(),t:SE.set.t,band:String(r.band||""),cefr:String(r.cefr||""),basis:"transcript"});if(S.spk.length>60)S.spk.splice(0,S.spk.length-60);
     (Array.isArray(r.errors)?r.errors:[]).slice(0,8).forEach(e=>logMiss("examiner",e.wrong,e.wrong,e.right+" – "+(e.why||"")));
-    if(band)skillLog("speak",band>=8.5?"C2":band>=7?"C1":band>=5.5?"B2":band>=4?"B1":"A2",band>=8.5?60+(band-8.5)*80:band>=7?60+(band-7)*26:band>=5.5?60+(band-5.5)*26:band>=4?60+(band-4)*26:40,"examiner");
+    /* Transcript feedback does not establish a measured speaking skill level. */
     incEv("drills");drillStat("examiner",band>=6.5);addXP(15);save();
     if($("#seRes"))$("#seRes").innerHTML=seHtml(r);}
-  catch(e){if($("#seRes"))$("#seRes").innerHTML=`<div class="notice">${esc(aiErr(e))}</div><button class="btn" id="seRetry">Újra</button>`;if($("#seRetry"))$("#seRetry").onclick=scoreSE;}
+  catch(e){if(SE!==cur)return;if($("#seRes"))$("#seRes").innerHTML=`<div class="notice">${esc(aiErr(e))}</div><button class="btn" id="seRetry">Újra</button>`;if($("#seRetry"))$("#seRetry").onclick=scoreSE;}
 }
-const SE_CRIT=[["fluency","Folyékonyság és koherencia"],["lexical","Szókincs"],["grammar","Nyelvtani változatosság és pontosság"],["pronunciation","Kiejtés (becslés)"]];
+const SE_CRIT=[["fluency","A szöveg koherenciája"],["lexical","Szókincs"],["grammar","Nyelvtani változatosság és pontosság"],["pronunciation","Kiejtés"]];
 function seHtml(r){
   const sc=r.scores||{},cm=r.comments||{},errs=Array.isArray(r.errors)?r.errors:[],better=Array.isArray(r.better)?r.better:[];
-  return `<div class="stack"><div class="card"><div class="stats" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="stat"><span class="label">IELTS sáv</span><b class="tnum">${esc(r.band||"–")}</b></div><div class="stat"><span class="label">KER-szint</span><b>${esc(r.cefr||"–")}</b></div></div>${r.summary?`<p style="margin-top:.8rem">${esc(r.summary)}</p>`:""}</div>
-  <div class="card stack">${SE_CRIT.map(([k,l])=>{const v=sc[k];return `<div><div class="row" style="justify-content:space-between"><b>${l}</b><span class="pill ${(+v||0)>=7?"ok":(+v||0)&&(+v)<5.5?"bad":""}">${v==null?"–":esc(v)} / 9</span></div><div class="meter"><i style="width:${(+v||0)/9*100}%"></i></div><p class="small muted">${esc(cm[k]||"")}</p></div>`;}).join("")}</div>
+  return `<div class="stack"><div class="card"><div class="stats" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="stat"><span class="label">Becsült nyelvi sáv</span><b class="tnum">${r.band?"kb. "+esc(r.band):"–"}</b></div><div class="stat"><span class="label">Tájékoztató KER-becslés</span><b>${esc(r.cefr||"–")}</b></div></div><p class="small muted" style="margin-top:.8rem">Az átirat nyelvhasználatának AI-becslése, nem hivatalos IELTS- vagy KER-eredmény. A tényleges beszédfolyékonyságot és a kiejtést nem értékeli.</p>${r.summary?`<p style="margin-top:.8rem">${esc(r.summary)}</p>`:""}</div>
+  <div class="card stack">${SE_CRIT.map(([k,l])=>{const v=k==="pronunciation"?null:sc[k];if(k==="pronunciation")return `<div><b>${l}</b><p class="small muted">Hanganyag nélkül nem értékelhető.</p></div>`;return `<div><div class="row" style="justify-content:space-between"><b>${l}</b><span class="pill ${(+v||0)>=7?"ok":(+v||0)&&(+v)<5.5?"bad":""}">${v==null?"–":esc(v)} / 9</span></div><div class="meter"><i style="width:${(+v||0)/9*100}%"></i></div><p class="small muted">${esc(cm[k]||"")}</p></div>`;}).join("")}</div>
   ${Array.isArray(r.strengths)&&r.strengths.length?`<div class="card stack"><h3>Erősségek</h3><ul style="padding-left:1.1rem">${r.strengths.map(s=>`<li>${esc(s)}</li>`).join("")}</ul></div>`:""}
   ${errs.length?`<div class="card stack"><h3>Hibák (${errs.length})</h3><div class="err-list">${errs.map(e=>`<div><s ${LA()}>${esc(e.wrong)}</s> → <ins ${LA()}>${esc(e.right)}</ins><div class="small muted">${esc(e.why)}</div></div>`).join("")}</div></div>`:""}
   ${better.map(b=>`<div class="card stack"><span class="label">Mintaválasz</span><b ${LA()}>${esc(b.q)}</b><p class="prewrap" ${LA()}>${esc(b.answer)}</p>${spkBtn(String(b.answer||""))}</div>`).join("")}

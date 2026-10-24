@@ -10,11 +10,11 @@ Angol, olasz és spanyol nyelvtanuló webapp, magyarul tanítva. Telepíthető a
   - Angol (A1–C1): általános ág (40 lecke A1-től B1-ig), haladó B2 ág (8 lecke: phrasal verbs, feltételes mondatok, szenvedő szerkezet, függő beszéd, panasz, used to, módbeli igék, érvelés), haladó C1 ág (8 lecke: óvatos fogalmazás, idiómák, formális és kötetlen stílus, inverzió, kollokációk, kiemelő szerkezetek, múltbeli következtetés, érvelés) és üzleti ág (10 lecke), 8 hangos történet, 50 rendhagyó ige, 5 célzott gyakorló (igeidők, névelők, elöljárók, phrasal verbs, feltételes mondatok).
   - **Alapszókincs:** a 3000+ leggyakoribb angol szó A1–B2 szintenként, felvett kiejtéssel. A bekapcsolt szint szavai a napi új kártyák közé kerülnek; szintenként kereshető lista, ajánlott szint a szókincsbecslés alapján.
   - **Nyelvtani kézikönyv:** 22 téma (minden igeidő, feltételes mondatok, szenvedő szerkezet, függő beszéd, módbeli igék, névelők, elöljárók, gerund/infinitive, wish, phrasal verbs…) táblázattal, magyar magyarázattal, a magyarok tipikus hibáival és 5 kérdéses gyakorlóval; a hibanapló alapján ajánl témát.
-  - **Szóbeli vizsgáztató:** IELTS-jellegű szóbeli három részben (interjú, kétperces témakártya felkészülési idővel, vita). Mikrofonba beszélsz vagy beírod; az AI sávpontszámot ad folyékonyságra, szókincsre, nyelvtanra és (az átiratból becsülve) kiejtésre, mintaválaszokkal.
+  - **Szóbeli vizsgáztató:** IELTS-jellegű szóbeli három részben (interjú, kétperces témakártya felkészülési idővel, vita). Mikrofonba beszélsz vagy beírod; az AI az átirat nyelvhasználatáról ad visszajelzést és mintaválaszokat. A sávpontszám tájékoztató gyakorlási becslés; a kiejtést és a beszédtempót az átiratból nem méri.
   - **Próbavizsga:** teljes, időre mért B2 First (75 perc) és C1 Advanced (90 perc) jellegű vizsga: olvasás, szókitöltés, szóképzés, mondatátalakítás, hallás felvett hanggal (kétszer hallgatható), írás AI-pontozással; a végén becsült Cambridge-skála és a hibák magyarázattal.
   - **Folytatásos történetek:** 3 hatfejezetes hangos történet (B1, B2, C1); a fejezetek kérdések után nyílnak.
   - **Napló:** napi pár mondat, az AI kijavítja, magyarul elmagyarázza a hibákat, természetesebb változatot ad; a javítások egy gombbal kártyák lesznek.
-  - **Készségszintek:** külön szintbecslés olvasásra, hallásra, írásra és beszédre a pontozott feladatok alapján (Statisztika).
+  - **Készségszintek:** tájékoztató becslés a legutóbbi legfeljebb nyolc feladat alapján (Statisztika), kevés adat esetén külön jelzéssel. Nem hivatalos KER-szintmérés; az átiratos vizsgáztató nem ad mért beszédkészség-szintet.
   - **Podcastok:** 25 hosszabb, felvett hangú beszélgetés A2-től C1-ig (ebből 4 brit és amerikai szereplőkkel), rejthető szöveggel és fordítással, tempóváltással, kérdésekkel és szószedettel.
   - **Kiejtés magyaroknak:** 7 hangpár-csoport (th, w/v, rövid és hosszú i, æ, ʌ, szóvégi zöngés hangok, szóhangsúly). Hallás alapján választasz, aztán kimondod: az app megmondja, ha a párját hallotta (think helyett sink), a mondatoknál pedig szavanként jelöli, mit nem értett.
   - **Brit vagy amerikai?** 20 mondat mindkét akcentussal felvéve: hallás alapján döntöd el, melyiket hallod, és a magyarázat megmutatja a különbséget. (Ausztrál és indiai hang a helyi hangkészletben nincs.)
@@ -25,12 +25,15 @@ Angol, olasz és spanyol nyelvtanuló webapp, magyarul tanítva. Telepíthető a
   - **Vizsgafelkészítő** (B2 First / IELTS jelleggel): feleletválasztós szókitöltés, szóképzés, mondatátalakítás, AI-olvasásértés és esszé, amit az AI a négy hivatalos szempont szerint pontoz, mintaválasszal.
   - Olasz (A1–B1): 30 lecke, 549 kifejezés, 9 történet, 25 ige öt igeidőben, 4 podcast, kiejtés magyaroknak (dupla mássalhangzók, gli és gn, c/ch/g/gh, nyitott-zárt e/o, hangsúly), 8 szócsomag (120 kifejezés), CILS-jellegű vizsgafeladatok; gyakorlók: kötőmód, imperfetto vagy passato prossimo, névelők, elöljárók.
   - Spanyol (A1–B1): 18 lecke, 324 kifejezés, 4 történet, 25 ige öt igeidőben, 4 podcast, kiejtés magyaroknak (r/rr, ñ, b/v, j/g/h, hangsúly), 8 szócsomag (120 kifejezés), DELE-jellegű vizsgafeladatok; gyakorlók: ser vagy estar, indefinido vagy imperfecto, por vagy para.
-- **Bevezető és szintfelmérő:** első indításkor nyelv- és célválasztás, majd egy 2–3 perces szintfelmérő, ami kihagyja, amit már tudsz.
+- **Bevezető és szintfelmérő:** nyelvválasztás után egy rövid, valódi mintagyakorlat következik, és csak ezután kér napi célt. Aki már tanult, szintenként hat, több leckéből vett felismerési, hallásértési és önálló gépelési feladattal kereshet kezdőpontot. Az átugrott lecke külön állapot; teljesítés és pecsét csak valódi gyakorlás után jár.
 - **Útlevél-pecsétek** minden befejezett leckéért, **heti kihívások** (3 hetente, +50 XP mindegyikért), hangjelzés és rezgés a válaszoknál.
 - **Olvasó:** AI-szöveg a szintedre bármilyen témában; koppints egy szóra a jelentéséért, és egy gombbal kártyára teheted.
 - **Saját szavak:** beírsz egy szót, az AI hozzáteszi a fordítást, a példamondatot és a nyelvtani tudnivalót.
 - **Napi emlékeztető** a telefonra a választott órában, ha aznap még nem gyakoroltál.
-- **Napi kör:** egy gombbal az esedékes ismétlések és az új szavak, kb. 10 perc.
+- **Vezetett napi gyakorlás:** egy kiemelt kezdőlapi gombbal rövid ismétlés → teljes lecke → önálló válasz, kb. 10–15 perc. A lépések nyelvenként és naponta mentődnek, újratöltés után folytathatók. A segítséggel megoldott választ nem jelöli önálló felidézésnek. A kézzelfogható haladás a tényleges feladatmegoldásokat és a legalább egyhetes ismétlés eredményét mutatja az XP mellett.
+- **Áttekinthető gyakorlók:** készségcsoportok, három gyors ajánlás és előre látható AI-igény. Az AI-tanárból közvetlenül elérhető, ellenőrizhető kapcsolatbeállítás.
+- **Hibajavítás:** rövid magyar visszajelzés és egyszeri, késleltetett visszakérdezés; a javítópróba nem növeli ismét az XP-t és az első próbálkozás pontosságát. A napló AI-javításaiból szerkeszthető előnézet és magyar jelentés jóváhagyása után lesz kártya.
+- **Megújult felület:** nyugodt törtfehér és kobaltkék felületek, egyértelmű főgomb, mobilos elrendezés, sötét és könnyen olvasható megjelenítés.
 - **Fokozatos nehézség:** egy kifejezés előbb választós feladatban jön elő, aztán kirakósban, gépelve, diktálva, végül kimondva, ahogy egyre jobban megy.
 - **FSRS-4.5 ütemező, személyre szabva:** választható megtartási cél (85/90/95%), nehéznek jelölhető kártyák, és ha a valós emlékezésed eltér a céltól, az időközök maguktól igazodnak.
 - **Hangos ismétlés autóban:** kéz és képernyő nélküli kártyaismétlés: magyarul felolvassa a jelentést, vár, kimondja a választ, és hangra értékelhetsz („tudtam”, „könnyű”, „újra”).
@@ -105,6 +108,12 @@ A forrás a `src/` mappában van, részekre bontva: `head.html`, `styles.css`, `
 ```bash
 python3 parliamo/build.py      # src/ → app.html + index.html + sw.js
 node parliamo/tests/run.js     # böngészős végpontteszt (a CI is futtatja)
+node parliamo/tests/guided-session.js
+node parliamo/tests/daily-async.js
+node parliamo/tests/onboarding-placement.js
+node parliamo/tests/ai-setup-review.js
+node parliamo/tests/speech-feedback.js
+node parliamo/tests/practice-feedback.test.js
 cd parliamo && python3 -m http.server 8000   # majd: http://localhost:8000
 ```
 
