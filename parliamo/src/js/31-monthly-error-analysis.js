@@ -1,6 +1,6 @@
 /* ============ MONTHLY ERROR ANALYSIS ============ */
-const MKIND={lesson:"Leckék",daily:"Napi kör",miss:"Hibakör",speak:"Kiejtés",chat:"AI-beszélgetés",podcast:"Podcast"};
-const mkLabel=k=>MKIND[k]||(k.startsWith("drill:")?"Gyakorló: "+((CDRILLS[k.slice(6)]||{}).title||(DRILLS.find(d=>d[0]===k.slice(6))||[0,k.slice(6)])[1]):k.startsWith("exam:")?"Vizsga: "+({mc:"szókitöltés",wf:"szóképzés",kwt:"mondatátalakítás",read:"olvasás",write:"írás"}[k.slice(5)]||k.slice(5)):k.startsWith("pron:")?"Kiejtés: "+k.slice(5):k);
+const MKIND={lesson:"Leckék",daily:"Napi kör",miss:"Hibakör",speak:"Kiejtés",chat:"AI-beszélgetés",podcast:"Podcast",journal:"Napló",examiner:"Szóbeli vizsgáztató",serial:"Folytatásos történetek"};
+const mkLabel=k=>MKIND[k]||(k.startsWith("grammar:")?"Nyelvtan: "+((XT.gram.find(x=>x.id===k.slice(8))||{}).title||k.slice(8)):k.startsWith("mock:")?"Próbavizsga: "+({reading:"olvasás",mc:"szókitöltés",wf:"szóképzés",kwt:"mondatátalakítás",listening:"hallás",writing:"írás"}[k.slice(5)]||k.slice(5)):k.startsWith("drill:")?"Gyakorló: "+((CDRILLS[k.slice(6)]||{}).title||(DRILLS.find(d=>d[0]===k.slice(6))||[0,k.slice(6)])[1]):k.startsWith("exam:")?"Vizsga: "+({mc:"szókitöltés",wf:"szóképzés",kwt:"mondatátalakítás",read:"olvasás",write:"írás"}[k.slice(5)]||k.slice(5)):k.startsWith("pron:")?"Kiejtés: "+k.slice(5):k);
 function monthMisses(){const t=today();return (S.mlog||[]).filter(m=>m.l===lang()&&m.d>t-30);}
 function analysisCard(){
   const ms=monthMisses(),by={};ms.forEach(m=>{by[m.k]=(by[m.k]||0)+1;});

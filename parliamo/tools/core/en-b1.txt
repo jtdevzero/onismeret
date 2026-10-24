@@ -1,0 +1,820 @@
+# B1 – alapszókincs (szó|magyar)
+absolutely|teljesen, abszolút
+academic|tudományos, akadémiai
+access|hozzáférés
+accommodation|szállás
+account|számla (bank), beszámoló
+to achieve|elérni (célt)
+achievement|teljesítmény, eredmény
+action|cselekvés, akció
+actual|tényleges
+actually|valójában
+to adapt|alkalmazkodni
+addition|kiegészítés
+additional|további
+admire|csodálni
+to admit|beismerni
+adult|felnőtt
+advance|előrelépés
+advanced|haladó
+advantage|előny
+to advertise|hirdetni
+advertisement|hirdetés
+to advise|tanácsolni
+affect|hatással lenni
+afford|megengedheti magának
+aged|… éves
+agency|ügynökség
+agent|ügynök
+aim|cél
+alcohol|alkohol
+to allow|megengedni
+alternative|alternatíva
+amazed|lenyűgözött
+ambition|ambíció
+ambulance|mentő
+among|között (több)
+amusing|mulatságos
+analyse|elemezni
+anger|düh
+announce|bejelenteni
+announcement|bejelentés
+annoyed|bosszús
+annoying|bosszantó
+annual|éves
+anxious|szorongó
+apart|külön
+apologise|bocsánatot kérni
+apparently|úgy tűnik
+appearance|megjelenés, külső
+application|jelentkezés, alkalmazás
+to apply|jelentkezni, alkalmazni
+appointment|időpont
+to appreciate|értékelni
+approach|megközelítés
+appropriate|megfelelő
+approve|jóváhagyni
+argue|vitatkozni
+argument|vita, érv
+army|hadsereg
+arrest|letartóztatni
+arrow|nyíl
+aspect|szempont
+assume|feltételezni
+atmosphere|légkör
+attach|csatolni
+attempt|kísérlet, próbálkozás
+to attend|részt venni
+attitude|hozzáállás
+to attract|vonzani
+audience|közönség
+author|szerző
+automatic|automatikus
+autumn|ősz
+aware|tudatában van
+awareness|tudatosság
+baggage|poggyász
+balance|egyensúly
+ban|tilalom
+bar|bár, rúd
+base|alap
+basic|alapvető
+basis|alap
+bean|bab
+bear|medve; elviselni
+beat|ütem
+belief|hit, meggyőződés
+bend|hajlítani
+benefit|előny, haszon
+besides|ezenkívül
+bet|fogadni
+beyond|túl
+billion|milliárd
+bin|szemetes
+biography|életrajz
+blame|hibáztatni
+blind|vak
+bomb|bomba
+bond|kötelék
+bother|zavarni
+brand|márka
+breathe|lélegezni
+brief|rövid
+bright|világos, ragyogó
+broad|széles
+budget|költségvetés
+bullet|golyó
+burst|szétpukkadni
+bury|eltemetni
+calculate|kiszámítani
+campaign|kampány
+cancel|lemondani, törölni
+candidate|jelölt
+capable|képes
+care|törődés
+carefully|óvatosan
+cast|szereplőgárda
+category|kategória
+ceiling|mennyezet
+cell|sejt; cella
+challenge|kihívás
+championship|bajnokság
+charge|díj; tölteni
+charity|jótékonyság
+chase|üldözni
+cheat|csalni
+chemical|vegyszer
+chief|fő, vezető
+childhood|gyerekkor
+citizen|állampolgár
+claim|állítani, igény
+classic|klasszikus
+client|ügyfél
+closely|szorosan, alaposan
+cloth|szövet
+coach|edző
+code|kód
+coffee shop|kávézó
+collect|gyűjteni
+column|oszlop, rovat
+combine|kombinálni
+comfort|kényelem
+command|parancs
+commercial|kereskedelmi
+commit|elkövetni
+committee|bizottság
+community|közösség
+compare|összehasonlítani
+comparison|összehasonlítás
+compete|versenyezni
+complaint|panasz
+completely|teljesen
+complex|összetett
+concentrate|koncentrálni
+concern|aggodalom
+conclusion|következtetés
+confirm|megerősíteni
+conflict|konfliktus
+confuse|összezavarni
+confused|zavarodott
+connection|kapcsolat
+consequence|következmény
+consider|fontolóra venni
+consist|állni valamiből
+constant|állandó
+construct|építeni
+consumer|fogyasztó
+contact|kapcsolat
+content|tartalom
+contest|verseny
+context|összefüggés
+contract|szerződés
+contrast|ellentét
+contribute|hozzájárulni
+control|irányítás
+convenient|kényelmes, alkalmas
+convince|meggyőzni
+cooperation|együttműködés
+cope|megbirkózni
+correctly|helyesen
+counter|pult
+couple|pár
+cover|takarni, borító
+crash|ütközés, összeomlás
+creative|kreatív
+creature|lény
+crew|személyzet
+criminal|bűnöző
+crisis|válság
+critic|kritikus
+criticise|kritizálni
+crowd|tömeg
+cruel|kegyetlen
+cure|gyógymód
+curious|kíváncsi
+currency|pénznem
+current|jelenlegi
+currently|jelenleg
+curtain|függöny
+custom|szokás
+cut|vágás
+cycle|ciklus
+damage|károsítani
+data|adat
+deadline|határidő
+deal with|foglalkozni valamivel
+debate|vita
+debt|adósság
+decade|évtized
+decision|döntés
+declare|kijelenteni
+decrease|csökkenni
+defeat|vereség
+defend|megvédeni
+definitely|határozottan
+definition|meghatározás
+deliver|kiszállítani
+delivery|szállítás
+demand|igény, követelni
+demonstrate|bemutatni
+deny|tagadni
+depressed|lehangolt
+describe|leírni
+description|leírás
+deserve|megérdemelni
+desire|vágy
+despite|ellenére
+destination|úti cél
+destroy|lerombolni
+determined|elszánt
+development|fejlődés
+device|eszköz
+dialogue|párbeszéd
+digital|digitális
+dinosaur|dinoszaurusz
+directly|közvetlenül
+disabled|fogyatékkal élő
+disadvantage|hátrány
+disagree|nem érteni egyet
+disappear|eltűnni
+disaster|katasztrófa
+discussion|beszélgetés, vita
+display|kijelző; kiállítani
+distant|távoli
+disturb|zavarni
+document|dokumentum
+documentary|dokumentumfilm
+domestic|háztartási, belföldi
+donate|adományozni
+doubt|kétely
+download|letölteni
+dozen|tucat
+drag|húzni
+drama|dráma
+dramatic|drámai
+drug|gyógyszer, drog
+due|esedékes
+dull|unalmas, tompa
+earn|keresni (pénzt)
+earthquake|földrengés
+economic|gazdasági
+economy|gazdaság
+edition|kiadás
+educate|nevelni, oktatni
+effective|hatékony
+efficient|hatékony, gazdaságos
+effort|erőfeszítés
+elect|megválasztani
+election|választás
+element|elem
+elderly|idős
+emotion|érzelem
+emotional|érzelmes
+emphasis|hangsúly
+employ|alkalmazni
+employee|alkalmazott
+employer|munkáltató
+employment|foglalkoztatás
+enable|lehetővé tenni
+encourage|bátorítani
+ending|befejezés
+enemy|ellenség
+engaged|jegyes; foglalt
+enormous|hatalmas
+ensure|biztosítani
+enter|belépni
+entertain|szórakoztatni
+entertainment|szórakozás
+enthusiastic|lelkes
+entire|egész
+entry|belépés
+episode|epizód
+equal|egyenlő
+equally|egyformán
+era|korszak
+error|hiba
+escape|menekülni
+essay|esszé
+essential|elengedhetetlen
+establish|létrehozni
+estimate|becsülni
+evidence|bizonyíték
+evil|gonosz
+exact|pontos
+examine|megvizsgálni
+excellent|kiváló
+exchange|csere
+exhausted|kimerült
+exist|létezni
+expand|bővülni
+expectation|elvárás
+expedition|expedíció
+experiment|kísérlet
+explanation|magyarázat
+explore|felfedezni
+explosion|robbanás
+export|exportálni
+express|kifejezni
+expression|kifejezés
+extend|meghosszabbítani
+extent|mérték
+extraordinary|rendkívüli
+extreme|szélsőséges
+facility|létesítmény
+factor|tényező
+failure|kudarc
+fairly|meglehetősen
+faith|hit
+false|hamis
+familiar|ismerős
+fancy|kedve van valamihez
+fault|hiba, vétség
+favour|szívesség
+fear|félni
+feedback|visszajelzés
+fiction|szépirodalom, kitalált
+figure|alak, szám
+file|fájl, akta
+finance|pénzügy
+financial|pénzügyi
+fit|fitt
+flavour|íz
+flexible|rugalmas
+flood|árvíz
+focus|összpontosítani
+fold|összehajtani
+fond|kedvel
+force|erő; kényszeríteni
+foreign|külföldi
+forever|örökre
+forgive|megbocsátani
+formal|hivatalos
+former|korábbi
+fortune|vagyon, szerencse
+found|alapítani
+frame|keret
+frankly|őszintén
+freedom|szabadság
+freeze|fagyni
+frequent|gyakori
+frequently|gyakran
+frighten|megijeszteni
+fully|teljesen
+function|funkció
+fund|alap, finanszírozni
+funeral|temetés
+furthermore|továbbá
+gain|szerezni
+gang|banda
+generate|előállítani
+generation|nemzedék
+generous|nagylelkű
+gentle|szelíd
+genuine|valódi
+giant|óriás
+glad|örül
+glance|pillantás
+goods|áru
+gradually|fokozatosan
+graduate|diplomát szerez
+grant|támogatás
+graph|grafikon
+grateful|hálás
+grave|sír
+greet|üdvözölni
+grocery|élelmiszerbolt
+growth|növekedés
+guarantee|garancia
+guard|őr
+guilty|bűnös
+hand in|beadni
+handle|kezelni
+hang out|lógni (valakivel)
+hardly|alig
+harm|ártalom
+headline|főcím
+heating|fűtés
+heaven|menny
+hell|pokol
+hesitate|habozni
+hide|elrejteni
+highlight|kiemelni
+hire|bérelni
+historic|történelmi
+honesty|őszinteség
+horror|horror
+household|háztartás
+housing|lakhatás
+however|azonban
+huge|hatalmas
+humour|humor
+hunger|éhség
+hurricane|hurrikán
+ideal|ideális
+identify|azonosítani
+identity|személyazonosság
+ignore|figyelmen kívül hagyni
+illegal|illegális
+imaginary|képzeletbeli
+impact|hatás
+import|importálni
+impress|lenyűgözni
+impression|benyomás
+impressive|lenyűgöző
+income|jövedelem
+incredible|hihetetlen
+independent|független
+indicate|jelezni
+individual|egyén
+infection|fertőzés
+influence|befolyás
+inform|tájékoztatni
+injure|megsebesíteni
+injury|sérülés
+innocent|ártatlan
+insist|ragaszkodni
+inspire|inspirálni
+install|telepíteni
+instance|eset
+institution|intézmény
+insurance|biztosítás
+intelligent|intelligens
+intend|szándékozni
+intention|szándék
+interrupt|félbeszakítani
+invest|befektetni
+investigate|kivizsgálni
+involve|bevonni
+issue|kérdés, probléma
+item|tétel
+journey|utazás
+judge|bíró; megítélni
+justice|igazságosság
+keen|lelkes
+kidnap|elrabolni
+knowledge|tudás
+label|címke
+lack|hiány
+landscape|táj
+largely|nagyrészt
+laughter|nevetés
+launch|elindítani
+layer|réteg
+lead to|vezet valamihez
+leaflet|szórólap
+league|liga
+leather|bőr (anyag)
+lecture|előadás
+legal|jogi, legális
+leisure|szabadidő
+length|hossz
+lifestyle|életmód
+limit|határ
+link|kapcsolat, link
+literature|irodalom
+load|rakomány
+loan|kölcsön
+location|helyszín
+logical|logikus
+loss|veszteség
+loyal|hűséges
+mainly|főként
+maintain|fenntartani
+majority|többség
+make up|kitalálni; kibékülni
+manner|mód, modor
+manufacture|gyártani
+mark|jel, osztályzat
+marriage|házasság
+mass|tömeg
+massive|hatalmas
+master|mester
+match|illik
+mate|haver
+matter|ügy; számít
+mayor|polgármester
+measure|mérni
+media|média
+medical|orvosi
+mental|mentális
+mention|megemlíteni
+mess|rendetlenség
+military|katonai
+mood|hangulat
+moreover|továbbá
+motivation|motiváció
+mystery|rejtély
+narrow|keskeny
+nation|nemzet
+national|nemzeti
+native|anyanyelvi, őshonos
+naturally|természetesen
+necessary|szükséges
+negotiate|tárgyalni
+nervous|ideges
+network|hálózat
+nevertheless|mindazonáltal
+nightmare|rémálom
+nowadays|manapság
+nuclear|nukleáris
+obey|engedelmeskedni
+objective|cél; objektív
+observe|megfigyelni
+obtain|megszerezni
+obvious|nyilvánvaló
+obviously|nyilvánvalóan
+occasion|alkalom
+occur|előfordulni
+odd|furcsa; páratlan
+operate|működtetni, operálni
+operation|művelet, műtét
+opportunity|lehetőség
+oppose|ellenezni
+option|lehetőség
+ordinary|hétköznapi
+organisation|szervezet
+originally|eredetileg
+otherwise|különben
+outcome|eredmény
+outdoor|szabadtéri
+overall|összességében
+overcome|legyőzni
+owe|tartozni
+pace|tempó
+pain|fájdalom
+panic|pánik
+participate|részt venni
+particular|különös, bizonyos
+particularly|különösen
+patience|türelem
+pattern|minta
+pause|szünet
+payment|fizetés, befizetés
+peak|csúcs
+pension|nyugdíj
+percentage|százalék
+perform|előadni, teljesíteni
+performance|előadás, teljesítmény
+permanent|állandó
+permission|engedély
+personality|személyiség
+persuade|meggyőzni
+phase|szakasz
+photography|fotózás
+phrase|kifejezés
+physical|fizikai
+pile|halom
+pleasure|öröm
+plenty|bőven
+poet|költő
+poison|méreg
+policy|irányelv
+polite|udvarias
+politics|politika
+population|népesség
+portrait|portré
+possess|birtokolni
+possibility|lehetőség
+potential|lehetséges, potenciál
+poverty|szegénység
+practical|gyakorlati
+praise|dicséret
+predict|megjósolni
+prediction|előrejelzés
+pregnant|terhes
+presence|jelenlét
+presentation|bemutató, prezentáció
+preserve|megőrizni
+president|elnök
+press|sajtó; megnyomni
+pressure|nyomás
+pretend|tettetni
+prevent|megelőzni
+previous|előző
+pride|büszkeség
+primary|elsődleges, általános (iskola)
+prison|börtön
+private|magán
+procedure|eljárás
+process|folyamat
+profession|szakma
+professional|profi, szakmai
+profit|nyereség
+progress|haladás
+promote|népszerűsíteni, előléptetni
+proof|bizonyíték
+proper|megfelelő
+property|ingatlan, tulajdon
+proposal|javaslat
+propose|javasolni
+prove|bizonyítani
+provide|biztosítani, nyújtani
+psychology|pszichológia
+publish|kiadni
+purchase|vásárlás
+purpose|cél
+pursue|követni, folytatni
+qualification|képesítés
+quality|minőség
+quantity|mennyiség
+quote|idézni
+range|választék, tartomány
+rank|rang
+rapid|gyors
+rare|ritka
+rate|arány, ráta
+rather|inkább
+raw|nyers
+react|reagálni
+reaction|reakció
+reality|valóság
+realise|rájönni
+reasonable|ésszerű
+recall|felidézni
+record|rekord; felvenni
+recover|felépülni
+reduce|csökkenteni
+refer|utalni
+reflect|tükrözni
+refuse|visszautasítani
+region|régió
+regret|megbánni
+regular|rendszeres
+relate|kapcsolódni
+relationship|kapcsolat
+relative|rokon
+release|kiadni, szabadon engedni
+relevant|releváns
+reliable|megbízható
+relief|megkönnyebbülés
+religion|vallás
+rely|támaszkodni
+remain|maradni
+remind|emlékeztetni
+remote|távoli
+remove|eltávolítani
+replace|kicserélni
+represent|képviselni
+reputation|hírnév
+request|kérés
+require|megkövetelni
+research|kutatás
+reservation|foglalás
+resident|lakos
+resource|erőforrás
+respect|tisztelet
+respond|válaszolni
+response|válasz
+responsibility|felelősség
+responsible|felelős
+restore|helyreállítani
+retire|nyugdíjba menni
+reveal|felfedni
+review|értékelés, áttekintés
+reward|jutalom
+risk|kockázat
+romantic|romantikus
+rough|durva
+row|sor
+royal|királyi
+rubbish|szemét
+rural|vidéki
+sail|vitorlázni
+sample|minta
+satisfied|elégedett
+scale|skála, méret
+scene|jelenet
+schedule|menetrend, ütemterv
+scheme|terv, program
+score|pontszám
+search|keresés
+secondary|másodlagos, középfokú
+security|biztonság
+seek|keresni
+select|kiválasztani
+senior|idősebb, vezető
+sensible|értelmes, józan
+sensitive|érzékeny
+separate|különálló
+series|sorozat
+session|alkalom, ülés
+settle|letelepedni, rendezni
+severe|súlyos
+shade|árnyék
+shame|szégyen
+shelter|menedék
+shift|műszak; elmozdulás
+shortage|hiány
+shot|lövés
+sight|látvány, látás
+signal|jel
+significant|jelentős
+silence|csend
+silly|buta
+similar|hasonló
+sink|mosogató; elsüllyedni
+site|helyszín
+situation|helyzet
+skill|készség
+slightly|kissé
+smooth|sima
+so-called|úgynevezett
+society|társadalom
+software|szoftver
+soil|talaj
+solid|szilárd
+source|forrás
+spare|tartalék, szabad
+species|faj
+specific|konkrét
+spirit|szellem
+split|szétválni
+sponsor|szponzor
+spot|folt, hely
+spread|terjedni
+stable|stabil
+standard|színvonal
+state|állam; állapot
+statement|nyilatkozat
+statistic|statisztika
+status|állapot, státusz
+steady|egyenletes
+stick|ragasztani, bot
+stomach ache|gyomorfájás
+strategy|stratégia
+strength|erő
+stretch|nyújtani
+strict|szigorú
+structure|szerkezet
+struggle|küzdeni
+style|stílus
+substance|anyag
+suffer|szenvedni
+sufficient|elegendő
+suitable|megfelelő
+summary|összefoglaló
+supply|ellátás
+surface|felszín
+survey|felmérés
+survive|túlélni
+suspect|gyanúsítani
+sympathy|együttérzés
+talented|tehetséges
+target|cél
+tax|adó
+technique|technika
+technology|technológia
+temporary|ideiglenes
+tend|hajlamos
+tension|feszültség
+term|kifejezés; félév
+theme|téma
+theory|elmélet
+therefore|ezért
+threat|fenyegetés
+throughout|végig
+tough|kemény
+tradition|hagyomány
+traditional|hagyományos
+transfer|átutalni, áthelyezni
+treat|kezelni
+treatment|kezelés
+trend|irányzat
+trial|próba; tárgyalás
+typical|tipikus
+ugly|csúnya
+ultimately|végső soron
+unemployed|munkanélküli
+union|szövetség, szakszervezet
+unique|egyedi
+universe|világegyetem
+unknown|ismeretlen
+unless|hacsak nem
+upset|felzaklatott
+urban|városi
+urgent|sürgős
+valuable|értékes
+value|érték
+variety|változatosság
+various|különféle
+vehicle|jármű
+version|változat
+victim|áldozat
+victory|győzelem
+violence|erőszak
+virtual|virtuális
+vision|látás, jövőkép
+volume|hangerő, kötet
+volunteer|önkéntes
+vote|szavazni
+wage|bér
+wealth|vagyon
+weapon|fegyver
+whereas|míg (ellentét)
+whether|vajon, -e
+wildlife|vadvilág
+willing|hajlandó
+witness|tanú
+wonder|csoda; kíváncsi
+worth|ér valamit
+youth|ifjúság

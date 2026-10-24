@@ -1,0 +1,1273 @@
+{
+ "serials": [
+  {
+   "id": "s1",
+   "level": "B1",
+   "title": "The Missing Painting",
+   "hu": "Az eltűnt festmény",
+   "img": "en-u31",
+   "desc": "Emily egy edinburgh-i galériában dolgozik. Egy reggel üres keretet talál a falon.",
+   "cast": {
+    "N": {
+     "name": "",
+     "g": "m",
+     "acc": "uk"
+    },
+    "A": {
+     "name": "Emily",
+     "g": "f",
+     "acc": "uk"
+    },
+    "B": {
+     "name": "Sam",
+     "g": "m",
+     "acc": "uk"
+    }
+   },
+   "chapters": [
+    {
+     "title": "An empty frame",
+     "hu": "Üres keret",
+     "lines": [
+      {
+       "s": "N",
+       "it": "Emily arrived at the gallery at eight, as she always did.",
+       "hu": "Emily nyolckor érkezett a galériába, mint mindig."
+      },
+      {
+       "s": "N",
+       "it": "But this morning, something was wrong. In the main room, there was an empty frame on the wall.",
+       "hu": "De ma reggel valami nem stimmelt. A nagyteremben egy üres keret lógott a falon."
+      },
+      {
+       "s": "A",
+       "it": "Sam! Come here, quickly! The Turner painting has gone!",
+       "hu": "Sam! Gyere ide, gyorsan! Eltűnt a Turner-festmény!"
+      },
+      {
+       "s": "B",
+       "it": "What? That's impossible. I locked every door last night.",
+       "hu": "Micsoda? Az lehetetlen. Tegnap este minden ajtót bezártam."
+      },
+      {
+       "s": "A",
+       "it": "Then how did someone get in?",
+       "hu": "Akkor hogy jutott be valaki?"
+      },
+      {
+       "s": "B",
+       "it": "I don't know. But the alarm didn't go off. I'm sure of that.",
+       "hu": "Nem tudom. De a riasztó nem szólalt meg. Ebben biztos vagyok."
+      },
+      {
+       "s": "N",
+       "it": "Emily looked closely at the frame. On the floor, under it, there was a small blue button.",
+       "hu": "Emily alaposan megnézte a keretet. Alatta, a padlón egy kis kék gomb feküdt."
+      },
+      {
+       "s": "A",
+       "it": "Look at this. It isn't ours. Someone was here.",
+       "hu": "Nézd ezt. Nem a miénk. Itt járt valaki."
+      }
+     ],
+     "questions": [
+      {
+       "q": "Mit talált Emily a falon?",
+       "o": [
+        "Egy üres keretet",
+        "Egy új festményt",
+        "Egy levelet"
+       ],
+       "a": 0
+      },
+      {
+       "q": "Mit talált a padlón?",
+       "o": [
+        "Egy kék gombot",
+        "Egy kulcsot",
+        "Egy telefont"
+       ],
+       "a": 0
+      }
+     ]
+    },
+    {
+     "title": "The police arrive",
+     "hu": "Megérkezik a rendőrség",
+     "lines": [
+      {
+       "s": "N",
+       "it": "An hour later, Detective Grant was walking slowly around the room.",
+       "hu": "Egy órával később Grant nyomozó lassan körbejárta a termet."
+      },
+      {
+       "s": "A",
+       "it": "The painting is worth about two million pounds.",
+       "hu": "A festmény nagyjából kétmillió fontot ér."
+      },
+      {
+       "s": "N",
+       "it": "The detective wrote something in his notebook. Then he turned to Sam.",
+       "hu": "A nyomozó írt valamit a jegyzetfüzetébe. Aztán Samhez fordult."
+      },
+      {
+       "s": "B",
+       "it": "I left at ten o'clock. Everything was fine then.",
+       "hu": "Tízkor mentem el. Akkor még minden rendben volt."
+      },
+      {
+       "s": "N",
+       "it": "Emily noticed that Sam's hands were shaking.",
+       "hu": "Emily észrevette, hogy Sam keze remeg."
+      },
+      {
+       "s": "A",
+       "it": "Are you all right, Sam? You look pale.",
+       "hu": "Jól vagy, Sam? Sápadtnak tűnsz."
+      },
+      {
+       "s": "B",
+       "it": "I'm just tired. I didn't sleep well.",
+       "hu": "Csak fáradt vagyok. Nem aludtam jól."
+      },
+      {
+       "s": "N",
+       "it": "But Emily was not sure he was telling the truth.",
+       "hu": "Emily azonban nem volt biztos benne, hogy igazat mond."
+      }
+     ],
+     "questions": [
+      {
+       "q": "Mennyit ér a festmény?",
+       "o": [
+        "Kétmillió fontot",
+        "Kétszázezer fontot",
+        "Húszmillió fontot"
+       ],
+       "a": 0
+      },
+      {
+       "q": "Mit vett észre Emily Samen?",
+       "o": [
+        "Remegett a keze",
+        "Mosolygott",
+        "Sietett"
+       ],
+       "a": 0
+      }
+     ]
+    },
+    {
+     "title": "The camera",
+     "hu": "A kamera",
+     "lines": [
+      {
+       "s": "N",
+       "it": "That afternoon, Emily checked the security cameras.",
+       "hu": "Aznap délután Emily megnézte a biztonsági kamerák felvételeit."
+      },
+      {
+       "s": "N",
+       "it": "At 11.42 p.m., the picture suddenly went black for exactly four minutes.",
+       "hu": "Éjjel 11:42-kor a kép hirtelen elsötétült, pontosan négy percre."
+      },
+      {
+       "s": "A",
+       "it": "Someone switched off the camera. Someone who knew the system.",
+       "hu": "Valaki kikapcsolta a kamerát. Valaki, aki ismerte a rendszert."
+      },
+      {
+       "s": "N",
+       "it": "She thought about Sam. He was the only other person with the code.",
+       "hu": "Samre gondolt. Rajta kívül csak neki volt meg a kód."
+      },
+      {
+       "s": "N",
+       "it": "Then she remembered something. Last week, a man in a grey coat had asked a lot of questions about the alarm.",
+       "hu": "Aztán eszébe jutott valami. A múlt héten egy szürke kabátos férfi sokat kérdezett a riasztóról."
+      },
+      {
+       "s": "A",
+       "it": "He said he was an electrician. But nobody had called an electrician.",
+       "hu": "Azt mondta, villanyszerelő. De senki nem hívott villanyszerelőt."
+      },
+      {
+       "s": "N",
+       "it": "And his coat had blue buttons.",
+       "hu": "És a kabátján kék gombok voltak."
+      },
+      {
+       "s": "A",
+       "it": "I need to find that man.",
+       "hu": "Meg kell találnom azt a férfit."
+      }
+     ],
+     "questions": [
+      {
+       "q": "Mennyi ideig volt sötét a kamera képe?",
+       "o": [
+        "Négy percig",
+        "Egy óráig",
+        "Tíz percig"
+       ],
+       "a": 0
+      },
+      {
+       "q": "Minek mondta magát a szürke kabátos férfi?",
+       "o": [
+        "Villanyszerelőnek",
+        "Rendőrnek",
+        "Festőnek"
+       ],
+       "a": 0
+      }
+     ]
+    },
+    {
+     "title": "Sam's secret",
+     "hu": "Sam titka",
+     "lines": [
+      {
+       "s": "N",
+       "it": "The next morning, Emily found Sam sitting alone in the café opposite the gallery.",
+       "hu": "Másnap reggel Emily a galériával szemközti kávézóban találta Samet, egyedül."
+      },
+      {
+       "s": "A",
+       "it": "Sam, I need you to be honest with me. Where were you on Tuesday night?",
+       "hu": "Sam, őszintének kell lenned velem. Hol voltál kedd este?"
+      },
+      {
+       "s": "B",
+       "it": "All right. I didn't go home at ten. I went back to the gallery at eleven.",
+       "hu": "Rendben. Nem mentem haza tízkor. Tizenegykor visszamentem a galériába."
+      },
+      {
+       "s": "A",
+       "it": "Why?",
+       "hu": "Miért?"
+      },
+      {
+       "s": "B",
+       "it": "A man phoned me. He said he was from the insurance company and needed to check the alarm.",
+       "hu": "Felhívott egy férfi. Azt mondta, a biztosítótól van, és ellenőriznie kell a riasztót."
+      },
+      {
+       "s": "B",
+       "it": "I let him in and gave him the code. I'm so stupid. I was afraid to tell the police.",
+       "hu": "Beengedtem, és megadtam neki a kódot. Milyen hülye vagyok. Féltem elmondani a rendőrségnek."
+      },
+      {
+       "s": "A",
+       "it": "Did he wear a grey coat?",
+       "hu": "Szürke kabát volt rajta?"
+      },
+      {
+       "s": "B",
+       "it": "Yes! How do you know?",
+       "hu": "Igen! Honnan tudod?"
+      }
+     ],
+     "questions": [
+      {
+       "q": "Mit tett Sam kedd este?",
+       "o": [
+        "Visszament a galériába, és beengedett egy férfit",
+        "Otthon aludt",
+        "Elvitte a festményt"
+       ],
+       "a": 0
+      },
+      {
+       "q": "Miért nem szólt Sam a rendőrségnek?",
+       "o": [
+        "Félt",
+        "Elfelejtette",
+        "Nem volt telefonja"
+       ],
+       "a": 0
+      }
+     ]
+    },
+    {
+     "title": "The auction",
+     "hu": "Az árverés",
+     "lines": [
+      {
+       "s": "N",
+       "it": "Emily searched online for sales of Turner paintings. One result made her heart stop.",
+       "hu": "Emily rákeresett az interneten Turner-festmények eladására. Az egyik találattól elakadt a lélegzete."
+      },
+      {
+       "s": "A",
+       "it": "Sam, look. A private auction in Glasgow this Saturday. \"A newly discovered Turner.\"",
+       "hu": "Sam, nézd. Magánárverés Glasgow-ban ezen a szombaton. „Egy újonnan felfedezett Turner.”"
+      },
+      {
+       "s": "B",
+       "it": "That's our painting! They've changed the frame, but it's definitely ours.",
+       "hu": "Ez a mi festményünk! Kicserélték a keretet, de biztosan a miénk."
+      },
+      {
+       "s": "A",
+       "it": "We have to tell Detective Grant.",
+       "hu": "Szólnunk kell Grant nyomozónak."
+      },
+      {
+       "s": "N",
+       "it": "The detective listened carefully. Then he smiled for the first time.",
+       "hu": "A nyomozó figyelmesen végighallgatta őket. Aztán először elmosolyodott."
+      },
+      {
+       "s": "N",
+       "it": "\"Good work,\" he said. \"But we need to catch him with the painting. Will you help us?\"",
+       "hu": "„Szép munka – mondta. – De a festménnyel együtt kell elkapnunk. Segítenek?”"
+      },
+      {
+       "s": "A",
+       "it": "Of course. What do we have to do?",
+       "hu": "Persze. Mit kell tennünk?"
+      },
+      {
+       "s": "N",
+       "it": "\"Go to the auction,\" said Grant. \"And try to look like rich buyers.\"",
+       "hu": "„Menjenek el az árverésre – mondta Grant. – És próbáljanak gazdag vevőknek látszani.”"
+      }
+     ],
+     "questions": [
+      {
+       "q": "Hol tartják az árverést?",
+       "o": [
+        "Glasgow-ban",
+        "Edinburgh-ban",
+        "Londonban"
+       ],
+       "a": 0
+      },
+      {
+       "q": "Mit kér a nyomozó Emilytől és Samtől?",
+       "o": [
+        "Hogy menjenek el az árverésre",
+        "Hogy maradjanak otthon",
+        "Hogy vegyék meg a festményt"
+       ],
+       "a": 0
+      }
+     ]
+    },
+    {
+     "title": "The man in the grey coat",
+     "hu": "A szürke kabátos férfi",
+     "lines": [
+      {
+       "s": "N",
+       "it": "On Saturday, the auction room was full of people in expensive clothes.",
+       "hu": "Szombaton az árverési terem tele volt drága ruhás emberekkel."
+      },
+      {
+       "s": "N",
+       "it": "When the Turner appeared, a man in the front row stood up to speak. He was wearing a grey coat.",
+       "hu": "Amikor feltűnt a Turner, az első sorban felállt egy férfi, hogy beszéljen. Szürke kabátot viselt."
+      },
+      {
+       "s": "B",
+       "it": "That's him. That's the man I let in.",
+       "hu": "Ő az. Őt engedtem be."
+      },
+      {
+       "s": "N",
+       "it": "One of the buttons on his coat was missing.",
+       "hu": "A kabátjáról hiányzott az egyik gomb."
+      },
+      {
+       "s": "N",
+       "it": "Emily took the small blue button out of her pocket and showed it to Detective Grant.",
+       "hu": "Emily elővette a zsebéből a kis kék gombot, és megmutatta Grant nyomozónak."
+      },
+      {
+       "s": "N",
+       "it": "Two police officers walked quietly to the front of the room.",
+       "hu": "Két rendőr csendben a terem elejére sétált."
+      },
+      {
+       "s": "A",
+       "it": "I think this belongs to you, sir.",
+       "hu": "Azt hiszem, ez az öné, uram."
+      },
+      {
+       "s": "N",
+       "it": "A week later, the Turner was back on the gallery wall, and Sam bought Emily the biggest cake in Edinburgh.",
+       "hu": "Egy héttel később a Turner újra a galéria falán lógott, Sam pedig megvette Emilynek Edinburgh legnagyobb tortáját."
+      }
+     ],
+     "questions": [
+      {
+       "q": "Mi hiányzott a férfi kabátjáról?",
+       "o": [
+        "Egy gomb",
+        "Egy zseb",
+        "A gallér"
+       ],
+       "a": 0
+      },
+      {
+       "q": "Mit vett Sam Emilynek a végén?",
+       "o": [
+        "Egy nagy tortát",
+        "Egy festményt",
+        "Egy kabátot"
+       ],
+       "a": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "s2",
+   "level": "B2",
+   "title": "The Startup",
+   "hu": "A startup",
+   "img": "en-b6",
+   "desc": "Priya és Jake saját alkalmazást fejleszt Austinban. A siker közel van, de a barátságuk próbára tétetik.",
+   "cast": {
+    "N": {
+     "name": "",
+     "g": "f",
+     "acc": "us"
+    },
+    "A": {
+     "name": "Priya",
+     "g": "f",
+     "acc": "us"
+    },
+    "B": {
+     "name": "Jake",
+     "g": "m",
+     "acc": "us"
+    }
+   },
+   "chapters": [
+    {
+     "title": "The idea",
+     "hu": "Az ötlet",
+     "lines": [
+      {
+       "s": "N",
+       "it": "Priya and Jake had been friends since college, but they had never worked together until now.",
+       "hu": "Priya és Jake az egyetem óta barátok voltak, de eddig még sosem dolgoztak együtt."
+      },
+      {
+       "s": "A",
+       "it": "Think about it, Jake. Half the food in restaurants gets thrown away at closing time.",
+       "hu": "Gondold végig, Jake. Az éttermekben zárás után az ételek fele a kukába kerül."
+      },
+      {
+       "s": "B",
+       "it": "And your app would let people buy it cheaply instead?",
+       "hu": "És az alkalmazásod lehetővé tenné, hogy az emberek inkább olcsón megvegyék?"
+      },
+      {
+       "s": "A",
+       "it": "Exactly. Restaurants make a bit of money, customers save money, and less food is wasted.",
+       "hu": "Pontosan. Az éttermek keresnek egy kicsit, a vásárlók spórolnak, és kevesebb étel megy pocsékba."
+      },
+      {
+       "s": "B",
+       "it": "It's a great idea. But we'd both have to quit our jobs.",
+       "hu": "Nagyszerű ötlet. De mindkettőnknek ki kellene lépnie a munkahelyéről."
+      },
+      {
+       "s": "A",
+       "it": "I know. That's why I need a partner I can trust.",
+       "hu": "Tudom. Ezért kell egy társ, akiben megbízhatok."
+      },
+      {
+       "s": "N",
+       "it": "Jake looked at the plan on the table for a long time.",
+       "hu": "Jake hosszan nézte az asztalon fekvő tervet."
+      },
+      {
+       "s": "B",
+       "it": "OK. Let's do it. But we split everything fifty-fifty.",
+       "hu": "Rendben. Csináljuk. De mindenen fele-fele arányban osztozunk."
+      }
+     ],
+     "questions": [
+      {
+       "q": "Mire való Priya alkalmazása?",
+       "o": [
+        "A maradék éttermi étel olcsó eladására",
+        "Asztalfoglalásra",
+        "Receptek megosztására"
+       ],
+       "a": 0
+      },
+      {
+       "q": "Milyen feltételt szab Jake?",
+       "o": [
+        "Mindenen fele-fele osztozzanak",
+        "Ő legyen a főnök",
+        "Ne lépjenek ki az állásukból"
+       ],
+       "a": 0
+      }
+     ]
+    },
+    {
+     "title": "Long nights",
+     "hu": "Hosszú éjszakák",
+     "lines": [
+      {
+       "s": "N",
+       "it": "For the next six months, they worked from Priya's tiny apartment, often until three in the morning.",
+       "hu": "A következő hat hónapban Priya pici lakásából dolgoztak, gyakran hajnali háromig."
+      },
+      {
+       "s": "B",
+       "it": "The payment system keeps crashing. I've rewritten it three times.",
+       "hu": "A fizetési rendszer folyton összeomlik. Már háromszor újraírtam."
+      },
+      {
+       "s": "A",
+       "it": "We're running out of money, Jake. We have maybe two months left.",
+       "hu": "Fogy a pénzünk, Jake. Talán két hónapunk van még."
+      },
+      {
+       "s": "B",
+       "it": "Then we need an investor. Soon.",
+       "hu": "Akkor befektető kell. Hamarosan."
+      },
+      {
+       "s": "N",
+       "it": "Priya sent emails to forty investors. Only one replied.",
+       "hu": "Priya negyven befektetőnek írt e-mailt. Csak egy válaszolt."
+      },
+      {
+       "s": "A",
+       "it": "Her name is Diane Ross. She wants to meet us next Thursday.",
+       "hu": "Diane Rossnak hívják. Jövő csütörtökön találkozni akar velünk."
+      },
+      {
+       "s": "B",
+       "it": "Diane Ross? She's invested in some of the biggest companies in Texas.",
+       "hu": "Diane Ross? Texas legnagyobb cégeibe fektetett be."
+      },
+      {
+       "s": "A",
+       "it": "Then we'd better not mess this up.",
+       "hu": "Akkor jobb, ha nem rontjuk el."
+      }
+     ],
+     "questions": [
+      {
+       "q": "Hány befektető válaszolt?",
+       "o": [
+        "Egy",
+        "Negyven",
+        "Egy sem"
+       ],
+       "a": 0
+      },
+      {
+       "q": "Mennyi időre elég még a pénzük?",
+       "o": [
+        "Kb. két hónapra",
+        "Egy évre",
+        "Egy hétre"
+       ],
+       "a": 0
+      }
+     ]
+    },
+    {
+     "title": "The pitch",
+     "hu": "A bemutató",
+     "lines": [
+      {
+       "s": "N",
+       "it": "Diane Ross listened without interrupting, her face impossible to read.",
+       "hu": "Diane Ross közbeszólás nélkül hallgatott, az arcáról semmit nem lehetett leolvasni."
+      },
+      {
+       "s": "N",
+       "it": "When they finished, she leaned back in her chair.",
+       "hu": "Amikor befejezték, hátradőlt a székében."
+      },
+      {
+       "s": "N",
+       "it": "\"I like the idea,\" she said. \"But I'm not convinced by the team.\"",
+       "hu": "„Tetszik az ötlet – mondta. – De a csapatban nem vagyok biztos.”"
+      },
+      {
+       "s": "A",
+       "it": "What do you mean?",
+       "hu": "Ezt hogy érti?"
+      },
+      {
+       "s": "N",
+       "it": "\"I'll invest half a million dollars,\" Diane continued, \"but only if Jake becomes CEO.\"",
+       "hu": "„Félmillió dollárt fektetek be – folytatta Diane –, de csak akkor, ha Jake lesz a vezérigazgató.”"
+      },
+      {
+       "s": "N",
+       "it": "There was a long silence. Priya felt her face go hot.",
+       "hu": "Hosszú csend lett. Priya érezte, hogy elvörösödik."
+      },
+      {
+       "s": "B",
+       "it": "Can we think about it?",
+       "hu": "Gondolkodhatunk rajta?"
+      },
+      {
+       "s": "N",
+       "it": "\"You have until Monday,\" said Diane.",
+       "hu": "„Hétfőig van idejük” – mondta Diane."
+      }
+     ],
+     "questions": [
+      {
+       "q": "Milyen feltétellel fektetne be Diane?",
+       "o": [
+        "Ha Jake lesz a vezérigazgató",
+        "Ha Priya marad a vezető",
+        "Ha átköltöznek New Yorkba"
+       ],
+       "a": 0
+      },
+      {
+       "q": "Mennyi pénzt ajánl?",
+       "o": [
+        "Félmillió dollárt",
+        "Egymillió dollárt",
+        "Százezer dollárt"
+       ],
+       "a": 0
+      }
+     ]
+    },
+    {
+     "title": "The argument",
+     "hu": "A veszekedés",
+     "lines": [
+      {
+       "s": "A",
+       "it": "It was my idea, Jake. My idea, my plan, my apartment.",
+       "hu": "Az én ötletem volt, Jake. Az én ötletem, az én tervem, az én lakásom."
+      },
+      {
+       "s": "B",
+       "it": "I know. I didn't ask her to do this.",
+       "hu": "Tudom. Nem én kértem erre."
+      },
+      {
+       "s": "A",
+       "it": "But you didn't say no either.",
+       "hu": "De nemet sem mondtál."
+      },
+      {
+       "s": "B",
+       "it": "Priya, without her money, the company dies in two months. Is that what you want?",
+       "hu": "Priya, a pénze nélkül a cég két hónap múlva megszűnik. Ezt akarod?"
+      },
+      {
+       "s": "A",
+       "it": "What I want is a partner who stands up for me.",
+       "hu": "Én olyan társat akarok, aki kiáll mellettem."
+      },
+      {
+       "s": "N",
+       "it": "Jake opened his mouth to reply, then closed it again.",
+       "hu": "Jake szóra nyitotta a száját, aztán becsukta."
+      },
+      {
+       "s": "N",
+       "it": "That night, neither of them slept. On Sunday evening, Jake sent a short message.",
+       "hu": "Azon az éjszakán egyikük sem aludt. Vasárnap este Jake rövid üzenetet küldött."
+      },
+      {
+       "s": "N",
+       "it": "\"Meet me at the coffee shop at eight. I have an idea.\"",
+       "hu": "„Találkozzunk nyolckor a kávézóban. Van egy ötletem.”"
+      }
+     ],
+     "questions": [
+      {
+       "q": "Mit vár Priya Jake-től?",
+       "o": [
+        "Hogy kiálljon mellette",
+        "Hogy adjon neki pénzt",
+        "Hogy kilépjen a cégből"
+       ],
+       "a": 0
+      },
+      {
+       "q": "Mit küld Jake vasárnap este?",
+       "o": [
+        "Egy rövid üzenetet",
+        "Egy e-mailt Diane-nek",
+        "Egy szerződést"
+       ],
+       "a": 0
+      }
+     ]
+    },
+    {
+     "title": "A different offer",
+     "hu": "Másféle ajánlat",
+     "lines": [
+      {
+       "s": "B",
+       "it": "I called Diane this morning. I told her we're a team, and that I won't be CEO without you.",
+       "hu": "Ma reggel felhívtam Diane-t. Megmondtam neki, hogy csapat vagyunk, és nélküled nem leszek vezérigazgató."
+      },
+      {
+       "s": "A",
+       "it": "You did what? She'll walk away!",
+       "hu": "Mit csináltál? Ki fog szállni!"
+      },
+      {
+       "s": "B",
+       "it": "Maybe. But I also suggested something else: you as CEO, and me as technical director.",
+       "hu": "Lehet. De javasoltam mást is: te leszel a vezérigazgató, én a műszaki igazgató."
+      },
+      {
+       "s": "B",
+       "it": "And I offered to give her more detailed figures to prove the business model works.",
+       "hu": "És felajánlottam, hogy részletesebb számokkal bizonyítom, hogy az üzleti modell működik."
+      },
+      {
+       "s": "A",
+       "it": "Jake... I don't know what to say.",
+       "hu": "Jake… nem is tudom, mit mondjak."
+      },
+      {
+       "s": "B",
+       "it": "Say you'll help me prepare the figures. We have until Friday.",
+       "hu": "Mondd, hogy segítesz előkészíteni a számokat. Péntekig van időnk."
+      },
+      {
+       "s": "N",
+       "it": "For the first time in a week, Priya laughed.",
+       "hu": "Egy hét óta először Priya felnevetett."
+      },
+      {
+       "s": "A",
+       "it": "Fifty-fifty?",
+       "hu": "Fele-fele?"
+      }
+     ],
+     "questions": [
+      {
+       "q": "Mit javasolt Jake Diane-nek?",
+       "o": [
+        "Priya legyen a vezérigazgató, ő a műszaki igazgató",
+        "Ő legyen egyedül a vezető",
+        "Adják el a céget"
+       ],
+       "a": 0
+      },
+      {
+       "q": "Meddig kell elkészíteniük a számokat?",
+       "o": [
+        "Péntekig",
+        "Hétfőig",
+        "Egy hónapon belül"
+       ],
+       "a": 0
+      }
+     ]
+    },
+    {
+     "title": "Launch day",
+     "hu": "Az indulás napja",
+     "lines": [
+      {
+       "s": "N",
+       "it": "On Friday, Diane studied the figures for twenty minutes without saying a word.",
+       "hu": "Pénteken Diane húsz percig tanulmányozta a számokat, szó nélkül."
+      },
+      {
+       "s": "N",
+       "it": "\"You two are stubborn,\" she said finally. \"I like that. You have a deal.\"",
+       "hu": "„Maguk ketten makacsok – mondta végül. – Ez tetszik. Megegyeztünk.”"
+      },
+      {
+       "s": "N",
+       "it": "Three months later, the app launched in Austin with forty restaurants.",
+       "hu": "Három hónappal később az alkalmazás negyven étteremmel elindult Austinban."
+      },
+      {
+       "s": "A",
+       "it": "Jake, look at this. Five thousand downloads on the first day!",
+       "hu": "Jake, nézd! Ötezer letöltés az első napon!"
+      },
+      {
+       "s": "B",
+       "it": "And two hundred meals saved from the bin. Not bad for a crazy idea.",
+       "hu": "És kétszáz adag étel megmentve a kukától. Nem rossz egy őrült ötlettől."
+      },
+      {
+       "s": "A",
+       "it": "I'm glad I didn't do this alone.",
+       "hu": "Örülök, hogy nem egyedül csináltam."
+      },
+      {
+       "s": "B",
+       "it": "Me too, boss.",
+       "hu": "Én is, főnök."
+      },
+      {
+       "s": "N",
+       "it": "Outside, the first customers were already queuing for discounted dinners.",
+       "hu": "Kint az első vásárlók már sorban álltak a kedvezményes vacsorákért."
+      }
+     ],
+     "questions": [
+      {
+       "q": "Hány étteremmel indult az alkalmazás?",
+       "o": [
+        "Negyvennel",
+        "Ötezerrel",
+        "Kétszázzal"
+       ],
+       "a": 0
+      },
+      {
+       "q": "Hány letöltés volt az első napon?",
+       "o": [
+        "Ötezer",
+        "Negyven",
+        "Kétszáz"
+       ],
+       "a": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "s3",
+   "level": "C1",
+   "title": "The Archive",
+   "hu": "Az archívum",
+   "img": "en-c7",
+   "desc": "Helen levéltáros egy londoni intézetben. Egy 1953-as dosszié olyan titkot rejt, amit valaki mindenáron el akar tüntetni.",
+   "cast": {
+    "N": {
+     "name": "",
+     "g": "m",
+     "acc": "uk"
+    },
+    "A": {
+     "name": "Helen",
+     "g": "f",
+     "acc": "uk"
+    },
+    "B": {
+     "name": "Daniel",
+     "g": "m",
+     "acc": "uk"
+    }
+   },
+   "chapters": [
+    {
+     "title": "File 1953/47",
+     "hu": "Az 1953/47-es dosszié",
+     "lines": [
+      {
+       "s": "N",
+       "it": "Helen Marsh had catalogued thousands of documents, but she had never seen a file with every name blacked out.",
+       "hu": "Helen Marsh dokumentumok ezreit katalogizálta már, de még sosem látott olyan dossziét, amelyben minden nevet kifeketítettek."
+      },
+      {
+       "s": "A",
+       "it": "Daniel, have a look at this. It's from 1953, but it isn't listed anywhere in the catalogue.",
+       "hu": "Daniel, nézd meg ezt. 1953-as, de a katalógusban sehol nem szerepel."
+      },
+      {
+       "s": "B",
+       "it": "Strange. Perhaps it was misfiled when the collection moved buildings.",
+       "hu": "Furcsa. Talán rossz helyre került, amikor a gyűjtemény átköltözött."
+      },
+      {
+       "s": "A",
+       "it": "Perhaps. But why would anyone go to the trouble of removing every single name?",
+       "hu": "Lehet. De miért venné bárki a fáradságot, hogy minden egyes nevet eltávolítson?"
+      },
+      {
+       "s": "N",
+       "it": "Daniel shrugged, though Helen noticed he was suddenly in a hurry to leave.",
+       "hu": "Daniel vállat vont, bár Helen észrevette, hogy hirtelen nagyon sietni kezdett."
+      },
+      {
+       "s": "N",
+       "it": "Tucked inside the back cover was a faded photograph of a young woman standing outside a laboratory.",
+       "hu": "A hátsó borító mögé egy megfakult fénykép volt becsúsztatva: egy fiatal nő áll egy laboratórium előtt."
+      },
+      {
+       "s": "N",
+       "it": "On the reverse, in pencil, someone had written a single word: \"Forgive.\"",
+       "hu": "A hátoldalán ceruzával valaki egyetlen szót írt: „Bocsáss meg.”"
+      },
+      {
+       "s": "A",
+       "it": "Forgive whom, I wonder? And for what?",
+       "hu": "Vajon kinek? És mit?"
+      }
+     ],
+     "questions": [
+      {
+       "q": "Mi a különös a dossziéban?",
+       "o": [
+        "Minden nevet kifeketítettek",
+        "Üres",
+        "Rossz nyelven írták"
+       ],
+       "a": 0
+      },
+      {
+       "q": "Mi áll a fénykép hátoldalán?",
+       "o": [
+        "„Bocsáss meg”",
+        "Egy dátum",
+        "Egy cím"
+       ],
+       "a": 0
+      }
+     ]
+    },
+    {
+     "title": "A visitor",
+     "hu": "Egy látogató",
+     "lines": [
+      {
+       "s": "N",
+       "it": "The following morning, a well-dressed man was waiting at the reading-room desk.",
+       "hu": "Másnap reggel egy jól öltözött férfi várt az olvasóterem pultjánál."
+      },
+      {
+       "s": "N",
+       "it": "\"I understand you've come across a file from 1953,\" he said pleasantly. \"I'm afraid it was released in error.\"",
+       "hu": "„Úgy tudom, rábukkant egy 1953-as dossziéra – mondta kedvesen. – Attól tartok, tévedésből került elő.”"
+      },
+      {
+       "s": "A",
+       "it": "May I ask who you are, and how you know about it?",
+       "hu": "Megkérdezhetem, kicsoda ön, és honnan tud róla?"
+      },
+      {
+       "s": "N",
+       "it": "\"Let's just say I represent the family concerned. They would prefer it to remain private.\"",
+       "hu": "„Mondjuk úgy, hogy az érintett családot képviselem. Szeretnék, ha bizalmas maradna.”"
+      },
+      {
+       "s": "A",
+       "it": "I'm afraid that's not how archives work. Requests for closure go through the director.",
+       "hu": "Attól tartok, egy archívum nem így működik. A zárolási kérelmek az igazgatón keresztül mennek."
+      },
+      {
+       "s": "N",
+       "it": "The man smiled, but his eyes remained cold.",
+       "hu": "A férfi elmosolyodott, de a szeme hideg maradt."
+      },
+      {
+       "s": "N",
+       "it": "\"Then I'll speak to the director,\" he said. \"I'm sure we can come to an arrangement.\"",
+       "hu": "„Akkor beszélek az igazgatóval – mondta. – Biztos vagyok benne, hogy meg tudunk egyezni.”"
+      },
+      {
+       "s": "N",
+       "it": "Only one other person had seen the file. Helen realised it must have been Daniel who had told him.",
+       "hu": "Csak egyvalaki látta még a dossziét. Helen rájött, hogy csak Daniel szólhatott neki."
+      }
+     ],
+     "questions": [
+      {
+       "q": "Mit akar a látogató?",
+       "o": [
+        "Hogy a dosszié bizalmas maradjon",
+        "Hogy megvehesse a fényképet",
+        "Hogy Helen nála dolgozzon"
+       ],
+       "a": 0
+      },
+      {
+       "q": "Kire gyanakszik Helen?",
+       "o": [
+        "Danielre",
+        "Az igazgatóra",
+        "Önmagára"
+       ],
+       "a": 0
+      }
+     ]
+    },
+    {
+     "title": "Confrontation",
+     "hu": "Szembesítés",
+     "lines": [
+      {
+       "s": "A",
+       "it": "You told him, didn't you? I'd like to know why.",
+       "hu": "Te szóltál neki, ugye? Szeretném tudni, miért."
+      },
+      {
+       "s": "B",
+       "it": "Helen, you don't understand what you're dealing with.",
+       "hu": "Helen, nem érted, mivel állsz szemben."
+      },
+      {
+       "s": "A",
+       "it": "Then explain it to me. I'm perfectly capable of following.",
+       "hu": "Akkor magyarázd el. Teljesen képes vagyok követni."
+      },
+      {
+       "s": "B",
+       "it": "My grandfather worked at that laboratory. If what's in that file comes out, my family will be ruined.",
+       "hu": "A nagyapám abban a laborban dolgozott. Ha kiderül, mi van abban a dossziéban, a családom tönkremegy."
+      },
+      {
+       "s": "A",
+       "it": "So you haven't read it either.",
+       "hu": "Szóval te sem olvastad."
+      },
+      {
+       "s": "B",
+       "it": "I didn't need to. My father always said there were things about that place best left alone.",
+       "hu": "Nem kellett. Apám mindig azt mondta, arról a helyről vannak dolgok, amiket jobb békén hagyni."
+      },
+      {
+       "s": "N",
+       "it": "For a moment, Helen almost felt sorry for him.",
+       "hu": "Egy pillanatra Helen szinte megsajnálta."
+      },
+      {
+       "s": "A",
+       "it": "Daniel, half-truths are what do the damage. If we don't find out, someone else will decide the story for us.",
+       "hu": "Daniel, a féligazságok okozzák a kárt. Ha nem derítjük ki, valaki más dönti el helyettünk, mi a történet."
+      }
+     ],
+     "questions": [
+      {
+       "q": "Miért félti Daniel a családját?",
+       "o": [
+        "A nagyapja abban a laborban dolgozott",
+        "Ő lopta el a dossziét",
+        "Pénzzel tartozik"
+       ],
+       "a": 0
+      },
+      {
+       "q": "Olvasta Daniel a dossziét?",
+       "o": [
+        "Nem",
+        "Igen, többször",
+        "Csak az elejét"
+       ],
+       "a": 0
+      }
+     ]
+    },
+    {
+     "title": "The woman in the photograph",
+     "hu": "A nő a fényképen",
+     "lines": [
+      {
+       "s": "N",
+       "it": "It took Helen three weeks to identify the woman: Dr Margaret Hale, a chemist who had resigned abruptly in 1953.",
+       "hu": "Helennek három hétbe telt azonosítani a nőt: dr. Margaret Hale, vegyész, aki 1953-ban váratlanul felmondott."
+      },
+      {
+       "s": "N",
+       "it": "Her later life was well documented. Her years at the laboratory were not.",
+       "hu": "Későbbi élete jól dokumentált volt. A laborban töltött évei nem."
+      },
+      {
+       "s": "N",
+       "it": "In a box of donated letters, Helen found one signed by Hale and addressed to a colleague named Arthur Lyle.",
+       "hu": "Egy adományozott levelekkel teli dobozban Helen talált egyet, amelyet Hale írt alá, és egy Arthur Lyle nevű kollégának címzett."
+      },
+      {
+       "s": "A",
+       "it": "\"Arthur, I cannot put my name to results I know to be false. If you publish, you will do so without me.\"",
+       "hu": "„Arthur, nem írhatom a nevemet olyan eredmények alá, amelyekről tudom, hogy hamisak. Ha publikálod, nélkülem teszed.”"
+      },
+      {
+       "s": "N",
+       "it": "Lyle had gone on to win a prestigious award for that very research.",
+       "hu": "Lyle később rangos díjat nyert éppen ezért a kutatásért."
+      },
+      {
+       "s": "N",
+       "it": "Helen's hands were trembling as she checked the name of Daniel's grandfather in the staff records.",
+       "hu": "Helen keze remegett, miközben a személyzeti nyilvántartásban megnézte Daniel nagyapjának nevét."
+      },
+      {
+       "s": "N",
+       "it": "It was not Lyle. It was the name of the laboratory's junior technician.",
+       "hu": "Nem Lyle volt az. Hanem a labor fiatal technikusáé."
+      },
+      {
+       "s": "A",
+       "it": "So it was never his family who had something to hide.",
+       "hu": "Szóval sosem az ő családjának volt rejtegetnivalója."
+      }
+     ],
+     "questions": [
+      {
+       "q": "Miért mondott fel Margaret Hale?",
+       "o": [
+        "Nem akart hamis eredményeket aláírni",
+        "Megbetegedett",
+        "Külföldre költözött"
+       ],
+       "a": 0
+      },
+      {
+       "q": "Ki volt Daniel nagyapja?",
+       "o": [
+        "A labor fiatal technikusa",
+        "Arthur Lyle",
+        "Az igazgató"
+       ],
+       "a": 0
+      }
+     ]
+    },
+    {
+     "title": "The real story",
+     "hu": "Az igazi történet",
+     "lines": [
+      {
+       "s": "A",
+       "it": "Daniel, your grandfather wasn't the one who falsified anything. He was the one who tried to stop it.",
+       "hu": "Daniel, nem a nagyapád hamisított bármit is. Ő volt az, aki megpróbálta megakadályozni."
+      },
+      {
+       "s": "N",
+       "it": "She showed him a second letter, written by the technician himself, offering to testify on Hale's behalf.",
+       "hu": "Megmutatott neki egy második levelet, amelyet maga a technikus írt, és amelyben felajánlotta, hogy tanúskodik Hale mellett."
+      },
+      {
+       "s": "B",
+       "it": "Then why did my family always speak about it as if it were a disgrace?",
+       "hu": "Akkor miért beszélt erről mindig úgy a családom, mintha szégyen volna?"
+      },
+      {
+       "s": "A",
+       "it": "Because he lost his job. Lyle made sure of that. The shame was imposed on him, not earned.",
+       "hu": "Mert elvesztette az állását. Erről Lyle gondoskodott. A szégyent ráhúzták, nem kiérdemelte."
+      },
+      {
+       "s": "N",
+       "it": "Daniel sat in silence, turning the letter over in his hands.",
+       "hu": "Daniel csendben ült, és a kezében forgatta a levelet."
+      },
+      {
+       "s": "B",
+       "it": "And the man who came to see you?",
+       "hu": "És a férfi, aki meglátogatott?"
+      },
+      {
+       "s": "A",
+       "it": "Lyle's great-grandson. It's his family's reputation that the file threatens, not yours.",
+       "hu": "Lyle dédunokája. Az ő családja hírnevét fenyegeti a dosszié, nem a tiédet."
+      },
+      {
+       "s": "B",
+       "it": "Then I owe you an apology. And my grandfather owes you his good name.",
+       "hu": "Akkor bocsánatkéréssel tartozom neked. A nagyapám pedig a jó hírét köszönheti neked."
+      }
+     ],
+     "questions": [
+      {
+       "q": "Mit tett valójában Daniel nagyapja?",
+       "o": [
+        "Megpróbálta megakadályozni a hamisítást",
+        "Ő hamisította az eredményeket",
+        "Elhallgatta az egészet"
+       ],
+       "a": 0
+      },
+      {
+       "q": "Kinek az érdeke a dosszié eltüntetése?",
+       "o": [
+        "Lyle családjáé",
+        "Daniel családjáé",
+        "Az archívumé"
+       ],
+       "a": 0
+      }
+     ]
+    },
+    {
+     "title": "Forgive",
+     "hu": "Bocsáss meg",
+     "lines": [
+      {
+       "s": "N",
+       "it": "The director refused the request to close the file. The documents were made public the following spring.",
+       "hu": "Az igazgató elutasította a dosszié zárolására irányuló kérelmet. A dokumentumokat a következő tavasszal nyilvánosságra hozták."
+      },
+      {
+       "s": "N",
+       "it": "The newspapers called it one of the great scientific scandals of the century.",
+       "hu": "Az újságok az évszázad egyik legnagyobb tudományos botrányának nevezték."
+      },
+      {
+       "s": "N",
+       "it": "Margaret Hale's name was finally added to the research she had refused to sign.",
+       "hu": "Margaret Hale nevét végül hozzáadták ahhoz a kutatáshoz, amelyet nem volt hajlandó aláírni."
+      },
+      {
+       "s": "B",
+       "it": "I keep thinking about the word on the photograph. Who do you think wrote it?",
+       "hu": "Folyton a fénykép hátoldalán álló szóra gondolok. Szerinted ki írta?"
+      },
+      {
+       "s": "A",
+       "it": "I compared the handwriting. It was your grandfather.",
+       "hu": "Összehasonlítottam a kézírást. A nagyapád volt."
+      },
+      {
+       "s": "B",
+       "it": "Asking her to forgive him for not doing more.",
+       "hu": "Bocsánatot kért tőle, amiért nem tett többet."
+      },
+      {
+       "s": "A",
+       "it": "Or perhaps asking himself. Sometimes the people who did the most are the ones who think they did the least.",
+       "hu": "Vagy talán önmagától. Néha azok érzik úgy, hogy a legkevesebbet tették, akik a legtöbbet."
+      },
+      {
+       "s": "N",
+       "it": "That evening, Helen returned the photograph to the file, and for the first time, wrote all the names back in.",
+       "hu": "Aznap este Helen visszatette a fényképet a dossziéba, és most először minden nevet visszaírt."
+      }
+     ],
+     "questions": [
+      {
+       "q": "Mi történt a dokumentumokkal?",
+       "o": [
+        "Nyilvánosságra hozták őket",
+        "Megsemmisítették őket",
+        "Eladták őket"
+       ],
+       "a": 0
+      },
+      {
+       "q": "Ki írta a „Forgive” szót?",
+       "o": [
+        "Daniel nagyapja",
+        "Margaret Hale",
+        "Arthur Lyle"
+       ],
+       "a": 0
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

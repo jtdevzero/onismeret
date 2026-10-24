@@ -1,0 +1,771 @@
+# A2 – alapszókincs (szó|magyar)
+ability|képesség
+able|képes
+abroad|külföldön
+to accept|elfogadni
+accident|baleset
+to act|cselekedni, játszani (szerepet)
+activity|tevékenység
+to add|hozzáadni
+adventure|kaland
+advert|hirdetés, reklám
+advice|tanács
+afraid|ijedt, fél
+against|ellen
+to agree with|egyetérteni valakivel
+ahead|előre, előtt
+alarm|riasztó, ébresztő
+alive|élő, életben
+almost|majdnem
+alone|egyedül
+along|mentén
+already|már
+although|bár
+amount|mennyiség
+ancient|ősi
+ankle|boka
+anybody|bárki
+anyway|egyébként, mindegy
+anywhere|bárhol
+app|alkalmazás
+to appear|megjelenni
+architect|építész
+army|hadsereg
+to arrange|megszervezni
+arrival|érkezés
+article|cikk
+artist|művész
+asleep|alvó, alszik
+assistant|asszisztens
+athlete|sportoló
+to attack|megtámadni
+attention|figyelem
+attractive|vonzó
+available|elérhető
+average|átlagos
+to avoid|elkerülni
+awake|ébren
+award|díj
+awful|szörnyű
+background|háttér
+badly|rosszul
+bake|sütni (sütőben)
+balcony|erkély
+bat|ütő; denevér
+battery|akkumulátor, elem
+battle|csata
+beard|szakáll
+to beat|legyőzni, verni
+beauty|szépség
+bee|méh
+beef|marhahús
+behaviour|viselkedés
+belt|öv
+to belong|tartozni valahová
+bill|számla
+biology|biológia
+bit|egy kicsit, darabka
+to bite|harapni
+blanket|takaró
+to block|elzárni
+blond|szőke
+blood|vér
+to blow|fújni
+board|tábla
+boat|csónak
+to boil|forralni
+bone|csont
+to book|lefoglalni
+boot|csizma
+border|határ
+bored|unatkozó
+to borrow|kölcsönkérni
+boss|főnök
+bottom|alj
+bowl|tál
+brain|agy
+branch|ág; fiók (bank)
+brave|bátor
+breath|lélegzet
+bridge|híd
+brilliant|ragyogó, kiváló
+broken|törött
+brush|kefe, ecset
+bucket|vödör
+burger|hamburger
+to burn|égni, égetni
+bush|bokor
+button|gomb
+cabbage|káposzta
+calendar|naptár
+calm|nyugodt
+campsite|kemping
+candle|gyertya
+cap|sapka
+capital|főváros
+captain|kapitány
+career|karrier
+careful|óvatos
+carpet|szőnyeg
+carrot|sárgarépa
+cartoon|rajzfilm
+case|eset; bőrönd
+cash|készpénz
+castle|vár, kastély
+to catch|elkapni
+cause|ok
+to celebrate|ünnepelni
+celebrity|híresség
+century|évszázad
+certain|biztos
+champion|bajnok
+chance|esély
+channel|csatorna
+chapter|fejezet
+character|szereplő, jellem
+to chat|csevegni
+cheerful|vidám
+chef|szakács
+chemistry|kémia
+chess|sakk
+chest|mellkas
+chips|sült krumpli (brit)
+choice|választás
+church|templom
+circle|kör
+climate|éghajlat
+to climb|mászni
+clinic|rendelő
+clothing|ruházat
+cloudy|felhős
+club|klub
+coach|edző; távolsági busz
+coast|tengerpart
+coin|érme
+collection|gyűjtemény
+college|főiskola
+comedy|vígjáték
+comfortable|kényelmes
+comment|megjegyzés
+common|gyakori, közös
+communication|kommunikáció
+company|cég
+competition|verseny
+to complain|panaszkodni
+complete|teljes
+concert|koncert
+condition|állapot, feltétel
+confident|magabiztos
+to connect|összekötni
+to contain|tartalmazni
+to continue|folytatni
+conversation|beszélgetés
+cooker|tűzhely
+cookie|keksz
+cooking|főzés
+copy|másolat
+costume|jelmez
+cotton|pamut
+cough|köhögés
+to count|számolni
+couple|pár
+courage|bátorság
+crazy|őrült
+cream|tejszín, krém
+to create|alkotni
+credit card|hitelkártya
+crime|bűncselekmény
+to cross|átkelni
+crowd|tömeg
+crowded|zsúfolt
+culture|kultúra
+cupboard|szekrény
+curly|göndör
+customer|vásárló
+cycling|kerékpározás
+daily|napi
+damage|kár
+danger|veszély
+dead|halott
+deal|üzlet, megállapodás
+death|halál
+deep|mély
+degree|fok; diploma
+dentist|fogorvos
+department|osztály, részleg
+departure|indulás
+to depend|függeni
+desert|sivatag
+to design|tervezni
+dessert|desszert
+detail|részlet
+detective|nyomozó
+to develop|fejleszteni
+diary|napló
+diet|étrend
+to dig|ásni
+direction|irány
+director|igazgató, rendező
+disappointed|csalódott
+discount|kedvezmény
+to discover|felfedezni
+to discuss|megbeszélni
+disease|betegség
+dish|fogás, edény
+distance|távolság
+to divide|elosztani
+document|dokumentum
+double|dupla
+downstairs|lent, a földszinten
+drama|dráma
+dream|álom
+to drop|leejteni
+drum|dob
+dry|száraz
+duck|kacsa
+dust|por
+duty|kötelesség
+earn|keresni (pénzt)
+earth|föld
+easily|könnyen
+edge|szél, perem
+education|oktatás
+effect|hatás
+either|bármelyik
+electric|elektromos
+electricity|áram
+elephant|elefánt
+else|más, egyéb
+embarrassed|zavarban lévő
+emergency|vészhelyzet
+empty|üres
+energy|energia
+engine|motor
+engineer|mérnök
+entrance|bejárat
+environment|környezet
+equipment|felszerelés
+especially|különösen
+euro|euró
+even|még (fokozás), sőt
+event|esemény
+ever|valaha
+exactly|pontosan
+exam|vizsga
+excellent|kiváló
+except|kivéve
+exhibition|kiállítás
+exit|kijárat
+to expect|várni, számítani
+experience|tapasztalat
+expert|szakértő
+extra|extra, plusz
+extremely|rendkívül
+factory|gyár
+to fail|megbukni, kudarcot vallani
+fair|igazságos
+to fall|esni
+fan|rajongó; ventilátor
+fantastic|fantasztikus
+fashion|divat
+fear|félelem
+feature|jellemző
+fee|díj
+to feed|etetni
+female|női
+festival|fesztivál
+fever|láz
+field|mező, terület
+to fight|harcolni
+to fill|kitölteni, megtölteni
+final|végső, döntő
+finally|végül
+finger|ujj
+to fit|illik, jó rá
+to fix|megjavítani
+flag|zászló
+flight|repülőjárat
+to float|lebegni
+flu|influenza
+fog|köd
+folk|népi
+forest|erdő
+fork|villa
+form|űrlap
+fortunately|szerencsére
+forward|előre
+fresh|friss
+fridge|hűtő
+fried|sült
+friendship|barátság
+frightened|megijedt
+frog|béka
+fuel|üzemanyag
+furniture|bútor
+gallery|galéria
+gap|rés, hézag
+garage|garázs
+gas|gáz
+gate|kapu
+general|általános
+gift|ajándék
+glasses|szemüveg
+global|globális
+glove|kesztyű
+goal|cél, gól
+gold|arany
+golf|golf
+government|kormány
+grade|osztályzat
+gram|gramm
+grass|fű
+guess|tipp, találgatás
+guest|vendég
+guide|idegenvezető, útmutató
+gym|edzőterem
+habit|szokás
+to hang|akasztani, lógni
+to happen|történni
+harbour|kikötő
+headache|fejfájás
+heart|szív
+heat|hőség
+heavy|nehéz (súlyú)
+height|magasság
+helpful|segítőkész
+hero|hős
+hill|domb
+to hire|bérelni, felvenni
+to hit|ütni
+to hold|tartani
+hole|lyuk
+honest|őszinte
+horrible|szörnyű
+host|házigazda
+hunt|vadászni
+hurry|sietség
+to hurt|fájni, megsérteni
+ice|jég
+ill|beteg
+illness|betegség
+image|kép
+to imagine|elképzelni
+immediately|azonnal
+to improve|javítani, fejlődni
+include|tartalmazni, beleérteni
+to increase|növelni
+indoor|beltéri
+industry|ipar
+insect|rovar
+instead|helyett
+instruction|utasítás
+instrument|hangszer, eszköz
+international|nemzetközi
+internet|internet
+interview|interjú
+to introduce|bemutatni
+to invent|feltalálni
+to invite|meghívni
+jacket|dzseki
+jam|lekvár
+jazz|dzsessz
+jewellery|ékszer
+to join|csatlakozni
+joke|vicc
+journalist|újságíró
+journey|utazás, út
+to jump|ugrani
+jungle|dzsungel
+kid|gyerek
+to kill|megölni
+kilometre|kilométer
+king|király
+to kiss|megcsókolni
+knee|térd
+knife|kés
+to knock|kopogni
+lake|tó
+lamp|lámpa
+laptop|laptop
+law|törvény
+lawyer|ügyvéd
+lazy|lusta
+to lead|vezetni
+leader|vezető
+to lend|kölcsönadni
+less|kevesebb
+level|szint
+lift|lift
+lion|oroszlán
+list|lista
+litre|liter
+local|helyi
+lock|zár
+lonely|magányos
+lorry|teherautó
+loud|hangos
+lovely|kedves, gyönyörű
+low|alacsony
+luck|szerencse
+lucky|szerencsés
+luggage|poggyász
+machine|gép
+magazine|magazin
+mail|posta
+main|fő
+male|férfi (melléknév)
+to manage|irányítani, sikerül
+manager|vezető, menedzser
+match|meccs; gyufa
+material|anyag
+maths|matek
+maybe|talán
+meaning|jelentés
+medicine|gyógyszer
+medium|közepes
+member|tag
+memory|emlék, memória
+message|üzenet
+metal|fém
+method|módszer
+metre|méter
+middle|közép
+midnight|éjfél
+might|lehet, hogy
+mile|mérföld
+million|millió
+mind|elme; bánni
+mirror|tükör
+to miss|hiányolni, lekésni
+mistake|hiba
+mix|keverék
+mobile phone|mobiltelefon
+model|modell
+modern|modern
+moment|pillanat
+monkey|majom
+moon|hold
+mostly|többnyire
+motorbike|motor
+mouse|egér
+to move|mozogni, költözni
+movie|film
+musician|zenész
+nature|természet
+neck|nyak
+necklace|nyaklánc
+negative|negatív
+neighbour|szomszéd
+neither|egyik sem
+nervous|ideges
+net|háló
+noise|zaj
+noisy|zajos
+none|egyik sem, semennyi
+normal|normális
+note|jegyzet
+to notice|észrevenni
+novel|regény
+nurse|ápoló
+object|tárgy
+ocean|óceán
+to offer|felajánlani
+officer|tiszt
+oil|olaj
+online|online
+opinion|vélemény
+opposite|szemközt; ellentét
+order|rendelés, sorrend
+to organise|megszervezni
+original|eredeti
+oven|sütő
+own|saját
+owner|tulajdonos
+to pack|bepakolni
+pain|fájdalom
+to paint|festeni
+painting|festmény
+pair|pár
+palace|palota
+pan|serpenyő
+parking|parkolás
+part|rész
+partner|partner
+to pass|elhaladni; átmenni (vizsgán)
+passenger|utas
+passport|útlevél
+path|ösvény
+patient|beteg; türelmes
+pay|fizetés
+peace|béke
+pepper|bors
+per cent|százalék
+perfect|tökéletes
+perhaps|talán
+period|időszak
+photographer|fényképész
+physics|fizika
+to pick|kiválasztani, szedni
+picnic|piknik
+piece|darab
+pig|disznó
+pill|tabletta
+pilot|pilóta
+plan|terv
+planet|bolygó
+plant|növény
+plastic|műanyag
+plate|tányér
+platform|peron
+player|játékos
+pleasant|kellemes
+pleased|elégedett
+plus|plusz
+poem|vers
+point|pont, lényeg
+polite|udvarias
+pollution|szennyezés
+pool|medence
+popular|népszerű
+position|helyzet, pozíció
+positive|pozitív
+possible|lehetséges
+post|posta
+postcard|képeslap
+pot|fazék, cserép
+pound|font
+powerful|erős, hatalmas
+to prefer|jobban szeretni
+to prepare|előkészíteni
+prize|díj
+probably|valószínűleg
+to produce|előállítani
+product|termék
+programme|műsor, program
+project|projekt
+to promise|megígérni
+to protect|védeni
+proud|büszke
+public|nyilvános, köz-
+to pull|húzni
+purple|lila
+to push|tolni
+queen|királynő
+queue|sor (várakozó)
+quickly|gyorsan
+quite|elég, eléggé
+race|verseny
+radio|rádió
+railway|vasút
+rainy|esős
+to raise|felemelni
+rarely|ritkán
+to reach|elérni
+reason|ok
+receipt|nyugta
+to receive|kapni
+recently|nemrég
+recipe|recept (étel)
+to recognise|felismerni
+to recommend|ajánlani
+to relax|pihenni
+to rent|bérelni
+to repair|megjavítani
+to repeat|megismételni
+to reply|válaszolni
+report|jelentés
+to rescue|megmenteni
+to rest|pihenni
+result|eredmény
+to return|visszatérni
+ring|gyűrű
+to rise|emelkedni
+rock|szikla, rock
+role|szerep
+roof|tető
+round|kerek
+route|útvonal
+rubbish|szemét
+rude|udvariatlan
+rule|szabály
+safe|biztonságos
+sailing|vitorlázás
+salary|fizetés
+sale|eladás, leárazás
+salt|só
+to save|megmenteni, megtakarítani
+scarf|sál
+scary|ijesztő
+science|tudomány
+scientist|tudós
+screen|képernyő
+season|évszak
+seat|ülés
+secret|titok
+to seem|tűnni valaminek
+selfie|szelfi
+sense|érzék
+serious|komoly
+to serve|felszolgálni
+service|szolgáltatás
+several|több, számos
+shape|forma
+to share|megosztani
+sheep|birka
+shelf|polc
+ship|hajó
+shock|sokk
+shopping|vásárlás
+shoulder|váll
+to shout|kiabálni
+shy|félénk
+side|oldal
+sign|tábla, jel
+silver|ezüst
+simple|egyszerű
+since|óta
+singer|énekes
+single|egyedülálló; egyszeri
+size|méret
+skiing|síelés
+skin|bőr
+sky|ég
+smart|okos, elegáns
+to smell|szagolni, illata van
+to smile|mosolyogni
+smoke|füst
+snack|nasi
+soap|szappan
+social media|közösségi média
+sock|zokni
+soft|puha
+soldier|katona
+solution|megoldás
+to solve|megoldani
+somewhere|valahol
+sound|hang
+space|űr, hely
+special|különleges
+speed|sebesség
+spicy|csípős
+spoon|kanál
+square|tér, négyzet
+stadium|stadion
+staff|személyzet
+stage|színpad, szakasz
+stairs|lépcső
+stamp|bélyeg
+to steal|lopni
+step|lépés
+stomach|gyomor
+stone|kő
+storm|vihar
+straight|egyenes
+strange|furcsa
+stranger|idegen
+strawberry|eper
+stress|stressz
+subject|tantárgy, téma
+to succeed|sikerül
+success|siker
+suddenly|hirtelen
+to suggest|javasolni
+suit|öltöny
+suitcase|bőrönd
+sunny|napos
+to support|támogatni
+to suppose|feltételezni
+surprise|meglepetés
+to surround|körülvenni
+sweet|édes
+symbol|szimbólum
+system|rendszer
+tablet|tabletta; táblagép
+talent|tehetség
+tap|csap
+task|feladat
+taste|íz
+teenager|tinédzser
+temperature|hőmérséklet
+tennis|tenisz
+tent|sátor
+terrible|szörnyű
+text|szöveg; SMS
+thick|vastag
+thin|vékony
+thought|gondolat
+to throw|dobni
+thunder|mennydörgés
+tidy|rendes
+tie|nyakkendő
+tiger|tigris
+tiny|apró
+tip|borravaló; tipp
+toast|pirítós
+toe|lábujj
+tongue|nyelv (testrész)
+tool|szerszám
+top|tető, csúcs
+total|összesen
+to touch|megérinteni
+tour|túra
+tourist|turista
+towel|törölköző
+tower|torony
+toy|játék (tárgy)
+track|pálya, nyom
+tradition|hagyomány
+traffic|forgalom
+training|képzés, edzés
+to translate|fordítani
+transport|közlekedés
+trouble|baj
+truck|teherautó
+to trust|megbízni
+truth|igazság
+to turn|fordulni
+twice|kétszer
+type|típus
+umbrella|esernyő
+unfortunately|sajnos
+uniform|egyenruha
+unit|egység
+unusual|szokatlan
+upstairs|fent, az emeleten
+useful|hasznos
+valley|völgy
+van|kisteherautó
+video|videó
+view|kilátás
+violin|hegedű
+visitor|látogató
+voice|hang (emberi)
+volleyball|röplabda
+to wake up|felébredni
+war|háború
+waste|hulladék, pazarlás
+wave|hullám
+weak|gyenge
+website|weboldal
+wedding|esküvő
+weight|súly
+wet|nedves
+wheel|kerék
+while|míg, miközben
+whole|egész
+wide|széles
+wild|vad
+wind|szél
+wing|szárny
+wise|bölcs
+to wish|kívánni
+wood|fa (anyag), erdő
+wool|gyapjú
+worker|munkás
+to worry|aggódni
+worse|rosszabb
+to wrap|becsomagolni
+writer|író
+yet|még (nem), már
+yoga|jóga
+zoo|állatkert

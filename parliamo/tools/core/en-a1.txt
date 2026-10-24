@@ -1,0 +1,668 @@
+# A1 – 600 alapszó (szó|magyar)
+a|egy (névelő)
+about|-ról, -ről; körülbelül
+above|fölött
+across|át, keresztül
+actor|színész
+address|cím
+adult|felnőtt
+after|után
+afternoon|délután
+again|újra
+age|kor, életkor
+ago|ezelőtt
+to agree|egyetérteni
+air|levegő
+airport|repülőtér
+all|minden, mind
+also|is
+always|mindig
+amazing|csodálatos
+and|és
+angry|dühös
+animal|állat
+another|egy másik
+answer|válasz
+any|bármilyen, valamennyi
+apartment|lakás
+apple|alma
+April|április
+area|terület, környék
+arm|kar
+around|körül
+to arrive|megérkezni
+art|művészet
+to ask|kérdezni, kérni
+at|-nál, -nél; -kor
+August|augusztus
+aunt|nagynéni
+autumn|ősz
+away|el, távol
+baby|kisbaba
+back|hát; vissza
+bad|rossz
+bag|táska
+ball|labda
+banana|banán
+band|zenekar
+bank|bank
+bath|kád, fürdés
+bathroom|fürdőszoba
+to be|lenni
+beach|strand, tengerpart
+beautiful|gyönyörű
+because|mert
+to become|válni valamivé
+bed|ágy
+bedroom|hálószoba
+beer|sör
+before|előtt
+to begin|elkezdeni
+behind|mögött
+to believe|hinni
+below|alatt
+best|legjobb
+better|jobb
+between|között
+bicycle|kerékpár
+big|nagy
+bike|bicikli
+bill|számla
+bird|madár
+birthday|születésnap
+black|fekete
+blue|kék
+boat|hajó, csónak
+body|test
+book|könyv
+boring|unalmas
+born|született
+both|mindkettő
+bottle|üveg, palack
+box|doboz
+boy|fiú
+boyfriend|barát (pár)
+bread|kenyér
+to break|eltörni
+breakfast|reggeli
+to bring|hozni
+brother|fiútestvér
+brown|barna
+to build|építeni
+building|épület
+bus|busz
+business|üzlet, vállalkozás
+busy|elfoglalt
+but|de
+butter|vaj
+to buy|venni, vásárolni
+by|által; mellett
+cafe|kávézó
+cake|sütemény, torta
+to call|hívni
+camera|fényképezőgép
+can|tud, -hat, -het
+car|autó
+card|kártya
+to carry|vinni, cipelni
+cat|macska
+centre|központ
+chair|szék
+to change|változtatni, átszállni
+cheap|olcsó
+to check|ellenőrizni
+cheese|sajt
+chicken|csirke
+child|gyerek
+children|gyerekek
+chocolate|csokoládé
+to choose|választani
+cinema|mozi
+city|város
+class|osztály, óra
+classroom|tanterem
+clean|tiszta
+to clean|takarítani
+clear|világos, tiszta
+clock|óra (fali)
+to close|bezárni
+clothes|ruhák
+cloud|felhő
+coat|kabát
+coffee|kávé
+cold|hideg
+colour|szín
+to come|jönni
+computer|számítógép
+to cook|főzni
+cool|hűvös; menő
+to copy|másolni
+corner|sarok
+correct|helyes
+cost|ár, költség
+could|tudott, -hatna
+country|ország, vidék
+course|tanfolyam, fogás
+cousin|unokatestvér
+cow|tehén
+to cry|sírni
+cup|csésze
+to cut|vágni
+dad|apu
+to dance|táncolni
+dangerous|veszélyes
+dark|sötét
+date|dátum, randevú
+daughter|lánya valakinek
+day|nap
+dear|kedves
+December|december
+to decide|eldönteni
+delicious|finom
+to describe|leírni
+desk|íróasztal
+dictionary|szótár
+to die|meghalni
+different|különböző, más
+difficult|nehéz
+dinner|vacsora
+dirty|piszkos
+to do|csinálni
+doctor|orvos
+dog|kutya
+dollar|dollár
+door|ajtó
+down|le, lent
+to draw|rajzolni
+dress|ruha (női)
+drink|ital
+to drink|inni
+to drive|vezetni
+driver|sofőr
+during|alatt, közben
+each|mindegyik
+ear|fül
+early|korán
+east|kelet
+easy|könnyű
+to eat|enni
+egg|tojás
+eight|nyolc
+eighteen|tizennyolc
+eighty|nyolcvan
+eleven|tizenegy
+email|e-mail
+to end|befejezni, véget érni
+English|angol
+to enjoy|élvezni
+enough|elég
+evening|este
+every|minden
+everyone|mindenki
+everything|minden
+example|példa
+excited|izgatott
+exciting|izgalmas
+excuse me|elnézést
+exercise|feladat, testmozgás
+expensive|drága
+to explain|elmagyarázni
+eye|szem
+face|arc
+fact|tény
+false|hamis
+family|család
+famous|híres
+far|messze
+farm|farm, tanya
+fast|gyors
+fat|kövér
+father|apa
+favourite|kedvenc
+February|február
+to feel|érezni
+few|kevés
+fifteen|tizenöt
+fifty|ötven
+film|film
+to find|találni
+fine|jó, rendben
+to finish|befejezni
+fire|tűz
+first|első
+fish|hal
+five|öt
+flat|lakás
+floor|padló, emelet
+flower|virág
+to fly|repülni
+to follow|követni
+food|étel
+foot|lábfej
+football|foci
+for|-ra, -re; számára
+to forget|elfelejteni
+forty|negyven
+four|négy
+fourteen|tizennégy
+free|szabad, ingyenes
+Friday|péntek
+friend|barát
+friendly|barátságos
+from|-tól, -től; -ból, -ből
+front|eleje
+fruit|gyümölcs
+full|tele
+fun|móka
+funny|vicces
+future|jövő
+game|játék
+garden|kert
+to get|kapni, szerezni
+girl|lány
+girlfriend|barátnő
+to give|adni
+glass|pohár, üveg
+to go|menni
+good|jó
+goodbye|viszontlátásra
+grandfather|nagyapa
+grandmother|nagymama
+grandparent|nagyszülő
+great|nagyszerű
+green|zöld
+grey|szürke
+group|csoport
+to grow|nőni, termeszteni
+guitar|gitár
+hair|haj
+half|fél
+hand|kéz
+happy|boldog
+hard|kemény, nehéz
+hat|kalap, sapka
+to hate|utálni
+to have|birtokol, van neki
+he|ő (férfi)
+head|fej
+health|egészség
+healthy|egészséges
+to hear|hallani
+hello|szia, helló
+to help|segíteni
+her|őt, az ő (nőé)
+here|itt
+hi|szia
+high|magas
+him|őt (férfit)
+his|az ő (férfié)
+history|történelem
+hobby|hobbi
+holiday|szabadság, nyaralás
+home|otthon
+homework|házi feladat
+hope|remény
+horse|ló
+hospital|kórház
+hot|forró
+hotel|szálloda
+hour|óra (60 perc)
+house|ház
+how|hogyan
+hundred|száz
+hungry|éhes
+husband|férj
+I|én
+ice cream|fagylalt
+idea|ötlet
+if|ha
+important|fontos
+in|-ban, -ben
+information|információ
+inside|belül
+interesting|érdekes
+into|-ba, -be
+island|sziget
+it|az (tárgy), ő
+January|január
+jeans|farmer
+job|munka, állás
+juice|gyümölcslé
+July|július
+June|június
+just|csak, épp
+to keep|tartani
+key|kulcs
+kind|kedves; fajta
+kitchen|konyha
+to know|tudni, ismerni
+language|nyelv
+large|nagy
+last|utolsó, múlt
+late|késő
+to laugh|nevetni
+to learn|tanulni
+left|bal
+leg|láb
+lesson|lecke, óra
+letter|levél, betű
+library|könyvtár
+to lie|feküdni; hazudni
+life|élet
+light|fény; könnyű
+like|mint
+to like|szeretni, kedvelni
+to listen|hallgatni
+little|kicsi, kevés
+to live|élni, lakni
+long|hosszú
+to look|nézni, kinézni
+to lose|elveszíteni
+lot|sok
+to love|szeretni
+lunch|ebéd
+to make|készíteni, csinálni
+man|férfi
+many|sok
+map|térkép
+March|március
+market|piac
+married|házas
+May|május
+me|engem
+meal|étkezés
+to mean|jelenteni
+meat|hús
+to meet|találkozni
+menu|étlap
+milk|tej
+minute|perc
+Monday|hétfő
+money|pénz
+month|hónap
+more|több
+morning|reggel, délelőtt
+most|legtöbb
+mother|anya
+mountain|hegy
+mouth|száj
+much|sok
+mum|anyu
+museum|múzeum
+music|zene
+must|kell
+my|az én …m
+name|név
+near|közel
+to need|szüksége van
+never|soha
+new|új
+news|hírek
+newspaper|újság
+next|következő
+nice|kedves, szép
+night|éjszaka
+nine|kilenc
+no|nem
+nobody|senki
+north|észak
+nose|orr
+not|nem
+nothing|semmi
+November|november
+now|most
+number|szám
+o'clock|óra (pontosan)
+October|október
+of|-nak, -nek (birtok)
+office|iroda
+often|gyakran
+old|régi, öreg
+on|-on, -en, -ön
+once|egyszer
+one|egy
+only|csak
+to open|kinyitni
+or|vagy
+orange|narancs
+other|más, másik
+our|a mi …nk
+out|ki, kint
+outside|kint
+over|fölött; vége
+page|oldal
+paper|papír
+parent|szülő
+park|park
+party|buli
+past|múlt
+to pay|fizetni
+pen|toll
+pencil|ceruza
+people|emberek
+person|személy
+phone|telefon
+photo|fénykép
+piano|zongora
+picture|kép
+pink|rózsaszín
+pizza|pizza
+place|hely
+plane|repülőgép
+to play|játszani
+please|kérem
+pocket|zseb
+police|rendőrség
+poor|szegény
+potato|krumpli
+to practise|gyakorolni
+present|ajándék; jelen
+pretty|csinos
+price|ár
+problem|probléma
+to put|tenni
+question|kérdés
+quick|gyors
+quiet|csendes
+rain|eső
+to read|olvasni
+ready|kész
+really|igazán, tényleg
+red|piros
+to remember|emlékezni
+restaurant|étterem
+rice|rizs
+rich|gazdag
+right|jobb; helyes
+river|folyó
+road|út
+room|szoba
+to run|futni
+sad|szomorú
+salad|saláta
+same|ugyanaz
+sandwich|szendvics
+Saturday|szombat
+to say|mondani
+school|iskola
+sea|tenger
+second|második; másodperc
+to see|látni
+to sell|eladni
+to send|küldeni
+sentence|mondat
+September|szeptember
+seven|hét (szám)
+she|ő (nő)
+shirt|ing
+shoe|cipő
+shop|bolt
+short|rövid, alacsony
+to show|megmutatni
+shower|zuhany
+sick|beteg
+to sing|énekelni
+sister|lánytestvér
+to sit|ülni
+six|hat
+sixteen|tizenhat
+sixty|hatvan
+skirt|szoknya
+to sleep|aludni
+slow|lassú
+small|kicsi
+snow|hó
+so|tehát, olyan
+some|néhány, egy kis
+someone|valaki
+something|valami
+sometimes|néha
+son|fia valakinek
+song|dal
+soon|hamarosan
+sorry|bocsánat
+soup|leves
+south|dél
+to speak|beszélni
+to spell|betűzni
+to spend|költeni, tölteni
+sport|sport
+spring|tavasz
+to stand|állni
+star|csillag
+to start|kezdeni
+station|állomás
+to stay|maradni
+still|még mindig
+to stop|megállni, abbahagyni
+story|történet
+street|utca
+strong|erős
+student|diák
+to study|tanulni
+sugar|cukor
+summer|nyár
+sun|nap (égitest)
+Sunday|vasárnap
+supermarket|szupermarket
+sure|biztos
+sweater|pulóver
+to swim|úszni
+table|asztal
+to take|venni, vinni
+to talk|beszélgetni
+tall|magas
+taxi|taxi
+tea|tea
+to teach|tanítani
+teacher|tanár
+team|csapat
+telephone|telefon
+television|televízió
+to tell|elmondani
+ten|tíz
+test|teszt, dolgozat
+than|mint (összehasonlítás)
+thank you|köszönöm
+that|az, hogy
+the|a, az
+theatre|színház
+their|az ő …uk
+them|őket
+then|aztán, akkor
+there|ott
+they|ők
+thing|dolog
+to think|gondolni
+third|harmadik
+thirsty|szomjas
+thirteen|tizenhárom
+thirty|harminc
+this|ez
+thousand|ezer
+three|három
+Thursday|csütörtök
+ticket|jegy
+time|idő
+tired|fáradt
+to|-hoz, -hez, -höz
+today|ma
+together|együtt
+toilet|mosdó, vécé
+tomato|paradicsom
+tomorrow|holnap
+tonight|ma este
+too|is; túl
+tooth|fog
+town|kisváros
+train|vonat
+to travel|utazni
+tree|fa
+trip|kirándulás, út
+trousers|nadrág
+true|igaz
+to try|próbálni
+T-shirt|póló
+Tuesday|kedd
+twelve|tizenkettő
+twenty|húsz
+two|kettő
+uncle|nagybácsi
+under|alatt
+to understand|megérteni
+university|egyetem
+until|-ig
+up|fel, fent
+us|minket
+to use|használni
+usually|általában
+vegetable|zöldség
+very|nagyon
+village|falu
+to visit|meglátogatni
+to wait|várni
+to walk|sétálni
+wall|fal
+to want|akarni
+warm|meleg
+to wash|mosni
+watch|karóra
+to watch|nézni (tévét)
+water|víz
+way|út, mód
+we|mi
+to wear|viselni, hordani
+weather|időjárás
+Wednesday|szerda
+week|hét
+weekend|hétvége
+welcome|üdvözöljük
+well|jól
+west|nyugat
+what|mi, mit
+when|mikor
+where|hol
+which|melyik
+white|fehér
+who|ki
+why|miért
+wife|feleség
+to win|nyerni
+window|ablak
+winter|tél
+with|-val, -vel
+without|nélkül
+woman|nő
+word|szó
+to work|dolgozni
+world|világ
+to write|írni
+wrong|rossz, hibás
+year|év
+yellow|sárga
+yes|igen
+yesterday|tegnap
+you|te, ön, ti
+young|fiatal
+your|a te …d
+zero|nulla

@@ -251,6 +251,8 @@ details.g .gb{padding-bottom:1.1rem;display:flex;flex-direction:column;gap:.8rem
 .lcard.done .num{background:var(--ok);color:#fff}
 .lcard.cur{outline:3px solid var(--lemon);outline-offset:-1px}
 .lcard.cur .num{background:var(--lemon);color:#2A2000}
+.meter{height:7px;background:var(--sunk);border-radius:9px;overflow:hidden;margin-top:.35rem}
+.meter i{display:block;height:100%;background:var(--cobalt);border-radius:9px;transition:width .4s}
 .lcard .meter{height:5px;background:var(--sunk);border-radius:9px;overflow:hidden;margin-top:.5rem}
 .lcard .meter i{display:block;height:100%;background:var(--ok)}
 .scard .pic{aspect-ratio:16/9}
