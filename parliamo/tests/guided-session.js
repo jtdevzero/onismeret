@@ -50,6 +50,7 @@ async function answerAll(p) {
 async function reset(p) {
   await p.evaluate(() => {
     S = fresh(); S.onboarded = true; S.settings.sound = false; S.settings.goal = 20;
+    const c=POOL[0];S.cards[c.id]={...sched(null,2,c.id),due:today()};
     dailyActive = false; save(); go('ma');
   });
 }
@@ -68,17 +69,20 @@ async function outputOnly(p) {
   await p.waitForSelector('[data-l="en"]');
   await reset(p);
   console.log('\nGuided daily path');
+  await p.evaluate(()=>{S.cards={};save();go('ma');});await p.click('#hRound');
+  check(await p.locator('#startL').count()===1 && await p.evaluate(()=>dailySession().review==='none'), 'empty review skips directly to the first lesson');
+  await reset(p);
   check(await p.locator('.daily-focus .daily-step').count() === 3, 'home presents three ordered stages');
   check(await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'mobile home has no horizontal overflow');
   await p.click('#hRound');
-  check(await p.evaluate(() => P.kind === 'daily' && P.queue.filter(e => e.t === 'intro').length === 1), 'daily CTA starts the short review');
+  check(await p.evaluate(() => P.kind === 'daily' && P.queue.filter(e => e.t === 'intro').length === 0), 'daily CTA starts the short review');
   await answerAll(p);
   check(await p.evaluate(() => S.dailySessions.en.review === true && !S.dailySessions.en.lesson), 'review completion saves its stage');
   await p.waitForSelector('#dailyContinue');
   await reloadHome(p); await p.click('#hRound');
   check(await p.locator('#startL').count() === 1, 'reload resumes at the lesson rather than repeating review');
   await p.click('#startL'); await answerAll(p);
-  check(await p.evaluate(() => S.dailySessions.en.lesson && !!S.lessons[S.dailySessions.en.lessonId].done), 'real lesson completion advances the daily stage');
+  check(await p.evaluate(() => S.dailySessions.en.lesson && !S.lessons[S.dailySessions.en.lessonId]?.done && lessonCoverageCount(S.dailySessions.en.lessonId)>0), 'completed short lesson section advances its daily stage and preserves full lesson coverage');
   await p.click('#dailyContinue'); await p.waitForSelector('#dailyAnswer');
   check(await p.locator('#dailyFeedback [data-say]').count() === 0, 'independent answer starts without revealing a model');
   await p.fill('#dailyAnswer', await p.evaluate(() => dailyOutputItem().it)); await p.click('#dailyCheck');
@@ -99,9 +103,16 @@ async function outputOnly(p) {
   check(!await p.locator('#dailyFeedback').innerText().then(t => t.includes('Sikerült önállóan')), 'assisted success avoids an independent claim');
   await reset(p); await outputOnly(p); await p.fill('#dailyAnswer', 'completely wrong answer'); await p.click('#dailyCheck');
   check(await p.evaluate(() => !S.dailySessions.en.output && !S.evidence.length), 'wrong output neither completes stage nor creates evidence');
+  check(await p.evaluate(() => !dailySession().outputHelp) && await p.locator('#dailyFeedback [data-say]').count()===0, 'first mistake gives a hint without revealing a model');
   await reloadHome(p); await p.click('#hRound');
   await p.fill('#dailyAnswer', await p.evaluate(() => dailyOutputItem().it)); await p.click('#dailyCheck');
-  check(await p.evaluate(() => S.evidence.length === 1 && S.evidence[0].kind === 'practice'), 'model shown after error stays assisted after reload');
+  check(await p.evaluate(() => S.evidence.length === 1 && S.evidence[0].kind === 'output'), 'a corrected answer after a nonrevealing hint can be independent');
+  await reset(p); await outputOnly(p);
+  await p.fill('#dailyAnswer', 'completely wrong answer'); await p.click('#dailyCheck'); await p.click('#dailyCheck');
+  check(await p.evaluate(() => !!dailySession().outputHelp), 'second mistake reveals a model and marks assistance');
+  await reloadHome(p); await p.click('#hRound');
+  await p.fill('#dailyAnswer', await p.evaluate(() => dailyOutputItem().it)); await p.click('#dailyCheck');
+  check(await p.evaluate(() => S.evidence.length === 1 && S.evidence[0].kind === 'practice'), 'revealed model stays assisted after reload');
 
   console.log('\nLanguage and date boundaries');
   const english = await p.evaluate(() => JSON.stringify(S.dailySessions.en));
@@ -149,6 +160,21 @@ async function outputOnly(p) {
   check(!merged.next.dailySessions.en.review && !merged.next.dailySessions.en.lesson && !merged.next.dailySessions.en.outputHelp, 'new-day merge does not inherit yesterday\'s completion or help');
   check(!merged.otherItem.dailySessions.en.outputHelp, 'help for a different output item does not contaminate a new answer');
   check(!merged.otherLesson.dailySessions.en.lesson, 'a different selected lesson does not inherit completion');
+  await p.evaluate(()=>{
+    const a=fresh(),b=fresh(),ids=POOL.filter(c=>c.ph&&c.li===0).slice(0,2).map(c=>c.id),base={day:today(),lessonId:LESSONS[0].id,review:true,lesson:true,output:false};
+    a.settings.goal=50;b.settings.goal=50;a.onboarded=true;b.onboarded=true;
+    a.dailySessions.en={...base,outputDone:[ids[0]],outputItemId:ids[0],at:100};
+    b.dailySessions.en={...base,outputDone:[ids[1]],outputItemId:ids[1],at:200};
+    a.updatedAt=100;b.updatedAt=200;S=mergeState(a,b);dailyActive=false;save();go('ma');
+  });
+  await p.click('#hRound');
+  check(await p.evaluate(()=>dailySession().output&&dailySession().outputDone.length===2)&&await p.locator('text=Mai gyakorlás kész').count()===1, 'two devices completing different sentences jointly finish a two-answer day');
+  const changed=await p.evaluate(()=>{
+    S=fresh();S.settings.goal=50;const id=LESSONS[0].id;S.lessons[id]={placed:true};
+    S.dailySessions.en={day:today(),lessonId:id,review:true,lesson:false,output:true,outputDone:['old-answer'],outputItemId:'old-answer',outputHelp:true,outputDraft:'old draft',outputAttempts:2,at:1};
+    const s=dailySession();return {changed:s.lessonId!==id,output:s.output,leftover:['outputDone','outputItemId','outputHelp','outputDraft','outputAttempts'].some(k=>k in s)};
+  });
+  check(changed.changed&&!changed.output&&!changed.leftover, 'choosing a different lesson clears answers and help from the previous lesson');
   check(errors.length === 0, 'daily flows produce no uncaught JavaScript errors: ' + errors.join('; '));
   console.log(`\n${count} guided-session checks passed.`);
 })().catch(e => { console.error(e.stack || e); process.exitCode = 1; }).finally(async () => { if (browser) await browser.close(); server.close(); });

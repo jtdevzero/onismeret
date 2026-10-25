@@ -15,7 +15,7 @@ function renderOnboarding(step){
   }
   if(step==="goal"){
     view.innerHTML=`<div class="onb-wrap"><div class="logo-big small">${flag(lang())}</div>${dots(2)}<h1>Mennyi idő fér bele naponta?</h1><p class="muted">Már kipróbáltad a tanulást. Válassz egy kényelmes ritmust; később bármikor átállíthatod.</p>
-      <div class="onb-langs">${[[20,"Kis lépések","kb. 5 perc"],[50,"Napi lendület","kb. 10–15 perc"],[100,"Több időm van","kb. 25–30 perc"]].map(([g,t,d])=>`<button class="onb-lang" data-g="${g}"><span><b>${t}</b><span class="small muted">${d}</span></span>${g===50?'<span class="pill now">Ajánlott</span>':""}</button>`).join("")}</div></div>`;
+      <div class="onb-langs">${[[20,"Kis lépések","kb. 5 perc"],[50,"Napi lendület","kb. 10 perc"],[100,"Több időm van","kb. 25 perc"]].map(([g,t,d])=>`<button class="onb-lang" data-g="${g}"><span><b>${t}</b><span class="small muted">${d}</span></span>${g===50?'<span class="pill now">Ajánlott</span>':""}</button>`).join("")}</div></div>`;
     view.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>{fx("tap");S.settings.goal=+b.dataset.g;finishOnboarding();});return;
   }
   if(step==="level"){

@@ -3,6 +3,7 @@ function applyPrefs(){
   const r=document.documentElement,st=S.settings;
   if(st.theme==="light"||st.theme==="dark"){r.dataset.theme=st.theme;r.dataset.themeSet="1";}else if(r.dataset.themeSet){delete r.dataset.theme;delete r.dataset.themeSet;}
   r.dataset.fs=st.fs||"m";if(st.readable)r.dataset.read="1";else delete r.dataset.read;
+  if(typeof applyLanguageWorld==="function")applyLanguageWorld();
 }
 function prefsCard(){
   const st=S.settings;

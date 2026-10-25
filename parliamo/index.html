@@ -534,6 +534,127 @@ section[aria-labelledby="practiceRecommended"]>.drills{grid-template-columns:rep
   .onb-lang{padding:.9rem;gap:.6rem}
   .onb-lang .pill{font-size:.65rem;padding-inline:.4rem}
 }
+/* Language worlds. Brand accents change; correct/error colours keep their meaning. */
+:root[data-learn-lang="en"]{
+  --world-bg-day:#F5F3ED;--world-surface-day:#FFFEFB;--world-sunk-day:#EAE7DF;--world-ink-day:#203448;--world-muted-day:#566574;--world-line-day:#DCDDD7;
+  --world-primary-day:#173A5D;--world-soft-day:#E7EDF3;--world-accent-day:#E8BA7B;--world-accent-soft-day:#F8EBD7;--world-accent-ink-day:#503919;--world-secondary-day:#9B4C3C;
+  --world-bg-night:#101923;--world-surface-night:#172430;--world-sunk-night:#21323F;--world-ink-night:#EBEFF2;--world-muted-night:#ACBBC7;--world-line-night:#344652;
+  --world-primary-night:#AECBE6;--world-soft-night:#243E54;--world-accent-night:#E8BA7B;--world-accent-soft-night:#40331F;--world-accent-ink-night:#F5D8AF;--world-secondary-night:#D8937D;
+  --world-hero-bg:#173A5D;--world-pattern:linear-gradient(90deg,transparent 46%,rgba(255,255,255,.12) 46% 50%,transparent 50%),linear-gradient(0deg,transparent 46%,rgba(255,255,255,.12) 46% 50%,transparent 50%);
+}
+:root[data-learn-lang="it"]{
+  --world-bg-day:#F8F3E9;--world-surface-day:#FFFCF6;--world-sunk-day:#EDE5D7;--world-ink-day:#3E3428;--world-muted-day:#6B6356;--world-line-day:#E0D7C8;
+  --world-primary-day:#91492F;--world-soft-day:#F6E8DF;--world-accent-day:#E9C679;--world-accent-soft-day:#FAEFD5;--world-accent-ink-day:#594017;--world-secondary-day:#56613C;
+  --world-bg-night:#1E1915;--world-surface-night:#2B231C;--world-sunk-night:#3A3025;--world-ink-night:#F4EBDD;--world-muted-night:#C5B7A5;--world-line-night:#504333;
+  --world-primary-night:#F0B498;--world-soft-night:#493126;--world-accent-night:#E9C679;--world-accent-soft-night:#45371F;--world-accent-ink-night:#F6DCA9;--world-secondary-night:#B5C391;
+  --world-hero-bg:#82412D;--world-pattern:radial-gradient(circle at 50% 100%,transparent 30%,rgba(255,255,255,.15) 31% 35%,transparent 36%);
+}
+:root[data-learn-lang="es"]{
+  --world-bg-day:#FAF4E8;--world-surface-day:#FFFCF5;--world-sunk-day:#F0E5D3;--world-ink-day:#233E4C;--world-muted-day:#5D6A6E;--world-line-day:#E1D9CA;
+  --world-primary-day:#234F69;--world-soft-day:#E6EEF0;--world-accent-day:#EDBE68;--world-accent-soft-day:#FBECCE;--world-accent-ink-day:#574019;--world-secondary-day:#B4533E;
+  --world-bg-night:#131D24;--world-surface-night:#1B2A32;--world-sunk-night:#293A42;--world-ink-night:#F1EDE3;--world-muted-night:#B6C0BD;--world-line-night:#3D5057;
+  --world-primary-night:#A8CFE7;--world-soft-night:#254451;--world-accent-night:#EDBE68;--world-accent-soft-night:#43351F;--world-accent-ink-night:#F7DDA9;--world-secondary-night:#EFA28A;
+  --world-hero-bg:#204B61;--world-pattern:linear-gradient(45deg,transparent 44%,rgba(255,255,255,.14) 45% 50%,transparent 51%),linear-gradient(-45deg,transparent 44%,rgba(255,255,255,.14) 45% 50%,transparent 51%);
+}
+:root[data-learn-lang]{
+  --bg:var(--world-bg-day);--surface:var(--world-surface-day);--sunk:var(--world-sunk-day);--ink:var(--world-ink-day);--muted:var(--world-muted-day);--line:var(--world-line-day);
+  --cobalt:var(--world-primary-day);--cobalt-ink:#FFFFFF;--cobalt-soft:var(--world-soft-day);--lemon:var(--world-accent-day);--lemon-soft:var(--world-accent-soft-day);--lemon-ink:var(--world-accent-ink-day);--world-secondary:var(--world-secondary-day);
+  --world-veil:var(--world-surface-day);--tile:var(--world-pattern);
+}
+@media (prefers-color-scheme:dark){:root[data-learn-lang]:not([data-theme="light"]){
+  --bg:var(--world-bg-night);--surface:var(--world-surface-night);--sunk:var(--world-sunk-night);--ink:var(--world-ink-night);--muted:var(--world-muted-night);--line:var(--world-line-night);
+  --cobalt:var(--world-primary-night);--cobalt-ink:var(--world-bg-night);--cobalt-soft:var(--world-soft-night);--lemon:var(--world-accent-night);--lemon-soft:var(--world-accent-soft-night);--lemon-ink:var(--world-accent-ink-night);--world-secondary:var(--world-secondary-night);--world-veil:var(--world-surface-night);
+}}
+:root[data-learn-lang][data-theme="dark"]{
+  --bg:var(--world-bg-night);--surface:var(--world-surface-night);--sunk:var(--world-sunk-night);--ink:var(--world-ink-night);--muted:var(--world-muted-night);--line:var(--world-line-night);
+  --cobalt:var(--world-primary-night);--cobalt-ink:var(--world-bg-night);--cobalt-soft:var(--world-soft-night);--lemon:var(--world-accent-night);--lemon-soft:var(--world-accent-soft-night);--lemon-ink:var(--world-accent-ink-night);--world-secondary:var(--world-secondary-night);--world-veil:var(--world-surface-night);
+}
+:root[data-learn-lang] .tileband{background:linear-gradient(90deg,var(--cobalt) 0 75%,var(--lemon) 75% 93%,var(--world-secondary) 93%)}
+:root[data-learn-lang] :is(button,input,textarea,select,a):focus-visible{outline:3px solid var(--cobalt);outline-offset:3px}
+:root[data-learn-lang] .daily-focus :is(button,a):focus-visible{outline-color:#FFFFFF}
+:root[data-learn-lang] .daily-focus{background:var(--world-hero-bg);padding:1.5rem 1.8rem;box-shadow:0 12px 28px -22px var(--world-hero-bg)}
+:root[data-learn-lang] .daily-focus h2{font-size:1.8rem;max-width:none;margin-top:.3rem}
+:root[data-learn-lang] .daily-focus>.label,:root[data-learn-lang] .daily-focus .muted{color:#F1EFE9}
+:root[data-learn-lang] .daily-focus>.label{opacity:.8}
+:root[data-learn-lang] .daily-focus .daily-step small{color:#FFFFFF;opacity:.82}
+:root[data-learn-lang] .daily-focus .btn{color:var(--world-hero-bg)}
+:root[data-learn-lang] .daily-focus .btn.ghost{color:#FFFFFF}
+:root[data-learn-lang] .daily-focus .btn.lemon{color:#32240E}
+:root[data-learn-lang] .daily-focus .daily-steps{margin:1.15rem 0}
+:root[data-learn-lang] .dico.c3{color:var(--world-secondary);background:color-mix(in srgb,var(--world-secondary) 13%,var(--surface))}
+:root[data-learn-lang] .wotd{background-color:var(--cobalt);background-image:var(--world-pattern);background-size:44px 44px}
+:root[data-learn-lang] .wotd::before{background:linear-gradient(100deg,var(--cobalt) 42%,color-mix(in srgb,var(--cobalt) 45%,transparent))}
+
+.world-hero{position:relative;isolation:isolate;overflow:hidden;min-height:260px;border:1px solid var(--line);border-radius:22px;background:var(--surface)}
+.world-hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,var(--world-veil,var(--surface)) 0%,color-mix(in srgb,var(--world-veil,var(--surface)) 97%,transparent) 35%,color-mix(in srgb,var(--world-veil,var(--surface)) 78%,transparent) 49%,transparent 73%)}
+.world-landmark{position:absolute;inset:0;margin:0;z-index:0;background:var(--sunk)}
+.world-landmark img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 54%}
+.world-landmark figcaption{position:absolute;right:1rem;bottom:1rem;max-width:44%;padding:.3rem .65rem;border-radius:999px;color:var(--ink);background:color-mix(in srgb,var(--surface) 93%,transparent);font-size:.66rem;font-weight:600;letter-spacing:.03em;line-height:1.4;text-align:right}
+.world-copy{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:center;gap:.65rem;width:57%;min-height:260px;padding:2rem}
+.world-copy::before{content:"";width:34px;height:3px;background:var(--world-secondary,var(--cobalt));border-radius:2px;margin-bottom:.25rem}
+.world-copy h1{font-size:clamp(1.75rem,3.5vw,2.45rem);line-height:1.12;letter-spacing:-.035em;max-width:18ch}
+.world-copy p{font-size:.88rem;line-height:1.55;max-width:39ch;color:var(--muted)}
+.world-eyebrow{font-size:.64rem;font-weight:700;letter-spacing:.1em;line-height:1.6;text-transform:uppercase;color:var(--muted)}
+:root[data-learn-lang="it"] .world-copy h1{max-width:13ch}
+:root[data-learn-lang="es"] .world-copy h1{max-width:15ch}
+.story-scene{position:relative;overflow:hidden;isolation:isolate;aspect-ratio:16/9;min-height:120px;margin:0;border:1px solid var(--line);border-radius:18px;background-color:var(--sunk);background-size:300% 200%;background-position:var(--scene-x,0%) var(--scene-y,0%);background-repeat:no-repeat}
+.story-scene>img{display:block;width:100%;height:100%;object-fit:cover}
+.story-scene-caption{position:absolute;inset:auto 0 0;padding:1.5rem 1rem .8rem;background:linear-gradient(transparent,rgba(13,21,24,.82));color:#FFFFFF;font-size:.77rem;line-height:1.5;text-shadow:0 1px 4px rgba(0,0,0,.2)}
+.story-figure{margin:0;overflow:hidden;border:1px solid var(--line);border-radius:18px;background:var(--surface)}
+.story-figure .story-scene{border:0;border-radius:0}
+.story-scene.pic::before{display:none}
+.story-caption{display:flex;flex-direction:column;gap:.3rem;padding:.8rem 1rem}
+.story-setting{font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.story-caption-text{font-size:.85rem;color:var(--ink);line-height:1.5}
+.story-card-figure{border:0;border-radius:0;width:100%}
+.story-card-figure .story-caption{padding:.65rem 1rem .2rem}
+.story-scene-fallback-label{position:absolute;inset:auto 1rem 1rem;z-index:1;width:fit-content;max-width:calc(100% - 2rem);padding:.35rem .65rem;border-radius:8px;background:var(--surface);color:var(--muted);font-size:.72rem;line-height:1.4}
+.story-scene:has(img) .story-scene-fallback-label{display:none}
+.lesson-filters,.shadow-filters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem;align-items:end;padding:.25rem 0}
+.lesson-filters label,.shadow-filters label{display:flex;flex-direction:column;gap:.3rem;color:var(--muted);font-size:.78rem;font-weight:600;min-width:0}
+.lesson-filters select,.shadow-filters select{font-size:.9rem;font-weight:500;color:var(--ink)}
+.lesson-filters .row,.shadow-filters .row{align-self:end}
+.speech-controls{position:sticky;bottom:0;z-index:12;display:flex;flex-wrap:wrap;align-items:center;gap:.55rem;padding:.8rem;margin-inline:-.25rem;border:1px solid var(--line);border-radius:16px;background:color-mix(in srgb,var(--surface) 97%,transparent);box-shadow:0 8px 26px -20px rgba(0,0,0,.4)}
+.speech-controls .btn{min-height:46px}
+.speech-guide{font-size:.92rem}
+.speech-guide.g summary{font-family:var(--body);font-size:.9rem;font-weight:600}
+.speech-record-status{display:flex;flex-wrap:wrap;align-items:center;gap:.35rem .65rem;flex:1 1 100%;padding:.45rem .6rem;border-radius:9px;background:var(--sunk);font-size:.8rem;line-height:1.5}
+.speech-record-status label{display:flex;align-items:center;gap:.35rem;flex:1;min-width:120px}
+.speech-record-status>.small{flex-basis:100%;font-size:.72rem}
+.speech-record-status meter{flex:1;min-width:70px;max-width:240px;height:12px;accent-color:var(--cobalt)}
+.speech-record-status #shTimer{font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap}
+.speech-progress{display:flex;align-items:center;gap:.5rem;color:var(--muted);font-size:.77rem;font-variant-numeric:tabular-nums;line-height:1.5}
+.intonation-chart{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:var(--sunk)}
+.intonation-chart [data-intonation-cursor]{stroke:var(--ink);stroke-width:1.5;stroke-dasharray:3 3;vector-effect:non-scaling-stroke}
+.intonation-axis{display:flex;justify-content:space-between;gap:.5rem;font-size:.66rem;line-height:1.5;color:var(--muted)}
+@media (max-width:980px){.speech-controls{bottom:calc(76px + env(safe-area-inset-bottom,0px))}}
+@media (max-width:760px){
+  .world-hero{min-height:208px;border-radius:18px}
+  .world-copy{min-height:208px;width:68%;padding:1.2rem;gap:.4rem}
+  .world-copy::before{width:24px;margin:0}
+  .world-copy h1{font-size:1.65rem;line-height:1.12;max-width:15ch}
+  .world-copy p{font-size:.77rem;line-height:1.45;max-width:28ch}
+  .world-eyebrow{font-size:.56rem;letter-spacing:.08em;line-height:1.5}
+  .world-landmark img{object-position:62% center}
+  .world-landmark figcaption{right:.5rem;bottom:.5rem;max-width:35%;font-size:.57rem;border-radius:8px;padding:.3rem .45rem}
+  .world-hero::after{background:linear-gradient(90deg,var(--world-veil,var(--surface)) 0%,color-mix(in srgb,var(--world-veil,var(--surface)) 97%,transparent) 30%,color-mix(in srgb,var(--world-veil,var(--surface)) 88%,transparent) 47%,color-mix(in srgb,var(--world-veil,var(--surface)) 35%,transparent) 68%,transparent 90%)}
+  :root[data-learn-lang] .daily-focus{padding:1.2rem}
+  :root[data-learn-lang] .daily-focus h2{font-size:1.45rem}
+  :root[data-learn-lang] .daily-focus .daily-steps{margin:.9rem 0}
+  .lesson-filters,.shadow-filters{gap:.5rem}
+  .speech-controls{gap:.45rem;padding:.6rem;margin-inline:0;border-radius:12px}
+  .speech-controls .btn{font-size:.84rem;padding:.65rem .8rem}
+  .speech-controls .icon-btn{width:46px;height:46px}
+  .speech-controls .speech-record-status{padding:.4rem;font-size:.74rem;gap:.4rem}
+  .story-scene{border-radius:14px}
+}
+@media (max-width:380px){
+  .world-copy{padding:1rem;width:71%;min-height:205px}
+  .world-copy h1{font-size:1.45rem}
+  .world-copy p{font-size:.74rem;line-height:1.4}
+  .world-landmark figcaption{max-width:29%;font-size:.52rem}
+  .lesson-filters,.shadow-filters{grid-template-columns:1fr}
+}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 
 /* Monthly report: print only the report itself */
@@ -875,15 +996,53 @@ const rnd=a=>a[Math.floor(Math.random()*a.length)];
 const dayNum=(d=new Date())=>Math.floor((d.getTime()-d.getTimezoneOffset()*60000)/864e5);
 const norm=s=>String(s).toLowerCase().replace(/[’`´ʼ]/g,"'").replace(/[.,!?¿¡;:"«»()…]/g,"").replace(/'\s+/g,"'").replace(/\s+/g," ").trim();
 const deacc=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"");
-function check(user,answers){
-  const u=norm(user); if(!u) return {ok:false};
-  for(const a of answers){const n=norm(a);
-    if(u===n) return {ok:true};
-    if(deacc(u)===deacc(n)) return {ok:true,warn:"Figyelj az ékezetre: "+a};
-    const bare=n.replace(LG().art,"");
-    if(bare!==n && (u===bare||deacc(u)===deacc(bare))) return {ok:true,warn:(lang()==="en"&&/^to /.test(n)?"Jó! Az igét to-val együtt tanuld: ":"Jó! Névelővel együtt tanuld: ")+a};
+/* Translation alternatives are deliberately narrow and meaning preserving. Grammar and
+   dictation never accept a paraphrase or silently remove a required article. */
+function answerForm(text){
+  const s=norm(text);
+  if(lang()!=="en")return s;
+  const forms={"i'm":"i am","you're":"you are","we're":"we are","they're":"they are","it's":"it is",
+    "don't":"do not","doesn't":"does not","didn't":"did not","can't":"cannot","won't":"will not",
+    "isn't":"is not","aren't":"are not","wasn't":"was not","weren't":"were not",
+    "i've":"i have","you've":"you have","we've":"we have","they've":"they have"};
+  return s.replace(/\b(?:i'm|you're|we're|they're|it's|don't|doesn't|didn't|can't|won't|isn't|aren't|wasn't|weren't|i've|you've|we've|they've)\b/g,x=>forms[x]).replace(/\bi'd like\b/g,"i would like");
+}
+function requestMeaning(text){
+  let s=answerForm(text),m;
+  if(lang()==="en"){
+    s=s.replace(/^please\s+|\s+please$/g,"");
+    m=s.match(/^(?:can|could|may) (i|we) (?:have|get) (.+)$/)||s.match(/^(i|we) would like (.+)$/);
+    /* "would like to go" and "have to go" express different meanings. Only
+       the shared object of a request can be compared by this narrow rule. */
+    return m&&!/^to\b/.test(m[2])?m[1]+"|"+m[2]:null;
   }
-  return {ok:false};
+  if(lang()==="it"){
+    s=s.replace(/\s+per (?:favore|piacere)$/g,"");
+    m=s.match(/^(?:vorrei|posso avere|potrei avere) (.+)$/);return m?"io|"+m[1]:null;
+  }
+  if(lang()==="es"){
+    s=s.replace(/\s+por favor$/g,"");
+    m=s.match(/^(?:quisiera|querría|me gustaría|puedo tomar|podría tomar) (.+)$/);return m?"yo|"+m[1]:null;
+  }
+  return null;
+}
+function check(user,answers,opts={}){
+  const u=norm(user),list=(Array.isArray(answers)?answers:[answers]).filter(a=>typeof a==="string"&&a.trim());
+  if(!u)return {ok:false,hint:"Írj be egy választ."};
+  for(const a of list){const n=norm(a);
+    if(u===n)return {ok:true};
+    if(deacc(u)===deacc(n))return {ok:true,warn:"Figyelj az ékezetre: "+a};
+  }
+  if(opts.type==="translation")for(const a of list){
+    const af=answerForm(a),uf=answerForm(user);
+    if(af===uf)return {ok:true,alternative:true};
+    if(deacc(af)===deacc(uf))return {ok:true,alternative:true,warn:"Figyelj az ékezetekre a mintában."};
+    const ar=requestMeaning(a),ur=requestMeaning(user);
+    if(ar&&ur&&ar===ur)return {ok:true,alternative:true};
+    if(ar&&ur&&deacc(ar)===deacc(ur))return {ok:true,alternative:true,warn:"Figyelj az ékezetekre a mintában."};
+  }
+  const articleMissing=list.some(a=>{const n=norm(a),bare=n.replace(LG().art,"");return bare!==n&&deacc(u)===deacc(bare);});
+  return {ok:false,hint:articleMissing?"Figyeld meg a kifejezés elejét: a névelő vagy a to is a tanult alak része.":opts.type==="translation"?"Nézd át a személyt, az ige alakját és a szórendet. Más jó megfogalmazás is létezhet a megadott mintákon kívül.":"Ellenőrizd a teljes tanult alakot, a névelőt és a szavak sorrendjét."};
 }
 const spkBtn=(t,cls="")=>`<button class="icon-btn ${cls}" data-say="${esc(t)}" aria-label="Meghallgatás: ${esc(t)}">${I.spk}</button>`;
 const pic=(name,cls="")=>`<div class="pic ${cls}"><img src="img/${name}.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"></div>`;
@@ -950,17 +1109,37 @@ function toast(msg){let t=$("#toast");if(!t){t=document.createElement("div");t.i
 
 /* ============ STATE ============ */
 const LS="parliamo.v1";
-function fresh(){return {v:1,xp:0,days:{},lessons:{},cards:{},stories:{},miss:{},log:{},ai:{},rounds:{},ev:{},chal:{},own:{},hard:{},pods:{},exam:{},certs:{},plan:{},mlog:[],onboarded:false,newToday:{day:0,n:0},drills:{},dailySessions:{},evidence:[],settings:{goal:50,newPerDay:10,dir:"mix",rate:0.95,ret:0.9,lang:"en",proxy:"",pass:"",cloud:false,theme:"auto",fs:"m",readable:false},updatedAt:0};}
+function fresh(){return {v:1,resetAt:0,activeExercises:{},lessonCoverage:{},journalDrafts:{},xp:0,days:{},lessons:{},cards:{},stories:{},miss:{},log:{},ai:{},rounds:{},ev:{},chal:{},own:{},hard:{},pods:{},exam:{},certs:{},plan:{},mlog:[],onboarded:false,newToday:{day:0,n:0},drills:{},dailySessions:{},evidence:[],settings:{goal:50,newPerDay:10,dir:"mix",rate:0.95,ret:0.9,lang:"en",proxy:"",pass:"",cloud:false,theme:"auto",fs:"m",readable:false},updatedAt:0};}
 function migrate(s){const old=s&&s.xp>0&&s.onboarded===undefined;const f=fresh();s=Object.assign(f,s||{});if(old)s.onboarded=true;s.settings=Object.assign(fresh().settings,s.settings||{});
   for(const rec of Object.values(s.lessons||{}))if(rec&&rec.placed&&rec.done&&!rec.best)rec.done=false;
   if(!Array.isArray(s.evidence))s.evidence=[];if(!s.dailySessions||typeof s.dailySessions!=="object")s.dailySessions={};
+  s.resetAt=resetEpoch(s);
+  for(const key of ["activeExercises","lessonCoverage","journalDrafts"])if(!s[key]||typeof s[key]!=="object"||Array.isArray(s[key]))s[key]={};
   return s;}
+/* A reset starts a new generation of progress. An older device cannot merge its old generation back in. */
+function resetEpoch(state){const value=Number(state&&state.resetAt);return Number.isSafeInteger(value)&&value>=0?value:0;}
+function resetProgress(){
+  const settings=Object.assign({},S.settings),onboarded=!!S.onboarded,epoch=Math.max(Date.now(),resetEpoch(S)+1);
+  S=fresh();S.settings=settings;S.onboarded=onboarded;S.resetAt=epoch;save();return S;
+}
 let S=fresh();
 try{const raw=localStorage.getItem(LS);if(raw)S=migrate(JSON.parse(raw));}catch(e){}
 let sync="local", docRef=null, rTimer=null, rBusy=false, rAgain=false;
 function save(){S.updatedAt=Date.now();try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}queueRemote();queueCloud();renderChips();}
 function queueRemote(){if(!docRef)return;clearTimeout(rTimer);rTimer=setTimeout(pushRemote,2000);}
-async function pushRemote(){if(rBusy){rAgain=true;return;}rBusy=true;try{await docRef.set({state:JSON.parse(JSON.stringify(S))});sync="cloud";}catch(e){sync="local";}rBusy=false;renderChips();if(rAgain){rAgain=false;pushRemote();}}
+async function pushRemote(){
+  if(rBusy){rAgain=true;return;}rBusy=true;
+  try{
+    const snap=await docRef.get(),remote=snap.exists&&(snap.data()||{}).state;
+    if(remote&&resetEpoch(remote)>resetEpoch(S)){
+      S=migrate(Object.assign({},remote,{settings:Object.assign({},remote.settings||{},S.settings)}));
+      try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}
+      P=null;CS=null;D=null;ST=null;PL=null;dailyActive=false;stopViews();if(LESSONS.length)render();
+    }
+    await docRef.set({state:cloudCopy()});sync="cloud";
+  }catch(e){sync="local";}
+  rBusy=false;renderChips();if(rAgain){rAgain=false;pushRemote();}
+}
 (async()=>{
   if(!window.claude||!window.claude.use) return;
   try{
@@ -970,7 +1149,7 @@ async function pushRemote(){if(rBusy){rAgain=true;return;}rBusy=true;try{await d
     docRef=db.collection("data/users/"+id).doc("progress");
     const snap=await docRef.get();
     const r=snap.exists?snap.data():null;
-    if(r&&r.state&&(r.state.updatedAt||0)>(S.updatedAt||0)){S=migrate(r.state);try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}sync="cloud";pruneState();if(LESSONS.length&&!P&&!CS&&!D&&!ST)render();}
+    if(r&&r.state&&(resetEpoch(r.state)>resetEpoch(S)||(resetEpoch(r.state)===resetEpoch(S)&&(r.state.updatedAt||0)>(S.updatedAt||0)))){S=migrate(Object.assign({},r.state,{settings:Object.assign({},r.state.settings||{},S.settings)}));try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}sync="cloud";pruneState();if(LESSONS.length&&!P&&!CS&&!D&&!ST)render();}
     else if(S.updatedAt){sync="cloud";pushRemote();}
     else sync="cloud";
     renderChips();
@@ -1027,6 +1206,7 @@ function learnedCount(){return packCards().filter(c=>c.reps>0).length;}
 let route="ma", P=null, CS=null, D=null;
 function navHtml(){return ROUTES.map(([k,l])=>`<button data-go="${k}" ${route===k?'aria-current="page"':""}>${I[k]}<span>${l}</span></button>`).join("");}
 function renderChips(){
+  if(typeof applyLanguageWorld==="function")applyLanguageWorld();
   const st=streak();
   $("#chips").innerHTML=`<button class="chip langsw" id="langBtn" aria-haspopup="menu" aria-label="Tanult nyelv: ${LG().name}. Váltás">${flag(lang())}<b>${LG().code}</b><svg viewBox="0 0 24 24" aria-hidden="true" style="width:12px;height:12px"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg></button><span class="chip streak" title="Napok sorozatban">${I.fire}<span class="tnum">${st}</span></span><span class="chip" title="Összes XP">${I.star}<span class="tnum">${S.xp}</span></span>`;
 }
@@ -1069,8 +1249,8 @@ function renderHome(){
   const nl=nextLesson(),s=dailySession(),steps=dailySteps(),finished=steps.every(x=>x[0]),started=steps.some(x=>x[0]);
   const w=WORDS[today()%WORDS.length],L=LESSONS.find(l=>l.id===s.lessonId);
   view.innerHTML=`<div class="stack">
-  <header class="home-head"><span class="home-kicker">${LG().name} · ${new Date().toLocaleDateString("hu-HU",{month:"long",day:"numeric"})}</span><h1>Egy kis gyakorlás. Minden nap.</h1><p class="muted">Ma is egy lépéssel közelebb az önálló nyelvhasználathoz.</p></header>
-  <section class="daily-focus" aria-labelledby="dailyTitle"><span class="label">A mai útvonalad · kb. 10–15 perc</span><h2 id="dailyTitle">${finished?"A mai gyakorlásod elkészült.":started?"Folytassuk, ahol tartottál.":"Tíz perc, ami összeadódik."}</h2><p>Rövid ismétlés, egy lecke, végül egy saját válasz. Lépésről lépésre végigvezetünk.</p>
+  ${worldHeroHtml()}
+  <section class="daily-focus" aria-labelledby="dailyTitle"><span class="label">A mai útvonalad · kb. ${dailyPacing().minutes} perc</span><h2 id="dailyTitle">${finished?"A mai gyakorlásod elkészült.":started?"Folytassuk, ahol tartottál.":"Egy kis lépés, ami összeadódik."}</h2><p>Rövid ismétlés, egy leckeszakasz, végül saját válaszok. Lépésről lépésre végigvezetünk.</p>
     <div class="daily-steps">${steps.map(([done,title,detail],i)=>`<div class="daily-step ${done?"is-done":""}"><span>${done?(done==="none"?"–":"✓"):i+1}</span><div><b>${esc(title)}</b><small>${esc(detail)}</small></div></div>`).join("")}</div>
     <div class="row"><button class="btn lemon" id="hRound">${finished?"Mai kör áttekintése":started?"Mai gyakorlás folytatása":"Mai gyakorlás indítása"} →</button><span class="small">Bármikor megállhatsz, innen folytatjuk.</span></div>
   </section>
@@ -1090,7 +1270,7 @@ function renderHome(){
   </div>
   ${budgetWarn()}
   <details class="g" id="homeSettings"><summary>Beállítások</summary><div class="gb">
-    <label class="stack" style="gap:.3rem"><span class="label">Napi cél</span><span class="seg" id="sGoal">${[20,50,100].map(g=>`<button data-v="${g}" aria-pressed="${S.settings.goal===g}">${g} XP</button>`).join("")}</span></label>
+    <label class="stack" style="gap:.3rem"><span class="label">Napi cél</span><span class="seg" id="sGoal">${[20,50,100].map(g=>`<button data-v="${g}" aria-pressed="${S.settings.goal===g}">${({20:5,50:10,100:25})[g]} perc</button>`).join("")}</span></label>
     <label class="stack" style="gap:.3rem"><span class="label">Új kártyák naponta</span><span class="seg" id="sNew">${[5,10,20].map(g=>`<button data-v="${g}" aria-pressed="${S.settings.newPerDay===g}">${g}</button>`).join("")}</span></label>
     <label class="stack" style="gap:.3rem"><span class="label">Hangjelzések és rezgés</span><span class="seg" id="sSound"><button data-v="1" aria-pressed="${S.settings.sound!==false}">Be</button><button data-v="0" aria-pressed="${S.settings.sound===false}">Ki</button></span></label>
     <div><button class="btn soft" data-go="ellenorzes">Eszközellenőrzés: mi működik ezen a telefonon?</button></div>
@@ -1110,18 +1290,25 @@ function renderHome(){
   bindAISetup(view);
   const segs=[["#sTheme","theme",String],["#sFs","fs",String],["#sRead","readable",v=>v==="1"],["#sRet","ret",Number],["#sGoal","goal",Number],["#sNew","newPerDay",Number],["#sRate","rate",Number],["#sSound","sound",v=>v==="1"]];
   segs.forEach(([id,k,f])=>$(id).querySelectorAll("button").forEach(b=>b.onclick=e=>{e.preventDefault();S.settings[k]=f(b.dataset.v);save();applyPrefs();renderHome();$("#homeSettings").open=true;}));
-  let armed=false;$("#sReset").onclick=()=>{if(!armed){armed=true;$("#sReset").textContent="Biztosan? Kattints újra a törléshez";$("#sReset").style.color="var(--bad)";return;}const st=S.settings;S=fresh();S.settings=st;dailyActive=false;save();toast("A haladásod törölve.");renderHome();};
+  let armed=false;$("#sReset").onclick=()=>{if(!armed){armed=true;$("#sReset").textContent="Biztosan? Kattints újra a törléshez";$("#sReset").style.color="var(--bad)";return;}dailyActive=false;stopViews();resetProgress();toast("A haladásod törölve.");renderHome();};
 }
 /* ============ LESSONS ============ */
+let lessonFilters={search:"",level:"",track:""};
 function renderLessons(){
-  const nl=nextLesson();
-  view.innerHTML=`<div class="stack"><div><span class="label">${LG().name} · ${LG().range} · ${doneCount()} / ${LESSONS.length} kész</span><h1>Leckék</h1><p class="muted">Minden lecke egy rövid magyarázattal indul, aztán 15–20 feladat következik. Egy befejezett lecke szavai bekerülnek a szókártyáid közé, és pecsétet kapsz az útleveledbe.</p><div class="row" style="margin-top:.6rem"><button class="btn ghost" data-go="terkep">Haladási térkép</button><button class="btn ghost" id="lPlace">Szintfelmérő</button><button class="btn ghost" data-go="utlevel">Útlevél</button></div></div>
-  <div class="lgrid">${LESSONS.map((L,i)=>{const s=ls(i);const cls=s&&s.done?"done":s&&s.placed?"placed":i===nl?"cur":"";
-    const head=TRACKS&&(i===0||LESSONS[i-1].track!==L.track)?`<h2 style="grid-column:1/-1;margin-top:${i?"1rem":"0"}">${esc(TRACKS[L.track]||L.track)}</h2>`:"";
-    return head+`<button class="lcard ${cls}" data-l="${i}"><div class="pic"><img src="img/${L.id}.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"><span class="num">${s&&s.done?"✓":i+1}</span><span class="badge">${s&&s.done?`<span class="pill ok">${esc(s.best)}%</span>`:s&&s.placed?`<span class="pill">Átugorva</span>`:i===nl?`<span class="pill now">Következő</span>`:`<span class="pill">${L.level}</span>`}</span></div>
-      <div class="body"><b>${esc(L.t)}</b><span class="small muted">${esc(L.hu)} · ${L.words.length} szó, ${L.phrases.length} kifejezés</span>${s&&s.done?`<div class="meter"><i style="width:${esc(s.best)}%"></i></div>`:""}</div></button>`;}).join("")}</div></div>`;
-  view.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>openLesson(+b.dataset.l));
-  $("#lPlace").onclick=()=>startPlacement(false);
+  const nl=nextLesson(),f=lessonFilters;if(!LG().levels.includes(f.level))f.level="";if(!LESSONS.some(l=>l.track===f.track))f.track="";
+  view.innerHTML=`<div class="stack"><div><span class="label">${LG().name} · ${LG().range} · ${doneCount()} / ${LESSONS.length} kész</span><h1>Leckék</h1><p class="muted">Tanulj kisebb részekben, vagy végezz el egy teljes leckét. A félbehagyott gyakorlást és a már elvégzett részeket megőrizzük.</p><div class="row" style="margin-top:.6rem"><button class="btn ghost" data-go="terkep">Haladási térkép</button><button class="btn ghost" id="lPlace">Szintfelmérő</button><button class="btn ghost" data-go="utlevel">Útlevél</button></div></div>
+  <div class="card stack"><label for="lSearch">Lecke keresése</label><input id="lSearch" type="search" placeholder="Téma vagy kifejezés" value="${esc(f.search)}"><div class="grid2"><label>Szint<select id="lLevel"><option value="">Minden szint</option>${LG().levels.map(l=>`<option value="${l}" ${f.level===l?"selected":""}>${l}</option>`).join("")}</select></label><label>Tanulási ág<select id="lTrack"><option value="">Minden ág</option>${[...new Set(LESSONS.map(l=>l.track).filter(Boolean))].map(t=>`<option value="${esc(t)}" ${f.track===t?"selected":""}>${esc((TRACKS||{})[t]||t)}</option>`).join("")}</select></label></div><p class="small muted" id="lCount" role="status"></p></div><div class="lgrid" id="lessonResults"></div></div>`;
+  function results(){
+    const query=deacc(norm(f.search)),list=LESSONS.map((L,i)=>({L,i})).filter(({L})=>(!f.level||L.level===f.level)&&(!f.track||L.track===f.track)&&(!query||deacc(norm([L.t,L.hu,L.goal].join(" "))).includes(query)));
+    $("#lCount").textContent=list.length+" / "+LESSONS.length+" lecke";
+    let previousTrack=null;
+    $("#lessonResults").innerHTML=list.length?list.map(({L,i})=>{const state=ls(i),cls=state&&state.done?"done":state&&state.placed?"placed":i===nl?"cur":"",coverage=lessonCoverageCount(L.id);
+      const head=TRACKS&&previousTrack!==L.track?`<h2 style="grid-column:1/-1">${esc(TRACKS[L.track]||L.track)}</h2>`:"";previousTrack=L.track;
+      return head+`<button class="lcard ${cls}" data-l="${i}"><div class="pic"><img src="img/${L.id}.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"><span class="num">${state&&state.done?"✓":i+1}</span><span class="badge">${state&&state.done?`<span class="pill ok">${esc(state.best)}%</span>`:state&&state.placed?'<span class="pill">Átugorva</span>':i===nl?'<span class="pill now">Következő</span>':`<span class="pill">${L.level}</span>`}</span></div><div class="body"><b>${esc(L.t)}</b><span class="small muted">${esc(L.hu)} · ${L.words.length} szó, ${L.phrases.length} kifejezés</span>${coverage&&!state?.done?`<span class="small muted">${coverage} feladat már elkészült · folytatható</span>`:""}</div></button>`;
+    }).join(""):'<div class="card" style="grid-column:1/-1"><h2>Nincs ilyen lecke</h2><p class="muted">Próbálj másik keresést, vagy válaszd a minden szint / minden ág lehetőséget.</p></div>';
+    view.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>openLesson(+b.dataset.l));
+  }
+  $("#lSearch").oninput=e=>{f.search=e.target.value;results();};$("#lLevel").onchange=e=>{f.level=e.target.value;results();};$("#lTrack").onchange=e=>{f.track=e.target.value;results();};$("#lPlace").onclick=()=>startPlacement(false);results();
 }
 function openLesson(li){
   const L=LESSONS[li];prefetch(L.id);
@@ -1139,31 +1326,131 @@ function openLesson(li){
 }
 function distract(w,key,pool){const ans=w[key];const c=[...new Set(pool.filter(x=>x[key]!==ans).map(x=>x[key]))];const near=shuffle(c).slice(0,3);if(near.length<3){shuffle([...new Set(WORDS.map(x=>x[key]))].filter(x=>x!==ans&&!near.includes(x))).slice(0,3-near.length).forEach(x=>near.push(x));}return shuffle([ans,...near]);}
 function tilesFor(it,others){const words=it.replace(/[.?!,]/g,"").split(" ");const extra=shuffle([...new Set(others.flatMap(p=>p.it.replace(/[.?!,]/g,"").split(" ")))].filter(x=>!words.includes(x))).slice(0,2);return shuffle([...words,...extra]).map((w,i)=>({w,i}));}
-function startLesson(li){
-  const L=LESSONS[li];
+/* Stable authored exercise IDs make small daily sections add up to a whole lesson. */
+function lessonCoverageCount(id){return Object.keys((S.lessonCoverage&&S.lessonCoverage[id]||{}).results||{}).length;}
+function lessonApplicationExercises(li){
+  const L=LESSONS[li],own=(L.grammar||[]).map((g,k)=>({t:"type",q:g[0],blank:1,sub:"Alkalmazd a szabályt: írd be az alakot",ans:[g[1]],why:g[3]||"",coverageId:"apply:grammar:"+k,seconds:50,strict:true}));
+  const target=deacc(norm(L.goal)),rules={
+    en:{pattern:/to be|lenni/,items:[["She is a teacher. → Tagadd: She ___ a teacher.","is not","A to be után not áll. Az összevont isn't alak is jó.",["isn't"]],["You are from Hungary. → Kérdés: ___ from Hungary?","Are you","Kérdésben az are az alany elé kerül."],["I am tired. → Többes szám: We ___ tired.","are","A we alanyhoz are tartozik."]]},
+    it:{pattern:/essere|lenni/,items:[["Io sono stanco. → Többes szám: Noi ___ stanchi.","siamo","Az essere noi alakja siamo; a melléknév is többes számú."],["Tu sei ungherese. → Magázva: Lei ___ ungherese.","è","A magázó Lei harmadik személyű igealakot kér."],["Lui è a Roma. → Tagadd: Lui ___ a Roma.","non è","A non közvetlenül az ige elé kerül."]]},
+    es:{pattern:/ser =|ser vagy/,items:[["Yo soy de Hungría. → Többes szám: Nosotros ___ de Hungría.","somos","A ser nosotros alakja somos."],["Tú eres médico. → Harmadik személy: Él ___ médico.","es","A ser harmadik személyű alakja es."],["Ella es profesora. → Tagadd: Ella ___ profesora.","no es","A no közvetlenül az ige elé kerül."]]}
+  },rule=rules[lang()];
+  if(rule&&rule.pattern.test(target))return rule.items.map((g,k)=>({t:"type",q:g[0],blank:1,sub:"Alakítsd át a mondatot",ans:[g[1],...(g[3]||[])],why:g[2],coverageId:"apply:transform:"+k,section:"application",seconds:60,strict:true}));
+  if(own.length>=3)return own.slice(0,3);
+  const topic=deacc(norm(L.goal+" "+L.notes.join(" "))),keys=Object.keys(CDRILLS).filter(k=>{
+    const d=CDRILLS[k];return d&&Array.isArray(d.items)&&d.items.some(x=>x.q&&x.a&&!x.a.includes(" / "));
+  });
+  const aliases={tenses:["igeido","present","past","jovo","mult"],articles:["nevelo","a / an"],art:["nevelo","nemek"],preps:["eloljar","idopont"],prep:["eloljar"],cond:["felteteles"],serestar:["ser","estar"],pretimp:["mult","preterito"],porpara:["por","para"]};
+  const matched=keys.filter(k=>(aliases[k]||[deacc(norm(CDRILLS[k].title))]).some(w=>topic.includes(w)));
+  if(matched.length){
+    const d=CDRILLS[matched[0]],items=d.items.filter(x=>x.q&&typeof x.a==="string"&&!x.a.includes(" / "));
+    for(const [k,x] of items.slice(li%Math.max(1,items.length-2),li%Math.max(1,items.length-2)+3-own.length).entries())own.push({t:"type",q:x.q,blank:1,sub:"Alkalmazd a szabályt: "+d.title,ans:[x.a],why:x.why||"",coverageId:"apply:drill:"+matched[0]+":"+norm(x.q),seconds:50,strict:true});
+  }
+  // Authored course phrases supply a controlled application task when there is no matching drill rule.
+  for(let k=own.length;k<3&&L.phrases.length;k++){
+    const p=L.phrases[(li+k)%L.phrases.length],words=p[0].split(/\s+/),j=words.findIndex(w=>w.length>2&&/^[A-Za-zÀ-ÿ]/.test(w));
+    if(j<0)continue;const answer=words[j].replace(/[.,!?¿¡;:]$/,""),q=words.map((w,i)=>i===j?"___":w).join(" ");
+    own.push({t:"type",q,blank:1,sub:"Egészítsd ki a helyzethez illő mondatot: "+p[1],ans:[answer],why:"A tanult helyzet mintamondata: "+p[0],coverageId:"apply:phrase:"+p[3],seconds:45,strict:true});
+  }
+  return own;
+}
+function lessonExercisePlan(li){
+  const L=LESSONS[li],pool=POOL.filter(c=>c.li===li&&!c.ph),ph=POOL.filter(c=>c.li===li&&c.ph),q=[];
+  const words=pool.map((c,k)=>Object.assign(exFor(c,k%3===2?3:1),{coverageId:"word:"+c.id,section:"words",seconds:k%3===2?40:25})),phrases=ph.map((c,k)=>Object.assign(exFor(c,k%3===0?4:k%3===1?2:3),{coverageId:"phrase:"+c.id,section:"phrases",seconds:45}));
+  while(words.length||phrases.length){if(phrases.length)q.push(phrases.shift());q.push(...words.splice(0,2));}
+  return q.concat(lessonApplicationExercises(li).map(e=>Object.assign(e,{section:"application"})));
+}
+function startLesson(li,options={}){
+  const L=LESSONS[li];if(!L)return;
+  if(!options.restart&&offerExerciseResume("lesson:"+L.id,()=>startLesson(li,Object.assign({},options,{restart:true}))))return;
   prefetch(L.id);
-  const pool=L.words.map(w=>({it:w[0],hu:w[1],alt:w[2],id:w[3]})), ph=L.phrases.map(p=>({it:p[0],hu:p[1],alt:p[2],id:p[3]}));
-  const ex=[{t:"match",pairs:pick(pool,4)}];
-  pick(pool,3).forEach(w=>ex.push({t:"mc",q:w.it,sub:"Mit jelent?",say:w.it,ans:w.hu,cid:w.id,opts:distract(w,"hu",pool)}));
-  pick(pool,2).forEach(w=>ex.push({t:"mc",q:w.hu,sub:"Hogy mondod "+LG().adv+"?",ans:w.it,it:w.it,opts:distract(w,"it",pool)}));
-  pick(pool,2).forEach(w=>ex.push({t:"type",q:w.hu,sub:"Írd le "+LG().adv,ans:[w.it,...w.alt],it:w.it,cid:w.id}));
-  pick(ph,2).forEach(p=>ex.push({t:"order",q:p.hu,ans:p.it,it:p.it,cid:p.id,tiles:tilesFor(p.it,ph.filter(x=>x!==p))}));
-  pick(ph,2).forEach(p=>ex.push({t:"listen",ans:p.it,it:p.it,hu:p.hu,opts:shuffle([p.it,...pick(ph.filter(x=>x.it!==p.it),3).map(x=>x.it)])}));
-  pick(ph,1).forEach(p=>ex.push({t:"type",q:p.hu,sub:"Fordítsd le "+LG().adj+"ra",ans:[p.it,...p.alt],it:p.it,cid:p.id}));
-  if(L.grammar.length<3)pick(ph,2).forEach(p=>ex.push({t:"mc",q:p.it,sub:"Mit jelent a mondat?",say:p.it,ans:p.hu,opts:distract(p,"hu",ph.length>3?ph:POOL.filter(c=>c.ph))}));
-  pick(L.grammar,5).forEach(g=>ex.push(g[2]?{t:"mc",q:g[0],blank:1,sub:"Válaszd ki a helyes alakot",ans:g[1],opts:shuffle(g[2].slice()),why:g[3]||""}:{t:"type",q:g[0],blank:1,sub:"Írd be a helyes alakot",ans:[g[1]],why:g[3]||""}));
-  P={kind:"lesson",li,queue:[ex[0],...shuffle(ex.slice(1))],i:0,ok:0,n:0,xp:0,st:{}};
-  renderEx();
+  const plan=lessonExercisePlan(li),results=(S.lessonCoverage&&S.lessonCoverage[L.id]||{}).results||{},replay=!!ls(li)?.done;
+  let selected=options.guided&&!replay?plan.filter(e=>!results[e.coverageId]):plan;
+  if(options.guided){let seconds=0;selected=selected.filter(e=>{if(seconds>=(options.seconds||330))return false;seconds+=(e.seconds||35)+(e.cid&&!S.cards[e.cid]?15:0);return true;});}
+  const queue=[];
+  selected.forEach(e=>{const c=e.cid&&POOL.find(c=>c.id===e.cid);if(options.guided&&c&&!results[e.coverageId]&&!S.cards[c.id])queue.push({t:"intro",c,li,seconds:15});queue.push(e);});
+  P={kind:"lesson",li,lessonId:L.id,queue,i:0,ok:0,n:0,xp:0,st:{},graded:{},chunk:!!options.guided,coverageIds:selected.map(e=>e.coverageId),replay};
+  if(!queue.length)return finishLesson();renderEx();
+}
+/* Saved snapshots hold data only. Graded feedback resumes at the following question. */
+function validExerciseSnapshot(x){
+  const object=v=>!!v&&typeof v==="object"&&!Array.isArray(v),text=v=>typeof v==="string"&&v.length<=20000;
+  const integer=(v,max=1000000)=>Number.isSafeInteger(v)&&v>=0&&v<=max;
+  const strings=(v,max=100)=>Array.isArray(v)&&v.length>0&&v.length<=max&&v.every(text);
+  if(!object(x)||x.cleared||x.v!==1||!object(x.session))return false;
+  const s=x.session,queue=s.queue;
+  if(!["lesson","daily","miss","speak"].includes(s.kind)||!Array.isArray(queue)||!queue.length||queue.length>200||!integer(s.i,queue.length))return false;
+  if(s.kind==="lesson"&&(typeof x.lessonId!=="string"||!integer(s.li,LESSONS.length-1)||LESSONS[s.li].id!==x.lessonId))return false;
+  if(s.kind!=="lesson"&&(x.lessonId!=null||s.li!=null))return false;
+  for(const key of ["ok","n","xp","retryN","retryOk"])if(s[key]!==undefined&&!integer(s[key]))return false;
+  if(!integer(s.ok)||!integer(s.n)||!integer(s.xp)||s.ok>s.n)return false;
+  if(!object(s.graded)||Object.entries(s.graded).some(([id,n])=>!POOL.some(c=>c.id===id)||n!==1))return false;
+  if(s.coverageIds!==undefined&&(!Array.isArray(s.coverageIds)||s.coverageIds.length>200||!s.coverageIds.every(text)))return false;
+  for(const e of queue){
+    if(!object(e)||!["intro","mc","type","listen","dict","order","match","speak"].includes(e.t))return false;
+    for(const key of ["q","sub","say","it","hu","why","coverageId","section"])if(e[key]!==undefined&&!text(e[key]))return false;
+    if(e.cid!==undefined&&(typeof e.cid!=="string"||!POOL.some(c=>c.id===e.cid)))return false;
+    if(e.li!==undefined&&!integer(e.li,LESSONS.length))return false;
+    if(e.blank&&(!["mc","type"].includes(e.t)||!text(e.q)))return false;
+    if(e.t==="intro"){
+      const c=e.c;if(!object(c)||!POOL.some(p=>p.id===c.id)||!text(c.it)||!text(c.hu)||(c.alt!==undefined&&(!Array.isArray(c.alt)||c.alt.length>100||!c.alt.every(text))))return false;
+    }
+    if(e.opts!==undefined&&!strings(e.opts,30))return false;
+    if(["mc","listen"].includes(e.t)&&(!strings(e.opts,30)||!text(e.ans)||!e.opts.includes(e.ans)))return false;
+    if(["type","dict"].includes(e.t)&&!strings(e.ans,30))return false;
+    if(["mc","type","order"].includes(e.t)&&!text(e.q))return false;
+    if(["order","speak"].includes(e.t)&&!text(e.ans))return false;
+    if(e.t==="order"){
+      if(!Array.isArray(e.tiles)||!e.tiles.length||e.tiles.length>200||e.tiles.some(t=>!object(t)||!integer(t.i,10000)||!text(t.w))||new Set(e.tiles.map(t=>t.i)).size!==e.tiles.length)return false;
+    }
+    if(e.t==="match"){
+      if(!Array.isArray(e.pairs)||!e.pairs.length||e.pairs.length>100||e.pairs.some(p=>!object(p)||!text(p.it)||!text(p.hu)))return false;
+      if(e.matchDone!==undefined&&(!Array.isArray(e.matchDone)||e.matchDone.some(i=>!integer(i,e.pairs.length-1))||new Set(e.matchDone).size!==e.matchDone.length))return false;
+      if(e.matchMiss!==undefined&&!integer(e.matchMiss))return false;
+    }
+  }
+  if(s.draft!=null){
+    const d=s.draft,e=queue[s.i];if(!object(d)||!e)return false;
+    if(d.text!==undefined&&(!text(d.text)||!["type","dict"].includes(e.t)))return false;
+    if(d.sel!=null&&(!["mc","listen"].includes(e.t)||!integer(d.sel,e.opts.length-1)))return false;
+    if(d.picked!==undefined&&(e.t!=="order"||!Array.isArray(d.picked)||d.picked.some(i=>!integer(i,10000)||!e.tiles.some(t=>t.i===i))||new Set(d.picked).size!==d.picked.length))return false;
+  }
+  return true;
+}
+function savedExercise(){const x=(S.activeExercises||{})[lang()];return validExerciseSnapshot(x)?x:null;}
+function clearActiveExercise(){S.activeExercises=S.activeExercises||{};S.activeExercises[lang()]={cleared:true,updatedAt:Date.now()};}
+function persistExercise(afterAnswer=false){
+  if(!P||!Array.isArray(P.queue))return;
+  const session=JSON.parse(JSON.stringify(P));delete session.st;
+  if(afterAnswer){session.i++;delete session.draft;}else session.draft=P.draft||null;
+  S.activeExercises=S.activeExercises||{};
+  S.activeExercises[lang()]={v:1,updatedAt:Date.now(),scope:P.kind==="lesson"?"lesson:"+LESSONS[P.li].id:"round:"+P.kind,lessonId:P.kind==="lesson"?LESSONS[P.li].id:null,session,daily:!!dailyActive};save();
+}
+function offerExerciseResume(scope,restart){
+  const saved=savedExercise();if(!saved)return false;
+  const li=saved.lessonId?LESSONS.findIndex(l=>l.id===saved.lessonId):null;
+  if(saved.lessonId&&li<0){clearActiveExercise();save();return false;}
+  const count=Math.min(saved.session.i,saved.session.queue.length),title=li!==null?LESSONS[li].hu:"Ismétlőkör";
+  view.innerHTML=`<div class="player"><span class="label">Mentett gyakorlás</span><h1>Folytassuk innen?</h1><div class="card stack"><h2>${esc(title)}</h2><p>${count} / ${saved.session.queue.length} feladat elkészült. A feladatsor, a válaszaid eredménye és az ismétlési ütemezés megmaradt.</p></div><button class="btn block" id="resumeExercise">Mentett gyakorlás folytatása</button><button class="btn ghost" id="restartExercise">${saved.scope===scope?"Ezt a gyakorlást újrakezdem":"A kiválasztott gyakorlást kezdem"}</button><button class="btn ghost" data-go="ma">Később folytatom</button></div>`;
+  $("#resumeExercise").onclick=resumeActiveExercise;$("#restartExercise").onclick=()=>{clearActiveExercise();save();restart();};return true;
+}
+function resumeActiveExercise(){
+  const saved=savedExercise();if(!saved)return;
+  const session=JSON.parse(JSON.stringify(saved.session)),allowed=new Set(["intro","mc","type","listen","dict","order","match","speak"]);
+  if(!["lesson","daily","miss","speak"].includes(session.kind)||session.queue.length>200||!session.queue.every(e=>e&&allowed.has(e.t)&&(!e.cid||POOL.some(c=>c.id===e.cid))&&(e.t!=="intro"||e.c&&POOL.some(c=>c.id===e.c.id)))||!Number.isInteger(session.i)||session.i<0||session.i>session.queue.length){clearActiveExercise();save();return go("ma");}
+  if(saved.lessonId){session.li=LESSONS.findIndex(l=>l.id===saved.lessonId);if(session.li<0)return;}
+  P=session;P.st={};dailyActive=!!saved.daily;
+  if(P.i>=P.queue.length)return P.kind==="lesson"?finishLesson():finishRound();renderEx();
 }
 function renderEx(){
-  const e=P.queue[P.i]; P.st={sel:null,picked:[],done:false,mL:null,matched:0,miss:0,t0:Date.now(),heard:null};
+  const e=P.queue[P.i],draft=P.draft||{}; P.st={sel:draft.sel??null,picked:draft.picked||[],done:false,mL:null,matched:(e.matchDone||[]).length,miss:e.matchMiss||0,t0:Date.now(),heard:null};persistExercise();
   let body="";
   if(e.t==="mc"){body=`<div class="stack"><span class="label">${esc(e.sub)}</span><div class="row" style="flex-wrap:nowrap;align-items:center">${e.say?spkBtn(e.say):""}<div class="q">${e.blank?blankify(e.q):esc(e.q)}</div></div></div>
     <div class="opts">${e.opts.map((o,i)=>`<button class="opt" data-o="${i}" aria-pressed="false"><kbd>${i+1}</kbd>${esc(o)}</button>`).join("")}</div>`;}
   if(e.t==="type"){body=`<div class="stack"><span class="label">${esc(e.sub)}</span><div class="q">${e.blank?blankify(e.q):esc(e.q)}</div></div>
     <input id="ans" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Írd ide ${LG().adv}…" aria-label="Válasz">`;}
   if(e.t==="order"){body=`<div class="stack"><span class="label">Rakd össze ${LG().adv}</span><div class="q">${esc(e.q)}</div></div>
-    <div class="tiles answer-line" id="line"></div><div class="tiles" id="bank">${e.tiles.map(t=>`<button class="tilebtn" data-t="${t.i}">${esc(t.w)}</button>`).join("")}</div>`;}
+    <div class="tiles answer-line" id="line"></div><div class="tiles" id="bank">${e.tiles.map(t=>`<button class="tilebtn" data-t="${esc(t.i)}">${esc(t.w)}</button>`).join("")}</div>`;}
   if(e.t==="listen"){body=`<div class="stack"><span class="label">Mit hallasz?</span><div class="listen">${spkBtn(e.ans,"big")}<button class="icon-btn" data-say="${esc(e.ans)}" data-slow aria-label="Lassan">${I.slow}</button></div></div>
     <div class="opts">${e.opts.map((o,i)=>`<button class="opt" data-o="${i}" aria-pressed="false"><kbd>${i+1}</kbd>${esc(o)}</button>`).join("")}</div>`;}
   if(e.t==="match"){const L=shuffle(e.pairs.map((p,i)=>({x:p.it,i}))),R=shuffle(e.pairs.map((p,i)=>({x:p.hu,i})));
@@ -1179,10 +1466,10 @@ function renderEx(){
     ${e.retry?'<p class="small muted" role="status">Visszakérdezés · ezt már gyakoroltuk. Az eredeti pontosságodat és az XP-t nem módosítja.</p>':""}${body}
     <div class="pfoot"><div id="fb"></div><button class="btn block" id="go" ${e.t==="match"?"hidden":""} disabled>Ellenőrzés</button></div>
   </div>`;
-  const li=P.li, kind=P.kind; $("#quit").onclick=()=>{P=null;if(dailyActive){go("ma");return;}if(kind==="lesson")openLesson(li);else render();};
+  const li=P.li, kind=P.kind; $("#quit").onclick=()=>{persistExercise(P.st.done);P=null;if(dailyActive){go("ma");return;}if(kind==="lesson")openLesson(li);else render();};
   const goBtn=$("#go");
   if(e.t==="intro"){goBtn.disabled=false;goBtn.textContent="Megvan, tovább";P.st.done=true;setTimeout(()=>say(e.c.it),250);}
-  if(e.t==="dict"){const inp=$("#ans");inp.oninput=()=>goBtn.disabled=!inp.value.trim();setTimeout(()=>{say(e.ans[0]);inp.focus();},250);}
+  if(e.t==="dict"){const inp=$("#ans");inp.value=draft.text||"";inp.oninput=()=>{goBtn.disabled=!inp.value.trim();P.draft={text:inp.value};persistExercise();};goBtn.disabled=!inp.value.trim();setTimeout(()=>{say(e.ans[0]);inp.focus();},250);}
   if(e.t==="speak"){
     const session=P,state=P.st;
     $("#mic").onclick=async()=>{const h=$("#heard"),mic=$("#mic");h.textContent="Hallgatlak…";mic.disabled=true;
@@ -1191,23 +1478,25 @@ function renderEx(){
       if(P===session&&P.st===state)mic.disabled=false;};
     $("#skipSpeak").onclick=()=>{P.st.done=true;nextEx();};
   }
-  if(e.t==="mc"||e.t==="listen"){view.querySelectorAll("[data-o]").forEach(b=>b.onclick=()=>{if(P.st.done)return;view.querySelectorAll("[data-o]").forEach(x=>x.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed","true");P.st.sel=+b.dataset.o;goBtn.disabled=false;if(e.t==="mc"&&!e.say&&e.it)say(e.opts[P.st.sel]);});}
-  if(e.t==="type"){const inp=$("#ans");inp.oninput=()=>goBtn.disabled=!inp.value.trim();setTimeout(()=>inp.focus(),30);}
+  if(e.t==="mc"||e.t==="listen"){view.querySelectorAll("[data-o]").forEach(b=>b.onclick=()=>{if(P.st.done)return;view.querySelectorAll("[data-o]").forEach(x=>x.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed","true");P.st.sel=+b.dataset.o;P.draft={sel:P.st.sel};persistExercise();goBtn.disabled=false;if(e.t==="mc"&&!e.say&&e.it)say(e.opts[P.st.sel]);});}
+  if(e.t==="type"){const inp=$("#ans");inp.value=draft.text||"";inp.oninput=()=>{goBtn.disabled=!inp.value.trim();P.draft={text:inp.value};persistExercise();};goBtn.disabled=!inp.value.trim();setTimeout(()=>inp.focus(),30);}
   if(e.t==="order"){
     const line=$("#line"),bank=$("#bank");
-    const draw=()=>{line.innerHTML=P.st.picked.map(i=>`<button class="tilebtn" data-u="${i}">${esc(e.tiles.find(t=>t.i===i).w)}</button>`).join("");
+    const draw=()=>{line.innerHTML=P.st.picked.map(i=>`<button class="tilebtn" data-u="${esc(i)}">${esc(e.tiles.find(t=>t.i===i).w)}</button>`).join("");
       bank.querySelectorAll("[data-t]").forEach(b=>b.classList.toggle("used",P.st.picked.includes(+b.dataset.t)));goBtn.disabled=!P.st.picked.length;
-      line.querySelectorAll("[data-u]").forEach(b=>b.onclick=()=>{if(P.st.done)return;P.st.picked=P.st.picked.filter(x=>x!==+b.dataset.u);draw();});};
-    bank.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>{if(P.st.done)return;const i=+b.dataset.t;if(!P.st.picked.includes(i)){P.st.picked.push(i);say(e.tiles.find(t=>t.i===i).w);draw();}});
+      line.querySelectorAll("[data-u]").forEach(b=>b.onclick=()=>{if(P.st.done)return;P.st.picked=P.st.picked.filter(x=>x!==+b.dataset.u);P.draft={picked:P.st.picked};persistExercise();draw();});};
+    draw();bank.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>{if(P.st.done)return;const i=+b.dataset.t;if(!P.st.picked.includes(i)){P.st.picked.push(i);P.draft={picked:P.st.picked};persistExercise();say(e.tiles.find(t=>t.i===i).w);draw();}});
   }
   if(e.t==="listen") setTimeout(()=>say(e.ans),250);
   if(e.t==="match"){
+    (e.matchDone||[]).forEach(i=>view.querySelectorAll(`[data-ml="${i}"],[data-mr="${i}"]`).forEach(b=>b.classList.add("right","gone")));
     view.querySelectorAll("[data-ml]").forEach(b=>b.onclick=()=>{view.querySelectorAll("[data-ml]").forEach(x=>x.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed","true");P.st.mL=+b.dataset.ml;say(e.pairs[P.st.mL].it);});
-    view.querySelectorAll("[data-mr]").forEach(b=>b.onclick=()=>{if(P.st.mL===null)return;const l=view.querySelector(`[data-ml="${P.st.mL}"]`);
-      if(+b.dataset.mr===P.st.mL){l.classList.add("right","gone");b.classList.add("right","gone");P.st.matched++;P.st.mL=null;
-        if(P.st.matched===e.pairs.length){P.st.done=true;const ok=P.st.miss<=1;recordExerciseResult(e,ok,null,false);showFb(ok,null,(ok?"Minden pár a helyén.":"Kész, de "+P.st.miss+" tévesztéssel. A hibás párokat hallgasd meg újra; pár feladat múlva visszakérdezek."));goBtn.hidden=false;goBtn.disabled=false;goBtn.textContent="Tovább";goBtn.focus();}}
-      else{P.st.miss++;b.classList.add("wrong");l.classList.add("wrong");setTimeout(()=>{b.classList.remove("wrong");l.classList.remove("wrong");},500);}});
+    view.querySelectorAll("[data-mr]").forEach(b=>b.onclick=()=>{if(P.st.mL===null||(e.matchDone||[]).includes(P.st.mL))return;const l=view.querySelector(`[data-ml="${P.st.mL}"]`);
+      if(+b.dataset.mr===P.st.mL){l.classList.add("right","gone");b.classList.add("right","gone");P.st.matched++;e.matchDone=(e.matchDone||[]).concat(P.st.mL);P.st.mL=null;persistExercise();
+        if(P.st.matched===e.pairs.length){P.st.done=true;const ok=P.st.miss<=1;recordExerciseResult(e,ok,null,false);showFb(ok,null,(ok?"Minden pár a helyén.":"Kész, de "+P.st.miss+" tévesztéssel. A hibás párokat hallgasd meg újra; pár feladat múlva visszakérdezek."));goBtn.hidden=false;goBtn.disabled=false;goBtn.textContent="Tovább";persistExercise(true);goBtn.focus();}}
+      else{P.st.miss++;e.matchMiss=P.st.miss;persistExercise();b.classList.add("wrong");l.classList.add("wrong");setTimeout(()=>{b.classList.remove("wrong");l.classList.remove("wrong");},500);}});
   }
+  if(draft.sel!=null&&(e.t==="mc"||e.t==="listen")){const selected=view.querySelector(`[data-o="${draft.sel}"]`);if(selected){selected.setAttribute("aria-pressed","true");goBtn.disabled=false;}}
   goBtn.onclick=()=>{if(P.st.done)return nextEx();evaluate();};
 }
 function showFb(ok,ans,extra){$("#fb").innerHTML=`<div class="feedback ${ok?"ok":"bad"}" role="status"><b>${ok?rnd(LG().ok):"Nem egészen."}</b>${ans?`<span>Helyes válasz: <span class="ans">${esc(ans)}</span></span>`:""}${extra?`<span class="small">${esc(extra)}</span>`:""}</div>`;}
@@ -1222,6 +1511,7 @@ function recordExerciseResult(e,ok,warn,fast){
   if(e.retry){P.retryN=(P.retryN||0)+1;if(ok)P.retryOk=(P.retryOk||0)+1;return;}
   P.n++;if(ok){P.ok++;P.xp+=2;}else queueExerciseRetry(e);
   if(e.cid)itemResult(e,ok,warn,fast);
+  if(P.kind==="lesson"&&e.coverageId&&!P.replay){S.lessonCoverage=S.lessonCoverage||{};const c=S.lessonCoverage[LESSONS[P.li].id]||(S.lessonCoverage[LESSONS[P.li].id]={results:{}});if(!c.results[e.coverageId])c.results[e.coverageId]={ok:!!ok,at:Date.now()};c.updatedAt=Date.now();}
 }
 function exerciseExplanation(e){
   if(e.why)return String(e.why);
@@ -1242,7 +1532,7 @@ function evaluate(){
   if(!P||P.st.done)return;
   const e=P.queue[P.i];let ok=false,warn=null;
   if(e.t==="mc"||e.t==="listen"){ok=e.opts[P.st.sel]===e.ans;view.querySelectorAll("[data-o]").forEach(b=>{const o=e.opts[+b.dataset.o];if(o===e.ans)b.classList.add("right");else if(+b.dataset.o===P.st.sel)b.classList.add("wrong");});}
-  if(e.t==="type"||e.t==="dict"){const r=check($("#ans").value,e.ans);ok=r.ok;warn=r.warn;$("#ans").readOnly=true;}
+  if(e.t==="type"||e.t==="dict"){const r=check($("#ans").value,e.ans,{type:e.strict?"grammar":e.t==="dict"?"dictation":e.cid&&!POOL.find(c=>c.id===e.cid)?.ph?"word":"translation"});ok=r.ok;warn=r.warn;$("#ans").readOnly=true;}
   if(e.t==="speak"){const sc=speechScore(e.ans,P.st.heard||[]);ok=sc>=0.75;if(ok&&sc<0.95)warn="A felismert szöveg részben egyezik a mintával. Hasonlítsd össze a két mondatot, majd próbáld újra.";}
   if(e.t==="order"){const text=P.st.picked.map(i=>e.tiles.find(t=>t.i===i).w).join(" ");ok=norm(text)===norm(e.ans);}
   P.st.done=true;
@@ -1258,26 +1548,27 @@ function evaluate(){
   const answer=Array.isArray(e.ans)?e.ans[0]:e.ans;
   const sp=e.it||(e.blank?e.q.replace(/\s*\(.*?\)\s*$/,"").replace("___",answer):null);
   if(sp&&!/^Írd|^Hogy van/.test(e.q))say(sp);
-  const g=$("#go");g.textContent="Tovább";g.disabled=false;g.focus();
+  persistExercise(true);const g=$("#go");g.textContent="Tovább";g.disabled=false;g.focus();
 }
-function nextEx(){P.i++;if(P.i>=P.queue.length)return P.kind==="lesson"?finishLesson():finishRound();renderEx();}
+function nextEx(){P.i++;delete P.draft;if(P.i>=P.queue.length)return P.kind==="lesson"?finishLesson():finishRound();renderEx();}
+function seedLessonReviews(li,ids,limit){
+  const candidates=POOL.filter(c=>c.li===li&&c.ph&&(!ids||ids.includes("phrase:"+c.id))&&!S.cards[c.id]).slice(0,limit);
+  candidates.forEach(c=>{const card=sched(null,2,c.id);card.due=today()+1;S.cards[c.id]=card;});
+  return candidates.length;
+}
 function finishLesson(){
-  const acc=P.n?Math.round(P.ok/P.n*100):0, prev=ls(P.li), firstTime=!(prev&&prev.done);
-  const bonus=acc>=90?10:0, xp=P.xp+bonus;
-  S.lessons[LESSONS[P.li].id]={done:true,best:Math.max(acc,prev?prev.best||0:0),day:prev&&prev.day&&!prev.placed?prev.day:today()};
-  if(firstTime||(prev&&prev.placed))incEv("lessons");addXP(xp);
-  const L=LESSONS[P.li], n=L.words.length+L.phrases.length, li=P.li;P=null;
-  view.innerHTML=`<div class="player" style="justify-content:center;text-align:center;align-items:center">
-    ${firstTime?`<div class="stamp-new">${stampSvg(L,li,true,today())}</div><span class="label">Új pecsét az útleveledben</span>`:`<span class="label">Lecke ${li+1} kész</span>`}<h1>${LG().fin[acc>=90?0:acc>=70?1:2]}</h1>
-    <div class="stats" style="width:100%;max-width:420px;grid-template-columns:repeat(2,minmax(0,1fr))"><div class="card stat"><span class="label">Pontosság</span><b class="tnum">${acc}%</b></div><div class="card stat"><span class="label">Szerzett XP</span><b class="tnum">+${xp}</b></div></div>
-    <p class="muted" style="max-width:46ch">${firstTime?`A lecke ${n} szava és kifejezése bekerült a szókártyáid közé. Holnaptól ismétlésre is feljönnek.`:"Az ismétlés segít, hogy a szavak hosszú távon megmaradjanak."}${acc<70?" Érdemes még egyszer végigcsinálni.":""}</p>
-    <div class="row" style="justify-content:center"><button class="btn ghost" id="again">Újra</button><button class="btn" id="cont">${nextLesson()!==null?"Következő lecke":"Leckék"}</button></div></div>`;
-  confetti();
-  $("#again").onclick=()=>startLesson(li);
-  $("#cont").onclick=()=>{const n=nextLesson();if(n!==null)openLesson(n);else renderLessons();};
-  if(typeof dailyLessonFinished==="function")dailyLessonFinished(li,acc);
+  const session=P,L=LESSONS[session.li],li=session.li,coverage=(S.lessonCoverage&&S.lessonCoverage[L.id]||{}).results||{},plan=lessonExercisePlan(li);
+  const complete=!session.chunk||plan.every(e=>coverage[e.coverageId]),acc=session.chunk&&complete?Math.round(plan.filter(e=>coverage[e.coverageId]?.ok).length/Math.max(1,plan.length)*100):session.n?Math.round(session.ok/session.n*100):0,prev=ls(li),firstTime=!(prev&&prev.done),bonus=complete&&acc>=90?10:0,xp=session.xp+bonus;
+  const reviewLimit=typeof dailyPacing==="function"?dailyPacing().newReviews:5,seeded=seedLessonReviews(li,session.chunk?session.coverageIds:null,reviewLimit);
+  clearActiveExercise();P=null;
+  if(complete){S.lessons[L.id]={done:true,best:Math.max(acc,prev?prev.best||0:0),day:prev&&prev.day&&!prev.placed?prev.day:today()};if(firstTime)incEv("lessons");}
+  addXP(xp);
+  view.innerHTML=`<div class="player" style="justify-content:center;text-align:center;align-items:center"><span class="label">${complete?"Lecke kész":"Mai leckeszakasz kész"}</span><h1>${complete?LG().fin[acc>=90?0:acc>=70?1:2]:"Egy újabb rész már megvan."}</h1>
+    ${complete&&firstTime?`<div class="stamp-new">${stampSvg(L,li,true,today())}</div>`:""}<div class="stats" style="width:100%;max-width:420px;grid-template-columns:repeat(2,minmax(0,1fr))"><div class="card stat"><span class="label">Pontosság</span><b>${acc}%</b></div><div class="card stat"><span class="label">Szerzett XP</span><b>+${xp}</b></div></div><p class="muted">${complete?"A lecke feladatait végiggyakoroltad.":`${Object.keys(coverage).length} / ${plan.length} feladat készült el. A következő alkalommal a még hátralévő résszel folytatjuk; a teljes lecke addig nincs befejezettnek jelölve.`} ${seeded?seeded+" új kulcskifejezés holnap ismétlésre vár.":"A már ütemezett kifejezések a saját időpontjukban térnek vissza."}</p><div class="row"><button class="btn ghost" id="again">${complete?"Újra":"További leckeszakasz"}</button><button class="btn" id="cont">${complete?"Következő lecke":"Vissza a leckékhez"}</button></div></div>`;
+  $("#again").onclick=()=>startLesson(li,session.chunk?{guided:true,seconds:dailyPacing().lessonSeconds}:{});
+  $("#cont").onclick=()=>{const n=nextLesson();if(complete&&n!==null)openLesson(n);else renderLessons();};
+  if(complete)confetti();if(typeof dailyLessonFinished==="function")dailyLessonFinished(li,acc);
 }
-
 /* ============ FLASHCARDS ============ */
 function renderCards(){
   const due=dueList(), avail=newAvail(), nl=Math.min(newLeft(),avail.length);
@@ -1484,7 +1775,7 @@ function exFor(c,st){
   const mcHu=()=>({...base,t:"mc",q:c.hu,sub:"Hogy mondod "+LG().adv+"?",ans:c.it,opts:distract(c,"it",pool)});
   const order=()=>({...base,t:"order",q:c.hu,ans:c.it,tiles:tilesFor(c.it,pool.filter(x=>x!==c))});
   const type=()=>({...base,t:"type",q:c.hu,sub:"Írd le "+LG().adv,ans:[c.it,...alt]});
-  const dict=()=>({...base,t:"dict",ans:[c.it,...alt],hu:c.hu});
+  const dict=()=>({...base,t:"dict",ans:[c.it],hu:c.hu});
   const speak=()=>({...base,t:"speak",ans:c.it,hu:c.hu});
   if(st==="speak")return speak();
   if(st<=1)return mcIt();
@@ -1512,6 +1803,7 @@ function itemResult(e,ok,warn,fast){
   save();
 }
 function startRound(kind,limits={}){
+  if(!limits.restart&&offerExerciseResume("round:"+kind,()=>startRound(kind,Object.assign({},limits,{restart:true}))))return;
   const q=[];
   if(kind==="daily"){
     const due=dueList().sort((a,b)=>S.cards[a.id].due-S.cards[b.id].due).slice(0,limits.review??25), nw=newAvail().slice(0,Math.min(newLeft(),limits.newCards??10));
@@ -1533,7 +1825,7 @@ function startRound(kind,limits={}){
 function finishRound(){
   const kind=P.kind, acc=P.n?Math.round(P.ok/P.n*100):100, bonus=kind==="daily"?10:0, xp=P.xp+bonus;
   if(kind==="daily"){S.rounds[today()]=(S.rounds[today()]||0)+1;incEv("rounds");}
-  addXP(xp);P=null;
+  clearActiveExercise();addXP(xp);P=null;
   const title={daily:"Napi kör kész",miss:"Hibakör kész",speak:"Hangos gyakorlás kész"}[kind];
   view.innerHTML=`<div class="player" style="justify-content:center;text-align:center;align-items:center">
     <span class="label">${title}</span><h1>${LG().fin[acc>=90?0:acc>=70?1:2]}</h1>
@@ -1667,8 +1959,8 @@ function webSettings(aiOnly=false){
     <span class="small" id="sSyncMsg" role="status">${syncLine()}</span></div>
   ${usageCard()}
   <div class="card stack" style="gap:.6rem"><span class="label">Offline és mentés</span>
-    <div class="row"><button class="btn ghost" id="sOffline">Letöltés offline használatra</button><span class="small muted" id="sOffMsg" role="status"></span></div>
-    <p class="small muted">Letölti mindhárom nyelv hangjait és képeit (kb. 60 MB), hogy net nélkül is működjön. Az AI-funkciókhoz net kell.</p>
+    <div class="row"><label class="stack" style="gap:.3rem" for="sOfflineLang"><span class="small">Offline tananyag</span><select id="sOfflineLang" style="width:auto">${Object.entries(LANGS).map(([key,L])=>`<option value="${key}" ${key===lang()?"selected":""}>${esc(L.name)}</option>`).join("")}<option value="all">Mindhárom nyelv</option></select></label><button class="btn ghost" id="sOffline">Letöltés és ellenőrzés</button></div>
+    <p class="small muted">A kiválasztott nyelv kész hanganyagait és képeit tölti le, és ellenőrzi a mentést. Mindhárom nyelv együtt nagyobb tárhelyet használ. Az AI-funkciókhoz továbbra is net kell.</p><span class="small muted" id="sOffMsg" role="status" aria-live="polite"></span>
     <div class="row"><button class="btn ghost" id="sExport">Haladás mentése fájlba</button><label class="btn ghost" for="sImport">Visszatöltés fájlból</label><input type="file" id="sImport" accept="application/json,.json" hidden></div></div>`;
 }
 /* Daily reminder via Web Push through the user's own server (worker/). */
@@ -1723,30 +2015,103 @@ function bindWebSettings(){
     if(on&&(!S.settings.proxy||!S.settings.pass)){$("#sSyncMsg").textContent=pushMsg({code:"no_proxy"});return;}
     S.settings.cloud=on;cloudErr="";save();refreshWebSettings();if(on){$("#sSyncMsg").textContent="Szinkronizálok…";await cloudSync();}});
   if($("#sSyncNow"))$("#sSyncNow").onclick=async e=>{e.preventDefault();$("#sSyncMsg").textContent="Szinkronizálok…";await cloudSync();};
-  $("#sOffline").onclick=async e=>{e.preventDefault();const m=$("#sOffMsg");m.textContent="Összeállítom a listát…";
-    try{const files=[...Object.keys(LANGS).flatMap(l=>[`data/${l}.json`,`data/stories-${l}.json`,`data/verbs-${l}.json`]),...Object.keys(LANGS).map(l=>`data/drills-${l}.json`),"img/hero.webp","img/hero-en.webp","img/hero-es.webp","img/teacher.webp",...SCENARIOS.map(x=>"img/sc-"+x.id+".webp")];
-      for(const l of Object.keys(LANGS)){const [pk,st,vb]=await Promise.all([`data/${l}.json`,`data/stories-${l}.json`,`data/verbs-${l}.json`].map(u=>fetch(u).then(r=>r.json())));
-        pk.units.forEach(u=>files.push("audio/"+u.id+".json","img/"+u.id+".webp"));st.stories.forEach(x=>files.push("audio/st-"+x.id+".json"));
-        files.push(...["podcasts","pron","exam","packs"].map(n=>`data/${n}-${l}.json`),`audio/pron-${l}.json`);
-        if(l==="en"){files.push("data/writing-en.json","data/vocabtest-en.json","audio/vb-en.json","audio/pron-en.json","audio/acc-en.json","audio/dl-en.json","data/podcasts-en.json","data/pron-en.json","data/exam-en.json","data/accents-en.json","data/packs-en.json","data/offline-en.json");}
-        const [pdl,pkl]=await Promise.all([`data/podcasts-${l}.json`,`data/packs-${l}.json`].map(u=>fetch(u).then(r=>r.ok?r.json():null).catch(()=>null)));
-        (pdl?pdl.podcasts:[]).forEach(p=>files.push("audio/pod-"+p.id+".json","img/pod-"+p.id+".webp"));(pkl?pkl.packs:[]).forEach(p=>files.push(`audio/pk-${l}-${p.id}.json`));
-        if(l!=="en")vb.verbs.forEach(v=>files.push("audio/vb-"+(l==="es"?"es-":"")+v.inf+".json"));
-        const [sel,mkl,cll,crl,spl]=await Promise.all(["serials","mock","colloc","core","speaking"].map(n=>fetch(`data/${n}-${l}.json`).then(r=>r.ok?r.json():null).catch(()=>null)));
-        (sel?sel.serials:[]).forEach(x=>files.push(`audio/ser-${l}-${x.id}.json`,`img/${x.img}.webp`));(mkl?mkl.mocks:[]).filter(m=>m.parts.some(p=>p.lines)).forEach(m=>files.push(`audio/mock-${l}-${m.id}.json`));
-        (cll?cll.groups:[]).forEach(g=>files.push(`audio/col-${l}-${g.id}.json`));(spl?spl.cam:[]).forEach(c=>files.push(`img/${c.pics.a}.webp`,`img/${c.pics.b}.webp`));
-        const on=(S.core||{})[l]||{};if(crl)files.push(...new Set(crl.levels.filter(L=>on[L.level]).flatMap(L=>L.words.map(w=>`audio/${w.b}.json`))));}
-      let k=0;for(const f of files){await fetch(f).catch(()=>{});k++;m.textContent=`${k} / ${files.length}`;}
-      m.textContent="Kész, az app net nélkül is működik.";}catch(err){m.textContent="A letöltés megszakadt. Próbáld újra, amikor van net.";}};
+  const offline=$("#sOffline"),offlineLang=$("#sOfflineLang");
+  offline.onclick=async e=>{
+    e.preventDefault();if(offline.disabled)return;
+    const message=$("#sOffMsg"),selected=offlineLang?offlineLang.value:lang(),languages=selected==="all"?Object.keys(LANGS):[selected];
+    offline.disabled=true;if(offlineLang)offlineLang.disabled=true;message.textContent="Összeállítom és ellenőrzöm a letöltést…";
+    try{
+      const result=await downloadOfflineLanguages(languages,(done,total)=>message.textContent=`Ellenőrzés: ${done} / ${total} fájl`);
+      if(result.ok){message.textContent=`Ellenőrizve: ${result.total} fájl elmentve. A kiválasztott kész tananyag offline elérhető; az AI-hoz net kell.`;offline.textContent="Letöltés és ellenőrzés";}
+      else{message.textContent=`${result.missing.length} fájl hiányzik vagy nem menthető. Az offline letöltés még nem teljes; ellenőrizd a hálózatot és a szabad tárhelyet, majd próbáld újra.`;offline.textContent="Hiányzó fájlok újrapróbálása";}
+    }catch(err){message.textContent=err&&err.code==="offline_unavailable"?"Az offline mentés most nem ellenőrizhető. Nyisd meg az appot HTTPS-en, engedélyezett böngészőtárhellyel, és töltsd újra. Sikeres mentést még nem jeleztünk.":"A letöltést nem sikerült ellenőrizni. Ellenőrizd a hálózatot és a tárhelyet, majd próbáld újra.";offline.textContent="Letöltés újrapróbálása";}
+    finally{offline.disabled=false;if(offlineLang)offlineLang.disabled=false;}
+  };
   $("#sExport").onclick=e=>{e.preventDefault();const out=JSON.parse(JSON.stringify(S));out.settings.pass="";
     const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(out)],{type:"application/json"}));
     a.download="parliamo-mentes-"+new Date().toISOString().slice(0,10)+".json";document.body.appendChild(a);a.click();a.remove();toast("A mentés letöltve.");};
   $("#sImport").onchange=async e=>{const f=e.target.files[0];if(!f)return;
     try{const o=JSON.parse(await f.text());if(typeof o!=="object"||!o.cards||typeof o.xp!=="number")throw 0;
-      const keep={proxy:S.settings.proxy,pass:S.settings.pass};S=migrate(o);Object.assign(S.settings,keep);save();await loadCourse();render();toast("Haladás visszatöltve.");}
+      const keep={proxy:S.settings.proxy,pass:S.settings.pass},epoch=resetEpoch(S);S=migrate(o);S.resetAt=Math.max(epoch,resetEpoch(S));Object.assign(S.settings,keep);save();await loadCourse();render();toast("Haladás visszatöltve.");}
     catch(err){toast("Ez a fájl nem Parliamo-mentés.");}};
 }
 
+
+/* Ask the worker controlling this page which caches it actually serves. A fetched sw.js could
+   already describe a newer worker, so its cache names cannot prove this page is ready offline. */
+function offlineWorkerManifest(worker){
+  if(typeof MessageChannel==="undefined")return Promise.reject({code:"offline_unavailable"});
+  return new Promise((resolve,reject)=>{
+    const channel=new MessageChannel();let settled=false;
+    const finish=(value,error)=>{if(settled)return;settled=true;clearTimeout(timer);channel.port1.close();channel.port2.close();error?reject(error):resolve(value);};
+    const timer=setTimeout(()=>finish(null,{code:"offline_unavailable"}),2500);
+    channel.port1.onmessage=event=>{
+      const manifest=event.data;
+      if(!manifest||manifest.type!=="parliamo-offline-manifest"||!/^parliamo-shell-[a-z0-9]+$/.test(manifest.shell)||!/^parliamo-media-[a-z0-9]+$/.test(manifest.media)||!Array.isArray(manifest.precache))return finish(null,{code:"offline_unavailable"});
+      finish(manifest);
+    };
+    try{worker.postMessage({type:"parliamo-offline-manifest"},[channel.port2]);}
+    catch(e){finish(null,{code:"offline_unavailable"});}
+  });
+}
+async function offlineCacheTargets(){
+  if(!navigator.serviceWorker||!navigator.serviceWorker.controller||!("caches" in window))throw {code:"offline_unavailable"};
+  const reg=await navigator.serviceWorker.getRegistration(),base=new URL("./",location.href),script=new URL("sw.js",base),worker=navigator.serviceWorker.controller;
+  if(!reg||!reg.active||new URL(worker.scriptURL).href!==script.href)throw {code:"offline_unavailable"};
+  const {shell,media,precache}=await offlineWorkerManifest(worker);
+  if(!Array.isArray(precache)||precache.some(file=>typeof file!=="string"||!offlineAssetURL(file,base)))throw {code:"offline_unavailable"};
+  try{return {shell:await caches.open(shell),media:await caches.open(media),precache,base};}
+  catch(e){throw {code:"offline_unavailable"};}
+}
+function offlineAssetURL(file,base){
+  try{const url=new URL(file,base);return url.origin===base.origin&&url.pathname.startsWith(base.pathname)&&!url.search&&!url.hash?url.href:null;}catch(e){return null;}
+}
+async function cacheOfflineAsset(file,targets){
+  const url=offlineAssetURL(file,targets.base);if(!url)throw {code:"offline_asset"};
+  const cache=/\/(audio|img)\//.test(new URL(url).pathname)?targets.media:targets.shell;
+  let response=await cache.match(url);
+  if(response&&response.ok)return response;
+  response=await fetch(url);if(!response.ok)throw {code:"offline_asset",status:response.status};
+  await cache.put(url,response.clone());
+  const stored=await cache.match(url);if(!stored||!stored.ok)throw {code:"offline_asset"};
+  return stored;
+}
+async function downloadOfflineLanguages(languages,onProgress=()=>{}){
+  const selected=[...new Set(languages)].filter(l=>Object.prototype.hasOwnProperty.call(LANGS,l));
+  if(!selected.length)throw {code:"offline_asset"};
+  const targets=await offlineCacheTargets(),files=new Set(targets.precache),missing=new Set(),declared=new Set(targets.precache);
+  const read=async(file,required=false)=>{
+    if(!required&&!declared.has(file))return null;
+    files.add(file);try{return await (await cacheOfflineAsset(file,targets)).json();}catch(e){missing.add(file);return null;}
+  };
+  for(const l of selected){
+    const [pack,stories,verbs,pods,packs,serials,mocks,colloc,core,speaking]=await Promise.all([
+      read(`data/${l}.json`,true),read(`data/stories-${l}.json`,true),read(`data/verbs-${l}.json`,true),
+      ...["podcasts","packs","serials","mock","colloc","core","speaking"].map(name=>read(`data/${name}-${l}.json`))]);
+    (pack&&pack.units||[]).forEach(unit=>{files.add(`audio/${unit.id}.json`);files.add(`img/${unit.id}.webp`);});
+    (stories&&stories.stories||[]).forEach(story=>files.add(`audio/st-${story.id}.json`));
+    if(verbs){if(l==="en")files.add("audio/vb-en.json");else(verbs.verbs||[]).forEach(verb=>files.add(`audio/vb-${l==="es"?"es-":""}${verb.inf}.json`));}
+    if(declared.has(`data/pron-${l}.json`))files.add(`audio/pron-${l}.json`);
+    (pods&&pods.podcasts||[]).forEach(pod=>{files.add(`audio/pod-${pod.id}.json`);files.add(`img/pod-${pod.id}.webp`);});
+    (packs&&packs.packs||[]).forEach(pack=>files.add(`audio/pk-${l}-${pack.id}.json`));
+    (serials&&serials.serials||[]).forEach(story=>{files.add(`audio/ser-${l}-${story.id}.json`);if(story.img)files.add(`img/${story.img}.webp`);});
+    (mocks&&mocks.mocks||[]).filter(mock=>(mock.parts||[]).some(part=>part.lines)).forEach(mock=>files.add(`audio/mock-${l}-${mock.id}.json`));
+    (colloc&&colloc.groups||[]).forEach(group=>files.add(`audio/col-${l}-${group.id}.json`));
+    (speaking&&speaking.cam||[]).forEach(card=>{if(card.pics){files.add(`img/${card.pics.a}.webp`);files.add(`img/${card.pics.b}.webp`);}});
+    const enabled=(S.core||{})[l]||{};
+    (core&&core.levels||[]).filter(level=>enabled[level.level]).forEach(level=>(level.words||[]).forEach(word=>files.add(`audio/${word.b}.json`)));
+    files.add(`img/${LANGS[l].hero}.webp`);
+    files.add(`img/world-${l}.webp`);
+    if(l==="en"){files.add("audio/acc-en.json");files.add("audio/dl-en.json");files.add("img/story-s3-scenes.webp");}
+    if(l==="it"){files.add("img/teacher.webp");SCENARIOS.forEach(scene=>files.add(`img/sc-${scene.id}.webp`));}
+  }
+  let done=0;
+  for(const file of files){
+    if(!missing.has(file))try{await cacheOfflineAsset(file,targets);}catch(e){missing.add(file);}
+    onProgress(++done,files.size);
+  }
+  return {ok:missing.size===0,missing:[...missing],total:files.size};
+}
 /* ============ PASSPORT STAMPS ============ */
 /* Each finished lesson earns a stamp: a round rubber-stamp drawing with the lesson title around the rim. */
 const STAMP_COLORS=["#1F4FD6","#C2352B","#1B8053","#8A4FD6","#C77A12","#0E7C86"];
@@ -1811,7 +2176,7 @@ function renderOnboarding(step){
   }
   if(step==="goal"){
     view.innerHTML=`<div class="onb-wrap"><div class="logo-big small">${flag(lang())}</div>${dots(2)}<h1>Mennyi idő fér bele naponta?</h1><p class="muted">Már kipróbáltad a tanulást. Válassz egy kényelmes ritmust; később bármikor átállíthatod.</p>
-      <div class="onb-langs">${[[20,"Kis lépések","kb. 5 perc"],[50,"Napi lendület","kb. 10–15 perc"],[100,"Több időm van","kb. 25–30 perc"]].map(([g,t,d])=>`<button class="onb-lang" data-g="${g}"><span><b>${t}</b><span class="small muted">${d}</span></span>${g===50?'<span class="pill now">Ajánlott</span>':""}</button>`).join("")}</div></div>`;
+      <div class="onb-langs">${[[20,"Kis lépések","kb. 5 perc"],[50,"Napi lendület","kb. 10 perc"],[100,"Több időm van","kb. 25 perc"]].map(([g,t,d])=>`<button class="onb-lang" data-g="${g}"><span><b>${t}</b><span class="small muted">${d}</span></span>${g===50?'<span class="pill now">Ajánlott</span>':""}</button>`).join("")}</div></div>`;
     view.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>{fx("tap");S.settings.goal=+b.dataset.g;finishOnboarding();});return;
   }
   if(step==="level"){
@@ -2043,9 +2408,10 @@ function renderStories(){
   view.innerHTML=`<div class="stack"><div class="row"><button class="btn ghost" id="sBack">← Gyakorlás</button></div>
   <div><span class="label">Hangos párbeszédek</span><h1>Történetek</h1><p class="muted">Rövid jelenetek két hanggal. Hallgasd meg mondatonként, koppints a mondatra a fordításért, és válaszolj a közbeékelt kérdésekre.</p></div>
   <div class="lgrid">${STORIES.map(st=>{const done=S.stories[st.id];const li=LESSONS.findIndex(l=>l.id===st.unlock);const ready=li<0||(ls(li)&&ls(li).done);
-    return `<button class="lcard scard ${done?"done":""}" data-st="${st.id}">${pic(st.img||st.unlock)}<div class="body"><b>${esc(st.title)}</b><span class="small muted">${esc(st.hu)}</span><span class="row" style="gap:.35rem;margin-top:.3rem"><span class="pill">${st.level}</span>${done?`<span class="pill ok">Kész · ${esc(done.score)}</span>`:ready?"":`<span class="pill">a ${li+1}. lecke után ajánlott</span>`}</span></div></button>`;}).join("")}</div></div>`;
+    return `<button class="lcard scard ${done?"done":""}" data-st="${st.id}">${storyVisual(st,{card:true})}<div class="body"><b>${esc(st.title)}</b><span class="small muted">${esc(st.hu)}</span><span class="row" style="gap:.35rem;margin-top:.3rem"><span class="pill">${st.level}</span>${done?`<span class="pill ok">Kész · ${esc(done.score)}</span>`:ready?"":`<span class="pill">a ${li+1}. lecke után ajánlott</span>`}</span></div></button>`;}).join("")}</div></div>`;
   $("#sBack").onclick=()=>renderPractice();
   view.querySelectorAll("[data-st]").forEach(b=>b.onclick=()=>playStory(b.dataset.st));
+  bindStoryArt();
   window.scrollTo(0,0);
 }
 let ST=null;
@@ -2060,7 +2426,7 @@ function drawStory(){
   const qOpen=cur&&cur.q&&ST.ans[i]===undefined;
   view.innerHTML=`<div class="player" style="max-width:680px">
     <div class="pbar"><button class="close" id="quit" aria-label="Kilépés">×</button><div class="track"><div class="fill" style="width:${(i+1)/st.lines.length*100}%"></div></div><span class="small muted tnum">${i+1}/${st.lines.length}</span></div>
-    <div class="chat-head" style="min-height:120px">${pic(st.img||st.unlock)}<div class="in"><div><span class="label" style="color:rgba(255,255,255,.8)">${st.level}</span><h3>${esc(st.title)}</h3><p class="small">${esc(st.hu)}</p></div></div></div>
+    <header class="story-reader-heading">${storyVisual(st,{caption:false})}<div class="story-reader-title"><span class="label">Rövid történet · ${esc(st.level)}</span><h2 ${LA()}>${esc(st.title)}</h2><p class="small muted">${esc(st.hu)}</p></div></header>
     <div class="chat" id="story">${lines.map((l,k)=>{
       if(l.q){const a=ST.ans[k];return `<div class="card stack" style="gap:.6rem"><span class="label">Kérdés</span><b>${esc(l.q)}</b><div class="opts">${l.o.map((o,j)=>`<button class="opt ${a!==undefined?(j===l.a?"right":j===a?"wrong":""):""}" data-q="${j}" ${a!==undefined?"disabled":""}>${esc(o)}</button>`).join("")}</div></div>`;}
       const who=st.cast[l.s]||{name:""};
@@ -2072,6 +2438,7 @@ function drawStory(){
   $("#quit").onclick=()=>{ST=null;renderStories();};
   view.querySelectorAll("[data-tr]").forEach(b=>b.onclick=()=>{const t=b.querySelector(".tr");t.hidden=!t.hidden;});
   bindWords(st.lines.filter(l=>l.it).map(l=>l.it),[]);
+  bindStoryArt();
   view.querySelectorAll("[data-q]").forEach(b=>b.onclick=()=>{const j=+b.dataset.q;ST.ans[i]=j;ST.nq++;if(j===cur.a)ST.ok++;drawStory();});
   if($("#again"))$("#again").onclick=()=>say(cur.it);
   $("#next").onclick=()=>{if(last)return finishStory();ST.i++;drawStory();const l=ST.st.lines[ST.i];if(l.it)say(l.it);};
@@ -2149,7 +2516,14 @@ function grammarPage(sections,intro,pre){
 /* ============ TUTOR ============ */
 let T={tab:"chat",sc:null,msgs:[],level:null,busy:false,wPrompt:null,wRes:null,wText:""};
 function defLevel(){const n=nextLesson();return n===null?LG().levels[LG().levels.length-1]:LESSONS[n].level;}
+function resetTutorRequest(kind){
+  const key=kind==="write"?"writeRequest":"chatRequest",job=T[key];if(job)job.cancel("stale");T[key]=null;
+  if(kind==="write"){T.wBusy=false;T.writeToken=(T.writeToken||0)+1;}else{T.busy=false;T.chatToken=(T.chatToken||0)+1;T.summaryToken=(T.summaryToken||0)+1;T.hands=false;T.listening=false;T.listenToken=(T.listenToken||0)+1;if(T.summaryRequest)T.summaryRequest.cancel("stale");T.summaryRequest=null;T.summaryBusy=false;if(T.pendingChatMessage){const i=T.msgs.indexOf(T.pendingChatMessage);if(i>=0)T.msgs.splice(i,1);T.pendingChatMessage=null;}}
+}
 function renderTutor(){
+  if(T.listening&&T.listeningNav!==NAVN){T.listening=false;T.listenToken=(T.listenToken||0)+1;}
+  if(T.chatRequest&&!T.chatRequest.owns())resetTutorRequest("chat");
+  if(T.writeRequest&&!T.writeRequest.owns())resetTutorRequest("write");
   if(!T.level)T.level=defLevel();
   if(T.wPrompt===null)T.wPrompt=today()%WRITING.length;
   view.innerHTML=`<div class="stack"><div><span class="label">Beszélgetés és írás</span><h1>AI tanár</h1><div style="margin-block:.5rem">${aiAccessBadge()}</div><p class="muted">Gyakorold az élő nyelvet: szerepjáték valós helyzetekben, minden üzenetedre javítással, és fogalmazás részletes visszajelzéssel.</p></div>
@@ -2157,8 +2531,8 @@ function renderTutor(){
   <div class="row" style="justify-content:space-between"><span class="seg" id="ttab"><button data-v="chat" aria-pressed="${T.tab==="chat"}">Beszélgetés</button><button data-v="write" aria-pressed="${T.tab==="write"}">Írás</button></span>
   <span class="seg" id="lvl">${LG().levels.map(l=>`<button data-v="${l}" aria-pressed="${T.level===l}">${l}</button>`).join("")}</span></div>
   <div id="tbody" class="stack"></div></div>`;
-  $("#ttab").querySelectorAll("button").forEach(b=>b.onclick=()=>{T.tab=b.dataset.v;renderTutor();});
-  $("#lvl").querySelectorAll("button").forEach(b=>b.onclick=()=>{T.level=b.dataset.v;renderTutor();});
+  $("#ttab").querySelectorAll("button").forEach(b=>b.onclick=()=>{resetTutorRequest("chat");resetTutorRequest("write");T.tab=b.dataset.v;renderTutor();});
+  $("#lvl").querySelectorAll("button").forEach(b=>b.onclick=()=>{resetTutorRequest("chat");resetTutorRequest("write");T.level=b.dataset.v;renderTutor();});
   bindAISetup(view,()=>renderTutor());
   if(!IS_WEB)getSample().then(sample=>{if(!sample&&$("#aiConnectionHint"))$("#aiConnectionHint").innerHTML=aiSetupNotice();});
   T.tab==="chat"?(T.sc?drawChat():drawScenarios()):drawWriting();
@@ -2166,43 +2540,51 @@ function renderTutor(){
 function drawScenarios(){
   $("#tbody").innerHTML=`<div class="lgrid">${SCEN.map(s=>`<button class="lcard scard" data-s="${s.id}">${pic(s.img)}<div class="body"><b>${esc(s.t)}</b><span class="small muted">${esc(s.d)}</span></div></button>`).join("")}</div>${offlineDialogsHtml()}`;
   bindOfflineDialogs();
-  $("#tbody").querySelectorAll("[data-s]").forEach(b=>b.onclick=()=>{T.sc=SCEN.find(s=>s.id===b.dataset.s);T.sum=null;
+  $("#tbody").querySelectorAll("[data-s]").forEach(b=>b.onclick=()=>{resetTutorRequest("chat");T.chatError=null;T.chatDraft="";T.sc=SCEN.find(s=>s.id===b.dataset.s);T.sum=null;
     if(T.sc.open){T.msgs=[{r:"ai",it:T.sc.open[0],hu:T.sc.open[1],sugg:[]}];drawChat();setTimeout(()=>say(T.sc.open[0]),200);}
     else{T.msgs=[];sendChat(null);}});
 }
 function drawChat(){
-  if(!$("#tbody"))return;
+  if(!$("#tbody")||!T.sc)return;
+  if(T.summaryRequest&&!T.summaryRequest.owns()){T.summaryRequest.cancel("stale");T.summaryRequest=null;T.summaryBusy=false;}
   const s=T.sc;
   const av=`<div class="av pic"><img src="img/${s.av}.webp" alt="" onerror="this.remove()"></div>`;
   $("#tbody").innerHTML=`<div class="chat-head">${pic(s.img)}<div class="in"><div><h3>${esc(s.t)}</h3><p class="small">${esc(s.d)}</p></div><button class="btn ghost" id="endc">Másik helyzet</button></div></div>
   <div class="chat" id="chat">${T.msgs.map((m,i)=>m.r==="me"?`<div class="msg me">${esc(m.it)}</div>${m.fix?`<div class="msg ai" style="align-self:flex-end;background:transparent;border:0;padding:0"><div class="fix"><b>Javítás:</b> ${esc(m.fix)}</div></div>`:""}`
     :`<div class="mrow">${av}<div class="msg ai"><div class="row" style="flex-wrap:nowrap;align-items:flex-start"><span style="flex:1;min-width:0" ${LA()}>${esc(m.it)}</span><button class="icon-btn" style="width:32px;height:32px" data-say="${esc(m.it)}" aria-label="Meghallgatás">${I.spk}</button></div><details><summary class="tr" style="cursor:pointer">Fordítás</summary><div class="tr">${esc(m.hu)}</div></details>${i===T.msgs.length-1&&m.sugg&&m.sugg.length?`<div class="sugg">${m.sugg.map(x=>`<button data-sg="${esc(x)}">${esc(x)}</button>`).join("")}</div>`:""}</div></div>`).join("")}
-  ${T.busy?`<div class="mrow">${av}<div class="msg ai"><span class="thinking"><i></i><i></i><i></i></span></div></div>`:""}</div>
-  <div class="composer"><input id="cin" placeholder="Válaszolj ${LG().adv}…" autocomplete="off" aria-label="Üzenet ${LG().adv}" ${T.busy?"disabled":""}>${canSpeak()?`<button class="icon-btn" id="cmic" aria-label="Kimondom" ${T.busy?"disabled":""}>${I.mic}</button>`:""}<button class="btn" id="csend" ${T.busy?"disabled":""}>Küldés</button></div>
+  </div>
+  <div id="chatRequestStatus">${T.busy?aiRequestBusy("A tanár válaszol…","cCancel"):T.chatError?`<div class="notice stack"><p>${esc(aiRequestMessage(T.chatError))}</p><div><button class="btn soft" id="cRetry">Újrapróbálás</button></div></div>`:""}</div>
+  <div class="composer"><input id="cin" value="${esc(T.chatDraft||"")}" placeholder="Válaszolj ${LG().adv}…" autocomplete="off" aria-label="Üzenet ${LG().adv}" ${T.busy||T.summaryBusy?"disabled":""}>${canSpeak()?`<button class="icon-btn" id="cmic" aria-label="Kimondom" ${T.busy||T.summaryBusy?"disabled":""}>${I.mic}</button>`:""}<button class="btn" id="csend" ${T.busy||T.summaryBusy?"disabled":""}>Küldés</button></div>
   <div class="row" style="justify-content:space-between"><p class="small muted" style="flex:1;min-width:200px">${T.hands?`<b id="hState" role="status">${T.listening?"Hallgatlak…":"Kéz nélküli mód: a tanár válasza után magától figyelek."}</b>`:`Tipp: ha nem tudsz egy szót, írd magyarul zárójelben, és a tanár megmondja ${LG().adv}.`}</p>
-  <span class="row" style="gap:.4rem">${canSpeak()?`<button class="btn ghost" id="cHands" aria-pressed="${!!T.hands}">${T.hands?"Kéz nélkül: be":"Kéz nélküli mód"}</button>`:""}${T.msgs.filter(m=>m.r==="me").length>=2?`<button class="btn soft" id="cSum">Értékelés</button>`:""}</span></div>
-  <div id="csum">${T.sum?sumHtml(T.sum):""}</div>`;
-  $("#endc").onclick=()=>{T.sc=null;T.msgs=[];T.sum=null;T.hands=false;drawScenarios();};
-  $("#tbody").querySelectorAll("[data-sg]").forEach(b=>b.onclick=()=>{$("#cin").value=b.dataset.sg;$("#cin").focus();});
+  <span class="row" style="gap:.4rem">${canSpeak()?`<button class="btn ghost" id="cHands" aria-pressed="${!!T.hands}">${T.hands?"Kéz nélkül: be":"Kéz nélküli mód"}</button>`:""}${T.msgs.filter(m=>m.r==="me").length>=2?`<button class="btn soft" id="cSum" ${T.busy||T.summaryBusy?"disabled":""}>Értékelés</button>`:""}</span></div>
+  <div id="csum">${T.summaryBusy?aiRequestBusy("A tanár átnézi a beszélgetést…","cSumCancel"):T.sumError?`<div class="notice stack"><p>${esc(aiRequestMessage(T.sumError))}</p><div><button class="btn soft" id="cSumRetry">Újrapróbálás</button></div></div>`:T.sum?sumHtml(T.sum):""}</div>`;
+  $("#endc").onclick=()=>{resetTutorRequest("chat");T.chatError=null;T.chatDraft="";T.sc=null;T.msgs=[];T.sum=null;T.hands=false;drawScenarios();};
+  $("#tbody").querySelectorAll("[data-sg]").forEach(b=>b.onclick=()=>{$("#cin").value=b.dataset.sg;T.chatDraft=b.dataset.sg;$("#cin").focus();});
   const send=()=>{const v=$("#cin").value.trim();if(v&&!T.busy)sendChat(v);};
+  $("#cin").oninput=()=>{T.chatDraft=$("#cin").value;};
+  if($("#cCancel"))$("#cCancel").onclick=()=>{if(T.chatRequest)T.chatRequest.cancel();};
+  if($("#cRetry"))$("#cRetry").onclick=()=>sendChat(T.chatRetry);
   $("#csend").onclick=send;$("#cin").onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();send();}};
   if($("#cmic"))$("#cmic").onclick=()=>handsListen(true);
   if($("#cHands"))$("#cHands").onclick=()=>{T.hands=!T.hands;if(T.hands&&!T.busy)handsListen(true);else{T.listening=false;drawChat();}};
   if($("#cSum"))$("#cSum").onclick=chatSummary;
+  if($("#cSumCancel"))$("#cSumCancel").onclick=()=>{if(T.summaryRequest)T.summaryRequest.cancel();};
+  if($("#cSumRetry"))$("#cSumRetry").onclick=chatSummary;
   if(!T.busy)$("#cin").focus({preventScroll:true});
   const last=$("#chat").lastElementChild;if(last)last.scrollIntoView({block:"nearest"});
 }
 const LVL={A1:"A1: nagyon rövid, egyszerű mondatok, csak jelen idő, gyakori szavak",A2:"A2: egyszerű mondatok, jelen és múlt idő, mindennapi szókincs",B1:"B1: természetes, de világos beszéd, többféle igeidő",B2:"B2: természetes, üzleti helyzetekben is magabiztos nyelvhasználat",C1:"C1: árnyalt, idiomatikus, profi üzleti nyelv"};
 async function sendChat(text){
-  const sample=await getSample();
-  if(!sample){const hint=$("#aiConnectionHint");if(hint){hint.innerHTML=aiSetupNotice();bindAISetup(hint,()=>renderTutor());hint.scrollIntoView({block:"nearest"});}else toast(aiMissing());return;}
-  const start=text===null;
-  if(!start)T.msgs.push({r:"me",it:text});T.busy=true;drawChat();
-  const hist=start?"(még nincs, a jelenet most kezdődik)":T.msgs.map(m=>(m.r==="me"?"Tanuló: ":"Te: ")+m.it).join("\n");
+  const session=T,scenario=session.sc;if(!scenario||session.busy||session.summaryBusy)return;
+  const token=session.chatToken=(session.chatToken||0)+1;
+  const job=createAIRequest(()=>T===session&&session.sc===scenario&&session.chatToken===token&&session.tab==="chat");
+  session.chatRequest=job;session.busy=true;session.chatError=null;session.chatRetry=text;
+  const start=text===null,me=start?null:{r:"me",it:text};session.pendingChatMessage=me;if(me)session.msgs.push(me);session.chatDraft=text||"";drawChat();
+  const hist=start?"(még nincs, a jelenet most kezdődik)":session.msgs.map(m=>(m.r==="me"?"Tanuló: ":"Te: ")+m.it).join("\n");
   const A=LG().adj,AV=LG().adv;
   const prompt=`Egy ${A} nyelvtanuló alkalmazásban szerepjátékot játszol egy magyar anyanyelvű tanulóval.
-A szereped: ${T.sc.role}. Maradj a szerepben, légy kedves és természetes.
-A tanuló szintje: ${LVL[T.level]}. Ehhez igazítsd a nyelvezetedet.
+A szereped: ${scenario.role}. Maradj a szerepben, légy kedves és természetes.
+A tanuló szintje: ${LVL[session.level]}. Ehhez igazítsd a nyelvezetedet.
 
 Az eddigi beszélgetés:
 ${hist}
@@ -2212,39 +2594,51 @@ ${start?`Feladat: a jelenet most kezdődik. Szólalj meg először a szereped sz
 Csak egy JSON objektumot adj vissza, pontosan ezekkel a kulcsokkal:
 {"reply":"a válaszod ${AV}","reply_hu":"a válaszod magyar fordítása","correction":"javított mondat – magyar magyarázat, vagy null, ha nem volt hiba","suggestions":["két rövid, a szintnek megfelelő ${A} mondat, amit a tanuló válaszolhat"]}`;
   try{
-    const r=await sample.json(prompt,{modelTier:"quick",cache:false});
-    const me=T.msgs[T.msgs.length-1];if(!start&&r&&r.correction){me.fix=String(r.correction);logMiss("chat",me.it,me.it,me.fix);}
-    T.msgs.push({r:"ai",it:String(r.reply||"…"),hu:String(r.reply_hu||""),sugg:Array.isArray(r.suggestions)?r.suggestions.slice(0,3).map(String):[]});
-    incEv("chat");addXP(2);T.busy=false;if(T.tab==="chat"&&T.sc&&$("#chat")){drawChat();say(String(r.reply||"")).then(handsNext);}
-  }catch(e){T.busy=false;if(!start)T.msgs.pop();if($("#chat")){drawChat();if(!start)$("#cin").value=text;}toast(aiErr(e));}
+    const r=await job.json(prompt,{modelTier:"quick",cache:false});if(!job.current())return;
+    if(!r||typeof r.reply!=="string"||!r.reply.trim())throw {code:"invalid_json"};
+    if(me&&r.correction){me.fix=String(r.correction);logMiss("chat",me.it,me.it,me.fix);}
+    session.msgs.push({r:"ai",it:r.reply,hu:String(r.reply_hu||""),sugg:Array.isArray(r.suggestions)?r.suggestions.slice(0,3).map(String):[]});
+    session.busy=false;session.pendingChatMessage=null;session.chatDraft="";session.chatRequest=null;incEv("chat");addXP(2);
+    if($("#chat")){drawChat();say(r.reply).then(()=>{if(job.owns())handsNext();});}
+  }catch(error){
+    if(!job.owns())return;
+    if(me){const i=session.msgs.indexOf(me);if(i>=0)session.msgs.splice(i,1);}
+    session.busy=false;session.pendingChatMessage=null;session.chatRequest=null;session.chatError=error;session.chatDraft=text||"";
+    if($("#chat"))drawChat();
+    if(error&&error.code==="no_ai"){const hint=$("#aiConnectionHint");if(hint){hint.innerHTML=aiSetupNotice();bindAISetup(hint,()=>renderTutor());}}
+  }
 }
 function drawWriting(){
   const p=WRITING[T.wPrompt];
   $("#tbody").innerHTML=`<div class="card stack"><div class="row" style="justify-content:space-between;align-items:flex-start"><div style="min-width:0;flex:1"><span class="label">Mai feladat</span><h3>${esc(p)}</h3></div><button class="btn ghost" id="wnext">Másik téma</button></div>
-  <textarea id="wtext" placeholder="${LG().write}" aria-label="Fogalmazás ${LG().adv}">${esc(T.wText)}</textarea>
-  <div class="row" style="justify-content:space-between"><span class="small muted tnum" id="wc">0 szó</span><button class="btn" id="wsend">Javítást kérek</button></div></div>
-  <div id="wres"></div>`;
+  <textarea id="wtext" placeholder="${LG().write}" aria-label="Fogalmazás ${LG().adv}" ${T.wBusy?"readonly":""}>${esc(T.wText)}</textarea>
+  <div class="row" style="justify-content:space-between"><span class="small muted tnum" id="wc">0 szó</span><button class="btn" id="wsend" ${T.wBusy?"disabled":""}>Javítást kérek</button></div></div>
+  <div id="wres">${T.wBusy?aiRequestBusy("A tanár javítja a szövegedet…","wCancel"):""}</div>`;
   const ta=$("#wtext"),wc=()=>{const n=ta.value.trim()?ta.value.trim().split(/\s+/).length:0;$("#wc").textContent=n+" szó";};
   ta.oninput=()=>{T.wText=ta.value;wc();};wc();
-  $("#wnext").onclick=()=>{T.wPrompt=(T.wPrompt+1)%WRITING.length;T.wRes=null;drawWriting();};
+  $("#wnext").onclick=()=>{resetTutorRequest("write");T.wError=null;T.wPrompt=(T.wPrompt+1)%WRITING.length;T.wRes=null;drawWriting();};
   $("#wsend").onclick=sendWriting;
-  if(T.wRes)drawWRes();
+  if($("#wCancel"))$("#wCancel").onclick=()=>{if(T.writeRequest)T.writeRequest.cancel();};
+  if(!T.wBusy&&T.wError){$("#wres").innerHTML=`<div class="notice stack"><p>${esc(aiRequestMessage(T.wError))}</p><div><button class="btn soft" id="wRetry">Újrapróbálás</button></div></div>`;$("#wRetry").onclick=sendWriting;}
+  else if(!T.wBusy&&T.wRes)drawWRes();
 }
 async function sendWriting(){
+  const session=T;if(session.wBusy||session.tab!=="write")return;
   const text=$("#wtext").value.trim();if(text.split(/\s+/).length<3){toast("Írj legalább egy-két mondatot.");return;}
-  const sample=await getSample();if(!sample){$("#wres").innerHTML=aiSetupNotice();bindAISetup($("#wres"),()=>renderTutor());return;}
-  $("#wsend").disabled=true;$("#wres").innerHTML=`<div class="card row"><span class="thinking"><i></i><i></i><i></i></span><span class="muted">A tanár javítja a szövegedet…</span></div>`;
-  const prompt=`${LG().teacher[0].toUpperCase()+LG().teacher.slice(1)}ként javítsd egy magyar anyanyelvű tanuló fogalmazását. A tanuló célszintje: ${T.level}.
-A feladat ez volt: "${WRITING[T.wPrompt]}"
+  const topic=session.wPrompt,token=session.writeToken=(session.writeToken||0)+1;
+  const job=createAIRequest(()=>T===session&&session.tab==="write"&&session.wPrompt===topic&&session.writeToken===token);
+  session.writeRequest=job;session.wBusy=true;session.wError=null;session.wText=text;drawWriting();
+  const prompt=`${LG().teacher[0].toUpperCase()+LG().teacher.slice(1)}ként javítsd egy magyar anyanyelvű tanuló fogalmazását. A tanuló célszintje: ${session.level}.
+A feladat ez volt: "${WRITING[topic]}"
 A tanuló szövege:
 """${text}"""
 
 Csak egy JSON objektumot adj vissza, pontosan ezekkel a kulcsokkal:
 {"score":1-től 10-ig egész szám a célszinthez mérve,"level":"a szöveg becsült szintje (A1, A2, B1, B2, C1 vagy C2)","praise":"egy konkrét dicséret magyarul","corrected":"a teljes szöveg javítva, a tanuló stílusát megtartva","errors":[{"wrong":"a hibás rész","right":"a javított rész","why":"rövid magyar magyarázat"}],"natural":"a szöveg természetesebb, anyanyelvi változata a célszinten","tip":"egy konkrét tipp magyarul, mire figyeljen legközelebb"}
 Legfeljebb 8 hibát sorolj fel, a legfontosabbakkal kezdve. Ha nincs hiba, az errors legyen üres lista.`;
-  try{const r=await sample.json(prompt,{modelTier:"default"});T.wRes=r;addXP(5);if(T.tab==="write"&&$("#wres"))drawWRes();}
-  catch(e){if($("#wres"))$("#wres").innerHTML=`<div class="notice">${esc(aiErr(e))}</div>`;}
-  if($("#wsend"))$("#wsend").disabled=false;
+  try{const r=await job.json(prompt,{modelTier:"default"});if(!job.current())return;
+    if(!r||typeof r.corrected!=="string")throw {code:"invalid_json"};session.wRes=r;session.wBusy=false;session.writeRequest=null;addXP(5);if($("#wres"))drawWriting();}
+  catch(error){if(!job.owns())return;session.wBusy=false;session.writeRequest=null;session.wError=error;if($("#wres")){drawWriting();if(error&&error.code==="no_ai"){$("#wres").innerHTML=aiSetupNotice();bindAISetup($("#wres"),()=>renderTutor());}}}
 }
 function drawWRes(){
   const r=T.wRes||{};const errs=Array.isArray(r.errors)?r.errors:[];
@@ -2259,7 +2653,7 @@ function drawWRes(){
 /* ============ SHARED BITS FOR THE NEW VIEWS ============ */
 let PD=null, PR=null, EX=null;
 let NAVN=0;
-function stopViews(){NAVN++;if(typeof SH!=="undefined"&&SH){shCleanup(SH);SH=null;}IMP=null;if(PD)PD.playing=false;if(MK&&MK.timer)clearInterval(MK.timer);if(SE&&SE.rec)try{SE.rec.stop();}catch(e){}if(SER)SER.playing=false;MK=null;SE=null;JR=null;SER=null;if(CAR){stopCar();CAR=null;}PD=null;PR=null;EX=null;QZ=null;AC=null;SB=null;DL=null;WC=null;VT=null;try{player.pause();speechSynthesis.cancel();}catch(e){}if(sayDone){sayDone();sayDone=null;}}
+function stopViews(){NAVN++;if(typeof cancelAIRequests==="function")cancelAIRequests("stale");if(typeof SH!=="undefined"&&SH){shCleanup(SH);SH=null;}IMP=null;if(PD)PD.playing=false;if(MK&&MK.timer)clearInterval(MK.timer);if(SE&&SE.rec)try{SE.rec.stop();}catch(e){}if(SER)SER.playing=false;MK=null;SE=null;JR=null;SER=null;if(CAR){stopCar();CAR=null;}PD=null;PR=null;EX=null;QZ=null;AC=null;SB=null;DL=null;WC=null;VT=null;try{player.pause();speechSynthesis.cancel();}catch(e){}if(sayDone){sayDone();sayDone=null;}}
 const LA=()=>`lang="${LG().tts.slice(0,2)}"`;
 function subShell(back,label,title,inner,score){
   view.innerHTML=`<div class="player"><div class="row" style="justify-content:space-between"><button class="btn ghost" id="sbBack">← ${back[0]}</button>${score!=null?`<span class="score tnum">${score}</span>`:""}</div><div><span class="label">${label}</span>${title?`<h2>${title}</h2>`:""}</div>${inner}</div>`;
@@ -2372,21 +2766,23 @@ function drawPron(){
   const modes=`<span class="seg" id="prMode">${[["hear","Hallás"],["speak","Kimondás"],["sent","Mondatok"]].filter(m=>!(st.mode==="sent"||st.id==="stress")||m[0]==="sent").map(([k,l])=>`<button data-v="${k}" aria-pressed="${PR.mode===k}">${l}</button>`).join("")}</span>`;
   let body="";
   if(PR.mode==="hear"){
-    body=`<div class="card stack" style="align-items:center;text-align:center;padding:1.6rem 1rem"><span class="label">Melyiket hallod?</span><button class="icon-btn" id="prPlay" style="width:64px;height:64px" aria-label="Lejátszás újra">${I.spk}</button></div>
+    body=`<div class="card stack" style="align-items:center;text-align:center;padding:1.6rem 1rem"><span class="label">Melyiket hallod?</span></div><div class="speech-controls"><button class="icon-btn" id="prPlay" style="width:64px;height:64px" aria-label="Lejátszás újra">${I.spk}</button></div>
     <div class="opts" style="grid-template-columns:1fr 1fr">${q.pair.map((w,j)=>`<button class="opt ${res?(j===q.t?"right":j===res.pick?"wrong":""):""}" data-j="${j}" ${res?"disabled":""} style="justify-content:center;font-size:1.3rem" ${LA()}>${esc(w)}</button>`).join("")}</div>
     ${res?`<div class="feedback ${res.ok?"ok":"bad"}" role="status"><b>${res.ok?rnd(LG().ok):"Nem egészen."}</b><span class="small" style="color:var(--ink)">Hallgasd meg egymás után: ${q.pair.map(w=>`<button class="btn ghost" data-say="${esc(w)}" style="padding:.15rem .6rem" ${LA()}>${esc(w)}</button>`).join(" ")}</span></div><button class="btn block" id="prNext">Következő</button>`:""}`;
   }else if(PR.mode==="speak"){
     const w=q.pair[q.t],o=q.pair[1-q.t];
-    body=`<div class="card stack" style="align-items:center;text-align:center;padding:1.6rem 1rem"><span class="label">Mondd ki</span><div class="big-q" ${LA()}>${esc(w)}</div><span class="small muted">és ne így: <span ${LA()}>${esc(o)}</span></span><div class="row" style="justify-content:center">${spkBtn(w)}${sp?`<button class="btn lemon" id="prMic">${I.mic.replace("<svg",'<svg style="width:18px;height:18px"')} Mondom</button>`:""}</div></div>
+    body=`<div class="card stack" style="align-items:center;text-align:center;padding:1.6rem 1rem"><span class="label">Mondd ki</span><div class="big-q" ${LA()}>${esc(w)}</div><span class="small muted">és ne így: <span ${LA()}>${esc(o)}</span></span></div><div class="speech-controls">${spkBtn(w)}${sp?`<button class="btn lemon" id="prMic">${I.mic.replace("<svg",'<svg style="width:18px;height:18px"')} Mondom</button>`:""}</div>
     ${!sp?`<p class="small muted">A beszédfelismerés ezen az eszközön nem érhető el. Mondd ki hangosan utána, és értékeld magad.</p><div class="row"><button class="btn soft" data-self="1">Ment</button><button class="btn ghost" data-self="0">Még gyakorlom</button></div>`:""}
     ${res?`<div class="feedback ${res.ok?"ok":"bad"}" role="status"><b>${res.self?(res.ok?"Önértékelés: ment":"Önértékelés: még gyakorlom"):res.ok?"A felismert szó egyezik.":res.partner?"A másik szó került az átiratba.":"A felismert szó eltér."}</b>${res.heard?`<span class="small" style="color:var(--ink)">A felismert szöveg: „${esc(res.heard)}”</span>`:""}${!res.ok?`<span class="small" style="color:var(--ink)">${esc(st.tip)}</span>`:""}<span class="small" style="color:var(--ink)">A szövegegyezés nem méri a hangképzést, hangsúlyt vagy intonációt.</span></div><button class="btn block" id="prNext">Következő</button>`:""}`;
   }else{
     body=`<div class="card stack" style="padding:1.4rem 1.1rem"><span class="label">Mondd ki a mondatot</span><div class="big-q" style="font-size:1.5rem" ${LA()}>${res&&res.words?res.words.map(x=>`<span style="color:var(--${x.ok?"ok":"bad"});${x.ok?"":"text-decoration:underline wavy"}">${esc(x.w)}</span>`).join(" "):esc(q.sent)}</div>
-      <div class="row">${spkBtn(q.sent)}<button class="icon-btn" data-say="${esc(q.sent)}" data-slow aria-label="Lassan">${I.slow}</button>${sp?`<button class="btn lemon" id="prMic">${I.mic.replace("<svg",'<svg style="width:18px;height:18px"')} Mondom</button>`:""}</div></div>
+      </div><div class="speech-controls">${spkBtn(q.sent)}<button class="icon-btn" data-say="${esc(q.sent)}" data-slow aria-label="Lassan">${I.slow}</button>${sp?`<button class="btn lemon" id="prMic">${I.mic.replace("<svg",'<svg style="width:18px;height:18px"')} Mondom</button>`:""}</div>
     ${!sp?`<p class="small muted">Hallgasd meg, aztán mondd utána hangosan (shadowing). A mikrofonos szövegellenőrzés ezen az eszközön nem érhető el.</p><div class="row"><button class="btn soft" data-self="1">Ment</button><button class="btn ghost" data-self="0">Még gyakorlom</button></div>`:""}
     ${res?`<div class="feedback ${res.ok?"ok":"bad"}" role="status"><b>${res.self?(res.ok?"Önértékelés: ment":"Önértékelés: még gyakorlom"):res.ok?"A felismert szöveg nagyrészt egyezik.":"Az aláhúzott szavak kimaradtak vagy eltérő helyen szerepelnek az átiratban."}</b>${res.heard?`<span class="small" style="color:var(--ink)">A felismert szöveg: „${esc(res.heard)}”</span>`:""}${!res.self?`<span class="small" style="color:var(--ink)">Szövegegyezés: ${Math.round((res.score||0)*100)}%. A hangképzést, hangsúlyt és intonációt ez nem értékeli.</span>`:""}</div><button class="btn block" id="prNext">Következő mondat</button>`:""}`;
   }
-  subShell(["Hangpárok",renderPron],"Kiejtés magyaroknak",esc(st.title),`<details class="g" ${PR.n?"":"open"}><summary>Hogyan képezd?</summary><div class="gb"><p>${esc(st.tip)}</p>${st.id==="stress"?`<div class="tbl-wrap"><table><tr><th>Főnév</th><th>Ige</th></tr>${st.pairs.map(p=>`<tr><td ${LA()}>${esc(p[0])}</td><td ${LA()}>${esc(p[1])}</td></tr>`).join("")}</table></div>`:st.mode==="sent"?`<p class="small" ${LA()}>${st.pairs.map(p=>esc(p.join(" – "))).join(" · ")}</p><p class="small muted">Ezeket a párokat a felvett hang sem mindig választja szét, ezért itt mondatokkal gyakorolsz.</p>`:""}</div></details>${modes}${PR.mode!=="hear"?`<p class="small muted">A mikrofon a felismert szöveget ellenőrzi. A hangképzést és a hangsúlyt a hangmintával összehasonlítva gyakorold.</p>`:""}${body}`,`${PR.ok} / ${PR.n}`);
+  const guideTitle=PR.mode==="hear"?"Hallás: mire figyelj?":PR.mode==="speak"?"Kimondás: hogyan képezd a hangot?":"Mondatok: hogyan gyakorolj?";
+  const guide=`<details class="g speech-guide" data-pr-guide="${PR.mode}"><summary>${guideTitle}</summary><div class="gb"><p>${esc(st.tip)}</p>${PR.mode!=="hear"?'<p class="small muted">A mikrofon a felismert szöveget ellenőrzi. A hangképzést és a hangsúlyt a hangmintával összehasonlítva gyakorold; ezekre nem adunk pontszámot.</p>':""}${st.id==="stress"?`<div class="tbl-wrap"><table><tr><th>Főnév</th><th>Ige</th></tr>${st.pairs.map(p=>`<tr><td ${LA()}>${esc(p[0])}</td><td ${LA()}>${esc(p[1])}</td></tr>`).join("")}</table></div>`:st.mode==="sent"?`<p class="small" ${LA()}>${st.pairs.map(p=>esc(p.join(" – "))).join(" · ")}</p><p class="small muted">Ezeket a párokat a felvett hang sem mindig választja szét, ezért itt mondatokkal gyakorolsz.</p>`:""}</div></details>`;
+  subShell(["Hangpárok",renderPron],"Kiejtés magyaroknak",esc(st.title),`${modes}${body}${guide}`,`${PR.ok} / ${PR.n}`);
   $("#prMode").querySelectorAll("button").forEach(b=>b.onclick=()=>{PR.mode=b.dataset.v;nextPron();});
   if($("#prPlay"))$("#prPlay").onclick=()=>say(q.pair[q.t]);
   if($("#prNext"))$("#prNext").onclick=nextPron;
@@ -2508,12 +2904,18 @@ function essayHtml(r){
 
 /* ============ HANDS-FREE CONVERSATION ============ */
 async function handsListen(manual){
-  if(!T.sc||T.busy||T.listening||route!=="tanar")return;
-  T.listening=true;if($("#chat"))drawChat();
-  try{const alts=await listen();T.listening=false;const v=String(alts[0]||"").trim();if(v)sendChat(v);else if($("#chat"))drawChat();}
-  catch(e){T.listening=false;if(e!=="no-speech"||manual)toast(micMsg(e));if(e!=="no-speech")T.hands=false;if($("#chat"))drawChat();}
+  const session=T,scenario=session.sc,navigation=NAVN,language=lang();
+  if(!scenario||session.busy||session.summaryBusy||session.listening||route!=="tanar")return;
+  const token=session.listenToken=(session.listenToken||0)+1;
+  const current=()=>T===session&&session.sc===scenario&&session.listenToken===token&&NAVN===navigation&&lang()===language&&route==="tanar";
+  session.listening=true;session.listeningNav=navigation;if($("#chat"))drawChat();
+  try{const alts=await listen();if(!current())return;session.listening=false;const v=String(alts[0]||"").trim();if(v)sendChat(v);else if($("#chat"))drawChat();}
+  catch(error){if(!current())return;session.listening=false;if(error!=="no-speech"||manual)toast(micMsg(error));if(error!=="no-speech")session.hands=false;if($("#chat"))drawChat();}
 }
-function handsNext(){if(T.hands&&T.sc&&!T.busy&&route==="tanar")setTimeout(()=>handsListen(false),300);}
+function handsNext(){
+  const session=T,scenario=session.sc,navigation=NAVN,language=lang();
+  if(session.hands&&scenario&&!session.busy&&route==="tanar")setTimeout(()=>{if(T===session&&T.sc===scenario&&NAVN===navigation&&lang()===language)handsListen(false);},300);
+}
 function sumHtml(r){
   const fx=Array.isArray(r.fixes)?r.fixes:[];
   return `<div class="card stack"><div class="row" style="justify-content:space-between"><h3>A beszélgetés értékelése</h3><span class="pill ${(+r.score||0)>=7?"ok":""}">${esc(r.score)} / 10 · ${esc(r.level||"")}</span></div>
@@ -2522,20 +2924,24 @@ function sumHtml(r){
     ${r.next?`<div class="notice"><b>Következő lépés:</b> ${esc(r.next)}</div>`:""}</div>`;
 }
 async function chatSummary(){
-  const sample=await getSample();if(!sample){toast(aiMissing());return;}
-  const b=$("#cSum");if(b){b.disabled=true;b.textContent="Értékelem…";}
-  const hist=T.msgs.map(m=>(m.r==="me"?"Tanuló: ":"Partner: ")+m.it+(m.fix?`  [javítás: ${m.fix}]`:"")).join("\n");
-  const prompt=`${LG().teacher[0].toUpperCase()+LG().teacher.slice(1)}ként értékeld egy magyar anyanyelvű tanuló ${LG().adv} folytatott beszélgetését (helyzet: ${T.sc.t}; célszint: ${T.level}).
+  const session=T,scenario=session.sc;if(!scenario||session.busy||session.summaryBusy)return;
+  const token=session.summaryToken=(session.summaryToken||0)+1,chatToken=session.chatToken;
+  const job=createAIRequest(()=>T===session&&session.sc===scenario&&session.summaryToken===token&&session.chatToken===chatToken&&session.tab==="chat");
+  session.summaryRequest=job;session.summaryBusy=true;session.sumError=null;drawChat();
+  const hist=session.msgs.map(m=>(m.r==="me"?"Tanuló: ":"Partner: ")+m.it+(m.fix?`  [javítás: ${m.fix}]`:"")).join("\n");
+  const prompt=`${LG().teacher[0].toUpperCase()+LG().teacher.slice(1)}ként értékeld egy magyar anyanyelvű tanuló ${LG().adv} folytatott beszélgetését (helyzet: ${scenario.t}; célszint: ${session.level}).
 A beszélgetés:
 ${hist}
 
 Csak egy JSON objektumot adj vissza:
 {"score":1-től 10-ig egész szám a célszinthez mérve,"level":"becsült szint (A1–C2)","summary":"2-3 mondat magyarul","good":["legfeljebb 3 konkrét erősség magyarul"],"fixes":[{"wrong":"a tanuló hibás mondatrésze","right":"helyesen","why":"rövid magyar magyarázat"}],"next":"egy konkrét tipp magyarul a következő beszélgetéshez"}
 A fixes legfeljebb 6 elem legyen, a visszatérő hibákkal kezdve.`;
-  try{const r=await sample.json(prompt,{modelTier:"default"});T.sum=r;addXP(3);skillLog("speak",T.level,(+r.score||0)*10,"chat");save();if($("#chat"))drawChat();const el=$("#csum");if(el)el.scrollIntoView({block:"start",behavior:"smooth"});}
-  catch(e){toast(aiErr(e));if(b){b.disabled=false;b.textContent="Értékelés";}}
+  try{const r=await job.json(prompt,{modelTier:"default"});if(!job.current())return;
+    if(!r||typeof r.summary!=="string")throw {code:"invalid_json"};
+    session.sum=r;session.summaryBusy=false;session.summaryRequest=null;addXP(3);skillLog("speak",session.level,(+r.score||0)*10,"chat");save();
+    if($("#chat"))drawChat();const el=$("#csum");if(el)el.scrollIntoView({block:"start",behavior:"smooth"});}
+  catch(error){if(!job.owns())return;session.summaryBusy=false;session.summaryRequest=null;session.sumError=error;if($("#chat"))drawChat();}
 }
-
 /* ============ MONTHLY ERROR ANALYSIS ============ */
 const MKIND={lesson:"Leckék",daily:"Napi kör",miss:"Hibakör",speak:"Kiejtés",chat:"AI-beszélgetés",podcast:"Podcast",journal:"Napló",examiner:"Szóbeli vizsgáztató",serial:"Folytatásos történetek"};
 const mkLabel=k=>MKIND[k]||(k.startsWith("grammar:")?"Nyelvtan: "+((XT.gram.find(x=>x.id===k.slice(8))||{}).title||k.slice(8)):k.startsWith("mock:")?"Próbavizsga: "+({reading:"olvasás",mc:"szókitöltés",wf:"szóképzés",kwt:"mondatátalakítás",listening:"hallás",writing:"írás"}[k.slice(5)]||k.slice(5)):k.startsWith("drill:")?"Gyakorló: "+((CDRILLS[k.slice(6)]||{}).title||(DRILLS.find(d=>d[0]===k.slice(6))||[0,k.slice(6)])[1]):k.startsWith("exam:")?"Vizsga: "+({mc:"szókitöltés",wf:"szóképzés",kwt:"mondatátalakítás",read:"olvasás",write:"írás"}[k.slice(5)]||k.slice(5)):k.startsWith("pron:")?"Kiejtés: "+k.slice(5):k);
@@ -2581,8 +2987,16 @@ A patterns 2–5 elem legyen.`;
 /* Progress is stored on the user's own server (worker/ /sync) next to the AI proxy, guarded by the same access code.
    Each device merges field by field, so practising on two phones in one day loses nothing. */
 const DEVICE_KEYS=["proxy","pass","remind","cloud","lang","sound","rate","theme","fs","readable"];
-let cloudT=null, cloudRev=0, cloudBusy=false, cloudAt=0, cloudErr="";
+let cloudT=null, cloudRev=0, cloudBusy=false, cloudAgain=false, cloudAt=0, cloudErr="";
 function mergeState(a,b){
+  const epochA=resetEpoch(a),epochB=resetEpoch(b);
+  if(epochA!==epochB){
+    const winner=epochA>epochB?a:b,o=JSON.parse(JSON.stringify(winner));
+    o.resetAt=Math.max(epochA,epochB);
+    // Connection details and device preferences always belong to this device, including after a remote reset.
+    o.settings=Object.assign({},winner.settings||{},a.settings||{});
+    return o;
+  }
   const newer=(b.updatedAt||0)>(a.updatedAt||0)?b:a, older=newer===a?b:a, o=JSON.parse(JSON.stringify(newer));
   const per=(k,better)=>{const m=Object.assign({},older[k]||{});for(const [x,v] of Object.entries(newer[k]||{}))m[x]=m[x]===undefined||better(v,m[x])?v:m[x];o[k]=m;};
   const num=(v,w)=>(typeof v==="number"?v:0)>=(typeof w==="number"?w:0);
@@ -2600,19 +3014,34 @@ function mergeState(a,b){
     const w=o.dailySessions[l];
     if(!w||v.day>w.day){o.dailySessions[l]=v;continue;}if(v.day<w.day)continue;
     const top=(v.at||0)>=(w.at||0)?v:w,other=top===v?w:v,sameLesson=top.lessonId===other.lessonId;
-    const sameOutput=!top.outputItemId||!other.outputItemId||top.outputItemId===other.outputItemId;
+    const sameOutput=top.outputItemId===other.outputItemId;
+    const outputDone=sameLesson?[...new Set([...(Array.isArray(top.outputDone)?top.outputDone:[]),...(Array.isArray(other.outputDone)?other.outputDone:[])])]:top.outputDone;
     o.dailySessions[l]=Object.assign({},top,{review:v.review===true||w.review===true?true:v.review||w.review,
       lesson:sameLesson?(v.lesson===true||w.lesson===true?true:v.lesson||w.lesson):top.lesson,
-      output:sameLesson&&sameOutput?(v.output||w.output):top.output,
+      output:sameLesson?(v.output===true||w.output===true?true:v.output||w.output):top.output,
+      outputDone,
       outputItemId:top.outputItemId||(sameLesson?other.outputItemId:undefined),
       outputHelp:sameLesson&&sameOutput?!!(v.outputHelp||w.outputHelp):!!top.outputHelp,
+      outputAttempts:sameLesson&&sameOutput?Math.max(Number(v.outputAttempts)||0,Number(w.outputAttempts)||0):top.outputAttempts,
       celebrated:!!(v.celebrated||w.celebrated)});
   }
+  const assistedEvidence=new Set((o.evidence||[]).filter(e=>e.kind==="practice").map(e=>e.id));
   o.evidence=(o.evidence||[]).map(e=>{
-    const s=o.dailySessions[e.l],parts=e.id.split("|");
-    if(e.kind==="output"&&s&&s.outputHelp&&s.day===+parts[1]&&s.outputItemId===(e.key||parts[3]))return Object.assign({},e,{kind:"practice",id:[e.l,s.day,"practice",e.key||parts[3]].join("|"),title:"Mondatot gyakoroltál segítséggel"});
+    const s=o.dailySessions[e.l],parts=e.id.split("|"),practiceId=[e.l,parts[1],"practice",e.key||parts[3]].join("|");
+    if(e.kind==="output"&&(assistedEvidence.has(practiceId)||s&&s.outputHelp&&s.day===+parts[1]&&s.outputItemId===(e.key||parts[3])))return Object.assign({},e,{kind:"practice",id:practiceId,title:"Mondatot gyakoroltál segítséggel"});
     return e;
   }).filter((e,i,a)=>a.findIndex(x=>x.id===e.id)===i);
+  const timestamp=v=>Number(v&&(v.updatedAt||v.at))||0;
+  const latest=(v,w)=>timestamp(v)>timestamp(w)||(timestamp(v)===timestamp(w)&&((v&&(v.cleared||v.deleted))?1:0)>=((w&&(w.cleared||w.deleted))?1:0));
+  per("activeExercises",latest);per("journalDrafts",latest);
+  o.lessonCoverage={};
+  for(const id of new Set([...Object.keys(a.lessonCoverage||{}),...Object.keys(b.lessonCoverage||{})])){
+    const left=(a.lessonCoverage||{})[id]||{},right=(b.lessonCoverage||{})[id]||{};
+    const top=latest(left,right)?left:right,results=Object.assign({},left.results||{});
+    for(const [key,value] of Object.entries(right.results||{}))if(!results[key]||latest(value,results[key]))results[key]=value;
+    o.lessonCoverage[id]=Object.assign({},top,{results});
+  }
+  o.resetAt=epochA;
   o.onboardingSample=Object.assign({},older.onboardingSample||{},newer.onboardingSample||{});
   o.sk={};for(const k of ["read","listen","write","speak"]){const seen=new Set();o.sk[k]=[...((a.sk||{})[k]||[]),...((b.sk||{})[k]||[])].filter(x=>{const id=x.at+"|"+x.src;return !seen.has(id)&&seen.add(id);}).sort((x,y)=>x.at-y.at).slice(-40);}
   o.ev=Object.assign({},older.ev||{});for(const [d,e] of Object.entries(newer.ev||{})){const m=Object.assign({},o.ev[d]||{});for(const [k,n] of Object.entries(e))m[k]=Math.max(m[k]||0,n);o.ev[d]=m;}
@@ -2625,7 +3054,7 @@ function mergeState(a,b){
   return o;
 }
 function cloudCopy(){const o=JSON.parse(JSON.stringify(S));DEVICE_KEYS.forEach(k=>delete o.settings[k]);return o;}
-function queueCloud(){if(!IS_WEB||!S.settings.cloud||cloudBusy)return;clearTimeout(cloudT);cloudT=setTimeout(()=>cloudSync(),4000);}
+function queueCloud(){if(!IS_WEB||!S.settings.cloud)return;if(cloudBusy){cloudAgain=true;return;}clearTimeout(cloudT);cloudT=setTimeout(()=>cloudSync(),4000);}
 function learningViewActive(){
   return !!(P||CS||D||ST||PD||PR||EX||PL||MK||SE||JR||SER||QZ||SB||AC||WC||CAR||DL||VT||dailyActive||
     route==="tanar"&&(T.sc||T.busy)||view.querySelector("#aiSetupBack,#jrCardReview")||
@@ -2647,7 +3076,8 @@ async function cloudSync(){
       catch(e){if(e&&e.code==="conflict")continue;throw e;}
     }
   }catch(e){cloudErr=pushMsg(e);}
-  cloudBusy=false;const m=$("#sSyncMsg");if(m)m.textContent=syncLine();
+  finally{cloudBusy=false;if(cloudAgain){cloudAgain=false;queueCloud();}}
+  const m=$("#sSyncMsg");if(m)m.textContent=syncLine();
 }
 const syncLine=()=>cloudErr?cloudErr:cloudAt?"Utolsó szinkron: "+new Date(cloudAt).toLocaleTimeString("hu-HU",{hour:"2-digit",minute:"2-digit"}):S.settings.cloud?"Bekapcsolva.":"";
 /* When the app goes to the background, send pending changes right away (keepalive survives closing the tab). */
@@ -3142,6 +3572,7 @@ function applyPrefs(){
   const r=document.documentElement,st=S.settings;
   if(st.theme==="light"||st.theme==="dark"){r.dataset.theme=st.theme;r.dataset.themeSet="1";}else if(r.dataset.themeSet){delete r.dataset.theme;delete r.dataset.themeSet;}
   r.dataset.fs=st.fs||"m";if(st.readable)r.dataset.read="1";else delete r.dataset.read;
+  if(typeof applyLanguageWorld==="function")applyLanguageWorld();
 }
 function prefsCard(){
   const st=S.settings;
@@ -3196,6 +3627,9 @@ function quickAction(h){
 
 /* A resumable daily path. Its stages record completed work, never inferred fluency. */
 let dailyActive=false;
+function dailyPacing(){
+  return S.settings.goal===20?{minutes:5,review:3,lessonSeconds:150,outputCount:1,newReviews:3}:S.settings.goal===100?{minutes:25,review:12,lessonSeconds:900,outputCount:3,newReviews:8}:{minutes:10,review:6,lessonSeconds:330,outputCount:2,newReviews:5};
+}
 function dailySession(){
   S.dailySessions=S.dailySessions||{};
   let s=S.dailySessions[lang()];
@@ -3207,25 +3641,26 @@ function dailySession(){
   const li=nextLesson(),current=LESSONS.findIndex(l=>l.id===s.lessonId);
   if(!s.lesson&&((!s.startedAt&&!s.review)||current>=0&&ls(current)&&ls(current).placed)){
     const nextId=li===null?null:LESSONS[li].id;
-    if(nextId!==s.lessonId){s.lessonId=nextId;delete s.outputItemId;delete s.outputHelp;}
+    if(nextId!==s.lessonId){s.lessonId=nextId;s.output=false;delete s.outputItemId;delete s.outputHelp;delete s.outputDone;delete s.outputDraft;delete s.outputAttempts;}
   }
+  if(Array.isArray(s.outputDone)&&new Set(s.outputDone).size>=dailyPacing().outputCount)s.output=true;
   return s;
 }
 function saveDaily(){dailySession().at=Date.now();save();}
 function dailySteps(){
   const s=dailySession(),L=LESSONS.find(l=>l.id===s.lessonId);
   return [
-    [s.review,"Rövid ismétlés",s.review==="none"?"Most nincs esedékes kártya":s.review?"Az ismétlőkör elkészült":"Néhány esedékes kártya és új szó"],
-    [s.lesson,"Egy lecke",s.lesson==="none"?"A kijelölt leckéket már végigvetted":s.lesson?"A mai lecke elkészült":L?L.hu:"Szabad ismétlés"],
-    [s.output,"Önálló válasz",s.output?"Válaszgyakorlat elkészült":"Egy mondat felidézése segítség nélkül"]
+    [s.review,"Rövid ismétlés",s.review==="none"?"Most nincs esedékes kártya":s.review?"Az ismétlőkör elkészült":"A korábban tanultak rövid felidézése"],
+    [s.lesson,"Egy leckeszakasz",s.lesson==="none"?"A kijelölt leckéket már végigvetted":s.lesson?"A mai leckeszakasz elkészült":L?L.hu:"Szabad ismétlés"],
+    [s.output,"Önálló válasz",s.output?"Válaszgyakorlat elkészült":dailyPacing().outputCount+" mondat felidézése segítség nélkül"]
   ];
 }
-function startDailyJourney(){dailyActive=true;dailySession().startedAt=dailySession().startedAt||Date.now();saveDaily();continueDaily();}
+function startDailyJourney(){if(savedExercise())return offerExerciseResume("daily",()=>startDailyJourney());dailyActive=true;dailySession().startedAt=dailySession().startedAt||Date.now();saveDaily();continueDaily();}
 function continueDaily(){
   dailyActive=true;
   const s=dailySession();
   if(!s.review){
-    if(dueList().length||Math.min(newLeft(),newAvail().length))return startRound("daily",{review:S.settings.goal===20?3:6,newCards:S.settings.goal===20?1:2});
+    if(dueList().length)return startRound("daily",{review:dailyPacing().review,newCards:0});
     s.review="none";saveDaily();
   }
   if(!s.lesson){
@@ -3239,8 +3674,8 @@ function continueDaily(){
 function openDailyLesson(li){
   openLesson(li);
   const back=$("#back");if(back){back.textContent="← Mai gyakorlás";back.onclick=()=>{dailyActive=false;go("ma");};}
-  const start=$("#startL");if(start)start.textContent="A mai lecke indítása";
-  view.insertAdjacentHTML("afterbegin",'<p class="small muted" style="margin-bottom:1rem">Mai gyakorlás · 2/3 · Olvasd át a tudnivalókat, majd próbáld ki a leckét.</p>');
+  const start=$("#startL");if(start){start.textContent="A mai, kb. "+Math.max(2,Math.round(dailyPacing().lessonSeconds/60))+" perces rész indítása";start.onclick=()=>startLesson(li,{guided:true,seconds:dailyPacing().lessonSeconds});}
+  view.insertAdjacentHTML("afterbegin",'<p class="small muted" style="margin-bottom:1rem">Mai gyakorlás · 2/3 · Olvasd át a tudnivalókat, majd egy rövid részt gyakorlunk. A többit máskor folytathatod.</p>');
 }
 function dailyRoundFinished(kind){
   if(!dailyActive||kind!=="daily")return;
@@ -3262,42 +3697,47 @@ function attachDailyContinue(label){
 function dailyOutputItem(){
   const s=dailySession();
   let c=POOL.find(c=>c.id===s.outputItemId);
+  if(c&&!s.output&&(s.outputDone||[]).includes(c.id)){
+    delete s.outputItemId;delete s.outputHelp;delete s.outputAttempts;delete s.outputDraft;c=null;
+  }
   if(!c){
     const li=LESSONS.findIndex(l=>l.id===s.lessonId),u=new Set(unlocked());
-    c=POOL.find(c=>c.ph&&c.li===li)||POOL.find(c=>c.ph&&u.has(c.li))||POOL.find(c=>u.has(c.li));
-    if(c){s.outputItemId=c.id;saveDaily();}
+    const phrases=POOL.filter(c=>c.ph&&c.li===li),fallback=POOL.filter(c=>c.ph&&u.has(c.li)),candidates=phrases.length?phrases:fallback.length?fallback:POOL.filter(c=>u.has(c.li));
+    const already=s.outputDone||[],available=candidates.filter(c=>!already.includes(c.id));
+    c=available.length?available[(today()+already.length)%available.length]:null;
+    if(c){s.outputItemId=c.id;delete s.outputDraft;delete s.outputAttempts;saveDaily();}
   }
   return c;
 }
 function drawDailyOutput(){
   const c=dailyOutputItem();
   if(!c){dailySession().output="none";saveDaily();return finishDailyJourney();}
-  const s=dailySession();
+  const s=dailySession(),count=Array.isArray(s.outputDone)?s.outputDone.length:0,target=dailyPacing().outputCount;
   view.innerHTML=`<div class="player"><div class="row"><button class="btn ghost" id="dailyBack">← Mai gyakorlás</button><span class="label">3/3 · Önálló válasz</span></div>
-    <h1>Most te következel.</h1><p class="muted">Hogyan mondanád ${LG().adv}? Először segítség nélkül próbáld meg. A válaszodat leírhatod vagy mikrofonba mondhatod.</p>
+    <h1>Most te következel. ${count+1}/${target}</h1><p class="muted">Hogyan mondanád ${LG().adv}? Először segítség nélkül próbáld meg. A válaszodat leírhatod vagy mikrofonba mondhatod.</p>
     <div class="card"><h2>${esc(c.hu)}</h2></div>
     <label class="stack"><span class="label">A válaszod</span><input id="dailyAnswer" ${LA()} autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="${esc(LG().write)}"></label>
     <div class="row"><button class="btn" id="dailyCheck" disabled>Ellenőrzés</button>${canSpeak()?'<button class="btn ghost" id="dailyMic">Mikrofon</button>':""}<button class="btn ghost" id="dailyHint">Mutass segítséget</button></div>
     <div id="dailyFeedback" aria-live="polite"></div></div>`;
   const answer=$("#dailyAnswer"),checkBtn=$("#dailyCheck"),feedback=$("#dailyFeedback");
-  answer.oninput=()=>checkBtn.disabled=!answer.value.trim();
+  answer.value=s.outputDraft||"";checkBtn.disabled=!answer.value.trim();answer.oninput=()=>{checkBtn.disabled=!answer.value.trim();s.outputDraft=answer.value;saveDaily();};
   $("#dailyBack").onclick=()=>go("ma");
   $("#dailyHint").onclick=()=>{s.outputHelp=true;saveDaily();feedback.innerHTML=`<div class="notice">${spkBtn(c.it)} <span ${LA()}>${esc(c.it)}</span><p class="small">Olvasd el, majd mondd ki és írd le újra. Ezt segített gyakorlásként mentjük.</p></div>`;};
   checkBtn.onclick=()=>{
-    const r=check(answer.value,[c.it,...(c.alt||[])]);
-    if(!r.ok){s.outputHelp=true;saveDaily();feedback.innerHTML=`<div class="feedback bad"><b>Próbáld újra.</b><span>Így mondhatod: <span ${LA()}>${esc(c.it)}</span></span><span class="small">Figyeld meg a szórendet és az ige alakját, majd írd le újra.</span></div>`;answer.focus();return;}
-    s.output=true;
+    const r=check(answer.value,[c.it,...(c.alt||[])],{type:"translation"});
+    if(!r.ok){s.outputAttempts=(s.outputAttempts||0)+1;if(s.outputAttempts===1&&!s.outputHelp){saveDaily();feedback.innerHTML=`<div class="notice"><b>Nézzük meg még egyszer.</b><p>${esc(r.hint||"Ezt a változatot a rövid ellenőrzés még nem tudta elfogadni. Nézd meg az alanyt, az igét és a szórendet; más helyes megfogalmazás is létezhet.")}</p><p class="small">Próbáld újra. A mintaválaszt csak külön kérésre vagy a következő sikertelen próbálkozás után mutatjuk.</p></div>`;answer.focus();return;}s.outputHelp=true;saveDaily();feedback.innerHTML=`<div class="feedback bad"><b>Próbáld újra.</b><span>Így mondhatod: <span ${LA()}>${esc(c.it)}</span></span><span class="small">Figyeld meg a szórendet és az ige alakját, majd írd le újra.</span></div>`;answer.focus();return;}
+    s.outputDone=Array.isArray(s.outputDone)?s.outputDone:[];if(!s.outputDone.includes(c.id))s.outputDone.push(c.id);s.output=s.outputDone.length>=target;delete s.outputDraft;
     recordEvidence(s.outputHelp?"practice":"output",c.id,s.outputHelp?"Mondatot gyakoroltál segítséggel":"Segítség nélkül felidézted",c.it);
     saveDaily();fx("ok");
-    feedback.innerHTML=`<div class="feedback ok"><b>${s.outputHelp?"Megvan, begyakoroltad.":"Sikerült önállóan!"}</b><span ${LA()}>${esc(c.it)}</span>${r.warn?`<span>${esc(r.warn)}</span>`:""}</div><button class="btn block" id="dailyFinish" style="margin-top:1rem">Mai gyakorlás befejezése</button>`;
+    feedback.innerHTML=`<div class="feedback ok"><b>${s.outputHelp?"Megvan, begyakoroltad.":"Sikerült önállóan!"}</b><span ${LA()}>${esc(c.it)}</span>${r.warn?`<span>${esc(r.warn)}</span>`:""}</div><button class="btn block" id="dailyFinish" style="margin-top:1rem">${s.output?"Mai gyakorlás befejezése":"Következő önálló mondat"}</button>`;
     checkBtn.disabled=true;answer.readOnly=true;$("#dailyHint").disabled=true;
     if($("#dailyMic"))$("#dailyMic").disabled=true;
-    $("#dailyFinish").onclick=finishDailyJourney;
+    $("#dailyFinish").onclick=()=>{if(s.output)finishDailyJourney();else{delete s.outputItemId;delete s.outputHelp;saveDaily();drawDailyOutput();}};
   };
   answer.onkeydown=e=>{if(e.key==="Enter"&&!checkBtn.disabled)checkBtn.click();};
   const mic=$("#dailyMic");if(mic)mic.onclick=async()=>{
     mic.disabled=true;feedback.textContent="Hallgatlak…";
-    try{const alts=await listen();if(!answer.isConnected||s.output||answer.readOnly)return;answer.value=alts[0]||"";checkBtn.disabled=!answer.value.trim();feedback.textContent="Ezt ismerte fel a böngésző: „"+answer.value+"”. A szöveget ellenőrizzük; a kiejtést ebből nem pontozzuk.";}
+    try{const alts=await listen();if(!answer.isConnected||s.output||answer.readOnly)return;answer.value=alts[0]||"";s.outputDraft=answer.value;saveDaily();checkBtn.disabled=!answer.value.trim();feedback.textContent="Ezt ismerte fel a böngésző: „"+answer.value+"”. A szöveget ellenőrizzük; a kiejtést ebből nem pontozzuk.";}
     catch(e){if(answer.isConnected&&!s.output)feedback.textContent="A mikrofon most nem érhető el. Írd be a válaszodat.";}
     if(mic.isConnected&&!s.output)mic.disabled=false;
   };
@@ -3646,25 +4086,29 @@ const serOf=id=>(S.ser||(S.ser={}))[id]||{};
 function renderSerials(){stopViews();withExtra("serials",renderSerialsNow);}
 function renderSerialsNow(){
   subShell(["Gyakorlás",()=>go("gyakorlas")],"Folytatásos történetek","Fejezetről fejezetre",`<p class="muted">Hosszabb, hangos történetek fejezetekre bontva. Minden fejezet végén két kérdés vár, és csak utána nyílik a következő. Koppints bármelyik szóra a jelentéséért.</p>
-    <div class="lgrid">${XT.ser.map(s=>{const d=Object.keys(serOf(s.id)).length;return `<button class="lcard" data-ser="${s.id}"><div class="pic"><img src="img/${s.img}.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"><span class="badge"><span class="pill ${d===s.chapters.length?"ok":""}">${d===s.chapters.length?"✓ Kész":d?d+"/"+s.chapters.length:s.level}</span></span></div><div class="body"><b>${esc(s.title)}</b><span class="small muted">${esc(s.hu)} · ${s.level} · ${s.chapters.length} fejezet</span></div></button>`;}).join("")}</div>`);
+    <div class="lgrid">${XT.ser.map(s=>{const d=Object.keys(serOf(s.id)).length,badge=`<span class="badge"><span class="pill ${d===s.chapters.length?"ok":""}">${d===s.chapters.length?"✓ Kész":d?d+"/"+s.chapters.length:s.level}</span></span>`;return `<button class="lcard serial-card" data-ser="${esc(s.id)}">${storyVisual(s,{serial:true,card:true,badge})}<div class="body"><b ${LA()}>${esc(s.title)}</b><span class="small muted">${esc(s.hu)} · ${esc(s.level)} · ${s.chapters.length} fejezet</span><span class="small muted">${esc(s.desc)}</span></div></button>`;}).join("")}</div>`);
   view.querySelectorAll("[data-ser]").forEach(b=>b.onclick=()=>openSerial(b.dataset.ser));
+  bindStoryArt();
 }
 function openSerial(id){
   const s=XT.ser.find(x=>x.id===id);if(!s)return;stopViews();prefetch(`ser-${lang()}-${id}`);const d=serOf(id);
-  subShell(["Történetek",renderSerials],`Folytatásos történet · ${s.level}`,esc(s.title),`${pic(s.img)}<p class="muted">${esc(s.desc)}</p>
-    <div class="stack" style="gap:.5rem">${s.chapters.map((ch,k)=>{const open=k===0||d[k-1],r=d[k];return `<button class="btn ${r?"soft":open?"":"ghost"} block" data-ch="${k}" ${open?"":"disabled"} style="justify-content:space-between;text-align:left"><span>${k+1}. ${esc(ch.title)} <span class="small muted">· ${esc(ch.hu)}</span></span><span>${r?`✓ ${r.ok}/${r.n}`:open?"→":"🔒"}</span></button>`;}).join("")}</div>`);
+  const illustrated=!!(((STORY_ART[lang()]||{}).serial||{})[s.id]);
+  subShell(["Történetek",renderSerials],`Folytatásos történet · ${s.level}`,esc(s.title),`<div class="serial-intro">${storyVisual(s,{serial:true})}<div class="stack"><p class="muted">${esc(s.desc)}</p>${illustrated?`<p class="small muted">Ugyanazokkal a szereplőkkel, hat jeleneten át. A következő fejezet az előző kérdései után nyílik meg.</p>`:""}</div></div>
+    <div class="stack serial-chapters" style="gap:.75rem">${s.chapters.map((ch,k)=>{const open=k===0||d[k-1],r=d[k];return `<button class="btn ${r?"soft":open?"":"ghost"} block serial-chapter${illustrated?" has-scene":""}" data-ch="${k}" ${open?"":"disabled"} style="justify-content:space-between;text-align:left">${illustrated?storyVisual(s,{serial:true,chapter:k,card:true,caption:false}):""}<span class="serial-chapter-title"><b>${k+1}. ${esc(ch.title)}</b><span class="small muted">${esc(ch.hu)}</span></span><span class="serial-chapter-status">${r?`✓ ${r.ok}/${r.n}`:open?"→":"🔒"}</span></button>`;}).join("")}</div>`);
   view.querySelectorAll("[data-ch]").forEach(b=>b.onclick=()=>{SER={s,k:+b.dataset.ch,i:-1,playing:false,showHu:false,ans:{},stage:"read"};drawChapter();});
+  bindStoryArt();
 }
 function drawChapter(){
   const {s,k}=SER,ch=s.chapters[k],cast=s.cast,last=k===s.chapters.length-1;
   const nm=x=>x==="N"?"":`<b class="small" style="color:var(--cobalt)">${esc(cast[x].name)}:</b> `;
   const qs=ch.questions,all=qs.every((_,j)=>SER.ans[j]!==undefined),ok=qs.filter((q,j)=>SER.ans[j]===q.a).length;
   if(!SER.ord)SER.ord=qs.map(q=>shuffle(q.o.map((_,j)=>j)));
-  subShell(["Fejezetek",()=>openSerial(s.id)],`${esc(s.title)} · ${k+1}/${s.chapters.length}. fejezet`,esc(ch.title),`<div class="row"><button class="btn lemon" id="chPlay">${SER.playing?"■ Megállítás":"▶ Felolvasás"}</button><button class="btn ghost" id="chHu" aria-pressed="${SER.showHu}">${SER.showHu?"Fordítás elrejtése":"Magyar fordítás"}</button></div>
+  subShell(["Fejezetek",()=>openSerial(s.id)],`${esc(s.title)} · ${k+1}/${s.chapters.length}. fejezet`,esc(ch.title),`<div class="serial-chapter-scene">${storyVisual(s,{serial:true,chapter:k})}</div><div class="row"><button class="btn lemon" id="chPlay">${SER.playing?"■ Megállítás":"▶ Felolvasás"}</button><button class="btn ghost" id="chHu" aria-pressed="${SER.showHu}">${SER.showHu?"Fordítás elrejtése":"Magyar fordítás"}</button></div>
     <div class="card stack" id="chLines" style="gap:.7rem">${ch.lines.map((l,j)=>`<div data-k="${j}" style="border-radius:8px;padding:.15rem .3rem"><div class="row" style="flex-wrap:nowrap;align-items:flex-start">${spkBtn(l.it,"sm")}<div style="min-width:0"><div ${LA()} style="${l.s==="N"?"":"font-style:italic"}">${nm(l.s)}${wrapW(l.it)}</div>${SER.showHu?`<div class="small muted">${esc(l.hu)}</div>`:""}</div></div></div>`).join("")}</div>
     <h3>Kérdések</h3>${qs.map((q,j)=>{const a=SER.ans[j];return `<div class="card stack" style="gap:.5rem"><b ${LA()}>${esc(q.q)}</b><div class="opts">${SER.ord[j].map(o=>`<button class="opt ${a!==undefined?(o===q.a?"right":o===a?"wrong":""):""}" data-sq="${j}" data-o="${o}" ${a!==undefined?"disabled":""} ${LA()}>${esc(q.o[o])}</button>`).join("")}</div></div>`;}).join("")}
     ${all?`<div class="card stack"><h3>${ok}/${qs.length} helyes</h3><p class="small muted">${last?"Ez volt az utolsó fejezet. Gratulálok, végigolvastad a történetet!":"A következő fejezet megnyílt."}</p><div class="row">${last?`<button class="btn" id="chList">Vissza a történetekhez</button>`:`<button class="btn" id="chNext">${k+2}. fejezet →</button>`}</div></div>`:""}`);
   bindWords(ch.lines.map(l=>l.it),[]);
+  bindStoryArt();
   $("#chHu").onclick=()=>{SER.showHu=!SER.showHu;const y=window.scrollY;drawChapter();window.scrollTo(0,y);};
   $("#chPlay").onclick=()=>{if(SER.playing){SER.playing=false;try{player.pause();speechSynthesis.cancel();}catch(e){}drawChapter();}else serPlay();};
   view.querySelectorAll("[data-sq]").forEach(b=>b.onclick=()=>{const j=+b.dataset.sq,o=+b.dataset.o,q=qs[j];SER.ans[j]=o;const good=o===q.a;
@@ -3688,26 +4132,55 @@ function serHl(){view.querySelectorAll("#chLines [data-k]").forEach(el=>{const o
 let JR=null;
 const JR_PROMPTS=["What did you do yesterday? Describe your day.","Describe something that made you smile this week.","What are your plans for the weekend?","Write about a place you would like to visit and why.","What is the best thing you have learned recently?","Describe a person you spoke to today.","What would you do if you had a free day tomorrow?","Write about a problem you solved recently.","What is your favourite way to relax, and why?","Describe your ideal job.","What did you eat today? Was it healthy?","Write about a film, book or series you enjoyed.","What habit would you like to change, and how?","Describe the weather today and how it affects your mood.","What was the most difficult part of your week?","If you could live in another country for a year, where would you go?","Write about a childhood memory.","What do you like and dislike about your town?","Describe a skill you would like to learn.","What advice would you give to your younger self?"];
 const jrList=()=>(S.journal||(S.journal=[])).filter(e=>e.l===lang());
+function journalSessionFromDraft(){
+  const l=lang(),draft=(S.journalDrafts||{})[l]||{};
+  return {l,text:typeof draft.text==="string"&&!draft.deleted?draft.text:"",prompt:typeof draft.prompt==="string"?draft.prompt:JR_PROMPTS[today()%JR_PROMPTS.length],res:null,history:false,historyLimit:10};
+}
+function saveJournalDraft(session=JR){
+  if(!session||session.history||session.l!==lang())return;
+  S.journalDrafts=S.journalDrafts||{};S.journalDrafts[session.l]={text:session.text,prompt:session.prompt,at:Date.now(),deleted:!session.text};save();
+}
+function journalFeedback(record){
+  if(record.feedback&&typeof record.feedback==="object")return record.feedback;
+  return {corrected:record.fixed||record.text||"",errors:(record.errs||[]).map(e=>({wrong:e.wrong,right:e.right,why:e.why||"",hu:e.hu||""})),level:record.lv||"",natural:"",praise:"",tip:"",words:[]};
+}
+function openJournalHistory(key){
+  const record=jrList().find(e=>(e.id||String(e.at))===key);if(!record)return;
+  stopViews();JR={l:lang(),history:true,entryId:key,text:record.text||"",prompt:record.prompt||"Korábbi bejegyzés",res:journalFeedback(record),historyLimit:10};renderJournal(true);window.scrollTo(0,0);
+}
 function renderJournal(keep){
-  if(!keep)stopViews();const list=jrList(),t=today(),done=list.some(e=>e.d===t);
-  JR=JR||{text:"",res:null,prompt:JR_PROMPTS[t%JR_PROMPTS.length]};
+  if(!keep)stopViews();if(!JR||JR.l!==lang())JR=journalSessionFromDraft();
+  if(JR.request&&!JR.request.owns()){JR.request.cancel("stale");JR.request=null;JR.busy=false;}
+  const list=jrList(),t=today(),done=list.some(e=>e.d===t),session=JR;
   let streak=0;for(let d=t-(done?0:1);list.some(e=>e.d===d);d--)streak++;
-  subShell(["Gyakorlás",()=>go("gyakorlas")],"Napló","Napi bejegyzés",`<p class="muted">Írj pár mondatot ${LG().adv} a napodról vagy a mai témáról. Az AI kijavítja, magyarul elmagyarázza a hibákat, és megmutatja, hogyan mondaná egy anyanyelvi. A hibáid bekerülnek a havi hibaelemzésbe, és átnézés után kártyát csinálhatsz belőlük.</p>
-    <div class="row">${aiAccessBadge()}</div>${!aiConfigured()?aiSetupNotice():""}
+  const limit=session.historyLimit||10;
+  subShell(["Gyakorlás",()=>go("gyakorlas")],"Napló",session.history?"Korábbi bejegyzés":"Napi bejegyzés",`<p class="muted">Írj pár mondatot ${LG().adv} a napodról vagy a mai témáról. A tanár magyar magyarázatot ad; a javításokat átnézés után ismétlőkártyára mentheted.</p>
+    <div class="row">${aiAccessBadge()}${session.history?`<button class="btn soft" id="jrBackToDraft">Vissza a piszkozatomhoz</button>`:""}</div>${!session.history&&!aiConfigured()?aiSetupNotice():""}
     <div class="card"><div class="stats" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="stat"><span class="label">Bejegyzések</span><b class="tnum">${list.length}</b></div><div class="stat"><span class="label">Napok sorozatban</span><b class="tnum">${streak}</b></div></div></div>
-    <div class="card stack"><span class="label">Mai téma (nem kötelező)</span><p ${LA()}>${esc(JR.prompt)}</p><div><button class="btn ghost" id="jrOther">Másik téma</button></div></div>
-    <textarea id="jrText" style="min-height:200px" ${LA()} placeholder="${LG().write}" aria-label="Napló ${LG().adv}">${esc(JR.text)}</textarea>
-    <div class="row" style="justify-content:space-between"><span class="small muted tnum" id="jrWc"></span><button class="btn" id="jrSend">Javítást kérek</button></div>
-    <div id="jrRes">${JR.res?jrHtml(JR.res,JR.text):""}</div>
-    ${list.length?`<div class="sec-head"><h2>Korábbi bejegyzések</h2></div>${list.slice(-10).reverse().map(e=>`<details class="g"><summary>${new Date(e.at).toLocaleDateString("hu-HU")} · ${e.n||0} hiba${e.lv?" · "+esc(e.lv):""}</summary><div class="gb stack"><p class="prewrap" ${LA()}>${esc(e.fixed||e.text)}</p>${(e.errs||[]).length?`<div class="err-list">${e.errs.map(x=>`<div><s ${LA()}>${esc(x.wrong)}</s> → <ins ${LA()}>${esc(x.right)}</ins></div>`).join("")}</div>`:""}</div></details>`).join("")}`:""}`);
-  const ta=$("#jrText"),wc=()=>{const n=ta.value.trim()?ta.value.trim().split(/\s+/).length:0;$("#jrWc").textContent=n+" szó";};ta.oninput=()=>{JR.text=ta.value;wc();};wc();
-  $("#jrOther").onclick=()=>{JR.prompt=rnd(JR_PROMPTS.filter(p=>p!==JR.prompt));renderJournal(true);};
-  $("#jrSend").onclick=sendJournal;bindJrCards();bindAISetup(view,()=>renderJournal(true));
+    <div class="card stack"><span class="label">${session.history?"A bejegyzés témája":"Mai téma (nem kötelező)"}</span><p lang="en">${esc(session.prompt)}</p>${!session.history?`<div><button class="btn ghost" id="jrOther" ${session.busy?"disabled":""}>Másik téma</button></div>`:""}</div>
+    <label class="stack" style="gap:.4rem"><span class="small">${session.history?"Az eredeti szöveged":"A bejegyzésed"}</span><textarea id="jrText" style="min-height:200px" ${LA()} placeholder="${LG().write}" aria-label="Napló ${LG().adv}" ${session.history||session.busy?"readonly":""}>${esc(session.text)}</textarea></label>
+    ${!session.history?`<div class="row" style="justify-content:space-between"><span class="small muted tnum" id="jrWc"></span><button class="btn" id="jrSend" ${session.busy?"disabled":""}>Javítást kérek</button></div><p class="small muted" id="jrDraftStatus">A piszkozatod automatikusan mentődik ebben a böngészőben.</p>`:""}
+    <div id="jrRes">${session.busy?aiRequestBusy("A tanár javítja a naplódat…","jrCancel"):session.error?`<div class="notice stack"><p>${esc(aiRequestMessage(session.error))}</p><div><button class="btn soft" id="jrRetry">Újrapróbálás</button></div></div>`:session.res?jrHtml(session.res,session.text):""}</div>
+    ${!session.history&&session.res?`<div><button class="btn ghost" id="jrNew">Új bejegyzés</button></div>`:""}
+    ${list.length?`<div class="sec-head"><h2>Korábbi bejegyzések</h2></div>${list.slice().reverse().slice(0,limit).map(e=>`<div class="card next"><div><b>${new Date(e.at).toLocaleDateString("hu-HU")}</b><p class="small muted">${e.n||0} javítás${e.lv?" · AI-becslés: "+esc(e.lv):""}</p></div><button class="btn ghost" data-journal-entry="${esc(e.id||String(e.at))}">Megnyitás</button></div>`).join("")}${list.length>limit?`<div><button class="btn ghost" id="jrMore">További bejegyzések (${list.length-limit})</button></div>`:""}`:""}`);
+  const ta=$("#jrText"),wc=()=>{const n=ta.value.trim()?ta.value.trim().split(/\s+/).length:0;const counter=$("#jrWc");if(counter)counter.textContent=n+" szó";};
+  ta.oninput=()=>{if(session.history||session.busy)return;session.text=ta.value;session.error=null;saveJournalDraft(session);wc();};wc();
+  if($("#jrOther"))$("#jrOther").onclick=()=>{session.prompt=rnd(JR_PROMPTS.filter(p=>p!==session.prompt));saveJournalDraft(session);renderJournal(true);};
+  if($("#jrSend"))$("#jrSend").onclick=sendJournal;
+  if($("#jrRetry"))$("#jrRetry").onclick=sendJournal;
+  if($("#jrCancel"))$("#jrCancel").onclick=()=>{if(session.request)session.request.cancel();};
+  if($("#jrMore"))$("#jrMore").onclick=()=>{session.historyLimit=limit+10;const y=window.scrollY;renderJournal(true);window.scrollTo(0,y);};
+  if($("#jrBackToDraft"))$("#jrBackToDraft").onclick=()=>{JR=journalSessionFromDraft();renderJournal(true);};
+  if($("#jrNew"))$("#jrNew").onclick=()=>{session.text="";saveJournalDraft(session);JR=journalSessionFromDraft();renderJournal(true);$("#jrText").focus();};
+  view.querySelectorAll("[data-journal-entry]").forEach(b=>b.onclick=()=>openJournalHistory(b.dataset.journalEntry));
+  bindJrCards();bindAISetup(view,()=>renderJournal(true));
 }
 async function sendJournal(){
+  const session=JR;if(!session||session.history||session.busy)return;
   const text=$("#jrText").value.trim();if(text.split(/\s+/).length<15){toast("Írj legalább 15 szót.");return;}
-  const sample=await getSample();if(!sample){$("#jrRes").innerHTML=aiSetupNotice();bindAISetup($("#jrRes"),()=>renderJournal(true));return;}
-  $("#jrSend").disabled=true;$("#jrRes").innerHTML=`<div class="card row"><span class="thinking"><i></i><i></i><i></i></span><span class="muted">A tanár javítja a naplódat…</span></div>`;
+  session.text=text;saveJournalDraft(session);
+  const token=session.token=(session.token||0)+1,job=createAIRequest(()=>JR===session&&session.l===lang()&&session.token===token&&!session.history);
+  session.request=job;session.busy=true;session.error=null;renderJournal(true);
   const prompt=`${LG().teacher[0].toUpperCase()+LG().teacher.slice(1)}ként javítsd ki egy magyar anyanyelvű tanuló ${LG().adv} írt naplóbejegyzését. Légy pontos, de bátorító.
 A bejegyzés:
 """${text}"""
@@ -3715,14 +4188,20 @@ A bejegyzés:
 Javítsd ki a nyelvtani, szóhasználati és helyesírási hibákat úgy, hogy a tanuló mondanivalója megmaradjon. Minden hibát külön sorolj fel rövid magyar magyarázattal (legfeljebb 10). Írj egy természetesebb, anyanyelvi változatot is ugyanarról. Becsüld meg a szöveg szintjét (A1–C2). Adj 3 hasznos ${LG().adj} kifejezést, ami ehhez a témához illik.
 Csak egy JSON objektumot adj vissza:
 {"corrected":"a kijavított szöveg","errors":[{"wrong":"hibás rész","right":"javított rész","hu":"a javított kifejezés magyar jelentése","why":"rövid magyar magyarázat"}],"natural":"természetesebb változat","level":"B1","praise":"egy mondat dicséret magyarul","tip":"egy konkrét tipp magyarul","words":[{"it":"kifejezés","hu":"jelentés"}]}`;
-  try{const r=await sample.json(prompt,{modelTier:"default"});if(!JR)return;
-    const errs=(Array.isArray(r.errors)?r.errors:[]).filter(e=>e&&e.wrong&&e.right).slice(0,10).map(e=>({wrong:String(e.wrong),right:String(e.right),why:String(e.why||""),hu:String(e.hu||"")}));r.errors=errs;
-    JR.res=r;S.journal=S.journal||[];S.journal.push({at:Date.now(),d:today(),l:lang(),text,fixed:String(r.corrected||""),errs:errs.map(e=>({wrong:e.wrong,right:e.right})),n:errs.length,lv:String(r.level||"")});if(S.journal.length>120)S.journal.splice(0,S.journal.length-120);
-    errs.forEach(e=>logMiss("journal",e.wrong,e.wrong,e.right+" – "+e.why));
-    const words=text.split(/\s+/).length;if(r.level)skillLog("write",String(r.level),Math.max(30,85-errs.length/words*400),"journal");
-    incEv("drills");addXP(8);save();if($("#jrRes")){$("#jrRes").innerHTML=jrHtml(r,text);bindJrCards();}}
-  catch(e){if($("#jrRes"))$("#jrRes").innerHTML=`<div class="notice">${esc(aiErr(e))}</div>`;}
-  if($("#jrSend"))$("#jrSend").disabled=false;
+  try{
+    const r=await job.json(prompt,{modelTier:"default"});if(!job.current())return;
+    if(!r||typeof r.corrected!=="string")throw {code:"invalid_json"};
+    const errors=(Array.isArray(r.errors)?r.errors:[]).filter(e=>e&&e.wrong&&e.right).slice(0,10).map(e=>({wrong:String(e.wrong),right:String(e.right),why:String(e.why||""),hu:String(e.hu||"")}));
+    const feedback={corrected:r.corrected,errors,natural:String(r.natural||""),level:String(r.level||""),praise:String(r.praise||""),tip:String(r.tip||""),words:(Array.isArray(r.words)?r.words:[]).filter(w=>w&&w.it).slice(0,10).map(w=>({it:String(w.it),hu:String(w.hu||"")}))};
+    const at=Date.now();session.res=feedback;session.busy=false;session.request=null;session.entryId=`${job.language}-jr-${at.toString(36)}-${Math.random().toString(36).slice(2,6)}`;
+    S.journal=S.journal||[];S.journal.push({id:session.entryId,at,d:today(),l:job.language,prompt:session.prompt,text,fixed:feedback.corrected,errs:errors,n:errors.length,lv:feedback.level,feedback});if(S.journal.length>120)S.journal.splice(0,S.journal.length-120);
+    errors.forEach(e=>logMiss("journal",e.wrong,e.wrong,e.right+" – "+e.why));
+    const words=text.split(/\s+/).length;if(feedback.level)skillLog("write",feedback.level,Math.max(30,85-errors.length/words*400),"journal");
+    incEv("drills");addXP(8);save();renderJournal(true);
+  }catch(error){
+    if(!job.owns())return;session.busy=false;session.request=null;session.error=error;renderJournal(true);
+    if(error&&error.code==="no_ai"){$("#jrRes").innerHTML=aiSetupNotice();bindAISetup($("#jrRes"),()=>renderJournal(true));}
+  }
 }
 function jrHtml(r,text){
   const errs=r.errors||[],words=Array.isArray(r.words)?r.words.filter(w=>w&&w.it):[];
@@ -3879,59 +4358,92 @@ function openImport(x){
    version back to back, with both intonation curves drawn over each other (65-intonation.js). Nothing leaves the device;
    the recordings live only until the next line. */
 let SH=null;
+let SH_FILTER={lang:null,level:"all",type:"all"};
 const canRecord=()=>!!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia&&window.MediaRecorder);
 function shSources(){
-  const pods=XT.pods.map(p=>({id:"pod-"+p.id,t:p.title,sub:"Podcast · "+p.level,lines:p.lines.map(x=>x.it),img:"pod-"+p.id}));
-  const st=STORIES.map(s=>({id:"st-"+s.id,t:s.title||s.id,sub:"Történet · "+(s.level||""),lines:s.lines.filter(x=>x.it).map(x=>x.it),img:s.img}));
-  const ser=XT.ser.flatMap(s=>s.chapters.map((c,k)=>({id:`ser-${s.id}-${k}`,t:`${s.title}: ${c.title}`,sub:`Folytatásos · ${s.level} · ${k+1}. fejezet`,lines:c.lines.map(x=>x.it),img:s.img})));
-  return [...ser,...pods,...st].filter(x=>x.lines.length);
+  const pods=XT.pods.map(p=>({id:"pod-"+p.id,t:p.title,level:p.level,type:"pod",sub:"Podcast · "+p.level,lines:p.lines.map(x=>x.it),img:"pod-"+p.id}));
+  const st=STORIES.map(s=>({id:"st-"+s.id,t:s.title||s.id,level:s.level,type:"story",sub:"Történet · "+(s.level||""),lines:s.lines.filter(x=>x.it).map(x=>x.it),img:s.img}));
+  const ser=XT.ser.flatMap(s=>s.chapters.map((c,k)=>({id:`ser-${s.id}-${k}`,t:`${s.title}: ${c.title}`,level:s.level,type:"serial",sub:`Folytatásos · ${s.level} · ${k+1}. fejezet`,lines:c.lines.map(x=>x.it),img:s.img})));
+  const levels=["A1","A2","B1","B2","C1","C2"],target=levels.indexOf(defLevel());
+  return [...st,...pods,...ser].filter(x=>x.lines.length).sort((a,b)=>{
+    const ai=levels.indexOf(a.level),bi=levels.indexOf(b.level),rank=i=>i<0?99:Math.abs(i-Math.max(0,target))*2+(i>target?1:0);
+    return rank(ai)-rank(bi)||ai-bi;
+  });
 }
+function shFilteredSources(sources,level="all",type="all"){return sources.filter(x=>(level==="all"||x.level===level)&&(type==="all"||x.type===type));}
 function renderShadow(){stopViews();withExtra("serials",renderShadowNow);}
 function renderShadowNow(){
-  const srcs=shSources(),done=S.shadow||{};
+  if(SH_FILTER.lang!==lang())SH_FILTER={lang:lang(),level:"all",type:"all"};
+  const all=shSources(),srcs=shFilteredSources(all,SH_FILTER.level,SH_FILTER.type),done=S.shadow||{};
+  const levels=["A1","A2","B1","B2","C1","C2"].filter(l=>all.some(s=>s.level===l));
   subShell(["Gyakorlás",()=>go("gyakorlas")],"Árnyékolás","Hallgasd, mondd utána, hasonlítsd össze",`<p class="muted">Válassz egy hangos szöveget. Mondatonként: meghallgatod a felvételt, utánamondod ugyanazzal a tempóval és hanglejtéssel, aztán az app egymás után lejátssza a mintát és a te felvételedet. A felvétel csak a te eszközödön marad.</p>
     ${canRecord()?"":`<div class="notice">Ebben a böngészőben nem érhető el hangfelvétel. A mondatokat így is meghallgathatod és utánamondhatod.</div>`}
-    <div class="drills">${srcs.slice(0,40).map((x,i)=>`<button class="drill" data-sh="${x.id}"><span class="dico c${i%4+1}">${I.mic}</span><b ${LA()}>${esc(x.t)}</b><span class="small muted">${esc(x.sub)} · ${x.lines.length} mondat</span>${done[x.id]?`<span class="small"><span class="pill ok">✓ ${done[x.id]} mondat kész</span></span>`:""}</button>`).join("")}</div>`);
-  view.querySelectorAll("[data-sh]").forEach(b=>b.onclick=()=>{const src=srcs.find(x=>x.id===b.dataset.sh);if(!src)return;prefetch(...new Set(src.lines.map(t=>AUDIO_IDX[t]).filter(Boolean)));SH={src,i:0,url:null,rec:null,stream:null,hide:false,n:0,busy:false};drawShadow();});
+    <div class="shadow-filters"><label>Szint<select id="shLevelFilter"><option value="all">Minden szint</option>${levels.map(l=>`<option value="${l}" ${SH_FILTER.level===l?"selected":""}>${l}</option>`).join("")}</select></label><label>Szövegtípus<select id="shTypeFilter">${[["all","Minden típus"],["story","Rövid történet"],["pod","Podcast"],["serial","Folytatásos történet"]].map(([k,l])=>`<option value="${k}" ${SH_FILTER.type===k?"selected":""}>${l}</option>`).join("")}</select></label></div>
+    <p class="small muted" id="shSourceCount" role="status">${srcs.length} / ${all.length} szöveg · alapból a javasolt ${esc(defLevel())} szinthez közeliek elöl.</p>
+    <div class="drills">${srcs.map((x,i)=>`<button class="drill" data-sh="${esc(x.id)}"><span class="dico c${i%4+1}">${I.mic}</span><b ${LA()}>${esc(x.t)}</b><span class="small muted">${esc(x.sub)} · ${x.lines.length} mondat</span>${done[x.id]?`<span class="small"><span class="pill ok">✓ ${esc(done[x.id])} mondat kész</span></span>`:""}</button>`).join("")}</div>${srcs.length?"":'<p class="notice">Ezzel a két szűrővel nincs találat. Válassz másik szintet vagy típust.</p>'}`);
+  $("#shLevelFilter").onchange=e=>{SH_FILTER.level=e.target.value;renderShadowNow();};
+  $("#shTypeFilter").onchange=e=>{SH_FILTER.type=e.target.value;renderShadowNow();};
+  view.querySelectorAll("[data-sh]").forEach(b=>b.onclick=()=>{const src=srcs.find(x=>x.id===b.dataset.sh);if(!src)return;prefetch(...new Set(src.lines.map(t=>AUDIO_IDX[t]).filter(Boolean)));SH={src,i:0,url:null,rec:null,stream:null,hide:false,n:0,busy:false,completed:new Set()};drawShadow();});
 }
 function drawShadow(){
   const {src,i}=SH,line=src.lines[i],last=i===src.lines.length-1;
   subShell(["Árnyékolás",renderShadow],`Árnyékolás · ${esc(src.sub)}`,"",`<div class="pbar"><div class="track"><div class="fill" style="width:${i/src.lines.length*100}%"></div></div><span class="small muted tnum">${i+1}/${src.lines.length}</span></div>
     <div class="card stack" style="padding:1.4rem 1.1rem;min-height:7rem"><span class="label">${SH.hide?"Csak hallás után":"Mondd utána"}</span><div class="big-q" style="font-size:1.35rem" ${LA()}>${SH.hide?"• • •":esc(line)}</div></div>
-    <div class="row" style="flex-wrap:wrap"><button class="btn soft" id="shPlay">▶ Minta</button><button class="btn soft" id="shSlow">▶ Lassan</button>${canRecord()?`<button class="btn ${SH.rec?"":"lemon"}" id="shRec" aria-pressed="${!!SH.rec}">${SH.rec?"■ Leállítás":"● Felvétel"}</button>`:""}<button class="btn ghost" id="shHide" aria-pressed="${SH.hide}">${SH.hide?"Szöveg mutatása":"Szöveg elrejtése"}</button></div>
-    ${SH.url?`<div class="card stack"><b>Összehasonlítás</b><p class="small muted">Előbb a minta, aztán a te felvételed szól. Figyeld a hangsúlyt, a tempót és a szóvégeket.</p><div class="row"><button class="btn" id="shCmp">▶ Minta + saját</button><button class="btn ghost" id="shMine">▶ Csak a sajátom</button></div><div id="shInto">${SH.into===undefined?`<p class="small muted">A hanglejtés kirajzolása…</p>`:intonationHtml(SH.into)}</div></div>`:""}
+    <div class="speech-controls"><button class="btn soft" id="shPlay" ${SH.rec||SH.busy?"disabled":""}>▶︎ Minta</button><button class="btn soft" id="shSlow" ${SH.rec||SH.busy?"disabled":""}>▶︎ Lassan</button>${canRecord()?`<button class="btn ${SH.rec?"":"lemon"}" id="shRec" aria-pressed="${!!SH.rec}" ${SH.busy?"disabled":""}>${SH.busy?"Mikrofon indítása…":SH.rec?"■ Leállítás":"● Felvétel"}</button>`:""}<button class="btn ghost" id="shHide" aria-pressed="${SH.hide}" ${SH.rec||SH.busy?"disabled":""}>${SH.hide?"Szöveg mutatása":"Szöveg elrejtése"}</button></div>
+    ${SH.rec?'<div class="speech-record-status" role="status"><b id="shTimer">Felvétel · 0:00</b><label>Jelszint <meter id="shLevel" min="0" max="1" value="0" aria-label="A mikrofon becsült jelszintje"></meter></label><span class="small muted">A zöld jel a hangerőt mutatja, nem a kiejtést.</span></div>':""}
+    <div class="speech-progress"><span id="shPlaybackClock" class="small muted">Lejátszás: álló helyzet</span><progress id="shPlaybackProgress" max="1" value="0" aria-label="A felvett hang lejátszási ideje"></progress></div>
+    <details class="g speech-guide"><summary>Hogyan gyakorolj?</summary><div class="gb"><p>Hallgasd meg a mintát, majd vedd fel a mondatot. Hallgasd vissza egymás után a két változatot, és válassz egy részletet, amit újra próbálsz. A görbe egyszerű hangmagasság-becslés; nem pontozza a kiejtést.</p><p class="small muted">A hang csak a böngésző memóriájában marad, mondatváltáskor töröljük. A felvétel leállításakor a mikrofont is kikapcsoljuk.</p></div></details>
+    ${SH.url?`<div class="card stack"><b>Összehasonlítás</b><p class="small muted">Előbb a minta, aztán a te felvételed szól. Figyeld a hangsúlyt, a tempót és a szóvégeket.</p><div class="row"><button class="btn" id="shCmp">▶︎ Minta + saját</button><button class="btn ghost" id="shMine">▶︎ Csak a sajátom</button></div><div id="shInto">${SH.into===undefined?`<p class="small muted">A hanglejtés kirajzolása…</p>`:intonationHtml(SH.into)}</div></div>`:""}
     <div class="row" style="justify-content:space-between"><button class="btn ghost" id="shPrev" ${i?"":"disabled"}>← Előző</button><button class="btn" id="shNext">${last?"Befejezés":"Következő →"}</button></div>`);
-  $("#shPlay").onclick=()=>say(line);$("#shSlow").onclick=()=>say(line,true);
+  shBindPlayback(SH);shUpdateRecording(SH);
+  $("#shPlay").onclick=()=>shPlayModel(line);$("#shSlow").onclick=()=>shPlayModel(line,true);
   $("#shHide").onclick=()=>{SH.hide=!SH.hide;drawShadow();};
   if($("#shRec"))$("#shRec").onclick=()=>SH.rec?shStop():shRecord(line);
-  if($("#shCmp"))$("#shCmp").onclick=async()=>{const cur=SH;await say(line);if(SH===cur)shPlayMine();};
+  if($("#shCmp"))$("#shCmp").onclick=async()=>{const cur=SH,take=cur.take;await shPlayModel(line);if(SH===cur&&cur.take===take)shPlayMine();};
   if($("#shMine"))$("#shMine").onclick=shPlayMine;
   $("#shPrev").onclick=()=>{shReset();SH.i--;drawShadow();};
-  $("#shNext").onclick=()=>{if(SH.url)SH.n++;shReset();if(last)return shFinish();SH.i++;drawShadow();};
-  if(!SH.spoke){SH.spoke=1;setTimeout(()=>{if(SH&&SH.src.lines[SH.i]===line)say(line);},250);}
+  $("#shNext").onclick=()=>{if(SH.url){SH.completed=SH.completed||new Set();SH.completed.add(i);SH.n=SH.completed.size;}shReset();if(last)return shFinish();SH.i++;drawShadow();};
+  if(!SH.spoke){SH.spoke=1;const cur=SH;setTimeout(()=>{if(SH===cur&&cur.src.lines[cur.i]===line&&!cur.rec&&!cur.busy)shPlayModel(line);},250);}
 }
 async function shRecord(line){
-  const cur=SH;try{player.pause();speechSynthesis.cancel();}catch(e){}
-  try{if(!cur.stream)cur.stream=await navigator.mediaDevices.getUserMedia({audio:true});}
-  catch(e){toast(micMsg(e&&e.name==="NotAllowedError"?"not-allowed":"error"));return;}
-  if(SH!==cur)return shCleanup(cur);
-  const chunks=[],rec=new MediaRecorder(cur.stream);cur.rec=rec;
+  const cur=SH;if(!cur||cur.rec||cur.busy)return;const take=cur.take=(cur.take||0)+1;cur.busy=true;drawShadow();try{player.pause();speechSynthesis.cancel();if(sayDone){sayDone();sayDone=null;}}catch(e){}
+  let stream;try{stream=await navigator.mediaDevices.getUserMedia({audio:true});}
+  catch(e){if(SH===cur&&cur.take===take){cur.busy=false;toast(micMsg(e&&e.name==="NotAllowedError"?"not-allowed":"error"));drawShadow();}return;}
+  if(SH!==cur||cur.take!==take){stream.getTracks().forEach(t=>t.stop());return;}cur.stream=stream;
+  const chunks=[];let rec;
+  try{rec=new MediaRecorder(cur.stream);}catch(e){cur.busy=false;shReleaseInput(cur);toast("Ezen az eszközön nem sikerült elindítani a hangfelvételt.");drawShadow();return;}cur.rec=rec;cur.busy=false;
   rec.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data);};
-  rec.onstop=()=>{if(SH!==cur)return;if(cur.url)URL.revokeObjectURL(cur.url);const blob=chunks.length?new Blob(chunks,{type:rec.mimeType||"audio/webm"}):null;cur.url=blob?URL.createObjectURL(blob):null;cur.into=undefined;cur.rec=null;drawShadow();
-    if(blob)analyseIntonation(line,blob).catch(()=>null).then(r=>{if(SH!==cur||cur.src.lines[cur.i]!==line)return;cur.into=r;const el=$("#shInto");if(el)el.innerHTML=intonationHtml(r);});if(cur.url)setTimeout(()=>{if(SH===cur)$("#shCmp")&&$("#shCmp").click();},200);};
-  rec.start();drawShadow();
+  rec.onstop=()=>{if(SH!==cur||cur.take!==take)return;shReleaseInput(cur);if(cur.url)URL.revokeObjectURL(cur.url);const blob=chunks.length?new Blob(chunks,{type:rec.mimeType||"audio/webm"}):null;cur.url=blob?URL.createObjectURL(blob):null;cur.into=undefined;cur.rec=null;drawShadow();
+    if(blob)analyseIntonation(line,blob).catch(()=>null).then(r=>{if(SH!==cur||cur.take!==take)return;cur.into=r;const el=$("#shInto");if(el)el.innerHTML=intonationHtml(r);shUpdatePlayback(cur);});if(cur.url)cur.compareTimer=setTimeout(()=>{cur.compareTimer=null;if(SH===cur&&cur.take===take)$("#shCmp")&&$("#shCmp").click();},200);};
+  rec.onerror=()=>{if(SH!==cur||cur.take!==take)return;shReleaseInput(cur);cur.rec=null;toast("Nem sikerült a felvétel. Próbáld újra.");drawShadow();};
+  try{rec.start();cur.recordedAt=Date.now();shStartMeter(cur);drawShadow();}catch(e){cur.rec=null;shReleaseInput(cur);toast("Nem sikerült a felvétel. Próbáld újra.");drawShadow();return;}
   /* Long enough for the line at a calm pace, then it stops by itself. */
   const ms=Math.min(15000,2000+line.split(/\s+/).length*550);setTimeout(()=>{if(SH===cur&&cur.rec===rec)shStop();},ms);
 }
 function shStop(){if(SH&&SH.rec&&SH.rec.state!=="inactive")try{SH.rec.stop();}catch(e){}}
-function shPlayMine(){if(!SH||!SH.url)return;try{speechSynthesis.cancel();player.pause();player.src=SH.url;player.playbackRate=1;player.onended=null;player.play().catch(()=>{});}catch(e){}}
-function shReset(){if(!SH)return;shStop();if(SH.url){URL.revokeObjectURL(SH.url);SH.url=null;}SH.into=undefined;SH.spoke=0;}
-function shCleanup(s){if(!s)return;try{if(s.rec&&s.rec.state!=="inactive")s.rec.stop();}catch(e){}if(s.stream)s.stream.getTracks().forEach(t=>t.stop());if(s.url)URL.revokeObjectURL(s.url);}
+function shPlayModel(line,slow){if(!SH||SH.rec||SH.busy)return Promise.resolve();clearTimeout(SH.compareTimer);SH.compareTimer=null;return say(line,slow);}
+function shPlayMine(){if(!SH||!SH.url||SH.rec||SH.busy)return;clearTimeout(SH.compareTimer);SH.compareTimer=null;try{speechSynthesis.cancel();if(sayDone){sayDone();sayDone=null;}player.pause();player.src=SH.url;player.playbackRate=1;player.onended=null;player.play().catch(()=>{});}catch(e){}}
+function shReset(){if(!SH)return;clearTimeout(SH.compareTimer);SH.compareTimer=null;SH.take=(SH.take||0)+1;SH.busy=false;shStop();SH.rec=null;shReleaseInput(SH);try{player.pause();speechSynthesis.cancel();if(sayDone){sayDone();sayDone=null;}}catch(e){}if(SH.url){URL.revokeObjectURL(SH.url);SH.url=null;}SH.into=undefined;SH.spoke=0;}
+function shReleaseInput(s){if(!s)return;cancelAnimationFrame(s.meterFrame||0);if(s.meterCtx){s.meterCtx.close().catch(()=>{});s.meterCtx=null;}s.analyser=null;if(s.stream){s.stream.getTracks().forEach(t=>t.stop());s.stream=null;}}
+function shCleanup(s){if(!s)return;clearTimeout(s.compareTimer);s.compareTimer=null;s.take=(s.take||0)+1;try{if(s.rec&&s.rec.state!=="inactive")s.rec.stop();}catch(e){}shReleaseInput(s);if(s.playListener)for(const e of ["timeupdate","loadedmetadata","play","pause","ended","emptied"])player.removeEventListener(e,s.playListener);if(s.url)URL.revokeObjectURL(s.url);}
+function shClock(seconds){const n=Math.max(0,Math.floor(Number(seconds)||0));return Math.floor(n/60)+":"+String(n%60).padStart(2,"0");}
+function shBindPlayback(s){if(!s.playListener){s.playListener=()=>shUpdatePlayback(s);for(const e of ["timeupdate","loadedmetadata","play","pause","ended","emptied"])player.addEventListener(e,s.playListener);}shUpdatePlayback(s);}
+function shUpdatePlayback(s){
+  if(SH!==s)return;const line=s.src.lines[s.i],src=player.currentSrc||player.src,kind=s.url&&src===s.url?"saját":CLIPS[line]&&src===CLIPS[line]?"minta":null;
+  const duration=Number.isFinite(player.duration)?player.duration:0,time=kind?player.currentTime||0:0,ratio=kind&&duration>0?Math.max(0,Math.min(1,time/duration)):0;
+  const clock=$("#shPlaybackClock"),progress=$("#shPlaybackProgress");if(clock)clock.textContent=kind?`${kind==="minta"?"Minta":"Saját felvétel"} · ${shClock(time)} / ${shClock(duration)}${player.paused?" · szünet":""}`:"Lejátszás: álló helyzet · időjel csak felvett hanghoz";if(progress)progress.value=ratio;
+  view.querySelectorAll("[data-intonation-cursor]").forEach(cursor=>{cursor.setAttribute("x1",String(ratio*320));cursor.setAttribute("x2",String(ratio*320));cursor.setAttribute("visibility",kind&&duration?"visible":"hidden");});
+}
+function shStartMeter(s){try{const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;s.meterCtx=new AC();const source=s.meterCtx.createMediaStreamSource(s.stream);s.analyser=s.meterCtx.createAnalyser();s.analyser.fftSize=512;source.connect(s.analyser);s.meterSamples=new Float32Array(s.analyser.fftSize);s.meterCtx.resume().catch(()=>{});}catch(e){s.analyser=null;}}
+function shUpdateRecording(s){
+  cancelAnimationFrame(s.meterFrame||0);if(SH!==s||!s.rec)return;
+  const tick=()=>{if(SH!==s||!s.rec)return;const timer=$("#shTimer"),meter=$("#shLevel");if(timer)timer.textContent="Felvétel · "+shClock((Date.now()-s.recordedAt)/1000);if(meter){let rms=0;if(s.analyser){s.analyser.getFloatTimeDomainData(s.meterSamples);for(const x of s.meterSamples)rms+=x*x;rms=Math.sqrt(rms/s.meterSamples.length);}meter.value=Math.min(1,rms*4);meter.title=s.analyser?"Becsült hangerő; nem kiejtési pontszám":"Ezen az eszközön a jelszint nem érhető el";}s.meterFrame=requestAnimationFrame(tick);};tick();
+}
 function shFinish(){
   const s=SH,n=s.n;S.shadow=S.shadow||{};S.shadow[s.src.id]=Math.max(S.shadow[s.src.id]||0,n);drillStat("shadow",true);incEv("drills");addXP(Math.max(3,n));save();
   shCleanup(s);SH=null;
   subShell(["Árnyékolás",renderShadow],"Árnyékolás",esc(s.src.t),`<div class="card stack" style="text-align:center"><h1>${LG().fin[1]}</h1><p class="muted">${n?`${n} mondatot mondtál utána felvétellel.`:"Végighallgattad a szöveget."} Az árnyékolás akkor hat igazán, ha ugyanazt a szöveget pár napig naponta megismétled.</p><div class="row" style="justify-content:center"><button class="btn" id="shAgain">Még egyszer</button></div></div>`);
-  $("#shAgain").onclick=()=>{SH={src:s.src,i:0,url:null,rec:null,stream:null,hide:false,n:0};drawShadow();};
+  $("#shAgain").onclick=()=>{SH={src:s.src,i:0,url:null,rec:null,stream:null,hide:false,n:0,completed:new Set()};drawShadow();};
 }
 /* ============ CARDS FROM YOUR CORRECTIONS ============ */
 /* Corrections from the journal, the speaking examiner and the writing tasks land in the mistake log as "wrong → right – why".
@@ -4073,7 +4585,7 @@ function renderReport(){
 /* ============ INTONATION CONTOUR (shadowing) ============ */
 /* Pitch (fundamental frequency) of the model recording and of the learner's recording, estimated in the browser with a
    normalised autocorrelation on 40 ms frames (16 kHz, 70–400 Hz). Both curves are shown in semitones around each speaker's
-   own median, so a man copying a woman's voice still compares fairly. Nothing is uploaded. */
+   own median. This normalises the baseline; it does not calibrate pronunciation or voice quality. Nothing is uploaded. */
 const PITCH_SR=16000,PITCH_MIN=70,PITCH_MAX=400;
 function toMono16k(buf){
   const ch=buf.numberOfChannels,n=buf.length,src=new Float32Array(n);
@@ -4097,25 +4609,29 @@ function pitchTrack(x,sr=PITCH_SR){
   /* A 5-point median removes the occasional octave jump. */
   return out.map((v,i)=>{if(!v)return 0;const w=out.slice(Math.max(0,i-2),i+3).filter(Boolean).sort((a,b)=>a-b);return w[w.length>>1];});
 }
-/* Voiced part, in semitones around the median, resampled to n points (gaps interpolated). */
+function pitchQuality(track){
+  const voiced=track.filter(v=>Number.isFinite(v)&&v>0).length,total=track.length;
+  return {voiced,total,seconds:voiced*0.01,usable:total>=25&&voiced>=25&&voiced/total>=0.25};
+}
+/* Keep the full recording timeline. Long unvoiced gaps stay gaps; do not invent a contour across silence. */
 function contour(track,n=60){
-  const first=track.findIndex(Boolean),last=track.length-1-[...track].reverse().findIndex(Boolean);
-  if(first<0||last-first<8)return null;
-  const seg=track.slice(first,last+1),voiced=seg.filter(Boolean).sort((a,b)=>a-b),med=voiced[voiced.length>>1];
-  const st=seg.map(v=>v?12*Math.log2(v/med):null);
-  for(let i=0;i<st.length;i++)if(st[i]===null){let a=i-1,b=i+1;while(b<st.length&&st[b]===null)b++;st[i]=a>=0&&b<st.length?st[a]+(st[b]-st[a])/(b-a):a>=0?st[a]:st[b];}
-  const pts=[];for(let k=0;k<n;k++){const p=k/(n-1)*(st.length-1),a=Math.floor(p),f=p-a;pts.push(st[a]+(st[Math.min(a+1,st.length-1)]-st[a])*f);}
+  if(!pitchQuality(track).usable)return null;
+  const voiced=track.filter(v=>v>0).sort((a,b)=>a-b),med=voiced[voiced.length>>1],st=track.map(v=>v?12*Math.log2(v/med):null);
+  for(let i=0;i<st.length;){if(st[i]!==null){i++;continue;}const start=i;while(i<st.length&&st[i]===null)i++;const end=i;if(start>0&&end<st.length&&end-start<=15)for(let j=start;j<end;j++)st[j]=st[start-1]+(st[end]-st[start-1])*(j-start+1)/(end-start+1);}
+  const pts=[];for(let k=0;k<n;k++){const p=k/(n-1)*(st.length-1),a=Math.floor(p),b=Math.min(a+1,st.length-1),f=p-a;pts.push(st[a]===null||st[b]===null?null:st[a]+(st[b]-st[a])*f);}
   return pts;
 }
 function contourStats(c){
-  const sorted=c.slice().sort((a,b)=>a-b),range=sorted[Math.floor(c.length*0.9)]-sorted[Math.floor(c.length*0.1)];
-  const tail=c.slice(Math.floor(c.length*0.75)),slope=tail[tail.length-1]-tail[0];
+  const vals=c.filter(Number.isFinite);if(!vals.length)return {range:0,end:"flat"};
+  const sorted=vals.slice().sort((a,b)=>a-b),range=sorted[Math.floor(vals.length*0.9)]-sorted[Math.floor(vals.length*0.1)];
+  const tail=vals.slice(Math.floor(vals.length*0.75)),slope=tail[tail.length-1]-tail[0];
   return {range,end:slope>1.5?"up":slope<-1.5?"down":"flat"};
 }
 function contourSim(a,b){
-  const m=v=>v.reduce((s,x)=>s+x,0)/v.length,ma=m(a),mb=m(b);let c=0,ea=0,eb=0;
-  for(let i=0;i<a.length;i++){c+=(a[i]-ma)*(b[i]-mb);ea+=(a[i]-ma)**2;eb+=(b[i]-mb)**2;}
-  return ea&&eb?c/Math.sqrt(ea*eb):0;
+  const pairs=a.map((v,i)=>[v,b[i]]).filter(([v,w])=>Number.isFinite(v)&&Number.isFinite(w));if(pairs.length<12)return null;
+  const ma=pairs.reduce((s,p)=>s+p[0],0)/pairs.length,mb=pairs.reduce((s,p)=>s+p[1],0)/pairs.length;let c=0,ea=0,eb=0;
+  for(const [x,y] of pairs){c+=(x-ma)*(y-mb);ea+=(x-ma)**2;eb+=(y-mb)**2;}
+  return ea>1e-6&&eb>1e-6?Math.max(-1,Math.min(1,c/Math.sqrt(ea*eb))):null;
 }
 let PITCH_CTX=null;
 async function decodeAudio(arrayBuf){
@@ -4128,31 +4644,171 @@ async function modelBuffer(line){
 }
 /* Returns {me, model?} contours with stats, or null when the recording has no usable voiced part. */
 async function analyseIntonation(line,blob){
-  const mine=contour(pitchTrack(toMono16k(await decodeAudio(await blob.arrayBuffer()))));
-  if(!mine)return null;
-  let model=null;try{const mb=await modelBuffer(line);if(mb)model=contour(pitchTrack(toMono16k(await decodeAudio(mb))));}catch(e){model=null;}
-  return {me:mine,meS:contourStats(mine),model,modelS:model&&contourStats(model),sim:model?contourSim(model,mine):null};
+  const mineBuf=await decodeAudio(await blob.arrayBuffer()),mineTrack=pitchTrack(toMono16k(mineBuf)),mine=contour(mineTrack),meQ=pitchQuality(mineTrack);
+  if(!mine)return {me:null,meQ,meDuration:mineBuf.duration};
+  let model=null,modelQ=null,modelDuration=null;
+  try{const mb=await modelBuffer(line);if(mb){const buf=await decodeAudio(mb),track=pitchTrack(toMono16k(buf));model=contour(track);modelQ=pitchQuality(track);modelDuration=buf.duration;}}catch(e){model=null;}
+  return {me:mine,meS:contourStats(mine),meQ,meDuration:mineBuf.duration,model,modelQ,modelDuration,modelS:model&&contourStats(model),sim:model?contourSim(model,mine):null};
 }
 const END_HU={up:"emelkedő",down:"eső",flat:"egyenletes"};
+function contourComparison(r){
+  if(!r||!r.model||!r.me)return "";
+  if(!Number.isFinite(r.sim))return "A görbealakok ebből a felvételből nem hasonlíthatók össze megbízhatóan.";
+  return r.sim>=0.7?"Az időben arányosított görbealakok többnyire hasonló irányban változnak.":r.sim<0?"Az időben arányosított görbealakok több helyen ellentétes irányban változnak.":"Az időben arányosított görbealakok eltérnek egymástól. Hallgasd vissza, hol tér el a két változat.";
+}
 function intonationHtml(r){
-  if(!r)return `<p class="small muted">A felvételen nem találtam elég zöngés hangot a hanglejtés kirajzolásához. Beszélj kicsit hangosabban, közelebb a mikrofonhoz.</p>`;
-  const W=320,H=120,y=v=>H/2-Math.max(-8,Math.min(8,v))*(H/2-6)/8,path=c=>c.map((v,i)=>`${(i/(c.length-1)*W).toFixed(1)},${y(v).toFixed(1)}`).join(" ");
+  if(!r||!r.me)return `<p class="small muted">A felvételen nem találtam elég zöngés hangot a hanglejtés kirajzolásához. Csendesebb helyen, a mikrofonhoz közelebb próbáld újra. Ebből nem készül összehasonlítás vagy pontszám.</p>`;
+  const W=320,H=120,y=v=>H/2-Math.max(-8,Math.min(8,v))*(H/2-6)/8,path=c=>{let gap=true;return c.map((v,i)=>{if(!Number.isFinite(v)){gap=true;return "";}const p=`${gap?"M":"L"}${(i/(c.length-1)*W).toFixed(1)},${y(v).toFixed(1)}`;gap=false;return p;}).join(" ");};
   const tips=[];
   if(r.model){
-    if(r.meS.range<r.modelS.range*0.6)tips.push("A hanglejtésed laposabb a mintánál: a hangsúlyos szavakon emeld meg jobban a hangod.");
-    else if(r.meS.range>r.modelS.range*1.6)tips.push("Nagyobbakat ugrik a hangod, mint a mintában: próbáld egyenletesebben.");
-    if(r.meS.end!==r.modelS.end&&r.modelS.end!=="flat")tips.push(`A mondat végén a minta hangja ${END_HU[r.modelS.end]}, a tiéd ${END_HU[r.meS.end]}. ${r.modelS.end==="up"?"Kérdésnél a végén emeld fel a hangod.":"Kijelentésnél a végén engedd le a hangod."}`);
-    if(!tips.length)tips.push("A hanglejtésed jól követi a mintát.");
+    tips.push(contourComparison(r));
+    if(r.meS.range<r.modelS.range*0.6)tips.push("A becsült hangmagasság kisebb tartományban változik a saját felvételeden, mint a mintában.");
+    else if(r.meS.range>r.modelS.range*1.6)tips.push("A becsült hangmagasság nagyobb tartományban változik a saját felvételeden, mint a mintában.");
+    if(r.meS.end!==r.modelS.end)tips.push(`Az utolsó zöngés szakasz iránya a mintában ${END_HU[r.modelS.end]}, a saját felvételeden ${END_HU[r.meS.end]}. Hallgasd vissza a mondat végét is.`);
   }
   return `<div class="stack" style="gap:.4rem"><b>Hanglejtés</b>
-    <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Hanglejtés-görbe${r.model?": minta és saját":""}" style="width:100%;height:auto;background:var(--sunk);border-radius:10px">
+    <svg class="intonation-chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Becsült hangmagasság az idő függvényében${r.model?": minta és saját":""}" style="width:100%;height:auto;background:var(--sunk);border-radius:10px">
       <line x1="0" x2="${W}" y1="${H/2}" y2="${H/2}" stroke="currentColor" stroke-opacity=".15"/>
-      ${r.model?`<polyline points="${path(r.model)}" fill="none" stroke="var(--cobalt)" stroke-width="3" stroke-linejoin="round"/>`:""}
-      <polyline points="${path(r.me)}" fill="none" stroke="var(--ok)" stroke-width="3" stroke-linejoin="round" stroke-dasharray="${r.model?"6 4":"0"}"/>
+      ${r.model?`<path d="${path(r.model)}" fill="none" stroke="var(--cobalt)" stroke-width="3" stroke-linejoin="round"/>`:""}
+      <path d="${path(r.me)}" fill="none" stroke="var(--ok)" stroke-width="3" stroke-linejoin="round" stroke-dasharray="${r.model?"6 4":"0"}"/>
+      <line data-intonation-cursor x1="0" x2="0" y1="0" y2="${H}" stroke="var(--ink)" stroke-width="2" visibility="hidden"/>
     </svg>
-    <div class="row small" style="gap:.8rem">${r.model?`<span><b style="color:var(--cobalt)">━</b> minta</span>`:""}<span><b style="color:var(--ok)">┅</b> te</span>${r.model?`<span class="pill">Hasonlóság: ${Math.max(0,Math.round(r.sim*100))}%</span>`:""}</div>
-    ${r.model?tips.map(t=>`<p class="small">${esc(t)}</p>`).join(""):`<p class="small muted">Ehhez a mondathoz nincs felvett minta, ezért csak a saját görbédet látod.</p>`}
-    <p class="small muted">A görbe a hangmagasság változását mutatja, nem értékeli a kiejtést. Mindkét görbe a saját beszédhangod átlagához igazodik.</p></div>`;
+    <div class="intonation-axis small muted"><span>0 · eleje</span><span>félidő</span><span>vége</span></div>
+    <div class="row small" style="gap:.8rem">${r.model?`<span><b style="color:var(--cobalt)">━</b> minta${Number.isFinite(r.modelDuration)?" · "+r.modelDuration.toFixed(1)+" mp":""}</span>`:""}<span><b style="color:var(--ok)">┅</b> saját${Number.isFinite(r.meDuration)?" · "+r.meDuration.toFixed(1)+" mp":""}</span></div>
+    ${r.model?tips.map(t=>`<p class="small">${esc(t)}</p>`).join(""):`<p class="small muted">${r.modelQ?"A minta hangmagasságából nem rajzolható ki elég megbízható görbe, ezért csak a saját görbédet látod.":"Ehhez a mondathoz nincs felvett minta, ezért csak a saját görbédet látod."}</p>`}
+    ${r.meQ?`<p class="small muted">Kirajzolható, zöngésként becsült hangrész: ${r.meQ.seconds.toFixed(1)} mp${Number.isFinite(r.meDuration)?" a "+r.meDuration.toFixed(1)+" mp-es saját felvételből":""}. A szüneteknél a görbe megszakadhat.</p>`:""}
+    <p class="small muted">A teljes felvételek idejét arányosítjuk; a szavak nincsenek egymáshoz igazítva. A mozgó időjel az éppen lejátszott felvett hang helyét mutatja. A görbe a saját hangmagasság középértékéhez igazított becslés; nem minősíti a kiejtést vagy a beszéd helyességét.</p></div>`;
+}
+/* ============ LANGUAGE WORLDS ============ */
+/* One familiar workspace, with the colours and everyday places of the language being learned.
+   Artwork is bundled locally; it is decorative and has no animation or network dependency. */
+/* A function keeps these values available to the early boot-time applyPrefs call,
+   even though this module is assembled after 60-boot.js. */
+function languageWorlds(){return {
+  en:{locale:"en-GB",place:"London",eyebrow:"Angol mindennapok",title:"A little closer, every day.",copy:"Utcák, történetek és hétköznapi beszélgetések. A mai angolgyakorlásod innen indul.",caption:"London · a Temze partján",colour:"#173A5D"},
+  it:{locale:"it-IT",place:"Bologna",eyebrow:"Olasz mindennapok",title:"Un passo alla volta.",copy:"Egy kávé a téren, egy új mondat olaszul. Haladj a saját ritmusodban.",caption:"Bologna · az árkádok alatt",colour:"#91492F"},
+  es:{locale:"es-ES",place:"Sevilla",eyebrow:"Spanyol mindennapok",title:"Cada día, un poco más.",copy:"Beszélgetések egy napfényes téren. Egy új mondat, egy új kapcsolat.",caption:"Sevilla · egy napfényes téren",colour:"#234F69"}
+};}
+function applyLanguageWorld(){
+  const worlds=languageWorlds(),key=typeof lang==="function"?lang():"en",l=Object.prototype.hasOwnProperty.call(worlds,key)?key:"en";
+  document.documentElement.dataset.learnLang=l;
+  const meta=document.querySelector('meta[name="theme-color"]');
+  if(meta)meta.content=worlds[l].colour;
+}
+function worldHeroHtml(){
+  const worlds=languageWorlds(),key=typeof lang==="function"?lang():"en",l=Object.prototype.hasOwnProperty.call(worlds,key)?key:"en",w=worlds[l];
+  const date=new Date().toLocaleDateString("hu-HU",{month:"long",day:"numeric"});
+  return `<header class="world-hero" aria-labelledby="worldTitle">
+    <figure class="world-landmark"><img src="img/world-${l}.webp" alt="" width="1536" height="1024" fetchpriority="high" decoding="async"><figcaption>${esc(w.caption)}</figcaption></figure>
+    <div class="world-copy"><span class="world-eyebrow">${esc(w.eyebrow)} · ${esc(date)}</span><h1 id="worldTitle" lang="${w.locale}">${esc(w.title)}</h1><p>${esc(w.copy)}</p></div>
+  </header>`;
+}
+/* ============ CANCELLABLE AI REQUESTS ============ */
+/* Function-owned storage avoids initialization-order coupling: boot starts before this
+   module, but these helpers are hoisted and initialize themselves on first use. */
+function aiRequestRegistry(){return aiRequestRegistry.items||(aiRequestRegistry.items=new Set());}
+function createAIRequest(valid,options={}){
+  const language=lang(),navigation=NAVN,controller=new AbortController(),registry=aiRequestRegistry();
+  let cancelled="",finished=false,rejectCancel;
+  const interrupted=new Promise((_,reject)=>{rejectCancel=reject;});
+  const job={language,navigation,signal:controller.signal,
+    owns:()=>language===lang()&&navigation===NAVN&&valid(),
+    current:()=>!cancelled&&job.owns(),
+    cancel(reason="cancelled"){if(finished||cancelled)return;cancelled=reason;controller.abort();rejectCancel({code:reason});},
+    async json(prompt,opts={}){
+      try{
+        const result=await Promise.race([(async()=>{const sample=await getSample();if(!job.current())throw {code:"stale"};if(!sample)throw {code:"no_ai"};return sample.json(prompt,Object.assign({},opts,{signal:controller.signal}));})(),interrupted]);
+        if(!job.current())throw {code:"stale"};return result;
+      }catch(error){if(!job.owns())throw {code:"stale"};throw error;}
+      finally{finished=true;clearTimeout(timer);registry.delete(job);}
+    }
+  };
+  const timer=setTimeout(()=>job.cancel("timeout"),Number.isFinite(options.timeoutMs)?Math.max(1,options.timeoutMs):45000);
+  registry.add(job);return job;
+}
+function cancelAIRequests(reason="stale"){for(const job of aiRequestRegistry())job.cancel(reason);}
+function aiRequestMessage(error){
+  if(error&&error.code==="timeout")return "A tanár most lassan válaszol. A kérés leállt; a szöveged megmaradt, próbáld újra.";
+  if(error&&error.code==="cancelled")return "A kérést megszakítottad. A szöveged megmaradt.";
+  return aiErr(error);
+}
+function aiRequestBusy(label,cancelId){return `<div class="card stack" role="status"><div class="row"><span class="thinking" aria-hidden="true"><i></i><i></i><i></i></span><span>${esc(label)}</span></div><div><button class="btn ghost" id="${cancelId}">Megszakítás</button></div></div>`;}
+/* ============ STORY ILLUSTRATIONS ============ */
+/* The serial atlas is one coherent cast in six scenes, in reading order (3 × 2).
+   Scene captions set the moment without disclosing answers to comprehension questions.
+   Existing lesson images remain contextual fallbacks; an absent atlas never blocks reading. */
+const STORY_ART={
+  en:{serial:{s3:{
+    atlas:"img/story-s3-scenes.webp",setting:"London · levéltár",fallback:"en-c7",
+    cast:[
+      {name:"Helen Marsh",appearance:"Sötétbarna bobfrizura, kerek teknőcmintás szemüveg, olívazöld kardigán, törtfehér blúz."},
+      {name:"Daniel",appearance:"Rövid, göndör sötét haj, sötétkék pulóver, rozsdaszínű ingkabát."},
+      {name:"A látogató",appearance:"Ezüstös, rendezett haj, antracitszínű öltöny."}
+    ],
+    scenes:[
+      {alt:"Helen és Daniel egy régi dossziét néznek át a levéltár olvasótermében.",caption:"Egy régi dosszié a londoni levéltárban."},
+      {alt:"Egy öltönyös látogató Helen olvasótermi asztalához érkezik.",caption:"Váratlan látogató érkezik az olvasóterembe."},
+      {alt:"Helen és Daniel feszülten beszélgetnek a levéltári polcok mellett.",caption:"Helen és Daniel között feszültté válik a beszélgetés."},
+      {alt:"Helen régi leveleket rendez egy megfakult fénykép mellett.",caption:"Régi levelek és egy megfakult fénykép."},
+      {alt:"Helen és Daniel egymás mellett ülve vizsgálják a levéltári iratokat.",caption:"Újra az asztalnál: Helen és Daniel átnézik a dokumentumokat."},
+      {alt:"Helen az esti fényben visszahelyez egy fényképet a dossziéba.",caption:"Esti fény a levéltárban; Helen visszarendezi a dossziét."}
+    ]
+  }},short:{
+    "en-s1":{setting:"London · kávézó",alt:"Kávé és péksütemény egy londoni kávézó pultján."},
+    "en-s2":{setting:"London · útbaigazítás"},
+    "en-s5":{setting:"Edinburgh · hétvégi utazás"},
+    "en-s6":{setting:"Munka és döntések"},
+    "en-s3":{setting:"Kapcsolatépítés"},
+    "en-s4":{setting:"Munkahelyi egyeztetés"},
+    "en-s7":{setting:"Szállodai helyzet"},
+    "en-s8":{setting:"Döntések és lehetőségek"}
+  }},
+  it:{short:{
+    s1:{setting:"Olasz kávézó"},s2:{setting:"Utazás Firenzébe"},s3:{setting:"Trastevere · vacsora",alt:"Terített olasz éttermi asztal, vacsorához készítve."},
+    s4:{setting:"Családi emlékek"},s5:{setting:"Orvosnál"},s6:{setting:"Utazás és váratlan helyzetek"},
+    s7:{setting:"Állásinterjú"},s8:{setting:"Bologna · lakáskeresés"},s9:{setting:"Tanácsok és döntések"}
+  }},
+  es:{short:{
+    "es-s1":{setting:"Madrid · kávézó"},"es-s2":{setting:"Utazás Sevillába",alt:"Utazó bőrönddel egy spanyol pályaudvaron."},
+    "es-s3":{setting:"Valencia · hétvégi utazás"},"es-s4":{setting:"Állásinterjú"}
+  }}
+};
+const storyArtLoads=new Map();
+let storyArtObserver=null;
+function storyVisual(st,opts={}){
+  const serial=!!opts.serial,config=(STORY_ART[lang()]||{})[serial?"serial":"short"]||{},art=config[st.id]||{};
+  const chapter=Math.max(0,Math.min(5,Number.isInteger(opts.chapter)?opts.chapter:0));
+  const scene=art.scenes&&art.scenes[chapter],setting=art.setting||(serial?"Hangos történet":"Rövid történet");
+  const fallback=art.fallback||st.img||st.unlock;
+  /* Only bundled image names may enter an image URL or a style. */
+  const image=typeof fallback==="string"&&/^[a-zA-Z0-9_-]+$/.test(fallback)?fallback:null;
+  const alt=art.alt||"Hangulatkép: "+(st.hu||st.title||"történet");
+  const caption=scene?scene.caption:st.hu||st.title||"";
+  const atlas=art.atlas&&/^img\/[a-zA-Z0-9_-]+\.webp$/.test(art.atlas)?art.atlas:null;
+  const x=chapter%3*50,y=Math.floor(chapter/3)*100;
+  return `<figure class="story-figure${opts.card?" story-card-figure":""}"${atlas?' data-story-prototype="archive"':""}>
+    <div class="pic story-scene" role="img" aria-label="${esc(alt)}"${atlas?` data-story-atlas="${esc(atlas)}" data-story-alt="${esc(scene.alt)}" data-story-position="${x}% ${y}%" style="aspect-ratio:1/1"`:""}>
+      <span class="story-scene-fallback-label" aria-hidden="true">${esc(setting)}</span>${image?`<img src="img/${esc(image)}.webp" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()">`:""}${opts.badge||""}
+    </div>${opts.caption===false?"":`<figcaption class="story-caption"><span class="story-setting">${esc(setting)}</span>${!opts.card?`<span class="story-caption-text">${esc(caption)}</span>`:""}</figcaption>`}</figure>`;
+}
+function loadStoryAtlas(src){
+  if(!storyArtLoads.has(src))storyArtLoads.set(src,new Promise(resolve=>{
+    const img=new Image();img.onload=()=>resolve(true);img.onerror=()=>resolve(false);img.src=src;
+  }));
+  return storyArtLoads.get(src);
+}
+function bindStoryArt(root=view){
+  if(storyArtObserver){storyArtObserver.disconnect();storyArtObserver=null;}
+  const scenes=[...root.querySelectorAll("[data-story-atlas]")];if(!scenes.length)return;
+  const show=async el=>{
+    const src=el.dataset.storyAtlas;if(!/^img\/[a-zA-Z0-9_-]+\.webp$/.test(src||""))return;
+    if(!await loadStoryAtlas(src)||!el.isConnected)return;
+    el.style.backgroundImage=`url("${src}")`;el.style.backgroundSize="300% 200%";el.style.backgroundPosition=el.dataset.storyPosition||"0% 0%";
+    el.classList.add("is-atlas");el.setAttribute("aria-label",el.dataset.storyAlt||el.getAttribute("aria-label"));el.querySelectorAll("img,.story-scene-fallback-label").forEach(img=>img.remove());
+  };
+  if(typeof IntersectionObserver==="undefined"){scenes.forEach(show);return;}
+  storyArtObserver=new IntersectionObserver(entries=>{for(const e of entries)if(e.isIntersecting){storyArtObserver&&storyArtObserver.unobserve(e.target);show(e.target);}},{rootMargin:"200px"});
+  scenes.forEach(el=>storyArtObserver.observe(el));
 }
 </script>
 <script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>

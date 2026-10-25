@@ -8,15 +8,53 @@ const rnd=a=>a[Math.floor(Math.random()*a.length)];
 const dayNum=(d=new Date())=>Math.floor((d.getTime()-d.getTimezoneOffset()*60000)/864e5);
 const norm=s=>String(s).toLowerCase().replace(/[’`´ʼ]/g,"'").replace(/[.,!?¿¡;:"«»()…]/g,"").replace(/'\s+/g,"'").replace(/\s+/g," ").trim();
 const deacc=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"");
-function check(user,answers){
-  const u=norm(user); if(!u) return {ok:false};
-  for(const a of answers){const n=norm(a);
-    if(u===n) return {ok:true};
-    if(deacc(u)===deacc(n)) return {ok:true,warn:"Figyelj az ékezetre: "+a};
-    const bare=n.replace(LG().art,"");
-    if(bare!==n && (u===bare||deacc(u)===deacc(bare))) return {ok:true,warn:(lang()==="en"&&/^to /.test(n)?"Jó! Az igét to-val együtt tanuld: ":"Jó! Névelővel együtt tanuld: ")+a};
+/* Translation alternatives are deliberately narrow and meaning preserving. Grammar and
+   dictation never accept a paraphrase or silently remove a required article. */
+function answerForm(text){
+  const s=norm(text);
+  if(lang()!=="en")return s;
+  const forms={"i'm":"i am","you're":"you are","we're":"we are","they're":"they are","it's":"it is",
+    "don't":"do not","doesn't":"does not","didn't":"did not","can't":"cannot","won't":"will not",
+    "isn't":"is not","aren't":"are not","wasn't":"was not","weren't":"were not",
+    "i've":"i have","you've":"you have","we've":"we have","they've":"they have"};
+  return s.replace(/\b(?:i'm|you're|we're|they're|it's|don't|doesn't|didn't|can't|won't|isn't|aren't|wasn't|weren't|i've|you've|we've|they've)\b/g,x=>forms[x]).replace(/\bi'd like\b/g,"i would like");
+}
+function requestMeaning(text){
+  let s=answerForm(text),m;
+  if(lang()==="en"){
+    s=s.replace(/^please\s+|\s+please$/g,"");
+    m=s.match(/^(?:can|could|may) (i|we) (?:have|get) (.+)$/)||s.match(/^(i|we) would like (.+)$/);
+    /* "would like to go" and "have to go" express different meanings. Only
+       the shared object of a request can be compared by this narrow rule. */
+    return m&&!/^to\b/.test(m[2])?m[1]+"|"+m[2]:null;
   }
-  return {ok:false};
+  if(lang()==="it"){
+    s=s.replace(/\s+per (?:favore|piacere)$/g,"");
+    m=s.match(/^(?:vorrei|posso avere|potrei avere) (.+)$/);return m?"io|"+m[1]:null;
+  }
+  if(lang()==="es"){
+    s=s.replace(/\s+por favor$/g,"");
+    m=s.match(/^(?:quisiera|querría|me gustaría|puedo tomar|podría tomar) (.+)$/);return m?"yo|"+m[1]:null;
+  }
+  return null;
+}
+function check(user,answers,opts={}){
+  const u=norm(user),list=(Array.isArray(answers)?answers:[answers]).filter(a=>typeof a==="string"&&a.trim());
+  if(!u)return {ok:false,hint:"Írj be egy választ."};
+  for(const a of list){const n=norm(a);
+    if(u===n)return {ok:true};
+    if(deacc(u)===deacc(n))return {ok:true,warn:"Figyelj az ékezetre: "+a};
+  }
+  if(opts.type==="translation")for(const a of list){
+    const af=answerForm(a),uf=answerForm(user);
+    if(af===uf)return {ok:true,alternative:true};
+    if(deacc(af)===deacc(uf))return {ok:true,alternative:true,warn:"Figyelj az ékezetekre a mintában."};
+    const ar=requestMeaning(a),ur=requestMeaning(user);
+    if(ar&&ur&&ar===ur)return {ok:true,alternative:true};
+    if(ar&&ur&&deacc(ar)===deacc(ur))return {ok:true,alternative:true,warn:"Figyelj az ékezetekre a mintában."};
+  }
+  const articleMissing=list.some(a=>{const n=norm(a),bare=n.replace(LG().art,"");return bare!==n&&deacc(u)===deacc(bare);});
+  return {ok:false,hint:articleMissing?"Figyeld meg a kifejezés elejét: a névelő vagy a to is a tanult alak része.":opts.type==="translation"?"Nézd át a személyt, az ige alakját és a szórendet. Más jó megfogalmazás is létezhet a megadott mintákon kívül.":"Ellenőrizd a teljes tanult alakot, a névelőt és a szavak sorrendjét."};
 }
 const spkBtn=(t,cls="")=>`<button class="icon-btn ${cls}" data-say="${esc(t)}" aria-label="Meghallgatás: ${esc(t)}">${I.spk}</button>`;
 const pic=(name,cls="")=>`<div class="pic ${cls}"><img src="img/${name}.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"></div>`;

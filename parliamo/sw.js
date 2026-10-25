@@ -1,8 +1,8 @@
 /* Parliamo service worker. GENERÁLT FÁJL (parliamo/build.py), ne szerkeszd kézzel.
    Az app váza és a tananyag telepítéskor a gyorsítótárba kerül; a hangok és képek az első használatkor
    (vagy a Beállítások „Letöltés offline használatra” gombjával). Az AI-kérések nem mennek át rajta. */
-const SHELL = 'parliamo-shell-b9e7c5f4fa';
-const MEDIA = 'parliamo-media-9929c19704';
+const SHELL = 'parliamo-shell-494a000320';
+const MEDIA = 'parliamo-media-7dbc5043e1';
 const PRECACHE = [
 "./",
 "index.html",
@@ -61,8 +61,16 @@ const PRECACHE = [
 "data/vocabtest-en.json",
 "data/writing-en.json",
 "img/hero.webp",
-"img/hero-en.webp"
+"img/hero-en.webp",
+"img/world-en.webp",
+"img/world-it.webp",
+"img/world-es.webp"
 ];
+self.addEventListener('message', e => {
+  if (e.data && e.data.type === 'parliamo-offline-manifest' && e.ports && e.ports[0]) {
+    e.ports[0].postMessage({ type: 'parliamo-offline-manifest', shell: SHELL, media: MEDIA, precache: PRECACHE });
+  }
+});
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(SHELL).then(c => c.addAll(PRECACHE)).then(() => self.skipWaiting()));
 });

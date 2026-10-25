@@ -2,6 +2,7 @@
 let route="ma", P=null, CS=null, D=null;
 function navHtml(){return ROUTES.map(([k,l])=>`<button data-go="${k}" ${route===k?'aria-current="page"':""}>${I[k]}<span>${l}</span></button>`).join("");}
 function renderChips(){
+  if(typeof applyLanguageWorld==="function")applyLanguageWorld();
   const st=streak();
   $("#chips").innerHTML=`<button class="chip langsw" id="langBtn" aria-haspopup="menu" aria-label="Tanult nyelv: ${LG().name}. Váltás">${flag(lang())}<b>${LG().code}</b><svg viewBox="0 0 24 24" aria-hidden="true" style="width:12px;height:12px"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg></button><span class="chip streak" title="Napok sorozatban">${I.fire}<span class="tnum">${st}</span></span><span class="chip" title="Összes XP">${I.star}<span class="tnum">${S.xp}</span></span>`;
 }

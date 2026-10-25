@@ -55,6 +55,11 @@ SW = """/* Parliamo service worker. GENERÁLT FÁJL (parliamo/build.py), ne szer
 const SHELL = 'parliamo-shell-__SHELL__';
 const MEDIA = 'parliamo-media-__MEDIA__';
 const PRECACHE = __LIST__;
+self.addEventListener('message', e => {
+  if (e.data && e.data.type === 'parliamo-offline-manifest' && e.ports && e.ports[0]) {
+    e.ports[0].postMessage({ type: 'parliamo-offline-manifest', shell: SHELL, media: MEDIA, precache: PRECACHE });
+  }
+});
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(SHELL).then(c => c.addAll(PRECACHE)).then(() => self.skipWaiting()));
 });
@@ -125,7 +130,7 @@ def main():
     shell += sorted(p.relative_to(HERE).as_posix() for p in (HERE / 'fonts').glob('*.woff2'))
     shell += sorted(p.relative_to(HERE).as_posix() for p in (HERE / 'icons').glob('*.png'))
     shell += sorted(p.relative_to(HERE).as_posix() for p in (HERE / 'data').glob('*.json'))
-    shell += ['img/hero.webp', 'img/hero-en.webp']
+    shell += ['img/hero.webp', 'img/hero-en.webp', 'img/world-en.webp', 'img/world-it.webp', 'img/world-es.webp']
     shell_files = [HERE / 'index.html'] + [HERE / s for s in shell if s not in ('./', 'index.html')]
     media_files = sorted((HERE / 'audio').glob('*.json')) + sorted((HERE / 'img').glob('*.webp'))
     sw = (SW.replace('__SHELL__', digest(shell_files))

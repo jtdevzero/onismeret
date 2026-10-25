@@ -1,13 +1,20 @@
 /* ============ LESSONS ============ */
+let lessonFilters={search:"",level:"",track:""};
 function renderLessons(){
-  const nl=nextLesson();
-  view.innerHTML=`<div class="stack"><div><span class="label">${LG().name} · ${LG().range} · ${doneCount()} / ${LESSONS.length} kész</span><h1>Leckék</h1><p class="muted">Minden lecke egy rövid magyarázattal indul, aztán 15–20 feladat következik. Egy befejezett lecke szavai bekerülnek a szókártyáid közé, és pecsétet kapsz az útleveledbe.</p><div class="row" style="margin-top:.6rem"><button class="btn ghost" data-go="terkep">Haladási térkép</button><button class="btn ghost" id="lPlace">Szintfelmérő</button><button class="btn ghost" data-go="utlevel">Útlevél</button></div></div>
-  <div class="lgrid">${LESSONS.map((L,i)=>{const s=ls(i);const cls=s&&s.done?"done":s&&s.placed?"placed":i===nl?"cur":"";
-    const head=TRACKS&&(i===0||LESSONS[i-1].track!==L.track)?`<h2 style="grid-column:1/-1;margin-top:${i?"1rem":"0"}">${esc(TRACKS[L.track]||L.track)}</h2>`:"";
-    return head+`<button class="lcard ${cls}" data-l="${i}"><div class="pic"><img src="img/${L.id}.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"><span class="num">${s&&s.done?"✓":i+1}</span><span class="badge">${s&&s.done?`<span class="pill ok">${esc(s.best)}%</span>`:s&&s.placed?`<span class="pill">Átugorva</span>`:i===nl?`<span class="pill now">Következő</span>`:`<span class="pill">${L.level}</span>`}</span></div>
-      <div class="body"><b>${esc(L.t)}</b><span class="small muted">${esc(L.hu)} · ${L.words.length} szó, ${L.phrases.length} kifejezés</span>${s&&s.done?`<div class="meter"><i style="width:${esc(s.best)}%"></i></div>`:""}</div></button>`;}).join("")}</div></div>`;
-  view.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>openLesson(+b.dataset.l));
-  $("#lPlace").onclick=()=>startPlacement(false);
+  const nl=nextLesson(),f=lessonFilters;if(!LG().levels.includes(f.level))f.level="";if(!LESSONS.some(l=>l.track===f.track))f.track="";
+  view.innerHTML=`<div class="stack"><div><span class="label">${LG().name} · ${LG().range} · ${doneCount()} / ${LESSONS.length} kész</span><h1>Leckék</h1><p class="muted">Tanulj kisebb részekben, vagy végezz el egy teljes leckét. A félbehagyott gyakorlást és a már elvégzett részeket megőrizzük.</p><div class="row" style="margin-top:.6rem"><button class="btn ghost" data-go="terkep">Haladási térkép</button><button class="btn ghost" id="lPlace">Szintfelmérő</button><button class="btn ghost" data-go="utlevel">Útlevél</button></div></div>
+  <div class="card stack"><label for="lSearch">Lecke keresése</label><input id="lSearch" type="search" placeholder="Téma vagy kifejezés" value="${esc(f.search)}"><div class="grid2"><label>Szint<select id="lLevel"><option value="">Minden szint</option>${LG().levels.map(l=>`<option value="${l}" ${f.level===l?"selected":""}>${l}</option>`).join("")}</select></label><label>Tanulási ág<select id="lTrack"><option value="">Minden ág</option>${[...new Set(LESSONS.map(l=>l.track).filter(Boolean))].map(t=>`<option value="${esc(t)}" ${f.track===t?"selected":""}>${esc((TRACKS||{})[t]||t)}</option>`).join("")}</select></label></div><p class="small muted" id="lCount" role="status"></p></div><div class="lgrid" id="lessonResults"></div></div>`;
+  function results(){
+    const query=deacc(norm(f.search)),list=LESSONS.map((L,i)=>({L,i})).filter(({L})=>(!f.level||L.level===f.level)&&(!f.track||L.track===f.track)&&(!query||deacc(norm([L.t,L.hu,L.goal].join(" "))).includes(query)));
+    $("#lCount").textContent=list.length+" / "+LESSONS.length+" lecke";
+    let previousTrack=null;
+    $("#lessonResults").innerHTML=list.length?list.map(({L,i})=>{const state=ls(i),cls=state&&state.done?"done":state&&state.placed?"placed":i===nl?"cur":"",coverage=lessonCoverageCount(L.id);
+      const head=TRACKS&&previousTrack!==L.track?`<h2 style="grid-column:1/-1">${esc(TRACKS[L.track]||L.track)}</h2>`:"";previousTrack=L.track;
+      return head+`<button class="lcard ${cls}" data-l="${i}"><div class="pic"><img src="img/${L.id}.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"><span class="num">${state&&state.done?"✓":i+1}</span><span class="badge">${state&&state.done?`<span class="pill ok">${esc(state.best)}%</span>`:state&&state.placed?'<span class="pill">Átugorva</span>':i===nl?'<span class="pill now">Következő</span>':`<span class="pill">${L.level}</span>`}</span></div><div class="body"><b>${esc(L.t)}</b><span class="small muted">${esc(L.hu)} · ${L.words.length} szó, ${L.phrases.length} kifejezés</span>${coverage&&!state?.done?`<span class="small muted">${coverage} feladat már elkészült · folytatható</span>`:""}</div></button>`;
+    }).join(""):'<div class="card" style="grid-column:1/-1"><h2>Nincs ilyen lecke</h2><p class="muted">Próbálj másik keresést, vagy válaszd a minden szint / minden ág lehetőséget.</p></div>';
+    view.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>openLesson(+b.dataset.l));
+  }
+  $("#lSearch").oninput=e=>{f.search=e.target.value;results();};$("#lLevel").onchange=e=>{f.level=e.target.value;results();};$("#lTrack").onchange=e=>{f.track=e.target.value;results();};$("#lPlace").onclick=()=>startPlacement(false);results();
 }
 function openLesson(li){
   const L=LESSONS[li];prefetch(L.id);
@@ -25,31 +32,131 @@ function openLesson(li){
 }
 function distract(w,key,pool){const ans=w[key];const c=[...new Set(pool.filter(x=>x[key]!==ans).map(x=>x[key]))];const near=shuffle(c).slice(0,3);if(near.length<3){shuffle([...new Set(WORDS.map(x=>x[key]))].filter(x=>x!==ans&&!near.includes(x))).slice(0,3-near.length).forEach(x=>near.push(x));}return shuffle([ans,...near]);}
 function tilesFor(it,others){const words=it.replace(/[.?!,]/g,"").split(" ");const extra=shuffle([...new Set(others.flatMap(p=>p.it.replace(/[.?!,]/g,"").split(" ")))].filter(x=>!words.includes(x))).slice(0,2);return shuffle([...words,...extra]).map((w,i)=>({w,i}));}
-function startLesson(li){
-  const L=LESSONS[li];
+/* Stable authored exercise IDs make small daily sections add up to a whole lesson. */
+function lessonCoverageCount(id){return Object.keys((S.lessonCoverage&&S.lessonCoverage[id]||{}).results||{}).length;}
+function lessonApplicationExercises(li){
+  const L=LESSONS[li],own=(L.grammar||[]).map((g,k)=>({t:"type",q:g[0],blank:1,sub:"Alkalmazd a szabályt: írd be az alakot",ans:[g[1]],why:g[3]||"",coverageId:"apply:grammar:"+k,seconds:50,strict:true}));
+  const target=deacc(norm(L.goal)),rules={
+    en:{pattern:/to be|lenni/,items:[["She is a teacher. → Tagadd: She ___ a teacher.","is not","A to be után not áll. Az összevont isn't alak is jó.",["isn't"]],["You are from Hungary. → Kérdés: ___ from Hungary?","Are you","Kérdésben az are az alany elé kerül."],["I am tired. → Többes szám: We ___ tired.","are","A we alanyhoz are tartozik."]]},
+    it:{pattern:/essere|lenni/,items:[["Io sono stanco. → Többes szám: Noi ___ stanchi.","siamo","Az essere noi alakja siamo; a melléknév is többes számú."],["Tu sei ungherese. → Magázva: Lei ___ ungherese.","è","A magázó Lei harmadik személyű igealakot kér."],["Lui è a Roma. → Tagadd: Lui ___ a Roma.","non è","A non közvetlenül az ige elé kerül."]]},
+    es:{pattern:/ser =|ser vagy/,items:[["Yo soy de Hungría. → Többes szám: Nosotros ___ de Hungría.","somos","A ser nosotros alakja somos."],["Tú eres médico. → Harmadik személy: Él ___ médico.","es","A ser harmadik személyű alakja es."],["Ella es profesora. → Tagadd: Ella ___ profesora.","no es","A no közvetlenül az ige elé kerül."]]}
+  },rule=rules[lang()];
+  if(rule&&rule.pattern.test(target))return rule.items.map((g,k)=>({t:"type",q:g[0],blank:1,sub:"Alakítsd át a mondatot",ans:[g[1],...(g[3]||[])],why:g[2],coverageId:"apply:transform:"+k,section:"application",seconds:60,strict:true}));
+  if(own.length>=3)return own.slice(0,3);
+  const topic=deacc(norm(L.goal+" "+L.notes.join(" "))),keys=Object.keys(CDRILLS).filter(k=>{
+    const d=CDRILLS[k];return d&&Array.isArray(d.items)&&d.items.some(x=>x.q&&x.a&&!x.a.includes(" / "));
+  });
+  const aliases={tenses:["igeido","present","past","jovo","mult"],articles:["nevelo","a / an"],art:["nevelo","nemek"],preps:["eloljar","idopont"],prep:["eloljar"],cond:["felteteles"],serestar:["ser","estar"],pretimp:["mult","preterito"],porpara:["por","para"]};
+  const matched=keys.filter(k=>(aliases[k]||[deacc(norm(CDRILLS[k].title))]).some(w=>topic.includes(w)));
+  if(matched.length){
+    const d=CDRILLS[matched[0]],items=d.items.filter(x=>x.q&&typeof x.a==="string"&&!x.a.includes(" / "));
+    for(const [k,x] of items.slice(li%Math.max(1,items.length-2),li%Math.max(1,items.length-2)+3-own.length).entries())own.push({t:"type",q:x.q,blank:1,sub:"Alkalmazd a szabályt: "+d.title,ans:[x.a],why:x.why||"",coverageId:"apply:drill:"+matched[0]+":"+norm(x.q),seconds:50,strict:true});
+  }
+  // Authored course phrases supply a controlled application task when there is no matching drill rule.
+  for(let k=own.length;k<3&&L.phrases.length;k++){
+    const p=L.phrases[(li+k)%L.phrases.length],words=p[0].split(/\s+/),j=words.findIndex(w=>w.length>2&&/^[A-Za-zÀ-ÿ]/.test(w));
+    if(j<0)continue;const answer=words[j].replace(/[.,!?¿¡;:]$/,""),q=words.map((w,i)=>i===j?"___":w).join(" ");
+    own.push({t:"type",q,blank:1,sub:"Egészítsd ki a helyzethez illő mondatot: "+p[1],ans:[answer],why:"A tanult helyzet mintamondata: "+p[0],coverageId:"apply:phrase:"+p[3],seconds:45,strict:true});
+  }
+  return own;
+}
+function lessonExercisePlan(li){
+  const L=LESSONS[li],pool=POOL.filter(c=>c.li===li&&!c.ph),ph=POOL.filter(c=>c.li===li&&c.ph),q=[];
+  const words=pool.map((c,k)=>Object.assign(exFor(c,k%3===2?3:1),{coverageId:"word:"+c.id,section:"words",seconds:k%3===2?40:25})),phrases=ph.map((c,k)=>Object.assign(exFor(c,k%3===0?4:k%3===1?2:3),{coverageId:"phrase:"+c.id,section:"phrases",seconds:45}));
+  while(words.length||phrases.length){if(phrases.length)q.push(phrases.shift());q.push(...words.splice(0,2));}
+  return q.concat(lessonApplicationExercises(li).map(e=>Object.assign(e,{section:"application"})));
+}
+function startLesson(li,options={}){
+  const L=LESSONS[li];if(!L)return;
+  if(!options.restart&&offerExerciseResume("lesson:"+L.id,()=>startLesson(li,Object.assign({},options,{restart:true}))))return;
   prefetch(L.id);
-  const pool=L.words.map(w=>({it:w[0],hu:w[1],alt:w[2],id:w[3]})), ph=L.phrases.map(p=>({it:p[0],hu:p[1],alt:p[2],id:p[3]}));
-  const ex=[{t:"match",pairs:pick(pool,4)}];
-  pick(pool,3).forEach(w=>ex.push({t:"mc",q:w.it,sub:"Mit jelent?",say:w.it,ans:w.hu,cid:w.id,opts:distract(w,"hu",pool)}));
-  pick(pool,2).forEach(w=>ex.push({t:"mc",q:w.hu,sub:"Hogy mondod "+LG().adv+"?",ans:w.it,it:w.it,opts:distract(w,"it",pool)}));
-  pick(pool,2).forEach(w=>ex.push({t:"type",q:w.hu,sub:"Írd le "+LG().adv,ans:[w.it,...w.alt],it:w.it,cid:w.id}));
-  pick(ph,2).forEach(p=>ex.push({t:"order",q:p.hu,ans:p.it,it:p.it,cid:p.id,tiles:tilesFor(p.it,ph.filter(x=>x!==p))}));
-  pick(ph,2).forEach(p=>ex.push({t:"listen",ans:p.it,it:p.it,hu:p.hu,opts:shuffle([p.it,...pick(ph.filter(x=>x.it!==p.it),3).map(x=>x.it)])}));
-  pick(ph,1).forEach(p=>ex.push({t:"type",q:p.hu,sub:"Fordítsd le "+LG().adj+"ra",ans:[p.it,...p.alt],it:p.it,cid:p.id}));
-  if(L.grammar.length<3)pick(ph,2).forEach(p=>ex.push({t:"mc",q:p.it,sub:"Mit jelent a mondat?",say:p.it,ans:p.hu,opts:distract(p,"hu",ph.length>3?ph:POOL.filter(c=>c.ph))}));
-  pick(L.grammar,5).forEach(g=>ex.push(g[2]?{t:"mc",q:g[0],blank:1,sub:"Válaszd ki a helyes alakot",ans:g[1],opts:shuffle(g[2].slice()),why:g[3]||""}:{t:"type",q:g[0],blank:1,sub:"Írd be a helyes alakot",ans:[g[1]],why:g[3]||""}));
-  P={kind:"lesson",li,queue:[ex[0],...shuffle(ex.slice(1))],i:0,ok:0,n:0,xp:0,st:{}};
-  renderEx();
+  const plan=lessonExercisePlan(li),results=(S.lessonCoverage&&S.lessonCoverage[L.id]||{}).results||{},replay=!!ls(li)?.done;
+  let selected=options.guided&&!replay?plan.filter(e=>!results[e.coverageId]):plan;
+  if(options.guided){let seconds=0;selected=selected.filter(e=>{if(seconds>=(options.seconds||330))return false;seconds+=(e.seconds||35)+(e.cid&&!S.cards[e.cid]?15:0);return true;});}
+  const queue=[];
+  selected.forEach(e=>{const c=e.cid&&POOL.find(c=>c.id===e.cid);if(options.guided&&c&&!results[e.coverageId]&&!S.cards[c.id])queue.push({t:"intro",c,li,seconds:15});queue.push(e);});
+  P={kind:"lesson",li,lessonId:L.id,queue,i:0,ok:0,n:0,xp:0,st:{},graded:{},chunk:!!options.guided,coverageIds:selected.map(e=>e.coverageId),replay};
+  if(!queue.length)return finishLesson();renderEx();
+}
+/* Saved snapshots hold data only. Graded feedback resumes at the following question. */
+function validExerciseSnapshot(x){
+  const object=v=>!!v&&typeof v==="object"&&!Array.isArray(v),text=v=>typeof v==="string"&&v.length<=20000;
+  const integer=(v,max=1000000)=>Number.isSafeInteger(v)&&v>=0&&v<=max;
+  const strings=(v,max=100)=>Array.isArray(v)&&v.length>0&&v.length<=max&&v.every(text);
+  if(!object(x)||x.cleared||x.v!==1||!object(x.session))return false;
+  const s=x.session,queue=s.queue;
+  if(!["lesson","daily","miss","speak"].includes(s.kind)||!Array.isArray(queue)||!queue.length||queue.length>200||!integer(s.i,queue.length))return false;
+  if(s.kind==="lesson"&&(typeof x.lessonId!=="string"||!integer(s.li,LESSONS.length-1)||LESSONS[s.li].id!==x.lessonId))return false;
+  if(s.kind!=="lesson"&&(x.lessonId!=null||s.li!=null))return false;
+  for(const key of ["ok","n","xp","retryN","retryOk"])if(s[key]!==undefined&&!integer(s[key]))return false;
+  if(!integer(s.ok)||!integer(s.n)||!integer(s.xp)||s.ok>s.n)return false;
+  if(!object(s.graded)||Object.entries(s.graded).some(([id,n])=>!POOL.some(c=>c.id===id)||n!==1))return false;
+  if(s.coverageIds!==undefined&&(!Array.isArray(s.coverageIds)||s.coverageIds.length>200||!s.coverageIds.every(text)))return false;
+  for(const e of queue){
+    if(!object(e)||!["intro","mc","type","listen","dict","order","match","speak"].includes(e.t))return false;
+    for(const key of ["q","sub","say","it","hu","why","coverageId","section"])if(e[key]!==undefined&&!text(e[key]))return false;
+    if(e.cid!==undefined&&(typeof e.cid!=="string"||!POOL.some(c=>c.id===e.cid)))return false;
+    if(e.li!==undefined&&!integer(e.li,LESSONS.length))return false;
+    if(e.blank&&(!["mc","type"].includes(e.t)||!text(e.q)))return false;
+    if(e.t==="intro"){
+      const c=e.c;if(!object(c)||!POOL.some(p=>p.id===c.id)||!text(c.it)||!text(c.hu)||(c.alt!==undefined&&(!Array.isArray(c.alt)||c.alt.length>100||!c.alt.every(text))))return false;
+    }
+    if(e.opts!==undefined&&!strings(e.opts,30))return false;
+    if(["mc","listen"].includes(e.t)&&(!strings(e.opts,30)||!text(e.ans)||!e.opts.includes(e.ans)))return false;
+    if(["type","dict"].includes(e.t)&&!strings(e.ans,30))return false;
+    if(["mc","type","order"].includes(e.t)&&!text(e.q))return false;
+    if(["order","speak"].includes(e.t)&&!text(e.ans))return false;
+    if(e.t==="order"){
+      if(!Array.isArray(e.tiles)||!e.tiles.length||e.tiles.length>200||e.tiles.some(t=>!object(t)||!integer(t.i,10000)||!text(t.w))||new Set(e.tiles.map(t=>t.i)).size!==e.tiles.length)return false;
+    }
+    if(e.t==="match"){
+      if(!Array.isArray(e.pairs)||!e.pairs.length||e.pairs.length>100||e.pairs.some(p=>!object(p)||!text(p.it)||!text(p.hu)))return false;
+      if(e.matchDone!==undefined&&(!Array.isArray(e.matchDone)||e.matchDone.some(i=>!integer(i,e.pairs.length-1))||new Set(e.matchDone).size!==e.matchDone.length))return false;
+      if(e.matchMiss!==undefined&&!integer(e.matchMiss))return false;
+    }
+  }
+  if(s.draft!=null){
+    const d=s.draft,e=queue[s.i];if(!object(d)||!e)return false;
+    if(d.text!==undefined&&(!text(d.text)||!["type","dict"].includes(e.t)))return false;
+    if(d.sel!=null&&(!["mc","listen"].includes(e.t)||!integer(d.sel,e.opts.length-1)))return false;
+    if(d.picked!==undefined&&(e.t!=="order"||!Array.isArray(d.picked)||d.picked.some(i=>!integer(i,10000)||!e.tiles.some(t=>t.i===i))||new Set(d.picked).size!==d.picked.length))return false;
+  }
+  return true;
+}
+function savedExercise(){const x=(S.activeExercises||{})[lang()];return validExerciseSnapshot(x)?x:null;}
+function clearActiveExercise(){S.activeExercises=S.activeExercises||{};S.activeExercises[lang()]={cleared:true,updatedAt:Date.now()};}
+function persistExercise(afterAnswer=false){
+  if(!P||!Array.isArray(P.queue))return;
+  const session=JSON.parse(JSON.stringify(P));delete session.st;
+  if(afterAnswer){session.i++;delete session.draft;}else session.draft=P.draft||null;
+  S.activeExercises=S.activeExercises||{};
+  S.activeExercises[lang()]={v:1,updatedAt:Date.now(),scope:P.kind==="lesson"?"lesson:"+LESSONS[P.li].id:"round:"+P.kind,lessonId:P.kind==="lesson"?LESSONS[P.li].id:null,session,daily:!!dailyActive};save();
+}
+function offerExerciseResume(scope,restart){
+  const saved=savedExercise();if(!saved)return false;
+  const li=saved.lessonId?LESSONS.findIndex(l=>l.id===saved.lessonId):null;
+  if(saved.lessonId&&li<0){clearActiveExercise();save();return false;}
+  const count=Math.min(saved.session.i,saved.session.queue.length),title=li!==null?LESSONS[li].hu:"Ismétlőkör";
+  view.innerHTML=`<div class="player"><span class="label">Mentett gyakorlás</span><h1>Folytassuk innen?</h1><div class="card stack"><h2>${esc(title)}</h2><p>${count} / ${saved.session.queue.length} feladat elkészült. A feladatsor, a válaszaid eredménye és az ismétlési ütemezés megmaradt.</p></div><button class="btn block" id="resumeExercise">Mentett gyakorlás folytatása</button><button class="btn ghost" id="restartExercise">${saved.scope===scope?"Ezt a gyakorlást újrakezdem":"A kiválasztott gyakorlást kezdem"}</button><button class="btn ghost" data-go="ma">Később folytatom</button></div>`;
+  $("#resumeExercise").onclick=resumeActiveExercise;$("#restartExercise").onclick=()=>{clearActiveExercise();save();restart();};return true;
+}
+function resumeActiveExercise(){
+  const saved=savedExercise();if(!saved)return;
+  const session=JSON.parse(JSON.stringify(saved.session)),allowed=new Set(["intro","mc","type","listen","dict","order","match","speak"]);
+  if(!["lesson","daily","miss","speak"].includes(session.kind)||session.queue.length>200||!session.queue.every(e=>e&&allowed.has(e.t)&&(!e.cid||POOL.some(c=>c.id===e.cid))&&(e.t!=="intro"||e.c&&POOL.some(c=>c.id===e.c.id)))||!Number.isInteger(session.i)||session.i<0||session.i>session.queue.length){clearActiveExercise();save();return go("ma");}
+  if(saved.lessonId){session.li=LESSONS.findIndex(l=>l.id===saved.lessonId);if(session.li<0)return;}
+  P=session;P.st={};dailyActive=!!saved.daily;
+  if(P.i>=P.queue.length)return P.kind==="lesson"?finishLesson():finishRound();renderEx();
 }
 function renderEx(){
-  const e=P.queue[P.i]; P.st={sel:null,picked:[],done:false,mL:null,matched:0,miss:0,t0:Date.now(),heard:null};
+  const e=P.queue[P.i],draft=P.draft||{}; P.st={sel:draft.sel??null,picked:draft.picked||[],done:false,mL:null,matched:(e.matchDone||[]).length,miss:e.matchMiss||0,t0:Date.now(),heard:null};persistExercise();
   let body="";
   if(e.t==="mc"){body=`<div class="stack"><span class="label">${esc(e.sub)}</span><div class="row" style="flex-wrap:nowrap;align-items:center">${e.say?spkBtn(e.say):""}<div class="q">${e.blank?blankify(e.q):esc(e.q)}</div></div></div>
     <div class="opts">${e.opts.map((o,i)=>`<button class="opt" data-o="${i}" aria-pressed="false"><kbd>${i+1}</kbd>${esc(o)}</button>`).join("")}</div>`;}
   if(e.t==="type"){body=`<div class="stack"><span class="label">${esc(e.sub)}</span><div class="q">${e.blank?blankify(e.q):esc(e.q)}</div></div>
     <input id="ans" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Írd ide ${LG().adv}…" aria-label="Válasz">`;}
   if(e.t==="order"){body=`<div class="stack"><span class="label">Rakd össze ${LG().adv}</span><div class="q">${esc(e.q)}</div></div>
-    <div class="tiles answer-line" id="line"></div><div class="tiles" id="bank">${e.tiles.map(t=>`<button class="tilebtn" data-t="${t.i}">${esc(t.w)}</button>`).join("")}</div>`;}
+    <div class="tiles answer-line" id="line"></div><div class="tiles" id="bank">${e.tiles.map(t=>`<button class="tilebtn" data-t="${esc(t.i)}">${esc(t.w)}</button>`).join("")}</div>`;}
   if(e.t==="listen"){body=`<div class="stack"><span class="label">Mit hallasz?</span><div class="listen">${spkBtn(e.ans,"big")}<button class="icon-btn" data-say="${esc(e.ans)}" data-slow aria-label="Lassan">${I.slow}</button></div></div>
     <div class="opts">${e.opts.map((o,i)=>`<button class="opt" data-o="${i}" aria-pressed="false"><kbd>${i+1}</kbd>${esc(o)}</button>`).join("")}</div>`;}
   if(e.t==="match"){const L=shuffle(e.pairs.map((p,i)=>({x:p.it,i}))),R=shuffle(e.pairs.map((p,i)=>({x:p.hu,i})));
@@ -65,10 +172,10 @@ function renderEx(){
     ${e.retry?'<p class="small muted" role="status">Visszakérdezés · ezt már gyakoroltuk. Az eredeti pontosságodat és az XP-t nem módosítja.</p>':""}${body}
     <div class="pfoot"><div id="fb"></div><button class="btn block" id="go" ${e.t==="match"?"hidden":""} disabled>Ellenőrzés</button></div>
   </div>`;
-  const li=P.li, kind=P.kind; $("#quit").onclick=()=>{P=null;if(dailyActive){go("ma");return;}if(kind==="lesson")openLesson(li);else render();};
+  const li=P.li, kind=P.kind; $("#quit").onclick=()=>{persistExercise(P.st.done);P=null;if(dailyActive){go("ma");return;}if(kind==="lesson")openLesson(li);else render();};
   const goBtn=$("#go");
   if(e.t==="intro"){goBtn.disabled=false;goBtn.textContent="Megvan, tovább";P.st.done=true;setTimeout(()=>say(e.c.it),250);}
-  if(e.t==="dict"){const inp=$("#ans");inp.oninput=()=>goBtn.disabled=!inp.value.trim();setTimeout(()=>{say(e.ans[0]);inp.focus();},250);}
+  if(e.t==="dict"){const inp=$("#ans");inp.value=draft.text||"";inp.oninput=()=>{goBtn.disabled=!inp.value.trim();P.draft={text:inp.value};persistExercise();};goBtn.disabled=!inp.value.trim();setTimeout(()=>{say(e.ans[0]);inp.focus();},250);}
   if(e.t==="speak"){
     const session=P,state=P.st;
     $("#mic").onclick=async()=>{const h=$("#heard"),mic=$("#mic");h.textContent="Hallgatlak…";mic.disabled=true;
@@ -77,23 +184,25 @@ function renderEx(){
       if(P===session&&P.st===state)mic.disabled=false;};
     $("#skipSpeak").onclick=()=>{P.st.done=true;nextEx();};
   }
-  if(e.t==="mc"||e.t==="listen"){view.querySelectorAll("[data-o]").forEach(b=>b.onclick=()=>{if(P.st.done)return;view.querySelectorAll("[data-o]").forEach(x=>x.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed","true");P.st.sel=+b.dataset.o;goBtn.disabled=false;if(e.t==="mc"&&!e.say&&e.it)say(e.opts[P.st.sel]);});}
-  if(e.t==="type"){const inp=$("#ans");inp.oninput=()=>goBtn.disabled=!inp.value.trim();setTimeout(()=>inp.focus(),30);}
+  if(e.t==="mc"||e.t==="listen"){view.querySelectorAll("[data-o]").forEach(b=>b.onclick=()=>{if(P.st.done)return;view.querySelectorAll("[data-o]").forEach(x=>x.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed","true");P.st.sel=+b.dataset.o;P.draft={sel:P.st.sel};persistExercise();goBtn.disabled=false;if(e.t==="mc"&&!e.say&&e.it)say(e.opts[P.st.sel]);});}
+  if(e.t==="type"){const inp=$("#ans");inp.value=draft.text||"";inp.oninput=()=>{goBtn.disabled=!inp.value.trim();P.draft={text:inp.value};persistExercise();};goBtn.disabled=!inp.value.trim();setTimeout(()=>inp.focus(),30);}
   if(e.t==="order"){
     const line=$("#line"),bank=$("#bank");
-    const draw=()=>{line.innerHTML=P.st.picked.map(i=>`<button class="tilebtn" data-u="${i}">${esc(e.tiles.find(t=>t.i===i).w)}</button>`).join("");
+    const draw=()=>{line.innerHTML=P.st.picked.map(i=>`<button class="tilebtn" data-u="${esc(i)}">${esc(e.tiles.find(t=>t.i===i).w)}</button>`).join("");
       bank.querySelectorAll("[data-t]").forEach(b=>b.classList.toggle("used",P.st.picked.includes(+b.dataset.t)));goBtn.disabled=!P.st.picked.length;
-      line.querySelectorAll("[data-u]").forEach(b=>b.onclick=()=>{if(P.st.done)return;P.st.picked=P.st.picked.filter(x=>x!==+b.dataset.u);draw();});};
-    bank.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>{if(P.st.done)return;const i=+b.dataset.t;if(!P.st.picked.includes(i)){P.st.picked.push(i);say(e.tiles.find(t=>t.i===i).w);draw();}});
+      line.querySelectorAll("[data-u]").forEach(b=>b.onclick=()=>{if(P.st.done)return;P.st.picked=P.st.picked.filter(x=>x!==+b.dataset.u);P.draft={picked:P.st.picked};persistExercise();draw();});};
+    draw();bank.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>{if(P.st.done)return;const i=+b.dataset.t;if(!P.st.picked.includes(i)){P.st.picked.push(i);P.draft={picked:P.st.picked};persistExercise();say(e.tiles.find(t=>t.i===i).w);draw();}});
   }
   if(e.t==="listen") setTimeout(()=>say(e.ans),250);
   if(e.t==="match"){
+    (e.matchDone||[]).forEach(i=>view.querySelectorAll(`[data-ml="${i}"],[data-mr="${i}"]`).forEach(b=>b.classList.add("right","gone")));
     view.querySelectorAll("[data-ml]").forEach(b=>b.onclick=()=>{view.querySelectorAll("[data-ml]").forEach(x=>x.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed","true");P.st.mL=+b.dataset.ml;say(e.pairs[P.st.mL].it);});
-    view.querySelectorAll("[data-mr]").forEach(b=>b.onclick=()=>{if(P.st.mL===null)return;const l=view.querySelector(`[data-ml="${P.st.mL}"]`);
-      if(+b.dataset.mr===P.st.mL){l.classList.add("right","gone");b.classList.add("right","gone");P.st.matched++;P.st.mL=null;
-        if(P.st.matched===e.pairs.length){P.st.done=true;const ok=P.st.miss<=1;recordExerciseResult(e,ok,null,false);showFb(ok,null,(ok?"Minden pár a helyén.":"Kész, de "+P.st.miss+" tévesztéssel. A hibás párokat hallgasd meg újra; pár feladat múlva visszakérdezek."));goBtn.hidden=false;goBtn.disabled=false;goBtn.textContent="Tovább";goBtn.focus();}}
-      else{P.st.miss++;b.classList.add("wrong");l.classList.add("wrong");setTimeout(()=>{b.classList.remove("wrong");l.classList.remove("wrong");},500);}});
+    view.querySelectorAll("[data-mr]").forEach(b=>b.onclick=()=>{if(P.st.mL===null||(e.matchDone||[]).includes(P.st.mL))return;const l=view.querySelector(`[data-ml="${P.st.mL}"]`);
+      if(+b.dataset.mr===P.st.mL){l.classList.add("right","gone");b.classList.add("right","gone");P.st.matched++;e.matchDone=(e.matchDone||[]).concat(P.st.mL);P.st.mL=null;persistExercise();
+        if(P.st.matched===e.pairs.length){P.st.done=true;const ok=P.st.miss<=1;recordExerciseResult(e,ok,null,false);showFb(ok,null,(ok?"Minden pár a helyén.":"Kész, de "+P.st.miss+" tévesztéssel. A hibás párokat hallgasd meg újra; pár feladat múlva visszakérdezek."));goBtn.hidden=false;goBtn.disabled=false;goBtn.textContent="Tovább";persistExercise(true);goBtn.focus();}}
+      else{P.st.miss++;e.matchMiss=P.st.miss;persistExercise();b.classList.add("wrong");l.classList.add("wrong");setTimeout(()=>{b.classList.remove("wrong");l.classList.remove("wrong");},500);}});
   }
+  if(draft.sel!=null&&(e.t==="mc"||e.t==="listen")){const selected=view.querySelector(`[data-o="${draft.sel}"]`);if(selected){selected.setAttribute("aria-pressed","true");goBtn.disabled=false;}}
   goBtn.onclick=()=>{if(P.st.done)return nextEx();evaluate();};
 }
 function showFb(ok,ans,extra){$("#fb").innerHTML=`<div class="feedback ${ok?"ok":"bad"}" role="status"><b>${ok?rnd(LG().ok):"Nem egészen."}</b>${ans?`<span>Helyes válasz: <span class="ans">${esc(ans)}</span></span>`:""}${extra?`<span class="small">${esc(extra)}</span>`:""}</div>`;}
@@ -108,6 +217,7 @@ function recordExerciseResult(e,ok,warn,fast){
   if(e.retry){P.retryN=(P.retryN||0)+1;if(ok)P.retryOk=(P.retryOk||0)+1;return;}
   P.n++;if(ok){P.ok++;P.xp+=2;}else queueExerciseRetry(e);
   if(e.cid)itemResult(e,ok,warn,fast);
+  if(P.kind==="lesson"&&e.coverageId&&!P.replay){S.lessonCoverage=S.lessonCoverage||{};const c=S.lessonCoverage[LESSONS[P.li].id]||(S.lessonCoverage[LESSONS[P.li].id]={results:{}});if(!c.results[e.coverageId])c.results[e.coverageId]={ok:!!ok,at:Date.now()};c.updatedAt=Date.now();}
 }
 function exerciseExplanation(e){
   if(e.why)return String(e.why);
@@ -128,7 +238,7 @@ function evaluate(){
   if(!P||P.st.done)return;
   const e=P.queue[P.i];let ok=false,warn=null;
   if(e.t==="mc"||e.t==="listen"){ok=e.opts[P.st.sel]===e.ans;view.querySelectorAll("[data-o]").forEach(b=>{const o=e.opts[+b.dataset.o];if(o===e.ans)b.classList.add("right");else if(+b.dataset.o===P.st.sel)b.classList.add("wrong");});}
-  if(e.t==="type"||e.t==="dict"){const r=check($("#ans").value,e.ans);ok=r.ok;warn=r.warn;$("#ans").readOnly=true;}
+  if(e.t==="type"||e.t==="dict"){const r=check($("#ans").value,e.ans,{type:e.strict?"grammar":e.t==="dict"?"dictation":e.cid&&!POOL.find(c=>c.id===e.cid)?.ph?"word":"translation"});ok=r.ok;warn=r.warn;$("#ans").readOnly=true;}
   if(e.t==="speak"){const sc=speechScore(e.ans,P.st.heard||[]);ok=sc>=0.75;if(ok&&sc<0.95)warn="A felismert szöveg részben egyezik a mintával. Hasonlítsd össze a két mondatot, majd próbáld újra.";}
   if(e.t==="order"){const text=P.st.picked.map(i=>e.tiles.find(t=>t.i===i).w).join(" ");ok=norm(text)===norm(e.ans);}
   P.st.done=true;
@@ -144,23 +254,24 @@ function evaluate(){
   const answer=Array.isArray(e.ans)?e.ans[0]:e.ans;
   const sp=e.it||(e.blank?e.q.replace(/\s*\(.*?\)\s*$/,"").replace("___",answer):null);
   if(sp&&!/^Írd|^Hogy van/.test(e.q))say(sp);
-  const g=$("#go");g.textContent="Tovább";g.disabled=false;g.focus();
+  persistExercise(true);const g=$("#go");g.textContent="Tovább";g.disabled=false;g.focus();
 }
-function nextEx(){P.i++;if(P.i>=P.queue.length)return P.kind==="lesson"?finishLesson():finishRound();renderEx();}
+function nextEx(){P.i++;delete P.draft;if(P.i>=P.queue.length)return P.kind==="lesson"?finishLesson():finishRound();renderEx();}
+function seedLessonReviews(li,ids,limit){
+  const candidates=POOL.filter(c=>c.li===li&&c.ph&&(!ids||ids.includes("phrase:"+c.id))&&!S.cards[c.id]).slice(0,limit);
+  candidates.forEach(c=>{const card=sched(null,2,c.id);card.due=today()+1;S.cards[c.id]=card;});
+  return candidates.length;
+}
 function finishLesson(){
-  const acc=P.n?Math.round(P.ok/P.n*100):0, prev=ls(P.li), firstTime=!(prev&&prev.done);
-  const bonus=acc>=90?10:0, xp=P.xp+bonus;
-  S.lessons[LESSONS[P.li].id]={done:true,best:Math.max(acc,prev?prev.best||0:0),day:prev&&prev.day&&!prev.placed?prev.day:today()};
-  if(firstTime||(prev&&prev.placed))incEv("lessons");addXP(xp);
-  const L=LESSONS[P.li], n=L.words.length+L.phrases.length, li=P.li;P=null;
-  view.innerHTML=`<div class="player" style="justify-content:center;text-align:center;align-items:center">
-    ${firstTime?`<div class="stamp-new">${stampSvg(L,li,true,today())}</div><span class="label">Új pecsét az útleveledben</span>`:`<span class="label">Lecke ${li+1} kész</span>`}<h1>${LG().fin[acc>=90?0:acc>=70?1:2]}</h1>
-    <div class="stats" style="width:100%;max-width:420px;grid-template-columns:repeat(2,minmax(0,1fr))"><div class="card stat"><span class="label">Pontosság</span><b class="tnum">${acc}%</b></div><div class="card stat"><span class="label">Szerzett XP</span><b class="tnum">+${xp}</b></div></div>
-    <p class="muted" style="max-width:46ch">${firstTime?`A lecke ${n} szava és kifejezése bekerült a szókártyáid közé. Holnaptól ismétlésre is feljönnek.`:"Az ismétlés segít, hogy a szavak hosszú távon megmaradjanak."}${acc<70?" Érdemes még egyszer végigcsinálni.":""}</p>
-    <div class="row" style="justify-content:center"><button class="btn ghost" id="again">Újra</button><button class="btn" id="cont">${nextLesson()!==null?"Következő lecke":"Leckék"}</button></div></div>`;
-  confetti();
-  $("#again").onclick=()=>startLesson(li);
-  $("#cont").onclick=()=>{const n=nextLesson();if(n!==null)openLesson(n);else renderLessons();};
-  if(typeof dailyLessonFinished==="function")dailyLessonFinished(li,acc);
+  const session=P,L=LESSONS[session.li],li=session.li,coverage=(S.lessonCoverage&&S.lessonCoverage[L.id]||{}).results||{},plan=lessonExercisePlan(li);
+  const complete=!session.chunk||plan.every(e=>coverage[e.coverageId]),acc=session.chunk&&complete?Math.round(plan.filter(e=>coverage[e.coverageId]?.ok).length/Math.max(1,plan.length)*100):session.n?Math.round(session.ok/session.n*100):0,prev=ls(li),firstTime=!(prev&&prev.done),bonus=complete&&acc>=90?10:0,xp=session.xp+bonus;
+  const reviewLimit=typeof dailyPacing==="function"?dailyPacing().newReviews:5,seeded=seedLessonReviews(li,session.chunk?session.coverageIds:null,reviewLimit);
+  clearActiveExercise();P=null;
+  if(complete){S.lessons[L.id]={done:true,best:Math.max(acc,prev?prev.best||0:0),day:prev&&prev.day&&!prev.placed?prev.day:today()};if(firstTime)incEv("lessons");}
+  addXP(xp);
+  view.innerHTML=`<div class="player" style="justify-content:center;text-align:center;align-items:center"><span class="label">${complete?"Lecke kész":"Mai leckeszakasz kész"}</span><h1>${complete?LG().fin[acc>=90?0:acc>=70?1:2]:"Egy újabb rész már megvan."}</h1>
+    ${complete&&firstTime?`<div class="stamp-new">${stampSvg(L,li,true,today())}</div>`:""}<div class="stats" style="width:100%;max-width:420px;grid-template-columns:repeat(2,minmax(0,1fr))"><div class="card stat"><span class="label">Pontosság</span><b>${acc}%</b></div><div class="card stat"><span class="label">Szerzett XP</span><b>+${xp}</b></div></div><p class="muted">${complete?"A lecke feladatait végiggyakoroltad.":`${Object.keys(coverage).length} / ${plan.length} feladat készült el. A következő alkalommal a még hátralévő résszel folytatjuk; a teljes lecke addig nincs befejezettnek jelölve.`} ${seeded?seeded+" új kulcskifejezés holnap ismétlésre vár.":"A már ütemezett kifejezések a saját időpontjukban térnek vissza."}</p><div class="row"><button class="btn ghost" id="again">${complete?"Újra":"További leckeszakasz"}</button><button class="btn" id="cont">${complete?"Következő lecke":"Vissza a leckékhez"}</button></div></div>`;
+  $("#again").onclick=()=>startLesson(li,session.chunk?{guided:true,seconds:dailyPacing().lessonSeconds}:{});
+  $("#cont").onclick=()=>{const n=nextLesson();if(complete&&n!==null)openLesson(n);else renderLessons();};
+  if(complete)confetti();if(typeof dailyLessonFinished==="function")dailyLessonFinished(li,acc);
 }
-

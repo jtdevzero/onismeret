@@ -15,7 +15,7 @@ function exFor(c,st){
   const mcHu=()=>({...base,t:"mc",q:c.hu,sub:"Hogy mondod "+LG().adv+"?",ans:c.it,opts:distract(c,"it",pool)});
   const order=()=>({...base,t:"order",q:c.hu,ans:c.it,tiles:tilesFor(c.it,pool.filter(x=>x!==c))});
   const type=()=>({...base,t:"type",q:c.hu,sub:"Írd le "+LG().adv,ans:[c.it,...alt]});
-  const dict=()=>({...base,t:"dict",ans:[c.it,...alt],hu:c.hu});
+  const dict=()=>({...base,t:"dict",ans:[c.it],hu:c.hu});
   const speak=()=>({...base,t:"speak",ans:c.it,hu:c.hu});
   if(st==="speak")return speak();
   if(st<=1)return mcIt();
@@ -43,6 +43,7 @@ function itemResult(e,ok,warn,fast){
   save();
 }
 function startRound(kind,limits={}){
+  if(!limits.restart&&offerExerciseResume("round:"+kind,()=>startRound(kind,Object.assign({},limits,{restart:true}))))return;
   const q=[];
   if(kind==="daily"){
     const due=dueList().sort((a,b)=>S.cards[a.id].due-S.cards[b.id].due).slice(0,limits.review??25), nw=newAvail().slice(0,Math.min(newLeft(),limits.newCards??10));
@@ -64,7 +65,7 @@ function startRound(kind,limits={}){
 function finishRound(){
   const kind=P.kind, acc=P.n?Math.round(P.ok/P.n*100):100, bonus=kind==="daily"?10:0, xp=P.xp+bonus;
   if(kind==="daily"){S.rounds[today()]=(S.rounds[today()]||0)+1;incEv("rounds");}
-  addXP(xp);P=null;
+  clearActiveExercise();addXP(xp);P=null;
   const title={daily:"Napi kör kész",miss:"Hibakör kész",speak:"Hangos gyakorlás kész"}[kind];
   view.innerHTML=`<div class="player" style="justify-content:center;text-align:center;align-items:center">
     <span class="label">${title}</span><h1>${LG().fin[acc>=90?0:acc>=70?1:2]}</h1>
