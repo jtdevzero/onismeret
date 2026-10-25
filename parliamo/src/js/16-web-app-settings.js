@@ -38,8 +38,8 @@ function webSettings(aiOnly=false){
     <span class="small" id="sSyncMsg" role="status">${syncLine()}</span></div>
   ${usageCard()}
   <div class="card stack" style="gap:.6rem"><span class="label">Offline és mentés</span>
-    <div class="row"><button class="btn ghost" id="sOffline">Letöltés offline használatra</button><span class="small muted" id="sOffMsg" role="status"></span></div>
-    <p class="small muted">Letölti mindhárom nyelv hangjait és képeit (kb. 60 MB), hogy net nélkül is működjön. Az AI-funkciókhoz net kell.</p>
+    <div class="row"><label class="stack" style="gap:.3rem" for="sOfflineLang"><span class="small">Offline tananyag</span><select id="sOfflineLang" style="width:auto">${Object.entries(LANGS).map(([key,L])=>`<option value="${key}" ${key===lang()?"selected":""}>${esc(L.name)}</option>`).join("")}<option value="all">Mindhárom nyelv</option></select></label><button class="btn ghost" id="sOffline">Letöltés és ellenőrzés</button></div>
+    <p class="small muted">A kiválasztott nyelv kész hanganyagait és képeit tölti le, és ellenőrzi a mentést. Mindhárom nyelv együtt nagyobb tárhelyet használ. Az AI-funkciókhoz továbbra is net kell.</p><span class="small muted" id="sOffMsg" role="status" aria-live="polite"></span>
     <div class="row"><button class="btn ghost" id="sExport">Haladás mentése fájlba</button><label class="btn ghost" for="sImport">Visszatöltés fájlból</label><input type="file" id="sImport" accept="application/json,.json" hidden></div></div>`;
 }
 /* Daily reminder via Web Push through the user's own server (worker/). */
@@ -94,27 +94,100 @@ function bindWebSettings(){
     if(on&&(!S.settings.proxy||!S.settings.pass)){$("#sSyncMsg").textContent=pushMsg({code:"no_proxy"});return;}
     S.settings.cloud=on;cloudErr="";save();refreshWebSettings();if(on){$("#sSyncMsg").textContent="Szinkronizálok…";await cloudSync();}});
   if($("#sSyncNow"))$("#sSyncNow").onclick=async e=>{e.preventDefault();$("#sSyncMsg").textContent="Szinkronizálok…";await cloudSync();};
-  $("#sOffline").onclick=async e=>{e.preventDefault();const m=$("#sOffMsg");m.textContent="Összeállítom a listát…";
-    try{const files=[...Object.keys(LANGS).flatMap(l=>[`data/${l}.json`,`data/stories-${l}.json`,`data/verbs-${l}.json`]),...Object.keys(LANGS).map(l=>`data/drills-${l}.json`),"img/hero.webp","img/hero-en.webp","img/hero-es.webp","img/teacher.webp",...SCENARIOS.map(x=>"img/sc-"+x.id+".webp")];
-      for(const l of Object.keys(LANGS)){const [pk,st,vb]=await Promise.all([`data/${l}.json`,`data/stories-${l}.json`,`data/verbs-${l}.json`].map(u=>fetch(u).then(r=>r.json())));
-        pk.units.forEach(u=>files.push("audio/"+u.id+".json","img/"+u.id+".webp"));st.stories.forEach(x=>files.push("audio/st-"+x.id+".json"));
-        files.push(...["podcasts","pron","exam","packs"].map(n=>`data/${n}-${l}.json`),`audio/pron-${l}.json`);
-        if(l==="en"){files.push("data/writing-en.json","data/vocabtest-en.json","audio/vb-en.json","audio/pron-en.json","audio/acc-en.json","audio/dl-en.json","data/podcasts-en.json","data/pron-en.json","data/exam-en.json","data/accents-en.json","data/packs-en.json","data/offline-en.json");}
-        const [pdl,pkl]=await Promise.all([`data/podcasts-${l}.json`,`data/packs-${l}.json`].map(u=>fetch(u).then(r=>r.ok?r.json():null).catch(()=>null)));
-        (pdl?pdl.podcasts:[]).forEach(p=>files.push("audio/pod-"+p.id+".json","img/pod-"+p.id+".webp"));(pkl?pkl.packs:[]).forEach(p=>files.push(`audio/pk-${l}-${p.id}.json`));
-        if(l!=="en")vb.verbs.forEach(v=>files.push("audio/vb-"+(l==="es"?"es-":"")+v.inf+".json"));
-        const [sel,mkl,cll,crl,spl]=await Promise.all(["serials","mock","colloc","core","speaking"].map(n=>fetch(`data/${n}-${l}.json`).then(r=>r.ok?r.json():null).catch(()=>null)));
-        (sel?sel.serials:[]).forEach(x=>files.push(`audio/ser-${l}-${x.id}.json`,`img/${x.img}.webp`));(mkl?mkl.mocks:[]).filter(m=>m.parts.some(p=>p.lines)).forEach(m=>files.push(`audio/mock-${l}-${m.id}.json`));
-        (cll?cll.groups:[]).forEach(g=>files.push(`audio/col-${l}-${g.id}.json`));(spl?spl.cam:[]).forEach(c=>files.push(`img/${c.pics.a}.webp`,`img/${c.pics.b}.webp`));
-        const on=(S.core||{})[l]||{};if(crl)files.push(...new Set(crl.levels.filter(L=>on[L.level]).flatMap(L=>L.words.map(w=>`audio/${w.b}.json`))));}
-      let k=0;for(const f of files){await fetch(f).catch(()=>{});k++;m.textContent=`${k} / ${files.length}`;}
-      m.textContent="Kész, az app net nélkül is működik.";}catch(err){m.textContent="A letöltés megszakadt. Próbáld újra, amikor van net.";}};
+  const offline=$("#sOffline"),offlineLang=$("#sOfflineLang");
+  offline.onclick=async e=>{
+    e.preventDefault();if(offline.disabled)return;
+    const message=$("#sOffMsg"),selected=offlineLang?offlineLang.value:lang(),languages=selected==="all"?Object.keys(LANGS):[selected];
+    offline.disabled=true;if(offlineLang)offlineLang.disabled=true;message.textContent="Összeállítom és ellenőrzöm a letöltést…";
+    try{
+      const result=await downloadOfflineLanguages(languages,(done,total)=>message.textContent=`Ellenőrzés: ${done} / ${total} fájl`);
+      if(result.ok){message.textContent=`Ellenőrizve: ${result.total} fájl elmentve. A kiválasztott kész tananyag offline elérhető; az AI-hoz net kell.`;offline.textContent="Letöltés és ellenőrzés";}
+      else{message.textContent=`${result.missing.length} fájl hiányzik vagy nem menthető. Az offline letöltés még nem teljes; ellenőrizd a hálózatot és a szabad tárhelyet, majd próbáld újra.`;offline.textContent="Hiányzó fájlok újrapróbálása";}
+    }catch(err){message.textContent=err&&err.code==="offline_unavailable"?"Az offline mentés most nem ellenőrizhető. Nyisd meg az appot HTTPS-en, engedélyezett böngészőtárhellyel, és töltsd újra. Sikeres mentést még nem jeleztünk.":"A letöltést nem sikerült ellenőrizni. Ellenőrizd a hálózatot és a tárhelyet, majd próbáld újra.";offline.textContent="Letöltés újrapróbálása";}
+    finally{offline.disabled=false;if(offlineLang)offlineLang.disabled=false;}
+  };
   $("#sExport").onclick=e=>{e.preventDefault();const out=JSON.parse(JSON.stringify(S));out.settings.pass="";
     const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(out)],{type:"application/json"}));
     a.download="parliamo-mentes-"+new Date().toISOString().slice(0,10)+".json";document.body.appendChild(a);a.click();a.remove();toast("A mentés letöltve.");};
   $("#sImport").onchange=async e=>{const f=e.target.files[0];if(!f)return;
     try{const o=JSON.parse(await f.text());if(typeof o!=="object"||!o.cards||typeof o.xp!=="number")throw 0;
-      const keep={proxy:S.settings.proxy,pass:S.settings.pass};S=migrate(o);Object.assign(S.settings,keep);save();await loadCourse();render();toast("Haladás visszatöltve.");}
+      const keep={proxy:S.settings.proxy,pass:S.settings.pass},epoch=resetEpoch(S);S=migrate(o);S.resetAt=Math.max(epoch,resetEpoch(S));Object.assign(S.settings,keep);save();await loadCourse();render();toast("Haladás visszatöltve.");}
     catch(err){toast("Ez a fájl nem Parliamo-mentés.");}};
 }
 
+
+/* Ask the worker controlling this page which caches it actually serves. A fetched sw.js could
+   already describe a newer worker, so its cache names cannot prove this page is ready offline. */
+function offlineWorkerManifest(worker){
+  if(typeof MessageChannel==="undefined")return Promise.reject({code:"offline_unavailable"});
+  return new Promise((resolve,reject)=>{
+    const channel=new MessageChannel();let settled=false;
+    const finish=(value,error)=>{if(settled)return;settled=true;clearTimeout(timer);channel.port1.close();channel.port2.close();error?reject(error):resolve(value);};
+    const timer=setTimeout(()=>finish(null,{code:"offline_unavailable"}),2500);
+    channel.port1.onmessage=event=>{
+      const manifest=event.data;
+      if(!manifest||manifest.type!=="parliamo-offline-manifest"||!/^parliamo-shell-[a-z0-9]+$/.test(manifest.shell)||!/^parliamo-media-[a-z0-9]+$/.test(manifest.media)||!Array.isArray(manifest.precache))return finish(null,{code:"offline_unavailable"});
+      finish(manifest);
+    };
+    try{worker.postMessage({type:"parliamo-offline-manifest"},[channel.port2]);}
+    catch(e){finish(null,{code:"offline_unavailable"});}
+  });
+}
+async function offlineCacheTargets(){
+  if(!navigator.serviceWorker||!navigator.serviceWorker.controller||!("caches" in window))throw {code:"offline_unavailable"};
+  const reg=await navigator.serviceWorker.getRegistration(),base=new URL("./",location.href),script=new URL("sw.js",base),worker=navigator.serviceWorker.controller;
+  if(!reg||!reg.active||new URL(worker.scriptURL).href!==script.href)throw {code:"offline_unavailable"};
+  const {shell,media,precache}=await offlineWorkerManifest(worker);
+  if(!Array.isArray(precache)||precache.some(file=>typeof file!=="string"||!offlineAssetURL(file,base)))throw {code:"offline_unavailable"};
+  try{return {shell:await caches.open(shell),media:await caches.open(media),precache,base};}
+  catch(e){throw {code:"offline_unavailable"};}
+}
+function offlineAssetURL(file,base){
+  try{const url=new URL(file,base);return url.origin===base.origin&&url.pathname.startsWith(base.pathname)&&!url.search&&!url.hash?url.href:null;}catch(e){return null;}
+}
+async function cacheOfflineAsset(file,targets){
+  const url=offlineAssetURL(file,targets.base);if(!url)throw {code:"offline_asset"};
+  const cache=/\/(audio|img)\//.test(new URL(url).pathname)?targets.media:targets.shell;
+  let response=await cache.match(url);
+  if(response&&response.ok)return response;
+  response=await fetch(url);if(!response.ok)throw {code:"offline_asset",status:response.status};
+  await cache.put(url,response.clone());
+  const stored=await cache.match(url);if(!stored||!stored.ok)throw {code:"offline_asset"};
+  return stored;
+}
+async function downloadOfflineLanguages(languages,onProgress=()=>{}){
+  const selected=[...new Set(languages)].filter(l=>Object.prototype.hasOwnProperty.call(LANGS,l));
+  if(!selected.length)throw {code:"offline_asset"};
+  const targets=await offlineCacheTargets(),files=new Set(targets.precache),missing=new Set(),declared=new Set(targets.precache);
+  const read=async(file,required=false)=>{
+    if(!required&&!declared.has(file))return null;
+    files.add(file);try{return await (await cacheOfflineAsset(file,targets)).json();}catch(e){missing.add(file);return null;}
+  };
+  for(const l of selected){
+    const [pack,stories,verbs,pods,packs,serials,mocks,colloc,core,speaking]=await Promise.all([
+      read(`data/${l}.json`,true),read(`data/stories-${l}.json`,true),read(`data/verbs-${l}.json`,true),
+      ...["podcasts","packs","serials","mock","colloc","core","speaking"].map(name=>read(`data/${name}-${l}.json`))]);
+    (pack&&pack.units||[]).forEach(unit=>{files.add(`audio/${unit.id}.json`);files.add(`img/${unit.id}.webp`);});
+    (stories&&stories.stories||[]).forEach(story=>files.add(`audio/st-${story.id}.json`));
+    if(verbs){if(l==="en")files.add("audio/vb-en.json");else(verbs.verbs||[]).forEach(verb=>files.add(`audio/vb-${l==="es"?"es-":""}${verb.inf}.json`));}
+    if(declared.has(`data/pron-${l}.json`))files.add(`audio/pron-${l}.json`);
+    (pods&&pods.podcasts||[]).forEach(pod=>{files.add(`audio/pod-${pod.id}.json`);files.add(`img/pod-${pod.id}.webp`);});
+    (packs&&packs.packs||[]).forEach(pack=>files.add(`audio/pk-${l}-${pack.id}.json`));
+    (serials&&serials.serials||[]).forEach(story=>{files.add(`audio/ser-${l}-${story.id}.json`);if(story.img)files.add(`img/${story.img}.webp`);});
+    (mocks&&mocks.mocks||[]).filter(mock=>(mock.parts||[]).some(part=>part.lines)).forEach(mock=>files.add(`audio/mock-${l}-${mock.id}.json`));
+    (colloc&&colloc.groups||[]).forEach(group=>files.add(`audio/col-${l}-${group.id}.json`));
+    (speaking&&speaking.cam||[]).forEach(card=>{if(card.pics){files.add(`img/${card.pics.a}.webp`);files.add(`img/${card.pics.b}.webp`);}});
+    const enabled=(S.core||{})[l]||{};
+    (core&&core.levels||[]).filter(level=>enabled[level.level]).forEach(level=>(level.words||[]).forEach(word=>files.add(`audio/${word.b}.json`)));
+    files.add(`img/${LANGS[l].hero}.webp`);
+    files.add(`img/world-${l}.webp`);
+    if(l==="en"){files.add("audio/acc-en.json");files.add("audio/dl-en.json");files.add("img/story-s3-scenes.webp");}
+    if(l==="it"){files.add("img/teacher.webp");SCENARIOS.forEach(scene=>files.add(`img/sc-${scene.id}.webp`));}
+  }
+  let done=0;
+  for(const file of files){
+    if(!missing.has(file))try{await cacheOfflineAsset(file,targets);}catch(e){missing.add(file);}
+    onProgress(++done,files.size);
+  }
+  return {ok:missing.size===0,missing:[...missing],total:files.size};
+}

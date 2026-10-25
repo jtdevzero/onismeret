@@ -3,8 +3,8 @@ function renderHome(){
   const nl=nextLesson(),s=dailySession(),steps=dailySteps(),finished=steps.every(x=>x[0]),started=steps.some(x=>x[0]);
   const w=WORDS[today()%WORDS.length],L=LESSONS.find(l=>l.id===s.lessonId);
   view.innerHTML=`<div class="stack">
-  <header class="home-head"><span class="home-kicker">${LG().name} · ${new Date().toLocaleDateString("hu-HU",{month:"long",day:"numeric"})}</span><h1>Egy kis gyakorlás. Minden nap.</h1><p class="muted">Ma is egy lépéssel közelebb az önálló nyelvhasználathoz.</p></header>
-  <section class="daily-focus" aria-labelledby="dailyTitle"><span class="label">A mai útvonalad · kb. 10–15 perc</span><h2 id="dailyTitle">${finished?"A mai gyakorlásod elkészült.":started?"Folytassuk, ahol tartottál.":"Tíz perc, ami összeadódik."}</h2><p>Rövid ismétlés, egy lecke, végül egy saját válasz. Lépésről lépésre végigvezetünk.</p>
+  ${worldHeroHtml()}
+  <section class="daily-focus" aria-labelledby="dailyTitle"><span class="label">A mai útvonalad · kb. ${dailyPacing().minutes} perc</span><h2 id="dailyTitle">${finished?"A mai gyakorlásod elkészült.":started?"Folytassuk, ahol tartottál.":"Egy kis lépés, ami összeadódik."}</h2><p>Rövid ismétlés, egy leckeszakasz, végül saját válaszok. Lépésről lépésre végigvezetünk.</p>
     <div class="daily-steps">${steps.map(([done,title,detail],i)=>`<div class="daily-step ${done?"is-done":""}"><span>${done?(done==="none"?"–":"✓"):i+1}</span><div><b>${esc(title)}</b><small>${esc(detail)}</small></div></div>`).join("")}</div>
     <div class="row"><button class="btn lemon" id="hRound">${finished?"Mai kör áttekintése":started?"Mai gyakorlás folytatása":"Mai gyakorlás indítása"} →</button><span class="small">Bármikor megállhatsz, innen folytatjuk.</span></div>
   </section>
@@ -24,7 +24,7 @@ function renderHome(){
   </div>
   ${budgetWarn()}
   <details class="g" id="homeSettings"><summary>Beállítások</summary><div class="gb">
-    <label class="stack" style="gap:.3rem"><span class="label">Napi cél</span><span class="seg" id="sGoal">${[20,50,100].map(g=>`<button data-v="${g}" aria-pressed="${S.settings.goal===g}">${g} XP</button>`).join("")}</span></label>
+    <label class="stack" style="gap:.3rem"><span class="label">Napi cél</span><span class="seg" id="sGoal">${[20,50,100].map(g=>`<button data-v="${g}" aria-pressed="${S.settings.goal===g}">${({20:5,50:10,100:25})[g]} perc</button>`).join("")}</span></label>
     <label class="stack" style="gap:.3rem"><span class="label">Új kártyák naponta</span><span class="seg" id="sNew">${[5,10,20].map(g=>`<button data-v="${g}" aria-pressed="${S.settings.newPerDay===g}">${g}</button>`).join("")}</span></label>
     <label class="stack" style="gap:.3rem"><span class="label">Hangjelzések és rezgés</span><span class="seg" id="sSound"><button data-v="1" aria-pressed="${S.settings.sound!==false}">Be</button><button data-v="0" aria-pressed="${S.settings.sound===false}">Ki</button></span></label>
     <div><button class="btn soft" data-go="ellenorzes">Eszközellenőrzés: mi működik ezen a telefonon?</button></div>
@@ -44,5 +44,5 @@ function renderHome(){
   bindAISetup(view);
   const segs=[["#sTheme","theme",String],["#sFs","fs",String],["#sRead","readable",v=>v==="1"],["#sRet","ret",Number],["#sGoal","goal",Number],["#sNew","newPerDay",Number],["#sRate","rate",Number],["#sSound","sound",v=>v==="1"]];
   segs.forEach(([id,k,f])=>$(id).querySelectorAll("button").forEach(b=>b.onclick=e=>{e.preventDefault();S.settings[k]=f(b.dataset.v);save();applyPrefs();renderHome();$("#homeSettings").open=true;}));
-  let armed=false;$("#sReset").onclick=()=>{if(!armed){armed=true;$("#sReset").textContent="Biztosan? Kattints újra a törléshez";$("#sReset").style.color="var(--bad)";return;}const st=S.settings;S=fresh();S.settings=st;dailyActive=false;save();toast("A haladásod törölve.");renderHome();};
+  let armed=false;$("#sReset").onclick=()=>{if(!armed){armed=true;$("#sReset").textContent="Biztosan? Kattints újra a törléshez";$("#sReset").style.color="var(--bad)";return;}dailyActive=false;stopViews();resetProgress();toast("A haladásod törölve.");renderHome();};
 }

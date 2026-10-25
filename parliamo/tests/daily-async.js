@@ -31,7 +31,7 @@ async function open(){
     return route.fulfill({status:404,headers:{'access-control-allow-origin':'*'},body:'{}'});
   });
   await context.addInitScript(({proxy})=>{
-    localStorage.setItem('parliamo.v1',JSON.stringify({onboarded:true,settings:{lang:'en',goal:20,sound:false,proxy,pass:'test-code',budget:10,cloud:false}}));
+    if(!localStorage.getItem('parliamo.v1'))localStorage.setItem('parliamo.v1',JSON.stringify({onboarded:true,settings:{lang:'en',goal:20,sound:false,proxy,pass:'test-code',budget:10,cloud:false}}));
     window.SpeechRecognition=class {};
   },{proxy:PROXY});
   const p=await context.newPage();p.on('pageerror',e=>errors.push(e.message));
@@ -75,6 +75,15 @@ async function deferListen(p){
     await context.close();
   }
 
+  console.log('\nRecognized speech draft persistence');
+  {
+    const {context,p,releaseUsage}=await open();releaseUsage();await p.waitForFunction(()=>USAGE!==null);await showOutput(p);await deferListen(p);
+    await p.evaluate(async()=>{window.__resolveListen(['my unfinished spoken draft']);await new Promise(r=>setTimeout(r,0));});
+    await p.reload();await p.waitForSelector('#hRound');await p.click('#hRound');await p.waitForSelector('#dailyAnswer');
+    check(await p.inputValue('#dailyAnswer')==='my unfinished spoken draft','recognized text survives reload as an editable draft');
+    await context.close();
+  }
+
   console.log('\nNavigation and pause while asynchronous work is pending');
   {
     const {context,p,releaseUsage}=await open();releaseUsage();await p.waitForFunction(()=>USAGE!==null);await showOutput(p);await deferListen(p);
@@ -82,7 +91,7 @@ async function deferListen(p){
     await p.fill('#dailyAnswer','my current unfinished answer');
     await p.evaluate(async()=>{window.__resolveListen(['stale microphone transcript']);await new Promise(r=>setTimeout(r,0));});
     check(await p.locator('#dailyAnswer').inputValue()==='my current unfinished answer'&&await p.locator('#dailyFeedback').innerText()==='','stale microphone result cannot alter a newly opened exercise');
-    await p.evaluate(()=>{go('ma');S.dailySessions={};save();renderHome();});await p.click('#hRound');await p.waitForSelector('#quit');
+    await p.evaluate(()=>{go('ma');S.dailySessions={};const c=POOL[0];S.cards[c.id]={...sched(null,2,c.id),due:today()};save();renderHome();});await p.click('#hRound');await p.waitForSelector('#quit');
     await p.click('#quit');await p.waitForSelector('#hRound');
     check(await p.evaluate(()=>!dailyActive&&!P&&!learningViewActive()),'quitting guided review pauses the path and permits background sync');
     await context.close();

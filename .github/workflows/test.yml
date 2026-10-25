@@ -46,3 +46,12 @@ jobs:
           node parliamo/tests/ai-setup-review.js
           node parliamo/tests/speech-feedback.js
           node parliamo/tests/practice-feedback.test.js
+          node parliamo/tests/answer-validation.js
+          node parliamo/tests/state-offline-reliability.test.js
+          node parliamo/tests/ai-lifecycle.js
+          node parliamo/tests/learning-continuity.js
+          node parliamo/tests/resume-safety.test.js
+          node parliamo/tests/shadowing-intonation.test.js
+          node parliamo/tests/shadowing-ui.js
+          node parliamo/tests/language-worlds.js
+          node parliamo/tests/offline-pwa.js

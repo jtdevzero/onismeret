@@ -1,16 +1,36 @@
 /* ============ STATE ============ */
 const LS="parliamo.v1";
-function fresh(){return {v:1,xp:0,days:{},lessons:{},cards:{},stories:{},miss:{},log:{},ai:{},rounds:{},ev:{},chal:{},own:{},hard:{},pods:{},exam:{},certs:{},plan:{},mlog:[],onboarded:false,newToday:{day:0,n:0},drills:{},dailySessions:{},evidence:[],settings:{goal:50,newPerDay:10,dir:"mix",rate:0.95,ret:0.9,lang:"en",proxy:"",pass:"",cloud:false,theme:"auto",fs:"m",readable:false},updatedAt:0};}
+function fresh(){return {v:1,resetAt:0,activeExercises:{},lessonCoverage:{},journalDrafts:{},xp:0,days:{},lessons:{},cards:{},stories:{},miss:{},log:{},ai:{},rounds:{},ev:{},chal:{},own:{},hard:{},pods:{},exam:{},certs:{},plan:{},mlog:[],onboarded:false,newToday:{day:0,n:0},drills:{},dailySessions:{},evidence:[],settings:{goal:50,newPerDay:10,dir:"mix",rate:0.95,ret:0.9,lang:"en",proxy:"",pass:"",cloud:false,theme:"auto",fs:"m",readable:false},updatedAt:0};}
 function migrate(s){const old=s&&s.xp>0&&s.onboarded===undefined;const f=fresh();s=Object.assign(f,s||{});if(old)s.onboarded=true;s.settings=Object.assign(fresh().settings,s.settings||{});
   for(const rec of Object.values(s.lessons||{}))if(rec&&rec.placed&&rec.done&&!rec.best)rec.done=false;
   if(!Array.isArray(s.evidence))s.evidence=[];if(!s.dailySessions||typeof s.dailySessions!=="object")s.dailySessions={};
+  s.resetAt=resetEpoch(s);
+  for(const key of ["activeExercises","lessonCoverage","journalDrafts"])if(!s[key]||typeof s[key]!=="object"||Array.isArray(s[key]))s[key]={};
   return s;}
+/* A reset starts a new generation of progress. An older device cannot merge its old generation back in. */
+function resetEpoch(state){const value=Number(state&&state.resetAt);return Number.isSafeInteger(value)&&value>=0?value:0;}
+function resetProgress(){
+  const settings=Object.assign({},S.settings),onboarded=!!S.onboarded,epoch=Math.max(Date.now(),resetEpoch(S)+1);
+  S=fresh();S.settings=settings;S.onboarded=onboarded;S.resetAt=epoch;save();return S;
+}
 let S=fresh();
 try{const raw=localStorage.getItem(LS);if(raw)S=migrate(JSON.parse(raw));}catch(e){}
 let sync="local", docRef=null, rTimer=null, rBusy=false, rAgain=false;
 function save(){S.updatedAt=Date.now();try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}queueRemote();queueCloud();renderChips();}
 function queueRemote(){if(!docRef)return;clearTimeout(rTimer);rTimer=setTimeout(pushRemote,2000);}
-async function pushRemote(){if(rBusy){rAgain=true;return;}rBusy=true;try{await docRef.set({state:JSON.parse(JSON.stringify(S))});sync="cloud";}catch(e){sync="local";}rBusy=false;renderChips();if(rAgain){rAgain=false;pushRemote();}}
+async function pushRemote(){
+  if(rBusy){rAgain=true;return;}rBusy=true;
+  try{
+    const snap=await docRef.get(),remote=snap.exists&&(snap.data()||{}).state;
+    if(remote&&resetEpoch(remote)>resetEpoch(S)){
+      S=migrate(Object.assign({},remote,{settings:Object.assign({},remote.settings||{},S.settings)}));
+      try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}
+      P=null;CS=null;D=null;ST=null;PL=null;dailyActive=false;stopViews();if(LESSONS.length)render();
+    }
+    await docRef.set({state:cloudCopy()});sync="cloud";
+  }catch(e){sync="local";}
+  rBusy=false;renderChips();if(rAgain){rAgain=false;pushRemote();}
+}
 (async()=>{
   if(!window.claude||!window.claude.use) return;
   try{
@@ -20,7 +40,7 @@ async function pushRemote(){if(rBusy){rAgain=true;return;}rBusy=true;try{await d
     docRef=db.collection("data/users/"+id).doc("progress");
     const snap=await docRef.get();
     const r=snap.exists?snap.data():null;
-    if(r&&r.state&&(r.state.updatedAt||0)>(S.updatedAt||0)){S=migrate(r.state);try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}sync="cloud";pruneState();if(LESSONS.length&&!P&&!CS&&!D&&!ST)render();}
+    if(r&&r.state&&(resetEpoch(r.state)>resetEpoch(S)||(resetEpoch(r.state)===resetEpoch(S)&&(r.state.updatedAt||0)>(S.updatedAt||0)))){S=migrate(Object.assign({},r.state,{settings:Object.assign({},r.state.settings||{},S.settings)}));try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}sync="cloud";pruneState();if(LESSONS.length&&!P&&!CS&&!D&&!ST)render();}
     else if(S.updatedAt){sync="cloud";pushRemote();}
     else sync="cloud";
     renderChips();

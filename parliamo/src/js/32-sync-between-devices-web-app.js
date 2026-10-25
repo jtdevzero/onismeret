@@ -2,8 +2,16 @@
 /* Progress is stored on the user's own server (worker/ /sync) next to the AI proxy, guarded by the same access code.
    Each device merges field by field, so practising on two phones in one day loses nothing. */
 const DEVICE_KEYS=["proxy","pass","remind","cloud","lang","sound","rate","theme","fs","readable"];
-let cloudT=null, cloudRev=0, cloudBusy=false, cloudAt=0, cloudErr="";
+let cloudT=null, cloudRev=0, cloudBusy=false, cloudAgain=false, cloudAt=0, cloudErr="";
 function mergeState(a,b){
+  const epochA=resetEpoch(a),epochB=resetEpoch(b);
+  if(epochA!==epochB){
+    const winner=epochA>epochB?a:b,o=JSON.parse(JSON.stringify(winner));
+    o.resetAt=Math.max(epochA,epochB);
+    // Connection details and device preferences always belong to this device, including after a remote reset.
+    o.settings=Object.assign({},winner.settings||{},a.settings||{});
+    return o;
+  }
   const newer=(b.updatedAt||0)>(a.updatedAt||0)?b:a, older=newer===a?b:a, o=JSON.parse(JSON.stringify(newer));
   const per=(k,better)=>{const m=Object.assign({},older[k]||{});for(const [x,v] of Object.entries(newer[k]||{}))m[x]=m[x]===undefined||better(v,m[x])?v:m[x];o[k]=m;};
   const num=(v,w)=>(typeof v==="number"?v:0)>=(typeof w==="number"?w:0);
@@ -21,19 +29,34 @@ function mergeState(a,b){
     const w=o.dailySessions[l];
     if(!w||v.day>w.day){o.dailySessions[l]=v;continue;}if(v.day<w.day)continue;
     const top=(v.at||0)>=(w.at||0)?v:w,other=top===v?w:v,sameLesson=top.lessonId===other.lessonId;
-    const sameOutput=!top.outputItemId||!other.outputItemId||top.outputItemId===other.outputItemId;
+    const sameOutput=top.outputItemId===other.outputItemId;
+    const outputDone=sameLesson?[...new Set([...(Array.isArray(top.outputDone)?top.outputDone:[]),...(Array.isArray(other.outputDone)?other.outputDone:[])])]:top.outputDone;
     o.dailySessions[l]=Object.assign({},top,{review:v.review===true||w.review===true?true:v.review||w.review,
       lesson:sameLesson?(v.lesson===true||w.lesson===true?true:v.lesson||w.lesson):top.lesson,
-      output:sameLesson&&sameOutput?(v.output||w.output):top.output,
+      output:sameLesson?(v.output===true||w.output===true?true:v.output||w.output):top.output,
+      outputDone,
       outputItemId:top.outputItemId||(sameLesson?other.outputItemId:undefined),
       outputHelp:sameLesson&&sameOutput?!!(v.outputHelp||w.outputHelp):!!top.outputHelp,
+      outputAttempts:sameLesson&&sameOutput?Math.max(Number(v.outputAttempts)||0,Number(w.outputAttempts)||0):top.outputAttempts,
       celebrated:!!(v.celebrated||w.celebrated)});
   }
+  const assistedEvidence=new Set((o.evidence||[]).filter(e=>e.kind==="practice").map(e=>e.id));
   o.evidence=(o.evidence||[]).map(e=>{
-    const s=o.dailySessions[e.l],parts=e.id.split("|");
-    if(e.kind==="output"&&s&&s.outputHelp&&s.day===+parts[1]&&s.outputItemId===(e.key||parts[3]))return Object.assign({},e,{kind:"practice",id:[e.l,s.day,"practice",e.key||parts[3]].join("|"),title:"Mondatot gyakoroltál segítséggel"});
+    const s=o.dailySessions[e.l],parts=e.id.split("|"),practiceId=[e.l,parts[1],"practice",e.key||parts[3]].join("|");
+    if(e.kind==="output"&&(assistedEvidence.has(practiceId)||s&&s.outputHelp&&s.day===+parts[1]&&s.outputItemId===(e.key||parts[3])))return Object.assign({},e,{kind:"practice",id:practiceId,title:"Mondatot gyakoroltál segítséggel"});
     return e;
   }).filter((e,i,a)=>a.findIndex(x=>x.id===e.id)===i);
+  const timestamp=v=>Number(v&&(v.updatedAt||v.at))||0;
+  const latest=(v,w)=>timestamp(v)>timestamp(w)||(timestamp(v)===timestamp(w)&&((v&&(v.cleared||v.deleted))?1:0)>=((w&&(w.cleared||w.deleted))?1:0));
+  per("activeExercises",latest);per("journalDrafts",latest);
+  o.lessonCoverage={};
+  for(const id of new Set([...Object.keys(a.lessonCoverage||{}),...Object.keys(b.lessonCoverage||{})])){
+    const left=(a.lessonCoverage||{})[id]||{},right=(b.lessonCoverage||{})[id]||{};
+    const top=latest(left,right)?left:right,results=Object.assign({},left.results||{});
+    for(const [key,value] of Object.entries(right.results||{}))if(!results[key]||latest(value,results[key]))results[key]=value;
+    o.lessonCoverage[id]=Object.assign({},top,{results});
+  }
+  o.resetAt=epochA;
   o.onboardingSample=Object.assign({},older.onboardingSample||{},newer.onboardingSample||{});
   o.sk={};for(const k of ["read","listen","write","speak"]){const seen=new Set();o.sk[k]=[...((a.sk||{})[k]||[]),...((b.sk||{})[k]||[])].filter(x=>{const id=x.at+"|"+x.src;return !seen.has(id)&&seen.add(id);}).sort((x,y)=>x.at-y.at).slice(-40);}
   o.ev=Object.assign({},older.ev||{});for(const [d,e] of Object.entries(newer.ev||{})){const m=Object.assign({},o.ev[d]||{});for(const [k,n] of Object.entries(e))m[k]=Math.max(m[k]||0,n);o.ev[d]=m;}
@@ -46,7 +69,7 @@ function mergeState(a,b){
   return o;
 }
 function cloudCopy(){const o=JSON.parse(JSON.stringify(S));DEVICE_KEYS.forEach(k=>delete o.settings[k]);return o;}
-function queueCloud(){if(!IS_WEB||!S.settings.cloud||cloudBusy)return;clearTimeout(cloudT);cloudT=setTimeout(()=>cloudSync(),4000);}
+function queueCloud(){if(!IS_WEB||!S.settings.cloud)return;if(cloudBusy){cloudAgain=true;return;}clearTimeout(cloudT);cloudT=setTimeout(()=>cloudSync(),4000);}
 function learningViewActive(){
   return !!(P||CS||D||ST||PD||PR||EX||PL||MK||SE||JR||SER||QZ||SB||AC||WC||CAR||DL||VT||dailyActive||
     route==="tanar"&&(T.sc||T.busy)||view.querySelector("#aiSetupBack,#jrCardReview")||
@@ -68,7 +91,8 @@ async function cloudSync(){
       catch(e){if(e&&e.code==="conflict")continue;throw e;}
     }
   }catch(e){cloudErr=pushMsg(e);}
-  cloudBusy=false;const m=$("#sSyncMsg");if(m)m.textContent=syncLine();
+  finally{cloudBusy=false;if(cloudAgain){cloudAgain=false;queueCloud();}}
+  const m=$("#sSyncMsg");if(m)m.textContent=syncLine();
 }
 const syncLine=()=>cloudErr?cloudErr:cloudAt?"Utolsó szinkron: "+new Date(cloudAt).toLocaleTimeString("hu-HU",{hour:"2-digit",minute:"2-digit"}):S.settings.cloud?"Bekapcsolva.":"";
 /* When the app goes to the background, send pending changes right away (keepalive survives closing the tab). */

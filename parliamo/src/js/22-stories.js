@@ -4,9 +4,10 @@ function renderStories(){
   view.innerHTML=`<div class="stack"><div class="row"><button class="btn ghost" id="sBack">← Gyakorlás</button></div>
   <div><span class="label">Hangos párbeszédek</span><h1>Történetek</h1><p class="muted">Rövid jelenetek két hanggal. Hallgasd meg mondatonként, koppints a mondatra a fordításért, és válaszolj a közbeékelt kérdésekre.</p></div>
   <div class="lgrid">${STORIES.map(st=>{const done=S.stories[st.id];const li=LESSONS.findIndex(l=>l.id===st.unlock);const ready=li<0||(ls(li)&&ls(li).done);
-    return `<button class="lcard scard ${done?"done":""}" data-st="${st.id}">${pic(st.img||st.unlock)}<div class="body"><b>${esc(st.title)}</b><span class="small muted">${esc(st.hu)}</span><span class="row" style="gap:.35rem;margin-top:.3rem"><span class="pill">${st.level}</span>${done?`<span class="pill ok">Kész · ${esc(done.score)}</span>`:ready?"":`<span class="pill">a ${li+1}. lecke után ajánlott</span>`}</span></div></button>`;}).join("")}</div></div>`;
+    return `<button class="lcard scard ${done?"done":""}" data-st="${st.id}">${storyVisual(st,{card:true})}<div class="body"><b>${esc(st.title)}</b><span class="small muted">${esc(st.hu)}</span><span class="row" style="gap:.35rem;margin-top:.3rem"><span class="pill">${st.level}</span>${done?`<span class="pill ok">Kész · ${esc(done.score)}</span>`:ready?"":`<span class="pill">a ${li+1}. lecke után ajánlott</span>`}</span></div></button>`;}).join("")}</div></div>`;
   $("#sBack").onclick=()=>renderPractice();
   view.querySelectorAll("[data-st]").forEach(b=>b.onclick=()=>playStory(b.dataset.st));
+  bindStoryArt();
   window.scrollTo(0,0);
 }
 let ST=null;
@@ -21,7 +22,7 @@ function drawStory(){
   const qOpen=cur&&cur.q&&ST.ans[i]===undefined;
   view.innerHTML=`<div class="player" style="max-width:680px">
     <div class="pbar"><button class="close" id="quit" aria-label="Kilépés">×</button><div class="track"><div class="fill" style="width:${(i+1)/st.lines.length*100}%"></div></div><span class="small muted tnum">${i+1}/${st.lines.length}</span></div>
-    <div class="chat-head" style="min-height:120px">${pic(st.img||st.unlock)}<div class="in"><div><span class="label" style="color:rgba(255,255,255,.8)">${st.level}</span><h3>${esc(st.title)}</h3><p class="small">${esc(st.hu)}</p></div></div></div>
+    <header class="story-reader-heading">${storyVisual(st,{caption:false})}<div class="story-reader-title"><span class="label">Rövid történet · ${esc(st.level)}</span><h2 ${LA()}>${esc(st.title)}</h2><p class="small muted">${esc(st.hu)}</p></div></header>
     <div class="chat" id="story">${lines.map((l,k)=>{
       if(l.q){const a=ST.ans[k];return `<div class="card stack" style="gap:.6rem"><span class="label">Kérdés</span><b>${esc(l.q)}</b><div class="opts">${l.o.map((o,j)=>`<button class="opt ${a!==undefined?(j===l.a?"right":j===a?"wrong":""):""}" data-q="${j}" ${a!==undefined?"disabled":""}>${esc(o)}</button>`).join("")}</div></div>`;}
       const who=st.cast[l.s]||{name:""};
@@ -33,6 +34,7 @@ function drawStory(){
   $("#quit").onclick=()=>{ST=null;renderStories();};
   view.querySelectorAll("[data-tr]").forEach(b=>b.onclick=()=>{const t=b.querySelector(".tr");t.hidden=!t.hidden;});
   bindWords(st.lines.filter(l=>l.it).map(l=>l.it),[]);
+  bindStoryArt();
   view.querySelectorAll("[data-q]").forEach(b=>b.onclick=()=>{const j=+b.dataset.q;ST.ans[i]=j;ST.nq++;if(j===cur.a)ST.ok++;drawStory();});
   if($("#again"))$("#again").onclick=()=>say(cur.it);
   $("#next").onclick=()=>{if(last)return finishStory();ST.i++;drawStory();const l=ST.st.lines[ST.i];if(l.it)say(l.it);};
