@@ -52,7 +52,17 @@ async function encrypt(sub, text) {
   return concat(salt, rs, new Uint8Array([asPublic.length]), asPublic, cipher);
 }
 
+/* Csak a böngészők valódi push-szolgáltatásaira küldünk, így a szerver nem használható tetszőleges cím hívására (SSRF). */
+const PUSH_HOSTS = [/^fcm\.googleapis\.com$/, /^(updates|[a-z0-9-]+)\.push\.services\.mozilla\.com$/, /^web\.push\.apple\.com$/, /^[a-z0-9-]+\.push\.apple\.com$/, /^[a-z0-9-]+\.notify\.windows\.com$/];
+export function pushEndpointOk(endpoint) {
+  try {
+    const u = new URL(endpoint);
+    return u.protocol === "https:" && !u.port && !u.username && !u.password && PUSH_HOSTS.some(re => re.test(u.hostname));
+  } catch { return false; }
+}
+
 export async function sendPush(kv, sub, message, subject) {
+  if (!pushEndpointOk(sub.endpoint)) return 400;
   const body = await encrypt(sub, JSON.stringify(message));
   const res = await fetch(sub.endpoint, {
     method: "POST",
@@ -72,9 +82,9 @@ async function subKey(endpoint) {
   return "sub:" + b64u(await crypto.subtle.digest("SHA-256", enc.encode(endpoint))).slice(0, 32);
 }
 
-function validSub(s) {
-  return s && typeof s.endpoint === "string" && /^https:\/\//.test(s.endpoint) && s.endpoint.length < 1000 &&
-    s.keys && typeof s.keys.p256dh === "string" && typeof s.keys.auth === "string";
+export function validSub(s) {
+  return !!(s && typeof s.endpoint === "string" && s.endpoint.length < 1000 && pushEndpointOk(s.endpoint) &&
+    s.keys && typeof s.keys.p256dh === "string" && s.keys.p256dh.length < 200 && typeof s.keys.auth === "string" && s.keys.auth.length < 100);
 }
 
 export async function subscribe(kv, body) {

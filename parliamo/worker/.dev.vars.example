@@ -1,0 +1,4 @@
+# Helyi fejlesztéshez: másold .dev.vars néven, és írd be a saját értékeidet.
+# A .dev.vars nem kerül a repóba (.gitignore). Élesben: npx wrangler secret put <NÉV>
+ANTHROPIC_API_KEY=sk-ant-ide-a-sajat-kulcsod
+APP_PASSWORD=valassz-egy-hosszu-belepokodot

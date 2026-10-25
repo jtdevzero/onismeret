@@ -785,8 +785,11 @@ const EXTRA={
 };
 function loadExtra(n){
   const l=lang(),k=l+":"+n;
-  if(!EXTRA_P[k])EXTRA_P[k]=fetch(`data/${n==="core"?"core":n}-${l}.json`).then(r=>r.ok?r.json():null).catch(()=>null)
-    .then(d=>{if(lang()===l&&EXTRA_P[k]){EXTRA[n](d,l);EXTRA_DONE[k]=1;}return d;});
+  if(!EXTRA_P[k])EXTRA_P[k]=fetch(`data/${n}-${l}.json`).then(r=>r.ok?r.json():r.status===404?false:null).catch(()=>null)
+    .then(d=>{
+      /* null: network error, try again next time; false: this language has no such file. */
+      if(d===null){delete EXTRA_P[k];return null;}
+      if(lang()===l&&EXTRA_P[k]){EXTRA[n](d||null,l);EXTRA_DONE[k]=1;}return d;});
   return EXTRA_P[k];
 }
 const extraReady=n=>!!EXTRA_DONE[lang()+":"+n];
@@ -794,7 +797,7 @@ const extraReady=n=>!!EXTRA_DONE[lang()+":"+n];
 function withExtra(n,fn){
   if(extraReady(n))return fn();
   const nav=NAVN;view.innerHTML=`<div class="card row"><span class="thinking"><i></i><i></i><i></i></span><span class="muted">Betöltés…</span></div>`;
-  loadExtra(n).then(()=>{if(NAVN===nav)fn();});
+  loadExtra(n).then(d=>{if(NAVN!==nav)return;if(d===null){view.innerHTML=`<div class="notice stack"><span>Nem sikerült betölteni ezt a részt. Ellenőrizd a netkapcsolatot.</span><div><button class="btn" id="xRetry">Újra</button></div></div>`;$("#xRetry").onclick=()=>withExtra(n,fn);return;}fn();});
 }
 /* Drop progress that belongs to the first-round course (its card and lesson ids no longer exist). */
 function pruneState(){
@@ -1115,8 +1118,8 @@ function renderLessons(){
   view.innerHTML=`<div class="stack"><div><span class="label">${LG().name} · ${LG().range} · ${doneCount()} / ${LESSONS.length} kész</span><h1>Leckék</h1><p class="muted">Minden lecke egy rövid magyarázattal indul, aztán 15–20 feladat következik. Egy befejezett lecke szavai bekerülnek a szókártyáid közé, és pecsétet kapsz az útleveledbe.</p><div class="row" style="margin-top:.6rem"><button class="btn ghost" data-go="terkep">Haladási térkép</button><button class="btn ghost" id="lPlace">Szintfelmérő</button><button class="btn ghost" data-go="utlevel">Útlevél</button></div></div>
   <div class="lgrid">${LESSONS.map((L,i)=>{const s=ls(i);const cls=s&&s.done?"done":s&&s.placed?"placed":i===nl?"cur":"";
     const head=TRACKS&&(i===0||LESSONS[i-1].track!==L.track)?`<h2 style="grid-column:1/-1;margin-top:${i?"1rem":"0"}">${esc(TRACKS[L.track]||L.track)}</h2>`:"";
-    return head+`<button class="lcard ${cls}" data-l="${i}"><div class="pic"><img src="img/${L.id}.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"><span class="num">${s&&s.done?"✓":i+1}</span><span class="badge">${s&&s.done?`<span class="pill ok">${s.best}%</span>`:s&&s.placed?`<span class="pill">Átugorva</span>`:i===nl?`<span class="pill now">Következő</span>`:`<span class="pill">${L.level}</span>`}</span></div>
-      <div class="body"><b>${esc(L.t)}</b><span class="small muted">${esc(L.hu)} · ${L.words.length} szó, ${L.phrases.length} kifejezés</span>${s&&s.done?`<div class="meter"><i style="width:${s.best}%"></i></div>`:""}</div></button>`;}).join("")}</div></div>`;
+    return head+`<button class="lcard ${cls}" data-l="${i}"><div class="pic"><img src="img/${L.id}.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"><span class="num">${s&&s.done?"✓":i+1}</span><span class="badge">${s&&s.done?`<span class="pill ok">${esc(s.best)}%</span>`:s&&s.placed?`<span class="pill">Átugorva</span>`:i===nl?`<span class="pill now">Következő</span>`:`<span class="pill">${L.level}</span>`}</span></div>
+      <div class="body"><b>${esc(L.t)}</b><span class="small muted">${esc(L.hu)} · ${L.words.length} szó, ${L.phrases.length} kifejezés</span>${s&&s.done?`<div class="meter"><i style="width:${esc(s.best)}%"></i></div>`:""}</div></button>`;}).join("")}</div></div>`;
   view.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>openLesson(+b.dataset.l));
   $("#lPlace").onclick=()=>startPlacement(false);
 }
@@ -2040,7 +2043,7 @@ function renderStories(){
   view.innerHTML=`<div class="stack"><div class="row"><button class="btn ghost" id="sBack">← Gyakorlás</button></div>
   <div><span class="label">Hangos párbeszédek</span><h1>Történetek</h1><p class="muted">Rövid jelenetek két hanggal. Hallgasd meg mondatonként, koppints a mondatra a fordításért, és válaszolj a közbeékelt kérdésekre.</p></div>
   <div class="lgrid">${STORIES.map(st=>{const done=S.stories[st.id];const li=LESSONS.findIndex(l=>l.id===st.unlock);const ready=li<0||(ls(li)&&ls(li).done);
-    return `<button class="lcard scard ${done?"done":""}" data-st="${st.id}">${pic(st.img||st.unlock)}<div class="body"><b>${esc(st.title)}</b><span class="small muted">${esc(st.hu)}</span><span class="row" style="gap:.35rem;margin-top:.3rem"><span class="pill">${st.level}</span>${done?`<span class="pill ok">Kész · ${done.score}</span>`:ready?"":`<span class="pill">a ${li+1}. lecke után ajánlott</span>`}</span></div></button>`;}).join("")}</div></div>`;
+    return `<button class="lcard scard ${done?"done":""}" data-st="${st.id}">${pic(st.img||st.unlock)}<div class="body"><b>${esc(st.title)}</b><span class="small muted">${esc(st.hu)}</span><span class="row" style="gap:.35rem;margin-top:.3rem"><span class="pill">${st.level}</span>${done?`<span class="pill ok">Kész · ${esc(done.score)}</span>`:ready?"":`<span class="pill">a ${li+1}. lecke után ajánlott</span>`}</span></div></button>`;}).join("")}</div></div>`;
   $("#sBack").onclick=()=>renderPractice();
   view.querySelectorAll("[data-st]").forEach(b=>b.onclick=()=>playStory(b.dataset.st));
   window.scrollTo(0,0);
@@ -2755,7 +2758,7 @@ function planDay(p){return Math.min(13,Math.max(0,today()-p.start));}
 function planCard(){
   const p=planOf();if(!p)return "";
   const d=planDay(p),doneN=p.days.filter(x=>x.done).length,dayIt=p.days[d];
-  if(p.post!=null)return `<div class="card next"><div><span class="label">Kéthetes terv kész</span><h3>${esc(p.title)}</h3><p class="small muted">Előtte ${p.pre}/${p.test.length}, utána ${p.post}/${p.test.length}.</p></div><button class="btn soft" data-go="stat">Részletek</button></div>`;
+  if(p.post!=null)return `<div class="card next"><div><span class="label">Kéthetes terv kész</span><h3>${esc(p.title)}</h3><p class="small muted">Előtte ${esc(p.pre)}/${p.test.length}, utána ${esc(p.post)}/${p.test.length}.</p></div><button class="btn soft" data-go="stat">Részletek</button></div>`;
   if(p.pre==null)return `<div class="card next" style="border:2px solid var(--lemon)"><div><span class="label">Új kéthetes terv</span><h3>${esc(p.title)}</h3><p class="small muted">Kezdd egy rövid felméréssel, hogy a végén látszódjon, mennyit javultál.</p></div><button class="btn lemon" id="plGo">Felmérés</button></div>`;
   const allDone=doneN>=p.days.length||d>=13&&dayIt.done;
   return `<div class="card next" style="border:2px solid var(--lemon)"><div><span class="label">Kéthetes terv · ${d+1}. nap · ${doneN}/${p.days.length} kész</span><h3>${esc(allDone?"Jöhet a zárófelmérés":dayIt.t)}</h3><p class="small muted">${esc(p.title)}</p></div><button class="btn lemon" id="plGo">${allDone?"Zárófelmérés":dayIt.done?"Újra":"Mai rész"}</button></div>`;
@@ -2768,7 +2771,7 @@ function openPlan(back){
     intro:`<p>${esc(p.goal||"")}</p><p class="small muted">${p.test.length} kérdés. Ne izgulj, ez csak a kiindulópont.</p>`,
     onDone:(ok,n)=>{p.pre=ok;save();planResult(`Kiindulópont: ${ok} / ${n}`,"Holnaptól minden nap egy rövid rész vár a kezdőlapon. Ma már nekiállhatsz az első napnak is.",true);}});
   if(finishAll&&p.post==null)return runQuiz({kind:"plan",label:"Kéthetes terv",title:"Zárófelmérés",items:p.test.map(x=>Object.assign({},x)),backLabel:"Kezdőlap",
-    onDone:(ok,n)=>{p.post=ok;addXP(30);save();confetti();planResult(`Előtte ${p.pre} / ${n}, most ${ok} / ${n}`,ok>p.pre?`${ok-p.pre} kérdéssel többet tudtál, mint két hete. Szép munka!`:ok===p.pre?"Ugyanannyi lett, mint az elején. Érdemes a gyenge pontokat újra átnézni.":"Most kevesebb ment. Nézd át a napi magyarázatokat még egyszer.",false);}});
+    onDone:(ok,n)=>{p.post=ok;addXP(30);save();confetti();planResult(`Előtte ${esc(p.pre)} / ${n}, most ${ok} / ${n}`,ok>p.pre?`${ok-p.pre} kérdéssel többet tudtál, mint két hete. Szép munka!`:ok===p.pre?"Ugyanannyi lett, mint az elején. Érdemes a gyenge pontokat újra átnézni.":"Most kevesebb ment. Nézd át a napi magyarázatokat még egyszer.",false);}});
   const d=planDay(p),day=p.days[d];
   runQuiz({kind:"plan",label:`Kéthetes terv · ${d+1}. nap`,title:day.t,items:day.items.map(x=>Object.assign({},x)),backLabel:"Kezdőlap",
     intro:`<p>${esc(day.ex)}</p>`,onDone:(ok,n)=>{day.done=true;day.score=ok+"/"+n;addXP(5+ok);incEv("plan");save();planResult(`${d+1}. nap kész: ${ok} / ${n}`,d<13?"Holnap jön a következő rész.":"Minden nap megvan. Jöhet a zárófelmérés.",false);}});
@@ -2810,7 +2813,7 @@ function renderMap(){
   levels.forEach((l,k)=>{
     const ls_=levelLessons(l),done=ls_.filter(x=>ls(x.i)&&ls(x.i).done).length,pct=done/ls_.length,cert=S.certs[certKey(l)],open=pct>=0.7;
     html+=`<div class="mapband"><div class="mapnodes">${ls_.map(({L,i})=>{const s=ls(i),d=s&&s.done;return `<button class="mnode ${d?"done":s&&s.placed?"placed":i===nextLesson()?"cur":""}" data-l="${i}" title="${esc(L.t)}" aria-label="${i+1}. lecke: ${esc(L.t)}${d?", kész":s&&s.placed?", szintfelmérő alapján átugorva":""}">${d?"✓":s&&s.placed?"↗":i+1}</button>`;}).join('<i class="mline"></i>')}</div>
-      <div class="mile ${cert?"ok":open?"open":""}"><div><span class="label">${l} szint · ${done}/${ls_.length} lecke</span><h3>${cert?`${l} oklevél megszerezve`:open?`${l} szintzáró teszt`:`${l} mérföldkő`}</h3><p class="small muted">${cert?`${new Date(cert.at).toLocaleDateString("hu-HU")} · ${cert.score}%`:open?"15 kérdés a szint leckéiből. 80%-tól jár az oklevél.":"A szintzáró a szint leckéinek 70%-a után nyílik meg."}</p></div>
+      <div class="mile ${cert?"ok":open?"open":""}"><div><span class="label">${l} szint · ${done}/${ls_.length} lecke</span><h3>${cert?`${l} oklevél megszerezve`:open?`${l} szintzáró teszt`:`${l} mérföldkő`}</h3><p class="small muted">${cert?`${new Date(cert.at).toLocaleDateString("hu-HU")} · ${esc(cert.score)}%`:open?"15 kérdés a szint leckéiből. 80%-tól jár az oklevél.":"A szintzáró a szint leckéinek 70%-a után nyílik meg."}</p></div>
       ${cert?`<button class="btn soft" data-cert="${l}">Oklevél</button>`:open?`<button class="btn lemon" data-test="${l}">Teszt</button>`:`<span class="pill">${Math.round(pct*100)}%</span>`}</div></div>`;});
   view.innerHTML=`<div class="stack"><div class="row"><button class="btn ghost" data-go="leckek">← Leckék</button></div>
     <div><span class="label">${LG().name} · ${LG().range}</span><h1>Haladási térkép</h1><p class="muted">Az útvonalad szintenként. A ↗ jelű leckéket a szintfelmérő alapján átugrottad; ezekért még nem jár teljesítés vagy pecsét. Az oklevél az app feladatainak teljesítését jelzi, nem hivatalos nyelvvizsga.</p></div>
@@ -2836,7 +2839,7 @@ function certSvg(l,c){
   <text x="400" y="170" text-anchor="middle" font-family="Young Serif, Georgia, serif" font-size="44" fill="#14204A">Oklevél</text>
   <text x="400" y="215" text-anchor="middle" font-family="Figtree, system-ui, sans-serif" font-size="18" fill="#5A6788" letter-spacing="3">PARLIAMO · ${esc(LG().name.toUpperCase())} NYELV</text>
   <text x="400" y="320" text-anchor="middle" font-family="Young Serif, Georgia, serif" font-size="110" fill="#1F4FD6">${l}</text>
-  <text x="400" y="380" text-anchor="middle" font-family="Figtree, system-ui, sans-serif" font-size="20" fill="#14204A">szintzáró teszt sikeresen teljesítve · ${c.score}%</text>
+  <text x="400" y="380" text-anchor="middle" font-family="Figtree, system-ui, sans-serif" font-size="20" fill="#14204A">szintzáró teszt sikeresen teljesítve · ${esc(c.score)}%</text>
   <text x="400" y="470" text-anchor="middle" font-family="Figtree, system-ui, sans-serif" font-size="16" fill="#5A6788">${new Date(c.at).toLocaleDateString("hu-HU",{year:"numeric",month:"long",day:"numeric"})}</text></svg>`;
 }
 function showCert(l){
@@ -2927,7 +2930,7 @@ function budgetWarn(){
 async function bindUsage(){
   if($("#sBudgetSave"))$("#sBudgetSave").onclick=e=>{e.preventDefault();const v=parseFloat(String($("#sBudget").value).replace(",","."));S.settings.budget=v>0?v:0;save();toast(v>0?"Keret elmentve.":"Figyelmeztetés kikapcsolva.");};
   const u=await loadUsage(),el=$("#sUse");
-  if(el)el.innerHTML=u?`<b style="color:var(--ink)">${fmtUsd(u.cost)}</b> becsült költség · ${u.calls} kérés · ${Math.round(u.in/1000)}k bemeneti és ${Math.round(u.out/1000)}k kimeneti token${u.budget?` · szerverkorlát: ${fmtUsd(u.budget)}`:""}${(u.months||[]).length>1?`<br>Korábban: ${u.months.slice(1).map(m=>`${m.month}: ${fmtUsd(m.cost)}`).join(" · ")}`:""}`:S.settings.proxy?"A szerver még nem ad használati adatot. Futtasd újra a telepítést.":el.innerHTML;
+  if(el)el.innerHTML=u?`<b style="color:var(--ink)">${fmtUsd(u.cost)}</b> becsült költség · ${esc(u.calls)} kérés · ${Math.round(u.in/1000)}k bemeneti és ${Math.round(u.out/1000)}k kimeneti token${u.budget?` · szerverkorlát: ${fmtUsd(u.budget)}`:""}${(u.months||[]).length>1?`<br>Korábban: ${u.months.slice(1).map(m=>`${esc(m.month)}: ${fmtUsd(m.cost)}`).join(" · ")}`:""}`:S.settings.proxy?"A szerver még nem ad használati adatot. Futtasd újra a telepítést.":el.innerHTML;
   if(!S.settings.cloud)return;
   const draw=async()=>{try{const r=await proxyPost("/sync/backups"),bk=$("#sBk");if(!bk)return;bk.innerHTML=r.list.length?r.list.map(x=>`<div class="row" style="justify-content:space-between"><span>${new Date(x.at).toLocaleString("hu-HU",{year:"numeric",month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"})} · ${x.xp} XP</span><button class="btn ghost" data-bk="${esc(x.key)}" style="padding:.3rem .7rem">Visszaállítás</button></div>`).join(""):"Még nincs mentés.";
     bk.querySelectorAll("[data-bk]").forEach(b=>{let armed=false;b.onclick=async e=>{e.preventDefault();if(!armed){armed=true;b.textContent="Biztosan? A mostani haladás felülíródik";b.style.color="var(--bad)";return;}
@@ -3001,7 +3004,7 @@ function renderWCourse(){
   const mods=XT.writing;
   view.innerHTML=`<div class="stack"><div class="row"><button class="btn ghost" id="wcBack">← Gyakorlás</button></div>
   <div><span class="label">B1–C1 · lépésenként</span><h1>Íráskurzus</h1><p class="muted">Négy szövegtípus a vizsgákról és a munkából. Mindegyiknél megtanulod a felépítést és a fordulatokat, megnézed a mintát, gyakorlod a kötőszavakat, aztán megírod a sajátodat, és az AI részenként javítja.</p></div>
-  <div class="drills">${mods.map((m,i)=>{const d=(S.wc||{})[m.id];return `<button class="drill" data-wc="${m.id}"><span class="dico c${i%4+1}">${I.tanar}</span><b ${LA()}>${esc(m.title)}</b><span class="small muted">${esc(m.hu)} · ${m.level}</span>${d?`<span class="small"><span class="pill ${d.score>=12?"ok":""}">${d.score}/15 pont</span></span>`:""}</button>`;}).join("")}</div></div>`;
+  <div class="drills">${mods.map((m,i)=>{const d=(S.wc||{})[m.id];return `<button class="drill" data-wc="${m.id}"><span class="dico c${i%4+1}">${I.tanar}</span><b ${LA()}>${esc(m.title)}</b><span class="small muted">${esc(m.hu)} · ${m.level}</span>${d?`<span class="small"><span class="pill ${d.score>=12?"ok":""}">${esc(d.score)}/15 pont</span></span>`:""}</button>`;}).join("")}</div></div>`;
   $("#wcBack").onclick=renderPractice;
   view.querySelectorAll("[data-wc]").forEach(b=>b.onclick=()=>{WC={m:mods.find(x=>x.id===b.dataset.wc),tab:"learn",txt:{},res:null};drawWC();});
 }
@@ -3873,7 +3876,8 @@ function openImport(x){
   render();quickAction(h);})();
 /* ============ SHADOWING ============ */
 /* Line by line: listen to the recording, repeat it, and the app records you (MediaRecorder) and plays the model and your
-   version back to back. Nothing leaves the device; the recordings live only until the next line. */
+   version back to back, with both intonation curves drawn over each other (65-intonation.js). Nothing leaves the device;
+   the recordings live only until the next line. */
 let SH=null;
 const canRecord=()=>!!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia&&window.MediaRecorder);
 function shSources(){
@@ -3895,7 +3899,7 @@ function drawShadow(){
   subShell(["Árnyékolás",renderShadow],`Árnyékolás · ${esc(src.sub)}`,"",`<div class="pbar"><div class="track"><div class="fill" style="width:${i/src.lines.length*100}%"></div></div><span class="small muted tnum">${i+1}/${src.lines.length}</span></div>
     <div class="card stack" style="padding:1.4rem 1.1rem;min-height:7rem"><span class="label">${SH.hide?"Csak hallás után":"Mondd utána"}</span><div class="big-q" style="font-size:1.35rem" ${LA()}>${SH.hide?"• • •":esc(line)}</div></div>
     <div class="row" style="flex-wrap:wrap"><button class="btn soft" id="shPlay">▶ Minta</button><button class="btn soft" id="shSlow">▶ Lassan</button>${canRecord()?`<button class="btn ${SH.rec?"":"lemon"}" id="shRec" aria-pressed="${!!SH.rec}">${SH.rec?"■ Leállítás":"● Felvétel"}</button>`:""}<button class="btn ghost" id="shHide" aria-pressed="${SH.hide}">${SH.hide?"Szöveg mutatása":"Szöveg elrejtése"}</button></div>
-    ${SH.url?`<div class="card stack"><b>Összehasonlítás</b><p class="small muted">Előbb a minta, aztán a te felvételed szól. Figyeld a hangsúlyt, a tempót és a szóvégeket.</p><div class="row"><button class="btn" id="shCmp">▶ Minta + saját</button><button class="btn ghost" id="shMine">▶ Csak a sajátom</button></div></div>`:""}
+    ${SH.url?`<div class="card stack"><b>Összehasonlítás</b><p class="small muted">Előbb a minta, aztán a te felvételed szól. Figyeld a hangsúlyt, a tempót és a szóvégeket.</p><div class="row"><button class="btn" id="shCmp">▶ Minta + saját</button><button class="btn ghost" id="shMine">▶ Csak a sajátom</button></div><div id="shInto">${SH.into===undefined?`<p class="small muted">A hanglejtés kirajzolása…</p>`:intonationHtml(SH.into)}</div></div>`:""}
     <div class="row" style="justify-content:space-between"><button class="btn ghost" id="shPrev" ${i?"":"disabled"}>← Előző</button><button class="btn" id="shNext">${last?"Befejezés":"Következő →"}</button></div>`);
   $("#shPlay").onclick=()=>say(line);$("#shSlow").onclick=()=>say(line,true);
   $("#shHide").onclick=()=>{SH.hide=!SH.hide;drawShadow();};
@@ -3913,14 +3917,15 @@ async function shRecord(line){
   if(SH!==cur)return shCleanup(cur);
   const chunks=[],rec=new MediaRecorder(cur.stream);cur.rec=rec;
   rec.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data);};
-  rec.onstop=()=>{if(SH!==cur)return;if(cur.url)URL.revokeObjectURL(cur.url);cur.url=chunks.length?URL.createObjectURL(new Blob(chunks,{type:rec.mimeType||"audio/webm"})):null;cur.rec=null;drawShadow();if(cur.url)setTimeout(()=>{if(SH===cur)$("#shCmp")&&$("#shCmp").click();},200);};
+  rec.onstop=()=>{if(SH!==cur)return;if(cur.url)URL.revokeObjectURL(cur.url);const blob=chunks.length?new Blob(chunks,{type:rec.mimeType||"audio/webm"}):null;cur.url=blob?URL.createObjectURL(blob):null;cur.into=undefined;cur.rec=null;drawShadow();
+    if(blob)analyseIntonation(line,blob).catch(()=>null).then(r=>{if(SH!==cur||cur.src.lines[cur.i]!==line)return;cur.into=r;const el=$("#shInto");if(el)el.innerHTML=intonationHtml(r);});if(cur.url)setTimeout(()=>{if(SH===cur)$("#shCmp")&&$("#shCmp").click();},200);};
   rec.start();drawShadow();
   /* Long enough for the line at a calm pace, then it stops by itself. */
   const ms=Math.min(15000,2000+line.split(/\s+/).length*550);setTimeout(()=>{if(SH===cur&&cur.rec===rec)shStop();},ms);
 }
 function shStop(){if(SH&&SH.rec&&SH.rec.state!=="inactive")try{SH.rec.stop();}catch(e){}}
 function shPlayMine(){if(!SH||!SH.url)return;try{speechSynthesis.cancel();player.pause();player.src=SH.url;player.playbackRate=1;player.onended=null;player.play().catch(()=>{});}catch(e){}}
-function shReset(){if(!SH)return;shStop();if(SH.url){URL.revokeObjectURL(SH.url);SH.url=null;}SH.spoke=0;}
+function shReset(){if(!SH)return;shStop();if(SH.url){URL.revokeObjectURL(SH.url);SH.url=null;}SH.into=undefined;SH.spoke=0;}
 function shCleanup(s){if(!s)return;try{if(s.rec&&s.rec.state!=="inactive")s.rec.stop();}catch(e){}if(s.stream)s.stream.getTracks().forEach(t=>t.stop());if(s.url)URL.revokeObjectURL(s.url);}
 function shFinish(){
   const s=SH,n=s.n;S.shadow=S.shadow||{};S.shadow[s.src.id]=Math.max(S.shadow[s.src.id]||0,n);drillStat("shadow",true);incEv("drills");addXP(Math.max(3,n));save();
@@ -4064,6 +4069,90 @@ function renderReport(){
     catch(e){if($("#repAIout"))$("#repAIout").innerHTML=`<div class="notice">${esc(aiErr(e))}</div>`;}
     if($("#repAI"))$("#repAI").disabled=false;};
   window.scrollTo(0,0);
+}
+/* ============ INTONATION CONTOUR (shadowing) ============ */
+/* Pitch (fundamental frequency) of the model recording and of the learner's recording, estimated in the browser with a
+   normalised autocorrelation on 40 ms frames (16 kHz, 70–400 Hz). Both curves are shown in semitones around each speaker's
+   own median, so a man copying a woman's voice still compares fairly. Nothing is uploaded. */
+const PITCH_SR=16000,PITCH_MIN=70,PITCH_MAX=400;
+function toMono16k(buf){
+  const ch=buf.numberOfChannels,n=buf.length,src=new Float32Array(n);
+  for(let c=0;c<ch;c++){const d=buf.getChannelData(c);for(let i=0;i<n;i++)src[i]+=d[i]/ch;}
+  const step=buf.sampleRate/PITCH_SR,out=new Float32Array(Math.floor(n/step));
+  for(let i=0;i<out.length;i++){const a=Math.floor(i*step),b=Math.max(a+1,Math.floor((i+1)*step));let s=0;for(let j=a;j<b;j++)s+=src[j];out[i]=s/(b-a);}
+  return out;
+}
+/* One value per 10 ms: frequency in Hz, or 0 for silence and unvoiced sounds. */
+function pitchTrack(x,sr=PITCH_SR){
+  const win=Math.round(sr*0.04),hop=Math.round(sr*0.01),lo=Math.floor(sr/PITCH_MAX),hi=Math.ceil(sr/PITCH_MIN),out=[];
+  let peak=0;for(let i=0;i<x.length;i++)peak=Math.max(peak,Math.abs(x[i]));
+  const gate=Math.max(1e-4,peak*0.06);
+  for(let s=0;s+win+hi<x.length;s+=hop){
+    let e=0;for(let i=0;i<win;i++)e+=x[s+i]*x[s+i];
+    if(Math.sqrt(e/win)<gate){out.push(0);continue;}
+    let best=0,lag=0;
+    for(let l=lo;l<=hi;l++){let c=0,e2=0;for(let i=0;i<win;i++){c+=x[s+i]*x[s+i+l];e2+=x[s+i+l]*x[s+i+l];}const r=c/Math.sqrt(e*e2||1);if(r>best){best=r;lag=l;}}
+    out.push(best>0.55&&lag?sr/lag:0);
+  }
+  /* A 5-point median removes the occasional octave jump. */
+  return out.map((v,i)=>{if(!v)return 0;const w=out.slice(Math.max(0,i-2),i+3).filter(Boolean).sort((a,b)=>a-b);return w[w.length>>1];});
+}
+/* Voiced part, in semitones around the median, resampled to n points (gaps interpolated). */
+function contour(track,n=60){
+  const first=track.findIndex(Boolean),last=track.length-1-[...track].reverse().findIndex(Boolean);
+  if(first<0||last-first<8)return null;
+  const seg=track.slice(first,last+1),voiced=seg.filter(Boolean).sort((a,b)=>a-b),med=voiced[voiced.length>>1];
+  const st=seg.map(v=>v?12*Math.log2(v/med):null);
+  for(let i=0;i<st.length;i++)if(st[i]===null){let a=i-1,b=i+1;while(b<st.length&&st[b]===null)b++;st[i]=a>=0&&b<st.length?st[a]+(st[b]-st[a])/(b-a):a>=0?st[a]:st[b];}
+  const pts=[];for(let k=0;k<n;k++){const p=k/(n-1)*(st.length-1),a=Math.floor(p),f=p-a;pts.push(st[a]+(st[Math.min(a+1,st.length-1)]-st[a])*f);}
+  return pts;
+}
+function contourStats(c){
+  const sorted=c.slice().sort((a,b)=>a-b),range=sorted[Math.floor(c.length*0.9)]-sorted[Math.floor(c.length*0.1)];
+  const tail=c.slice(Math.floor(c.length*0.75)),slope=tail[tail.length-1]-tail[0];
+  return {range,end:slope>1.5?"up":slope<-1.5?"down":"flat"};
+}
+function contourSim(a,b){
+  const m=v=>v.reduce((s,x)=>s+x,0)/v.length,ma=m(a),mb=m(b);let c=0,ea=0,eb=0;
+  for(let i=0;i<a.length;i++){c+=(a[i]-ma)*(b[i]-mb);ea+=(a[i]-ma)**2;eb+=(b[i]-mb)**2;}
+  return ea&&eb?c/Math.sqrt(ea*eb):0;
+}
+let PITCH_CTX=null;
+async function decodeAudio(arrayBuf){
+  PITCH_CTX=PITCH_CTX||new (window.OfflineAudioContext||window.webkitOfflineAudioContext)(1,1,44100);
+  return await new Promise((res,rej)=>{const p=PITCH_CTX.decodeAudioData(arrayBuf.slice(0),res,rej);if(p&&p.then)p.then(res,rej);});
+}
+async function modelBuffer(line){
+  const b=AUDIO_IDX[line];if(!b)return null;const data=await loadBundle(b);const b64=data&&data[line];if(!b64)return null;
+  const bin=atob(b64),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return u.buffer;
+}
+/* Returns {me, model?} contours with stats, or null when the recording has no usable voiced part. */
+async function analyseIntonation(line,blob){
+  const mine=contour(pitchTrack(toMono16k(await decodeAudio(await blob.arrayBuffer()))));
+  if(!mine)return null;
+  let model=null;try{const mb=await modelBuffer(line);if(mb)model=contour(pitchTrack(toMono16k(await decodeAudio(mb))));}catch(e){model=null;}
+  return {me:mine,meS:contourStats(mine),model,modelS:model&&contourStats(model),sim:model?contourSim(model,mine):null};
+}
+const END_HU={up:"emelkedő",down:"eső",flat:"egyenletes"};
+function intonationHtml(r){
+  if(!r)return `<p class="small muted">A felvételen nem találtam elég zöngés hangot a hanglejtés kirajzolásához. Beszélj kicsit hangosabban, közelebb a mikrofonhoz.</p>`;
+  const W=320,H=120,y=v=>H/2-Math.max(-8,Math.min(8,v))*(H/2-6)/8,path=c=>c.map((v,i)=>`${(i/(c.length-1)*W).toFixed(1)},${y(v).toFixed(1)}`).join(" ");
+  const tips=[];
+  if(r.model){
+    if(r.meS.range<r.modelS.range*0.6)tips.push("A hanglejtésed laposabb a mintánál: a hangsúlyos szavakon emeld meg jobban a hangod.");
+    else if(r.meS.range>r.modelS.range*1.6)tips.push("Nagyobbakat ugrik a hangod, mint a mintában: próbáld egyenletesebben.");
+    if(r.meS.end!==r.modelS.end&&r.modelS.end!=="flat")tips.push(`A mondat végén a minta hangja ${END_HU[r.modelS.end]}, a tiéd ${END_HU[r.meS.end]}. ${r.modelS.end==="up"?"Kérdésnél a végén emeld fel a hangod.":"Kijelentésnél a végén engedd le a hangod."}`);
+    if(!tips.length)tips.push("A hanglejtésed jól követi a mintát.");
+  }
+  return `<div class="stack" style="gap:.4rem"><b>Hanglejtés</b>
+    <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Hanglejtés-görbe${r.model?": minta és saját":""}" style="width:100%;height:auto;background:var(--sunk);border-radius:10px">
+      <line x1="0" x2="${W}" y1="${H/2}" y2="${H/2}" stroke="currentColor" stroke-opacity=".15"/>
+      ${r.model?`<polyline points="${path(r.model)}" fill="none" stroke="var(--cobalt)" stroke-width="3" stroke-linejoin="round"/>`:""}
+      <polyline points="${path(r.me)}" fill="none" stroke="var(--ok)" stroke-width="3" stroke-linejoin="round" stroke-dasharray="${r.model?"6 4":"0"}"/>
+    </svg>
+    <div class="row small" style="gap:.8rem">${r.model?`<span><b style="color:var(--cobalt)">━</b> minta</span>`:""}<span><b style="color:var(--ok)">┅</b> te</span>${r.model?`<span class="pill">Hasonlóság: ${Math.max(0,Math.round(r.sim*100))}%</span>`:""}</div>
+    ${r.model?tips.map(t=>`<p class="small">${esc(t)}</p>`).join(""):`<p class="small muted">Ehhez a mondathoz nincs felvett minta, ezért csak a saját görbédet látod.</p>`}
+    <p class="small muted">A görbe a hangmagasság változását mutatja, nem értékeli a kiejtést. Mindkét görbe a saját beszédhangod átlagához igazodik.</p></div>`;
 }
 </script>
 <script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>

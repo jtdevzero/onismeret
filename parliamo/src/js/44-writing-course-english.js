@@ -4,7 +4,7 @@ function renderWCourse(){
   const mods=XT.writing;
   view.innerHTML=`<div class="stack"><div class="row"><button class="btn ghost" id="wcBack">← Gyakorlás</button></div>
   <div><span class="label">B1–C1 · lépésenként</span><h1>Íráskurzus</h1><p class="muted">Négy szövegtípus a vizsgákról és a munkából. Mindegyiknél megtanulod a felépítést és a fordulatokat, megnézed a mintát, gyakorlod a kötőszavakat, aztán megírod a sajátodat, és az AI részenként javítja.</p></div>
-  <div class="drills">${mods.map((m,i)=>{const d=(S.wc||{})[m.id];return `<button class="drill" data-wc="${m.id}"><span class="dico c${i%4+1}">${I.tanar}</span><b ${LA()}>${esc(m.title)}</b><span class="small muted">${esc(m.hu)} · ${m.level}</span>${d?`<span class="small"><span class="pill ${d.score>=12?"ok":""}">${d.score}/15 pont</span></span>`:""}</button>`;}).join("")}</div></div>`;
+  <div class="drills">${mods.map((m,i)=>{const d=(S.wc||{})[m.id];return `<button class="drill" data-wc="${m.id}"><span class="dico c${i%4+1}">${I.tanar}</span><b ${LA()}>${esc(m.title)}</b><span class="small muted">${esc(m.hu)} · ${m.level}</span>${d?`<span class="small"><span class="pill ${d.score>=12?"ok":""}">${esc(d.score)}/15 pont</span></span>`:""}</button>`;}).join("")}</div></div>`;
   $("#wcBack").onclick=renderPractice;
   view.querySelectorAll("[data-wc]").forEach(b=>b.onclick=()=>{WC={m:mods.find(x=>x.id===b.dataset.wc),tab:"learn",txt:{},res:null};drawWC();});
 }
