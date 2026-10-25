@@ -7,14 +7,15 @@ let sayDone=null;
 function say(text,slow,rate){
   if(sayDone){sayDone();sayDone=null;}
   return new Promise(res=>{
-    let fin=false;const done=()=>{if(!fin){fin=true;if(sayDone===done)sayDone=null;res();}};sayDone=done;
+    let fin=false;const language=lang(),navigation=NAVN,done=()=>{if(!fin){fin=true;if(sayDone===done)sayDone=null;res();}},current=()=>!fin&&language===lang()&&navigation===NAVN;
+    const fallback=()=>{if(current())tts(text,slow,rate,done);else done();};sayDone=done;
     const b=AUDIO_IDX[text];
     if(b){
       try{speechSynthesis.cancel();}catch(e){}
-      const play=data=>{if(fin)return;if(!data||!data[text])return tts(text,slow,rate,done);try{player.pause();player.src=clipUrl(text,data[text]);player.playbackRate=rate||(slow?0.7:1);player.onended=done;player.onerror=done;player.play().catch(()=>tts(text,slow,rate,done));}catch(e){tts(text,slow,rate,done);}};
+      const play=data=>{if(!current())return done();if(!data||!data[text])return fallback();try{player.pause();player.src=clipUrl(text,data[text]);player.playbackRate=rate||(slow?0.7:1);player.onended=done;player.onerror=done;player.play().catch(fallback);}catch(e){fallback();}};
       loadBundle(b).then(play);return;
     }
-    tts(text,slow,rate,done);
+    fallback();
   });
 }
 function tts(text,slow,rate,done){

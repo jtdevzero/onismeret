@@ -24,5 +24,8 @@ const run=s=>vm.runInContext(s,context),encoded=s=>Buffer.from(s).toString('base
   let finishBundle;context.loadBundle=()=>new Promise(resolve=>finishBundle=resolve);
   language='en';const oldLanguage=run("playKey('acc-en','uk:hello','hello')");language='it';finishBundle({'uk:hello':encoded('English hello')});await oldLanguage;assert.equal(run('player.src'),undefined);
   language='en';const oldView=run("playKey('acc-en','uk:hello','hello')");run('NAVN++');finishBundle({'uk:hello':encoded('English hello')});await oldView;assert.equal(run('player.src'),undefined);
-  console.log('Audio language isolation: 19 checks passed.');
+  let rejectPlayback;const spoken=[];context.SpeechSynthesisUtterance=class{constructor(text){this.text=text;}};context.speechSynthesis.speak=u=>spoken.push({text:u.text,language:u.lang});context.AUDIO_IDX.ciao='u1';context.loadBundle=async()=>({ciao:encoded('Italian ciao')});context.rejectablePlayback=()=>new Promise((_,reject)=>rejectPlayback=reject);run('player.play=rejectablePlayback');
+  language='it';const interrupted=run("say('ciao')");await Promise.resolve();assert.equal(typeof rejectPlayback,'function');
+  run('if(sayDone)sayDone();NAVN++;');language='en';rejectPlayback(Error('playback interrupted'));await interrupted;await Promise.resolve();assert.deepEqual(spoken,[],'late rejection after navigation cannot speak an Italian word using the English fallback voice');
+  console.log('Audio language isolation: 21 checks passed.');
 })().catch(error=>{console.error(error);process.exitCode=1;});
