@@ -5,12 +5,12 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self'; connect-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Társasest</title>
-<meta name="description" content="Buli- és társasjátékok egy telefonon: Impostor, Én még soha nem, Ki a legvalószínűbb, Szóbomba, Vérfarkas mesélő, Kódnevek.">
+<meta name="description" content="Buli- és társasjátékok egy telefonon: Impostor, Én még soha nem, Ki a legvalószínűbb, Szóbomba, Vérfarkas, Kódnevek és hét új játék. Offline, közös névsorral, saját kérdéscsomagokkal.">
 <meta name="theme-color" content="#15111d">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
-<link rel="stylesheet" href="style.css?v=1">
+<link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
 <header class="top">
@@ -18,11 +18,26 @@
   <h1 class="brand" id="title">Társasest</h1>
   <button class="icon-btn" id="settingsBtn" aria-label="Beállítások">⚙︎</button>
 </header>
-<main id="app" aria-live="polite"><p class="muted center">Betöltés…</p></main>
-<script src="data.js?v=1"></script>
-<script src="app.js?v=1"></script>
+<main id="app" tabindex="-1"><p class="muted center">Betöltés…</p></main>
+<p id="offlineStatus" class="muted small center" role="status"></p>
+<script src="data.js?v=2"></script>
+<script src="app.js?v=2"></script>
+<script src="games-party.js?v=2"></script>
+<script src="games-social.js?v=2"></script>
+<script src="games-bluff.js?v=2"></script>
+<script src="games-quiz.js?v=2"></script>
+<script src="enhancements.js?v=2"></script>
 <script>
-if ('serviceWorker' in navigator && location.protocol !== 'file:') navigator.serviceWorker.register('sw.js');
+initTarsas();
+if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+  const status = document.getElementById('offlineStatus');
+  status.textContent = 'Offline csomag előkészítése…';
+  navigator.serviceWorker.register('sw.js').then(() => navigator.serviceWorker.ready).then(() => {
+    status.textContent = navigator.onLine ? 'Offline használatra kész ✓' : 'Offline mód · a játékok elérhetők';
+    window.addEventListener('online', () => { status.textContent = 'Offline használatra kész ✓'; });
+    window.addEventListener('offline', () => { status.textContent = 'Offline mód · a játékok elérhetők'; });
+  }).catch(() => { status.textContent = 'Az offline csomag még nem érhető el. Próbáld újra hálózaton.'; });
+}
 </script>
 </body>
 </html>

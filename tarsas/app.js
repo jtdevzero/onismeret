@@ -7,7 +7,22 @@ const SKEY = 'tarsas.v1', RKEY = 'tarsas.run.v1';
 
 const S = Object.assign({ players: [], settings: { spicy: false, sound: true, vibrate: true, tts: true, revealRole: true } }, read(localStorage, SKEY));
 S.settings = Object.assign({ spicy: false, sound: true, vibrate: true, tts: true, revealRole: true }, S.settings);
-const R = Object.assign({ view: 'home', back: 'home', games: {} }, read(sessionStorage, RKEY));
+const R = Object.assign({ view: 'home', back: 'home', games: {}, results: [] }, read(sessionStorage, RKEY));
+const TICKERS = {}, PRIVACY = [];
+let privacyCovered = false;
+function recordResult(game, entries) {
+  R.results = Array.isArray(R.results) ? R.results : [];
+  const id = Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8);
+  R.results.push({ id, game, entries: entries.map(x => ({ name: String(x.name), points: Number(x.points) || 0 })), at: Date.now() });
+  R.results = R.results.slice(-100);
+  save();
+  return id;
+}
+function updateResult(s, game, entries) {
+  const result = (R.results || []).find(x => x.id === s.resultId);
+  if (result) result.entries = entries;
+  else s.resultId = recordResult(game, entries);
+}
 
 function read(store, key) { try { return JSON.parse(store.getItem(key)) || {}; } catch (e) { return {}; } }
 function save() {
@@ -79,18 +94,44 @@ async function keepAwake(on) {
     if (!on && wake) { await wake.release(); wake = null; }
   } catch (e) {}
 }
-document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') keepAwake(R.view !== 'home'); });
+function hideSecrets() {
+  Object.values(R.games).forEach(s => { if (s && s.deal) s.deal.shown = false; });
+  if (R.games.codes) R.games.codes.key = false;
+  if (R.games.codekey) R.games.codekey.revealed = false;
+  PRIVACY.forEach(fn => fn());
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
+}
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden') {
+    hideSecrets();
+    privacyCovered = !!GAMES[R.view] || R.view === 'codekey';
+    save();
+    if (privacyCovered) render();
+  } else { keepAwake(R.view !== 'home'); render(); }
+});
 
 /* ---------- Navigáció ---------- */
 function go(view, back) {
+  if (!V[view]) view = 'home';
+  if (view !== R.view) { hideSecrets(); privacyCovered = false; }
   R.back = back !== undefined ? back : R.view;
   R.view = view;
-  if (view !== 'home') history.replaceState(null, '', '#' + view); else history.replaceState(null, '', location.pathname);
+  const url = view === 'home' ? location.pathname : '#' + view;
+  if (location.hash !== (view === 'home' ? '' : '#' + view)) history.pushState({ view, back: R.back }, '', url);
   keepAwake(view !== 'home');
+  save();
   window.scrollTo(0, 0);
   render();
+  $app.focus({ preventScroll: true });
 }
-function inProgress(v) { const s = R.games[v]; return s && s.phase && s.phase !== 'setup' && s.phase !== 'end'; }
+window.addEventListener('popstate', e => {
+  hideSecrets(); privacyCovered = false;
+  const v = e.state && e.state.view || location.hash.slice(1) || 'home';
+  R.view = V[v] ? v : 'home';
+  R.back = e.state && e.state.back || 'home';
+  keepAwake(R.view !== 'home'); save(); render();
+});
+function inProgress(v) { const s = R.games[v]; return s && s.phase && !['setup', 'end', 'reveal'].includes(s.phase); }
 document.getElementById('back').onclick = () => {
   if ('speechSynthesis' in window) speechSynthesis.cancel();
   go(GAMES[R.view] ? 'home' : (R.back || 'home'), 'home');
@@ -99,6 +140,7 @@ document.getElementById('settingsBtn').onclick = () => go('settings', R.view ===
 
 /* ---------- Kattintások ---------- */
 const A = {}; // akciók: data-a="név", data-v="érték"
+A.privacyResume = () => { privacyCovered = false; };
 document.addEventListener('click', e => {
   const el = e.target.closest('[data-a]'); if (!el || el.tagName === 'FORM') return;
   audio(); // iOS: az első érintés oldja fel a hangot
@@ -119,6 +161,10 @@ function render() {
   document.getElementById('title').textContent = GAMES[v] ? GAMES[v].name : ({ players: 'Társaság', settings: 'Beállítások', codekey: 'Kémfőnöki kulcs' }[v] || 'Társasest');
   document.documentElement.style.setProperty('--c', GAMES[v] ? GAMES[v].c : (v === 'codekey' ? GAMES.codes.c : '#ffcf3f'));
   const fn = V[v] || V.home;
+  if (privacyCovered) {
+    $app.innerHTML = '<div class="bigcard"><div class="huge">🔒</div><h2>A játék elrejtve</h2><p class="muted">A megfelelő játékosnál van a telefon?</p></div><button class="btn primary big" data-a="privacyResume">Folytatás</button>';
+    after = null; return;
+  }
   $app.innerHTML = fn();
   if (after) { const f = after; after = null; f(); }
   tick();
@@ -150,13 +196,13 @@ A.nav = v => go(v);
 V.players = () => `
   <form class="panel" data-a="addPlayer">
     <h2>Ki játszik?</h2>
-    <div class="field"><input id="pname" name="n" placeholder="Név" autocomplete="off" maxlength="18" enterkeyhint="done"><button class="btn primary">Hozzáad</button></div>
+    <div class="field"><input id="pname" name="n" aria-label="Játékos neve" placeholder="Név" autocomplete="off" maxlength="18" enterkeyhint="done"><button class="btn primary">Hozzáad</button></div>
     <div class="chips">${S.players.map((n, i) => `<button type="button" class="chip" data-a="delPlayer" data-v="${i}" aria-label="${esc(n)} törlése">${esc(n)}<span class="x">✕</span></button>`).join('') || '<span class="muted small">Még senki. Írj be egy nevet!</span>'}</div>
   </form>
   ${S.players.length ? `<div class="btn-row"><button class="btn ghost" data-a="shufflePlayers">Sorrend keverése</button><button class="btn ghost" data-a="clearPlayers">Mindet törlöm</button></div>` : ''}
   <button class="btn primary big" data-a="backFromPlayers">Kész</button>`;
 A.addPlayer = form => {
-  const v = form.n.value.trim(); if (!v) return;
+  const v = form.n.value.trim().slice(0,18); if (!v || ['__proto__','constructor','prototype'].includes(v)) return;
   let name = v, k = 2; while (S.players.includes(name)) name = v + ' ' + k++;
   if (S.players.length < 24) S.players.push(name);
   after = () => document.getElementById('pname').focus();
@@ -189,7 +235,14 @@ V.settings = () => {
     <button class="btn ghost" data-a="resetGames">Minden játék nullázása</button></div>
   <p class="muted small center">A nevek és beállítások csak ezen a telefonon tárolódnak.</p>`;
 };
-A.setting = (k, el) => { S.settings[k] = el.checked; if (k === 'tts' && !el.checked && 'speechSynthesis' in window) speechSynthesis.cancel(); };
+A.setting = (k, el) => {
+  if (!Object.hasOwn(S.settings, k)) return;
+  S.settings[k] = !!el.checked;
+  if (k === 'spicy' && !el.checked) {
+    ['never', 'likely'].forEach(v => { if (R.games[v]) cardDeckState(v, D[v]); });
+  }
+  if (k === 'tts' && !el.checked && 'speechSynthesis' in window) speechSynthesis.cancel();
+};
 A.resetGames = () => { if (!confirm('Minden folyamatban lévő játék elvész. Mehet?')) return false; R.games = {}; };
 
 /* ---------- Közös: kézről kézre osztás ---------- */
@@ -245,6 +298,7 @@ function tick() {
   }
   if (R.view === 'bomb') bombTick(s);
   if (R.view === 'likely') likelyTick(s);
+  if (TICKERS[R.view]) TICKERS[R.view](s);
 }
 setInterval(tick, 100);
 
@@ -302,14 +356,19 @@ V.impostor = () => {
     <div class="panel"><h3>Kire szavazott a többség?</h3>
       <div class="chips">${s.order.map(n => `<button class="chip ${s.voted === n ? 'on' : ''}" data-a="impVoted" data-v="${esc(n)}">${esc(n)}</button>`).join('')}</div></div>
     <button class="btn primary big" data-a="impReveal" ${s.voted ? '' : 'disabled'}>Leleplezés</button>`;
+  if (s.phase === 'guess') return `<div class="bigcard">
+    <div class="kicker">Utolsó esély</div><div class="say">${s.imps.map(esc).join(', ')}</div>
+    <p>Mondjátok ki a tippet! Mi lehetett ${s.mode === 'szo' ? 'a titkos szó' : 'a helyszín'}?</p>
+    <p class="muted small">A megfejtés a döntés után jelenik meg. A többiek jelöljék, hogy helyes volt-e a tipp.</p></div>
+    <div class="btn-row"><button class="btn primary" data-a="impGuess" data-v="yes">Eltalálta</button><button class="btn ghost" data-a="impGuess" data-v="no">Nem találta el</button></div>`;
   // reveal
   const caught = s.imps.includes(s.voted);
   return `
     <div class="bigcard" style="--c:${caught ? 'var(--green)' : 'var(--red)'}">
-      <div class="kicker">${caught ? 'Lebukott!' : 'Rossz embert gyanúsítottatok'}</div>
+      <div class="kicker">${caught ? (s.guessed ? 'Az utolsó tipp helyes!' : 'Lebukott!') : 'Rossz embert gyanúsítottatok'}</div>
       <div class="say">${s.imps.length > 1 ? 'Az impostorok' : (s.mode === 'szo' ? 'Az impostor' : 'A kém')}: ${s.imps.map(esc).join(', ')}</div>
       <div class="sub">${s.mode === 'szo' ? 'A titkos szó' : 'A helyszín'}: <b>${esc(s.word)}</b></div>
-      ${caught ? `<div class="sub">Utolsó esély: ha ${s.mode === 'szo' ? 'kitalálja a szót' : 'kitalálja a helyszínt'}, mégis ${s.imps.length > 1 ? 'ők nyernek' : 'ő nyer'}.</div>` : ''}
+      <div class="sub">${!caught || s.guessed ? 'Az impostorok csapata nyert.' : 'A szót ismerő játékosok nyertek.'}</div>
     </div>
     <div class="btn-row"><button class="btn ghost" data-a="impSetup">Beállítások</button><button class="btn primary" data-a="impStart">Új kör</button></div>`;
 };
@@ -328,32 +387,52 @@ A.impStart = () => {
     ps.forEach((n, i) => { s.roles[n] = roles[i % roles.length]; });
   }
   s.imps = shuffle(ps).slice(0, s.nImp);
-  s.order = ps; s.voted = null; s.timer = null;
+  s.order = ps; s.voted = null; s.guessed = false; s.recorded = false; s.timer = null;
   s.deal = { order: ps, i: 0, shown: false };
   s.phase = 'deal';
 };
 DEAL_DONE.impostor = s => { s.phase = 'talk'; s.starter = pick(s.order); startTimer(s, s.minutes); };
 A.impVote = () => { const s = impState(); s.phase = 'vote'; s.timer = null; };
 A.impVoted = n => { impState().voted = n; };
-A.impReveal = () => { impState().phase = 'reveal'; buzz([60, 40, 60]); };
+function impRecord(s) {
+  if (s.recorded) return;
+  const impostorsWin = !s.imps.includes(s.voted) || s.guessed;
+  recordResult('impostor', s.order.map(name => ({ name, points: s.imps.includes(name) === impostorsWin ? 1 : 0 })));
+  s.recorded = true;
+}
+A.impReveal = () => { const s = impState(); s.phase = s.imps.includes(s.voted) ? 'guess' : 'reveal'; if (s.phase === 'reveal') impRecord(s); buzz([60, 40, 60]); };
+A.impGuess = v => { const s = impState(); if (s.phase !== 'guess') return; s.guessed = v === 'yes'; s.phase = 'reveal'; impRecord(s); };
 A.impSetup = () => { impState().phase = 'setup'; };
 
 /* =====================================================================
    5. ÉN MÉG SOHA NEM
    ===================================================================== */
+function cardAllowed(src, c, i) {
+  const view = src === D.never ? 'never' : 'likely';
+  const blocked = S.cardPrefs && S.cardPrefs[view] && S.cardPrefs[view].blocked || [];
+  return Object.hasOwn(src, c) && Array.isArray(src[c].items) && typeof src[c].items[i] === 'string' && (!src[c].spicy || S.settings.spicy) && !blocked.includes(c + '|' + i);
+}
 function deckOf(src, cats) {
   const all = [];
-  cats.forEach(c => src[c] && src[c].items.forEach((t, i) => all.push([c, i])));
+  cats.forEach(c => Object.hasOwn(src, c) && src[c].items.forEach((t, i) => { if (cardAllowed(src, c, i)) all.push([c, i]); }));
   return shuffle(all);
 }
 const visibleCats = src => Object.keys(src).filter(k => !src[k].spicy || S.settings.spicy);
 function cardDeckState(view, src) {
   const s = R.games[view] = R.games[view] || { phase: 'setup', cats: visibleCats(src).filter(k => !src[k].spicy) };
-  s.cats = s.cats.filter(k => visibleCats(src).includes(k));
+  s.cats = (s.cats || []).filter(k => visibleCats(src).includes(k));
+  if (s.phase !== 'setup' && Array.isArray(s.deck)) {
+    const old = s.deck, pos = s.pos || 0;
+    const valid = x => Array.isArray(x) && s.cats.includes(x[0]) && cardAllowed(src, x[0], x[1]);
+    s.pos = old.slice(0, pos).filter(valid).length;
+    s.deck = old.filter(valid);
+    if (!s.deck.length) { if (s.phase !== 'end') s.phase = 'setup'; s.pos = 0; }
+    else s.pos = Math.min(s.pos, s.deck.length - 1);
+  } else if (s.phase !== 'setup' && s.phase !== 'end') s.phase = 'setup';
   return s;
 }
 function catChips(src, s, act) {
-  return `<div class="chips">${visibleCats(src).map(k => `<button class="chip ${s.cats.includes(k) ? 'on' : ''}" data-a="${act}" data-v="${k}">${src[k].name}${src[k].spicy ? ' 🌶️' : ''}</button>`).join('')}</div>`;
+  return `<div class="chips">${visibleCats(src).map(k => `<button class="chip ${s.cats.includes(k) ? 'on' : ''}" data-a="${act}" data-v="${k}">${esc(src[k].name)}${src[k].spicy ? ' 🌶️' : ''}</button>`).join('')}</div>`;
 }
 function toggleCat(s, k) { s.cats = s.cats.includes(k) ? s.cats.filter(x => x !== k) : s.cats.concat(k); }
 
@@ -366,7 +445,7 @@ V.never = () => {
     <button class="btn primary big" data-a="neverStart" ${s.cats.length ? '' : 'disabled'}>Kezdjük</button>`;
   const [c, i] = s.deck[s.pos];
   return `
-    <div class="counter">${s.pos + 1} / ${s.deck.length} · ${D.never[c].name}</div>
+    <div class="counter">${s.pos + 1} / ${s.deck.length} · ${esc(D.never[c].name)}</div>
     <div class="bigcard tap" data-a="neverNext">
       <div class="kicker">Én még soha nem…</div>
       <div class="say">${esc(D.never[c].items[i])}</div>
@@ -375,7 +454,7 @@ V.never = () => {
     <button class="btn ghost" data-a="neverSetup">Csomagok</button>`;
 };
 A.neverCat = k => toggleCat(R.games.never, k);
-A.neverStart = () => { const s = R.games.never; s.deck = deckOf(D.never, s.cats); s.pos = 0; s.phase = 'play'; };
+A.neverStart = () => { const s = R.games.never; s.deck = deckOf(D.never, s.cats); s.pos = 0; s.phase = s.deck.length ? 'play' : 'setup'; };
 A.neverNext = () => { const s = R.games.never; if (s.pos < s.deck.length - 1) s.pos++; else { s.deck = deckOf(D.never, s.cats); s.pos = 0; } };
 A.neverPrev = () => { const s = R.games.never; s.pos = Math.max(0, s.pos - 1); };
 A.neverSetup = () => { R.games.never.phase = 'setup'; };
@@ -420,14 +499,19 @@ function likelyTick(s) {
   if (left < -900) { s.phase = 'vote'; save(); render(); }
 }
 A.likelyCat = k => toggleCat(R.games.likely, k);
-A.likelyStart = () => { const s = R.games.likely; s.deck = deckOf(D.likely, s.cats); s.pos = 0; s.phase = 'card'; };
+A.likelyStart = () => { const s = R.games.likely; s.deck = deckOf(D.likely, s.cats); s.pos = 0; s.phase = s.deck.length ? 'card' : 'setup'; };
 A.likelyCount = () => { const s = R.games.likely; s.phase = 'count'; s.countEnd = Date.now() + 3000; beep(520, 0.08); };
 A.likelyWin = n => { const s = R.games.likely, [c, i] = s.deck[s.pos]; (s.tally[n] = s.tally[n] || []).push(D.likely[c].items[i]); A.likelyNext(); };
 A.likelyNext = () => { const s = R.games.likely; s.phase = 'card'; if (s.pos < s.deck.length - 1) s.pos++; else { s.deck = deckOf(D.likely, s.cats); s.pos = 0; } };
 A.likelySetup = () => { R.games.likely.phase = 'setup'; };
-A.likelyEnd = () => { const s = R.games.likely; s.prev = s.phase === 'count' ? 'card' : s.phase; s.phase = 'end'; };
+A.likelyEnd = () => {
+  const s = R.games.likely;
+  s.prev = s.phase === 'count' ? 'card' : s.phase; s.phase = 'end';
+  const names = [...new Set(S.players.concat(Object.keys(s.tally || {})))];
+  if (Object.keys(s.tally || {}).length) updateResult(s, 'likely', names.map(name => ({name, points: (s.tally[name] || []).length})));
+};
 A.likelyBack = () => { const s = R.games.likely; s.phase = s.deck ? (s.prev || 'card') : 'setup'; };
-A.likelyReset = () => { const s = R.games.likely; s.tally = {}; s.phase = 'setup'; };
+A.likelyReset = () => { const s = R.games.likely; s.tally = {}; s.resultId = null; s.phase = 'setup'; };
 
 /* =====================================================================
    7. SZÓBOMBA
@@ -451,6 +535,7 @@ V.bomb = () => {
     </div>
     ${scoreBoard(s.losses, 'Robbanások')}
     <button class="btn primary big" data-a="bombArm">Élesítés 💣</button>`;
+  if (s.phase === 'end') return `<div class="panel"><h2>A Szóbomba eredménye mentve</h2><p class="muted">A legkevesebb robbanás nyer. Az estpontozáshoz a robbanások negatívját mentjük.</p></div>${scoreBoard(s.losses, 'Robbanások')}<button class="btn primary big" data-a="bombSetup">Folytatjuk</button>`;
   if (s.phase === 'armed') return `
     <div class="bigcard">
       <div class="kicker">${esc(s.prompt.k)}</div>
@@ -472,7 +557,7 @@ function scoreBoard(obj, title) {
   const rows = Object.entries(obj).filter(x => x[1]).sort((a, b) => b[1] - a[1]);
   if (!rows.length) return '';
   return `<div class="panel"><h3>${title}</h3><div class="tally">${rows.map(([n, v]) => `<div><span>${esc(n)}</span><b>${v}</b></div>`).join('')}</div>
-    <button class="btn ghost" data-a="bombClear">Pontok nullázása</button></div>`;
+    <div class="btn-row"><button class="btn ghost" data-a="bombClear">Pontok nullázása</button><button class="btn ghost" data-a="bombEnd">Eredmény mentése</button></div></div>`;
 }
 function bombTick(s) {
   if (s.phase !== 'armed') return;
@@ -494,7 +579,12 @@ A.bombArm = () => {
 A.bombDefuse = () => { bombState().phase = 'setup'; };
 A.bombLoser = n => { const s = bombState(); s.losses[n] = (s.losses[n] || 0) + 1; A.bombArm(); };
 A.bombSetup = () => { bombState().phase = 'setup'; };
-A.bombClear = () => { bombState().losses = {}; };
+A.bombEnd = () => {
+  const s = bombState(), names = [...new Set(S.players.concat(Object.keys(s.losses)))];
+  if (Object.values(s.losses).some(Boolean)) updateResult(s, 'bomb', names.map(name => ({name, points: -(s.losses[name] || 0)})));
+  s.phase = 'end';
+};
+A.bombClear = () => { const s = bombState(); s.losses = {}; s.resultId = null; };
 
 /* =====================================================================
    8. VÉRFARKAS / MAFFIA MESÉLŐ
@@ -560,7 +650,7 @@ A.wolfStart = () => {
   const sh = shuffle(roles);
   s.players = players().map(name => ({ name, role: sh[ps.indexOf(name)], alive: true }));
   s.night = 0; s.lastProtect = null; s.witch = s.counts.boszi ? { heal: true, poison: true } : null; s.winner = null; s.timer = null;
-  s.deal = { order: players(), i: 0, shown: false }; s.phase = 'deal';
+  s.deal = { order: players(), i: 0, shown: false }; s.recorded = false; s.phase = 'deal';
 };
 DEAL_DONE.wolf = s => startNight(s);
 
@@ -603,9 +693,10 @@ function wolfNight(s) {
   }
   if (st === 'boszi') {
     const w = s.witch, v = s.sel.kill;
-    script = `<em>${rn('boszi')}</em>, ébredj! Ma éjjel <em>${esc(v || 'senki')}</em> az áldozat.${w.heal ? ' Megmented?' : ''}${w.poison ? ' Megmérgezel valakit?' : ''}`;
+    script = `<em>${rn('boszi')}</em>, ébredj! Nézz a mesélőre, és jelezd a döntésedet!`;
     if (deadRole('boszi')) body = fake;
     else {
+      body += `<p>Az éjszakai célpont: <b>${esc(v || 'senki')}</b>. Ezt csak a boszorkánynak mutasd, szó nélkül.</p>`;
       if (w.heal && v) body += `<div class="chips"><button class="chip ${s.sel.heal ? 'on' : ''}" data-a="wolfToggle" data-v="heal">🧪 Megmentem</button></div>`;
       if (w.poison) body += `<p class="muted small">Méreg (nem kötelező):</p>` + grid('poison', al.filter(p => p !== aliveHolder(s, 'boszi')));
       if (!w.heal && !w.poison) body += `<p class="muted small">Már mindkét bájitalt elhasználta.</p>`;
@@ -705,6 +796,7 @@ function wolfVerdict(s) {
     <button class="btn primary big" data-a="wolfAfterDeath" data-v="night">Tovább</button>`;
 }
 function wolfEnd(s) {
+  if (!s.recorded && s.winner) { s.recorded = true; recordResult('wolf', s.players.map(p => ({ name: p.name, points: D.wolfRoles[p.role].team === s.winner ? 1 : 0 }))); }
   const wolves = s.winner === 'farkas';
   const text = wolves ? `Vége! ${rn('farkas', true)} nyertek.` : `Vége! ${sk().Town} nyert, minden ${rn('farkas').toLowerCase()} lebukott.`;
   after = () => speak(text, 'end');
@@ -740,48 +832,55 @@ V.codes = () => {
   return `
     <div class="score"><span class="r">● ${TEAM.r}: ${left('r')}</span><span class="muted small">kód: <b style="color:var(--text);letter-spacing:.1em">${s.seed}</b></span><span class="b">${TEAM.b}: ${left('b')} ●</span></div>
     ${s.phase === 'end' ? `<div class="turn ${s.winner}">${TEAM[s.winner]} csapat nyert! ${s.why || ''}</div>` : `<div class="turn ${s.turn}">${TEAM[s.turn]} csapat tippel</div>`}
-    <div class="board">${b.words.map((w, i) => {
+    <button class="btn ghost" data-a="codesZoom">${s.zoom ? 'Normál tábla' : 'Tábla nagyítása'}</button>
+    <div class="board ${s.zoom ? 'zoom' : ''}">${b.words.map((w, i) => {
       const show = s.rev[i] || s.key || s.phase === 'end';
-      return `<button class="cell ${show ? b.colors[i] : ''} ${s.rev[i] ? 'rev' : (show ? 'keyonly' : '')} ${s.sel === i ? 'sel' : ''}" data-a="codesTap" data-v="${i}">${esc(w)}</button>`;
+      return `<button class="cell ${show ? b.colors[i] : ''} ${s.rev[i] ? 'rev' : (show ? 'keyonly' : '')} ${s.sel === i ? 'sel' : ''}" data-a="codesTap" data-v="${i}">${show ? `<span class="cell-mark" aria-hidden="true">${({r:'●',b:'◆',n:'○',a:'✕'})[b.colors[i]]}</span>` : ''}<span>${esc(w)}</span></button>`;
     }).join('')}</div>
     ${s.sel != null && s.phase !== 'end' ? '<p class="center small" style="color:var(--accent);margin:0">Koppints rá még egyszer a felfordításhoz.</p>' : ''}
     ${s.phase !== 'end' ? `<div class="btn-row"><button class="btn ghost" data-a="codesKey">${s.key ? 'Kulcs elrejtése' : '🔑 Kulcs (csak kémfőnök)'}</button><button class="btn primary" data-a="codesPass">Kör vége</button></div>`
       : `<button class="btn primary big" data-a="codesNew">Új tábla</button>`}
     <button class="btn ghost" data-a="codesSetup">Szabályok, új játék</button>`;
 };
-A.codesNew = () => { const s = codesState(); s.seed = 1000 + rnd(9000); s.rev = Array(25).fill(false); s.turn = codesBoard(s.seed).start; s.sel = null; s.key = false; s.winner = null; s.phase = 'play'; };
+A.codesNew = () => { const s = codesState(); s.seed = 1000 + rnd(9000); s.rev = Array(25).fill(false); s.turn = codesBoard(s.seed).start; s.sel = null; s.key = false; s.winner = null; s.recorded = false; s.phase = 'play'; };
+A.codesZoom = () => { const s = codesState(); s.zoom = !s.zoom; };
 A.codesSetup = () => { codesState().phase = 'setup'; };
 A.codesKey = () => { const s = codesState(); if (!s.key && !confirm('Csak a kémfőnökök nézzenek a telefonra! Mutassam a kulcsot?')) return false; s.key = !s.key; };
 A.codesPass = () => { const s = codesState(); s.turn = s.turn === 'r' ? 'b' : 'r'; s.sel = null; };
+function codesRecord(s) {
+  if (!s.recorded) { recordResult('codes', ['r','b'].map(t => ({name: TEAM[t] + ' csapat', points: s.winner === t ? 1 : 0}))); s.recorded = true; }
+}
 A.codesTap = v => {
   const s = codesState(), i = +v; if (s.phase === 'end' || s.rev[i]) return;
   if (s.sel !== i) { s.sel = i; return; }
   const b = codesBoard(s.seed), c = b.colors[i], other = s.turn === 'r' ? 'b' : 'r';
   s.rev[i] = true; s.sel = null; buzz(40);
-  if (c === 'a') { s.winner = other; s.why = `(${TEAM[s.turn]} a merénylőt fordította fel.)`; s.phase = 'end'; boom(); return; }
+  if (c === 'a') { s.winner = other; s.why = `(${TEAM[s.turn]} a merénylőt fordította fel.)`; s.phase = 'end'; codesRecord(s); boom(); return; }
   ['r', 'b'].forEach(t => { if (!b.colors.some((x, j) => x === t && !s.rev[j])) { s.winner = t; s.why = ''; s.phase = 'end'; } });
-  if (s.phase === 'end') { alarm(); return; }
+  if (s.phase === 'end') { codesRecord(s); alarm(); return; }
   if (c !== s.turn) { s.turn = other; beep(300, 0.15, 0.2, 'triangle'); } else beep(880, 0.08, 0.2, 'triangle');
 };
 
 V.codekey = () => {
   const k = R.games.codekey = R.games.codekey || {};
-  const b = k.seed ? codesBoard(k.seed) : null;
+  const b = k.seed && k.revealed ? codesBoard(k.seed) : null;
   return `<form class="panel" data-a="codekeySet">
     <p class="muted small">Írd be a táblán látható négyjegyű kódot. A kulcs csak a kémfőnököknek szól, a csapatod ne lássa!</p>
-    <div class="field"><input name="c" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" placeholder="pl. 4821" value="${k.seed || ''}"><button class="btn primary">Mutasd</button></div></form>
+    <div class="field"><input name="c" aria-label="Négyjegyű táblakód" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" placeholder="pl. 4821" value="${k.seed || ''}"><button class="btn primary">Mutasd</button></div></form>
     ${b ? `<div class="turn ${b.start}">${TEAM[b.start]} kezd (9 kártya)</div>
       <div class="board">${b.words.map((w, i) => `<div class="cell ${b.colors[i]}">${esc(w)}</div>`).join('')}</div>
       <p class="muted small center">A felfordított kártyákat itt nem követi a telefon, nézd a táblát.</p>` : ''}`;
 };
-A.codekeySet = f => { const v = +f.c.value; if (v >= 1000 && v <= 9999) R.games.codekey.seed = v; };
+A.codekeySet = f => { const v = +f.c.value; if (Number.isInteger(v) && v >= 1000 && v <= 9999) { R.games.codekey.seed = v; R.games.codekey.revealed = true; } };
 
 /* ---------- Indulás ---------- */
-(function init() {
+function initTarsas() {
   const h = location.hash.slice(1);
   if (h && (V[h] || GAMES[h])) R.view = h;
   if (!V[R.view]) R.view = 'home';
+  hideSecrets();
+  history.replaceState({view:R.view,back:R.back}, '', R.view === 'home' ? location.pathname : '#' + R.view);
   render();
   keepAwake(R.view !== 'home');
   if ('speechSynthesis' in window) speechSynthesis.getVoices();
-})();
+}

@@ -31,6 +31,10 @@ jobs:
           fi
       - name: Tesztek (linkek, séma, pontozás, felület)
         run: npm test
+      - name: Társasest játékok és offline mobilfelület
+        run: |
+          npm run test:tarsas
+          npm run test:tarsas:browser
       - name: Parliamo AI-szerver (worker) tesztjei
         working-directory: parliamo/worker
         run: |
