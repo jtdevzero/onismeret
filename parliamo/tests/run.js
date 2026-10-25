@@ -377,7 +377,7 @@ function mockProxy(store) {
   ok(await p.locator('[data-ch="1"][disabled]').count() === 1, 'folytatásos történet: a 2. fejezet zárva');
   await p.click('[data-ch="0"]'); ok(await p.evaluate(() => AUDIO_IDX[XT.ser[0].chapters[0].lines[0].it] === 'ser-en-s1'), 'fejezet felvett hanggal');
   await p.click('[data-sq="0"][data-o="0"]'); await p.click('[data-sq="1"][data-o="0"]');
-  ok(await p.evaluate(() => S.ser.s1[0].ok === 2) && await p.locator('#chNext').count() === 1, 'kérdések után megnyílik a következő fejezet');
+  ok(await p.evaluate(() => S.ser['en:s1'][0].ok === 2) && await p.locator('#chNext').count() === 1, 'kérdések után megnyílik a következő fejezet');
   await p.evaluate(() => go('gyakorlas')); await p.click('[data-d="journal"]');
   const jp = await p.evaluate(() => JR.prompt); await p.fill('#jrText', 'draft'); await p.click('#jrOther');
   ok(await p.evaluate(jp => JR.prompt !== jp && document.querySelector('#jrText').value === 'draft', jp), 'napló: másik téma, a piszkozat megmarad');

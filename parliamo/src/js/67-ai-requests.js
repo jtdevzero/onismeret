@@ -10,13 +10,15 @@ function createAIRequest(valid,options={}){
     owns:()=>language===lang()&&navigation===NAVN&&valid(),
     current:()=>!cancelled&&job.owns(),
     cancel(reason="cancelled"){if(finished||cancelled)return;cancelled=reason;controller.abort();rejectCancel({code:reason});},
-    async json(prompt,opts={}){
+    async run(prompt,opts,method){
       try{
-        const result=await Promise.race([(async()=>{const sample=await getSample();if(!job.current())throw {code:"stale"};if(!sample)throw {code:"no_ai"};return sample.json(prompt,Object.assign({},opts,{signal:controller.signal}));})(),interrupted]);
+        const result=await Promise.race([(async()=>{const sample=await getSample();if(!job.current())throw {code:"stale"};if(!sample)throw {code:"no_ai"};const settings=Object.assign({},opts,{signal:controller.signal});return method==="text"?sample(prompt,settings):sample.json(prompt,settings);})(),interrupted]);
         if(!job.current())throw {code:"stale"};return result;
       }catch(error){if(!job.owns())throw {code:"stale"};throw error;}
       finally{finished=true;clearTimeout(timer);registry.delete(job);}
-    }
+    },
+    json(prompt,opts={}){return job.run(prompt,opts,"json");},
+    text(prompt,opts={}){return job.run(prompt,opts,"text");}
   };
   const timer=setTimeout(()=>job.cancel("timeout"),Number.isFinite(options.timeoutMs)?Math.max(1,options.timeoutMs):45000);
   registry.add(job);return job;

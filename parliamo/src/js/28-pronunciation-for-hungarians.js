@@ -2,7 +2,7 @@
 function renderPron(){
   view.innerHTML=`<div class="stack"><div class="row"><button class="btn ghost" id="prBack">← Gyakorlás</button></div>
   <div><span class="label">Kiejtés magyaroknak</span><h1>Hangpárok</h1><p class="muted">A magyar anyanyelvűek tipikus ${LG().adj} kiejtési hibái, egyenként. Először hallás alapján különböztesd meg a párokat, aztán mondd ki őket${canSpeak()?", és megnézheted, melyik szó került a felismert szövegbe":""}.</p></div>
-  <div class="drills">${XT.pron.map((st,i)=>{const s=S.drills["pr-"+st.id];return `<button class="drill" data-s="${st.id}"><span class="dico c${i%4+1}">${I.mic}</span><b>${esc(st.title)}</b><span class="small muted">${esc(st.pairs.slice(0,3).map(p=>p.join(" – ")).join(", "))}</span>${s&&s.n?`<span class="small"><span class="pill ${s.ok/s.n>=.8?"ok":""}">${Math.round(s.ok/s.n*100)}% · ${s.n} válasz</span></span>`:""}</button>`;}).join("")}</div></div>`;
+  <div class="drills">${XT.pron.map((st,i)=>{const s=drillResult("pr-"+st.id);return `<button class="drill" data-s="${st.id}"><span class="dico c${i%4+1}">${I.mic}</span><b>${esc(st.title)}</b><span class="small muted">${esc(st.pairs.slice(0,3).map(p=>p.join(" – ")).join(", "))}</span>${s&&s.n?`<span class="small"><span class="pill ${s.ok/s.n>=.8?"ok":""}">${Math.round(s.ok/s.n*100)}% · ${s.n} válasz</span></span>`:""}</button>`;}).join("")}</div></div>`;
   $("#prBack").onclick=renderPractice;
   view.querySelectorAll("[data-s]").forEach(b=>b.onclick=()=>openPron(b.dataset.s));
 }

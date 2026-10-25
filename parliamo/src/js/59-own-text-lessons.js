@@ -14,10 +14,10 @@ function renderImport(keep){
   view.querySelectorAll("[data-imp]").forEach(b=>b.onclick=()=>{const x=impList().find(y=>String(y.at)===b.dataset.imp);if(x)openImport(x);});
 }
 async function makeImport(){
-  const text=$("#impText").value.trim(),n=text.split(/\s+/).length;
+  const session=IMP,button=$("#impGo"),message=$("#impMsg"),input=$("#impText");if(!session||!button||button.disabled||!input)return;
+  const text=input.value.trim(),n=text.split(/\s+/).length;
   if(n<40){toast("Legalább 40 szavas szöveg kell.");return;}if(n>800){toast("Ez túl hosszú. Legfeljebb kb. 600 szót másolj be.");return;}
-  const sample=await getSample();if(!sample){$("#impMsg").innerHTML=`<div class="notice">${aiMissing()}</div>`;return;}
-  $("#impGo").disabled=true;$("#impMsg").innerHTML=`<div class="card row"><span class="thinking"><i></i><i></i><i></i></span><span class="muted">Készül a lecke…</span></div>`;
+  const job=createAIRequest(()=>IMP===session&&button.isConnected&&message.isConnected&&$("#impGo")===button);session.text=text;button.disabled=true;message.innerHTML=aiRequestBusy("Készül a lecke…","impCancel");$("#impCancel").onclick=()=>job.cancel();
   const prompt=`Egy magyar anyanyelvű, ${defLevel()} szintű ${LG().adj} nyelvtanuló leckét szeretne készíteni a saját szövegéből. A szöveg:
 """${text}"""
 
@@ -26,13 +26,13 @@ Készíts 6–8 feleletválasztós lyukas mondatot a szöveg mondataiból: a mon
 Adj a szövegnek rövid címet ${LG().adv} és 1–2 mondatos magyar összefoglalót.
 Csak egy JSON objektumot adj vissza:
 {"title":"cím","summary":"magyar összefoglaló","words":[{"it":"kifejezés","hu":"jelentés","ex":"a mondat a szövegből"}],"cloze":[{"q":"mondat ___ résszel","a":"helyes","o":["helyes","rossz1","rossz2"],"why":"magyar magyarázat"}]}`;
-  try{const r=await sample.json(prompt,{modelTier:"default"});if(!IMP)return;
+  try{const r=await job.json(prompt,{modelTier:"default"});if(!job.current())return;
     const words=(Array.isArray(r.words)?r.words:[]).filter(w=>w&&w.it&&w.hu).slice(0,15).map(w=>({it:String(w.it),hu:String(w.hu),ex:String(w.ex||"")}));
     const cloze=(Array.isArray(r.cloze)?r.cloze:[]).filter(c=>c&&String(c.q).includes("___")&&Array.isArray(c.o)&&c.o.map(String).includes(String(c.a))).slice(0,8).map(c=>({q:String(c.q),a:String(c.a),o:[...new Set(c.o.map(String))].slice(0,4),why:String(c.why||"")}));
     if(!words.length)throw {code:"invalid_json"};
-    const x={at:Date.now(),l:lang(),title:String(r.title||"Saját szöveg").slice(0,80),summary:String(r.summary||""),text:text.slice(0,4000),words,cloze};
-    S.imp=S.imp||[];S.imp.push(x);if(S.imp.length>10)S.imp.splice(0,S.imp.length-10);incEv("drills");addXP(5);save();IMP.text="";openImport(x);}
-  catch(e){if($("#impMsg"))$("#impMsg").innerHTML=`<div class="notice">${esc(e&&e.code==="invalid_json"?"Nem sikerült leckét készíteni ebből a szövegből. Próbáld újra, vagy válassz másik szöveget.":aiErr(e))}</div>`;if($("#impGo"))$("#impGo").disabled=false;}
+    const x={at:Date.now(),l:job.language,title:String(r.title||"Saját szöveg").slice(0,80),summary:String(r.summary||""),text:text.slice(0,4000),words,cloze};
+    S.imp=S.imp||[];S.imp.push(x);if(S.imp.length>10)S.imp.splice(0,S.imp.length-10);incEv("drills");addXP(5);save();session.text="";openImport(x);}
+  catch(e){if(!job.owns())return;message.innerHTML=`<div class="notice">${esc(e&&e.code==="no_ai"?aiMissing():e&&e.code==="invalid_json"?"Nem sikerült leckét készíteni ebből a szövegből. Próbáld újra, vagy válassz másik szöveget.":aiRequestMessage(e))}</div>`;button.disabled=false;}
 }
 function openImport(x){
   const own=new Set(ownList().map(w=>norm(w.it))),left=x.words.filter(w=>!own.has(norm(w.it))),paras=x.text.split(/\n\s*\n|\n/).map(p=>p.trim()).filter(Boolean);

@@ -30,11 +30,12 @@ function grammarPage(sections,intro,pre){
   ${pre||""}${sections.map(([t,b],i)=>`<details class="g" ${i===0&&!pre?"open":""}><summary>${t}</summary><div class="gb">${b}</div></details>`).join("")}
   <div class="card stack"><div><h3>Kérdezz a tanártól</h3><p class="small muted">Bármilyen nyelvtani vagy szóhasználati kérdés, magyarul. Például: „${LG().ask}”</p></div>
   <textarea id="gq" style="min-height:5rem" placeholder="Írd ide a kérdésed…" aria-label="Kérdés a tanárnak"></textarea><div><button class="btn" id="gask">Kérdezek</button></div><div id="gans" class="prewrap"></div></div></div>`;
-  let ctrl=null;
-  $("#gask").onclick=async()=>{const q=$("#gq").value.trim();if(!q)return;const out=$("#gans");const sample=await getSample();
-    if(!sample){out.innerHTML=`<div class="notice">${aiMissing()}</div>`;return;}
-    if(ctrl)ctrl.abort();ctrl=new AbortController();out.innerHTML=`<span class="thinking"><i></i><i></i><i></i></span>`;
-    try{await sample(`Te egy tapasztalt ${LG().teacher} vagy, aki magyar anyanyelvű tanulónak válaszol. Válaszolj magyarul, tömören és világosan (legfeljebb 200 szó). Adj 2-4 ${LG().adj} példamondatot magyar fordítással. Ahol segít, hasonlítsd a magyarhoz. Ne használj markdown formázást, csak egyszerű szöveget és sortöréseket.\n\nA tanuló kérdése: ${q}`,{modelTier:"default",signal:ctrl.signal,onText:({text})=>{out.textContent=text;}});}
-    catch(e){if(e&&e.code==="aborted")return;out.innerHTML=`<div class="notice">${esc(aiErr(e))}</div>`;}};
+  let pending=null;
+  $("#gask").onclick=async()=>{const q=$("#gq").value.trim();if(!q)return;const out=$("#gans"),button=$("#gask");
+    if(pending)pending.cancel("stale");const job=createAIRequest(()=>pending===job&&out.isConnected&&$("#gans")===out);pending=job;
+    out.innerHTML=aiRequestBusy("A tanár válaszol…","gCancel");$("#gCancel").onclick=()=>job.cancel();
+    try{const r=await job.text(`Te egy tapasztalt ${LG().teacher} vagy, aki magyar anyanyelvű tanulónak válaszol. Válaszolj magyarul, tömören és világosan (legfeljebb 200 szó). Adj 2-4 ${LG().adj} példamondatot magyar fordítással. Ahol segít, hasonlítsd a magyarhoz. Ne használj markdown formázást, csak egyszerű szöveget és sortöréseket.\n\nA tanuló kérdése: ${q}`,{modelTier:"default"});if(job.current())out.textContent=String(r.text||"");}
+    catch(e){if(job.owns())out.innerHTML=`<div class="notice">${esc(e&&e.code==="no_ai"?aiMissing():aiRequestMessage(e))}</div>`;}
+    finally{if(pending===job)pending=null;}};
 }
 

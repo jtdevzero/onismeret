@@ -1,8 +1,8 @@
 /* ============ EXAM PREP (B2 First / IELTS style) ============ */
 function renderExam(){
   const X=XT.exam;if(!X){toast("A vizsgafeladatok nem töltődtek be.");return;}
-  const st=k=>{const s=S.exam[k];return s&&s.n?`<span class="small"><span class="pill ${s.ok/s.n>=.75?"ok":""}">${Math.round(s.ok/s.n*100)}% · ${s.n} feladat</span></span>`:"";};
-  const items=[X.mc&&["mc",X.mc.title,X.mc.desc,I.leckek],X.wf&&["wf",X.wf.title,X.wf.desc,I.nyelvtan],X.kwt&&["kwt",X.kwt.title,X.kwt.desc,I.gyakorlas],["read","Olvasott szöveg értése","AI-szöveg B2 vagy C1 szinten, öt feleletválasztós kérdéssel és magyarázattal.",I.kartyak],["write","Esszé és e-mail","B2 First és IELTS Task 2 feladatok. Az AI a hivatalos szempontok szerint pontoz, és mintaválaszt ad.",I.tanar]];
+  const st=k=>{const s=examResult(k);return s&&s.n?`<span class="small"><span class="pill ${s.ok/s.n>=.75?"ok":""}">${Math.round(s.ok/s.n*100)}% · ${s.n} feladat</span></span>`:"";};
+  const items=[X.mc&&["mc",X.mc.title,X.mc.desc,I.leckek],X.wf&&["wf",X.wf.title,X.wf.desc,I.nyelvtan],X.kwt&&["kwt",X.kwt.title,X.kwt.desc,I.gyakorlas],["read","Olvasott szöveg értése",`AI-szöveg ${examLevels().join(" vagy ")} szinten, öt feleletválasztós kérdéssel és magyar magyarázattal.`,I.kartyak],["write","Esszé és e-mail",`${lang()==="en"?"B2 First és IELTS Task 2":EXN[lang()]} jellegű írásfeladatok. Az AI gyakorlási visszajelzést és mintaválaszt ad.`,I.tanar]];
   view.innerHTML=`<div class="stack"><div class="row"><button class="btn ghost" id="xBack">← Gyakorlás</button></div>
   <div><span class="label">${EXN[lang()]}</span><h1>Vizsgafelkészítő</h1><p class="muted">A nyelvvizsgák jellegzetes feladattípusai. A nyelvhelyességi részek azonnal javítanak, az olvasás és az írás az AI-tanárral működik.</p></div>
   <div class="drills">${items.filter(Boolean).map(([k,t,d,ic],i)=>`<button class="drill" data-x="${k}"><span class="dico c${i%4+1}">${ic}</span><b>${esc(t)}</b><span class="small muted">${esc(d)}</span>${st(k)}</button>`).join("")}</div></div>`;
@@ -10,12 +10,17 @@ function renderExam(){
   view.querySelectorAll("[data-x]").forEach(b=>b.onclick=()=>startExam(b.dataset.x));
 }
 const EXN={en:"B2 First · IELTS",it:"CILS · CELI · PLIDA",es:"DELE · SIELE"};
-function examStat(k,ok){const s=S.exam[k]||{ok:0,n:0};s.n++;if(ok)s.ok++;S.exam[k]=s;incEv("drills");incEv("exam");}
+const examLevels=()=>lang()==="en"?["B2","C1"]:["B1","B2"];
+const examKey=k=>lang()+":"+k;
+/* Old shared counters have no language attribution. Keep them in backups, without
+   displaying an English result as an Italian or Spanish achievement. */
+const examResult=k=>(S.exam||{})[examKey(k)];
+function examStat(k,ok,countDrill=true){S.exam=S.exam||{};const key=examKey(k),s=S.exam[key]||{ok:0,n:0};s.n++;if(ok)s.ok++;S.exam[key]=s;if(countDrill)incEv("drills");incEv("exam");}
 function startExam(k){
   const X=XT.exam;
   if(k==="mc"){CDRILLS["exam-mc"]={title:X.mc.title,desc:X.mc.desc,items:X.mc.items};return startChoice("exam-mc");}
   if(k==="wf"||k==="kwt"){EX={k,queue:shuffle(X[k].items.slice()),pos:0,ok:0,n:0,done:false};return drawTyped();}
-  if(k==="read"){EX={k,level:defLevel()==="C1"?"C1":"B2",data:null,ans:{}};return drawReading();}
+  if(k==="read"){const levels=examLevels(),level=defLevel();EX={k,level:levels.includes(level)?level:levels[0],data:null,ans:{}};return drawReading();}
   if(k==="write"){EX={k,ti:today()%X.essays.length,text:"",res:null};return drawEssay();}
 }
 function kwtOk(v,it){const u=deacc(norm(v));return u===deacc(norm(it.a))||(it.accept||[]).some(a=>{const x=deacc(norm(a));return u===x||u.startsWith(x);});}
@@ -38,21 +43,24 @@ function drawTyped(){
 async function drawReading(){
   const back=["Vizsgafelkészítő",renderExam];
   if(!EX.data){
-    subShell(back,"Olvasott szöveg értése","Szint és téma",`<span class="seg" id="xLvl">${["B2","C1"].map(l=>`<button data-v="${l}" aria-pressed="${EX.level===l}">${l}</button>`).join("")}</span>
+    subShell(back,"Olvasott szöveg értése","Szint és téma",`<span class="seg" id="xLvl">${examLevels().map(l=>`<button data-v="${l}" aria-pressed="${EX.level===l}">${l}</button>`).join("")}</span>
       <div class="drills">${["Munka és karrier","Technológia","Környezet","Egészség","Oktatás","Kultúra és művészet"].map(t=>`<button class="drill" data-t="${t}"><b>${t}</b></button>`).join("")}</div><div id="xmsg"></div>`);
-    $("#xLvl").querySelectorAll("button").forEach(b=>b.onclick=()=>{EX.level=b.dataset.v;drawReading();});
-    view.querySelectorAll("[data-t]").forEach(b=>b.onclick=async()=>{const sample=await getSample();if(!sample){$("#xmsg").innerHTML=`<div class="notice">${aiMissing()}</div>`;return;}
-      $("#xmsg").innerHTML=`<div class="card row"><span class="thinking"><i></i><i></i><i></i></span><span class="muted">Készül a szöveg…</span></div>`;
+    $("#xLvl").querySelectorAll("button").forEach(b=>b.onclick=()=>{if(EX.readRequest)EX.readRequest.cancel("stale");EX.level=b.dataset.v;drawReading();});
+    view.querySelectorAll("[data-t]").forEach(b=>b.onclick=async()=>{
+      const current=EX;if(!current||current.k!=="read")return;if(current.readRequest)current.readRequest.cancel("stale");
+      const job=createAIRequest(()=>EX===current&&current.readRequest===job);current.readRequest=job;
+      const box=$("#xmsg");box.innerHTML=aiRequestBusy("Készül a szöveg…","xReadCancel");$("#xReadCancel").onclick=()=>job.cancel();
       const prompt=`Írj egy ${EX.level} szintű ${LG().adj} olvasásértési vizsgafeladatot (${EXN[lang()]} jelleggel) magyar tanulóknak. Téma: ${b.dataset.t}.
-A szöveg 280–380 szavas, hiteles, magazin- vagy újságcikk stílusú angol szöveg legyen, címmel, 4–5 bekezdésben.
-Utána 5 feleletválasztós kérdés angolul, mindegyikhez 4 válaszlehetőség, amelyek közül pontosan egy helyes; a rossz válaszok legyenek hihetőek (parafrázis, részigazság). A magyarázat magyarul legyen, és idézze a szöveg releváns részét.
+A szöveg ${EX.level==="B1"?"180–250":"280–380"} szavas, hiteles, magazin- vagy újságcikk stílusú ${LG().adj} szöveg legyen, címmel, 4–5 bekezdésben.
+Utána 5 feleletválasztós kérdés ${LG().adv}, mindegyikhez 4 válaszlehetőség ugyanazon a nyelven, amelyek közül pontosan egy helyes; a rossz válaszok legyenek hihetőek (parafrázis, részigazság). A magyarázat magyarul legyen, és idézze a szöveg releváns részét.
 Csak egy JSON objektumot adj vissza:
 {"title":"cím","text":"a szöveg, bekezdések között \\n\\n","questions":[{"q":"kérdés","o":["A","B","C","D"],"a":0,"why":"magyar magyarázat"}]}`;
-      try{const d=await sample.json(prompt,{modelTier:"default"});
-        if(!d||typeof d.text!=="string"||!Array.isArray(d.questions))throw {code:"invalid_json"};
-        d.questions=d.questions.filter(q=>q&&Array.isArray(q.o)&&q.o.length>1&&Number.isInteger(q.a)).map(q=>({q:String(q.q),o:q.o.map(String),a:Math.min(q.a,q.o.length-1),why:String(q.why||"")}));
-        if(EX&&EX.k==="read"){EX.data=d;EX.ans={};drawReading();}}
-      catch(e){if($("#xmsg"))$("#xmsg").innerHTML=`<div class="notice">${esc(aiErr(e))}</div>`;}});
+      try{const d=await job.json(prompt,{modelTier:"default"});
+        if(!d||typeof d.text!=="string"||!d.text.trim()||!Array.isArray(d.questions)||d.questions.length!==5||d.questions.some(q=>!q||typeof q.q!=="string"||!q.q.trim()||!Array.isArray(q.o)||q.o.length!==4||q.o.some(o=>typeof o!=="string"||!o.trim())||new Set(q.o.map(norm)).size!==4||!Number.isInteger(q.a)||q.a<0||q.a>=q.o.length))throw {code:"invalid_json"};
+        d.questions=d.questions.map(q=>({q:q.q,o:q.o,a:q.a,why:String(q.why||"")}));
+        if(job.owns()){current.data=d;current.ans={};drawReading();}}
+      catch(e){if(job.owns()&&box.isConnected)box.innerHTML=`<div class="notice">${esc(aiRequestMessage(e))}</div>`;}
+      finally{if(current.readRequest===job)current.readRequest=null;}});
     return;
   }
   const d=EX.data,all=d.questions.every((_,k)=>EX.ans[k]!==undefined),ok=d.questions.filter((q,k)=>EX.ans[k]===q.a).length;
@@ -70,11 +78,13 @@ function drawEssay(){
     <textarea id="xtext" style="min-height:260px" ${LA()} placeholder="${LG().write}" aria-label="A válaszod ${LG().adv}">${esc(EX.text)}</textarea>
     <div class="row" style="justify-content:space-between"><span class="small muted tnum" id="xwc">0 szó</span><button class="btn" id="xsend">Értékelést kérek</button></div><div id="xres">${EX.res?essayHtml(EX.res):""}</div>`);
   const ta=$("#xtext"),wc=()=>{const n=ta.value.trim()?ta.value.trim().split(/\s+/).length:0;$("#xwc").textContent=n+" szó";};ta.oninput=()=>{EX.text=ta.value;wc();};wc();
-  $("#xNext").onclick=()=>{EX.ti=(EX.ti+1)%X.essays.length;EX.res=null;drawEssay();};
+  $("#xNext").onclick=()=>{if(EX.writeRequest)EX.writeRequest.cancel("stale");EX.ti=(EX.ti+1)%X.essays.length;EX.res=null;drawEssay();};
   $("#xsend").onclick=async()=>{const text=ta.value.trim();if(text.split(/\s+/).length<60){toast("Írj legalább 60 szót, hogy értékelhető legyen.");return;}
-    const sample=await getSample();if(!sample){$("#xres").innerHTML=`<div class="notice">${aiMissing()}</div>`;return;}
-    $("#xsend").disabled=true;$("#xres").innerHTML=`<div class="card row"><span class="thinking"><i></i><i></i><i></i></span><span class="muted">A vizsgáztató értékel…</span></div>`;
+    const current=EX;if(current.writeRequest)current.writeRequest.cancel("stale");
+    const job=createAIRequest(()=>EX===current&&current.writeRequest===job);current.writeRequest=job;
+    const send=$("#xsend"),result=$("#xres");send.disabled=true;ta.readOnly=true;result.innerHTML=aiRequestBusy("A vizsgáztató értékel…","xWriteCancel");$("#xWriteCancel").onclick=()=>job.cancel();
     const ielts=/IELTS/.test(t.type);
+    const taskLevel=(t.type.match(/\b[ABC][12]\b/)||[])[0]||"B2";
     const exn=lang()==="en"?(ielts?"IELTS":"Cambridge B2 First"):EXN[lang()];
     const prompt=`Tapasztalt ${exn} vizsgáztatóként értékeld egy magyar anyanyelvű vizsgázó írásbeli munkáját.
 Feladattípus: ${t.type}
@@ -82,15 +92,17 @@ Feladat: ${t.task}
 A vizsgázó szövege:
 """${text}"""
 
-Pontozd ${lang()==="en"?"a Cambridge B2 First írásbeli":"az európai nyelvvizsgák (KER) írásbeli értékelésének"} négy szempontja szerint, mindegyiket 0–5 skálán: Content, Communicative Achievement, Organisation, Language. ${ielts?"Adj becsült IELTS Writing band értéket is (pl. 6.0).":"Adj becsült eredményt is (pl. B2 szint alatt / B2 / C1 szint)."}
+Pontozd ${lang()==="en"?"a Cambridge B2 First írásbeli":"az európai nyelvvizsgák (KER) írásbeli értékelésének"} négy szempontja szerint, mindegyiket 0–5 skálán: Content, Communicative Achievement, Organisation, Language. ${ielts?"Adj becsült IELTS Writing band értéket is (pl. 6.0).":`Adj becsült eredményt is a feladat ${taskLevel} célszintjéhez viszonyítva.`}
 Minden szemponthoz írj 1–2 mondatos, konkrét magyar indoklást. Sorold fel a legfontosabb nyelvi hibákat (legfeljebb 8). Végül írj egy mintaválaszt ugyanerre a feladatra a célszinten, a feladat szóhatárán belül.
 Csak egy JSON objektumot adj vissza:
 {"scores":{"content":0,"communicative":0,"organisation":0,"language":0},"comments":{"content":"","communicative":"","organisation":"","language":""},"band":"becsült eredmény","summary":"2-3 mondatos összegzés magyarul","errors":[{"wrong":"","right":"","why":""}],"model":"mintaválasz ${LG().adv}"}`;
-    try{const r=await sample.json(prompt,{modelTier:"default"});EX.res=r;addXP(10);examStat("write",true);skillLog("write","B2",CRIT.reduce((a,[k])=>a+(Number((r.scores||{})[k])||0),0)/20*100,"essay");
+    try{const r=await job.json(prompt,{modelTier:"default"});if(!job.owns())return;
+      if(!r||!r.scores||CRIT.some(([k])=>!Number.isFinite(Number(r.scores[k]))||Number(r.scores[k])<0||Number(r.scores[k])>5))throw {code:"invalid_json"};
+      current.res=r;addXP(10);examStat("write",true);skillLog("write",taskLevel,CRIT.reduce((a,[k])=>a+(Number((r.scores||{})[k])||0),0)/20*100,"essay");
       (Array.isArray(r.errors)?r.errors:[]).slice(0,8).forEach(e=>logMiss("exam:write",e.wrong,e.wrong,e.right+" – "+(e.why||"")));save();
-      if(EX&&EX.k==="write"&&$("#xres"))$("#xres").innerHTML=essayHtml(r);}
-    catch(e){if($("#xres"))$("#xres").innerHTML=`<div class="notice">${esc(aiErr(e))}</div>`;}
-    if($("#xsend"))$("#xsend").disabled=false;};
+      if(job.owns()&&result.isConnected)result.innerHTML=essayHtml(r);}
+    catch(e){if(job.owns()&&result.isConnected)result.innerHTML=`<div class="notice">${esc(aiRequestMessage(e))}</div>`;}
+    finally{if(current.writeRequest===job)current.writeRequest=null;if(send.isConnected)send.disabled=false;if(ta.isConnected)ta.readOnly=false;}};
 }
 function essayHtml(r){
   const sc=r.scores||{},cm=r.comments||{},tot=CRIT.reduce((a,[k])=>a+(Number(sc[k])||0),0),errs=Array.isArray(r.errors)?r.errors:[];

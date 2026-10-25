@@ -20,8 +20,8 @@ function bindAnalysis(){
   if($("#aPlan"))$("#aPlan").onclick=()=>makePlan($("#aPlan"),$("#aMsg"));
   if($("#plGo"))bindPlan(()=>go("stat"));
   if($("#aDrill"))$("#aDrill").onclick=()=>{const rep=S.ai["rep-"+lang()];CDRILLS.mx={title:"Személyre szabott gyakorló",desc:"A saját hibáidból",items:rep.drill};route="gyakorlas";render();startChoice("mx");};
-  if($("#aRun"))$("#aRun").onclick=async()=>{const m=$("#aMsg"),sample=await getSample();if(!sample){m.textContent=aiMissing();return;}
-    $("#aRun").disabled=true;m.innerHTML=`<span class="thinking"><i></i><i></i><i></i></span> Elemzem a hibáidat…`;
+  if($("#aRun"))$("#aRun").onclick=async()=>{const m=$("#aMsg"),button=$("#aRun");if(button.disabled)return;const job=createAIRequest(()=>m.isConnected&&button.isConnected&&$("#aRun")===button&&$("#aMsg")===m);
+    button.disabled=true;m.innerHTML=`<span class="thinking"><i></i><i></i><i></i></span> Elemzem a hibáidat…`;
     const ms=monthMisses().slice(-120).map(x=>`[${mkLabel(x.k)}] kérdés: ${x.q} | válasz: ${x.a||"–"} | helyes: ${x.c}`).join("\n");
     const prompt=`${LG().teacher[0].toUpperCase()+LG().teacher.slice(1)}ként elemezd egy magyar anyanyelvű tanuló elmúlt havi hibáit egy ${LG().adj} nyelvtanuló alkalmazásban. A tanuló szintje: ${defLevel()}.
 A hibák (kategória, feladat, a tanuló válasza, a helyes válasz):
@@ -32,10 +32,10 @@ Készíts hozzá 10 feleletválasztós gyakorló feladatot ${LG().adv}, amelyek 
 Csak egy JSON objektumot adj vissza:
 {"summary":"2-3 mondatos összegzés magyarul","patterns":[{"title":"a minta neve magyarul","explain":"magyarázat és szabály magyarul, 1-3 mondat","examples":["1-2 helyes ${LG().adj} példa"]}],"drill":[{"q":"mondat ___ hellyel","a":"helyes válasz","o":["a helyes válasz is benne"],"why":"rövid magyar magyarázat"}]}
 A patterns 2–5 elem legyen.`;
-    try{const r=await sample.json(prompt,{modelTier:"default"});
+    try{const r=await job.json(prompt,{modelTier:"default"});if(!job.current())return;
       const drill=(Array.isArray(r.drill)?r.drill:[]).filter(d=>d&&typeof d.q==="string"&&d.q.includes("___")&&Array.isArray(d.o)&&d.o.map(String).includes(String(d.a))).map(d=>({q:d.q,a:String(d.a),o:d.o.map(String),why:String(d.why||"")}));
-      S.ai["rep-"+lang()]={at:Date.now(),summary:String(r.summary||""),patterns:(Array.isArray(r.patterns)?r.patterns:[]).slice(0,5).map(p=>({title:String(p.title||""),explain:String(p.explain||""),examples:(Array.isArray(p.examples)?p.examples:[]).slice(0,2).map(String)})),drill};
+      S.ai["rep-"+job.language]={at:Date.now(),summary:String(r.summary||""),patterns:(Array.isArray(r.patterns)?r.patterns:[]).slice(0,5).map(p=>({title:String(p.title||""),explain:String(p.explain||""),examples:(Array.isArray(p.examples)?p.examples:[]).slice(0,2).map(String)})),drill};
       save();if(route==="stat")renderStats();}
-    catch(e){m.textContent=aiErr(e);$("#aRun").disabled=false;}};
+    catch(e){if(!job.owns())return;m.textContent=e&&e.code==="no_ai"?aiMissing():aiRequestMessage(e);button.disabled=false;}};
 }
 

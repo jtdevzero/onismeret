@@ -9,7 +9,7 @@ function nextChoice(){
     <div class="opts">${opts.map((o,i)=>`<button class="opt" data-o="${i}"><kbd>${i+1}</kbd>${esc(o)}</button>`).join("")}</div><div id="dfb"></div><button class="btn block" id="dgo" hidden>Következő</button>`);
   const btn=$("#dgo");btn.onclick=nextChoice;
   view.querySelectorAll("[data-o]").forEach(b=>b.onclick=()=>{if(D.done)return;D.done=true;const pick=opts[+b.dataset.o],ok=pick===it.a;
-    D.n++;if(!ok)logMiss("drill:"+D.k,it.q,pick,it.a);if(ok){D.ok++;addXP(1);fx("ok");}else{save();fx("bad");}drillStat(D.k,ok);
+    D.n++;if(!ok)logMiss("drill:"+D.k,it.q,pick,it.a);if(ok){D.ok++;addXP(1);fx("ok");}else{save();fx("bad");}drillStat(D.k,ok);if(D.k==="exam-mc")examStat("mc",ok,false);
     view.querySelectorAll("[data-o]").forEach(x=>{const o=opts[+x.dataset.o];if(o===it.a)x.classList.add("right");else if(x===b)x.classList.add("wrong");});
     const full=fillBlanks(it.q,it.a,false);
     $("#dfb").innerHTML=`<div class="feedback ${ok?"ok":"bad"}" role="status"><b>${ok?rnd(LG().ok):"Nem egészen."}</b><span class="ans">${fillBlanks(esc(it.q),it.a,true)}</span><span class="small" style="color:var(--ink)">${esc(it.why)}</span></div>`;

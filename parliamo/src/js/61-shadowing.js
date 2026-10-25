@@ -5,6 +5,15 @@
 let SH=null;
 let SH_FILTER={lang:null,level:"all",type:"all"};
 const canRecord=()=>!!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia&&window.MediaRecorder);
+const shadowKey=(id,l=lang())=>l+":"+id;
+function shadowProgress(id,l=lang()){
+  const progress=S.shadow||{},key=shadowKey(id,l);
+  if(Object.prototype.hasOwnProperty.call(progress,key))return Number(progress[key])||0;
+  /* Legacy podcast/short-story identifiers carry their language. Serial s1 does not;
+     retain that ambiguous record without counting it as practice in three languages. */
+  const explicit=id.match(/^(?:pod|st)-(en|it|es)-/),legacy=explicit?explicit[1]:/^st-s\d+$/.test(id)?"it":/^ser-s[23]-\d+$/.test(id)?"en":null;
+  return legacy===l?Number(progress[id])||0:0;
+}
 function shSources(){
   const pods=XT.pods.map(p=>({id:"pod-"+p.id,t:p.title,level:p.level,type:"pod",sub:"Podcast · "+p.level,lines:p.lines.map(x=>x.it),img:"pod-"+p.id}));
   const st=STORIES.map(s=>({id:"st-"+s.id,t:s.title||s.id,level:s.level,type:"story",sub:"Történet · "+(s.level||""),lines:s.lines.filter(x=>x.it).map(x=>x.it),img:s.img}));
@@ -19,16 +28,16 @@ function shFilteredSources(sources,level="all",type="all"){return sources.filter
 function renderShadow(){stopViews();withExtra("serials",renderShadowNow);}
 function renderShadowNow(){
   if(SH_FILTER.lang!==lang())SH_FILTER={lang:lang(),level:"all",type:"all"};
-  const all=shSources(),srcs=shFilteredSources(all,SH_FILTER.level,SH_FILTER.type),done=S.shadow||{};
+  const all=shSources(),srcs=shFilteredSources(all,SH_FILTER.level,SH_FILTER.type);
   const levels=["A1","A2","B1","B2","C1","C2"].filter(l=>all.some(s=>s.level===l));
   subShell(["Gyakorlás",()=>go("gyakorlas")],"Árnyékolás","Hallgasd, mondd utána, hasonlítsd össze",`<p class="muted">Válassz egy hangos szöveget. Mondatonként: meghallgatod a felvételt, utánamondod ugyanazzal a tempóval és hanglejtéssel, aztán az app egymás után lejátssza a mintát és a te felvételedet. A felvétel csak a te eszközödön marad.</p>
     ${canRecord()?"":`<div class="notice">Ebben a böngészőben nem érhető el hangfelvétel. A mondatokat így is meghallgathatod és utánamondhatod.</div>`}
     <div class="shadow-filters"><label>Szint<select id="shLevelFilter"><option value="all">Minden szint</option>${levels.map(l=>`<option value="${l}" ${SH_FILTER.level===l?"selected":""}>${l}</option>`).join("")}</select></label><label>Szövegtípus<select id="shTypeFilter">${[["all","Minden típus"],["story","Rövid történet"],["pod","Podcast"],["serial","Folytatásos történet"]].map(([k,l])=>`<option value="${k}" ${SH_FILTER.type===k?"selected":""}>${l}</option>`).join("")}</select></label></div>
     <p class="small muted" id="shSourceCount" role="status">${srcs.length} / ${all.length} szöveg · alapból a javasolt ${esc(defLevel())} szinthez közeliek elöl.</p>
-    <div class="drills">${srcs.map((x,i)=>`<button class="drill" data-sh="${esc(x.id)}"><span class="dico c${i%4+1}">${I.mic}</span><b ${LA()}>${esc(x.t)}</b><span class="small muted">${esc(x.sub)} · ${x.lines.length} mondat</span>${done[x.id]?`<span class="small"><span class="pill ok">✓ ${esc(done[x.id])} mondat kész</span></span>`:""}</button>`).join("")}</div>${srcs.length?"":'<p class="notice">Ezzel a két szűrővel nincs találat. Válassz másik szintet vagy típust.</p>'}`);
+    <div class="drills">${srcs.map((x,i)=>`<button class="drill" data-sh="${esc(x.id)}"><span class="dico c${i%4+1}">${I.mic}</span><b ${LA()}>${esc(x.t)}</b><span class="small muted">${esc(x.sub)} · ${x.lines.length} mondat</span>${shadowProgress(x.id)?`<span class="small"><span class="pill ok">✓ ${esc(shadowProgress(x.id))} mondat kész</span></span>`:""}</button>`).join("")}</div>${srcs.length?"":'<p class="notice">Ezzel a két szűrővel nincs találat. Válassz másik szintet vagy típust.</p>'}`);
   $("#shLevelFilter").onchange=e=>{SH_FILTER.level=e.target.value;renderShadowNow();};
   $("#shTypeFilter").onchange=e=>{SH_FILTER.type=e.target.value;renderShadowNow();};
-  view.querySelectorAll("[data-sh]").forEach(b=>b.onclick=()=>{const src=srcs.find(x=>x.id===b.dataset.sh);if(!src)return;prefetch(...new Set(src.lines.map(t=>AUDIO_IDX[t]).filter(Boolean)));SH={src,i:0,url:null,rec:null,stream:null,hide:false,n:0,busy:false,completed:new Set()};drawShadow();});
+  view.querySelectorAll("[data-sh]").forEach(b=>b.onclick=()=>{const src=srcs.find(x=>x.id===b.dataset.sh);if(!src)return;prefetch(...new Set(src.lines.map(t=>AUDIO_IDX[t]).filter(Boolean)));SH={src,l:lang(),i:0,url:null,rec:null,stream:null,hide:false,n:0,busy:false,completed:new Set()};drawShadow();});
 }
 function drawShadow(){
   const {src,i}=SH,line=src.lines[i],last=i===src.lines.length-1;
@@ -74,7 +83,7 @@ function shCleanup(s){if(!s)return;clearTimeout(s.compareTimer);s.compareTimer=n
 function shClock(seconds){const n=Math.max(0,Math.floor(Number(seconds)||0));return Math.floor(n/60)+":"+String(n%60).padStart(2,"0");}
 function shBindPlayback(s){if(!s.playListener){s.playListener=()=>shUpdatePlayback(s);for(const e of ["timeupdate","loadedmetadata","play","pause","ended","emptied"])player.addEventListener(e,s.playListener);}shUpdatePlayback(s);}
 function shUpdatePlayback(s){
-  if(SH!==s)return;const line=s.src.lines[s.i],src=player.currentSrc||player.src,kind=s.url&&src===s.url?"saját":CLIPS[line]&&src===CLIPS[line]?"minta":null;
+  if(SH!==s)return;const line=s.src.lines[s.i],src=player.currentSrc||player.src,kind=s.url&&src===s.url?"saját":cachedClipUrl(line,s.l)&&src===cachedClipUrl(line,s.l)?"minta":null;
   const duration=Number.isFinite(player.duration)?player.duration:0,time=kind?player.currentTime||0:0,ratio=kind&&duration>0?Math.max(0,Math.min(1,time/duration)):0;
   const clock=$("#shPlaybackClock"),progress=$("#shPlaybackProgress");if(clock)clock.textContent=kind?`${kind==="minta"?"Minta":"Saját felvétel"} · ${shClock(time)} / ${shClock(duration)}${player.paused?" · szünet":""}`:"Lejátszás: álló helyzet · időjel csak felvett hanghoz";if(progress)progress.value=ratio;
   view.querySelectorAll("[data-intonation-cursor]").forEach(cursor=>{cursor.setAttribute("x1",String(ratio*320));cursor.setAttribute("x2",String(ratio*320));cursor.setAttribute("visibility",kind&&duration?"visible":"hidden");});
@@ -85,8 +94,8 @@ function shUpdateRecording(s){
   const tick=()=>{if(SH!==s||!s.rec)return;const timer=$("#shTimer"),meter=$("#shLevel");if(timer)timer.textContent="Felvétel · "+shClock((Date.now()-s.recordedAt)/1000);if(meter){let rms=0;if(s.analyser){s.analyser.getFloatTimeDomainData(s.meterSamples);for(const x of s.meterSamples)rms+=x*x;rms=Math.sqrt(rms/s.meterSamples.length);}meter.value=Math.min(1,rms*4);meter.title=s.analyser?"Becsült hangerő; nem kiejtési pontszám":"Ezen az eszközön a jelszint nem érhető el";}s.meterFrame=requestAnimationFrame(tick);};tick();
 }
 function shFinish(){
-  const s=SH,n=s.n;S.shadow=S.shadow||{};S.shadow[s.src.id]=Math.max(S.shadow[s.src.id]||0,n);drillStat("shadow",true);incEv("drills");addXP(Math.max(3,n));save();
+  const s=SH,n=s.n;S.shadow=S.shadow||{};S.shadow[shadowKey(s.src.id,s.l)]=Math.max(shadowProgress(s.src.id,s.l),n);drillStat("shadow",true);incEv("drills");addXP(Math.max(3,n));save();
   shCleanup(s);SH=null;
   subShell(["Árnyékolás",renderShadow],"Árnyékolás",esc(s.src.t),`<div class="card stack" style="text-align:center"><h1>${LG().fin[1]}</h1><p class="muted">${n?`${n} mondatot mondtál utána felvétellel.`:"Végighallgattad a szöveget."} Az árnyékolás akkor hat igazán, ha ugyanazt a szöveget pár napig naponta megismétled.</p><div class="row" style="justify-content:center"><button class="btn" id="shAgain">Még egyszer</button></div></div>`);
-  $("#shAgain").onclick=()=>{SH={src:s.src,i:0,url:null,rec:null,stream:null,hide:false,n:0,completed:new Set()};drawShadow();};
+  $("#shAgain").onclick=()=>{SH={src:s.src,l:s.l,i:0,url:null,rec:null,stream:null,hide:false,n:0,completed:new Set()};drawShadow();};
 }

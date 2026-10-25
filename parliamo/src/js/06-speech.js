@@ -1,6 +1,6 @@
 /* ============ SPEECH ============ */
 let itVoice=null, voicesChecked=false;
-function pickVoice(){try{const vs=speechSynthesis.getVoices(),t=LG().tts,pre=t.slice(0,2);if(vs.length){voicesChecked=true;itVoice=vs.find(v=>v.lang.replace("_","-")===t)||vs.find(v=>new RegExp("^"+pre,"i").test(v.lang))||null;}}catch(e){}}
+function pickVoice(){itVoice=null;voicesChecked=false;try{const vs=speechSynthesis.getVoices(),t=LG().tts,pre=t.slice(0,2);if(vs.length){voicesChecked=true;itVoice=vs.find(v=>v.lang.replace("_","-")===t)||vs.find(v=>new RegExp("^"+pre,"i").test(v.lang))||null;}}catch(e){}}
 try{speechSynthesis.onvoiceschanged=pickVoice;}catch(e){}
 /* say() resolves when the clip or the synthesised speech has finished (or failed), so callers can chain lines. */
 let sayDone=null;

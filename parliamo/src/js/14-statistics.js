@@ -13,7 +13,7 @@ function renderStats(){
   <div class="row"><button class="btn ghost" data-go="ma">← Kezdőlap</button></div>
   <div class="row" style="justify-content:space-between;align-items:flex-end"><div><span class="label">${LG().name} · haladás</span><h1>Statisztika</h1></div><button class="btn soft" data-go="utlevel">Útlevél · ${LESSONS.filter((_,i)=>ls(i)&&ls(i).done).length} pecsét</button></div>
   <div class="card"><div class="stats">
-    <div class="stat"><span class="label">Megtartás (30 nap)</span><b class="tnum">${ret===null?"–":ret+"%"}</b><span class="small muted">${n} ismétlésből</span></div>
+    <div class="stat"><span class="label">Megtartás · összes nyelv (30 nap)</span><b class="tnum">${ret===null?"–":ret+"%"}</b><span class="small muted">${n} ismétlésből</span></div>
     <div class="stat"><span class="label">Ezen a héten</span><b class="tnum">${w1} XP</b><span class="small ${w1>=w0?"":"muted"}" style="color:var(--${w1>=w0?"ok":"muted"})">${w0?(w1>=w0?"+":"")+Math.round((w1-w0)/w0*100)+"% a múlt héthez":"első hét"}</span></div>
     <div class="stat"><span class="label">Leckék</span><b class="tnum">${ld} / ${LESSONS.length}</b></div>
     <div class="stat"><span class="label">Történetek</span><b class="tnum">${sd} / ${STORIES.length}</b></div>

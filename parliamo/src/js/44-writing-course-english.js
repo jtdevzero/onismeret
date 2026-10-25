@@ -18,7 +18,7 @@ function drawWC(){
     ${m.parts.map((p,i)=>`<label class="stack" style="gap:.3rem"><span class="label">${i+1}. ${esc(p.name)}</span><span class="small muted">${esc(p.tip)}</span><textarea data-wp="${i}" ${LA()} style="min-height:${i===1?160:90}px" placeholder="${esc(p.phrases[0])}">${esc(WC.txt[i]||"")}</textarea></label>`).join("")}
     <div class="row" style="justify-content:space-between"><span class="small muted tnum" id="wcN">0 szó</span><button class="btn" id="wcSend">Javítást kérek</button></div><div id="wcRes">${r?wcResHtml(r):""}</div>`;}
   subShell(["Íráskurzus",renderWCourse],`${m.hu} · ${m.level}`,`<span ${LA()}>${esc(m.title)}</span>`,`<span class="seg" id="wcTab">${tabs.map(([k,l])=>`<button data-v="${k}" aria-pressed="${tab===k}">${l}</button>`).join("")}</span>${body}`);
-  $("#wcTab").querySelectorAll("button").forEach(b=>b.onclick=()=>{WC.tab=b.dataset.v;drawWC();});
+  $("#wcTab").querySelectorAll("button").forEach(b=>b.onclick=()=>{if(WC.request)WC.request.cancel("stale");WC.tab=b.dataset.v;drawWC();});
   if($("#wcDrill"))$("#wcDrill").onclick=()=>{const back=()=>{WC.tab="write";drawWC();};QZ_BACK=back;runQuiz({kind:"writing",label:m.hu,title:"Kötőszavak és fordulatok",items:m.drill.map(x=>Object.assign({},x)),backLabel:m.hu,onDone:(ok,n)=>{addXP(ok);toast(`${ok} / ${n} helyes. Jöhet az írás!`);back();}});};
   if(tab==="write"){
     const cnt=()=>{const n=Object.values(WC.txt).join(" ").trim().split(/\s+/).filter(Boolean).length;$("#wcN").textContent=n+" szó";};
@@ -27,10 +27,12 @@ function drawWC(){
   }
 }
 async function sendWC(){
-  const {m}=WC,parts=m.parts.map((p,i)=>({name:p.name,text:String(WC.txt[i]||"").trim()}));
+  const current=WC;if(!current||current.tab!=="write")return;
+  const {m}=current,parts=m.parts.map((p,i)=>({name:p.name,text:String(current.txt[i]||"").trim()}));
   if(parts.some(p=>p.text.split(/\s+/).filter(Boolean).length<5)){toast("Mindegyik részbe írj legalább egy-két mondatot.");return;}
-  const sample=await getSample();if(!sample){$("#wcRes").innerHTML=`<div class="notice">${aiMissing()}</div>`;return;}
-  $("#wcSend").disabled=true;$("#wcRes").innerHTML=`<div class="card row"><span class="thinking"><i></i><i></i><i></i></span><span class="muted">A tanár részenként javít…</span></div>`;
+  if(current.request)current.request.cancel("stale");const job=createAIRequest(()=>WC===current&&current.tab==="write"&&current.request===job);current.request=job;
+  const send=$("#wcSend"),out=$("#wcRes"),inputs=[...view.querySelectorAll("[data-wp]")];send.disabled=true;inputs.forEach(t=>t.readOnly=true);
+  out.innerHTML=aiRequestBusy("A tanár részenként javít…","wcCancel");$("#wcCancel").onclick=()=>job.cancel();
   const prompt=`Tapasztalt angoltanárként javítsd egy magyar anyanyelvű tanuló írását. Szövegtípus: ${m.title} (${m.hu}), szint: ${m.level}.
 Feladat: ${m.task}
 A tanuló a szöveget részenként írta meg:
@@ -39,13 +41,13 @@ ${parts.map((p,i)=>`[${i+1}. ${p.name}]\n"""${p.text}"""`).join("\n")}
 Minden részt értékelj külön 0–5 pontra aszerint, mennyire teljesíti a rész szerepét (felépítés, hangnem, fordulatok, nyelvhelyesség). Minden részhez adj egy rövid magyar megjegyzést és a rész javított változatát (a tanuló stílusát megtartva). Végül egy mondatos összegzés és egy konkrét tipp magyarul.
 Csak egy JSON objektumot adj vissza:
 {"parts":[{"score":0,"comment":"magyar megjegyzés","corrected":"javított angol szöveg"}],"summary":"összegzés","tip":"tipp"}`;
-  try{const r=await sample.json(prompt,{modelTier:"default"});
-    r.parts=(Array.isArray(r.parts)?r.parts:[]).slice(0,m.parts.length);
+  try{const r=await job.json(prompt,{modelTier:"default"});if(!job.current())return;
+    if(!r||!Array.isArray(r.parts)||r.parts.length!==m.parts.length||r.parts.some(p=>!p||!Number.isFinite(Number(p.score))||Number(p.score)<0||Number(p.score)>5))throw {code:"invalid_json"};
     const score=r.parts.reduce((a,p)=>a+Math.max(0,Math.min(5,+p.score||0)),0);r.score=score;
-    WC.res=r;S.wc=S.wc||{};const prev=S.wc[m.id];if(!prev||prev.score<score)S.wc[m.id]={score,day:today()};addXP(8);incEv("writing");save();
-    if(WC&&WC.tab==="write"&&$("#wcRes"))$("#wcRes").innerHTML=wcResHtml(r);}
-  catch(e){if($("#wcRes"))$("#wcRes").innerHTML=`<div class="notice">${esc(aiErr(e))}</div>`;}
-  if($("#wcSend"))$("#wcSend").disabled=false;
+    current.res=r;S.wc=S.wc||{};const prev=S.wc[m.id];if(!prev||prev.score<score)S.wc[m.id]={score,day:today()};addXP(8);incEv("writing");save();
+    if(job.owns()&&out.isConnected)out.innerHTML=wcResHtml(r);}
+  catch(e){if(job.owns()&&out.isConnected)out.innerHTML=`<div class="notice">${esc(e&&e.code==="no_ai"?aiMissing():aiRequestMessage(e))}</div>`;}
+  finally{if(current.request===job)current.request=null;if(send.isConnected)send.disabled=false;inputs.forEach(t=>{if(t.isConnected)t.readOnly=false;});}
 }
 function wcResHtml(r){
   const m=WC.m,max=m.parts.length*5;

@@ -3,7 +3,7 @@
    listening with recorded audio (two plays) and writing. Objective parts are marked at once, the writing by the AI examiner. */
 let MK=null;
 const MK_NAME={reading:"Olvasás",mc:"Szókitöltés",wf:"Szóképzés",kwt:"Mondatátalakítás",listening:"Hallás",writing:"Írás"};
-const mkHist=id=>(S.mock||(S.mock={}))[id]||[];
+const mkHist=id=>((S.mock||(S.mock={}))[id]||[]).filter(r=>(r.l||"en")===lang());
 function renderMocks(){stopViews();withExtra("mock",renderMocksNow);}
 function renderMocksNow(){
   subShell(["Gyakorlás",()=>go("gyakorlas")],"Próbavizsga","Teljes, időre mért próbavizsga",`<p class="muted">Egy ülésben, visszaszámlálóval, mint a valódi vizsgán: olvasás, nyelvhelyesség, hallás és írás. A részek között szabadon lépkedhetsz. Ha lejár az idő, a vizsga automatikusan beadódik. Az írást az AI vizsgáztató pontozza.</p>
@@ -71,26 +71,28 @@ function mkBand(pct){const r=Math.round(pct*0.4),T=[[39,9],[37,8.5],[35,8],[33,7
 function mkScale(level,pct){const base=level==="C1"?180:160,s=Math.round(base+(pct-60)),grade=level==="C1"?(s>=200?"C2 (A)":s>=180?"C1":s>=160?"B2":"B2 alatt"):(s>=180?"C1 (A)":s>=160?"B2":s>=140?"B1":"B1 alatt");return {s:Math.max(level==="C1"?140:120,Math.min(level==="C1"?210:190,s)),grade};}
 async function submitMock(auto){
   if(!MK||MK.done)return;MK.done=true;clearInterval(MK.timer);MK.timer=null;MK.playing=false;try{player.pause();speechSynthesis.cancel();}catch(e){}
-  const m=MK.m,parts=mkMark(),used=m.minutes*60-MK.left,mk=MK;
+  const m=MK.m,parts=mkMark(),used=m.minutes*60-MK.left,mk=MK,language=lang(),navigation=NAVN,text=MK.text.trim();
+  const current=()=>MK===mk&&lang()===language&&NAVN===navigation;
   const wp=m.parts.find(p=>p.type==="writing");let wres=null;
   view.innerHTML=`<div class="player"><span class="label">${esc(m.title)}</span><h1>${auto?"Lejárt az idő":"Beadva"}</h1><div id="mkRes"><div class="card row"><span class="thinking"><i></i><i></i><i></i></span><span class="muted">Javítás${wp&&MK.text.trim()?", az írást az AI vizsgáztató pontozza":""}…</span></div></div></div>`;
-  if(wp&&MK.text.trim().split(/\s+/).length>=40){const sample=await getSample();
-    if(sample){try{wres=await sample.json(`Tapasztalt ${m.level==="C1"?"Cambridge C1 Advanced":"Cambridge B2 First"} vizsgáztatóként értékeld egy magyar anyanyelvű vizsgázó írásbeli munkáját.
+  if(wp&&text.split(/\s+/).length>=40){const job=createAIRequest(current);
+    $("#mkRes").insertAdjacentHTML("beforeend",'<button class="btn ghost" id="mkCancelAI">AI-pontozás megszakítása</button>');$("#mkCancelAI").onclick=()=>job.cancel();
+    try{wres=await job.json(`Tapasztalt ${m.level==="C1"?"Cambridge C1 Advanced":"Cambridge B2 First"} vizsgáztatóként értékeld egy magyar anyanyelvű vizsgázó írásbeli munkáját.
 Feladattípus: ${wp.etype}
 Feladat: ${wp.task}
 A vizsgázó szövege:
-"""${MK.text.trim()}"""
+"""${text}"""
 
 Pontozd a Cambridge írásbeli négy szempontja szerint, mindegyiket 0–5 skálán: Content, Communicative Achievement, Organisation, Language. Adj becsült eredményt is (pl. ${m.level} szint alatt / ${m.level} / magasabb).
 Minden szemponthoz írj 1–2 mondatos, konkrét magyar indoklást. Sorold fel a legfontosabb nyelvi hibákat (legfeljebb 8). Végül írj egy mintaválaszt ugyanerre a feladatra a célszinten.
 Csak egy JSON objektumot adj vissza:
 {"scores":{"content":0,"communicative":0,"organisation":0,"language":0},"comments":{"content":"","communicative":"","organisation":"","language":""},"band":"becsült eredmény","summary":"2-3 mondatos összegzés magyarul","errors":[{"wrong":"","right":"","why":""}],"model":"mintaválasz angolul"}`,{modelTier:"default"});
-      (Array.isArray(wres.errors)?wres.errors:[]).slice(0,8).forEach(e=>logMiss("mock:writing",e.wrong,e.wrong,e.right+" – "+(e.why||"")));}catch(e){wres={err:aiErr(e)};}}
-    else wres={err:aiMissing()};}
-  if(MK!==mk)return;
+      if(!job.current())return;
+      (Array.isArray(wres.errors)?wres.errors:[]).slice(0,8).forEach(e=>logMiss("mock:writing",e.wrong,e.wrong,e.right+" – "+(e.why||"")));}catch(e){if(!job.owns())return;wres={err:e&&e.code==="no_ai"?aiMissing():aiRequestMessage(e)};}}
+  if(!current())return;
   if(wp){const w=wres&&wres.scores?Math.round(CRIT.reduce((a,[k])=>a+(Number(wres.scores[k])||0),0)/20*100):0;parts.push({type:"writing",title:wp.title,ok:null,n:null,pct:w,pending:!(wres&&wres.scores)});}
   const scored=parts.filter(p=>!p.pending),pct=scored.length?Math.round(scored.reduce((a,p)=>a+p.pct,0)/scored.length):0,sc=m.ielts?mkBand(pct):mkScale(m.level,pct);
-  S.mock=S.mock||{};const h=S.mock[m.id]||(S.mock[m.id]=[]);h.push({at:Date.now(),pct,scale:sc.s,grade:sc.grade,parts:parts.map(p=>({t:p.type,pct:p.pct})),secs:used});if(h.length>10)h.splice(0,h.length-10);
+  S.mock=S.mock||{};const h=S.mock[m.id]||(S.mock[m.id]=[]);h.push({at:Date.now(),l:language,pct,scale:sc.s,grade:sc.grade,parts:parts.map(p=>({t:p.type,pct:p.pct})),secs:used});if(h.length>10)h.splice(0,h.length-10);
   parts.forEach(p=>{if(p.pending)return;const k=p.type==="reading"?"read":p.type==="listening"?"listen":p.type==="writing"?"write":null;if(k)skillLog(k,m.level,p.pct,"mock");});
   incEv("exam");incEv("tests");addXP(30);save();if(pct>=60)confetti();
   const qrev=p=>{const pi=p.pi;const qs=m.parts[pi].questions||m.parts[pi].items;const bad=qs.filter(q=>q._r&&!q._r.good);

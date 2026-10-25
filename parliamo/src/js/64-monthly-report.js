@@ -8,7 +8,8 @@ function reportData(){
   const ev={};for(let d=from;d<=t;d++)Object.entries(S.ev[d]||{}).forEach(([k,n])=>ev[k]=(ev[k]||0)+n);
   const pc=packCards(),mature=pc.filter(c=>c.ivl>=21).length;
   const mk={};monthMisses().forEach(m=>mk[m.k]=(mk[m.k]||0)+1);
-  const mocks=Object.entries(S.mock||{}).flatMap(([id,h])=>h.filter(x=>x.at>=since).map(x=>({id,...x})));
+  /* Existing mock exams were English-only; new records carry their language explicitly. */
+  const mocks=Object.entries(S.mock||{}).flatMap(([id,h])=>h.filter(x=>x.at>=since&&(x.l||"en")===l).map(x=>({id,...x})));
   return {xp,days,rev,ret:rev?Math.round(ok/rev*100):null,ev,cards:pc.length,mature,lessons:doneCount(),
     skills:SKILLS.map(([k,lbl])=>({lbl,e:skillEst(k)})),miss:Object.entries(mk).sort((a,b)=>b[1]-a[1]).slice(0,5),mocks,
     spk:(S.spk||[]).filter(x=>x.at>=since&&x.l===l),journal:(S.journal||[]).filter(x=>x.at>=since&&x.l===l)};
@@ -20,6 +21,7 @@ function renderReport(){
   view.innerHTML=`<div class="stack report">
   <div class="row no-print"><button class="btn ghost" data-go="stat">← Statisztika</button><button class="btn" id="repPrint">Nyomtatás / PDF</button><button class="btn soft" id="repAI">AI-összegzés</button></div>
   <div><span class="label">Parliamo · ${LG().name} · havi riport</span><h1>${f(d0)} – ${f(d1)}</h1></div>
+  <p class="small muted">Az aktivitás és az XP az összes nyelvre együtt értendő; a szókincs és az eredmények a kiválasztott nyelvhez tartoznak.</p>
   <div class="card"><div class="stats">
     <div class="stat"><span class="label">Aktív napok</span><b class="tnum">${R.days} / 30</b></div>
     <div class="stat"><span class="label">XP</span><b class="tnum">${R.xp}</b></div>
@@ -37,14 +39,16 @@ function renderReport(){
   <div id="repAIout">${rep?`<div class="card stack"><span class="label">AI-összegzés · ${new Date(rep.at).toLocaleDateString("hu-HU")}</span><p>${esc(rep.text)}</p></div>`:""}</div>
   <p class="small muted">A szintek és a vizsgaeredmények gyakorlási becslések, nem hivatalos nyelvvizsga-eredmények.</p></div>`;
   $("#repPrint").onclick=()=>{try{window.print();}catch(e){toast("A nyomtatás itt nem érhető el.");}};
-  $("#repAI").onclick=async()=>{const sample=await getSample();if(!sample){$("#repAIout").innerHTML=`<div class="notice">${aiMissing()}</div>`;return;}
-    $("#repAI").disabled=true;$("#repAIout").innerHTML=`<div class="card row"><span class="thinking"><i></i><i></i><i></i></span><span class="muted">Összegzés készül…</span></div>`;
+  const reportPanel=view.firstElementChild,language=lang();let request=null;
+  $("#repAI").onclick=async()=>{if(request)return;const job=createAIRequest(()=>view.firstElementChild===reportPanel);request=job;
+    $("#repAI").disabled=true;$("#repAIout").innerHTML=aiRequestBusy("Összegzés készül…","repAICancel");$("#repAICancel").onclick=()=>job.cancel();
     const sum={aktiv_napok:R.days,xp:R.xp,ismetlesek:R.rev,helyes_arany:R.ret,kartyak:R.cards,biztos_szavak:R.mature,keszsegek:R.skills.map(s=>[s.lbl,s.e?s.e.lv:null]),hibak:R.miss.map(([k,n])=>[mkLabel(k),n]),probavizsgak:R.mocks.map(m=>m.pct),szobeli:R.spk.length,naplo:R.journal.length};
-    try{const r=await sample(`Egy magyar anyanyelvű ${LG().adj} nyelvtanuló elmúlt 30 napjának adatai (JSON): ${JSON.stringify(sum)}
+    try{const r=await job.text(`Egy magyar anyanyelvű ${LG().adj} nyelvtanuló elmúlt 30 napjának adatai (JSON): ${JSON.stringify(sum)}
 Írj róla 3–4 mondatos, barátságos, konkrét magyar összefoglalót: mi ment jól, mire figyeljen a következő hónapban, és egy gyakorlati javaslatot. Ne találj ki adatot, csak a fentiekből dolgozz, és ne nevezd a szinteket hivatalos eredménynek. Csak a szöveget add vissza.`,{modelTier:"quick"});
-      const text=String(r.text||"").trim();if(text){S.ai["report-"+lang()]={at:Date.now(),text};save();}
+      if(!job.current())return;
+      const text=String(r.text||"").trim();if(text){S.ai["report-"+language]={at:Date.now(),text};save();}
       if($("#repAIout"))$("#repAIout").innerHTML=`<div class="card stack"><span class="label">AI-összegzés</span><p>${esc(text)}</p></div>`;}
-    catch(e){if($("#repAIout"))$("#repAIout").innerHTML=`<div class="notice">${esc(aiErr(e))}</div>`;}
-    if($("#repAI"))$("#repAI").disabled=false;};
+    catch(e){if(!job.owns())return;if($("#repAIout"))$("#repAIout").innerHTML=`<div class="notice">${e&&e.code==="no_ai"?aiMissing():esc(aiRequestMessage(e))}</div>`;}
+    finally{if(job.owns()){request=null;if($("#repAI"))$("#repAI").disabled=false;}}};
   window.scrollTo(0,0);
 }

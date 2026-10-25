@@ -10,7 +10,7 @@ function renderOnboarding(step){
     view.querySelectorAll("[data-l]").forEach(b=>b.onclick=async()=>{
       fx("tap");S.settings.lang=b.dataset.l;save();
       view.innerHTML=`<div class="card row" role="status"><span class="thinking"><i></i><i></i><i></i></span><span>A tananyag betöltése…</span></div>`;
-      try{await loadCourse();renderOnboarding("level");}catch(e){view.innerHTML=`<div class="onb-wrap"><h1>Nem sikerült betölteni a tananyagot</h1><p class="muted">Ellenőrizd az internetkapcsolatot, és próbáld újra.</p><button class="btn" id="onbRetry">Újrapróbálom</button></div>`;$("#onbRetry").onclick=()=>renderOnboarding();}
+      try{if(!await loadCourse())return;renderOnboarding("level");}catch(e){view.innerHTML=`<div class="onb-wrap"><h1>Nem sikerült betölteni a tananyagot</h1><p class="muted">Ellenőrizd az internetkapcsolatot, és próbáld újra.</p><button class="btn" id="onbRetry">Újrapróbálom</button></div>`;$("#onbRetry").onclick=()=>renderOnboarding();}
     });return;
   }
   if(step==="goal"){
