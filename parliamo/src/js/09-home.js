@@ -1,7 +1,12 @@
 /* ============ HOME ============ */
+function wordOfDay(){
+  const words=WORDS.filter(w=>!w.own&&!w.core&&langOf(w.id)===lang());
+  return words.length?words[today()%words.length]:null;
+}
 function renderHome(){
+  if(!courseReady())return render();
   const nl=nextLesson(),s=dailySession(),steps=dailySteps(),finished=steps.every(x=>x[0]),started=steps.some(x=>x[0]);
-  const w=WORDS[today()%WORDS.length],L=LESSONS.find(l=>l.id===s.lessonId);
+  const w=wordOfDay(),L=LESSONS.find(l=>l.id===s.lessonId);
   view.innerHTML=`<div class="stack">
   ${worldHeroHtml()}
   <section class="daily-focus" aria-labelledby="dailyTitle"><span class="label">A mai útvonalad · kb. ${dailyPacing().minutes} perc</span><h2 id="dailyTitle">${finished?"A mai gyakorlásod elkészült.":started?"Folytassuk, ahol tartottál.":"Egy kis lépés, ami összeadódik."}</h2><p>Rövid ismétlés, egy leckeszakasz, végül saját válaszok. Lépésről lépésre végigvezetünk.</p>
@@ -19,7 +24,7 @@ function renderHome(){
     ${goalCard()}${planCard()}${weekCard()}${chalCard()}
   </div></details>
   <div class="home-secondary">
-    <div class="card wotd"><div class="row" style="justify-content:space-between"><div><span class="label">${LG().wotd}</span><div class="word" ${LA()}>${esc(w.it)}</div><div>${esc(w.hu)}</div></div>${spkBtn(w.it)}</div></div>
+    ${w?`<section class="card wotd" aria-labelledby="wordOfDayTitle" data-word-language="${lang()}"><div class="row" style="justify-content:space-between"><div><span class="label" id="wordOfDayTitle">A nap szava · ${esc(LG().name)}</span><div class="word" ${LA()}>${esc(w.it)}</div><div>${esc(w.hu)}</div></div>${spkBtn(w.it)}</div></section>`:""}
     <section class="card stack"><span class="label">Ha beszélgetnél</span><h3>Próbáld ki az AI-tanárt</h3><p class="small muted">Szerepjátékok és magyar magyarázatok. Külön AI-kapcsolatot igényel; a napi gyakorlás enélkül is működik.</p><div class="row">${aiAccessBadge()}<button class="btn ghost" data-go="tanar">AI-tanár →</button></div></section>
   </div>
   ${budgetWarn()}

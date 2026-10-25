@@ -5,7 +5,7 @@ const PRACTICE_GROUPS=[
   ["words","Szókincs","Szavak és kifejezések felidézése.",["miss","colloc","phrasal","num"]],
   ["listen","Hallásértés","Hallgasd meg, értsd meg, idézd fel.",["pod","serial","story","acc","dict"]],
   ["speak","Beszéd","Mondj ki önállóan is mondatokat.",["shadow","build","speak","pron","examiner"]],
-  ["write","Írás","Rövid szövegek és olvasmányok.",["journal","import","wcourse","read","ai"]],
+  ["write","Olvasás és írás","Olvasmányok, saját mondatok és szövegek.",["journal","import","wcourse","read","ai"]],
   ["grammar","Nyelvtan","Egy-egy nyelvtani pont célzott gyakorlása.",["conj","art","prep","tenses","articles","preps","cond","cong","impp","serestar","pretimp","porpara"]],
   ["exam","Vizsga","Vizsgatípusú gyakorlás, tájékoztató visszajelzéssel.",["mock","exam"]]
 ];
@@ -16,9 +16,11 @@ function practiceAccess(k){
   return `<span class="access-badge">Azonnal használható${optionalAI?" · AI-val bővíthető":""}</span>`;
 }
 function practiceTile(item,i,recommended=false){
-  let [k,t,d]=item;const s=S.drills[k];
+  let [k,t,d]=item;const s=drillResult(k);
   if(k==="conj"&&lang()==="en"){t="Rendhagyó igék";d="50 gyakori rendhagyó ige 2. és 3. alakja, felvett hanggal.";}
   if(k==="conj"&&lang()==="es")d="25 gyakori ige öt igeidőben.";
+  if(k==="pron")d=`A magyar anyanyelvűek tipikus ${LG().adj} kiejtési nehézségei: hangpárok, mondatok és felvett minták.`;
+  if(k==="exam"&&lang()!=="en")d=`${EXN[lang()]} jellegű feladatok: szókitöltés, szóképzés, olvasás és írás magyar visszajelzéssel.`;
   if(k==="story")d=`${STORIES.length} hangos párbeszéd ${STORIES.length?STORIES[0].level+"–"+STORIES[STORIES.length-1].level:""}, értésellenőrző kérdésekkel.`;
   const icon=({mock:I.star,examiner:I.mic,journal:I.tanar,serial:I.spk,colloc:I.kartyak,import:I.nyelvtan,shadow:I.mic,read:I.nyelvtan,pod:I.spk,pron:I.mic,exam:I.star,acc:I.spk,build:I.mic,wcourse:I.tanar,miss:I.kartyak,ai:I.tanar,speak:I.mic,story:I.spk,conj:I.gyakorlas,art:I.nyelvtan,prep:I.leckek,dict:I.spk,num:I.star}[k])||I.nyelvtan;
   return `<button class="drill" ${recommended?'data-recommend':'data-d'}="${esc(k)}"><span class="dico c${i%4+1}">${icon}</span><b>${esc(t)}</b><span class="small muted">${esc(d)}</span>${practiceAccess(k)}${k==="miss"?`<span class="small"><span class="pill ${missCount()?"bad":"ok"}">${missCount()?missCount()+" vár javításra":"Nincs hiba"}</span></span>`:""}${s&&s.n?`<span class="small"><span class="pill ${s.ok/s.n>=.8?"ok":""}">${Math.round(s.ok/s.n*100)}% · ${s.n} válasz</span></span>`:""}</button>`;
@@ -42,7 +44,10 @@ function drillList(){
   return LG().drills.map(k=>{const d=DRILLS.find(x=>x[0]===k);if(d)return d.slice();const c=CDRILLS[k];return c?[k,c.title,c.desc]:null;})
     .filter(d=>d&&(d[0]!=="speak"||canSpeak())&&(d[0]!=="shadow"||canRecord()));
 }
-function drillStat(k,ok){const s=S.drills[k]||{ok:0,n:0};s.n++;if(ok)s.ok++;S.drills[k]=s;incEv("drills");}
+const drillKey=k=>lang()+":"+k;
+/* Shared legacy totals are retained, but cannot safely be attributed to a language. */
+const drillResult=k=>(S.drills||{})[drillKey(k)];
+function drillStat(k,ok){S.drills=S.drills||{};const key=drillKey(k),s=S.drills[key]||{ok:0,n:0};s.n++;if(ok)s.ok++;S.drills[key]=s;incEv("drills");}
 function startDrill(k){if(k==="colloc")return renderColloc();if(k==="import")return renderImport();if(k==="shadow")return renderShadow();if(k==="mock")return renderMocks();if(k==="examiner")return renderExaminer();if(k==="journal")return renderJournal();if(k==="serial")return renderSerials();if(k==="wcourse")return renderWCourse();if(k==="acc")return startAccent();if(k==="build")return startBuild();if(k==="pod")return renderPods();if(k==="pron")return renderPron();if(k==="exam")return renderExam();if(k==="story")return renderStories();if(k==="miss")return startRound("miss");if(k==="ai")return aiStory();if(k==="speak")return startRound("speak");if(k==="read")return renderReader();if(CDRILLS[k])return startChoice(k);D={k,ok:0,n:0,tense:"",set:"all",mode:"listen",done:false};nextDrill();}
 function drillShell(title,inner){const T=DRILLS.find(d=>d[0]===D.k)||[D.k,(CDRILLS[D.k]||{}).title||""];
   view.innerHTML=`<div class="player"><div class="row" style="justify-content:space-between"><button class="btn ghost" id="dBack">← Gyakorlás</button><span class="score tnum">${D.ok} / ${D.n}</span></div><div><span class="label">${T[1]}</span>${title?`<h2>${title}</h2>`:""}</div>${inner}</div>`;

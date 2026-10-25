@@ -1,7 +1,7 @@
 /* Parliamo service worker. GENERÁLT FÁJL (parliamo/build.py), ne szerkeszd kézzel.
    Az app váza és a tananyag telepítéskor a gyorsítótárba kerül; a hangok és képek az első használatkor
    (vagy a Beállítások „Letöltés offline használatra” gombjával). Az AI-kérések nem mennek át rajta. */
-const SHELL = 'parliamo-shell-494a000320';
+const SHELL = 'parliamo-shell-cd82e831de';
 const MEDIA = 'parliamo-media-7dbc5043e1';
 const PRECACHE = [
 "./",

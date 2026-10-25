@@ -36,10 +36,10 @@ async function cloudRestore(state){
   cloudBusy=true;
   try{
     const keep={};DEVICE_KEYS.forEach(k=>keep[k]=S.settings[k]);
-    S=migrate(state);Object.assign(S.settings,keep);S.updatedAt=Date.now();try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}
+    const epoch=resetEpoch(S);stopViews();S=migrate(state);S.resetAt=Math.max(epoch,resetEpoch(S));Object.assign(S.settings,keep);S.updatedAt=Date.now();try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}
     for(let n=0;n<3;n++){const r=await proxyPost("/sync/get");
       try{const w=await proxyPost("/sync/put",{state:cloudCopy(),base:r.rev||0});cloudRev=w.rev;cloudAt=Date.now();break;}catch(e){if(!(e&&e.code==="conflict"))throw e;}}
   }finally{cloudBusy=false;clearTimeout(cloudT);cloudT=null;}
-  await loadCourse();render();
+  if(!await loadCourse())return;render();
 }
 

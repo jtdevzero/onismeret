@@ -20,7 +20,19 @@ function mergeState(a,b){
   per("lessons",(v,w)=>(v.done?1:0)>(w.done?1:0)||((v.done?1:0)===(w.done?1:0)&&(v.best||0)>=(w.best||0)));
   per("log",(v,w)=>(v.n||0)>=(w.n||0));per("drills",(v,w)=>(v.n||0)>=(w.n||0));per("exam",(v,w)=>(v.n||0)>=(w.n||0));
   per("certs",(v,w)=>(v.score||0)>=(w.score||0));per("plan",(v,w)=>(v.at||0)>=(w.at||0));per("readDone",()=>true);per("dlg",()=>true);per("stories",()=>true);per("pods",()=>true);per("chal",()=>true);per("ai",()=>true);per("hard",()=>true);
-  per("core",()=>true);per("gram",(v,w)=>(v.d||0)>=(w.d||0));per("ser",()=>true);per("mock",(v,w)=>(v.length||0)>=(w.length||0));
+  per("core",()=>true);per("gram",(v,w)=>(v.d||0)>=(w.d||0));per("mock",(v,w)=>(v.length||0)>=(w.length||0));
+  /* A story contains several independently completed chapters. Whole-story replacement
+     would discard the chapter finished on another device. Legacy keys remain retained. */
+  o.ser={};
+  for(const id of new Set([...Object.keys(a.ser||{}),...Object.keys(b.ser||{})])){
+    const left=(a.ser||{})[id]||{},right=(b.ser||{})[id]||{},chapters=Object.assign({},left);
+    for(const [k,result] of Object.entries(right)){
+      const previous=chapters[k],day=Number(result&&result.d)||0,previousDay=Number(previous&&previous.d)||0;
+      const score=Number(result&&result.n)>0?(Number(result.ok)||0)/Number(result.n):-1,previousScore=Number(previous&&previous.n)>0?(Number(previous.ok)||0)/Number(previous.n):-1;
+      if(!previous||day>previousDay||day===previousDay&&score>=previousScore)chapters[k]=result;
+    }
+    o.ser[id]=chapters;
+  }
   const cat=(k,key,max)=>{const seen=new Set();o[k]=[...(a[k]||[]),...(b[k]||[])].filter(x=>{const id=key(x);return !seen.has(id)&&seen.add(id);}).sort((x,y)=>(x.at||0)-(y.at||0)).slice(-max);};
   cat("journal",x=>x.at,120);cat("spk",x=>x.at,60);cat("imp",x=>x.at,10);per("shadow",num);per("col",(v,w)=>(v.d||0)>=(w.d||0));
   cat("evidence",x=>x.id,80);
@@ -86,7 +98,7 @@ async function cloudSync(){
       if(learningViewActive()){cloudBusy=false;queueCloud();return;}
       if(r.state){const before=JSON.stringify(S),lang0=lang();S=migrate(mergeState(S,r.state));
         if(JSON.stringify(S)!==before){try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}queueRemote();
-          if(lang()!==lang0)await loadCourse();else{rebuildOwn();}if(!learningViewActive()&&S.onboarded&&!view.querySelector("details[open]"))render();else renderChips();}}
+          if(lang()!==lang0){if(!await loadCourse())return;}else{rebuildOwn();}if(!learningViewActive()&&S.onboarded&&!view.querySelector("details[open]"))render();else renderChips();}}
       try{const w=await proxyPost("/sync/put",{state:cloudCopy(),base:r.rev||0});cloudRev=w.rev;cloudAt=Date.now();cloudErr="";break;}
       catch(e){if(e&&e.code==="conflict")continue;throw e;}
     }

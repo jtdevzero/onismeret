@@ -70,6 +70,20 @@ evaluate('dailyRemote.updatedAt=300;dailyRemote.dailySessions.en.day=9; S=mergeS
 assert.equal(evaluate('S.dailySessions.en.day'),10,'a newer save of an older day does not replace today');
 assert.equal(evaluate('S.dailySessions.en.outputDone.join(",")'),'a','different days do not share completed output sentences');
 
+// Story chapter maps merge independently and retain both language scope and old data.
+stateContext.serialLocal={updatedAt:200,settings:{},ser:{'en:s1':{0:{ok:2,n:2,d:10},2:{ok:1,n:2,d:10}},'it:s1':{0:{ok:1,n:2,d:9}},s1:{0:{ok:2,n:2,d:1}}}};
+stateContext.serialRemote={updatedAt:100,settings:{},ser:{'en:s1':{1:{ok:2,n:2,d:10},2:{ok:2,n:2,d:10}},'es:s1':{0:{ok:2,n:2,d:8}},s1:{1:{ok:1,n:2,d:2}}}};
+evaluate('S=mergeState(serialLocal,serialRemote)');
+assert.equal(evaluate("Object.keys(S.ser['en:s1']).join(',')"),'0,1,2','different chapters completed on separate devices are retained');
+assert.equal(evaluate("S.ser['en:s1'][2].ok"),2,'same-day attempts retain the better chapter result');
+assert.equal(evaluate("S.ser['it:s1'][0].ok"),1,'Italian progress remains separate');
+assert.equal(evaluate("S.ser['es:s1'][0].ok"),2,'Spanish progress remains separate');
+assert.equal(evaluate('Object.keys(S.ser.s1).length'),2,'ambiguous legacy story results remain stored');
+evaluate("serialRemote.ser['en:s1'][2]={ok:0,n:2,d:11};S=mergeState(serialLocal,serialRemote)");
+assert.equal(evaluate("S.ser['en:s1'][2].d"),11,'a later chapter attempt is not replaced by an older score');
+assert.equal(evaluate("S.ser['en:s1'][2].ok"),0);
+assert.deepEqual(JSON.parse(evaluate("JSON.stringify(mergeState(serialLocal,serialRemote).ser)")),JSON.parse(evaluate("JSON.stringify(mergeState(serialRemote,serialLocal).ser)")),'chapter merges are symmetric for real conflicting attempts');
+
 const base='https://example.test/parliamo/';
 const toURL=file=>new URL(file,base).href;
 const responses={
@@ -122,6 +136,23 @@ function offlineContext({failed,failedStatus,notStored,noController=false,noCach
   finishPut({rev:2});await pendingSync;
   assert.equal(evaluate('cloudAgain'),false);
   assert.equal(evaluate('cloudT'),1,'the newer reset is scheduled after the in-flight upload ends');
+  // An explicitly restored old backup belongs to the current reset generation.
+  // Otherwise another device carrying the newer reset would erase that restoration.
+  Object.assign(stateContext,{restoreUploads:[],restoreRenders:0,loadCourse:async()=>true,render(){stateContext.restoreRenders++;},
+    proxyPost:async(route,body)=>{if(route==='/sync/get')return {rev:2};stateContext.restoreUploads.push(body.state);return {rev:3};}});
+  vm.runInContext(src('41-ai-usage-and-backups.js'),stateContext);
+  const restoreEpoch=evaluate('S.resetAt');evaluate("S.settings.lang='it';S.settings.pass='device-example';");
+  stateContext.oldBackup={resetAt:0,xp:8,cards:{},lessons:{},settings:{lang:'en'}};
+  await evaluate('cloudRestore(oldBackup)');
+  assert.equal(evaluate('S.resetAt'),restoreEpoch,'restoration retains the current reset generation');
+  assert.equal(evaluate('S.xp'),8,'the explicitly selected backup progress is restored');
+  assert.equal(evaluate('S.settings.lang'),'it','restoration preserves device language');
+  assert.equal(evaluate('S.settings.pass'),'device-example','restoration preserves device credentials locally');
+  assert.equal('pass' in stateContext.restoreUploads[0].settings,false,'the restored cloud copy contains no device credential');
+  assert.equal(evaluate('mergeState(S,{resetAt:0,xp:999999,settings:{}}).xp'),8,'an older device cannot replace the explicitly restored progress');
+  assert.equal(stateContext.restoreRenders,1);
+  stateContext.loadCourse=async()=>false;await evaluate('cloudRestore(oldBackup)');
+  assert.equal(stateContext.restoreRenders,1,'an obsolete restore load cannot repaint another language');
   let c=offlineContext({failed:'audio/en-u1.json'});
   let result=await vm.runInContext("downloadOfflineLanguages(['en'])",c);
   assert.equal(result.ok,false);assert.ok(result.missing.includes('audio/en-u1.json'),'failed media is reported');

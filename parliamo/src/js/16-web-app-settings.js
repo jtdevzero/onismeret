@@ -111,7 +111,7 @@ function bindWebSettings(){
     a.download="parliamo-mentes-"+new Date().toISOString().slice(0,10)+".json";document.body.appendChild(a);a.click();a.remove();toast("A mentés letöltve.");};
   $("#sImport").onchange=async e=>{const f=e.target.files[0];if(!f)return;
     try{const o=JSON.parse(await f.text());if(typeof o!=="object"||!o.cards||typeof o.xp!=="number")throw 0;
-      const keep={proxy:S.settings.proxy,pass:S.settings.pass},epoch=resetEpoch(S);S=migrate(o);S.resetAt=Math.max(epoch,resetEpoch(S));Object.assign(S.settings,keep);save();await loadCourse();render();toast("Haladás visszatöltve.");}
+      const keep={proxy:S.settings.proxy,pass:S.settings.pass},epoch=resetEpoch(S);stopViews();S=migrate(o);S.resetAt=Math.max(epoch,resetEpoch(S));Object.assign(S.settings,keep);save();if(!await loadCourse())return;render();toast("Haladás visszatöltve.");}
     catch(err){toast("Ez a fájl nem Parliamo-mentés.");}};
 }
 

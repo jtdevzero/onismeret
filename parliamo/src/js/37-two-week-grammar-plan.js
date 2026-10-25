@@ -27,7 +27,7 @@ function planResult(h,p,again){
   if($("#plNext"))$("#plNext").onclick=()=>openPlan();
 }
 async function makePlan(btn,msg){
-  const sample=await getSample();if(!sample){msg.textContent=aiMissing();return;}
+  if(!btn||!msg||btn.disabled)return;const job=createAIRequest(()=>btn.isConnected&&msg.isConnected&&$("#aPlan")===btn&&$("#aMsg")===msg);
   btn.disabled=true;msg.innerHTML=`<span class="thinking"><i></i><i></i><i></i></span> Összeállítom a tervet (ez fél percig is eltarthat)…`;
   const ms=monthMisses().slice(-100).map(x=>`[${mkLabel(x.k)}] ${x.q} | válasz: ${x.a||"–"} | helyes: ${x.c}`).join("\n");
   const rep=S.ai["rep-"+lang()];
@@ -41,13 +41,13 @@ Készíts egy 10 kérdéses felmérést is ugyanilyen formában, amely a terv ö
 Csak egy JSON objektumot adj vissza:
 {"title":"a terv rövid címe magyarul","goal":"egy mondat magyarul, mit fog tudni a végére","days":[{"t":"a nap címe","ex":"magyarázat","items":[{"q":"mondat ___ hellyel","a":"helyes","o":["helyes","rossz1","rossz2"],"why":"indoklás"}]}],"test":[{"q":"…","a":"…","o":["…"],"why":"…"}]}`;
   const valid=a=>(Array.isArray(a)?a:[]).filter(d=>d&&typeof d.q==="string"&&d.q.includes("___")&&Array.isArray(d.o)&&d.o.map(String).includes(String(d.a))).map(d=>({q:d.q,a:String(d.a),o:[...new Set(d.o.map(String))],why:String(d.why||"")}));
-  try{const r=await sample.json(prompt,{modelTier:"default"});
+  try{const r=await job.json(prompt,{modelTier:"default"});if(!job.current())return;
     const days=(Array.isArray(r.days)?r.days:[]).slice(0,14).map(d=>({t:String(d.t||""),ex:String(d.ex||""),items:valid(d.items),done:false})).filter(d=>d.items.length);
     const test=valid(r.test);
     if(days.length<7||test.length<5)throw {code:"invalid_json"};
     while(days.length<14)days.push(Object.assign({},days[days.length%7],{done:false}));
-    S.plan[lang()]={start:today(),title:String(r.title||"Kéthetes terv"),goal:String(r.goal||""),days,test,pre:null,post:null,at:Date.now()};save();
+    S.plan[job.language]={start:today(),title:String(r.title||"Kéthetes terv"),goal:String(r.goal||""),days,test,pre:null,post:null,at:Date.now()};save();
     toast("Kész a kéthetes terv. A kezdőlapon indíthatod.");if(route==="stat")renderStats();}
-  catch(e){msg.textContent=e&&e.code==="invalid_json"?"A terv formátuma nem sikerült. Próbáld újra.":aiErr(e);btn.disabled=false;}
+  catch(e){if(!job.owns())return;msg.textContent=e&&e.code==="no_ai"?aiMissing():e&&e.code==="invalid_json"?"A terv formátuma nem sikerült. Próbáld újra.":aiRequestMessage(e);btn.disabled=false;}
 }
 

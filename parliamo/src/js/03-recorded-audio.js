@@ -1,6 +1,6 @@
 /* ============ RECORDED AUDIO ============ */
 /* Neural-voice recordings ship as base64 bundles (one per unit, story and verb) and are decoded on demand. */
-const BUNDLES={}, CLIPS={};
+const BUNDLES={}, CLIPS={}, CLIP_DATA={};
 const player=new Audio();
 /* The claude.ai artifact holds a limited number of files, so there the bundles are merged into a few larger packs
    (tools/artifact_audio.py writes audio/packs.json: bundle name → pack). The web app keeps the small per-bundle files,
@@ -14,10 +14,14 @@ function loadBundle(name){
     if(!PACKS[p])PACKS[p]=getJSON("audio/"+p+".json");return PACKS[p].then(d=>(d&&d[name])||null);});
   return BUNDLES[name];
 }
+const audioClipKey=(text,l=lang())=>l+":"+text;
+const cachedClipUrl=(text,l=lang())=>CLIPS[audioClipKey(text,l)]||null;
 function clipUrl(text,data){
-  if(CLIPS[text])return CLIPS[text];
+  const key=audioClipKey(text);
+  if(CLIPS[key]&&CLIP_DATA[key]===data)return CLIPS[key];
   const b=atob(data),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);
-  return CLIPS[text]=URL.createObjectURL(new Blob([u],{type:"audio/mpeg"}));
+  if(CLIPS[key])URL.revokeObjectURL(CLIPS[key]);CLIP_DATA[key]=data;
+  return CLIPS[key]=URL.createObjectURL(new Blob([u],{type:"audio/mpeg"}));
 }
 const prefetch=(...names)=>names.forEach(n=>loadBundle(n));
 

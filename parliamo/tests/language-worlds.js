@@ -41,7 +41,7 @@ function check(v,title){assert.ok(v,title);count++;console.log('  ✓ '+title);}
         for(let j=0;j<answers.length;j++)await p.click(`[data-sq="${j}"][data-o="${answers[j]}"]`);
         if(k<5)await p.click('#chNext');
       }
-      check(await p.evaluate(()=>Object.keys(S.ser.s3).length===6),'all six illustrated chapters remain playable and save their results');
+      check(await p.evaluate(()=>Object.keys(S.ser['en:s3']).length===6),'all six illustrated chapters remain playable and save their results');
     }
     await ctx.close();
   }

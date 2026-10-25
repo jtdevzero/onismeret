@@ -55,3 +55,11 @@ jobs:
           node parliamo/tests/shadowing-ui.js
           node parliamo/tests/language-worlds.js
           node parliamo/tests/offline-pwa.js
+          node parliamo/tests/course-loading-race.test.js
+          node parliamo/tests/language-switching.js
+          node parliamo/tests/language-progress.js
+          node parliamo/tests/exam-language.test.js
+          node parliamo/tests/mock-device-lifecycle.test.js
+          node parliamo/tests/secondary-ai-lifecycle.js
+          node parliamo/tests/ai-remaining-views.js
+          node parliamo/tests/audio-language.test.js

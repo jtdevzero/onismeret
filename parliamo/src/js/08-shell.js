@@ -24,19 +24,28 @@ function openLangMenu(){
   setTimeout(()=>document.addEventListener("click",function off(e){if(!e.target.closest("#langMenu,#langBtn")){m.remove();document.removeEventListener("click",off);}}),0);
 }
 async function switchLang(to){
+  if(!Object.prototype.hasOwnProperty.call(LANGS,to))return;
   dailyActive=false;stopViews();
   S.settings.lang=to;save();
   P=null;CS=null;D=null;ST=null;T={tab:"chat",sc:null,msgs:[],level:null,busy:false,wPrompt:null,wRes:null,wText:""};
-  view.innerHTML=`<div class="card row"><span class="thinking"><i></i><i></i><i></i></span><span class="muted">${LG().name} tananyag betöltése…</span></div>`;
-  try{await loadCourse();}catch(e){view.innerHTML=`<div class="notice">Nem sikerült betölteni a tananyagot. Töltsd újra az oldalt.</div>`;return;}
+  view.innerHTML=`<div class="card row" role="status"><span class="thinking"><i></i><i></i><i></i></span><span class="muted">${LG().name} tananyag betöltése…</span></div>`;
+  try{if(!await loadCourse())return;}catch(e){if(lang()===to&&!COURSE_LOADING)render();return;}
+  if(lang()!==to||!courseReady())return;
   toast(LG().name+" tananyag");render();
+  const shortcut=(location.hash||"").slice(1);if(["kor","terv","podcast","auto","ellenorzes"].includes(shortcut))quickAction(shortcut);
 }
 document.addEventListener("click",e=>{if(e.target.closest("#langBtn"))openLangMenu();});
-window.addEventListener("hashchange",()=>{const h=(location.hash||"").slice(1);if(S.onboarded&&LESSONS.length)quickAction(h);});
+window.addEventListener("hashchange",()=>{const h=(location.hash||"").slice(1);if(S.onboarded&&courseReady())quickAction(h);});
 function go(r){dailyActive=false;route=r;P=null;CS=null;D=null;ST=null;PL=null;stopViews();try{history.replaceState(null,"","#"+r);}catch(e){}render();window.scrollTo(0,0);try{view.focus({preventScroll:true});}catch(e){}}
 function render(){
   $("#nav").innerHTML=navHtml();$("#bnav").innerHTML=navHtml();renderChips();
   const rt=(ROUTES.find(x=>x[0]===route)||[0,{stat:"Statisztika",utlevel:"Útlevél",terkep:"Térkép",ellenorzes:"Eszközellenőrzés"}[route]||"Ma"])[1];document.title="Parliamo · "+rt;document.documentElement.lang="hu";
+  /* Navigation stays available while loading, but the previous language's data
+     must not be rendered under the newly selected language's labels. */
+  if(!courseReady()){
+    view.innerHTML=COURSE_ERROR?`<div class="notice stack" role="alert"><h1>Nem sikerült betölteni a tananyagot</h1><p>A kiválasztott ${LG().adj} tananyag még nem érhető el. Ellenőrizd a kapcsolatot, majd próbáld újra.</p><div><button class="btn" id="courseRetry">Újrapróbálom</button></div></div>`:`<div class="card row" role="status"><span class="thinking"><i></i><i></i><i></i></span><span class="muted">${LG().name} tananyag betöltése…</span></div>`;
+    if($("#courseRetry"))$("#courseRetry").onclick=()=>switchLang(lang());return;
+  }
   ({ma:renderHome,leckek:renderLessons,kartyak:renderCards,gyakorlas:renderPractice,nyelvtan:renderGrammar,tanar:renderTutor,stat:renderStats,utlevel:renderPassport,terkep:renderMap,ellenorzes:renderCheck}[route]||renderHome)();
 }
 
