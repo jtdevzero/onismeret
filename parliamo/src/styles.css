@@ -160,6 +160,8 @@ main{max-width:1040px;margin:0 auto;padding-block:2.4rem 6rem;padding-left:max(2
 .feedback{border-radius:var(--r);padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.35rem}
 .feedback.ok{background:var(--ok-soft);color:var(--ok)}
 .feedback.bad{background:var(--bad-soft);color:var(--bad)}
+.feedback.near{background:var(--lemon-soft);color:var(--lemon-ink)}
+.feedback.near .bad-letter{color:var(--bad)}
 .feedback .ans{color:var(--ink);font-weight:600}
 .pfoot{margin-top:auto;display:flex;flex-direction:column;gap:.8rem}
 .listen{display:flex;gap:1rem;align-items:center}
@@ -188,7 +190,7 @@ main{max-width:1040px;margin:0 auto;padding-block:2.4rem 6rem;padding-left:max(2
 .diff .hit{background:var(--ok-soft);color:var(--ok)}
 .diff .miss{background:var(--bad-soft);color:var(--bad);text-decoration:underline}
 .diff .near{background:var(--lemon-soft);color:var(--ink);border-radius:4px}
-.diff .bad-letter{color:var(--bad);font-weight:700;text-decoration:underline;text-decoration-thickness:2px}
+.bad-letter{color:var(--bad);font-weight:700;text-decoration:underline;text-decoration-thickness:2px}
 
 /* grammar tables */
 .tbl-wrap{overflow-x:auto}

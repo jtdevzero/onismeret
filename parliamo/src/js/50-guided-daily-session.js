@@ -97,12 +97,12 @@ function drawDailyOutput(){
   $("#dailyBack").onclick=()=>go("ma");
   $("#dailyHint").onclick=()=>{s.outputHelp=true;saveDaily();feedback.innerHTML=`<div class="notice">${spkBtn(c.it)} <span ${LA()}>${esc(c.it)}</span><p class="small">Olvasd el, majd mondd ki és írd le újra. Ezt segített gyakorlásként mentjük.</p></div>`;};
   checkBtn.onclick=()=>{
-    const r=check(answer.value,[c.it,...(c.alt||[])],{type:"translation"});
+    const r=check(answer.value,[c.it,...(c.alt||[])],{type:"translation",near:true});
     if(!r.ok){s.outputAttempts=(s.outputAttempts||0)+1;if(s.outputAttempts===1&&!s.outputHelp){saveDaily();feedback.innerHTML=`<div class="notice"><b>Nézzük meg még egyszer.</b><p>${esc(r.hint||"Ezt a változatot a rövid ellenőrzés még nem tudta elfogadni. Nézd meg az alanyt, az igét és a szórendet; más helyes megfogalmazás is létezhet.")}</p><p class="small">Próbáld újra. A mintaválaszt csak külön kérésre vagy a következő sikertelen próbálkozás után mutatjuk.</p></div>`;answer.focus();return;}s.outputHelp=true;saveDaily();feedback.innerHTML=`<div class="feedback bad"><b>Próbáld újra.</b><span>Így mondhatod: <span ${LA()}>${esc(c.it)}</span></span><span class="small">Figyeld meg a szórendet és az ige alakját, majd írd le újra.</span></div>`;answer.focus();return;}
     s.outputDone=Array.isArray(s.outputDone)?s.outputDone:[];if(!s.outputDone.includes(c.id))s.outputDone.push(c.id);s.output=s.outputDone.length>=target;delete s.outputDraft;
     recordEvidence(s.outputHelp?"practice":"output",c.id,s.outputHelp?"Mondatot gyakoroltál segítséggel":"Segítség nélkül felidézted",c.it);
     saveDaily();fx("ok");
-    feedback.innerHTML=`<div class="feedback ok"><b>${s.outputHelp?"Megvan, begyakoroltad.":"Sikerült önállóan!"}</b><span ${LA()}>${esc(c.it)}</span>${r.warn?`<span>${esc(r.warn)}</span>`:""}</div><button class="btn block" id="dailyFinish" style="margin-top:1rem">${s.output?"Mai gyakorlás befejezése":"Következő önálló mondat"}</button>`;
+    feedback.innerHTML=`<div class="feedback ${r.near?"near":"ok"}"><b>${s.outputHelp?"Megvan, begyakoroltad.":"Sikerült önállóan!"}</b><span ${LA()}>${esc(c.it)}</span>${r.near?`<span>${nearHtml(r)}</span>`:r.warn?`<span>${esc(r.warn)}</span>`:""}</div><button class="btn block" id="dailyFinish" style="margin-top:1rem">${s.output?"Mai gyakorlás befejezése":"Következő önálló mondat"}</button>`;
     checkBtn.disabled=true;answer.readOnly=true;$("#dailyHint").disabled=true;
     if($("#dailyMic"))$("#dailyMic").disabled=true;
     $("#dailyFinish").onclick=()=>{if(s.output)finishDailyJourney();else{delete s.outputItemId;delete s.outputHelp;saveDaily();drawDailyOutput();}};

@@ -59,7 +59,7 @@ function drillCheckUI(onCheck){
   const act=()=>{if(D.done){nextDrill();return;}if(inp&&!inp.value.trim())return;onCheck();D.done=true;btn.textContent="Következő";btn.focus();};
   btn.onclick=act;if(inp)inp.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();act();}};
 }
-function fbHtml(ok,main,extra){return `<div class="feedback ${ok?"ok":"bad"}" role="status"><b>${ok?LG().ok[0]:"Nem egészen."}</b>${main?`<span>Helyes: <span class="ans">${esc(main)}</span></span>`:""}${extra||""}</div>`;}
+function fbHtml(ok,main,extra,near){return `<div class="feedback ${near&&ok?"near":ok?"ok":"bad"}" role="status"><b>${near&&ok?"Majdnem!":ok?LG().ok[0]:"Nem egészen."}</b>${main?`<span>Helyes: <span class="ans">${esc(main)}</span></span>`:""}${extra||""}</div>`;}
 function ppForms(v,p){const aux=v.aux==="e"?ESS:AVE;if(v.aux==="a")return [aux[p]+" "+v.pp];const st=v.pp.slice(0,-1);return p<3?[aux[p]+" "+st+"o",aux[p]+" "+st+"a"]:[aux[p]+" "+st+"i",aux[p]+" "+st+"e"];}
 function nextDrill(){
   D.done=false;
@@ -76,10 +76,10 @@ function nextDrill(){
       <input id="dans" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Írd be az alakot" aria-label="Igealak"><div id="dfb"></div><button class="btn block" id="dgo">Ellenőrzés</button>`);
     $("#tense").querySelectorAll("button").forEach(b=>b.onclick=()=>{D.tense=b.dataset.v;nextDrill();});
     $("#vset").querySelectorAll("button").forEach(b=>b.onclick=()=>{D.set=b.dataset.v;nextDrill();});
-    drillCheckUI(()=>{const r=check($("#dans").value,ans);D.n++;if(r.ok){D.ok++;addXP(1);}else save();drillStat("conj",r.ok);
+    drillCheckUI(()=>{const r=check($("#dans").value,ans,{near:true});D.n++;if(r.ok){D.ok++;addXP(1);}else save();drillStat("conj",r.ok);
       const rows=one?tk.map(k=>[esc(TN[k]),v.forms[k][0],k===t]):v.forms[t].map((f,i)=>[esc(rowLabel(i)),f,i===p]);
       const table=`<div class="tbl-wrap"><table><tr><th></th><th>${esc(v.inf)}${one?"":" · "+esc(TN[t])}</th><th></th></tr>${rows.map(([lab,f,em],i)=>`<tr><td class="muted">${lab}</td><td class="${em?"em":""}">${esc(f)}</td><td>${spkBtn(one?f:vbKey(i,f),"sm")}</td></tr>`).join("")}</table></div>`;
-      $("#dfb").innerHTML=fbHtml(r.ok,r.ok?null:ans.join(" / "),r.warn?`<span class="small">${esc(r.warn)}</span>`:"")+table;
+      $("#dfb").innerHTML=fbHtml(r.ok,r.ok?null:ans.join(" / "),r.warn?`<span class="small">${r.near?nearHtml(r):esc(r.warn)}</span>`:"",r.near)+table;
       $(".score").textContent=D.ok+" / "+D.n;say(one?v.forms[t][p]:vbKey(p,v.forms[t][p]));});
   }
   if(D.k==="art"){
@@ -100,19 +100,19 @@ function nextDrill(){
     if(useSent){const s=rnd(PREP_SENT);q=s[0];ans=s[1];hint=s[2];}else{const p=rnd(PREPS),a=rnd(ARTS);q=p+" + "+a;ans=prepArt(p,a);hint=null;}
     drillShell("",`<div class="card" style="text-align:center;padding:2rem 1rem"><span class="label">${useSent?"egészítsd ki · "+esc(hint):"vond össze"}</span><div class="big-q">${useSent?blankify(q):esc(q)+" = ?"}</div></div>
       <input id="dans" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="pl. nella" aria-label="Válasz"><div id="dfb"></div><button class="btn block" id="dgo">Ellenőrzés</button>`);
-    drillCheckUI(()=>{const r=check($("#dans").value,[ans]);D.n++;if(r.ok){D.ok++;addXP(1);}else save();drillStat("prep",r.ok);
+    drillCheckUI(()=>{const r=check($("#dans").value,[ans],{near:true});D.n++;if(r.ok){D.ok++;addXP(1);}else save();drillStat("prep",r.ok);
       const full=useSent?q.replace("___ ",ans.endsWith("'")?ans:ans+" "):null;
-      $("#dfb").innerHTML=fbHtml(r.ok,r.ok?null:ans,full?`<span class="small">${esc(full)}</span>`:"");$(".score").textContent=D.ok+" / "+D.n;if(full)say(full);});
+      $("#dfb").innerHTML=fbHtml(r.ok,r.ok?null:ans,(r.near?`<span class="small">${nearHtml(r)}</span>`:"")+(full?`<span class="small">${esc(full)}</span>`:""),r.near);$(".score").textContent=D.ok+" / "+D.n;if(full)say(full);});
   }
   if(D.k==="dict"){
     const u=new Set(unlocked());const ph=POOL.filter(c=>c.ph&&(u.has(c.li)||Math.random()<.35));const c=rnd(ph.length?ph:POOL.filter(c=>c.ph));
     drillShell("Írd le, amit hallasz",`<div class="listen">${spkBtn(c.it,"big")}<button class="icon-btn" data-say="${esc(c.it)}" data-slow aria-label="Lassan">${I.slow}</button><span class="small muted">Annyiszor hallgasd meg, ahányszor kell.</span></div>
       <input id="dans" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Írd le ${LG().adv}…" aria-label="Diktált mondat"><div id="dfb"></div><button class="btn block" id="dgo">Ellenőrzés</button>`);
     setTimeout(()=>say(c.it),300);
-    drillCheckUI(()=>{const user=$("#dans").value;const r=check(user,[c.it]);const uw=new Set(deacc(norm(user)).split(" "));
+    drillCheckUI(()=>{const user=$("#dans").value;const r=check(user,[c.it],{near:true});const uw=new Set(deacc(norm(user)).split(" "));
       const diff=dictDiff(c.it,user,uw);
       D.n++;if(r.ok){D.ok++;addXP(3);}else save();drillStat("dict",r.ok);
-      $("#dfb").innerHTML=`<div class="feedback ${r.ok?"ok":"bad"}" role="status"><b>${r.ok?LG().ok[0]:"Majdnem."}</b><span class="diff ans">${diff}</span><span class="small" style="color:var(--muted)">${esc(c.hu)}</span>${r.warn?`<span class="small">${esc(r.warn)}</span>`:""}</div>`;$(".score").textContent=D.ok+" / "+D.n;});
+      $("#dfb").innerHTML=`<div class="feedback ${r.near?"near":r.ok?"ok":"bad"}" role="status"><b>${r.near?"Majdnem!":r.ok?LG().ok[0]:"Nem egészen."}</b><span class="diff ans">${diff}</span><span class="small" style="color:var(--muted)">${esc(c.hu)}</span>${r.warn?`<span class="small">${esc(r.warn)}</span>`:""}</div>`;$(".score").textContent=D.ok+" / "+D.n;});
   }
   if(D.k==="num"){
     const n=Math.floor(Math.random()*101),w=numIt(n),listen=D.mode==="listen";
@@ -128,8 +128,6 @@ function nextDrill(){
 document.addEventListener("keydown",e=>{if(D&&D.keys&&(D.k==="art"||D.choice)&&!e.target.matches("input,textarea"))D.keys(e);});
 /* Dictation feedback: correct words in green; for a word that was nearly right (a letter or two off), only the wrong
    letters are marked, with the learner's spelling next to it; words not attempted at all are marked whole. */
-function editDist(a,b){const d=Array.from({length:a.length+1},(_,i)=>[i]);for(let j=1;j<=b.length;j++)d[0][j]=j;
-  for(let i=1;i<=a.length;i++)for(let j=1;j<=b.length;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return d[a.length][b.length];}
 function letterMarks(target,guess){
   /* Longest common subsequence: target letters outside it are the ones the learner got wrong or left out. */
   const t=[...target],g=[...guess],L=Array.from({length:t.length+1},()=>new Array(g.length+1).fill(0));
