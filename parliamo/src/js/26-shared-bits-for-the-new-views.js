@@ -4,7 +4,7 @@ let NAVN=0;
 function stopViews(){NAVN++;if(typeof cancelAIRequests==="function")cancelAIRequests("stale");if(typeof SH!=="undefined"&&SH){shCleanup(SH);SH=null;}IMP=null;if(PD)PD.playing=false;if(MK&&MK.timer)clearInterval(MK.timer);if(SE&&SE.rec)try{SE.rec.stop();}catch(e){}if(SER)SER.playing=false;MK=null;SE=null;JR=null;SER=null;if(CAR){stopCar();CAR=null;}PD=null;PR=null;EX=null;QZ=null;AC=null;SB=null;DL=null;WC=null;VT=null;try{player.pause();speechSynthesis.cancel();}catch(e){}if(sayDone){sayDone();sayDone=null;}}
 const LA=()=>`lang="${LG().tts.slice(0,2)}"`;
 function subShell(back,label,title,inner,score){
-  view.innerHTML=`<div class="player"><div class="row" style="justify-content:space-between"><button class="btn ghost" id="sbBack">← ${back[0]}</button>${score!=null?`<span class="score tnum">${score}</span>`:""}</div><div><span class="label">${label}</span>${title?`<h2>${title}</h2>`:""}</div>${inner}</div>`;
+  view.innerHTML=`<div class="player"><div class="row" style="justify-content:space-between"><button class="btn ghost" id="sbBack">← ${back[0]}</button>${score!=null?`<span class="score tnum">${score}</span>`:""}</div><div><h1 class="label">${label}</h1>${title?`<h2>${title}</h2>`:""}</div>${inner}</div>`;
   $("#sbBack").onclick=()=>{stopViews();back[1]();};
 }
 /* Mistake log for the monthly analysis: what was asked, what the learner gave, what was right. */

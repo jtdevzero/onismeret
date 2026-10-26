@@ -1,0 +1,349 @@
+{
+ "mocks": [
+  {
+   "id": "celi2",
+   "title": "CELI 2 (B1) jellegű próbavizsga",
+   "level": "B1",
+   "minutes": 60,
+   "scheme": "pct",
+   "examiner": "CELI 2 (B1, Università per Stranieri di Perugia)",
+   "words": "100–120",
+   "parts": [
+    {
+     "type": "reading",
+     "title": "Olvasott szöveg értése",
+     "name": "Il ritorno delle biciclette in città",
+     "text": "Negli ultimi dieci anni molte città italiane hanno cambiato volto. A Bologna, a Ferrara e perfino a Milano, dove il traffico sembrava impossibile da fermare, sempre più persone vanno al lavoro in bicicletta. Secondo un'indagine recente, a Ferrara quasi un abitante su tre usa la bici ogni giorno.\n\nIl cambiamento non è avvenuto per caso. Molti comuni hanno costruito nuove piste ciclabili e hanno ridotto i parcheggi nel centro storico. A Milano, durante la pandemia, il comune ha trasformato in pochi mesi alcune strade a quattro corsie in strade con una corsia riservata alle biciclette. All'inizio i commercianti erano preoccupati: temevano di perdere clienti. Oggi molti di loro ammettono che i negozi sono più frequentati di prima, perché chi passa in bici si ferma più volentieri.\n\nNon mancano però i problemi. I furti di biciclette sono ancora molto diffusi, e nelle città più grandi molti ciclisti si lamentano della poca sicurezza agli incroci. Anche il clima ha un ruolo: d'estate fa molto caldo e non tutti gli uffici hanno una doccia per i dipendenti.\n\nPer questo alcune aziende offrono incentivi a chi lascia l'auto a casa: un piccolo bonus mensile, un parcheggio coperto per le bici o la possibilità di iniziare il lavoro mezz'ora più tardi. «Arrivo in ufficio più sveglia e di buon umore», racconta Giulia, impiegata milanese, «e risparmio quasi cento euro al mese di benzina.»",
+     "questions": [
+      {
+       "q": "Che cosa dice il testo di Ferrara?",
+       "o": [
+        "Quasi un abitante su tre usa la bici ogni giorno.",
+        "È la città con più traffico d'Italia.",
+        "Ha vietato le automobili nel centro.",
+        "Non ha piste ciclabili."
+       ],
+       "a": 0,
+       "why": "\"a Ferrara quasi un abitante su tre usa la bici ogni giorno\""
+      },
+      {
+       "q": "Che cosa ha fatto il comune di Milano durante la pandemia?",
+       "o": [
+        "Ha creato corsie per le biciclette su alcune strade.",
+        "Ha chiuso tutti i parcheggi.",
+        "Ha regalato biciclette ai cittadini.",
+        "Ha costruito una nuova metropolitana."
+       ],
+       "a": 0,
+       "why": "\"strade con una corsia riservata alle biciclette\""
+      },
+      {
+       "q": "Come si sentivano all'inizio i commercianti?",
+       "o": [
+        "Preoccupati",
+        "Entusiasti",
+        "Indifferenti",
+        "Arrabbiati con i ciclisti"
+       ],
+       "a": 0,
+       "why": "\"All'inizio i commercianti erano preoccupati\""
+      },
+      {
+       "q": "Perché oggi i negozi sono più frequentati?",
+       "o": [
+        "Chi passa in bici si ferma più volentieri.",
+        "I prezzi sono più bassi.",
+        "Ci sono più parcheggi.",
+        "I negozi sono aperti anche di notte."
+       ],
+       "a": 0,
+       "why": "\"chi passa in bici si ferma più volentieri\""
+      },
+      {
+       "q": "Quale problema NON è citato nel testo?",
+       "o": [
+        "Il costo delle biciclette",
+        "I furti",
+        "La sicurezza agli incroci",
+        "Il caldo d'estate"
+       ],
+       "a": 0,
+       "why": "A szöveg a lopást, a kereszteződéseket és a nyári meleget említi, az árat nem."
+      },
+      {
+       "q": "Che cosa offrono alcune aziende?",
+       "o": [
+        "Vantaggi a chi va al lavoro senza auto",
+        "Un'auto aziendale",
+        "Biciclette elettriche gratuite",
+        "Più giorni di ferie"
+       ],
+       "a": 0,
+       "why": "\"incentivi a chi lascia l'auto a casa\""
+      }
+     ]
+    },
+    {
+     "type": "mc",
+     "title": "Nyelvhelyesség: szókitöltés",
+     "items": [
+      {
+       "q": "Ieri ___ andati al mare con gli amici.",
+       "a": "siamo",
+       "o": [
+        "siamo",
+        "abbiamo",
+        "sono",
+        "avevamo"
+       ],
+       "why": "Az andare essere segédigével áll: siamo andati."
+      },
+      {
+       "q": "Se ho tempo, ti ___ domani.",
+       "a": "chiamo",
+       "o": [
+        "chiamo",
+        "chiamerei",
+        "chiamassi",
+        "chiamato"
+       ],
+       "why": "Valós feltétel: se + presente, a főmondatban presente (vagy futuro)."
+      },
+      {
+       "q": "Non conosco nessuno ___ parli giapponese.",
+       "a": "che",
+       "o": [
+        "che",
+        "chi",
+        "cui",
+        "quale"
+       ],
+       "why": "Alanyi vonatkozó névmás: che."
+      },
+      {
+       "q": "Penso che Marco ___ ragione.",
+       "a": "abbia",
+       "o": [
+        "abbia",
+        "ha",
+        "avendo",
+        "avesse"
+       ],
+       "why": "A penso che után kötőmód: abbia."
+      },
+      {
+       "q": "Abito a Torino ___ cinque anni.",
+       "a": "da",
+       "o": [
+        "da",
+        "per",
+        "fra",
+        "in"
+       ],
+       "why": "Ma is tartó időtartam: da (óta)."
+      },
+      {
+       "q": "Hai visto le mie chiavi? – Sì, ___ ho viste sul tavolo.",
+       "a": "le",
+       "o": [
+        "le",
+        "li",
+        "la",
+        "gli"
+       ],
+       "why": "le chiavi nőnemű többes: le, és a participio is egyezik (viste)."
+      },
+      {
+       "q": "Il film era così noioso ___ mi sono addormentato.",
+       "a": "che",
+       "o": [
+        "che",
+        "quindi",
+        "perché",
+        "come"
+       ],
+       "why": "così … che = annyira …, hogy."
+      },
+      {
+       "q": "Quando ero piccolo, ___ sempre con mio nonno.",
+       "a": "giocavo",
+       "o": [
+        "giocavo",
+        "ho giocato",
+        "giocai",
+        "giocherò"
+       ],
+       "why": "Múltbeli szokás: imperfetto."
+      }
+     ]
+    },
+    {
+     "type": "wf",
+     "title": "Nyelvhelyesség: szóképzés",
+     "items": [
+      {
+       "q": "Prima dell'esame ho bisogno di un po' di ___. (TRANQUILLO)",
+       "a": "tranquillità",
+       "why": "-ità főnévképző: tranquillità = nyugalom."
+      },
+      {
+       "q": "Il direttore ha parlato ___ con tutti i dipendenti. (GENTILE)",
+       "a": "gentilmente",
+       "why": "-mente határozószó-képző."
+      },
+      {
+       "q": "L'___ della nuova biblioteca è prevista per giugno. (APRIRE)",
+       "a": "apertura",
+       "why": "-ura főnévképző: apertura = megnyitó."
+      },
+      {
+       "q": "Finire tutto oggi è ___. (POSSIBILE, ellentét)",
+       "a": "impossibile",
+       "why": "im- fosztóképző a p előtt."
+      },
+      {
+       "q": "Mia sorella lavora come ___ in un ospedale. (INFERMIERE, nőnem)",
+       "a": "infermiera",
+       "why": "Nőnem: -iere → -iera."
+      },
+      {
+       "q": "È stato un viaggio ___. (DIMENTICARE)",
+       "a": "indimenticabile",
+       "why": "in- + -abile: felejthetetlen."
+      }
+     ]
+    },
+    {
+     "type": "listening",
+     "title": "Hallott szöveg értése",
+     "name": "Un fine settimana sul lago",
+     "cast": {
+      "A": {
+       "name": "Sara",
+       "g": "f"
+      },
+      "B": {
+       "name": "Marco",
+       "g": "m"
+      }
+     },
+     "lines": [
+      {
+       "s": "A",
+       "it": "Marco, hai già deciso cosa fare questo fine settimana?",
+       "hu": "Marco, eldöntötted már, mit csinálsz a hétvégén?"
+      },
+      {
+       "s": "B",
+       "it": "Pensavo di andare al lago di Garda. Mio cugino ha una casa a Sirmione.",
+       "hu": "Arra gondoltam, hogy elmegyek a Garda-tóhoz. Az unokatestvéremnek van egy háza Sirmionéban."
+      },
+      {
+       "s": "A",
+       "it": "Che bello! Ci vai in macchina?",
+       "hu": "De jó! Kocsival mész?"
+      },
+      {
+       "s": "B",
+       "it": "No, prendo il treno fino a Desenzano. In macchina c'è sempre troppo traffico il sabato mattina.",
+       "hu": "Nem, vonattal megyek Desenzanóig. Szombat reggel kocsival mindig túl nagy a forgalom."
+      },
+      {
+       "s": "A",
+       "it": "E che cosa farete lì?",
+       "hu": "És mit fogtok ott csinálni?"
+      },
+      {
+       "s": "B",
+       "it": "Se il tempo è bello, vogliamo noleggiare una barca. Altrimenti visitiamo il castello e mangiamo il pesce di lago.",
+       "hu": "Ha szép az idő, csónakot akarunk bérelni. Ha nem, megnézzük a várat, és tavi halat eszünk."
+      },
+      {
+       "s": "A",
+       "it": "Io non sono mai stata a Sirmione. Dicono che d'estate sia pienissima di turisti.",
+       "hu": "Én még sosem voltam Sirmionéban. Azt mondják, nyáron tele van turistákkal."
+      },
+      {
+       "s": "B",
+       "it": "È vero, ma a settembre è più tranquilla. Perché non vieni anche tu? C'è una camera libera.",
+       "hu": "Igaz, de szeptemberben nyugodtabb. Miért nem jössz te is? Van egy szabad szoba."
+      },
+      {
+       "s": "A",
+       "it": "Mi piacerebbe, ma domenica pomeriggio devo lavorare. Potrei venire solo sabato.",
+       "hu": "Szívesen mennék, de vasárnap délután dolgoznom kell. Csak szombatra tudnék jönni."
+      },
+      {
+       "s": "B",
+       "it": "Nessun problema: c'è un treno di ritorno alle otto di sera. Ti mando l'orario.",
+       "hu": "Semmi gond: este nyolckor van visszafelé vonat. Elküldöm a menetrendet."
+      }
+     ],
+     "questions": [
+      {
+       "q": "Dove ha una casa il cugino di Marco?",
+       "o": [
+        "A Sirmione",
+        "A Desenzano",
+        "A Milano",
+        "A Verona"
+       ],
+       "a": 0,
+       "why": "\"Mio cugino ha una casa a Sirmione.\""
+      },
+      {
+       "q": "Perché Marco non va in macchina?",
+       "o": [
+        "Il sabato mattina c'è troppo traffico.",
+        "Non ha la patente.",
+        "La macchina è rotta.",
+        "Il treno costa meno."
+       ],
+       "a": 0,
+       "why": "\"In macchina c'è sempre troppo traffico il sabato mattina.\""
+      },
+      {
+       "q": "Che cosa faranno se il tempo è bello?",
+       "o": [
+        "Noleggeranno una barca.",
+        "Visiteranno il castello.",
+        "Andranno in montagna.",
+        "Resteranno a casa."
+       ],
+       "a": 0,
+       "why": "\"Se il tempo è bello, vogliamo noleggiare una barca.\""
+      },
+      {
+       "q": "Che cosa dice Marco di Sirmione a settembre?",
+       "o": [
+        "È più tranquilla.",
+        "È chiusa ai turisti.",
+        "Fa troppo freddo.",
+        "È più cara."
+       ],
+       "a": 0,
+       "why": "\"a settembre è più tranquilla\""
+      },
+      {
+       "q": "Perché Sara può andare solo sabato?",
+       "o": [
+        "Domenica pomeriggio deve lavorare.",
+        "Non le piace il lago.",
+        "Non c'è posto in casa.",
+        "La domenica non ci sono treni."
+       ],
+       "a": 0,
+       "why": "\"domenica pomeriggio devo lavorare\""
+      }
+     ]
+    },
+    {
+     "type": "writing",
+     "title": "Íráskészség",
+     "task": "Scrivi un'email a un'amica italiana. Racconta un viaggio che hai fatto di recente (dove sei andato, con chi, che cosa ti è piaciuto di più) e invitala a venirti a trovare. (100–120 parole)",
+     "etype": "CELI 2 – informális e-mail"
+    }
+   ]
+  }
+ ]
+}

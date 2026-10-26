@@ -14,6 +14,7 @@ function renderCards(){
   ${POOL.some(c=>S.cards[c.id])?`<button class="btn block soft" id="startCar">${I.spk.replace("<svg",'<svg style="width:18px;height:18px"')} Hangos ismétlés (autóban, kéz nélkül)</button>`:""}
   <button class="btn block lemon" id="startC" ${due.length+nl?"":"disabled"}>${due.length+nl?`Ismétlés indítása (${due.length+nl})`:"Mára nincs több kártya"}</button>
   ${!avail.length&&!due.length?`<p class="small muted">Fejezz be egy újabb leckét, és a szavai itt jelennek meg.</p>`:""}
+  <h2 class="sr-only">Kártyacsomagok</h2>
   ${fixCard()}
   ${ownCard()}
   ${coreCard()}

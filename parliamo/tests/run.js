@@ -461,6 +461,58 @@ function mockProxy(store) {
   await p.evaluate(() => switchLang('en')); await p.waitForFunction(() => lang() === 'en' && LESSONS.length);
   ok(await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'a hetedik kör nézeteiben sincs vízszintes görgetés');
 
+  console.log('\n21. Kilencedik kör: mentés, ikonjelvény, diktálás, hibákra szabott kör, igeidő-idővonal, olasz és spanyol próbavizsga');
+  await p.evaluate(() => { go('ma'); const d = $('#homeSettings'); if (d) d.open = true; });
+  const [dl] = await Promise.all([p.waitForEvent('download'), p.click('#sExport')]);
+  ok(/^parliamo-mentes-\d{4}-\d{2}-\d{2}\.json$/.test(dl.suggestedFilename()), 'mentés letöltése a webes változatban');
+  ok(await p.evaluate(async () => {
+    /* The artifact path: no download link, the file goes through the downloads capability. */
+    const saved = []; const was = window.claude;
+    window.claude = { use: async n => n === 'downloads' ? { save: async o => { saved.push(o); return { status: 'saved' }; } } : null };
+    let r; try { r = await saveFile('x.json', new Blob(['{}']), { web: false }); } finally { window.claude = was; }
+    return r === true && saved.length === 1 && saved[0].filename === 'x.json';
+  }), 'mentés az artifactban a letöltési képességen át');
+  ok(await p.evaluate(() => {
+    const calls = []; navigator.setAppBadge = n => { calls.push(n); return Promise.resolve(); }; navigator.clearAppBadge = () => { calls.push(0); return Promise.resolve(); };
+    S.settings.badge = true; S.days[today()] = 0; updateBadge(); const open = calls[calls.length - 1];
+    S.days[today()] = (S.settings.goal || 50) + 1; updateBadge(); const done = calls[calls.length - 1];
+    S.settings.badge = false; S.days[today()] = 0; updateBadge(); const off = calls[calls.length - 1];
+    S.settings.badge = true; delete S.days[today()]; save();
+    return open >= 1 && done === 0 && off === 0;
+  }), 'ikonjelvény: nyitott célnál szám, teljesítve és kikapcsolva eltűnik');
+  ok(await p.evaluate(() => {
+    const t = 'I went to the market yesterday';
+    const h = dictDiff(t, 'I went to the markt yesterdy', new Set(['i', 'went', 'to', 'the']));
+    const d = document.createElement('div'); d.innerHTML = h;
+    return d.querySelectorAll('.hit').length === 4 && d.querySelectorAll('.near').length === 2 && [...d.querySelectorAll('.bad-letter')].map(x => x.textContent).join('') === 'ea' && !d.querySelector('.miss');
+  }), 'diktálás: a majdnem jó szavaknál csak a hibás betűk vannak jelölve');
+  ok(await p.evaluate(() => {
+    const fresh = new Set(newAvail().map(x => x.id)); const c = POOL.find(x => !S.cards[x.id] && !fresh.has(x.id)); if (!c) return false; S.miss[c.id] = 3;
+    startRound('daily', { restart: true }); const e = P.queue.find(x => x.fromMiss && x.cid === c.id);
+    if (!e) return false; itemResult(e, true); const after = { card: !!S.cards[c.id], miss: S.miss[c.id] };
+    P = null; delete S.miss[c.id]; save(); go('ma');
+    return !after.card && after.miss === 2;
+  }), 'napi kör: a hibáidból jön elem, javítása nem hoz létre kártyát');
+  await p.evaluate(() => { S.mlog.push({ d: today(), l: 'en', k: 'drill:tenses', q: 'a', a: 'b', c: 'c' }, { d: today(), l: 'en', k: 'drill:tenses', q: 'a2', a: 'b', c: 'c' }); save(); });
+  ok(await p.evaluate(() => { const w = weakSpot(); return !!w && w.k === 'drill:tenses' && w.n >= 2; }), 'visszatérő hibatípus felismerése a napi kör végére');
+  await p.evaluate(() => go('gyakorlas')); await p.click('[data-d="tline"]'); await p.waitForSelector('#tlQuiz');
+  ok(await p.locator('.player article svg[role=img]').count() === 12, 'igeidő-idővonal: 12 angol igeidő ábrával');
+  await p.click('#tlQuiz'); await p.waitForSelector('[data-o]'); await p.click('[data-o="0"]'); await p.waitForSelector('#qfb svg');
+  ok(true, 'igeidő-gyakorló: válasz után megjelenik a helyes igeidő idővonala');
+  await p.evaluate(() => { QZ = null; QZ_BACK = null; switchLang('it'); }); await p.waitForFunction(() => lang() === 'it' && LESSONS.length);
+  await p.evaluate(() => go('gyakorlas')); await p.waitForFunction(() => document.querySelector('[data-d]')); await p.waitForTimeout(300); await p.evaluate(() => startDrill('mock')); await p.waitForSelector('[data-mk="celi2"]');
+  await p.click('[data-mk="celi2"]'); await p.waitForSelector('#mkClock');
+  ok(await p.evaluate(() => AUDIO_IDX[XT.mock[0].parts.find(x => x.type === 'listening').lines[0].it] === 'mock-it-celi2'), 'olasz próbavizsga: hallás felvett hanggal');
+  await p.evaluate(() => { MK.m.parts.forEach((pt, pi) => (pt.questions || pt.items || []).forEach((q, k) => { MK.ans[pi + '-' + k] = q.o ? q.a : q.a; })); });
+  await p.evaluate(() => submitMock(false)); await p.waitForSelector('#mkBack');
+  ok(await p.evaluate(() => /B1: megfelelne/.test($('#mkRes').textContent) && S.mock.celi2 && S.mock.celi2[0].pct === 100), 'olasz próbavizsga: értékelés a B1-es határral');
+  await p.evaluate(() => switchLang('es')); await p.waitForFunction(() => lang() === 'es' && LESSONS.length);
+  await p.evaluate(() => go('gyakorlas')); await p.waitForFunction(() => document.querySelector('[data-d]')); await p.waitForTimeout(300); await p.evaluate(() => startDrill('mock')); await p.waitForSelector('[data-mk="dele-b1"]');
+  ok(await p.evaluate(() => XT.mock.length === 1 && XT.mock[0].parts.length === 5), 'spanyol DELE B1 jellegű próbavizsga');
+  await p.evaluate(() => go('gyakorlas')); await p.waitForFunction(() => document.querySelector('[data-d]')); await p.waitForTimeout(300); await p.evaluate(() => startDrill('tline')); await p.waitForSelector('#tlQuiz'); ok(await p.locator('.player article svg[role=img]').count() === 9, 'spanyol igeidő-idővonal');
+  await p.evaluate(() => switchLang('en')); await p.waitForFunction(() => lang() === 'en' && LESSONS.length);
+  ok(await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'a kilencedik kör nézeteiben sincs vízszintes görgetés');
+
   ok(p._errs.length === 0 && B.p._errs.length === 0, 'nincs JS-hiba', [...p._errs, ...B.p._errs].slice(0, 5));
   await browser.close(); server.close();
   console.log(`\n${pass} ok, ${fail} hiba`);

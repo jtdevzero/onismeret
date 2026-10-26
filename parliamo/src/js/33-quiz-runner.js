@@ -13,7 +13,7 @@ function drawQuiz(){
   view.querySelectorAll("[data-o]").forEach(b=>b.onclick=()=>{if(QZ.done)return;QZ.done=true;const pick=opts[+b.dataset.o],ok=pick===it.a;
     if(ok){QZ.ok++;fx("ok");}else{fx("bad");QZ.miss.push(it);logMiss(QZ.kind||"quiz",it.q,pick,it.a);}
     view.querySelectorAll("[data-o]").forEach(x=>{const v=opts[+x.dataset.o];if(v===it.a)x.classList.add("right");else if(x===b)x.classList.add("wrong");});
-    $("#qfb").innerHTML=`<div class="feedback ${ok?"ok":"bad"}" role="status"><b>${ok?rnd(LG().ok):"Nem egészen."}</b>${ok?"":`<span>Helyes: <span class="ans">${esc(it.a)}</span></span>`}${it.why?`<span class="small" style="color:var(--ink)">${esc(it.why)}</span>`:""}</div>`;
+    $("#qfb").innerHTML=`<div class="feedback ${ok?"ok":"bad"}" role="status"><b>${ok?rnd(LG().ok):"Nem egészen."}</b>${ok?"":`<span>Helyes: <span class="ans">${esc(it.a)}</span></span>`}${it.why?`<span class="small" style="color:var(--ink)">${esc(it.why)}</span>`:""}${QZ.after?QZ.after(it):""}</div>`;
     if(it.q.includes("___"))say(it.q.replace(/___/,it.a));else if(it.say)say(it.say);
     const g=$("#qgo");g.hidden=false;g.focus();g.onclick=()=>{QZ.i++;drawQuiz();};});
 }

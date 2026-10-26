@@ -16,7 +16,7 @@ function resetProgress(){
 let S=fresh();
 try{const raw=localStorage.getItem(LS);if(raw)S=migrate(JSON.parse(raw));}catch(e){}
 let sync="local", docRef=null, rTimer=null, rBusy=false, rAgain=false;
-function save(){S.updatedAt=Date.now();try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}queueRemote();queueCloud();renderChips();}
+function save(){S.updatedAt=Date.now();try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}queueRemote();queueCloud();renderChips();if(typeof updateBadge==="function")updateBadge();}
 function queueRemote(){if(!docRef)return;clearTimeout(rTimer);rTimer=setTimeout(pushRemote,2000);}
 async function pushRemote(){
   if(rBusy){rAgain=true;return;}rBusy=true;

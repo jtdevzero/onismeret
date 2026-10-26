@@ -32,8 +32,9 @@ function easier(e){
 function itemResult(e,ok,warn,fast){
   const id=e.cid;
   if(!ok)S.miss[id]=(S.miss[id]||0)+1;
-  else if(P.kind==="miss"&&!e.retry){S.miss[id]=(S.miss[id]||1)-1;if(S.miss[id]<=0)delete S.miss[id];incEv("fixes");}
-  if(P.kind==="daily"&&!e.retry&&!P.graded[id]){
+  else if((P.kind==="miss"||e.fromMiss)&&!e.retry){S.miss[id]=(S.miss[id]||1)-1;if(S.miss[id]<=0)delete S.miss[id];incEv("fixes");}
+  /* Mistake items are practice, not reviews: they never create or reschedule a card. */
+  if(P.kind==="daily"&&!e.retry&&!e.fromMiss&&!P.graded[id]){
     P.graded[id]=1;const g=!ok?1:warn?2:fast?4:3,isNew=!S.cards[id];
     const prev=S.cards[id];
     if(ok&&prev&&prev.last&&Date.now()-prev.last>=7*864e5)recordEvidence("recall",id,e.t==="type"&&!warn?"Egy hét után is felidézted":"Egy hét után is helyesen válaszoltál",(POOL.find(c=>c.id===id)||{}).it||e.it||e.q||"");
@@ -42,6 +43,17 @@ function itemResult(e,ok,warn,fast){
   }
   save();
 }
+/* The most-missed items that are not already in the round, most frequent first. */
+function missPicks(skip,n){
+  if(!n)return [];
+  return Object.entries(S.miss).map(([id,k])=>[POOL.find(c=>c.id===id),k]).filter(([c])=>c&&!skip.has(c.id)).sort((a,b)=>b[1]-a[1]).slice(0,n).map(([c])=>c);
+}
+/* The grammar topic or drill that the last 30 days of mistakes point to most (at least two mistakes). */
+function weakSpot(){
+  const by={};monthMisses().forEach(m=>{by[m.k]=(by[m.k]||0)+1;});
+  const top=Object.entries(by).filter(([k,n])=>n>=2&&(k.startsWith("grammar:")||k.startsWith("drill:"))).sort((a,b)=>b[1]-a[1])[0];
+  return top?{k:top[0],n:top[1],label:mkLabel(top[0])}:null;
+}
 function startRound(kind,limits={}){
   if(!limits.restart&&offerExerciseResume("round:"+kind,()=>startRound(kind,Object.assign({},limits,{restart:true}))))return;
   const q=[];
@@ -49,6 +61,8 @@ function startRound(kind,limits={}){
     const due=dueList().sort((a,b)=>S.cards[a.id].due-S.cards[b.id].due).slice(0,limits.review??25), nw=newAvail().slice(0,Math.min(newLeft(),limits.newCards??10));
     due.forEach(c=>q.push(exFor(c,stageOf(S.cards[c.id]))));
     nw.forEach((c,k)=>{const pos=Math.min(q.length,k*3);q.splice(pos,0,{t:"intro",c,li:c.li});q.splice(Math.min(q.length,pos+3),0,exFor(c,0));});
+    /* A few of the learner's own recurring mistakes ride along in every daily round, spread through the queue. */
+    missPicks(new Set(q.map(e=>e.cid).filter(Boolean)),limits.miss??3).forEach((c,k,all)=>q.splice(Math.round((k+1)*q.length/(all.length+1)),0,Object.assign(exFor(c,c.ph&&Math.random()<.5?2:3),{fromMiss:true})));
   }
   if(kind==="miss"){
     Object.entries(S.miss).map(([id,n])=>[POOL.find(c=>c.id===id),n]).filter(x=>x[0]).sort((a,b)=>b[1]-a[1]).slice(0,15)
@@ -71,9 +85,12 @@ function finishRound(){
     <span class="label">${title}</span><h1>${LG().fin[acc>=90?0:acc>=70?1:2]}</h1>
     <div class="stats" style="width:100%;max-width:420px;grid-template-columns:repeat(2,minmax(0,1fr))"><div class="card stat"><span class="label">Pontosság</span><b class="tnum">${acc}%</b></div><div class="card stat"><span class="label">Szerzett XP</span><b class="tnum">+${xp}</b></div></div>
     <p class="muted" style="max-width:46ch">${kind==="daily"?"Az ütemező minden kifejezést akkor hoz vissza, amikor nagyjából 90% eséllyel még emlékszel rá.":kind==="miss"?(missCount()?`Még ${missCount()} kifejezés vár javításra.`:"Minden hibát kijavítottál."):"A kiejtés a sok hangos ismétléstől javul. Holnap is mondj ki pár mondatot."}</p>
+    ${kind==="daily"&&weakSpot()?`<div class="card stack" style="max-width:420px;text-align:left"><span class="label">A visszatérő hibáid alapján</span><p><b>${esc(weakSpot().label)}</b> · ${weakSpot().n} hiba az elmúlt 30 napban.</p><button class="btn soft" id="rWeak">Gyakoroljuk most</button></div>`:""}
     <div class="row" style="justify-content:center"><button class="btn ghost" data-go="ma">Kezdőlap</button>${missCount()&&kind!=="miss"?`<button class="btn" id="rMiss">Hibakör</button>`:`<button class="btn" id="rAi">Napi AI-történet</button>`}</div></div>`;
   confetti();
   if($("#rMiss"))$("#rMiss").onclick=()=>startRound("miss");
+  if($("#rWeak"))$("#rWeak").onclick=()=>{const w=weakSpot();if(!w)return;dailyActive=false;route="gyakorlas";
+    if(w.k.startsWith("grammar:")){const id=w.k.slice(8);route="nyelvtan";withExtra("grammar",()=>openTopic(id));}else startDrill(w.k.slice(6));};
   if($("#rAi"))$("#rAi").onclick=()=>{route="gyakorlas";aiStory();};
   dailyRoundFinished(kind);
 }

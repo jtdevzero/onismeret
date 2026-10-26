@@ -1,0 +1,349 @@
+{
+ "mocks": [
+  {
+   "id": "dele-b1",
+   "title": "DELE B1 jellegű próbavizsga",
+   "level": "B1",
+   "minutes": 60,
+   "scheme": "pct",
+   "examiner": "DELE B1 (Instituto Cervantes)",
+   "words": "100–120",
+   "parts": [
+    {
+     "type": "reading",
+     "title": "Olvasott szöveg értése",
+     "name": "Los mercados de barrio vuelven a estar de moda",
+     "text": "En muchas ciudades españolas, los mercados de barrio estaban perdiendo clientes desde hacía años. Los supermercados abrían más horas, tenían aparcamiento y precios más bajos. Sin embargo, en la última década algo ha cambiado: en Madrid, Valencia o Barcelona, los mercados tradicionales vuelven a llenarse, sobre todo los fines de semana.\n\nEl caso del Mercado de San Fernando, en el barrio madrileño de Lavapiés, es un buen ejemplo. Hace quince años, casi la mitad de los puestos estaban vacíos. Entonces un grupo de vecinos propuso alquilarlos a precios bajos a jóvenes emprendedores. Hoy, junto a la frutería y la carnicería de siempre, hay una librería que vende libros al peso, un puesto de comida peruana y un taller donde arreglan bicicletas.\n\nLos comerciantes más antiguos reconocen que al principio tenían dudas. «Pensaba que la gente vendría solo a tomar algo y no a comprar», cuenta Antonio, que vende pescado desde hace treinta años. «Pero me equivoqué: ahora tengo clientes jóvenes que antes no venían nunca.»\n\nNo todo el mundo está contento. Algunos vecinos se quejan de que los precios han subido y de que el mercado se ha convertido en un lugar para turistas. Los responsables del mercado responden que han mantenido los horarios de mañana para los clientes habituales y que la mayoría de los puestos siguen vendiendo productos frescos.",
+     "questions": [
+      {
+       "q": "¿Por qué perdían clientes los mercados de barrio?",
+       "o": [
+        "Los supermercados ofrecían más comodidades y precios más bajos.",
+        "Los productos eran de mala calidad.",
+        "Estaban lejos del centro.",
+        "Cerraban los fines de semana."
+       ],
+       "a": 0,
+       "why": "\"Los supermercados abrían más horas, tenían aparcamiento y precios más bajos.\""
+      },
+      {
+       "q": "¿Cómo era el Mercado de San Fernando hace quince años?",
+       "o": [
+        "Casi la mitad de los puestos estaban vacíos.",
+        "Era el mercado más caro de Madrid.",
+        "Estaba cerrado por obras.",
+        "Solo vendía pescado."
+       ],
+       "a": 0,
+       "why": "\"casi la mitad de los puestos estaban vacíos\""
+      },
+      {
+       "q": "¿Qué propusieron los vecinos?",
+       "o": [
+        "Alquilar los puestos baratos a jóvenes emprendedores.",
+        "Convertir el mercado en un supermercado.",
+        "Cerrar el mercado.",
+        "Abrir un aparcamiento."
+       ],
+       "a": 0,
+       "why": "\"alquilarlos a precios bajos a jóvenes emprendedores\""
+      },
+      {
+       "q": "¿Qué pensaba Antonio al principio?",
+       "o": [
+        "Que la gente no vendría a comprar.",
+        "Que el mercado cerraría pronto.",
+        "Que los turistas comprarían mucho pescado.",
+        "Que los jóvenes trabajarían con él."
+       ],
+       "a": 0,
+       "why": "\"Pensaba que la gente vendría solo a tomar algo y no a comprar\""
+      },
+      {
+       "q": "¿Qué critican algunos vecinos?",
+       "o": [
+        "La subida de los precios y el turismo.",
+        "El ruido de los bares.",
+        "La falta de productos frescos.",
+        "Los horarios de la mañana."
+       ],
+       "a": 0,
+       "why": "\"los precios han subido … un lugar para turistas\""
+      },
+      {
+       "q": "¿Qué han hecho los responsables del mercado para los clientes habituales?",
+       "o": [
+        "Han mantenido los horarios de mañana.",
+        "Han bajado todos los precios.",
+        "Han cerrado los bares.",
+        "Han prohibido la entrada a los turistas."
+       ],
+       "a": 0,
+       "why": "\"han mantenido los horarios de mañana para los clientes habituales\""
+      }
+     ]
+    },
+    {
+     "type": "mc",
+     "title": "Nyelvhelyesség: szókitöltés",
+     "items": [
+      {
+       "q": "Ayer ___ al cine con mis amigos.",
+       "a": "fui",
+       "o": [
+        "fui",
+        "iba",
+        "he ido",
+        "voy"
+       ],
+       "why": "ayer: lezárt időszak, pretérito indefinido."
+      },
+      {
+       "q": "Cuando era pequeño, ___ en un pueblo.",
+       "a": "vivía",
+       "o": [
+        "vivía",
+        "vivo",
+        "he vivido",
+        "viviré"
+       ],
+       "why": "Múltbeli háttér, állapot: imperfecto."
+      },
+      {
+       "q": "Espero que ___ un buen viaje.",
+       "a": "tengas",
+       "o": [
+        "tengas",
+        "tienes",
+        "tendrás",
+        "tener"
+       ],
+       "why": "Az esperar que után kötőmód: tengas."
+      },
+      {
+       "q": "Este regalo es ___ ti.",
+       "a": "para",
+       "o": [
+        "para",
+        "por",
+        "a",
+        "de"
+       ],
+       "why": "Címzett, cél: para."
+      },
+      {
+       "q": "Mi hermano es ___ alto que yo.",
+       "a": "más",
+       "o": [
+        "más",
+        "tan",
+        "muy",
+        "mucho"
+       ],
+       "why": "Középfok: más … que."
+      },
+      {
+       "q": "¿Has visto a Laura? – No, no la ___ visto hoy.",
+       "a": "he",
+       "o": [
+        "he",
+        "ha",
+        "había",
+        "haya"
+       ],
+       "why": "hoy: pretérito perfecto, első személy: he visto."
+      },
+      {
+       "q": "Si ___ tiempo, iré contigo.",
+       "a": "tengo",
+       "o": [
+        "tengo",
+        "tendré",
+        "tuviera",
+        "tenga"
+       ],
+       "why": "Valós feltétel: si + presente, a főmondatban futuro."
+      },
+      {
+       "q": "No me gusta ___ película.",
+       "a": "esta",
+       "o": [
+        "esta",
+        "este",
+        "estos",
+        "esto"
+       ],
+       "why": "película nőnemű egyes szám: esta."
+      }
+     ]
+    },
+    {
+     "type": "wf",
+     "title": "Nyelvhelyesség: szóképzés",
+     "items": [
+      {
+       "q": "Me gusta la ___ de este pueblo. (TRANQUILO)",
+       "a": "tranquilidad",
+       "why": "-idad főnévképző: tranquilidad = nyugalom."
+      },
+      {
+       "q": "Habla español ___. (PERFECTO)",
+       "a": "perfectamente",
+       "why": "-mente határozószó-képző a nőnemű alakhoz."
+      },
+      {
+       "q": "La ___ del museo es a las diez. (ABRIR)",
+       "a": "apertura",
+       "why": "apertura = nyitás, megnyitó."
+      },
+      {
+       "q": "Es ___ terminar hoy. (POSIBLE, ellentét)",
+       "a": "imposible",
+       "why": "im- fosztóképző a p előtt."
+      },
+      {
+       "q": "Mi madre trabaja como ___ en un colegio. (PROFESOR, nőnem)",
+       "a": "profesora",
+       "why": "Nőnem: -or → -ora."
+      },
+      {
+       "q": "Fue un viaje ___. (OLVIDAR)",
+       "a": "inolvidable",
+       "why": "in- + -able: felejthetetlen."
+      }
+     ]
+    },
+    {
+     "type": "listening",
+     "title": "Hallott szöveg értése",
+     "name": "El piso nuevo de Lucía",
+     "cast": {
+      "A": {
+       "name": "Carlos",
+       "g": "m"
+      },
+      "B": {
+       "name": "Lucía",
+       "g": "f"
+      }
+     },
+     "lines": [
+      {
+       "s": "A",
+       "it": "Lucía, ¿qué tal la mudanza? ¿Ya estás en el piso nuevo?",
+       "hu": "Lucía, hogy ment a költözés? Már az új lakásban vagy?"
+      },
+      {
+       "s": "B",
+       "it": "Sí, desde el sábado. Todavía tengo cajas por todas partes, pero estoy muy contenta.",
+       "hu": "Igen, szombat óta. Még mindenhol dobozok vannak, de nagyon boldog vagyok."
+      },
+      {
+       "s": "A",
+       "it": "¿Está cerca de tu trabajo?",
+       "hu": "Közel van a munkahelyedhez?"
+      },
+      {
+       "s": "B",
+       "it": "Muchísimo más cerca. Antes tardaba una hora en metro; ahora voy andando en quince minutos.",
+       "hu": "Sokkal közelebb. Korábban egy óra volt metróval, most tizenöt perc gyalog."
+      },
+      {
+       "s": "A",
+       "it": "¡Qué suerte! ¿Y cómo es el barrio?",
+       "hu": "Micsoda szerencse! És milyen a környék?"
+      },
+      {
+       "s": "B",
+       "it": "Es bastante tranquilo. Hay un mercado muy bonito y un parque enfrente de mi casa. Lo único malo es que no hay muchos restaurantes.",
+       "hu": "Elég csendes. Van egy nagyon szép piac, és egy park a házammal szemben. Az egyetlen rossz, hogy nincs sok étterem."
+      },
+      {
+       "s": "A",
+       "it": "Bueno, así cocinas más. ¿Vas a hacer una fiesta para enseñarnos el piso?",
+       "hu": "Hát, így többet főzöl. Tartasz bulit, hogy megmutasd a lakást?"
+      },
+      {
+       "s": "B",
+       "it": "Claro, pero primero tengo que comprar un sofá. Ahora mismo solo tengo dos sillas.",
+       "hu": "Persze, de előbb vennem kell egy kanapét. Most csak két székem van."
+      },
+      {
+       "s": "A",
+       "it": "Si quieres, el domingo te acompaño a una tienda de muebles de segunda mano. Mi hermana compró allí toda su casa.",
+       "hu": "Ha akarod, vasárnap elkísérlek egy használtbútor-boltba. A húgom ott vette az egész berendezését."
+      },
+      {
+       "s": "B",
+       "it": "¡Perfecto! Así ahorro un poco. ¿Quedamos a las once?",
+       "hu": "Tökéletes! Így spórolok egy kicsit. Tizenegykor találkozunk?"
+      }
+     ],
+     "questions": [
+      {
+       "q": "¿Desde cuándo vive Lucía en el piso nuevo?",
+       "o": [
+        "Desde el sábado.",
+        "Desde hace un mes.",
+        "Desde el domingo.",
+        "Todavía no vive allí."
+       ],
+       "a": 0,
+       "why": "\"Sí, desde el sábado.\""
+      },
+      {
+       "q": "¿Cómo va Lucía al trabajo ahora?",
+       "o": [
+        "Andando",
+        "En metro",
+        "En autobús",
+        "En bici"
+       ],
+       "a": 0,
+       "why": "\"ahora voy andando en quince minutos\""
+      },
+      {
+       "q": "¿Qué es lo único malo del barrio?",
+       "o": [
+        "No hay muchos restaurantes.",
+        "Hay mucho ruido.",
+        "No hay parques.",
+        "Está lejos del metro."
+       ],
+       "a": 0,
+       "why": "\"Lo único malo es que no hay muchos restaurantes.\""
+      },
+      {
+       "q": "¿Qué tiene que comprar Lucía antes de la fiesta?",
+       "o": [
+        "Un sofá",
+        "Dos sillas",
+        "Una mesa",
+        "Una cama"
+       ],
+       "a": 0,
+       "why": "\"primero tengo que comprar un sofá\""
+      },
+      {
+       "q": "¿Qué le propone Carlos?",
+       "o": [
+        "Ir juntos a una tienda de muebles de segunda mano.",
+        "Hacer la fiesta en su casa.",
+        "Prestarle su sofá.",
+        "Ayudarla con las cajas el sábado."
+       ],
+       "a": 0,
+       "why": "\"el domingo te acompaño a una tienda de muebles de segunda mano\""
+      }
+     ]
+    },
+    {
+     "type": "writing",
+     "title": "Íráskészség",
+     "task": "Escribe un correo a un amigo español. Cuéntale cómo es tu barrio (qué hay, qué te gusta y qué no) e invítalo a visitarte. (100–120 palabras)",
+     "etype": "DELE B1 – informális e-mail"
+    }
+   ]
+  }
+ ]
+}

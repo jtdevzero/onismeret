@@ -82,3 +82,13 @@ function confetti(){
 }
 function blankify(q){return esc(q).replace("___",'<span class="blank"></span>');}
 
+/* Offer a generated file. On the web a plain download link works; inside the claude.ai artifact the viewer only accepts
+   files through the "downloads" capability, which asks for confirmation. Resolves true when the file was handed over. */
+async function saveFile(filename,data,{web=IS_WEB}={}){
+  if(web){const a=document.createElement("a"),url=URL.createObjectURL(data instanceof Blob?data:new Blob([data]));a.href=url;a.download=filename;
+    document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);return true;}
+  const dl=await window.claude.use("downloads").catch(()=>null);
+  if(!dl){toast("A mentés itt nem érhető el. Nyisd meg a webes változatot.");return false;}
+  try{await dl.save({filename,data});return true;}
+  catch(e){if(e&&e.code!=="declined")toast(e.code==="rate_limited"?"Egy mentési ablak már nyitva van.":"A mentés most nem sikerült.");return false;}
+}
