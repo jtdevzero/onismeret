@@ -417,3 +417,129 @@ Hogyan tudunk egymás különböző igényeire közös feladatként tekinteni?
 Mit szeretnél megköszönni abból, ahogyan a másik meghallgatott?`)}]
  };
 })();
+
+/* Pajzán 18+ csomagok: nyílt, zavarba ejtő kérdések és kihívások. Minden passzolható. */
+(() => {
+ const L=s=>s.trim().split('\n').map(x=>x.trim()).filter(Boolean),P=window.PAIR_PACKS;
+ P.radar.push({id:'fire',name:'Tűzpróba · pajzán 18+',adult:true,items:[
+ ['Mikor inkább?','Reggeli szex','Késő esti szex'],
+ ['Az együttlét inkább…','Lassú és érzéki','Gyors és szenvedélyes'],
+ ['Az ágyban inkább…','Én irányítok','Hagyom, hogy irányítsanak'],
+ ['A villany…','Legyen sötét','Égjen, látni akarlak'],
+ ['Szex közben inkább…','Sóhajok és csend','Hangosan, szavakkal'],
+ ['Inkább…','Adni','Kapni'],
+ ['A ruhák…','Lassan, egyenként','Sietve, le velük'],
+ ['A helyszín…','Az ágy a legjobb','Bárhol a lakásban'],
+ ['Az előjáték…','Minél hosszabb','Térjünk a lényegre'],
+ ['Melyik indít be jobban?','Csók a nyakon','Harapás a fülcimpán'],
+ ['A kezdeményezés inkább…','Egy pajzán üzenettel','Szó nélkül, érintéssel'],
+ ['Egy fantáziát inkább…','Elmesélnék','Eljátszanék'],
+ ['Közben…','Szóljon zene','Csak mi halljunk'],
+ ['A szexi fehérnemű…','Rajtam izgat','Rajtad izgat'],
+ ['A szemkötő…','Az én szememre','A te szemedre'],
+ ['Egy tükör az ágy mellett…','Izgalmas','Inkább ne'],
+ ['Utána inkább…','Összebújás','Közös zuhany'],
+ ['Egy éjszaka…','Egyszer, de alaposan','Többször is'],
+ ['A csók inkább…','Lassú és mély','Vad és harapós'],
+ ['A pajzán szavakat…','Súgva szeretem','Kimondva szeretem'],
+ ['Inkább…','Romantikus szeretkezés','Pajzán, játékos szex'],
+ ['A szex inkább…','Előre megbeszélve','Váratlanul lecsapva'],
+ ['Egy szexjáték…','Kipróbálnám','Nincs rá szükségem'],
+ ['Napközben inkább…','Pajzán üzeneteket kapnék','Pajzán üzeneteket küldenék']
+ ]});
+ P.truth.push({id:'naughty',name:'Pajzán · 18+',adult:true,truth:L(`Mi volt a legforróbb gondolatod rólam, amit még nem mondtál ki?
+Melyik testrészemet nézed a legszívesebben, amikor nem figyelek?
+Hol szeretkeznél velem a legszívesebben, ha senki sem láthatna meg?
+Melyik fantáziádat nem mertél még elmondani senkinek?
+Mi volt a legkínosabb pillanatod szex közben?
+Mivel lehet téged a leggyorsabban beindítani?
+Melyik közös éjszakánkat élnéd át újra, és miért pont azt?
+Mit szeretnél, hogy gyakrabban csináljak az ágyban?
+Gondoltál már rám, amikor egyedül voltál? Mesélj róla!
+Melyik pózt próbálnád ki velem, amit még nem csináltunk?
+Mit viseljek, hogy teljesen elveszítsd a fejed?
+Mi a legmerészebb hely, ahol szexeltél, vagy ahol szeretnél?
+Milyen mondatot szeretnél hallani tőlem az ágyban?
+Mit próbálnál ki, de tartasz tőle, hogy furcsának gondolnám?
+Inkább irányítanál, vagy hagynád, hogy én irányítsak?
+Mi volt a legpajzánabb álmod rólam?
+Melyik szexi apróság tűnik fel rajtam, amiről szerinted nem is tudok?
+Egy tízes skálán mennyire indultál be az első csókunknál?
+Melyik szót kimondani is zavarba ejtő, hallani viszont izgat?
+Melyik filmjelenetet játszanád el velem az ágyban?
+Hogyan ébresztenélek fel a legszívesebben?
+Kipróbálnál velem egy szexjátékot? Milyet?
+Milyen határt feszegetnél velem szívesen, és mi az, amit semmiképp?
+Egy tízes skálán most őszintén mennyire vagy beindulva?`),dare:L(`Súgd a másik fülébe, mit csinálnál vele most egy szállodai szobában.
+Csókold meg a másikat ott, ahová ő mutat.
+Mondd el három szóban, mi indít be benne a legjobban.
+Vegyél le egy ruhadarabot. Te választod, melyiket.
+Masszírozd egy percig a másikat ott, ahol kéri.
+Mutasd meg, hogyan csókolnád meg, ha most találkoznátok először egy bárban.
+Fogalmazz meg egy pajzán üzenetet, amit holnap elküldenél neki, és olvasd fel.
+Fél percig nézzétek egymás szemét egészen közelről, nevetés nélkül.
+Csókolj végig a másik karján a csuklójától a válláig.
+Mondd el a legmerészebb fantáziádat egyetlen mondatban.
+Ülj a másik ölébe a következő kör végéig.
+Súgj neki egy bókot a testéről, amit még sosem mondtál.
+Érintés nélkül, a kezeddel a levegőben mutasd meg, hogyan simogatnád.
+Táncolj neki fél percig csábítóan.
+Kösd be a szemed, és a másik egy percig csak csókokkal érhet hozzád.
+Harapj gyengéden a másik fülcimpájába.
+Mondd ki hangosan a kedvenc pózod nevét.
+Írd le az ujjaddal a hátára, mit szeretnél ma este. Neki kell kitalálnia.
+Csókold a másik nyakát tíz másodpercig.
+Mondd el, milyen fehérneműt vennél neki, és miért pont azt.
+Válassz egy testrészét, és dicsérd egy teljes percig.
+Vegyél le egy ruhadarabot a másikról. Ő mondja meg, melyiket.
+Utánozd, milyen hangot ad ki a másik, amikor nagyon élvezi.
+Mondj egy kívánságot ma estére, amire a másik igent vagy nemet mondhat.`)});
+ P.match.push({id:'wishlist',name:'Pajzán kívánságlista · 18+',adult:true,items:L(`Szex valahol máshol, mint az ágy
+Pajzán fotók egymásról, csak kettőnknek
+Szemkötő
+Kötözés selyemsállal, megbeszélt stopszóval
+Szerepjáték: két idegen egy bárban
+Közös erotikus film nézése
+Erotikus masszázs olajjal
+Egy szexjáték közös kipróbálása
+Gyors menet egy váratlan pillanatban
+Szex a zuhany alatt
+Egy egész este csak orális kényeztetés
+Pajzán üzenetek napközben
+Sztriptíz egymásnak
+Szex a tükör előtt
+Hangos, pajzán szavak szex közben
+Finom fenékpaskolás
+Egy egész estés, lassú előjáték
+Egy éjszaka egy szállodában csak a szex kedvéért
+Egy este, amikor az egyikünk irányít mindent
+Közös vásárlás egy szexboltban
+Fehérneműbemutató egymásnak
+Ébresztés kényeztetéssel
+Jégkocka a forró pillanatokban
+Pózkártyák húzása és kipróbálása`)});
+ P.honest.push({id:'frank',name:'Szex, kertelés nélkül · 18+',adult:true,items:L(`Mikor élvezted a legjobban a szexet velem, és mitől lett olyan jó?
+Mit csinálok szex közben, amit jobban élveznél másképp?
+Milyen gyakran vágysz igazán szexre, és mennyire illik ez a mostani ritmusunkhoz?
+Mi segít neked a legjobban elélvezni?
+Megjátszottad már valaha az orgazmust? Mi vezetett oda?
+Melyik fantáziád hoz zavarba, de mégis izgat?
+Nézel pornót? Ha igen, mi fog meg benne?
+Mit gondolsz az önkielégítésről, a sajátodról és az enyémről?
+Milyen pajzán dolgot kezdeményeznék szerinted túl ritkán?
+Az orális szexben inkább adni vagy kapni szeretsz, és miért?
+Melyik testrészed a legérzékenyebb?
+Mit próbáltál ki korábban, amit velem is szívesen megismételnél?
+Mitől volt jó a legjobb szexuális élményed, akár velem, akár nem?
+Milyen pajzán szavak indítanak be, és mitől lohad le a kedved?
+Hogyan állsz a szexjátékokhoz?
+Inkább a gyors menetet vagy a hosszú, lassú szexet szereted?
+Mit gondolsz a domináns és alárendelt szerepjátékokról?
+Volt, hogy nemet akartál mondani, de nem mondtál? Mit tehetnék, hogy könnyebb legyen?
+Mit szeretnél, hogy szex után csináljunk?
+Melyik napszakban vagy a legkívánósabb?
+Mit szégyellsz a testeden szex közben, és mit mondhatnék, ami segít?
+Ha egy hétig bármit kérhetnél az ágyban, mi lenne az első?
+Mitől megy el azonnal a kedved?
+Mit szeretnél, hogy jobban tudjak a testedről?`)});
+})();

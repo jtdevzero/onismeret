@@ -18,4 +18,6 @@ Az alkalmazás kártyái eredeti magyar megfogalmazások. A szexuális témájú
 
 A körhossz beszélgetős játékoknál és kihívásoknál 6/12/24 kártya; titkos válaszadásnál 4/8/12 kérdés fejenként. A kezdőlap beszélgetős, titkos választós és 18+ játékokra szűrhető.
 
-Négy extra 18+ csomag: Kémia (Flörtradar), Flört és szikra (Igazság vagy kihívás), Vágyak–közös igenek (Igen, nem, talán), Intimitásról nyíltan (Szexről őszintén). Összesen 120 új elem; a teljes készlet 396 elem. A csomagválasztás körönként változtatható; az újraindítás megtartja a csomagot és a körhosszt. A Flörtradar alapcsomagja nem 18+, a Kémia csomag külön megerősítést kér. A 18+ kikapcsolása minden felnőtt csomag aktuális válaszait is törli.
+Négy extra 18+ csomag: Kémia (Flörtradar), Flört és szikra (Igazság vagy kihívás), Vágyak–közös igenek (Igen, nem, talán), Intimitásról nyíltan (Szexről őszintén). Összesen 120 új elem. A csomagválasztás körönként változtatható; az újraindítás megtartja a csomagot és a körhosszt. A Flörtradar alapcsomagja nem 18+, a Kémia csomag külön megerősítést kér. A 18+ kikapcsolása minden felnőtt csomag aktuális válaszait is törli.
+
+Négy pajzán 18+ csomag nyílt, zavarba ejtő kérdésekkel és kihívásokkal: Tűzpróba (Flörtradar), Pajzán (Igazság vagy kihívás), Pajzán kívánságlista (Igen, nem, talán), Szex, kertelés nélkül (Szexről őszintén). Újabb 120 elem; a teljes készlet 516 elem.
