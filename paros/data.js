@@ -289,3 +289,131 @@ Csillagnézés egy biztonságos, nyugodt helyen
 Egy közös emlékfüzet elkezdése`);
  return {closer,honest,truth,dare,radar,match,quiz,memories,future,bucket};
 })();
+
+/* Külön választható flörtös és felnőtt beszélgetőcsomagok. */
+window.PAIR_PACKS = (() => {
+ const L=s=>s.trim().split('\n').map(x=>x.trim()).filter(Boolean);
+ return {
+ radar:[{id:'chemistry',name:'Kémia · 18+',adult:true,items:[
+ ['Mitől érzed jobban a köztetek lévő kémiát?','Egy hosszú beszélgetéstől','Apró, figyelmes gesztusoktól'],
+ ['A flört nálad inkább…','Játékos humor','Őszinte bókok'],
+ ['Milyen kezdeményezés esik jobban?','Egy egyenes kérdés','Egy finom célzás, amit megbeszélünk'],
+ ['Mikor oldódsz könnyebben?','Egy nyugodt estén','Egy közös kaland után'],
+ ['Egy romantikus üzenetben inkább…','Kedves emléket idéznék','Következő találkozót terveznék'],
+ ['Melyik bók érintene meg jobban?','Ahogy gondolkodsz, lenyűgöz','Jó veled egy térben lenni'],
+ ['A közeledés tempója inkább…','Lassan kibontakozó','Spontán, közösen egyeztetve'],
+ ['Egy késő esti beszélgetéshez…','Lágy zene','Csend és figyelem'],
+ ['A romantikus meglepetés legyen…','Személyes és apró','Együtt megélt program'],
+ ['Mitől érzed magad kívánatosnak?','Ha ezt ki is mondják','Ha külön időt szánnak rám'],
+ ['Egy közös emléket inkább…','Újra átélnék','Új nézőpontból beszélnék meg'],
+ ['Mikor könnyebb kimondanod a vágyadat?','Ha előbb megkérdeznek','Ha én választhatom meg a pillanatot'],
+ ['Egy ismerkedős estén inkább…','Sokat nevetnék','Mélyebb témákat érintenék'],
+ ['Mi esik jobban egy randi után?','Rögtön egy kedves üzenet','Másnap egy személyes visszajelzés'],
+ ['Milyen meghívás fogna meg?','Van kedved velem felfedezni valamit?','Lenne kedved egy csak nekünk szóló estéhez?'],
+ ['A figyelem inkább ebből látszik…','Emlékszik, mit meséltem','Észreveszi, mire van most szükségem'],
+ ['Egy romantikus filmben inkább…','A szellemes párbeszéd fog meg','A csendes összhang fog meg'],
+ ['Milyen közös titok tetszene?','Egy csak általunk ismert becenév','Egy közösen kitalált jel'],
+ ['A flörtben inkább…','Kérdezek','Magamról osztok meg valamit'],
+ ['Mit választanál egy nyugodt randira?','Egy eldugott kávézót','Egy hosszú esti sétát'],
+ ['A közelséghez inkább…','Időre van szükségem','Jólesik a nyílt beszélgetés'],
+ ['Mivel teremtenél romantikus hangulatot?','Zenével és fénnyel','Figyelmes beszélgetéssel'],
+ ['Milyen üzenetet őriznél meg?','Egy vicces belső utalást','Egy őszinte vallomást'],
+ ['Egy szabad estén inkább…','Új közös élményt keresnék','Egy kedves emléket idéznék fel']
+ ]}],
+ truth:[{id:'spark',name:'Flört és szikra · 18+',adult:true,truth:L(`Mi volt az a pillanat, amikor más szemmel kezdtél nézni rám?
+Milyen bókot szeretnél egyszer hallani tőlem?
+Milyen gesztusomban érzed a legtöbb vonzalmat?
+Milyen helyzetben lennél szívesen kezdeményezőbb?
+Melyik közös emlékünkből csinálnál romantikus jelenetet?
+Milyen mondattal hívnál el engem újra egy első randira?
+Mitől érzed különlegesnek egy találkozásunk végét?
+Milyen apró részletet vettél észre rajtam először?
+Milyen közös pillanatot szeretnél szavakban megőrizni?
+Miben vagyunk szerinted meglepően jó páros?
+Milyen romantikus ötlethez kérnéd ki a véleményemet?
+Hogyan jeleznéd, ha most közelebb szeretnél kerülni hozzám?
+Melyik tulajdonságomban van számodra a legtöbb báj?
+Milyen ismerkedős kérdést tennél fel nekem most?
+Mitől lesz nálad egy pillantás emlékezetes?
+Milyen közös programon tudnál teljesen feloldódni?
+Mikor volt jóleső meglepetés a figyelmem?
+Milyen flörtös mondaton tudnál jóízűen nevetni?
+Milyen meghívásra mondanál ma szívesen igent?
+Mit szeretnél megtudni arról, hogyan látlak téged?
+Milyen közös hangulatot idéz számodra a nevem?
+Mitől különleges számodra egy egymásnak írt üzenet?
+Mikor szeretsz inkább egyenesen kérdezni a finom célzások helyett?
+Milyen romantikus szokást próbálnál ki velünk?`),dare:L(`Mondj egy bókot, amely egy közös emlékünkhöz kapcsolódik.
+Találj ki egy szellemes, kedves megszólítást kettőnk következő randijára.
+Hívd el a másikat egy képzeletbeli első randira három mondatban.
+Válassz egy dalt, és mondd el, miért jut róla eszedbe a másik.
+Mondj egy őszinte mondatot arról, mit értékelsz a figyelmében.
+Tervezz meg egy romantikus találkozót három, közösen választott szóval.
+Találjatok ki egy belső poént a mai estéhez.
+Meséld el úgy a megismerkedéseteket, mintha egy film előzetese lenne.
+Írj egy képzeletbeli képeslapot egy közös hétvégéről.
+Mondj egy apró figyelmességet, amit szívesen adnál a másiknak.
+Kérdezd meg, milyen közös programnak örülne most legjobban.
+Válasszatok közösen egy romantikus filmcímet a mai hangulatotokhoz.
+Találj ki egy nevet egy csak kettőtöknek szóló ünnephez.
+Mondj egy bókot a másik humoráról vagy gondolkodásáról.
+Mesélj egy kedves jelenetet egy lehetséges közös utazásról.
+Kérdezd meg, melyik korábbi bókodat őrizte meg a másik.
+Találjatok ki egy vicces jelszót arra, hogy ideje közös programot szervezni.
+Fejezd be ezt a mondatot: „Azért jó ma veled lennem, mert…”
+Képzeld el, hogy újra bemutatkozol a másiknak, és mutass meg egy ritkán látott oldaladat.
+Köszönj meg egy apró gesztust, amellyel a másik figyelt rád.
+Találjatok ki egy közösen választott, telefonmentes randiötletet.
+Mondj egy tulajdonságot, amelyben szerinted jól kiegészítitek egymást.
+Írj egy rövid meghívást egy következő, nyugodt beszélgetésre.
+Kérdezd meg, van-e olyan közös emlék, amit szívesen felidézne most.`)}],
+ match:[{id:'desires',name:'Vágyak, közös igenek · 18+',adult:true,items:L(`Nyugodt beszélgetés arról, mitől érezzük magunkat kívánatosnak
+Egymásnak elmondott romantikus fantáziák megbeszélése
+Annak megosztása, milyen kezdeményezés esik jól
+Közös romantikus lejátszási lista összeállítása
+Egy csak kettőnknek szóló esti randi megtervezése
+Beszélgetés arról, milyen tempóban szeretünk közeledni
+Egy személyes bókokra szánt közös este
+Annak megbeszélése, milyen környezet segít ellazulni
+Egy kedves, romantikus levél megírása egymásnak
+Beszélgetés a közelség és a személyes tér egyensúlyáról
+Egymás kedvenc romantikus emlékeinek felidézése
+Annak megosztása, milyen figyelemre vágyunk most
+Közös szokás kialakítása az intim témák megbeszéléséhez
+Egy romantikus program közös megtervezése
+Beszélgetés arról, mit jelent számunkra a gyengédség
+Egymásnak adott visszajelzés arról, milyen bókok esnek jól
+Annak megosztása, mikor van szükségünk több időre
+Beszélgetés arról, milyen jelből tudjuk, hogy érdemes lassítani
+Egy következő találkozó hangulatának közös kitalálása
+Beszélgetés a vágyaink időbeli változásáról
+Egy közösen elfogadott szünetjel megbeszélése
+Annak megosztása, milyen kérdést szeretnénk gyakrabban hallani
+Egymás romantikus ötleteinek meghallgatása elvárások nélkül
+Egy közös, nyugodt pillanat kiválasztása a következő beszélgetéshez`)}],
+ honest:[{id:'intimacy',name:'Intimitásról nyíltan · 18+',adult:true,items:L(`Milyen módon szeretnéd, hogy rákérdezzek a kívánságaidra?
+Mi segít abban, hogy ne kelljen elvárásoknak megfelelned?
+Hogyan különböztessük meg a bizonytalanságot az igentől?
+Milyen témáról beszélnél könnyebben írásban, mint szóban?
+Miből érzed, hogy valóban figyelek a válaszodra?
+Hogyan szeretnéd, hogy fogadjak egy később megváltozott döntést?
+Milyen közös szokás segítene nyugodtan beszélni a szexuális igényeinkről?
+Mitől érzed úgy, hogy egy kívánságodat ítélkezés nélkül elmondhatod?
+Hogyan lehetne több helye a kíváncsiságnak a feltételezések helyett?
+Mi segít, ha eltérő időben vágyunk közelségre?
+Hogyan szeretnéd jelezni, ha egy kérdést most passzolnál?
+Milyen reakció esne jól egy érzékeny gondolat megosztása után?
+Milyen szavakkal beszélsz legszívesebben az intimitásról?
+Mitől különbözik nálad a romantikus hangulat és az együttlét iránti vágy?
+Hogyan tudjuk elengedni, hogy minden közös estéből valaminek következnie kelljen?
+Milyen gesztusból érzed, hogy a határaid fontosak nekem?
+Mire szeretnél időt hagyni egy intim témáról szóló beszélgetés után?
+Hogyan tudjuk kedvesen jelezni, ha félreértettük egymást?
+Milyen kérdés segítene megérteni, mire van most szükséged?
+Mit szeretnél, hogy tudjak a közelséghez kapcsolódó bizonytalanságaidról?
+Hogyan lehessen beszélni a vágyakról úgy, hogy az ne jelentsen vállalást?
+Milyen hétköznapi feszültséget lenne jó külön kezelni az intim időnktől?
+Hogyan tudunk egymás különböző igényeire közös feladatként tekinteni?
+Mit szeretnél megköszönni abból, ahogyan a másik meghallgatott?`)}]
+ };
+})();
