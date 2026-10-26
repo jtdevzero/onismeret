@@ -15,7 +15,8 @@ function kv() {
   };
 }
 function limiter(n) { const c = new Map(); return { async limit({ key }) { c.set(key, (c.get(key) || 0) + 1); return { success: c.get(key) <= n }; } }; }
-const env = (o = {}) => ({ APP_PASSWORD: "correct-horse-battery-staple", ALLOWED_ORIGINS: ORIGIN, PUSH: kv(), LIMITER: limiter(20), AUTH_LIMITER: limiter(3), ...o });
+/* The key is a placeholder: every /chat test below stops at validation before any AI call. */
+const env = (o = {}) => ({ APP_PASSWORD: "correct-horse-battery-staple", ANTHROPIC_API_KEY: "test-placeholder", ALLOWED_ORIGINS: ORIGIN, PUSH: kv(), LIMITER: limiter(20), AUTH_LIMITER: limiter(3), ...o });
 const call = (e, path, { key = "correct-horse-battery-staple", body = {}, origin = ORIGIN, method = "POST", ip = "1.2.3.4", headers = {} } = {}) =>
   worker.fetch(new Request("https://w.example" + path, { method, headers: { Origin: origin, "x-app-key": key, "content-type": "application/json", "CF-Connecting-IP": ip, ...headers }, body: method === "POST" ? (typeof body === "string" ? body : JSON.stringify(body)) : undefined }), e, { waitUntil() {} });
 
@@ -81,4 +82,14 @@ test("szinkron: elavult írás 409, jó írás növeli a revíziót, hibás áll
   const r = await (await call(e, "/sync/get")).json();
   assert.equal(r.rev, 1);
   assert.equal((await call(e, "/sync/backup-get", { body: { key: "../sync:main" } })).status, 400);
+});
+
+test("Claude-kulcs nélkül: /chat 503 no_ai_key, a szinkron közben működik", async () => {
+  const e = env({ ANTHROPIC_API_KEY: "" });
+  const r = await call(e, "/chat", { body: { messages: [{ role: "user", content: "szia" }] } });
+  assert.equal(r.status, 503);
+  assert.equal((await r.json()).error, "no_ai_key");
+  assert.equal((await call(e, "/chat", { key: "rossz" })).status, 401);
+  const put = await call(e, "/sync/put", { body: { base: 0, state: { xp: 5 } } });
+  assert.equal(put.status, 200);
 });

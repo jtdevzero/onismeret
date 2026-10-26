@@ -3,7 +3,7 @@ let AI_CHECK=null;
 function aiConfigured(){return !IS_WEB||!!(S.settings.proxy&&S.settings.pass);}
 function aiChecked(){return AI_CHECK&&AI_CHECK.proxy===S.settings.proxy&&AI_CHECK.pass===S.settings.pass?AI_CHECK:null;}
 function aiAccessBadge(){
-  const check=aiChecked(),label=!IS_WEB?"AI az alkalmazáson keresztül":!aiConfigured()?"AI-beállítás szükséges":check?(check.ok?"AI-kapcsolat ellenőrizve":"AI-kapcsolati hiba"):"AI beállítva · próba szükséges";
+  const check=aiChecked(),label=!IS_WEB?"AI az alkalmazáson keresztül":!aiConfigured()?"AI-beállítás szükséges":check?(check.ok?"AI-kapcsolat ellenőrizve":check.noAI?"Szerver kapcsolódva · AI nélkül":"AI-kapcsolati hiba"):"AI beállítva · próba szükséges";
   return `<span class="access-badge ${check&&check.ok?"ok":""}" data-ai-status>${label}</span>`;
 }
 function aiSetupNotice(){
@@ -77,7 +77,8 @@ function bindWebSettings(){
     const timeout=setTimeout(()=>controller.abort(),15000);saveAI.disabled=true;m.style.color="";m.textContent="Kapcsolat ellenőrzése…";
     const snapshot={proxy,pass,ok:false};
     try{const response=await sample("Válaszolj egyetlen szóval: ok",{modelTier:"quick",signal:controller.signal});if(!response.text.trim())throw {code:"error"};snapshot.ok=true;m.style.color="var(--ok)";m.textContent="A kapcsolat működik. Visszatérhetsz a gyakorláshoz.";}
-    catch(err){m.style.color="var(--bad)";m.textContent=err&&err.code==="aborted"?"A szerver 15 másodperc alatt nem válaszolt. Ellenőrizd a címet és próbáld újra.":aiErr(err);}
+    catch(err){if(err&&err.code==="no_ai_key"){snapshot.noAI=true;m.style.color="var(--ok)";m.textContent="A kapcsolat működik: a szinkron és az emlékeztető bekapcsolható. A szerveren nincs Claude-kulcs, ezért AI-hoz a claude.ai-os változatot (artifact) használd.";return;}
+      m.style.color="var(--bad)";m.textContent=err&&err.code==="aborted"?"A szerver 15 másodperc alatt nem válaszolt. Ellenőrizd a címet és próbáld újra.":aiErr(err);}
     finally{clearTimeout(timeout);AI_CHECK=snapshot;saveAI.disabled=false;refreshAIBadges();}
   };
   if(!$("#sRemOn"))return;

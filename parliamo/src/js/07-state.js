@@ -56,7 +56,7 @@ function proxySample(){
     const messages=typeof input==="string"?[{role:"user",content:input}]:input;
     let r;try{r=await fetch(st.proxy.replace(/\/+$/,"")+"/chat",{method:"POST",headers:{"content-type":"application/json","x-app-key":st.pass},body:JSON.stringify({tier:opts.modelTier||"default",messages}),signal:opts.signal});}
     catch(e){if(e&&e.name==="AbortError")throw {code:"aborted"};throw {code:"network"};}
-    if(r.status===401)throw {code:"bad_key"};if(r.status===429){const j=await r.json().catch(()=>({}));throw {code:j.error==="budget"?"budget":"rate_limited"};}if(!r.ok)throw {code:"error"};
+    if(r.status===401)throw {code:"bad_key"};if(r.status===429){const j=await r.json().catch(()=>({}));throw {code:j.error==="budget"?"budget":"rate_limited"};}if(r.status===503){const j=await r.json().catch(()=>({}));if(j.error==="no_ai_key")throw {code:"no_ai_key"};}if(!r.ok)throw {code:"error"};
     const j=await r.json();if(j.refused)throw {code:"refused"};const text=String(j.text||"");
     if(opts.onText)opts.onText({text,delta:text});return {text,truncated:!!j.truncated};
   };
@@ -68,7 +68,7 @@ function getSample(){
   if(!sampleP)sampleP=claude.use("sample").catch(()=>null);return sampleP;
 }
 const aiMissing=()=>IS_WEB?"Ehhez AI-kapcsolat szükséges. Az AI-tanár oldalon közvetlenül beállíthatod. A leckék és az ismétlés enélkül is használható.":"Az AI-tanár csak a claude.ai-on megnyitott oldalon érhető el.";
-function aiErr(e){const c=e&&e.code;if(c==="bad_key")return "Hibás belépőkód. Ellenőrizd a Beállításokban az AI-kapcsolatot.";if(c==="network")return "Nem érem el az AI-szervert. Ellenőrizd a netet és a szerver címét.";if(c==="refused")return "Erre a kérésre a tanár nem válaszolt. Fogalmazd meg másképp.";if(c==="not_granted")return "Nem engedélyezted az AI-tanárt ebben a nézetben. Töltsd újra az oldalt, ha mégis használnád.";if(c==="budget")return "Elérted a szerveren beállított havi AI-keretet. A következő hónapban újra működik, vagy emeld a keretet (MONTHLY_BUDGET_USD).";if(c==="rate_limited")return "Túl sok kérés ment el egyszerre. Várj fél percet, és próbáld újra.";return "Nem jött válasz a tanártól. Próbáld újra.";}
+function aiErr(e){const c=e&&e.code;if(c==="no_ai_key")return "A szervereden nincs Claude-kulcs, ezért a webappban nincs AI. A szinkron és az emlékeztető működik; az AI-funkciókat a claude.ai-os változatban (artifact) használd.";if(c==="bad_key")return "Hibás belépőkód. Ellenőrizd a Beállításokban az AI-kapcsolatot.";if(c==="network")return "Nem érem el az AI-szervert. Ellenőrizd a netet és a szerver címét.";if(c==="refused")return "Erre a kérésre a tanár nem válaszolt. Fogalmazd meg másképp.";if(c==="not_granted")return "Nem engedélyezted az AI-tanárt ebben a nézetben. Töltsd újra az oldalt, ha mégis használnád.";if(c==="budget")return "Elérted a szerveren beállított havi AI-keretet. A következő hónapban újra működik, vagy emeld a keretet (MONTHLY_BUDGET_USD).";if(c==="rate_limited")return "Túl sok kérés ment el egyszerre. Várj fél percet, és próbáld újra.";return "Nem jött válasz a tanártól. Próbáld újra.";}
 
 function today(){return dayNum();}
 function addXP(n){S.xp+=n;const d=today();S.days[d]=(S.days[d]||0)+n;save();checkChallenges();
