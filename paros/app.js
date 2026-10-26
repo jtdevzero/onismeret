@@ -21,6 +21,7 @@ let adult=false,run=null,masked=false,view='home',notice='';
 const A={};
 let filter='all';
 const packChoice={},roundChoice={};
+function hide(){if(!run)return;masked=true;if(['answer','guess'].includes(run.phase)){run.resume=run.phase;run.phase='cover';run.selected=null;}}
 function packsFor(key){
  if(!Object.hasOwn(GAMES,key))return [];
  const base=GAMES[key].type==='truth'?{truth:DATA.truth,dare:DATA.dare}:{items:DATA[key]};
@@ -34,12 +35,12 @@ const defaultLength=key=>['talk','truth'].includes(GAMES[key].type)?12:8;
 const visibleGame=(g,key)=>filter==='all'||filter==='adult'&&(g.adult||(PACKS[key]||[]).some(p=>p.adult))||filter==='talk'&&g.type==='talk'||filter==='private'&&['match','radar','quiz'].includes(g.type);
 function savePrefs(){try{localStorage.setItem(KEY,JSON.stringify({names:prefs.names}));return true;}catch{notice='A neveket most nem tudjuk megjegyezni. A játék ettől még működik.';return false;}}
 function route(){const h=location.hash.slice(1);return h==='settings'||h==='play'||Object.hasOwn(GAMES,h)?h:'home';}
-function go(v){if(v!==view&&run)masked=true;view=v;const hash=v==='home'?'#home':'#'+v;if(location.hash!==hash)history.pushState(null,'',hash);render();window.scrollTo(0,0);app.focus({preventScroll:true});}
-window.addEventListener('popstate',()=>{if(run)masked=true;view=route();render();});
-window.addEventListener('hashchange',()=>{if(run)masked=true;view=route();render();});
-function conceal(){if(run){masked=true;render();}}
+function go(v){if(v!==view)hide();view=v;const hash=v==='home'?'#home':'#'+v;if(location.hash!==hash)history.pushState(null,'',hash);render();window.scrollTo(0,0);app.focus({preventScroll:true});}
+window.addEventListener('popstate',()=>{hide();view=route();render();});
+window.addEventListener('hashchange',()=>{hide();view=route();render();});
+function conceal(){if(run){hide();render();}}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')conceal();});
-window.addEventListener('pagehide',()=>{if(run)masked=true;});
+window.addEventListener('pagehide',hide);
 window.addEventListener('pageshow',()=>render());
 const btn=(action,label,value='',primary=false)=>`<button class="btn${primary?' primary':''}" data-a="${action}" data-v="${value}">${label}</button>`;
 const back=()=>'<a class="back small" href="#home">← A játékokhoz</a>';
@@ -65,13 +66,14 @@ function play(){const s=run;if(!s)return `<div class="panel"><h2>A korábbi kör
 }
 function advancePrivate(s){s.pos++;s.selected=null;if(s.pos>=s.deck.length){if(s.player===0){s.player=1;s.pos=0;s.phase='cover';}else resolve(s);}else s.phase='answer';}
 function resolve(s){
- const rows=[],scores=[0,0];
+ const rows=[],scores=[0,0],guessed=[0,0];
  s.deck.forEach((q,i)=>{const a=s.answers[0][i],b=s.answers[1][i];if(s.type==='match'){if(a===0&&b===0)rows.push({text:q});return;}
  if(s.type==='radar'){if(a!==null&&b!==null)rows.push({text:q[0],values:[q[a+1],q[b+1]],same:a===b});return;}
- const correct=[s.guesses[0][i]!==null&&b!==null&&s.guesses[0][i]===b,s.guesses[1][i]!==null&&a!==null&&s.guesses[1][i]===a];correct.forEach((v,p)=>{if(v)scores[p]++;});rows.push({text:q[0],values:[a===null?'Passz':q[a+1],b===null?'Passz':q[b+1]],correct});
- });s.rows=rows;s.scores=scores;s.answers=[[],[]];s.guesses=[[],[]];s.selected=null;s.phase='result';s.opened=false;}
+ const scored=[s.guesses[0][i]!=null&&b!=null,s.guesses[1][i]!=null&&a!=null],correct=[scored[0]&&s.guesses[0][i]===b,scored[1]&&s.guesses[1][i]===a];scored.forEach((v,p)=>{if(v)guessed[p]++;if(correct[p])scores[p]++;});rows.push({text:q[0],values:[a===null?'Passz':q[a+1],b===null?'Passz':q[b+1]],correct});
+ });s.rows=rows;s.scores=scores;s.guessed=guessed;s.answers=[[],[]];s.guesses=[[],[]];s.selected=null;s.phase='result';s.opened=false;}
 function result(s){if(s.type==='talk'||s.type==='truth')return `<div class="hero"><span class="eyebrow">Egy közös pillanat</span><h1>Ennyi is számít.</h1><p>${s.count} kártyánál időztetek el, ${s.skipped} kártyát passzoltatok. Köszönjétek meg egymásnak, amit megosztottatok.</p></div>${btn('restart','Új kör','',true)}${btn('clear','Kör törlése és vissza')}`;
- const matches=s.rows.filter(x=>x.same).length;return `<div class="hero"><span class="eyebrow">${GAMES[s.key].name}</span><h1>${s.type==='match'?'Amire mindketten igent mondtatok.':s.type==='quiz'?'Mennyire találtatok egymásra?':'Két nézőpont, egy közös este.'}</h1><p>${s.type==='match'?'Az egyéni nemek, talánok és passzok nem jelennek meg. Egy közös igen nem ígéret: beszéljétek meg, most is jólesne-e.':s.type==='radar'?`${s.rows.length} közösen megválaszolt kérdésből ${matches} egyezés. Ez játék, nem összeillőségi teszt.`:'Minden helyes tipp 1 pont. A különbségek új beszélgetéseket is indíthatnak.'}</p></div>${s.type==='quiz'?`<div class="panel score">${s.names.map((name,i)=>`<div>${esc(name)}<br><b>${s.scores[i]} / ${s.guessed[i]}</b><br><span class="small muted">helyes tipp / adott tipp</span></div>`).join('')}</div>`:''}<div class="panel">${s.rows.length?s.rows.map(row=>`<div class="match-item"><h3>${esc(row.text)}</h3>${row.values?row.values.map((v,i)=>`<p class="small"><b>${esc(s.names[i])}:</b> ${esc(v)}${row.correct?` · a tipped ${row.correct[i]?'helyes':'nem adott pontot'}`:''}</p>`).join(''):'<span class="tag">Közös igen</span>'}</div>`).join(''):`<div class="empty"><h2>${s.type==='match'?'Most nincs közös igen':'Most nincs közös válasz'}</h2><p>Ez is rendben van. Semmit sem kell teljesíteni vagy megmagyarázni.</p></div>`}</div>${btn('restart','Új kör','',true)}${btn('clear','Válaszok törlése és vissza')}`;}
+ const matches=s.rows.filter(x=>x.same).length;return `<div class="hero"><span class="eyebrow">${GAMES[s.key].name}</span><h1>${s.type==='match'?'Amire mindketten igent mondtatok.':s.type==='quiz'?'Mennyire találtatok egymásra?':'Két nézőpont, egy közös este.'}</h1><p>${s.type==='match'?'Az egyéni nemek, talánok és passzok nem jelennek meg. Egy közös igen nem ígéret: beszéljétek meg, most is jólesne-e.':s.type==='radar'?`${s.rows.length} közösen megválaszolt kérdésből ${matches} egyezés. Ez játék, nem összeillőségi teszt.`:'Minden helyes tipp 1 pont. Ahol a másik passzolt, ott a tipp nem számít bele. A különbségek új beszélgetéseket is indíthatnak.'}</p></div>${s.type==='quiz'?`<div class="panel score">${s.names.map((name,i)=>`<div>${esc(name)}<br><b>${s.scores[i]} / ${s.guessed[i]}</b><br><span class="small muted">helyes tipp / értékelhető tipp</span></div>`).join('')}</div>`:''}<div class="panel">${s.rows.length?s.rows.map(row=>`<div class="match-item"><h3>${esc(row.text)}</h3>${row.values?row.values.map((v,i)=>`<p class="small"><b>${esc(s.names[i])}:</b> ${esc(v)}${row.correct?` · a tipped ${row.correct[i]?'helyes':'nem adott pontot'}`:''}</p>`).join(''):'<span class="tag">Közös igen</span>'}</div>`).join(''):`<div class="empty"><h2>${s.type==='match'?'Most nincs közös igen':'Most nincs közös válasz'}</h2><p>Ez is rendben van. Semmit sem kell teljesíteni vagy megmagyarázni.</p></div>`}</div>${btn('restart','Új kör','',true)}${btn('clear','Válaszok törlése és vissza')}`;}
+function keepFocus(a,v){const same=[...app.querySelectorAll('[data-a]')].find(el=>el.dataset.a===a&&el.dataset.v===v&&!el.disabled);const target=same||app.querySelector('.question,h1,h2')||app;if(!same&&target!==app)target.tabIndex=-1;target.focus({preventScroll:true});}
 function render(){if(Object.hasOwn(GAMES,view))app.innerHTML=setup(view);else app.innerHTML=view==='settings'?settings():view==='play'?play():home();if(notice)app.innerHTML=`<p class="notice" role="status">${esc(notice)}</p>`+app.innerHTML;}
 A.names=f=>{const first=f.elements.first.value.trim().slice(0,24),second=f.elements.second.value.trim().slice(0,24);if(!first||!second)return;prefs.names=[first,second];if(savePrefs())notice='A neveket elmentettük.';};
 A.start=f=>start(f.dataset.v,!!f.elements.adult?.checked,f.elements.rounds.value,f.elements.pack?.value||'base');
@@ -80,18 +82,18 @@ A.adultOn=()=>{view='honest';history.pushState(null,'','#honest');};
 A.adultOff=()=>{adult=false;if(run&&run.adult){run=null;masked=false;}notice='A 18+ hozzáférést és a felnőtt kör válaszait töröltük.';};
 A.resume=()=>go('play');
 A.unmask=()=>{masked=false;};
-A.open=()=>{if(run&&run.phase==='cover')run.phase='answer';};
+A.open=()=>{if(run&&!masked&&run.phase==='cover'){run.phase=run.resume||'answer';run.resume=null;}};
 A.select=v=>{if(!run||masked||!['answer','guess'].includes(run.phase))return;const n=Number(v),max=run.type==='match'?2:1;if(Number.isInteger(n)&&n>=-1&&n<=max)run.selected=n;};
 A.confirm=()=>{const s=run;if(!s||masked||s.selected===null||!['answer','guess'].includes(s.phase))return;const value=s.selected===-1?null:s.selected;
  if(s.phase==='answer'){s.answers[s.player][s.pos]=value;if(value!==null)s.answered[s.player]++;s.selected=null;if(s.type==='quiz')s.phase='guess';else advancePrivate(s);}
- else{s.guesses[s.player][s.pos]=value;if(value!==null)s.guessed[s.player]++;advancePrivate(s);}};
+ else{s.guesses[s.player][s.pos]=value;advancePrivate(s);}};
 function talkNext(skipped){const s=run;if(!s||masked||s.phase!=='talk')return;if(s.type==='truth'&&!s.prompt&&!skipped)return;if(skipped)s.skipped++;else s.count++;s.pos++;s.prompt=null;s.kind=null;if(s.pos>=s.deck.length)s.phase='result';}
 A.next=()=>talkNext(false);A.pass=()=>talkNext(true);
 A.draw=kind=>{const s=run;if(!s||masked||s.type!=='truth'||s.phase!=='talk'||s.prompt||!['truth','dare'].includes(kind))return;s.kind=kind;s.prompt=s[kind].pop();};
 A.stop=()=>{if(run&&run.phase==='talk')run.phase='result';};
 A.clear=()=>{if(run&&run.phase!=='result'&&!confirm('Törlöd a kört és az összes eddigi választ?'))return;run=null;masked=false;go('home');};
 A.restart=()=>{if(!run||run.phase!=='result')return;const key=run.key,length=run.length,packId=run.packId;run=null;start(key,adult,length,packId);};
-document.addEventListener('click',e=>{const el=e.target.closest('[data-a]');if(!el||el.tagName==='FORM')return;const action=A[el.dataset.a];if(action){notice='';action(el.dataset.v);render();}});
+document.addEventListener('click',e=>{const el=e.target.closest('[data-a]');if(!el||el.tagName==='FORM')return;const action=A[el.dataset.a];if(action){notice='';const v=view;action(el.dataset.v);render();if(v===view)keepFocus(el.dataset.a,el.dataset.v||'');}});
 document.addEventListener('change',e=>{
  const key=e.target.dataset.packGame;
  if(key&&packFor(key,e.target.value)){

@@ -8,7 +8,7 @@ Milyen lenne számodra egy tökéletes közös vasárnap?
 Melyik történetedet mesélnéd el, hogy jobban megismerjelek?
 Milyen bók maradt meg benned sokáig?
 Milyen helyzetben érzed leginkább önmagadnak magad?
-Mivel lehet egy nehéz nap után megnyugtatni?
+Mivel lehet téged megnyugtatni egy nehéz nap után?
 Milyen közös emléket szeretnél egy év múlva felidézni?
 Milyen apró gesztusból érzed, hogy fontos vagy?
 Mi lepett meg bennem kellemesen?
@@ -44,7 +44,7 @@ Milyen elvárást szeretnél levenni a vállunkról?
 Mennyi beszélgetésre vagy csendre van szükséged együttlét után?
 Hogyan tudjuk megkülönböztetni a kíváncsiságot az ígérettől?
 Milyen szerepe van számodra a humornak az intimitásban?
-Hogyan jelezzünk egymásnak, ha valami megváltozott az igényeinkben?
+Hogyan hat a fáradtság vagy a stressz a vágyadra, és mi segít ilyenkor?
 Melyik napszakban könnyebb számodra nyugodtan kapcsolódni?
 Hogyan szeretnéd, hogy reagáljak egy bizonytalan válaszodra?
 Mi segít abban, hogy ne teljesítményként gondolj az együttlétre?
@@ -74,7 +74,7 @@ Tartsatok egy rövid, közösen vállalt szemkontaktust; bármikor el lehet neve
 Kérdezd meg, jólesne-e most egy ölelés. A választ fogadd el.
 Mutasd meg szavak nélkül, hogyan örülsz egy találkozásunknak.
 Írj egy kedves, egymondatos meghívót egy következő randira.
-Találj ki egy közös titkos kézjelet arra, hogy szünetet kértek.
+Találj ki egy közös titkos kézjelet arra, ha szünetet kérünk.
 Tervezz meg egy húszperces közös programot pénzköltés nélkül.
 Fejezd be: „Ma este azt értékelem benned, hogy…”
 Mondj három apró dolgot, amit szívesen csinálnál együtt.
@@ -155,7 +155,7 @@ Milyen közös pillanatból szeretnél többet?`));
 Milyen különbség van számodra a közelség és az elvárás között?
 Mi segítene abban, hogy könnyebben kérdezz rá az igényeimre?
 Hogyan szeretnéd megbeszélni, ha valami korábban jólesett, most pedig nem?
-Milyen közös jelből tudhatjuk, hogy érdemes lassítani?
+Mi segít, hogy jól érezd magad a saját testedben, amikor közel vagyunk egymáshoz?
 Mitől lesz számodra egy intim beszélgetés meghitt?
 Milyen szót vagy kifejezést használnál szívesen a közelségről beszélve?
 Mikor könnyebb számodra nemet mondani?
@@ -183,7 +183,7 @@ Mutass be egy lassított, képzeletbeli vörös szőnyeges bevonulást.
 Találj ki egy új ünnepet, amelyet ketten tarthatnátok meg.
 Kérdezd meg, melyik közös programot ismételné meg szívesen a másik.
 Mondj egy kedves mondatot három különböző hangulatban.
-Rajzoljatok a levegőbe egy közös hétvégi tervet, és találjátok ki.
+Rajzolj a levegőbe egy közös hétvégi programot, a másik pedig találja ki, mi az.
 Válasszatok egy új szót arra, amikor hiányzik a másik.
 Tervezzetek meg egy képzeletbeli kirándulást csak három tárggyal.
 Köszönj meg a másiknak valamit, amit eddig természetesnek vettél.`));
@@ -204,7 +204,7 @@ Egy apró, előre egyeztetett meglepetés
 Beszélgetés arról, milyen bókok esnek jól
 Egy közös emlékdoboz készítése
 Közös szünet a közösségi médiától
-Egy figyelmes üzenet megírása egymásnak`));
+Egy közös este, amikor felváltva választunk programot`));
  quiz.push(
  ['Váratlan szabadidőben inkább…','Olvasnék','Zenét hallgatnék'],
  ['Közös alkotásként inkább…','Rajzolnék','Főznék'],
@@ -220,7 +220,7 @@ Melyik apró részletre emlékszel az első közös programunkból?
 Mi volt az első dolog, ami megnevettetett velem kapcsolatban?
 Melyik közös utunkon érezted magad különösen szabadnak?
 Milyen illat vagy íz idéz fel egy közös emléket?
-Melyik közös félreértésen tudtok már mosolyogni?
+Melyik közös félreértésen tudunk már mosolyogni?
 Mikor segített neked egy mondatom?
 Melyik közös program lett jobb, mint amire számítottál?
 Milyen dalhoz kötődik egy közös pillanatunk?
@@ -259,7 +259,7 @@ Milyen közös alkotást kezdenél el?
 Hogyan ünnepelnénk egy tervünk legelső kis lépését?
 Mikor néznénk át legközelebb a közös ötleteinket?
 Milyen utazást terveznél csak a hangulata alapján?
-Milyen közös emléket szeretnél egy nyárról?
+Milyen közös emléket szeretnél a következő nyárról?
 Mit tanulnál szívesen tőlem a következő időszakban?
 Milyen személyes térre szeretnél vigyázni a közös tervek mellett?
 Mi az a közös terv, amire még csak kíváncsi vagy, de nem ígéred?`);
@@ -280,7 +280,7 @@ Közös sütés
 Egy helyi piac felfedezése
 Közös nyújtás vagy könnyű mozgás
 Könyvesbolti böngészés egymásnak ajánlott könyvekkel
-Esős délután közös főzéssel
+Napfelkelte megnézése egy közeli kilátóból
 Egy régi kedvenc hely újrafelfedezése
 Egy közösen választott új hobbi kipróbálása
 Közös jótékonysági vagy önkéntes program keresése
@@ -301,7 +301,7 @@ window.PAIR_PACKS = (() => {
  ['Mikor oldódsz könnyebben?','Egy nyugodt estén','Egy közös kaland után'],
  ['Egy romantikus üzenetben inkább…','Kedves emléket idéznék','Következő találkozót terveznék'],
  ['Melyik bók érintene meg jobban?','Ahogy gondolkodsz, lenyűgöz','Jó veled egy térben lenni'],
- ['A közeledés tempója inkább…','Lassan kibontakozó','Spontán, közösen egyeztetve'],
+ ['A közeledés tempója inkább…','Lassan kibontakozó','Gyorsabb, ha mindketten szeretnénk'],
  ['Egy késő esti beszélgetéshez…','Lágy zene','Csend és figyelem'],
  ['A romantikus meglepetés legyen…','Személyes és apró','Együtt megélt program'],
  ['Mitől érzed magad kívánatosnak?','Ha ezt ki is mondják','Ha külön időt szánnak rám'],
@@ -350,12 +350,12 @@ Válassz egy dalt, és mondd el, miért jut róla eszedbe a másik.
 Mondj egy őszinte mondatot arról, mit értékelsz a figyelmében.
 Tervezz meg egy romantikus találkozót három, közösen választott szóval.
 Találjatok ki egy belső poént a mai estéhez.
-Meséld el úgy a megismerkedéseteket, mintha egy film előzetese lenne.
+Meséld el a megismerkedésünket úgy, ahogy szerinted a másik élte meg.
 Írj egy képzeletbeli képeslapot egy közös hétvégéről.
 Mondj egy apró figyelmességet, amit szívesen adnál a másiknak.
 Kérdezd meg, milyen közös programnak örülne most legjobban.
-Válasszatok közösen egy romantikus filmcímet a mai hangulatotokhoz.
-Találj ki egy nevet egy csak kettőtöknek szóló ünnephez.
+Írjatok együtt egy háromszavas mottót a mai estére.
+Súgj a másik fülébe egy bókot, ha ez neki is jólesik.
 Mondj egy bókot a másik humoráról vagy gondolkodásáról.
 Mesélj egy kedves jelenetet egy lehetséges közös utazásról.
 Kérdezd meg, melyik korábbi bókodat őrizte meg a másik.
@@ -364,7 +364,7 @@ Fejezd be ezt a mondatot: „Azért jó ma veled lennem, mert…”
 Képzeld el, hogy újra bemutatkozol a másiknak, és mutass meg egy ritkán látott oldaladat.
 Köszönj meg egy apró gesztust, amellyel a másik figyelt rád.
 Találjatok ki egy közösen választott, telefonmentes randiötletet.
-Mondj egy tulajdonságot, amelyben szerinted jól kiegészítitek egymást.
+Mondj egy tulajdonságot, amelyben szerinted jól kiegészítjük egymást.
 Írj egy rövid meghívást egy következő, nyugodt beszélgetésre.
 Kérdezd meg, van-e olyan közös emlék, amit szívesen felidézne most.`)}],
  match:[{id:'desires',name:'Vágyak, közös igenek · 18+',adult:true,items:L(`Nyugodt beszélgetés arról, mitől érezzük magunkat kívánatosnak
@@ -380,14 +380,14 @@ Beszélgetés a közelség és a személyes tér egyensúlyáról
 Egymás kedvenc romantikus emlékeinek felidézése
 Annak megosztása, milyen figyelemre vágyunk most
 Közös szokás kialakítása az intim témák megbeszéléséhez
-Egy romantikus program közös megtervezése
+Egymás masszírozása előre megbeszélt keretekkel
 Beszélgetés arról, mit jelent számunkra a gyengédség
-Egymásnak adott visszajelzés arról, milyen bókok esnek jól
+Egy új napszak vagy helyszín kipróbálása a kettesben töltött időnkhöz
 Annak megosztása, mikor van szükségünk több időre
 Beszélgetés arról, milyen jelből tudjuk, hogy érdemes lassítani
-Egy következő találkozó hangulatának közös kitalálása
+Egy ráérős este elvárások nélkül, csak összebújással
 Beszélgetés a vágyaink időbeli változásáról
-Egy közösen elfogadott szünetjel megbeszélése
+Közös fürdő vagy zuhany, ha mindkettőnknek jólesik
 Annak megosztása, milyen kérdést szeretnénk gyakrabban hallani
 Egymás romantikus ötleteinek meghallgatása elvárások nélkül
 Egy közös, nyugodt pillanat kiválasztása a következő beszélgetéshez`)}],
