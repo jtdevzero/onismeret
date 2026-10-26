@@ -170,6 +170,8 @@ export default {
       if (!success) return json({ error: "rate_limited" }, 429, cors);
     }
 
+    /* Claude-kulcs nélkül a szerver csak szinkronra és emlékeztetőre szolgál; az AI-t ilyenkor az artifact adja. */
+    if (!env.ANTHROPIC_API_KEY) return json({ error: "no_ai_key" }, 503, cors);
     let body;
     try { const raw = await req.text(); if (raw.length > MAX_BODY) return json({ error: "too_big" }, 413, cors); body = JSON.parse(raw); } catch { return json({ error: "bad_request" }, 400, cors); }
     const messages = cleanMessages(body && body.messages);

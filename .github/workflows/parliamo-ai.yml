@@ -1,7 +1,7 @@
 name: Parliamo AI-szerver telepítése
 # Kézzel indítható: Actions fül → „Parliamo AI-szerver telepítése” → Run workflow.
 # Szükséges titkok (Settings → Secrets and variables → Actions):
-#   CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID, ANTHROPIC_API_KEY, PARLIAMO_APP_PASSWORD
+#   CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID, PARLIAMO_APP_PASSWORD; elhagyható: ANTHROPIC_API_KEY (nélküle nincs AI a webappban)
 on:
   workflow_dispatch:
 # A munkafolyamat csak olvassa a repót; írási jogot egyik lépés sem kap.
@@ -17,6 +17,7 @@ jobs:
           # A wrangler 4-hez legalább Node.js 22 kell.
           node-version: 22
       - name: Szükséges titkok megvannak?
+        id: secrets
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -24,13 +25,15 @@ jobs:
           PARLIAMO_APP_PASSWORD: ${{ secrets.PARLIAMO_APP_PASSWORD }}
         run: |
           missing=""
-          for n in CLOUDFLARE_API_TOKEN CLOUDFLARE_ACCOUNT_ID ANTHROPIC_API_KEY PARLIAMO_APP_PASSWORD; do
+          for n in CLOUDFLARE_API_TOKEN CLOUDFLARE_ACCOUNT_ID PARLIAMO_APP_PASSWORD; do
             [ -n "${!n}" ] || missing="$missing $n"
           done
           if [ -n "$missing" ]; then
             echo "::error::Hiányzó titkok:$missing. Add meg őket: Settings → Secrets and variables → Actions → New repository secret."
             exit 1
           fi
+          # A Claude-kulcs elhagyható: nélküle a szerver szinkront és emlékeztetőt ad, AI-t nem.
+          if [ -n "$ANTHROPIC_API_KEY" ]; then echo "ai=true" >> "$GITHUB_OUTPUT"; else echo "::notice::Nincs ANTHROPIC_API_KEY: a szerver AI nélkül települ (szinkron és emlékeztető működik)."; echo "ai=false" >> "$GITHUB_OUTPUT"; fi
       - name: Függőségek a lockfile szerint
         working-directory: parliamo/worker
         run: npm ci
@@ -48,7 +51,8 @@ jobs:
           if [ -z "$ID" ]; then npx wrangler kv namespace create parliamo-push; ID=$(find_id); fi
           test -n "$ID"
           printf '\n[[kv_namespaces]]\nbinding = "PUSH"\nid = "%s"\n' "$ID" >> wrangler.toml
-      - name: Telepítés a Cloudflare-re
+      - name: Telepítés a Cloudflare-re (AI-val)
+        if: steps.secrets.outputs.ai == 'true'
         uses: cloudflare/wrangler-action@9acf94ace14e7dc412b076f2c5c20b8ce93c79cd # v3.15.0
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -60,4 +64,16 @@ jobs:
             APP_PASSWORD
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          APP_PASSWORD: ${{ secrets.PARLIAMO_APP_PASSWORD }}
+      - name: Telepítés a Cloudflare-re (AI nélkül)
+        if: steps.secrets.outputs.ai != 'true'
+        uses: cloudflare/wrangler-action@9acf94ace14e7dc412b076f2c5c20b8ce93c79cd # v3.15.0
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: parliamo/worker
+          wranglerVersion: "4.152.0"
+          secrets: |
+            APP_PASSWORD
+        env:
           APP_PASSWORD: ${{ secrets.PARLIAMO_APP_PASSWORD }}

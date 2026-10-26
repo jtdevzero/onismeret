@@ -86,16 +86,20 @@ A szerver a `worker/` mappában van (Cloudflare Workers, ingyenes csomag elég).
 
 **Állíts be havi költségkorlátot** a Claude Console-ban (Settings → Limits), hogy egy esetleg kiszivárgott belépőkód se okozhasson nagy számlát.
 
+### Ingyen, AI nélkül is
+
+A Cloudflare ingyenes csomagja elég a szerverhez. A **Claude API-kulcs fizetős** (használat alapján számláz, külön a claude.ai-előfizetéstől), de **elhagyható**: nélküle a szerver ingyen adja a szinkront az eszközök között és a napi emlékeztetőt, a webappban pedig az AI-funkciók helyett egy üzenet jelzi, hogy az AI a claude.ai-os változatban (artifact) érhető el. Ilyenkor a lenti 3. lépés és az `ANTHROPIC_API_KEY` titok kimarad.
+
 ### Telepítés telefonról (GitHub Actions)
 
 1. Cloudflare-fiók: https://dash.cloudflare.com (ingyenes). Jobb oldalt az **Account ID**-t másold ki.
 2. Cloudflare API-token: My Profile → API Tokens → Create Token → **Edit Cloudflare Workers** sablon → Create. Másold ki.
-3. Claude API-kulcs: https://platform.claude.com → API Keys → Create Key.
+3. (Elhagyható, fizetős) Claude API-kulcs: https://platform.claude.com → API Keys → Create Key. Állíts be mellé havi költségkorlátot (Settings → Limits).
 4. Találj ki egy hosszú belépőkódot (pl. 4-5 véletlen szó).
-5. GitHub: a repó **Settings → Secrets and variables → Actions → New repository secret**, négy titok:
+5. GitHub: a repó **Settings → Secrets and variables → Actions → New repository secret**, három kötelező és egy elhagyható titok:
    - `CLOUDFLARE_API_TOKEN`
    - `CLOUDFLARE_ACCOUNT_ID`
-   - `ANTHROPIC_API_KEY`
+   - `ANTHROPIC_API_KEY` (elhagyható; nélküle nincs AI a webappban)
    - `PARLIAMO_APP_PASSWORD` (a belépőkód)
 6. **Actions** fül → **Parliamo AI-szerver telepítése** → **Run workflow**. A végén a naplóban ott a szerver címe: `https://parliamo-ai.<fiókneved>.workers.dev`.
 7. A webappban: Ma → Beállítások → **AI-kapcsolat**: add meg a címet és a belépőkódot → **Mentés és próba**.
