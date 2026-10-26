@@ -26,6 +26,7 @@ const server = http.createServer((req, res) => {
       const headers = { 'access-control-allow-origin':'*', 'access-control-allow-headers':'content-type, x-app-key', 'access-control-allow-methods':'POST' };
       if (request.method() === 'OPTIONS') return route.fulfill({ status:204, headers });
       requests++;
+      if (request.headers()['x-app-user']) { const ok = request.headers()['x-app-user'] === 'anna' && request.headers()['x-app-key'] === 'annajelszava'; return route.fulfill({ status:ok ? 200 : 401, headers, contentType:'application/json', body:JSON.stringify(ok ? { text:'ok' } : { error:'unauthorized' }) }); }
       if (request.headers()['x-app-key'] === 'noai') return route.fulfill({ status:503, headers, contentType:'application/json', body:JSON.stringify({ error:'no_ai_key' }) });
       return route.fulfill({ status:request.headers()['x-app-key'] === 'correct' ? 200 : 401, headers, contentType:'application/json', body:JSON.stringify({ text:'ok' }) });
     });
@@ -59,6 +60,19 @@ const server = http.createServer((req, res) => {
     assert.match(await page.evaluate(async () => { try { await proxySample()('x'); return ''; } catch (e) { return aiErr(e); } }), /artifact/);
     await page.click('#aiSetupBack');
     console.log('✓ server without a Claude key: connection accepted, AI explained');
+
+    /* Multi-user server: user name + password; the name travels in its own header, a wrong password names both fields. */
+    await page.evaluate(() => openAISettings()); await page.fill('#sUser', 'Anna'); await page.fill('#sPass', 'rossz-jelszo');
+    await page.click('#sAiSave'); await page.waitForFunction(() => !document.querySelector('#sAiSave').disabled);
+    assert.match(await page.locator('#sAiMsg').textContent(), /Hibás felhasználónév vagy jelszó/);
+    await page.fill('#sPass', 'annajelszava'); await page.click('#sAiSave'); await page.waitForFunction(() => !document.querySelector('#sAiSave').disabled);
+    assert.match(await page.locator('[data-ai-status]').textContent(), /ellenőrizve/);
+    assert.deepEqual(await page.evaluate(() => [S.settings.user, proxyHeaders()['x-app-user']]), ['anna', 'anna']);
+    await page.fill('#sUser', 'Anna Kiss'); await page.click('#sAiSave');
+    assert.match(await page.locator('#sAiMsg').textContent(), /felhasználónév/);
+    await page.evaluate(() => { S.settings.user = ''; save(); });
+    await page.click('#aiSetupBack');
+    console.log('✓ multi-user login: user name header, wrong password message, name validation');
 
     await page.evaluate(() => { S.settings.proxy=''; S.settings.pass=''; renderJournal(); });
     const draft = 'Yesterday I went to the cinema with my friends and we watched a funny film.';

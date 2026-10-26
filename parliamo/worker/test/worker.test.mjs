@@ -2,8 +2,8 @@
    Az AI-hívást nem teszteljük; a belépés, a korlátok, a méretkorlát, a push-címek és a szinkron viselkedését igen. */
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import worker from "../src/index.js";
-import { pushEndpointOk, validSub } from "../src/push.js";
+import worker, { parseUsers } from "../src/index.js";
+import { pushEndpointOk, validSub, subscribe, runReminders } from "../src/push.js";
 
 const ORIGIN = "https://jtdevzero.github.io";
 function kv() {
@@ -92,4 +92,53 @@ test("Claude-kulcs nélkül: /chat 503 no_ai_key, a szinkron közben működik",
   assert.equal((await call(e, "/chat", { key: "rossz" })).status, 401);
   const put = await call(e, "/sync/put", { body: { base: 0, state: { xp: 5 } } });
   assert.equal(put.status, 200);
+});
+
+test("több felhasználó: a felhasználólista értelmezése", () => {
+  const u = parseUsers("Anna:hosszujelszo1, peti:masikjelszo2\nrossz sor\nkata:rovid, bad name:jelszo12345");
+  assert.deepEqual([...u.keys()], ["anna", "peti"]);
+  assert.equal(u.get("anna"), "hosszujelszo1");
+});
+
+test("több felhasználó: mindenki csak a saját haladását és mentéseit látja", async () => {
+  const e = env({ APP_PASSWORD: "", USERS: "anna:hosszujelszo1, peti:masikjelszo2" });
+  const as = (user, key) => ({ headers: { "x-app-user": user }, key });
+  assert.equal((await call(e, "/sync/put", { ...as("anna", "hosszujelszo1"), body: { base: 0, state: { xp: 10 } } })).status, 200);
+  assert.equal((await call(e, "/sync/put", { ...as("peti", "masikjelszo2"), body: { base: 0, state: { xp: 99 } } })).status, 200);
+  assert.equal((await (await call(e, "/sync/get", as("anna", "hosszujelszo1"))).json()).state.xp, 10);
+  assert.equal((await (await call(e, "/sync/get", as("peti", "masikjelszo2"))).json()).state.xp, 99);
+  /* Rossz jelszó, más jelszava, ismeretlen név, név nélküli kérés: mind 401. */
+  assert.equal((await call(e, "/sync/get", as("anna", "masikjelszo2"))).status, 401);
+  assert.equal((await call(e, "/sync/get", as("senki", "hosszujelszo1"))).status, 401);
+  assert.equal((await call(e, "/sync/get", { key: "hosszujelszo1" })).status, 401);
+  /* Mentések: a lista csak a sajátot adja, más mentése nem kérhető le. */
+  const annaList = (await (await call(e, "/sync/backups", as("anna", "hosszujelszo1"))).json()).list;
+  const petiList = (await (await call(e, "/sync/backups", as("peti", "masikjelszo2"))).json()).list;
+  assert.equal(annaList.length, 1); assert.equal(petiList.length, 1);
+  assert.match(annaList[0].key, /^backup:u:anna:\d+$/);
+  assert.equal((await call(e, "/sync/backup-get", { ...as("anna", "hosszujelszo1"), body: { key: petiList[0].key } })).status, 400);
+  const own = await call(e, "/sync/backup-get", { ...as("anna", "hosszujelszo1"), body: { key: annaList[0].key } });
+  assert.equal((await own.json()).state.xp, 10);
+});
+
+test("több felhasználó: a régi egyetlen belépőkód is működik, külön tárolóval", async () => {
+  const e = env({ USERS: "anna:hosszujelszo1" });
+  assert.equal((await call(e, "/sync/put", { body: { base: 0, state: { xp: 7 } } })).status, 200);
+  assert.equal((await call(e, "/sync/put", { headers: { "x-app-user": "anna" }, key: "hosszujelszo1", body: { base: 0, state: { xp: 1 } } })).status, 200);
+  assert.equal((await (await call(e, "/sync/get")).json()).state.xp, 7);
+  const legacyBackups = (await (await call(e, "/sync/backups")).json()).list;
+  assert.ok(legacyBackups.length === 1 && /^backup:\d+$/.test(legacyBackups[0].key), "a régi belépés nem látja a felhasználók mentéseit");
+  assert.equal((await call(e, "/chat", { body: {}, headers: { Origin: ORIGIN } })).headers.get("access-control-allow-headers").includes("x-app-user"), true);
+});
+
+test("emlékeztető: minden feliratkozás a saját tanulója állapotát kapja", async () => {
+  const store = kv(), asked = [];
+  const sub = u => ({ subscription: { endpoint: "https://fcm.googleapis.com/fcm/send/" + u, keys: { p256dh: "x", auth: "y" } }, hour: new Date().getUTCHours(), tz: 0 });
+  await subscribe(store, sub("a"), "u:anna");
+  await subscribe(store, sub("b"));
+  const realFetch = globalThis.fetch; globalThis.fetch = async () => ({ status: 201 });
+  try { await runReminders(store, "https://example.com", async user => { asked.push(user); return null; }); }
+  catch (e) { /* the fake keys cannot be encrypted for; the state lookup happens before that */ }
+  finally { globalThis.fetch = realFetch; }
+  assert.deepEqual(asked.sort(), ["main", "u:anna"]);
 });
