@@ -513,6 +513,27 @@ function mockProxy(store) {
   await p.evaluate(() => switchLang('en')); await p.waitForFunction(() => lang() === 'en' && LESSONS.length);
   ok(await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'a kilencedik kör nézeteiben sincs vízszintes görgetés');
 
+  console.log('\n22. Majdnem jó válasz: egy karakter eltérés sárga');
+  ok(await p.evaluate(() => {
+    const t = (u, a, o) => check(u, [a], o);
+    const typo = t('hous', 'house', { near: true }), apos = t("I dont know", "I don't know", { near: true }), space = t('alot', 'a lot', { near: true });
+    const punct = t('Hello, how are you', 'Hello! How are you?', { near: true }), two = t('hose', 'horse!!', { near: true }).ok && t('hse', 'horse', { near: true });
+    return typo.ok && typo.near && apos.near && space.near && punct.ok && !punct.near && !two.ok
+      && !t('hous', 'house').ok && !t('cat', 'car', { near: true }).ok && t('perche', 'perché').near;
+  }), 'egy karakter eltérés elfogadva sárgával, írásjel nem számít, két eltérés és vizsgák szigorúak, rövid szavak szigorúak');
+  ok(await p.evaluate(() => {
+    const d = document.createElement('div'); d.innerHTML = nearHtml(check("I dont know", ["I don't know"], { near: true }));
+    const e = document.createElement('div'); e.innerHTML = nearHtml(check('alot', ['a lot'], { near: true }));
+    return [...d.querySelectorAll('.bad-letter')].map(x => x.textContent).join('') === "'" && e.querySelectorAll('.bad-letter').length === 1;
+  }), 'a sárga visszajelzés megjelöli az eltérő karaktert (aposztróf, szóköz)');
+  await p.evaluate(() => { go('gyakorlas'); });
+  await p.waitForFunction(() => document.querySelector('[data-d]')); await p.waitForTimeout(300);
+  await p.evaluate(() => { D = { k: 'dict', ok: 0, n: 0, done: false }; nextDrill(); });
+  await p.waitForSelector('#dans');
+  await p.evaluate(() => { const it = document.querySelector('[data-say]').dataset.say; const w = it.split(' '); const i = w.findIndex(x => deacc(norm(x)).length >= 4); w[i] = w[i].slice(1); $('#dans').value = w.join(' '); $('#dgo').click(); });
+  ok(await p.evaluate(() => !!document.querySelector('#dfb .feedback.near')), 'diktálásban az egy betűs elírás sárga visszajelzést ad');
+  await p.evaluate(() => { D = null; go('ma'); });
+
   ok(p._errs.length === 0 && B.p._errs.length === 0, 'nincs JS-hiba', [...p._errs, ...B.p._errs].slice(0, 5));
   await browser.close(); server.close();
   console.log(`\n${pass} ok, ${fail} hiba`);

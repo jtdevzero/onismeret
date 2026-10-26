@@ -38,12 +38,13 @@ function requestMeaning(text){
   }
   return null;
 }
-function check(user,answers,opts={}){
+function check(user,answers,opts={}){const r=checkCore(user,answers,opts);if(r.near)r.given=user;return r;}
+function checkCore(user,answers,opts={}){
   const u=norm(user),list=(Array.isArray(answers)?answers:[answers]).filter(a=>typeof a==="string"&&a.trim());
   if(!u)return {ok:false,hint:"Írj be egy választ."};
   for(const a of list){const n=norm(a);
     if(u===n)return {ok:true};
-    if(deacc(u)===deacc(n))return {ok:true,warn:"Figyelj az ékezetre: "+a};
+    if(deacc(u)===deacc(n))return {ok:true,near:true,answer:a,warn:"Figyelj az ékezetre: "+a};
   }
   if(opts.type==="translation")for(const a of list){
     const af=answerForm(a),uf=answerForm(user);
@@ -53,8 +54,26 @@ function check(user,answers,opts={}){
     if(ar&&ur&&ar===ur)return {ok:true,alternative:true};
     if(ar&&ur&&deacc(ar)===deacc(ur))return {ok:true,alternative:true,warn:"Figyelj az ékezetekre a mintában."};
   }
+  /* Learning exercises (not exams) accept a single slip: one letter, apostrophe, hyphen or space off a word of at least
+     four letters. It counts as right but is shown in yellow with the correct form, and reviews grade it as "hard". */
+  if(opts.near)for(const a of list){const n=deacc(norm(a));
+    if(n.length>=4&&editDist(deacc(u),n)===1)return {ok:true,near:true,answer:a,warn:"Majdnem pontos: egy karakter eltér. Helyesen: "+a};
+  }
   const articleMissing=list.some(a=>{const n=norm(a),bare=n.replace(LG().art,"");return bare!==n&&deacc(u)===deacc(bare);});
   return {ok:false,hint:articleMissing?"Figyeld meg a kifejezés elejét: a névelő vagy a to is a tanult alak része.":opts.type==="translation"?"Nézd át a személyt, az ige alakját és a szórendet. Más jó megfogalmazás is létezhet a megadott mintákon kívül.":"Ellenőrizd a teljes tanult alakot, a névelőt és a szavak sorrendjét."};
+}
+function editDist(a,b){const d=Array.from({length:a.length+1},(_,i)=>[i]);for(let j=1;j<=b.length;j++)d[0][j]=j;
+  for(let i=1;i<=a.length;i++)for(let j=1;j<=b.length;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return d[a.length][b.length];}
+/* The correct form with the one differing character underlined (a missing space shows as an underlined gap). */
+function nearHtml(r){
+  if(!r||!r.answer)return esc(r&&r.warn||"");
+  const t=[...r.answer],g=[...String(r.given||"")],k=c=>deacc(c.toLowerCase());
+  const L=Array.from({length:t.length+1},()=>new Array(g.length+1).fill(0));
+  for(let i=t.length-1;i>=0;i--)for(let j=g.length-1;j>=0;j--)L[i][j]=k(t[i])===k(g[j])?L[i+1][j+1]+1:Math.max(L[i+1][j],L[i][j+1]);
+  const keep=new Array(t.length).fill(false);let i=0,j=0;
+  while(i<t.length&&j<g.length){if(k(t[i])===k(g[j])){keep[i]=true;i++;j++;}else if(L[i+1][j]>=L[i][j+1])i++;else j++;}
+  const marked=t.map((ch,x)=>keep[x]||/[.,!?¿¡;:"«»()…]/.test(ch)?esc(ch):`<u class="bad-letter">${ch===" "?"&nbsp;":esc(ch)}</u>`).join("");
+  return (/ékezet/.test(r.warn)?"Figyelj az ékezetre: ":"Egy karakter eltér: ")+`<span class="ans">${marked}</span>`;
 }
 const spkBtn=(t,cls="")=>`<button class="icon-btn ${cls}" data-say="${esc(t)}" aria-label="Meghallgatás: ${esc(t)}">${I.spk}</button>`;
 const pic=(name,cls="")=>`<div class="pic ${cls}"><img src="img/${name}.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"></div>`;

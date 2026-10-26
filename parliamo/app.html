@@ -166,6 +166,8 @@ main{max-width:1040px;margin:0 auto;padding-block:2.4rem 6rem;padding-left:max(2
 .feedback{border-radius:var(--r);padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.35rem}
 .feedback.ok{background:var(--ok-soft);color:var(--ok)}
 .feedback.bad{background:var(--bad-soft);color:var(--bad)}
+.feedback.near{background:var(--lemon-soft);color:var(--lemon-ink)}
+.feedback.near .bad-letter{color:var(--bad)}
 .feedback .ans{color:var(--ink);font-weight:600}
 .pfoot{margin-top:auto;display:flex;flex-direction:column;gap:.8rem}
 .listen{display:flex;gap:1rem;align-items:center}
@@ -194,7 +196,7 @@ main{max-width:1040px;margin:0 auto;padding-block:2.4rem 6rem;padding-left:max(2
 .diff .hit{background:var(--ok-soft);color:var(--ok)}
 .diff .miss{background:var(--bad-soft);color:var(--bad);text-decoration:underline}
 .diff .near{background:var(--lemon-soft);color:var(--ink);border-radius:4px}
-.diff .bad-letter{color:var(--bad);font-weight:700;text-decoration:underline;text-decoration-thickness:2px}
+.bad-letter{color:var(--bad);font-weight:700;text-decoration:underline;text-decoration-thickness:2px}
 
 /* grammar tables */
 .tbl-wrap{overflow-x:auto}
@@ -1028,12 +1030,13 @@ function requestMeaning(text){
   }
   return null;
 }
-function check(user,answers,opts={}){
+function check(user,answers,opts={}){const r=checkCore(user,answers,opts);if(r.near)r.given=user;return r;}
+function checkCore(user,answers,opts={}){
   const u=norm(user),list=(Array.isArray(answers)?answers:[answers]).filter(a=>typeof a==="string"&&a.trim());
   if(!u)return {ok:false,hint:"Írj be egy választ."};
   for(const a of list){const n=norm(a);
     if(u===n)return {ok:true};
-    if(deacc(u)===deacc(n))return {ok:true,warn:"Figyelj az ékezetre: "+a};
+    if(deacc(u)===deacc(n))return {ok:true,near:true,answer:a,warn:"Figyelj az ékezetre: "+a};
   }
   if(opts.type==="translation")for(const a of list){
     const af=answerForm(a),uf=answerForm(user);
@@ -1043,8 +1046,26 @@ function check(user,answers,opts={}){
     if(ar&&ur&&ar===ur)return {ok:true,alternative:true};
     if(ar&&ur&&deacc(ar)===deacc(ur))return {ok:true,alternative:true,warn:"Figyelj az ékezetekre a mintában."};
   }
+  /* Learning exercises (not exams) accept a single slip: one letter, apostrophe, hyphen or space off a word of at least
+     four letters. It counts as right but is shown in yellow with the correct form, and reviews grade it as "hard". */
+  if(opts.near)for(const a of list){const n=deacc(norm(a));
+    if(n.length>=4&&editDist(deacc(u),n)===1)return {ok:true,near:true,answer:a,warn:"Majdnem pontos: egy karakter eltér. Helyesen: "+a};
+  }
   const articleMissing=list.some(a=>{const n=norm(a),bare=n.replace(LG().art,"");return bare!==n&&deacc(u)===deacc(bare);});
   return {ok:false,hint:articleMissing?"Figyeld meg a kifejezés elejét: a névelő vagy a to is a tanult alak része.":opts.type==="translation"?"Nézd át a személyt, az ige alakját és a szórendet. Más jó megfogalmazás is létezhet a megadott mintákon kívül.":"Ellenőrizd a teljes tanult alakot, a névelőt és a szavak sorrendjét."};
+}
+function editDist(a,b){const d=Array.from({length:a.length+1},(_,i)=>[i]);for(let j=1;j<=b.length;j++)d[0][j]=j;
+  for(let i=1;i<=a.length;i++)for(let j=1;j<=b.length;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return d[a.length][b.length];}
+/* The correct form with the one differing character underlined (a missing space shows as an underlined gap). */
+function nearHtml(r){
+  if(!r||!r.answer)return esc(r&&r.warn||"");
+  const t=[...r.answer],g=[...String(r.given||"")],k=c=>deacc(c.toLowerCase());
+  const L=Array.from({length:t.length+1},()=>new Array(g.length+1).fill(0));
+  for(let i=t.length-1;i>=0;i--)for(let j=g.length-1;j>=0;j--)L[i][j]=k(t[i])===k(g[j])?L[i+1][j+1]+1:Math.max(L[i+1][j],L[i][j+1]);
+  const keep=new Array(t.length).fill(false);let i=0,j=0;
+  while(i<t.length&&j<g.length){if(k(t[i])===k(g[j])){keep[i]=true;i++;j++;}else if(L[i+1][j]>=L[i][j+1])i++;else j++;}
+  const marked=t.map((ch,x)=>keep[x]||/[.,!?¿¡;:"«»()…]/.test(ch)?esc(ch):`<u class="bad-letter">${ch===" "?"&nbsp;":esc(ch)}</u>`).join("");
+  return (/ékezet/.test(r.warn)?"Figyelj az ékezetre: ":"Egy karakter eltér: ")+`<span class="ans">${marked}</span>`;
 }
 const spkBtn=(t,cls="")=>`<button class="icon-btn ${cls}" data-say="${esc(t)}" aria-label="Meghallgatás: ${esc(t)}">${I.spk}</button>`;
 const pic=(name,cls="")=>`<div class="pic ${cls}"><img src="img/${name}.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"></div>`;
@@ -1526,7 +1547,7 @@ function renderEx(){
   if(draft.sel!=null&&(e.t==="mc"||e.t==="listen")){const selected=view.querySelector(`[data-o="${draft.sel}"]`);if(selected){selected.setAttribute("aria-pressed","true");goBtn.disabled=false;}}
   goBtn.onclick=()=>{if(P.st.done)return nextEx();evaluate();};
 }
-function showFb(ok,ans,extra){$("#fb").innerHTML=`<div class="feedback ${ok?"ok":"bad"}" role="status"><b>${ok?rnd(LG().ok):"Nem egészen."}</b>${ans?`<span>Helyes válasz: <span class="ans">${esc(ans)}</span></span>`:""}${extra?`<span class="small">${esc(extra)}</span>`:""}</div>`;}
+function showFb(ok,ans,extra,near){$("#fb").innerHTML=`<div class="feedback ${near&&ok?"near":ok?"ok":"bad"}" role="status"><b>${near&&ok?"Majdnem!":ok?rnd(LG().ok):"Nem egészen."}</b>${near&&ok?`<span>${nearHtml(near)}</span>`:""}${ans?`<span>Helyes válasz: <span class="ans">${esc(ans)}</span></span>`:""}${extra?`<span class="small">${esc(extra)}</span>`:""}</div>`;}
 /* A retry is feedback, not a second graded attempt. This keeps accuracy, XP and FSRS honest. */
 function queueExerciseRetry(e){
   if(e.retry||e.retried)return;
@@ -1557,20 +1578,20 @@ function exerciseExplanation(e){
 }
 function evaluate(){
   if(!P||P.st.done)return;
-  const e=P.queue[P.i];let ok=false,warn=null;
+  const e=P.queue[P.i];let ok=false,warn=null,near=null;
   if(e.t==="mc"||e.t==="listen"){ok=e.opts[P.st.sel]===e.ans;view.querySelectorAll("[data-o]").forEach(b=>{const o=e.opts[+b.dataset.o];if(o===e.ans)b.classList.add("right");else if(+b.dataset.o===P.st.sel)b.classList.add("wrong");});}
-  if(e.t==="type"||e.t==="dict"){const r=check($("#ans").value,e.ans,{type:e.strict?"grammar":e.t==="dict"?"dictation":e.cid&&!POOL.find(c=>c.id===e.cid)?.ph?"word":"translation"});ok=r.ok;warn=r.warn;$("#ans").readOnly=true;}
+  if(e.t==="type"||e.t==="dict"){const r=check($("#ans").value,e.ans,{type:e.strict?"grammar":e.t==="dict"?"dictation":e.cid&&!POOL.find(c=>c.id===e.cid)?.ph?"word":"translation",near:true});ok=r.ok;warn=r.warn;if(r.near)near=r;$("#ans").readOnly=true;}
   if(e.t==="speak"){const sc=speechScore(e.ans,P.st.heard||[]);ok=sc>=0.75;if(ok&&sc<0.95)warn="A felismert szöveg részben egyezik a mintával. Hasonlítsd össze a két mondatot, majd próbáld újra.";}
   if(e.t==="order"){const text=P.st.picked.map(i=>e.tiles.find(t=>t.i===i).w).join(" ");ok=norm(text)===norm(e.ans);}
   P.st.done=true;
   const fast=(e.t==="type"||e.t==="dict")&&Date.now()-P.st.t0<8000;
   recordExerciseResult(e,ok,warn,fast);fx(ok?"ok":"bad");
   if(!ok&&!e.retry){const given=e.t==="mc"||e.t==="listen"?e.opts[P.st.sel]:e.t==="order"?P.st.picked.map(i=>e.tiles.find(t=>t.i===i).w).join(" "):e.t==="speak"?(P.st.heard||[])[0]:($("#ans")||{}).value;logMiss(P.kind,e.q||e.hu||e.it,given,Array.isArray(e.ans)?e.ans[0]:e.ans);}
-  let extra=warn||"";
+  let extra=near?"":warn||"";
   if(!ok||e.t==="listen"||e.t==="dict"||e.t==="speak")extra+=(extra?" ":"")+exerciseExplanation(e);
   if(!ok&&!e.retry)extra+=" Néhány feladat múlva újra előkerül.";
   if(e.retry&&ok)extra+=(extra?" ":"")+"Most már sikerült a visszakérdezés.";
-  showFb(ok,ok?null:(Array.isArray(e.ans)?e.ans[0]:e.ans),extra);
+  showFb(ok,ok?null:(Array.isArray(e.ans)?e.ans[0]:e.ans),extra,near);
   if(e.blank){const q=view.querySelector(".q");if(q)q.innerHTML=esc(e.q).replace("___",`<b style="color:var(--${ok?"ok":"bad"})">${esc(Array.isArray(e.ans)?e.ans[0]:e.ans)}</b>`);}
   const answer=Array.isArray(e.ans)?e.ans[0]:e.ans;
   const sp=e.it||(e.blank?e.q.replace(/\s*\(.*?\)\s*$/,"").replace("___",answer):null);
@@ -1725,7 +1746,7 @@ function drillCheckUI(onCheck){
   const act=()=>{if(D.done){nextDrill();return;}if(inp&&!inp.value.trim())return;onCheck();D.done=true;btn.textContent="Következő";btn.focus();};
   btn.onclick=act;if(inp)inp.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();act();}};
 }
-function fbHtml(ok,main,extra){return `<div class="feedback ${ok?"ok":"bad"}" role="status"><b>${ok?LG().ok[0]:"Nem egészen."}</b>${main?`<span>Helyes: <span class="ans">${esc(main)}</span></span>`:""}${extra||""}</div>`;}
+function fbHtml(ok,main,extra,near){return `<div class="feedback ${near&&ok?"near":ok?"ok":"bad"}" role="status"><b>${near&&ok?"Majdnem!":ok?LG().ok[0]:"Nem egészen."}</b>${main?`<span>Helyes: <span class="ans">${esc(main)}</span></span>`:""}${extra||""}</div>`;}
 function ppForms(v,p){const aux=v.aux==="e"?ESS:AVE;if(v.aux==="a")return [aux[p]+" "+v.pp];const st=v.pp.slice(0,-1);return p<3?[aux[p]+" "+st+"o",aux[p]+" "+st+"a"]:[aux[p]+" "+st+"i",aux[p]+" "+st+"e"];}
 function nextDrill(){
   D.done=false;
@@ -1742,10 +1763,10 @@ function nextDrill(){
       <input id="dans" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Írd be az alakot" aria-label="Igealak"><div id="dfb"></div><button class="btn block" id="dgo">Ellenőrzés</button>`);
     $("#tense").querySelectorAll("button").forEach(b=>b.onclick=()=>{D.tense=b.dataset.v;nextDrill();});
     $("#vset").querySelectorAll("button").forEach(b=>b.onclick=()=>{D.set=b.dataset.v;nextDrill();});
-    drillCheckUI(()=>{const r=check($("#dans").value,ans);D.n++;if(r.ok){D.ok++;addXP(1);}else save();drillStat("conj",r.ok);
+    drillCheckUI(()=>{const r=check($("#dans").value,ans,{near:true});D.n++;if(r.ok){D.ok++;addXP(1);}else save();drillStat("conj",r.ok);
       const rows=one?tk.map(k=>[esc(TN[k]),v.forms[k][0],k===t]):v.forms[t].map((f,i)=>[esc(rowLabel(i)),f,i===p]);
       const table=`<div class="tbl-wrap"><table><tr><th></th><th>${esc(v.inf)}${one?"":" · "+esc(TN[t])}</th><th></th></tr>${rows.map(([lab,f,em],i)=>`<tr><td class="muted">${lab}</td><td class="${em?"em":""}">${esc(f)}</td><td>${spkBtn(one?f:vbKey(i,f),"sm")}</td></tr>`).join("")}</table></div>`;
-      $("#dfb").innerHTML=fbHtml(r.ok,r.ok?null:ans.join(" / "),r.warn?`<span class="small">${esc(r.warn)}</span>`:"")+table;
+      $("#dfb").innerHTML=fbHtml(r.ok,r.ok?null:ans.join(" / "),r.warn?`<span class="small">${r.near?nearHtml(r):esc(r.warn)}</span>`:"",r.near)+table;
       $(".score").textContent=D.ok+" / "+D.n;say(one?v.forms[t][p]:vbKey(p,v.forms[t][p]));});
   }
   if(D.k==="art"){
@@ -1766,19 +1787,19 @@ function nextDrill(){
     if(useSent){const s=rnd(PREP_SENT);q=s[0];ans=s[1];hint=s[2];}else{const p=rnd(PREPS),a=rnd(ARTS);q=p+" + "+a;ans=prepArt(p,a);hint=null;}
     drillShell("",`<div class="card" style="text-align:center;padding:2rem 1rem"><span class="label">${useSent?"egészítsd ki · "+esc(hint):"vond össze"}</span><div class="big-q">${useSent?blankify(q):esc(q)+" = ?"}</div></div>
       <input id="dans" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="pl. nella" aria-label="Válasz"><div id="dfb"></div><button class="btn block" id="dgo">Ellenőrzés</button>`);
-    drillCheckUI(()=>{const r=check($("#dans").value,[ans]);D.n++;if(r.ok){D.ok++;addXP(1);}else save();drillStat("prep",r.ok);
+    drillCheckUI(()=>{const r=check($("#dans").value,[ans],{near:true});D.n++;if(r.ok){D.ok++;addXP(1);}else save();drillStat("prep",r.ok);
       const full=useSent?q.replace("___ ",ans.endsWith("'")?ans:ans+" "):null;
-      $("#dfb").innerHTML=fbHtml(r.ok,r.ok?null:ans,full?`<span class="small">${esc(full)}</span>`:"");$(".score").textContent=D.ok+" / "+D.n;if(full)say(full);});
+      $("#dfb").innerHTML=fbHtml(r.ok,r.ok?null:ans,(r.near?`<span class="small">${nearHtml(r)}</span>`:"")+(full?`<span class="small">${esc(full)}</span>`:""),r.near);$(".score").textContent=D.ok+" / "+D.n;if(full)say(full);});
   }
   if(D.k==="dict"){
     const u=new Set(unlocked());const ph=POOL.filter(c=>c.ph&&(u.has(c.li)||Math.random()<.35));const c=rnd(ph.length?ph:POOL.filter(c=>c.ph));
     drillShell("Írd le, amit hallasz",`<div class="listen">${spkBtn(c.it,"big")}<button class="icon-btn" data-say="${esc(c.it)}" data-slow aria-label="Lassan">${I.slow}</button><span class="small muted">Annyiszor hallgasd meg, ahányszor kell.</span></div>
       <input id="dans" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Írd le ${LG().adv}…" aria-label="Diktált mondat"><div id="dfb"></div><button class="btn block" id="dgo">Ellenőrzés</button>`);
     setTimeout(()=>say(c.it),300);
-    drillCheckUI(()=>{const user=$("#dans").value;const r=check(user,[c.it]);const uw=new Set(deacc(norm(user)).split(" "));
+    drillCheckUI(()=>{const user=$("#dans").value;const r=check(user,[c.it],{near:true});const uw=new Set(deacc(norm(user)).split(" "));
       const diff=dictDiff(c.it,user,uw);
       D.n++;if(r.ok){D.ok++;addXP(3);}else save();drillStat("dict",r.ok);
-      $("#dfb").innerHTML=`<div class="feedback ${r.ok?"ok":"bad"}" role="status"><b>${r.ok?LG().ok[0]:"Majdnem."}</b><span class="diff ans">${diff}</span><span class="small" style="color:var(--muted)">${esc(c.hu)}</span>${r.warn?`<span class="small">${esc(r.warn)}</span>`:""}</div>`;$(".score").textContent=D.ok+" / "+D.n;});
+      $("#dfb").innerHTML=`<div class="feedback ${r.near?"near":r.ok?"ok":"bad"}" role="status"><b>${r.near?"Majdnem!":r.ok?LG().ok[0]:"Nem egészen."}</b><span class="diff ans">${diff}</span><span class="small" style="color:var(--muted)">${esc(c.hu)}</span>${r.warn?`<span class="small">${esc(r.warn)}</span>`:""}</div>`;$(".score").textContent=D.ok+" / "+D.n;});
   }
   if(D.k==="num"){
     const n=Math.floor(Math.random()*101),w=numIt(n),listen=D.mode==="listen";
@@ -1794,8 +1815,6 @@ function nextDrill(){
 document.addEventListener("keydown",e=>{if(D&&D.keys&&(D.k==="art"||D.choice)&&!e.target.matches("input,textarea"))D.keys(e);});
 /* Dictation feedback: correct words in green; for a word that was nearly right (a letter or two off), only the wrong
    letters are marked, with the learner's spelling next to it; words not attempted at all are marked whole. */
-function editDist(a,b){const d=Array.from({length:a.length+1},(_,i)=>[i]);for(let j=1;j<=b.length;j++)d[0][j]=j;
-  for(let i=1;i<=a.length;i++)for(let j=1;j<=b.length;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return d[a.length][b.length];}
 function letterMarks(target,guess){
   /* Longest common subsequence: target letters outside it are the ones the learner got wrong or left out. */
   const t=[...target],g=[...guess],L=Array.from({length:t.length+1},()=>new Array(g.length+1).fill(0));
@@ -3859,12 +3878,12 @@ function drawDailyOutput(){
   $("#dailyBack").onclick=()=>go("ma");
   $("#dailyHint").onclick=()=>{s.outputHelp=true;saveDaily();feedback.innerHTML=`<div class="notice">${spkBtn(c.it)} <span ${LA()}>${esc(c.it)}</span><p class="small">Olvasd el, majd mondd ki és írd le újra. Ezt segített gyakorlásként mentjük.</p></div>`;};
   checkBtn.onclick=()=>{
-    const r=check(answer.value,[c.it,...(c.alt||[])],{type:"translation"});
+    const r=check(answer.value,[c.it,...(c.alt||[])],{type:"translation",near:true});
     if(!r.ok){s.outputAttempts=(s.outputAttempts||0)+1;if(s.outputAttempts===1&&!s.outputHelp){saveDaily();feedback.innerHTML=`<div class="notice"><b>Nézzük meg még egyszer.</b><p>${esc(r.hint||"Ezt a változatot a rövid ellenőrzés még nem tudta elfogadni. Nézd meg az alanyt, az igét és a szórendet; más helyes megfogalmazás is létezhet.")}</p><p class="small">Próbáld újra. A mintaválaszt csak külön kérésre vagy a következő sikertelen próbálkozás után mutatjuk.</p></div>`;answer.focus();return;}s.outputHelp=true;saveDaily();feedback.innerHTML=`<div class="feedback bad"><b>Próbáld újra.</b><span>Így mondhatod: <span ${LA()}>${esc(c.it)}</span></span><span class="small">Figyeld meg a szórendet és az ige alakját, majd írd le újra.</span></div>`;answer.focus();return;}
     s.outputDone=Array.isArray(s.outputDone)?s.outputDone:[];if(!s.outputDone.includes(c.id))s.outputDone.push(c.id);s.output=s.outputDone.length>=target;delete s.outputDraft;
     recordEvidence(s.outputHelp?"practice":"output",c.id,s.outputHelp?"Mondatot gyakoroltál segítséggel":"Segítség nélkül felidézted",c.it);
     saveDaily();fx("ok");
-    feedback.innerHTML=`<div class="feedback ok"><b>${s.outputHelp?"Megvan, begyakoroltad.":"Sikerült önállóan!"}</b><span ${LA()}>${esc(c.it)}</span>${r.warn?`<span>${esc(r.warn)}</span>`:""}</div><button class="btn block" id="dailyFinish" style="margin-top:1rem">${s.output?"Mai gyakorlás befejezése":"Következő önálló mondat"}</button>`;
+    feedback.innerHTML=`<div class="feedback ${r.near?"near":"ok"}"><b>${s.outputHelp?"Megvan, begyakoroltad.":"Sikerült önállóan!"}</b><span ${LA()}>${esc(c.it)}</span>${r.near?`<span>${nearHtml(r)}</span>`:r.warn?`<span>${esc(r.warn)}</span>`:""}</div><button class="btn block" id="dailyFinish" style="margin-top:1rem">${s.output?"Mai gyakorlás befejezése":"Következő önálló mondat"}</button>`;
     checkBtn.disabled=true;answer.readOnly=true;$("#dailyHint").disabled=true;
     if($("#dailyMic"))$("#dailyMic").disabled=true;
     $("#dailyFinish").onclick=()=>{if(s.output)finishDailyJourney();else{delete s.outputItemId;delete s.outputHelp;saveDaily();drawDailyOutput();}};

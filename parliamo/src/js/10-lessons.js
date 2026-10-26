@@ -205,7 +205,7 @@ function renderEx(){
   if(draft.sel!=null&&(e.t==="mc"||e.t==="listen")){const selected=view.querySelector(`[data-o="${draft.sel}"]`);if(selected){selected.setAttribute("aria-pressed","true");goBtn.disabled=false;}}
   goBtn.onclick=()=>{if(P.st.done)return nextEx();evaluate();};
 }
-function showFb(ok,ans,extra){$("#fb").innerHTML=`<div class="feedback ${ok?"ok":"bad"}" role="status"><b>${ok?rnd(LG().ok):"Nem egészen."}</b>${ans?`<span>Helyes válasz: <span class="ans">${esc(ans)}</span></span>`:""}${extra?`<span class="small">${esc(extra)}</span>`:""}</div>`;}
+function showFb(ok,ans,extra,near){$("#fb").innerHTML=`<div class="feedback ${near&&ok?"near":ok?"ok":"bad"}" role="status"><b>${near&&ok?"Majdnem!":ok?rnd(LG().ok):"Nem egészen."}</b>${near&&ok?`<span>${nearHtml(near)}</span>`:""}${ans?`<span>Helyes válasz: <span class="ans">${esc(ans)}</span></span>`:""}${extra?`<span class="small">${esc(extra)}</span>`:""}</div>`;}
 /* A retry is feedback, not a second graded attempt. This keeps accuracy, XP and FSRS honest. */
 function queueExerciseRetry(e){
   if(e.retry||e.retried)return;
@@ -236,20 +236,20 @@ function exerciseExplanation(e){
 }
 function evaluate(){
   if(!P||P.st.done)return;
-  const e=P.queue[P.i];let ok=false,warn=null;
+  const e=P.queue[P.i];let ok=false,warn=null,near=null;
   if(e.t==="mc"||e.t==="listen"){ok=e.opts[P.st.sel]===e.ans;view.querySelectorAll("[data-o]").forEach(b=>{const o=e.opts[+b.dataset.o];if(o===e.ans)b.classList.add("right");else if(+b.dataset.o===P.st.sel)b.classList.add("wrong");});}
-  if(e.t==="type"||e.t==="dict"){const r=check($("#ans").value,e.ans,{type:e.strict?"grammar":e.t==="dict"?"dictation":e.cid&&!POOL.find(c=>c.id===e.cid)?.ph?"word":"translation"});ok=r.ok;warn=r.warn;$("#ans").readOnly=true;}
+  if(e.t==="type"||e.t==="dict"){const r=check($("#ans").value,e.ans,{type:e.strict?"grammar":e.t==="dict"?"dictation":e.cid&&!POOL.find(c=>c.id===e.cid)?.ph?"word":"translation",near:true});ok=r.ok;warn=r.warn;if(r.near)near=r;$("#ans").readOnly=true;}
   if(e.t==="speak"){const sc=speechScore(e.ans,P.st.heard||[]);ok=sc>=0.75;if(ok&&sc<0.95)warn="A felismert szöveg részben egyezik a mintával. Hasonlítsd össze a két mondatot, majd próbáld újra.";}
   if(e.t==="order"){const text=P.st.picked.map(i=>e.tiles.find(t=>t.i===i).w).join(" ");ok=norm(text)===norm(e.ans);}
   P.st.done=true;
   const fast=(e.t==="type"||e.t==="dict")&&Date.now()-P.st.t0<8000;
   recordExerciseResult(e,ok,warn,fast);fx(ok?"ok":"bad");
   if(!ok&&!e.retry){const given=e.t==="mc"||e.t==="listen"?e.opts[P.st.sel]:e.t==="order"?P.st.picked.map(i=>e.tiles.find(t=>t.i===i).w).join(" "):e.t==="speak"?(P.st.heard||[])[0]:($("#ans")||{}).value;logMiss(P.kind,e.q||e.hu||e.it,given,Array.isArray(e.ans)?e.ans[0]:e.ans);}
-  let extra=warn||"";
+  let extra=near?"":warn||"";
   if(!ok||e.t==="listen"||e.t==="dict"||e.t==="speak")extra+=(extra?" ":"")+exerciseExplanation(e);
   if(!ok&&!e.retry)extra+=" Néhány feladat múlva újra előkerül.";
   if(e.retry&&ok)extra+=(extra?" ":"")+"Most már sikerült a visszakérdezés.";
-  showFb(ok,ok?null:(Array.isArray(e.ans)?e.ans[0]:e.ans),extra);
+  showFb(ok,ok?null:(Array.isArray(e.ans)?e.ans[0]:e.ans),extra,near);
   if(e.blank){const q=view.querySelector(".q");if(q)q.innerHTML=esc(e.q).replace("___",`<b style="color:var(--${ok?"ok":"bad"})">${esc(Array.isArray(e.ans)?e.ans[0]:e.ans)}</b>`);}
   const answer=Array.isArray(e.ans)?e.ans[0]:e.ans;
   const sp=e.it||(e.blank?e.q.replace(/\s*\(.*?\)\s*$/,"").replace("___",answer):null);
