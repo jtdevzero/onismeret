@@ -158,6 +158,7 @@
   }).join('')}`;
 
   const tutorials = {
+    dreams: ['A mesélő titokban képet választ és nyomot ír hozzá.', 'A többiek a saját lapjaikból a nyomhoz illőt választanak, majd az összekevert képekre titokban szavaznak.', 'Ha néhányan eltalálják: a mesélő és a találók 3 pontot kapnak. Ha mindenki vagy senki: csak a többiek 2 pontot. Minden megtévesztett szavazó további 1 pont.'],
     impostor: ['Mindenki megnézi a saját titkos kártyáját, majd elrejti és továbbadja a telefont.', 'Sorban mondjatok egy kapcsolódó szót. Az impostor közben próbálja kitalálni a közös megfejtést.', 'Szavazzatok, majd adjatok egy utolsó tippet az impostornak, és csak utána jöhet a megfejtés.'],
     never: ['Valaki felolvassa: „Én még soha nem aludtam el moziban.”', 'Akivel már megtörtént, jelez, például lehajt egy ujjat. A sztorizás választható.', 'Aki nem akar válaszolni, passzolhat magyarázkodás nélkül. Ezután jöhet a következő kérdés.'],
     likely: ['Olvassátok fel: „Ki a legvalószínűbb, hogy eltéved a saját utcájában?”', 'A visszaszámlálás végén mindenki egyszerre rámutat valakire.', 'Koppintsatok arra, akire a legtöbben mutattak. Döntetlennél vagy kényes kérdésnél passzoljatok.'],
@@ -173,6 +174,7 @@
     estimate: ['Olvassátok el a számszerű kérdést, és mindenki titokban írja be a tippjét.', 'Ugyanazt a mértékegységet használjátok, amelyet a kérdés kér.', 'Felfedéskor a legközelebbi tippek kapnak pontot. Azonos távolság azonos helyezés.']
   };
   const practiceExamples = {
+    dreams: ['A mesélő nyoma: „Hosszú utazás”. Hárman szavaznak, ketten eltalálják a képét. Ki kap pontot?', 'A mesélő és a két helyesen tippelő 3 pontot kap. A harmadik szavazat által kiválasztott kép gazdája további 1 pontot kap.'],
     impostor: ['A közös szó: pizza. A játékosok azt mondják: „sajt”, „sütő”, „kerek”. Melyik témára gondolhattak?', 'Például pizza. Az impostor következtet, a többiek pedig azt figyelik, ki ad túl általános választ.'],
     never: ['„Én még soha nem aludtam el moziban.” Veled már megtörtént. Mit teszel?', 'Jelzel, például lehajtasz egy ujjat. Sztorizhatsz, de nem kötelező. Kényelmetlen kérdésnél passzolhatsz.'],
     likely: ['Hárman Annára mutatnak, ketten Bélára. Kinél kell rögzíteni a címet?', 'Annánál. A telefon a közösen megállapított eredményt rögzíti, nem számolja magától a mutatásokat.'],

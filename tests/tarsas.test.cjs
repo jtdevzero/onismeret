@@ -7,7 +7,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const ROOT = path.resolve(__dirname, '..', 'tarsas');
-const GAME_KEYS = ['impostor', 'never', 'likely', 'bomb', 'wolf', 'codes', 'taboo', 'act', 'wave', 'story', 'bluff', 'scale', 'estimate'];
+const GAME_KEYS = ['impostor', 'never', 'likely', 'bomb', 'wolf', 'codes', 'taboo', 'act', 'wave', 'story', 'bluff', 'scale', 'estimate', 'dreams'];
 
 function createApp(seed = {}) {
   const listeners = new Map(), spoken = [], nodes = new Map();
@@ -67,7 +67,7 @@ let passed = 0;
 const test = (name,fn) => { try { fn(); passed++; console.log('✓ '+name); } catch(error) { console.error('✗ '+name); throw error; } };
 const seedPlayers = app => app.run(`S.players=['Anna','Béla','Csilla','Dani','Eszter','Feri'];S.settings.sound=false;S.settings.vibrate=false;`);
 
-test('all thirteen games load through the production index and every setup renders', () => {
+test('all fourteen games load through the production index and every setup renders', () => {
   const app=createApp(); seedPlayers(app);
   assert.deepEqual(app.json('Object.keys(GAMES).sort()'), [...GAME_KEYS].sort());
   for (const key of GAME_KEYS) {
@@ -278,7 +278,7 @@ test('recommendations respect player counts and an evening can be planned, score
   app.action('eveningToggle','0');assert.equal(app.run('R.evening.queue[0].done'),false);
 });
 
-test('all thirteen tutorials and example rounds leave real game scores untouched', () => {
+test('all fourteen tutorials and example rounds leave real game scores untouched', () => {
   const app=createApp();seedPlayers(app);app.run(`go('bomb');`);
   const before=app.json('R.games');
   for(const key of GAME_KEYS){
@@ -325,5 +325,29 @@ test('Ki a legvalószínűbb? exhausted decks can show results and return withou
   assert.equal(app.run(`R.results.filter(x=>x.game==='likely').length`),1,'returning to results upserts the same summary');
 });
 
-if (require.main===module) console.log(`\n${passed} Társasest regression tests passed.`);
+if (require.main===module) test('Álomképek private hands, votes, scoring, rotation and restore',()=>{
+ const a=createApp();a.run("S.players=['Anna','Béla','Csilla','Dani'];go('dreams');A.dreamStart();");
+ assert.equal(a.run('new Set(R.games.dreams.hands.flat()).size'),16);
+ assert(!a.html().includes('dream-art'));
+ a.action('dreamOpen');const truth=a.run('R.games.dreams.hands[0][0]');a.action('dreamPick',String(truth));a.action('dreamConfirm');
+ a.submit('dreamClue',{clue:'<b>Utazás</b>'});assert(a.html().includes('&lt;b&gt;'));
+ for(let i=1;i<4;i++){a.action('dreamOpen');a.action('dreamPick',String(a.run(`R.games.dreams.hands[${i}][0]`)));a.action('dreamConfirm');}
+ assert.equal(a.run('R.games.dreams.phase'),'vote');
+ for(let i=1;i<4;i++){a.action('dreamOpen');a.action('dreamPick',String(a.run(`R.games.dreams.picks[${i}]`)));assert.equal(a.run('R.games.dreams.selected'),null);a.action('dreamPick',String(i===3?a.run('R.games.dreams.picks[1]'):truth));a.action('dreamConfirm');}
+ assert.deepEqual(a.json('R.games.dreams.scores'),[3,4,3,0]);
+ a.action('dreamConfirm');assert.deepEqual(a.json('R.games.dreams.scores'),[3,4,3,0]);
+ a.action('dreamNext');assert.equal(a.run('R.games.dreams.actor'),1);
+ a.action('dreamOpen');a.run("document.visibilityState='hidden'");a.event('visibilitychange');assert.equal(a.run('R.games.dreams.open'),false);
+ const b=createApp({local:Object.fromEntries(a.local),session:Object.fromEntries(a.session)});assert.equal(b.run('R.games.dreams.open'),false);
+});
+test('Álomképek everyone and nobody guesses scoring and final record',()=>{
+ for(const all of [true,false]){
+ const a=createApp();a.run(`S.players=['A','B','C'];go('dreams');A.dreamStart();Object.assign(R.games.dreams,{phase:'vote',actor:2,open:true,picks:[0,1,2],options:[0,1,2],votes:[null,${all?0:2},null],selected:${all?0:1}});A.dreamConfirm();`);
+ assert.deepEqual(a.json('R.games.dreams.scores'),all?[0,2,2]:[0,3,3]);
+ a.action('dreamFinish');a.action('dreamFinish');assert.equal(a.run("R.results.filter(x=>x.game==='dreams').length"),1);
+ }
+});
+
 module.exports={createApp,seedPlayers,test,GAME_KEYS};
+
+console.log(`\n${passed} Társasest regression tests passed.`);

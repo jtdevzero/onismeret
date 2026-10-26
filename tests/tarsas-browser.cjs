@@ -13,7 +13,7 @@ const server=http.createServer((req,res)=>{
   if(!filename.startsWith(ROOT+path.sep)){res.writeHead(403).end();return;}
   fs.readFile(filename,(error,body)=>{if(error){res.writeHead(404).end();return;}res.writeHead(200,{'Content-Type':mime[path.extname(filename)]||'application/octet-stream','Cache-Control':'no-store'});res.end(body);});
 });
-const GAME_KEYS=['impostor','never','likely','bomb','wolf','codes','taboo','act','wave','story','bluff','scale','estimate'];
+const GAME_KEYS=['impostor','never','likely','bomb','wolf','codes','taboo','act','wave','story','bluff','scale','estimate','dreams'];
 let assertions=0;
 function check(condition,message){assert(condition,message);assertions++;console.log('✓ '+message);}
 (async()=>{
@@ -28,8 +28,8 @@ function check(condition,message){assert(condition,message);assertions++;console
       page.on('request',request=>{if(!request.url().startsWith(origin)&&!request.url().startsWith('data:')&&!request.url().startsWith('blob:'))external.push(request.url());});
       page.on('dialog',dialog=>dialog.accept());
       await page.goto(origin+'/tarsas/');
-      await page.waitForFunction(()=>typeof GAMES!=='undefined'&&Object.keys(GAMES).length===13);
-      check(await page.locator('.game').count()===13,width+'px: all thirteen game cards render');
+      await page.waitForFunction(()=>typeof GAMES!=='undefined'&&Object.keys(GAMES).length===14);
+      check(await page.locator('.game').count()===14,width+'px: all fourteen game cards render');
       await page.evaluate(()=>{S.players=['Anna','Béla','Csilla','Dani','Eszter','Feri'];S.settings.sound=false;S.settings.tts=false;save();render();});
       for(const key of GAME_KEYS){
         await page.evaluate(key=>go(key),key);
@@ -53,6 +53,7 @@ function check(condition,message){assert(condition,message);assertions++;console
           else if(key==='bluff'){A.bluffStart();A.bluffOpen();}
           else if(key==='scale'){A.scaleStart();A.scaleShow();}
           else if(key==='estimate'){A.estimateStart();A.estimateShow();}
+          else if(key==='dreams'){A.dreamStart();A.dreamOpen();}
           save();render();
         },key);
         const bounds=await page.evaluate(()=>({doc:document.documentElement.scrollWidth,win:innerWidth,app:document.getElementById('app').innerText}));
@@ -92,9 +93,14 @@ function check(condition,message){assert(condition,message);assertions++;console
         await page.waitForFunction(()=>navigator.serviceWorker.controller!==null);
         await context.setOffline(true);
         await page.reload();
-        check(await page.evaluate(()=>Object.keys(GAMES).length)===13,'offline reload loads all thirteen games');
+        check(await page.evaluate(()=>Object.keys(GAMES).length)===14,'offline reload loads all fourteen games');
         await page.evaluate(()=>go('home'));
-        check(await page.locator('.game').count()===13,'offline home and navigation remain usable');
+        check(await page.locator('.game').count()===14,'offline home and navigation remain usable');
+        await page.evaluate(()=>{go('dreams');A.dreamStart();A.dreamOpen();save();render();});
+        check(await page.locator('.dream-art').count()===4,'offline Álomképek hand shows four illustrated cards');
+        const atlas=await page.evaluate(async()=>{const r=await fetch('images/dreams-atlas.webp');return r.ok&&(await r.blob()).size>1000;});
+        check(atlas,'all24 dream illustrations are available offline');
+        await page.screenshot({path:'/tmp/alomkepek-preview.png',fullPage:true});
         await context.setOffline(false);
       }
       check(errors.length===0,width+'px: no browser JavaScript errors ('+errors.join('; ')+')');
