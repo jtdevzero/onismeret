@@ -418,128 +418,128 @@ Mit szeretnél megköszönni abból, ahogyan a másik meghallgatott?`)}]
  };
 })();
 
-/* Mocskos 18+ csomagok: nyílt, explicit kérdések és kihívások. Minden passzolható, a másik bármikor nemet mondhat. */
+/* Mocskos 18+ csomagok: nyers, explicit kérdések és kihívások. Minden passzolható, a másik bármikor nemet mondhat. */
 (() => {
  const L=s=>s.trim().split('\n').map(x=>x.trim()).filter(Boolean),P=window.PAIR_PACKS;
  P.radar.push({id:'fire',name:'Tűzpróba · mocskos 18+',adult:true,items:[
- ['Elélvezni inkább…','Együtt','Egymás után'],
- ['A szám inkább…','Adni szeretne','Kapni szeretne'],
- ['Az ágyban inkább…','Én parancsolok','Én engedelmeskedem'],
- ['A dugás inkább…','Lassan és mélyen','Gyorsan és keményen'],
- ['Kedvenc irány…','Szemtől szemben','Hátulról'],
+ ['A szám inkább…','Én nyalok','Engem nyaljanak'],
+ ['A dugás inkább…','Lassan, hogy minden centit érezzek','Keményen, amíg bírjuk'],
+ ['Az ágyban…','Én baszlak meg téged','Te baszol meg engem'],
+ ['Kedvenc póz…','Kutyapóz','Lovaglás'],
  ['Fent vagy lent?','Fent','Lent'],
- ['A hangerő…','Fojtott nyögések','Hadd hallják a szomszédok'],
- ['A paskolás…','Gyengéden','Amíg ki nem pirul'],
- ['A hajhúzás…','Beindít','Nem nekem való'],
- ['Mocskos szavak…','Súgva a fülembe','Hangosan, parancsolva'],
- ['Kötözés…','Engem kötözz ki','Én kötözlek ki téged'],
- ['Hol?','Ágyban, kényelmesen','Konyhapult, zuhany, bárhol otthon'],
- ['Az előjáték…','Félórás kínzás','Rögtön a lényegre'],
- ['Elélvezéskor…','Bárhova','Előre megbeszélt helyre'],
- ['A vibrátor…','Rajtam','Rajtad'],
- ['Videó magunkról…','Felvenném','Inkább csak élőben'],
- ['Egy éjszaka…','Egy hosszú menet','Három gyors'],
- ['Az elélvezés megtagadása…','Megőrjít, kérem','Ne kínozz'],
- ['A ruhám…','Tépd le','Vedd le lassan'],
- ['A tükör…','Nézni akarom, ahogy dugunk','Csukott szemmel jobb'],
- ['Reggel…','Ébressz a száddal','Ébressz egy gyors menettel'],
- ['Egy fantáziát…','Mondd el közben','Csináljuk meg'],
- ['Utána…','Még egy kör','Összebújás és alvás'],
- ['Napközbeni pajzán üzenet…','Képpel','Csak szavakkal']
+ ['A hangerő…','Fojtott nyögés','Üvöltés, hadd hallják'],
+ ['A paskolás…','Pár finom csapás','Amíg ki nem pirul a seggem'],
+ ['Hajhúzás dugás közben…','Igen, erősen','Inkább ne'],
+ ['Mocskos beszéd…','Szidj mocskosan','Dicsérj mocskosan'],
+ ['Kikötözve…','Én legyek','Te legyél'],
+ ['Hol?','Az ágyban','Konyhapult, mosógép, lépcső, bárhol otthon'],
+ ['Az előjáték…','Kínozz, amíg könyörgök','Azonnal dugj meg'],
+ ['Elélvezéskor…','A testemre','A számba'],
+ ['A vibrátor…','Rajtam, amíg remegek','Rajtad, amíg remegsz'],
+ ['Szexvideó…','Vegyük fel és nézzük vissza','Csak élőben'],
+ ['Egy éjszaka…','Egy hosszú, brutális menet','Ahányszor csak bírjuk'],
+ ['Az elélvezés megtagadása…','Kínozz vele, könyörögni akarok','Ne tarts vissza'],
+ ['A ruhám…','Tépd le','Hagyd rajtam, csak told félre'],
+ ['A tükör előtt…','Nézni akarom, ahogy dugunk','Csukott szemmel jobb'],
+ ['Reggel…','Ébressz nyalással','Ébressz egy gyors dugással'],
+ ['A fenekem…','Csak paskold','Játssz is vele'],
+ ['Utána…','Még egy menet','Hulla vagyok'],
+ ['Napközben…','Küldj meztelen képet','Írd meg, mit csinálsz velem este'],
+ ['Ha könyörgök…','Add meg rögtön','Várass még']
  ]});
- P.truth.push({id:'naughty',name:'Mocskos · 18+',adult:true,truth:L(`Mit csinálnál velem most azonnal, ha nem kellene játszanunk? Részletesen.
-Mi a legmocskosabb dolog, amit csinálni akarsz velem, de még nem mertél kérni?
-Hogyan szeretsz a legjobban elélvezni?
-Mi jobb: ha a számmal kényeztetlek, vagy ha a kezemmel?
-Melyik pózban élvezel el a legkönnyebben?
-Mi volt a legdurvább szex az életedben?
-Mire gondolsz, amikor magadhoz nyúlsz?
-Hányszor nyúltál magadhoz rám gondolva az elmúlt hónapban?
-Mit akarsz hallani tőlem, miközben dugunk?
-Melyik testrészemet nyalnád a legszívesebben, és meddig?
-Mi a legperverzebb fantáziád, amit még senkinek sem mondtál el?
-Szeretnéd, ha néha durvábban bánnék veled az ágyban? Mennyire durván?
-Hol szeretnéd érezni, amikor elélvezek?
-Csinálnál velem szexvideót? Mit vennénk fel először?
-Melyik pornókategóriára kattansz rá titokban a legjobban?
-Melyik az a pillanat szex közben, amikor teljesen elveszted a fejed?
-Mit csinálnál velem, ha egy egész éjszakára azt tehetnéd velem, amit akarsz?
-Szereted, ha meghúzzák a hajad vagy elfenekelnek? Mennyire erősen?
-Mi volt a legkockázatosabb hely, ahol valaha kényeztettél valakit?
-Melyik szexjátékot próbálnád ki rajtam először?
-Ha most bármit kérhetnél tőlem az ágyban, mi lenne az?
-Milyen hangosan akarod, hogy nyögjek?
-Mi indít be jobban: ha könyörgök, vagy ha parancsolgatok?
-Mondd ki most a legmocskosabb szót, ami szex közben beindít.`),dare:L(`Súgd a másik fülébe a legmocskosabb mondatot, ami most eszedbe jut.
-Vedd le a fogaddal a másik egyik ruhadarabját.
-Nyald végig a másik nyakát a kulcscsontjától a füléig.
-Mutasd meg a saját testeden, hol akarod, hogy a másik megérintsen.
-Ülj a másik ölébe, és fél percig lassan mozogj rajta, ruhában.
-Vetkőzz alsóneműre, és maradj úgy a következő körig.
-Nyögd el, milyen hangot adsz ki, amikor elélvezel.
-Csókold végig a másik hasát egészen a köldöke alá.
-Mondd el részletesen, hogyan kényeztetnéd a száddal.
-Markold meg a másik fenekét, és mondd el, mit csinálnál vele.
-Harapj gyengéden a másik combjának belső oldalába.
-Írj egy mocskos üzenetet a másik telefonjára, amit csak ma éjjel olvashat el.
-A másik egy percig bárhol megérinthet, ahol akar, ruhán keresztül.
-Kösd be a másik szemét, és két percig csak a szádat használhatod rajta.
-Mutasd meg pózzal, hogyan dugnál vele a legszívesebben.
-Vegyél le egy ruhadarabot a másikról, és egyet magadról.
-Szívj ki egy foltot a másik bőrén ott, ahol ő engedi.
-Simogasd egy percig a másik combjának belső oldalát. Feljebb nem mehetsz.
-Nézz a másik szemébe, és mondd ki: „Most azonnal meg akarlak dugni.”
-Játsszátok le a következő két kört csak alsóneműben.
-Szopd meg lassan a másik ujjait, egyenként.
-Mondd el, mit csinálnál vele egy szállodai szobában, ha három órátok lenne.
-A másik dönti el, melyik ruhadarabodat veszi le, és hogyan.
-Kényeztesd a másikat a száddal ott, ahol ő kéri, egy teljes percig.`)});
- P.match.push({id:'wishlist',name:'Mocskos kívánságlista · 18+',adult:true,items:L(`Egyszerre kényeztetni egymást a szánkkal (69)
-Elélvezés a testemre
-Szájba élvezés
+ P.truth.push({id:'naughty',name:'Mocskos · 18+',adult:true,truth:L(`Mit csinálnál velem most, ha nem kellene játszanunk? Mondd el mocskosan, részletesen.
+Mi a legperverzebb dolog, amit valaha meg akartál csinálni velem?
+Pontosan hogyan akarsz ma éjjel elélvezni?
+Mi indít be jobban: ha nyalnak, vagy ha dugnak?
+Melyik pózban a legjobb, amikor dugunk?
+Mi volt a legmocskosabb szex az életedben? Részleteket kérek.
+Mire gondoltál utoljára, amikor magadhoz nyúltál?
+Hányszor nyúltál magadhoz rám gondolva az elmúlt héten?
+Mit mondjak a füledbe, miközben dugunk? Mondd ki szó szerint.
+Melyik testrészemet nyalnád a legszívesebben, és meddig bírnád?
+Mi a legbetegebb fantáziád, amit még senkinek sem mertél elmondani?
+Egy tízes skálán milyen durván bánjak veled? És mit jelent nálad a tízes?
+Hová élvezzek a legszívesebben? Mondd ki.
+Milyen szexvideót vennél fel kettőnkről, és mi lenne a címe?
+Melyik pornókategóriát nézed a legtöbbet, amikor egyedül vagy?
+Mit csinálnál velem, ha egy éjszakára a játékszered lennék?
+Mennyire erősen húzhatom a hajad, és hányat paskolhatok a seggedre?
+Hol nyaltál vagy dugtál a legnagyobb lebukásveszélyben?
+Milyen szexjátékot próbálnál ki rajtam elsőként, és hogyan?
+Ha ma éjjel minden kérésedre igent mondanék, mi lenne az első három?
+Milyen hangosan akarod hallani, ahogy élvezek?
+Inkább könyörögnél, hogy megdugjalak, vagy parancsolnál?
+Mondd ki háromszor egymás után a legmocskosabb szót, ami beindít.
+Mit kennél rám, hogy aztán lenyald?`),dare:L(`Súgd a másik fülébe, pontosan hogyan fogod megdugni ma éjjel.
+Vedd le a fogaddal a másik alsóneműjét.
+Nyald végig a másik testét a nyakától a köldöke aláig.
+Nyúlj magadhoz a ruhádon keresztül fél percig, miközben a másik néz.
+Lovagolj a másik ölében egy percig, ruhában.
+Vetkőzz meztelenre, és maradj így a következő három körben.
+Nyögd el hangosan, ahogy elélvezel.
+Csókold és nyald a másik combjának belső oldalát egy percig.
+Mondd el szó szerint, hogyan nyalnád ki vagy szopnád le.
+Markold meg a másik seggét, és paskold meg háromszor.
+Harapj bele a másik fenekébe.
+Küldj a másiknak egy meztelen képet magadról, és nézze meg most rögtön.
+A másik egy percig bárhol megérinthet, ahol akar, ruha nélkül.
+Kösd be a másik szemét, és két percig csak a nyelved érhet hozzá.
+Helyezkedj el abban a pózban, amiben a legszívesebben dugnál most.
+Vetkőztessétek le egymást teljesen egy perc alatt.
+Szívj ki egy foltot a másik mellén vagy combján.
+Simogasd egy percig a másik lába közét, ruhán keresztül.
+Nézz a másik szemébe, és mondd: „Most azonnal meg akarlak baszni.”
+A következő kört a másik ölében, meztelenül játszod.
+Szopd meg lassan a másik ujjait, és közben nézz a szemébe.
+Kenj valamit a másik bőrére, és nyald le róla.
+A másik dönti el, mit veszel le, és hogyan mutatod meg magad neki.
+Kényeztesd a másikat a száddal ott, ahol ő kéri, két teljes percig.`)});
+ P.match.push({id:'wishlist',name:'Mocskos kívánságlista · 18+',adult:true,items:L(`69 egészen az elélvezésig
+Elélvezés az arcomra
+Szájba élvezés és lenyelés
 Anális szex lassan, sok síkosítóval
-Kikötözés és teljes kiszolgáltatottság, stopszóval
+Kikötözve, teljesen kiszolgáltatva, stopszóval
 Fenékpaskolás, amíg ki nem pirul
 Hajhúzás dugás közben
-Egy este, amikor az egyikünk parancsol, a másik engedelmeskedik
-Szexvideó csak kettőnknek
-Vibrátor használata egymáson
-Közös pornónézés, aztán utánozzuk
-Önkielégítés egymás szeme láttára
-Egész éjszakás dugásmaraton
-Gyors menet a konyhapulton
-Mocskos beszéd az egész idő alatt
-Szerepjáték: orvos és páciens
-Szexelés videóhívásban, amikor távol vagyunk
-Popsidugó viselése egy egész estén
+Egy éjszaka, amikor az egyikünk a másik szexrabszolgája, stopszóval
+Szexvideó felvétele és közös visszanézése
+Vibrátor, amíg többször el nem élvezek
+Közös pornónézés, aztán ugyanazt csináljuk
+Önkielégítés egymás előtt, végig szemkontaktussal
+Dugásmaraton reggelig
+Gyors dugás a konyhapulton, félig felöltözve
+Mocskos beszéd és káromkodás az egész idő alatt
+Szerepjáték: két idegen, akik egy bárban szedik fel egymást
+Meztelen képek cseréje napközben
+Popsidugó egész este, aztán anális játék
 Dugás a tükör előtt, végig nézve magunkat
-Elélvezni csak akkor, ha a másik megengedi
-Forró masszázsgyertya viasza a bőrön
-Ébresztés orális kényeztetéssel
-Kézbilincs
-Egy éjszaka alatt minél több póz kipróbálása`)});
- P.honest.push({id:'frank',name:'Szex, kertelés nélkül · 18+',adult:true,items:L(`Mit szeretsz a legjobban, amikor a számmal kényeztetlek, és mit csináljak másképp?
-Mennyire szereted a durva szexet, és hol van a határ?
-Milyen gyakran nyúlsz magadhoz, és mire gondolsz közben?
-Testileg pontosan mi a legjobb érzés neked szex közben?
-Melyik pózban érzed a legmélyebben?
-Mennyire izgat az anális szex, és melyik oldalon?
-Mit gondolsz arról, ha a szádba vagy a testedre élvezek?
-Szeretnéd, ha mocskosabban beszélnék szex közben? Milyen szavakkal?
-Volt már olyan fantáziád, amiben más is részt vesz? Mit gondolsz róla valójában?
-Milyen pornót nézel, amikor senki sem látja?
-Mit élveztél egy korábbi partnerrel, amit velem még nem csináltunk?
-Mennyire fontos neked, hogy minden alkalommal elélvezz?
-Hol a legérzékenyebb a tested ott, ahol még nem fedeztelek fel rendesen?
-Szereted, ha leszorítalak és irányítalak?
-Mit szólnál egy estéhez, amikor csak a te kényeztetésed számít, amíg bírod?
-Melyik szexjátékot vennéd meg velem holnap?
-Melyik pillanatban indultál be tőlem a legjobban?
-Mitől zökkensz ki szex közben?
-Szeretnél pajzán fotókat vagy videót magunkról? Hol tartanánk őket biztonságban?
-Mennyi előjáték kell, hogy igazán beindulj?
-Milyen szavak a testedre indítanak be, és melyek hangzanak kiábrándítóan?
-Milyen gyakran szexelnél, ha semmi sem akadályozna?
-Mit szeretnél, ha bátrabban kérnék tőled az ágyban?
-Mi az a határ, amit soha nem akarsz átlépni, hogy biztosan tudjam?`)});
+Elélvezni csak engedéllyel, könyörgésig húzva
+Fenekelés kézzel vagy lapáttal
+Ébresztés úgy, hogy már nyalnak
+Kézbilincs és szemkötő egyszerre
+Szerepcsere strap-onnal`)});
+ P.honest.push({id:'frank',name:'Szex, kertelés nélkül · 18+',adult:true,items:L(`Mit csinálok rosszul, amikor a számmal kényeztetlek? Mondd meg őszintén.
+Valójában mennyire durván szereted a szexet, és mit nem mertél még kérni?
+Milyen gyakran nyúlsz magadhoz, mivel, és mire gondolsz közben?
+Mi a legjobb érzés neked dugás közben, pontosan hol és hogyan?
+Melyik pózban érzed a legmélyebben, és miért kéred ritkán?
+Mennyire izgat az anál, és melyik oldalon?
+Hová szeretnéd, hogy élvezzek, és mi az, ami kiábrándít?
+Milyen mocskos szavakat akarsz hallani dugás közben? Mondd ki őket.
+Gondoltál már hármasra, vagy arra, hogy valaki néz minket? Mennyire komolyan?
+Milyen pornót nézel, és melyik jelenetet csinálnád meg velem?
+Mit csinált egy korábbi partnered jobban az ágyban, mint én?
+Megjátszottad már, hogy elélvezel? Velem is?
+Hol a legérzékenyebb a tested ott, ahol még nem nyaltalak elég sokáig?
+Szereted, ha leszorítalak, lefoglak és nem engedlek?
+Mit csinálnál velem, ha egy egész estére a szexrabszolgád lennék?
+Milyen szexjátékot rendelnénk ma este, ha holnapra kihoznák?
+Mikor indultál be tőlem a legjobban, és mit éreztél a testedben?
+Mitől lohad le a kedved dugás közben?
+Csinálnánk pornót magunkról? Mi kerülne bele, és hogyan vigyáznánk rá?
+Meddig kell kényeztetnem, hogy könyörögj?
+Milyen szavakat szeretsz a nemi szervedre, és melyiket utálod?
+Hányszor dugnál egy héten, ha semmi sem akadályozna?
+Mit csináljak veled gátlástalanabbul?
+Mi az a határ, amit akkor sem akarsz átlépni, ha nagyon be vagy indulva?`)});
 })();
