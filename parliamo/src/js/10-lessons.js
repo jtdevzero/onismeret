@@ -167,9 +167,9 @@ function renderEx(){
     <input id="ans" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Írd le ${LG().adv}…" aria-label="Válasz">`;}
   if(e.t==="speak"){body=`<div class="stack"><span class="label">Mondd ki hangosan</span><div class="row" style="flex-wrap:nowrap">${spkBtn(e.ans)}<div class="q">${esc(e.ans)}</div></div><p class="small muted">${esc(e.hu||"")}</p></div>
     <div class="stack" style="align-items:center;gap:.6rem"><button class="icon-btn big" id="mic" aria-label="Felvétel indítása"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg></button><span class="small muted" id="heard">Koppints a mikrofonra, és mondd ki a mondatot. A felismert szöveget ellenőrizzük; ez nem kiejtésmérés.</span><button class="btn ghost" id="skipSpeak" style="font-size:.85rem">Most nem tudok beszélni</button></div>`;}
-  view.innerHTML=`<div class="player">
+  view.innerHTML=`<div class="player"><h1 class="sr-only">${esc(({daily:"Napi kör",miss:"Hibakör",speak:"Hangos gyakorlás"})[P.kind]||(P.li!=null&&LESSONS[P.li]?"Lecke: "+LESSONS[P.li].t:"Gyakorlás"))}</h1>
     <div class="pbar"><button class="close" id="quit" aria-label="Kilépés">×</button><div class="track"><div class="fill" style="width:${P.i/P.queue.length*100}%"></div></div><span class="small muted tnum">${P.i+1}/${P.queue.length}</span></div>
-    ${e.retry?'<p class="small muted" role="status">Visszakérdezés · ezt már gyakoroltuk. Az eredeti pontosságodat és az XP-t nem módosítja.</p>':""}${body}
+    ${e.fromMiss&&!e.retry?'<p class="small muted"><span class="pill">A hibáidból</span> Ezt korábban elvétetted, most újra előkerül.</p>':""}${e.retry?'<p class="small muted" role="status">Visszakérdezés · ezt már gyakoroltuk. Az eredeti pontosságodat és az XP-t nem módosítja.</p>':""}${body}
     <div class="pfoot"><div id="fb"></div><button class="btn block" id="go" ${e.t==="match"?"hidden":""} disabled>Ellenőrzés</button></div>
   </div>`;
   const li=P.li, kind=P.kind; $("#quit").onclick=()=>{persistExercise(P.st.done);P=null;if(dailyActive){go("ma");return;}if(kind==="lesson")openLesson(li);else render();};

@@ -1,8 +1,8 @@
 /* Parliamo service worker. GENERÁLT FÁJL (parliamo/build.py), ne szerkeszd kézzel.
    Az app váza és a tananyag telepítéskor a gyorsítótárba kerül; a hangok és képek az első használatkor
    (vagy a Beállítások „Letöltés offline használatra” gombjával). Az AI-kérések nem mennek át rajta. */
-const SHELL = 'parliamo-shell-cd82e831de';
-const MEDIA = 'parliamo-media-7dbc5043e1';
+const SHELL = 'parliamo-shell-c1dc507f4a';
+const MEDIA = 'parliamo-media-e9a265014e';
 const PRECACHE = [
 "./",
 "index.html",
@@ -38,6 +38,8 @@ const PRECACHE = [
 "data/grammar-it.json",
 "data/it.json",
 "data/mock-en.json",
+"data/mock-es.json",
+"data/mock-it.json",
 "data/offline-en.json",
 "data/packs-en.json",
 "data/packs-es.json",

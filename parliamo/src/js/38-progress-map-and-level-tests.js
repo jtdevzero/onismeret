@@ -38,8 +38,8 @@ function certSvg(l,c){
 function showCert(l){
   const c=S.certs[certKey(l)];if(!c)return;
   view.innerHTML=`<div class="stack"><div class="row"><button class="btn ghost" data-go="terkep">← Térkép</button></div><div class="card" style="padding:.6rem">${certSvg(l,c)}</div>
-    <p class="small muted">Az oklevél a szint leckéiből összeállított tesztet igazolja, nem hivatalos nyelvvizsga.</p>${IS_WEB?`<div><button class="btn soft" id="cPng">Mentés képként</button></div>`:""}</div>`;
+    <p class="small muted">Az oklevél a szint leckéiből összeállított tesztet igazolja, nem hivatalos nyelvvizsga.</p><div><button class="btn soft" id="cPng">Mentés képként</button></div></div>`;
   if($("#cPng"))$("#cPng").onclick=()=>{const svg=view.querySelector("svg"),img=new Image(),url=URL.createObjectURL(new Blob([svg.outerHTML.replace("<svg ",'<svg xmlns="http://www.w3.org/2000/svg" ')],{type:"image/svg+xml"}));
-    img.onload=()=>{const cv=document.createElement("canvas");cv.width=1600;cv.height=1120;cv.getContext("2d").drawImage(img,0,0,1600,1120);const a=document.createElement("a");a.href=cv.toDataURL("image/png");a.download=`parliamo-oklevel-${lang()}-${l}.png`;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);};img.src=url;};
+    img.onload=()=>{const cv=document.createElement("canvas");cv.width=1600;cv.height=1120;cv.getContext("2d").drawImage(img,0,0,1600,1120);URL.revokeObjectURL(url);cv.toBlob(b=>{if(b)saveFile(`parliamo-oklevel-${lang()}-${l}.png`,b);},"image/png");};img.src=url;};
 }
 

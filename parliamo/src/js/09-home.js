@@ -47,7 +47,7 @@ function renderHome(){
   if($("#hMiss"))$("#hMiss").onclick=()=>{dailyActive=false;startRound("miss");};
   if(IS_WEB)bindWebSettings();
   bindAISetup(view);
-  const segs=[["#sTheme","theme",String],["#sFs","fs",String],["#sRead","readable",v=>v==="1"],["#sRet","ret",Number],["#sGoal","goal",Number],["#sNew","newPerDay",Number],["#sRate","rate",Number],["#sSound","sound",v=>v==="1"]];
-  segs.forEach(([id,k,f])=>$(id).querySelectorAll("button").forEach(b=>b.onclick=e=>{e.preventDefault();S.settings[k]=f(b.dataset.v);save();applyPrefs();renderHome();$("#homeSettings").open=true;}));
+  const segs=[["#sTheme","theme",String],["#sFs","fs",String],["#sRead","readable",v=>v==="1"],["#sRet","ret",Number],["#sGoal","goal",Number],["#sNew","newPerDay",Number],["#sRate","rate",Number],["#sSound","sound",v=>v==="1"],["#sBadge","badge",v=>v==="1"]];
+  segs.forEach(([id,k,f])=>$(id)&&$(id).querySelectorAll("button").forEach(b=>b.onclick=e=>{e.preventDefault();S.settings[k]=f(b.dataset.v);save();applyPrefs();renderHome();$("#homeSettings").open=true;}));
   let armed=false;$("#sReset").onclick=()=>{if(!armed){armed=true;$("#sReset").textContent="Biztosan? Kattints újra a törléshez";$("#sReset").style.color="var(--bad)";return;}dailyActive=false;stopViews();resetProgress();toast("A haladásod törölve.");renderHome();};
 }

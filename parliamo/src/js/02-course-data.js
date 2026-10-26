@@ -4,17 +4,17 @@ const LANGS={
   en:{code:"EN",name:"Angol",nat:"English",adj:"angol",adv:"angolul",teacher:"angoltanár",tts:"en-GB",vbPron:[""],art:/^(to|the|a|an)\s/,
     ok:["Spot on!","Perfect!","Nice one!","Exactly!"],fin:["Brilliant!","Well done!","You made it!"],wotd:"Word of the day",
     hello:"Good morning! Kezdjük?",goalDone:"Brilliant! Megvan a mai cél.",goalLeft:n=>"Keep going! Még "+n+" XP a célig.",range:"A1–C1",
-    levels:["A1","A2","B1","B2","C1"],hero:"hero-en",drills:["mock","examiner","journal","serial","colloc","import","shadow","read","miss","pod","pron","acc","exam","wcourse","build","ai","speak","story","conj","tenses","articles","preps","phrasal","cond","dict"],write:"Write here in English…",native:"egy angol anyanyelvű",
+    levels:["A1","A2","B1","B2","C1"],hero:"hero-en",drills:["mock","examiner","journal","serial","colloc","import","shadow","read","miss","pod","pron","acc","exam","wcourse","build","ai","speak","story","conj","tline","tenses","articles","preps","phrasal","cond","dict"],write:"Write here in English…",native:"egy angol anyanyelvű",
     ask:"Mi a különbség a present perfect és a past simple között?",free:["Free chat","Emma, egy barátságos londoni angoltanár, aki kötetlenül beszélget a tanulóval"]},
   it:{code:"IT",name:"Olasz",nat:"Italiano",adj:"olasz",adv:"olaszul",teacher:"olasztanár",tts:"it-IT",vbPron:["io","tu","lui","noi","voi","loro"],art:/^(il|lo|la|l'|i|gli|le)\s?/,
     ok:["Esatto!","Giusto!","Perfetto!","Bravo!"],fin:["Fantastico!","Molto bene!","Ce l'hai fatta!"],wotd:"La parola del giorno",
     hello:"Buongiorno! Kezdjük?",goalDone:"Bravissimo! Megvan a mai cél.",goalLeft:n=>"Avanti così! Még "+n+" XP a célig.",range:"A1–B1",
-    levels:["A1","A2","B1"],hero:"hero",drills:["serial","import","shadow","read","miss","pod","pron","exam","build","ai","speak","story","conj","cong","impp","art","prep","dict","num"],write:"Scrivi qui in italiano…",native:"egy olasz",
+    levels:["A1","A2","B1"],hero:"hero",drills:["mock","serial","import","shadow","read","miss","pod","pron","exam","build","ai","speak","story","tline","conj","cong","impp","art","prep","dict","num"],write:"Scrivi qui in italiano…",native:"egy olasz",
     ask:"Mi a különbség a sapere és a conoscere között?"},
   es:{code:"ES",name:"Spanyol",nat:"Español",adj:"spanyol",adv:"spanyolul",teacher:"spanyoltanár",tts:"es-ES",vbPron:["yo","tú","él","nosotros","vosotros","ellos"],art:/^(el|la|los|las)\s/,
     ok:["¡Muy bien!","¡Perfecto!","¡Genial!","¡Exacto!"],fin:["¡Fantástico!","¡Muy bien!","¡Lo has conseguido!"],wotd:"La palabra del día",
     hello:"¡Buenos días! Kezdjük?",goalDone:"¡Genial! Megvan a mai cél.",goalLeft:n=>"¡Ánimo! Még "+n+" XP a célig.",range:"A1–B1",
-    levels:["A1","A2","B1"],hero:"hero-es",drills:["serial","import","shadow","read","miss","pod","pron","exam","build","ai","speak","story","conj","serestar","pretimp","porpara","dict"],write:"Escribe aquí en español…",native:"egy spanyol anyanyelvű",
+    levels:["A1","A2","B1"],hero:"hero-es",drills:["mock","serial","import","shadow","read","miss","pod","pron","exam","build","ai","speak","story","tline","conj","serestar","pretimp","porpara","dict"],write:"Escribe aquí en español…",native:"egy spanyol anyanyelvű",
     ask:"Mi a különbség a ser és az estar között?",free:["Conversación libre","Lucía, egy kedves madridi spanyoltanár, aki kötetlenül beszélget a tanulóval"]}
 };
 /* English is the default for new learners; the switcher offers every language in LANGS. */

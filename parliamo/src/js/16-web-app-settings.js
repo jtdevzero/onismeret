@@ -106,9 +106,8 @@ function bindWebSettings(){
     }catch(err){message.textContent=err&&err.code==="offline_unavailable"?"Az offline mentés most nem ellenőrizhető. Nyisd meg az appot HTTPS-en, engedélyezett böngészőtárhellyel, és töltsd újra. Sikeres mentést még nem jeleztünk.":"A letöltést nem sikerült ellenőrizni. Ellenőrizd a hálózatot és a tárhelyet, majd próbáld újra.";offline.textContent="Letöltés újrapróbálása";}
     finally{offline.disabled=false;if(offlineLang)offlineLang.disabled=false;}
   };
-  $("#sExport").onclick=e=>{e.preventDefault();const out=JSON.parse(JSON.stringify(S));out.settings.pass="";
-    const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(out)],{type:"application/json"}));
-    a.download="parliamo-mentes-"+new Date().toISOString().slice(0,10)+".json";document.body.appendChild(a);a.click();a.remove();toast("A mentés letöltve.");};
+  $("#sExport").onclick=async e=>{e.preventDefault();const out=JSON.parse(JSON.stringify(S));out.settings.pass="";
+    if(await saveFile("parliamo-mentes-"+new Date().toISOString().slice(0,10)+".json",new Blob([JSON.stringify(out)],{type:"application/json"})))toast("A mentés letöltve.");};
   $("#sImport").onchange=async e=>{const f=e.target.files[0];if(!f)return;
     try{const o=JSON.parse(await f.text());if(typeof o!=="object"||!o.cards||typeof o.xp!=="number")throw 0;
       const keep={proxy:S.settings.proxy,pass:S.settings.pass},epoch=resetEpoch(S);stopViews();S=migrate(o);S.resetAt=Math.max(epoch,resetEpoch(S));Object.assign(S.settings,keep);save();if(!await loadCourse())return;render();toast("Haladás visszatöltve.");}
