@@ -2,7 +2,7 @@
 
 Önálló, két játékosra tervezett statikus alkalmazás az `onismeret/paros/` könyvtárban.
 
-Játékok: Közelebb hozzád, Flörtradar, Igazság vagy kihívás (18+), Igen, nem, talán (18+), Szexről őszintén (18+), Mennyire ismersz?
+Játékok: Közelebb hozzád, Flörtradar, Igazság vagy kihívás (18+), Igen, nem, talán (18+), Szexről őszintén (18+), Mennyire ismersz?, Emlékösvény, Jövőnk mozaikja, Közös bakancslista
 
 - A válaszok kizárólag memóriában élnek; újratöltés vagy körtörlés után elvesznek. Háttérbe kerüléskor fedőképernyő takarja a játékot.
 - Az Igen, nem, talán eredménye csak a két igen találkozásait tartalmazza; az egyéni válaszokat az összevetés után töröljük a kör állapotából.
@@ -15,3 +15,5 @@ Fejlesztés: a könyvtár közvetlenül szerkeszthető, nincs generált alkalmaz
 Teszt: a repó gyökeréből `npm run test:paros`. A meglévő Playwright-függőséget használja. Rendszer Chromium választható a `PW_CHROMIUM` környezeti változóval.
 
 Az alkalmazás kártyái eredeti magyar megfogalmazások. A szexuális témájú csomag kapcsolati kommunikációt segít; a kihívások és kérdések minden esetben passzolhatók.
+
+A körhossz beszélgetős játékoknál és kihívásoknál 6/12/24 kártya; titkos válaszadásnál 4/8/12 kérdés fejenként. A kezdőlap beszélgetős, titkos választós és 18+ játékokra szűrhető.
