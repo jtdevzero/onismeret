@@ -191,3 +191,14 @@ label { display: block; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; scroll-behavior: auto !important; }
 }
+
+/* Álomképek: egyetlen, offline tárolt illusztrációs atlasz, 24 önálló képpel. */
+.dream-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.dream-card { display:block; padding:6px; border:2px solid var(--line); border-radius:16px; background:var(--card); color:var(--text); min-width:0; overflow:hidden; text-align:center; font:inherit; }
+button.dream-card { cursor:pointer; }
+.dream-card.selected, .dream-card.truth { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent); }
+.dream-card:disabled { opacity:.45; cursor:default; }
+.dream-art { display:block; width:100%; aspect-ratio:1; background-image:url('images/dreams-atlas.webp'); background-size:600% 400%; background-repeat:no-repeat; border-radius:10px; }
+.dream-caption { display:block; padding:8px 2px 2px; font-size:14px; font-weight:700; }
+.dream-card p { font-size:13px; overflow-wrap:anywhere; }
+.dream-chosen { max-width:320px; width:100%; margin-inline:auto; }

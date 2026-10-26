@@ -14,7 +14,23 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
-          node-version: 20
+          # A wrangler 4-hez legalább Node.js 22 kell.
+          node-version: 22
+      - name: Szükséges titkok megvannak?
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          PARLIAMO_APP_PASSWORD: ${{ secrets.PARLIAMO_APP_PASSWORD }}
+        run: |
+          missing=""
+          for n in CLOUDFLARE_API_TOKEN CLOUDFLARE_ACCOUNT_ID ANTHROPIC_API_KEY PARLIAMO_APP_PASSWORD; do
+            [ -n "${!n}" ] || missing="$missing $n"
+          done
+          if [ -n "$missing" ]; then
+            echo "::error::Hiányzó titkok:$missing. Add meg őket: Settings → Secrets and variables → Actions → New repository secret."
+            exit 1
+          fi
       - name: Függőségek a lockfile szerint
         working-directory: parliamo/worker
         run: npm ci

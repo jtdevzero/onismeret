@@ -1,7 +1,7 @@
 /* Verziózott, teljes offline csomag. Sikertelen frissítéskor a régi csomag marad aktív. */
-const CACHE = 'tarsas-v2';
-const SHELL = ['./', 'index.html', 'style.css?v=2', 'data.js?v=2', 'app.js?v=2',
-  'games-party.js?v=2', 'games-social.js?v=2', 'games-bluff.js?v=2', 'games-quiz.js?v=2', 'enhancements.js?v=2',
+const CACHE = 'tarsas-v3';
+const SHELL = ['./', 'index.html', 'style.css?v=3', 'data.js?v=3', 'app.js?v=3',
+  'games-party.js?v=3', 'games-social.js?v=3', 'games-bluff.js?v=3', 'games-quiz.js?v=3', 'enhancements.js?v=3', 'games-dreams.js?v=3', 'images/dreams-atlas.webp',
   'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/icon-maskable-512.png'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL.map(url => new Request(url, { cache: 'reload' })))).then(() => self.skipWaiting()));
