@@ -87,12 +87,12 @@ export function validSub(s) {
     s.keys && typeof s.keys.p256dh === "string" && s.keys.p256dh.length < 200 && typeof s.keys.auth === "string" && s.keys.auth.length < 100);
 }
 
-export async function subscribe(kv, body) {
+export async function subscribe(kv, body, user = "main") {
   if (!validSub(body.subscription)) return false;
   const hour = Math.min(23, Math.max(0, parseInt(body.hour, 10) || 18));
   const tz = Math.max(-840, Math.min(840, parseInt(body.tz, 10) || 0));
   const lastDay = /^\d{4}-\d{2}-\d{2}$/.test(body.lastDay || "") ? body.lastDay : "";
-  await kv.put(await subKey(body.subscription.endpoint), JSON.stringify({ sub: body.subscription, hour, tz, lastDay }));
+  await kv.put(await subKey(body.subscription.endpoint), JSON.stringify({ sub: body.subscription, hour, tz, lastDay, user: typeof user === "string" ? user : "main" }));
   return true;
 }
 
@@ -129,14 +129,21 @@ export function todayPlan(state, tz, now = Date.now()) {
 }
 
 /* Óránként fut: akinek most van a beállított órája, és ma még nem gyakorolt, kap egy emlékeztetőt.
-   Vasárnap a heti összefoglalót mindenképp elküldi; ha van heti terv, az emlékeztető a mai feladatot is megmondja. */
-export async function runReminders(kv, subject, state) {
+   Vasárnap a heti összefoglalót mindenképp elküldi; ha van heti terv, az emlékeztető a mai feladatot is megmondja.
+   A feliratkozás tanulójának (rec.user) saját szinkronizált állapotát használja; getState(user) adja vissza. */
+export async function runReminders(kv, subject, getState) {
+  const states = new Map(), stateOf = async user => {
+    if (typeof getState !== "function") return getState || null;
+    if (!states.has(user)) states.set(user, await getState(user).catch(() => null));
+    return states.get(user);
+  };
   let cursor;
   do {
     const page = await kv.list({ prefix: "sub:", cursor });
     for (const k of page.keys) {
       const rec = await kv.get(k.name, "json");
       if (!rec) continue;
+      const state = await stateOf(rec.user || "main");
       const { hour, day } = localParts(rec.tz);
       const sunday = new Date(Date.now() + rec.tz * 60000).getUTCDay() === 0;
       const summary = sunday ? weeklySummary(state, rec.tz) : "";

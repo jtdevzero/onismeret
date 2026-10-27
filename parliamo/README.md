@@ -90,19 +90,30 @@ A szerver a `worker/` mappában van (Cloudflare Workers, ingyenes csomag elég).
 
 A Cloudflare ingyenes csomagja elég a szerverhez. A **Claude API-kulcs fizetős** (használat alapján számláz, külön a claude.ai-előfizetéstől), de **elhagyható**: nélküle a szerver ingyen adja a szinkront az eszközök között és a napi emlékeztetőt, a webappban pedig az AI-funkciók helyett egy üzenet jelzi, hogy az AI a claude.ai-os változatban (artifact) érhető el. Ilyenkor a lenti 3. lépés és az `ANTHROPIC_API_KEY` titok kimarad.
 
+### Több felhasználó
+
+A szerveren több tanuló is lehet, mindenki saját **felhasználónévvel és jelszóval**. Mindenkinek külön tárolódik a haladása, a heti mentése és az emlékeztetője; senki nem látja a másikét.
+
+- A felhasználók listája a `PARLIAMO_USERS` GitHub-titok: `anna:hosszújelszó1, peti:másikjelszó2` (vesszővel vagy új sorral elválasztva). A név kisbetű, szám, pont, kötőjel vagy aláhúzás (legfeljebb 32 karakter), a jelszó legalább 8 karakter, vessző nélkül.
+- **Új felhasználó:** bővítsd a titkot egy új sorral, és futtasd újra a telepítést. Az ő telefonján a webappban: Beállítások → AI-kapcsolat → szervercím, felhasználónév, jelszó.
+- **Kitiltás:** töröld a sorát, és futtasd újra a telepítést. A tárolt haladása a Cloudflare KV-ban marad (Workers & Pages → KV → `parliamo-push`, kulcsok: `sync:u:<név>`, `backup:u:<név>:…`), onnan kézzel törölhető.
+- **Egy böngészőt egy ember használjon:** a haladás a böngészőben is tárolódik, ezért ha ugyanazon a böngészőn más névvel lépsz be, az ottani haladás a másik fiókba szinkronizálódna.
+- A régi, felhasználónév nélküli belépőkód (`PARLIAMO_APP_PASSWORD`) továbbra is működik egyetlen tanulónak; a két mód együtt is használható.
+- A Cloudflare ingyenes csomagja naponta korlátozott számú adatmentést enged; néhány családtagnak ez bőven elég.
+
 ### Telepítés telefonról (GitHub Actions)
 
 1. Cloudflare-fiók: https://dash.cloudflare.com (ingyenes). Jobb oldalt az **Account ID**-t másold ki.
 2. Cloudflare API-token: My Profile → API Tokens → Create Token → **Edit Cloudflare Workers** sablon → Create. Másold ki.
 3. (Elhagyható, fizetős) Claude API-kulcs: https://platform.claude.com → API Keys → Create Key. Állíts be mellé havi költségkorlátot (Settings → Limits).
-4. Találj ki egy hosszú belépőkódot (pl. 4-5 véletlen szó).
-5. GitHub: a repó **Settings → Secrets and variables → Actions → New repository secret**, három kötelező és egy elhagyható titok:
+4. Találd ki a felhasználókat és a jelszavukat (pl. `anna:négy-öt-véletlen-szó`), vagy egyetlen közös belépőkódot.
+5. GitHub: a repó **Settings → Secrets and variables → Actions → New repository secret**:
    - `CLOUDFLARE_API_TOKEN`
    - `CLOUDFLARE_ACCOUNT_ID`
    - `ANTHROPIC_API_KEY` (elhagyható; nélküle nincs AI a webappban)
-   - `PARLIAMO_APP_PASSWORD` (a belépőkód)
+   - `PARLIAMO_USERS` (felhasználónév:jelszó lista, lásd fent) **vagy** `PARLIAMO_APP_PASSWORD` (egyetlen közös belépőkód)
 6. **Actions** fül → **Parliamo AI-szerver telepítése** → **Run workflow**. A végén a naplóban ott a szerver címe: `https://parliamo-ai.<fiókneved>.workers.dev`.
-7. A webappban: Ma → Beállítások → **AI-kapcsolat**: add meg a címet és a belépőkódot → **Mentés és próba**.
+7. A webappban: Ma → Beállítások → **AI-kapcsolat**: add meg a címet, a felhasználónevet (egy közös belépőkódnál üresen marad) és a jelszót → **Mentés és próba**.
 8. Emlékeztető: ugyanott **Napi emlékeztető** → válassz órát → **Bekapcsolás**, majd **Próba**. iPhone-on csak a kezdőképernyőre tett appból működik.
 
 A telepítés a push-tárolót (KV) is magától létrehozza. Ha az emlékeztető korábbi telepítés után nem működik, futtasd újra a workflow-t.

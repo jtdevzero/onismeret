@@ -1,7 +1,7 @@
 /* ============ WEB APP SETTINGS ============ */
 let AI_CHECK=null;
 function aiConfigured(){return !IS_WEB||!!(S.settings.proxy&&S.settings.pass);}
-function aiChecked(){return AI_CHECK&&AI_CHECK.proxy===S.settings.proxy&&AI_CHECK.pass===S.settings.pass?AI_CHECK:null;}
+function aiChecked(){return AI_CHECK&&AI_CHECK.proxy===S.settings.proxy&&AI_CHECK.pass===S.settings.pass&&AI_CHECK.user===(S.settings.user||"")?AI_CHECK:null;}
 function aiAccessBadge(){
   const check=aiChecked(),label=!IS_WEB?"AI az alkalmazáson keresztül":!aiConfigured()?"AI-beállítás szükséges":check?(check.ok?"AI-kapcsolat ellenőrizve":check.noAI?"Szerver kapcsolódva · AI nélkül":"AI-kapcsolati hiba"):"AI beállítva · próba szükséges";
   return `<span class="access-badge ${check&&check.ok?"ok":""}" data-ai-status>${label}</span>`;
@@ -21,7 +21,9 @@ function aiConnectionSettings(){
     <p class="small muted">A saját AI-szervered címe és a belépőkód a telepítési útmutatóból. A Claude API-kulcs a szerveren marad, ide nem kell beírni. A címet és a belépőkódot ez a böngésző megjegyzi.</p>
     <label class="stack" style="gap:.3rem" for="sProxy"><span class="small">AI-szerver címe</span><input id="sProxy" type="url" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://parliamo-ai.fiokod.workers.dev" value="${esc(S.settings.proxy)}" aria-describedby="sProxyHelp"></label>
     <p class="small muted" id="sProxyHelp">A telepítéskor kapott HTTPS-címet használd (workers.dev), vagy az alkalmazás saját címét.</p>
-    <label class="stack" style="gap:.3rem" for="sPass"><span class="small">Belépőkód</span><input id="sPass" type="password" autocomplete="off" placeholder="A szerver belépőkódja" value="${esc(S.settings.pass)}"></label>
+    <label class="stack" style="gap:.3rem" for="sUser"><span class="small">Felhasználónév</span><input id="sUser" autocomplete="username" autocapitalize="off" spellcheck="false" placeholder="pl. anna (egyfelhasználós szervernél üresen marad)" value="${esc(S.settings.user||"")}" aria-describedby="sUserHelp"></label>
+    <p class="small muted" id="sUserHelp">Ha a szervereden több tanuló van, mindenki a saját nevével és jelszavával lép be, és mindenkinek külön tárolódik a haladása.</p>
+    <label class="stack" style="gap:.3rem" for="sPass"><span class="small">Jelszó (belépőkód)</span><input id="sPass" type="password" autocomplete="current-password" placeholder="A jelszavad vagy a szerver belépőkódja" value="${esc(S.settings.pass)}"></label>
     <div class="row"><button class="btn" id="sAiSave">Mentés és kapcsolat ellenőrzése</button><span class="small" id="sAiMsg" role="status" aria-live="polite"></span></div></div>`;
 }
 function webSettings(aiOnly=false){
@@ -46,7 +48,7 @@ function webSettings(aiOnly=false){
 const localDay=()=>{const d=new Date();return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10);};
 async function proxyPost(path,body){
   const st=S.settings;if(!st.proxy||!st.pass)throw {code:"no_proxy"};
-  const r=await fetch(st.proxy.replace(/\/+$/,"")+path,{method:"POST",headers:{"content-type":"application/json","x-app-key":st.pass},body:JSON.stringify(body||{})});
+  const r=await fetch(st.proxy.replace(/\/+$/,"")+path,{method:"POST",headers:proxyHeaders(),body:JSON.stringify(body||{})});
   if(r.status===401)throw {code:"bad_key"};if(r.status===501)throw {code:"push_unavailable"};if(r.status===409)throw {code:"conflict"};if(r.status===413)throw {code:"too_big"};if(!r.ok)throw {code:"error"};return r.json();
 }
 async function pushSub(){
@@ -64,18 +66,19 @@ const pushMsg=e=>({unsupported:"Ez a böngésző nem támogatja az értesítése
 function refreshWebSettings(){renderHome();const panel=$("#sProxy")&&$("#sProxy").closest("details");if(panel)panel.open=true;}
 function refreshAIBadges(){view.querySelectorAll("[data-ai-status]").forEach(el=>{const holder=document.createElement("span");holder.innerHTML=aiAccessBadge();el.replaceWith(holder.firstElementChild);});}
 function bindWebSettings(){
-  [$("#sProxy"),$("#sPass")].filter(Boolean).forEach(input=>input.oninput=()=>view.querySelectorAll("[data-ai-status]").forEach(el=>{el.textContent="Nem mentett módosítások";el.classList.remove("ok");}));
+  [$("#sProxy"),$("#sUser"),$("#sPass")].filter(Boolean).forEach(input=>input.oninput=()=>view.querySelectorAll("[data-ai-status]").forEach(el=>{el.textContent="Nem mentett módosítások";el.classList.remove("ok");}));
   const saveAI=$("#sAiSave");
   if(saveAI)saveAI.onclick=async e=>{
-    e.preventDefault();const m=$("#sAiMsg"),address=$("#sProxy").value.trim(),pass=$("#sPass").value;
+    e.preventDefault();const m=$("#sAiMsg"),address=$("#sProxy").value.trim(),pass=$("#sPass").value,user=($("#sUser")?$("#sUser").value:"").trim().toLowerCase();
     m.style.color="var(--bad)";AI_CHECK=null;refreshAIBadges();
     if(!address||!pass){m.textContent="Add meg a szerver címét és a belépőkódot.";return;}
     let url;try{url=new URL(address);if(url.username||url.password||url.search||url.hash||!(url.origin===location.origin||(url.protocol==="https:"&&url.hostname.endsWith(".workers.dev"))))throw 0;}
     catch(err){m.textContent="Érvényes HTTPS-címet adj meg: a saját workers.dev szervered vagy az alkalmazás saját címe használható.";return;}
-    S.settings.proxy=url.href.replace(/\/+$/,"");S.settings.pass=pass;save();
+    if(user&&!/^[a-z0-9._-]{1,32}$/.test(user)){m.textContent="A felhasználónév kisbetűs betűkből, számokból, pontból, kötőjelből vagy aláhúzásból álljon (legfeljebb 32 karakter).";return;}
+    S.settings.proxy=url.href.replace(/\/+$/,"");S.settings.pass=pass;S.settings.user=user;save();
     const proxy=S.settings.proxy,sample=proxySample(),controller=new AbortController();
     const timeout=setTimeout(()=>controller.abort(),15000);saveAI.disabled=true;m.style.color="";m.textContent="Kapcsolat ellenőrzése…";
-    const snapshot={proxy,pass,ok:false};
+    const snapshot={proxy,pass,user,ok:false};
     try{const response=await sample("Válaszolj egyetlen szóval: ok",{modelTier:"quick",signal:controller.signal});if(!response.text.trim())throw {code:"error"};snapshot.ok=true;m.style.color="var(--ok)";m.textContent="A kapcsolat működik. Visszatérhetsz a gyakorláshoz.";}
     catch(err){if(err&&err.code==="no_ai_key"){snapshot.noAI=true;m.style.color="var(--ok)";m.textContent="A kapcsolat működik: a szinkron és az emlékeztető bekapcsolható. A szerveren nincs Claude-kulcs, ezért AI-hoz a claude.ai-os változatot (artifact) használd.";return;}
       m.style.color="var(--bad)";m.textContent=err&&err.code==="aborted"?"A szerver 15 másodperc alatt nem válaszolt. Ellenőrizd a címet és próbáld újra.":aiErr(err);}

@@ -111,6 +111,6 @@ const syncLine=()=>cloudErr?cloudErr:cloudAt?"Utolsó szinkron: "+new Date(cloud
 document.addEventListener("visibilitychange",()=>{
   if(document.visibilityState!=="hidden"||!cloudT||!IS_WEB||!S.settings.cloud||!cloudRev)return;
   clearTimeout(cloudT);cloudT=null;const st=S.settings,body=JSON.stringify({state:cloudCopy(),base:cloudRev});
-  try{fetch(st.proxy.replace(/\/+$/,"")+"/sync/put",{method:"POST",headers:{"content-type":"application/json","x-app-key":st.pass},body,keepalive:body.length<60000}).then(r=>r.ok&&r.json()).then(j=>{if(j&&j.rev)cloudRev=j.rev;}).catch(()=>{});}catch(e){}
+  try{fetch(st.proxy.replace(/\/+$/,"")+"/sync/put",{method:"POST",headers:proxyHeaders(),body,keepalive:body.length<60000}).then(r=>r.ok&&r.json()).then(j=>{if(j&&j.rev)cloudRev=j.rev;}).catch(()=>{});}catch(e){}
 });
 
