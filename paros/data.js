@@ -8,7 +8,7 @@ Milyen lenne számodra egy tökéletes közös vasárnap?
 Melyik történetedet mesélnéd el, hogy jobban megismerjelek?
 Milyen bók maradt meg benned sokáig?
 Milyen helyzetben érzed leginkább önmagadnak magad?
-Mivel lehet egy nehéz nap után megnyugtatni?
+Mivel lehet téged megnyugtatni egy nehéz nap után?
 Milyen közös emléket szeretnél egy év múlva felidézni?
 Milyen apró gesztusból érzed, hogy fontos vagy?
 Mi lepett meg bennem kellemesen?
@@ -44,7 +44,7 @@ Milyen elvárást szeretnél levenni a vállunkról?
 Mennyi beszélgetésre vagy csendre van szükséged együttlét után?
 Hogyan tudjuk megkülönböztetni a kíváncsiságot az ígérettől?
 Milyen szerepe van számodra a humornak az intimitásban?
-Hogyan jelezzünk egymásnak, ha valami megváltozott az igényeinkben?
+Hogyan hat a fáradtság vagy a stressz a vágyadra, és mi segít ilyenkor?
 Melyik napszakban könnyebb számodra nyugodtan kapcsolódni?
 Hogyan szeretnéd, hogy reagáljak egy bizonytalan válaszodra?
 Mi segít abban, hogy ne teljesítményként gondolj az együttlétre?
@@ -74,7 +74,7 @@ Tartsatok egy rövid, közösen vállalt szemkontaktust; bármikor el lehet neve
 Kérdezd meg, jólesne-e most egy ölelés. A választ fogadd el.
 Mutasd meg szavak nélkül, hogyan örülsz egy találkozásunknak.
 Írj egy kedves, egymondatos meghívót egy következő randira.
-Találj ki egy közös titkos kézjelet arra, hogy szünetet kértek.
+Találj ki egy közös titkos kézjelet arra, ha szünetet kérünk.
 Tervezz meg egy húszperces közös programot pénzköltés nélkül.
 Fejezd be: „Ma este azt értékelem benned, hogy…”
 Mondj három apró dolgot, amit szívesen csinálnál együtt.
@@ -155,7 +155,7 @@ Milyen közös pillanatból szeretnél többet?`));
 Milyen különbség van számodra a közelség és az elvárás között?
 Mi segítene abban, hogy könnyebben kérdezz rá az igényeimre?
 Hogyan szeretnéd megbeszélni, ha valami korábban jólesett, most pedig nem?
-Milyen közös jelből tudhatjuk, hogy érdemes lassítani?
+Mi segít, hogy jól érezd magad a saját testedben, amikor közel vagyunk egymáshoz?
 Mitől lesz számodra egy intim beszélgetés meghitt?
 Milyen szót vagy kifejezést használnál szívesen a közelségről beszélve?
 Mikor könnyebb számodra nemet mondani?
@@ -183,7 +183,7 @@ Mutass be egy lassított, képzeletbeli vörös szőnyeges bevonulást.
 Találj ki egy új ünnepet, amelyet ketten tarthatnátok meg.
 Kérdezd meg, melyik közös programot ismételné meg szívesen a másik.
 Mondj egy kedves mondatot három különböző hangulatban.
-Rajzoljatok a levegőbe egy közös hétvégi tervet, és találjátok ki.
+Rajzolj a levegőbe egy közös hétvégi programot, a másik pedig találja ki, mi az.
 Válasszatok egy új szót arra, amikor hiányzik a másik.
 Tervezzetek meg egy képzeletbeli kirándulást csak három tárggyal.
 Köszönj meg a másiknak valamit, amit eddig természetesnek vettél.`));
@@ -204,7 +204,7 @@ Egy apró, előre egyeztetett meglepetés
 Beszélgetés arról, milyen bókok esnek jól
 Egy közös emlékdoboz készítése
 Közös szünet a közösségi médiától
-Egy figyelmes üzenet megírása egymásnak`));
+Egy közös este, amikor felváltva választunk programot`));
  quiz.push(
  ['Váratlan szabadidőben inkább…','Olvasnék','Zenét hallgatnék'],
  ['Közös alkotásként inkább…','Rajzolnék','Főznék'],
@@ -220,7 +220,7 @@ Melyik apró részletre emlékszel az első közös programunkból?
 Mi volt az első dolog, ami megnevettetett velem kapcsolatban?
 Melyik közös utunkon érezted magad különösen szabadnak?
 Milyen illat vagy íz idéz fel egy közös emléket?
-Melyik közös félreértésen tudtok már mosolyogni?
+Melyik közös félreértésen tudunk már mosolyogni?
 Mikor segített neked egy mondatom?
 Melyik közös program lett jobb, mint amire számítottál?
 Milyen dalhoz kötődik egy közös pillanatunk?
@@ -259,7 +259,7 @@ Milyen közös alkotást kezdenél el?
 Hogyan ünnepelnénk egy tervünk legelső kis lépését?
 Mikor néznénk át legközelebb a közös ötleteinket?
 Milyen utazást terveznél csak a hangulata alapján?
-Milyen közös emléket szeretnél egy nyárról?
+Milyen közös emléket szeretnél a következő nyárról?
 Mit tanulnál szívesen tőlem a következő időszakban?
 Milyen személyes térre szeretnél vigyázni a közös tervek mellett?
 Mi az a közös terv, amire még csak kíváncsi vagy, de nem ígéred?`);
@@ -280,7 +280,7 @@ Közös sütés
 Egy helyi piac felfedezése
 Közös nyújtás vagy könnyű mozgás
 Könyvesbolti böngészés egymásnak ajánlott könyvekkel
-Esős délután közös főzéssel
+Napfelkelte megnézése egy közeli kilátóból
 Egy régi kedvenc hely újrafelfedezése
 Egy közösen választott új hobbi kipróbálása
 Közös jótékonysági vagy önkéntes program keresése
@@ -301,7 +301,7 @@ window.PAIR_PACKS = (() => {
  ['Mikor oldódsz könnyebben?','Egy nyugodt estén','Egy közös kaland után'],
  ['Egy romantikus üzenetben inkább…','Kedves emléket idéznék','Következő találkozót terveznék'],
  ['Melyik bók érintene meg jobban?','Ahogy gondolkodsz, lenyűgöz','Jó veled egy térben lenni'],
- ['A közeledés tempója inkább…','Lassan kibontakozó','Spontán, közösen egyeztetve'],
+ ['A közeledés tempója inkább…','Lassan kibontakozó','Gyorsabb, ha mindketten szeretnénk'],
  ['Egy késő esti beszélgetéshez…','Lágy zene','Csend és figyelem'],
  ['A romantikus meglepetés legyen…','Személyes és apró','Együtt megélt program'],
  ['Mitől érzed magad kívánatosnak?','Ha ezt ki is mondják','Ha külön időt szánnak rám'],
@@ -350,12 +350,12 @@ Válassz egy dalt, és mondd el, miért jut róla eszedbe a másik.
 Mondj egy őszinte mondatot arról, mit értékelsz a figyelmében.
 Tervezz meg egy romantikus találkozót három, közösen választott szóval.
 Találjatok ki egy belső poént a mai estéhez.
-Meséld el úgy a megismerkedéseteket, mintha egy film előzetese lenne.
+Meséld el a megismerkedésünket úgy, ahogy szerinted a másik élte meg.
 Írj egy képzeletbeli képeslapot egy közös hétvégéről.
 Mondj egy apró figyelmességet, amit szívesen adnál a másiknak.
 Kérdezd meg, milyen közös programnak örülne most legjobban.
-Válasszatok közösen egy romantikus filmcímet a mai hangulatotokhoz.
-Találj ki egy nevet egy csak kettőtöknek szóló ünnephez.
+Írjatok együtt egy háromszavas mottót a mai estére.
+Súgj a másik fülébe egy bókot, ha ez neki is jólesik.
 Mondj egy bókot a másik humoráról vagy gondolkodásáról.
 Mesélj egy kedves jelenetet egy lehetséges közös utazásról.
 Kérdezd meg, melyik korábbi bókodat őrizte meg a másik.
@@ -364,7 +364,7 @@ Fejezd be ezt a mondatot: „Azért jó ma veled lennem, mert…”
 Képzeld el, hogy újra bemutatkozol a másiknak, és mutass meg egy ritkán látott oldaladat.
 Köszönj meg egy apró gesztust, amellyel a másik figyelt rád.
 Találjatok ki egy közösen választott, telefonmentes randiötletet.
-Mondj egy tulajdonságot, amelyben szerinted jól kiegészítitek egymást.
+Mondj egy tulajdonságot, amelyben szerinted jól kiegészítjük egymást.
 Írj egy rövid meghívást egy következő, nyugodt beszélgetésre.
 Kérdezd meg, van-e olyan közös emlék, amit szívesen felidézne most.`)}],
  match:[{id:'desires',name:'Vágyak, közös igenek · 18+',adult:true,items:L(`Nyugodt beszélgetés arról, mitől érezzük magunkat kívánatosnak
@@ -380,14 +380,14 @@ Beszélgetés a közelség és a személyes tér egyensúlyáról
 Egymás kedvenc romantikus emlékeinek felidézése
 Annak megosztása, milyen figyelemre vágyunk most
 Közös szokás kialakítása az intim témák megbeszéléséhez
-Egy romantikus program közös megtervezése
+Egymás masszírozása előre megbeszélt keretekkel
 Beszélgetés arról, mit jelent számunkra a gyengédség
-Egymásnak adott visszajelzés arról, milyen bókok esnek jól
+Egy új napszak vagy helyszín kipróbálása a kettesben töltött időnkhöz
 Annak megosztása, mikor van szükségünk több időre
 Beszélgetés arról, milyen jelből tudjuk, hogy érdemes lassítani
-Egy következő találkozó hangulatának közös kitalálása
+Egy ráérős este elvárások nélkül, csak összebújással
 Beszélgetés a vágyaink időbeli változásáról
-Egy közösen elfogadott szünetjel megbeszélése
+Közös fürdő vagy zuhany, ha mindkettőnknek jólesik
 Annak megosztása, milyen kérdést szeretnénk gyakrabban hallani
 Egymás romantikus ötleteinek meghallgatása elvárások nélkül
 Egy közös, nyugodt pillanat kiválasztása a következő beszélgetéshez`)}],
@@ -416,4 +416,130 @@ Milyen hétköznapi feszültséget lenne jó külön kezelni az intim időnktől
 Hogyan tudunk egymás különböző igényeire közös feladatként tekinteni?
 Mit szeretnél megköszönni abból, ahogyan a másik meghallgatott?`)}]
  };
+})();
+
+/* Mocskos 18+ csomagok: nyers, explicit kérdések és kihívások. Minden passzolható, a másik bármikor nemet mondhat. */
+(() => {
+ const L=s=>s.trim().split('\n').map(x=>x.trim()).filter(Boolean),P=window.PAIR_PACKS;
+ P.radar.push({id:'fire',name:'Tűzpróba · mocskos 18+',adult:true,items:[
+ ['A szám inkább…','Én nyalok','Engem nyaljanak'],
+ ['A dugás inkább…','Lassan, hogy minden centit érezzek','Keményen, amíg bírjuk'],
+ ['Az ágyban…','Én baszlak meg téged','Te baszol meg engem'],
+ ['Kedvenc póz…','Kutyapóz','Lovaglás'],
+ ['Fent vagy lent?','Fent','Lent'],
+ ['A hangerő…','Fojtott nyögés','Üvöltés, hadd hallják'],
+ ['A paskolás…','Pár finom csapás','Amíg ki nem pirul a seggem'],
+ ['Hajhúzás dugás közben…','Igen, erősen','Inkább ne'],
+ ['Mocskos beszéd…','Szidj mocskosan','Dicsérj mocskosan'],
+ ['Kikötözve…','Én legyek','Te legyél'],
+ ['Hol?','Az ágyban','Konyhapult, mosógép, lépcső, bárhol otthon'],
+ ['Az előjáték…','Kínozz, amíg könyörgök','Azonnal dugj meg'],
+ ['Elélvezéskor…','A testemre','A számba'],
+ ['A vibrátor…','Rajtam, amíg remegek','Rajtad, amíg remegsz'],
+ ['Szexvideó…','Vegyük fel és nézzük vissza','Csak élőben'],
+ ['Egy éjszaka…','Egy hosszú, brutális menet','Ahányszor csak bírjuk'],
+ ['Az elélvezés megtagadása…','Kínozz vele, könyörögni akarok','Ne tarts vissza'],
+ ['A ruhám…','Tépd le','Hagyd rajtam, csak told félre'],
+ ['A tükör előtt…','Nézni akarom, ahogy dugunk','Csukott szemmel jobb'],
+ ['Reggel…','Ébressz nyalással','Ébressz egy gyors dugással'],
+ ['A fenekem…','Csak paskold','Játssz is vele'],
+ ['Utána…','Még egy menet','Hulla vagyok'],
+ ['Napközben…','Küldj meztelen képet','Írd meg, mit csinálsz velem este'],
+ ['Ha könyörgök…','Add meg rögtön','Várass még']
+ ]});
+ P.truth.push({id:'naughty',name:'Mocskos · 18+',adult:true,truth:L(`Mit csinálnál velem most, ha nem kellene játszanunk? Mondd el mocskosan, részletesen.
+Mi a legperverzebb dolog, amit valaha meg akartál csinálni velem?
+Pontosan hogyan akarsz ma éjjel elélvezni?
+Mi indít be jobban: ha nyalnak, vagy ha dugnak?
+Melyik pózban a legjobb, amikor dugunk?
+Mi volt a legmocskosabb szex az életedben? Részleteket kérek.
+Mire gondoltál utoljára, amikor magadhoz nyúltál?
+Hányszor nyúltál magadhoz rám gondolva az elmúlt héten?
+Mit mondjak a füledbe, miközben dugunk? Mondd ki szó szerint.
+Melyik testrészemet nyalnád a legszívesebben, és meddig bírnád?
+Mi a legbetegebb fantáziád, amit még senkinek sem mertél elmondani?
+Egy tízes skálán milyen durván bánjak veled? És mit jelent nálad a tízes?
+Hová élvezzek a legszívesebben? Mondd ki.
+Milyen szexvideót vennél fel kettőnkről, és mi lenne a címe?
+Melyik pornókategóriát nézed a legtöbbet, amikor egyedül vagy?
+Mit csinálnál velem, ha egy éjszakára a játékszered lennék?
+Mennyire erősen húzhatom a hajad, és hányat paskolhatok a seggedre?
+Hol nyaltál vagy dugtál a legnagyobb lebukásveszélyben?
+Milyen szexjátékot próbálnál ki rajtam elsőként, és hogyan?
+Ha ma éjjel minden kérésedre igent mondanék, mi lenne az első három?
+Milyen hangosan akarod hallani, ahogy élvezek?
+Inkább könyörögnél, hogy megdugjalak, vagy parancsolnál?
+Mondd ki háromszor egymás után a legmocskosabb szót, ami beindít.
+Mit kennél rám, hogy aztán lenyald?`),dare:L(`Súgd a másik fülébe, pontosan hogyan fogod megdugni ma éjjel.
+Vedd le a fogaddal a másik alsóneműjét.
+Nyald végig a másik testét a nyakától a köldöke aláig.
+Nyúlj magadhoz a ruhádon keresztül fél percig, miközben a másik néz.
+Lovagolj a másik ölében egy percig, ruhában.
+Vetkőzz meztelenre, és maradj így a következő három körben.
+Nyögd el hangosan, ahogy elélvezel.
+Csókold és nyald a másik combjának belső oldalát egy percig.
+Mondd el szó szerint, hogyan nyalnád ki vagy szopnád le.
+Markold meg a másik seggét, és paskold meg háromszor.
+Harapj bele a másik fenekébe.
+Küldj a másiknak egy meztelen képet magadról, és nézze meg most rögtön.
+A másik egy percig bárhol megérinthet, ahol akar, ruha nélkül.
+Kösd be a másik szemét, és két percig csak a nyelved érhet hozzá.
+Helyezkedj el abban a pózban, amiben a legszívesebben dugnál most.
+Vetkőztessétek le egymást teljesen egy perc alatt.
+Szívj ki egy foltot a másik mellén vagy combján.
+Simogasd egy percig a másik lába közét, ruhán keresztül.
+Nézz a másik szemébe, és mondd: „Most azonnal meg akarlak baszni.”
+A következő kört a másik ölében, meztelenül játszod.
+Szopd meg lassan a másik ujjait, és közben nézz a szemébe.
+Kenj valamit a másik bőrére, és nyald le róla.
+A másik dönti el, mit veszel le, és hogyan mutatod meg magad neki.
+Kényeztesd a másikat a száddal ott, ahol ő kéri, két teljes percig.`)});
+ P.match.push({id:'wishlist',name:'Mocskos kívánságlista · 18+',adult:true,items:L(`69 egészen az elélvezésig
+Elélvezés az arcomra
+Szájba élvezés és lenyelés
+Anális szex lassan, sok síkosítóval
+Kikötözve, teljesen kiszolgáltatva, stopszóval
+Fenékpaskolás, amíg ki nem pirul
+Hajhúzás dugás közben
+Egy éjszaka, amikor az egyikünk a másik szexrabszolgája, stopszóval
+Szexvideó felvétele és közös visszanézése
+Vibrátor, amíg többször el nem élvezek
+Közös pornónézés, aztán ugyanazt csináljuk
+Önkielégítés egymás előtt, végig szemkontaktussal
+Dugásmaraton reggelig
+Gyors dugás a konyhapulton, félig felöltözve
+Mocskos beszéd és káromkodás az egész idő alatt
+Szerepjáték: két idegen, akik egy bárban szedik fel egymást
+Meztelen képek cseréje napközben
+Popsidugó egész este, aztán anális játék
+Dugás a tükör előtt, végig nézve magunkat
+Elélvezni csak engedéllyel, könyörgésig húzva
+Fenekelés kézzel vagy lapáttal
+Ébresztés úgy, hogy már nyalnak
+Kézbilincs és szemkötő egyszerre
+Szerepcsere strap-onnal`)});
+ P.honest.push({id:'frank',name:'Szex, kertelés nélkül · 18+',adult:true,items:L(`Mit csinálok rosszul, amikor a számmal kényeztetlek? Mondd meg őszintén.
+Valójában mennyire durván szereted a szexet, és mit nem mertél még kérni?
+Milyen gyakran nyúlsz magadhoz, mivel, és mire gondolsz közben?
+Mi a legjobb érzés neked dugás közben, pontosan hol és hogyan?
+Melyik pózban érzed a legmélyebben, és miért kéred ritkán?
+Mennyire izgat az anál, és melyik oldalon?
+Hová szeretnéd, hogy élvezzek, és mi az, ami kiábrándít?
+Milyen mocskos szavakat akarsz hallani dugás közben? Mondd ki őket.
+Gondoltál már hármasra, vagy arra, hogy valaki néz minket? Mennyire komolyan?
+Milyen pornót nézel, és melyik jelenetet csinálnád meg velem?
+Mit csinált egy korábbi partnered jobban az ágyban, mint én?
+Megjátszottad már, hogy elélvezel? Velem is?
+Hol a legérzékenyebb a tested ott, ahol még nem nyaltalak elég sokáig?
+Szereted, ha leszorítalak, lefoglak és nem engedlek?
+Mit csinálnál velem, ha egy egész estére a szexrabszolgád lennék?
+Milyen szexjátékot rendelnénk ma este, ha holnapra kihoznák?
+Mikor indultál be tőlem a legjobban, és mit éreztél a testedben?
+Mitől lohad le a kedved dugás közben?
+Csinálnánk pornót magunkról? Mi kerülne bele, és hogyan vigyáznánk rá?
+Meddig kell kényeztetnem, hogy könyörögj?
+Milyen szavakat szeretsz a nemi szervedre, és melyiket utálod?
+Hányszor dugnál egy héten, ha semmi sem akadályozna?
+Mit csináljak veled gátlástalanabbul?
+Mi az a határ, amit akkor sem akarsz átlépni, ha nagyon be vagy indulva?`)});
 })();
