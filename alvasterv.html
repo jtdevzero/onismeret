@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="hu" data-page="alvasterv">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alvásterv — Önismereti térképek</title>
+<meta name="description" content="Alvásterv: alvásnapló, alváshatékonyság, személyre szabott alvásablak és esti menetrend az alvás-tesztjeid alapján. Minden adat csak ebben a böngészőben marad.">
+<link rel="stylesheet" href="fonts/fonts.css?v=50e1f8e3">
+<style>
+:root{
+  --bg-deep:#050d1e;--bg-card:#0f2038;--bg-card-hi:#152845;
+  --ink:#e6ecf5;--ink-soft:#a3b3c8;--ink-mute:#6b7c94;--line:#1e3255;--line-soft:#152845;
+  --gold:#fbbf24;--gold-soft:#78551a;--sapphire:#60a5fa;--rose:#fb7185;--emerald:#34d399;--violet:#a78bfa;
+  --font-serif:'Fraunces','Cardo',Georgia,serif;--font-sans:'Manrope','Inter','Helvetica Neue',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg-deep);color:var(--ink);font-family:var(--font-sans);font-size:16px;line-height:1.6;min-height:100vh}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+a{color:inherit}
+.wrap{max-width:1000px;margin:0 auto;padding:40px 24px 96px}
+.back{display:inline-flex;gap:8px;font-size:12px;color:var(--ink-mute);text-decoration:none;letter-spacing:.06em;margin-bottom:28px}
+.back:hover{color:var(--ink)}
+.kicker{display:inline-block;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:18px;padding:6px 16px;border:1px solid var(--gold-soft);border-radius:99px}
+h1{font-family:var(--font-serif);font-weight:400;font-size:clamp(34px,6vw,56px);line-height:1.05;letter-spacing:-0.02em;margin-bottom:16px}
+h1 em,h2 em{font-style:italic;color:var(--gold)}
+.lead{color:var(--ink-soft);font-size:16.5px;max-width:720px;margin-bottom:18px}
+h2{font-family:var(--font-serif);font-weight:400;font-size:28px;margin:52px 0 8px;letter-spacing:-0.01em}
+h3{font-family:var(--font-serif);font-weight:400;font-size:19px;margin-bottom:4px}
+.h2sub{color:var(--ink-mute);font-size:14px;margin-bottom:18px;max-width:720px}
+.statbar{display:flex;flex-wrap:wrap;gap:10px 26px;padding:18px 22px;border:1px solid var(--line);border-radius:16px;background:var(--bg-card);margin-bottom:18px;font-size:14px;color:var(--ink-soft)}
+.statbar strong{font-family:var(--font-serif);font-size:22px;color:var(--ink);font-weight:500;margin-right:6px}
+.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:14px}
+.btn{appearance:none;cursor:pointer;font:inherit;font-size:13.5px;font-weight:600;padding:9px 16px;border-radius:99px;border:1px solid var(--gold);background:color-mix(in srgb,var(--gold) 12%,transparent);color:var(--ink);white-space:nowrap;text-decoration:none;display:inline-block}
+.btn.ghost{border-color:var(--line);background:transparent;color:var(--ink-soft);font-weight:500}
+.btn.danger{border-color:color-mix(in srgb,var(--rose) 60%,transparent);background:transparent;color:var(--rose)}
+.btn.sm{font-size:12.5px;padding:6px 12px}
+.btn:hover{filter:brightness(1.08)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.msg{font-size:13.5px;color:var(--ink-soft)}
+.card{background:var(--bg-card);border:1px solid var(--line);border-radius:18px;padding:20px 22px;margin-bottom:12px;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--acc,var(--gold))}
+.empty{padding:22px;border:1px dashed var(--line);border-radius:18px;color:var(--ink-soft);font-size:15px;margin-bottom:14px}
+.empty a,.how a,.note a,.warn a,.remeasure a,.ins a{color:var(--gold)}
+.note{font-size:12.5px;color:var(--ink-mute);margin-top:48px;line-height:1.7;border-top:1px dashed var(--line);padding-top:20px}
+.note a{color:var(--sapphire)}
+.jump{position:sticky;top:0;z-index:5;display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding:10px 0;margin:8px 0 0;background:var(--bg-deep)}
+.jump a{flex:0 0 auto;font-size:13px;font-weight:600;text-decoration:none;padding:7px 14px;border-radius:99px;border:1px solid var(--line);color:var(--ink-soft)}
+.jump a:hover{border-color:var(--gold);color:var(--ink)}
+.how{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin:22px 0 4px}
+.how div{border:1px solid var(--line);border-radius:14px;padding:14px 16px;background:var(--bg-card);font-size:13.5px;color:var(--ink-soft)}
+.how b{display:block;color:var(--ink);font-family:var(--font-serif);font-weight:400;font-size:16.5px;margin-bottom:2px}
+.base{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:16px}
+.bs{border:1px solid var(--line);border-radius:14px;padding:14px 16px;background:var(--bg-card);position:relative;overflow:hidden}
+.bs::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--acc,var(--gold))}
+.bs .k{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mute);font-weight:700}
+.bs .v{font-family:var(--font-serif);font-size:26px;line-height:1.2}
+.bs .v small{font-size:14px;color:var(--ink-mute);font-family:var(--font-sans)}
+.bs .l{font-size:13px;color:var(--ink-soft)}
+.bs a{font-size:13px;color:var(--gold)}
+.bs .dl{font-size:12.5px;font-weight:600;margin-top:4px}
+.dl.up{color:var(--emerald)}.dl.down{color:var(--rose)}.dl.neu{color:var(--ink-mute)}
+.ins{list-style:none;display:grid;gap:8px;margin-bottom:18px}
+.ins li{border-left:3px solid var(--acc,var(--sapphire));padding:6px 0 6px 14px;color:var(--ink-soft);font-size:14.5px}
+.ins li b{color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 6px}
+.chip{appearance:none;cursor:pointer;font:inherit;font-size:13px;padding:6px 12px;border-radius:99px;border:1px solid var(--line);background:transparent;color:var(--ink-soft)}
+.chip.on{border-color:var(--gold);color:var(--ink);background:color-mix(in srgb,var(--gold) 14%,transparent)}
+.warn{border:1px solid color-mix(in srgb,var(--rose) 45%,transparent);border-radius:14px;padding:14px 16px;font-size:14px;color:var(--ink-soft);margin-bottom:16px}
+.remeasure{border:1px dashed var(--gold);border-radius:14px;padding:14px 16px;font-size:14px;color:var(--ink-soft);margin-bottom:16px}
+.fld{width:100%;margin-top:6px;background:var(--bg-deep);border:1px solid var(--line);border-radius:10px;padding:9px 12px;color:var(--ink);font:inherit;font-size:14px}
+textarea.fld{min-height:60px;resize:vertical}
+select.fld{appearance:auto}
+input[type=time].fld{color-scheme:dark}
+html[data-theme="light"] input[type=time].fld{color-scheme:light}
+.lbl{display:block;font-size:12.5px;color:var(--ink-mute);margin-top:12px}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:4px 14px}
+.form .full{grid-column:1/-1}
+.chk{display:flex;gap:8px;align-items:flex-start;font-size:14px;color:var(--ink-soft);margin-top:12px}
+.chk input{accent-color:var(--emerald);width:16px;height:16px;margin-top:3px;flex:0 0 auto}
+.saved{font-size:12.5px;color:var(--emerald);min-height:18px}
+.calc{font-size:13.5px;color:var(--ink-soft);margin-top:12px;padding:10px 14px;border-radius:12px;background:var(--bg-deep);border:1px solid var(--line)}
+.calc b{color:var(--ink)}
+/* ma este */
+.tonight{--acc:var(--violet)}
+.big{display:flex;flex-wrap:wrap;gap:12px 36px;margin:6px 0 4px}
+.big div{font-size:13px;color:var(--ink-mute)}
+.big b{display:block;font-family:var(--font-serif);font-weight:400;font-size:36px;line-height:1.1;color:var(--ink)}
+.tl{list-style:none;margin-top:14px;border-left:2px solid var(--line);padding-left:16px}
+.tl li{position:relative;padding:6px 0;font-size:14px;color:var(--ink-soft)}
+.tl li::before{content:'';position:absolute;left:-22px;top:13px;width:10px;height:10px;border-radius:50%;background:var(--bg-deep);border:2px solid var(--acc2,var(--sapphire))}
+.tl li b{display:inline-block;min-width:58px;color:var(--ink);font-variant-numeric:tabular-nums}
+/* grafikon */
+.bars{display:grid;grid-template-columns:repeat(14,1fr);gap:6px;align-items:end;height:170px;margin:10px 0 4px;position:relative;border-bottom:1px solid var(--line)}
+.bars .b{position:relative;height:100%;display:flex;align-items:flex-end}
+.bars .b span{display:block;width:100%;border-radius:6px 6px 2px 2px;background:var(--c,var(--line))}
+.bars .b.none span{height:4px;background:var(--line-soft)}
+.bars .goal{position:absolute;left:0;right:0;border-top:1px dashed var(--gold);pointer-events:none}
+.bars .goal i{position:absolute;right:0;top:-18px;font-size:11px;font-style:normal;color:var(--gold)}
+.days{display:grid;grid-template-columns:repeat(14,1fr);gap:6px;font-size:10.5px;color:var(--ink-mute);text-align:center}
+.days .today{color:var(--gold);font-weight:700}
+.legend{font-size:12px;color:var(--ink-mute);margin-top:6px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin:0 4px 0 10px;vertical-align:-1px}
+table.fac{width:100%;border-collapse:collapse;font-size:14px;margin-top:6px}
+.fac th,.fac td{text-align:left;padding:8px 6px;border-bottom:1px dashed var(--line);color:var(--ink-soft)}
+.fac th{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mute);font-weight:700}
+.fac td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+.fac .pos{color:var(--emerald);font-weight:600}.fac .neg{color:var(--rose);font-weight:600}
+.hist{list-style:none;margin-top:8px}
+.hist li{display:flex;flex-wrap:wrap;gap:4px 14px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:13.5px;color:var(--ink-soft)}
+.hist li b{color:var(--ink);min-width:96px}
+.hist button{margin-left:auto}
+@media (max-width:640px){.wrap{padding:28px 16px 64px}.jump a{font-size:12.5px;padding:6px 11px}h2{margin-top:40px}.card{padding:16px}.big b{font-size:30px}.bars{gap:3px;height:140px}.days{gap:3px;font-size:9.5px}.fac th:nth-child(4),.fac td:nth-child(4){display:none}}
+</style>
+<script src="assets/oni.js?v=604a0bdc"></script>
+<script src="assets/oni-schema.js?v=e9a9d9af" defer></script>
+<script src="assets/tests-data.js?v=972452a2" defer></script>
+<script src="assets/mely.js?v=394634ec" defer></script>
+<script src="assets/results-plus.js?v=1f96d0e0" defer></script>
+<link rel="stylesheet" href="assets/theme.css?v=9b667bcf">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#050d1e">
+<link rel="icon" type="image/png" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+</head>
+<body>
+<main id="main">
+<div class="wrap">
+  <a class="back" href="index.html">‹ Önismereti térképek</a>
+  <span class="kicker">Alvásterv</span>
+  <h1>Jobb alvás <em>rendszerességgel</em>, nem erőlködéssel</h1>
+  <p class="lead">A tesztek megmutatják, mennyire jól alszol. Ez az oldal abban segít, hogy javíts rajta: vezetsz egy rövid reggeli alvásnaplót, kiszámolja az alváshatékonyságodat, ad egy személyre szabott alvásablakot és esti menetrendet, és megmutatja, mi segít neked és mi ront. 4 hét után újraméred, és látod, mi változott.</p>
+  <div class="how">
+    <div><b>Rögzített kelés</b>A belső órát a reggeli kelés és a reggeli fény állítja be a legerősebben. Minden nap ugyanakkor kelj, hétvégén is.</div>
+    <div><b>Alvásnyomás</b>Minél tovább vagy ébren, annál mélyebb az alvás. Ha túl sokat fekszel ágyban, az alvás felhígul és töredezik.</div>
+    <div><b>Az ágy az alvásé</b>Ha 20 perc után sem jön az álom, kelj fel, és csak álmosan feküdj vissza. Így az ágy újra az elalvással kapcsolódik össze.</div>
+    <div><b>Mérés, nem érzés</b>Reggel két perc a napló. Két hét után kiderül, mi valóban számít nálad: a koffein, a képernyő vagy a késő este.</div>
+  </div>
+  <nav class="jump" aria-label="Szakaszok"><a href="#terv">1 · Terv</a><a href="#ma">2 · Ma este</a><a href="#naplo">3 · Alvásnapló</a><a href="#elemzes">4 · Elemzés</a></nav>
+
+  <section id="terv"><h2>Személyre szabott <em>terv</em></h2><div id="plan"></div></section>
+  <section id="ma"><h2>Ma <em>este</em></h2><div id="tonight"></div></section>
+  <section id="naplo"><h2>Alvás<em>napló</em></h2><div id="diary"></div></section>
+  <section id="elemzes"><h2>Mi <em>segít</em> neked</h2><div id="stats"></div></section>
+
+  <p class="note">Mire épül: az álmatlanság kognitív viselkedésterápiája (CBT-I), amely az alvászavar első választandó kezelése az európai (ESRS 2023) és az amerikai (AASM 2021) ajánlás szerint is: alvásnapló, alvásablak (alvásrestrikció), ingerkontroll és alváshigiénia. A napló a Consensus Sleep Diary (Carney és mtsai, 2012) egyszerűsített változata. A társas jet-lag számítása Roenneberg és munkatársai nyomán. Az alvásablak itt óvatosabb a klinikai protokollnál (legalább 5,5 óra), de ez is önsegítő eszköz, nem kezelés: tartós álmatlanság, horkolás, légzéskimaradás vagy erős nappali álmosság esetén fordulj orvoshoz. A terv az <a href="alvas.html">alvás-tesztek</a> és a <a href="cselekves.html#test-meq">kronotípus-teszt</a> legutóbbi eredményéből készül. Minden adat csak ebben a böngészőben marad, és benne van a főoldali mentésben.</p>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  var K='onismeret-alvasterv-v1';
+  var esc=function(x){return String(x==null?'':x).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+  var fmt=function(t){return new Date(t).toLocaleDateString('hu-HU',{year:'numeric',month:'short',day:'numeric'})};
+  var pad=function(n){return (n<10?'0':'')+n};
+  var dk=function(d){d=d||new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())};
+  var dayOf=function(k){var p=k.split('-');return new Date(+p[0],+p[1]-1,+p[2])};
+  var ago=function(n){var d=new Date();d.setDate(d.getDate()-n);return dk(d)};
+  var days=function(t){return Math.floor((Date.now()-new Date(t).getTime())/864e5)};
+  function get(){try{var v=JSON.parse(localStorage.getItem(K));return v&&typeof v==='object'&&!Array.isArray(v)?v:{}}catch(e){return {}}}
+  function put(v){try{localStorage.setItem(K,JSON.stringify(v));return true}catch(e){return false}}
+
+  /* ── időszámítás: percek éjfél óta, az éjfélen átnyúló szakaszokat körbeérve ── */
+  var TRE=/^([01]\d|2[0-3]):[0-5]\d$/;
+  var tm=function(s){return TRE.test(s||'')?+s.slice(0,2)*60+ +s.slice(3):null};
+  var hm=function(m){m=((Math.round(m)%1440)+1440)%1440;return pad(Math.floor(m/60))+':'+pad(m%60)};
+  var span=function(a,b){return ((b-a)%1440+1440)%1440};
+  var hrs=function(m){if(m==null)return '–';m=Math.round(m);return Math.floor(m/60)+' ó '+pad(m%60)+' p'};
+  var pct=function(x){return x==null?'–':Math.round(x*100)+'%'};
+  var r15=function(m){return Math.round(m/15)*15};
+  function night(e){
+    var bed=tm(e.bed),off=tm(e.off),wake=tm(e.wake),up=tm(e.up);if([bed,off,wake,up].indexOf(null)>-1)return null;
+    var tib=span(bed,up)||1440,toWake=span(off,wake),tst=Math.max(0,toWake-(e.lat||0)-(e.waso||0));
+    if(span(bed,off)>tib||toWake>tib)return null;   /* a sorrend nem stimmel: lefekvés ≤ lámpaoltás ≤ ébredés ≤ felkelés */
+    return {tib:tib,tst:tst,se:Math.min(1,tst/tib),mid:off+(e.lat||0)+(toWake-(e.lat||0))/2}}
+
+  var TESTS={
+    sci:{n:'Alvásminőség',s:'SCI',min:0,max:32,dir:1,link:'alvas.html#test-sci',band:function(v){return v<=16?'valószínű álmatlanság':v<=24?'közepes alvásproblémák':'jó alvás'}},
+    ess:{n:'Nappali álmosság',s:'Epworth',min:0,max:24,dir:-1,link:'alvas.html#test-ess',band:function(v){return v>=16?'súlyos':v>=13?'közepes':v>=11?'enyhe':'normál tartomány'}},
+    meq:{n:'Kronotípus',s:'MEQ',min:16,max:86,dir:0,link:'cselekves.html#test-meq',band:function(v){return v>=70?'határozottan reggeli':v>=59?'mérsékelten reggeli':v>=42?'köztes':v>=31?'mérsékelten esti':'határozottan esti'}}};
+  var TK=Object.keys(TESTS),ACC={sci:'var(--sapphire)',ess:'var(--rose)',meq:'var(--violet)'};
+  var FAC={caf:{n:'Koffein 14 óra után',bad:1},alc:{n:'Alkohol este',bad:1},scr:{n:'Képernyő a lefekvés előtti órában',bad:1},late:{n:'Nagy vacsora 3 órán belül',bad:1},
+    stress:{n:'Feszült, pörgős este',bad:1},nap:{n:'Délutáni szundi',bad:1},ex:{n:'Mozgás napközben',bad:0},light:{n:'Reggeli fény (15+ perc kint)',bad:0},wind:{n:'Levezetés lefekvés előtt',bad:0}};
+  var FK=Object.keys(FAC);
+  var MIN_WIN=330,MAX_WIN=540;
+
+  /* ── eredmények ── */
+  var store=window.ONI&&ONI.all?ONI.all():{};
+  function latest(id){var h=store[id];return Array.isArray(h)&&h.length?h[h.length-1]:null}
+  function dv(r){return r&&r.d&&r.d.total&&typeof r.d.total[1]==='number'?r.d.total[1]:null}
+  function snapshot(){var b={};TK.forEach(function(id){b[id]=dv(latest(id))});return b}
+
+  var st=get();
+  function log(){return st.log||{}}
+  function entries(from,to){var L=log();return Object.keys(L).filter(function(k){return k>=from&&k<=to}).sort().map(function(k){return {k:k,e:L[k],n:night(L[k])}}).filter(function(x){return x.n})}
+  function avg(a,f){var v=a.map(f).filter(function(x){return x!=null});return v.length?v.reduce(function(s,x){return s+x},0)/v.length:null}
+  function week(){var w=entries(ago(6),dk());return {n:w.length,tst:avg(w,function(x){return x.n.tst}),se:avg(w,function(x){return x.n.se}),lat:avg(w,function(x){return x.e.lat}),waso:avg(w,function(x){return x.e.waso})}}
+  /* esti oldali kronotípus és korai kelés: a terv figyelmeztet a társas jet-lagra */
+  function lastAdj(p){return p.adj&&p.adj.length?p.adj[p.adj.length-1].t:p.start}
+  function bedtime(p){return tm(p.wake)-(p.mode==='ablak'&&p.win?p.win:p.need)}
+  function proposal(p){
+    if(p.mode!=='ablak'||!p.win)return null;var w=week();if(w.n<5||days(lastAdj(p))<7)return {wait:true,w:w,left:Math.max(0,7-days(lastAdj(p))),need:Math.max(0,5-w.n)};
+    var nw=w.se>=0.9?p.win+15:w.se<0.85?p.win-15:p.win;nw=Math.max(MIN_WIN,Math.min(MAX_WIN,Math.min(nw,Math.max(p.need,p.win))));
+    return {w:w,win:nw}}
+
+  /* ── 1. terv ── */
+  function delta(id,a,b){if(a==null||b==null)return '';var d=Math.round((b-a)*100)/100,t=TESTS[id];
+    if(Math.abs(d)<(t.max-t.min)*0.03)return '<div class="dl neu">Lényegében változatlan ('+(d>0?'+':'')+d+')</div>';
+    var good=d*t.dir>0;return '<div class="dl '+(good?'up':'down')+'">'+(d>0?'+':'')+d+' a kezdéshez képest · '+(good?'kedvező irány':'kedvezőtlen irány')+'</div>'}
+  function insights(b){
+    var out=[];
+    if(b.sci!=null)out.push({c:ACC.sci,h:b.sci<=16?'Az alvásod az álmatlanság mintáját mutatja.':b.sci<=24?'Vannak alvásproblémáid, de nem minden éjszaka.':'Jól alszol.',
+      t:b.sci<=24?'Ilyenkor az alvásnapló és az alvásablak a leghatékonyabb önsegítő módszer: kevesebb idő ágyban, de tömörebb, mélyebb alvás.':'A cél itt a rendszeresség megtartása és a finomhangolás: a napló megmutatja, mi ront rajta.'});
+    if(b.ess!=null)out.push({c:ACC.ess,h:b.ess>=11?'Napközben a szokásosnál álmosabb vagy.':'A nappali éberséged rendben van.',
+      t:b.ess>=11?'Ezért az alvásablakot (az ágyban töltött idő szűkítését) most nem javasoljuk: rövid távon tovább növelné az álmosságot.':'Ha az alvásod töredezett, biztonságosan kipróbálhatod az alvásablakot.'});
+    if(b.meq!=null)out.push({c:ACC.meq,h:'Kronotípus: '+TESTS.meq.band(b.meq)+'.',
+      t:b.meq<42?'Az esti típusnak a túl korai lefekvés nem segít: inkább a kelés legyen rögzített, és reggel menj ki a fényre, ez hozza előrébb a belső órát.':b.meq>=59?'A reggeli típusnak a korai lefekvés természetes. A késő esti programok utáni korai ébredés a gyakori csapda.':'Rugalmas a belső órád: a rendszeresség a legfontosabb.'});
+    return out}
+  function needOpts(sel){var h='';for(var m=360;m<=570;m+=30)h+='<option value="'+m+'"'+(m===sel?' selected':'')+'>'+hrs(m).replace(' 00 p','')+'</option>';return h}
+  function renderPlan(){
+    var el=document.getElementById('plan'),p=st.plan,b=p?p.base:snapshot(),any=TK.some(function(id){return latest(id)}),h='';
+    if(p){var d=days(p.start),newer=['sci','ess'].filter(function(id){var r=latest(id);return r&&Date.parse(r.t)>Date.parse(p.start)});
+      h+='<div class="statbar"><span><strong>'+d+'</strong> napja tart a terv</span><span>Kelés: <strong>'+esc(p.wake)+'</strong></span><span>'+(p.mode==='ablak'?'Alvásablak: <strong>'+hrs(p.win)+'</strong>':'Alvásigény: <strong>'+hrs(p.need)+'</strong>')+'</span><span>Kezdés: '+fmt(p.start)+'</span></div>';
+      if(d>=28&&newer.length<2)h+='<div class="remeasure"><strong>Ideje újramérni.</strong> Eltelt '+d+' nap. Töltsd ki újra, és itt látod, mi mozdult: '+['sci','ess'].filter(function(id){return newer.indexOf(id)<0}).map(function(id){return '<a href="'+TESTS[id].link+'">'+esc(TESTS[id].n)+'</a>'}).join(' · ')+'</div>';
+      else if(d<28)h+='<p class="h2sub">Újramérés '+(28-d)+' nap múlva javasolt. Az alvásablak első 1–2 hetében az álmosság gyakran nő, utána javul az alvás minősége.</p>';
+      h+='<div class="base">'+['sci','ess'].map(function(id){var t=TESTS[id],v0=p.base[id],r=newer.indexOf(id)>-1?latest(id):null,v1=r?dv(r):null;
+        return '<div class="bs" style="--acc:'+ACC[id]+'"><div class="k">'+esc(t.s)+'</div><div class="v">'+(v1!=null?v1:v0!=null?v0:'–')+' <small>/ '+t.max+'</small></div><div class="l">'+esc(t.n)+(v0!=null?' · kezdéskor '+v0:'')+'</div>'+(v1!=null?delta(id,v0,v1):v0==null?'<a href="'+t.link+'">Nem volt kitöltve</a>':'')+'</div>'}).join('')+'</div>';
+      h+='<div class="tools"><a class="btn" href="#naplo">Mai napló</a><button type="button" class="btn ghost" id="pl-reset">Terv módosítása</button></div>';
+      el.innerHTML=h;
+      document.getElementById('pl-reset').addEventListener('click',function(){if(!confirm('Új tervet állítasz be? A napló megmarad, csak a kelési idő, a mód és a kiindulópont változik.'))return;
+        delete st.plan;put(st);store=window.ONI&&ONI.all?ONI.all():store;renderAll();});
+      return;
+    }
+    if(!any)h+='<div class="empty">Még nincs kitöltve egyik <a href="alvas.html">alvás-teszt</a> sem. Érdemes előbb az alvásminőséget (SCI) és a nappali álmosságot (Epworth) kitölteni (kb. 4 perc), és ha van kedved, a <a href="cselekves.html#test-meq">kronotípust</a> is. Így a terv a te eredményeidre épül, és 4 hét után látod a változást. Addig is elindulhatsz.</div>';
+    else{
+      h+='<div class="base">'+TK.map(function(id){var t=TESTS[id],v=b[id];
+        return '<div class="bs" style="--acc:'+ACC[id]+'"><div class="k">'+esc(t.s)+'</div>'+(v!=null?'<div class="v">'+v+' <small>/ '+t.max+'</small></div><div class="l">'+esc(t.n)+': '+t.band(v)+'</div>':'<div class="v">–</div><div class="l">'+esc(t.n)+'</div><a href="'+t.link+'">Kitöltöm</a>')+'</div>'}).join('')+'</div>';
+      h+='<ul class="ins">'+insights(b).map(function(x){return '<li style="--acc:'+x.c+'"><b>'+esc(x.h)+'</b> '+esc(x.t)+'</li>'}).join('')+'</ul>';
+    }
+    if(b.ess!=null&&b.ess>=16)h+='<div class="warn"><strong>Erős nappali álmosság.</strong> Ez állhat alvási apnoé, narkolepszia vagy más kezelhető alvászavar hátterében. Érdemes háziorvossal vagy alvásklinikával beszélni, és addig ne vezess álmosan.</div>';
+    else if(b.sci!=null&&b.sci<=16)h+='<div class="warn">Ha az álmatlanság hónapok óta tart, a CBT-I szakemberrel (vagy validált digitális programmal) a leghatékonyabb. Ez az oldal jó kezdés, de nem helyettesíti. Horkolás, légzéskimaradás vagy nyugtalan láb esetén először orvoshoz fordulj.</div>';
+    var w=week(),essOk=b.ess==null||b.ess<11,ready=w.n>=5,suggest=b.sci!=null&&b.sci<=24&&essOk&&ready&&w.se!=null&&w.se<0.85;
+    h+='<div class="card" style="--acc:var(--violet)"><h3>Beállítás</h3><div class="form">'+
+      '<div><label class="lbl" for="pl-wake">Rögzített kelés (minden nap)</label><input class="fld" type="time" id="pl-wake" value="07:00"></div>'+
+      '<div><label class="lbl" for="pl-need">Alvásigényed (becslés)</label><select class="fld" id="pl-need">'+needOpts(450)+'</select></div></div>'+
+      '<div class="lbl">Mód</div><div class="chips" id="pl-mode"><button type="button" class="chip on" aria-pressed="true" data-m="rutin">Rendszeres ritmus</button><button type="button" class="chip" aria-pressed="false" data-m="ablak"'+(essOk?'':' disabled')+'>Alvásablak (CBT-I)</button></div>'+
+      '<p class="h2sub" id="pl-mdesc"></p>'+
+      '<div id="pl-ablak" hidden>'+
+        (essOk?'':'<div class="warn">Az Epworth-pontszámod alapján most nem javasoljuk.</div>')+
+        (ready?'<div class="calc">Az elmúlt 7 nap naplója ('+w.n+' éjszaka): átlagosan <b>'+hrs(w.tst)+'</b> alvás, alváshatékonyság <b>'+pct(w.se)+'</b>. Az induló ablak: <b>'+hrs(Math.max(MIN_WIN,r15(w.tst)))+'</b>.</div>':'<div class="calc">Az alvásablakhoz előbb <b>legalább 5 éjszakát</b> rögzíts a naplóban (most '+w.n+'). Addig indulj rendszeres ritmussal, és egy hét múlva válts.</div>')+
+        '<label class="chk"><input type="checkbox" id="pl-safe"> Nincs kezeletlen alvási apnoém, bipoláris zavarom vagy epilepsziám, nem vagyok várandós, és nem vezetek hivatásszerűen. (Ezekben az esetekben az alvásablak csak orvosi felügyelettel ajánlott.)</label>'+
+      '</div>'+
+      (suggest?'<p class="h2sub" style="margin-top:10px">A naplód alapján az alvásablak illik hozzád: a hatékonyságod '+pct(w.se)+', a cél legalább 85%.</p>':'')+
+      '<div class="tools"><button type="button" class="btn" id="pl-start">Indul a terv</button><span class="msg" id="pl-msg" aria-live="polite"></span></div></div>';
+    el.innerHTML=h;
+    var mode='rutin',DESC={rutin:'Minden nap ugyanakkor kelsz, és a kelés előtt az alvásigényednek megfelelő idővel fekszel le, ha álmos vagy. Enyhe alvásproblémákra és megelőzésre ez a legjobb.',
+      ablak:'Csak annyi időt töltesz ágyban, amennyit ténylegesen alszol (legalább 5,5 órát). Ha egy héten át 90% fölött van a hatékonyság, 15 perccel bővül; 85% alatt 15 perccel szűkül. Az álmatlanság leghatékonyabb önsegítő eleme.'};
+    var setMode=function(m){mode=m;el.querySelectorAll('#pl-mode .chip').forEach(function(c){var on=c.getAttribute('data-m')===m;c.classList.toggle('on',on);c.setAttribute('aria-pressed',on)});
+      document.getElementById('pl-mdesc').textContent=DESC[m];document.getElementById('pl-ablak').hidden=m!=='ablak'};
+    setMode('rutin');
+    el.querySelectorAll('#pl-mode .chip').forEach(function(c){c.addEventListener('click',function(){if(!c.disabled)setMode(c.getAttribute('data-m'))})});
+    document.getElementById('pl-start').addEventListener('click',function(){
+      var m=document.getElementById('pl-msg'),wake=document.getElementById('pl-wake').value,need=+document.getElementById('pl-need').value;
+      if(!TRE.test(wake)){m.textContent='Add meg a kelési időt (óó:pp).';return;}
+      var plan={start:new Date().toISOString(),wake:wake,need:need,mode:mode,base:snapshot()};
+      if(mode==='ablak'){
+        if(!essOk){m.textContent='Az alvásablak erős nappali álmossággal nem javasolt.';return;}
+        if(!ready){m.textContent='Előbb rögzíts legalább 5 éjszakát a naplóban.';return;}
+        if(!document.getElementById('pl-safe').checked){m.textContent='Az alvásablakhoz erősítsd meg, hogy egyik kizáró ok sem áll fenn.';return;}
+        plan.win=Math.min(MAX_WIN,Math.max(MIN_WIN,r15(w.tst)));plan.adj=[];}
+      st=get();st.plan=plan;
+      if(!put(st)){m.textContent='Nem sikerült menteni ezen az eszközön.';return;}
+      renderAll();document.getElementById('ma').scrollIntoView();});
+  }
+
+  /* ── 2. ma este ── */
+  function renderTonight(){
+    var el=document.getElementById('tonight'),p=st.plan,h='';
+    if(!p){el.innerHTML='<div class="empty">A terv elindítása után itt látod, mikor feküdj le, és mikor mi legyen az utolsó kávé, vacsora, képernyő.</div>';return;}
+    var B=bedtime(p),W=tm(p.wake),ab=p.mode==='ablak';
+    h+='<div class="card tonight"><div class="big"><div>'+(ab?'Lefekvés legkorábban':'Lefekvés')+'<b>'+hm(B)+'</b></div><div>Kelés<b>'+esc(p.wake)+'</b></div><div>'+(ab?'Alvásablak':'Ágyban')+'<b>'+hrs(ab?p.win:p.need)+'</b></div></div>';
+    h+='<p class="h2sub" style="margin:6px 0 0">'+(ab?'Ennél korábban ne feküdj le akkor sem, ha fáradt vagy: az alvásnyomás most a szövetséged. Később lehet, ha még nem vagy álmos.':'Csak akkor feküdj le, ha álmos vagy. Ha 20 perc után sem jön az álom, kelj fel, csinálj valami nyugodtat félhomályban, és álmosan feküdj vissza.')+'</p>';
+    var T=[[B-480,'Utolsó kávé, energiaital, fekete vagy zöld tea','A koffein felezési ideje 5–6 óra: este is a szervezetedben van, és csökkenti a mélyalvást.','var(--gold)'],
+      [B-180,'Utolsó nagy étkezés és alkohol, intenzív edzés vége','Az alkohol elaltat, de az éjszaka második felében töredezett, felszínes alvást okoz.','var(--rose)'],
+      [B-60,'Képernyők le, fények tompítása','Az erős, kékes fény késlelteti a melatonin esti emelkedését. A tompa, meleg fény segít.','var(--violet)'],
+      [B-30,'Levezetés: zuhany, olvasás, holnapi teendők leírása','A teendőlista leírása csökkenti az elalvás előtti pörgést; a langyos zuhany utáni lehűlés álmosít.','var(--sapphire)'],
+      [B,'Lefekvés, '+(ab?'de csak ha álmos vagy':'ha álmos vagy'),'Az ágy csak alvásra (és szexre) való: telefon, munka, sorozat máshol.','var(--emerald)'],
+      [W,'Kelés, minden nap ugyanekkor','Az első órában 15–30 perc kinti fény a legerősebb jel a belső órának. Felhős időben is többszöröse a beltérinek.','var(--gold)']];
+    h+='<ul class="tl">'+T.map(function(x){return '<li style="--acc2:'+x[3]+'"><b>'+hm(x[0])+'</b> '+esc(x[1])+'<br><span style="font-size:13px;color:var(--ink-mute)">'+esc(x[2])+'</span></li>'}).join('')+'</ul></div>';
+    var b=p.base;
+    if(b.meq!=null&&b.meq<42&&W<=390)h+='<ul class="ins"><li style="--acc:var(--violet)"><b>Esti kronotípus és korai kelés:</b> a belső órád később jár, mint a kelésed. A reggeli fény és a hétvégén is tartott kelési idő fokozatosan előrébb hozza; a hétvégi hosszú alvás visszaállítja a késést.</li></ul>';
+    var pr=proposal(p);
+    if(pr&&!pr.wait){var same=pr.win===p.win;
+      h+='<div class="remeasure"><strong>Heti beállítás.</strong> Az elmúlt hét: '+pr.w.n+' éjszaka, átlagosan '+hrs(pr.w.tst)+' alvás, hatékonyság '+pct(pr.w.se)+'. '+
+        (pr.w.se>=0.9?'90% fölött: az ablak 15 perccel bővülhet':pr.w.se<0.85?'85% alatt: az ablak 15 perccel szűkül':'85–90% között: az ablak marad')+(same&&pr.w.se>=0.9?' (elérted az alvásigényed vagy a felső határt, marad)':'')+(same&&pr.w.se<0.85?' (elérted az 5,5 órás alsó határt, marad)':'')+'.'+
+        '<div class="tools"><button type="button" class="btn sm" id="tn-adj">'+(same?'Rendben, marad '+hrs(p.win):'Új ablak: '+hrs(pr.win)+' (lefekvés '+hm(W-pr.win)+')')+'</button></div></div>';}
+    else if(pr&&pr.wait)h+='<p class="h2sub">Következő heti beállítás: '+(pr.left?pr.left+' nap múlva':'ha meglesz az adat')+(pr.need?', és még '+pr.need+' éjszaka kell a naplóba az elmúlt 7 napból':'')+'.</p>';
+    if(ab&&p.adj&&p.adj.length)h+='<details><summary class="lbl" style="cursor:pointer">Az ablak története ('+p.adj.length+')</summary><ul class="hist">'+p.adj.slice().reverse().map(function(a){return '<li><b>'+fmt(a.t)+'</b> '+hrs(a.win)+' · előző heti hatékonyság '+pct(a.se)+'</li>'}).join('')+'</ul></details>';
+    el.innerHTML=h;
+    var a=document.getElementById('tn-adj');if(a)a.addEventListener('click',function(){st=get();if(!st.plan)return;var q=proposal(st.plan);if(!q||q.wait)return;
+      st.plan.adj=(st.plan.adj||[]).concat([{t:new Date().toISOString(),win:q.win,se:Math.round(q.w.se*1000)/1000}]).slice(-60);st.plan.win=q.win;put(st);renderAll();});
+  }
+
+  /* ── 3. napló ── */
+  var selDay=null;
+  function defaults(){var L=log(),ks=Object.keys(L).sort(),last=ks.length?L[ks[ks.length-1]]:null,p=st.plan;
+    if(last)return {bed:last.bed,off:last.off,lat:last.lat,waso:last.waso,wake:last.wake,up:last.up,q:3,f:[]};
+    var W=p?tm(p.wake):420,B=p?bedtime(p):W-450;return {bed:hm(B-15),off:hm(B),lat:15,waso:10,wake:hm(W),up:hm(W+10),q:3,f:[]}}
+  function clean(e){var o={bed:e.bed,off:e.off,wake:e.wake,up:e.up,lat:Math.max(0,Math.min(720,Math.round(+e.lat||0))),waso:Math.max(0,Math.min(720,Math.round(+e.waso||0))),q:Math.max(1,Math.min(5,Math.round(+e.q||3))),
+      f:(e.f||[]).filter(function(x,i,a){return FAC[x]&&a.indexOf(x)===i})};
+    if((e.note||'').trim())o.note=String(e.note).slice(0,500);return o}
+  function renderDiary(){
+    var el=document.getElementById('diary'),L=log(),today=dk();selDay=selDay||today;
+    var e=L[selDay]?JSON.parse(JSON.stringify(L[selDay])):defaults(),has=!!L[selDay];
+    var opts='';for(var i=0;i<14;i++){var k=ago(i);opts+='<option value="'+k+'"'+(k===selDay?' selected':'')+'>'+(i===0?'Ma reggel':i===1?'Tegnap reggel':esc(dayOf(k).toLocaleDateString('hu-HU',{month:'short',day:'numeric',weekday:'short'})))+(L[k]?' ✓':'')+'</option>';}
+    var h='<p class="h2sub">Reggel, felkelés után töltsd ki, az előző éjszakáról. Becslés elég, ne nézd az órát éjjel: az óranézés maga is ébren tart.</p>';
+    h+='<div class="card" style="--acc:var(--sapphire)"><div class="form">'+
+      '<div class="full"><label class="lbl" for="dy-day">Melyik reggel?</label><select class="fld" id="dy-day">'+opts+'</select></div>'+
+      '<div><label class="lbl" for="dy-bed">Ágyba feküdtem</label><input class="fld" type="time" id="dy-bed" value="'+esc(e.bed)+'"></div>'+
+      '<div><label class="lbl" for="dy-off">Próbáltam elaludni (lámpaoltás)</label><input class="fld" type="time" id="dy-off" value="'+esc(e.off)+'"></div>'+
+      '<div><label class="lbl" for="dy-lat">Elalvás kb. (perc)</label><input class="fld" type="number" min="0" max="720" step="5" id="dy-lat" value="'+esc(e.lat)+'"></div>'+
+      '<div><label class="lbl" for="dy-waso">Éjjel ébren összesen (perc)</label><input class="fld" type="number" min="0" max="720" step="5" id="dy-waso" value="'+esc(e.waso)+'"></div>'+
+      '<div><label class="lbl" for="dy-wake">Végső ébredés</label><input class="fld" type="time" id="dy-wake" value="'+esc(e.wake)+'"></div>'+
+      '<div><label class="lbl" for="dy-up">Felkeltem az ágyból</label><input class="fld" type="time" id="dy-up" value="'+esc(e.up)+'"></div></div>'+
+      '<div class="lbl">Mennyire volt pihentető? (1 = nagyon rossz, 5 = nagyon jó)</div><div class="chips" id="dy-q">'+[1,2,3,4,5].map(function(n){return '<button type="button" class="chip'+(e.q===n?' on':'')+'" aria-pressed="'+(e.q===n)+'" data-q="'+n+'">'+n+'</button>'}).join('')+'</div>'+
+      '<div class="lbl">Előző nap és este (jelöld, ami igaz)</div><div class="chips" id="dy-f">'+FK.map(function(f){var on=(e.f||[]).indexOf(f)>-1;return '<button type="button" class="chip'+(on?' on':'')+'" aria-pressed="'+on+'" data-f="'+f+'">'+esc(FAC[f].n)+'</button>'}).join('')+'</div>'+
+      '<label class="lbl" for="dy-note">Megjegyzés (nem kötelező)</label><textarea class="fld" id="dy-note" maxlength="500" placeholder="pl. zajos szomszéd, késő esti megbeszélés, gyógyszer">'+esc(e.note||'')+'</textarea>'+
+      '<div class="calc" id="dy-calc"></div>'+
+      '<div class="tools"><button type="button" class="btn" id="dy-save">'+(has?'Módosítom':'Mentés')+'</button>'+(has?'<button type="button" class="btn sm danger" id="dy-del">Törlöm ezt a napot</button>':'')+'<span class="saved" id="dy-saved" aria-live="polite"></span></div></div>';
+    el.innerHTML=h;
+    var read=function(){['bed','off','wake','up'].forEach(function(f){e[f]=document.getElementById('dy-'+f).value});e.lat=+document.getElementById('dy-lat').value||0;e.waso=+document.getElementById('dy-waso').value||0;e.note=document.getElementById('dy-note').value;return e};
+    var calc=function(){var n=night(read()),c=document.getElementById('dy-calc');
+      c.innerHTML=n?'Alvás: <b>'+hrs(n.tst)+'</b> · ágyban: <b>'+hrs(n.tib)+'</b> · alváshatékonyság: <b>'+pct(n.se)+'</b>'+(n.se<0.85?' <span style="color:var(--ink-mute)">(cél: 85% fölött)</span>':''):'Az időpontok sorrendje: ágyba fekvés → lámpaoltás → ébredés → felkelés. Az elalvás és az éjszakai ébrenlét együtt nem lehet több a lámpaoltás és az ébredés közti időnél.';return n};
+    calc();
+    el.querySelectorAll('input,textarea').forEach(function(i){i.addEventListener('input',calc)});
+    document.getElementById('dy-day').addEventListener('change',function(ev){selDay=ev.target.value;renderDiary()});
+    el.querySelectorAll('#dy-q .chip').forEach(function(c){c.addEventListener('click',function(){e.q=+c.getAttribute('data-q');el.querySelectorAll('#dy-q .chip').forEach(function(x){var on=x===c;x.classList.toggle('on',on);x.setAttribute('aria-pressed',on)})})});
+    el.querySelectorAll('#dy-f .chip').forEach(function(c){c.addEventListener('click',function(){var f=c.getAttribute('data-f');e.f=e.f||[];var i=e.f.indexOf(f);if(i>-1)e.f.splice(i,1);else e.f.push(f);c.classList.toggle('on',i<0);c.setAttribute('aria-pressed',i<0)})});
+    document.getElementById('dy-save').addEventListener('click',function(){var s=document.getElementById('dy-saved'),n=calc();
+      if(!n||(e.lat+e.waso)>span(tm(e.off),tm(e.wake))){s.style.color='var(--rose)';s.textContent='Ellenőrizd az időpontokat (lásd fent).';return;}
+      st=get();st.log=st.log||{};st.log[selDay]=clean(e);var ks=Object.keys(st.log).sort();while(ks.length>400)delete st.log[ks.shift()];
+      if(!put(st)){s.style.color='var(--rose)';s.textContent='Nem sikerült menteni ezen az eszközön.';return;}
+      renderAll();var s2=document.getElementById('dy-saved');if(s2)s2.textContent='Mentve';});
+    var del=document.getElementById('dy-del');if(del)del.addEventListener('click',function(){if(!confirm('Törlöd ennek a reggelnek a bejegyzését?'))return;st=get();if(st.log)delete st.log[selDay];put(st);renderAll();});
+  }
+
+  /* ── 4. elemzés ── */
+  function sd(a){if(a.length<2)return null;var m=avg(a,function(x){return x});return Math.sqrt(a.reduce(function(s,x){return s+(x-m)*(x-m)},0)/(a.length-1))}
+  /* a déltől délig tartó skálán átlagolunk, hogy az éjfél körüli időpontok ne essenek szét */
+  var fromNoon=function(m){return ((m-720)%1440+1440)%1440};
+  function renderStats(){
+    var el=document.getElementById('stats'),all=entries('0000-00-00',dk()),p=st.plan,h='';
+    if(all.length<3){el.innerHTML='<div class="empty">'+(all.length?'Már '+all.length+' éjszaka van a naplóban. ':'')+'Legalább 3 éjszaka után itt látod az alvásidőd és a hatékonyságod alakulását, 2 hét után pedig azt is, mi segít és mi ront nálad.</div>';return;}
+    var w=week(),last14=entries(ago(13),dk()),wk=sd(last14.map(function(x){return fromNoon(tm(x.e.wake))}));
+    h+='<div class="statbar"><span><strong>'+all.length+'</strong> éjszaka a naplóban</span><span><strong>'+hrs(w.tst)+'</strong> átlagos alvás (7 nap)</span><span><strong>'+pct(w.se)+'</strong> hatékonyság</span><span><strong>'+(w.lat==null?'–':Math.round(w.lat)+' p')+'</strong> elalvás</span>'+(wk!=null?'<span><strong>±'+Math.round(wk)+' p</strong> kelési szórás (14 nap)</span>':'')+'</div>';
+    /* grafikon: 14 reggel, oszlopmagasság = alvásidő, szín = hatékonyság */
+    var L=log(),MAXH=600,goal=p?(p.mode==='ablak'&&p.win?p.win:p.need):null,bars='',lbl='';
+    for(var i=13;i>=0;i--){var k=ago(i),e=L[k],n=e?night(e):null,c=n?(n.se>=0.85?'var(--emerald)':n.se>=0.75?'var(--gold)':'var(--rose)'):'';
+      bars+='<div class="b'+(n?'':' none')+'" title="'+esc(k)+(n?': '+hrs(n.tst)+' alvás, '+pct(n.se):': nincs adat')+'"><span style="'+(n?'height:'+Math.max(3,Math.min(100,n.tst/MAXH*100))+'%;--c:'+c:'')+'"></span></div>';
+      lbl+='<span'+(i===0?' class="today"':'')+'>'+dayOf(k).getDate()+'</span>';}
+    var aria='Az elmúlt 14 reggel alvásideje: '+last14.length+' rögzített éjszaka, átlagosan '+hrs(avg(last14,function(x){return x.n.tst}));
+    h+='<h3>Az elmúlt 14 éjszaka</h3><div class="bars" role="img" aria-label="'+esc(aria)+'">'+bars+(goal?'<div class="goal" style="bottom:'+Math.min(100,goal/MAXH*100)+'%"><i>cél '+hrs(goal)+'</i></div>':'')+'</div><div class="days" aria-hidden="true">'+lbl+'</div>';
+    h+='<div class="legend">Oszlopmagasság: alvásidő (10 óráig). Hatékonyság:<i style="background:var(--emerald)"></i>85% fölött<i style="background:var(--gold)"></i>75–85%<i style="background:var(--rose)"></i>75% alatt</div>';
+    /* megfigyelések */
+    var ins=[],r=entries(ago(13),dk()),lat=avg(r,function(x){return x.e.lat}),waso=avg(r,function(x){return x.e.waso}),se=avg(r,function(x){return x.n.se});
+    if(lat!=null&&lat>30)ins.push(['var(--sapphire)','Az elalvás átlagosan '+Math.round(lat)+' perc.','Ha 20 perc után sem jön az álom, kelj fel, és csak álmosan feküdj vissza. A teendők délutáni leírása („aggódási idő”) is segít.']);
+    if(waso!=null&&waso>30)ins.push(['var(--violet)','Éjjel átlagosan '+Math.round(waso)+' percet vagy ébren.','Az esti alkohol, a késő vacsora és a túl sok ágyban töltött idő a leggyakoribb ok. Éjjel ne nézd az órát.']);
+    if(se!=null&&se<0.85&&(!p||p.mode!=='ablak'))ins.push(['var(--rose)','A hatékonyságod '+pct(se)+': a fekvésidő jó része ébren telik.','Ez az a helyzet, amelyben az alvásablak a leghatékonyabb. A terv módosításánál válthatsz rá.']);
+    if(wk!=null&&wk>45)ins.push(['var(--gold)','A kelési időd napról napra átlagosan '+Math.round(wk)+' percet ingadozik.','A rendszertelen kelés olyan, mint egy kis jet-lag minden héten. A rögzített kelés a legegyszerűbb, legerősebb lépés.']);
+    var we=r.filter(function(x){var d=dayOf(x.k).getDay();return d===0||d===6}),wd=r.filter(function(x){var d=dayOf(x.k).getDay();return d>0&&d<6});
+    if(we.length>=2&&wd.length>=3){var sj=avg(we,function(x){return fromNoon(x.n.mid)})-avg(wd,function(x){return fromNoon(x.n.mid)});
+      if(Math.abs(sj)>=60)ins.push(['var(--violet)','Társas jet-lag: hétvégén az alvásod közepe '+hrs(Math.abs(sj))+' '+(sj>0?'később':'korábban')+' van, mint hétköznap.','Ez hétfőnként kisebb jet-lagot okoz. Hétvégén legfeljebb egy órával kelj később, és reggel menj ki a fényre.']);}
+    if(se!=null&&se>=0.85&&(lat==null||lat<=30)&&(waso==null||waso<=30)&&!ins.length)ins.push(['var(--emerald)','Hatékony, összefüggő alvás.','Tartsd meg a rendszerességet; a lenti tényezőkből látod, mi ront rajta, ha mégis romlik.']);
+    if(ins.length)h+='<ul class="ins" style="margin-top:18px">'+ins.map(function(x){return '<li style="--acc:'+x[0]+'"><b>'+esc(x[1])+'</b> '+esc(x[2])+'</li>'}).join('')+'</ul>';
+    /* tényezők: a jelölt és a jelöletlen éjszakák összevetése */
+    var pool=entries(ago(89),dk()),rows=[];
+    FK.forEach(function(f){var y=pool.filter(function(x){return (x.e.f||[]).indexOf(f)>-1}),n=pool.filter(function(x){return (x.e.f||[]).indexOf(f)<0});
+      if(y.length<3||n.length<3)return;var dse=avg(y,function(x){return x.n.se})-avg(n,function(x){return x.n.se}),dq=avg(y,function(x){return x.e.q})-avg(n,function(x){return x.e.q});
+      rows.push({f:f,y:y.length,n:n.length,dse:dse,dq:dq})});
+    h+='<h3 style="margin-top:26px">Tényezők</h3>';
+    if(!rows.length)h+='<p class="h2sub">Ha egy tényezőt legalább 3 éjszakán jelöltél, és legalább 3-on nem, itt összeveti a kettőt. Jelöld a naplóban, ami igaz volt az előző napra.</p>';
+    else{rows.sort(function(a,b){return Math.abs(b.dse)-Math.abs(a.dse)});
+      var sg=function(x,u){var v=u?Math.round(x*100):Math.round(x*10)/10;return (v>0?'+':'')+v+(u?' %pont':'')};
+      h+='<p class="h2sub">Az elmúlt 90 nap éjszakái: amikor a tényező jelen volt, mennyivel volt más a hatékonyság és a pihentetőség. Ez összefüggés, nem bizonyíték; 1–2 %pont eltérés még véletlen lehet.</p>';
+      h+='<table class="fac"><thead><tr><th>Tényező</th><th>Hatékonyság</th><th>Pihentetőség</th><th>Éjszakák</th></tr></thead><tbody>'+rows.map(function(r){var cl=function(x,th){return Math.abs(x)<th?'':x>0?'pos':'neg'};
+        return '<tr><td>'+esc(FAC[r.f].n)+'</td><td class="n '+cl(r.dse,0.03)+'">'+sg(r.dse,1)+'</td><td class="n '+cl(r.dq,0.3)+'">'+sg(r.dq,0)+'</td><td class="n">'+r.y+' / '+r.n+'</td></tr>'}).join('')+'</tbody></table>';}
+    var recent=all.slice().reverse().slice(0,10);
+    h+='<details style="margin-top:20px"><summary class="lbl" style="cursor:pointer;font-size:14px">Utolsó bejegyzések ('+recent.length+')</summary><ul class="hist">'+recent.map(function(x){
+      return '<li><b>'+esc(dayOf(x.k).toLocaleDateString('hu-HU',{month:'short',day:'numeric',weekday:'short'}))+'</b>'+esc(x.e.off)+'–'+esc(x.e.wake)+' · '+hrs(x.n.tst)+' · '+pct(x.n.se)+' · pihentető: '+x.e.q+'/5'+(x.e.note?' · <i>'+esc(x.e.note)+'</i>':'')+'<button type="button" class="btn sm ghost" data-edit="'+esc(x.k)+'">Szerkesztem</button></li>'}).join('')+'</ul></details>';
+    el.innerHTML=h;
+    el.querySelectorAll('[data-edit]').forEach(function(b){b.addEventListener('click',function(){var k=b.getAttribute('data-edit');if(k<ago(13)){alert('Csak az elmúlt 14 nap bejegyzései szerkeszthetők.');return;}selDay=k;renderDiary();document.getElementById('naplo').scrollIntoView()})});
+  }
+
+  function renderAll(){st=get();renderPlan();renderTonight();renderDiary();renderStats();}
+  renderAll();
+});
+</script>
+</main>
+</body>
+</html>

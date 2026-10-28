@@ -1097,6 +1097,52 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
     await ctx.close();
   }
 
+  console.log('\n35b. Alvásterv: napló, hatékonyság, alvásablak, heti beállítás, séma');
+  {
+    const ctx = await newCtx(); const p = await pageIn(ctx);
+    const KA = 'onismeret-alvasterv-v1';
+    await p.goto(R + 'alvasterv.html'); await p.waitForTimeout(200);
+    ok(await p.evaluate(() => /Még nincs kitöltve/.test(document.getElementById('plan').textContent) && /Legalább 3 éjszaka/.test(document.getElementById('stats').textContent) && document.querySelectorAll('#dy-f .chip').length === 9), 'üres állapot: tesztajánló, üres elemzés, 9 tényező');
+    // alacsony SCI, normál Epworth
+    await p.goto(R + 'alvas.html#test-sci'); await p.waitForTimeout(150);
+    await p.evaluate(() => { TESTS.sci._fillAll(() => 1); TESTS.sci.show(); TESTS.ess._fillAll(() => 0); TESTS.ess.show(); });
+    await p.goto(R + 'alvasterv.html'); await p.waitForTimeout(200);
+    // napló az űrlapon: 22:30 ágy, 22:45 lámpa, 45 perc elalvás, 60 perc ébren, 06:30 ébredés, 07:15 kelés → 6 óra alvás, 8:45 ágyban, 69%
+    for (const [f, v] of [['bed', '22:30'], ['off', '22:45'], ['wake', '06:30'], ['up', '07:15'], ['lat', '45'], ['waso', '60']]) await p.fill('#dy-' + f, v);
+    await p.click('#dy-q .chip[data-q="2"]'); await p.click('#dy-f .chip[data-f="caf"]'); await p.click('#dy-save'); await p.waitForTimeout(100);
+    let m = await p.evaluate(k => { const s = JSON.parse(localStorage.getItem(k)), e = Object.values(s.log)[0]; return { e, calc: document.getElementById('dy-calc').textContent, saved: document.getElementById('dy-saved').textContent }; }, KA);
+    ok(m.e.lat === 45 && m.e.q === 2 && m.e.f.join() === 'caf' && /6 ó 00 p/.test(m.calc) && /69%/.test(m.calc) && m.saved === 'Mentve', 'napló mentve, alvásidő és hatékonyság az éjfélen át is helyes', m);
+    await p.fill('#dy-lat', '600'); await p.click('#dy-save'); await p.waitForTimeout(50);
+    ok(await p.evaluate(k => /Ellenőrizd/.test(document.getElementById('dy-saved').textContent) && JSON.parse(localStorage.getItem(k)).log[Object.keys(JSON.parse(localStorage.getItem(k)).log)[0]].lat === 45, KA), 'lehetetlen időadatot nem ment');
+    // még nincs 5 éjszaka: az alvásablak nem indul
+    await p.click('#pl-mode .chip[data-m="ablak"]'); await p.check('#pl-safe'); await p.click('#pl-start'); await p.waitForTimeout(50);
+    ok(await p.evaluate(() => /legalább 5 éjszakát/.test(document.getElementById('pl-msg').textContent)), 'alvásablak csak 5 rögzített éjszaka után');
+    await p.evaluate(k => { const s = JSON.parse(localStorage.getItem(k)), pad = n => (n < 10 ? '0' : '') + n;
+      for (let i = 1; i < 8; i++) { const d = new Date(); d.setDate(d.getDate() - i); s.log[d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate())] = { bed: '22:30', off: '22:45', lat: 45, waso: 60, wake: '06:30', up: '07:15', q: 2, f: i % 2 ? ['caf'] : ['light'] }; }
+      localStorage.setItem(k, JSON.stringify(s)); }, KA);
+    await p.reload(); await p.waitForTimeout(200);
+    ok(await p.evaluate(() => /illik hozzád/.test(document.getElementById('plan').textContent) && /Az elalvás átlagosan 45 perc/.test(document.getElementById('stats').textContent) && document.querySelectorAll('#stats .bars .b:not(.none)').length === 8 && document.querySelectorAll('#stats table.fac tbody tr').length === 2), 'elemzés: grafikon, megfigyelések, tényezők; az alvásablakot ajánlja');
+    await p.fill('#pl-wake', '06:30'); await p.click('#pl-mode .chip[data-m="ablak"]'); await p.check('#pl-safe'); await p.click('#pl-start'); await p.waitForTimeout(100);
+    m = await p.evaluate(k => ({ pl: JSON.parse(localStorage.getItem(k)).plan, t: document.getElementById('tonight').innerText, sci: ONI.all().sci.slice(-1)[0].d.total[1] }), KA);
+    ok(m.pl.mode === 'ablak' && m.pl.win === 360 && m.pl.base.sci === m.sci && m.pl.base.ess === 0 && /00:30/.test(m.t) && /16:30 Utolsó kávé/.test(m.t), 'alvásablak: 6 óra, lefekvés 00:30, koffein-határ 16:30, kiindulópont mentve', m.pl);
+    // egy hét múlva: 85% alatt 15 perccel szűkül
+    await p.evaluate(k => { const s = JSON.parse(localStorage.getItem(k)); s.plan.start = new Date(Date.now() - 8 * 864e5).toISOString(); localStorage.setItem(k, JSON.stringify(s)); }, KA);
+    await p.reload(); await p.waitForTimeout(200); await p.click('#tn-adj'); await p.waitForTimeout(100);
+    ok(await p.evaluate(k => { const pl = JSON.parse(localStorage.getItem(k)).plan; return pl.win === 345 && pl.adj.length === 1 && /00:45/.test(document.getElementById('tonight').textContent); }, KA), 'heti beállítás: 85% alatt 15 perccel szűkül');
+    ok(await p.evaluate(k => { const v = localStorage.getItem(k), bad = JSON.parse(v); bad.plan.win = 200; const bad2 = JSON.parse(v); Object.values(bad2.log)[0].bed = '25:00'; return ONI_CHECK.stored(k, v) === null && !!ONI_CHECK.stored(k, JSON.stringify(bad)) && !!ONI_CHECK.stored(k, JSON.stringify(bad2)); }, KA), 'séma: az alvásterv visszaállítható, a hibás elutasítva');
+    // erős nappali álmosság: az alvásablak le van tiltva
+    await p.goto(R + 'alvas.html#test-ess'); await p.waitForTimeout(150);
+    await p.evaluate(() => { TESTS.ess._fillAll(k => k - 1); TESTS.ess.show(); });
+    await p.goto(R + 'alvasterv.html'); await p.waitForTimeout(200); await p.click('#pl-reset'); await p.waitForTimeout(100);
+    ok(await p.evaluate(() => document.querySelector('#pl-mode .chip[data-m="ablak"]').disabled && /Erős nappali álmosság/.test(document.getElementById('plan').textContent)), 'Epworth 24: orvosi figyelmeztetés, alvásablak tiltva');
+    await p.evaluate(() => localStorage.setItem('onismeret-settings-v1', JSON.stringify({ theme: 'light' }))); await p.reload(); await p.waitForTimeout(150);
+    ok(await p.evaluate(() => getComputedStyle(document.body).backgroundColor === 'rgb(248, 250, 252)'), 'alvasterv.html: világos módban világos háttér');
+    await p.goto(R + 'index.html'); await p.waitForTimeout(200);
+    ok(await p.evaluate(() => !!document.querySelector('#cat-14 a.card[href="alvasterv.html"]') && document.querySelectorAll('#cat-14 .card[data-key]').length === 3), 'főoldal: az alvásterv-kártya a XIV. témakörben, a tesztkártyák száma változatlan');
+    ok(p._errs.length === 0, 'nincs JS-hiba a 35b. szakaszban', p._errs);
+    await ctx.close();
+  }
+
   console.log('\n36. Önismereti könyvtár: adat, Markdown-alkönyvtárak, ajánlás, szűrők, olvasólista, útvonalak');
   {
     const src = JSON.parse(fs.readFileSync(path.join(ROOT, 'src/konyvtar.json'), 'utf8'));
@@ -1202,6 +1248,7 @@ const near = (a, b) => Math.abs(a - b) < 0.011;
         'onismeret-commit-v1': Object.fromEntries(Object.keys(res).map(id => [id, [{ sid: res[id][0].sid || 'x1', text: P, t: now }]])),
         'onismeret-unclear-v1': { rses: { '1': { t: now, q: P } } },
         'onismeret-edzes-v1': { plan: { start: now, areas: ['KI'], base: { rses: 10 } }, log: { [now.slice(0, 10)]: { ex: ['win'], win: [P], crit: { a: P, b: P }, note: P } }, ladder: [{ id: 'a1', text: P, area: 'KI', fear: 3, tries: [{ t: now, pred: 3, real: 2, note: P }] }] },
+        'onismeret-alvasterv-v1': { plan: { start: now, wake: '07:00', need: 450, mode: 'rutin', base: { sci: 10 } }, log: { [now.slice(0, 10)]: { bed: '23:00', off: '23:10', lat: 10, waso: 5, wake: '07:00', up: '07:05', q: 3, f: ['caf'], note: P } } },
         'onismeret-konyvtar-v1': { list: { flow: { s: 'doing', t: now, note: P } } }, 'onismeret-partner-v1': { name: P, loaded: now, results: res } };
       return Object.entries(set).map(([k, v]) => { const s = JSON.stringify(v); localStorage.setItem(k, s); return ONI_CHECK.stored(k, s) === null ? null : k; }).filter(Boolean);
     }, P);

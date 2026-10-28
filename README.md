@@ -49,6 +49,7 @@
 | | BFNE-II (negatív értékeléstől való félelem) | 12 | `onbizalom.html#test-bfne` |
 | | Gyakorlati önbizalom (saját, nem validált, kurzus előtt/után) | 20 | `onbizalom.html#test-obgy` |
 | | Önbizalom-edzés (gyakorló oldal, nem teszt: terv, napi gyakorlat, bátorság-létra) | – | `edzes.html` |
+| | Alvásterv (gyakorló oldal, nem teszt: alvásnapló, alváshatékonyság, alvásablak, esti menetrend, tényezők) | – | `alvasterv.html` |
 | **XII. Jóllét és stressz** | Havi állapotfelmérés (WHO-5, PSS-4, CBI személyes, UCLA-3, SCI rövid; havi idővonallal) | 20 | `havi.html#test-pulse` |
 | | WHO-5 (jóllét) | 5 | `jollet.html#test-who5` |
 | | PSS-10 (észlelt stressz) | 10 | `jollet.html#test-pss` |
@@ -100,6 +101,7 @@ onismeret/
 ├── osszegzes.html        Kereszt-összegzés: minták, változás, eredménytörténet, riport (?demo=1: demó profil)
 ├── fokusz.html           Fókusz: egy kiválasztott minta 2–4 hetes gyakorlási köre
 ├── edzes.html            Önbizalom-edzés: terv a négy önbizalom-tesztből, napi gyakorlatok, bátorság-létra (nem teszt)
+├── alvasterv.html        Alvásterv: CBT-I alapú alvásnapló, alvásablak és esti menetrend az SCI, Epworth és MEQ eredményéből (nem teszt)
 ├── par.html              Párkapcsolati mód: két profil egymás mellett
 ├── konyvtar.html         Önismereti könyvtár: források, ajánlás, olvasólista, útvonalak (nem teszt; forrás: src/konyvtar.json)
 ├── konyvtar/             A könyvtár alkönyvtárai Markdownban — GENERÁLT (tools/build.py)

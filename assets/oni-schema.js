@@ -161,6 +161,25 @@ window.ONI_CHECK=(function(){
             if(!Array.isArray(r.tries)||r.tries.length>50||!r.tries.every(function(t){return isObj(t)&&iso(t.t)&&sc(t.pred)&&sc(t.real)&&str(t.note,500)}))return (i+1)+'. lépcső próbái hibásak';}
           return null}
         return 'ismeretlen mező'})},
+    /* Alvásterv (alvasterv.html): terv, heti ablak-beállítások, reggeli alvásnapló */
+    'onismeret-alvasterv-v1':function(j){
+      var FAC=['caf','alc','scr','late','stress','nap','ex','light','wind'],HM=/^([01]\d|2[0-3]):[0-5]\d$/;
+      var hm=function(x){return typeof x==='string'&&HM.test(x)},int=function(x,a,b){return typeof x==='number'&&Math.floor(x)===x&&x>=a&&x<=b};
+      return each(j,function(k,v){
+        if(k==='plan'){if(!isObj(v)||!iso(v.start))return 'hibás kezdés';
+          if(!hm(v.wake)||!int(v.need,300,600)||(v.mode!=='rutin'&&v.mode!=='ablak'))return 'hibás beállítás';
+          if(v.win!==undefined&&!int(v.win,300,600))return 'hibás alvásablak';
+          if(v.adj!==undefined&&(!Array.isArray(v.adj)||v.adj.length>60||!v.adj.every(function(a){return isObj(a)&&iso(a.t)&&int(a.win,300,600)&&typeof a.se==='number'&&a.se>=0&&a.se<=1})))return 'hibás beállítás-történet';
+          var e=each(v.base,function(b,n){return ['sci','ess','meq'].indexOf(b)<0?'ismeretlen skála':n===null||(typeof n==='number'&&isFinite(n)&&n>=0&&n<=86)?null:'hibás érték'});if(e)return e;
+          return Object.keys(v).every(function(x){return ['start','wake','need','mode','win','adj','base'].indexOf(x)>-1})?null:'ismeretlen mező'}
+        if(k==='log'){if(isObj(v)&&Object.keys(v).length>400)return 'túl sok nap';
+          return each(v,function(d,e){if(!/^\d{4}-\d{2}-\d{2}$/.test(d)||!iso(d+'T00:00:00'))return 'hibás nap';if(!isObj(e))return 'nem objektum';
+          if(!hm(e.bed)||!hm(e.off)||!hm(e.wake)||!hm(e.up))return 'hibás időpont';
+          if(!int(e.lat,0,720)||!int(e.waso,0,720)||!int(e.q,1,5))return 'hibás érték';
+          if(!Array.isArray(e.f)||e.f.length>FAC.length||!e.f.every(function(x){return FAC.indexOf(x)>-1}))return 'hibás tényezőlista';
+          if(e.note!==undefined&&!str(e.note,500))return 'hibás megjegyzés';
+          return Object.keys(e).every(function(x){return ['bed','off','wake','up','lat','waso','q','f','note'].indexOf(x)>-1})?null:'ismeretlen mező'})}
+        return 'ismeretlen mező'})},
     'onismeret-konyvtar-v1':function(j){
       var ST=['want','doing','done'],ID=/^[a-z0-9-]{2,40}$/;
       return each(j,function(k,v){

@@ -2,12 +2,13 @@
    Offline működés: az első látogatáskor minden oldal és közös fájl a böngésző gyorsítótárába kerül.
    Az oldalak hálózatról frissülnek, ha van net; a verziózott (?v=…) fájlok a gyorsítótárból jönnek.
    Válasz vagy eredmény nem megy át rajta: csak a statikus fájlokat kezeli. */
-const VERSION = '668a19c15e';
+const VERSION = 'ea229db37a';
 const PRECACHE = [
 "./",
 "adatok.html",
 "allapot.html",
 "alvas.html",
+"alvasterv.html",
 "assets/csillag-calc.js?v=d8ce36f3",
 "assets/csillag-data.js?v=5be1bbf6",
 "assets/demo-data.js?v=8351e47a",
@@ -33,11 +34,11 @@ const PRECACHE = [
 "assets/mely-szokasok.js?v=0278c30b",
 "assets/mely-terkepek.js?v=fc297f4e",
 "assets/mely.js?v=394634ec",
-"assets/oni-schema.js?v=150eefef",
+"assets/oni-schema.js?v=e9a9d9af",
 "assets/oni.js?v=604a0bdc",
 "assets/results-plus.js?v=1f96d0e0",
 "assets/tests-data.js?v=972452a2",
-"assets/theme.css?v=b50d9800",
+"assets/theme.css?v=9b667bcf",
 "assets/vendor/astronomy.browser.min.js",
 "assets/ysq-mely.js?v=8155356a",
 "attitudok.html",
