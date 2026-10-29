@@ -232,3 +232,13 @@ main{max-width:760px;padding-top:26px;gap:20px}body[data-view="home"] main{max-w
 .bomb.pulse-tick{animation:bomb-tick-pulse .22s ease-out}
 @keyframes bomb-tick-pulse{0%{transform:scale(1);filter:brightness(1)}45%{transform:scale(1.09);filter:brightness(1.4)}100%{transform:scale(1);filter:brightness(1)}}
 @media(prefers-reduced-motion:reduce){.bomb.pulse-tick{animation:none}.bomb-feedback{font-weight:700}}
+
+/* Társasest 2.0: mobile-first játékválasztó. A régi játékfelületeket nem módosítja. */
+.browse-filters{display:flex;align-items:center;gap:9px;overflow-x:auto;overscroll-behavior-inline:contain;scrollbar-width:none;padding:5px 2px 16px;scroll-snap-type:x proximity}
+.browse-filters::-webkit-scrollbar{display:none}
+.browse-chip{flex:0 0 auto;scroll-snap-align:start;border:1px solid var(--line);border-radius:999px;color:var(--text);background:var(--card);font:inherit;font-size:13px;font-weight:650;padding:11px 16px;min-height:44px;cursor:pointer}
+.browse-chip.active{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+.browse-chip:focus-visible,.cover-card:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+@media(max-width:620px){.portal-library{scroll-margin-top:20px}.browse-filters{margin-right:-18px;padding-right:18px}.game.cover-card{min-height:286px}.game.cover-card b{font-size:clamp(20px,5.4vw,25px)}.portal-toolbar>.btn{min-height:44px}}
+@media(max-width:360px){.games{grid-template-columns:1fr}.game.cover-card{min-height:260px}.game-art{height:136px}}
+@media(prefers-reduced-motion:reduce){.browse-filters{scroll-behavior:auto}}
