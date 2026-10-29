@@ -5,7 +5,7 @@ Statikus, magyar nyelvű kvíz, közvetlenül a GitHub Pages-en fut. Nincs hozz�
 Útvonal: `tarsas/harry-potter/`. A Társasest kezdőlapjáról is megnyitható.
 
 - Nyolc filmrészenként válogatható, 40 saját megfogalmazású kérdés.
-- Feleletválasztós, képes és számtippelős mód; nyolc saját SVG-illusztráció.
+- Feleletválasztós, képes és számtippelős mód; nyolc egyedi, filmes hangulatú WebP-illusztráció.
 - Véletlen kérdés- és válaszsorrend, ismétlés nélkül.
 - Állítható időkorlát, automatikus pontozás és végső eredmény.
 - Helyes felelet: 1000 pont. Számtipp: `round(1000 / (1 + abs(helyes - tipp)))`. Kihagyás: 0 pont.

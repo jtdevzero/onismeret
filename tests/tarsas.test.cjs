@@ -81,7 +81,7 @@ test('Activity 18+ is a separate home link without entering the fourteen interna
   const app=createApp();
   const home=app.html();
   assert.equal((home.match(/class="game(?:\s|\")/g)||[]).length,15);
-  assert.match(home,/<a class="game standalone-game"[^>]*href="\.\/activity18\/"/);
+  assert.match(home,/<a class="game standalone-game(?: [^"]*)?"[^>]*href="\.\/activity18\/"/);
   assert(home.includes('840 rövid feladvány') && home.includes('saját csapatok és beállítások'));
   assert.match(home,/<a class="btn primary big" href="homlok\/">Homlok! indítása/,'concurrent Homlok launcher remains available');
   assert.equal(app.run('Object.keys(GAMES).length'),14);
@@ -391,15 +391,15 @@ async function checkPortalOffline() {
   vm.runInContext(fs.readFileSync(path.join(ROOT,'sw.js'),'utf8'),context,{filename:'sw.js'});
   const shell=Array.from(vm.runInContext('SHELL',context));
   const cacheName=vm.runInContext('CACHE',context);
-  test('portal v7 precaches all Activity runtime files and matches its versioned scripts',()=>{
-    assert.equal(cacheName,'tarsas-v7');
+  test('portal v8 precaches all Activity runtime files and matches its versioned scripts',()=>{
+    assert.equal(cacheName,'tarsas-v8');
     const childFiles=['','index.html','styles.css','app.js','game.js','prompts.js','prompt-metadata.js','difficulty.js','custom-pack.js','offline.js','sw.js','favicon.svg','manifest.webmanifest','icon.svg'];
     for(const file of childFiles) assert(shell.includes('activity18/'+file),'offline shell includes Activity '+file);
     for(const file of ['','index.html','styles.css?v=4','app.js?v=4','data.js?v=4','party-history.js?v=4','round-recorder.js?v=4','game-core.js','favicon.svg','manifest.webmanifest?v=4','service-worker.js']) assert(shell.includes('homlok/'+file),'offline shell preserves Homlok '+file);
     for(const asset of shell) assert(fs.existsSync(path.join(ROOT,asset.split('?')[0])),'shell asset exists: '+asset);
     const index=fs.readFileSync(path.join(ROOT,'index.html'),'utf8');
     for(const match of index.matchAll(/(?:src|href)="([^"\s]+\?v=\d+)"/g)) {
-      assert(match[1].endsWith('?v=7'),'all portal entry scripts use v7');
+      assert(match[1].endsWith('?v=8'),'all portal entry scripts use v8');
       assert(shell.includes(match[1]),'entry resource is precached: '+match[1]);
     }
   });

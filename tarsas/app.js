@@ -157,6 +157,7 @@ document.addEventListener('submit', e => {
 function render() {
   clearTimeout(render.t);
   const v = R.view;
+  document.body.dataset.view = v;
   document.getElementById('back').hidden = v === 'home';
   document.getElementById('title').textContent = GAMES[v] ? GAMES[v].name : ({ players: 'Társaság', settings: 'Beállítások', codekey: 'Kémfőnöki kulcs' }[v] || 'Társasest');
   document.documentElement.style.setProperty('--c', GAMES[v] ? GAMES[v].c : (v === 'codekey' ? GAMES.codes.c : '#ffcf3f'));

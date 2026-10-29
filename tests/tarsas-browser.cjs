@@ -135,7 +135,7 @@ function check(condition,message){assert(condition,message);assertions++;console
     await offlinePage.evaluate(()=>navigator.serviceWorker.ready);
     await offlinePage.waitForFunction(()=>navigator.serviceWorker.controller!==null);
     await offlinePage.waitForFunction(async()=>{
-      const cache=await caches.open('tarsas-v7');
+      const cache=await caches.open('tarsas-v8');
       return !!(await cache.match(new URL('activity18/app.js',location.href).href));
     });
     await offlineContext.setOffline(true);

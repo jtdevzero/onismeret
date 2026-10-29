@@ -18,7 +18,7 @@ test('static solo game: filters, pictures, scoring, timeout, no API calls and mo
     if (!file.startsWith(root + path.sep)) { res.writeHead(403).end(); return; }
     fs.readFile(file, (e, data) => {
       if (e) { res.writeHead(404).end(); return; }
-      res.writeHead(200, { 'Content-Type': { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml' }[path.extname(file)] || 'application/octet-stream' }); res.end(data);
+      res.writeHead(200, { 'Content-Type': { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.webp': 'image/webp' }[path.extname(file)] || 'application/octet-stream' }); res.end(data);
     });
   });
   server.listen(0, '127.0.0.1'); await once(server, 'listening');
