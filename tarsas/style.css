@@ -242,3 +242,11 @@ main{max-width:760px;padding-top:26px;gap:20px}body[data-view="home"] main{max-w
 @media(max-width:620px){.portal-library{scroll-margin-top:20px}.browse-filters{margin-right:-18px;padding-right:18px}.game.cover-card{min-height:286px}.game.cover-card b{font-size:clamp(20px,5.4vw,25px)}.portal-toolbar>.btn{min-height:44px}}
 @media(max-width:360px){.games{grid-template-columns:1fr}.game.cover-card{min-height:260px}.game-art{height:136px}}
 @media(prefers-reduced-motion:reduce){.browse-filters{scroll-behavior:auto}}
+
+/* 2.0: az Esttervező egységes, holtversenyt is jelölő ranglistája */
+.evening-leaderboard{display:grid;gap:8px;margin:16px 0}
+.evening-leaderboard-row{display:grid;grid-template-columns:42px minmax(0,1fr) auto;align-items:center;gap:10px;border:1px solid var(--line);background:var(--card2);border-radius:14px;padding:13px 12px;min-height:54px}
+.evening-rank{font-size:19px;text-align:center;font-variant-numeric:tabular-nums}
+.evening-leaderboard-row b{overflow-wrap:anywhere}
+.evening-points{font-size:13px;color:var(--accent);font-variant-numeric:tabular-nums}
+@media(max-width:360px){.evening-leaderboard-row{grid-template-columns:32px minmax(0,1fr);gap:6px}.evening-points{grid-column:2}}
