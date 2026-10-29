@@ -1,6 +1,6 @@
 # Restaurant Empire – mechanikai elemzés és tervjavaslat
 
-> **Forrás:** JT saját, telepített Restaurant Empire-példánya (Enlight Software, 2003), `C:\Program Files (x86)\Enlight\Restaurant Empire`. Olvasva: a `script/rpg` szkriptek (találkozások, főzőversenyek, fejezetcélok), a `Resource` alatti beállítás- és szövegfájlok (`GAMEPLAY.RES`, `scenario.res`, `opinion.res`, `*.txr`), és az `STD.SET` adatbázis szerkezete.
+> **Forrás (két kör):** JT saját, telepített Restaurant Empire-példánya (Enlight Software, 2003), `C:\Program Files (x86)\Enlight\Restaurant Empire`. Olvasva: a `script/rpg` szkriptek (találkozások, főzőversenyek, fejezetcélok), a `Resource` alatti beállítás- és szövegfájlok (`GAMEPLAY.RES`, `scenario.res`, `opinion.res`, `*.txr`), és az `STD.SET` adatbázis szerkezete.
 >
 > **Határ:** a játékból semmilyen fájl, szöveg, név, recept, modell, textúra vagy zene nem kerül át az Étterembirodalomba. Ez a dokumentum csak azt rögzíti, **hogyan működnek a rendszerek**, saját szavakkal és összesített számokkal. A tartalom (receptek, szereplők, párbeszédek, nevek) nálunk saját. A számokat nem másoljuk, hanem a saját `balance.json`-unkban kalibráljuk; az itt szereplő értékek csak arányérzéket adnak.
 
@@ -157,9 +157,108 @@ A vendégek egy része „különleges”: miután evett, rá lehet kattintani. 
 - **Átvezetők a játékmotorban:** kamerapályák, a szereplők mozgatása, feliratkártyák be- és kiúsztatással, hangeffekt, háttér-elsötétítés. Ugyanezt csináljuk mi is a three.js-ben.
 - **Napszakok:** reggeli 6–12, ebéd 12–14, uzsonna 14–18, vacsora 18–21, mindegyiknek csúcsidővel. Van ebéd- és vacsoramenü (fogássor), meg egy minimális receptszám fogástípusonként, ami alatt panasz jön („szűk választék”).
 
+## 10. Berendezés, szettek és felújítás (második kör)
+
+**Tárgyak.** 405 tárgy van 20 osztályban. Minden tárgynak van ára, kényelmi, díszítési és szórakoztatási értéke, mérete, havi fenntartása és stílusa (bármely, francia, olasz, steak, tengeri, zenés).
+
+| Osztály | Darab | Ár (medián / max) | Mit ad |
+| --- | ---: | --- | --- |
+| Asztal | 50 | 605 / 1 400 $ | Komfort kb. 80–90, díszítés kb. 50–60 |
+| Szék, box | 58 | 350 / 500 $ | Komfort kb. 75–100, díszítés kb. 65–70 |
+| Dísz (festmény, padló- és falidísz, szőnyeg, válaszfal, asztaldísz) | 143 | 600 / 5 000 $ | Díszítés 30–100. Az ár és a díszítés közepesen függ össze (r ≈ 0,5). |
+| Lámpa (fali, asztali, csillár) | 15 | 400 / 550 $ | Díszítés kb. 30–35, plusz fényerő és sugár |
+| Recepciós pult | 6 | 1 500 $ | Kötelező: nélküle a vendégek be sem térnek |
+| Mosdó-berendezés | 20 | 1 350 / 2 300 $ | Komfort és díszítés |
+| Konyhai gépek (tűzhely, grill, mikró, robotgép, előkészítő pult, mosogatógép, mosogató, receptasztal) | 8 | 700 / 2 500 $ | Ezek nélkül bizonyos receptek nem készíthetők el („a konyhád nincs felkészülve”) |
+| Ételfelvonó | 2 | 3 000 $ | Emeleti terem kiszolgálása |
+| Szórakoztató elektronika | 1 | 11 000 $ | Díszítés 100 |
+
+- **Kész szettek:** 82 darab (nagy asztal, kis asztal, box), 440 és 4 950 dollár között, stílusonként. Egy kattintással lerakható asztal a székeivel együtt.
+- **Helyiségek:** konyha, női és férfi mosdó, egyenként legalább 10 egység méretben. A falnak és a padlónak stílusonként külön mintája van (25 padló, 26 fal).
+- **Eltávolítás:** tárgy törlésekor az ár 20%-a elvész.
+- **Homlokzat-felújítás:** 273 elem, étteremtípusonként külön sor (francia, olasz, steak, tengeri, zenés). Az elemek a földszintre, az emeletre és a tetőre kerülnek.
+  - Négy csillagszint, a medián ár kb. 9 600 → 11 600 → 16 000 → 19 200 dollár.
+  - Csak akkor vehető meg, ha az étterem besorolása eléri a szintet. A homlokzat a „kilátás és külső” értéket emeli, ennek a környezetben 5-ös a súlya.
+- **Teremhatások:**
+  - **zaj:** a vendégek növelik, a válaszfal csökkenti;
+  - **fény:** a lámpák sugara számít;
+  - **komfort:** a tárgyak és a szabad hely adják.
+  - Az asztalmegosztás kapcsolható: több vendég fér el, de csökken az elégedettség.
+
+## 11. Gazdaság
+
+- **Telek és épület:** a telek egységenként kb. 11 000 dollár; az épület a földszinten egységenként 3 000, az emeleten 5 000 dollár. Mindkettő 250 000 dolláros felső határig. A jó kilátás drágítja az épületet. Az építési és fenntartási szorzó étteremtípusonként 0,96 és 1,05 között van.
+- **Fenntartás havonta:** az alapterület és a szintek után jár egy díj, plus a felújítások értékének 1%-a.
+- **Nyitvatartás:** állítható nyitás, zárás és utolsó rendelés. A reggeli 6-kor, az ebéd és vacsora 11-kor kezdődik, és 22-ig vagy 24-ig tart.
+- **Ital:** 10 ital, beszerzési ár × 2,3–5,5-ös szorzó adja az eladási árat. Az alkoholos italokhoz 20 000 dolláros engedély kell.
+- **Reklám:** havi keret, négy csatorna, mindegyiknek más a hatásplafonja és a szórása.
+
+  | Csatorna | Hatásplafon | Jellemző |
+  | --- | ---: | --- |
+  | Tévé | 25% | Drága, nagy szórás |
+  | Rádió | 20% | Olcsóbb |
+  | Újság | 15% | Olcsó, állandóan kell frissíteni |
+  | Magazin | 10% | A legpontosabb |
+
+- **Képzés:** havi keret, legfeljebb 50 000 dollár. A személyzet átlagos tudását emeli.
+- **Hitel:** felvehető és törleszthető, havi kamattal, a kamatláb évi kb. 10%-kal indul, és van hitelkeret.
+- **Franchise:** egy éttermet franchise-ként is lehet nyitni. Ugyanaz az étlap és berendezés („minden franchise-ra” alkalmazva), és az egységesség maga is besorolási tényező (súlya 3).
+- **Vendégrétegek városonként:** hét jövedelmi réteg, a prémiumtól az alacsonyig, népességarányokkal (pl. a középréteg 35%, a prémium 5%) és rétegenkénti büdzsével (100-tól 40-ig).
+  - A turisták négy rétegben jönnek, a helyieknél nagyobb büdzsével.
+  - **A turizmus havonta változik, és városonként máskor csúcsosodik:** Párizsban nyár végén, Rómában tavasszal, Los Angelesben télen.
+- **Kereslet:** az árat, a környezetet, az ételt, a kiszolgálást, az exkluzivitást és az ismertséget egyforma súllyal veszi figyelembe. Ehhez jön az étterem helye (telekérték) és a népszerűségi rang.
+  - **Ismertség:** a reklám, a három legjobb séf hírneve (1,0 / 0,6 / 0,3 súllyal) és az elégedettség adja. Ha az ebéd- és a vacsoramenü is kész, +10 bónusz jár.
+- **Exkluzivitás:** ha egy receptet a régióban vagy az egész világon csak te kínálsz, ×1,5, illetve ×2,0 szorzót kap.
+- **Mérföldkövek:** a 100%-ban elégedett vendégek száma lépcsőzetes küszöböket ér el (5, 8, 12, 20 … 100). Minden lépcső tartós bónuszt ad az ismertséghez és a várható napi vendégszámhoz.
+- **Pontszám:** a besorolásból, az éves bevételből és profitból, valamint a sztárséf-rangból áll össze.
+
+## 12. Riválisok
+
+- **Nem teljes szimuláció.** Minden AI-étteremnek egy rögzített profilja van:
+  - besorolások: étel, kiszolgálás, környezet, komfort, díszítés, zene, kilátás, ár;
+  - ismertség, panaszbüntetés, elégedettség, nyitvatartás;
+  - az előző havi számok: ülőhelyek, alkalmazottak, bevétel, kiadás, vendégszám, eladott ételek és italok, foglaltság, időben kiszolgált fogások, vendégenkénti költés és profit.
+- **A szerepük:** versenytársként osztoznak a keresleten, és látszanak a piaci részesedés jelentésben.
+- **Pénz:** az AI-cégek 1 millió dollárral indulnak, a játékos szabad játékban 5 millióval, a kampányban 0-val.
+- **Események:** a riválisok időnként nyitnak vagy bezárnak, erről üzenet jön.
+
+## 13. Díjak, rangok, üzenetek, tippek
+
+- **Díjak:** 104 darab, minden versenyhez és minden helyezéshez külön (1., 2., 3. hely). Fajták: emlékérem, emléktábla, kupa. Néhány különleges versenynek („nagy nyolcak”, nagydöntő) saját díja van.
+- **Üzenetek:** 21 típus, három fontossági szinten (apró, normál, sürgős). Például:
+  - rekordbevétel vagy rekordprofit;
+  - havi veszteség;
+  - sok panasz egy ok miatt;
+  - kilépett egy alkalmazott;
+  - alacsony morál miatt felmondás fenyeget;
+  - hiányzó ételpult vagy recepció;
+  - recept a besorolás alatt;
+  - asztalhiány;
+  - a vendégek rendelés nélkül távoztak.
+
+  A legtöbb üzenet ok-okozatilag tanácsot is ad.
+- **Tippek:** 177 tipp kilenc témában: általános, kampány, gyakorló, vendég, recept, alkalmazott, irányítás, besorolás, verseny.
+
+## 14. Oktatás (tutorial) felépítése
+
+A játék hat leckében vezet be, mindegyiket az adott rendszer első megjelenésekor. Egy lecke lépései így néznek ki: üzenetablak, egy kiemelt felületi terület, egy elvárt kattintás vagy művelet, aztán a Tovább gomb.
+
+1. **Városnézet:** kamera, felső sáv (pénz, nyereség), belépés az étterembe.
+2. **Étlap és receptek:** fogástípusok, receptkártya, felvétel az étlapra.
+3. **Személyzet:** felvétel, a recepciós és a recepciós pult, tárgyak mozgatása és törlése.
+4. **Konyha és terem:** ételpult, ételfelvonó és emelet, asztalszettek.
+5. **Főzőverseny:** nevezés, csapat, recept kiválasztása, minijáték.
+6. **Új étterem:** helyiségek (mosdó, konyha) rajzolása, átméretezése, áthelyezése.
+
+## 15. Ami nem jött ki, és miért
+
+- **A pontos képletek** (kereslet, ételbesorolás, környezet) a futtatható programban vannak. Csak a konstansokat és a megjegyzéseket láttuk. A programot nem fejtjük vissza. A képleteket a saját, már tesztelt modellünkre építjük, ezeket az arányokat használva iránytűnek.
+- **A történet párbeszédei** benne vannak, de szándékosan nem dolgoztuk fel őket, mert saját történetünk van. A szerkezetük (fejezet, cél, helyszín, különleges vendég, átvezető) a 8. pontban szerepel.
+- **A grafika, a zene és a térképek** nem tartoznak a mechanikához, és nem is kerülnek át.
+
 ---
 
-## 9. Mi lesz ebből az Étterembirodalomban
+## 16. Mi lesz ebből az Étterembirodalomban
 
 Saját tartalommal, a jelenlegi kódra építve, lépésenként. Minden szám a `balance.json`-ba kerül, minden képlet Vitest-tesztet kap.
 
@@ -171,6 +270,7 @@ Saját tartalommal, a jelenlegi kódra építve, lépésenként. Minden szám a 
   - 1–3 főzési lépés a meglévő főzési idő helyett.
 - **Ételminőség:** a hozzávalók súlyozott minősége kombinálva a séf fogásbeli tudásával. Ez váltja ki a mai háromlépcsős alapanyag-minőség kapcsolót.
 - **Beszállítók városonként** (2–4 darab): olcsó és közepes, drága és kiváló. Ugyanaz a hozzávaló több helyről, eltérő áron és minőséggel. Gaston régi beszállítói a kampányban nyílnak meg.
+- **Konyhai gépek:** a recept konyhai gépet is kérhet (grill, sütő, robotgép). Ha nincs meg, a recept nem vehető fel az étlapra.
 - **Receptszerkesztő:** másolat, hozzávaló cseréje vagy hozzáadása, élő költség- és minőség-előnézettel. Ez a „saját változat” élmény.
 
 ### M3b – Séfek tudása
@@ -199,7 +299,23 @@ Saját tartalommal, a jelenlegi kódra építve, lépésenként. Minden szám a 
 - **Helyszínek a város-jelenetben:** Gaston lakása, a vásárcsarnok, Pellerin végrehajtó irodája, a nizzai kikötő, a római patrónus palazzója. Rájuk koppintva jelenet indul.
 - **Átvezető minden felvonás elején és a kulcsfejezeteknél,** a bevezető mintájára.
 
-**Javasolt sorrend:** M3a → M3b → M3d → M3e → M3c → M3f → M3g. A recept- és hozzávalórendszer a mag, erre épül a többi.
+### M3h – Gazdaság
+- Reklám négy saját csatornával: plakát, rádió, újság, gasztromagazin. Mindegyiknek más a plafonja és a szórása.
+- Képzési keret, hitel kamattal, italok és borlicenc, nyitvatartás.
+- Turizmus városonként más csúcsszezonnal: a fejezetek napjaihoz kötve, Nizza nyáron, Róma tavasszal, Párizs ősszel.
+- Mérföldkő-bónusz a 100%-ban elégedett vendégekért.
+- Exkluzivitás: ha egy recept csak nálad kapható a városban, szorzót kap.
+
+### M3i – Berendezés és homlokzat
+- Asztalszettek, vagyis asztal székekkel egy mozdulattal. Ez telefonon különösen hasznos.
+- Recepciós pult, válaszfal (zajcsökkentés), csillár.
+- Homlokzat-felújítás négy csillagszinten, a város-jelenetben látható napellenzővel, virágládával, cégtáblával.
+
+### M3j – Oktatás és üzenetek
+- Hat rövid, kiemelős lecke az első kampánynapokra, telefonra hangolva.
+- Ok-okozati üzenetek tanáccsal („a vendégek rendelés nélkül távoztak: túl drága az étlap”).
+
+**Javasolt sorrend:** M3a → M3b → M3d → M3e → M3c → M3f → M3i → M3h → M3g → M3j. A recept- és hozzávalórendszer a mag, erre épül a többi.
 
 ### Nyitott kérdések JT-nek
 1. Maradjon a napi ütem (egy nap = 8 perc), vagy legyen hónapos fejezet, mint az RE-ben? Javaslat: maradjon a nap, a fejezetek pedig 5–10 naposak.
