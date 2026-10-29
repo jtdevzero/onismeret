@@ -140,7 +140,9 @@ function check(condition,message){assert(condition,message);assertions++;console
     await offlinePage.evaluate(()=>navigator.serviceWorker.ready);
     await offlinePage.waitForFunction(()=>navigator.serviceWorker.controller!==null);
     await offlinePage.waitForFunction(async()=>{
-      const cache=await caches.open('tarsas-v13');
+      const version=document.querySelector('link[rel="stylesheet"][href^="style.css?v="]')?.getAttribute('href')?.match(/v=(\d+)/)?.[1];
+      if(!version)return false;
+      const cache=await caches.open('tarsas-v'+version);
       return !!(await cache.match(new URL('activity18/app.js',location.href).href));
     });
     await offlineContext.setOffline(true);
