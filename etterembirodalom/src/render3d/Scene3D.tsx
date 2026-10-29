@@ -13,11 +13,11 @@ import { canPlace, chairTable, isWalkable, buildBlocked, itemAt, neighbors } fro
 import { activeRestaurant, setFxListener } from '../sim/sim';
 import type { FxEvent, GameState, Group, PlacedItem, RestaurantState } from '../sim/types';
 import { useApp } from '../store';
+import { buildCity, type City } from './city';
 import { guestLook, staffLook } from './looks';
 import { WALL_COLORS, PAL, box, floorTexture, makeItem, makePerson, makePlate, makePot, mat, mesh, posePerson, sphere, type PersonRig } from './models';
 
 const WALL_H = 2.6;
-const BG = 0xdfe5ec;
 const OK = 0x059669;
 const WARN = 0xd97706;
 const BAD = 0xb91c1c;
@@ -123,6 +123,29 @@ function facingAngle(r: RestaurantState, it: PlacedItem): number {
   return Math.round(a / (Math.PI / 2)) * (Math.PI / 2);
 }
 
+const SKY_VERT = `varying vec3 vDir; void main() { vDir = normalize(position); gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`;
+const SKY_FRAG = `uniform vec3 top; uniform vec3 horizon; uniform vec3 glow; varying vec3 vDir;
+void main() { float h = clamp(vDir.y, 0.0, 1.0); vec3 c = mix(horizon, top, pow(h, 0.55)); c += glow * pow(1.0 - h, 6.0) * 0.6; gl_FragColor = vec4(c, 1.0); }`;
+
+function horizonColor(hour: number): THREE.Color {
+  const day = new THREE.Color(0xd9e6ef);
+  const dusk = new THREE.Color(0xf0a868);
+  const night = new THREE.Color(0x2a2440);
+  if (hour < 17) return day;
+  if (hour < 19) return day.clone().lerp(dusk, (hour - 17) / 2);
+  return dusk.clone().lerp(night, Math.min(1, (hour - 19) / 1.5));
+}
+
+interface Flight {
+  pos: THREE.CatmullRomCurve3;
+  look: THREE.CatmullRomCurve3;
+  start: number;
+  dur: number;
+  intro: boolean;
+}
+
+const ease = (x: number) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+
 function skyColors(hour: number): { sky: THREE.Color; sun: number; hemi: number; evening: number } {
   const day = new THREE.Color(0x9fd0f2);
   const dusk = new THREE.Color(0xf2a65a);
@@ -173,13 +196,18 @@ export function Scene3D() {
     renderer.domElement.style.touchAction = 'none';
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(BG);
+    // Égbolt-kupola színátmenettel és köd a város széléhez.
+    const skyUniforms = { top: { value: new THREE.Color(0x9fd0f2) }, horizon: { value: new THREE.Color(0xd9e6ef) }, glow: { value: new THREE.Color(0x000000) } };
+    const skyDome = new THREE.Mesh(new THREE.SphereGeometry(180, 24, 12), new THREE.ShaderMaterial({ uniforms: skyUniforms, vertexShader: SKY_VERT, fragmentShader: SKY_FRAG, side: THREE.BackSide, depthWrite: false, fog: false }));
+    skyDome.renderOrder = -1;
+    scene.add(skyDome);
+    scene.fog = new THREE.Fog(0xd9e6ef, 45, 135);
     // Környezeti tükröződés a fémes felületekhez (tűzhely, arany díszek).
     const pmrem = new THREE.PMREMGenerator(renderer);
     const envTex = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
     scene.environment = envTex;
     scene.environmentIntensity = 0.45;
-    const camera = new THREE.PerspectiveCamera(36, el.clientWidth / el.clientHeight, 0.1, 300);
+    const camera = new THREE.PerspectiveCamera(36, el.clientWidth / el.clientHeight, 0.1, 400);
 
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
@@ -204,11 +232,6 @@ export function Scene3D() {
     const warm = new THREE.AmbientLight(0xffc277, 0);
     scene.add(warm);
 
-    // Talapzat a terem alatt: diorámaszerű kivágás.
-    const ground = mesh(new THREE.PlaneGeometry(400, 400), mat(0xcfd8e3, { rough: 1 }), 0, -0.32, 0, false);
-    ground.rotation.x = -Math.PI / 2;
-    scene.add(ground);
-
     const room = new THREE.Group();
     const objects = new THREE.Group();
     const agentsGroup = new THREE.Group();
@@ -225,15 +248,35 @@ export function Scene3D() {
     const agents = new Map<string, AgentVis>();
     let builtKey = '';
     let fittedFor = '';
+    let city: City | null = null;
+    let cityKey = '';
+    let flight: Flight | null = null;
 
-    const fit = (r: RestaurantState) => {
-      const w = r.layout.width;
-      const h = r.layout.height;
-      const target = new THREE.Vector3(w / 2 - 0.5, 0, h / 2 - 0.5);
+    const homeView = (r: RestaurantState) => {
+      const target = new THREE.Vector3(r.layout.width / 2 - 0.5, 0, r.layout.height / 2 - 0.5);
       const dist = narrow() ? 30 : 31;
-      camera.position.set(target.x + dist * 0.62, dist * 0.72, target.z + dist * 0.62);
+      return { target, pos: new THREE.Vector3(target.x + dist * 0.62, dist * 0.72, target.z + dist * 0.62) };
+    };
+    const fit = (r: RestaurantState) => {
+      const { target, pos } = homeView(r);
+      camera.position.copy(pos);
       controls.target.copy(target);
       controls.update();
+      fittedFor = `${r.id}`;
+    };
+    // Kamerarepülés: a hosszú bevezető a város fölött az utcán át a bisztróig, a rövid érkezés felülről.
+    const startFlight = (r: RestaurantState, intro: boolean, now: number) => {
+      const { target, pos } = homeView(r);
+      const H = r.layout.height;
+      const ez = r.layout.entrance.y;
+      const p = intro
+        ? [new THREE.Vector3(30, 34, H + 46), new THREE.Vector3(-4.7, 14, H + 30), new THREE.Vector3(-4.6, 3.2, ez + 12), new THREE.Vector3(-4.2, 2.4, ez + 2.5), new THREE.Vector3(-3, 9, ez - 1), pos]
+        : [new THREE.Vector3(pos.x + 20, pos.y + 26, pos.z + 24), pos.clone().lerp(target, -0.2), pos];
+      const l = intro
+        ? [new THREE.Vector3(-30, 8, -30), new THREE.Vector3(-3, 2, ez + 4), new THREE.Vector3(-1.2, 2.6, ez), new THREE.Vector3(-0.6, 2.9, ez), new THREE.Vector3(2, 0.5, ez), target]
+        : [target, target, target];
+      flight = { pos: new THREE.CatmullRomCurve3(p, false, 'centripetal'), look: new THREE.CatmullRomCurve3(l, false, 'centripetal'), start: now, dur: intro ? 15000 : 3200, intro };
+      controls.enabled = false;
       fittedFor = `${r.id}`;
     };
 
@@ -269,7 +312,7 @@ export function Scene3D() {
       }
 
       const colors = WALL_COLORS[r.style.wall];
-      const plaster = mat(0xe9edf2, { rough: 0.95 });
+      const plaster = mat(0xe6d8bf, { rough: 0.95 });
       const panel = mat(colors.panel, { rough: 0.7 });
       const panelDark = mat(colors.dark, { rough: 0.7 });
       const rail = mat(PAL.gold, { metal: 0.7, rough: 0.35 });
@@ -366,6 +409,14 @@ export function Scene3D() {
       sc.far = 80;
       sc.updateProjectionMatrix();
       sun.target.position.set(W / 2 - 0.5, 0, H / 2 - 0.5);
+
+      const ck = `${r.id}|${r.name}`;
+      if (ck !== cityKey) {
+        if (city) scene.remove(city.group);
+        city = buildCity(r.neighborhood, W, H, r.layout.entrance.y, r.name, r.id * 131 + 7);
+        scene.add(city.group);
+        cityKey = ck;
+      }
     };
 
     const buildItems = (r: RestaurantState) => {
@@ -597,22 +648,52 @@ export function Scene3D() {
         buildItems(r);
         builtKey = key;
       }
-      if (fittedFor !== `${r.id}`) fit(r);
-      controls.target.x = THREE.MathUtils.clamp(controls.target.x, 0, r.layout.width - 1);
-      controls.target.z = THREE.MathUtils.clamp(controls.target.z, 0, r.layout.height - 1);
-      controls.target.y = 0;
-      controls.update();
+      if (st.cinematic === 'intro' && !flight?.intro) startFlight(r, true, now);
+      else if (fittedFor !== `${r.id}`) {
+        if (fittedFor === '') fit(r);
+        startFlight(r, false, now);
+      }
+      let introHour: number | null = null;
+      if (flight) {
+        const raw = Math.min(1, (now - flight.start) / flight.dur);
+        const k = ease(raw);
+        camera.position.copy(flight.pos.getPoint(k));
+        camera.lookAt(flight.look.getPoint(k));
+        if (flight.intro) introHour = 20.4;
+        if (raw >= 1 || (flight.intro && st.cinematic !== 'intro')) {
+          const { target, pos } = homeView(r);
+          if (flight.intro && raw < 1) camera.position.copy(pos);
+          controls.target.copy(target);
+          controls.enabled = true;
+          const wasIntro = flight.intro;
+          flight = null;
+          controls.update();
+          if (wasIntro && st.cinematic === 'intro') st.endCinematic();
+        }
+      } else {
+        controls.target.x = THREE.MathUtils.clamp(controls.target.x, 0, r.layout.width - 1);
+        controls.target.z = THREE.MathUtils.clamp(controls.target.z, 0, r.layout.height - 1);
+        controls.target.y = 0;
+        controls.update();
+      }
 
       // Falak: csak a kamerától távoli oldalak látszanak.
       for (const w of walls) {
         tmp.copy(camera.position).sub(w.center);
-        w.obj.visible = tmp.dot(w.normal) < 0;
+        w.obj.visible = !!flight?.intro || tmp.dot(w.normal) < 0;
       }
 
       // Napszak.
-      const hour = B.time.openHour + gs.time / 3600;
+      const hour = introHour ?? B.time.openHour + gs.time / 3600;
       const sky = skyColors(hour);
       skyMat.color.copy(sky.sky);
+      const hz = horizonColor(hour);
+      skyUniforms.top.value.copy(sky.sky);
+      skyUniforms.horizon.value.copy(hz);
+      skyUniforms.glow.value.setRGB(sky.evening > 0 && sky.evening < 0.9 ? 0.9 : 0.15, 0.4 * (1 - sky.evening), 0.1).multiplyScalar(sky.evening);
+      (scene.fog as THREE.Fog).color.copy(hz);
+      skyDome.position.copy(camera.position);
+      city?.update(now, sky.evening);
       sun.intensity = sky.sun;
       hemi.intensity = sky.hemi;
       warm.intensity = sky.evening * 0.35;

@@ -25,6 +25,9 @@ interface AppState {
   lastSpeed: Exclude<Speed, 0>;
   tool: Tool;
   toast: Toast | null;
+  /** Filmszerű bevezető fut (a kamera a város fölött repül, a történet utána jön). */
+  cinematic: 'intro' | null;
+  endCinematic: () => void;
   start: (game: GameState) => void;
   newGame: (mode: 'campaign' | 'free') => void;
   dispatch: (c: Command) => CommandResult;
@@ -45,8 +48,13 @@ export const useApp = create<AppState>((set, get) => ({
   lastSpeed: 1,
   tool: null,
   toast: null,
-  start: (game) => set({ game, speed: 0, tool: null, version: get().version + 1 }),
-  newGame: (mode) => get().start(createGame((Date.now() & 0x7fffffff) | 1, mode)),
+  cinematic: null,
+  endCinematic: () => set({ cinematic: null, version: get().version + 1 }),
+  start: (game) => set({ game, speed: 0, tool: null, cinematic: null, version: get().version + 1 }),
+  newGame: (mode) => {
+    get().start(createGame((Date.now() & 0x7fffffff) | 1, mode));
+    if (mode === 'campaign') set({ cinematic: 'intro' });
+  },
   dispatch: (c) => {
     const g = get().game;
     if (!g) return { ok: false, error: 'notFound' };

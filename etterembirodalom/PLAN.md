@@ -23,6 +23,7 @@ Az M1 kész, az M2 szabályai és a kampány váza működik. A felhasználói v
 - **Világ:** Budapest helyett Párizs (francia), Nizza (mediterrán) és Róma (olasz konyha). A pénznem euró; a mag eurócentben számol, így az M1-egyensúly változatlan maradt.
 - **Történet:** „Gaston nyomában”, 12 fejezet 4 felvonásban. Eltűnt nagybácsi, elveszett receptlapok, szabotőr szakács, főzőversenyek, kritikus, római patrónus és döntő a Gourmet Global főséfje ellen. Saját szereplők és nevek; a Restaurant Empire csak műfaji minta.
 - **Új mechanikák:** takarító és tisztaság, képzés, elbocsátás, alapanyag-minőség, marketing, riválisok piaci részesedéssel, legfeljebb 3 étterem, csőd, dekoráció (5 elem), padló- és falstílusok, elveszett receptek (5-ös szint), versenyek, szabotőr, fejezetjutalmak, saját szerzésű musette-zene Web Audióval.
+- **Hangulat (v3.1):** sötét bisztró-felület (sárgaréz, bordó, ébenfa), város a terem körül városonként saját építészettel (párizsi manzárdtetők és Eiffel-torony, nizzai pasztell házak és tenger, római okker házak és Colosseum), utca járókelőkkel, autóval, lámpákkal, teraszasztalokkal és cégtáblával. Új kampánynál kb. 15 másodperces filmszerű bevezető: kamerarepülés a város fölött a bisztróig, feliratkártyákkal, kihagyható. Másik étterem megnyitásakor rövid berepülés.
 - **Háttér-szimuláció:** a nem látható éttermek is teljes szimulációval futnak (mérve olcsó), így az M2 ±10%-os feltétele pontosan teljesül.
 
 ## Alapfeltevések és kivágások

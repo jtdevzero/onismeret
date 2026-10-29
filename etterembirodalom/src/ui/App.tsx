@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactElement } from 'react';
 import {
   FLOOR_STYLES,
   ITEMS,
@@ -26,6 +26,7 @@ import { isMusicOn, toggleMusic } from './music';
 
 export function App() {
   const game = useApp((s) => s.game);
+  const cinematic = useApp((s) => s.cinematic);
   const narrow = useNarrow();
   useEffect(() => startLoop(), []);
   useKeyboard();
@@ -33,18 +34,24 @@ export function App() {
   return (
     <div className={`game ${narrow ? 'narrow' : 'wide'}`}>
       <Scene3D />
-      <TopBar />
-      <MissionBar />
-      {narrow ? (
-        <MobileDock />
+      {cinematic ? (
+        <Cinematic />
       ) : (
         <>
-          <BuildBar />
-          <SidePanel />
+          <TopBar />
+          <MissionBar />
+          {narrow ? (
+            <MobileDock />
+          ) : (
+            <>
+              <BuildBar />
+              <SidePanel />
+            </>
+          )}
+          <DayEndModal />
+          <StoryModal />
         </>
       )}
-      <DayEndModal />
-      <StoryModal />
       <BankruptModal />
       <ToastView />
     </div>
@@ -102,7 +109,72 @@ function goalText(def: ChapterDef): string {
   return t(`ch.${def.id}.goal`, { target, served: def.kind === 'cleanStreak' ? STREAK_SERVED : GOOD_DAY_SERVED, rating: num(STREAK_RATING) });
 }
 
+// --- Filmszerű bevezető ----------------------------------------------------------
+
+const CINE_CARDS = ['intro.1', 'intro.2', 'intro.3', 'intro.4'] as const;
+const CINE_MS = 3700;
+
+function Cinematic() {
+  const end = useApp((s) => s.endCinematic);
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setI((x) => Math.min(CINE_CARDS.length - 1, x + 1)), CINE_MS);
+    return () => clearInterval(id);
+  }, []);
+  const key = CINE_CARDS[i]!;
+  const last = i === CINE_CARDS.length - 1;
+  return (
+    <div className="cinematic">
+      <div className="cine-card" key={key}>
+        <div className="place">{t(`${key}.place`)}</div>
+        {last ? <div className="title">{t(`${key}.line`)}</div> : <div className="line">{t(`${key}.line`)}</div>}
+      </div>
+      <button className="btn small cine-skip" onClick={end}>
+        {t('intro.skip')}
+      </button>
+    </div>
+  );
+}
+
 // --- Kezdőképernyő ---------------------------------------------------------------
+
+/** Esti párizsi háztetők sziluettje világító ablakokkal és a toronnyal. Determinisztikus. */
+function Skyline() {
+  let seed = 11;
+  const rnd = () => ((seed = (seed * 1103515245 + 12345) >>> 0) / 4294967296);
+  const back: ReactElement[] = [];
+  const front: ReactElement[] = [];
+  const windows: ReactElement[] = [];
+  for (let x = -10, k = 0; x < 1220; k++) {
+    const w = 50 + rnd() * 60;
+    const h = 90 + rnd() * 90;
+    back.push(<rect key={`b${k}`} x={x} y={300 - h - 40} width={w} height={h + 40} />);
+    x += w - 4;
+  }
+  for (let x = -10, k = 0; x < 1220; k++) {
+    const w = 70 + rnd() * 70;
+    const h = 60 + rnd() * 70;
+    const top = 300 - h;
+    front.push(<path key={`f${k}`} d={`M${x} 300 V${top} L${x + 10} ${top - 18} H${x + w - 10} L${x + w} ${top} V300 Z`} />);
+    front.push(<rect key={`c${k}`} x={x + w * 0.7} y={top - 34} width={8} height={18} />);
+    for (let wy = top + 12; wy < 290; wy += 22) {
+      for (let wx = x + 10; wx < x + w - 14; wx += 18) {
+        if (rnd() < 0.32) windows.push(<rect key={`w${windows.length}`} x={wx} y={wy} width={7} height={11} />);
+      }
+    }
+    x += w + 2;
+  }
+  return (
+    <svg className="skyline" viewBox="0 0 1200 300" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <path d="M858 300 L880 210 L888 150 L893 70 L896 20 L899 70 L904 150 L912 210 L934 300 H918 Q896 262 874 300 Z" fill="#1d1420" />
+      <rect x="884" y="206" width="24" height="5" fill="#f2c46b" opacity="0.8" />
+      <rect x="889" y="146" width="14" height="4" fill="#f2c46b" opacity="0.8" />
+      <g fill="#1a1420">{back}</g>
+      <g fill="#0f0b0e">{front}</g>
+      <g fill="#f2c46b" opacity="0.85">{windows}</g>
+    </svg>
+  );
+}
 
 function StartScreen() {
   const { start, newGame } = useApp();
@@ -117,9 +189,11 @@ function StartScreen() {
   }, []);
   return (
     <div className="start">
+      <Skyline />
       <div className="start-card">
         <div className="eyebrow">{t('app.subtitle')}</div>
         <h1>{t('app.title')}</h1>
+        <p className="tagline">{t('start.tagline')}</p>
         <p className="muted">{t('start.hint')}</p>
         <div className="start-actions">
           {saved && (
@@ -357,15 +431,15 @@ function BankruptModal() {
 // --- Építés ------------------------------------------------------------------------
 
 const SWATCH: Record<ItemKind, string> = {
-  table: 'var(--burgundy)',
-  chair: 'var(--gold)',
-  stove: 'var(--slate-600)',
-  counter: 'var(--emerald)',
+  table: '#8c2a3c',
+  chair: '#c9a24a',
+  stove: '#6b7280',
+  counter: '#2f6b4f',
   plant: '#4d7c3a',
   lamp: '#e8c76a',
-  wine: '#3f2615',
+  wine: '#6b3f22',
   aquarium: '#7cc4e8',
-  piano: '#0b0b0f',
+  piano: '#3a3436',
 };
 
 const FURNITURE: ItemKind[] = ['table', 'chair', 'stove', 'counter'];
