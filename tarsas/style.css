@@ -226,3 +226,9 @@ main{max-width:760px;padding-top:26px;gap:20px}body[data-view="home"] main{max-w
 @media(prefers-reduced-motion:reduce){.cover-card{transition:none}.cover-card:hover{transform:none}}
 .arrow-up-right{position:relative;display:inline-block;width:9px;height:9px;border-top:1px solid currentColor;border-right:1px solid currentColor;flex:none}.arrow-up-right::after{content:"";position:absolute;right:0;top:-1px;height:12px;border-left:1px solid currentColor;transform:rotate(45deg);transform-origin:top}.icon-btn{display:grid;place-items:center}.hero-actions .btn .arrow-up-right{margin-left:4px}.crew-edit .arrow-up-right{width:7px;height:7px;margin-left:5px}.portal-toolbar>.btn .arrow-up-right{width:7px;height:7px}.standalone-game b>.arrow-up-right{width:9px;height:9px;vertical-align:middle;margin-left:2px}
 @media(max-width:620px){.game.cover-card small{font-size:11px}.game.cover-card .card-meta{font-size:9px}.card-category{font-size:8px}.hero-note{font-size:9px}.crew-edit{font-size:10px}}
+
+/* Társasest 2.0: Szóbomba – hozzáférhető vizuális ketyegés iOS-en is */
+.bomb-feedback{text-align:center;letter-spacing:.04em;font-size:.85rem;opacity:.8;margin:.35rem 0}
+.bomb.pulse-tick{animation:bomb-tick-pulse .22s ease-out}
+@keyframes bomb-tick-pulse{0%{transform:scale(1);filter:brightness(1)}45%{transform:scale(1.09);filter:brightness(1.4)}100%{transform:scale(1);filter:brightness(1)}}
+@media(prefers-reduced-motion:reduce){.bomb.pulse-tick{animation:none}.bomb-feedback{font-weight:700}}
