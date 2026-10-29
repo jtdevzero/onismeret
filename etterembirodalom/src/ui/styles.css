@@ -647,3 +647,180 @@ dl.stats dd {
     transform: translate(-50%, 6px);
   }
 }
+
+/* --- Telefonos elrendezés ----------------------------------------------------- */
+
+.game.narrow .topbar {
+  top: calc(6px + env(safe-area-inset-top, 0px));
+  left: max(8px, env(safe-area-inset-left, 0px));
+  right: max(8px, env(safe-area-inset-right, 0px));
+  height: auto;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  padding: 8px 10px;
+}
+.game.narrow .brand {
+  display: none;
+}
+.game.narrow .stat .label {
+  font-size: 9.5px;
+}
+.game.narrow .stat .value {
+  font-size: 14px;
+}
+.game.narrow .spacer {
+  flex-basis: 100%;
+  height: 0;
+}
+.game.narrow .speed {
+  flex: 1;
+}
+.game.narrow .seg {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 6px;
+}
+
+.checklist-compact {
+  position: absolute;
+  left: max(8px, env(safe-area-inset-left, 0px));
+  right: max(8px, env(safe-area-inset-right, 0px));
+  top: calc(110px + env(safe-area-inset-top, 0px));
+  z-index: 4;
+  background: rgba(248, 250, 252, 0.95);
+  border: 1px solid var(--slate-200);
+  border-left: 4px solid var(--gold);
+  border-radius: 8px;
+  padding: 7px 10px;
+  font-size: 12.5px;
+  color: var(--slate-700);
+  box-shadow: var(--shadow);
+}
+
+.dock {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 6;
+  display: flex;
+  gap: 4px;
+  padding: 6px max(8px, env(safe-area-inset-right, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-left, 0px));
+  background: rgba(248, 250, 252, 0.98);
+  border-top: 1px solid var(--slate-200);
+  box-shadow: 0 -6px 18px rgba(15, 23, 42, 0.08);
+}
+.dock-btn {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  padding: 11px 4px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--slate-600);
+  cursor: pointer;
+}
+.dock-btn.on {
+  background: var(--sapphire);
+  color: #fff;
+}
+.dock-btn.icon {
+  flex: 0 0 44px;
+  font-size: 18px;
+}
+
+.sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(58px + env(safe-area-inset-bottom, 0px));
+  z-index: 5;
+  background: rgba(248, 250, 252, 0.98);
+  border-top: 1px solid var(--slate-200);
+  border-radius: 14px 14px 0 0;
+  box-shadow: 0 -10px 30px rgba(15, 23, 42, 0.12);
+  display: flex;
+  flex-direction: column;
+}
+.sheet-tall {
+  max-height: 62%;
+}
+.sheet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px max(16px, env(safe-area-inset-right, 0px)) 6px max(16px, env(safe-area-inset-left, 0px));
+}
+.sheet-head h2 {
+  font-size: 18px;
+}
+.sheet-body {
+  overflow-y: auto;
+  padding: 6px max(16px, env(safe-area-inset-right, 0px)) 14px max(16px, env(safe-area-inset-left, 0px));
+}
+.sheet-build .sheet-body {
+  padding-top: 10px;
+  padding-bottom: 8px;
+}
+.sheet-build .tools {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+.sheet-build .tool {
+  flex: 0 0 auto;
+  width: auto;
+  margin: 0;
+  padding: 7px 10px 7px 7px;
+  border: 1px solid var(--slate-200);
+  background: #fff;
+}
+.sheet-build .tool.on {
+  border-color: var(--sapphire);
+  background: #eef2ff;
+}
+.sheet-build .tool-desc {
+  display: none;
+}
+.game.narrow .price-input input {
+  font-size: 16px;
+  width: 84px;
+}
+.game.narrow .modal {
+  max-height: calc(100% - 24px);
+  overflow-y: auto;
+  padding: 20px 18px 18px;
+}
+.game.narrow .modal-grid {
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+.game.narrow .modal h2 {
+  font-size: 22px;
+}
+.game.narrow .toast {
+  bottom: calc(150px + env(safe-area-inset-bottom, 0px));
+  max-width: calc(100% - 32px);
+}
+@media (max-width: 899px) {
+  .start-card {
+    padding: 26px 20px 22px;
+  }
+  .start-card h1 {
+    font-size: 34px;
+  }
+  .start-actions {
+    flex-direction: column;
+  }
+}
+
+.game.narrow .hide-narrow {
+  display: none;
+}
+.game.narrow .topbar .btn.small {
+  padding: 7px 10px;
+}

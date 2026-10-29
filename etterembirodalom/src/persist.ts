@@ -6,8 +6,14 @@ import type { GameState } from './sim/types';
 
 const KEY = 'etterembirodalom:autosave';
 
-export async function saveGame(state: GameState): Promise<void> {
-  await set(KEY, serializeSave(state));
+export async function saveGame(state: GameState): Promise<boolean> {
+  try {
+    await set(KEY, serializeSave(state));
+    return true;
+  } catch {
+    // Privát ablakban vagy tiltott tárolásnál a játék mentés nélkül is fut.
+    return false;
+  }
 }
 
 export async function loadGame(): Promise<ParseResult | null> {

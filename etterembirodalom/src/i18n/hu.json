@@ -19,6 +19,8 @@
   "build.title": "Építés",
   "build.remove": "Eladás",
   "build.rotate": "Forgatás (R)",
+  "sheet.close": "Bezárás",
+  "view.fit": "Terem középre",
   "build.hint": "Kattints a padlóra a lerakáshoz. Jobb gomb: mozgatás, görgő: nagyítás, Esc: kilépés.",
   "item.table": "Asztal",
   "item.chair": "Szék",

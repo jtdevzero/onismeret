@@ -12,20 +12,39 @@ import { startLoop, useApp, type Speed } from '../store';
 
 export function App() {
   const game = useApp((s) => s.game);
+  const narrow = useNarrow();
   useEffect(() => startLoop(), []);
   useKeyboard();
   if (!game) return <StartScreen />;
   return (
-    <div className="game">
+    <div className={`game ${narrow ? 'narrow' : 'wide'}`}>
       <IsoView />
       <TopBar />
-      <BuildBar />
-      <SidePanel />
-      <Checklist />
+      {narrow ? (
+        <MobileDock />
+      ) : (
+        <>
+          <BuildBar />
+          <SidePanel />
+          <Checklist />
+        </>
+      )}
       <DayEndModal />
       <ToastView />
     </div>
   );
+}
+
+function useNarrow(): boolean {
+  const query = '(max-width: 899px)';
+  const [narrow, setNarrow] = useState(() => (typeof window !== 'undefined' ? window.matchMedia(query).matches : false));
+  useEffect(() => {
+    const mq = window.matchMedia(query);
+    const on = () => setNarrow(mq.matches);
+    mq.addEventListener('change', on);
+    return () => mq.removeEventListener('change', on);
+  }, []);
+  return narrow;
 }
 
 function useKeyboard() {
@@ -118,7 +137,7 @@ function TopBar() {
           <Stars value={g.reputation} /> <span className="mono small">{num(g.reputation)}</span>
         </span>
       </div>
-      <div className="stat">
+      <div className="stat hide-narrow">
         <span className="label">{t('top.guests')}</span>
         <span className="value mono">{guests}</span>
       </div>
@@ -164,11 +183,20 @@ const SWATCH: Record<ItemKind, string> = {
 };
 
 function BuildBar() {
-  const g = useGame();
-  const { tool, setTool } = useApp();
   return (
     <aside className="buildbar">
       <h2>{t('build.title')}</h2>
+      <BuildTools />
+      <p className="hint subtle">{t('build.hint')}</p>
+    </aside>
+  );
+}
+
+function BuildTools() {
+  const g = useGame();
+  const { tool, setTool } = useApp();
+  return (
+    <div className="tools">
       {ITEM_ORDER.map((k) => {
         const price = ITEMS[k].price;
         const disabled = g.cash < price;
@@ -189,9 +217,8 @@ function BuildBar() {
           <span className="tool-price">−{Math.round(B.economy.sellRefund * 100)}%</span>
         </span>
       </button>
-      {tool && tool !== 'remove' && <p className="hint">{t(`item.${tool}.desc`, { n: B.service.chefParallelDishes })}</p>}
-      <p className="hint subtle">{t('build.hint')}</p>
-    </aside>
+      {tool && tool !== 'remove' && <p className="hint tool-desc">{t(`item.${tool}.desc`, { n: B.service.chefParallelDishes })}</p>}
+    </div>
   );
 }
 
@@ -419,7 +446,7 @@ function FinanceTab() {
 
 // --- Nyitási ellenőrzőlista -------------------------------------------------------
 
-function Checklist() {
+function Checklist({ compact = false }: { compact?: boolean }) {
   const g = useGame();
   const r = isServiceReady(g);
   const items: [string, boolean][] = [
@@ -430,6 +457,14 @@ function Checklist() {
     ['checklist.waiter', r.waiters > 0],
   ];
   if (items.every(([, ok]) => ok)) return null;
+  if (compact) {
+    const missing = items.filter(([, ok]) => !ok).map(([k]) => t(k));
+    return (
+      <div className="checklist-compact">
+        <strong>{t('checklist.title')}:</strong> {missing.join(', ')}
+      </div>
+    );
+  }
   return (
     <div className="checklist">
       <h4>{t('checklist.title')}</h4>
@@ -442,6 +477,54 @@ function Checklist() {
         ))}
       </ul>
     </div>
+  );
+}
+
+// --- Telefonos dokk -------------------------------------------------------------
+
+type DockTab = 'build' | Tab;
+
+function MobileDock() {
+  const [open, setOpen] = useState<DockTab | null>('build');
+  const setTool = useApp((s) => s.setTool);
+  const tabs: DockTab[] = ['build', 'staff', 'menu', 'finance'];
+  const label = (k: DockTab) => (k === 'build' ? t('build.title') : t(`tab.${k}`));
+  const toggle = (k: DockTab) => {
+    if (k !== 'build') setTool(null);
+    setOpen(open === k ? null : k);
+  };
+  return (
+    <>
+      {open !== 'staff' && open !== 'menu' && open !== 'finance' && <Checklist compact />}
+      {open && (
+        <section className={`sheet ${open === 'build' ? 'sheet-build' : 'sheet-tall'}`} aria-label={label(open)}>
+          {open !== 'build' && (
+            <header className="sheet-head">
+              <h2>{label(open)}</h2>
+              <button className="btn small" onClick={() => setOpen(null)}>
+                {t('sheet.close')}
+              </button>
+            </header>
+          )}
+          <div className="sheet-body">
+            {open === 'build' && <BuildTools />}
+            {open === 'staff' && <StaffTab />}
+            {open === 'menu' && <MenuTab />}
+            {open === 'finance' && <FinanceTab />}
+          </div>
+        </section>
+      )}
+      <nav className="dock">
+        {tabs.map((k) => (
+          <button key={k} className={`dock-btn ${open === k ? 'on' : ''}`} onClick={() => toggle(k)}>
+            {label(k)}
+          </button>
+        ))}
+        <button className="dock-btn icon" onClick={() => window.dispatchEvent(new Event('etterem:refit'))} title={t('view.fit')} aria-label={t('view.fit')}>
+          ⤢
+        </button>
+      </nav>
+    </>
   );
 }
 
