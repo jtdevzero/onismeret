@@ -397,7 +397,7 @@ async function checkPortalOffline() {
     assert.equal(cacheName,'tarsas-v'+portalVersion);
     const childFiles=['','index.html','styles.css','app.js','game.js','prompts.js','prompt-metadata.js','difficulty.js','custom-pack.js','offline.js','sw.js','favicon.svg','manifest.webmanifest','icon.svg'];
     for(const file of childFiles) assert(shell.includes('activity18/'+file),'offline shell includes Activity '+file);
-    for(const file of ['','index.html','styles.css?v=5','app.js?v=4','data.js?v=4','party-history.js?v=4','round-recorder.js?v=4','game-core.js','favicon.svg','manifest.webmanifest?v=4','service-worker.js']) assert(shell.includes('homlok/'+file),'offline shell preserves Homlok '+file);
+    for(const file of ['','index.html','styles.css?v=6','app.js?v=4','data.js?v=4','party-history.js?v=4','round-recorder.js?v=4','game-core.js','favicon.svg','manifest.webmanifest?v=4','service-worker.js']) assert(shell.includes('homlok/'+file),'offline shell preserves Homlok '+file);
     for(const asset of shell) assert(fs.existsSync(path.join(ROOT,asset.split('?')[0])),'shell asset exists: '+asset);
     const index=fs.readFileSync(path.join(ROOT,'index.html'),'utf8');
     for(const match of index.matchAll(/(?:src|href)="([^"\s]+\?v=\d+)"/g)) {
