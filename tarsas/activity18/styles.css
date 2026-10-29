@@ -489,3 +489,12 @@ dialog.canvas-modal { width: min(960px, calc(100% - 24px)); }
   .paired-card .prompt-word { font-size: 25px; }
   .prompt-meta { flex-wrap: wrap; gap: 6px; }
 }
+
+
+/* PREMIUM 2.0 – Activity: neon party, kontrasztos tap targets */
+:root{--bg:#100d1c;--surface:#1c1830;--surface-raised:#2b2246;--line:#51436f;--lime:#dcff79;--lilac:#c9aaff;--peach:#ffad95}
+body{background:radial-gradient(ellipse at 80% 0%,rgba(149,81,230,.19),transparent 55%),radial-gradient(ellipse at 0% 75%,rgba(255,111,158,.09),transparent 42%),var(--bg)}
+button:not(:disabled){transition:transform .14s ease,filter .2s ease,box-shadow .2s ease}
+button:not(:disabled):active{transform:scale(.97)}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--lime);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){button:not(:disabled){transition:none}}
