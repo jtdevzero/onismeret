@@ -110,6 +110,17 @@ function check(condition,message){assert(condition,message);assertions++;console
         const atlas=await page.evaluate(async()=>{const r=await fetch('images/dreams-atlas.webp');return r.ok&&(await r.blob()).size>1000;});
         check(atlas,'all24 dream illustrations are available offline');
         await page.screenshot({path:'/tmp/alomkepek-preview.png',fullPage:true});
+        await page.goto(origin+'/tarsas/harry-potter/');
+        await page.getByRole('button',{name:'Egyéni játék indítása'}).waitFor();
+        check(await page.locator('h1').innerText()==='Mennyire ismered\nRoxfort titkait?','Harry Potter opens offline without a backend');
+        await page.locator('select[name="mode"]').selectOption('picture');
+        await page.getByRole('button',{name:'Egyéni játék indítása'}).click();
+        await page.waitForFunction(()=>document.querySelector('.illustration')?.naturalWidth>0);
+        check(await page.locator('.illustration').count()===1,'Harry Potter picture loads offline');
+        await page.locator('[data-answer]').first().click();
+        await page.locator('[data-action="next"]').click();
+        check(await page.locator('.result').count()===1,'Harry Potter solo round completes offline');
+
         await context.setOffline(false);
       }
       check(errors.length===0,width+'px: no browser JavaScript errors ('+errors.join('; ')+')');
@@ -124,7 +135,7 @@ function check(condition,message){assert(condition,message);assertions++;console
     await offlinePage.evaluate(()=>navigator.serviceWorker.ready);
     await offlinePage.waitForFunction(()=>navigator.serviceWorker.controller!==null);
     await offlinePage.waitForFunction(async()=>{
-      const cache=await caches.open('tarsas-v6');
+      const cache=await caches.open('tarsas-v7');
       return !!(await cache.match(new URL('activity18/app.js',location.href).href));
     });
     await offlineContext.setOffline(true);

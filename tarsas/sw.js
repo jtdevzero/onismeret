@@ -1,7 +1,8 @@
 /* Verziózott, teljes offline csomag. Az új változat megvárja a régi játéklapok bezárását. */
-const CACHE = 'tarsas-v6';
-const SHELL = ['./', 'index.html', 'style.css?v=6', 'data.js?v=6', 'app.js?v=6',
-  'games-party.js?v=6', 'games-social.js?v=6', 'games-bluff.js?v=6', 'games-quiz.js?v=6', 'enhancements.js?v=6', 'games-dreams.js?v=6', 'images/dreams-atlas.webp',
+const CACHE = 'tarsas-v7';
+const HP = ['index.html', 'app.js', 'style.css', 'questions.js', ...['owl', 'diary', 'map', 'goblet', 'quill', 'potion', 'locket', 'hallows'].map(name => 'images/' + name + '.svg')].map(file => 'harry-potter/' + file);
+const SHELL = [...HP, './', 'index.html', 'style.css?v=7', 'data.js?v=7', 'app.js?v=7',
+  'games-party.js?v=7', 'games-social.js?v=7', 'games-bluff.js?v=7', 'games-quiz.js?v=7', 'enhancements.js?v=7', 'games-dreams.js?v=7', 'images/dreams-atlas.webp',
   'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/icon-maskable-512.png',
   'homlok/', 'homlok/index.html', 'homlok/styles.css?v=4', 'homlok/app.js?v=4', 'homlok/data.js?v=4',
   'homlok/party-history.js?v=4', 'homlok/round-recorder.js?v=4', 'homlok/game-core.js', 'homlok/favicon.svg',
@@ -10,7 +11,7 @@ const SHELL = ['./', 'index.html', 'style.css?v=6', 'data.js?v=6', 'app.js?v=6',
   'activity18/prompts.js', 'activity18/prompt-metadata.js', 'activity18/difficulty.js', 'activity18/custom-pack.js',
   'activity18/offline.js', 'activity18/sw.js', 'activity18/favicon.svg', 'activity18/manifest.webmanifest', 'activity18/icon.svg'];
 const scope = new URL(self.registration.scope);
-const childRoots = ['activity18/', 'homlok/'].map(path => new URL(path, scope));
+const childRoots = ['activity18/', 'homlok/', 'harry-potter/'].map(path => new URL(path, scope));
 const indexURL = new URL('index.html', scope).href;
 self.addEventListener('install', e => {
   e.waitUntil((async () => {
@@ -35,7 +36,7 @@ self.addEventListener('fetch', e => {
     const cache = await caches.open(CACHE);
     if (childRoot) {
       const childIndexURL = new URL('index.html', childRoot).href;
-      // Mindkét külön játék a saját workerének első aktiválódásáig is megnyitható offline.
+      // Minden külön játék a saját workerének első aktiválódásáig is megnyitható offline.
       // Online a saját új változatát kapja, a portál teljes tartalékcsomagját nem keverjük át.
       try {
         const response = await fetch(req);

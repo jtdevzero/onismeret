@@ -9,7 +9,8 @@
     "test:tarsas": "node tests/tarsas.test.cjs && npm run test:activity18",
     "test:activity18": "npm --prefix tarsas/activity18 test",
     "test:tarsas:browser": "node tests/tarsas-browser.cjs",
-    "test:paros": "node paros/tests/run.cjs"
+    "test:paros": "node paros/tests/run.cjs",
+    "test:hp": "node --test tarsas/harry-potter/tests/*.test.cjs"
   },
   "devDependencies": {
     "playwright": "1.63.0"
