@@ -1,8 +1,8 @@
 /* Verziózott, teljes offline csomag. Sikertelen frissítéskor a régi csomag marad aktív. */
-const CACHE = 'tarsas-v4';
+const CACHE = 'tarsas-v5';
 const SHELL = ['./', 'index.html', 'style.css?v=4', 'data.js?v=4', 'app.js?v=4',
-  'games-party.js?v=4', 'games-social.js?v=4', 'games-bluff.js?v=4', 'games-quiz.js?v=4', 'enhancements.js?v=4', 'games-dreams.js?v=4', 'images/dreams-atlas.webp',
-  'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/icon-maskable-512.png'];
+  'games-party.js?v=4', 'games-social.js?v=4', 'games-bluff.js?v=4', 'games-quiz.js?v=4', 'enhancements.js?v=5', 'games-dreams.js?v=4', 'images/dreams-atlas.webp',
+  'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/icon-maskable-512.png', 'homlok/', 'homlok/index.html', 'homlok/styles.css?v=4', 'homlok/app.js?v=4', 'homlok/data.js?v=4', 'homlok/party-history.js?v=4', 'homlok/round-recorder.js?v=4', 'homlok/game-core.js', 'homlok/favicon.svg', 'homlok/manifest.webmanifest?v=4'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL.map(url => new Request(url, { cache: 'reload' })))).then(() => self.skipWaiting()));
 });
