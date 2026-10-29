@@ -41,7 +41,7 @@ describe('kereslet', () => {
   });
 
   it('λ = B_k × N × H_f × M_f', () => {
-    expect(guestsPerHour('university', 9 * 3600, 2.5, 0)).toBeCloseTo(22 * 1.8 * 1.0);
+    expect(guestsPerHour('paris', 9 * 3600, 2.5, 0)).toBeCloseTo(22 * 1.8 * 1.0);
   });
 });
 
@@ -58,7 +58,7 @@ describe('étel és vendégdöntés', () => {
   });
 
   it('referenciaár a környék szorzójával', () => {
-    expect(referencePrice('carbonara', 'university')).toBe(Math.round(3200 * 0.9));
+    expect(referencePrice('coq_au_vin', 'paris')).toBe(Math.round(4400 * 0.9));
   });
 
   it('adagköltség az alapanyag-minőséggel', () => {

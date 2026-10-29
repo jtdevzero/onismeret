@@ -1,5 +1,5 @@
-import { applyCommand, createGame, type Command } from '../src/sim/sim';
-import type { GameState, Role } from '../src/sim/types';
+import { activeRestaurant, applyCommand, createGame, runDay, type Command } from '../src/sim/sim';
+import type { DayReport, GameState, RestaurantState, Role } from '../src/sim/types';
 
 export const TABLE_SPOTS: [number, number][] = [
   [3, 2], [7, 2], [11, 2],
@@ -14,25 +14,47 @@ export function must(s: GameState, c: Command): number | undefined {
   return r.id;
 }
 
+export function rest(s: GameState): RestaurantState {
+  return activeRestaurant(s);
+}
+
 /** Asztal négy székkel (fent, lent, bal, jobb). */
-export function placeTable(s: GameState, x: number, y: number): void {
-  must(s, { type: 'place', kind: 'table', x, y });
-  for (const [dx, dy] of [[-1, 0], [1, 0], [0, -1], [0, 1]] as const) must(s, { type: 'place', kind: 'chair', x: x + dx, y: y + dy });
+export function placeTable(s: GameState, x: number, y: number, restaurant?: number): void {
+  must(s, { type: 'place', kind: 'table', x, y, restaurant });
+  for (const [dx, dy] of [[-1, 0], [1, 0], [0, -1], [0, 1]] as const) must(s, { type: 'place', kind: 'chair', x: x + dx, y: y + dy, restaurant });
 }
 
-export function hireBest(s: GameState, role: Role): void {
-  const c = s.candidates.filter((x) => x.role === role).sort((a, b) => b.skill - a.skill)[0];
+export function hireBest(s: GameState, role: Role, restaurant?: number): void {
+  const r = restaurant === undefined ? rest(s) : s.restaurants.find((x) => x.id === restaurant)!;
+  const c = r.candidates.filter((x) => x.role === role).sort((a, b) => b.skill - a.skill)[0];
   if (!c) throw new Error('Nincs jelölt');
-  must(s, { type: 'hire', candidateId: c.id });
+  must(s, { type: 'hire', candidateId: c.id, restaurant: r.id });
 }
 
-/** Szabványos tesztelrendezés: n asztal, 1 főzőállomás, 1 pult, adott létszám. */
-export function setup(seed: number, opts: { tables: number; chefs: number; waiters: number }): GameState {
-  const s = createGame(seed);
-  for (const [x, y] of TABLE_SPOTS.slice(0, opts.tables)) placeTable(s, x, y);
-  for (let i = 0; i < opts.chefs; i++) must(s, { type: 'place', kind: 'stove', x: 16, y: 7 + i * 2 });
-  must(s, { type: 'place', kind: 'counter', x: 14, y: 9 });
-  for (let i = 0; i < opts.chefs; i++) hireBest(s, 'chef');
-  for (let i = 0; i < opts.waiters; i++) hireBest(s, 'waiter');
+export interface SetupOpts {
+  tables: number;
+  chefs: number;
+  waiters: number;
+  cleaners?: number;
+}
+
+/** Szabványos tesztelrendezés egy étteremben. */
+export function furnish(s: GameState, opts: SetupOpts, restaurant?: number): void {
+  for (const [x, y] of TABLE_SPOTS.slice(0, opts.tables)) placeTable(s, x, y, restaurant);
+  for (let i = 0; i < opts.chefs; i++) must(s, { type: 'place', kind: 'stove', x: 16, y: 7 + i * 2, restaurant });
+  must(s, { type: 'place', kind: 'counter', x: 14, y: 9, restaurant });
+  for (let i = 0; i < opts.chefs; i++) hireBest(s, 'chef', restaurant);
+  for (let i = 0; i < opts.waiters; i++) hireBest(s, 'waiter', restaurant);
+  for (let i = 0; i < (opts.cleaners ?? 0); i++) hireBest(s, 'cleaner', restaurant);
+}
+
+export function setup(seed: number, opts: SetupOpts): GameState {
+  const s = createGame(seed, 'free');
+  furnish(s, opts);
   return s;
+}
+
+/** Egy nap lefuttatása; az első étterem jelentését adja vissza. */
+export function day(s: GameState): DayReport {
+  return runDay(s).restaurants[0]!.report;
 }

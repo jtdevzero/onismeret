@@ -2,8 +2,8 @@
 // Minden konstans a balance.json-ból jön.
 
 import balance from '../data/balance.json';
-import { NEIGHBORHOODS, recipeById, type IngredientQuality, type NeighborhoodId } from '../data/content';
-import type { Role } from './types';
+import { ITEMS, NEIGHBORHOODS, recipeById, type IngredientQuality, type NeighborhoodId, type RivalDef } from '../data/content';
+import type { MenuEntry, PlacedItem, Role } from './types';
 
 export const B = balance;
 
@@ -91,10 +91,53 @@ export function valueScore(quality: number, price: number, refPrice: number): nu
   return Math.min(1, (quality * refPrice) / price);
 }
 
-/** D: hangulatpontszám a berendezés értékéből. */
-export function decorScore(furnitureValue: number): number {
+/** A hangulathoz számított berendezésérték: a dekoráció háromszoros súllyal. */
+export function decorValue(items: PlacedItem[]): number {
+  return items.reduce((a, i) => a + ITEMS[i.kind].price * (ITEMS[i.kind].decor ? B.satisfaction.decorItemWeight : 1), 0);
+}
+
+/** D: hangulatpontszám a berendezés értékéből; 60% tisztaság alatt a felére esik. */
+export function decorScore(value: number, cleanliness = 1): number {
   const s = B.satisfaction;
-  return Math.min(1, s.decorBase + (1 - s.decorBase) * (furnitureValue / s.decorFullValueFt));
+  const d = Math.min(1, s.decorBase + (1 - s.decorBase) * (value / s.decorFullValueFt));
+  return cleanliness < B.cleaning.decorPenaltyBelow ? d * B.cleaning.decorPenaltyFactor : d;
+}
+
+// --- Riválisok és piaci részesedés -------------------------------------------------
+
+function reputationTerm(reputation: number): number {
+  return B.rivals.reputationWeight * (reputation - B.rivals.reputationPivot);
+}
+
+/** Ū a játékos étterménél: az étlap átlagos, zaj nélküli hasznossága + hírnévtag. */
+export function playerAppeal(menu: MenuEntry[], neighborhood: NeighborhoodId, chefSkill: number, reputation: number): number {
+  const on = menu.filter((m) => m.onMenu);
+  if (on.length === 0) return -Infinity;
+  const fav = NEIGHBORHOODS[neighborhood].favoriteCuisine;
+  const total = on.reduce((a, m) => {
+    const q = dishQuality(m.level, m.ingredient, chefSkill);
+    return a + dishUtility(q, m.price, referencePrice(m.recipeId, neighborhood), recipeById(m.recipeId).cuisine === fav, 0);
+  }, 0);
+  return total / on.length + reputationTerm(reputation);
+}
+
+/** Ū egy riválisnál. */
+export function rivalAppeal(def: RivalDef, priceLevel: number): number {
+  const c = B.choice;
+  const fav = NEIGHBORHOODS[def.neighborhood].favoriteCuisine === def.cuisine;
+  return c.baseWillingness + c.qualityWeight * def.quality - c.priceWeight * priceLevel + (fav ? c.cuisineBonus : 0) + reputationTerm(def.reputation);
+}
+
+/**
+ * R_share = e^(kŪ_j) / (e^(kŪ_j) + Σ e^(kŪ_r)) × (1 + n_rivális).
+ * A nyers részesedés (szorzó nélkül) adja a riválisok reakcióját.
+ */
+export function marketShare(player: number, rivals: number[]): { raw: number; share: number } {
+  if (!Number.isFinite(player)) return { raw: 0, share: 0 };
+  const k = B.rivals.temperature;
+  const ep = Math.exp(k * player);
+  const raw = ep / (ep + rivals.reduce((a, u) => a + Math.exp(k * u), 0));
+  return { raw, share: raw * (1 + rivals.length) };
 }
 
 /** S = 35Q + 20(1 − W/W_max) + 15C + 15V + 15D, 0–100 */

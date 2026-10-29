@@ -15,6 +15,16 @@ Változások a v1-hez képest:
 - **Grafikai terv** placeholder → végleges asset útvonallal.
 - **Mérhető elfogadási feltételek** minden mérföldkőhöz.
 
+## Állapot és irányváltások (v3)
+
+Az M1 kész, az M2 szabályai és a kampány váza működik. A felhasználói visszajelzések alapján három nagy irányváltás történt a v2 tervhez képest:
+
+- **Megjelenítés:** a PixiJS-alapú izometrikus nézetet three.js-alapú, valódi 3D-s játéktér váltotta. Low-poly modellek, forgatható kamera, árnyékok, napszakfüggő fény. Telefonon egy ujjal forgat, két ujjal nagyít, koppintással rak le.
+- **Világ:** Budapest helyett Párizs (francia), Nizza (mediterrán) és Róma (olasz konyha). A pénznem euró; a mag eurócentben számol, így az M1-egyensúly változatlan maradt.
+- **Történet:** „Gaston nyomában”, 12 fejezet 4 felvonásban. Eltűnt nagybácsi, elveszett receptlapok, szabotőr szakács, főzőversenyek, kritikus, római patrónus és döntő a Gourmet Global főséfje ellen. Saját szereplők és nevek; a Restaurant Empire csak műfaji minta.
+- **Új mechanikák:** takarító és tisztaság, képzés, elbocsátás, alapanyag-minőség, marketing, riválisok piaci részesedéssel, legfeljebb 3 étterem, csőd, dekoráció (5 elem), padló- és falstílusok, elveszett receptek (5-ös szint), versenyek, szabotőr, fejezetjutalmak, saját szerzésű musette-zene Web Audióval.
+- **Háttér-szimuláció:** a nem látható éttermek is teljes szimulációval futnak (mérve olcsó), így az M2 ±10%-os feltétele pontosan teljesül.
+
 ## Alapfeltevések és kivágások
 
 Egyjátékos, offline, asztali böngészős játék készül, magyar felülettel, saját tartalommal és forintban számolt játékpénzzel.

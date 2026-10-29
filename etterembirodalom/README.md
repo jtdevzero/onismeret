@@ -2,7 +2,7 @@
 
 Magyar, böngészős étteremmenedzser-játék. A specifikáció a [PLAN.md](PLAN.md), az ügynököknek szóló szabályok az [AGENTS.md](AGENTS.md).
 
-**Állapot:** M1 – vertical slice. Egy étterem (egyetemi negyed), olasz konyha 5 recepttel, séf és pincér, teljes vendégkör, napi eredménykimutatás, IndexedDB-mentés, placeholder grafika.
+**Állapot:** M2 + kampány. „Gaston nyomában” – 12 fejezetes történet Párizstól Rómáig, három étterem, 3D-s játéktér (three.js), euró.
 
 ## Futtatás
 
@@ -20,8 +20,9 @@ npm run build    # típusellenőrzés + statikus build a dist/ mappába
 | --- | --- |
 | Lerakás / eladás | Válassz eszközt bal oldalt, kattints a padlóra |
 | Kilépés az eszközből | Esc |
-| Mozgatás | Jobb gomb húzása (eszköz nélkül bal gomb is) |
-| Nagyítás | Görgő |
+| Forgatás | Bal gomb húzása / egy ujj |
+| Mozgatás | Jobb gomb húzása / két ujj |
+| Nagyítás | Görgő / csippentés |
 | Szünet / folytatás | Szóköz |
 | Sebesség | 1, 2, 3 (1×, 2×, 4×) |
 
@@ -31,7 +32,7 @@ npm run build    # típusellenőrzés + statikus build a dist/ mappába
 | --- | --- |
 | `src/sim/` | Determinisztikus szimuláció: képletek, rács és A*, vendégkör, napzárás, mentés-séma. Nem importál semmit a megjelenítésből. |
 | `src/data/` | `balance.json` (minden hangolható szám), `content.ts` (berendezés, receptek, környékek) |
-| `src/render/` | PixiJS izometrikus játéktér |
+| `src/render3d/` | three.js 3D játéktér, low-poly modellek |
 | `src/ui/` | React panelek |
 | `src/i18n/` | `hu.json` – a felület összes szövege |
 | `tests/` | Vitest-tesztek |

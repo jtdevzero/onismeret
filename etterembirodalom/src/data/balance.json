@@ -99,7 +99,8 @@
     "reputationLearningRate": 0.02,
     "startingReputation": 2.5,
     "decorBase": 0.3,
-    "decorFullValueFt": 1200000
+    "decorFullValueFt": 1200000,
+    "decorItemWeight": 3
   },
   "economy": {
     "startingCash": 3000000,
@@ -107,11 +108,39 @@
     "maintenancePctPerDay": 0.002,
     "baseWage": {
       "chef": 28000,
-      "waiter": 18000
+      "waiter": 18000,
+      "cleaner": 14000
     },
     "candidateSkillMin": 30,
     "candidateSkillMax": 70,
     "candidatesPerRole": 3,
-    "sellRefund": 0.5
+    "sellRefund": 0.5,
+    "trainingCost": 80000,
+    "trainingSkill": 10,
+    "maxRestaurants": 3,
+    "bankruptcyDays": 3,
+    "backupSlots": 3
+  },
+  "cleaning": {
+    "dirtPerGuest": 0.005,
+    "cleanPerMinute": 0.04,
+    "workMinutes": 1,
+    "overnightRecovery": 0.2,
+    "decorPenaltyBelow": 0.6,
+    "decorPenaltyFactor": 0.5
+  },
+  "rivals": {
+    "temperature": 4,
+    "reputationWeight": 0.1,
+    "reputationPivot": 2.5,
+    "reactThreshold": 0.5,
+    "reactStep": 0.03,
+    "minPriceLevel": 0.8,
+    "reactEveryDays": 7
+  },
+  "campaign": {
+    "sabotageChance": 0.5,
+    "sabotageQuality": 0.2,
+    "contestLuck": 8
   }
 }

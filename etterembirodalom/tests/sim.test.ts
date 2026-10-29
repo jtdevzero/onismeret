@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { referencePrice } from '../src/sim/formulas';
 import { parseSave, serializeSave } from '../src/sim/save';
-import { TICKS_PER_DAY, applyCommand, createGame, runDay, runTicks, sumLedger, tick } from '../src/sim/sim';
+import { CAPITAL, OPERATING, TICKS_PER_DAY, applyCommand, createGame, runDay, runTicks, sumLedger, tick } from '../src/sim/sim';
 import type { GameState } from '../src/sim/types';
-import { must, placeTable, setup } from './helpers';
+import { day, must, placeTable, rest, setup } from './helpers';
 
 const SEEDS = Array.from({ length: 30 }, (_, i) => i + 1);
 
@@ -38,7 +38,7 @@ describe('M1 elfogadás: idő és determinizmus', () => {
 
 describe('M1 elfogadás: gazdaság', () => {
   it('optimális beállítással (6 asztal, 1 séf, 2 pincér, referenciaár) az 1. nap átlagosan +40 000 és +120 000 Ft között zárul', () => {
-    const profits = SEEDS.map((seed) => runDay(setup(seed, { tables: 6, chefs: 1, waiters: 2 })).profit);
+    const profits = SEEDS.map((seed) => day(setup(seed, { tables: 6, chefs: 1, waiters: 2 })).profit);
     const mean = profits.reduce((a, b) => a + b, 0) / profits.length;
     expect(mean).toBeGreaterThanOrEqual(40000);
     expect(mean).toBeLessThanOrEqual(120000);
@@ -52,10 +52,10 @@ describe('M1 elfogadás: gazdaság', () => {
     let leftWithThree = 0;
     let arrivedWithThree = 0;
     for (const seed of SEEDS.slice(0, 10)) {
-      const one = runDay(setup(seed, { tables: 10, chefs: 1, waiters: 1 }));
+      const one = day(setup(seed, { tables: 10, chefs: 2, waiters: 1 }));
       left += one.stats.leftPatience;
       arrived += one.stats.arrivedGuests;
-      const three = runDay(setup(seed, { tables: 10, chefs: 1, waiters: 3 }));
+      const three = day(setup(seed, { tables: 10, chefs: 2, waiters: 3 }));
       leftWithThree += three.stats.leftPatience;
       arrivedWithThree += three.stats.arrivedGuests;
     }
@@ -69,8 +69,8 @@ describe('M1 elfogadás: gazdaság', () => {
     let served = 0;
     for (const seed of SEEDS.slice(0, 10)) {
       const s = setup(seed, { tables: 6, chefs: 1, waiters: 2 });
-      for (const m of s.menu) must(s, { type: 'setMenu', recipeId: m.recipeId, price: referencePrice(m.recipeId, 'university') * 2.5 });
-      const r = runDay(s);
+      for (const m of rest(s).menu) must(s, { type: 'setMenu', recipeId: m.recipeId, price: referencePrice(m.recipeId, 'paris') * 2.5 });
+      const r = day(s);
       refused += r.stats.leftPrice;
       served += r.stats.servedGuests;
     }
@@ -81,9 +81,9 @@ describe('M1 elfogadás: gazdaság', () => {
     for (const seed of SEEDS.slice(0, 5)) {
       const s = setup(seed, { tables: 6, chefs: 1, waiters: 2 });
       const startCash = 3_000_000;
-      const r = runDay(s);
+      const r = day(s);
       expect(r.profit).toBe(r.revenue - r.ingredients - r.wages - r.rent - r.maintenance - r.marketing);
-      expect(r.profit + r.capex).toBe(sumLedger(s, ['revenue', 'ingredients', 'wages', 'rent', 'maintenance', 'marketing', 'purchase', 'refund']));
+      expect(r.profit + r.capex).toBe(sumLedger(rest(s), [...OPERATING, ...CAPITAL]));
       expect(s.cash - startCash).toBe(r.profit + r.capex);
     }
   });
@@ -92,8 +92,8 @@ describe('M1 elfogadás: gazdaság', () => {
     const s = setup(3, { tables: 6, chefs: 1, waiters: 2 });
     for (let d = 0; d < 5; d++) {
       runDay(s);
-      expect(s.reputation).toBeGreaterThanOrEqual(0);
-      expect(s.reputation).toBeLessThanOrEqual(5);
+      expect(rest(s).reputation).toBeGreaterThanOrEqual(0);
+      expect(rest(s).reputation).toBeLessThanOrEqual(5);
       must(s, { type: 'continue' });
     }
     expect(s.history).toHaveLength(5);
@@ -143,7 +143,7 @@ describe('M1 elfogadás: építés', () => {
     const phases = new Set<string>();
     while (s.phase === 'open') {
       tick(s);
-      for (const g of s.groups) phases.add(g.phase);
+      for (const g of rest(s).groups) phases.add(g.phase);
     }
     for (const p of ['queue', 'toTable', 'waitOrder', 'ordering', 'waitFood', 'eating', 'waitPay', 'paying', 'leaving']) {
       expect(phases.has(p), p).toBe(true);
@@ -153,7 +153,7 @@ describe('M1 elfogadás: építés', () => {
 
   it('asztal nélkül senki nem fizet, a vendégek elmennek', () => {
     const s = createGame(2);
-    const r = runDay(s);
+    const r = day(s);
     expect(r.revenue).toBe(0);
     expect(r.stats.arrivedGuests).toBeGreaterThan(0);
   });
@@ -161,7 +161,7 @@ describe('M1 elfogadás: építés', () => {
   it('egy asztal 4 székkel a tesztelrendezés építőköve', () => {
     const s: GameState = createGame(1);
     placeTable(s, 4, 3);
-    expect(s.restaurant.items.filter((i) => i.kind === 'chair')).toHaveLength(4);
+    expect(rest(s).layout.items.filter((i) => i.kind === 'chair')).toHaveLength(4);
   });
 });
 

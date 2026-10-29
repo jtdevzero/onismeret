@@ -5,6 +5,7 @@ import { create } from 'zustand';
 import type { ItemKind } from './data/content';
 import { t } from './i18n';
 import { saveGame } from './persist';
+import { storyPending } from './sim/campaign';
 import { applyCommand, createGame, tick, type Command, type CommandResult } from './sim/sim';
 import type { GameState } from './sim/types';
 
@@ -25,7 +26,7 @@ interface AppState {
   tool: Tool;
   toast: Toast | null;
   start: (game: GameState) => void;
-  newGame: () => void;
+  newGame: (mode: 'campaign' | 'free') => void;
   dispatch: (c: Command) => CommandResult;
   setSpeed: (s: Speed) => void;
   togglePause: () => void;
@@ -45,7 +46,7 @@ export const useApp = create<AppState>((set, get) => ({
   tool: null,
   toast: null,
   start: (game) => set({ game, speed: 0, tool: null, version: get().version + 1 }),
-  newGame: () => get().start(createGame((Date.now() & 0x7fffffff) | 1)),
+  newGame: (mode) => get().start(createGame((Date.now() & 0x7fffffff) | 1, mode)),
   dispatch: (c) => {
     const g = get().game;
     if (!g) return { ok: false, error: 'notFound' };
@@ -95,7 +96,7 @@ export function startLoop(): () => void {
     const st = useApp.getState();
     const g = st.game;
     if (g) {
-      if (g.phase === 'open' && st.speed > 0) {
+      if (g.phase === 'open' && st.speed > 0 && !storyPending(g)) {
         acc += dt * st.speed;
         let n = 0;
         while (acc >= TICK_MS && n < MAX_TICKS_PER_FRAME && g.phase === 'open') {

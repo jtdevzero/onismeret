@@ -1,7 +1,7 @@
 // Rács, útvonalkeresés (A*) és elrendezés-ellenőrzés.
 
 import { ITEMS, type ItemKind } from '../data/content';
-import type { PlacedItem, Pt, Restaurant } from './types';
+import type { Layout as Restaurant, PlacedItem, Pt } from './types';
 
 const DIRS: Pt[] = [
   { x: 1, y: 0 },
@@ -191,6 +191,7 @@ export function findUnreachable(r: Restaurant): number | null {
   const blocked = buildBlocked(r);
   const reach = reachableFrom(r, blocked, r.entrance);
   for (const it of r.items) {
+    if (ITEMS[it.kind].decor) continue;
     if (it.kind === 'table') {
       if (tableAccessTiles(r, blocked, reach, it).length === 0) return it.id;
     } else if (accessTiles(r, blocked, reach, it).length === 0) {
