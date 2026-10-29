@@ -250,3 +250,24 @@ main{max-width:760px;padding-top:26px;gap:20px}body[data-view="home"] main{max-w
 .evening-leaderboard-row b{overflow-wrap:anywhere}
 .evening-points{font-size:13px;color:var(--accent);font-variant-numeric:tabular-nums}
 @media(max-width:360px){.evening-leaderboard-row{grid-template-columns:32px minmax(0,1fr);gap:6px}.evening-points{grid-column:2}}
+
+/* TÁRSASEST 2.0 — prémium vizuális réteg, nem módosít játékszabályokat */
+:root{--bg:#0b1020;--card:#151d33;--card2:#202b49;--line:#35405f;--text:#f5f4ff;--muted:#bbc5dc;--accent:#c6aeff;--radius:20px}
+body{background:radial-gradient(ellipse at 8% 0%,rgba(105,77,189,.23),transparent 42%),radial-gradient(ellipse at 92% 42%,rgba(36,113,160,.12),transparent 45%),var(--bg);background-attachment:fixed}
+.top{border-bottom:1px solid rgba(201,188,255,.13);background:rgba(11,16,32,.87);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.brand{letter-spacing:-.035em}
+.back,.icon-btn{background:rgba(200,188,255,.10);border:1px solid rgba(200,188,255,.16);min-width:44px;min-height:44px}
+main{padding-bottom:max(38px,env(safe-area-inset-bottom));}
+.panel{background:linear-gradient(140deg,rgba(31,40,69,.98),rgba(18,26,47,.99));border:1px solid rgba(187,168,255,.16);box-shadow:0 14px 34px rgba(0,0,0,.13)}
+.bigcard{background:linear-gradient(150deg,#202443 0%,#111b34 68%,#222044 100%);border:1px solid rgba(198,174,255,.28);box-shadow:0 14px 44px rgba(0,0,0,.24),inset 0 1px rgba(255,255,255,.06)}
+.btn{transition:transform .16s ease,background .18s ease,box-shadow .18s ease;border-radius:15px}
+.btn.primary{background:linear-gradient(115deg,var(--c,var(--accent)),color-mix(in srgb,var(--c,var(--accent)) 70%,white));color:#0b1020;box-shadow:0 8px 24px rgba(159,119,255,.16)}
+.btn:not(:disabled):active,.chip:not(:disabled):active,.cover-card:active{transform:scale(.975)}
+.chip{min-height:44px;border-color:rgba(198,174,255,.25)}
+.btn:focus-visible,.chip:focus-visible,.back:focus-visible,.icon-btn:focus-visible{outline:3px solid #91c9ff;outline-offset:3px}
+.game.cover-card{box-shadow:0 13px 28px rgba(0,0,0,.19);border:1px solid rgba(207,191,255,.17);transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.game.cover-card:hover{border-color:rgba(207,191,255,.45);box-shadow:0 18px 36px rgba(0,0,0,.26)}
+#app>.panel,#app>.bigcard,#app>.games,#app>.portal-hero,#app>.portal-toolbar{animation:tarsas-enter .24s ease-out both}
+@keyframes tarsas-enter{from{opacity:.65;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:620px){.top{padding:8px 12px}.panel{padding:17px}.bigcard{padding:24px 18px}.btn.big{min-height:58px}}
+@media(prefers-reduced-motion:reduce){#app>.panel,#app>.bigcard,#app>.games,#app>.portal-hero,#app>.portal-toolbar{animation:none}.btn,.game.cover-card{transition:none}}
