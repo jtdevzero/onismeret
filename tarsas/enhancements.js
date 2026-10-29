@@ -315,7 +315,7 @@
     };
   });
   const previousHome = V.home;
-  V.home = () => previousHome() + '<section class="panel" aria-label="Átkozott döntések"><h2>💀 Átkozott döntések</h2><p>Két rossz lehetőség, egy döntés. 60 abszurd, kínos és beteg humorú dilemma, titkos szavazással.</p><a class="btn primary big" href="atkozott/">Játék indítása →</a></section>';
+  V.home = () => previousHome() + '<section class="panel" aria-label="Átkozott döntések"><h2>💀 Átkozott döntések</h2><p>Két rossz lehetőség, egy döntés. 460 abszurd, kínos és beteg humorú dilemma, titkos szavazással.</p><a class="btn primary big" href="atkozott/">Játék indítása →</a></section>';
   const baseSettings = V.settings;
   V.settings = () => baseSettings() + '<div class="btn-row"><button class="btn ghost" data-a="nav" data-v="packs">Saját csomagok</button><button class="btn ghost" data-a="nav" data-v="favorites">Kedvencek és elrejtések</button></div>';
 })();
