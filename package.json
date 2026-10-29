@@ -8,7 +8,8 @@
     "test": "node tests/run.js",
     "test:tarsas": "node tests/tarsas.test.cjs",
     "test:tarsas:browser": "node tests/tarsas-browser.cjs",
-    "test:paros": "node paros/tests/run.cjs"
+    "test:paros": "node paros/tests/run.cjs",
+    "test:hp": "node --test tarsas/harry-potter/tests/*.test.cjs"
   },
   "devDependencies": {
     "playwright": "1.63.0"

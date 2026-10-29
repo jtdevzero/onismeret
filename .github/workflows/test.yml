@@ -35,6 +35,7 @@ jobs:
         run: |
           npm run test:tarsas
           npm run test:tarsas:browser
+          npm run test:hp
       - name: Páros est mobilfelület és adatvédelem
         run: npm run test:paros
       - name: Parliamo AI-szerver (worker) tesztjei

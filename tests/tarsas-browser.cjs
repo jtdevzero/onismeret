@@ -6,7 +6,7 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http');
 const {chromium}=require('playwright');
 const ROOT=path.resolve(__dirname,'..');
-const mime={'.html':'text/html','.js':'text/javascript','.css':'text/css','.png':'image/png','.webmanifest':'application/manifest+json'};
+const mime={'.html':'text/html','.js':'text/javascript','.css':'text/css','.png':'image/png','.webmanifest':'application/manifest+json','.svg':'image/svg+xml'};
 const server=http.createServer((req,res)=>{
   const pathname=decodeURIComponent(new URL(req.url,'http://localhost').pathname);
   const filename=path.resolve(ROOT,'.'+pathname+(pathname.endsWith('/')?'index.html':''));
@@ -101,6 +101,19 @@ function check(condition,message){assert(condition,message);assertions++;console
         const atlas=await page.evaluate(async()=>{const r=await fetch('images/dreams-atlas.webp');return r.ok&&(await r.blob()).size>1000;});
         check(atlas,'all24 dream illustrations are available offline');
         await page.screenshot({path:'/tmp/alomkepek-preview.png',fullPage:true});
+        await page.goto(origin+'/tarsas/harry-potter/');
+        await page.getByRole('button',{name:'Egyéni játék indítása'}).waitFor();
+        check(await page.getByRole('heading',{name:'Mennyire ismered Roxfort titkait?'}).count()===1,'Harry Potter subpage opens offline from the parent cache');
+        await page.locator('select[name="mode"]').selectOption('picture');
+        await page.getByRole('button',{name:'Egyéni játék indítása'}).click();
+        await page.locator('.illustration').waitFor();
+        await page.waitForFunction(()=>document.querySelector('.illustration')?.naturalWidth>0);
+        check(await page.locator('.illustration').evaluate(img=>img.complete&&img.naturalWidth>0),'Harry Potter original illustration loads offline');
+        await page.locator('button[data-answer]').first().click();
+        await page.locator('[data-action="next"]').click();
+        check(await page.locator('.result').count()===1,'Harry Potter solo round completes offline');
+        await page.screenshot({path:'/tmp/harry-potter-offline.png',fullPage:true});
+
         await context.setOffline(false);
       }
       check(errors.length===0,width+'px: no browser JavaScript errors ('+errors.join('; ')+')');
