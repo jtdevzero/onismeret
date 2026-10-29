@@ -17,6 +17,72 @@
     S.cardPrefs[key] = { favorites: Array.isArray(p.favorites) ? p.favorites.filter(x => typeof x === 'string').slice(0, 2000) : [], blocked: Array.isArray(p.blocked) ? p.blocked.filter(x => typeof x === 'string').slice(0, 2000) : [] };
   });
   S.customPacks = Array.isArray(S.customPacks) ? S.customPacks.filter(p => isObject(p) && ['never', 'likely'].includes(p.game) && /^custom_[a-z0-9_]+$/.test(p.id) && typeof p.name === 'string' && Array.isArray(p.items)).slice(0, 30).map(p => ({ id: p.id, game: p.game, name: p.name.slice(0, 40).replace(/[<>]/g, ''), spicy: !!p.spicy, items: p.items.filter(x => typeof x === 'string' && x.trim()).slice(0, 100).map(x => x.trim().slice(0, 220)) })) : [];
+  /* Beépített, nem pikáns új csomagok. Az állandó azonosítók a látott lapok nyilvántartását is stabilan tartják. */
+  const extraPacks = {
+    never: {
+      uj_kalandok: { name: 'Kalandok és bakik', spicy: false, items: [
+        'indultam el rossz irányba egy egész társasággal.',
+        'kevertem össze két teljesen idegen ember nevét.',
+        'tévedtem el úgy, hogy nálam volt a térkép.',
+        'énekeltem hangosan, miközben nem tudtam a dalszöveget.',
+        'próbáltam titokban elrejteni egy kínos nevetést.',
+        'felejtettem el, miért mentem be egy szobába.',
+        'küldtem üzenetet rossz beszélgetésbe.',
+        'néztem meg egy filmet csak azért, mert mindenki más látta.',
+        'próbáltam megnyitni egy ajtót, amit húzni kellett volna.',
+        'találtam ki rögtönzött kifogást egy késésre.',
+        'rendeltem valamit úgy, hogy fogalmam sem volt, mi az.',
+        'nyertem meg egy vitát teljesen véletlenül.'
+      ]},
+      uj_barati: { name: 'Barátok között', spicy: false, items: [
+        'készítettem belsős poént, amit csak ketten értettünk.',
+        'őriztem meg évekig egy vicces közös fényképet.',
+        'nevettem annyira, hogy nem tudtam beszélni.',
+        'kaptam becenevet, amit sosem választottam volna.',
+        'alakítottam át egy átlagos estét spontán kalanddá.',
+        'meséltem újra ugyanazt a történetet ugyanannak az embernek.',
+        'felejtettem el egy barátom születésnapját.',
+        'választottam a barátaim kedvéért olyan programot, amitől tartottam.',
+        'mentem el úgy buliba, hogy csak egy órára terveztem.',
+        'kötöttem barátságot egy teljesen váratlan helyen.',
+        'beszélgettem valakivel hajnalig az élet nagy kérdéseiről.',
+        'nevettem egy régi üzenetünkön évekkel később.'
+      ]}
+    },
+    likely: {
+      uj_kaosz: { name: 'Káoszkommandó', spicy: false, items: [
+        'véletlenül rossz vonatra száll?',
+        'egy hét alatt új hobbit talál ki?',
+        'spontán utazást szervez holnapra?',
+        'egy egyszerű feladatból versenyt csinál?',
+        'öt perc alatt összeismerkedik az egész teremmel?',
+        'készít teljesen indokolatlanul egy részletes táblázatot?',
+        'szerez új becenevet valakinek?',
+        'elfelejti, hova tette a saját telefonját?',
+        'elindít egy közös karaokeestet?',
+        'viccelődéssel old fel egy kínos csendet?',
+        'kitalál egy új társasjáték-szabályt?',
+        'ráveszi a többieket egy váratlan kihívásra?'
+      ]},
+      uj_szuperero: { name: 'Titkos szupererők', spicy: false, items: [
+        'megnyugtat mindenkit egy stresszes helyzetben?',
+        'észrevesz egy apró részletet, ami másnak fel sem tűnik?',
+        'a legjobb útitervet rakja össze?',
+        'kitalálja, milyen ajándéknak örülnél?',
+        'egy perc alatt kitalál egy hihető fedősztorit?',
+        'a legemlékezetesebb beszédet mondja?',
+        'egy idegen nyelven is elboldogul kézzel-lábbal?',
+        'a leggyorsabban megtanul egy új játékot?',
+        'összehozza a társaság két legkülönbözőbb emberét?',
+        'megoldja a problémát egy szokatlan ötlettel?',
+        'a legnagyobb türelemmel magyarázza el a szabályokat?',
+        'észreveszi, ha valaki kimarad a társaságból?'
+      ]}
+    }
+  };
+  Object.entries(extraPacks).forEach(([game, packs]) => Object.entries(packs).forEach(([id, pack]) => {
+    if (!Object.hasOwn(D[game], id)) D[game][id] = pack;
+  }));
   const installPacks = () => {
     ['never', 'likely'].forEach(key => {
       Object.keys(D[key]).filter(k => k.startsWith('custom_')).forEach(k => delete D[key][k]);
