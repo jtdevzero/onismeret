@@ -73,7 +73,11 @@ function boom() {
   src.buffer = buf; src.connect(f).connect(gn).connect(a.destination); src.start();
 }
 function alarm() { [0, 220, 440].forEach(t => setTimeout(() => beep(660, 0.18, 0.3, 'sawtooth'), t)); buzz([200, 100, 200]); }
-function buzz(p) { if (S.settings.vibrate && navigator.vibrate) try { navigator.vibrate(p); } catch (e) {} }
+function vibrationSupported() { return typeof navigator.vibrate === 'function'; }
+function buzz(p) {
+  if (!S.settings.vibrate || !vibrationSupported() || document.visibilityState === 'hidden') return false;
+  try { return navigator.vibrate(p); } catch (e) { return false; }
+}
 let lastSpoken = '';
 function speak(text, key) {
   if (!S.settings.tts || !('speechSynthesis' in window)) return;
@@ -227,7 +231,7 @@ V.settings = () => {
   return `<div class="panel">
     ${t('spicy', 'Pikáns 18+ kártyák', 'Megjelenik egy külön pikáns csomag az „Én még soha nem” és a „Ki a legvalószínűbb” játékban.')}
     <hr>${t('sound', 'Hangok', 'Ketyegés, robbanás, időzítő.')}
-    <hr>${t('vibrate', 'Rezgés')}
+    <hr>${t('vibrate', 'Rezgés', vibrationSupported() ? 'Támogatott böngészőben a Szóbomba minden ketyegésnél röviden rezeg.' : 'Ez a böngésző nem támogatja a rezgést (például iPhone Safari). A hang és a vizuális pulzálás továbbra is működik.')}
     <hr>${t('tts', 'Felolvasás a Vérfarkas mesélőnél', 'A telefon hangosan felolvassa a mesélő szövegét (ha van magyar hang).')}
     <hr>${t('revealRole', 'Vérfarkas: halálkor kiderül a szerep')}
   </div>
@@ -541,7 +545,7 @@ V.bomb = () => {
     <div class="bigcard">
       <div class="kicker">${esc(s.prompt.k)}</div>
       <div class="huge" style="font-size:clamp(36px,12vw,64px)">${esc(s.prompt.t)}</div>
-      <div class="bomb" id="bombEmo">💣</div>
+      <div class="bomb" id="bombEmo" aria-hidden="true">💣</div><p class="bomb-feedback" id="bombFeedback" aria-live="off">Ketyeg a bomba…</p>
       <div class="sub">Mondd és add tovább!</div>
     </div>
     <button class="btn ghost" data-a="bombDefuse">Leállítom</button>`;
@@ -569,7 +573,13 @@ function bombTick(s) {
     render(); return;
   }
   const p = (now - s.start) / (s.end - s.start), gap = 950 - 780 * p * p; // egyre gyorsabb ketyegés
-  if (!s.nextTick || now >= s.nextTick) { beep(p > .8 ? 1200 : 900, 0.04, 0.2); s.nextTick = now + gap; }
+  if (!s.nextTick || now >= s.nextTick) {
+    beep(p > .8 ? 1200 : 900, 0.04, 0.2);
+    buzz(p > .8 ? 35 : 20);
+    s.nextTick = now + gap;
+    const visual = document.getElementById('bombEmo');
+    if (visual) { visual.classList.remove('pulse-tick'); void visual.offsetWidth; visual.classList.add('pulse-tick'); }
+  }
   const el = document.getElementById('bombEmo'); if (el) el.classList.toggle('fast', p > .75);
 }
 A.bombSet = v => { const [k, x] = v.split(':'); bombState()[k] = x; };
