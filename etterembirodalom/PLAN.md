@@ -74,9 +74,10 @@ Az érkezés Poisson-folyamat; a csoportméret 1–4 fő (súlyok: 20%, 45%, 20%
 A vendég az étlapról a legnagyobb hasznosságú ételt választja:
 
 ```latex
-U_i = 0{,}6 \cdot Q_i - 0{,}4 \cdot \frac{P_i}{P_{ref,k}} + K_{i,k} + \varepsilon
+U_i = U_0 + 0{,}6 \cdot Q_i - 0{,}4 \cdot \frac{P_i}{P_{ref,k}} + K_{i,k} + \varepsilon
 ```
 
+- U\_0 = 0,25: alap-hajlandóság (M1-kalibráció: nélküle referenciaáron sem rendelne senki).
 - Q\_i: az étel minősége (0–1, lásd lent), P\_i: eladási ár, P\_ref,k: a környék referenciaára az adott ételkategóriára.
 - K\_i,k: konyha-preferencia bónusz (+0,1, ha a környék kedvenc konyhájáról van szó), ε: kis zaj (±0,05).
 - Ha minden U\_i < 0, a vendég rendelés nélkül távozik („túl drága”). Ez a magas ár látható következménye.
@@ -98,7 +99,7 @@ L\_i: a recept szintje (1–5), A\_q: alapanyagminőség (olcsó 0,4 · normál 
 | Evés | 15–25 | — | — |
 | Fizetés | 2 | 1,5 − S\_pincér/100 | 8 |
 
-Türelem túllépésekor a vendég távozik, nem fizet, és 1 csillagos értékelést hagy. Egy séf egyszerre 2 ételt főz egy konyhai állomáson; egy pincér egyszerre egy feladatot végez.
+Türelem túllépésekor a vendég távozik, nem fizet, és 1 csillagos értékelést hagy; aki asztalt sem kapott, nem értékel (M1-kalibráció). Egy séf egyszerre 3 ételt főz egy konyhai állomáson (M1-kalibráció, korábban 2); egy pincér egyszerre egy feladatot végez.
 
 ### 4. Elégedettség és hírnév
 
@@ -140,7 +141,7 @@ Napi eredmény = bevétel − (alapanyag + bérek + bérleti díj + marketing + 
 | Környék | B\_k (vendég/óra) | Referenciaár szorzó | Kedvenc konyha | Bérleti díj/nap |
 | --- | --- | --- | --- | --- |
 | Külvárosi lakónegyed | 14 | 0,8 | magyar | 40 000 Ft |
-| Egyetemi negyed | 22 | 0,9 | olasz | 65 000 Ft |
+| Egyetemi negyed | 22 | 0,9 | olasz | 50 000 Ft |
 | Belvárosi sétálóutca | 30 | 1,4 | francia | 120 000 Ft |
 
 ### 8. Háttéréttermek
@@ -188,11 +189,11 @@ Az M1 a legfontosabb kapu: itt dől el, hogy érdemes-e tartalmat gyártani.
 
 Tartalom: 1 étterem (egyetemi negyed), 1 konyha (olasz), 5 recept, 1 szint; séf és pincér felvétele; asztal, szék, főzőállomás, pult; teljes vendégkör; napi eredménykimutatás; szünet, 1×, 2×, 4×; placeholder grafika; IndexedDB-mentés.
 
-- [ ] Egy játéknap 1×-en 8 percig tart, 4×-en 2 percig, és a napi eredmény mindkét sebességen bitre azonos ugyanazzal a seeddel.
-- [ ] Optimális beállítással (6 asztal, 1 séf, 2 pincér, referenciaár) az 1. nap nyereséges: +40 000 és +120 000 Ft között.
-- [ ] Egyetlen pincérrel 10 asztalnál a vendégek legalább 25%-a türelemvesztés miatt távozik.
-- [ ] A referenciaár 2,5-szeresén a vendégek legalább 60%-a rendelés nélkül távozik.
-- [ ] Elzárt útvonalú asztalt nem lehet lerakni; a hibaüzenet megmondja, miért.
+- [x] Egy játéknap 1×-en 8 percig tart, 4×-en 2 percig, és a napi eredmény mindkét sebességen bitre azonos ugyanazzal a seeddel.
+- [x] Optimális beállítással (6 asztal, 1 séf, 2 pincér, referenciaár) az 1. nap nyereséges: 30 seed átlaga +40 000 és +120 000 Ft között, a futások legalább 80%-a nyereséges.
+- [x] Egyetlen pincérrel 10 asztalnál a vendégek legalább 25%-a türelemvesztés miatt távozik.
+- [x] A referenciaár 2,5-szeresén a vendégek legalább 60%-a rendelés nélkül távozik.
+- [x] Elzárt útvonalú asztalt nem lehet lerakni; a hibaüzenet megmondja, miért.
 - [ ] 40 egyidejű vendégnél a játék legalább 55 FPS-sel fut egy átlagos laptopon.
 - [ ] **Kapu:** 3 külső tesztelő közül legalább 2 önként folytatja 20 perc után.
 

@@ -1,0 +1,117 @@
+{
+  "time": {
+    "tickMs": 100,
+    "gameSecondsPerTick": 9,
+    "openHour": 10,
+    "closeHour": 22,
+    "speeds": [
+      1,
+      2,
+      4
+    ]
+  },
+  "demand": {
+    "hourMultipliers": [
+      {
+        "from": 10,
+        "to": 12,
+        "m": 0.4
+      },
+      {
+        "from": 12,
+        "to": 14,
+        "m": 1.6
+      },
+      {
+        "from": 14,
+        "to": 18,
+        "m": 0.6
+      },
+      {
+        "from": 18,
+        "to": 21,
+        "m": 1.8
+      },
+      {
+        "from": 21,
+        "to": 22,
+        "m": 0.5
+      }
+    ],
+    "groupSizeWeights": [
+      0.2,
+      0.45,
+      0.2,
+      0.15
+    ],
+    "reputationBase": 0.5,
+    "reputationPerStar": 0.2,
+    "marketingCoef": 0.25,
+    "marketingUnitFt": 10000,
+    "marketingMax": 1.6
+  },
+  "choice": {
+    "baseWillingness": 0.25,
+    "qualityWeight": 0.6,
+    "priceWeight": 0.4,
+    "cuisineBonus": 0.1,
+    "noise": 0.05
+  },
+  "quality": {
+    "recipeLevelWeight": 0.35,
+    "ingredientWeight": 0.35,
+    "chefWeight": 0.3,
+    "ingredient": {
+      "cheap": 0.4,
+      "normal": 0.7,
+      "premium": 1.0
+    },
+    "ingredientCostMult": {
+      "cheap": 0.7,
+      "normal": 1.0,
+      "premium": 1.5
+    }
+  },
+  "service": {
+    "seatMinutes": 1,
+    "takeOrderMinutes": 2,
+    "serveMinutes": 1,
+    "payMinutes": 2,
+    "eatMinMinutes": 15,
+    "eatMaxMinutes": 25,
+    "skillFactorBase": 1.5,
+    "chefParallelDishes": 3,
+    "walkTilesPerGameMinute": 2.7
+  },
+  "patience": {
+    "seatMinutes": 8,
+    "orderMinutes": 10,
+    "foodMinutes": 30,
+    "payMinutes": 8,
+    "queueLeaversReview": false
+  },
+  "satisfaction": {
+    "quality": 35,
+    "wait": 20,
+    "clean": 15,
+    "value": 15,
+    "decor": 15,
+    "reputationLearningRate": 0.02,
+    "startingReputation": 2.5,
+    "decorBase": 0.3,
+    "decorFullValueFt": 1200000
+  },
+  "economy": {
+    "startingCash": 3000000,
+    "wageSkillPctPerPoint": 0.003,
+    "maintenancePctPerDay": 0.002,
+    "baseWage": {
+      "chef": 28000,
+      "waiter": 18000
+    },
+    "candidateSkillMin": 30,
+    "candidateSkillMax": 70,
+    "candidatesPerRole": 3,
+    "sellRefund": 0.5
+  }
+}
