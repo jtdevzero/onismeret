@@ -30,7 +30,8 @@ test('static solo game: filters, pictures, scoring, timeout, no API calls and mo
   page.on('dialog', d => d.accept());
   const origin = 'http://127.0.0.1:' + server.address().port;
   await page.goto(origin);
-  assert.equal(await page.getByText(/szobakód|szobaszerver|Csatlakozom/).count(), 0);
+  assert.equal(await page.getByRole('button', { name: 'Egyéni játék indítása' }).count(), 1);
+  assert.equal(await page.locator('[data-mode="online"]').count(), 1, 'Shared mode is offered without contacting its API during solo play');
   assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
   await page.locator('select[name="mode"]').selectOption('number');
   await page.getByRole('button', { name: 'Egyéni játék indítása' }).click();
