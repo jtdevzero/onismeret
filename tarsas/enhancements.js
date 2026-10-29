@@ -17,6 +17,72 @@
     S.cardPrefs[key] = { favorites: Array.isArray(p.favorites) ? p.favorites.filter(x => typeof x === 'string').slice(0, 2000) : [], blocked: Array.isArray(p.blocked) ? p.blocked.filter(x => typeof x === 'string').slice(0, 2000) : [] };
   });
   S.customPacks = Array.isArray(S.customPacks) ? S.customPacks.filter(p => isObject(p) && ['never', 'likely'].includes(p.game) && /^custom_[a-z0-9_]+$/.test(p.id) && typeof p.name === 'string' && Array.isArray(p.items)).slice(0, 30).map(p => ({ id: p.id, game: p.game, name: p.name.slice(0, 40).replace(/[<>]/g, ''), spicy: !!p.spicy, items: p.items.filter(x => typeof x === 'string' && x.trim()).slice(0, 100).map(x => x.trim().slice(0, 220)) })) : [];
+  /* Beépített, nem pikáns új csomagok. Az állandó azonosítók a látott lapok nyilvántartását is stabilan tartják. */
+  const extraPacks = {
+    never: {
+      uj_kalandok: { name: 'Kalandok és bakik', spicy: false, items: [
+        'indultam el rossz irányba egy egész társasággal.',
+        'kevertem össze két teljesen idegen ember nevét.',
+        'tévedtem el úgy, hogy nálam volt a térkép.',
+        'énekeltem hangosan, miközben nem tudtam a dalszöveget.',
+        'próbáltam titokban elrejteni egy kínos nevetést.',
+        'felejtettem el, miért mentem be egy szobába.',
+        'küldtem üzenetet rossz beszélgetésbe.',
+        'néztem meg egy filmet csak azért, mert mindenki más látta.',
+        'próbáltam megnyitni egy ajtót, amit húzni kellett volna.',
+        'találtam ki rögtönzött kifogást egy késésre.',
+        'rendeltem valamit úgy, hogy fogalmam sem volt, mi az.',
+        'nyertem meg egy vitát teljesen véletlenül.'
+      ]},
+      uj_barati: { name: 'Barátok között', spicy: false, items: [
+        'készítettem belsős poént, amit csak ketten értettünk.',
+        'őriztem meg évekig egy vicces közös fényképet.',
+        'nevettem annyira, hogy nem tudtam beszélni.',
+        'kaptam becenevet, amit sosem választottam volna.',
+        'alakítottam át egy átlagos estét spontán kalanddá.',
+        'meséltem újra ugyanazt a történetet ugyanannak az embernek.',
+        'felejtettem el egy barátom születésnapját.',
+        'választottam a barátaim kedvéért olyan programot, amitől tartottam.',
+        'mentem el úgy buliba, hogy csak egy órára terveztem.',
+        'kötöttem barátságot egy teljesen váratlan helyen.',
+        'beszélgettem valakivel hajnalig az élet nagy kérdéseiről.',
+        'nevettem egy régi üzenetünkön évekkel később.'
+      ]}
+    },
+    likely: {
+      uj_kaosz: { name: 'Káoszkommandó', spicy: false, items: [
+        'véletlenül rossz vonatra száll?',
+        'egy hét alatt új hobbit talál ki?',
+        'spontán utazást szervez holnapra?',
+        'egy egyszerű feladatból versenyt csinál?',
+        'öt perc alatt összeismerkedik az egész teremmel?',
+        'készít teljesen indokolatlanul egy részletes táblázatot?',
+        'szerez új becenevet valakinek?',
+        'elfelejti, hova tette a saját telefonját?',
+        'elindít egy közös karaokeestet?',
+        'viccelődéssel old fel egy kínos csendet?',
+        'kitalál egy új társasjáték-szabályt?',
+        'ráveszi a többieket egy váratlan kihívásra?'
+      ]},
+      uj_szuperero: { name: 'Titkos szupererők', spicy: false, items: [
+        'megnyugtat mindenkit egy stresszes helyzetben?',
+        'észrevesz egy apró részletet, ami másnak fel sem tűnik?',
+        'a legjobb útitervet rakja össze?',
+        'kitalálja, milyen ajándéknak örülnél?',
+        'egy perc alatt kitalál egy hihető fedősztorit?',
+        'a legemlékezetesebb beszédet mondja?',
+        'egy idegen nyelven is elboldogul kézzel-lábbal?',
+        'a leggyorsabban megtanul egy új játékot?',
+        'összehozza a társaság két legkülönbözőbb emberét?',
+        'megoldja a problémát egy szokatlan ötlettel?',
+        'a legnagyobb türelemmel magyarázza el a szabályokat?',
+        'észreveszi, ha valaki kimarad a társaságból?'
+      ]}
+    }
+  };
+  Object.entries(extraPacks).forEach(([game, packs]) => Object.entries(packs).forEach(([id, pack]) => {
+    if (!Object.hasOwn(D[game], id)) D[game][id] = pack;
+  }));
   const installPacks = () => {
     ['never', 'likely'].forEach(key => {
       Object.keys(D[key]).filter(k => k.startsWith('custom_')).forEach(k => delete D[key][k]);
@@ -40,10 +106,25 @@
     return `<button class="game cover-card" style="--c:${x.c};${artStyle(artwork[key] || 0)}" data-a="nav" data-v="${key}"><span class="game-art" aria-hidden="true"></span><span class="card-category">${esc((meta(key).tags || []).slice(0, 2).join(' · '))}</span><b>${esc(x.name)}</b><small>${esc(x.desc)}</small><small class="card-meta">${esc(gameInfo(key))}</small><span class="card-arrow" aria-hidden="true"><i class="arrow-up-right"></i></span>${inProgress(key) ? '<small class="in-progress">● Folyamatban</small>' : ''}</button>`;
   };
   A.portalBrowse = () => { document.getElementById('jatekok').scrollIntoView({ behavior: 'smooth', block: 'start' }); return false; };
+  const browseFilters = { all: 'Összes', quick: 'Gyors', social: 'Beszélgetős', bluff: 'Blöff', words: 'Szójáték', team: 'Csapatjáték' };
+  R.portalFilter = browseFilters[R.portalFilter] ? R.portalFilter : 'all';
+  const matchesBrowse = key => {
+    const m = meta(key), tags = m.tags.join(' ').toLocaleLowerCase('hu');
+    switch (R.portalFilter) {
+      case 'quick': return m.time <= 10;
+      case 'social': return /beszél|laza|közös/.test(tags);
+      case 'bluff': return /blöff|taktika/.test(tags);
+      case 'words': return /szav|szó|asszoci/.test(tags);
+      case 'team': return /csapat|taktika|kooper|mozg/.test(tags);
+      default: return true;
+    }
+  };
+  A.portalFilter = key => { if (!browseFilters[key]) return false; R.portalFilter = key; return true; };
+  const filterBar = () => `<div class="browse-filters" role="group" aria-label="Játékok szűrése">${Object.entries(browseFilters).map(([key,label]) => `<button type="button" class="browse-chip ${R.portalFilter === key ? 'active' : ''}" aria-pressed="${R.portalFilter === key}" data-a="portalFilter" data-v="${key}">${label}</button>`).join('')}</div>`;
   V.home = () => `<section class="portal-hero" aria-labelledby="portal-heading"><img class="portal-hero-image" src="images/party-hero.webp" alt="" fetchpriority="high" width="1536" height="1024"><div class="portal-hero-content"><p class="eyebrow">A legjobb esték itt kezdődnek</p><h2 id="portal-heading">Jó társaság.<br><em>Emlékezetes esték.</em></h2><p>Egy kis játék. Sok közös történet.<br>Találjátok meg a következő kedvenceteket.</p><div class="hero-actions"><button class="btn primary" data-a="portalBrowse">Felfedezem a játékokat <span class="arrow-up-right" aria-hidden="true"></span></button><button class="hero-text-link" data-a="nav" data-v="recommend">Segíts választani →</button></div><div class="hero-note"><span aria-hidden="true">✦</span> Ingyenes · Regisztráció nélkül · Offline is</div></div></section>
     <div class="portal-toolbar"><button class="crew" data-a="nav" data-v="players"><span class="crew-icon" aria-hidden="true">♧</span><span class="names"><b>A ti társaságotok · ${S.players.length} fő</b>${S.players.length ? esc(S.players.join(', ')) : 'Adjátok meg a neveket, és kezdődhet az este.'}</span><span class="crew-edit">Szerkesztés <span class="arrow-up-right" aria-hidden="true"></span></span></button><button class="btn ghost" data-a="nav" data-v="evening">Esttervező${R.evening && R.evening.queue ? ' · ' + R.evening.queue.filter(x => !x.done).length + ' hátra' : ''} <span class="arrow-up-right" aria-hidden="true"></span></button></div>
     <section class="portal-library" id="jatekok" aria-labelledby="library-heading"><div class="library-heading"><div><p class="eyebrow">Játékra fel</p><h2 id="library-heading">Mi legyen a mai játék?</h2></div><span class="library-count">${Object.keys(GAMES).length + 1} játék · minden hangulathoz</span></div>
-    <div class="games">${Object.keys(GAMES).map(gameCard).join('')}<a class="game standalone-game cover-card" style="--c:#d9b288;${artStyle(6)}" href="./activity18/"><span class="game-art" aria-hidden="true"></span><span class="card-category">Csapatjáték · 18+</span><b>Activity 18+ <span class="arrow-up-right" aria-hidden="true"></span></b><small>840 rövid feladvány, pikáns és kreatív paklikkal, káoszkörrel.</small><small class="card-meta">2–6 csapat · saját csapatok és beállítások</small></a></div></section>
+    ${filterBar()}<div class="games">${Object.keys(GAMES).filter(matchesBrowse).map(gameCard).join('')}${R.portalFilter !== 'all' && !Object.keys(GAMES).some(matchesBrowse) ? '<p class="panel">Ebben a kategóriában még nincs játék. Válassz másik szűrőt!</p>' : ''}${R.portalFilter === 'all' || R.portalFilter === 'team' ? '<a class="game standalone-game cover-card" style="--c:#d9b288;--art-x:66.6667%;--art-y:100%" href="./activity18/"><span class="game-art" aria-hidden="true"></span><span class="card-category">Csapatjáték · 18+</span><b>Activity 18+ <span class="arrow-up-right" aria-hidden="true"></span></b><small>840 rövid feladvány, pikáns és kreatív paklikkal, káoszkörrel.</small><small class="card-meta">2–6 csapat · saját csapatok és beállítások</small></a>' : ''}</div></section>
     <section class="portal-specials" aria-label="Különleges játékok"><div class="library-heading"><div><p class="eyebrow">Egy másik világ</p><h2>Különleges próbatételek</h2></div></div><div class="special-grid"><article class="feature-card feature-potter"><img src="harry-potter/images/castle-hero.webp" alt="" loading="lazy" width="1536" height="1024"><div><p class="eyebrow">Harry Potter-kvíz · Egyéni</p><h3>Roxfort vár rád.</h3><p>Nyolc film titkai. Egy varázslatos próbatétel.</p><a class="btn primary" href="harry-potter/">Irány Roxfort <span class="arrow-up-right" aria-hidden="true"></span></a></div></article><article class="feature-card feature-homlok"><div class="feature-art" aria-hidden="true"></div><div><p class="eyebrow">Homlok! · Színészek és filmek</p><h3>Most tiétek a főszerep.</h3><p>570 feladvány. Egy telefon. Rengeteg nevetés.</p><a class="btn primary big" href="homlok/">Homlok! indítása <span class="arrow-up-right" aria-hidden="true"></span></a></div></article></div></section>
     <div class="portal-bottom"><div><span class="eyebrow">Ketten is jó társaság</span><h3>Egy este csak nektek.</h3><a href="../paros/">Páros est · külön játékoldal ↗</a></div><div class="portal-bottom-actions"><button class="btn ghost" data-a="nav" data-v="packs">Saját csomagok</button><button class="btn ghost" data-a="nav" data-v="favorites">Kedvenc kérdések</button></div></div><p class="portal-footer-note">Társasest <span>Kevesebb képernyő. Több közös pillanat.</span></p>`;
 
@@ -74,7 +155,16 @@
     R.evening.queue = R.evening.queue.filter(x => x && GAMES[x.game]);
     return R.evening;
   };
-  const eveningResults = () => (Array.isArray(R.results) ? R.results : []).filter(result => result && GAMES[result.game] && result.at >= eveningState().startedAt);
+  const eveningResults = () => (Array.isArray(R.results) ? R.results : []).filter(result => result && GAMES[result.game] && Number.isFinite(Number(result.at)) && result.at >= eveningState().startedAt);
+  const leaderboard = rows => rows.map(([name, points]) => ({
+    name, points, rank: 1 + rows.filter(([, other]) => other > points).length
+  }));
+  const leaderboardMarkup = rows => {
+    const standing = leaderboard(rows);
+    return `<div class="evening-leaderboard" aria-label="Az este ranglistája">${standing.map(({ name, points, rank }) =>
+      `<div class="evening-leaderboard-row"><span class="evening-rank" aria-label="${rank}. helyezés">${rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : rank + '.'}</span><b>${esc(name)}</b><span class="evening-points">${points} estpont</span></div>`
+    ).join('')}</div>`;
+  };
   const eveningScores = () => {
     const totals = new Map();
     eveningResults().forEach(result => {
@@ -88,7 +178,7 @@
     const s = eveningState(), rows = eveningScores(), next = s.queue.findIndex(x => !x.done);
     return `<div class="panel"><h2>Az este programja</h2><p class="muted small">Válasszatok legfeljebb három játékot. A kész köröket itt tudjátok kipipálni.</p>${s.queue.length ? s.queue.map((x, i) => `<div class="row"><span class="grow">${x.done ? '✓' : (i + 1) + '.'} ${esc(GAMES[x.game].name)}</span><button class="btn ghost" data-a="eveningToggle" data-v="${i}">${x.done ? 'Újra nyitom' : 'Kész'}</button>${!x.done ? `<button class="btn primary" data-a="nav" data-v="${x.game}">Indít</button>` : ''}</div>`).join('') : '<p>Még üres a program. Adj hozzá játékokat!</p>'}${next >= 0 ? `<button class="btn primary big" data-a="nav" data-v="${s.queue[next].game}">Következő: ${esc(GAMES[s.queue[next].game].name)}</button>` : (s.queue.length ? '<p>🎉 A program végére értetek!</p>' : '')}</div>
       ${s.queue.length < 3 ? `<form class="panel" data-a="eveningAdd"><label>Játék hozzáadása <select name="game">${Object.entries(GAMES).map(([key, x]) => `<option value="${key}">${esc(x.name)}</option>`).join('')}</select></label><button class="btn primary">Hozzáadom</button></form>` : ''}
-      <div class="panel"><h3>Az este eredményei</h3><p class="muted small">A játék végén mentett eredményekből: első hely 3 estpont, második 2, minden további 1. Döntetlenben azonos helyezés jár. Az egyes játékok saját pontjai megmaradnak.</p>${rows.length ? `<div class="tally">${rows.map(([name, points]) => `<div><b>${esc(name)}</b><span>${points} estpont</span></div>`).join('')}</div>` : '<p class="muted">Még nincs mentett eredmény. A pontozás nélküli játékokat is kipipálhatjátok a programban.</p>'}${eveningResults().length ? `<details><summary>Játékonként mentett pontok</summary>${eveningResults().map(result => `<div class="panel"><b>${esc(GAMES[result.game].name)}</b>${(Array.isArray(result.entries) ? result.entries : []).filter(entry => entry && typeof entry.name === 'string' && Number.isFinite(Number(entry.points))).map(entry => `<div class="row"><span class="grow">${esc(entry.name)}</span><span>${result.game === 'bomb' ? esc(Math.abs(Number(entry.points))) + ' robbanás' : esc(entry.points) + ' pont'}</span></div>`).join('')}</div>`).join('')}</details>` : ''}</div><button class="btn ghost" data-a="eveningReset">Új est tervezése</button>`;
+      <div class="panel"><h3>Az este eredményei</h3><p class="muted small">A játék végén mentett eredményekből: első hely 3 estpont, második 2, minden további 1. Döntetlenben azonos helyezés jár. Az egyes játékok saját pontjai megmaradnak.</p>${rows.length ? leaderboardMarkup(rows) : '<p class="muted">Még nincs mentett eredmény. A pontozás nélküli játékokat is kipipálhatjátok a programban.</p>'}${eveningResults().length ? `<details><summary>Játékonként mentett pontok</summary>${eveningResults().map(result => `<div class="panel"><b>${esc(GAMES[result.game].name)}</b>${(Array.isArray(result.entries) ? result.entries : []).filter(entry => entry && typeof entry.name === 'string' && Number.isFinite(Number(entry.points))).map(entry => `<div class="row"><span class="grow">${esc(entry.name)}</span><span>${result.game === 'bomb' ? esc(Math.abs(Number(entry.points))) + ' robbanás' : esc(entry.points) + ' pont'}</span></div>`).join('')}</div>`).join('')}</details>` : ''}</div><button class="btn ghost" data-a="eveningReset">Új est tervezése</button>`;
   };
   A.eveningAdd = f => { const s = eveningState(), key = f.elements.game.value; if (GAMES[key] && s.queue.length < 3) s.queue.push({ game: key, done: false }); };
   A.eveningToggle = index => { const item = eveningState().queue[Number(index)]; if (item) item.done = !item.done; };
@@ -224,6 +314,8 @@
       return content;
     };
   });
+  const previousHome = V.home;
+  V.home = () => previousHome() + '<section class="panel" aria-label="Átkozott döntések"><h2>💀 Átkozott döntések</h2><p>Két rossz lehetőség, egy döntés. 460 abszurd, kínos és beteg humorú dilemma, titkos szavazással.</p><a class="btn primary big" href="atkozott/">Játék indítása →</a></section>';
   const baseSettings = V.settings;
   V.settings = () => baseSettings() + '<div class="btn-row"><button class="btn ghost" data-a="nav" data-v="packs">Saját csomagok</button><button class="btn ghost" data-a="nav" data-v="favorites">Kedvencek és elrejtések</button></div>';
 })();

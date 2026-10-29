@@ -18,3 +18,27 @@
 .exclusions-dialog .exclusion-feedback{padding:10px 12px;border:1px solid #ccdac2;border-radius:8px;background:#eaf2e3;color:#4e6a40;font-size:11px;line-height:1.6;margin:10px 0}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important;animation:none!important}}
 
+
+
+/* PREMIUM 2.0 – Homlok!: világos szerkesztőségi, játékos arculat */
+:root{--paper:#f5f0e6;--ink:#202d2a;--mint:#a2dfc7;--coral:#f77d68;--yellow:#f7d981;--line:#d8d8cb}
+body{background:radial-gradient(circle at 90% 3%,rgba(247,125,104,.17),transparent 38%),radial-gradient(circle at 3% 55%,rgba(57,167,140,.12),transparent 43%),var(--paper)}
+button,a,input,summary{outline-offset:3px}
+button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid #186c63}
+button:not(:disabled){transition:transform .16s ease,box-shadow .2s ease}
+button:not(:disabled):active{transform:scale(.975)}
+@media(hover:hover){button:not(:disabled):hover{filter:brightness(.98)}}
+@media(prefers-reduced-motion:reduce){button:not(:disabled){transition:none}html{scroll-behavior:auto}}
+
+
+/* PREMIUM ROLLOUT — Homlok!: kártyaválasztás, setup, játékállapot */
+.site-header{backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.hero{isolation:isolate}
+.setup-panel,.deck-card{box-shadow:0 15px 34px rgba(35,69,53,.09)}
+.deck-card{border-radius:18px;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+.deck-label:hover .deck-card{transform:translateY(-2px);box-shadow:0 19px 42px rgba(35,69,53,.14)}
+.deck-label input:checked+.deck-card{box-shadow:0 0 0 2px rgba(24,108,99,.35),0 18px 34px rgba(35,69,53,.13)}
+.icon-button{min-width:44px;min-height:44px}
+button:focus-visible,.deck-label:focus-within .deck-card{outline:3px solid #186c63;outline-offset:3px}
+@media(max-width:480px){.setup-panel{border-radius:20px}.deck-card{min-height:110px}}
+@media(prefers-reduced-motion:reduce){.deck-card{transition:none}.deck-label:hover .deck-card{transform:none}}

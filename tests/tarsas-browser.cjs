@@ -30,6 +30,11 @@ function check(condition,message){assert(condition,message);assertions++;console
       await page.goto(origin+'/tarsas/');
       await page.waitForFunction(()=>typeof GAMES!=='undefined'&&Object.keys(GAMES).length===14);
       check(await page.locator('.game').count()===15,width+'px: fourteen internal games and the Activity card render');
+      await page.locator('[data-a="portalFilter"][data-v="quick"]').click();
+      check(await page.locator('.game.cover-card').count()>0,width+'px: fast category contains games');
+      check(await page.locator('.standalone-game').count()===0,width+'px: fast category hides standalone Activity');
+      await page.locator('[data-a="portalFilter"][data-v="all"]').click();
+      check(await page.locator('.game').count()===15,width+'px: all category restores every game');
       await page.evaluate(()=>{S.players=['Anna','Béla','Csilla','Dani','Eszter','Feri'];S.settings.sound=false;S.settings.tts=false;save();render();});
       await page.locator('.standalone-game').click();
       await page.waitForURL('**/tarsas/activity18/');
@@ -135,7 +140,9 @@ function check(condition,message){assert(condition,message);assertions++;console
     await offlinePage.evaluate(()=>navigator.serviceWorker.ready);
     await offlinePage.waitForFunction(()=>navigator.serviceWorker.controller!==null);
     await offlinePage.waitForFunction(async()=>{
-      const cache=await caches.open('tarsas-v8');
+      const version=document.querySelector('link[rel="stylesheet"][href^="style.css?v="]')?.getAttribute('href')?.match(/v=(\d+)/)?.[1];
+      if(!version)return false;
+      const cache=await caches.open('tarsas-v'+version);
       return !!(await cache.match(new URL('activity18/app.js',location.href).href));
     });
     await offlineContext.setOffline(true);
