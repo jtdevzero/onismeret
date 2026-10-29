@@ -77,6 +77,20 @@ test('all fourteen games load through the production index and every setup rende
   }
 });
 
+test('Activity 18+ is a separate home link without entering the fourteen internal games', () => {
+  const app=createApp();
+  const home=app.html();
+  assert.equal((home.match(/class="game(?:\s|\")/g)||[]).length,15);
+  assert.match(home,/<a class="game standalone-game"[^>]*href="\.\/activity18\/"/);
+  assert(home.includes('840 rövid feladvány') && home.includes('saját csapatok és beállítások'));
+  assert.match(home,/<a class="btn primary big" href="homlok\/">Homlok! indítása/,'concurrent Homlok launcher remains available');
+  assert.equal(app.run('Object.keys(GAMES).length'),14);
+  app.run("go('recommend');");
+  assert(!app.html().includes('standalone-game'),'recommendations use the shared internal roster only');
+  app.run("go('evening');");
+  assert(!app.html().includes('value="activity18"'),'the external game is not an incompatible evening queue item');
+});
+
 test('Impostor final guess keeps the solution hidden until the guess is resolved', () => {
   const app=createApp();
   app.run(`R.view='impostor';R.games.impostor={phase:'vote',mode:'szo',imps:['Anna'],voted:'Anna',word:'SECRET_REGRESSION',catName:'teszt',order:['Anna','Béla','Csilla']};`);
@@ -144,6 +158,7 @@ test('Kerülőút and Mutasd! score complete two-team rounds without duplicate c
 
 test('Közös hullám hides each starting word and normalizes matching answers', () => {
   const app=createApp();seedPlayers(app);app.run(`go('wave');`);app.action('waveStart');
+  app.run(`R.games.wave.words=['PRIVATE_WORD_ALPHA','PRIVATE_WORD_BETA'];render();`);
   const words=app.json('R.games.wave.words');
   assert(!app.html().includes(words[0]) && !app.html().includes(words[1]),'handoff is private');
   app.action('dealShow');assert(app.html().includes(words[0]));assert(!app.html().includes(words[1]));
@@ -350,4 +365,102 @@ test('Álomképek everyone and nobody guesses scoring and final record',()=>{
 
 module.exports={createApp,seedPlayers,test,GAME_KEYS};
 
-console.log(`\n${passed} Társasest regression tests passed.`);
+async function checkPortalOffline() {
+  const handlers={}, records=new Map(), deleted=[];
+  let online=false, failInstall=false, forced=0;
+  const scope='https://example.test/onismeret/tarsas/';
+  const cacheFor=name=>{
+    if(!records.has(name)) records.set(name,new Map());
+    const items=records.get(name);
+    return {
+      async addAll(requests) {
+        if(failInstall) throw new Error('missing asset');
+        for(const request of requests) items.set(request.url,'cached:'+request.url);
+      },
+      async match(request) {
+        const value=items.get(typeof request==='string'?request:request.url);
+        return value===undefined?undefined:new Response(value);
+      }
+    };
+  };
+  const context=vm.createContext({URL,Request,Response,Promise,Error,
+    self:{registration:{scope},addEventListener:(name,fn)=>{handlers[name]=fn;},clients:{claim:async()=>{}},skipWaiting:()=>{forced++;}},
+    caches:{open:async name=>cacheFor(name),keys:async()=>[...records.keys()],delete:async name=>{deleted.push(name);return records.delete(name);}},
+    fetch:async req=>{if(!online)throw new Error('offline');return new Response('network:'+req.url);}
+  });
+  vm.runInContext(fs.readFileSync(path.join(ROOT,'sw.js'),'utf8'),context,{filename:'sw.js'});
+  const shell=Array.from(vm.runInContext('SHELL',context));
+  const cacheName=vm.runInContext('CACHE',context);
+  test('portal v6 precaches all Activity runtime files and matches its versioned scripts',()=>{
+    assert.equal(cacheName,'tarsas-v6');
+    const childFiles=['','index.html','styles.css','app.js','game.js','prompts.js','prompt-metadata.js','difficulty.js','custom-pack.js','offline.js','sw.js','favicon.svg','manifest.webmanifest','icon.svg'];
+    for(const file of childFiles) assert(shell.includes('activity18/'+file),'offline shell includes Activity '+file);
+    for(const file of ['','index.html','styles.css?v=4','app.js?v=4','data.js?v=4','party-history.js?v=4','round-recorder.js?v=4','game-core.js','favicon.svg','manifest.webmanifest?v=4','service-worker.js']) assert(shell.includes('homlok/'+file),'offline shell preserves Homlok '+file);
+    for(const asset of shell) assert(fs.existsSync(path.join(ROOT,asset.split('?')[0])),'shell asset exists: '+asset);
+    const index=fs.readFileSync(path.join(ROOT,'index.html'),'utf8');
+    for(const match of index.matchAll(/(?:src|href)="([^"\s]+\?v=\d+)"/g)) {
+      assert(match[1].endsWith('?v=6'),'all portal entry scripts use v6');
+      assert(shell.includes(match[1]),'entry resource is precached: '+match[1]);
+    }
+  });
+  let installing;
+  handlers.install({waitUntil:promise=>{installing=promise;}});
+  await installing;
+  records.set('tarsas-v4',new Map());
+  records.set('tarsas-v5',new Map());
+  records.set('homlok-v4',new Map());
+  records.set('ejfel-utan-activity18:'+scope+'activity18/:old',new Map());
+  records.set('another-app',new Map());
+  let activating;
+  handlers.activate({waitUntil:promise=>{activating=promise;}});
+  await activating;
+  test('portal update waits for old clients and preserves the independent Activity cache',()=>{
+    assert.equal(forced,0,'new worker must not force-replace a live game');
+    assert.deepEqual(deleted,['tarsas-v4','tarsas-v5']);
+    assert(records.has('ejfel-utan-activity18:'+scope+'activity18/:old'));
+    assert(records.has('homlok-v4'));
+    assert(records.has('another-app'));
+  });
+  const request=async(pathname,mode='navigate')=>{
+    let response;
+    handlers.fetch({request:{url:new URL(pathname,scope).href,method:'GET',mode},respondWith:promise=>{response=promise;}});
+    return response;
+  };
+  const child=await request('activity18/?from=hub');
+  const childText=await child.text();
+  const childModule=await request('activity18/app.js?release=next','cors');
+  const childModuleText=await childModule.text();
+  const unknown=await request('activity18/missing.html');
+  const parent=await request('./');
+  const parentText=await parent.text();
+  const homlok=await request('homlok/');
+  const homlokText=await homlok.text();
+  const homlokModule=await request('homlok/app.js?v=4','cors');
+  const homlokModuleText=await homlokModule.text();
+  test('offline child navigation and modules receive child files rather than the portal HTML',()=>{
+    assert.equal(childText,'cached:'+scope+'activity18/index.html');
+    assert.equal(childModuleText,'cached:'+scope+'activity18/app.js');
+    assert.equal(unknown.status,0,'unknown child routes must not fall back to portal HTML');
+    assert.equal(parentText,'cached:'+scope+'index.html');
+    assert.equal(homlokText,'cached:'+scope+'homlok/index.html');
+    assert.equal(homlokModuleText,'cached:'+scope+'homlok/app.js?v=4');
+  });
+  online=true;
+  const freshChild=await request('activity18/');
+  const freshChildText=await freshChild.text();
+  const coherentParent=await request('./');
+  const coherentParentText=await coherentParent.text();
+  test('online child visits fetch its deployment while the portal keeps one complete shell',()=>{
+    assert.equal(freshChildText,'network:'+scope+'activity18/');
+    assert.equal(coherentParentText,'cached:'+scope+'index.html');
+  });
+  failInstall=true;
+  handlers.install({waitUntil:promise=>{installing=promise;}});
+  await assert.rejects(installing,/missing asset/);
+  test('an incomplete portal download removes only its failed release cache',()=>{
+    assert(!records.has(cacheName));
+    assert(records.has('ejfel-utan-activity18:'+scope+'activity18/:old'));
+    assert(records.has('another-app'));
+  });
+}
+checkPortalOffline().then(()=>console.log(`\n${passed} Társasest regression tests passed.`)).catch(error=>{console.error(error);process.exitCode=1;});

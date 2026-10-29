@@ -6,7 +6,7 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http');
 const {chromium}=require('playwright');
 const ROOT=path.resolve(__dirname,'..');
-const mime={'.html':'text/html','.js':'text/javascript','.css':'text/css','.png':'image/png','.webmanifest':'application/manifest+json'};
+const mime={'.html':'text/html','.js':'text/javascript','.css':'text/css','.png':'image/png','.svg':'image/svg+xml','.webp':'image/webp','.webmanifest':'application/manifest+json'};
 const server=http.createServer((req,res)=>{
   const pathname=decodeURIComponent(new URL(req.url,'http://localhost').pathname);
   const filename=path.resolve(ROOT,'.'+pathname+(pathname.endsWith('/')?'index.html':''));
@@ -29,8 +29,17 @@ function check(condition,message){assert(condition,message);assertions++;console
       page.on('dialog',dialog=>dialog.accept());
       await page.goto(origin+'/tarsas/');
       await page.waitForFunction(()=>typeof GAMES!=='undefined'&&Object.keys(GAMES).length===14);
-      check(await page.locator('.game').count()===14,width+'px: all fourteen game cards render');
+      check(await page.locator('.game').count()===15,width+'px: fourteen internal games and the Activity card render');
       await page.evaluate(()=>{S.players=['Anna','Béla','Csilla','Dani','Eszter','Feri'];S.settings.sound=false;S.settings.tts=false;save();render();});
+      await page.locator('.standalone-game').click();
+      await page.waitForURL('**/tarsas/activity18/');
+      await page.locator('#start-game').waitFor();
+      check(await page.locator('#prompt-count').textContent()==='840',width+'px: Activity opens through the portal card');
+      check(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),width+'px: Activity has no horizontal overflow');
+      await page.locator('.parent-navigation a').click();
+      await page.waitForURL('**/tarsas/');
+      await page.waitForFunction(()=>typeof GAMES!=='undefined');
+      check(await page.evaluate(()=>S.players.length)===6,width+'px: return to portal preserves its shared roster');
       for(const key of GAME_KEYS){
         await page.evaluate(key=>go(key),key);
         await page.waitForTimeout(30);
@@ -95,7 +104,7 @@ function check(condition,message){assert(condition,message);assertions++;console
         await page.reload();
         check(await page.evaluate(()=>Object.keys(GAMES).length)===14,'offline reload loads all fourteen games');
         await page.evaluate(()=>go('home'));
-        check(await page.locator('.game').count()===14,'offline home and navigation remain usable');
+        check(await page.locator('.game').count()===15,'offline home includes the Activity link and internal games');
         await page.evaluate(()=>{go('dreams');A.dreamStart();A.dreamOpen();save();render();});
         check(await page.locator('.dream-art').count()===4,'offline Álomképek hand shows four illustrated cards');
         const atlas=await page.evaluate(async()=>{const r=await fetch('images/dreams-atlas.webp');return r.ok&&(await r.blob()).size>1000;});
@@ -107,6 +116,41 @@ function check(condition,message){assert(condition,message);assertions++;console
       check(external.length===0,width+'px: gameplay sends no external requests');
       await context.close();
     }
+    // First-ever Activity visit must also work offline using the parent's complete shell.
+    const offlineContext=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
+    const offlinePage=await offlineContext.newPage(),offlineErrors=[];
+    offlinePage.on('pageerror',error=>offlineErrors.push(error.message));
+    await offlinePage.goto(origin+'/tarsas/');
+    await offlinePage.evaluate(()=>navigator.serviceWorker.ready);
+    await offlinePage.waitForFunction(()=>navigator.serviceWorker.controller!==null);
+    await offlinePage.waitForFunction(async()=>{
+      const cache=await caches.open('tarsas-v6');
+      return !!(await cache.match(new URL('activity18/app.js',location.href).href));
+    });
+    await offlineContext.setOffline(true);
+    await offlinePage.locator('.standalone-game').click();
+    await offlinePage.waitForURL('**/tarsas/activity18/');
+    await offlinePage.locator('#start-game').waitFor();
+    check(await offlinePage.title()==='Éjfél után · Activity 18+','first Activity visit opens its own HTML and modules while offline');
+    await offlinePage.locator('#age-consent').check();
+    await offlinePage.locator('#start-game').click();
+    await offlinePage.locator('[data-action="reveal"]').click();
+    await offlinePage.locator('[data-action="start"]').click();
+    check(await offlinePage.locator('#prompt-word').isVisible(),'Activity starts a playable card on its first offline visit');
+    await offlinePage.locator('.parent-navigation a').click();
+    await offlinePage.waitForURL('**/tarsas/');
+    await offlinePage.waitForFunction(()=>typeof GAMES!=='undefined');
+    check(await offlinePage.locator('.game').count()===15,'offline Activity return link opens the intact portal');
+    await offlinePage.locator('a[href="homlok/"]').click();
+    await offlinePage.waitForURL('**/tarsas/homlok/');
+    await offlinePage.locator('#home-screen').waitFor();
+    check((await offlinePage.title()).startsWith('Homlok!'),'concurrently added Homlok opens on its first offline visit');
+    await offlinePage.goBack();
+    await offlinePage.waitForURL('**/tarsas/');
+    await offlinePage.waitForFunction(()=>typeof GAMES!=='undefined');
+    check(await offlinePage.locator('.game').count()===15,'offline browser Back from Homlok preserves Activity and the internal games');
+    check(offlineErrors.length===0,'offline integration has no JavaScript errors ('+offlineErrors.join('; ')+')');
+    await offlineContext.close();
     console.log('\n'+assertions+' Társasest browser assertions passed.');
   }finally{await browser.close();}
 })().catch(error=>{console.error(error);process.exitCode=1;}).finally(()=>server.close());

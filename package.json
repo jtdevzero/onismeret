@@ -6,7 +6,8 @@
     "build": "python3 tools/build.py",
     "schema": "node tools/schema.js",
     "test": "node tests/run.js",
-    "test:tarsas": "node tests/tarsas.test.cjs",
+    "test:tarsas": "node tests/tarsas.test.cjs && npm run test:activity18",
+    "test:activity18": "npm --prefix tarsas/activity18 test",
     "test:tarsas:browser": "node tests/tarsas-browser.cjs",
     "test:paros": "node paros/tests/run.cjs"
   },
