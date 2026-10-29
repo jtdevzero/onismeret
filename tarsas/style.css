@@ -271,3 +271,13 @@ main{padding-bottom:max(38px,env(safe-area-inset-bottom));}
 @keyframes tarsas-enter{from{opacity:.65;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:620px){.top{padding:8px 12px}.panel{padding:17px}.bigcard{padding:24px 18px}.btn.big{min-height:58px}}
 @media(prefers-reduced-motion:reduce){#app>.panel,#app>.bigcard,#app>.games,#app>.portal-hero,#app>.portal-toolbar{animation:none}.btn,.game.cover-card{transition:none}}
+
+
+/* PREMIUM ROLLOUT — Társasest: közös játékállapotok */
+.panel,.bigcard,.game.cover-card{overflow-wrap:anywhere}
+.bigcard .say{font-size:clamp(1.4rem,5.8vw,2.4rem);line-height:1.25;letter-spacing:-.025em}
+.counter{font-variant-numeric:tabular-nums;letter-spacing:.055em}
+.chip.on{box-shadow:0 0 0 2px rgba(198,174,255,.16)}
+.timer{font-variant-numeric:tabular-nums}
+button:focus-visible{outline:3px solid #91c9ff;outline-offset:3px}
+@media(max-width:400px){.btn-row{flex-wrap:wrap}.btn-row>.btn{min-width:44%}.panel{min-width:0}.bigcard{min-width:0}}
