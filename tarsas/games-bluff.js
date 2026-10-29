@@ -83,7 +83,7 @@
     if (s.phase === 'vote') {
       const owner = s.voteOrder[s.voteIndex];
       if (!s.opened) return cover(s, owner, 'bluffOpen');
-      return `${heading(s)}<div class="panel"><h3>${esc(s.roster[owner])}, melyik az igazi?</h3><p class="muted small">Válassz, majd erősítsd meg. A saját válaszod nem választható.</p>${s.options.map((o, i) => `<button class="btn ${s.selected === i ? 'primary' : 'ghost'}" data-a="bluffVote" data-v="${i}" ${o.owners.includes(owner) ? 'disabled' : ''}>${esc(o.text)}${o.owners.includes(owner) ? ' · saját válasz' : ''}</button>`).join('')}${notice(s)}<button class="btn primary big" data-a="bluffConfirmVote" ${s.selected == null ? 'disabled' : ''}>Szavazok és elrejtem</button></div><div class="counter">${s.voteIndex + 1} / ${s.voteOrder.length} szavazat</div>`;
+      return `${heading(s)}<div class="panel"><h3>${esc(s.roster[owner])}, melyik az igazi?</h3><p class="muted small">Titkos szavazás · ${s.voteIndex + 1}/${s.voteOrder.length}. játékos. Válassz, erősítsd meg, majd add tovább a letakart képernyőt. A saját válaszod nem választható.</p>${s.options.map((o, i) => `<button class="btn ${s.selected === i ? 'primary' : 'ghost'}" data-a="bluffVote" data-v="${i}" ${o.owners.includes(owner) ? 'disabled' : ''}>${esc(o.text)}${o.owners.includes(owner) ? ' · saját válasz' : ''}</button>`).join('')}${notice(s)}<button class="btn primary big" data-a="bluffConfirmVote" ${s.selected == null ? 'disabled' : ''}>Szavazok és elrejtem</button></div><div class="counter">${s.voteIndex + 1} / ${s.voteOrder.length} szavazat</div>`;
     }
     if (s.phase === 'result') {
       const q = question(s);
