@@ -1,8 +1,8 @@
 /* Verziózott, teljes offline csomag. Az új változat megvárja a régi játéklapok bezárását. */
-const CACHE = 'tarsas-v10';
+const CACHE = 'tarsas-v11';
 const HP = ['index.html', 'app.js', 'style.css', 'questions.js', 'images/castle-hero.webp', ...['owl', 'diary', 'map', 'goblet', 'quill', 'potion', 'locket', 'hallows'].map(name => 'images/' + name + '.webp')].map(file => 'harry-potter/' + file);
-const SHELL = [...HP, './', 'index.html', 'style.css?v=10', 'data.js?v=10', 'app.js?v=10',
-  'games-party.js?v=10', 'games-social.js?v=10', 'games-bluff.js?v=10', 'games-quiz.js?v=10', 'enhancements.js?v=10', 'games-dreams.js?v=10', 'images/dreams-atlas.webp', 'images/party-hero.webp', 'images/game-covers.webp',
+const SHELL = [...HP, './', 'index.html', 'style.css?v=11', 'data.js?v=11', 'app.js?v=11',
+  'games-party.js?v=11', 'games-social.js?v=11', 'games-bluff.js?v=11', 'games-quiz.js?v=11', 'enhancements.js?v=11', 'games-dreams.js?v=11', 'images/dreams-atlas.webp', 'images/party-hero.webp', 'images/game-covers.webp',
   'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/icon-maskable-512.png',
   'homlok/', 'homlok/index.html', 'homlok/styles.css?v=4', 'homlok/app.js?v=4', 'homlok/data.js?v=4',
   'homlok/party-history.js?v=4', 'homlok/round-recorder.js?v=4', 'homlok/game-core.js', 'homlok/favicon.svg',
