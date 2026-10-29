@@ -1,5 +1,5 @@
 // Change this release id whenever any app-shell file changes.
-const RELEASE = '2026-10-29-premium-2';
+const RELEASE = '2026-10-29-premium-3';
 const CACHE_PREFIX = `ejfel-utan-activity18:${self.registration.scope}:`;
 const CACHE_NAME = `${CACHE_PREFIX}${RELEASE}`;
 const SHELL_FILES = [
