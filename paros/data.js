@@ -129,8 +129,8 @@ Előre megbeszélt jel arra, ha szünetet szeretnénk
 Egy közös emlék felidézése romantikus estéhez`);
  const quiz=[
  ['Melyik töltene fel jobban?','Egy csendes este','Egy mozgalmas nap'],
- ['Melyiket választanám?','Édes reggeli','Sós reggeli'],
- ['Szívesebben utaznék…','Tengerpartra','Hegyekbe'],
+ ['Reggelire inkább…','Édes reggeli','Sós reggeli'],
+ ['Utazáshoz inkább…','Tengerpart','Hegyek'],
  ['Szabadnapon inkább…','Sokáig aludnék','Korán indulnék'],
  ['Filmezéshez inkább…','Vígjáték','Izgalmas történet'],
  ['Ajándékként inkább…','Közös élmény','Személyes tárgy'],
@@ -139,10 +139,10 @@ Egy közös emlék felidézése romantikus estéhez`);
  ['Utazásnál inkább…','Pontos terv','Szabad felfedezés'],
  ['Otthoni hangulatként…','Zene szóljon','Legyen csend'],
  ['Egy üres délutánon…','Kint lennék','Otthon lennék'],
- ['A kedvenc évszakom inkább…','Meleg hónapok','Hűvös hónapok'],
+ ['A kedvenc évszak inkább…','Meleg hónapok','Hűvös hónapok'],
  ['Egy új étteremben…','Biztos kedvencet kérek','Újdonságot próbálok'],
  ['Jobban esik…','Dicséretet hallani','Segítséget kapni'],
- ['Melyik közös programot kérném?','Társasjáték','Mozi'],
+ ['Közös programnak inkább…','Társasjáték','Mozi'],
  ['Egy közös emléket inkább…','Lefotóznék','Leírnék']
  ];
 

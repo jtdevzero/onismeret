@@ -95,7 +95,7 @@ const path = require('node:path');
    if(await surprise.count()!==1)throw Error('Surprise chooser button missing');
    await surprise.click();
    const selected=await page.evaluate(()=>location.hash.slice(1));
-   if(!['closer','radar','quiz','memories','future','bucket'].includes(selected))throw Error('Surprise chooser picked unavailable adult game: '+selected);
+   if(!['closer','radar','truth','quiz','memories','future','bucket'].includes(selected))throw Error('Surprise chooser picked unavailable adult game: '+selected);
    console.log('PASS all ten couples game routes');
   }catch(e){failures.push('couples game routes: '+e.message);console.error('FAIL couples game routes',e.message);}
   finally{await page.close();}

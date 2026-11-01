@@ -115,6 +115,11 @@ let count=0;function ok(value,message){assert(value,message);count++;console.log
  await page.evaluate(()=>go('closer'));await page.selectOption('#custom-mode','only');await page.locator('form[data-a="start"] button').click();
  ok(await page.evaluate(()=>run.deck.length===1&&run.deck[0].t==='<b>Saját</b> kérdés?'),'a round can use only the couple\'s own cards');
  await page.evaluate(()=>{A.clear();custom.cards=[];saveCustom();});
+ ok(await page.evaluate(()=>{A.clear();adult=false;start('truth',false,6);return run&&run.packId==='base';}),'the base truth pack plays without 18+ confirmation');
+ ok(await page.evaluate(()=>{A.clear();adult=false;start('truth',false,6,'naughty');return run===null;}),'spicy truth packs still require 18+ confirmation');
+ await page.evaluate(()=>{A.clear();start('truth',true,6,'naughty');A.openLimits();A.limitsDone();A.openLimits();A.limitsDone();run.kind='dare';run.prompt=packsFor('truth').find(p=>p.id==='naughty').dare.find(c=>c.tags.includes('foto'));render();});
+ ok((await page.locator('#app').innerText()).includes('a felhőben is megmarad'),'photo cards warn that pictures persist');
+ await page.evaluate(()=>{A.clear();});
  // Background and return with a private response selected.
  await page.evaluate(()=>{A.clear();start('match',true);A.open();A.select('1');render();conceal();});ok(await page.locator('#app').innerText().then(t=>t.includes('A kör elrejtve')),'background veil hides an opened answer');
  await page.locator('[data-a="unmask"]').click();ok(await page.evaluate(()=>!masked&&run.phase==='cover'&&run.selected===null),'veil drops the pending choice and returns to the handoff screen');
