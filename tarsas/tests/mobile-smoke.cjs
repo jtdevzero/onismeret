@@ -60,6 +60,26 @@ const path = require('node:path');
   }catch(e){failures.push('dilemma gameplay: '+e.message);console.error('FAIL dilemma gameplay',e.message);}
   finally{await page.close();}
  }
+ // Páros est: all nine game entry points render without runtime errors.
+ {
+  const page=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
+  try {
+   await page.goto('http://127.0.0.1:8765/paros/',{waitUntil:'networkidle'});
+   const games=['closer','radar','truth','match','honest','quiz','memories','future','bucket'];
+   for(const key of games) {
+    await page.goto('http://127.0.0.1:8765/paros/#'+key,{waitUntil:'domcontentloaded'});
+    await page.waitForTimeout(120);
+    const heading=await page.locator('h1,h2').allInnerTexts();
+    const text=(await page.locator('#app').innerText()).trim();
+    if(text.length<45||!heading.length||/Betöltés…/.test(text))throw Error(key+': empty setup');
+    const width=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,view:innerWidth}));
+    if(width.scroll>width.view+3)throw Error(key+': horizontal overflow');
+    await page.screenshot({path:path.join('test-artifacts','paros_'+key+'.png'),fullPage:true});
+   }
+   console.log('PASS all nine couples game routes');
+  }catch(e){failures.push('couples game routes: '+e.message);console.error('FAIL couples game routes',e.message);}
+  finally{await page.close();}
+ }
  await browser.close();
  if(failures.length){console.error(failures.join('\n'));process.exitCode=1;}
 })().catch(e=>{console.error(e);process.exitCode=1});
