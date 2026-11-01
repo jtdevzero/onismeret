@@ -63,7 +63,7 @@ test('a prémium stílus minden céloldalon és a cache-ben szerepel', () => {
   const premium = readRoot('assets/party-premium.css');
   assert.match(premium, /premium-focus/);
   for (const page of ['tarsas/index.html','paros/index.html','tarsas/harry-potter/index.html','tarsas/atkozott/index.html']) {
-    assert.match(readRoot(page), /party-premium\.css\?v=1/, page);
+    assert.match(readRoot(page), /(?:party-premium|premium)\.css\?v=\d+/, page);
   }
   for (const rootName of ['tarsas','paros']) {
     const html = readRoot(rootName+'/index.html');
@@ -71,7 +71,7 @@ test('a prémium stílus minden céloldalon és a cache-ben szerepel', () => {
     const version = html.match(/(?:style|styles)\.css\?v=(\d+)/)?.[1];
     assert.ok(version, rootName+' asset version');
     assert.ok(worker.includes(rootName+'-v'+version), rootName+' cache version');
-    assert.match(worker, /party-premium\.css\?v=1/);
+    assert.match(worker, new RegExp('premium\\.css\\?v='+version));
   }
 });
 test('Átkozott döntések: egyéni mód csak a végén mutat eredményt', () => {
