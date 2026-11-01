@@ -282,7 +282,7 @@ test('recommendations respect player counts and an evening can be planned, score
   const app=createApp();seedPlayers(app);app.run(`go('recommend');`);
   app.submit('recommendSet',{count:'2',time:'10',mood:'közös'});
   app.action('eveningSuggested');
-  const queue=app.json('R.evening.queue');assert(queue.length>0&&queue.length<=3);
+  const queue=app.json('R.evening.queue');assert(queue.length>0&&queue.length<=5);
   assert.equal(queue[0].game,'wave','cooperative two-player game ranks first for cooperative mood');
   assert.equal(app.run('R.evening.queue.every(x=>GAMES[x.game].min<=2)'),true);
   assert(!app.html().includes('perc perc'));

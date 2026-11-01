@@ -40,6 +40,8 @@ jobs:
           name: release-mobile-screenshots
           path: test-artifacts/
           if-no-files-found: ignore
+      - name: Páros est tesztek
+        run: node paros/tests/run.cjs
       - run: |
           node --check tarsas/app.js
           node --check paros/app.js

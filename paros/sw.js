@@ -1,6 +1,6 @@
 'use strict';
-const CACHE='paros-v12';
-const SHELL=['./','index.html','style.css?v=12','data.js?v=4','app.js?v=12','images/together-photo.webp','premium.css?v=12','manifest.webmanifest','icon.svg'];
+const CACHE='paros-v17';
+const SHELL=['./','index.html','style.css?v=17','data.js?v=7','app.js?v=16','images/together-photo.webp','premium.css?v=17','manifest.webmanifest','icon.svg'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(SHELL.map(u=>new Request(u,{cache:'reload'})))).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('paros-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
 self.addEventListener('fetch',e=>{
