@@ -543,3 +543,131 @@ Hányszor dugnál egy héten, ha semmi sem akadályozna?
 Mit csináljak veled gátlástalanabbul?
 Mi az a határ, amit akkor sem akarsz átlépni, ha nagyon be vagy indulva?`)});
 })();
+
+/* Mocskos 18+ csomagok bővítése: durvább, szélsőségesebb kártyák. Minden passzolható, a stopszó mindig érvényes. */
+(() => {
+ const L=s=>s.trim().split('\n').map(x=>x.trim()).filter(Boolean),P=window.PAIR_PACKS,pack=(game,id)=>P[game].find(p=>p.id===id);
+ pack('radar','fire').items.push(
+ ['Kötözésnél inkább…','Kéz a hátam mögött','Kéz az ágy támlájához'],
+ ['A szemkötő alatt inkább…','Csókokat várnék','Harapásokat várnék'],
+ ['Paskoláskor…','Én számolom hangosan','Te számolod helyettem'],
+ ['Az irányításnál inkább…','Parancsokat adnék','Parancsokat követnék'],
+ ['Egy éjszakára inkább…','A szexrabszolgád lennék','A gazdád lennék'],
+ ['Elélvezés előtt…','Én könyörögjek érte','Te könyörögj érte'],
+ ['Az anál…','Lassan, ujjal kezdve','Játékszerrel kezdve'],
+ ['Elélvezéskor inkább…','A számba','A testemre'],
+ ['Dugás közben…','Fogd le a csuklóm','Markold a fenekem'],
+ ['A mocskos szavak közül…','Hívj a mocskos kis játékszerednek','Mondd, hogy csak a tiéd vagyok'],
+ ['Egy játékszer…','Távirányítós vibrátor','Popsidugó'],
+ ['Videóra vennél minket…','Csak a testünket','Mindent, az arcunkat is'],
+ ['Az elélvezések…','Egy, de robbanó','Sorozatban, amíg bírom'],
+ ['Dugás után…','Azonnal még egy','Lassú kényeztetés'],
+ ['Szerepjátékban inkább…','Főnök és beosztott','Idegenek egy szállodában'],
+ ['Kikötve…','Csak kényeztess','Kínozz az elélvezésig'],
+ ['Tükör előtt dugva…','Én nézem, ahogy dugsz','Te nézed, ahogy élvezek'],
+ ['Lefogva lenni…','Imádnám','Nem nekem való'],
+ ['Az alsóneműm…','Tépd le rólam','Hagyd rajtam végig'],
+ ['Egy durva éjszaka után…','Nyomok a bőrömön','Semmi nyom'],
+ ['Előjáték helyett…','Falhoz nyomva','Ágyra dobva'],
+ ['Mocskos beszéd közben…','Mondd el, mit csinálsz velem','Mondasd ki velem, mit akarok'],
+ ['A szex hangja…','Csattanások','Nyögések'],
+ ['Ha két óránk lenne…','Egy órás előjáték','Két óra dugás']
+ );
+ const naughty=pack('truth','naughty');
+ naughty.truth.push(...L(`Mi a legdurvább, amit valaha kipróbáltál az ágyban, és megcsinálnád velem is?
+Milyen nyomot hagynál szívesen a testemen?
+Minek hívjalak dugás közben?
+Hányszor tudnál egymás után elélvezni, ha nem állnék le?
+Mit csinálnál velem, ha kikötnélek, és két órád lenne?
+Hogyan büntetnél meg az ágyban, ha rossz voltam?
+Melyik testrészemet kötnéd ki vagy fognád le a legszívesebben?
+Mi az a mocskos dolog, amit szégyellsz, hogy beindít?
+Mennyire izgatna, ha egy egész estére megtagadnám tőled az elélvezést?
+Melyik játékszert használnád rajtam először, és hol?
+Mi a legperverzebb dolog, amit valaha velem csináltál?
+Mit akarsz, hogy könyörögjek, mielőtt megkapom?
+Milyen szerepjátékba mennél bele velem, amibe senki mással nem?
+Hol nem dugtunk még a lakásban, pedig kellene?
+Hogyan ébresszelek fel holnap reggel?
+Melyik pornójelenet jut eszedbe rólunk?
+Mennyire szereted, ha karmolás, harapás vagy szívásnyom marad rajtad?
+Mit éreznél, ha végignéznéd, ahogy magamhoz nyúlok?
+Mit csinálnál velem, ha egy estére a szexrabszolgád lennék?
+Mi a legmocskosabb üzenet, amit munka közben szívesen kapnál tőlem?
+Halkan vagy üvöltve akarod hallani, ahogy elélvezek?
+Ha egy napig parancsolhatnál nekem, mi lenne az első utasításod?
+Mikor akartál a legjobban, de nem mutattad?
+Milyen mocskos szót kiáltanál, amikor elélvezel?`));
+ naughty.dare.push(...L(`Kösd hátra a másik kezét egy sállal a következő kör végéig.
+Paskold meg ötször a másik fenekét. Ő számolja hangosan.
+Fogd le a másik csuklóját, és csókold, amíg ő nem szól, hogy elég.
+Vedd a szádba a másik ujjait, és mutasd meg, hogyan szopnál.
+Nyald végig a másik combjának belső oldalát az alsóneműje széléig.
+Térdelj le a másik elé, és várd az első utasítását.
+Mondd el részletesen, hogyan dugnál vele a konyhapulton.
+Vetkőztesd le a másikat teljesen, te pedig maradj felöltözve a következő körig.
+Harapd meg gyengéden a másik nyakát, és hagyj rajta kis nyomot, ha engedi.
+Nyúlj magadhoz meztelenül egy percig, miközben a másik szemébe nézel.
+Tedd a másik kezét oda, ahol most a legjobban vágysz rá.
+Ülj a másik arcára fél percig, ha ő is akarja.
+Szívd a másik mellbimbóját fél percig.
+Dörzsöld magad egy percig a másik combjához, mint aki nem bír magával.
+Adj a másiknak három parancsot, amit a következő percben teljesítenie kell.
+Kösd be a másik szemét, és érintsd meg valamivel, amit ki kell találnia.
+Húzz végig egy jégkockát a másik testén.
+Fektesd hasra a másikat, és csókold végig a gerincét a fenekéig.
+Mondd ki kertelés nélkül, mit csináljon veled a másik ma éjjel.
+Nyald meg a másik fülét, és súgd bele a kedvenc mocskos szavadat.
+A másik kiválaszt egy testrészedet, és két percig úgy kényezteti, ahogy akarja.
+Hajolj előre, és hagyd, hogy a másik nézzen, ameddig akar.
+Csókold meg a másikat a lába között, a ruhán keresztül.
+Kényeztessétek egymást egyszerre a kezetekkel egy percig.`));
+ pack('match','wishlist').items.push(...L(`Kikötés az ágyhoz széttárt kézzel-lábbal, stopszóval
+Szemkötő és fülhallgató egyszerre, teljes kiszolgáltatottság
+Egy egész nap, amikor az egyikünk a másik szexrabszolgája
+Elélvezés tiltása napokig, aztán egy robbanó este
+Távirányítós vibrátor egy otthoni este alatt
+Játékszer és kéz egyszerre
+Fenekelés, amíg nyomot nem hagy
+Harapás-, karmolás- és szívásnyomok
+Arcra ülés
+Mély torok lassan, szünetekkel
+Anális szex dildóval vagy strap-onnal
+Elélvezés egymás után, amíg bírom
+Dugás egy előre megírt, durva forgatókönyv szerint
+Megalázó mocskos beszéd, előre megbeszélt határokkal
+Nyakörv és póráz otthon
+Popsidugó egész nap, este anál
+Szexvideó egy egész éjszakáról
+Fantáziálás egy hármasról, csak szavakban
+Kézbilincs és szemkötő a zuhany alatt
+Jégkocka és masszázsgyertya felváltva
+Ágyhoz kötve dugni, elélvezés-tiltással
+Dugás a nappali padlóján
+Egymás arcára élvezni
+Kutyapóz hajhúzással`));
+ pack('honest','frank').items.push(...L(`Milyen durvaságot élveznél, amit még soha nem mertél kérni?
+Mennyire izgat, ha megaláznak az ágyban, és hol a határ?
+Van „elvevős” fantáziád? Milyen határokkal és stopszóval beszélnénk róla biztonságosan?
+Mit jelentene neked, ha egy estére teljesen átadnád az irányítást?
+Mit jelentene neked, ha egy estére teljesen te irányítanál?
+Melyik a legdurvább pornó, amit izgatónak találtál?
+Mennyire fontosak neked a nyomok szex után, és hol látszódhatnak?
+Mit gondolsz a mély torokról?
+Mennyire izgat, ha a testnedveinkről beszélünk szex közben?
+Van olyan fantáziád, amit undorítónak tartasz, mégis beindít?
+Milyen stopszót választanál, és mit tegyek, ha kimondod?
+Mennyire érdekel a nyakörv, a póráz, a gazda és szolga játék?
+Mi segítene, hogy hangosabb legyél szex közben?
+Melyik testrészedet szégyelled, mégis szeretnéd, ha többet foglalkoznék vele?
+A hármas gondolata valódi vágy nálad, vagy csak fantázia?
+Hányszor élveztél el a legtöbbször egy nap alatt?
+Milyen gyakran gondolsz napközben arra, hogy velem szexelsz?
+Mit gondolsz a fenékjátékokról nálad és nálam?
+Melyik szexjáték van a kívánságlistádon, amit még nem mertél megvenni?
+Mire van szükséged egy durva este után: ölelésre, csendre, beszélgetésre?
+Mennyire szereted, ha könyörgök neked?
+Volt, hogy túl messzire mentem? Mit csináljak másképp?
+Mit tennénk, ha egy fantáziád megvalósulna, és mégsem tetszene?
+Hogyan beszéljünk a határainkról úgy, hogy közben ne lohadjon le a kedvünk?`));
+})();

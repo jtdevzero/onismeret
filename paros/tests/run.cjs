@@ -15,7 +15,7 @@ let count=0;function ok(value,message){assert(value,message);count++;console.log
  ok(await page.locator('.game').count()===9,`${width}px: nine separate pair games`);
  ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`${width}px: home fits viewport`);
  for(const mode of ['closer','radar','truth','match','honest','quiz','memories','future','bucket']){await page.evaluate(m=>go(m),mode);ok(await page.locator('h1').innerText()!==''&&await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`${mode} setup and layout`);}
- ok(await page.evaluate(()=>cardCount()===516),'all 516 base and extra cards counted once');
+ ok(await page.evaluate(()=>cardCount()===636),'all 636 base and extra cards counted once');
  await page.evaluate(()=>{run=null;adult=false;go('radar');});await page.selectOption('#round-length','4');await page.selectOption('#pack-select','chemistry');
  ok(await page.locator('#round-length').inputValue()==='4','pack change preserves selected round length');
  ok(await page.locator('input[name="adult"]').count()===1,'adult radar pack requires confirmation');
@@ -85,7 +85,7 @@ let count=0;function ok(value,message){assert(value,message);count++;console.log
  await page.evaluate(()=>go('home'));await page.locator('.game[href="#radar"]').click();await page.goBack();ok(await page.evaluate(()=>view==='home'),'browser Back navigates the standalone page');
  await page.evaluate(()=>navigator.serviceWorker.ready);await page.reload();await page.waitForFunction(()=>navigator.serviceWorker.controller);await context.setOffline(true);await page.reload();await page.evaluate(()=>go('home'));ok(await page.locator('.game').count()===9,'all nine games available after offline reload');
  await page.evaluate(()=>start('radar',false));await page.locator('[data-a="open"]').click();ok(await page.locator('[data-a="select"]').count()===3,'offline play includes choices and pass');
- await page.evaluate(()=>{run=null;adult=false;start('radar',false,4,'chemistry');});ok(await page.evaluate(()=>run===null),'offline adult pack still requires confirmation');await page.evaluate(()=>{start('radar',true,4,'chemistry');A.open();render();});ok(await page.locator('[data-a="select"]').count()===3&&await page.evaluate(()=>run.packId==='chemistry'&&cardCount()===516),'all new pack data remains playable offline');
+ await page.evaluate(()=>{run=null;adult=false;start('radar',false,4,'chemistry');});ok(await page.evaluate(()=>run===null),'offline adult pack still requires confirmation');await page.evaluate(()=>{start('radar',true,4,'chemistry');A.open();render();});ok(await page.locator('[data-a="select"]').count()===3&&await page.evaluate(()=>run.packId==='chemistry'&&cardCount()===636),'all new pack data remains playable offline');
  if(width===320){await page.evaluate(()=>{run=null;go('home');});await page.screenshot({path:'/tmp/paros-home.png',fullPage:true});}
  ok(errors.length===0,`${width}px: no JavaScript errors: ${errors.join(';')}`);ok(external.length===0,`${width}px: no external requests or answer transmission`);
  await context.close();}
