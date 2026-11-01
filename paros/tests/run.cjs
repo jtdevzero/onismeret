@@ -120,6 +120,9 @@ let count=0;function ok(value,message){assert(value,message);count++;console.log
  await page.evaluate(()=>{A.clear();start('truth',true,6,'naughty');A.openLimits();A.limitsDone();A.openLimits();A.limitsDone();run.kind='dare';run.prompt=packsFor('truth').find(p=>p.id==='naughty').dare.find(c=>c.tags.includes('foto'));render();});
  ok((await page.locator('#app').innerText()).includes('a felhőben is megmarad'),'photo cards warn that pictures persist');
  await page.evaluate(()=>{A.clear();});
+ ok(await page.evaluate(()=>{seen.clear();A.clear();start('closer',false,12);const a=run.deck.map(c=>c.t);A.clear();start('closer',false,12);const b=run.deck.map(c=>c.t);A.clear();return b.every(t=>!a.includes(t));}),'a second round in the same session brings new cards');
+ ok(await page.evaluate(()=>{seen.clear();A.clear();start('memories',false,6);const a=run.deck.map(c=>c.t).join();A.clear();start('memories',false,6);return run.deck.map(c=>c.t).join()!==a;}),'card order is random every time a round opens');
+ ok(await page.evaluate(()=>{seen.clear();const draws=()=>{A.clear();start('truth',true,24,'naughty');A.openLimits();A.limitsDone();A.openLimits();A.limitsDone();const t=[];for(let i=0;i<24;i++){A.draw(i%2?'dare':'truth');t.push(run.prompt.t);A.next();}return t;};const a=draws(),b=draws();A.clear();return b.every(t=>!a.includes(t));}),'spicy truth or dare does not repeat cards between rounds');
  // Background and return with a private response selected.
  await page.evaluate(()=>{A.clear();start('match',true);A.open();A.select('1');render();conceal();});ok(await page.locator('#app').innerText().then(t=>t.includes('A kör elrejtve')),'background veil hides an opened answer');
  await page.locator('[data-a="unmask"]').click();ok(await page.evaluate(()=>!masked&&run.phase==='cover'&&run.selected===null),'veil drops the pending choice and returns to the handoff screen');

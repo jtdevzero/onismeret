@@ -78,23 +78,28 @@ function start(key,consent,length,packId='base',opts={}){const g=GAMES[key],pack
  else buildDeck(run,pack);
  masked=false;go('play');masked=false;render();keepAwake(true);}
 // A két játékos határainak csak az uniója szűri a paklit; a pakli összeállítása után a határok is törlődnek.
+// A munkamenetben már látott kártyák (csak memóriában): az új kör először a még nem látottakból válogat.
+const seen=new Map();
+const seenFor=s=>{const k=s.key+':'+s.packId;if(!seen.has(k))seen.set(k,new Set());return seen.get(k);};
+const freshFirst=(cards,used)=>shuffle(cards).sort((a,b)=>used.has(a.t)-used.has(b.t));
 function buildDeck(s,pack){
+ const used=seenFor(s);
  const ok=c=>!c.tags.some(t=>s.excluded?.has(t)),only=s.opts.custom==='only';
  const mine=kind=>s.opts.custom&&s.opts.custom!=='none'&&['talk','truth'].includes(s.type)&&!GAMES[s.key].spin?custom.cards.filter(c=>c.kind===kind).map(c=>card(c.t,2)):[];
  const pool=(cards,kind)=>only?mine(kind):[...(cards||[]).filter(ok),...mine(kind)];
  if(GAMES[s.key].spin)s.deck=Array.from({length:s.length},()=>spinOnce(s.excluded||new Set())).filter(Boolean);
  else if(s.type==='truth'){
-  s.truth=shuffle(pool(pack.truth,'truth'));s.dare=shuffle(pool(pack.dare,'dare'));
+  s.truth=freshFirst(pool(pack.truth,'truth'),used).reverse();s.dare=freshFirst(pool(pack.dare,'dare'),used).reverse();
   if(s.mild&&!only)s.sources={mild:{truth:shuffle(s.mild.truth.filter(ok)),dare:shuffle(s.mild.dare.filter(ok))},hot:{truth:s.truth,dare:s.dare}};
   const total=s.truth.length+s.dare.length+(s.sources?s.sources.mild.truth.length+s.sources.mild.dare.length:0);
   s.deck=Array(Math.min(s.length,total)).fill(null);s.prompt=null;
- }else{const cards=pool(pack.items,'talk');s.deck=GAMES[s.key].graded&&!only?graded(cards,s.length):shuffle(cards).slice(0,s.length);}
+ }else{const cards=pool(pack.items,'talk');s.deck=GAMES[s.key].graded&&!only?graded(cards,s.length,used):freshFirst(cards,used).slice(0,s.length);s.deck.forEach(c=>used.add(c.t));}
  s.short=s.deck.length<s.length;s.excluded=null;s.draft=null;s.pack=null;s.mild=null;s.player=0;s.pos=0;
  s.phase=!s.deck.length?'empty':['talk','truth'].includes(s.type)?'talk':'cover';
 }
 // Szintenként kevert, szint szerint növekvő pakli; minden szint a körhossz arányos részét adja.
-function graded(cards,size){
- const levels=[1,2,3].map(l=>shuffle(cards.filter(c=>c.lvl===l))).filter(x=>x.length);
+function graded(cards,size,used=new Set()){
+ const levels=[1,2,3].map(l=>freshFirst(cards.filter(c=>c.lvl===l),used)).filter(x=>x.length);
  const quota=levels.map((_,i)=>Math.floor(size*(i+1)/levels.length)-Math.floor(size*i/levels.length));
  const deck=levels.flatMap((x,i)=>x.slice(0,quota[i]));
  for(const c of levels.flatMap((x,i)=>x.slice(quota[i]))){if(deck.length>=size)break;deck.push(c);}
@@ -177,7 +182,7 @@ A.confirm=()=>{const s=run;if(!s||masked||s.selected===null||!['answer','guess']
  else{s.guesses[s.player][s.pos]=value;advancePrivate(s);}};
 function talkNext(skipped){const s=run;if(!s||masked||s.phase!=='talk')return;stopTimer();if(s.type==='truth'&&!s.prompt&&!skipped)return;if(skipped)s.skipped++;else s.count++;s.pos++;s.prompt=null;s.kind=null;if(s.pos>=s.deck.length)s.phase='result';}
 A.next=()=>talkNext(false);A.pass=()=>talkNext(true);
-A.draw=kind=>{const s=run;if(!s||masked||s.type!=='truth'||s.phase!=='talk'||s.prompt||!['truth','dare'].includes(kind))return;s.kind=kind;const src=s.sources?(s.pos<Math.ceil(s.deck.length/3)?s.sources.mild:s.sources.hot):s,other=s.sources&&(src===s.sources.mild?s.sources.hot:s.sources.mild);s.prompt=src[kind].pop()||other?.[kind].pop()||null;};
+A.draw=kind=>{const s=run;if(!s||masked||s.type!=='truth'||s.phase!=='talk'||s.prompt||!['truth','dare'].includes(kind))return;s.kind=kind;const src=s.sources?(s.pos<Math.ceil(s.deck.length/3)?s.sources.mild:s.sources.hot):s,other=s.sources&&(src===s.sources.mild?s.sources.hot:s.sources.mild);s.prompt=src[kind].pop()||other?.[kind].pop()||null;if(s.prompt)seenFor(s).add(s.prompt.t);};
 A.stop=()=>{if(run&&run.phase==='talk')run.phase='result';};
 A.clear=()=>{stopTimer();keepAwake(false);if(run&&run.phase!=='result'&&!confirm('Törlöd a kört és az összes eddigi választ?'))return;run=null;masked=false;go('home');};
 A.restart=()=>{if(!run||run.phase!=='result')return;const key=run.key,length=run.length,packId=run.packId,opts=run.opts;run=null;start(key,adult,length,packId,opts);};
