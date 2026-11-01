@@ -909,3 +909,71 @@ window.PAIR_DICE={
  places:[{t:'az ágyon'},{t:'a kanapén'},{t:'a konyhapulton'},{t:'a zuhany alatt'},{t:'a nappali szőnyegén'},{t:'egy fotelben'},{t:'az íróasztalon'},{t:'a tükör előtt'},{t:'az előszobában'},{t:'behúzott függöny mögött, az ablaknál'}],
  secs:[60,120,180,300]
 };
+
+/* Tabuk nélkül (Szexről őszintén, 18+): nyers, provokatív kérdések. Kérdések, nem felszólítások; minden passzolható. */
+(() => {
+ const L=window.PAIR_LINES;
+ window.PAIR_PACKS.honest.push({id:'taboo',name:'Tabuk nélkül · 18+',adult:true,items:L(`Gondoltál már valaki másra, miközben velem basztál? Kire? #harmadik
+Melyik közös ismerősünket basznád meg a legszívesebben, csak fantáziában? #harmadik
+Mi a legmocskosabb fantáziád, amit sosem csinálnál meg, de elmesélnéd?
+Ha egy éjszakára büntetlenül megdughatnál valaki mást, ki lenne az? #harmadik
+Izgatna, ha végignéznéd, ahogy valaki más nyal engem? #harmadik #oral
+Izgatna, ha én nézném végig, ahogy valaki más dug téged? #harmadik
+Mit csináltál egy volt partnereddel az ágyban, amit sosem mernél elmondani nekem? #mult
+Ki dugott a legjobban előttem, és mit csinált jobban? #mult
+Hasonlítottad már a farkamat vagy a puncimat valaki máséhoz? #mult
+Izgatna, ha egy szerepjátékban fizetnék a baszásért? #szerep
+Melyik pornókategóriára nyúlsz magadhoz, amit a legjobban szégyellsz?
+Milyen pornót töröltél gyorsan az előzményekből, miután elélveztél rá? #testnedv
+Mi a legbetegebb dolog, amitől valaha begerjedtél?
+Szeretnéd, ha valaki végignézné, ahogy megbaszlak? #harmadik
+Mennyire izgat, ha a szomszédok hallják, ahogy üvöltesz alattam?
+Hagynád, hogy lefotózzalak, miközben benned vagyok vagy rajtad vagyok? #foto
+Néznéd velem hetente, ahogy a saját videónkon baszunk? #foto
+Mi a legmegalázóbb dolog, amit velem csinálnál, ha hagynám? #kotozes
+Mi a legmegalázóbb, amit tőlem elviselnél, sőt élveznél? #kotozes
+Mennyire üssek, csípjek, harapjak, mielőtt már nem élvezed? #fajdalom
+Lennél egy estére a kis ribancom, szabályokkal és stopszóval? #kotozes
+Melyik testnedvemet szereted a legjobban a szádban vagy a bőrödön? #testnedv
+Mindig lenyelnéd a gecimet, vagy csak ha kérem? #oral #testnedv @penisz
+Mennyire akarsz seggbe dugni, és mennyire akarod, hogy én dugjalak oda? #anal
+Nyalnád a seggemet, vagy azt akarod, hogy én nyaljam a tiédet? #anal #oral
+Hagynád, hogy egész nap távirányítós vibrátorral kínozzalak itthon? #jatekszer
+Mit szólnál, ha egy este másik párral cserélnénk, csak fantáziában? #harmadik
+Ha bárkit megdughatnánk egymás mellett, mi lenne az első szabályod? #harmadik
+Felizgatna vagy féltékennyé tenne, ha másra gondolnék, miközben nyalsz? #harmadik #oral
+Melyik fantáziádtól esne le az állam?
+Mi a legerkölcstelenebb, amire valaha magadhoz nyúltál?
+Melyik ruhámban akarsz rögtön megdugni? #meztelen
+Hol nyúltál magadhoz a legfurcsább helyen? #erintes
+Akarod, hogy egy harmadik ember is ujjazzon vagy nyaljon, amíg baszunk? #harmadik
+Mi a legmocskosabb mondat, amit valaki valaha a füledbe nyögött? #mult
+Dugtál már valakivel, akinek még a nevét sem tudtad? #mult
+Hol buktál le majdnem dugás közben? #mult
+Melyik barátomat dugnád meg, ha szabad lenne? #harmadik
+Elcsábítsalak egy szerepjátékban idegenként, mintha először látnál? #szerep
+Melyik izgat jobban: ha fizetnek a kényeztetésedért, vagy ha te fizetsz érte? #szerep
+Mennyire izgat, ha baszás közben ribancnak vagy kurvának hívlak? #kotozes
+Milyen fétisedtől pirulnál el, ha most hangosan kimondanád?
+Nyalnád a lábamat, vagy azt szeretnéd, hogy én nyaljam a tiédet?
+Izgatna, ha egy estére a másik nem ruháiban dugnál meg? #szerep
+Izgatna, ha egy idegen kamerán nézné, ahogy vetkőzöl és magadhoz nyúlsz? #harmadik #foto
+Szexeltél már videóhívásban valakivel? Kivel és hogyan? #foto #mult
+Küldtél már meztelen képet valakinek, akinek nem kellett volna? #foto #mult
+Mit hallgattál el a szexuális múltadról nekem? #mult
+Hány emberrel basztál valójában? #mult
+Kivel dugtál a legrövidebb ismeretség után? #mult
+Szerinted mire gondolok, amikor egyedül nyúlok magamhoz?
+Megnéznéd velem a kedvenc pornódat, és közben megmutatnád, mire indulsz be?
+Mit nem kérnél tőlem soha az ágyban, mert félsz, hogy elítéllek?
+Mi a legmocskosabb üzenet, amit valaha kaptál vagy küldtél? #mult
+Melyik perverz fantáziádat készítenéd elő nekem meglepetésként?
+Megdugnál a fürdőszobában, miközben vendégeink vannak a nappaliban?
+Melyik baszást bántad meg a legjobban? #mult
+Mit csinálnál, ha azt mondanám: ma este bármit megtehetsz velem, a stopszóig? #kotozes
+Kinek a teste jár a fejedben, amikor nem rám gondolsz? #harmadik
+Felizgatna, ha bevallanám, hogy egy volt partneremre is gondoltam dugás közben? #mult
+Izgat a fojtogatás gondolata? Tudod, hogy játékból is okozhat maradandó sérülést? #fajdalom #kotozes
+Mi vonz a fojtogatásban: a kiszolgáltatottság vagy az irányítás? Mi adná ezt meg veszély nélkül? #kotozes
+Hol a határ, ha a nyakadhoz érek szex közben: csók, simítás, és mi az, ami már nem fér bele? #fajdalom`)});
+})();

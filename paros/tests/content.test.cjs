@@ -12,7 +12,9 @@ const tri=s=>{s=s.toLowerCase();const t=new Set();for(let i=0;i<s.length-2;i++)t
 const sim=(a,b)=>{const x=tri(a),y=tri(b);let n=0;x.forEach(v=>{if(y.has(v))n++;});return 2*n/(x.size+y.size);};
 
 test('nincs tiltott téma egyetlen kártyán sem',()=>{
- for(const p of packs)for(const c of p.cards)for(const re of BANNED)assert.ok(!re.test(text(c)),`${p.id}: ${text(c)} (${re})`);
+ // A fojtogatásról csak beszélgetőkérdés lehet a Tabuk nélkül csomagban; kihívás, kívánság vagy pörgetés soha.
+ const discussable=(p,t,re)=>re===BANNED[0]&&p.id==='taboo'&&/\?$/.test(t);
+ for(const p of packs)for(const c of p.cards)for(const re of BANNED)assert.ok(!re.test(text(c))||discussable(p,text(c),re),`${p.id}: ${text(c)} (${re})`);
 });
 test('minden kártya legfeljebb 110 karakter',()=>{
  for(const p of packs)for(const c of p.cards)assert.ok(text(c).length<=110,`${p.id}: ${text(c)}`);

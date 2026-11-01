@@ -75,8 +75,23 @@ function boom() {
 function alarm() { [0, 220, 440].forEach(t => setTimeout(() => beep(660, 0.18, 0.3, 'sawtooth'), t)); buzz([200, 100, 200]); }
 function vibrationSupported() { return typeof navigator.vibrate === 'function'; }
 function buzz(p) {
-  if (!S.settings.vibrate || !vibrationSupported() || document.visibilityState === 'hidden') return false;
-  try { return navigator.vibrate(p); } catch (e) { return false; }
+  if (!S.settings.vibrate || document.visibilityState === 'hidden') return false;
+  if (vibrationSupported()) { try { return navigator.vibrate(p); } catch (e) { return false; } }
+  // iPhone: a Safari nem támogatja a navigator.vibrate-et. iOS 18-tól egy kapcsoló-checkbox (switch) címkéjére
+  // kattintás rövid rezgést ad, de csak felhasználói érintésen belül, ezért a ketyegésnél és a robbanásnál nem.
+  return navigator.userActivation?.isActive ? iosHaptic() : false;
+}
+function iosHaptic() {
+  try {
+    let label = document.getElementById('haptic-switch');
+    if (!label) {
+      label = document.createElement('label'); label.id = 'haptic-switch'; label.setAttribute('aria-hidden', 'true');
+      label.style.cssText = 'position:fixed;left:-9999px;top:0;width:1px;height:1px;overflow:hidden';
+      const input = document.createElement('input'); input.type = 'checkbox'; input.setAttribute('switch', ''); input.tabIndex = -1;
+      label.appendChild(input); document.body.appendChild(label);
+    }
+    label.click(); return true;
+  } catch (e) { return false; }
 }
 let lastSpoken = '';
 function speak(text, key) {
@@ -231,7 +246,7 @@ V.settings = () => {
   return `<div class="panel">
     ${t('spicy', 'Pikáns 18+ kártyák', 'Megjelenik egy külön pikáns csomag az „Én még soha nem” és a „Ki a legvalószínűbb” játékban.')}
     <hr>${t('sound', 'Hangok', 'Ketyegés, robbanás, időzítő.')}
-    <hr>${t('vibrate', 'Rezgés', vibrationSupported() ? 'Támogatott böngészőben a Szóbomba minden ketyegésnél röviden rezeg.' : 'Ez a böngésző nem támogatja a rezgést (például iPhone Safari). A hang és a vizuális pulzálás továbbra is működik.')}
+    <hr>${t('vibrate', 'Rezgés', vibrationSupported() ? 'Támogatott böngészőben a Szóbomba minden ketyegésnél röviden rezeg.' : 'Ez a böngésző nem támogatja a folyamatos rezgést (például iPhone). iPhone-on, iOS 18-tól koppintáskor rövid rezgés jelez, például a Szóbomba indításakor és a vesztes kiválasztásakor; a ketyegést és a robbanást a hang és a vizuális pulzálás jelzi.')}
     <hr>${t('tts', 'Felolvasás a Vérfarkas mesélőnél', 'A telefon hangosan felolvassa a mesélő szövegét (ha van magyar hang).')}
     <hr>${t('revealRole', 'Vérfarkas: halálkor kiderül a szerep')}
   </div>

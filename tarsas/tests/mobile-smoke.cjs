@@ -133,7 +133,9 @@ const path = require('node:path');
     const before=await page.locator('#app').innerText();
     if(!before.includes('Én még soha'))throw Error('Planner did not accept game');
     await page.reload({waitUntil:'networkidle'});
-    await page.locator('[data-a="nav"][data-v="evening"]').first().click();
+    // Újratöltés után a tervező magától visszaáll; a menügombra csak akkor kell kattintani, ha látszik.
+    const plannerNav=page.locator('[data-a="nav"][data-v="evening"]').first();
+    if(await plannerNav.isVisible())await plannerNav.click();
     const after=await page.locator('#app').innerText();
     if(!after.includes('Én még soha'))throw Error('Planner session did not restore');
     const downloadPromise=page.waitForEvent('download',{timeout:10000});

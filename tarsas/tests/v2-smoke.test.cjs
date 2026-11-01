@@ -99,9 +99,9 @@ test('a külön játékok offline navigációja és a csomag tartalma összhangb
 test('Páros est: mind a tizenhárom játékmód és az érzékeny válaszok memóriában tartása', () => {
  const js=fs.readFileSync(path.resolve(root,'../paros/app.js'),'utf8');
  assert.doesNotThrow(()=>new vm.Script(js));
- const games=js.match(/const GAMES=\{([\s\S]*?)\n\};/);
+ const games=js.match(/const GAMES\s*=\s*\{([\s\S]*?)\n\};/);
  assert.ok(games);
- const keys=[...games[1].matchAll(/^\s*([a-z]+):\{/gm)].map(m=>m[1]);
+ const keys=[...games[1].matchAll(/^\s*([a-z]+):\s*\{/gm)].map(m=>m[1]);
  assert.equal(keys.length,13);
  assert.equal(new Set(keys).size,13);
  assert.match(js,/válaszok kizárólag memóriában élnek/);
@@ -129,4 +129,17 @@ test('Játékosprofil: eredmény- és elsőhely-számláló',()=>{
  assert.match(js,/row\.games\+\+/);
  assert.match(js,/row\.wins\+\+/);
  assert.match(js,/Játékosprofilok · az este/);
+});
+
+test('Szóbomba rezgés: iPhone-on érintéskor kapcsoló-alapú tartalék, időzítőből nem', () => {
+ const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
+ const js=fs.readFileSync(path.resolve(__dirname,'../app.js'),'utf8');
+ const src=js.match(/function buzz\(p\) \{[\s\S]*?\n\}\nfunction iosHaptic\(\) \{[\s\S]*?\n\}/)[0];
+ const make=(active,hasVibrate)=>{const clicks=[];const doc={visibilityState:'visible',body:{appendChild(){}},getElementById:()=>null,createElement:t=>({tagName:t,style:{},setAttribute(){},appendChild(){},click(){clicks.push(t);}})};
+  const ctx={S:{settings:{vibrate:true}},document:doc,navigator:{userActivation:{isActive:active},...(hasVibrate?{vibrate:()=>true}:{})}};
+  vm.runInNewContext('function vibrationSupported(){return typeof navigator.vibrate==="function";}'+src+';this.r=buzz(30);',ctx);return {r:ctx.r,clicks};};
+ assert.equal(make(true,false).r,true,'tap on iPhone triggers the switch haptic');
+ assert.equal(make(true,false).clicks.length,1);
+ assert.equal(make(false,false).r,false,'timer ticks without a tap do not try the haptic');
+ assert.equal(make(false,true).r,true,'Android keeps navigator.vibrate');
 });
