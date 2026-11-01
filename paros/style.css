@@ -27,3 +27,19 @@ h2,h3{font-weight:850;letter-spacing:-.03em}
 button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #ffc7a7;outline-offset:3px}
 @media(max-width:480px){.hero,.panel,.card{padding:20px}.btn{min-height:49px}}
 @media(prefers-reduced-motion:reduce){.game{transition:none;transform:none!important}}
+
+
+/* Premium 3.0 — consistent interactive game screens */
+#app{min-width:0}
+.panel,.card{overflow-wrap:anywhere;isolation:isolate}
+.panel h2,.card h2{font-size:clamp(1.4rem,5vw,2.2rem);line-height:1.13;letter-spacing:-.045em}
+.question{font-size:clamp(1.4rem,5.5vw,2.25rem);line-height:1.25;text-wrap:pretty}
+.choices{display:grid;gap:12px}
+.choices button{min-height:58px;padding:15px 18px;text-align:left;line-height:1.35}
+.choices button:focus-visible{outline:3px solid #ffc7a7;outline-offset:3px}
+.score,.match-item{border-radius:16px;overflow-wrap:anywhere}
+.actions{gap:10px}
+.actions>*{min-height:48px}
+.counter,.score{font-variant-numeric:tabular-nums}
+input:not([type=checkbox]),select{min-height:48px;max-width:100%}
+@media(max-width:420px){.actions>*{flex:1 1 140px}.choices button{font-size:1rem}.game{min-width:0}}
