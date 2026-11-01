@@ -54,6 +54,9 @@ const path = require('node:path');
    await page.locator('[data-vote="0"]').click();
    await page.locator('[data-vote="1"]').click();
    if(await page.locator('#next').count()!==1)throw Error('Multiplayer result missing');
+   const stats=await page.locator('#game').innerText();
+   if(!stats.includes('Eddig lezárt körök: 1')||!stats.includes('Összes A: 1')||!stats.includes('Összes B: 1'))throw Error('Multiplayer aggregate is incorrect');
+
    await page.locator('#next').click();
    if(await page.locator('[data-vote="0"]').count()!==1)throw Error('Next round unavailable');
    const skipBefore=await page.locator('#progress').innerText();
