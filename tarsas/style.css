@@ -303,3 +303,16 @@ body{font-family:"Avenir Next",Avenir,"Segoe UI",system-ui,sans-serif;background
 button:focus-visible,a:focus-visible{outline:3px solid #dbff7a;outline-offset:3px}
 @media(max-width:480px){.panel{padding:20px}.btn{min-height:48px}}
 @media(prefers-reduced-motion:reduce){.game,.btn{transition:none!important}}
+
+
+/* Premium 3.0 — consistent gameplay and result screens */
+#app{min-width:0}
+#app>.panel,#app>.bigcard{overflow-wrap:anywhere}
+.panel h2,.panel h3{font-size:clamp(1.4rem,5vw,2.15rem);line-height:1.12;letter-spacing:-.04em}
+.bigcard{isolation:isolate}
+.bigcard .say{font-size:clamp(1.5rem,5.8vw,2.6rem);line-height:1.22;text-wrap:pretty}
+.btn-row{gap:10px}
+.btn-row>.btn{min-height:48px}
+.score,.counter,.timer{font-variant-numeric:tabular-nums}
+.field input,.field select{min-height:48px;max-width:100%}
+@media(max-width:420px){.btn-row{flex-wrap:wrap}.btn-row>.btn{flex:1 1 135px}.panel{padding:18px}}
