@@ -106,4 +106,4 @@ main p.small,main .muted.small,.hero p.small{font-size:var(--fs-sm)}
 .pair-hero-visual figcaption{font-size:18px}
 .pair-hero-copy>p,main .panel p,.game .desc,input:not([type=checkbox]){font-size:var(--fs-md)}
 main .panel p.small,main .panel .muted.small,.game .desc{font-size:var(--fs-sm)}
-@media(max-width:420px){.hero-actions{align-items:stretch}.hero-actions>.btn.primary,.hero-actions>.btn.adult-entry{width:100%;justify-content:center;white-space:nowrap;padding-inline:8px;gap:6px}}
+@media(max-width:420px){.hero-actions{align-items:stretch}.hero-actions>.btn.primary,.hero-actions>.btn.adult-entry{width:100%;max-width:100%;justify-content:center;text-align:center;white-space:normal;overflow-wrap:anywhere;padding-inline:12px;gap:6px}}
