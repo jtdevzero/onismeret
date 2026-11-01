@@ -30,7 +30,13 @@ let count=0;function ok(value,message){assert(value,message);count++;console.log
  else {for(let i=0;i<6;i++){if(key==='truth')await page.locator(`[data-a="draw"][data-v="${i%2?'dare':'truth'}"]`).click();await page.locator('[data-a="next"]').click();}ok(await page.evaluate(()=>run.phase==='result'&&run.count===6),key+' adult pack completes with correct deck');}
  await page.locator('[data-a="restart"]').click();ok(await page.evaluate(pack=>run.packId===pack&&run.deck.length===(run.key==='match'?4:6),id),key+' restart preserves pack and length');}
  await page.evaluate(()=>{run=null;adult=false;Object.keys(packChoice).forEach(k=>delete packChoice[k]);Object.keys(roundChoice).forEach(k=>delete roundChoice[k]);go('home');});
- await page.evaluate(()=>go('home'));await page.getByRole('button',{name:'Új flörtös és 18+ csomagok',exact:true}).click();ok(await page.locator('.game').count()===4,'adult filter includes adult packs without locking their base game');await page.locator('[data-a="filter"][data-v="all"]').click();
+ await page.evaluate(()=>go('home'));const heroH=await page.locator('.hero-actions .btn.primary').evaluate(e=>e.getBoundingClientRect().height);ok(heroH>=44&&heroH<=60,`${width}px: hero button has a normal height (${heroH})`);
+ const entry=await page.locator('.adult-entry').boundingBox();ok(entry.height>=44&&entry.width>=44,`${width}px: 18+ entry is a real touch target`);
+ await page.getByRole('button',{name:'18+ játékok és mocskos csomagok',exact:true}).click();ok(await page.locator('.game').count()===4,'adult filter includes adult packs without locking their base game');
+ ok(await page.locator('.adult-banner').isVisible()&&(await page.locator('.game[href="#truth"]').innerText()).includes('Mocskos'),'adult filter names the spicy packs');
+ await page.locator('.game[href="#truth"]').click();ok(await page.locator('#pack-select').inputValue()==='naughty','adult filter preselects the spicy pack');
+ await page.evaluate(()=>{filter='all';Object.keys(packChoice).forEach(k=>delete packChoice[k]);go('truth');});ok(await page.locator('#pack-select').inputValue()==='base','other filters keep the base pack');
+ await page.evaluate(()=>{filter='adult';go('home');});await page.locator('[data-a="filter"][data-v="all"]').click();
  for(const key of ['memories','future','bucket']){await page.evaluate(k=>{run=null;go(k);},key);await page.selectOption('#round-length',key==='bucket'?'4':'6');await page.locator('form[data-a="start"] button').click();ok(await page.evaluate(()=>run.deck.length)===(key==='bucket'?4:6),key+' respects chosen short round');if(key!=='bucket'){for(let i=0;i<6;i++)await page.locator('[data-a="next"]').click();ok(await page.evaluate(()=>run.phase==='result'&&run.count===6),key+' completes six questions');}else{for(let p=0;p<2;p++){await page.locator('[data-a="open"]').click();for(let i=0;i<4;i++){await page.locator('[data-a="select"][data-v="0"]').click();await page.locator('[data-a="confirm"]').click();}}ok(await page.evaluate(()=>run.rows.length===4&&run.answers.every(a=>a.length===0)),'bucket reveals only shared ideas and erases answers');}}
  await page.evaluate(()=>{run=null;start('truth',true,24);A.draw('truth');for(let i=0;i<24;i++){A.next();if(run.phase==='talk')A.draw('truth');}render();});ok(await page.evaluate(()=>run.phase==='result'&&run.count===24),'long truth round has enough unique prompts');
  await page.evaluate(()=>{run=null;adult=false;});
@@ -51,6 +57,10 @@ let count=0;function ok(value,message){assert(value,message);count++;console.log
  await page.evaluate(()=>{A.clear();start('radar',false);});
  for(const choice of [0,1]){await page.locator('[data-a="open"]').click();for(let i=0;i<8;i++){await page.locator(`[data-a="select"][data-v="${choice}"]`).click();await page.locator('[data-a="confirm"]').click();}}
  ok(await page.evaluate(()=>run.rows.length===8&&run.rows.every(r=>!r.same)),'radar compares both completed private sets');
+ await page.evaluate(()=>{A.clear();start('radar',true,4,'fire');});
+ for(const choice of [[0,0,1,1],[0,1,1,-1]]){await page.locator('[data-a="open"]').click();for(const n of choice){await page.locator(`[data-a="select"][data-v="${n}"]`).click();await page.locator('[data-a="confirm"]').click();}}
+ ok(await page.evaluate(()=>run.rows.length===2&&run.rows.every(r=>r.shared&&!r.values)),'adult radar reveals only matching answers');
+ ok(await page.evaluate(()=>run.answers.every(a=>a.length===0))&&(await page.locator('#app').innerText()).includes('Mindketten:'),'adult radar erases individual answers and shows the shared choice');
  await page.evaluate(()=>{A.clear();start('quiz',false);});
  for(const values of [[0,1],[1,0]]){await page.locator('[data-a="open"]').click();for(let i=0;i<8;i++){for(const n of values){await page.locator(`[data-a="select"][data-v="${n}"]`).click();await page.locator('[data-a="confirm"]').click();}}}
  ok(await page.evaluate(()=>run.scores.every(n=>n===8)),'quiz scores own answers against partner predictions');

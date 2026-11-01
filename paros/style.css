@@ -43,3 +43,8 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #ffc7
 .counter,.score{font-variant-numeric:tabular-nums}
 input:not([type=checkbox]),select{min-height:48px;max-width:100%}
 @media(max-width:420px){.actions>*{flex:1 1 140px}.choices button{font-size:1rem}.game{min-width:0}}
+.hero-actions>.btn{flex:none}
+.hero-actions>.btn.primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px}
+.hero-actions>.btn.adult-entry{background:transparent;border:1px solid var(--rose);color:var(--text);min-height:48px;padding:12px 18px;font-size:15px;font-weight:650;text-align:left}
+.adult-banner{border-left:3px solid var(--rose);padding:12px 14px;background:var(--panel);border-radius:12px;margin:0}
+.hero-actions>.btn:not(.primary):not(.adult-entry){min-height:44px}

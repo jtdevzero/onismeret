@@ -32,22 +32,28 @@ jobs:
       - name: Tesztek (linkek, séma, pontozás, felület)
         run: npm test
       - name: Társasest játékok és offline mobilfelület
+        if: ${{ !cancelled() }}
         run: |
           npm run test:tarsas
           npm run test:tarsas:browser
           npm run test:hp
       - name: Társasest 2.0 célzott regressziós tesztek
+        if: ${{ !cancelled() }}
         run: node --test tarsas/tests/v2-smoke.test.cjs
       - name: Páros est mobilfelület és adatvédelem
+        if: ${{ !cancelled() }}
         run: npm run test:paros
       - name: Parliamo AI-szerver (worker) tesztjei
+        if: ${{ !cancelled() }}
         working-directory: parliamo/worker
         run: |
           npm ci
           npm test
       - name: Parliamo böngészős végpontteszt
+        if: ${{ !cancelled() }}
         run: node parliamo/tests/run.js
       - name: Parliamo tanulási útvonal és visszajelzés
+        if: ${{ !cancelled() }}
         run: |
           node parliamo/tests/guided-session.js
           node parliamo/tests/daily-async.js
