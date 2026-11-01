@@ -19,6 +19,19 @@ jobs:
         with:
           node-version: '22'
       - run: node --test tarsas/tests/v2-smoke.test.cjs
+      - run: npm install --no-save playwright@1.56.1
+      - run: npx playwright install --with-deps chromium
+      - name: Start preview server
+        run: python3 -m http.server 8765 --bind 127.0.0.1 > /tmp/party-server.log 2>&1 &
+      - name: Verify mobile game screens and dilemma voting
+        run: node tarsas/tests/mobile-smoke.cjs
+      - name: Save screenshots on any outcome
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-mobile-screenshots
+          path: test-artifacts/
+          if-no-files-found: ignore
       - run: |
           node --check tarsas/app.js
           node --check paros/app.js
