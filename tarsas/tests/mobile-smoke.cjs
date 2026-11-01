@@ -56,6 +56,11 @@ const path = require('node:path');
    if(await page.locator('#next').count()!==1)throw Error('Multiplayer result missing');
    await page.locator('#next').click();
    if(await page.locator('[data-vote="0"]').count()!==1)throw Error('Next round unavailable');
+   const skipBefore=await page.locator('#progress').innerText();
+   await page.locator('#skip').click();
+   const skipAfter=await page.locator('#progress').innerText();
+   if(skipBefore===skipAfter)throw Error('Skip did not advance dilemma');
+   if(await page.locator('[data-vote="0"]').count()!==1)throw Error('Vote controls missing after skip');
    console.log('PASS dilemma gameplay');
   }catch(e){failures.push('dilemma gameplay: '+e.message);console.error('FAIL dilemma gameplay',e.message);}
   finally{await page.close();}
