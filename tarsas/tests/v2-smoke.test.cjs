@@ -86,3 +86,23 @@ test('Átkozott döntések: egyéni mód csak a végén mutat eredményt', () =>
   assert.match(script, /idx>=decks\[cat\]\.length/);
   assert.match(script, /phase='solo-end'/);
 });
+
+
+test('a külön játékok offline navigációja és a csomag tartalma összhangban van', () => {
+ const sw = read('sw.js');
+ assert.match(sw, /'atkozott\/'/);
+ assert.match(sw, /childRoots = \[[^\]]*'atkozott\/'/);
+ for (const file of ['atkozott/index.html','homlok/index.html','activity18/index.html','harry-potter/index.html']) {
+   assert.ok(fs.existsSync(path.join(root,file)), file);
+ }
+});
+test('Páros est: mind a kilenc játékmód és az érzékeny válaszok memóriában tartása', () => {
+ const js=fs.readFileSync(path.resolve(root,'../paros/app.js'),'utf8');
+ assert.doesNotThrow(()=>new vm.Script(js));
+ const games=js.match(/const GAMES=\{([\s\S]*?)\n\};/);
+ assert.ok(games);
+ const keys=[...games[1].matchAll(/^\s*([a-z]+):\{/gm)].map(m=>m[1]);
+ assert.equal(keys.length,9);
+ assert.equal(new Set(keys).size,9);
+ assert.match(js,/válaszok kizárólag memóriában élnek/);
+});
