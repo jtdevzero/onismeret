@@ -76,6 +76,12 @@ const path = require('node:path');
     if(width.scroll>width.view+3)throw Error(key+': horizontal overflow');
     await page.screenshot({path:path.join('test-artifacts','paros_'+key+'.png'),fullPage:true});
    }
+   await page.goto('http://127.0.0.1:8765/paros/#home',{waitUntil:'domcontentloaded'});
+   const surprise=page.getByRole('button',{name:'Lepj meg egy játékkal'});
+   if(await surprise.count()!==1)throw Error('Surprise chooser button missing');
+   await surprise.click();
+   const selected=await page.evaluate(()=>location.hash.slice(1));
+   if(!['closer','radar','quiz','memories','future','bucket'].includes(selected))throw Error('Surprise chooser picked unavailable adult game: '+selected);
    console.log('PASS all nine couples game routes');
   }catch(e){failures.push('couples game routes: '+e.message);console.error('FAIL couples game routes',e.message);}
   finally{await page.close();}
