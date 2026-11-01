@@ -100,6 +100,25 @@ const path = require('node:path');
   }catch(e){failures.push('couples game routes: '+e.message);console.error('FAIL couples game routes',e.message);}
   finally{await page.close();}
  }
+ // End-to-end: a non-sensitive couples conversation starts and can advance.
+ {
+  const page=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
+  try {
+   await page.goto('http://127.0.0.1:8765/paros/#closer',{waitUntil:'networkidle'});
+   const form=page.locator('form[data-a="start"]');
+   if(await form.count()!==1)throw Error('Conversation start form missing');
+   await form.locator('button').last().click();
+   if(!page.url().endsWith('#play'))throw Error('Game did not start');
+   if(await page.locator('[data-a="next"]').count()!==1)throw Error('Conversation advance missing');
+   await page.locator('[data-a="next"]').click();
+   if(!page.url().endsWith('#play'))throw Error('Advancing left game unexpectedly');
+   await page.locator('[data-a="stop"]').click();
+   const ending=await page.locator('#app').innerText();
+   if(ending.length<40)throw Error('Conversation end is empty');
+   console.log('PASS couples conversation flow');
+  } catch(e){failures.push('couples conversation: '+e.message);console.error('FAIL couples conversation',e.message);}
+  finally{await page.close();}
+ }
  await browser.close();
  if(failures.length){console.error(failures.join('\n'));process.exitCode=1;}
 })().catch(e=>{console.error(e);process.exitCode=1});
