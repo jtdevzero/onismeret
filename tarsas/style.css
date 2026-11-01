@@ -316,3 +316,12 @@ button:focus-visible,a:focus-visible{outline:3px solid #dbff7a;outline-offset:3p
 .score,.counter,.timer{font-variant-numeric:tabular-nums}
 .field input,.field select{min-height:48px;max-width:100%}
 @media(max-width:420px){.btn-row{flex-wrap:wrap}.btn-row>.btn{flex:1 1 135px}.panel{padding:18px}}
+/* Egységes réteg (Társasest): legkisebb szöveg 12 px, érintési felület legalább 44 px. */
+.eyebrow,p.eyebrow,span.eyebrow,.hero-note,.names,.crew-edit,.library-count,.card-category,.portal-footer-note span{font-size:12px;font-family:inherit}
+p.muted.small.center{font-size:14px}
+.hero-text-link,.browse-chip,.pair-launch{min-height:44px;display:inline-flex;align-items:center}
+input[type=checkbox],input[type=radio]{min-width:24px;min-height:24px}
+label:has(>input[type=checkbox]),label:has(>input[type=radio]){min-height:44px;display:flex;align-items:center;gap:10px}
+.hero .eyebrow,main .eyebrow,main p.eyebrow,main span.eyebrow,main .names{font-size:12px!important}
+main p.muted.small.center{font-size:14px!important}
+p.muted.small.center{font-size:14px!important}
