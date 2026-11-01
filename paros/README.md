@@ -29,7 +29,7 @@ A fotó forrása és licence: [images/README.md](images/README.md).
 
 # Bővítések, 2026 november
 
-13 játék és 867 kártya. A Szexről őszintén új, Tabuk nélkül nevű csomagja 63 nyers, provokatív kérdést ad (más emberekről szóló fantáziák, múlt, titkok, fétisek, megalázás, nyitott kapcsolat), csak kérdésként. A mocskos csomagok egyenként 72 elemesek; négy alkalmi csomag (Valentin-nap, Évforduló, Nyaralás, Első randi) a Közelebb hozzád játékhoz. Új játékok: Pajzán pörgető, Póz- és helyszínkocka, Szerepjáték (12 jelenet), Titkos kívánság.
+13 játék és 1388 kártya. A Szexről őszintén új, Tabuk nélkül nevű csomagja 120 nyers, provokatív kérdést ad (más emberekről szóló fantáziák, múlt, titkok, fétisek, megalázás, nyitott kapcsolat), csak kérdésként. A mocskos csomagok egyenként 100 elemesek, az alap- és flörtös csomagok 48 elemesek; négy alkalmi csomag (Valentin-nap, Évforduló, Nyaralás, Első randi) a Közelebb hozzád játékhoz. Új játékok: Pajzán pörgető, Póz- és helyszínkocka, Szerepjáték (12 jelenet), Titkos kívánság.
 
 Biztonság: titkos határlista a címkézett 18+ csomagok előtt, Állj gomb, Esc azonnali elrejtés. Játékélmény: fokozatos hevülés, időzítő, rákérdező kártyák, jokerek, pontozós mód, évforduló mód, hangulatfény, „Ma este…” varázsló, az este íve, napi kérdés.
 
