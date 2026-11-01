@@ -55,3 +55,34 @@ test('ranglista tartalmazza a holtverseny logikáját', () => {
   assert.match(enhancement, /other > points/);
   assert.match(enhancement, /leaderboardMarkup\(rows\)/);
 });
+
+test('a prémium stílus minden céloldalon és a cache-ben szerepel', () => {
+  const root = require('node:path').resolve(__dirname, '../..');
+  const fs = require('node:fs');
+  const readRoot = p => fs.readFileSync(require('node:path').join(root,p),'utf8');
+  const premium = readRoot('assets/party-premium.css');
+  assert.match(premium, /premium-focus/);
+  for (const page of ['tarsas/index.html','paros/index.html','tarsas/harry-potter/index.html','tarsas/atkozott/index.html']) {
+    assert.match(readRoot(page), /party-premium\.css\?v=1/, page);
+  }
+  for (const rootName of ['tarsas','paros']) {
+    const html = readRoot(rootName+'/index.html');
+    const worker = readRoot(rootName+'/sw.js');
+    const version = html.match(/(?:style|styles)\.css\?v=(\d+)/)?.[1];
+    assert.ok(version, rootName+' asset version');
+    assert.ok(worker.includes(rootName+'-v'+version), rootName+' cache version');
+    assert.match(worker, /party-premium\.css\?v=1/);
+  }
+});
+test('Átkozott döntések: egyéni mód csak a végén mutat eredményt', () => {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const page = fs.readFileSync(path.resolve(__dirname,'../atkozott/index.html'),'utf8');
+  const script = page.match(/<script>([\s\S]*?)<\/script>/)?.[1];
+  assert.ok(script);
+  assert.doesNotThrow(() => new vm.Script(script));
+  assert.match(script, /players===1/);
+  assert.match(script, /soloVotes\[choice\]\+\+/);
+  assert.match(script, /idx>=decks\[cat\]\.length/);
+  assert.match(script, /phase='solo-end'/);
+});
