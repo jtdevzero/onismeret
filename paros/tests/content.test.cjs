@@ -7,6 +7,7 @@ const text=c=>typeof c==='string'?c:Array.isArray(c)?c[0]:c.t;
 const packs=[...Object.entries(D).map(([k,v])=>({id:'alap:'+k,cards:v})),
  ...Object.values(P).flat().map(p=>({id:p.id,cards:[...(p.items||[]),...(p.truth||[]),...(p.dare||[])]})),
  {id:'szerepjatek',cards:ctx.window.PAIR_SCENES.flatMap(c=>[c.t,...c.detail])}];
+packs.push({id:'jackpot',cards:require('../jackpot-core.js').categories.flatMap(c=>c.tasks)});
 const BANNED=[/fojt/i,/légszomj|levegőt (?:se|ne)/i,/nyilvános|parkban szex|autóban szex/i,/\bvér/i,/kiskorú|iskolá|tanár|\bdiák/i,/kényszer|erőszak/i,/részeg/i,/\balvó\b|alszik.*(?:dug|szex)/i,/vérfertőz|testvér|mostoha/i];
 const tri=s=>{s=s.toLowerCase();const t=new Set();for(let i=0;i<s.length-2;i++)t.add(s.slice(i,i+3));return t;};
 const sim=(a,b)=>{const x=tri(a),y=tri(b);let n=0;x.forEach(v=>{if(y.has(v))n++;});return 2*n/(x.size+y.size);};

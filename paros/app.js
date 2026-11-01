@@ -101,6 +101,11 @@ const GAMES = {
     time: '10–30 perc',
     adult: true
   },
+  jackpot: {
+    name: 'Vágyjackpot', symbol: '⚄',
+    desc: 'Három neonfényes kocka, közös feladatok és a saját jackpototok. Egy telefon, két játékos.',
+    type: 'jackpot', time: '10–30 perc', adult: true
+  },
   wish: {
     name: 'Titkos kívánság',
     symbol: '✧',
@@ -208,6 +213,8 @@ const packChoice = {},
   roundChoice = {};
 function hide() {
   stopTimer();
+  jackpotCleanup();
+  if (run?.jp?.rolling) jackpotSettle(run);
   if (!run) return;
   masked = true;
   if (['answer', 'guess', 'wish'].includes(run.phase)) {
@@ -277,13 +284,16 @@ const SPICY = new Set(['fire', 'naughty', 'wishlist', 'frank', 'taboo']);
 const adultPacks = key => (PACKS[key] || []).filter(p => p.adult);
 const packLabel = p => p.name.split(' · ')[0];
 const cardCount = () =>
+  window.PAIR_JACKPOT.categories.reduce((sum, c) => sum + c.tasks.length, 0) +
   Object.values(DATA).reduce((sum, cards) => sum + cards.length, 0) +
   Object.values(PACKS)
     .flat()
     .reduce((sum, p) => sum + (p.items?.length || 0) + (p.truth?.length || 0) + (p.dare?.length || 0), 0);
 
 const lengths = key =>
-  key === 'wish'
+  key === 'jackpot'
+    ? [6, 12, 24]
+    : key === 'wish'
     ? [1]
     : key === 'scene'
       ? [1, 3, 6]
@@ -291,7 +301,7 @@ const lengths = key =>
         ? [6, 12, 24]
         : [4, 8, 12];
 const defaultLength = key =>
-  key === 'scene' || key === 'wish' ? 1 : ['talk', 'truth'].includes(GAMES[key].type) ? 12 : 8;
+  key === 'jackpot' ? 12 : key === 'scene' || key === 'wish' ? 1 : ['talk', 'truth'].includes(GAMES[key].type) ? 12 : 8;
 const visibleGame = (g, key) =>
   filter === 'all' ||
   (filter === 'adult' && (g.adult || (PACKS[key] || []).some(p => p.adult))) ||
@@ -489,6 +499,7 @@ function settings() {
     )}</select></label><button class="btn primary">Hozzáadás</button></form>${custom.cards.length ? `<ul class="custom-list">${custom.cards.map((c, i) => `<li><span>${esc(c.t)} <span class="tag">${KIND[c.kind]}</span></span>${btn('customDel', 'Törlés', String(i))}</li>`).join('')}</ul>${btn('customClear', 'Mind törlése')}` : ''}<label class="check"><input type="checkbox" data-custom-remember ${custom.remember ? 'checked' : ''}><span>Megjegyzés ezen az eszközön. Bárki láthatja, aki ezt a telefont használja.</span></label></section><section class="panel"><h3>Közös lista és jelölt kártyák</h3><p class="muted small">A közös lista a kölcsönös igenekből áll; a „Soha többé” kártyák nem jönnek elő újra. ${marks.fav.length} kedvenc, ${marks.never.length} kizárt kártya.</p><label class="check"><input type="checkbox" data-store="together" ${together.remember ? 'checked' : ''}><span>A közös lista maradjon meg ezen az eszközön.</span></label><label class="check"><input type="checkbox" data-store="marks" ${marks.remember ? 'checked' : ''}><span>A kedvencek és a kizárt kártyák maradjanak meg ezen az eszközön.</span></label>${marks.fav.length ? `<ul class="custom-list">${marks.fav.map(t => `<li><span>♥ ${esc(t)}</span></li>`).join('')}</ul>` : ''}${marks.never.length || marks.fav.length ? btn('marksClear', 'Jelölések törlése') : ''}</section>${matchMedia('(display-mode: standalone)').matches ? '' : `<section class="panel"><h3>Tedd a kezdőképernyőre</h3><p class="muted small">Így egy koppintással indul, és internet nélkül is működik.</p>${installPrompt ? btn('install', 'Telepítés erre az eszközre', '', true) : ''}<ul class="small"><li><b>iPhone, iPad (Safari):</b> Megosztás gomb → „Főképernyőhöz adás”.</li><li><b>Android (Chrome):</b> jobb felső menü → „Alkalmazás telepítése” vagy „Hozzáadás a kezdőképernyőhöz”.</li><li><b>Számítógép (Chrome, Edge):</b> a címsor végén a telepítés ikon.</li></ul></section>`}${run ? btn('resume', 'Vissza a körhöz', '', true) : ''}`;
 }
 function setup(key) {
+  if (key === 'jackpot') return jackpotSetup();
   const g = GAMES[key],
     spicy = filter === 'adult' ? packsFor(key).find(p => SPICY.has(p.id)) : null,
     pack = packFor(key, packChoice[key] || g.defaultPack || spicy?.id || 'base'),
@@ -516,6 +527,7 @@ function start(key, consent, length, packId = 'base', opts = {}) {
   const g = GAMES[key],
     pack = packFor(key, packId);
   if (!Object.hasOwn(GAMES, key) || !pack || ((g.adult || pack.adult) && !adult && !consent)) return;
+  if (key === 'jackpot' && !window.PAIR_JACKPOT.validOptions(opts.jp)) { notice = 'Adjátok meg a közös jackpotot, és ellenőrizzétek a saját feladatokat.'; return; }
   if (run && !confirm('Új kör indításakor a mostani válaszok végleg törlődnek. Mehet?')) return;
   if (g.adult || pack.adult) adult = true;
   const type = g.type;
@@ -555,7 +567,7 @@ function start(key, consent, length, packId = 'base', opts = {}) {
     return;
   }
   const tagged =
-    g.spin || g.dice || [...(pack.items || []), ...(pack.truth || []), ...(pack.dare || [])].some(c => c.tags.length);
+    key === 'jackpot' || g.spin || g.dice || [...(pack.items || []), ...(pack.truth || []), ...(pack.dare || [])].some(c => c.tags.length);
   if (run.adult && tagged && arc?.excluded) {
     run.excluded = new Set(arc.excluded);
     buildDeck(run, pack);
@@ -578,6 +590,12 @@ const seenFor = s => {
 };
 const freshFirst = (cards, used) => shuffle(cards).sort((a, b) => used.has(a.t) - used.has(b.t));
 function buildDeck(s, pack) {
+  if (s.key === 'jackpot') {
+    s.jp = window.PAIR_JACKPOT.create(s.opts.jp, s.excluded || new Set());
+    s.excluded = s.draft = s.pack = null;
+    s.phase = 'talk';
+    return;
+  }
   const used = seenFor(s);
   const ok = c => !c.tags.some(t => s.excluded?.has(t)) && !marks.never.includes(c.t),
     only = s.opts.custom === 'only';
@@ -698,8 +716,12 @@ const LIMITS = [
 function limitsCover(s) {
   return `<div class="panel"><span class="eyebrow">Határok · titokban</span><h2>Most ${esc(s.names[s.limitPlayer])} következik</h2><p class="muted">A másik játékos forduljon el. Kijelölheted, mi nem fér most bele. A másik nem látja, mit választottál.</p></div><div class="card"><span class="privacy" aria-hidden="true">◒</span><p class="question">Nálad van a telefon?</p></div>${btn('openLimits', 'Igen, mutasd', '', true)}${btn('clear', 'Kör törlése')}`;
 }
+function limitsFor(key) {
+  return key === 'jackpot' ? [...LIMITS, ['erintes', 'Érintés, csók, ölelés'], ['pozicio', 'Testhelyzet']] : LIMITS;
+}
 function limits(s) {
-  return `<div class="counter">${esc(s.names[s.limitPlayer])} · Határaid</div><div class="panel"><h2>Mi az, ami most nem fér bele?</h2><p class="muted">Ezek a kártyák nem kerülnek a pakliba. Senki nem látja, ki mit jelölt; legfeljebb annyi derül ki, ha rövidebb lett a kör.</p></div><div class="choices">${LIMITS.map(([id, label]) => `<button class="btn${s.draft.has(id) ? ' selected' : ''}" aria-pressed="${s.draft.has(id)}" data-a="limit" data-v="${id}">${esc(label)}</button>`).join('')}</div>${btn('limitsDone', s.draft.size ? 'Kész, jöhet a másik' : 'Mindent vállalok', '', true)}`;
+  const limits = limitsFor(s.key);
+  return `<div class="counter">${esc(s.names[s.limitPlayer])} · Határaid</div><div class="panel"><h2>Mi az, ami most nem fér bele?</h2><p class="muted">Ezek a kártyák nem kerülnek a pakliba. Senki nem látja, ki mit jelölt; legfeljebb annyi derül ki, ha rövidebb lett a kör.</p></div><div class="choices">${limits.map(([id, label]) => `<button class="btn${s.draft.has(id) ? ' selected' : ''}" aria-pressed="${s.draft.has(id)}" data-a="limit" data-v="${id}">${esc(label)}</button>`).join('')}</div>${btn('limitsDone', s.draft.size ? 'Kész, jöhet a másik' : 'Mindent vállalok', '', true)}`;
 }
 const WISH_CATS = [
   'Romantikus este',
@@ -732,6 +754,7 @@ function playView() {
     return `<div class="panel"><h2>A korábbi kör már nincs meg</h2><p>A személyes válaszokat nem mentjük. Kezdjetek új játékot!</p></div>${back()}`;
   if (masked)
     return `<div class="card"><span class="privacy" aria-hidden="true">🔒</span><h2>A kör elrejtve</h2><p>A megfelelő játékosnál van a telefon?</p></div>${btn('unmask', 'Nálam a telefon, folytatom', '', true)}${btn('clear', 'Kör törlése')}`;
+  if (s.key === 'jackpot' && s.phase === 'result') return jackpotResult(s);
   if (s.phase === 'result') return result(s);
   if (s.phase === 'limits-cover') return limitsCover(s);
   if (s.phase === 'wish') return wishView(s);
@@ -741,6 +764,7 @@ function playView() {
   if (s.phase === 'halt')
     return `<div class="card"><h2>Megálltunk.</h2><p>Semmit nem kell megmagyarázni. Igyatok egy pohár vizet, öleljétek meg egymást, ha jólesik.</p></div>${btn('haltResume', 'Folytatjuk')}${btn('haltGentle', 'Szelídebb csomaggal tovább', '', true)}${btn('haltEnd', 'Vége a körnek')}`;
   if (s.phase === 'cover') return cover(s);
+  if (s.key === 'jackpot' && s.phase === 'talk') return jackpotPlay(s);
   if (s.phase === 'talk') {
     const q = s.type === 'truth' ? s.prompt : s.deck[s.pos];
     return `<div class="counter">${esc(GAMES[s.key].name)} · ${esc(s.names[s.pos % 2])} köre</div>${progress(s)}<div class="card"><span class="eyebrow">${s.type === 'truth' ? (s.kind === 'truth' ? 'Igazság' : s.kind === 'dare' ? 'Kihívás' : 'Te választasz') : GAMES[s.key].spin ? 'Pörgetés' : GAMES[s.key].dice ? 'Dobás' : 'Beszélgetőkártya'}</span><div class="question">${q ? esc(q.t) : 'Igazságot mondasz vagy kihívást választasz?'}</div>${photoNote(q)}</div>${q?.detail ? `<ul class="scene-detail">${q.detail.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}${s.follow ? `<p class="follow">↳ ${esc(s.follow)}</p>` : ''}${timerView(q)}${q ? cardTools(s, q) : ''}${s.type === 'truth' && !q ? `<div class="actions">${btn('draw', 'Igazság', 'truth', true)}${btn('draw', 'Kihívás', 'dare')}</div>` : btn('next', s.type === 'truth' ? 'Kész, következő kör' : GAMES[s.key].spin ? 'Kész, jöhet a következő pörgetés' : GAMES[s.key].dice ? 'Kész, dobunk újra' : 'Beszélgettünk, jöhet a következő', '', true)}${pass()}`;
@@ -903,12 +927,103 @@ function keepFocus(a, v) {
   target.focus({ preventScroll: true });
 }
 function render() {
+  jackpotCleanup();
   document.body.dataset.view = view;
   document.body.classList.toggle('mood-light', moodLight && view === 'play' && !!run && !masked);
   if (Object.hasOwn(GAMES, view)) app.innerHTML = setup(view);
   else app.innerHTML = view === 'settings' ? settings() : view === 'play' ? play() : home();
   if (notice) app.innerHTML = `<p class="notice" role="status">${esc(notice)}</p>` + app.innerHTML;
+  jackpotMount();
 }
+// Vágyjackpot keeps all custom text and progress in this run only.
+let jackpotDisposer = null, jackpotTimeout = null;
+function jackpotCleanup() {
+  clearTimeout(jackpotTimeout);
+  jackpotTimeout = null;
+  jackpotDisposer?.();
+  jackpotDisposer = null;
+}
+function jackpotSetup() {
+  const J = window.PAIR_JACKPOT;
+  return `${back()}<section class="hero jackpot-intro"><span class="eyebrow">18+ · Egy telefon · Két játékos</span><h1>Vágyjackpot</h1><p>Három kocka. Egy közös este. A főnyereményt ti találjátok ki.</p><div class="jackpot-preview" aria-hidden="true">♡ <span>✧</span> ◇</div></section><section class="panel"><h2>A szerencse közelebb hoz</h2><p>Minden dobás egy feladat. Két egyforma jel két feladat közötti választást ad, három egyforma a közös jackpotot nyitja. Minden kocka hat jelből, egyenlő eséllyel dob: a jackpot esélye dobásonként 1/36.</p><p class="muted">Felváltva dobtok. Bármit passzolhattok, büntetés nélkül. Az ötletekhez mindig új, közös igen kell. Nincs pénztét.</p></section><form class="panel jackpot-form" data-a="start" data-v="jackpot"><h2>Mi legyen a főnyeremény?</h2><label for="jackpot-reward">A közös jackpototok<input id="jackpot-reward" name="reward" required maxlength="140" autocomplete="off" placeholder="Például: egy közösen megtervezett randi"></label><label for="round-length">Körhossz<select id="round-length" name="rounds">${[6,12,24].map(n=>`<option value="${n}" ${n===12?'selected':''}>${n} dobás</option>`).join('')}</select></label><details><summary>Saját feladatok hozzáadása</summary><p class="muted small">Soronként egy feladat, kategóriánként legfeljebb tíz. Egy feladat legfeljebb 110 karakter. Csak erre a körre adjuk a beépített ötletekhez.</p>${J.categories.map(c=>`<label for="jackpot-${c.id}">${esc(c.name)}<textarea id="jackpot-${c.id}" name="custom-${c.id}" maxlength="1110" rows="2" autocomplete="off"></textarea></label>`).join('')}</details><fieldset><legend>A jackpot és a saját feladatok határcímkéi</legend><p class="muted small">Jelöljetek minden érintett témát. Ha bármelyiket kizárjátok a következő titkos határlistán, ezek az ötletek kimaradnak. A beépített érintéses feladatokat külön is szűrjük.</p>${limitsFor('jackpot').map(([id,label])=>`<label class="check"><input type="checkbox" name="jp-tag" value="${id}"><span>${esc(label)}</span></label>`).join('')}</fieldset>${!adult?'<label class="check"><input type="checkbox" name="adult" required><span>Mindketten elmúltunk 18 évesek, és szeretnénk megnyitni ezt a játékot.</span></label>':''}<p class="muted small">A saját szövegek és az eredmények csak memóriában élnek; újratöltéskor törlődnek.</p><button class="btn primary">Jöhet a közös este</button></form>`;
+}
+function jackpotOptions(f) {
+  return { reward: f.elements.reward.value.trim(),
+    tags: [...f.querySelectorAll('[name="jp-tag"]:checked')].map(x=>x.value),
+    custom: window.PAIR_JACKPOT.categories.flatMap(c=>f.elements['custom-'+c.id].value.split('\n').map(t=>t.trim()).filter(Boolean).map(t=>({category:c.id,t}))) };
+}
+function jackpotValidateForm(f) {
+  if (!f.elements.reward.value.trim()) {
+    f.elements.reward.setCustomValidity('Adjátok meg a közös jackpotot.');
+    f.elements.reward.reportValidity(); return false;
+  }
+  for (const c of window.PAIR_JACKPOT.categories) {
+    const field=f.elements['custom-'+c.id], lines=field.value.split('\n').map(t=>t.trim()).filter(Boolean);
+    if (lines.length>10 || lines.some(t=>t.length>110)) {
+      field.setCustomValidity('Legfeljebb tíz feladatot adj meg, soronként legfeljebb 110 karakterrel.');
+      field.reportValidity(); return false;
+    }
+  }
+  return true;
+}
+document.addEventListener('input',e=>{
+  if(e.target.closest('.jackpot-form') && typeof e.target.setCustomValidity === 'function') e.target.setCustomValidity('');
+});
+function jackpotPlay(s) {
+  const j = s.jp, r = j.result, J = window.PAIR_JACKPOT;
+  if (j.blocked) return `<section class="panel"><h2>Módosítsátok a játékbeállításokat</h2><p>A közös határok miatt egy kategória kiürült, vagy a jackpot kimaradt. A dobás előtt válasszatok másik jutalmat, illetve feladatokat.</p>${btn('jackpotEdit','Vissza a beállításokhoz','',true)}</section>`;
+  const labels = r ? r.faces.map(i=>J.categories[i].name).join(' · ') : 'Várnak a kockák';
+  return `<section class="jackpot-machine${r?.kind==='jackpot'&&!j.rolling?' is-jackpot':''}" aria-label="Vágyjackpot"><div class="jackpot-topline"><span class="eyebrow">Vágyjackpot</span><span>${s.pos+1} / ${s.length}</span></div><h2>${esc(s.names[s.pos%2])} köre</h2><div class="jackpot-stage" aria-hidden="true"><div class="jackpot-symbols">${(r?r.faces:[0,2,5]).map(i=>`<span>${J.categories[i].symbol}</span>`).join('')}</div><div class="jackpot-canvas"></div></div><p class="jackpot-labels">${j.rolling?'Pörög a szerencse…':esc(labels)}</p><div class="jackpot-outcome" role="status" aria-live="polite">${j.rolling?'<h3>Mindjárt megállnak a kockák</h3>':r?`<span class="eyebrow">${r.kind==='jackpot'?'Jackpot · A közös főnyeremény':r.kind==='pair'?'Dupla jel · Te választasz':'A dobás ajándéka'}</span>${r.chosen!==null?`<p class="question">${esc(r.tasks[r.chosen])}</p>`:`<h3>Melyikhez van kedvetek?</h3><div class="jackpot-choices">${r.tasks.map((t,i)=>btn('jackpotChoose',esc(t),String(i))).join('')}</div>`}`:'<h3>Egy dobásnyi kíváncsiság</h3><p>Minden jel egy közös lehetőség.</p>'}</div>${!r?btn('jackpotRoll','Dobjunk!','',true):j.rolling?'<button class="btn primary" disabled>Dobás folyamatban…</button>':`<div class="actions">${r.chosen!==null?btn('jackpotNext','Kész, következő játékos','',true):''}${btn('jackpotPass','Passz, következő játékos')}</div>`}<p class="small muted">A nyeremény is csak lehetőség. Bármikor mondhattok nemet.</p></section>${btn('jackpotEnd','Lezárjuk az estét')}`;
+}
+function jackpotResult(s) {
+  return `<section class="hero"><span class="eyebrow">Vágyjackpot · Közös este</span><h1>Az együtt töltött idő a nyeremény.</h1><p>${s.jp.rolls} dobás · ${s.count} elfogadott feladat · ${s.skipped} passz · ${s.jp.jackpots} jackpot</p><p class="muted">A feladatokat és a saját szövegeket a kör törlésével elengedjük.</p></section>${btn('restart','Új kör ugyanezekkel a beállításokkal','',true)}${btn('clear','Kör törlése és vissza')}`;
+}
+function jackpotSettle(s) {
+  if (!s.jp?.rolling) return;
+  s.jp.rolling = false;
+  if (s.jp.result.kind === 'jackpot') s.jp.jackpots++;
+}
+function jackpotMount() {
+  if (view!=='play'||masked||run?.key!=='jackpot'||run.phase!=='talk'||run.jp.blocked) return;
+  const s=run, j=s.jp, stage=app.querySelector('.jackpot-stage');
+  if (!stage) return;
+  jackpotDisposer=window.PAIR_JACKPOT_3D.mount(stage,j.result?.faces||[0,2,5],j.rolling,j.rollAt);
+  if(j.rolling) jackpotTimeout=setTimeout(()=>{
+    if(run!==s||masked||s.phase!=='talk') return;
+    jackpotSettle(s); render();
+  },Math.max(0,(matchMedia('(prefers-reduced-motion: reduce)').matches?100:1500)-(Date.now()-j.rollAt)));
+}
+A.jackpotRoll=()=>{
+  const s=run;
+  if(!s||masked||s.key!=='jackpot'||s.phase!=='talk'||s.jp.blocked||s.jp.result) return;
+  s.jp.result=window.PAIR_JACKPOT.roll(s.jp);
+  s.jp.rolls++;
+  s.jp.rolling=true; s.jp.rollAt=Date.now();
+};
+A.jackpotChoose=v=>{
+  const s=run, r=s?.jp?.result, i=Number(v);
+  if(masked||s?.key!=='jackpot'||s.phase!=='talk'||s.jp.rolling||r?.kind!=='pair'||r.chosen!==null||!Number.isInteger(i)||i<0||i>=r.tasks.length) return;
+  r.chosen=i;
+};
+function jackpotNext(pass) {
+  const s=run, j=s?.jp;
+  if(masked||s?.key!=='jackpot'||s.phase!=='talk'||!j.result||j.rolling||(!pass&&j.result.chosen===null)) return;
+  if(pass) s.skipped++; else s.count++;
+  s.pos++; j.result=null;
+  if(s.pos>=s.length) { s.phase='result'; keepAwake(false); }
+}
+A.jackpotNext=()=>jackpotNext(false);
+A.jackpotPass=()=>jackpotNext(true);
+A.jackpotEnd=()=>{
+  if(run?.key==='jackpot'&&!masked&&run.phase==='talk') {
+    jackpotSettle(run); run.phase='result'; keepAwake(false);
+  }
+};
+A.jackpotEdit=()=>{
+  if(run?.key!=='jackpot'||masked||!run.jp?.blocked) return;
+  run=null; go('jackpot');
+};
+
 A.names = f => {
   const first = f.elements.first.value.trim().slice(0, 24),
     second = f.elements.second.value.trim().slice(0, 24);
@@ -919,6 +1034,7 @@ A.names = f => {
 A.start = f => {
   if (arc && ARCS[arc.id].steps[arc.step][0] !== f.dataset.v) arc = null;
   return start(f.dataset.v, !!f.elements.adult?.checked, f.elements.rounds.value, f.elements.pack?.value || 'base', {
+    jp: f.dataset.v === 'jackpot' ? jackpotOptions(f) : undefined,
     escalate: !!f.elements.escalate?.checked,
     custom: f.elements.custom?.value || 'none',
     score: !!f.elements.score?.checked,
@@ -1112,7 +1228,7 @@ A.openLimits = () => {
 };
 A.limit = id => {
   const s = run;
-  if (!s || masked || s.phase !== 'limits' || !LIMITS.some(([x]) => x === id)) return;
+  if (!s || masked || s.phase !== 'limits' || !limitsFor(s.key).some(([x]) => x === id)) return;
   s.draft.has(id) ? s.draft.delete(id) : s.draft.add(id);
 };
 A.limitsDone = () => {
@@ -1132,6 +1248,7 @@ A.halt = () => {
   const s = run;
   if (!s || masked || !s.adult || !['talk', 'answer', 'guess'].includes(s.phase)) return;
   stopTimer();
+  if (s.jp?.rolling) jackpotSettle(s);
   s.haltedFrom = s.phase;
   s.phase = 'halt';
   s.selected = null;
@@ -1148,6 +1265,7 @@ A.haltGentle = () => {
   const key = run.key,
     length = run.length;
   run = null;
+  if (key === 'jackpot') { go('jackpot'); return; }
   start(key, adult, length, 'base');
 };
 A.haltEnd = () => {
@@ -1272,6 +1390,7 @@ document.addEventListener('change', e => {
 document.addEventListener('submit', e => {
   if (!e.target.dataset.a) return;
   e.preventDefault();
+  if (e.target.dataset.a === 'start' && e.target.dataset.v === 'jackpot' && !jackpotValidateForm(e.target)) return;
   const action = A[e.target.dataset.a];
   if (action) {
     notice = '';
