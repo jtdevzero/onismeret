@@ -122,3 +122,11 @@ test('Eredménykártya és helyi játékosprofil elérhető',()=>{
  assert.match(js,/Eredménykártya PNG/);
  assert.match(js,/Játékosprofilok · az este/);
 });
+
+test('Játékosprofil: eredmény- és elsőhely-számláló',()=>{
+ const js=read('enhancements.js');
+ assert.match(js,/const allTimeProfiles =/);
+ assert.match(js,/row\.games\+\+/);
+ assert.match(js,/row\.wins\+\+/);
+ assert.match(js,/Játékosprofilok · az este/);
+});
