@@ -84,3 +84,26 @@ body.mood-light{animation:mood-light 14s ease-in-out infinite alternate}
 @keyframes mood-light{from{background-color:#1d1420}to{background-color:#2a1426}}
 @media(prefers-reduced-motion:reduce){body.mood-light{animation:none;background-color:#24141f}}
 textarea{width:100%;min-width:0;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--text);padding:13px;font:inherit;resize:vertical}
+/* Egységes réteg: betűcsaládok, méretskála (12 / 14 / 16 px alatt nincs szöveg) és legalább 44 px-es érintési felület. */
+:root{--font-body:"Avenir Next",Avenir,"Segoe UI",system-ui,sans-serif;--font-display:Georgia,"Times New Roman",serif;--font-mono:ui-monospace,"SF Mono",Menlo,monospace;--fs-xs:12px;--fs-sm:14px;--fs-md:16px;--tap:44px}
+body,button,input,select,textarea,.btn,.tag{font-family:var(--font-body)}
+.tag{font-size:var(--fs-xs);line-height:1.5}
+.eyebrow,.pair-hero-meta span,.game .meta,.photo-credit,.photo-credit a{font-size:var(--fs-xs)}
+.counter,.small,.settings-link,footer,footer a,.pair-filters .btn,.hero-actions>.btn:not(.primary):not(.adult-entry){font-size:var(--fs-sm)}
+.brand,.settings-link,.back,footer a,.pair-filters .btn{min-height:var(--tap);display:inline-flex;align-items:center}
+.settings-link{padding:0 14px}
+.back{padding-right:8px}
+.pair-filters .btn{padding:0 16px;justify-content:center}
+label.check{min-height:var(--tap);align-items:center}
+.btn{min-height:var(--tap)}
+.actions>.btn,.btn.primary,form>.btn,.choices>.btn{min-height:50px}
+.card-tools>.btn,.halt-row .btn{min-height:var(--tap)}
+.pair-hero .eyebrow,main .eyebrow{font-size:var(--fs-xs)}
+.games .game .symbol{font-family:var(--font-mono);font-size:var(--fs-xs)}
+.hero-actions>.btn.primary,.hero-actions>.btn.adult-entry,select,option{font-size:var(--fs-md)}
+.hero p,main p{font-size:var(--fs-md)}
+main p.small,main .muted.small,.hero p.small{font-size:var(--fs-sm)}
+.pair-hero-visual figcaption{font-size:18px}
+.pair-hero-copy>p,main .panel p,.game .desc,input:not([type=checkbox]){font-size:var(--fs-md)}
+main .panel p.small,main .panel .muted.small,.game .desc{font-size:var(--fs-sm)}
+@media(max-width:420px){.hero-actions{align-items:stretch}.hero-actions>.btn.primary,.hero-actions>.btn.adult-entry{width:100%;justify-content:center;white-space:nowrap;padding-inline:8px;gap:6px}}

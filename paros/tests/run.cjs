@@ -16,7 +16,7 @@ let count=0;function ok(value,message){assert(value,message);count++;console.log
  await page.goto(origin+'/paros/');await page.waitForSelector('.game');
  ok(await page.locator('.game').count()===13,`${width}px: thirteen separate pair games`);
  ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`${width}px: home fits viewport`);
- if(width===320)ok(await page.evaluate(()=>document.documentElement.scrollHeight<=3900&&document.querySelector('.game').getBoundingClientRect().height<=160),'320px: compact game cards keep the home page short');
+ if(width===320)ok(await page.evaluate(()=>document.documentElement.scrollHeight<=4200&&document.querySelector('.game').getBoundingClientRect().height<=160),'320px: compact game cards keep the home page short');
  ok(await page.evaluate(()=>{updateReady=true;render();const shown=!!document.querySelector('.update-banner');updateReady=false;render();return shown;}),`${width}px: an update banner can be shown on the home page`);
  for(const mode of ['closer','radar','truth','match','honest','quiz','memories','future','bucket','spin','scene','dice','wish']){await page.evaluate(m=>go(m),mode);ok(await page.locator('h1').innerText()!==''&&await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`${mode} setup and layout`);}
  ok(await page.evaluate(()=>cardCount()===804),'all 804 base and extra cards counted once');
