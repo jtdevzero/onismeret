@@ -206,11 +206,27 @@
       setTimeout(()=>URL.revokeObjectURL(url),10000);
     },'image/png');
   };
+  const allTimeProfiles = () => {
+    const profiles=new Map();
+    (Array.isArray(R.results)?R.results:[]).slice(-200).forEach(result=>{
+      if(!result||!GAMES[result.game]||!Array.isArray(result.entries))return;
+      const entries=result.entries.filter(x=>x&&typeof x.name==='string'&&Number.isFinite(Number(x.points)));
+      if(!entries.length)return;
+      const maximum=Math.max(...entries.map(x=>Number(x.points)));
+      entries.forEach(entry=>{
+        const name=entry.name.trim().slice(0,24);if(!name)return;
+        const row=profiles.get(name)||{games:0,wins:0};
+        row.games++;if(Number(entry.points)===maximum)row.wins++;
+        profiles.set(name,row);
+      });
+    });
+    return profiles;
+  };
   V.evening = () => {
     const s = eveningState(), rows = eveningScores(), next = s.queue.findIndex(x => !x.done);
     return `<div class="panel"><h2>Az este programja</h2><p class="muted small">Becsült játékidő: ${s.queue.reduce((minutes,x)=>minutes+(Number(GAMES[x.game].time)||10),0)} perc (szünetek nélkül).</p><p class="muted small">Válasszatok legfeljebb öt játékot. A kész köröket itt tudjátok kipipálni.</p>${s.queue.length ? s.queue.map((x, i) => `<div class="row"><span class="grow">${x.done ? '✓' : (i + 1) + '.'} ${esc(GAMES[x.game].name)}</span><button class="btn ghost" data-a="eveningToggle" data-v="${i}">${x.done ? 'Újra nyitom' : 'Kész'}</button>${!x.done ? `<button class="btn primary" data-a="nav" data-v="${x.game}">Indít</button>` : ''}</div>`).join('') : '<p>Még üres a program. Adj hozzá játékokat!</p>'}${next >= 0 ? `<button class="btn primary big" data-a="nav" data-v="${s.queue[next].game}">Következő: ${esc(GAMES[s.queue[next].game].name)}</button>` : (s.queue.length ? '<p>🎉 A program végére értetek!</p>' : '')}</div>
       ${s.queue.length < 5 ? `<form class="panel" data-a="eveningAdd"><label>Játék hozzáadása <select name="game">${Object.entries(GAMES).map(([key, x]) => `<option value="${key}">${esc(x.name)}</option>`).join('')}</select></label><button class="btn primary">Hozzáadom</button></form>` : ''}
-      <div class="panel"><h3>Játékosprofilok · az este</h3><p class="muted small">Csak a már mentett, nem érzékeny pontszámok alapján.</p>${(Array.isArray(S.players)?S.players:[]).map(player=>{const name=typeof player==='string'?player:player&&player.name;const score=eveningScores().find(row=>row[0]===name);return name?'<div class="row"><span class="grow">'+esc(name)+'</span><b>'+(score?score[1]:0)+' estpont</b></div>':'';}).join('')||'<p class="muted">Adj hozzá játékosokat a közös névsorhoz.</p>'}</div>
+      <div class="panel"><h3>Játékosprofilok · az este</h3><p class="muted small">Csak a már mentett, nem érzékeny pontszámok alapján.</p>${(Array.isArray(S.players)?S.players:[]).map(player=>{const name=typeof player==='string'?player:player&&player.name;const score=eveningScores().find(row=>row[0]===name);const stat=allTimeProfiles().get(name);return name?'<div class="row"><span class="grow">'+esc(name)+'</span><small>'+(stat?stat.games+' eredmény · '+stat.wins+' első hely · ':'')+(score?score[1]:0)+' estpont</small></div>':'';}).join('')||'<p class="muted">Adj hozzá játékosokat a közös névsorhoz.</p>'}</div>
       <div class="panel"><h3>Az este eredményei</h3><p class="muted small">A játék végén mentett eredményekből: első hely 3 estpont, második 2, minden további 1. Döntetlenben azonos helyezés jár. Az egyes játékok saját pontjai megmaradnak.</p>${rows.length ? leaderboardMarkup(rows) : '<p class="muted">Még nincs mentett eredmény. A pontozás nélküli játékokat is kipipálhatjátok a programban.</p>'}${eveningResults().length ? `<details><summary>Játékonként mentett pontok</summary>${eveningResults().map(result => `<div class="panel"><b>${esc(GAMES[result.game].name)}</b>${(Array.isArray(result.entries) ? result.entries : []).filter(entry => entry && typeof entry.name === 'string' && Number.isFinite(Number(entry.points))).map(entry => `<div class="row"><span class="grow">${esc(entry.name)}</span><span>${result.game === 'bomb' ? esc(Math.abs(Number(entry.points))) + ' robbanás' : esc(entry.points) + ' pont'}</span></div>`).join('')}</div>`).join('')}</details>` : ''}</div><button class="btn ghost" data-a="eveningCard">Eredménykártya PNG</button><button class="btn ghost" data-a="eveningShare">Estprogram megosztása</button><button class="btn ghost" data-a="eveningReset">Új est tervezése</button>`;
   };
   A.eveningAdd = f => { const s = eveningState(), key = f.elements.game.value; if (GAMES[key] && s.queue.length < 5) s.queue.push({ game: key, done: false }); };
