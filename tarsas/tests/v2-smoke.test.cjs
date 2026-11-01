@@ -106,3 +106,11 @@ test('Páros est: mind a kilenc játékmód és az érzékeny válaszok memóri�
  assert.equal(new Set(keys).size,9);
  assert.match(js,/válaszok kizárólag memóriában élnek/);
 });
+
+test('Esttervező: öt játék és megosztható ranglista', () => {
+ const script=read('enhancements.js');
+ assert.match(script,/s\.queue\.length < 5/);
+ assert.match(script,/A\.eveningShare =/);
+ assert.match(script,/Estprogram megosztása/);
+ assert.match(script,/navigator\.share/);
+});
