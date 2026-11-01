@@ -96,14 +96,14 @@ test('a külön játékok offline navigációja és a csomag tartalma összhangb
    assert.ok(fs.existsSync(path.join(root,file)), file);
  }
 });
-test('Páros est: mind a tizenegy játékmód és az érzékeny válaszok memóriában tartása', () => {
+test('Páros est: mind a tizenhárom játékmód és az érzékeny válaszok memóriában tartása', () => {
  const js=fs.readFileSync(path.resolve(root,'../paros/app.js'),'utf8');
  assert.doesNotThrow(()=>new vm.Script(js));
  const games=js.match(/const GAMES=\{([\s\S]*?)\n\};/);
  assert.ok(games);
  const keys=[...games[1].matchAll(/^\s*([a-z]+):\{/gm)].map(m=>m[1]);
- assert.equal(keys.length,11);
- assert.equal(new Set(keys).size,11);
+ assert.equal(keys.length,13);
+ assert.equal(new Set(keys).size,13);
  assert.match(js,/válaszok kizárólag memóriában élnek/);
 });
 

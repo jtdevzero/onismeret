@@ -26,3 +26,13 @@ Négy mocskos 18+ csomag nyílt, explicit kérdésekkel és kihívásokkal: Tűz
 Sötét, visszafogott felület egy valódi nyitófotóval. A kilenc játék kezdőlapja, beállításai, átadási nézetei, kérdéskártyái és eredményei egységes stílust használnak. A játéklogika és a személyes válaszok memóriában tartása változatlan.
 
 A fotó forrása és licence: [images/README.md](images/README.md).
+
+# Bővítések, 2026 november
+
+13 játék és 804 kártya. A mocskos csomagok egyenként 72 elemesek; négy alkalmi csomag (Valentin-nap, Évforduló, Nyaralás, Első randi) a Közelebb hozzád játékhoz. Új játékok: Pajzán pörgető, Póz- és helyszínkocka, Szerepjáték (12 jelenet), Titkos kívánság.
+
+Biztonság: titkos határlista a címkézett 18+ csomagok előtt, Állj gomb, Esc azonnali elrejtés. Játékélmény: fokozatos hevülés, időzítő, rákérdező kártyák, jokerek, pontozós mód, évforduló mód, hangulatfény, „Ma este…” varázsló, az este íve, napi kérdés.
+
+Minden, ami az eszközön megmaradhat (saját kártyák, közös lista, kedvencek és kizárt kártyák), csak külön kapcsolóval tárolódik, saját kulccsal: `paros.custom.v1`, `paros.together.v1`, `paros.marks.v1`.
+
+Tesztek: `npm run test:paros` = tartalom-ellenőrző (`tests/content.test.cjs`), böngészős tesztek (`tests/run.cjs`) és akadálymentességi ellenőrzés (`tests/a11y.cjs`, axe-core). A tartalmi szabályok: [TARTALOM.md](TARTALOM.md).
