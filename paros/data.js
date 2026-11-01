@@ -977,3 +977,544 @@ Izgat a fojtogatás gondolata? Tudod, hogy játékból is okozhat maradandó sé
 Mi vonz a fojtogatásban: a kiszolgáltatottság vagy az irányítás? Mi adná ezt meg veszély nélkül? #kotozes
 Hol a határ, ha a nyakadhoz érek szex közben: csók, simítás, és mi az, ami már nem fér bele? #fajdalom`)});
 })();
+
+/* Nagy bővítés (2026. november): alap- és flörtös csomagok 48-ra, mocskos csomagok 100-ra, Tabuk nélkül 120-ra. */
+(() => {
+ const L=window.PAIR_LINES,D=window.PAIR_DATA,P=window.PAIR_PACKS,pack=(game,id)=>P[game].find(p=>p.id===id);
+ D.closer.push(...L(`Melyik étel juttat eszedbe egy jó gyerekkori napot?
+Milyen apró dolog dobta fel a hetedet?
+Melyik évszakban érzed magad a legjobban, és miért?
+Milyen hobbit kezdenél el, ha holnap lenne rá időd?
+Mit csinálok, amitől úgy érzed, hogy figyelek rád? !2
+Mikor érezted legutóbb, hogy büszke vagyok rád? !2
+Milyen szokásomat hiányolnád, ha egy hétre elutaznék? !2
+Melyik közös beszélgetésünk változtatott valamin benned? !2
+Mitől félsz a legjobban egy kapcsolatban? !3
+Mi az, amit még sosem mertél kimondani nekem? !3
+Melyik régi sebed hat még ma is arra, ahogy szeretsz? !3
+Mit szeretnél, ha jobban értenék abból, ahogy gyerekként szerettek? !3`));
+ D.honest.push(...L(`Melyik érintésnél érzed magad a legbiztonságosabban?
+Mit jelent neked az, hogy egy együttlét jól sikerült?
+Milyen hangulat kell ahhoz, hogy kívánj?
+Mitől érzed magad vonzónak egy átlagos napon?
+Hogyan szeretnéd, hogy szóba hozzam, ha valami újat szeretnék?
+Milyen emlékünk segít, ha eltávolodtunk egymástól?
+Mi segít, hogy a stressz ne vegye el a kedvedet a közelségtől?
+Milyen bókot szeretsz hallani a testedről?
+Mit szeretnél, hogy tudjak arról, hogyan jön meg a kedved?
+Mennyi idő kell neked, hogy egy veszekedés után újra közel kerülj?
+Hogyan szeretnéd, ha egy elutasítást fogadnék?
+Melyik közös szokásunk tesz kívánatosabbá a szemedben?`));
+ D.truth.push(...L(`Mi volt az első gondolatod, amikor először megláttál?
+Melyik ruhámban tetszem neked a legjobban?
+Milyen titkot árulnál el most, ami megnevettet?
+Melyik közös fotónk a kedvenced, és miért?
+Mikor féltékenykedtél utoljára, akár csak egy kicsit?
+Melyik szokásomat utánoznád a legszívesebben?
+Mit gondoltál rólam, amit később át kellett értékelned?
+Milyen randiötletet tartogatsz még nekem?
+Mi volt a legviccesebb félreértésünk?
+Melyik dalt énekelnéd nekem, ha senki sem hallaná?
+Milyen becenevet adnál nekem titokban?
+Mikor nevettél rajtam úgy, hogy nem vettem észre?
+Mi az, amiben sokkal jobb vagy nálam?
+Mit csinálsz, amikor egyedül vagy, és senki sem lát?
+Melyik pillanatban akartál a legjobban megcsókolni?
+Milyen meglepetést terveztél, ami végül elmaradt?
+Mi a legkínosabb dolog, ami velem kapcsolatban történt veled?
+Melyik ismerősömmel jönnél ki a legjobban?
+Mit szeretnél, ha gyakrabban mondanék neked?
+Melyik tulajdonságomat örökítenéd tovább?`));
+ D.dare.push(...L(`Mondd el a másik három kedvenc tulajdonságát, gondolkodás nélkül.
+Utánozd a másik nevetését.
+Táncolj fél percig a kedvenc dalodra. ~30
+Rajzold le a másikat tíz másodperc alatt, csukott szemmel. ~10
+Írj egy rövid, vicces verset a nevéről.
+Meséld el, hogyan képzeled el a következő közös nyaralásunkat.
+Adj a másiknak egy hosszú, szoros ölelést.
+Mondj egy bókot egy olyan dologra, amit ma csinált.
+Válassz a telefonodról egy közös képet, és mesélj róla.
+Énekelj el egy szerelmes dalból két sort.
+Mutasd meg, hogyan néztél rá az első randin.
+Masszírozd meg a másik vállát egy percig. ~60
+Mondd el, mit főznél neki egy különleges estére.
+Találj ki egy titkos jelet, ami azt jelenti: „szeretlek”.
+Suttogd el a fülébe, mit szeretsz benne a legjobban.
+Csókold meg a kézfejét, mint egy régi filmben.
+Tervezz egy tökéletes vasárnapot öt lépésben.
+Mondj egy mondatot úgy, mintha egy romantikus film hőse lennél.
+Fogjátok meg egymás kezét, és fél percig ne szóljatok. ~30
+Adj a másiknak egy puszit oda, ahová ő kéri, az arcán.`));
+ D.radar.push(
+ ['Egy esős estén inkább…','Film és takaró','Társasjáték és tea'],
+ ['Születésnapra inkább…','Nagy buli','Csendes vacsora kettesben'],
+ ['Reggelente inkább…','Kávé ágyba','Közös reggeli az asztalnál'],
+ ['Az ideális randi hossza…','Pár óra','Egy egész nap'],
+ ['Kalandnak inkább…','Hegyi túra','Városnézés'],
+ ['Egy ajándékban inkább…','A meglepetés','A hasznosság'],
+ ['Veszekedés után inkább…','Rögtön kibeszélem','Előbb lehiggadok'],
+ ['Egy közös estén inkább…','Főzünk','Rendelünk'],
+ ['Nyáron inkább…','Strand','Erdő'],
+ ['Egy üzenetre inkább…','Azonnal válaszolok','Ráérősen válaszolok'],
+ ['A közös fotókon inkább…','Komolyak vagyunk','Bolondozunk'],
+ ['Hétköznap este inkább…','Sorozat','Séta'],
+ ['Indulás előtt inkább…','Tervezett utazás','Last minute út'],
+ ['Egy bulin inkább…','Táncolok','Beszélgetek'],
+ ['A meglepetéseket…','Imádom','Inkább tudom előre'],
+ ['Közös hobbiként inkább…','Sport','Alkotás'],
+ ['Egy kávézóban inkább…','Ablak mellett','Csendes sarokban'],
+ ['Háziállatnak inkább…','Kutya','Macska'],
+ ['Közlekedésben inkább…','Repülő','Vonat'],
+ ['A lakásban inkább…','Sok növény','Kevés tárgy'],
+ ['Pihenőnapon inkább…','Alszom egy nagyot','Korán kelek'],
+ ['Nassolni inkább…','Édes','Sós'],
+ ['Egy filmnél inkább…','Sírok','Nevetek'],
+ ['A hétvégén inkább…','Barátokkal','Csak kettesben']
+ );
+ D.match.push(...L(`Közös fürdő gyertyafénnyel
+Lassú tánc a konyhában
+Egymás kedvenc filmjének megnézése
+Szerelmes üzenetek elrejtése a lakásban
+Meglepetés-reggeli a kedvenc kávézóban
+Naplementés séta kézen fogva
+Egymás masszírozása illatos olajjal
+Közös fotóalbum összeállítása
+Hétvégi kiruccanás egy kis panzióba
+Egy este csak gyertyafénnyel, áram nélkül
+Egymásnak választott ruhában menni randira
+Közös főzés egy új receptből
+Csillagnézés pokrócon
+Szerepjátékos randi, mintha most ismerkednénk
+Egy nap telefon nélkül
+Szerelmes levél felolvasása egymásnak
+Csókverseny: ki bírja tovább
+Egymás hajának megmosása
+Pizsamás filmmaraton
+Ölelkezés egy egész film alatt`));
+ D.quiz.push(
+ ['Ébredés után inkább…','Rögtön felkelek','Még szundítok'],
+ ['Stresszes napon inkább…','Mozgok','Pihenek'],
+ ['Zenében inkább…','Régi slágerek','Új számok'],
+ ['Egy könyvnél inkább…','Regény','Ismeretterjesztő'],
+ ['Vásárláskor inkább…','Előre listát írok','Spontán veszek'],
+ ['Telefonon inkább…','Hívok','Írok'],
+ ['Egy ünnepen inkább…','Hagyományos menü','Valami új'],
+ ['Kirándulásnál inkább…','Rövid séta','Hosszú túra'],
+ ['Nyaraláskor inkább…','Pihenés','Program'],
+ ['Egy vitában inkább…','Gyorsan kibékülök','Kell egy kis idő'],
+ ['A kedvenc napszak…','Reggel','Este'],
+ ['Egy partin inkább…','A konyhában beszélgetek','A táncparketten vagyok'],
+ ['Ajándéknál inkább…','Kézzel készített','Boltban vett'],
+ ['Edzésben inkább…','Egyedül','Társasággal'],
+ ['Egy új helyen inkább…','Térképet nézek','Kérdezek'],
+ ['Moziban inkább…','Elöl ülök','Hátul ülök'],
+ ['Sorozatnál inkább…','Egyszerre végignézem','Részenként élvezem'],
+ ['Pénzzel inkább…','Spórolok','Elköltöm'],
+ ['Takarításnál inkább…','Mindent egyszerre','Apránként'],
+ ['Kávét inkább…','Feketén','Tejjel'],
+ ['Egy döntés után inkább…','Nem bánom','Sokat rágódom'],
+ ['Vendégségben inkább…','Én főzök','Én viszem a desszertet'],
+ ['Egy szabad estén inkább…','Olvasok','Játszom'],
+ ['Ünnepi fotón inkább…','Mosolygok','Grimaszolok']
+ );
+ D.memories.push(...L(`Melyik közös utazásunkon nevettünk a legtöbbet?
+Mi volt az első ajándék, amit tőlem kaptál?
+Melyik ünnepünk maradt meg a legszebben?
+Mikor éreztem úgy, hogy igazán számíthatok rád?
+Melyik közös kalandunk ment teljesen félre, mégis jó volt?
+Milyen időjárás jut eszedbe az első randinkról?
+Melyik közös reggelünkre emlékszel szívesen?
+Mikor láttál először sírni, és mit éreztél?
+Melyik közös barátunkkal töltött este volt a legjobb?
+Mi volt az első közös vásárlásunk?
+Melyik veszekedésünk után szerettelek még jobban?
+Milyen ruhában voltam, amikor először megláttál?
+Melyik közös sorozatunk kötött össze?
+Mikor kerültünk igazán közel egymáshoz, akár képletesen?
+Melyik meglepetésem volt a legemlékezetesebb?
+Milyen helyen csókolóztunk először?
+Melyik közös nyarunk volt a kedvenced?
+Mi volt az első közös szokásunk?
+Melyik közös fotónk mögött van a legviccesebb történet?
+Mikor hiányoztam neked a legjobban?
+Melyik receptünk lett igazi hagyomány?
+Milyen dalt énekeltünk együtt a legtöbbször?
+Mikor éreztük úgy, hogy csapat vagyunk?
+Melyik első alkalmunkra gondolsz ma is mosolyogva?`));
+ D.future.push(...L(`Hol szeretnél élni velem tíz év múlva?
+Milyen közös célért spórolnánk szívesen?
+Milyen hagyományt adnánk tovább másoknak?
+Milyen kalandot tervezzünk jövő nyárra?
+Hogyan szeretnénk ünnepelni a következő évfordulónkat?
+Milyen nyelvet tanulnánk meg együtt?
+Milyen lenne az álomkonyhánk?
+Milyen otthoni szokást vezetnénk be jövő hónaptól?
+Mi lenne az első dolog a közös bakancslistánkon?
+Hogyan osztanánk meg a házimunkát igazságosabban?
+Milyen sportot kezdenénk el közösen?
+Milyen ünnepet szerveznénk a barátainknak?
+Hogyan töltenénk egy szabad évet?
+Milyen állatot fogadnánk örökbe?
+Milyen hosszú utat tennénk meg autóval?
+Milyen közös szokással figyelnénk jobban egymásra?
+Mit tanulnánk meg, hogy könnyebb legyen a hétköznap?
+Hogyan néz ki egy tökéletes közös nyugdíjas napunk?
+Milyen helyet szeretnél újra meglátogatni velem?
+Milyen közös vállalkozást indítanánk szívesen?
+Hogyan fogjuk tudni, hogy jól vagyunk egy év múlva?
+Milyen bátor döntést hoznánk meg együtt?
+Melyik közös álmunkat kezdenénk el kicsiben már most?
+Mire szánnánk több időt, ha kevesebbet dolgoznánk?`));
+ D.bucket.push(...L(`Hajnali túra a hegyekben
+Közös főzőtanfolyam
+Lovaglás egy tanyán
+Kajakozás egy tavon
+Biciklitúra egy hétvégén
+Koncert, ahol egyikünk sem ismeri a zenekart
+Szabadulószoba
+Önkéntes nap egy állatmenhelyen
+Termálfürdő egy hideg napon
+Kemping sátorral
+Hőlégballonos repülés
+Egy éjszaka egy faházban
+Fazekas-workshop
+Tánciskola egy estére
+Bortúra egy borvidéken
+Kalandpark
+Hajókirándulás
+Moziban egy régi film
+Piknik egy várromnál
+Közös fotósorozat egy városban
+Hosszú vonatút ismeretlen célba
+Csillagvizsgáló meglátogatása
+Saját limonádé vagy szörp készítése
+Strandröplabda`));
+ pack('radar','chemistry').items.push(
+ ['Egy flörtös üzenetben inkább…','Emoji','Szavak'],
+ ['Egy randi végén inkább…','Hosszú csók','Ölelés és ígéret'],
+ ['Ha tetszem neked, inkább…','Megmondod','Megmutatod'],
+ ['Kezdeményezésnél inkább…','Én lépek','Várom, hogy lépj'],
+ ['Kettesben otthon inkább…','Közel ülünk','Szemben ülünk'],
+ ['Egy bókban inkább…','A külsőmet dicsérd','A gondolataimat dicsérd'],
+ ['A kémia nálad inkább…','Azonnal érezhető','Lassan épül'],
+ ['Egy táncnál inkább…','Lassú','Pörgős'],
+ ['A szemkontaktus…','Zavarba hoz','Felizgat'],
+ ['Egy csók előtt inkább…','Kérdezz','Lepj meg'],
+ ['Egy illatban inkább…','Friss','Fűszeres'],
+ ['A legszexibb rajtam inkább…','A mosolyom','A hangom'],
+ ['Csábításnál inkább…','Szóbeli játék','Érintések'],
+ ['Egy randin inkább…','Te tervezel','Én tervezek'],
+ ['Egy meglepetés csókra…','Imádom','Előbb szólj'],
+ ['Egy közös fürdésre…','Igen, gyertyával','Inkább később'],
+ ['Telefonon inkább…','Hosszú hívás','Gyors flört'],
+ ['A vonzalom jele nálad inkább…','Pirulás','Bátorság'],
+ ['Egy romantikus helyszín inkább…','Tetőterasz','Tengerpart'],
+ ['Egy hosszú nap után inkább…','Masszázs','Csók'],
+ ['Egy kacsintásra inkább…','Visszakacsintok','Elnevetem magam'],
+ ['Öltözködésben randira inkább…','Elegáns','Laza'],
+ ['A kezed fogásánál…','Összefonódó ujjak','Tenyér a tenyérben'],
+ ['A búcsúnál inkább…','Még egy csók','Egy kedves üzenet később']
+ );
+ const spark=pack('truth','spark');
+ spark.truth.push(...L(`Mikor akartál a legjobban megcsókolni, de nem tetted?
+Melyik testrészemet nézed meg először?
+Milyen ruhám vonz a legjobban?
+Mi volt a legszexibb dolog, amit valaha mondtam?
+Mikor gondoltál rám pajzánul napközben?
+Milyen randin csábítanál el a legszívesebben?
+Hol csókolnálak meg most a legszívesebben?
+Mi az a mozdulatom, amitől beindulsz?
+Milyen illatomat szereted a legjobban?
+Mikor voltál a legféltékenyebb rám?
+Milyen fantáziád van egy közös nyaralásról?
+Melyik közös éjszakánkra gondolsz a legszívesebben?
+Mit viselnék, ha te választhatnál ma estére?
+Mikor pirultál el miattam utoljára?
+Milyen üzenetet írnál nekem, amit csak éjjel olvashatok el?
+Mi az a bók, amitől elolvadsz?
+Mikor éreztél a legerősebb vonzalmat irántam?
+Milyen helyen szeretnél egyszer kettesben lenni velem?
+Melyik hangulatban vagyok a legvonzóbb?
+Mit csinálnál, ha most egy órára csak a tiéd lennék?
+Milyen játékos kihívást adnál nekem ma este?
+Melyik csókunk volt a legemlékezetesebb?
+Mit szeretsz a legjobban abban, ahogy hozzád érek?
+Mi az, amit még nem kértél tőlem, de szeretnéd?`));
+ spark.dare.push(...L(`Csókold meg a másik nyakát, lassan.
+Súgj a fülébe egy pajzán bókot.
+Simogasd a másik arcát fél percig, csukott szemmel. ~30
+Táncolj vele egy lassút zene nélkül.
+Ülj az ölébe a következő kör végéig.
+Fogd meg a kezét, és csókold végig az ujjait.
+Mondd el, mi az első, amit levennél róla.
+Adj neki egy csókot, ami legalább tíz másodpercig tart. ~10
+Nézz a szemébe, és mondd el, mennyire kívánod.
+Írj neki egy flörtös üzenetet, és küldd el most.
+Csókold meg ott, ahová ő mutat a nyakától felfelé.
+Masszírozd a vállát egy percig. ~60
+Mutasd meg, hogyan csábítanád el egy bárban.
+Harapj gyengéden az alsó ajkába.
+Simogasd a hátát a pólója alatt egy percig. ~60
+Mondd el három szóban, mit csinálnál vele ma éjjel.
+Fújj lágyan a nyakára.
+Ölelj át hátulról, és maradj így fél percig. ~30
+Csókold meg a homlokát, az orrát és a száját.
+Táncolj neki fél percig csábítóan. ~30
+Kérdezd meg, hol szeretné, hogy megérintsd, és tedd meg.
+Simítsd végig a combját a ruháján keresztül.
+Mondj neki egy bókot csak a szemeddel, szavak nélkül.
+Csókolj bele a tenyerébe, és nézz a szemébe.`));
+ pack('match','desires').items.push(...L(`Hosszú csókolózás a kanapén, sietség nélkül
+Közös zuhany illatos tusfürdővel
+Egymás vetkőztetése lassan
+Masszázs gyertyafényben
+Flörtös randi egy bárban, mintha nem ismernénk egymást
+Szexi fehérnemű egy meglepetés estére
+Egy este csak csókokkal
+Közös fürdő pezsgővel
+Egymás érintésének felfedezése bekötött szemmel
+Hétvége egy hotelben kettesben
+Reggeli összebújás ébresztő nélkül
+Egymás testének végigcsókolása
+Tánc gyertyafényben, lassan vetkőzve
+Romantikus vacsora otthon, utána ágy
+Közös film után hosszú simogatás
+Egy este, amikor a másik dönt mindenről
+Fürdés után krémezés egymásnak
+Pajzán társasjáték kettesben
+Csókok a nyakon, amíg bírjuk
+Egy éjszaka meztelenül alva
+Közös tervezés: mit próbálnánk ki legközelebb
+Lassú szeretkezés zenére
+Érintés-térkép: megmutatjuk, hol szeretjük`));
+ pack('honest','intimacy').items.push(...L(`Mi a kedvenc emléked az első együttlétünkről?
+Milyen érintéstől olvadsz el a legjobban?
+Mikor kívánsz a legjobban a nap folyamán?
+Mit szeretsz abban, ahogy megcsókollak?
+Milyen hangulat segít, hogy elengedd magad?
+Melyik testrészedet szereted, ha kényeztetem?
+Mit szeretnél többet az előjátékból?
+Milyen szavakat szeretsz hallani szeretkezés közben?
+Mi az, ami után a legközelebb érzed magad hozzám?
+Hogyan szeretnéd, hogy kezdeményezzek, ha fáradt vagy?
+Milyen új dolgot próbálnál ki velem lassan?
+Mitől érzed magad a legszexibbnek?
+Mi a kedvenc napszakod a szeretkezéshez?
+Milyen zene illik szerinted hozzánk az ágyban?
+Mit szeretsz abban, ahogy rád nézek?
+Mi az, amit egy hosszú együttlét után a legjobban élvezel?
+Hogyan mondanád el, ha valami nagyon jólesik?
+Mit gondolsz, miben lettünk jobbak az ágyban?
+Milyen fantáziádat mesélnéd el először?
+Milyen szerepet játszik nálad a lassúság?
+Mikor érzed, hogy igazán rád figyelek szex közben?
+Mi az, amit sosem unsz meg velem?
+Mit szeretnél, ha gyakrabban kezdeményeznék?
+Milyen helyen szeretnél egyszer szeretkezni velem a lakásban?`));
+})();
+
+// Mocskos és Tabuk nélkül bővítés (2026. november)
+(()=>{
+ const L=window.PAIR_LINES,P=window.PAIR_PACKS,pack=(game,id)=>P[game].find(p=>p.id===id);
+ pack('match','desires').items.push(...L(`Hosszú, lassú masszázs olajjal, utána közös fürdés`));
+ pack('radar','fire').items.push(
+ ['A csuklómon inkább…','Selyemsál','Bilincs',{tags:['kotozes']}],
+ ['Orálisnál inkább…','Lassan, kínzóan','Mohón, gyorsan',{tags:['oral']}],
+ ['Az ujjaid inkább…','A számban','Bennem',{tags:['erintes','oral']}],
+ ['A csúcson inkább…','Nézz a szemembe','Fordíts hátat'],
+ ['Popsidugó…','Csak előjátékhoz','Egész estére',{tags:['anal','jatekszer']}],
+ ['Reggel inkább…','Gyors menet a zuhany alatt','Lassú menet az ágyban',{tags:['pozicio']}],
+ ['Hátulról inkább…','A hajamat húzva','A csípőmet markolva',{tags:['pozicio','fajdalom']}],
+ ['Mocskos beszédben inkább…','Dicsérj','Alázz meg'],
+ ['Vibrátorral inkább…','Rajtam, míg nézed','Rajtad, míg nézem',{tags:['jatekszer']}],
+ ['Lovagláskor…','Én diktálok','Te húzol magadra',{tags:['pozicio']}],
+ ['A fenekemen inkább…','Tenyér','Lapát',{tags:['fajdalom']}],
+ ['Ha karmolok…','A hátadon','A combodon',{tags:['fajdalom']}],
+ ['Elélvezés-tiltás…','Egész estére','Három könyörgésig',{tags:['kotozes']}],
+ ['Egy videó rólunk…','Csak nézni együtt','Soha ne készüljön',{tags:['foto']}],
+ ['A testnedvek…','Minél több','Minél tisztább',{tags:['testnedv']}],
+ ['Egy hármas…','Csak fantáziában','Talán egyszer',{tags:['harmadik']}],
+ ['Szerepben inkább…','Főnök és titkárnő','Szállodai vendég és masszőr',{tags:['szerep']}],
+ ['Nyakörv…','Rajtam','Rajtad',{tags:['kotozes']}],
+ ['Meztelenül inkább…','Főzz nekem','Táncolj nekem',{tags:['meztelen']}],
+ ['Egy menet…','Teljes csendben','Hangosan nyögve'],
+ ['A tükör…','Nézzük magunkat','Inkább sötét legyen',{tags:['pozicio']}],
+ ['Nyalás közben…','Fogd a fejem','Tartsd szét a combom',{tags:['oral']}],
+ ['Kikötve inkább…','Szemkötővel','Látva mindent',{tags:['kotozes']}],
+ ['Az utolsó menet…','Lassú és mély','Durva és gyors'],
+ ['Szexjáték vásárlás…','Együtt választunk','Lepj meg vele',{tags:['jatekszer']}],
+ ['Kényeztetésnél inkább…','Mellbimbó','Belső comb',{tags:['erintes']}],
+ ['Egész hétvégén…','Ruha nélkül otthon','Csak alsóneműben',{tags:['meztelen']}],
+ ['Ha nyomot hagysz…','Harapás','Szívásnyom',{tags:['fajdalom']}]
+ );
+ const naughty=pack('truth','naughty');
+ naughty.truth.push(...L(`Hányszor akartál ma megdugni, mióta felébredtél?
+Melyik testrészemet nyalnád most a legszívesebben? #oral
+Mi volt a legjobb orgazmusod velem, és mitől lett olyan jó?
+Mit gondolsz rólam, amikor egyedül nyúlsz magadhoz?
+Melyik pózban élvezel el a leggyorsabban? #pozicio
+Mire gerjedsz rá, amiről azt hiszed, nem tudok?
+Melyik szexjátékot használnád rajtam legelőször? #jatekszer
+Mit suttogjak neked, mielőtt elélvezel?
+Mennyire szereted, ha lefoglak és nem mozdulhatsz? #kotozes
+Melyik ruhadarabomat tartanád meg emlékbe egy jó dugás után?
+Szereted látni a nyomát a bőrömön, amikor elélvezel rajtam? #testnedv
+Mit csinálsz a legszívesebben a száddal, ha szabad kezet kapsz? #oral
+Melyik fantáziádat valósítanád meg még ma éjjel, ha belemennék?
+Hogyan dugnál meg, ha csak öt perced lenne?
+Milyen hangot adsz ki, amikor tényleg nagyon jó?
+Mit tennél velem, ha egy egész napig a rabszolgád lennék? #kotozes #szerep
+Mi a legmocskosabb dolog, amit már csináltunk, és megismételnéd?
+Milyen fehérneműben akarsz látni legközelebb? #meztelen
+Mennyire izgat, ha a hajadat húzom dugás közben? #fajdalom
+Szeretnéd, ha készítenék rólad egy pajzán képet csak magunknak? #foto
+Melyik szerepben dugnál meg a legszívesebben? #szerep
+Mit csinálnál, ha most meztelenül az öledbe ülnék? #meztelen
+Hány menetet bírnál ki egy éjszaka alatt, ha nem engednélek pihenni?
+Melyik testrészemre harapnál rá a legszívesebben? #fajdalom
+Mennyire szereted, ha előjáték közben a fenekedhez nyúlok? #anal
+Mitől leszel a legnedvesebb vagy a legkeményebb?
+Mit csinálnék veled egy héten át minden este, ha te döntenél?
+Melyik mocskos üzenetemet olvastad el többször is?`));
+ naughty.dare.push(...L(`Súgd a másik fülébe, pontosan hogyan dugod meg ma este.
+Csókold a másik belső combját egy percig, de a közepéhez nem érhetsz. ~60 #erintes
+Vetkőzz le a másik előtt lassan, zene nélkül, a szemébe nézve. #meztelen
+Nyúlj a másik nadrágjába, és simogasd fél percig. ~30 #erintes
+Kösd össze a másik csuklóját, és csókold, ahol akarod, két percig. ~120 #kotozes
+Harapd meg gyengéden háromszor a másik fenekét. #fajdalom
+Szívd a másik mellbimbóját, amíg fel nem nyög. #oral #erintes
+Ülj a másik arcára tíz másodpercig, aztán állj fel. ~10 #oral
+Sorold fel hangosan, a másik mely három testrészét nyalnád meg ma. #oral
+Tartsd a másik csuklóját az ágyhoz szorítva, és csókold végig a hasát. #kotozes
+Hintázz lassan a másik ölében, amíg ő azt nem mondja, elég. #pozicio
+Készíts egy pajzán fotót a másikról, amit utána együtt töröltök. #foto
+Dörzsöld magad a másik combjához fél percig. ~30 #erintes
+Kényeztesd a másikat csak a nyelveddel két percig, kéz nélkül. ~120 #oral
+Paskold meg a másik fenekét ötször, és minden csapás után kérdezd, kér-e még. #fajdalom
+Vedd a szádba a másik ujjait, és szopogasd őket lassan. #oral
+Nyögj a másik fülébe úgy, ahogy elélvezéskor szoktál.
+Vetkőztessétek le egymást úgy, hogy csak a szátokat használhatjátok. #meztelen
+A másik bekötött szemmel fekszik, te egy percig kényezteted, ő találja ki, mivel. ~60 #kotozes #erintes
+Simogasd a másik fenekét két percig, közben mondd el, mit tennél vele. ~120 #erintes
+Mutasd meg a másiknak fél percig, hogyan nyúlsz magadhoz. ~30 #erintes #meztelen
+Csókold meg a másikat úgy, mintha most dugnátok először.
+Írj ujjal egy mocskos szót a másik hátára, neki ki kell találnia. #erintes
+Szívj egy nyomot a másik nyakára, ha ő igent mond. #fajdalom
+Nyald le lassan a mézet a másik ujjáról. #oral
+Térdelj a másik elé, és várd az utasítását egy percig. ~60 #szerep
+Kényeztesd a másik mellbimbóját jégkockával tíz másodpercig. ~10 #erintes
+Fordítsd hasra a másikat, és csókold végig a gerincét. #erintes`));
+ pack('match','wishlist').items.push(...L(`Tíz csapás a fenekemre, hangosan számolva #fajdalom
+Egész estés elélvezés-tiltás, csak a végén szabad #kotozes
+Közös zuhany, ahol végig a számmal kényeztetlek #oral
+Vibrátoros kínzás, amíg a másik könyörögni nem kezd #jatekszer
+Bekötött szemmel kitalálni, mivel érintesz #kotozes #erintes
+Popsidugó egész este, aztán anál, ha mindketten akarjuk #anal #jatekszer
+Szerepjáték: masszőr, aki túl messzire megy #szerep #erintes
+Kikötve, amíg háromszor el nem élvezek #kotozes
+Arcra élvezés, előre megbeszélve #testnedv
+Megbeszélt ébresztés nyalással egy szabadnapon #oral
+Egymás nyalása tükör előtt, hogy lássuk magunkat #oral
+Hajhúzás hátulról, keményen #fajdalom #pozicio
+Otthoni videó, amit megnézünk, aztán törlünk #foto
+Nyakörv és póráz egy estére a lakásban #kotozes
+Mocskos beszéd végig, egy perc szünet nélkül
+Lassú, kínzó kézimunka a legvégéig #erintes
+Ujjazás, miközben a fülembe mondod, mit akarsz #erintes
+Meztelen házimunka, amíg a másik nézi #meztelen
+Gyertyaviasz a hátamra, alacsony olvadáspontú masszázsgyertyával #fajdalom
+Egy este, amikor csak te élvezhetsz el
+Egy este, amikor csak én parancsolok #kotozes
+Nyalás, amíg már könyörgök, hogy hagyd abba #oral
+Tusfürdős, csúszós kényeztetés az egész testen #erintes
+Dugás az ablaknál, behúzott függöny mögött #pozicio
+Karmolás a hátamon, ahogy jólesik #fajdalom
+Fenékjáték nyelvvel, előtte közös fürdés #anal #oral
+Szexjáték, amit együtt választunk ki a boltban #jatekszer
+Hármas fantázia elmesélve dugás közben #harmadik`));
+ pack('honest','frank').items.push(...L(`Milyen gyakran szeretnél valójában szexelni, ha csak rajtad múlna?
+Mi az, amit túl gyorsan csinálok az ágyban?
+Megjátszottad már velem az orgazmust? Mikor és miért?
+Mi kell ahhoz, hogy biztosan elélvezz?
+Melyik szexjáték érdekel, amit eddig szégyelltél szóba hozni? #jatekszer
+Hogyan szereted az orálist: lassan, gyorsan, mélyen? #oral
+Mit gondolsz az anál szexről, nálad hol a határ? #anal
+Zavar, ha szex közben nyikorog az ágy, vagy túl hangosak vagyunk?
+Milyen illatomat vagy ízemet szereted a legjobban? #testnedv
+Mikor csalódtál utoljára egy együttlét után, és miért?
+Mit csinálsz magaddal másként, amikor egyedül élvezel el? #erintes
+Melyik szexuális élményed formált a legjobban? #mult
+Mit csinált jobban egy volt partnered, amit megtanítanál nekem? #mult
+Szereted, ha fenekelés közben beszélek hozzád? #fajdalom
+Hol van számodra a határ a megalázó beszédben?
+Mit szeretnél, hogy csináljak, miután te már elélveztél?
+Melyik pózt kéred túl ritkán? #pozicio
+Mit érzel, ha szájjal fejezem be, és mit, ha nem? #oral #testnedv
+Mennyire izgat a gondolat, hogy kikötöm a kezedet? #kotozes
+Milyen pornójelenetet néznél meg velem, hogy megmutasd, mit szeretnél?
+Mi az, amitől szex közben elmegy a kedved?
+Milyen szóval szereted, ha a nemi szervedet nevezem?
+Elég hosszú szerinted az előjátékunk? Mit tennél hozzá?
+Mit csinálsz, amikor nem vagy hangulatban, de én igen?
+Melyik testrészed miatt vagy bizonytalan meztelenül? #meztelen
+Kell nekünk egy lassíts jel a stopszó mellé? Mi legyen az?
+Melyik fantáziád ijeszt meg egy kicsit, mégis vonz?
+Volt már, hogy fájt szex közben, és nem szóltál? #fajdalom`));
+ pack('honest','taboo').items.push(...L(`Kivel csalnál meg a fantáziádban, ha semmi következménye nem lenne? #harmadik
+Melyik barátunk segge jár a fejedben, amikor magadhoz nyúlsz? #harmadik
+Mennyire akarod, hogy az arcodra élvezzek, és utána így nézzelek? #testnedv
+Hagynád, hogy egy egész estén át csak a szádat baszjam? #oral
+Mi a legkurvább dolog, amit valaha csináltál?
+Ki volt a legrosszabb baszásod, és mit rontott el? #mult
+Fizetnél valaha szexért, ha senki nem tudná meg?
+Mennyire izgat a gondolat, hogy valaki más gecije vagy nedve van rajtam? #harmadik #testnedv
+Néznél velem élő szexkamerát, és közben magadhoz nyúlnál?
+Melyik ismerősöd punciját vagy farkát nézted meg titokban a legtöbbször? #harmadik
+Ha hármasban basznánk, kit nyalnál előbb: engem vagy őt? #harmadik #oral
+Hagynád, hogy egy idegen nézze, ahogy baszunk, ha te nem is látnád őt? #harmadik
+Mi a legocsmányabb szó, amit hallani akarsz, miközben elélvezel?
+Mennyire akarsz a seggembe élvezni? #anal #testnedv
+Mi a legaljasabb fantáziád rólam, amit sosem mondtál ki?
+Ha egy éjszakára a szexrabszolgád lennék, mit csinálnál velem először? #kotozes
+Lennél egy estére a szexjátékom, aki csak akkor beszél, ha kérdezem? #kotozes #szerep
+Térden állva könyörögnél a farkamért vagy a puncimért, ha azt mondanám? #szerep
+Melyik pornósztárt basznád meg előttem, ha megengedném? #harmadik
+Mit csinált veled egy volt partnered, ami most is beindít, ha rágondolsz? #mult
+Mennyi ismeretség után basztál meg valakit a leghamarabb? #mult
+Szopnám a lábujjaidat, miközben magadhoz nyúlsz: izgatna vagy röhögnél?
+Mennyire izgat, ha nyomot hagyok rajtad, amit holnap mindenki láthat? #fajdalom
+Hány ujjat bírnál magadban egyszerre? #erintes
+Mi a legdurvább dolog, amit valaha a seggedbe dugtál, vagy dugnál? #anal #jatekszer
+Megnyalnád a saját nedvedet a farkamról vagy az ujjamról? #testnedv #oral
+Szoptál vagy nyaltál már valakit, akit közben utáltál? #mult #oral
+Mi a legperverzebb keresés a telefonod előzményeiben?
+Izgatna, ha elmennénk egy cserepárbuliba, csak nézelődni? #harmadik
+Elképzelted már, hogy egy másik nő vagy férfi segít neked kielégíteni engem? #harmadik
+Basznál velem egy amatőr pornó előtt, pontosan azt csinálva, amit ők? #pozicio
+Ki lenne szívesebben a mocskos ribanc kettőnk közül egy éjszakára? #szerep
+Akarod, hogy bekötött szemmel, kikötve várj rám az ágyon, amíg megbaszlak? #kotozes
+Mit szólnál, ha meztelen képet küldenék magamról, miközben dolgozol? #foto #meztelen
+Videóznál, miközben a farkadat vagy a puncidat nyalom? #foto #oral
+Szétkennéd a gecimet vagy a nedvemet a melleden, hogy lássam? #testnedv
+Mennyire akarsz megfenekelni, amíg piros nem lesz a seggem? #fajdalom
+Meddig bírnád elélvezés nélkül, ha megtiltanám, és közben kínoználak?
+Gerjesztene, ha a fantáziádban egy egész csapat nézné, ahogy kiszolgálsz? #harmadik
+Kit akarnál látni magunk között az ágyban: egy nőt vagy egy férfit? #harmadik
+Milyen hazugságot mondtál már, hogy megdughass valakit? #mult
+Kit szégyellsz a legjobban azok közül, akiket megbasztál? #mult
+Akarod, hogy a hajadnál fogva húzzalak a farkamra vagy a puncimra? #fajdalom #oral
+Mennyire izgat, ha ruhában, sietve baszunk, mintha bármikor ránk nyithatnának?
+Kiszolgálnál egész hétvégén meztelenül, ha én úgy akarom? #meztelen #szerep
+Melyik tilos hely jár a fejedben, ahol otthon még nem basztunk?
+Gondoltál már arra, hogy pénzért vetkőzz egy kamera előtt? #meztelen
+Bevallanád, ha egész héten valaki más után nyúltál volna magadhoz? #harmadik
+Mi a legmocskosabb hely a testemen, amit mégis megnyalnál? #oral
+Akarnád, hogy egy napig csak a lyukaimat használd, a stopszóig? #szerep
+Izgatna, ha baszás után kidobnálak, mint egy egyéjszakás kalandot, szerepből? #szerep
+Basznál velem úgy, hogy közben egy volt partnered nevét kiáltod, ha kérném? #mult
+Melyik testrészemet akarod a legközelebbről látni, miközben elélvezel?
+Mennyire vágysz arra, hogy egy éjszaka alatt minden lyukamat megbaszd? #anal #oral
+Elvinnélek vacsorázni a konyhánkba úgy, hogy egy játék van a seggedben? #anal #jatekszer
+Mi az a perverzió, amit rólad senki sem gondolna?
+Melyik határodat lépnéd át velem, ha tudnád, hogy bármikor megállíthatod?`));
+})();
