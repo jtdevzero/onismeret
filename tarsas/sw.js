@@ -1,9 +1,9 @@
 /* Verziózott, teljes offline csomag. Az új változat megvárja a régi játéklapok bezárását. */
-const CACHE = 'tarsas-v24';
+const CACHE = 'tarsas-v25';
 const HP = ['index.html', 'app.js', 'style.css', 'questions.js', 'images/castle-night-photo.webp', ...['owl', 'diary', 'map', 'goblet', 'quill', 'potion', 'locket', 'hallows'].map(name => 'images/' + name + '.webp')].map(file => 'harry-potter/' + file);
-const SHELL = [...HP, './', 'index.html', 'style.css?v=24', 'data.js?v=24', 'app.js?v=24',
-  'games-party.js?v=24', 'games-social.js?v=24', 'games-bluff.js?v=24', 'games-quiz.js?v=24', 'enhancements.js?v=24', 'games-dreams.js?v=24', 'images/dreams-atlas.webp', 'images/game-night-photo.webp', 'images/together-photo.webp',
-  'atkozott/', 'atkozott/index.html', 'premium.css?v=24', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/icon-maskable-512.png',
+const SHELL = [...HP, './', 'index.html', 'style.css?v=25', 'data.js?v=25', 'app.js?v=25',
+  'games-party.js?v=25', 'games-social.js?v=25', 'games-bluff.js?v=25', 'games-quiz.js?v=25', 'enhancements.js?v=25', 'games-dreams.js?v=25', 'images/dreams-atlas.webp', 'images/game-night-photo.webp', 'images/together-photo.webp',
+  'atkozott/', 'atkozott/index.html', 'premium.css?v=25', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/icon-maskable-512.png',
   'homlok/', 'homlok/index.html', 'homlok/styles.css?v=6', 'homlok/app.js?v=4', 'homlok/data.js?v=4',
   'homlok/party-history.js?v=4', 'homlok/round-recorder.js?v=4', 'homlok/game-core.js', 'homlok/favicon.svg',
   'homlok/manifest.webmanifest?v=4', 'homlok/service-worker.js',
