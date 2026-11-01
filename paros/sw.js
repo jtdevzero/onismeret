@@ -1,6 +1,6 @@
 'use strict';
 const CACHE='paros-v26';
-const SHELL=['./','index.html','style.css?v=26','data.js?v=11','app.js?v=21','images/together-photo.webp','premium.css?v=25','manifest.webmanifest','icon.svg','jackpot-core.js?v=1','jackpot-3d.js?v=1','vendor/three-r160.min.js'];
+const SHELL=['./','index.html','style.css?v=26','data.js?v=11','app.js?v=21','images/together-photo.webp','premium.css?v=26','manifest.webmanifest','icon.svg','jackpot-core.js?v=1','jackpot-3d.js?v=1','vendor/three-r160.min.js'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(SHELL.map(u=>new Request(u,{cache:'reload'})))).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('paros-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
 self.addEventListener('fetch',e=>{

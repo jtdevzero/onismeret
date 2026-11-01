@@ -16,7 +16,7 @@ async function roll(page,faces,wait=true) {
 }
 (async()=>{
  await new Promise(r=>server.listen(0,'127.0.0.1',r));const origin='http://127.0.0.1:'+server.address().port;
- const browser=await chromium.launch({executablePath:process.env.PW_CHROMIUM||'/usr/bin/chromium',args:['--no-sandbox','--enable-unsafe-swiftshader']});
+ const browser=await chromium.launch({executablePath:process.env.PW_CHROMIUM||(fs.existsSync('/usr/bin/chromium')?'/usr/bin/chromium':undefined),args:['--no-sandbox','--enable-unsafe-swiftshader']});
  try {
   for(const width of [320,880]) {
    const context=await browser.newContext({viewport:{width,height:900}}),page=await context.newPage(),errors=[],external=[];
@@ -80,7 +80,7 @@ async function roll(page,faces,wait=true) {
     await context.setOffline(false);
     await start(page,{reward:'Egy közösen megtervezett randi',tags:[],custom:[]},12);
     await roll(page,[0,0,0]);await page.waitForSelector('.has-3d');
-    await page.screenshot({path:'/workspace/vagyjackpot-preview.png',fullPage:true});
+    await page.screenshot({path:'/tmp/vagyjackpot-preview.png',fullPage:true});
    }
    await context.close();
   }
