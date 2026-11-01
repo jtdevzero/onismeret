@@ -5,6 +5,8 @@ const {chromium}=require('playwright');const ROOT=path.resolve(__dirname,'../..'
 const mime={'.html':'text/html','.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.webp':'image/webp','.webmanifest':'application/manifest+json'};
 const server=http.createServer((req,res)=>{let file;try{const u=new URL(req.url,'http://localhost');file=path.resolve(ROOT,'.'+decodeURIComponent(u.pathname)+(u.pathname.endsWith('/')?'index.html':''));}catch{res.writeHead(400).end();return;}if(!file.startsWith(ROOT+path.sep)){res.writeHead(403).end();return;}fs.readFile(file,(error,data)=>{if(error)res.writeHead(404).end();else res.writeHead(200,{'Content-Type':mime[path.extname(file)]||'application/octet-stream'}).end(data);});});
 let count=0;function ok(value,message){assert(value,message);count++;console.log('✓ '+message);}
+{const html=fs.readFileSync(path.join(ROOT,'paros/index.html'),'utf8'),sw=fs.readFileSync(path.join(ROOT,'paros/sw.js'),'utf8');const refs=[...html.matchAll(/(?:href|src)="([\w./-]+\.(?:css|js))\?v=(\d+)"/g)];
+ ok(refs.length>=4&&refs.every(m=>sw.includes(`'${m[1]}?v=${m[2]}'`)),'service worker precaches exactly the asset versions index.html loads');}
 (async()=>{
  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));const origin='http://127.0.0.1:'+server.address().port;
  const browser=await chromium.launch({executablePath:process.env.PW_CHROMIUM||(fs.existsSync('/usr/bin/chromium')?'/usr/bin/chromium':undefined),args:['--no-sandbox']});
@@ -14,6 +16,8 @@ let count=0;function ok(value,message){assert(value,message);count++;console.log
  await page.goto(origin+'/paros/');await page.waitForSelector('.game');
  ok(await page.locator('.game').count()===10,`${width}px: ten separate pair games`);
  ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`${width}px: home fits viewport`);
+ if(width===320)ok(await page.evaluate(()=>document.documentElement.scrollHeight<=3100&&document.querySelector('.game').getBoundingClientRect().height<=160),'320px: compact game cards keep the home page short');
+ ok(await page.evaluate(()=>{updateReady=true;render();const shown=!!document.querySelector('.update-banner');updateReady=false;render();return shown;}),`${width}px: an update banner can be shown on the home page`);
  for(const mode of ['closer','radar','truth','match','honest','quiz','memories','future','bucket','spin']){await page.evaluate(m=>go(m),mode);ok(await page.locator('h1').innerText()!==''&&await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`${mode} setup and layout`);}
  ok(await page.evaluate(()=>cardCount()===636),'all 636 base and extra cards counted once');
  ok(await page.evaluate(()=>Object.keys(GAMES).every(k=>packsFor(k).every(p=>[...(p.items||[]),...(p.truth||[]),...(p.dare||[])].every(c=>typeof c.t==='string'&&c.t&&[1,2,3].includes(c.lvl)&&c.tags.every(t=>TAGS.has(t))&&(!c.opts||c.opts.length===2))))),'every card normalises with text, level and known tags');
