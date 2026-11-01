@@ -1,0 +1,11 @@
+/* Premium editorial design system, grounded in Activity 18+ */
+:root{--premium-ink:#f5f0e8;--premium-muted:#c0b5c9;--premium-lime:#dbff7a;--premium-lilac:#bb99ff;--premium-peach:#ffb79c;--premium-radius:22px;--premium-focus:#dbff7a;--premium-space:clamp(16px,4vw,28px);--premium-shadow:0 16px 45px rgba(10,6,24,.22)}
+html{font-synthesis:none;-webkit-text-size-adjust:100%}
+button,a,input,select,summary{touch-action:manipulation}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--premium-focus);outline-offset:3px}
+button:not(:disabled):active{transform:scale(.985)}
+button:disabled{cursor:not-allowed}
+[data-premium-card]{border-radius:var(--premium-radius);box-shadow:var(--premium-shadow);overflow-wrap:anywhere}
+[data-premium-action]{min-height:48px;border-radius:15px;font-weight:800}
+[data-premium-title]{font-weight:900;letter-spacing:-.045em;line-height:1.08;text-wrap:balance}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
