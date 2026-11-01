@@ -1,5 +1,5 @@
 /* Verziózott, teljes offline csomag. Az új változat megvárja a régi játéklapok bezárását. */
-const CACHE = 'tarsas-v21';
+const CACHE = 'tarsas-v22';
 const HP = ['index.html', 'app.js', 'style.css', 'questions.js', 'images/castle-night-photo.webp', ...['owl', 'diary', 'map', 'goblet', 'quill', 'potion', 'locket', 'hallows'].map(name => 'images/' + name + '.webp')].map(file => 'harry-potter/' + file);
 const SHELL = [...HP, './', 'index.html', 'style.css?v=22', 'data.js?v=22', 'app.js?v=22',
   'games-party.js?v=22', 'games-social.js?v=22', 'games-bluff.js?v=22', 'games-quiz.js?v=22', 'enhancements.js?v=22', 'games-dreams.js?v=22', 'images/dreams-atlas.webp', 'images/game-night-photo.webp', 'images/together-photo.webp',
