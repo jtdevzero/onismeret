@@ -61,6 +61,12 @@ const path = require('node:path');
    const skipAfter=await page.locator('#progress').innerText();
    if(skipBefore===skipAfter)throw Error('Skip did not advance dilemma');
    if(await page.locator('[data-vote="0"]').count()!==1)throw Error('Vote controls missing after skip');
+   await page.locator('#players').selectOption('1');
+   const total=Number((await page.locator('#progress').innerText()).split('/')[1].trim());
+   for(let i=0;i<total;i++)await page.locator('#skip').click();
+   if(await page.locator('#restart').count()!==1)throw Error('Skipped solo deck must finish');
+   const finalText=await page.locator('#game').innerText();
+   if(!finalText.includes('Átugrott: '+total))throw Error('Skipped total missing from summary');
    console.log('PASS dilemma gameplay');
   }catch(e){failures.push('dilemma gameplay: '+e.message);console.error('FAIL dilemma gameplay',e.message);}
   finally{await page.close();}
