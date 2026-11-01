@@ -50,3 +50,10 @@ input:not([type=checkbox]),select{min-height:48px;max-width:100%}
 .hero-actions>.btn:not(.primary):not(.adult-entry){min-height:44px}
 .halt-row{display:flex;justify-content:flex-end;margin-bottom:-8px}
 .halt-row .btn{min-height:44px;padding:8px 18px;border-color:var(--rose);background:transparent}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.timer{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.timer-left{font:600 30px/1 Georgia,serif;font-variant-numeric:tabular-nums;min-width:4ch}
+.timer .btn{flex:1 1 140px}
+.custom-list{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.custom-list li{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.custom-list li .btn{flex:none;min-height:44px;padding:8px 14px}

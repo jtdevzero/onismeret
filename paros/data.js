@@ -678,3 +678,28 @@ Volt, hogy túl messzire mentem? Mit csináljak másképp?
 Mit tennénk, ha egy fantáziád megvalósulna, és mégsem tetszene?
 Hogyan beszéljünk a határainkról úgy, hogy közben ne lohadjon le a kedvünk?`));
 })();
+
+/* Pajzán pörgető: cselekvés, testrész és időtartam. A parts[].acts az engedélyezett párokat sorolja fel. */
+window.PAIR_SPIN={
+ acts:[
+ {id:'kiss',t:'Csókolgasd a másik',tags:['erintes']},
+ {id:'lick',t:'Nyalogasd a másik',tags:['oral']},
+ {id:'stroke',t:'Simogasd a másik',tags:['erintes']},
+ {id:'bite',t:'Harapdáld gyengéden a másik',tags:['fajdalom']},
+ {id:'suck',t:'Szívogasd a másik',tags:['oral']},
+ {id:'massage',t:'Masszírozd a másik',tags:['erintes']}
+ ],
+ parts:[
+ {t:'nyakát',acts:['kiss','lick','stroke','bite','suck']},
+ {t:'fülcimpáját',acts:['kiss','lick','bite','suck']},
+ {t:'vállát',acts:['kiss','bite','massage']},
+ {t:'hátát',acts:['kiss','lick','stroke','massage']},
+ {t:'hasát',acts:['kiss','lick','stroke']},
+ {t:'mellbimbóit',acts:['kiss','lick','stroke','bite','suck'],tags:['meztelen']},
+ {t:'ujjait',acts:['kiss','lick','suck']},
+ {t:'combja belső oldalát',acts:['kiss','lick','stroke','bite','massage']},
+ {t:'fenekét',acts:['kiss','stroke','bite','massage'],tags:['meztelen']},
+ {t:'lába közét',acts:['kiss','lick','stroke','massage'],tags:['meztelen']}
+ ],
+ secs:[10,20,30,60]
+};

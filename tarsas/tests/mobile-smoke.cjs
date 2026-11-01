@@ -79,7 +79,7 @@ const path = require('node:path');
   const page=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
   try {
    await page.goto('http://127.0.0.1:8765/paros/',{waitUntil:'networkidle'});
-   const games=['closer','radar','truth','match','honest','quiz','memories','future','bucket'];
+   const games=['closer','radar','truth','match','honest','quiz','memories','future','bucket','spin'];
    for(const key of games) {
     await page.goto('http://127.0.0.1:8765/paros/#'+key,{waitUntil:'domcontentloaded'});
     await page.waitForTimeout(120);
@@ -96,7 +96,7 @@ const path = require('node:path');
    await surprise.click();
    const selected=await page.evaluate(()=>location.hash.slice(1));
    if(!['closer','radar','quiz','memories','future','bucket'].includes(selected))throw Error('Surprise chooser picked unavailable adult game: '+selected);
-   console.log('PASS all nine couples game routes');
+   console.log('PASS all ten couples game routes');
   }catch(e){failures.push('couples game routes: '+e.message);console.error('FAIL couples game routes',e.message);}
   finally{await page.close();}
  }
