@@ -1,30 +1,37 @@
+/* Kártyasorok jelölőkkel: #címke, ~másodperc, !szint (1–3), @testfelépítés. Jelölő nélkül a sor sima szöveg marad. */
+window.PAIR_LINES=s=>s.trim().split('\n').map(x=>x.trim()).filter(Boolean).map(line=>{
+ const tags=[...line.matchAll(/ #([a-z]+)/g)].map(m=>m[1]);
+ const sec=+(/ ~(\d+)/.exec(line)?.[1]||0),lvl=+(/ !([123])/.exec(line)?.[1]||0),body=/ @([a-z]+)/.exec(line)?.[1]||null;
+ const t=line.replace(/ [#~!@][a-z0-9]+/g,'').trim();
+ return tags.length||sec||lvl||body?{t,tags,sec,lvl,body}:t;
+});
 /* Saját megfogalmazású kérdések és ötletek. A 18+ témák kapcsolati kommunikációt szolgálnak. */
 'use strict';
 window.PAIR_DATA = (() => {
- const lines=s=>s.trim().split('\n').map(x=>x.trim()).filter(Boolean);
- const closer=lines(`Mi az az apróság, amitől rögtön vonzóbb lesz számodra valaki?
-Mikor érezted legutóbb, hogy igazán figyelnek rád?
+ const lines=window.PAIR_LINES;
+ const closer=lines(`Mi az az apróság, amitől rögtön vonzóbb lesz számodra valaki? !2
+Mikor érezted legutóbb, hogy igazán figyelnek rád? !3
 Milyen lenne számodra egy tökéletes közös vasárnap?
-Melyik történetedet mesélnéd el, hogy jobban megismerjelek?
+Melyik történetedet mesélnéd el, hogy jobban megismerjelek? !2
 Milyen bók maradt meg benned sokáig?
-Milyen helyzetben érzed leginkább önmagadnak magad?
-Mivel lehet téged megnyugtatni egy nehéz nap után?
+Milyen helyzetben érzed leginkább önmagadnak magad? !3
+Mivel lehet téged megnyugtatni egy nehéz nap után? !2
 Milyen közös emléket szeretnél egy év múlva felidézni?
-Milyen apró gesztusból érzed, hogy fontos vagy?
+Milyen apró gesztusból érzed, hogy fontos vagy? !2
 Mi lepett meg bennem kellemesen?
-Mit tanultál az utóbbi időben saját magadról?
-Melyik szokásodat szeretnéd, ha jobban megérteném?
-Mit jelent neked a minőségi együtt töltött idő?
+Mit tanultál az utóbbi időben saját magadról? !3
+Melyik szokásodat szeretnéd, ha jobban megérteném? !3
+Mit jelent neked a minőségi együtt töltött idő? !2
 Milyen programon lennél szívesen kezdő velem együtt?
-Miből veszed észre, hogy valaki mellett biztonságban vagy?
+Miből veszed észre, hogy valaki mellett biztonságban vagy? !3
 Melyik gyerekkori örömödet hoznád vissza egy napra?
-Hogyan szereted jelezni, ha egy kis egyedüllétre van szükséged?
+Hogyan szereted jelezni, ha egy kis egyedüllétre van szükséged? !3
 Milyen utazást terveznél kettőnknek, ha csak egy hétvégénk lenne?
-Melyik értékedből nem szeretnél engedni egy kapcsolatban?
-Mit szeretnél, hogy gyakrabban kérdezzenek meg tőled?
-Mikor nevettél utoljára felszabadultan valakivel?
+Melyik értékedből nem szeretnél engedni egy kapcsolatban? !3
+Mit szeretnél, hogy gyakrabban kérdezzenek meg tőled? !3
+Mikor nevettél utoljára felszabadultan valakivel? !2
 Milyen közös hagyományt találnál ki nekünk?
-Mitől lesz szerinted egy hétköznapi találkozás emlékezetes?
+Mitől lesz szerinted egy hétköznapi találkozás emlékezetes? !2
 Mit szeretnél ma megtudni rólam?`);
  const honest=lines(`Hogyan tudnám könnyebbé tenni, hogy elmondd, mire vágysz?
 Hogyan szereted jelezni, ha most nincs kedved az intimitáshoz?
@@ -140,17 +147,17 @@ Egy közös emlék felidézése romantikus estéhez`);
  ];
 
  closer.push(...lines(`Milyen apró közös sikerre lennél büszke?
-Milyen helyzetben szeretsz segítséget kérni?
-Mi volt egy váratlanul jó találkozás az életedben?
-Milyen szokásod mögött van egy fontos történet?
-Hogyan mutatod ki, hogy megbízol valakiben?
+Milyen helyzetben szeretsz segítséget kérni? !3
+Mi volt egy váratlanul jó találkozás az életedben? !2
+Milyen szokásod mögött van egy fontos történet? !3
+Hogyan mutatod ki, hogy megbízol valakiben? !3
 Milyen helyet mutatnál meg nekem a szülővárosodból?
-Mivel tudnál ma örömet szerezni saját magadnak?
-Mikor szeretsz előre tervezni, és mikor inkább sodródni?
+Mivel tudnál ma örömet szerezni saját magadnak? !2
+Mikor szeretsz előre tervezni, és mikor inkább sodródni? !2
 Melyik közös témánkról beszélgetnél még sokáig?
-Milyen hibádból tanultál valami kedveset magadról?
-Mit jelent számodra egy figyelmes kérdés?
-Milyen közös pillanatból szeretnél többet?`));
+Milyen hibádból tanultál valami kedveset magadról? !3
+Mit jelent számodra egy figyelmes kérdés? !2
+Milyen közös pillanatból szeretnél többet? !2`));
  honest.push(...lines(`Hogyan szeretnéd jelezni, hogy valamire még nem tudsz válaszolni?
 Milyen különbség van számodra a közelség és az elvárás között?
 Mi segítene abban, hogy könnyebben kérdezz rá az igényeimre?
@@ -292,7 +299,7 @@ Egy közös emlékfüzet elkezdése`);
 
 /* Külön választható flörtös és felnőtt beszélgetőcsomagok. */
 window.PAIR_PACKS = (() => {
- const L=s=>s.trim().split('\n').map(x=>x.trim()).filter(Boolean);
+ const L=window.PAIR_LINES;
  return {
  radar:[{id:'chemistry',name:'Kémia · 18+',adult:true,items:[
  ['Mitől érzed jobban a köztetek lévő kémiát?','Egy hosszú beszélgetéstől','Apró, figyelmes gesztusoktól'],
@@ -420,124 +427,124 @@ Mit szeretnél megköszönni abból, ahogyan a másik meghallgatott?`)}]
 
 /* Mocskos 18+ csomagok: nyers, explicit kérdések és kihívások. Minden passzolható, a másik bármikor nemet mondhat. */
 (() => {
- const L=s=>s.trim().split('\n').map(x=>x.trim()).filter(Boolean),P=window.PAIR_PACKS;
+ const L=window.PAIR_LINES,P=window.PAIR_PACKS;
  P.radar.push({id:'fire',name:'Tűzpróba · mocskos 18+',adult:true,items:[
- ['A szám inkább…','Én nyalok','Engem nyaljanak'],
+ ['A szám inkább…','Én nyalok','Engem nyaljanak',{tags:['oral']}],
  ['A dugás inkább…','Lassan, hogy minden centit érezzek','Keményen, amíg bírjuk'],
  ['Az ágyban…','Én baszlak meg téged','Te baszol meg engem'],
- ['Kedvenc póz…','Kutyapóz','Lovaglás'],
- ['Fent vagy lent?','Fent','Lent'],
+ ['Kedvenc póz…','Kutyapóz','Lovaglás',{tags:['pozicio']}],
+ ['Fent vagy lent?','Fent','Lent',{tags:['pozicio']}],
  ['A hangerő…','Fojtott nyögés','Üvöltés, hadd hallják'],
- ['A paskolás…','Pár finom csapás','Amíg ki nem pirul a seggem'],
- ['Hajhúzás dugás közben…','Igen, erősen','Inkább ne'],
+ ['A paskolás…','Pár finom csapás','Amíg ki nem pirul a seggem',{tags:['fajdalom']}],
+ ['Hajhúzás dugás közben…','Igen, erősen','Inkább ne',{tags:['fajdalom']}],
  ['Mocskos beszéd…','Szidj mocskosan','Dicsérj mocskosan'],
- ['Kikötözve…','Én legyek','Te legyél'],
- ['Hol?','Az ágyban','Konyhapult, mosógép, lépcső, bárhol otthon'],
- ['Az előjáték…','Kínozz, amíg könyörgök','Azonnal dugj meg'],
- ['Elélvezéskor…','A testemre','A számba'],
- ['A vibrátor…','Rajtam, amíg remegek','Rajtad, amíg remegsz'],
- ['Szexvideó…','Vegyük fel és nézzük vissza','Csak élőben'],
- ['Egy éjszaka…','Egy hosszú, brutális menet','Ahányszor csak bírjuk'],
- ['Az elélvezés megtagadása…','Kínozz vele, könyörögni akarok','Ne tarts vissza'],
- ['A ruhám…','Tépd le','Hagyd rajtam, csak told félre'],
- ['A tükör előtt…','Nézni akarom, ahogy dugunk','Csukott szemmel jobb'],
- ['Reggel…','Ébressz nyalással','Ébressz egy gyors dugással'],
- ['A fenekem…','Csak paskold','Játssz is vele'],
+ ['Kikötözve…','Én legyek','Te legyél',{tags:['kotozes']}],
+ ['Hol?','Az ágyban','Konyhapult, mosógép, lépcső, bárhol otthon',{tags:['pozicio']}],
+ ['Az előjáték…','Kínozz, amíg könyörgök','Azonnal dugj meg',{tags:['fajdalom','kotozes']}],
+ ['Elélvezéskor…','A testemre','A számba',{tags:['oral','testnedv'],body:'penisz'}],
+ ['A vibrátor…','Rajtam, amíg remegek','Rajtad, amíg remegsz',{tags:['jatekszer']}],
+ ['Szexvideó…','Vegyük fel és nézzük vissza','Csak élőben',{tags:['foto']}],
+ ['Egy éjszaka…','Egy hosszú, brutális menet','Ahányszor csak bírjuk',{tags:['fajdalom']}],
+ ['Az elélvezés megtagadása…','Kínozz vele, könyörögni akarok','Ne tarts vissza',{tags:['kotozes']}],
+ ['A ruhám…','Tépd le','Hagyd rajtam, csak told félre',{tags:['meztelen']}],
+ ['A tükör előtt…','Nézni akarom, ahogy dugunk','Csukott szemmel jobb',{tags:['pozicio']}],
+ ['Reggel…','Ébressz nyalással','Ébressz egy gyors dugással',{tags:['oral']}],
+ ['A fenekem…','Csak paskold','Játssz is vele',{tags:['anal','fajdalom']}],
  ['Utána…','Még egy menet','Hulla vagyok'],
- ['Napközben…','Küldj meztelen képet','Írd meg, mit csinálsz velem este'],
- ['Ha könyörgök…','Add meg rögtön','Várass még']
+ ['Napközben…','Küldj meztelen képet','Írd meg, mit csinálsz velem este',{tags:['foto','meztelen']}],
+ ['Ha könyörgök…','Add meg rögtön','Várass még',{tags:['kotozes']}]
  ]});
  P.truth.push({id:'naughty',name:'Mocskos · 18+',adult:true,truth:L(`Mit csinálnál velem most, ha nem kellene játszanunk? Mondd el mocskosan, részletesen.
 Mi a legperverzebb dolog, amit valaha meg akartál csinálni velem?
-Pontosan hogyan akarsz ma éjjel elélvezni?
-Mi indít be jobban: ha nyalnak, vagy ha dugnak?
-Melyik pózban a legjobb, amikor dugunk?
-Mi volt a legmocskosabb szex az életedben? Részleteket kérek.
-Mire gondoltál utoljára, amikor magadhoz nyúltál?
-Hányszor nyúltál magadhoz rám gondolva az elmúlt héten?
+Pontosan hogyan akarsz ma éjjel elélvezni? #testnedv
+Mi indít be jobban: ha nyalnak, vagy ha dugnak? #oral
+Melyik pózban a legjobb, amikor dugunk? #pozicio
+Mi volt a legmocskosabb szex az életedben? Részleteket kérek. #mult
+Mire gondoltál utoljára, amikor magadhoz nyúltál? #erintes
+Hányszor nyúltál magadhoz rám gondolva az elmúlt héten? #erintes
 Mit mondjak a füledbe, miközben dugunk? Mondd ki szó szerint.
-Melyik testrészemet nyalnád a legszívesebben, és meddig bírnád?
+Melyik testrészemet nyalnád a legszívesebben, és meddig bírnád? #oral
 Mi a legbetegebb fantáziád, amit még senkinek sem mertél elmondani?
-Egy tízes skálán milyen durván bánjak veled? És mit jelent nálad a tízes?
-Hová élvezzek a legszívesebben? Mondd ki.
-Milyen szexvideót vennél fel kettőnkről, és mi lenne a címe?
+Egy tízes skálán milyen durván bánjak veled? És mit jelent nálad a tízes? #fajdalom
+Hová élvezzek a legszívesebben? Mondd ki. #testnedv
+Milyen szexvideót vennél fel kettőnkről, és mi lenne a címe? #foto
 Melyik pornókategóriát nézed a legtöbbet, amikor egyedül vagy?
-Mit csinálnál velem, ha egy éjszakára a játékszered lennék?
-Mennyire erősen húzhatom a hajad, és hányat paskolhatok a seggedre?
-Hol nyaltál vagy dugtál a legnagyobb lebukásveszélyben?
-Milyen szexjátékot próbálnál ki rajtam elsőként, és hogyan?
+Mit csinálnál velem, ha egy éjszakára a játékszered lennék? #kotozes
+Mennyire erősen húzhatom a hajad, és hányat paskolhatok a seggedre? #fajdalom
+Hol nyaltál vagy dugtál a legnagyobb lebukásveszélyben? #oral #mult
+Milyen szexjátékot próbálnál ki rajtam elsőként, és hogyan? #jatekszer
 Ha ma éjjel minden kérésedre igent mondanék, mi lenne az első három?
-Milyen hangosan akarod hallani, ahogy élvezek?
-Inkább könyörögnél, hogy megdugjalak, vagy parancsolnál?
+Milyen hangosan akarod hallani, ahogy élvezek? #testnedv
+Inkább könyörögnél, hogy megdugjalak, vagy parancsolnál? #kotozes
 Mondd ki háromszor egymás után a legmocskosabb szót, ami beindít.
-Mit kennél rám, hogy aztán lenyald?`),dare:L(`Súgd a másik fülébe, pontosan hogyan fogod megdugni ma éjjel.
-Vedd le a fogaddal a másik alsóneműjét.
-Nyald végig a másik testét a nyakától a köldöke aláig.
-Nyúlj magadhoz a ruhádon keresztül fél percig, miközben a másik néz.
-Lovagolj a másik ölében egy percig, ruhában.
-Vetkőzz meztelenre, és maradj így a következő három körben.
+Mit kennél rám, hogy aztán lenyald? #oral`),dare:L(`Súgd a másik fülébe, pontosan hogyan fogod megdugni ma éjjel.
+Vedd le a fogaddal a másik alsóneműjét. #meztelen
+Nyald végig a másik testét a nyakától a köldöke aláig. #oral
+Nyúlj magadhoz a ruhádon keresztül fél percig, miközben a másik néz. #erintes ~30
+Lovagolj a másik ölében egy percig, ruhában. #erintes #pozicio ~60
+Vetkőzz meztelenre, és maradj így a következő három körben. #meztelen
 Nyögd el hangosan, ahogy elélvezel.
-Csókold és nyald a másik combjának belső oldalát egy percig.
-Mondd el szó szerint, hogyan nyalnád ki vagy szopnád le.
-Markold meg a másik seggét, és paskold meg háromszor.
-Harapj bele a másik fenekébe.
-Küldj a másiknak egy meztelen képet magadról, és nézze meg most rögtön.
-A másik egy percig bárhol megérinthet, ahol akar, ruha nélkül.
-Kösd be a másik szemét, és két percig csak a nyelved érhet hozzá.
-Helyezkedj el abban a pózban, amiben a legszívesebben dugnál most.
-Vetkőztessétek le egymást teljesen egy perc alatt.
-Szívj ki egy foltot a másik mellén vagy combján.
-Simogasd egy percig a másik lába közét, ruhán keresztül.
+Csókold és nyald a másik combjának belső oldalát egy percig. #oral ~60
+Mondd el szó szerint, hogyan nyalnád ki vagy szopnád le. #oral
+Markold meg a másik seggét, és paskold meg háromszor. #fajdalom
+Harapj bele a másik fenekébe. #fajdalom
+Küldj a másiknak egy meztelen képet magadról, és nézze meg most rögtön. #foto #meztelen
+A másik egy percig bárhol megérinthet, ahol akar, ruha nélkül. #erintes #meztelen ~60
+Kösd be a másik szemét, és két percig csak a nyelved érhet hozzá. #kotozes #oral ~120
+Helyezkedj el abban a pózban, amiben a legszívesebben dugnál most. #pozicio
+Vetkőztessétek le egymást teljesen egy perc alatt. #meztelen ~60
+Szívj ki egy foltot a másik mellén vagy combján. #fajdalom
+Simogasd egy percig a másik lába közét, ruhán keresztül. #erintes ~60
 Nézz a másik szemébe, és mondd: „Most azonnal meg akarlak baszni.”
-A következő kört a másik ölében, meztelenül játszod.
-Szopd meg lassan a másik ujjait, és közben nézz a szemébe.
-Kenj valamit a másik bőrére, és nyald le róla.
-A másik dönti el, mit veszel le, és hogyan mutatod meg magad neki.
-Kényeztesd a másikat a száddal ott, ahol ő kéri, két teljes percig.`)});
- P.match.push({id:'wishlist',name:'Mocskos kívánságlista · 18+',adult:true,items:L(`69 egészen az elélvezésig
-Elélvezés az arcomra
-Szájba élvezés és lenyelés
-Anális szex lassan, sok síkosítóval
-Kikötözve, teljesen kiszolgáltatva, stopszóval
-Fenékpaskolás, amíg ki nem pirul
-Hajhúzás dugás közben
-Egy éjszaka, amikor az egyikünk a másik szexrabszolgája, stopszóval
-Szexvideó felvétele és közös visszanézése
-Vibrátor, amíg többször el nem élvezek
+A következő kört a másik ölében, meztelenül játszod. #meztelen #erintes
+Szopd meg lassan a másik ujjait, és közben nézz a szemébe. #oral #erintes
+Kenj valamit a másik bőrére, és nyald le róla. #oral
+A másik dönti el, mit veszel le, és hogyan mutatod meg magad neki. #meztelen
+Kényeztesd a másikat a száddal ott, ahol ő kéri, két teljes percig. #oral ~120`)});
+ P.match.push({id:'wishlist',name:'Mocskos kívánságlista · 18+',adult:true,items:L(`69 egészen az elélvezésig #oral #testnedv
+Elélvezés az arcomra #testnedv @penisz
+Szájba élvezés és lenyelés #oral #testnedv @penisz
+Anális szex lassan, sok síkosítóval #anal
+Kikötözve, teljesen kiszolgáltatva, stopszóval #kotozes
+Fenékpaskolás, amíg ki nem pirul #fajdalom
+Hajhúzás dugás közben #fajdalom
+Egy éjszaka, amikor az egyikünk a másik szexrabszolgája, stopszóval #kotozes
+Szexvideó felvétele és közös visszanézése #foto
+Vibrátor, amíg többször el nem élvezek #jatekszer
 Közös pornónézés, aztán ugyanazt csináljuk
-Önkielégítés egymás előtt, végig szemkontaktussal
+Önkielégítés egymás előtt, végig szemkontaktussal #erintes
 Dugásmaraton reggelig
-Gyors dugás a konyhapulton, félig felöltözve
+Gyors dugás a konyhapulton, félig felöltözve #pozicio
 Mocskos beszéd és káromkodás az egész idő alatt
-Szerepjáték: két idegen, akik egy bárban szedik fel egymást
-Meztelen képek cseréje napközben
-Popsidugó egész este, aztán anális játék
-Dugás a tükör előtt, végig nézve magunkat
-Elélvezni csak engedéllyel, könyörgésig húzva
-Fenekelés kézzel vagy lapáttal
-Ébresztés úgy, hogy már nyalnak
-Kézbilincs és szemkötő egyszerre
-Szerepcsere strap-onnal`)});
- P.honest.push({id:'frank',name:'Szex, kertelés nélkül · 18+',adult:true,items:L(`Mit csinálok rosszul, amikor a számmal kényeztetlek? Mondd meg őszintén.
-Valójában mennyire durván szereted a szexet, és mit nem mertél még kérni?
-Milyen gyakran nyúlsz magadhoz, mivel, és mire gondolsz közben?
+Szerepjáték: két idegen, akik egy bárban szedik fel egymást #szerep
+Meztelen képek cseréje napközben #foto #meztelen
+Popsidugó egész este, aztán anális játék #anal #jatekszer
+Dugás a tükör előtt, végig nézve magunkat #pozicio
+Elélvezni csak engedéllyel, könyörgésig húzva #kotozes
+Fenekelés kézzel vagy lapáttal #fajdalom
+Ébresztés úgy, hogy már nyalnak #oral
+Kézbilincs és szemkötő egyszerre #kotozes
+Szerepcsere strap-onnal #anal #jatekszer #szerep`)});
+ P.honest.push({id:'frank',name:'Szex, kertelés nélkül · 18+',adult:true,items:L(`Mit csinálok rosszul, amikor a számmal kényeztetlek? Mondd meg őszintén. #oral
+Valójában mennyire durván szereted a szexet, és mit nem mertél még kérni? #fajdalom
+Milyen gyakran nyúlsz magadhoz, mivel, és mire gondolsz közben? #erintes
 Mi a legjobb érzés neked dugás közben, pontosan hol és hogyan?
-Melyik pózban érzed a legmélyebben, és miért kéred ritkán?
-Mennyire izgat az anál, és melyik oldalon?
-Hová szeretnéd, hogy élvezzek, és mi az, ami kiábrándít?
+Melyik pózban érzed a legmélyebben, és miért kéred ritkán? #pozicio
+Mennyire izgat az anál, és melyik oldalon? #anal
+Hová szeretnéd, hogy élvezzek, és mi az, ami kiábrándít? #testnedv
 Milyen mocskos szavakat akarsz hallani dugás közben? Mondd ki őket.
-Gondoltál már hármasra, vagy arra, hogy valaki néz minket? Mennyire komolyan?
+Gondoltál már hármasra, vagy arra, hogy valaki néz minket? Mennyire komolyan? #harmadik
 Milyen pornót nézel, és melyik jelenetet csinálnád meg velem?
-Mit csinált egy korábbi partnered jobban az ágyban, mint én?
+Mit csinált egy korábbi partnered jobban az ágyban, mint én? #mult
 Megjátszottad már, hogy elélvezel? Velem is?
-Hol a legérzékenyebb a tested ott, ahol még nem nyaltalak elég sokáig?
-Szereted, ha leszorítalak, lefoglak és nem engedlek?
-Mit csinálnál velem, ha egy egész estére a szexrabszolgád lennék?
-Milyen szexjátékot rendelnénk ma este, ha holnapra kihoznák?
+Hol a legérzékenyebb a tested ott, ahol még nem nyaltalak elég sokáig? #oral
+Szereted, ha leszorítalak, lefoglak és nem engedlek? #kotozes
+Mit csinálnál velem, ha egy egész estére a szexrabszolgád lennék? #kotozes
+Milyen szexjátékot rendelnénk ma este, ha holnapra kihoznák? #jatekszer
 Mikor indultál be tőlem a legjobban, és mit éreztél a testedben?
 Mitől lohad le a kedved dugás közben?
-Csinálnánk pornót magunkról? Mi kerülne bele, és hogyan vigyáznánk rá?
-Meddig kell kényeztetnem, hogy könyörögj?
+Csinálnánk pornót magunkról? Mi kerülne bele, és hogyan vigyáznánk rá? #foto
+Meddig kell kényeztetnem, hogy könyörögj? #kotozes
 Milyen szavakat szeretsz a nemi szervedre, és melyiket utálod?
 Hányszor dugnál egy héten, ha semmi sem akadályozna?
 Mit csináljak veled gátlástalanabbul?
@@ -546,127 +553,127 @@ Mi az a határ, amit akkor sem akarsz átlépni, ha nagyon be vagy indulva?`)});
 
 /* Mocskos 18+ csomagok bővítése: durvább, szélsőségesebb kártyák. Minden passzolható, a stopszó mindig érvényes. */
 (() => {
- const L=s=>s.trim().split('\n').map(x=>x.trim()).filter(Boolean),P=window.PAIR_PACKS,pack=(game,id)=>P[game].find(p=>p.id===id);
+ const L=window.PAIR_LINES,P=window.PAIR_PACKS,pack=(game,id)=>P[game].find(p=>p.id===id);
  pack('radar','fire').items.push(
- ['Kötözésnél inkább…','Kéz a hátam mögött','Kéz az ágy támlájához'],
- ['A szemkötő alatt inkább…','Csókokat várnék','Harapásokat várnék'],
- ['Paskoláskor…','Én számolom hangosan','Te számolod helyettem'],
- ['Az irányításnál inkább…','Parancsokat adnék','Parancsokat követnék'],
- ['Egy éjszakára inkább…','A szexrabszolgád lennék','A gazdád lennék'],
- ['Elélvezés előtt…','Én könyörögjek érte','Te könyörögj érte'],
- ['Az anál…','Lassan, ujjal kezdve','Játékszerrel kezdve'],
- ['Elélvezéskor inkább…','A számba','A testemre'],
- ['Dugás közben…','Fogd le a csuklóm','Markold a fenekem'],
- ['A mocskos szavak közül…','Hívj a mocskos kis játékszerednek','Mondd, hogy csak a tiéd vagyok'],
- ['Egy játékszer…','Távirányítós vibrátor','Popsidugó'],
- ['Videóra vennél minket…','Csak a testünket','Mindent, az arcunkat is'],
- ['Az elélvezések…','Egy, de robbanó','Sorozatban, amíg bírom'],
+ ['Kötözésnél inkább…','Kéz a hátam mögött','Kéz az ágy támlájához',{tags:['kotozes']}],
+ ['A szemkötő alatt inkább…','Csókokat várnék','Harapásokat várnék',{tags:['kotozes','fajdalom']}],
+ ['Paskoláskor…','Én számolom hangosan','Te számolod helyettem',{tags:['fajdalom']}],
+ ['Az irányításnál inkább…','Parancsokat adnék','Parancsokat követnék',{tags:['kotozes']}],
+ ['Egy éjszakára inkább…','A szexrabszolgád lennék','A gazdád lennék',{tags:['kotozes']}],
+ ['Elélvezés előtt…','Én könyörögjek érte','Te könyörögj érte',{tags:['kotozes']}],
+ ['Az anál…','Lassan, ujjal kezdve','Játékszerrel kezdve',{tags:['anal','jatekszer']}],
+ ['Elélvezéskor inkább…','A számba','A testemre',{tags:['oral','testnedv'],body:'penisz'}],
+ ['Dugás közben…','Fogd le a csuklóm','Markold a fenekem',{tags:['kotozes','erintes']}],
+ ['A mocskos szavak közül…','Hívj a mocskos kis játékszerednek','Mondd, hogy csak a tiéd vagyok',{tags:['kotozes']}],
+ ['Egy játékszer…','Távirányítós vibrátor','Popsidugó',{tags:['anal','jatekszer']}],
+ ['Videóra vennél minket…','Csak a testünket','Mindent, az arcunkat is',{tags:['foto']}],
+ ['Az elélvezések…','Egy, de robbanó','Sorozatban, amíg bírom',{tags:['testnedv']}],
  ['Dugás után…','Azonnal még egy','Lassú kényeztetés'],
- ['Szerepjátékban inkább…','Főnök és beosztott','Idegenek egy szállodában'],
- ['Kikötve…','Csak kényeztess','Kínozz az elélvezésig'],
- ['Tükör előtt dugva…','Én nézem, ahogy dugsz','Te nézed, ahogy élvezek'],
- ['Lefogva lenni…','Imádnám','Nem nekem való'],
- ['Az alsóneműm…','Tépd le rólam','Hagyd rajtam végig'],
- ['Egy durva éjszaka után…','Nyomok a bőrömön','Semmi nyom'],
- ['Előjáték helyett…','Falhoz nyomva','Ágyra dobva'],
+ ['Szerepjátékban inkább…','Főnök és beosztott','Idegenek egy szállodában',{tags:['szerep']}],
+ ['Kikötve…','Csak kényeztess','Kínozz az elélvezésig',{tags:['kotozes','fajdalom']}],
+ ['Tükör előtt dugva…','Én nézem, ahogy dugsz','Te nézed, ahogy élvezek',{tags:['pozicio']}],
+ ['Lefogva lenni…','Imádnám','Nem nekem való',{tags:['kotozes']}],
+ ['Az alsóneműm…','Tépd le rólam','Hagyd rajtam végig',{tags:['meztelen']}],
+ ['Egy durva éjszaka után…','Nyomok a bőrömön','Semmi nyom',{tags:['fajdalom']}],
+ ['Előjáték helyett…','Falhoz nyomva','Ágyra dobva',{tags:['pozicio']}],
  ['Mocskos beszéd közben…','Mondd el, mit csinálsz velem','Mondasd ki velem, mit akarok'],
  ['A szex hangja…','Csattanások','Nyögések'],
  ['Ha két óránk lenne…','Egy órás előjáték','Két óra dugás']
  );
  const naughty=pack('truth','naughty');
- naughty.truth.push(...L(`Mi a legdurvább, amit valaha kipróbáltál az ágyban, és megcsinálnád velem is?
-Milyen nyomot hagynál szívesen a testemen?
+ naughty.truth.push(...L(`Mi a legdurvább, amit valaha kipróbáltál az ágyban, és megcsinálnád velem is? #fajdalom #mult
+Milyen nyomot hagynál szívesen a testemen? #fajdalom
 Minek hívjalak dugás közben?
-Hányszor tudnál egymás után elélvezni, ha nem állnék le?
-Mit csinálnál velem, ha kikötnélek, és két órád lenne?
-Hogyan büntetnél meg az ágyban, ha rossz voltam?
-Melyik testrészemet kötnéd ki vagy fognád le a legszívesebben?
+Hányszor tudnál egymás után elélvezni, ha nem állnék le? #testnedv
+Mit csinálnál velem, ha kikötnélek, és két órád lenne? #kotozes
+Hogyan büntetnél meg az ágyban, ha rossz voltam? #kotozes #fajdalom
+Melyik testrészemet kötnéd ki vagy fognád le a legszívesebben? #kotozes
 Mi az a mocskos dolog, amit szégyellsz, hogy beindít?
-Mennyire izgatna, ha egy egész estére megtagadnám tőled az elélvezést?
-Melyik játékszert használnád rajtam először, és hol?
+Mennyire izgatna, ha egy egész estére megtagadnám tőled az elélvezést? #kotozes
+Melyik játékszert használnád rajtam először, és hol? #jatekszer
 Mi a legperverzebb dolog, amit valaha velem csináltál?
-Mit akarsz, hogy könyörögjek, mielőtt megkapom?
-Milyen szerepjátékba mennél bele velem, amibe senki mással nem?
-Hol nem dugtunk még a lakásban, pedig kellene?
+Mit akarsz, hogy könyörögjek, mielőtt megkapom? #kotozes
+Milyen szerepjátékba mennél bele velem, amibe senki mással nem? #szerep
+Hol nem dugtunk még a lakásban, pedig kellene? #pozicio
 Hogyan ébresszelek fel holnap reggel?
 Melyik pornójelenet jut eszedbe rólunk?
-Mennyire szereted, ha karmolás, harapás vagy szívásnyom marad rajtad?
-Mit éreznél, ha végignéznéd, ahogy magamhoz nyúlok?
-Mit csinálnál velem, ha egy estére a szexrabszolgád lennék?
+Mennyire szereted, ha karmolás, harapás vagy szívásnyom marad rajtad? #fajdalom
+Mit éreznél, ha végignéznéd, ahogy magamhoz nyúlok? #erintes
+Mit csinálnál velem, ha egy estére a szexrabszolgád lennék? #kotozes
 Mi a legmocskosabb üzenet, amit munka közben szívesen kapnál tőlem?
-Halkan vagy üvöltve akarod hallani, ahogy elélvezek?
-Ha egy napig parancsolhatnál nekem, mi lenne az első utasításod?
+Halkan vagy üvöltve akarod hallani, ahogy elélvezek? #testnedv
+Ha egy napig parancsolhatnál nekem, mi lenne az első utasításod? #kotozes
 Mikor akartál a legjobban, de nem mutattad?
-Milyen mocskos szót kiáltanál, amikor elélvezel?`));
- naughty.dare.push(...L(`Kösd hátra a másik kezét egy sállal a következő kör végéig.
-Paskold meg ötször a másik fenekét. Ő számolja hangosan.
-Fogd le a másik csuklóját, és csókold, amíg ő nem szól, hogy elég.
-Vedd a szádba a másik ujjait, és mutasd meg, hogyan szopnál.
-Nyald végig a másik combjának belső oldalát az alsóneműje széléig.
-Térdelj le a másik elé, és várd az első utasítását.
-Mondd el részletesen, hogyan dugnál vele a konyhapulton.
-Vetkőztesd le a másikat teljesen, te pedig maradj felöltözve a következő körig.
-Harapd meg gyengéden a másik nyakát, és hagyj rajta kis nyomot, ha engedi.
-Nyúlj magadhoz meztelenül egy percig, miközben a másik szemébe nézel.
-Tedd a másik kezét oda, ahol most a legjobban vágysz rá.
-Ülj a másik arcára fél percig, ha ő is akarja.
-Szívd a másik mellbimbóját fél percig.
-Dörzsöld magad egy percig a másik combjához, mint aki nem bír magával.
-Adj a másiknak három parancsot, amit a következő percben teljesítenie kell.
-Kösd be a másik szemét, és érintsd meg valamivel, amit ki kell találnia.
-Húzz végig egy jégkockát a másik testén.
-Fektesd hasra a másikat, és csókold végig a gerincét a fenekéig.
+Milyen mocskos szót kiáltanál, amikor elélvezel? #testnedv`));
+ naughty.dare.push(...L(`Kösd hátra a másik kezét egy sállal a következő kör végéig. #kotozes
+Paskold meg ötször a másik fenekét. Ő számolja hangosan. #fajdalom
+Fogd le a másik csuklóját, és csókold, amíg ő nem szól, hogy elég. #kotozes #erintes
+Vedd a szádba a másik ujjait, és mutasd meg, hogyan szopnál. #oral
+Nyald végig a másik combjának belső oldalát az alsóneműje széléig. #oral
+Térdelj le a másik elé, és várd az első utasítását. #kotozes
+Mondd el részletesen, hogyan dugnál vele a konyhapulton. #pozicio
+Vetkőztesd le a másikat teljesen, te pedig maradj felöltözve a következő körig. #meztelen
+Harapd meg gyengéden a másik nyakát, és hagyj rajta kis nyomot, ha engedi. #fajdalom
+Nyúlj magadhoz meztelenül egy percig, miközben a másik szemébe nézel. #meztelen #erintes ~60
+Tedd a másik kezét oda, ahol most a legjobban vágysz rá. #erintes
+Ülj a másik arcára fél percig, ha ő is akarja. #oral ~30
+Szívd a másik mellbimbóját fél percig. #oral ~30
+Dörzsöld magad egy percig a másik combjához, mint aki nem bír magával. #erintes ~60
+Adj a másiknak három parancsot, amit a következő percben teljesítenie kell. #kotozes
+Kösd be a másik szemét, és érintsd meg valamivel, amit ki kell találnia. #kotozes
+Húzz végig egy jégkockát a másik testén. #fajdalom
+Fektesd hasra a másikat, és csókold végig a gerincét a fenekéig. #erintes
 Mondd ki kertelés nélkül, mit csináljon veled a másik ma éjjel.
-Nyald meg a másik fülét, és súgd bele a kedvenc mocskos szavadat.
-A másik kiválaszt egy testrészedet, és két percig úgy kényezteti, ahogy akarja.
-Hajolj előre, és hagyd, hogy a másik nézzen, ameddig akar.
-Csókold meg a másikat a lába között, a ruhán keresztül.
-Kényeztessétek egymást egyszerre a kezetekkel egy percig.`));
- pack('match','wishlist').items.push(...L(`Kikötés az ágyhoz széttárt kézzel-lábbal, stopszóval
-Szemkötő és fülhallgató egyszerre, teljes kiszolgáltatottság
-Egy egész nap, amikor az egyikünk a másik szexrabszolgája
-Elélvezés tiltása napokig, aztán egy robbanó este
-Távirányítós vibrátor egy otthoni este alatt
-Játékszer és kéz egyszerre
-Fenekelés, amíg nyomot nem hagy
-Harapás-, karmolás- és szívásnyomok
-Arcra ülés
-Mély torok lassan, szünetekkel
-Anális szex dildóval vagy strap-onnal
+Nyald meg a másik fülét, és súgd bele a kedvenc mocskos szavadat. #oral
+A másik kiválaszt egy testrészedet, és két percig úgy kényezteti, ahogy akarja. #erintes ~120
+Hajolj előre, és hagyd, hogy a másik nézzen, ameddig akar. #meztelen
+Csókold meg a másikat a lába között, a ruhán keresztül. #oral #erintes
+Kényeztessétek egymást egyszerre a kezetekkel egy percig. #erintes ~60`));
+ pack('match','wishlist').items.push(...L(`Kikötés az ágyhoz széttárt kézzel-lábbal, stopszóval #kotozes
+Szemkötő és fülhallgató egyszerre, teljes kiszolgáltatottság #kotozes
+Egy egész nap, amikor az egyikünk a másik szexrabszolgája #kotozes
+Elélvezés tiltása napokig, aztán egy robbanó este #kotozes
+Távirányítós vibrátor egy otthoni este alatt #jatekszer
+Játékszer és kéz egyszerre #jatekszer
+Fenekelés, amíg nyomot nem hagy #fajdalom
+Harapás-, karmolás- és szívásnyomok #fajdalom
+Arcra ülés #oral
+Mély torok lassan, szünetekkel #oral
+Anális szex dildóval vagy strap-onnal #anal #jatekszer
 Elélvezés egymás után, amíg bírom
-Dugás egy előre megírt, durva forgatókönyv szerint
-Megalázó mocskos beszéd, előre megbeszélt határokkal
-Nyakörv és póráz otthon
-Popsidugó egész nap, este anál
-Szexvideó egy egész éjszakáról
-Fantáziálás egy hármasról, csak szavakban
-Kézbilincs és szemkötő a zuhany alatt
-Jégkocka és masszázsgyertya felváltva
-Ágyhoz kötve dugni, elélvezés-tiltással
-Dugás a nappali padlóján
-Egymás arcára élvezni
-Kutyapóz hajhúzással`));
- pack('honest','frank').items.push(...L(`Milyen durvaságot élveznél, amit még soha nem mertél kérni?
-Mennyire izgat, ha megaláznak az ágyban, és hol a határ?
-Van „elvevős” fantáziád? Milyen határokkal és stopszóval beszélnénk róla biztonságosan?
-Mit jelentene neked, ha egy estére teljesen átadnád az irányítást?
-Mit jelentene neked, ha egy estére teljesen te irányítanál?
+Dugás egy előre megírt, durva forgatókönyv szerint #szerep #fajdalom
+Megalázó mocskos beszéd, előre megbeszélt határokkal #kotozes
+Nyakörv és póráz otthon #kotozes
+Popsidugó egész nap, este anál #anal #jatekszer
+Szexvideó egy egész éjszakáról #foto
+Fantáziálás egy hármasról, csak szavakban #harmadik
+Kézbilincs és szemkötő a zuhany alatt #kotozes
+Jégkocka és masszázsgyertya felváltva #fajdalom
+Ágyhoz kötve dugni, elélvezés-tiltással #kotozes
+Dugás a nappali padlóján #pozicio
+Egymás arcára élvezni #testnedv @penisz
+Kutyapóz hajhúzással #fajdalom #pozicio`));
+ pack('honest','frank').items.push(...L(`Milyen durvaságot élveznél, amit még soha nem mertél kérni? #fajdalom
+Mennyire izgat, ha megaláznak az ágyban, és hol a határ? #kotozes
+Van „elvevős” fantáziád? Milyen határokkal és stopszóval beszélnénk róla biztonságosan? #kotozes
+Mit jelentene neked, ha egy estére teljesen átadnád az irányítást? #kotozes
+Mit jelentene neked, ha egy estére teljesen te irányítanál? #kotozes
 Melyik a legdurvább pornó, amit izgatónak találtál?
-Mennyire fontosak neked a nyomok szex után, és hol látszódhatnak?
-Mit gondolsz a mély torokról?
-Mennyire izgat, ha a testnedveinkről beszélünk szex közben?
+Mennyire fontosak neked a nyomok szex után, és hol látszódhatnak? #fajdalom
+Mit gondolsz a mély torokról? #oral
+Mennyire izgat, ha a testnedveinkről beszélünk szex közben? #testnedv
 Van olyan fantáziád, amit undorítónak tartasz, mégis beindít?
 Milyen stopszót választanál, és mit tegyek, ha kimondod?
-Mennyire érdekel a nyakörv, a póráz, a gazda és szolga játék?
+Mennyire érdekel a nyakörv, a póráz, a gazda és szolga játék? #kotozes
 Mi segítene, hogy hangosabb legyél szex közben?
 Melyik testrészedet szégyelled, mégis szeretnéd, ha többet foglalkoznék vele?
-A hármas gondolata valódi vágy nálad, vagy csak fantázia?
+A hármas gondolata valódi vágy nálad, vagy csak fantázia? #harmadik
 Hányszor élveztél el a legtöbbször egy nap alatt?
 Milyen gyakran gondolsz napközben arra, hogy velem szexelsz?
-Mit gondolsz a fenékjátékokról nálad és nálam?
-Melyik szexjáték van a kívánságlistádon, amit még nem mertél megvenni?
+Mit gondolsz a fenékjátékokról nálad és nálam? #anal
+Melyik szexjáték van a kívánságlistádon, amit még nem mertél megvenni? #jatekszer
 Mire van szükséged egy durva este után: ölelésre, csendre, beszélgetésre?
-Mennyire szereted, ha könyörgök neked?
+Mennyire szereted, ha könyörgök neked? #kotozes
 Volt, hogy túl messzire mentem? Mit csináljak másképp?
 Mit tennénk, ha egy fantáziád megvalósulna, és mégsem tetszene?
 Hogyan beszéljünk a határainkról úgy, hogy közben ne lohadjon le a kedvünk?`));
