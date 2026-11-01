@@ -14,17 +14,17 @@ let count=0;function ok(value,message){assert(value,message);count++;console.log
  const context=await browser.newContext({viewport:{width,height:900}}),page=await context.newPage(),errors=[],external=[];
  page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>{if(!r.url().startsWith(origin)&&!r.url().startsWith('data:'))external.push(r.url());});page.on('dialog',d=>d.accept());
  await page.goto(origin+'/paros/');await page.waitForSelector('.game');
- ok(await page.locator('.game').count()===11,`${width}px: eleven separate pair games`);
+ ok(await page.locator('.game').count()===13,`${width}px: thirteen separate pair games`);
  ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`${width}px: home fits viewport`);
- if(width===320)ok(await page.evaluate(()=>document.documentElement.scrollHeight<=3600&&document.querySelector('.game').getBoundingClientRect().height<=160),'320px: compact game cards keep the home page short');
+ if(width===320)ok(await page.evaluate(()=>document.documentElement.scrollHeight<=3900&&document.querySelector('.game').getBoundingClientRect().height<=160),'320px: compact game cards keep the home page short');
  ok(await page.evaluate(()=>{updateReady=true;render();const shown=!!document.querySelector('.update-banner');updateReady=false;render();return shown;}),`${width}px: an update banner can be shown on the home page`);
- for(const mode of ['closer','radar','truth','match','honest','quiz','memories','future','bucket','spin','scene']){await page.evaluate(m=>go(m),mode);ok(await page.locator('h1').innerText()!==''&&await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`${mode} setup and layout`);}
- ok(await page.evaluate(()=>cardCount()===636),'all 636 base and extra cards counted once');
+ for(const mode of ['closer','radar','truth','match','honest','quiz','memories','future','bucket','spin','scene','dice','wish']){await page.evaluate(m=>go(m),mode);ok(await page.locator('h1').innerText()!==''&&await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`${mode} setup and layout`);}
+ ok(await page.evaluate(()=>cardCount()===804),'all 804 base and extra cards counted once');
  ok(await page.evaluate(()=>Object.keys(GAMES).every(k=>packsFor(k).every(p=>[...(p.items||[]),...(p.truth||[]),...(p.dare||[])].every(c=>typeof c.t==='string'&&c.t&&[1,2,3].includes(c.lvl)&&c.tags.every(t=>TAGS.has(t))&&(!c.opts||c.opts.length===2))))),'every card normalises with text, level and known tags');
  ok(await page.evaluate(()=>window.PAIR_LINES('Csókold meg tíz másodpercig. ~10 #erintes !3\nSima sor').every((c,i)=>i?c==='Sima sor':c.t==='Csókold meg tíz másodpercig.'&&c.sec===10&&c.lvl===3&&c.tags[0]==='erintes')),'card line markers parse and strip correctly');
  ok(await page.evaluate(()=>{const cards=Object.keys(GAMES).filter(k=>k!=='scene').flatMap(k=>packsFor(k)).filter(p=>p.lvl===3).flatMap(p=>[...(p.items||[]),...(p.truth||[]),...(p.dare||[])]);const txt=c=>[c.t,...(c.opts||[])].join(' ');
   const guard=[[/\banál|popsidugó|fenékjáték/i,'anal'],[/fotó|videó|képet|képek/i,'foto'],[/hármas/i,'harmadik'],[/kötöz|kikötö|bilincs|nyakörv|rabszolg/i,'kotozes'],[/paskol|fenekel|harap|karmol/i,'fajdalom']];
-  return cards.length===240&&cards.every(c=>guard.every(([re,tag])=>!re.test(txt(c))||c.tags.includes(tag)));}),'spicy cards carry the limit tags their text implies');
+  return cards.length===360&&cards.every(c=>guard.every(([re,tag])=>!re.test(txt(c))||c.tags.includes(tag)));}),'spicy cards carry the limit tags their text implies');
  ok(await page.evaluate(()=>Object.keys(GAMES).flatMap(k=>packsFor(k)).flatMap(p=>[...(p.items||[]),...(p.dare||[])]).filter(c=>/(egy|két|fél|tíz) (teljes )?(percig|másodpercig)/.test(c.t)&&/^(Nyúlj|Lovagolj|Csókold|A másik|Kösd|Vetkőztessétek|Simogasd|Kényeztes|Ülj|Szívd|Dörzsöld|Nyúlj)/.test(c.t)).every(c=>c.sec>0)),'timed spicy dares carry a duration');
  ok(await page.evaluate(()=>{const l=packsFor('closer')[0].items.map(c=>c.lvl);return [1,2,3].every(v=>l.filter(x=>x===v).length===12);}),'closer cards are split into three intensity levels');
  await page.evaluate(()=>{run=null;adult=false;go('radar');});await page.selectOption('#round-length','4');await page.selectOption('#pack-select','chemistry');
@@ -43,7 +43,7 @@ let count=0;function ok(value,message){assert(value,message);count++;console.log
  await page.evaluate(()=>{run=null;adult=false;Object.keys(packChoice).forEach(k=>delete packChoice[k]);Object.keys(roundChoice).forEach(k=>delete roundChoice[k]);go('home');});
  await page.evaluate(()=>go('home'));const heroH=await page.locator('.hero-actions .btn.primary').evaluate(e=>e.getBoundingClientRect().height);ok(heroH>=44&&heroH<=60,`${width}px: hero button has a normal height (${heroH})`);
  const entry=await page.locator('.adult-entry').boundingBox();ok(entry.height>=44&&entry.width>=44,`${width}px: 18+ entry is a real touch target`);
- await page.getByRole('button',{name:'18+ játékok és mocskos csomagok',exact:true}).click();ok(await page.locator('.game').count()===6,'adult filter includes adult packs without locking their base game');
+ await page.getByRole('button',{name:'18+ játékok és mocskos csomagok',exact:true}).click();ok(await page.locator('.game').count()===8,'adult filter includes adult packs without locking their base game');
  ok(await page.locator('.adult-banner').isVisible()&&(await page.locator('.game[href="#truth"]').innerText()).includes('Mocskos'),'adult filter names the spicy packs');
  await page.locator('.game[href="#truth"]').click();ok(await page.locator('#pack-select').inputValue()==='naughty','adult filter preselects the spicy pack');
  await page.evaluate(()=>{filter='all';Object.keys(packChoice).forEach(k=>delete packChoice[k]);go('truth');});ok(await page.locator('#pack-select').inputValue()==='base','other filters keep the base pack');
@@ -55,7 +55,7 @@ let count=0;function ok(value,message){assert(value,message);count++;console.log
  await page.evaluate(()=>{start('truth',true,24,'naughty');while(run&&run.phase==='limits-cover'){A.openLimits();A.limitsDone();}for(let i=0;i<24;i++){A.draw(i%2?'dare':'truth');A.next();}render();});ok(await page.evaluate(()=>run.phase==='result'&&run.count===24),'long pajzán truth round has enough prompts');
  await page.evaluate(()=>{run=null;adult=false;});
  await page.evaluate(()=>{run=null;start('memories',false,6);for(let i=0;i<6;i++)A.next();A.restart();render();});ok(await page.evaluate(()=>run.deck.length===6),'restart preserves the selected round length');await page.evaluate(()=>{run=null;});
- await page.goto(origin+'/paros/#__proto__');ok(await page.locator('.game').count()===11,'invalid prototype hash safely falls back to home');
+ await page.goto(origin+'/paros/#__proto__');ok(await page.locator('.game').count()===13,'invalid prototype hash safely falls back to home');
  await page.evaluate(()=>{adult=false;start('match',false);});ok(await page.evaluate(()=>run===null),'18+ cannot start without confirmation');
  await page.evaluate(()=>go('match'));await page.locator('form[data-a="start"] input[type="checkbox"]').check();await page.locator('form[data-a="start"] button').click();
  ok(await page.locator('.privacy').count()===1,'private handoff covers first answers');
@@ -86,7 +86,7 @@ let count=0;function ok(value,message){assert(value,message);count++;console.log
  ok(!/Anál|Fotó|Fájdalom/.test(await page.locator('#app').innerText()),'limits are not revealed during play');
  await page.evaluate(()=>{A.clear();start('match',true,4,'wishlist');A.openLimits();A.limit('anal');hide();masked=false;render();});
  ok(await page.evaluate(()=>run.phase==='limits-cover'&&run.draft.size===0),'veil drops an unfinished limits choice');
- await page.evaluate(()=>{A.clear();start('match',true,12,'wishlist');for(const p of [0,1]){A.openLimits();LIMITS.forEach(([id])=>A.limit(id));A.limitsDone();}render();});
+ await page.evaluate(()=>{A.clear();start('match',true,12,'wishlist');for(const p of [0,1]){A.openLimits();LIMITS.forEach(([id])=>A.limit(id));run.draft.add('erintes');run.draft.add('pozicio');A.limitsDone();}render();});
  ok(await page.evaluate(()=>run.short&&run.deck.length<12)&&(await page.locator('#app').innerText()).includes('A határaitok miatt'),'tight limits shorten the round and say so');
  await page.evaluate(()=>{A.clear();start('honest',true,6,'frank');A.openLimits();A.limitsDone();A.openLimits();A.limitsDone();render();});
  const haltBox=await page.locator('[data-a="halt"]').boundingBox();ok(haltBox&&haltBox.height>=44,'Állj is visible and touchable in adult rounds');
@@ -145,6 +145,21 @@ let count=0;function ok(value,message){assert(value,message);count++;console.log
  ok(await page.locator('.scene-detail li').count()===4&&(await page.locator('.scene-detail').innerText()).includes('Kezdőmondat'),'a roleplay scene shows roles, place, opener and twist');
  ok(await page.evaluate(()=>{A.clear();start('scene',true,1);A.openLimits();A.limit('szerep');A.limitsDone();A.openLimits();A.limitsDone();return run.phase==='empty';}),'excluding roleplay leaves no scene to play');
  await page.evaluate(()=>{A.clear();});
+ ok(await page.evaluate(()=>{A.clear();start('closer',false,6);render();A.follow();render();const f=run.follow;return typeof f==='string'&&FOLLOW[run.deck[0].lvl].includes(f)&&!!document.querySelector('.follow');}),'a follow-up question can be asked on a conversation card');
+ ok(await page.evaluate(()=>{A.follow();const a=run.follow;A.next();return a&&run.follow===null;}),'follow-ups reset on the next card');
+ ok(await page.evaluate(()=>{const ex=new Set(['oral']);return Array.from({length:500},()=>diceOnce(ex)).every(c=>c&&c.sec>=60&&!c.tags.includes('oral')&&/percig\.$/.test(c.t));}),'the position dice respects limits and always gives a duration');
+ ok(await page.evaluate(()=>{A.clear();adult=false;start('dice',false,6);if(run)return false;start('dice',true,6);A.openLimits();A.limitsDone();A.openLimits();A.limitsDone();return run.deck.length===6;}),'the position dice needs 18+ and builds a full round');
+ await page.evaluate(()=>{A.clear();start('wish',true);A.open();render();});
+ await page.selectOption('#wish-cat','2');await page.locator('#wish-text').fill('<i>Titkos</i> első');await page.locator('form[data-a="wishSave"] button').click();
+ await page.evaluate(()=>{A.open();render();});await page.selectOption('#wish-cat','2');await page.locator('#wish-text').fill('Második kívánság');await page.locator('form[data-a="wishSave"] button').click();
+ ok(await page.evaluate(()=>run.phase==='result'&&run.wishCat==='Szerepjáték'&&run.wishes===null)&&(await page.locator('#app').innerText()).includes('<i>Titkos</i> első'),'matching secret wishes are revealed as escaped text');
+ ok(await page.evaluate(()=>{A.clear();start('wish',true);A.open();run.phase='wish';const f=n=>({elements:{cat:{value:String(n)},text:{value:'kívánság '+n}}});A.wishSave(f(0));A.open();A.wishSave(f(5));return run.phase==='result'&&run.wishCat===null&&run.rows.length===0&&run.wishes===null;}),'different secret wishes stay hidden and are discarded');
+ ok(await page.evaluate(()=>{A.clear();start('truth',true,6,'spark',{score:true});A.draw('truth');A.next();A.draw('dare');A.next();A.draw('truth');A.pass();return run.points[0]===1&&run.points[1]===2;}),'score mode gives 1 for truth, 2 for dare and 0 for a pass');
+ ok(await page.evaluate(()=>{A.clear();const d=new Date();d.setMonth(d.getMonth()-26);const m=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;start('memories',false,6,'base',{since:m});const first=run.deck.slice(0,4).map(c=>c.t);return first.every(t=>t.includes('2 év és 2 hónap')||t.includes('következő évre'));}),'anniversary mode personalises the first memory cards');
+ ok(await page.evaluate(()=>{A.clear();start('closer',false,6,'valentin');return run.deck.length===6&&run.packName==='Valentin-nap';}),'occasion packs are playable');
+ ok(await page.evaluate(()=>{A.clear();start('closer',false,6);render();A.mood();render();const on=document.body.classList.contains('mood-light');A.mood();render();return on&&!document.body.classList.contains('mood-light');}),'mood light can be switched on and off during a round');
+ await page.evaluate(()=>{A.clear();go('settings');});ok((await page.locator('#app').innerText()).includes('Tedd a kezdőképernyőre'),'settings explain how to install the app');
+ await page.evaluate(()=>{A.clear();go('home');});
  // Background and return with a private response selected.
  await page.evaluate(()=>{A.clear();start('match',true);A.open();A.select('1');render();conceal();});ok(await page.locator('#app').innerText().then(t=>t.includes('A kör elrejtve')),'background veil hides an opened answer');
  await page.locator('[data-a="unmask"]').click();ok(await page.evaluate(()=>!masked&&run.phase==='cover'&&run.selected===null),'veil drops the pending choice and returns to the handoff screen');
@@ -161,9 +176,9 @@ let count=0;function ok(value,message){assert(value,message);count++;console.log
  const storage=await page.evaluate(()=>Object.fromEntries(Object.keys(localStorage).map(k=>[k,localStorage.getItem(k)])));ok(Object.keys(storage).every(k=>k==='paros.preferences.v1')&&!JSON.stringify(storage).includes('answers'),'only names are stored, separately from Társasest');
  await page.reload();ok(await page.evaluate(()=>run===null&&!adult),'reload clears private responses and adult confirmation');
  await page.evaluate(()=>go('home'));await page.locator('.game[href="#radar"]').click();await page.goBack();ok(await page.evaluate(()=>view==='home'),'browser Back navigates the standalone page');
- await page.evaluate(()=>navigator.serviceWorker.ready);await page.reload();await page.waitForFunction(()=>navigator.serviceWorker.controller);await context.setOffline(true);await page.reload();await page.evaluate(()=>go('home'));ok(await page.locator('.game').count()===11,'all eleven games available after offline reload');
+ await page.evaluate(()=>navigator.serviceWorker.ready);await page.reload();await page.waitForFunction(()=>navigator.serviceWorker.controller);await context.setOffline(true);await page.reload();await page.evaluate(()=>go('home'));ok(await page.locator('.game').count()===13,'all thirteen games available after offline reload');
  await page.evaluate(()=>start('radar',false));await page.locator('[data-a="open"]').click();ok(await page.locator('[data-a="select"]').count()===3,'offline play includes choices and pass');
- await page.evaluate(()=>{run=null;adult=false;start('radar',false,4,'chemistry');});ok(await page.evaluate(()=>run===null),'offline adult pack still requires confirmation');await page.evaluate(()=>{start('radar',true,4,'chemistry');A.open();render();});ok(await page.locator('[data-a="select"]').count()===3&&await page.evaluate(()=>run.packId==='chemistry'&&cardCount()===636),'all new pack data remains playable offline');
+ await page.evaluate(()=>{run=null;adult=false;start('radar',false,4,'chemistry');});ok(await page.evaluate(()=>run===null),'offline adult pack still requires confirmation');await page.evaluate(()=>{start('radar',true,4,'chemistry');A.open();render();});ok(await page.locator('[data-a="select"]').count()===3&&await page.evaluate(()=>run.packId==='chemistry'&&cardCount()===804),'all new pack data remains playable offline');
  if(width===320){await page.evaluate(()=>{run=null;go('home');});await page.screenshot({path:'/tmp/paros-home.png',fullPage:true});}
  ok(errors.length===0,`${width}px: no JavaScript errors: ${errors.join(';')}`);ok(external.length===0,`${width}px: no external requests or answer transmission`);
  await context.close();}

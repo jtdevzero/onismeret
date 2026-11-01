@@ -78,3 +78,9 @@ input:not([type=checkbox]),select{min-height:48px;max-width:100%}
 .fold summary{cursor:pointer;font-weight:650;min-height:44px;display:flex;align-items:center}
 .fold[open] summary{margin-bottom:14px}
 .fold .wizard{display:grid;gap:16px}
+.follow{margin:0;color:var(--rose);font-size:18px}
+.halt-row{gap:10px}
+body.mood-light{animation:mood-light 14s ease-in-out infinite alternate}
+@keyframes mood-light{from{background-color:#1d1420}to{background-color:#2a1426}}
+@media(prefers-reduced-motion:reduce){body.mood-light{animation:none;background-color:#24141f}}
+textarea{width:100%;min-width:0;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--text);padding:13px;font:inherit;resize:vertical}
