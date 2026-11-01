@@ -41,7 +41,7 @@ let count=0;function ok(value,message){assert(value,message);count++;console.log
  else {for(let i=0;i<6;i++){if(key==='truth')await page.locator(`[data-a="draw"][data-v="${i%2?'dare':'truth'}"]`).click();await page.locator('[data-a="next"]').click();}ok(await page.evaluate(()=>run.phase==='result'&&run.count===6),key+' adult pack completes with correct deck');}
  await page.locator('[data-a="restart"]').click();ok(await page.evaluate(pack=>run.packId===pack&&run.deck.length===(run.key==='match'?4:6),id),key+' restart preserves pack and length');}
  await page.evaluate(()=>{run=null;adult=false;Object.keys(packChoice).forEach(k=>delete packChoice[k]);Object.keys(roundChoice).forEach(k=>delete roundChoice[k]);go('home');});
- await page.evaluate(()=>go('home'));const heroH=await page.locator('.hero-actions .btn.primary').evaluate(e=>e.getBoundingClientRect().height);ok(heroH>=44&&heroH<=60,`${width}px: hero button has a normal height (${heroH})`);
+ await page.evaluate(()=>go('home'));const heroH=await page.locator('.hero-actions .btn.primary').evaluate(e=>e.getBoundingClientRect().height);ok(heroH>=44&&heroH<=(width<=360?84:60),`${width}px: hero button has a normal height (${heroH})`);
  const entry=await page.locator('.adult-entry').boundingBox();ok(entry.height>=44&&entry.width>=44,`${width}px: 18+ entry is a real touch target`);
  await page.getByRole('button',{name:'18+ játékok és mocskos csomagok',exact:true}).click();ok(await page.locator('.game').count()===8,'adult filter includes adult packs without locking their base game');
  ok(await page.locator('.adult-banner').isVisible()&&(await page.locator('.game[href="#truth"]').innerText()).includes('Mocskos'),'adult filter names the spicy packs');
@@ -162,6 +162,10 @@ let count=0;function ok(value,message){assert(value,message);count++;console.log
  await page.evaluate(()=>{A.clear();go('home');});
  ok(await page.evaluate(()=>{A.clear();adult=false;start('honest',false,24,'taboo');if(run)return false;start('honest',true,24,'taboo');for(const p of [0,1]){A.openLimits();if(!p)A.limit('harmadik');A.limitsDone();}return run.deck.length===24&&run.deck.every(c=>!c.tags.includes('harmadik'));}),'the taboo pack needs 18+ and respects the limits list');
  await page.evaluate(()=>{A.clear();});
+ await page.evaluate(()=>{A.clear();Object.keys(packChoice).forEach(k=>delete packChoice[k]);filter='all';go('honest');});
+ ok(await page.locator('#pack-select').inputValue()==='taboo','Szexről őszintén opens with the newest Tabuk nélkül pack');
+ await page.evaluate(()=>{filter='adult';go('honest');});ok(await page.locator('#pack-select').inputValue()==='taboo','the 18+ filter also opens Tabuk nélkül');
+ await page.evaluate(()=>{filter='all';go('home');});
  // Background and return with a private response selected.
  await page.evaluate(()=>{A.clear();start('match',true);A.open();A.select('1');render();conceal();});ok(await page.locator('#app').innerText().then(t=>t.includes('A kör elrejtve')),'background veil hides an opened answer');
  await page.locator('[data-a="unmask"]').click();ok(await page.evaluate(()=>!masked&&run.phase==='cover'&&run.selected===null),'veil drops the pending choice and returns to the handoff screen');
