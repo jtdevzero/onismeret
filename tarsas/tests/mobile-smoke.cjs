@@ -143,6 +143,16 @@ const path = require('node:path');
     const out=path.join('test-artifacts','planner-export.png');
     await download.saveAs(out);
     if(fs.statSync(out).size<1000)throw Error('Export PNG is empty');
+    // A service worker must control the page before going offline.
+    await page.evaluate(async()=>{if(!('serviceWorker' in navigator))throw Error('No service worker support');await navigator.serviceWorker.ready;});
+    await page.reload({waitUntil:'domcontentloaded'});
+    await page.waitForFunction(()=>!!navigator.serviceWorker.controller,{timeout:15000});
+    await page.context().setOffline(true);
+    try {
+      await page.reload({waitUntil:'domcontentloaded'});
+      const offlineText=await page.locator('#app').innerText();
+      if(!offlineText.includes('Én még soha'))throw Error('Offline restored planner missing game');
+    } finally {await page.context().setOffline(false);}
     console.log('PASS planner and session restore');
   }catch(e){failures.push('planner persistence: '+e.message);console.error('FAIL planner persistence',e.message);}
   finally{await page.close();}
