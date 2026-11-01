@@ -48,3 +48,5 @@ input:not([type=checkbox]),select{min-height:48px;max-width:100%}
 .hero-actions>.btn.adult-entry{background:transparent;border:1px solid var(--rose);color:var(--text);min-height:48px;padding:12px 18px;font-size:15px;font-weight:650;text-align:left}
 .adult-banner{border-left:3px solid var(--rose);padding:12px 14px;background:var(--panel);border-radius:12px;margin:0}
 .hero-actions>.btn:not(.primary):not(.adult-entry){min-height:44px}
+.halt-row{display:flex;justify-content:flex-end;margin-bottom:-8px}
+.halt-row .btn{min-height:44px;padding:8px 18px;border-color:var(--rose);background:transparent}

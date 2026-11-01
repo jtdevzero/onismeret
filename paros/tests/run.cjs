@@ -48,7 +48,7 @@ let count=0;function ok(value,message){assert(value,message);count++;console.log
  await page.evaluate(()=>{run=null;start('truth',true,24);A.draw('truth');for(let i=0;i<24;i++){A.next();if(run.phase==='talk')A.draw('truth');}render();});ok(await page.evaluate(()=>run.phase==='result'&&run.count===24),'long truth round has enough unique prompts');
  await page.evaluate(()=>{run=null;adult=false;});
  for(const [key,id] of [['radar','fire'],['truth','naughty'],['match','wishlist'],['honest','frank']]){await page.evaluate(([k,p])=>{run=null;adult=false;start(k,false,4,p);},[key,id]);ok(await page.evaluate(()=>run===null),key+' '+id+' pack requires 18+ confirmation');await page.evaluate(([k,p])=>{start(k,true,24,p);adult=false;run=null;},[key,id]);}
- await page.evaluate(()=>{start('truth',true,24,'naughty');for(let i=0;i<24;i++){A.draw(i%2?'dare':'truth');A.next();}render();});ok(await page.evaluate(()=>run.phase==='result'&&run.count===24),'long pajzán truth round has enough prompts');
+ await page.evaluate(()=>{start('truth',true,24,'naughty');while(run&&run.phase==='limits-cover'){A.openLimits();A.limitsDone();}for(let i=0;i<24;i++){A.draw(i%2?'dare':'truth');A.next();}render();});ok(await page.evaluate(()=>run.phase==='result'&&run.count===24),'long pajzán truth round has enough prompts');
  await page.evaluate(()=>{run=null;adult=false;});
  await page.evaluate(()=>{run=null;start('memories',false,6);for(let i=0;i<6;i++)A.next();A.restart();render();});ok(await page.evaluate(()=>run.deck.length===6),'restart preserves the selected round length');await page.evaluate(()=>{run=null;});
  await page.goto(origin+'/paros/#__proto__');ok(await page.locator('.game').count()===9,'invalid prototype hash safely falls back to home');
@@ -64,7 +64,7 @@ let count=0;function ok(value,message){assert(value,message);count++;console.log
  await page.evaluate(()=>{A.clear();start('radar',false);});
  for(const choice of [0,1]){await page.locator('[data-a="open"]').click();for(let i=0;i<8;i++){await page.locator(`[data-a="select"][data-v="${choice}"]`).click();await page.locator('[data-a="confirm"]').click();}}
  ok(await page.evaluate(()=>run.rows.length===8&&run.rows.every(r=>!r.same)),'radar compares both completed private sets');
- await page.evaluate(()=>{A.clear();start('radar',true,4,'fire');});
+ await page.evaluate(()=>{A.clear();start('radar',true,4,'fire');while(run&&run.phase==='limits-cover'){A.openLimits();A.limitsDone();}render();});
  for(const choice of [[0,0,1,1],[0,1,1,-1]]){await page.locator('[data-a="open"]').click();for(const n of choice){await page.locator(`[data-a="select"][data-v="${n}"]`).click();await page.locator('[data-a="confirm"]').click();}}
  ok(await page.evaluate(()=>run.rows.length===2&&run.rows.every(r=>r.shared&&!r.values)),'adult radar reveals only matching answers');
  ok(await page.evaluate(()=>run.answers.every(a=>a.length===0))&&(await page.locator('#app').innerText()).includes('Mindketten:'),'adult radar erases individual answers and shows the shared choice');
@@ -74,6 +74,25 @@ let count=0;function ok(value,message){assert(value,message);count++;console.log
  const scores=await page.evaluate(()=>run.scores.join(','));await page.evaluate(()=>A.confirm());ok(await page.evaluate(()=>run.scores.join(','))===scores,'repeated confirmation cannot duplicate quiz scores');
  for(const key of ['closer','honest']){await page.evaluate(k=>{A.clear();start(k,true);},key);ok(await page.evaluate(()=>new Set(run.deck).size===12),`${key}: non-repeating deck`);for(let i=0;i<12;i++)await page.locator('[data-a="next"]').click();ok(await page.evaluate(()=>run.phase==='result'&&run.count===12),`${key}: conversation completes without scoring`);}
  await page.evaluate(()=>{A.clear();start('truth',true);});await page.locator('[data-a="draw"][data-v="truth"]').click();ok(await page.evaluate(()=>typeof run.prompt?.t==='string'),'truth draws a question');await page.locator('[data-a="pass"]').click();await page.locator('[data-a="draw"][data-v="dare"]').click();ok(await page.evaluate(()=>run.kind==='dare'&&run.pos===1&&run.skipped===1),'pass switches player without penalty');await page.locator('[data-a="stop"]').click();
+ await page.evaluate(()=>{A.clear();start('truth',true,24,'naughty');render();});
+ ok(await page.locator('[data-a="openLimits"]').count()===1,'spicy rounds start with a private limits step');
+ for(const pick of [['anal'],['foto','fajdalom']]){await page.locator('[data-a="openLimits"]').click();for(const id of pick)await page.locator(`[data-a="limit"][data-v="${id}"]`).click();await page.locator('[data-a="limitsDone"]').click();}
+ ok(await page.evaluate(()=>run.phase==='talk'&&[...run.truth,...run.dare].length>0&&[...run.truth,...run.dare].every(c=>!c.tags.some(t=>['anal','foto','fajdalom'].includes(t)))),'excluded categories never reach the deck');
+ ok(await page.evaluate(()=>run.excluded===null&&run.draft===null),'per-player limits are discarded once the deck is built');
+ ok(!/Anál|Fotó|Fájdalom/.test(await page.locator('#app').innerText()),'limits are not revealed during play');
+ await page.evaluate(()=>{A.clear();start('match',true,4,'wishlist');A.openLimits();A.limit('anal');hide();masked=false;render();});
+ ok(await page.evaluate(()=>run.phase==='limits-cover'&&run.draft.size===0),'veil drops an unfinished limits choice');
+ await page.evaluate(()=>{A.clear();start('match',true,12,'wishlist');for(const p of [0,1]){A.openLimits();LIMITS.forEach(([id])=>A.limit(id));A.limitsDone();}render();});
+ ok(await page.evaluate(()=>run.short&&run.deck.length<12)&&(await page.locator('#app').innerText()).includes('A határaitok miatt'),'tight limits shorten the round and say so');
+ await page.evaluate(()=>{A.clear();start('honest',true,6,'frank');A.openLimits();A.limitsDone();A.openLimits();A.limitsDone();render();});
+ const haltBox=await page.locator('[data-a="halt"]').boundingBox();ok(haltBox&&haltBox.height>=44,'Állj is visible and touchable in adult rounds');
+ await page.locator('[data-a="halt"]').click();ok(await page.evaluate(()=>run.phase==='halt'),'Állj pauses the round');
+ await page.locator('[data-a="haltResume"]').click();ok(await page.evaluate(()=>run.phase==='talk'),'the round can continue after Állj');
+ await page.locator('[data-a="halt"]').click();await page.locator('[data-a="haltGentle"]').click();ok(await page.evaluate(()=>run.packId==='base'&&run.key==='honest'),'Állj can continue with the gentle base pack');
+ await page.evaluate(()=>{A.clear();start('closer',false,6);render();});ok(await page.locator('[data-a="halt"]').count()===0,'non-adult rounds have no Állj button');
+ await page.evaluate(()=>{A.clear();start('honest',true,6,'frank');A.openLimits();A.limitsDone();A.openLimits();A.limitsDone();render();});
+ await page.keyboard.press('Escape');ok(await page.evaluate(()=>masked)&&!(await page.locator('#app').innerText()).includes('Szexről'),'Escape veils without naming the game');
+ await page.evaluate(()=>{masked=false;A.clear();});
  // Background and return with a private response selected.
  await page.evaluate(()=>{A.clear();start('match',true);A.open();A.select('1');render();conceal();});ok(await page.locator('#app').innerText().then(t=>t.includes('A kör elrejtve')),'background veil hides an opened answer');
  await page.locator('[data-a="unmask"]').click();ok(await page.evaluate(()=>!masked&&run.phase==='cover'&&run.selected===null),'veil drops the pending choice and returns to the handoff screen');
