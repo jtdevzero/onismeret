@@ -11,7 +11,7 @@ const SHELL = [...HP, './', 'index.html', 'style.css?v=25', 'data.js?v=25', 'app
   'activity18/prompts.js', 'activity18/prompt-metadata.js', 'activity18/difficulty.js', 'activity18/custom-pack.js',
   'activity18/offline.js', 'activity18/sw.js', 'activity18/favicon.svg', 'activity18/manifest.webmanifest', 'activity18/icon.svg'];
 const scope = new URL(self.registration.scope);
-const childRoots = ['activity18/', 'homlok/', 'harry-potter/'].map(path => new URL(path, scope));
+const childRoots = ['activity18/', 'homlok/', 'harry-potter/', 'atkozott/'].map(path => new URL(path, scope));
 const indexURL = new URL('index.html', scope).href;
 self.addEventListener('install', e => {
   e.waitUntil((async () => {
