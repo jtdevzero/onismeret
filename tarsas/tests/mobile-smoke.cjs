@@ -136,6 +136,13 @@ const path = require('node:path');
     await page.locator('[data-a="nav"][data-v="evening"]').first().click();
     const after=await page.locator('#app').innerText();
     if(!after.includes('Én még soha'))throw Error('Planner session did not restore');
+    const downloadPromise=page.waitForEvent('download',{timeout:10000});
+    await page.locator('[data-a="eveningCard"]').click();
+    const download=await downloadPromise;
+    if(!download.suggestedFilename().endsWith('.png'))throw Error('Export is not PNG');
+    const out=path.join('test-artifacts','planner-export.png');
+    await download.saveAs(out);
+    if(fs.statSync(out).size<1000)throw Error('Export PNG is empty');
     console.log('PASS planner and session restore');
   }catch(e){failures.push('planner persistence: '+e.message);console.error('FAIL planner persistence',e.message);}
   finally{await page.close();}
