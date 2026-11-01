@@ -22,8 +22,20 @@ const path = require('node:path');
    if(errors.length)throw Error(errors.join(' | '));
    await page.screenshot({path:path.join('test-artifacts',route.replaceAll('/','_')+'.png'),fullPage:true});
    console.log('PASS',route);
-  }catch(e){failures.push(route+': '+e.message);console.error('FAIL',route,e.message);}
+  }catch(e){failures.push(route+': '+e.message);console.error('FAIL',route,e.message);try{await page.screenshot({path:path.join('test-artifacts','FAILED_'+route.replaceAll('/','_')+'.png'),fullPage:true})}catch{}}
   finally{await page.close();}
+ }
+ // Check compact phone layouts for horizontal overflow on every app.
+ for(const route of routes){
+  const page=await browser.newPage({viewport:{width:320,height:740},isMobile:true,hasTouch:true});
+  try{
+   const response=await page.goto('http://127.0.0.1:8765/'+route,{waitUntil:'networkidle'});
+   if(!response?.ok())throw Error('HTTP '+response?.status());
+   const width=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,view:window.innerWidth}));
+   if(width.scroll>width.view+3)throw Error('Horizontal overflow '+JSON.stringify(width));
+   console.log('PASS small screen',route);
+  }catch(e){failures.push('320px '+route+': '+e.message);try{await page.screenshot({path:path.join('test-artifacts','SMALL_'+route.replaceAll('/','_')+'.png'),fullPage:true})}catch{}}
+  finally{await page.close()}
  }
  // Behavioural check: solo dilemma voting advances without showing round results.
  {
