@@ -26,7 +26,7 @@ const set='<div class="head"><label for="players">Játékosok száma</label><sel
 if(phase==='vote'){
 $('game').innerHTML=set+'<p class="muted">'+(players===1?'Egyéni mód · a választás után automatikusan jön a következő kérdés. Összesítés csak a végén.':(people+1)+' / '+players+' játékos · koppints az egyik válaszra, majd add tovább!')+'</p>'+ 
 q.map((v,i)=>'<button class="choice" data-vote="'+i+'"><span>OPCIÓ '+(i?'B':'A')+'</span>'+v+'</button>').join('')+
-(people?'<button class="chip" id="reveal">Korábbi eredmény megmutatása ('+people+' szavazat)</button>':'');
+(people?'<button class="chip" id="reveal">Korábbi eredmény megmutatása ('+people+' szavazat)</button>':'')+'<button class="chip" id="skip" type="button">Dilemma átugrása →</button>';
 }else if(phase==='solo-end'){
 const total=soloVotes[0]+soloVotes[1];$('game').innerHTML='<h2>Vége! Az összes dilemmára válaszoltál.</h2>'+soloVotes.map((n,i)=>'<div class="result"><strong>'+(i?'B':'A')+' választások: '+n+' ('+(total?Math.round(n/total*100):0)+'%)</strong><div class="meter"><div style="width:'+(total?n/total*100:0)+'%"></div></div></div>').join('')+'<button class="next" id="restart">Új játék →</button>';
 }else{
@@ -37,6 +37,7 @@ document.addEventListener('click',e=>{
 const t=e.target.closest('button');if(!t)return;
 if(t.dataset.cat){cat=t.dataset.cat;reset();return}
 if(t.dataset.vote!==undefined&&phase==='vote'){const choice=Number(t.dataset.vote);if(players===1){soloVotes[choice]++;idx++;if(idx>=decks[cat].length){idx=decks[cat].length-1;phase='solo-end'}render();return}votes[choice]++;people++;if(people>=players)phase='result';render();return}
+if(t.id==='skip'){idx=(idx+1)%decks[cat].length;if(idx===0)shuffle(decks[cat]);votes=[0,0];people=0;phase='vote';render();return}
 if(t.id==='reveal'&&people){phase='result';render();return}
 if(t.id==='restart'){shuffle(decks[cat]);reset();return}
 if(t.id==='next'){idx=(idx+1)%decks[cat].length;if(idx===0)shuffle(decks[cat]);votes=[0,0];people=0;phase='vote';render()}
