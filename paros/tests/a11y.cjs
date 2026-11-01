@@ -7,6 +7,11 @@ const AXE=require.resolve('axe-core/axe.min.js');
 const mime={'.html':'text/html','.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.webp':'image/webp','.webmanifest':'application/manifest+json'};
 const server=http.createServer((req,res)=>{let file;try{const u=new URL(req.url,'http://localhost');file=path.resolve(ROOT,'.'+decodeURIComponent(u.pathname)+(u.pathname.endsWith('/')?'index.html':''));}catch{res.writeHead(400).end();return;}if(!file.startsWith(ROOT+path.sep)){res.writeHead(403).end();return;}fs.readFile(file,(e,d)=>{if(e)res.writeHead(404).end();else res.writeHead(200,{'Content-Type':mime[path.extname(file)]||'application/octet-stream'}).end(d);});});
 const SCREENS=[
+ ['jackpot beállítás',`go('jackpot')`],
+ ['jackpot kockák',`run=null;start('jackpot',true,6,'base',{jp:{reward:'Közös randi',tags:[],custom:[]}});A.openLimits();A.limitsDone();A.openLimits();A.limitsDone();render()`],
+ ['jackpot választás',`run.jp.result={faces:[0,0,1],kind:'pair',tasks:['Első feladat.','Második feladat.'],chosen:null};render()`],
+ ['jackpot nyeremény',`run.jp.result={faces:[0,0,0],kind:'jackpot',tasks:['Közös randi'],chosen:0};render()`],
+ ['jackpot eredmény',`A.jackpotEnd();render()`],
  ['főoldal',`go('home')`],
  ['beállítások',`go('settings')`],
  ['játékbeállítás',`go('truth')`],
