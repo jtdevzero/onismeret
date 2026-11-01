@@ -130,3 +130,16 @@ test('Játékosprofil: eredmény- és elsőhely-számláló',()=>{
  assert.match(js,/row\.wins\+\+/);
  assert.match(js,/Játékosprofilok · az este/);
 });
+
+test('Szóbomba rezgés: iPhone-on érintéskor kapcsoló-alapú tartalék, időzítőből nem', () => {
+ const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
+ const js=fs.readFileSync(path.resolve(__dirname,'../app.js'),'utf8');
+ const src=js.match(/function buzz\(p\) \{[\s\S]*?\n\}\nfunction iosHaptic\(\) \{[\s\S]*?\n\}/)[0];
+ const make=(active,hasVibrate)=>{const clicks=[];const doc={visibilityState:'visible',body:{appendChild(){}},getElementById:()=>null,createElement:t=>({tagName:t,style:{},setAttribute(){},appendChild(){},click(){clicks.push(t);}})};
+  const ctx={S:{settings:{vibrate:true}},document:doc,navigator:{userActivation:{isActive:active},...(hasVibrate?{vibrate:()=>true}:{})}};
+  vm.runInNewContext('function vibrationSupported(){return typeof navigator.vibrate==="function";}'+src+';this.r=buzz(30);',ctx);return {r:ctx.r,clicks};};
+ assert.equal(make(true,false).r,true,'tap on iPhone triggers the switch haptic');
+ assert.equal(make(true,false).clicks.length,1);
+ assert.equal(make(false,false).r,false,'timer ticks without a tap do not try the haptic');
+ assert.equal(make(false,true).r,true,'Android keeps navigator.vibrate');
+});
