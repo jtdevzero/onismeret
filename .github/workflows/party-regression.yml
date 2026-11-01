@@ -1,0 +1,26 @@
+name: Party games regression checks
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  static-regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate game scripts
+        run: |
+          node --check tarsas/app.js
+          node --check paros/app.js
+          node --check tarsas/enhancements.js
+          node --check tarsas/sw.js
+          node --check paros/sw.js
+      - name: Check premium styles, game states, and offline cache
+        run: node --test tarsas/tests/v2-smoke.test.cjs
