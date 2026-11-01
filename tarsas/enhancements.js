@@ -174,11 +174,43 @@
     });
     return [...totals].sort((a, b) => b[1] - a[1]);
   };
+  // Export a locally rendered, privacy-friendly result card; nothing is uploaded.
+  A.eveningCard = () => {
+    const rows=eveningScores();
+    const canvas=document.createElement('canvas');
+    canvas.width=1080;canvas.height=1350;
+    const ctx=canvas.getContext('2d');
+    if(!ctx){notice='A képkészítés nem támogatott.';render();return;}
+    const bg=ctx.createLinearGradient(0,0,1080,1350);
+    bg.addColorStop(0,'#21142e');bg.addColorStop(1,'#3c254b');
+    ctx.fillStyle=bg;ctx.fillRect(0,0,1080,1350);
+    ctx.fillStyle='#dbff7a';ctx.fillRect(78,110,112,12);
+    ctx.fillStyle='#f5f0e8';ctx.font='bold 84px system-ui';ctx.fillText('TÁRSASEST',78,245);
+    ctx.font='bold 58px system-ui';ctx.fillText('Az este eredményei',78,340);
+    ctx.font='32px system-ui';ctx.fillStyle='#c4b4cc';ctx.fillText('Közös játékok · közös emlékek',78,405);
+    const winners=rows.slice(0,8);
+    ctx.font='bold 43px system-ui';
+    winners.forEach(([name,points],i)=>{
+      const y=520+i*89;
+      ctx.fillStyle=i===0?'#dbff7a':'#f5f0e8';
+      const safe=String(name).slice(0,21);
+      ctx.fillText((i+1)+'. '+safe,86,y);
+      ctx.textAlign='right';ctx.fillText(points+' pont',980,y);ctx.textAlign='left';
+    });
+    if(!winners.length){ctx.fillStyle='#f5f0e8';ctx.font='36px system-ui';ctx.fillText('Még nincs mentett eredmény.',86,540);}
+    ctx.fillStyle='#ffb79c';ctx.font='bold 31px system-ui';ctx.fillText('Társasest · A játék nálatok kezdődik',78,1240);
+    canvas.toBlob(blob=>{
+      if(!blob){notice='A kép nem menthető.';render();return;}
+      const url=URL.createObjectURL(blob),a=document.createElement('a');
+      a.href=url;a.download='tarsasest-eredmenyek.png';a.click();
+      setTimeout(()=>URL.revokeObjectURL(url),10000);
+    },'image/png');
+  };
   V.evening = () => {
     const s = eveningState(), rows = eveningScores(), next = s.queue.findIndex(x => !x.done);
     return `<div class="panel"><h2>Az este programja</h2><p class="muted small">Becsült játékidő: ${s.queue.reduce((minutes,x)=>minutes+(Number(GAMES[x.game].time)||10),0)} perc (szünetek nélkül).</p><p class="muted small">Válasszatok legfeljebb öt játékot. A kész köröket itt tudjátok kipipálni.</p>${s.queue.length ? s.queue.map((x, i) => `<div class="row"><span class="grow">${x.done ? '✓' : (i + 1) + '.'} ${esc(GAMES[x.game].name)}</span><button class="btn ghost" data-a="eveningToggle" data-v="${i}">${x.done ? 'Újra nyitom' : 'Kész'}</button>${!x.done ? `<button class="btn primary" data-a="nav" data-v="${x.game}">Indít</button>` : ''}</div>`).join('') : '<p>Még üres a program. Adj hozzá játékokat!</p>'}${next >= 0 ? `<button class="btn primary big" data-a="nav" data-v="${s.queue[next].game}">Következő: ${esc(GAMES[s.queue[next].game].name)}</button>` : (s.queue.length ? '<p>🎉 A program végére értetek!</p>' : '')}</div>
       ${s.queue.length < 5 ? `<form class="panel" data-a="eveningAdd"><label>Játék hozzáadása <select name="game">${Object.entries(GAMES).map(([key, x]) => `<option value="${key}">${esc(x.name)}</option>`).join('')}</select></label><button class="btn primary">Hozzáadom</button></form>` : ''}
-      <div class="panel"><h3>Az este eredményei</h3><p class="muted small">A játék végén mentett eredményekből: első hely 3 estpont, második 2, minden további 1. Döntetlenben azonos helyezés jár. Az egyes játékok saját pontjai megmaradnak.</p>${rows.length ? leaderboardMarkup(rows) : '<p class="muted">Még nincs mentett eredmény. A pontozás nélküli játékokat is kipipálhatjátok a programban.</p>'}${eveningResults().length ? `<details><summary>Játékonként mentett pontok</summary>${eveningResults().map(result => `<div class="panel"><b>${esc(GAMES[result.game].name)}</b>${(Array.isArray(result.entries) ? result.entries : []).filter(entry => entry && typeof entry.name === 'string' && Number.isFinite(Number(entry.points))).map(entry => `<div class="row"><span class="grow">${esc(entry.name)}</span><span>${result.game === 'bomb' ? esc(Math.abs(Number(entry.points))) + ' robbanás' : esc(entry.points) + ' pont'}</span></div>`).join('')}</div>`).join('')}</details>` : ''}</div><button class="btn ghost" data-a="eveningShare">Estprogram megosztása</button><button class="btn ghost" data-a="eveningReset">Új est tervezése</button>`;
+      <div class="panel"><h3>Az este eredményei</h3><p class="muted small">A játék végén mentett eredményekből: első hely 3 estpont, második 2, minden további 1. Döntetlenben azonos helyezés jár. Az egyes játékok saját pontjai megmaradnak.</p>${rows.length ? leaderboardMarkup(rows) : '<p class="muted">Még nincs mentett eredmény. A pontozás nélküli játékokat is kipipálhatjátok a programban.</p>'}${eveningResults().length ? `<details><summary>Játékonként mentett pontok</summary>${eveningResults().map(result => `<div class="panel"><b>${esc(GAMES[result.game].name)}</b>${(Array.isArray(result.entries) ? result.entries : []).filter(entry => entry && typeof entry.name === 'string' && Number.isFinite(Number(entry.points))).map(entry => `<div class="row"><span class="grow">${esc(entry.name)}</span><span>${result.game === 'bomb' ? esc(Math.abs(Number(entry.points))) + ' robbanás' : esc(entry.points) + ' pont'}</span></div>`).join('')}</div>`).join('')}</details>` : ''}</div><button class="btn ghost" data-a="eveningCard">Eredménykártya PNG</button><button class="btn ghost" data-a="eveningShare">Estprogram megosztása</button><button class="btn ghost" data-a="eveningReset">Új est tervezése</button>`;
   };
   A.eveningAdd = f => { const s = eveningState(), key = f.elements.game.value; if (GAMES[key] && s.queue.length < 5) s.queue.push({ game: key, done: false }); };
   A.eveningToggle = index => { const item = eveningState().queue[Number(index)]; if (item) item.done = !item.done; };
