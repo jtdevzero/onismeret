@@ -114,3 +114,11 @@ test('Esttervező: öt játék és megosztható ranglista', () => {
  assert.match(script,/Estprogram megosztása/);
  assert.match(script,/navigator\.share/);
 });
+
+test('Eredménykártya és helyi játékosprofil elérhető',()=>{
+ const js=read('enhancements.js');
+ assert.match(js,/A\.eveningCard =/);
+ assert.match(js,/canvas\.toBlob/);
+ assert.match(js,/Eredménykártya PNG/);
+ assert.match(js,/Játékosprofilok · az este/);
+});
