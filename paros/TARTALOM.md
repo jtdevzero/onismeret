@@ -39,7 +39,7 @@ Minden 3-as szintű kártya kapja meg azokat a címkéket, amelyekre a szövege 
 
 Ezek a témák semmilyen csomagba nem kerülnek, akkor sem, ha kérik:
 
-- fojtogatás, légzéskorlátozás – játékból is okozhat agykárosodást vagy halált;
+- fojtogatás, légzéskorlátozás kihívásként, kívánságként vagy pörgetésként – játékból is okozhat agykárosodást vagy halált. Beszélgetőkérdésként (a fantáziáról, a kockázatról, a veszélytelen helyettesítőkről) csak a Tabuk nélkül csomagban szerepelhet;
 - vér – fertőzés- és sérülésveszély;
 - nyilvános helyen szex – azokat is belevonja, akik nem egyeztek bele;
 - kiskorúra utaló szerep vagy szöveg, vérfertőzés;
@@ -47,6 +47,8 @@ Ezek a témák semmilyen csomagba nem kerülnek, akkor sem, ha kérik:
 - részeg vagy alvó partner bevonása előzetes, kölcsönös igen nélkül.
 
 A durvaság (kötözés, paskolás, nyomok, megalázó beszéd, elélvezés-tiltás) belefér, ha a kártya a beleegyezést és a stopszót nem kérdőjelezi meg.
+
+A Tabuk nélkül csomag nyelvezete szándékosan nyers és vulgáris (baszás, farok, punci, segg, geci). A többi csomag ennél visszafogottabb.
 
 ## Forma
 
