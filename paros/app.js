@@ -236,6 +236,7 @@ const TAGS = new Set([
 ]);
 const PACK_LVL = {
   scene: 3,
+  taboo: 3,
   chemistry: 2,
   spark: 2,
   desires: 2,
@@ -271,7 +272,7 @@ function packsFor(key) {
   return list;
 }
 const packFor = (key, id = 'base') => packsFor(key).find(p => p.id === id);
-const SPICY = new Set(['fire', 'naughty', 'wishlist', 'frank']);
+const SPICY = new Set(['fire', 'naughty', 'wishlist', 'frank', 'taboo']);
 const adultPacks = key => (PACKS[key] || []).filter(p => p.adult);
 const packLabel = p => p.name.split(' · ')[0];
 const cardCount = () =>

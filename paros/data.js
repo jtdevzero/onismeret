@@ -909,3 +909,68 @@ window.PAIR_DICE={
  places:[{t:'az ágyon'},{t:'a kanapén'},{t:'a konyhapulton'},{t:'a zuhany alatt'},{t:'a nappali szőnyegén'},{t:'egy fotelben'},{t:'az íróasztalon'},{t:'a tükör előtt'},{t:'az előszobában'},{t:'behúzott függöny mögött, az ablaknál'}],
  secs:[60,120,180,300]
 };
+
+/* Tabuk nélkül (Szexről őszintén, 18+): provokatív, kényes kérdések. Kérdések, nem felszólítások; minden passzolható. */
+(() => {
+ const L=window.PAIR_LINES;
+ window.PAIR_PACKS.honest.push({id:'taboo',name:'Tabuk nélkül · 18+',adult:true,items:L(`Gondoltál már valaki másra, miközben velem szexeltél? Kire? #harmadik
+Melyik közös ismerősünkkel fantáziáltál már? #harmadik
+Mi a legtiltottabb fantáziád, amit sosem valósítanál meg, de szívesen elmesélnéd?
+Ha egy éjszakára büntetlenül lefeküdhetnél valaki mással, ki lenne az? #harmadik
+Izgatna, ha végignéznéd, ahogy valaki más kényeztet engem? #harmadik
+Izgatna, ha én nézném végig, ahogy valaki más kényeztet téged? #harmadik
+Mit csináltál egy korábbi partnereddel, amit sosem mernél elmondani nekem? #mult
+Ki volt a legjobb az ágyban előttem, és miben volt jobb? #mult
+Hasonlítottál már össze gondolatban valakivel szex közben? #mult
+Izgatna egy szerepjáték, amelyben fizetek az együttlétért? #szerep
+Melyik pornókategóriát szégyelled a legjobban, hogy beindít?
+Milyen pornót töröltél már gyorsan az előzményekből?
+Mi a legbizarrabb dolog, amitől valaha beindultál?
+Szeretnéd, ha valaki más is látná, ahogy szexelünk? #harmadik
+Mennyire izgat a gondolat, hogy valaki meghall minket?
+Hagynád, hogy fotót készítsek rólad szex közben, és megtartsam? #foto
+Néznéd velem hetente a saját szexvideónkat? #foto
+Mi a legmegalázóbb dolog, amit szívesen csinálnál velem, ha megengedném? #kotozes
+Mi a legmegalázóbb dolog, amit szívesen elszenvednél tőlem? #kotozes
+Mennyi fájdalom fér bele nálad, mielőtt már nem élvezed? #fajdalom
+Szeretnéd, ha egy estére a tulajdonom lennél, szabályokkal és stopszóval? #kotozes
+Melyik testnedvemet szereted a legjobban, és miért? #testnedv
+Mindig lenyelnéd, vagy csak ha kérem? #oral #testnedv @penisz
+Mennyire izgat az anál, ha te adod, és ha te kapod? #anal
+Mit gondolsz a fenéknyalásról: adnád vagy kapnád? #anal #oral
+Hagynád, hogy egy játékszerrel egész nap távolról irányítsalak? #jatekszer
+Mit gondolsz a partnercseréről, csak fantáziaként? #harmadik
+Ha nyitott kapcsolatban élnénk, mi lenne az első szabályod? #harmadik
+Féltékeny lennél, ha egy fantáziámban más szerepelne? #harmadik
+Melyik fantáziádról hiszed, hogy megbotránkoznék rajta?
+Volt már olyan szexuális gondolatod, amit erkölcstelennek tartasz? Mi volt az?
+Melyik ruhámban nézel rám úgy, hogy azonnal levetkőztetnél? #meztelen
+Hol nyúltál magadhoz a legfurcsább helyzetben? #erintes
+Szeretnéd, ha egy harmadik ember csak a kezével segítene nekünk? #harmadik
+Mi a legdurvább mondat, amit valaki szex közben mondott neked? #mult
+Szexeltél már valakivel, akit alig ismertél? Milyen volt? #mult
+Hol buktál le majdnem szex közben? #mult
+Melyik barátom tűnt már fel neked szexuálisan? #harmadik
+Mit tennél, ha egy szerepjátékban idegenként csábítanálak el? #szerep
+Melyik szerep izgat jobban: aki pénzért kényeztet, vagy aki fizet érte? #szerep
+Mennyire izgat, ha szex közben csúnya, megalázó szavakkal hívlak? #kotozes
+Milyen titkos fétised van, amiről még senkinek sem beszéltél?
+Mit gondolsz a lábfétisről, nálad vagy nálam?
+Izgatna, ha egy estére a másik nem ruháiba öltöznél nekem? #szerep
+Izgatna, ha egy idegen kamerán át nézné, ahogy vetkőzöl? #harmadik #foto
+Csináltál már szexuális videóhívást valakivel? Kivel? #foto #mult
+Küldtél már meztelen képet valakinek, akinek nem kellett volna? #foto #mult
+Mit hallgattál el a szexuális múltadról nekem? #mult
+Hány emberrel feküdtél le valójában? #mult
+Kivel feküdtél le a legrövidebb ismeretség után? #mult
+Szerinted mire gondolok titokban, amikor magamhoz nyúlok?
+Megnéznéd velem a kedvenc pornódat, és elmondanád, mi tetszik benne?
+Mit nem kérnél tőlem soha, mert félsz, hogy elítéllek?
+Mi a legmocskosabb üzenet, amit valaha kaptál vagy küldtél? #mult
+Melyik fantáziádat készítenéd elő nekem titokban, meglepetésként?
+Izgatna egy gyors menet a fürdőszobában, miközben vendégeink vannak?
+Mi az a szexuális élmény, amit megbántál? #mult
+Mit csinálnál, ha azt mondanám: ma este bármit megtehetsz velem, a stopszóig? #kotozes
+Kinek a teste jár a fejedben, amikor nem rám gondolsz? #harmadik
+Mit szólnál, ha bevallanám, hogy egy volt partneremre is gondoltam már? #mult`)});
+})();
