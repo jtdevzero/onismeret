@@ -119,6 +119,27 @@ const path = require('node:path');
   } catch(e){failures.push('couples conversation: '+e.message);console.error('FAIL couples conversation',e.message);}
   finally{await page.close();}
  }
+ // Party planner: verify result-card control and in-session state after reload.
+ {
+  const page=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
+  try{
+    await page.goto('http://127.0.0.1:8765/tarsas/',{waitUntil:'networkidle'});
+    const planner=page.locator('[data-a="nav"][data-v="evening"]').first();
+    if(await planner.count()!==1)throw Error('Evening planner navigation missing');
+    await planner.click();
+    if(await page.locator('[data-a="eveningCard"]').count()!==1)throw Error('PNG export control missing');
+    await page.locator('form[data-a="eveningAdd"] select[name="game"]').selectOption('never');
+    await page.locator('form[data-a="eveningAdd"] button').click();
+    const before=await page.locator('#app').innerText();
+    if(!before.includes('Én még soha'))throw Error('Planner did not accept game');
+    await page.reload({waitUntil:'networkidle'});
+    await page.locator('[data-a="nav"][data-v="evening"]').first().click();
+    const after=await page.locator('#app').innerText();
+    if(!after.includes('Én még soha'))throw Error('Planner session did not restore');
+    console.log('PASS planner and session restore');
+  }catch(e){failures.push('planner persistence: '+e.message);console.error('FAIL planner persistence',e.message);}
+  finally{await page.close();}
+ }
  await browser.close();
  if(failures.length){console.error(failures.join('\n'));process.exitCode=1;}
 })().catch(e=>{console.error(e);process.exitCode=1});
