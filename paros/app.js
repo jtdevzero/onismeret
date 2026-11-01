@@ -48,7 +48,8 @@ const GAMES = {
     desc: 'Nyugodt beszélgetés a közelségről, vágyakról, határokról és figyelemről.',
     type: 'talk',
     time: '15–25 perc',
-    adult: true
+    adult: true,
+    defaultPack: 'taboo'
   },
   quiz: {
     name: 'Mennyire ismersz?',
@@ -490,7 +491,7 @@ function settings() {
 function setup(key) {
   const g = GAMES[key],
     spicy = filter === 'adult' ? packsFor(key).find(p => SPICY.has(p.id)) : null,
-    pack = packFor(key, packChoice[key] || spicy?.id || 'base'),
+    pack = packFor(key, packChoice[key] || g.defaultPack || spicy?.id || 'base'),
     size = roundChoice[key] || defaultLength(key);
   return `${back()}<div class="hero"><span class="eyebrow">${g.time} · Ketten</span><h1>${g.name}</h1><p>${g.desc}</p></div><section class="panel"><h2>Így játsszatok</h2><p>${g.type === 'talk' ? 'Felváltva kaptok egy kérdést. Hallgassátok meg egymást, időkorlát és pontozás nélkül. A kör bármikor lezárható.' : g.type === 'truth' ? 'Felváltva választotok igazságot vagy kihívást. A megjelenő ötletet közösen mérlegeljétek; érintés csak külön, kölcsönös beleegyezéssel történjen. Teljesítés és passzolás után sincs pont vagy büntetés.' : g.type === 'quiz' ? 'Mindketten titokban megadjátok a saját válaszotokat, és megtippelitek a másikét is. A második játékos csak az összes saját válasza és tippje után láthatja az eredményt. Minden helyes tipp 1 pont.' : g.type === 'match' ? 'Mindketten külön válaszoltok a kiválasztott ötletekre: igen, nem vagy talán. A passz is külön lehetőség. Kizárólag a két igenből születő egyezések látszanak; a többi egyéni válasz soha. Az egyezés beszélgetési lehetőség, nem vállalás.' : pack.adult ? 'Mindketten titokban választotok a kérdéseknél. A végén csak azok a kérdések látszanak, ahol ugyanazt választottátok; a többi egyéni válasz soha. A passz kimarad.' : 'Mindketten titokban választotok a kérdéseknél. A végén a válaszaitok együtt jelennek meg; eltérni is teljesen rendben van. A passz kimarad az összehasonlításból.'}</p><p class="muted small">A telefon átadásakor takarjuk a válaszokat. Újratöltéskor a kör és a válaszok törlődnek. Kényes beszélgetéshez nyugodt, közösen választott pillanatot keressetek.</p></section><form class="panel" data-a="start" data-v="${key}">${
     packsFor(key).length > 1

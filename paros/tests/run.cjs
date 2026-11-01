@@ -162,6 +162,10 @@ let count=0;function ok(value,message){assert(value,message);count++;console.log
  await page.evaluate(()=>{A.clear();go('home');});
  ok(await page.evaluate(()=>{A.clear();adult=false;start('honest',false,24,'taboo');if(run)return false;start('honest',true,24,'taboo');for(const p of [0,1]){A.openLimits();if(!p)A.limit('harmadik');A.limitsDone();}return run.deck.length===24&&run.deck.every(c=>!c.tags.includes('harmadik'));}),'the taboo pack needs 18+ and respects the limits list');
  await page.evaluate(()=>{A.clear();});
+ await page.evaluate(()=>{A.clear();Object.keys(packChoice).forEach(k=>delete packChoice[k]);filter='all';go('honest');});
+ ok(await page.locator('#pack-select').inputValue()==='taboo','Szexről őszintén opens with the newest Tabuk nélkül pack');
+ await page.evaluate(()=>{filter='adult';go('honest');});ok(await page.locator('#pack-select').inputValue()==='taboo','the 18+ filter also opens Tabuk nélkül');
+ await page.evaluate(()=>{filter='all';go('home');});
  // Background and return with a private response selected.
  await page.evaluate(()=>{A.clear();start('match',true);A.open();A.select('1');render();conceal();});ok(await page.locator('#app').innerText().then(t=>t.includes('A kör elrejtve')),'background veil hides an opened answer');
  await page.locator('[data-a="unmask"]').click();ok(await page.evaluate(()=>!masked&&run.phase==='cover'&&run.selected===null),'veil drops the pending choice and returns to the handoff screen');
