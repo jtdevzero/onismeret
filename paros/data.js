@@ -703,3 +703,19 @@ window.PAIR_SPIN={
  ],
  secs:[10,20,30,60]
 };
+
+/* Szerepjáték-forgatókönyvek (18+): két felnőtt, egyenrangú szerep, otthoni vagy zárt helyszín. A stopszó mindig érvényes. */
+window.PAIR_SCENES=[
+ {t:'Idegenek a bárban',detail:['Szerepek: aki először szólít meg · aki nehezen kapható','Helyszín: egy szállodai bár, aztán a szoba','Kezdőmondat: „Erre a helyre egyedül szoktál járni?”','Félidőben: kiderül, hogy ugyanazon az emeleten laktok.'],tags:['szerep']},
+ {t:'Masszőr és vendég',detail:['Szerepek: a masszőr · a vendég, aki többet szeretne','Helyszín: félhomályos szoba, olaj, halk zene','Kezdőmondat: „Szóljon, ha valahol erősebben kell.”','Félidőben: a vendég megfordul, és ő kér valamit.'],tags:['szerep','erintes']},
+ {t:'Főnök és új asszisztens',detail:['Szerepek: a szigorú főnök · az új asszisztens','Helyszín: iroda túlóra után','Kezdőmondat: „Ezt a jelentést még ma kérem.”','Félidőben: az asszisztens veszi át az irányítást.'],tags:['szerep','kotozes']},
+ {t:'Fotós és modell',detail:['Szerepek: a fotós · a modell','Helyszín: otthoni műterem, egy lámpa','Kezdőmondat: „Lazíts, és csak engem nézz.”','Félidőben: a modell kéri, hogy a fotós is vetkőzzön.'],tags:['szerep','meztelen']},
+ {t:'Szobaszerviz',detail:['Szerepek: a vendég · aki felhozza a rendelést','Helyszín: szállodai szoba, köntösben','Kezdőmondat: „Rendelt valamit, vagy csak engem várt?”','Félidőben: a vendég megkéri, hogy maradjon még.'],tags:['szerep']},
+ {t:'Régi szerelmek',detail:['Szerepek: aki évek után felismeri · aki úgy tesz, mintha nem emlékezne','Helyszín: egy esküvő után a hotelszobában','Kezdőmondat: „Te mindig is így néztél rám?”','Félidőben: egyikőtök bevallja, hogy mindig is akarta.'],tags:['szerep']},
+ {t:'A hívott szerelő',detail:['Szerepek: aki szerelőt hívott · a szerelő','Helyszín: konyha, csöpögő csap','Kezdőmondat: „Hol szivárog pontosan?”','Félidőben: kiderül, hogy semmi sem romlott el.'],tags:['szerep']},
+ {t:'Gazda és szolga',detail:['Szerepek: aki parancsol · aki engedelmeskedik','Helyszín: hálószoba, előre megbeszélt stopszóval','Kezdőmondat: „Térdelj le, és várd az utasításomat.”','Félidőben: szerepcsere.'],tags:['szerep','kotozes']},
+ {t:'Privát tánc',detail:['Szerepek: a táncos · a vendég, akinek nem szabad hozzáérnie','Helyszín: nappali, egy szék és tompa fény','Kezdőmondat: „A szabály egyszerű: csak nézhetsz.”','Félidőben: a táncos megszegi a saját szabályát.'],tags:['szerep','meztelen']},
+ {t:'Edző és ügyfél',detail:['Szerepek: a személyi edző · az ügyfél','Helyszín: nappali, edzés után','Kezdőmondat: „Még tíz ismétlés, aztán jön a jutalom.”','Félidőben: a jutalom egészen más, mint amire számít.'],tags:['szerep']},
+ {t:'Kihallgatás',detail:['Szerepek: a kém · aki kihallgatja','Helyszín: elsötétített szoba, egy szék','Kezdőmondat: „Mindent elmondasz, vagy kitaláljam, hogyan szedjem ki belőled?”','Félidőben: a kém csábítással fordít a helyzeten.'],tags:['szerep','kotozes']},
+ {t:'Első randi, újra',detail:['Szerepek: aki randira hív · aki először ideges','Helyszín: otthon, gyertyafény, két pohár','Kezdőmondat: „Szóval… gyakran randizol idegenekkel?”','Félidőben: egyikőtök sokkal merészebben kezdeményez.'],tags:['szerep']}
+];

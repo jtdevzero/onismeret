@@ -69,3 +69,12 @@ input:not([type=checkbox]),select{min-height:48px;max-width:100%}
 }
 .update-banner{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
 .update-banner .btn{flex:none}
+.question.daily{font-size:clamp(21px,4.4vw,28px)}
+.wizard-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media(max-width:560px){.wizard-grid{grid-template-columns:1fr}}
+.card-tools{gap:8px}
+.card-tools>*{flex:1 1 110px;min-height:44px;padding:8px 12px;font-size:14px}
+.scene-detail{margin:0;padding-left:18px;display:grid;gap:6px;color:var(--muted)}
+.fold summary{cursor:pointer;font-weight:650;min-height:44px;display:flex;align-items:center}
+.fold[open] summary{margin-bottom:14px}
+.fold .wizard{display:grid;gap:16px}
