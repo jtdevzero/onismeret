@@ -58,7 +58,7 @@ async function loadCourse(){
   if(vb)vb.verbs.forEach(v=>Object.values(v.forms).forEach(fs=>fs.forEach((f,i)=>{const pron=LANGS[l].vbPron[i];nextAudio[pron?pron+" "+f:f]=l==="en"?"vb-en":l==="es"?"vb-es-"+v.inf:"vb-"+v.inf;})));
   if(core)core.levels.forEach(L=>L.words.forEach(w=>nextAudio[w.it]=nextAudio[w.it]||w.b));
   const nextScenarios=l==="it"?SCENARIOS.map(x=>Object.assign({img:"sc-"+x.id,av:x.id==="libero"?"teacher":"sc-"+x.id},x))
-    :nextLessons.filter(L=>L.role).map(L=>({id:L.id,t:L.t,d:L.role,role:`${L.role} (a lecke témája: ${L.t}). Te játszod az ${LANGS[l].adv} beszélő másik felet ebben a helyzetben.`,img:L.id,av:L.id}))
+    :nextLessons.filter(L=>L.role).map(L=>({id:L.id,t:L.t,d:L.role,role:`${L.role} (a lecke témája: ${L.t}). Te játszod az ${LANGS[l].adv} beszélő másik felet ebben a helyzetben.`,img:L.id,av:L.id,level:L.level}))
       .concat([{id:"free",t:LANGS[l].free[0],d:"Kötetlen beszélgetés bármiről.",role:LANGS[l].free[1],img:LANGS[l].hero,av:LANGS[l].hero}]);
   const nextPool=[];nextLessons.forEach((L,li)=>{L.words.forEach(w=>nextPool.push({id:w[3],it:w[0],hu:w[1],alt:w[2],li}));L.phrases.forEach(p=>nextPool.push({id:p[3],it:p[0],hu:p[1],alt:p[2],li,ph:1}));});
   CDRILLS=dr||{};XT=nextExtra;CORE=core;TRACKS=pack.tracks||null;LESSONS=nextLessons;STORIES=nextStories;VB=vb;SCEN=nextScenarios;POOL=nextPool;WORDS=nextPool.filter(c=>!c.ph);

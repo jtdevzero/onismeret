@@ -23,7 +23,11 @@ function renderTutor(){
   T.tab==="chat"?(T.sc?drawChat():drawScenarios()):drawWriting();
 }
 function drawScenarios(){
-  $("#tbody").innerHTML=`<div class="lgrid">${SCEN.map(s=>`<button class="lcard scard" data-s="${s.id}">${pic(s.img)}<div class="body"><b>${esc(s.t)}</b><span class="small muted">${esc(s.d)}</span></div></button>`).join("")}</div>${offlineDialogsHtml()}`;
+  /* Lesson-based situations fold by level (the chosen level opens); free conversation stays on top. */
+  const row=s=>`<button class="lcard scard" data-s="${s.id}">${pic(s.img)}<div class="body"><b>${esc(s.t)}</b><span class="small muted">${esc(s.d)}</span></div></button>`;
+  const levels=LG().levels.filter(l=>SCEN.some(s=>s.level===l)),loose=SCEN.filter(s=>!levels.includes(s.level));
+  $("#tbody").innerHTML=`${loose.length?`<div class="lgrid">${loose.map(row).join("")}</div>`:""}${levels.map(l=>{const xs=SCEN.filter(s=>s.level===l);
+    return `<details class="g lgroup" ${l===T.level||levels.length===1?"open":""}><summary><span>${esc(l)} <span class="small muted">· ${xs.length} helyzet</span></span></summary><div class="gb"><div class="lgrid">${xs.map(row).join("")}</div></div></details>`;}).join("")}${offlineDialogsHtml()}`;
   bindOfflineDialogs();
   $("#tbody").querySelectorAll("[data-s]").forEach(b=>b.onclick=()=>{resetTutorRequest("chat");T.chatError=null;T.chatDraft="";T.sc=SCEN.find(s=>s.id===b.dataset.s);T.sum=null;
     if(T.sc.open){T.msgs=[{r:"ai",it:T.sc.open[0],hu:T.sc.open[1],sugg:[]}];drawChat();setTimeout(()=>say(T.sc.open[0]),200);}

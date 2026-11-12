@@ -3,7 +3,7 @@ function packsCard(){
   if(!XT.packs.length)return "";
   const own=new Set(ownList().map(w=>norm(w.it)));
   return `<div class="sec-head"><h2>Témakörös szócsomagok</h2><span class="small muted">${XT.packs.length} csomag</span></div>
-  <div class="drills">${XT.packs.map((p,i)=>{const n=p.items.filter(x=>own.has(norm(x.it))).length;return `<button class="drill" data-pk="${p.id}"><span class="dico c${i%4+1}">${I.kartyak}</span><b>${esc(p.title)}</b><span class="small muted">${esc(p.desc)} · ${p.items.length} kifejezés</span>${n?`<span class="small"><span class="pill ${n===p.items.length?"ok":"now"}">${n===p.items.length?"Felvéve":n+" felvéve"}</span></span>`:""}</button>`;}).join("")}</div>`;
+  <div class="drills compact">${XT.packs.map((p,i)=>{const n=p.items.filter(x=>own.has(norm(x.it))).length;return `<button class="drill" data-pk="${p.id}"><span class="dico c${i%4+1}">${I.kartyak}</span><b>${esc(p.title)}</b><span class="small muted">${esc(p.desc)} · ${p.items.length} kifejezés</span>${n?`<span class="small"><span class="pill ${n===p.items.length?"ok":"now"}">${n===p.items.length?"Felvéve":n+" felvéve"}</span></span>`:""}</button>`;}).join("")}</div>`;
 }
 function bindPacks(){view.querySelectorAll("[data-pk]").forEach(b=>b.onclick=()=>openPack(b.dataset.pk));}
 function openPack(id){

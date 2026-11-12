@@ -25,9 +25,9 @@ function renderGrammarIt(pre){
   ];
   grammarPage(sections,pre?"Témánként táblázattal, magyarázattal és gyakorlóval; lent a kiejtés, a ragozás és a névelők összefoglalója.":"Az A1–A2 szint nyelvtana magyarázattal és táblázatokkal.",pre);
 }
-function grammarPage(sections,intro,pre){
+function grammarPage(sections,intro,pre,fold){
   view.innerHTML=`<div class="stack"><div><span class="label">${LG().name} kézikönyv</span><h1>Nyelvtan</h1><p class="muted">${intro} Ha elakadsz, kérdezz alul a tanártól.</p></div>
-  ${pre||""}${sections.map(([t,b],i)=>`<details class="g" ${i===0&&!pre?"open":""}><summary>${t}</summary><div class="gb">${b}</div></details>`).join("")}
+  ${pre||""}${(list=>fold?`<details class="g gfold"><summary><span>${esc(fold)} <span class="small muted">· ${sections.length}</span></span></summary><div class="gb">${list}</div></details>`:list)(sections.map(([t,b],i)=>`<details class="g" ${i===0&&!pre?"open":""}><summary>${t}</summary><div class="gb">${b}</div></details>`).join(""))}
   <div class="card stack"><div><h3>Kérdezz a tanártól</h3><p class="small muted">Bármilyen nyelvtani vagy szóhasználati kérdés, magyarul. Például: „${LG().ask}”</p></div>
   <textarea id="gq" style="min-height:5rem" placeholder="Írd ide a kérdésed…" aria-label="Kérdés a tanárnak"></textarea><div><button class="btn" id="gask">Kérdezek</button></div><div id="gans" class="prewrap"></div></div></div>`;
   let pending=null;

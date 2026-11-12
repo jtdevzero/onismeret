@@ -227,7 +227,7 @@ details.g{background:var(--surface);border:1px solid var(--line);border-radius:v
 details.g summary{cursor:pointer;padding:1rem 0;font-family:var(--display);font-size:1.15rem;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:1rem}
 details.g summary::-webkit-details-marker{display:none}
 details.g summary::after{content:"+";font-family:var(--body);font-size:1.4rem;color:var(--muted)}
-details.g[open] summary::after{content:"–"}
+details.g[open]>summary::after{content:"–"}
 details.g .gb{padding-bottom:1.1rem;display:flex;flex-direction:column;gap:.8rem;max-width:72ch}
 
 /* tutor */
@@ -277,6 +277,7 @@ details.g .gb{padding-bottom:1.1rem;display:flex;flex-direction:column;gap:.8rem
 .lcard .pic img{transition:transform .5s ease}
 .lcard:hover .pic img{transform:scale(1.05)}
 .lcard .num{position:absolute;top:10px;left:10px;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-family:var(--display);font-size:1.15rem;background:var(--surface);color:var(--ink);box-shadow:0 4px 12px rgba(0,0,0,.18)}
+.lcard{position:relative}
 .lcard .badge{position:absolute;top:10px;right:10px}
 .lcard .body{padding:1rem 1.1rem 1.2rem;display:flex;flex-direction:column;gap:.3rem}
 .lcard .body b{font-family:var(--body);font-weight:700;font-size:1.08rem;line-height:1.4}
@@ -669,6 +670,25 @@ section[aria-labelledby="practiceRecommended"]>.drills{grid-template-columns:rep
   body{background:#fff!important;color:#000!important}
   .report .card{break-inside:avoid;box-shadow:none;border:1px solid #ccc}
 }
+/* Compact lists: level groups fold, and on phones every lesson or situation is one row with a thumbnail. */
+details.g.lgroup .gb,details.g.gfold>.gb{max-width:none}
+details.g.gfold>.gb>details.g{background:var(--sunk);border-color:transparent}
+@media (max-width:640px){
+  details.g.lgroup{padding:0 .75rem}
+  .lgrid{grid-template-columns:minmax(0,1fr);gap:.6rem}
+  .lcard{flex-direction:row;align-items:stretch;border-radius:16px;min-height:84px}
+  .lcard .pic,.scard .pic{flex:0 0 92px;aspect-ratio:auto}
+  .lcard .num{top:6px;left:6px;width:28px;height:28px;border-radius:9px;font-size:.9rem}
+  .lcard .body{flex:1;min-width:0;justify-content:center;padding:.7rem .9rem;gap:.15rem}
+  .lcard .body b{font-size:1rem;line-height:1.3}
+  .lcard .body>.badge{position:static;margin-top:.2rem}
+  .lcard .pic>.badge{top:auto;right:auto;bottom:6px;left:6px}
+  .lcard:hover{transform:none}
+  .drills.compact{grid-template-columns:minmax(0,1fr);gap:.6rem}
+  .drills.compact .drill{display:grid;grid-template-columns:42px minmax(0,1fr);column-gap:.85rem;row-gap:.15rem;align-items:center;padding:.8rem 1rem}
+  .drills.compact .drill .dico{grid-row:1/span 3;margin:0}
+  .drills.compact .drill>:not(.dico){grid-column:2}
+}
 </style>
 
 <a class="skip" href="#view">Ugrás a tartalomhoz</a>
@@ -895,7 +915,7 @@ async function loadCourse(){
   if(vb)vb.verbs.forEach(v=>Object.values(v.forms).forEach(fs=>fs.forEach((f,i)=>{const pron=LANGS[l].vbPron[i];nextAudio[pron?pron+" "+f:f]=l==="en"?"vb-en":l==="es"?"vb-es-"+v.inf:"vb-"+v.inf;})));
   if(core)core.levels.forEach(L=>L.words.forEach(w=>nextAudio[w.it]=nextAudio[w.it]||w.b));
   const nextScenarios=l==="it"?SCENARIOS.map(x=>Object.assign({img:"sc-"+x.id,av:x.id==="libero"?"teacher":"sc-"+x.id},x))
-    :nextLessons.filter(L=>L.role).map(L=>({id:L.id,t:L.t,d:L.role,role:`${L.role} (a lecke témája: ${L.t}). Te játszod az ${LANGS[l].adv} beszélő másik felet ebben a helyzetben.`,img:L.id,av:L.id}))
+    :nextLessons.filter(L=>L.role).map(L=>({id:L.id,t:L.t,d:L.role,role:`${L.role} (a lecke témája: ${L.t}). Te játszod az ${LANGS[l].adv} beszélő másik felet ebben a helyzetben.`,img:L.id,av:L.id,level:L.level}))
       .concat([{id:"free",t:LANGS[l].free[0],d:"Kötetlen beszélgetés bármiről.",role:LANGS[l].free[1],img:LANGS[l].hero,av:LANGS[l].hero}]);
   const nextPool=[];nextLessons.forEach((L,li)=>{L.words.forEach(w=>nextPool.push({id:w[3],it:w[0],hu:w[1],alt:w[2],li}));L.phrases.forEach(p=>nextPool.push({id:p[3],it:p[0],hu:p[1],alt:p[2],li,ph:1}));});
   CDRILLS=dr||{};XT=nextExtra;CORE=core;TRACKS=pack.tracks||null;LESSONS=nextLessons;STORIES=nextStories;VB=vb;SCEN=nextScenarios;POOL=nextPool;WORDS=nextPool.filter(c=>!c.ph);
@@ -1362,19 +1382,28 @@ function renderHome(){
   let armed=false;$("#sReset").onclick=()=>{if(!armed){armed=true;$("#sReset").textContent="Biztosan? Kattints újra a törléshez";$("#sReset").style.color="var(--bad)";return;}dailyActive=false;stopViews();resetProgress();toast("A haladásod törölve.");renderHome();};
 }
 /* ============ LESSONS ============ */
-let lessonFilters={search:"",level:"",track:""};
+let lessonFilters={search:"",level:"",track:""},lessonOpen={};
 function renderLessons(){
   const nl=nextLesson(),f=lessonFilters;if(!LG().levels.includes(f.level))f.level="";if(!LESSONS.some(l=>l.track===f.track))f.track="";
   view.innerHTML=`<div class="stack"><div><span class="label">${LG().name} · ${LG().range} · ${doneCount()} / ${LESSONS.length} kész</span><h1>Leckék</h1><p class="muted">Tanulj kisebb részekben, vagy végezz el egy teljes leckét. A félbehagyott gyakorlást és a már elvégzett részeket megőrizzük.</p><div class="row" style="margin-top:.6rem"><button class="btn ghost" data-go="terkep">Haladási térkép</button><button class="btn ghost" id="lPlace">Szintfelmérő</button><button class="btn ghost" data-go="utlevel">Útlevél</button></div></div>
-  <div class="card stack"><label for="lSearch">Lecke keresése</label><input id="lSearch" type="search" placeholder="Téma vagy kifejezés" value="${esc(f.search)}"><div class="grid2"><label>Szint<select id="lLevel"><option value="">Minden szint</option>${LG().levels.map(l=>`<option value="${l}" ${f.level===l?"selected":""}>${l}</option>`).join("")}</select></label><label>Tanulási ág<select id="lTrack"><option value="">Minden ág</option>${[...new Set(LESSONS.map(l=>l.track).filter(Boolean))].map(t=>`<option value="${esc(t)}" ${f.track===t?"selected":""}>${esc((TRACKS||{})[t]||t)}</option>`).join("")}</select></label></div><p class="small muted" id="lCount" role="status"></p></div><div class="lgrid" id="lessonResults"></div></div>`;
+  <div class="card stack"><label for="lSearch">Lecke keresése</label><input id="lSearch" type="search" placeholder="Téma vagy kifejezés" value="${esc(f.search)}"><div class="grid2"><label>Szint<select id="lLevel"><option value="">Minden szint</option>${LG().levels.map(l=>`<option value="${l}" ${f.level===l?"selected":""}>${l}</option>`).join("")}</select></label><label>Tanulási ág<select id="lTrack"><option value="">Minden ág</option>${[...new Set(LESSONS.map(l=>l.track).filter(Boolean))].map(t=>`<option value="${esc(t)}" ${f.track===t?"selected":""}>${esc((TRACKS||{})[t]||t)}</option>`).join("")}</select></label></div><p class="small muted" id="lCount" role="status"></p></div><div class="stack" id="lessonResults"></div></div>`;
   function results(){
     const query=deacc(norm(f.search)),list=LESSONS.map((L,i)=>({L,i})).filter(({L})=>(!f.level||L.level===f.level)&&(!f.track||L.track===f.track)&&(!query||deacc(norm([L.t,L.hu,L.goal].join(" "))).includes(query)));
     $("#lCount").textContent=list.length+" / "+LESSONS.length+" lecke";
+    /* Compact, collapsible level groups: the group with the next lesson opens by default; a search or level filter opens every match. */
+    const openAll=!!(query||f.level),groups=[];
+    list.forEach(x=>{const key=(x.L.track||"")+"|"+x.L.level;let g=groups[groups.length-1];if(!g||g.key!==key){g={key,track:x.L.track,level:x.L.level,items:[]};groups.push(g);}g.items.push(x);});
+    const card=({L,i})=>{const state=ls(i),cls=state&&state.done?"done":state&&state.placed?"placed":i===nl?"cur":"",coverage=lessonCoverageCount(L.id);
+      const pill=state&&state.done?`<span class="pill ok">${esc(state.best)}%</span>`:state&&state.placed?'<span class="pill">Átugorva</span>':i===nl?'<span class="pill now">Következő</span>':"";
+      return `<button class="lcard ${cls}" data-l="${i}"><div class="pic"><img src="img/${L.id}.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"><span class="num">${state&&state.done?"✓":i+1}</span></div><div class="body"><b>${esc(L.t)}</b><span class="small muted">${esc(L.hu)} · ${L.words.length} szó, ${L.phrases.length} kifejezés</span>${coverage&&!state?.done?`<span class="small muted">${coverage} feladat már elkészült · folytatható</span>`:""}${pill?`<span class="badge">${pill}</span>`:""}</div></button>`;};
     let previousTrack=null;
-    $("#lessonResults").innerHTML=list.length?list.map(({L,i})=>{const state=ls(i),cls=state&&state.done?"done":state&&state.placed?"placed":i===nl?"cur":"",coverage=lessonCoverageCount(L.id);
-      const head=TRACKS&&previousTrack!==L.track?`<h2 style="grid-column:1/-1">${esc(TRACKS[L.track]||L.track)}</h2>`:"";previousTrack=L.track;
-      return head+`<button class="lcard ${cls}" data-l="${i}"><div class="pic"><img src="img/${L.id}.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"><span class="num">${state&&state.done?"✓":i+1}</span><span class="badge">${state&&state.done?`<span class="pill ok">${esc(state.best)}%</span>`:state&&state.placed?'<span class="pill">Átugorva</span>':i===nl?'<span class="pill now">Következő</span>':`<span class="pill">${L.level}</span>`}</span></div><div class="body"><b>${esc(L.t)}</b><span class="small muted">${esc(L.hu)} · ${L.words.length} szó, ${L.phrases.length} kifejezés</span>${coverage&&!state?.done?`<span class="small muted">${coverage} feladat már elkészült · folytatható</span>`:""}</div></button>`;
-    }).join(""):'<div class="card" style="grid-column:1/-1"><h2>Nincs ilyen lecke</h2><p class="muted">Próbálj másik keresést, vagy válaszd a minden szint / minden ág lehetőséget.</p></div>';
+    $("#lessonResults").innerHTML=list.length?groups.map(g=>{
+      const head=TRACKS&&previousTrack!==g.track?`<h2>${esc(TRACKS[g.track]||g.track)}</h2>`:"";previousTrack=g.track;
+      const done=g.items.filter(({i})=>ls(i)&&ls(i).done).length,saved=lessonOpen[lang()+":"+g.key];
+      const open=openAll||groups.length===1||(saved!==undefined?saved:g.items.some(({i})=>i===nl));
+      return head+`<details class="g lgroup" data-group="${esc(g.key)}" ${open?"open":""}><summary><span>${esc(g.level)} <span class="small muted">· ${g.items.length} lecke${done?` · ${done} kész`:""}</span></span></summary><div class="gb"><div class="lgrid">${g.items.map(card).join("")}</div></div></details>`;
+    }).join(""):'<div class="card"><h2>Nincs ilyen lecke</h2><p class="muted">Próbálj másik keresést, vagy válaszd a minden szint / minden ág lehetőséget.</p></div>';
+    if(!openAll)view.querySelectorAll("details.lgroup").forEach(d=>d.ontoggle=()=>{lessonOpen[lang()+":"+d.dataset.group]=d.open;});
     view.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>openLesson(+b.dataset.l));
   }
   $("#lSearch").oninput=e=>{f.search=e.target.value;results();};$("#lLevel").onchange=e=>{f.level=e.target.value;results();};$("#lTrack").onchange=e=>{f.track=e.target.value;results();};$("#lPlace").onclick=()=>startPlacement(false);results();
@@ -1665,10 +1694,13 @@ function renderCards(){
   </div>`;
   $("#dir").querySelectorAll("button").forEach(b=>b.onclick=()=>{S.settings.dir=b.dataset.v;save();renderCards();});
   $("#startC").onclick=startCards;if($("#startCar"))$("#startCar").onclick=startCar;
+  /* Without a search the dictionary shows a short preview; the rest opens on request. */
+  let dictAll=false;
   const drawDict=()=>{const q=deacc(norm($("#q").value));const t=today();
-    const rows=POOL.filter(c=>!q||deacc(norm(c.it)).includes(q)||deacc(norm(c.hu)).includes(q)).slice(0,80);
+    const found=POOL.filter(c=>!q||deacc(norm(c.it)).includes(q)||deacc(norm(c.hu)).includes(q)),rows=found.slice(0,q||dictAll?80:12);
     $("#dict").innerHTML=rows.length?rows.map(c=>{const s=S.cards[c.id];const pill=c.core&&!s?`<span class="pill">${c.core}</span>`:c.own&&!s?`<span class="pill now">Saját</span>`:!s?`<span class="pill">L${c.li+1}</span>`:s.ivl>=21?`<span class="pill ok">megy</span>`:s.due<=t?`<span class="pill now">esedékes</span>`:`<span class="pill">${ivlLabel({ivl:s.due-t})} múlva</span>`;
-      return `<div class="dict-row">${spkBtn(c.it)}<div style="min-width:0"><div class="it" ${LA()}>${esc(c.it)}</div><div class="small muted">${esc(c.hu)}</div></div>${pill}</div>`;}).join(""):`<p class="muted">Nincs találat.</p>`;};
+      return `<div class="dict-row">${spkBtn(c.it)}<div style="min-width:0"><div class="it" ${LA()}>${esc(c.it)}</div><div class="small muted">${esc(c.hu)}</div></div>${pill}</div>`;}).join("")+(found.length>rows.length?(q||dictAll?`<p class="small muted">Az első ${rows.length} találat látszik. Szűkítsd a keresést a többihez.</p>`:`<div style="padding-top:.8rem"><button class="btn ghost" id="dictMore">További szavak</button></div>`):""):`<p class="muted">Nincs találat.</p>`;
+    if($("#dictMore"))$("#dictMore").onclick=()=>{dictAll=true;drawDict();};};
   $("#q").oninput=drawDict;drawDict();bindOwn();bindPacks();bindCore();bindFix();
 }
 function startCards(){
@@ -2626,9 +2658,9 @@ function renderGrammarIt(pre){
   ];
   grammarPage(sections,pre?"Témánként táblázattal, magyarázattal és gyakorlóval; lent a kiejtés, a ragozás és a névelők összefoglalója.":"Az A1–A2 szint nyelvtana magyarázattal és táblázatokkal.",pre);
 }
-function grammarPage(sections,intro,pre){
+function grammarPage(sections,intro,pre,fold){
   view.innerHTML=`<div class="stack"><div><span class="label">${LG().name} kézikönyv</span><h1>Nyelvtan</h1><p class="muted">${intro} Ha elakadsz, kérdezz alul a tanártól.</p></div>
-  ${pre||""}${sections.map(([t,b],i)=>`<details class="g" ${i===0&&!pre?"open":""}><summary>${t}</summary><div class="gb">${b}</div></details>`).join("")}
+  ${pre||""}${(list=>fold?`<details class="g gfold"><summary><span>${esc(fold)} <span class="small muted">· ${sections.length}</span></span></summary><div class="gb">${list}</div></details>`:list)(sections.map(([t,b],i)=>`<details class="g" ${i===0&&!pre?"open":""}><summary>${t}</summary><div class="gb">${b}</div></details>`).join(""))}
   <div class="card stack"><div><h3>Kérdezz a tanártól</h3><p class="small muted">Bármilyen nyelvtani vagy szóhasználati kérdés, magyarul. Például: „${LG().ask}”</p></div>
   <textarea id="gq" style="min-height:5rem" placeholder="Írd ide a kérdésed…" aria-label="Kérdés a tanárnak"></textarea><div><button class="btn" id="gask">Kérdezek</button></div><div id="gans" class="prewrap"></div></div></div>`;
   let pending=null;
@@ -2665,7 +2697,11 @@ function renderTutor(){
   T.tab==="chat"?(T.sc?drawChat():drawScenarios()):drawWriting();
 }
 function drawScenarios(){
-  $("#tbody").innerHTML=`<div class="lgrid">${SCEN.map(s=>`<button class="lcard scard" data-s="${s.id}">${pic(s.img)}<div class="body"><b>${esc(s.t)}</b><span class="small muted">${esc(s.d)}</span></div></button>`).join("")}</div>${offlineDialogsHtml()}`;
+  /* Lesson-based situations fold by level (the chosen level opens); free conversation stays on top. */
+  const row=s=>`<button class="lcard scard" data-s="${s.id}">${pic(s.img)}<div class="body"><b>${esc(s.t)}</b><span class="small muted">${esc(s.d)}</span></div></button>`;
+  const levels=LG().levels.filter(l=>SCEN.some(s=>s.level===l)),loose=SCEN.filter(s=>!levels.includes(s.level));
+  $("#tbody").innerHTML=`${loose.length?`<div class="lgrid">${loose.map(row).join("")}</div>`:""}${levels.map(l=>{const xs=SCEN.filter(s=>s.level===l);
+    return `<details class="g lgroup" ${l===T.level||levels.length===1?"open":""}><summary><span>${esc(l)} <span class="small muted">· ${xs.length} helyzet</span></span></summary><div class="gb"><div class="lgrid">${xs.map(row).join("")}</div></div></details>`;}).join("")}${offlineDialogsHtml()}`;
   bindOfflineDialogs();
   $("#tbody").querySelectorAll("[data-s]").forEach(b=>b.onclick=()=>{resetTutorRequest("chat");T.chatError=null;T.chatDraft="";T.sc=SCEN.find(s=>s.id===b.dataset.s);T.sum=null;
     if(T.sc.open){T.msgs=[{r:"ai",it:T.sc.open[0],hu:T.sc.open[1],sugg:[]}];drawChat();setTimeout(()=>say(T.sc.open[0]),200);}
@@ -3287,7 +3323,7 @@ function packsCard(){
   if(!XT.packs.length)return "";
   const own=new Set(ownList().map(w=>norm(w.it)));
   return `<div class="sec-head"><h2>Témakörös szócsomagok</h2><span class="small muted">${XT.packs.length} csomag</span></div>
-  <div class="drills">${XT.packs.map((p,i)=>{const n=p.items.filter(x=>own.has(norm(x.it))).length;return `<button class="drill" data-pk="${p.id}"><span class="dico c${i%4+1}">${I.kartyak}</span><b>${esc(p.title)}</b><span class="small muted">${esc(p.desc)} · ${p.items.length} kifejezés</span>${n?`<span class="small"><span class="pill ${n===p.items.length?"ok":"now"}">${n===p.items.length?"Felvéve":n+" felvéve"}</span></span>`:""}</button>`;}).join("")}</div>`;
+  <div class="drills compact">${XT.packs.map((p,i)=>{const n=p.items.filter(x=>own.has(norm(x.it))).length;return `<button class="drill" data-pk="${p.id}"><span class="dico c${i%4+1}">${I.kartyak}</span><b>${esc(p.title)}</b><span class="small muted">${esc(p.desc)} · ${p.items.length} kifejezés</span>${n?`<span class="small"><span class="pill ${n===p.items.length?"ok":"now"}">${n===p.items.length?"Felvéve":n+" felvéve"}</span></span>`:""}</button>`;}).join("")}</div>`;
 }
 function bindPacks(){view.querySelectorAll("[data-pk]").forEach(b=>b.onclick=()=>openPack(b.dataset.pk));}
 function openPack(id){
@@ -4008,11 +4044,11 @@ function renderHandbook(){
   const weak=gramWeak(),done=XT.gram.filter(x=>{const g=gramOf()[gkey(x.id)];return g&&g.n&&g.ok/g.n>=0.8;}).length;
   const card=(x,i)=>`<button class="drill" data-gt="${x.id}"><span class="dico c${i%4+1}">${I.nyelvtan}</span><b>${esc(x.title)}</b><span class="small muted">${x.level} · ${x.drill.length} kérdéses gyakorló</span>${gramPill(x.id)}</button>`;
   const pre=`<div class="card"><div class="stats" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="stat"><span class="label">Témák</span><b class="tnum">${XT.gram.length}</b></div><div class="stat"><span class="label">Megy (80%+)</span><b class="tnum">${done}</b></div></div></div>
-  ${weak.length?`<div class="sec-head"><h2>Ajánlott a hibáid alapján</h2></div><div class="drills">${weak.map(card).join("")}</div>`:""}
-  ${["A1","A2","B1","B2","C1"].map(lv=>{const xs=XT.gram.filter(x=>x.level.slice(0,2)===lv);return xs.length?`<div class="sec-head"><h2>${lv}</h2><span class="small muted">${xs.length} téma</span></div><div class="drills">${xs.map(card).join("")}</div>`:"";}).join("")}
-  <div class="sec-head"><h2>${lang()==="it"?"Összefoglaló táblázatok":"A leckék jegyzetei"}</h2></div>`;
+  ${weak.length?`<div class="sec-head"><h2>Ajánlott a hibáid alapján</h2></div><div class="drills compact">${weak.map(card).join("")}</div>`:""}
+  ${["A1","A2","B1","B2","C1"].map(lv=>{const xs=XT.gram.filter(x=>x.level.slice(0,2)===lv);return xs.length?`<div class="sec-head"><h2>${lv}</h2><span class="small muted">${xs.length} téma</span></div><div class="drills compact">${xs.map(card).join("")}</div>`:"";}).join("")}
+  ${lang()==="it"?'<div class="sec-head"><h2>Összefoglaló táblázatok</h2></div>':""}`;
   if(lang()==="it")renderGrammarIt(pre);
-  else grammarPage(lessonNotes(),`A${lang()==="en"?"z angol":" "+LG().adj} nyelvtan témánként: táblázat, szabályok, a magyarok tipikus hibái és egy rövid gyakorló.`,pre);
+  else grammarPage(lessonNotes(),`A${lang()==="en"?"z angol":" "+LG().adj} nyelvtan témánként: táblázat, szabályok, a magyarok tipikus hibái és egy rövid gyakorló.`,pre,"A leckék jegyzetei");
   view.querySelectorAll("[data-gt]").forEach(b=>b.onclick=()=>openTopic(b.dataset.gt));
 }
 function openTopic(id){

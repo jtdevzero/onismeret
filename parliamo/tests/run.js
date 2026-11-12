@@ -109,6 +109,11 @@ function mockProxy(store) {
   ok(await p.locator('h2', { hasText: 'Haladó angol C1' }).count() === 1, 'a C1 ág fejléce látszik');
   const c1 = await p.evaluate(() => LESSONS.findIndex(l => l.id === 'en-c1'));
   ok(c1 > 0 && await p.evaluate(() => LESSONS.filter(l => l.track === 'c1').length) === 8, '8 C1 lecke', c1);
+  const c1Group = p.locator('details.lgroup', { has: p.locator(`[data-l="${c1}"]`) });
+  ok(!(await c1Group.evaluate(d => d.open)) && await p.locator('details.lgroup[open]').count() === 1, 'a leckék szintenként csukva, csak a következő lecke csoportja nyitott');
+  await c1Group.locator('summary').click();
+  await p.fill('#lSearch', 'idiom'); ok(await p.locator('details.lgroup:not([open])').count() === 0, 'keresésnél minden találati csoport nyitva'); await p.fill('#lSearch', '');
+  ok(await c1Group.evaluate(d => d.open), 'a kinyitott csoport keresés után is nyitva marad');
   await p.click(`[data-l="${c1}"]`); await p.click('#startL'); await answerAll(p);
   ok(await p.evaluate(() => S.lessons['en-c1'] && S.lessons['en-c1'].done), 'C1 lecke végigvihető');
   await p.reload(); await p.waitForFunction(() => LESSONS.length > 0 && !!document.querySelector('#view h1'));

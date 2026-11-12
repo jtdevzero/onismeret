@@ -16,11 +16,11 @@ function renderHandbook(){
   const weak=gramWeak(),done=XT.gram.filter(x=>{const g=gramOf()[gkey(x.id)];return g&&g.n&&g.ok/g.n>=0.8;}).length;
   const card=(x,i)=>`<button class="drill" data-gt="${x.id}"><span class="dico c${i%4+1}">${I.nyelvtan}</span><b>${esc(x.title)}</b><span class="small muted">${x.level} · ${x.drill.length} kérdéses gyakorló</span>${gramPill(x.id)}</button>`;
   const pre=`<div class="card"><div class="stats" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="stat"><span class="label">Témák</span><b class="tnum">${XT.gram.length}</b></div><div class="stat"><span class="label">Megy (80%+)</span><b class="tnum">${done}</b></div></div></div>
-  ${weak.length?`<div class="sec-head"><h2>Ajánlott a hibáid alapján</h2></div><div class="drills">${weak.map(card).join("")}</div>`:""}
-  ${["A1","A2","B1","B2","C1"].map(lv=>{const xs=XT.gram.filter(x=>x.level.slice(0,2)===lv);return xs.length?`<div class="sec-head"><h2>${lv}</h2><span class="small muted">${xs.length} téma</span></div><div class="drills">${xs.map(card).join("")}</div>`:"";}).join("")}
-  <div class="sec-head"><h2>${lang()==="it"?"Összefoglaló táblázatok":"A leckék jegyzetei"}</h2></div>`;
+  ${weak.length?`<div class="sec-head"><h2>Ajánlott a hibáid alapján</h2></div><div class="drills compact">${weak.map(card).join("")}</div>`:""}
+  ${["A1","A2","B1","B2","C1"].map(lv=>{const xs=XT.gram.filter(x=>x.level.slice(0,2)===lv);return xs.length?`<div class="sec-head"><h2>${lv}</h2><span class="small muted">${xs.length} téma</span></div><div class="drills compact">${xs.map(card).join("")}</div>`:"";}).join("")}
+  ${lang()==="it"?'<div class="sec-head"><h2>Összefoglaló táblázatok</h2></div>':""}`;
   if(lang()==="it")renderGrammarIt(pre);
-  else grammarPage(lessonNotes(),`A${lang()==="en"?"z angol":" "+LG().adj} nyelvtan témánként: táblázat, szabályok, a magyarok tipikus hibái és egy rövid gyakorló.`,pre);
+  else grammarPage(lessonNotes(),`A${lang()==="en"?"z angol":" "+LG().adj} nyelvtan témánként: táblázat, szabályok, a magyarok tipikus hibái és egy rövid gyakorló.`,pre,"A leckék jegyzetei");
   view.querySelectorAll("[data-gt]").forEach(b=>b.onclick=()=>openTopic(b.dataset.gt));
 }
 function openTopic(id){

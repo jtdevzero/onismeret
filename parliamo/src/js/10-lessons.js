@@ -1,17 +1,26 @@
 /* ============ LESSONS ============ */
-let lessonFilters={search:"",level:"",track:""};
+let lessonFilters={search:"",level:"",track:""},lessonOpen={};
 function renderLessons(){
   const nl=nextLesson(),f=lessonFilters;if(!LG().levels.includes(f.level))f.level="";if(!LESSONS.some(l=>l.track===f.track))f.track="";
   view.innerHTML=`<div class="stack"><div><span class="label">${LG().name} · ${LG().range} · ${doneCount()} / ${LESSONS.length} kész</span><h1>Leckék</h1><p class="muted">Tanulj kisebb részekben, vagy végezz el egy teljes leckét. A félbehagyott gyakorlást és a már elvégzett részeket megőrizzük.</p><div class="row" style="margin-top:.6rem"><button class="btn ghost" data-go="terkep">Haladási térkép</button><button class="btn ghost" id="lPlace">Szintfelmérő</button><button class="btn ghost" data-go="utlevel">Útlevél</button></div></div>
-  <div class="card stack"><label for="lSearch">Lecke keresése</label><input id="lSearch" type="search" placeholder="Téma vagy kifejezés" value="${esc(f.search)}"><div class="grid2"><label>Szint<select id="lLevel"><option value="">Minden szint</option>${LG().levels.map(l=>`<option value="${l}" ${f.level===l?"selected":""}>${l}</option>`).join("")}</select></label><label>Tanulási ág<select id="lTrack"><option value="">Minden ág</option>${[...new Set(LESSONS.map(l=>l.track).filter(Boolean))].map(t=>`<option value="${esc(t)}" ${f.track===t?"selected":""}>${esc((TRACKS||{})[t]||t)}</option>`).join("")}</select></label></div><p class="small muted" id="lCount" role="status"></p></div><div class="lgrid" id="lessonResults"></div></div>`;
+  <div class="card stack"><label for="lSearch">Lecke keresése</label><input id="lSearch" type="search" placeholder="Téma vagy kifejezés" value="${esc(f.search)}"><div class="grid2"><label>Szint<select id="lLevel"><option value="">Minden szint</option>${LG().levels.map(l=>`<option value="${l}" ${f.level===l?"selected":""}>${l}</option>`).join("")}</select></label><label>Tanulási ág<select id="lTrack"><option value="">Minden ág</option>${[...new Set(LESSONS.map(l=>l.track).filter(Boolean))].map(t=>`<option value="${esc(t)}" ${f.track===t?"selected":""}>${esc((TRACKS||{})[t]||t)}</option>`).join("")}</select></label></div><p class="small muted" id="lCount" role="status"></p></div><div class="stack" id="lessonResults"></div></div>`;
   function results(){
     const query=deacc(norm(f.search)),list=LESSONS.map((L,i)=>({L,i})).filter(({L})=>(!f.level||L.level===f.level)&&(!f.track||L.track===f.track)&&(!query||deacc(norm([L.t,L.hu,L.goal].join(" "))).includes(query)));
     $("#lCount").textContent=list.length+" / "+LESSONS.length+" lecke";
+    /* Compact, collapsible level groups: the group with the next lesson opens by default; a search or level filter opens every match. */
+    const openAll=!!(query||f.level),groups=[];
+    list.forEach(x=>{const key=(x.L.track||"")+"|"+x.L.level;let g=groups[groups.length-1];if(!g||g.key!==key){g={key,track:x.L.track,level:x.L.level,items:[]};groups.push(g);}g.items.push(x);});
+    const card=({L,i})=>{const state=ls(i),cls=state&&state.done?"done":state&&state.placed?"placed":i===nl?"cur":"",coverage=lessonCoverageCount(L.id);
+      const pill=state&&state.done?`<span class="pill ok">${esc(state.best)}%</span>`:state&&state.placed?'<span class="pill">Átugorva</span>':i===nl?'<span class="pill now">Következő</span>':"";
+      return `<button class="lcard ${cls}" data-l="${i}"><div class="pic"><img src="img/${L.id}.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"><span class="num">${state&&state.done?"✓":i+1}</span></div><div class="body"><b>${esc(L.t)}</b><span class="small muted">${esc(L.hu)} · ${L.words.length} szó, ${L.phrases.length} kifejezés</span>${coverage&&!state?.done?`<span class="small muted">${coverage} feladat már elkészült · folytatható</span>`:""}${pill?`<span class="badge">${pill}</span>`:""}</div></button>`;};
     let previousTrack=null;
-    $("#lessonResults").innerHTML=list.length?list.map(({L,i})=>{const state=ls(i),cls=state&&state.done?"done":state&&state.placed?"placed":i===nl?"cur":"",coverage=lessonCoverageCount(L.id);
-      const head=TRACKS&&previousTrack!==L.track?`<h2 style="grid-column:1/-1">${esc(TRACKS[L.track]||L.track)}</h2>`:"";previousTrack=L.track;
-      return head+`<button class="lcard ${cls}" data-l="${i}"><div class="pic"><img src="img/${L.id}.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"><span class="num">${state&&state.done?"✓":i+1}</span><span class="badge">${state&&state.done?`<span class="pill ok">${esc(state.best)}%</span>`:state&&state.placed?'<span class="pill">Átugorva</span>':i===nl?'<span class="pill now">Következő</span>':`<span class="pill">${L.level}</span>`}</span></div><div class="body"><b>${esc(L.t)}</b><span class="small muted">${esc(L.hu)} · ${L.words.length} szó, ${L.phrases.length} kifejezés</span>${coverage&&!state?.done?`<span class="small muted">${coverage} feladat már elkészült · folytatható</span>`:""}</div></button>`;
-    }).join(""):'<div class="card" style="grid-column:1/-1"><h2>Nincs ilyen lecke</h2><p class="muted">Próbálj másik keresést, vagy válaszd a minden szint / minden ág lehetőséget.</p></div>';
+    $("#lessonResults").innerHTML=list.length?groups.map(g=>{
+      const head=TRACKS&&previousTrack!==g.track?`<h2>${esc(TRACKS[g.track]||g.track)}</h2>`:"";previousTrack=g.track;
+      const done=g.items.filter(({i})=>ls(i)&&ls(i).done).length,saved=lessonOpen[lang()+":"+g.key];
+      const open=openAll||groups.length===1||(saved!==undefined?saved:g.items.some(({i})=>i===nl));
+      return head+`<details class="g lgroup" data-group="${esc(g.key)}" ${open?"open":""}><summary><span>${esc(g.level)} <span class="small muted">· ${g.items.length} lecke${done?` · ${done} kész`:""}</span></span></summary><div class="gb"><div class="lgrid">${g.items.map(card).join("")}</div></div></details>`;
+    }).join(""):'<div class="card"><h2>Nincs ilyen lecke</h2><p class="muted">Próbálj másik keresést, vagy válaszd a minden szint / minden ág lehetőséget.</p></div>';
+    if(!openAll)view.querySelectorAll("details.lgroup").forEach(d=>d.ontoggle=()=>{lessonOpen[lang()+":"+d.dataset.group]=d.open;});
     view.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>openLesson(+b.dataset.l));
   }
   $("#lSearch").oninput=e=>{f.search=e.target.value;results();};$("#lLevel").onchange=e=>{f.level=e.target.value;results();};$("#lTrack").onchange=e=>{f.track=e.target.value;results();};$("#lPlace").onclick=()=>startPlacement(false);results();

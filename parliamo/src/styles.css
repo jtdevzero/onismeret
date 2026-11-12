@@ -202,7 +202,7 @@ details.g{background:var(--surface);border:1px solid var(--line);border-radius:v
 details.g summary{cursor:pointer;padding:1rem 0;font-family:var(--display);font-size:1.15rem;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:1rem}
 details.g summary::-webkit-details-marker{display:none}
 details.g summary::after{content:"+";font-family:var(--body);font-size:1.4rem;color:var(--muted)}
-details.g[open] summary::after{content:"–"}
+details.g[open]>summary::after{content:"–"}
 details.g .gb{padding-bottom:1.1rem;display:flex;flex-direction:column;gap:.8rem;max-width:72ch}
 
 /* tutor */
@@ -252,6 +252,7 @@ details.g .gb{padding-bottom:1.1rem;display:flex;flex-direction:column;gap:.8rem
 .lcard .pic img{transition:transform .5s ease}
 .lcard:hover .pic img{transform:scale(1.05)}
 .lcard .num{position:absolute;top:10px;left:10px;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-family:var(--display);font-size:1.15rem;background:var(--surface);color:var(--ink);box-shadow:0 4px 12px rgba(0,0,0,.18)}
+.lcard{position:relative}
 .lcard .badge{position:absolute;top:10px;right:10px}
 .lcard .body{padding:1rem 1.1rem 1.2rem;display:flex;flex-direction:column;gap:.3rem}
 .lcard .body b{font-family:var(--body);font-weight:700;font-size:1.08rem;line-height:1.4}
@@ -643,4 +644,23 @@ section[aria-labelledby="practiceRecommended"]>.drills{grid-template-columns:rep
   .skip,header.top,#nav,#bnav,.no-print,#toast{display:none!important}
   body{background:#fff!important;color:#000!important}
   .report .card{break-inside:avoid;box-shadow:none;border:1px solid #ccc}
+}
+/* Compact lists: level groups fold, and on phones every lesson or situation is one row with a thumbnail. */
+details.g.lgroup .gb,details.g.gfold>.gb{max-width:none}
+details.g.gfold>.gb>details.g{background:var(--sunk);border-color:transparent}
+@media (max-width:640px){
+  details.g.lgroup{padding:0 .75rem}
+  .lgrid{grid-template-columns:minmax(0,1fr);gap:.6rem}
+  .lcard{flex-direction:row;align-items:stretch;border-radius:16px;min-height:84px}
+  .lcard .pic,.scard .pic{flex:0 0 92px;aspect-ratio:auto}
+  .lcard .num{top:6px;left:6px;width:28px;height:28px;border-radius:9px;font-size:.9rem}
+  .lcard .body{flex:1;min-width:0;justify-content:center;padding:.7rem .9rem;gap:.15rem}
+  .lcard .body b{font-size:1rem;line-height:1.3}
+  .lcard .body>.badge{position:static;margin-top:.2rem}
+  .lcard .pic>.badge{top:auto;right:auto;bottom:6px;left:6px}
+  .lcard:hover{transform:none}
+  .drills.compact{grid-template-columns:minmax(0,1fr);gap:.6rem}
+  .drills.compact .drill{display:grid;grid-template-columns:42px minmax(0,1fr);column-gap:.85rem;row-gap:.15rem;align-items:center;padding:.8rem 1rem}
+  .drills.compact .drill .dico{grid-row:1/span 3;margin:0}
+  .drills.compact .drill>:not(.dico){grid-column:2}
 }

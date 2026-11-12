@@ -25,10 +25,13 @@ function renderCards(){
   </div>`;
   $("#dir").querySelectorAll("button").forEach(b=>b.onclick=()=>{S.settings.dir=b.dataset.v;save();renderCards();});
   $("#startC").onclick=startCards;if($("#startCar"))$("#startCar").onclick=startCar;
+  /* Without a search the dictionary shows a short preview; the rest opens on request. */
+  let dictAll=false;
   const drawDict=()=>{const q=deacc(norm($("#q").value));const t=today();
-    const rows=POOL.filter(c=>!q||deacc(norm(c.it)).includes(q)||deacc(norm(c.hu)).includes(q)).slice(0,80);
+    const found=POOL.filter(c=>!q||deacc(norm(c.it)).includes(q)||deacc(norm(c.hu)).includes(q)),rows=found.slice(0,q||dictAll?80:12);
     $("#dict").innerHTML=rows.length?rows.map(c=>{const s=S.cards[c.id];const pill=c.core&&!s?`<span class="pill">${c.core}</span>`:c.own&&!s?`<span class="pill now">Saját</span>`:!s?`<span class="pill">L${c.li+1}</span>`:s.ivl>=21?`<span class="pill ok">megy</span>`:s.due<=t?`<span class="pill now">esedékes</span>`:`<span class="pill">${ivlLabel({ivl:s.due-t})} múlva</span>`;
-      return `<div class="dict-row">${spkBtn(c.it)}<div style="min-width:0"><div class="it" ${LA()}>${esc(c.it)}</div><div class="small muted">${esc(c.hu)}</div></div>${pill}</div>`;}).join(""):`<p class="muted">Nincs találat.</p>`;};
+      return `<div class="dict-row">${spkBtn(c.it)}<div style="min-width:0"><div class="it" ${LA()}>${esc(c.it)}</div><div class="small muted">${esc(c.hu)}</div></div>${pill}</div>`;}).join("")+(found.length>rows.length?(q||dictAll?`<p class="small muted">Az első ${rows.length} találat látszik. Szűkítsd a keresést a többihez.</p>`:`<div style="padding-top:.8rem"><button class="btn ghost" id="dictMore">További szavak</button></div>`):""):`<p class="muted">Nincs találat.</p>`;
+    if($("#dictMore"))$("#dictMore").onclick=()=>{dictAll=true;drawDict();};};
   $("#q").oninput=drawDict;drawDict();bindOwn();bindPacks();bindCore();bindFix();
 }
 function startCards(){
