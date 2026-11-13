@@ -29,6 +29,8 @@ jobs:
             git diff --stat
             exit 1
           fi
+      - name: Parliamo méretkorlát (az első indulás ne hízzon)
+        run: python3 parliamo/tools/size_budget.py
       - name: Tesztek (linkek, séma, pontozás, felület)
         run: npm test
       - name: Társasest játékok és offline mobilfelület
