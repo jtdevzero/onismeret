@@ -39,6 +39,6 @@ async function boot() {
   addEventListener('hashchange', route);
   await route();
   document.documentElement.dataset.ready = '1';
-  if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});
+  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) navigator.serviceWorker.register('sw.js').catch(() => {});
 }
 boot();

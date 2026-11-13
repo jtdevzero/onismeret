@@ -151,3 +151,22 @@ test('érvényesítő: hiányzó mező, ismeretlen azonosító, túl hosszú sz�
   assert.ok(validPrepCoach(p, []));
   for (const bad of [{ ...p, next: 'jump' }, { ...p, option_id: 'x' }, { ...p, fix: null }, { ...p, good: '' }]) assert.equal(validPrepCoach(bad, []), false);
 });
+
+test('build: az index.html és az sw.js friss, a gyorsítótár-lista minden fájlja létezik, a CSP szigorú', async () => {
+  const { execFileSync } = await import('node:child_process');
+  const { existsSync } = await import('node:fs');
+  const root = new URL('../', import.meta.url);
+  const read = n => readFileSync(new URL(n, root), 'utf8');
+  const before = [read('index.html'), read('sw.js')];
+  execFileSync('python3', [new URL('build.py', root).pathname]);
+  assert.deepEqual([read('index.html'), read('sw.js')], before, 'futtasd: python3 kanyar/build.py');
+  const list = JSON.parse(/const PRECACHE = (\[[\s\S]*?\]);/.exec(before[1])[1]);
+  for (const f of list) if (f !== './') assert.ok(existsSync(new URL(f, root)), f);
+  assert.ok(list.includes('js/ui/app.js') && list.includes('data/faults.json'));
+  assert.ok(!list.some(f => f.includes('vendor/')), 'a 16 MB-os pózbecslő nem a telepítéskor töltődik');
+  const csp = /Content-Security-Policy" content="([^"]+)"/.exec(before[0])[1];
+  assert.match(csp, /script-src 'self' 'wasm-unsafe-eval';/);
+  assert.match(csp, /style-src 'self';/);
+  assert.doesNotMatch(csp, /unsafe-inline|(?<!wasm-)unsafe-eval|\*(?!\.workers\.dev)/);
+  assert.doesNotMatch(before[0], /<script(?![^>]*\bsrc=)|\son\w+=|style="/, 'nincs beágyazott szkript, eseménykezelő vagy stílus');
+});

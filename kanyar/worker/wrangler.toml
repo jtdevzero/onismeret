@@ -1,0 +1,28 @@
+# Kanyar AI-edző szerver (Cloudflare Worker).
+# Titkos értékek, amiket NEM ide kell írni, hanem `wrangler secret put` paranccsal adsz meg:
+#   ANTHROPIC_API_KEY  a Claude API-kulcsod
+#   APP_PASSWORD       a belépőkód (legalább 12 karakter), amit a webapp Beállításainál megadsz
+name = "kanyar-ai"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+
+[vars]
+# Vesszővel elválasztva: honnan hívhatja a szervert böngésző.
+ALLOWED_ORIGINS = "https://jtdevzero.github.io"
+MODEL = "claude-sonnet-5-5"
+
+# Legfeljebb 10 elemzés percenként, hogy egy kiszivárgott belépőkóddal se lehessen nagy számlát csinálni.
+[[ratelimits]]
+name = "LIMITER"
+namespace_id = "2001"
+  [ratelimits.simple]
+  limit = 10
+  period = 60
+
+# Hibás belépőkód: IP-címenként legfeljebb 10 próbálkozás percenként.
+[[ratelimits]]
+name = "AUTH_LIMITER"
+namespace_id = "2002"
+  [ratelimits.simple]
+  limit = 10
+  period = 60

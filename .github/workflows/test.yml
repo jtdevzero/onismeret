@@ -16,6 +16,7 @@ jobs:
           cache-dependency-path: |
             package-lock.json
             parliamo/worker/package-lock.json
+            kanyar/worker/package-lock.json
       - name: Függőségek a lockfile szerint
         run: |
           npm ci
@@ -24,8 +25,9 @@ jobs:
         run: |
           python3 tools/build.py
           python3 parliamo/build.py
+          python3 kanyar/build.py
           if ! git diff --quiet; then
-            echo "A build után generálatlan módosítás maradt. Futtasd helyben: python3 tools/build.py és python3 parliamo/build.py"
+            echo "A build után generálatlan módosítás maradt. Futtasd helyben: python3 tools/build.py, python3 parliamo/build.py és python3 kanyar/build.py"
             git diff --stat
             exit 1
           fi
@@ -78,3 +80,17 @@ jobs:
           node parliamo/tests/secondary-ai-lifecycle.js
           node parliamo/tests/ai-remaining-views.js
           node parliamo/tests/audio-language.test.js
+      - name: Kanyar elemzőmag, tartalom és build
+        if: ${{ !cancelled() }}
+        run: node --test kanyar/tests/*.test.mjs
+      - name: Kanyar AI-szerver (worker) tesztjei
+        if: ${{ !cancelled() }}
+        working-directory: kanyar/worker
+        run: |
+          npm ci
+          npm test
+      - name: Kanyar böngészős végpontteszt és pózbecslő
+        if: ${{ !cancelled() }}
+        run: |
+          node kanyar/tests/browser.cjs
+          node kanyar/tests/pose-smoke.cjs
