@@ -6,6 +6,7 @@ import { kvGet, kvSet, itemPut } from './store.js';
 import { analyzeExercise, isAnalyzable } from '../core/exercise.js';
 import { TESTS, buildProfile, buildProgram } from '../core/program.js';
 import { prepCoach } from './coach-client.js';
+import { liveCounter } from './live.js';
 
 const pain = () => !!(S.settings.health && S.settings.health.pain);
 const exMap = () => Object.fromEntries(Object.values(D.ex).map(e => [e.id, e]));
@@ -108,16 +109,17 @@ function resultCard(result, ex, coach) {
     coach.aiError ? note('Az AI-edzőt most nem sikerült elérni, ezért a helyi elemzést látod.', 'small') : null);
 }
 
-export async function exerciseView(id) {
+export async function exerciseView(id, onCleanup) {
   const ex = D.ex[id];
   if (!ex) return page('Nincs ilyen gyakorlat', link('#/prep', '← Felkészülés', 'btn'));
   const isTest = TESTS.includes(id), out = h('div', { 'aria-live': 'polite' });
   let analyze = null;
   if (isAnalyzable(id)) {
-    const picker = videoPicker(isTest ? 'Teszt felvétele vagy feltöltése' : 'Vedd fel, és elemzem', async ({ blob, frames, aspect }, say) => {
+    /* A videóból és az élő számlálásból érkező mérés ugyanazon az úton megy tovább. */
+    const finish = async ({ blob, frames, aspect }, statusEl, say = () => {}) => {
       const result = analyzeExercise(frames, { aspect, exercise: id });
       if (!result.ok) {
-        clear(picker.status).append(note(result.reason === 'no_movement'
+        clear(statusEl).append(note(result.reason === 'no_movement'
           ? 'Nem találtam a gyakorlat mozgását a felvételen. Ellenőrizd a kameraállást, és hogy végig látszol-e.'
           : 'Nem látszottál elég jól a felvételen. Támaszd le a telefont úgy, hogy tetőtől talpig beleférj, és legyen elég fény.', 'warn'));
         return;
@@ -125,17 +127,21 @@ export async function exerciseView(id) {
       say('Visszajelzés készül…');
       const profile = await getProfile();
       let images = [];
-      try { const d = frames[frames.length - 1].t; images = await captureFrames(blob, [0.3 * d, 0.6 * d], 384, 0.5); } catch { images = []; }
+      if (blob) try { const d = frames[frames.length - 1].t; images = await captureFrames(blob, [0.3 * d, 0.6 * d], 384, 0.5); } catch { images = []; }
       const coach = await prepCoach(result, ex, { mode: isTest ? 'assessment' : 'exercise', profile }, images);
-      await itemPut({ id: uid(), kind: 'exercise', date: Date.now(), exercise: id, isTest, result, coach });
+      await itemPut({ id: uid(), kind: 'exercise', date: Date.now(), exercise: id, isTest, live: !blob, result, coach });
       if (isTest) { const all = await kvGet('assessment', {}); all[id] = result; await kvSet('assessment', all); toast('A teszt eredménye bekerült a profilodba.'); }
-      clear(picker.status);
+      clear(statusEl);
       clear(out).append(resultCard(result, ex, coach));
       out.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
+    };
+    const picker = videoPicker(isTest ? 'Teszt felvétele vagy feltöltése' : 'Vedd fel, és elemzem', (r, say) => finish(r, picker.status, say));
+    const live = liveCounter(id, (r, statusEl) => finish(r, statusEl));
+    if (onCleanup) onCleanup(live.stop);
     analyze = card(h('h2', null, isTest ? 'Teszt elvégzése' : 'Végrehajtás elemzése'),
       h('p', null, ex.camera || 'Támaszd le a telefont úgy, hogy tetőtől talpig látszódj.'),
-      note('A videó a telefonodon marad, az elemzés a készüléken fut.', 'small'), picker.el);
+      note('A videó a telefonodon marad, az elemzés a készüléken fut.', 'small'), picker.el,
+      h('h3', null, 'Vagy számoljak élőben?'), live.el);
   }
   return page(ex.name,
     h('p', { class: 'muted' }, D.exercises.typeNames[ex.type] + (ex.dose.seconds ? ' · ' + fmtSec(ex.dose.seconds) : ' · ' + ex.dose.reps + ' ismétlés') + (ex.perSide ? ' oldalanként' : '')),

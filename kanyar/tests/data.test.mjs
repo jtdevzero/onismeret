@@ -44,12 +44,13 @@ test('minden elemezhető gyakorlathoz van kameratanács és szöveg az összes e
   for (const t of TESTS) assert.ok(ANALYZERS[t] && ex[t], t);
 });
 
-test('leckék: egyedi azonosítók, mindkét sportág első két szintjén van lecke', () => {
+test('leckék: egyedi azonosítók, mindkét sportág mind az öt szintjén van lecke', () => {
   assert.equal(new Set(LES.lessons.map(l => l.id)).size, LES.lessons.length);
   for (const l of LES.lessons) { assert.ok(l.title && l.body.length, l.id); assert.ok(['lesson', 'drill', 'guide'].includes(l.kind), l.id); }
   for (const sport of ['ski', 'snowboard']) {
     assert.equal(LES.levels[sport].length, 5);
-    for (const lv of [1, 2]) assert.ok(LES.lessons.filter(l => l.sport === sport && l.level === lv && l.kind === 'lesson').length >= 5, `${sport} ${lv}. szint`);
+    for (const lv of [1, 2, 3, 4, 5]) assert.ok(LES.lessons.filter(l => l.sport === sport && l.level === lv && l.kind === 'lesson').length >= 4, `${sport} ${lv}. szint`);
+    for (const l of LES.lessons.filter(x => x.kind !== 'guide')) { assert.ok(l.steps.length >= 3 && l.check.length >= 2, l.id); }
   }
   for (const id of ['guide_filming', 'guide_fis', 'guide_limits', 'guide_mountain_routine']) assert.ok(lesson[id], id);
 });

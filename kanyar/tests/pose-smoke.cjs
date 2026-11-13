@@ -16,7 +16,7 @@ const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '
       fs.readFile(f, (e, b) => { if (e) { res.writeHead(404); res.end(); } else { res.writeHead(200, { 'content-type': TYPES[path.extname(f)] || 'application/octet-stream' }); res.end(b); } });
     }).listen(0, '127.0.0.1', () => resolve(s));
   });
-  const browser = await chromium.launch();
+  const browser = await chromium.launch({ args: ['--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream'] });
   const page = await browser.newPage();
   const errors = [];
   page.on('pageerror', e => errors.push(e.message));
@@ -33,9 +33,20 @@ const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '
     const out = lm.detectForVideo(c, Math.round(performance.now()));
     return { poses: out.landmarks.length };
   });
+  /* élő kamera (a böngésző teszt-kamerájával): képkockák érkeznek növekvő időbélyeggel, lezárás után a sáv leáll */
+  const live = await page.evaluate(async () => {
+    const { openCamera } = await import('./js/ui/pose.js');
+    const cam = await openCamera();
+    const frames = [await cam.read(), await cam.read(), await cam.read()];
+    const track = cam.el.srcObject.getTracks()[0];
+    cam.close();
+    return { n: frames.length, increasing: frames[2].t > frames[1].t && frames[1].t > frames[0].t, shape: frames.every(f => f.lm === null || f.lm.length === 33), aspect: cam.aspect, stopped: track.readyState === 'ended', after: await cam.read() };
+  });
+  assert.deepEqual({ ...live, aspect: live.aspect > 0 }, { n: 3, increasing: true, shape: true, aspect: true, stopped: true, after: null });
   assert.equal(typeof res.poses, 'number');
   assert.deepEqual(external, [], 'a pózbecslő nem hív külső szervert');
   assert.deepEqual(errors, [], errors.join(' | '));
   await browser.close(); srv.close();
+  console.log('ok   az élő kamera képkockákat ad, és lezáráskor leáll');
   console.log('ok   a pózbecslő betöltődik és lefut a szigorú CSP mellett, külső hívás nélkül (talált póz: ' + res.poses + ')');
 })().catch(e => { console.error(e); process.exit(1); });

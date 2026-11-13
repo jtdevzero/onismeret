@@ -132,3 +132,36 @@ export async function captureFrames(blob, times, maxSide = 512, quality = 0.6) {
     return out;
   } finally { release(); }
 }
+
+/* Élő kamera: a kép nem kerül rögzítésre és nem megy sehova, csak a testpontokat mérjük képkockánként.
+   → { el (előnézet), aspect, read(): a következő mért képkocka vagy null, close() } */
+export async function openCamera() {
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw Object.assign(new Error('no_camera'), { code: 'no_camera' });
+  const lm = await loadPose();
+  let stream;
+  try { stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } } }); }
+  catch (e) { throw Object.assign(new Error('camera_denied'), { code: 'camera_denied' }); }
+  const video = document.createElement('video');
+  video.muted = true; video.playsInline = true; video.autoplay = true; video.srcObject = stream;
+  video.className = 'live-video';
+  await video.play().catch(() => {});
+  if (video.readyState < 2) await once(video, 'loadeddata');
+  const start = performance.now();
+  let last = -1, open = true;
+  const nextFrame = () => new Promise(resolve => ('requestVideoFrameCallback' in video ? video.requestVideoFrameCallback(() => resolve()) : requestAnimationFrame(() => resolve())));
+  return {
+    el: video,
+    aspect: video.videoWidth / video.videoHeight || 4 / 3,
+    async read() {
+      while (open) {
+        await nextFrame();
+        const t = (performance.now() - start) / 1000;
+        if (t - last < SAMPLE_GAP * 0.9) continue;
+        last = t;
+        return detect(lm, video, t);
+      }
+      return null;
+    },
+    close() { open = false; stream.getTracks().forEach(tr => tr.stop()); video.srcObject = null; },
+  };
+}

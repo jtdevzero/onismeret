@@ -12,9 +12,10 @@ A videó a készüléken marad. A pózbecslés (MediaPipe Pose Landmarker) a bö
 - A mutatók **szintetikus mozgásadatokon** vannak tesztelve. Valódi sí- és snowboardvideón még senki nem próbálta ki; a sávhatárok (`js/core/snow.js`, `js/core/exercise.js`) szakmai becslések, kalibrálásra várnak.
 - A tananyagot, a hibakatalógust és a gyakorlatokat **szakember még nem lektorálta** (`"reviewed": false` a `data/` fájlokban).
 - A bemutató videók YouTube-keresésből, cím alapján kerültek be; a tartalmukat senki nem nézte át.
-- Tananyag az első két szinthez készült (sí és snowboard). A felület magyar.
+- Tananyag mind az öt szinthez van (sí és snowboard, szintenként 4–5 lecke). A felület magyar.
 - AI-szerver nélkül a helyi, szabályalapú edző válaszol; a `worker/` telepítése után az AI-edző.
-- Nincs benne: élő (csúszás vagy edzés közbeni) visszajelzés, szenzoros követés, fiók és szinkron, élszög és sebesség mérése.
+- Az otthoni gyakorlatoknál van élő ismétlésszámlálás kamerával, hangos számolással; a formaértékelés a sorozat végén jön.
+- Nincs benne: csúszás közbeni élő visszajelzés, szenzoros követés, fiók és szinkron, élszög és sebesség mérése.
 
 ## Felépítés
 

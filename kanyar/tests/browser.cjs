@@ -47,7 +47,7 @@ const go = async (page, hash) => { await page.evaluate(h => { if (location.hash 
   const ctx = await browser.newContext({ ...devices['Pixel 7'] });
   const page = await ctx.newPage();
   const problems = [];
-  page.on('console', m => { if (m.type() === 'error' && !/teszt\.mp4|blob:|Failed to load resource/.test(m.text())) problems.push('console: ' + m.text()); });
+  page.on('console', m => { if (m.type() === 'error' && !/teszt\.mp4|blob:|Failed to load resource|camera_denied/.test(m.text())) problems.push('console: ' + m.text()); });
   page.on('pageerror', e => problems.push('pageerror: ' + e.message));
   let n = 0;
   const shot = async name => { if (SHOTS) await page.screenshot({ path: path.join(SHOTS, String(++n).padStart(2, '0') + '-' + name + '.png'), fullPage: true }); };
@@ -120,7 +120,33 @@ const go = async (page, hash) => { await page.evaluate(h => { if (location.hash 
     await shot('prep');
   });
 
+  await step('élő számlálás: visszaszámlál, élőben számolja az ismétléseket, a végén értékel és naplóz', async () => {
+    await go(page, '#/ex/squat');
+    await page.evaluate(async () => {
+      const w = await import('./js/ui/widgets.js'), s = await import('./tests/synth.mjs');
+      const flex = t => 55 - 50 * Math.cos(2 * Math.PI * t / 3);
+      /* 2 mp visszaszámlálás, utána 5 guggolás; a képkockák gyorsítva érkeznek */
+      const frames = s.series(17.5, t => ({ flex: t < 2 ? 5 : flex(t - 2), stance: 0.2, kneeW: 0.24 }));
+      let i = 0, open = true;
+      window.__liveSeen = [];
+      w.setRunner({ countdown: 2, openCamera: async () => ({ el: null, aspect: 1, read: async () => { await new Promise(r => setTimeout(r, 2)); const c = document.querySelector('.live-count'); if (c) window.__liveSeen.push(c.textContent); return open && i < frames.length ? frames[i++] : null; }, close: () => { open = false; window.__liveClosed = true; } }) });
+    });
+    await page.getByRole('button', { name: 'Élő számlálás kamerával' }).click();
+    await page.waitForFunction(() => /5 ismétlés/.test(document.getElementById('main').innerText));
+    const seen = await page.evaluate(() => [...new Set(window.__liveSeen)]);
+    for (const v of ['2', '1', '3', '4', '5']) assert.ok(seen.includes(v), 'a kijelzőn megjelent: ' + v + ' (' + seen.join(',') + ')');
+    assert.equal(await page.evaluate(() => window.__liveClosed), true, 'a kamera leáll');
+    assert.match(await text(), /Mélység[\s\S]*Rendben/);
+    assert.equal(await page.locator('.live-stage').isVisible(), false);
+    await shot('live-result');
+    /* kamera nélkül érthető hibaüzenet */
+    await page.evaluate(async () => { const w = await import('./js/ui/widgets.js'); w.setRunner({ openCamera: async () => { throw Object.assign(new Error('camera_denied'), { code: 'camera_denied' }); } }); });
+    await page.getByRole('button', { name: 'Élő számlálás kamerával' }).click();
+    await page.waitForFunction(() => /Nem kaptam engedélyt a kamerához/.test(document.getElementById('main').innerText));
+  });
+
   await step('program: a gyenge térdkontroll miatt ugrások nélkül készül, az edzés kipipálható', async () => {
+    await go(page, '#/prep');
     await page.getByRole('button', { name: 'Program készítése' }).click();
     await shown(page, '#/program');
     const t = await text();
