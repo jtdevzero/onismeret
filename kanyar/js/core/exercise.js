@@ -46,16 +46,25 @@ function longestHold(t, okArr) {
   }
   return best;
 }
+/* Egy ismétlés ideje: a szomszédos mélypontok közti idő (az utolsónál az előző ciklusé). Egy ismétlésnél a mért szakasz. */
+function repSeconds(F, reps) {
+  return reps.map((r, i) => {
+    if (reps.length < 2) return F[r.i1].t - F[r.i0].t;
+    const a = i + 1 < reps.length ? i : i - 1;
+    return F[reps[a + 1].bottom].t - F[reps[a].bottom].t;
+  });
+}
 const isFrontal = b => b.shoulderW / (b.torsoLen || 1) > 0.45;
 
 /* ---- gyakorlatonkénti elemzők: (F, t) → részeredmény ---- */
 
 function squat(F) {
   const reps = detectReps(F.map(f => f.b.knee), 30);
-  const perRep = reps.map(r => {
+  const secs = repSeconds(F, reps);
+  const perRep = reps.map((r, i) => {
     const f = F[r.bottom], frontal = isFrontal(f.b);
     return {
-      view: frontal ? 'frontal' : 'side', depth: f.b.knee, seconds: F[r.i1].t - F[r.i0].t,
+      view: frontal ? 'frontal' : 'side', depth: f.b.knee, seconds: secs[i],
       valgus: frontal ? f.b.kneeDist / (f.b.ankleDist || 1) : null,
       torso: frontal ? null : Math.abs(f.b.torsoTilt),
     };
@@ -68,7 +77,7 @@ function squat(F) {
     if (fr.length) { const v = mean(fr.map(r => r.valgus)); checks.push(check('knees_out', v >= 0.75, v, 'ratio')); }
     if (sd.length) { const v = mean(sd.map(r => r.torso)); checks.push(check('chest_up', v <= 55, v)); }
     const sec = mean(perRep.map(r => r.seconds));
-    checks.push(check('tempo', sec >= 1.2, sec, 's'));
+    checks.push(check('tempo', sec >= 2, sec, 's'));
   }
   return { reps: reps.length, perRep, checks };
 }
@@ -117,11 +126,12 @@ function singleLegSquat(F) {
 
 function lunge(F) {
   const reps = detectReps(F.map(f => Math.min(f.b.kneeL, f.b.kneeR)), 30);
-  const perRep = reps.map(r => ({ depth: Math.min(F[r.bottom].b.kneeL, F[r.bottom].b.kneeR), torso: Math.abs(F[r.bottom].b.torsoTilt), seconds: F[r.i1].t - F[r.i0].t }));
+  const secs = repSeconds(F, reps);
+  const perRep = reps.map((r, i) => ({ depth: Math.min(F[r.bottom].b.kneeL, F[r.bottom].b.kneeR), torso: Math.abs(F[r.bottom].b.torsoTilt), seconds: secs[i] }));
   const checks = [];
   if (perRep.length) {
     const d = mean(perRep.map(r => r.depth)), tr = mean(perRep.map(r => r.torso)), sec = mean(perRep.map(r => r.seconds));
-    checks.push(check('depth', d <= 105, d), check('chest_up', tr <= 30, tr), check('tempo', sec >= 1.2, sec, 's'));
+    checks.push(check('depth', d <= 105, d), check('chest_up', tr <= 30, tr), check('tempo', sec >= 2, sec, 's'));
   }
   return { reps: reps.length, perRep, checks };
 }
@@ -143,11 +153,12 @@ function lateralLunge(F) {
 function gluteBridge(F) {
   /* fent a csípő nyújtva van: a jelet megfordítjuk, hogy a „lent” a nyújtott helyzet legyen */
   const reps = detectReps(F.map(f => -f.b.hipAngle), 20);
-  const perRep = reps.map(r => ({ top: F[r.bottom].b.hipAngle, seconds: F[r.i1].t - F[r.i0].t }));
+  const secs = repSeconds(F, reps);
+  const perRep = reps.map((r, i) => ({ top: F[r.bottom].b.hipAngle, seconds: secs[i] }));
   const checks = [];
   if (perRep.length) {
     const top = mean(perRep.map(r => r.top)), sec = mean(perRep.map(r => r.seconds));
-    checks.push(check('hips_high', top >= 160, top), check('tempo', sec >= 1.5, sec, 's'));
+    checks.push(check('hips_high', top >= 160, top), check('tempo', sec >= 2, sec, 's'));
   }
   return { reps: reps.length, perRep, checks };
 }

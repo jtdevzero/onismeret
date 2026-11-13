@@ -11,22 +11,22 @@ const CONF = ['high', 'medium', 'low'];
 export function validSnowCoach(o, ids) {
   if (!o || typeof o !== 'object' || Array.isArray(o)) return false;
   const m = o.main_issue;
-  return str(o.summary) && str(o.strength) && m && typeof m === 'object'
+  return !!(str(o.summary) && str(o.strength) && m && typeof m === 'object'
     && (m.id === null || ids.faults.includes(m.id)) && str(m.what) && str(m.why)
     && Array.isArray(m.evidence) && m.evidence.length <= 8 && m.evidence.every(e => str(e, 40))
     && (o.drill_id === null || ids.drills.includes(o.drill_id))
     && (o.home_drill_id === null || ids.homeDrills.includes(o.home_drill_id))
-    && strOrNull(o.cue) && strOrNull(o.progress) && CONF.includes(o.confidence) && strOrNull(o.reshoot_tip);
+    && strOrNull(o.cue) && strOrNull(o.progress) && CONF.includes(o.confidence) && strOrNull(o.reshoot_tip));
 }
 /* A felkészülési edző válaszának ellenőrzése. options: megengedett gyakorlatazonosítók. */
 export function validPrepCoach(o, options) {
   if (!o || typeof o !== 'object' || Array.isArray(o)) return false;
   const f = o.fix;
-  return str(o.summary) && str(o.good) && f && typeof f === 'object' && str(f.what) && str(f.cue)
+  return !!(str(o.summary) && str(o.good) && f && typeof f === 'object' && str(f.what) && str(f.cue)
     && Array.isArray(f.evidence) && f.evidence.length <= 8 && f.evidence.every(e => str(e, 40))
     && str(o.on_snow) && ['keep', 'easier', 'harder'].includes(o.next)
     && (o.option_id === null || options.includes(o.option_id))
-    && strOrNull(o.asymmetry) && CONF.includes(o.confidence) && strOrNull(o.reshoot_tip);
+    && strOrNull(o.asymmetry) && CONF.includes(o.confidence) && strOrNull(o.reshoot_tip));
 }
 
 const levelOk = (f, level) => level >= (f.minLevel || 1) && level <= (f.maxLevel || 5);

@@ -120,6 +120,7 @@ test('guggolás szemből: 5 ismétlés, jó mélység; beeső térdnél „knees
   assert.equal(chk(good, 'depth'), 'ok');
   assert.equal(chk(good, 'knees_out'), 'ok');
   assert.equal(chk(good, 'tempo'), 'ok');
+  assert.ok(Math.abs(good.checks.find(c => c.id === 'tempo').value - 3) < 0.4, 'az ismétlés ideje a teljes ciklus (3 mp)');
   const valgus = ex('squat', series(15.5, t => ({ flex: squatFlex(t), stance: 0.2, kneeW: 0.24 - 0.12 * (squatFlex(t) / 105) })));
   assert.equal(valgus.reps, 5);
   assert.equal(chk(valgus, 'knees_out'), 'fix');

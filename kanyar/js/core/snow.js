@@ -86,6 +86,8 @@ export function detectTurns(t, sig) {
   }
   if (state) close(n - 1, true);
   if (turns.length && turns[0].i0 === 0) turns[0].partial = true;
+  /* egyetlen, előjelváltás nélküli „kanyar” csak tartós dőlés (pl. oldalnézetben a csípő helyzete), nem kanyar */
+  if (turns.length === 1) return [];
   return turns.filter(k => k.t1 - k.t0 >= 0.35).map(k => {
     /* fázisok: kezdés (a csúcs feléig), irányítás, befejezés (a csúcs fele alá esés után) */
     let a = k.i0, b = k.i1;
