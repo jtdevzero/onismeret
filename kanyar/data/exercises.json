@@ -1,0 +1,343 @@
+{
+  "note": "A gyakorlatleírásokat és a határértékeket edző vagy gyógytornász még nem lektorálta. A videók YouTube-keresésből, cím alapján kerültek ide; a tartalmukat senki nem nézte át (reviewed: false).",
+  "reviewed": false,
+  "typeNames": {
+    "warmup": "Bemelegítés", "strength": "Erő", "core": "Törzs", "balance": "Egyensúly",
+    "power": "Robbanékonyság", "endurance": "Állóképesség", "mobility": "Mobilitás és nyújtás", "test": "Felmérő teszt"
+  },
+  "weakNames": {
+    "knee_control": "térdkontroll", "ankle_mobility": "bokamozgékonyság", "balance": "egyensúly", "leg_strength": "láberő",
+    "leg_endurance": "combállóképesség", "hip_mobility": "csípőmozgékonyság", "rotation": "törzsforgás", "power": "robbanékonyság"
+  },
+  "workouts": {
+    "ski": [
+      { "title": "15 Min Ski Strength Bodyweight Workout", "url": "https://www.youtube.com/watch?v=iRP44bdc2GE" },
+      { "title": "Ski Fitness! 20 Min FULL BODY Work Out For Skiers", "url": "https://www.youtube.com/watch?v=CH-PNXdG1lI" },
+      { "title": "THE PERFECT AT HOME PRE SKI SEASON WORKOUT; NO EQUIPMENT!!", "url": "https://www.youtube.com/watch?v=wFNiCXGenLk" }
+    ],
+    "snowboard": [
+      { "title": "At-Home Snowboard Workout (15 Minutes)", "url": "https://www.youtube.com/watch?v=MUeAG8ohYdw" },
+      { "title": "20-Min Beginner Snowboard Workout", "url": "https://www.youtube.com/watch?v=AGPvsNxZsa8" },
+      { "title": "9 Snowboard Exercises That Actually Work (Before Your First Day)", "url": "https://www.youtube.com/watch?v=p-XhbLFQT90" }
+    ]
+  },
+  "exercises": [
+    {
+      "id": "warmup_routine", "name": "Bemelegítés", "type": "warmup", "view": "any", "perSide": false, "dose": { "seconds": 300 },
+      "how": "Öt perc folyamatos mozgás: helyben járás magas térdemeléssel, karkörzés, csípőkörzés, 10 laza guggolás, 10 kitörés váltott lábbal, törzsfordítás állva. A végére melegedj ki, de ne fáradj el.",
+      "points": ["Fokozatosan nagyobb mozdulatok", "Rugózás és rángatás nélkül", "A végén kicsit szaporább a légzésed"],
+      "onSnow": "A hegyen ugyanezt csináld meg sícipőben vagy bakancsban az első csúszás előtt: a hideg izom lassabban reagál.",
+      "easier": null, "harder": null,
+      "videos": [
+        { "title": "HOW TO WARM UP FOR SKIING", "url": "https://www.youtube.com/watch?v=MCgS1Us1ZFo" },
+        { "title": "How To Warm Up For A Day's Snowboarding", "url": "https://www.youtube.com/watch?v=Fi_ros2LcYs" },
+        { "title": "Warm Up Routine for Skiing and Snowboarding", "url": "https://www.youtube.com/watch?v=mnY4ATjCT-Y" }
+      ],
+      "query": "ski snowboard warm up routine"
+    },
+    {
+      "id": "squat", "name": "Guggolás", "type": "strength", "view": "front", "perSide": false, "dose": { "reps": 12 },
+      "how": "Vállszéles terpesz, a lábfej kicsit kifelé néz. Told hátra a csípőd, mintha székre ülnél, és ereszkedj le, amíg a combod vízszintes. A sarkad végig a talajon marad.",
+      "camera": "Szemből vagy oldalról, 2–3 méterről, hogy a bokád és a fejed is látsszon.",
+      "points": ["A comb legalább vízszintesig megy le", "A térd a lábujjak irányába néz, nem esik befelé", "A mellkas nyitott, a törzs nem bukik előre"],
+      "checkpoints": {
+        "depth": { "good": "Szépen lementél, a combod elérte a vízszintest.", "fix": "Nem mész le elég mélyre.", "cue": "Ülj hátra egy képzeletbeli alacsony székre." },
+        "knees_out": { "good": "A térded végig a lábfejed fölött maradt.", "fix": "Lent a térdeid befelé esnek.", "cue": "Told szét a térdeddel a padlót." },
+        "chest_up": { "good": "A törzsed egyenes maradt.", "fix": "Lent túlságosan előrebuksz.", "cue": "Mutasd meg a pólód feliratát a szemközti falnak." },
+        "tempo": { "good": "Nyugodt, kontrollált tempóban dolgoztál.", "fix": "Túl gyorsan kapkodod az ismétléseket.", "cue": "Lefelé számolj háromig." }
+      },
+      "onSnow": "Ez a síelő és a snowboardos alapállása: a kanyarban ugyanígy hajlítasz és nyújtasz.",
+      "easier": null, "harder": "sl_squat",
+      "videos": [{ "title": "How to Do a Bodyweight Squat (Perfect Form + Common Mistakes)", "url": "https://www.youtube.com/watch?v=eWatHIujxPM" }],
+      "query": "bodyweight squat proper form"
+    },
+    {
+      "id": "deep_squat", "name": "Mély guggolás (teszt)", "type": "test", "view": "front", "perSide": false, "dose": { "reps": 6 },
+      "how": "Csinálj 3 lassú, minél mélyebb guggolást szemben a kamerával, aztán fordulj oldalt, és csinálj még 3-at. A sarkad maradjon lent.",
+      "camera": "Támaszd le a telefont derékmagasságban, 2–3 méterre. Előbb szemből, aztán oldalról.",
+      "points": ["Minél mélyebbre, leemelt sarok nélkül", "A térd a lábujjak irányába néz", "A törzs minél egyenesebb"],
+      "checkpoints": {
+        "depth": { "good": "Megvan a mélység: a csípőd és a bokád elég mozgékony.", "fix": "Nem jutsz le vízszintes combig.", "cue": "Ülj hátra, és engedd előre a térded a lábujjad fölé." },
+        "knees_out": { "good": "A térded stabilan a lábfejed fölött maradt.", "fix": "Lent a térdeid befelé esnek.", "cue": "Told szét a térdeddel a padlót." },
+        "chest_up": { "good": "A törzsed egyenes maradt.", "fix": "Lent erősen előrebuksz.", "cue": "Emeld a mellkasod, nézz előre." },
+        "tempo": { "good": "Kontrolláltan mozogtál.", "fix": "Túl gyors volt, így nem látszik a valódi mozgástartományod.", "cue": "Lefelé számolj háromig." }
+      },
+      "onSnow": "Megmutatja, mennyire tudsz hajlítani a kanyarban, és hogy a térded stabil marad-e terhelés alatt.",
+      "easier": null, "harder": null,
+      "videos": [{ "title": "How to Do a Bodyweight Squat (Perfect Form + Common Mistakes)", "url": "https://www.youtube.com/watch?v=eWatHIujxPM" }],
+      "query": "overhead deep squat assessment"
+    },
+    {
+      "id": "sl_squat", "name": "Egylábas guggolás székre", "type": "strength", "view": "front", "perSide": true, "dose": { "reps": 6 },
+      "how": "Állj egy szék elé, emeld meg az egyik lábad, és lassan ülj le a másikon, majd állj fel. Előbb a bal, aztán a jobb lábon.",
+      "camera": "Szemből, 2–3 méterről. Előbb a bal lábon csináld az ismétléseket, aztán a jobbon.",
+      "points": ["Lassan ereszkedsz, nem zuhansz a székre", "A térd a lábfej fölött marad, nem tér ki befelé", "A medence vízszintes"],
+      "checkpoints": {
+        "depth": { "good": "Mindkét lábon megvan a mélység.", "fix": "Nem mész le elég mélyre egy lábon.", "cue": "Érintsd meg a széket a fenekeddel, mielőtt felállsz." },
+        "knee_line": { "good": "A térded szépen a lábfejed fölött maradt.", "fix": "Az álló lábad térde befelé tér ki.", "cue": "A térdkalácsod nézzen a második lábujjad felé." },
+        "pelvis_level": { "good": "A medencéd vízszintes maradt.", "fix": "A medencéd oldalra billen.", "cue": "Képzeld el, hogy egy pohár víz áll a derekadon." }
+      },
+      "onSnow": "A kanyarban a külső lábad egyedül tartja a terhelést; snowboardon élváltáskor ugyanez a kontroll kell.",
+      "easier": "squat", "harder": null,
+      "videos": [
+        { "title": "How to Do a Single-Leg Squat to Box (Step-by-Step)", "url": "https://www.youtube.com/watch?v=3-ZE3O7qlw8" },
+        { "title": "Single Leg Squat To Chair", "url": "https://www.youtube.com/watch?v=TqSGcdtZZhQ" }
+      ],
+      "query": "single leg squat to chair"
+    },
+    {
+      "id": "reverse_lunge", "name": "Hátralépő kitörés", "type": "strength", "view": "side", "perSide": true, "dose": { "reps": 8 },
+      "how": "Lépj hátra egy nagyot, és ereszkedj le, amíg az elülső combod vízszintes, a hátsó térded majdnem leér. Az elülső sarkadból told vissza magad.",
+      "camera": "Oldalról, 2–3 méterről.",
+      "points": ["Az elülső comb vízszintesig megy", "A törzs függőleges marad", "Az elülső sarok végig lent van"],
+      "checkpoints": {
+        "depth": { "good": "Megvan a mélység.", "fix": "Nem ereszkedsz le eléggé.", "cue": "A hátsó térded majdnem érintse a talajt." },
+        "chest_up": { "good": "A törzsed függőleges maradt.", "fix": "Előredőlsz a kitörésben.", "cue": "Húzd ki magad, mintha a fejed tetejénél fogva emelnének." },
+        "tempo": { "good": "Kontrollált tempó.", "fix": "Kapkodod az ismétléseket.", "cue": "Lefelé számolj kettőig, lent állj meg egy pillanatra." }
+      },
+      "onSnow": "Egy lábon terhelt hajlítás: ezt csinálja a külső lábad minden kanyarban.",
+      "easier": "squat", "harder": null,
+      "videos": [
+        { "title": "How To Do A Reverse Lunge Correctly", "url": "https://www.youtube.com/watch?v=-Nr6dqEvz3Q" },
+        { "title": "Reverse Bodyweight Lunge Exercise Tutorial - Proper Form", "url": "https://www.youtube.com/watch?v=HXs8u1251ss" }
+      ],
+      "query": "reverse lunge proper form bodyweight"
+    },
+    {
+      "id": "lateral_lunge", "name": "Oldalsó kitörés", "type": "strength", "view": "front", "perSide": true, "dose": { "reps": 8 },
+      "how": "Lépj nagyot oldalra, és ülj rá arra a lábadra: a csípőd hátra megy, a másik lábad nyújtva marad. Mindkét talp a talajon.",
+      "camera": "Szemből, 3 méterről, hogy a széles terpesz is beleférjen.",
+      "points": ["A hajlított comb közel vízszintes", "A másik láb nyújtva marad", "A törzs nem bukik előre"],
+      "checkpoints": {
+        "depth": { "good": "Szépen ráülsz a hajlított lábra.", "fix": "Nem hajlítasz eléggé.", "cue": "Told hátra a csípőd, mintha oldalt álló székre ülnél." },
+        "other_leg_straight": { "good": "A másik lábad nyújtva maradt.", "fix": "A másik lábad is behajlik.", "cue": "Feszítsd meg a nyújtott lábad combját." },
+        "chest_up": { "good": "A törzsed egyenes maradt.", "fix": "Túlságosan előredőlsz.", "cue": "Nézz előre, emeld a mellkasod." }
+      },
+      "onSnow": "Az oldalirányú terhelés a kanyar lényege: a tested egyik oldalról a másikra helyezi a súlyt.",
+      "easier": "squat", "harder": null,
+      "videos": [{ "title": "Lateral Lunge Body Weight Exercise - How to do a Side Lunge", "url": "https://www.youtube.com/watch?v=sGZn1_WK6gc" }],
+      "query": "lateral lunge side lunge how to"
+    },
+    {
+      "id": "glute_bridge", "name": "Csípőemelés", "type": "strength", "view": "side", "perSide": false, "dose": { "reps": 12 },
+      "how": "Feküdj hanyatt, a térded hajlítva, a talpad a talajon. Emeld a csípőd, amíg a vállad, a csípőd és a térded egy vonalba kerül, fent szorítsd össze a farizmod, majd lassan engedd le.",
+      "camera": "Oldalról, a talaj magasságából, 2 méterről.",
+      "points": ["Fent a váll, a csípő és a térd egy vonalban", "A derék nem homorít", "Lassan engeded le"],
+      "checkpoints": {
+        "hips_high": { "good": "Fent teljesen kinyújtod a csípőd.", "fix": "Nem emeled elég magasra a csípőd.", "cue": "Told a csípőd a plafon felé, és szorítsd össze a farizmod." },
+        "tempo": { "good": "Kontrollált tempó.", "fix": "Túl gyors az ismétlés.", "cue": "Fent tartsd meg két másodpercig." }
+      },
+      "onSnow": "A farizom tartja egyenesben a térded: ha erős, kevésbé esik befelé a térd a kanyarban.",
+      "easier": null, "harder": null,
+      "videos": [{ "title": "Glute Bridge Exercise - The correct way of doing it", "url": "https://www.youtube.com/watch?v=Q_Bpj91Yiis" }],
+      "query": "glute bridge proper form"
+    },
+    {
+      "id": "calf_raise", "name": "Vádliemelés", "type": "strength", "view": "side", "perSide": false, "dose": { "reps": 15 },
+      "how": "Állj egyenesen, szükség esetén fogj meg egy széket. Emelkedj lábujjhegyre, amilyen magasra tudsz, tartsd meg egy pillanatra, majd lassan ereszkedj vissza.",
+      "points": ["Teljes magasságig emelkedsz", "Lassan ereszkedsz vissza", "A boka nem billen kifelé"],
+      "onSnow": "Snowboardon a lábujjélen állás, sín a cipő nyelvének nyomása ugyanezt az izmot használja.",
+      "easier": null, "harder": null,
+      "videos": [{ "title": "Standing Calf Raise Tutorial for Beginners", "url": "https://www.youtube.com/watch?v=KRJIKsY02nE" }],
+      "query": "standing calf raise bodyweight"
+    },
+    {
+      "id": "plank", "name": "Plank", "type": "core", "view": "side", "perSide": false, "dose": { "seconds": 30 },
+      "how": "Támaszkodj az alkarodra és a lábujjadra, a könyököd a vállad alatt. A tested egyenes vonal a fejedtől a sarkadig; feszítsd meg a hasad és a farizmod.",
+      "camera": "Oldalról, a talaj magasságából, 2–3 méterről.",
+      "points": ["A váll, a csípő és a boka egy vonalban", "A csípő nem lóg be és nem áll felfelé", "Egyenletes légzés"],
+      "checkpoints": {
+        "straight_line": { "good": "A tested végig egyenes vonalban volt.", "fix": "A csípőd belóg vagy felfelé áll.", "cue": "Húzd a köldököd a gerinced felé, és szorítsd össze a farizmod." },
+        "steady": { "good": "Mozdulatlanul tartottad.", "fix": "Tartás közben hullámzik a csípőd.", "cue": "Inkább rövidebb ideig, de mozdulatlanul." }
+      },
+      "onSnow": "A stabil törzs miatt marad nyugodt a felsőtested, miközben a lábad dolgozik alattad.",
+      "easier": null, "harder": "side_plank",
+      "videos": [{ "title": "How to do the perfect PLANK: technique and common mistakes", "url": "https://www.youtube.com/watch?v=6LqqeBtFn9M" }],
+      "query": "plank proper form"
+    },
+    {
+      "id": "side_plank", "name": "Oldalplank", "type": "core", "view": "front", "perSide": true, "dose": { "seconds": 20 },
+      "how": "Feküdj az oldaladra, támaszkodj az alkarodra, a könyököd a vállad alatt. Emeld el a csípőd, hogy a tested egyenes legyen a fejedtől a bokádig.",
+      "camera": "Szemből (a mellkasod a kamera felé néz), a talaj magasságából.",
+      "points": ["A test egyenes vonal", "A csípő nem süllyed le", "A felső váll nem fordul előre"],
+      "checkpoints": {
+        "straight_line": { "good": "Egyenes vonalban tartottad a tested.", "fix": "A csípőd lesüllyed.", "cue": "Told a csípőd a plafon felé." },
+        "steady": { "good": "Stabilan tartottad.", "fix": "Tartás közben imbolyogsz.", "cue": "Feszítsd meg a hasad, és nézz előre egy pontra." }
+      },
+      "onSnow": "Az oldalsó törzsizmok tartanak meg, amikor a kanyarban oldalra dől a lábad, de a törzsed függőlegesebb marad.",
+      "easier": "plank", "harder": null,
+      "videos": [{ "title": "How to Do a Side Plank Correctly (For Beginners)", "url": "https://www.youtube.com/watch?v=oaJ15vYERoU" }],
+      "query": "side plank proper form"
+    },
+    {
+      "id": "dead_bug", "name": "Dead bug", "type": "core", "view": "side", "perSide": true, "dose": { "reps": 8 },
+      "how": "Feküdj hanyatt, a karod a plafon felé nyújtva, a térded és a csípőd derékszögben. Lassan nyújtsd ki az ellentétes karod és lábad a talaj fölé, majd vissza. A derekad végig a talajon marad.",
+      "points": ["A derék nem emelkedik el a talajtól", "Lassú, kontrollált mozgás", "Kilégzés nyújtás közben"],
+      "onSnow": "Megtanítja, hogy a törzsed nyugodt maradjon, miközben a karod és a lábad külön mozog.",
+      "easier": null, "harder": null,
+      "videos": [{ "title": "How To Do The Dead Bug Correctly", "url": "https://www.youtube.com/watch?v=-gRN_JyVTLY" }],
+      "query": "dead bug exercise proper form"
+    },
+    {
+      "id": "bird_dog", "name": "Bird dog", "type": "core", "view": "side", "perSide": true, "dose": { "reps": 8 },
+      "how": "Négykézláb helyzetből nyújtsd ki az ellentétes karod és lábad, amíg vízszintes nem lesz, tartsd meg két másodpercig, majd vissza. A csípőd nem fordul ki.",
+      "points": ["A hát egyenes, nem homorít", "A csípő nem billen oldalra", "Lassú mozgás, fent megtartva"],
+      "onSnow": "Snowboardon a forgás ellen dolgozó törzsizmok tartják egy vonalban a vállad és a deszkát.",
+      "easier": null, "harder": null,
+      "videos": [{ "title": "How to Do a Bird Dog Correctly", "url": "https://www.youtube.com/watch?v=Y_NGGmPH8zA" }],
+      "query": "bird dog exercise proper form"
+    },
+    {
+      "id": "sl_stand", "name": "Egylábas állás", "type": "balance", "view": "front", "perSide": true, "dose": { "seconds": 30 },
+      "how": "Állj egy lábra, a másik lábfejed emeld a bokád magasságáig. A kezed a csípődön, a tekinteted egy ponton. Előbb a bal lábon állj, tedd le, aztán a jobbon.",
+      "camera": "Szemből, 2–3 méterről. Előbb a bal lábon állj, aztán tedd le mindkettőt, és válts.",
+      "points": ["A csípő nem leng ki oldalra", "Az álló térd enyhén hajlítva", "30 másodpercig lerakás nélkül"],
+      "checkpoints": {
+        "still": { "good": "Alig mozdultál el a talpad fölül.", "fix": "A tested kileng az álló lábad fölött.", "cue": "Nyomd a talajba a nagylábujjad tövét, és feszítsd meg a farizmod." },
+        "hold_time": { "good": "Végig megtartottad.", "fix": "Le kellett tenned a lábad idő előtt.", "cue": "Nézz egy fix pontra, és lélegezz nyugodtan." }
+      },
+      "onSnow": "A síelés nagy része egy lábon egyensúlyozás: a kanyarban a külső lábadon állsz.",
+      "easier": null, "harder": "sl_reach",
+      "videos": [{ "title": "How to do a Single leg stand", "url": "https://www.youtube.com/watch?v=hH4aQTBIYo0" }],
+      "query": "single leg balance exercise"
+    },
+    {
+      "id": "sl_reach", "name": "Egylábas előrenyúlás", "type": "balance", "view": "side", "perSide": true, "dose": { "reps": 6 },
+      "how": "Állj egy lábon, a térded enyhén hajlítva. Dőlj előre csípőből egyenes háttal, a szabad lábad hátra nyúlik, a kezed a talaj felé. Lassan állj vissza.",
+      "points": ["A hát egyenes, csípőből dőlsz", "A medence nem fordul ki", "Az álló térd a lábfej fölött marad"],
+      "onSnow": "Mozgás közbeni egyensúly: így tartod meg magad, amikor a terep kibillent.",
+      "easier": "sl_stand", "harder": null,
+      "videos": [{ "title": "1-Leg RDL with Reach", "url": "https://www.youtube.com/watch?v=7X1hjxk2MZs" }],
+      "query": "single leg RDL reach bodyweight"
+    },
+    {
+      "id": "lateral_hops", "name": "Korcsolyázó szökdelés", "type": "power", "view": "front", "perSide": false, "dose": { "seconds": 20 },
+      "how": "Szökkenj oldalra az egyik lábadról a másikra, mint egy gyorskorcsolyázó. Puhán, hajlított térddel érkezz, és egyenletes ütemben válts. Könnyítés: páros lábbal szökdelj egy vonal fölött.",
+      "camera": "Szemből, 3–4 méterről, hogy a teljes oldalmozgás beleférjen.",
+      "points": ["Puha, hajlított térdű érkezés", "Egyenletes ritmus", "Az érkező térd nem esik befelé"],
+      "checkpoints": {
+        "rhythm": { "good": "Egyenletes ritmusban váltottál.", "fix": "Egyenetlen a ritmusod.", "cue": "Számolj magadban: egy-két, egy-két." },
+        "soft_landing": { "good": "Puhán, hajlított térddel érkeztél.", "fix": "Merev térdre érkezel.", "cue": "Érkezz halkan, mintha nem akarnád felébreszteni a szomszédot." }
+      },
+      "onSnow": "Ez a kanyarváltás ritmusa és a gyors élváltás: ugyanígy helyezed át a súlyod egyik oldalról a másikra.",
+      "easier": "lateral_lunge", "harder": null,
+      "videos": [{ "title": "Speed Skaters Exercise (Skater Hops): Proper Form", "url": "https://www.youtube.com/watch?v=9_jLW6VkU8A" }],
+      "query": "skater hops proper form"
+    },
+    {
+      "id": "squat_jump", "name": "Guggolásból felugrás", "type": "power", "view": "side", "perSide": false, "dose": { "reps": 6 },
+      "how": "Ereszkedj fél guggolásba, ugorj fel, és érkezz puhán, teljes talpra, hajlított térddel. Minden érkezés után állj meg egy pillanatra. Csak akkor csináld, ha a térded nem fáj, és a felmérésben a térdtartásod rendben volt.",
+      "points": ["Halk, puha érkezés teljes talpra", "A térd érkezéskor a lábfej fölött marad", "Minden ugrás után megállsz"],
+      "onSnow": "Az egyenetlen terep és a bukkanók elnyelése ugyanezt a puha, rugalmas érkezést kéri.",
+      "easier": "squat", "harder": null,
+      "videos": [{ "title": "Squat Jump with Stable Landing", "url": "https://www.youtube.com/watch?v=d0p-3x84nj0" }],
+      "query": "squat jump soft landing form"
+    },
+    {
+      "id": "wall_sit", "name": "Fal melletti ülés", "type": "endurance", "view": "side", "perSide": false, "dose": { "seconds": 30 },
+      "how": "Támaszd a hátad a falnak, és csússz le, amíg a térded derékszögben van, a térded a bokád fölött. Tartsd meg; a kezed ne támaszkodjon a combodon.",
+      "camera": "Oldalról, 2–3 méterről.",
+      "points": ["A térd derékszögben, a boka fölött", "A hát végig a falon", "A kéz nem támaszkodik a combon"],
+      "checkpoints": {
+        "knee_angle": { "good": "Megvan a derékszög a térdedben.", "fix": "Túl magasan ülsz, a térded nincs derékszögben.", "cue": "Csússz lejjebb, amíg a combod vízszintes." },
+        "steady": { "good": "Mozdulatlanul tartottad.", "fix": "Tartás közben feljebb csúszol.", "cue": "Nyomd a derekad a falnak, és maradj egy magasságban." }
+      },
+      "onSnow": "Hosszú lesikláson így ég a combod; ez a gyakorlat arra készít fel, hogy a pálya alján is tartsd a tartásod.",
+      "easier": null, "harder": "interval_squat",
+      "videos": [{ "title": "How To Do a Wall Sit", "url": "https://www.youtube.com/watch?v=JaZNYM3zAP0" }],
+      "query": "wall sit proper form"
+    },
+    {
+      "id": "interval_squat", "name": "Síelő szakasz", "type": "endurance", "view": "any", "perSide": false, "dose": { "seconds": 40 },
+      "how": "Állj fél guggolásba, és rugózz kis mozdulatokkal 40 másodpercig úgy, hogy közben nem egyenesedsz fel teljesen. Pihenj 20 másodpercet a sorozatok között.",
+      "points": ["Végig hajlítva maradsz", "A térd a lábfej fölött", "Egyenletes légzés"],
+      "onSnow": "Egy lesiklás 1–2 perc folyamatos combmunka; ez a gyakorlat ezt a terhelést utánozza.",
+      "easier": "wall_sit", "harder": null,
+      "videos": [],
+      "query": "ski tuck hold squat pulses workout"
+    },
+    {
+      "id": "ankle_wall", "name": "Térd a falhoz (bokamobilizálás)", "type": "mobility", "view": "side", "perSide": true, "dose": { "reps": 10 },
+      "how": "Állj kitörésben a fal elé, az elülső lábfejed egy tenyérnyire a faltól. Told előre a térded a fal felé úgy, hogy a sarkad lent marad, tartsd meg két másodpercig, majd vissza. Előbb a bal, aztán a jobb lábbal.",
+      "camera": "Oldalról, a talajhoz közel, 2 méterről. Előbb a bal lábad legyen elöl, aztán a jobb.",
+      "points": ["A sarok végig a talajon marad", "A térd a második lábujj irányába megy", "Lassan, rugózás nélkül"],
+      "checkpoints": {
+        "ankle_range": { "good": "A bokád jól hajlik: a sípcsontod szépen előredől.", "fix": "A bokád kevéssé hajlik előre.", "cue": "Engedd előre a térded a lábujjad fölé, a sarkad maradjon lent." }
+      },
+      "onSnow": "Ha a bokád nem hajlik, nem tudod előre terhelni a cipőt, és hátraülsz.",
+      "easier": null, "harder": null,
+      "videos": [
+        { "title": "Knee to Wall - Ankle Mobility Test", "url": "https://www.youtube.com/watch?v=cPN3-FR-clk" },
+        { "title": "Knee to Wall Ankle Mobility Drill", "url": "https://www.youtube.com/watch?v=Y1IZXkdPPdw" }
+      ],
+      "query": "knee to wall ankle mobility"
+    },
+    {
+      "id": "trunk_rotation", "name": "Törzsfordítás ülve (teszt)", "type": "test", "view": "front", "perSide": true, "dose": { "reps": 3 },
+      "how": "Ülj egy székre szemben a kamerával, a térded összezárva, a karod keresztben a mellkasodon. Fordulj lassan jobbra, amennyire tudsz, majd balra; a csípőd ne mozduljon. Ismételd háromszor.",
+      "camera": "Szemből, mellmagasságban, 2 méterről.",
+      "points": ["A csípő és a térd nem mozdul", "A törzs egyenes marad", "Lassan, a végén megtartva"],
+      "checkpoints": {
+        "range": { "good": "Mindkét irányba jól fordulsz.", "fix": "Legalább az egyik irányba szűk a törzsforgásod.", "cue": "Fordítsd a mellkasod, ne csak a vállad és a fejed." }
+      },
+      "onSnow": "A felsőtested így tud a völgy felé nézni, miközben a lábad alattad fordul.",
+      "easier": null, "harder": null,
+      "videos": [{ "title": "Seated Trunk Rotation Test", "url": "https://www.youtube.com/watch?v=XuHhl6F2fsM" }],
+      "query": "seated trunk rotation test"
+    },
+    {
+      "id": "thoracic_rotation", "name": "Nyitott könyv (háti forgatás)", "type": "mobility", "view": "any", "perSide": true, "dose": { "reps": 8 },
+      "how": "Feküdj az oldaladra, a térded felhúzva, a karod előre nyújtva egymáson. Nyisd ki a felső karod a másik oldalra, kövesd a tekinteteddel, a térded közben nem mozdul. Lassan vissza.",
+      "points": ["A térdek egymáson maradnak", "A tekintet követi a kezet", "Kilégzés nyitás közben"],
+      "onSnow": "A mozgékony hát engedi, hogy a felsőtested függetlenül forduljon a lábadtól.",
+      "easier": null, "harder": null,
+      "videos": [{ "title": "Sidelying Thoracic Rotation (Open Book Exercise)", "url": "https://www.youtube.com/watch?v=917w2gqZwZQ" }],
+      "query": "open book thoracic rotation"
+    },
+    {
+      "id": "stretch_hipflexor", "name": "Csípőhajlító nyújtás", "type": "mobility", "view": "any", "perSide": true, "dose": { "seconds": 30 },
+      "how": "Térdelj fél térdre, billentsd hátra a medencéd (húzd be a farkcsontod), és told előre a csípőd, amíg a hátsó lábad csípőjének elején húzódást érzel. A derekad ne homorítson.",
+      "points": ["A medence hátrabillentve", "A derék nem homorít", "Enyhe húzódás, nem fájdalom"],
+      "onSnow": "A feszes csípőhajlító előrebillenti a medencét, és hátraülésbe húz.",
+      "easier": null, "harder": null,
+      "videos": [{ "title": "How To Half Kneeling Hip Flexor Stretch", "url": "https://www.youtube.com/watch?v=MVNiNwU9sbg" }],
+      "query": "half kneeling hip flexor stretch"
+    },
+    {
+      "id": "stretch_hamstring", "name": "Combhajlító nyújtás", "type": "mobility", "view": "any", "perSide": true, "dose": { "seconds": 30 },
+      "how": "Tedd az egyik sarkad egy alacsony székre, a térded nyújtva, a lábujjad felfelé. Dőlj előre csípőből, egyenes háttal, amíg a combod hátulján húzódást érzel.",
+      "points": ["Egyenes hát, csípőből dőlsz", "A térd nyújtva", "Rugózás nélkül"],
+      "onSnow": "A rugalmas combhajlító védi a térded, amikor hirtelen hátra kerül a súlyod.",
+      "easier": null, "harder": null,
+      "videos": [{ "title": "Standing Hamstring Stretch", "url": "https://www.youtube.com/watch?v=2s2t3mEYZNo" }],
+      "query": "standing hamstring stretch"
+    },
+    {
+      "id": "stretch_calf", "name": "Vádlinyújtás", "type": "mobility", "view": "any", "perSide": true, "dose": { "seconds": 30 },
+      "how": "Támaszkodj a falnak, az egyik lábad hátul, a sarka a talajon. Előbb nyújtott térddel dőlj előre, aztán hajlítsd be a hátsó térded, hogy a vádli alsó része is nyúljon.",
+      "points": ["A hátsó sarok a talajon marad", "A lábfej előre néz", "Nyújtott és hajlított térddel is"],
+      "onSnow": "A laza vádli engedi előre a sípcsontod a cipőben, így a tested a talpad fölött marad.",
+      "easier": null, "harder": null,
+      "videos": [{ "title": "How to stretch your calf muscles properly - Gastocnemius and Soleus muscle stretches.", "url": "https://www.youtube.com/watch?v=xDhzGbQ6dmM" }],
+      "query": "wall calf stretch gastrocnemius soleus"
+    },
+    {
+      "id": "stretch_glute", "name": "Farizomnyújtás (négyes)", "type": "mobility", "view": "any", "perSide": true, "dose": { "seconds": 30 },
+      "how": "Feküdj hanyatt, tedd az egyik bokád a másik térdedre, és húzd az alsó combod a mellkasod felé, amíg a keresztbe tett lábad farizmában húzódást érzel.",
+      "points": ["A medence a talajon marad", "A keresztbe tett térd kifelé néz", "Nyugodt légzés"],
+      "onSnow": "A laza csípő engedi, hogy a térded a kanyar felé forduljon anélkül, hogy a derekad dolgozna helyette.",
+      "easier": null, "harder": null,
+      "videos": [{ "title": "How To Do Figure 4 Stretch", "url": "https://www.youtube.com/watch?v=VgjgTGnBkx0" }],
+      "query": "figure four glute stretch"
+    },
+    {
+      "id": "stretch_quad", "name": "Combfeszítő nyújtás", "type": "mobility", "view": "any", "perSide": true, "dose": { "seconds": 30 },
+      "how": "Állj egy lábon, fogd meg a másik bokád, és húzd a sarkad a feneked felé. A térdeid egymás mellett, a medencéd hátrabillentve; ne homoríts.",
+      "points": ["A térdek egymás mellett", "A medence hátrabillentve", "Kapaszkodj, ha kell"],
+      "onSnow": "Egy nap síelés után a combfeszítő a legfeszesebb izmod; a nyújtás segít, hogy másnap is hajlítani tudj.",
+      "easier": null, "harder": null,
+      "videos": [{ "title": "How to Do Standing Quad Stretch", "url": "https://www.youtube.com/watch?v=SpuMWv97SvE" }],
+      "query": "standing quad stretch"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "name": "kanyar",
+  "private": true,
+  "type": "module",
+  "description": "Kanyar – sí- és snowboard-oktató és elemző PWA",
+  "scripts": {
+    "build": "python3 build.py",
+    "test": "node --test tests/*.test.mjs"
+  }
+}
