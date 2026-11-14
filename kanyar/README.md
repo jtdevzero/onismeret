@@ -15,6 +15,8 @@ A videó a készüléken marad. A pózbecslés (MediaPipe Pose Landmarker) a bö
 - Tananyag mind az öt szinthez van (sí és snowboard, szintenként 4–5 lecke). A felület magyar.
 - AI-szerver nélkül a helyi, szabályalapú edző válaszol; a `worker/` telepítése után az AI-edző.
 - Az otthoni gyakorlatoknál van élő ismétlésszámlálás kamerával, hangos számolással; a formaértékelés a sorozat végén jön.
+- Az elemzés oldala összeveti az eredményt az előző, azonos nézetű elemzéssel; a gyakorlatoknál látszanak a korábbi eredmények.
+- Beállítások → Eszközpróba: megméri a pózbecslő sebességét, és megnézi a kamerát, a magyar hangot és a tárhelyet. Hibajelentéshez az eredmény kimásolható.
 - Nincs benne: csúszás közbeni élő visszajelzés, szenzoros követés, fiók és szinkron, élszög és sebesség mérése.
 
 ## Felépítés

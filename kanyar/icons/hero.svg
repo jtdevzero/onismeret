@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300" preserveAspectRatio="xMidYMax meet">
+<path d="M0 300 190 120l80 70 110-130 150 150 90-70 180 160z" fill="#fff" opacity=".13"/>
+<path d="M0 300 120 210l90 50 140-120 130 110 110-70 210 120z" fill="#fff" opacity=".2"/>
+<path d="M380 60 420 100l-22-8-18 22-16-26z" fill="#fff" opacity=".55"/>
+<path d="M120 300C300 250 380 320 560 262S760 250 800 240v60z" fill="#fff" opacity=".28"/>
+</svg>

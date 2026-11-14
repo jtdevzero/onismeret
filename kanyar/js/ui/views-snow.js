@@ -5,6 +5,7 @@ import { D, S, sportName, levelName } from './data.js';
 import { itemPut, itemGet, itemsAll, itemDelete, videoPut, videoGet } from './store.js';
 import { analyzeRun, RELIABLE } from '../core/snow.js';
 import { snowCoach } from './coach-client.js';
+import { compareRuns } from '../core/compare.js';
 import { getProfile } from './views-train.js';
 import { replay } from './overlay.js';
 
@@ -85,6 +86,24 @@ export async function analysisView(id, onCleanup) {
   const blob = it.hasVideo ? await videoGet(id) : null;
   let player = null;
   if (blob) { player = replay(blob, it.frames || [], a.turns); onCleanup(player.destroy); }
+  /* a legutóbbi korábbi, összevethető elemzés (azonos sportág és nézet) */
+  let cmpCard = null;
+  for (const o of await itemsAll()) {
+    if (o.kind !== 'snow' || o.date >= it.date) continue;
+    const cmp = compareRuns(o.analysis, a);
+    if (!cmp) continue;
+    const M = D.faults.metricNames, B = D.faults.bandNames, LABEL = { better: 'Javult', worse: 'Romlott', same: 'Változatlan' };
+    const order = { better: 0, worse: 1, same: 2 };
+    cmpCard = card(h('h2', null, 'Változás az előző elemzéshez képest'),
+      h('p', { class: 'muted' }, `Előző: ${fmtDate(o.date)} · ${cmp.better} javult, ${cmp.worse} romlott, ${cmp.same} változatlan`),
+      cmp.rows.length
+        ? h('ul', { class: 'rows' }, [...cmp.rows].sort((x, y) => order[x.change] - order[y.change]).map(r => h('li', null,
+          h('span', null, M[r.id], h('span', { class: 'muted small' }, ` (${(B[r.id] && B[r.id][r.from]) || r.from} → ${(B[r.id] && B[r.id][r.to]) || r.to})`)),
+          h('span', { class: 'badge ' + (r.change === 'better' ? 'good' : r.change === 'worse' ? 'warn' : '') }, LABEL[r.change]))))
+        : note('Nincs olyan mutató, amely mindkét felvételen megbízhatóan mérhető volt.', 'small'),
+      link('#/a/' + o.id, 'Az előző elemzés megnyitása'));
+    break;
+  }
   const drill = c.drill_id && D.lesson[c.drill_id], home = c.home_drill_id && D.ex[c.home_drill_id];
   const fb = h('div', { class: 'row' });
   const drawFb = () => {
@@ -106,6 +125,7 @@ export async function analysisView(id, onCleanup) {
       c.reshoot_tip ? note(c.reshoot_tip, 'warn') : null,
       c.aiError ? note('Az AI-edzőt most nem sikerült elérni, ezért a helyi elemzést látod.', 'small') : null,
       fb),
+    cmpCard,
     card(h('h2', null, 'Mért mutatók'), metricRows(a)),
     h('div', { class: 'row' }, link('#/snow', 'Új elemzés', 'btn primary'), link('#/log', 'Napló', 'btn'),
       btn('Törlés', async () => { if (confirm('Törlöd ezt az elemzést és a hozzá mentett videót?')) { await itemDelete(id); toast('Törölve.'); location.hash = '#/log'; } }, 'danger')));
