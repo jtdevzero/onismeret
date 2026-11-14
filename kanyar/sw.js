@@ -1,7 +1,7 @@
 /* Kanyar service worker. GENERÁLT FÁJL (kanyar/build.py), ne szerkeszd kézzel.
    Az app váza, a kód és a tananyag telepítéskor a gyorsítótárba kerül. A pózbecslő (kb. 16 MB) az első
    használatkor, vagy a Beállítások „Letöltés offline használatra” gombjával. Az AI-kérések nem mennek át rajta. */
-const SHELL = 'kanyar-shell-654771358b';
+const SHELL = 'kanyar-shell-d5406f804b';
 const VENDOR = 'kanyar-vendor-62fc9e8c57';
 const PRECACHE = [
 "./",
@@ -13,6 +13,7 @@ const PRECACHE = [
 "icons/icon-512.png",
 "icons/icon.svg",
 "js/core/coach.js",
+"js/core/compare.js",
 "js/core/exercise.js",
 "js/core/geometry.js",
 "js/core/program.js",

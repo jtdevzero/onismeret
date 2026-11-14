@@ -5,6 +5,7 @@ import { angleAt, tilt, percentile, movingAverage } from '../js/core/geometry.js
 import { prepare } from '../js/core/series.js';
 import { analyzeRun, detectTurns, RELIABLE } from '../js/core/snow.js';
 import { analyzeExercise, detectReps } from '../js/core/exercise.js';
+import { compareRuns, comparable } from '../js/core/compare.js';
 import { series, wave } from './synth.mjs';
 
 const A = 1; /* képarány a szintetikus adatokhoz */
@@ -174,4 +175,24 @@ test('ismeretlen gyakorlat és üres felvétel: hibával tér vissza, nem dob ki
   assert.equal(ex('nincs_ilyen', series(5, () => ({}))).reason, 'unknown_exercise');
   assert.equal(ex('squat', []).reason, 'not_tracked');
   assert.equal(ex('squat', series(8, () => ({ flex: 10 }))).reason, 'no_movement');
+});
+
+test('összehasonlítás: a megszűnt hátraülés „javult”, az új „romlott”; más nézet vagy sportág nem vethető össze', () => {
+  const side = o => run(series(10, () => ({ view: 'side', ...o })), { view: 'side' });
+  const back = side({ shin: 5, thigh: 60, torso: 30 }), good = side({ shin: 25, thigh: 30, torso: 25 });
+  const up = compareRuns(back, good), down = compareRuns(good, back);
+  assert.equal(up.rows.find(r => r.id === 'foreAft').change, 'better');
+  assert.equal(down.rows.find(r => r.id === 'foreAft').change, 'worse');
+  assert.ok(up.better >= 1 && down.worse >= 1);
+  assert.ok(compareRuns(back, back).rows.every(r => r.change === 'same'));
+  /* mindkétszer hátul, de kevésbé: ez is javulás */
+  const less = side({ shin: 10, thigh: 50, torso: 30 });
+  assert.equal(band(less, 'foreAft'), 'low');
+  assert.equal(compareRuns(back, less).rows.find(r => r.id === 'foreAft').change, 'better');
+  const front = run(series(15, t => ({ legTilt: 15 * wave(t, 3) })));
+  assert.equal(compareRuns(back, front), null);
+  assert.equal(comparable(back, { ...back, sport: 'snowboard' }), false);
+  assert.equal(compareRuns(back, { ok: false }), null);
+  /* a szemből nem mérhető mutató nem kerül a listába */
+  assert.equal(compareRuns(front, front).rows.some(r => r.id === 'foreAft'), false);
 });

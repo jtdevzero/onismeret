@@ -204,6 +204,7 @@ const go = async (page, hash) => { await page.evaluate(h => { if (location.hash 
     assert.equal(await page.locator('#main img').count(), 0);
     assert.equal(await page.evaluate(() => window.__xss), undefined);
     assert.match(await text(), /Tálca a kézben/);
+    assert.match(await text(), /Változás az előző elemzéshez képest[\s\S]*Súlypont elöl–hátul[\s\S]*Változatlan/, 'az előző, azonos nézetű elemzéssel összeveti');
     assert.equal(sent.key, 'titkos-kod-123');
     assert.equal(sent.body.kind, 'snow');
     assert.equal(sent.body.input.metrics.foreAft.band, 'low');
@@ -218,6 +219,20 @@ const go = async (page, hash) => { await page.evaluate(h => { if (location.hash 
     await upload(page);
     await page.waitForFunction(() => location.hash.startsWith('#/a/') && /Helyi elemzés/.test(document.getElementById('main').innerText));
     assert.match(await text(), /Az AI-edzőt most nem sikerült elérni/);
+  });
+
+  await step('eszközpróba és korábbi eredmények', async () => {
+    await page.evaluate(async () => { const w = await import('./js/ui/widgets.js'); w.setRunner({ benchmark: async () => ({ loadMs: 2100, frameMs: 38 }) }); });
+    await go(page, '#/settings');
+    await page.getByRole('button', { name: 'Eszközpróba indítása' }).click();
+    await page.waitForFunction(() => /egy képkocka 38 ms/.test(document.getElementById('main').innerText));
+    const t = await text();
+    assert.match(t, /gyors: az elemzés nagyjából a videó hosszáig tart/);
+    assert.match(t, /Kamera/);
+    assert.match(t, /Mozilla\//, 'a másolható szövegben ott a böngésző azonosítója');
+    await shot('device-check');
+    await go(page, '#/ex/squat');
+    assert.match(await text(), /Korábbi eredményeid[\s\S]*5 ismétlés · élő/);
   });
 
   await step('mentés fájlba: a belépőkód nem kerül bele', async () => {
