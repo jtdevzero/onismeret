@@ -24,8 +24,8 @@ export async function startView() {
     await saveSettings({ sport: f.sport, level: Number(f.level), stance: f.sport === 'snowboard' ? f.stance : null, health: { pain: f.pain }, accepted: Date.now() });
     location.hash = '#/';
   } }, 'Kezdjük');
-  return page('Kanyar',
-    h('p', { class: 'lead' }, 'Sí- és snowboard-edző a zsebedben: felkészít a szezonra, és a videódból megmondja, min javíts.'),
+  return h('div', { class: 'page' },
+    h('header', { class: 'hero' }, h('h1', null, 'Kanyar'), h('p', { class: 'hero-lead' }, 'Sí- és snowboard-edző a zsebedben: felkészít a szezonra, és a videódból megmondja, min javíts.')),
     card(h('h2', null, 'Mit űzöl?'), choice('sport', [['ski', 'Sí'], ['snowboard', 'Snowboard']], f.sport, v => { f.sport = v; f.level = 1; draw(); }), stance),
     card(h('h2', null, 'Melyik írja le legjobban a tudásod?'), levels),
     card(h('h2', null, 'Egészség'),
@@ -47,14 +47,18 @@ export async function homeView() {
   else if (!prog) next = ['Készítsd el a programod', `A felmérésből ${profile.done} teszt megvan. Mehet a 6 hetes program.`, '#/prep', 'Program készítése'];
   else if (!lastSnow) next = ['Folytasd az edzést', `${progDone} / 18 edzés kész. A hegyen töltsd fel az első videód.`, '#/program', 'Program megnyitása'];
   else next = ['Legutóbbi visszajelzés', lastSnow.coach.main_issue.what + (lastSnow.coach.cue ? ' ' + lastSnow.coach.cue : ''), '#/a/' + lastSnow.id, 'Megnyitás'];
-  return page('Kanyar',
-    h('p', { class: 'muted' }, `${sportName(s.sport)} · ${s.level}. szint: ${levelName(s.sport, s.level)}`),
-    card(h('h2', null, next[0]), h('p', null, next[1]), link(next[2], next[3], 'btn primary')),
+  const tile = (href, icon, title, sub) => h('a', { class: 'tile', href }, h('span', { class: 'tile-ic' }, h('span', { class: 'ic ic-' + icon, 'aria-hidden': 'true' })), h('strong', null, title), h('span', null, sub));
+  return h('div', { class: 'page' },
+    h('header', { class: 'hero' },
+      h('h1', null, 'Kanyar'),
+      h('p', { class: 'hero-sub' }, `${sportName(s.sport)} · ${s.level}. szint: ${levelName(s.sport, s.level)}`),
+      h('div', { class: 'hero-next' },
+        h('h2', null, next[0]), h('p', null, next[1]), link(next[2], next[3], 'btn light'))),
     h('div', { class: 'grid' },
-      h('a', { class: 'tile', href: '#/prep' }, h('strong', null, 'Felkészülés'), h('span', null, `Felmérés ${profile.done}/${profile.total}` + (prog ? ` · edzés ${progDone}/18` : ''))),
-      h('a', { class: 'tile', href: '#/snow' }, h('strong', null, 'Havas elemzés'), h('span', null, 'Videóból visszajelzés')),
-      h('a', { class: 'tile', href: '#/learn' }, h('strong', null, 'Tananyag'), h('span', null, 'Leckék és gyakorlatok')),
-      h('a', { class: 'tile', href: '#/log' }, h('strong', null, 'Napló'), h('span', null, items.length + ' bejegyzés'))),
+      tile('#/prep', 'train', 'Felkészülés', `Felmérés ${profile.done}/${profile.total}` + (prog ? ` · edzés ${progDone}/18` : '')),
+      tile('#/snow', 'video', 'Havas elemzés', 'Videóból visszajelzés'),
+      tile('#/learn', 'book', 'Tananyag', 'Leckék és gyakorlatok'),
+      tile('#/log', 'log', 'Napló', items.length + ' bejegyzés')),
     s.health && s.health.pain ? note('Fájdalmat vagy sérülést jeleztél: a program kíméletes, ugrások nélkül. A Beállításokban módosíthatod.', 'warn') : null);
 }
 

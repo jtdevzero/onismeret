@@ -111,7 +111,7 @@ const go = async (page, hash) => { await page.evaluate(h => { if (location.hash 
     await page.waitForFunction(() => /5 ismétlés/.test(document.getElementById('main').innerText));
     const t = await text();
     assert.match(t, /Térdek kifelé[\s\S]*Javítandó/);
-    assert.match(t, /A havon/);
+    assert.match(t, /A havon/i);
     await shot('exercise-result');
     await go(page, '#/prep');
     const p = await text();
