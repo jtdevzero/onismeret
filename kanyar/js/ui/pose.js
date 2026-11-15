@@ -165,3 +165,17 @@ export async function openCamera() {
     close() { open = false; stream.getTracks().forEach(tr => tr.stop()); video.srcObject = null; },
   };
 }
+
+/* Eszközpróba: betölti a pózbecslőt, és megméri, mennyi idő egy képkocka ezen a készüléken. */
+export async function benchmark() {
+  const t0 = performance.now();
+  const lm = await loadPose();
+  const load = performance.now() - t0;
+  const c = document.createElement('canvas'); c.width = 480; c.height = 640;
+  const g = c.getContext('2d'); g.fillStyle = '#8899aa'; g.fillRect(0, 0, c.width, c.height);
+  const run = () => { clock = Math.max(clock + 1, Math.round(performance.now())); lm.detectForVideo(c, clock); };
+  run();
+  const t1 = performance.now();
+  for (let i = 0; i < 5; i++) run();
+  return { loadMs: Math.round(load), frameMs: Math.round((performance.now() - t1) / 5) };
+}

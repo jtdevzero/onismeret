@@ -1,8 +1,8 @@
 /* Felkészülés: mozgásfelmérés, program, gyakorlatok és a felvett gyakorlat elemzése. */
-import { h, clear, uid, fmtSec, toast } from './dom.js';
+import { h, clear, uid, fmtSec, fmtDate, toast } from './dom.js';
 import { page, card, btn, link, note, list, videoPicker, videoLinks, confBadge, sourceBadge, captureFrames } from './widgets.js';
 import { D, S } from './data.js';
-import { kvGet, kvSet, itemPut } from './store.js';
+import { kvGet, kvSet, itemPut, itemsAll } from './store.js';
 import { analyzeExercise, isAnalyzable } from '../core/exercise.js';
 import { TESTS, buildProfile, buildProgram } from '../core/program.js';
 import { prepCoach } from './coach-client.js';
@@ -143,11 +143,20 @@ export async function exerciseView(id, onCleanup) {
       note('A videó a telefonodon marad, az elemzés a készüléken fut.', 'small'), picker.el,
       h('h3', null, 'Vagy számoljak élőben?'), live.el);
   }
+  /* korábbi eredmények ebből a gyakorlatból */
+  const past = (await itemsAll()).filter(i => i.kind === 'exercise' && i.exercise === id).slice(0, 6);
+  const history = past.length ? card(h('h2', null, 'Korábbi eredményeid'),
+    h('ul', { class: 'rows' }, past.map(i => {
+      const fixes = i.result.checks.filter(c => c.band === 'fix').length;
+      return h('li', null,
+        h('span', null, fmtDate(i.date), h('span', { class: 'muted small' }, ' · ' + (i.result.holdSeconds ? fmtSec(i.result.holdSeconds) + ' tartás' : i.result.reps + ' ismétlés') + (i.live ? ' · élő' : ''))),
+        h('span', { class: 'badge ' + (fixes ? 'warn' : 'good') }, fixes ? fixes + ' javítandó' : 'Rendben'));
+    }))) : null;
   return page(ex.name,
     h('p', { class: 'muted' }, D.exercises.typeNames[ex.type] + (ex.dose.seconds ? ' · ' + fmtSec(ex.dose.seconds) : ' · ' + ex.dose.reps + ' ismétlés') + (ex.perSide ? ' oldalanként' : '')),
     ['power'].includes(ex.type) && pain() ? note('Fájdalmat jeleztél: ezt az ugrásos gyakorlatot most hagyd ki.', 'warn') : null,
     card(h('h2', null, 'Hogyan csináld'), h('p', null, ex.how), h('h3', null, 'Három dolog, amire figyelj'), list(ex.points),
       h('h3', null, 'Miért számít a havon'), h('p', null, ex.onSnow)),
-    analyze, out, card(videoLinks(ex)),
+    analyze, out, history, card(videoLinks(ex)),
     link(isTest ? '#/prep' : '#/prep', '← Felkészülés', 'btn'));
 }
