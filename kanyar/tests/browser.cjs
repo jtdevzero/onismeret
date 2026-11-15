@@ -76,7 +76,7 @@ const go = async (page, hash) => { await page.evaluate(h => { if (location.hash 
     await fakePose(page, 'ski-side-backseat');
     await shot('snow-form');
     await upload(page);
-    await page.waitForFunction(() => location.hash.startsWith('#/a/'));
+    await page.waitForFunction(() => (document.documentElement.dataset.view || '').startsWith('#/a/'));
     await page.waitForFunction(() => /Visszajelzés/.test(document.getElementById('main').innerText));
     const t = await text();
     assert.match(t, /Hátraülsz/);
@@ -199,7 +199,7 @@ const go = async (page, hash) => { await page.evaluate(h => { if (location.hash 
     await go(page, '#/snow');
     await fakePose(page, 'ski-side-backseat');
     await upload(page);
-    await page.waitForFunction(() => location.hash.startsWith('#/a/') && /AI-edző/.test(document.getElementById('main').innerText));
+    await page.waitForFunction(() => (document.documentElement.dataset.view || '').startsWith('#/a/') && /AI-edző/.test(document.getElementById('main').innerText));
     assert.match(await text(), /AI: <img src=x/, 'a HTML szövegként látszik');
     assert.equal(await page.locator('#main img').count(), 0);
     assert.equal(await page.evaluate(() => window.__xss), undefined);
@@ -217,7 +217,7 @@ const go = async (page, hash) => { await page.evaluate(h => { if (location.hash 
     await go(page, '#/snow');
     await fakePose(page, 'ski-side-backseat');
     await upload(page);
-    await page.waitForFunction(() => location.hash.startsWith('#/a/') && /Helyi elemzés/.test(document.getElementById('main').innerText));
+    await page.waitForFunction(() => (document.documentElement.dataset.view || '').startsWith('#/a/') && /Helyi elemzés/.test(document.getElementById('main').innerText));
     assert.match(await text(), /Az AI-edzőt most nem sikerült elérni/);
   });
 
