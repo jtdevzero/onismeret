@@ -13,7 +13,7 @@ const ERR = {
 };
 const NUM = ['', 'egy', 'kettő', 'három', 'négy', 'öt', 'hat', 'hét', 'nyolc', 'kilenc', 'tíz', 'tizenegy', 'tizenkettő', 'tizenhárom', 'tizennégy', 'tizenöt', 'tizenhat', 'tizenhét', 'tizennyolc', 'tizenkilenc', 'húsz'];
 
-function speak(text, enabled) {
+export function speak(text, enabled) {
   if (!enabled || !('speechSynthesis' in window)) return;
   try { const u = new SpeechSynthesisUtterance(text); u.lang = 'hu-HU'; u.rate = 1.1; speechSynthesis.cancel(); speechSynthesis.speak(u); } catch { /* a hang nem létfontosságú */ }
 }

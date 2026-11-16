@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { ANALYZERS, analyzeExercise } from '../js/core/exercise.js';
-import { TESTS, WEAK_ORDER, buildProfile, buildProgram } from '../js/core/program.js';
+import { TESTS, WEAK_ORDER, buildProfile, buildProgram, sessionSteps, sessionMinutes } from '../js/core/program.js';
 import { analyzeRun, THRESHOLDS } from '../js/core/snow.js';
 import { localSnowCoach, localPrepCoach, validSnowCoach, validPrepCoach, triggeredFaults } from '../js/core/coach.js';
 import { series, wave } from './synth.mjs';
@@ -170,4 +170,26 @@ test('build: az index.html és az sw.js friss, a gyorsítótár-lista minden fá
   assert.match(csp, /style-src 'self';/);
   assert.doesNotMatch(csp, /unsafe-inline|(?<!wasm-)unsafe-eval|\*(?!\.workers\.dev)/);
   assert.doesNotMatch(before[0], /<script(?![^>]*\bsrc=)|\son\w+=|style="/, 'nincs beágyazott szkript, eseménykezelő vagy stílus');
+});
+
+test('vezetett edzés: a lépések a program szerint következnek, oldalanként és körönként, pihenővel', () => {
+  const p = buildProgram({ weak: [], done: 7 }, 'ski', ex);
+  for (const w of p.weeks) for (const s of w.sessions) {
+    const steps = sessionSteps(s, ex);
+    const work = steps.filter(x => x.type === 'work');
+    assert.equal(steps[0].exercise, 'warmup_routine');
+    assert.notEqual(steps[steps.length - 1].type, 'rest', 'az edzés nem pihenővel ér véget');
+    assert.ok(steps.every((x, i) => x.type !== 'rest' || steps[i - 1].type === 'work'), 'nincs két pihenő egymás után');
+    for (const b of s.blocks) {
+      const mine = work.filter(x => x.exercise === b.exercise);
+      assert.equal(mine.length, b.sets * (b.seconds && b.perSide ? 2 : 1), b.exercise);
+      assert.ok(mine.every(x => (b.seconds ? x.seconds === b.seconds : x.reps === b.reps)));
+    }
+    const min = sessionMinutes(steps);
+    assert.ok(min >= 12 && min <= 45, `az edzés hossza ésszerű: ${min} perc`);
+  }
+  /* időre menő, oldalankénti gyakorlat: bal, majd jobb; nyújtás után nincs pihenő */
+  const steps = sessionSteps({ blocks: [{ exercise: 'side_plank', sets: 2, seconds: 20, perSide: true }, { exercise: 'stretch_calf', sets: 1, seconds: 30, perSide: true }] }, ex, 15);
+  assert.deepEqual(steps.map(x => x.type === 'rest' ? 'rest' + x.seconds : x.exercise + ':' + x.side), ['side_plank:left', 'side_plank:right', 'rest15', 'side_plank:left', 'side_plank:right', 'rest15', 'stretch_calf:left', 'stretch_calf:right']);
+  assert.throws(() => sessionSteps({ blocks: [{ exercise: 'nincs', sets: 1, reps: 5 }] }, ex));
 });

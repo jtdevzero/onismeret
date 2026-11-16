@@ -127,6 +127,14 @@ export async function analysisView(id, onCleanup) {
       fb),
     cmpCard,
     card(h('h2', null, 'Mért mutatók'), metricRows(a)),
+    card(h('h2', null, 'Mérési adatok'),
+      h('p', null, 'A testpontok és a mutatók letölthetők egy fájlba, videó és kép nélkül. Ebből lehet a határértékeket a valódi felvételeidhez igazítani.'),
+      btn('Mérési adatok letöltése', () => {
+        const data = { app: 'kanyar', kind: 'snow-measurement', date: new Date(it.date).toISOString(), sport: it.sport, view: it.view, level: it.level, analysis: a, coach: { main_issue: c.main_issue.id, confidence: c.confidence, source: c.source }, feedback: it.feedback || null, frames: it.frames || [] };
+        const url = URL.createObjectURL(new Blob([JSON.stringify(data)], { type: 'application/json' }));
+        const el = h('a', { href: url, download: 'kanyar-meres-' + it.id + '.json' });
+        document.body.append(el); el.click(); el.remove(); setTimeout(() => URL.revokeObjectURL(url), 5000);
+      })),
     h('div', { class: 'row' }, link('#/snow', 'Új elemzés', 'btn primary'), link('#/log', 'Napló', 'btn'),
       btn('Törlés', async () => { if (confirm('Törlöd ezt az elemzést és a hozzá mentett videót?')) { await itemDelete(id); toast('Törölve.'); location.hash = '#/log'; } }, 'danger')));
 }

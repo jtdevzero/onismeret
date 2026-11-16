@@ -19,12 +19,13 @@ export function choice(name, options, value, onchange) {
 }
 
 /* A pózbecslés a tesztekben lecserélhető (valódi videó nélkül nem lehet determinisztikusan tesztelni). */
-let runner = { analyzeVideo: pose.analyzeVideo, captureFrames: pose.captureFrames, openCamera: pose.openCamera, benchmark: pose.benchmark, countdown: 5 };
+let runner = { analyzeVideo: pose.analyzeVideo, captureFrames: pose.captureFrames, openCamera: pose.openCamera, benchmark: pose.benchmark, countdown: 5, tick: 1000 };
 export const setRunner = r => { runner = { ...runner, ...r }; };
 export const captureFrames = (...a) => runner.captureFrames(...a);
 export const openCamera = () => runner.openCamera();
 export const liveCountdown = () => runner.countdown;
 export const benchmark = () => runner.benchmark();
+export const tickMs = () => runner.tick;
 
 const ERR = {
   too_short: `A videó túl rövid. Legalább ${pose.MIN_SECONDS} másodperc kell.`,

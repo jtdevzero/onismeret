@@ -1,12 +1,12 @@
 /* Felkészülés: mozgásfelmérés, program, gyakorlatok és a felvett gyakorlat elemzése. */
 import { h, clear, uid, fmtSec, fmtDate, toast } from './dom.js';
-import { page, card, btn, link, note, list, videoPicker, videoLinks, confBadge, sourceBadge, captureFrames } from './widgets.js';
+import { page, card, btn, link, note, list, videoPicker, videoLinks, confBadge, sourceBadge, captureFrames, tickMs } from './widgets.js';
 import { D, S } from './data.js';
 import { kvGet, kvSet, itemPut, itemsAll } from './store.js';
 import { analyzeExercise, isAnalyzable } from '../core/exercise.js';
-import { TESTS, buildProfile, buildProgram } from '../core/program.js';
+import { TESTS, buildProfile, buildProgram, sessionSteps, sessionMinutes } from '../core/program.js';
 import { prepCoach } from './coach-client.js';
-import { liveCounter } from './live.js';
+import { liveCounter, speak } from './live.js';
 
 const pain = () => !!(S.settings.health && S.settings.health.pain);
 const exMap = () => Object.fromEntries(Object.values(D.ex).map(e => [e.id, e]));
@@ -82,7 +82,9 @@ export async function programView() {
         await kvSet('program', { ...prog, done });
       } });
       return h('div', { class: 'session' },
-        h('label', { class: 'session-head' }, box, h('strong', null, `${i + 1}. edzés: ${SESSION[s.key]}`)),
+        h('div', { class: 'row tight session-top' },
+          h('label', { class: 'session-head' }, box, h('strong', null, `${i + 1}. edzés: ${SESSION[s.key]}`)),
+          link('#/session/' + key, done[key] ? 'Újra' : 'Indítás', 'btn small' + (done[key] ? '' : ' primary'))),
         h('ol', { class: 'blocks' }, s.blocks.map(b => h('li', null, link('#/ex/' + b.exercise, D.ex[b.exercise].name), h('span', { class: 'muted' }, ' · ' + dose(b))))));
     })));
   return page('6 hetes program',
@@ -159,4 +161,96 @@ export async function exerciseView(id, onCleanup) {
       h('h3', null, 'Miért számít a havon'), h('p', null, ex.onSnow)),
     analyze, out, history, card(videoLinks(ex)),
     link(isTest ? '#/prep' : '#/prep', '← Felkészülés', 'btn'));
+}
+
+const SIDE = { left: 'bal oldal', right: 'jobb oldal', both: 'oldalanként' };
+
+/* Vezetett edzés: lépésről lépésre, időzítővel, pihenővel és hangos bemondással. */
+export async function sessionView(key, onCleanup) {
+  const prog = await kvGet('program', null);
+  const [w, i] = String(key || '').split('-').map(Number);
+  const week = prog && prog.program.weeks.find(x => x.week === w), session = week && week.sessions[i];
+  if (!session) return page('Nincs ilyen edzés', link('#/program', '← Program', 'btn'));
+  const steps = sessionSteps(session, D.ex), total = steps.length, started = Date.now();
+  let at = 0, left = 0, timer = null, running = false, wake = null, finished = false;
+  const voice = h('input', { type: 'checkbox', checked: true });
+  const bar = h('progress', { max: total, value: 0, 'aria-label': 'Az edzés előrehaladása' });
+  const count = h('p', { class: 'muted small' });
+  const stage = h('div', { class: 'workout', 'aria-live': 'polite' });
+  const stop = () => { if (timer) { clearInterval(timer); timer = null; } running = false; };
+  const release = () => { stop(); if (wake) { wake.release().catch(() => {}); wake = null; } try { if ('speechSynthesis' in window) speechSynthesis.cancel(); } catch { /* a hang nem létfontosságú */ } };
+  onCleanup(release);
+  try { wake = await navigator.wakeLock.request('screen'); } catch { wake = null; }
+
+  const next = () => { stop(); at++; if (at >= total) finish(); else show(); };
+  const back = () => { stop(); if (at > 0) { at--; show(); } };
+
+  async function finish() {
+    if (finished) return;
+    finished = true; release();
+    const minutes = Math.max(1, Math.round((Date.now() - started) / 60000));
+    const fresh = (await kvGet('program', null)) || prog;
+    await kvSet('program', { ...fresh, done: { ...(fresh.done || {}), [key]: Date.now() } });
+    await itemPut({ id: uid(), kind: 'workout', date: Date.now(), week: w, session: i, name: SESSION[session.key], minutes, steps: total });
+    speak('Kész az edzés. Szép munka!', voice.checked);
+    bar.value = total; count.textContent = `${total} / ${total} lépés`;
+    clear(stage).append(card(h('h2', null, 'Edzés kész'),
+      h('p', { class: 'lead' }, `${w}. hét, ${i + 1}. edzés: ${SESSION[session.key]}.`),
+      h('p', null, 'Bekerült a naplódba, és a programban kipipáltam.'),
+      h('div', { class: 'row' }, link('#/program', 'Vissza a programhoz', 'btn primary'), link('#/log', 'Napló', 'btn'))));
+  }
+
+  function show() {
+    const st = steps[at];
+    bar.value = at; count.textContent = `${at + 1} / ${total} lépés`;
+    const nav = h('div', { class: 'row' },
+      at > 0 ? btn('Vissza', back, 'small') : null,
+      btn('Edzés befejezése most', () => { if (confirm('Befejezed most az edzést? A hátralévő lépések kimaradnak, de az edzés késznek számít.')) finish(); }, 'small'));
+    const clock = h('div', { class: 'workout-clock', role: 'timer' });
+    const draw = () => { clock.textContent = left >= 60 ? Math.floor(left / 60) + ':' + String(left % 60).padStart(2, '0') : String(left); };
+    const run = () => {
+      if (running) return;
+      running = true;
+      timer = setInterval(() => {
+        left--; draw();
+        if (left === 3) speak('három', voice.checked);
+        if (left <= 0) next();
+      }, tickMs());
+    };
+    if (st.type === 'rest') {
+      const after = steps[at + 1];
+      left = st.seconds; draw();
+      clear(stage).append(card(h('p', { class: 'workout-kicker' }, 'Pihenő'), clock,
+        after ? h('p', null, 'Következik: ', h('strong', null, D.ex[after.exercise].name)) : null,
+        h('div', { class: 'row' }, btn('Pihenő kihagyása', next, 'primary'))), nav);
+      speak('Pihenő', voice.checked);
+      run();
+      return;
+    }
+    const ex = D.ex[st.exercise];
+    const kicker = [D.exercises.typeNames[ex.type] === ex.name ? null : D.exercises.typeNames[ex.type], st.sets > 1 ? `${st.set}. kör / ${st.sets}` : null].filter(Boolean).join(' · ');
+    const head = [kicker ? h('p', { class: 'workout-kicker' }, kicker) : null, h('h2', { class: 'workout-title' }, ex.name)];
+    const points = h('ul', { class: 'plain' }, ex.points.map(p => h('li', null, p)));
+    const more = link('#/ex/' + ex.id, 'Leírás és videó');
+    if (st.seconds) {
+      left = st.seconds; draw();
+      const go = btn('Indítás', () => { go.hidden = true; pause.hidden = false; run(); }, 'primary');
+      const pause = btn('Szünet', () => { if (running) { stop(); pause.textContent = 'Folytatás'; } else { pause.textContent = 'Szünet'; run(); } });
+      pause.hidden = true;
+      clear(stage).append(card(head, st.side ? h('p', { class: 'badge' }, SIDE[st.side]) : null, clock, points,
+        h('div', { class: 'row' }, go, pause, btn('Kész, tovább', next)), more), nav);
+      speak(ex.name + (st.side ? ', ' + SIDE[st.side] : '') + ', ' + st.seconds + ' másodperc', voice.checked);
+    } else {
+      clear(stage).append(card(head, h('div', { class: 'workout-clock' }, String(st.reps)),
+        h('p', { class: 'workout-unit' }, 'ismétlés' + (st.side === 'both' ? ' oldalanként' : '')), points,
+        h('div', { class: 'row' }, btn('Kész, tovább', next, 'primary')), more), nav);
+      speak(ex.name + ', ' + st.reps + ' ismétlés' + (st.side === 'both' ? ' oldalanként' : ''), voice.checked);
+    }
+  }
+  show();
+  return page(`${w}. hét · ${SESSION[session.key]}`,
+    h('p', { class: 'muted' }, `Nagyjából ${sessionMinutes(steps)} perc · ${session.blocks.length} gyakorlat`),
+    bar, h('div', { class: 'row tight workout-meta' }, count, h('label', { class: 'check' }, voice, h('span', null, 'Hangos bemondás'))),
+    pain() ? note('Fájdalmat jeleztél: ha bármelyik gyakorlat fáj, hagyd ki.', 'warn') : null,
+    stage);
 }

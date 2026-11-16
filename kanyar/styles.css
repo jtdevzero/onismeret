@@ -182,6 +182,20 @@ progress { width: 100%; height: 10px; accent-color: var(--accent); border-radius
 .live-count { font-size: 4rem; font-weight: 800; font-variant-numeric: tabular-nums; }
 .live-label { font-size: .9rem; font-weight: 600; }
 
+/* ---- vezetett edzés ---- */
+.workout .card { text-align: center; }
+.workout .card ul.plain { text-align: left; margin-top: 14px; }
+.workout .card .row { justify-content: center; }
+.workout .card > a { display: inline-block; margin-top: 14px; }
+.workout-kicker { margin: 0 0 4px; font-size: .8rem; font-weight: 750; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.workout-title { font-size: 1.6rem; margin: 0 0 6px; }
+.workout-clock { font-size: 5rem; line-height: 1.05; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -.03em; color: var(--accent); margin: 6px 0 0; }
+.workout-unit { margin: 0; font-weight: 650; color: var(--muted); }
+.workout-meta { justify-content: space-between; margin: 6px 0 12px; }
+.workout-meta p { margin: 0; }
+.session-top { justify-content: space-between; align-items: center; }
+.session-top .session-head { flex: 1; }
+
 /* ---- alsó menü ---- */
 #nav {
   position: fixed; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; gap: 2px; z-index: 5;
