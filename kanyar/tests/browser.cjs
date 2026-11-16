@@ -301,6 +301,36 @@ const go = async (page, hash) => { await page.evaluate(h => { if (location.hash 
     assert.match(await text(), /Korábbi eredményeid[\s\S]*5 ismétlés · élő/);
   });
 
+  await step('napi terv, haladás és megosztható kártya', async () => {
+    await go(page, '#/');
+    assert.match(await text(), /Mai terv a hegyen/);
+    await go(page, '#/day');
+    let t = await text();
+    assert.match(t, /Erre figyelj ma[\s\S]*Hátraülsz/i);
+    assert.match(t, /Bemelegítés/);
+    assert.equal(await page.locator('.plan input[type=checkbox]').count(), 4, 'bemelegítés és három gyakorlat');
+    await shot('day');
+    for (const box of await page.locator('.plan input[type=checkbox]').all()) await box.check();
+    await page.waitForFunction(() => /Megvan a mai adag/.test(document.getElementById('main').innerText));
+    await go(page, '#/log');
+    await go(page, '#/day');
+    assert.equal(await page.locator('.plan input[type=checkbox]:checked').count(), 4, 'a pipák megmaradnak');
+    await go(page, '#/log');
+    t = await text();
+    assert.match(t, /Haladás/);
+    assert.match(t, /Havas mutatók alakulása[\s\S]*Súlypont elöl–hátul/i);
+    assert.ok(await page.locator('.bar:not(.empty)').count() >= 1);
+    await shot('progress');
+    /* megosztható kártya: PNG készül, a letöltés elindul (a tesztböngészőben nincs megosztás) */
+    await page.locator('.log-item[href^="#/a/"]').first().click();
+    await page.waitForFunction(() => (document.documentElement.dataset.view || '').startsWith('#/a/'));
+    const [dl] = await Promise.all([page.waitForEvent('download'), page.getByRole('button', { name: 'Eredmény megosztása' }).click()]);
+    assert.equal(dl.suggestedFilename(), 'kanyar-eredmeny.png');
+    const png = fs.readFileSync(await dl.path());
+    assert.ok(png.length > 20000 && png.subarray(1, 4).toString() === 'PNG', 'valódi PNG-kép');
+    if (SHOTS) fs.copyFileSync(await dl.path(), path.join(SHOTS, 'share-card.png'));
+  });
+
   await step('mentés fájlba: a belépőkód nem kerül bele', async () => {
     await go(page, '#/settings');
     const [dl] = await Promise.all([page.waitForEvent('download'), page.getByRole('button', { name: 'Mentés fájlba' }).click()]);

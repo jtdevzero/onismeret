@@ -4,6 +4,8 @@ import { page, card, btn, link, note, list, choice, benchmark } from './widgets.
 import { D, S, saveSettings, sportName, levelName, lessonsFor } from './data.js';
 import { kvGet, itemsAll, itemDelete, wipeAll, exportAll } from './store.js';
 import { getProfile } from './views-train.js';
+import { weeklyActivity, weekStreak, metricTrails, dayPlan } from '../core/progress.js';
+import { kvSet } from './store.js';
 
 const LEVEL_DESC = {
   ski: ['Most kezdem, vagy hóekével csúszom és fékezek.', 'Kék pályán kanyarodom, a kanyar végén már zárom a léceket.', 'Párhuzamos lécekkel kanyarodom kék és piros pályán.', 'Piros pályán élen vezetett íveket is húzok.', 'Bármilyen pályán magabiztosan, élen csúszom.'],
@@ -46,7 +48,7 @@ export async function homeView() {
   if (!profile.done) next = ['Kezdd a mozgásfelméréssel', 'Hét rövid teszt a kamerával, nagyjából 10 perc. Ebből készül a személyre szabott programod.', '#/prep', 'Felmérés indítása'];
   else if (!prog) next = ['Készítsd el a programod', `A felmérésből ${profile.done} teszt megvan. Mehet a 6 hetes program.`, '#/prep', 'Program készítése'];
   else if (!lastSnow) next = ['Folytasd az edzést', `${progDone} / 18 edzés kész. A hegyen töltsd fel az első videód.`, '#/program', 'Program megnyitása'];
-  else next = ['Legutóbbi visszajelzés', lastSnow.coach.main_issue.what + (lastSnow.coach.cue ? ' ' + lastSnow.coach.cue : ''), '#/a/' + lastSnow.id, 'Megnyitás'];
+  else next = ['Mai terv a hegyen', lastSnow.coach.main_issue.what + (lastSnow.coach.cue ? ' ' + lastSnow.coach.cue : ''), '#/day', 'Terv megnyitása'];
   const tile = (href, icon, title, sub) => h('a', { class: 'tile', href }, h('span', { class: 'tile-ic' }, h('span', { class: 'ic ic-' + icon, 'aria-hidden': 'true' })), h('strong', null, title), h('span', null, sub));
   return h('div', { class: 'page' },
     h('header', { class: 'hero' },
@@ -90,6 +92,63 @@ export async function lessonView(id) {
     link('#/learn', '← Tananyag', 'btn'));
 }
 
+/* Haladás: heti aktivitás oszlopokban és a havas mutatók alakulása pöttyökkel. */
+function progressCard(items) {
+  const weeks = weeklyActivity(items), max = Math.max(1, ...weeks.map(w => w.total)), streak = weekStreak(items);
+  const bars = h('div', { class: 'bars', role: 'img', 'aria-label': 'Bejegyzések száma az utolsó nyolc hétben: ' + weeks.map(w => w.total).join(', ') },
+    weeks.map((w, i) => {
+      const bar = h('div', { class: 'bar' + (w.total ? '' : ' empty') });
+      bar.style.height = Math.max(4, Math.round(100 * w.total / max)) + '%';
+      return h('div', { class: 'bar-col' }, h('span', { class: 'bar-n' }, w.total || ''), h('div', { class: 'bar-track' }, bar),
+        h('span', { class: 'bar-l' }, i === weeks.length - 1 ? 'most' : new Date(w.start).toLocaleDateString('hu-HU', { month: 'numeric', day: 'numeric' })));
+    }));
+  const trails = metricTrails(items, S.settings.sport);
+  const M = D.faults.metricNames, LABEL = { better: 'Javult', worse: 'Romlott', same: 'Változatlan' };
+  return card(h('h2', null, 'Haladás'),
+    h('p', { class: 'muted' }, streak >= 2 ? `${streak} hete megszakítás nélkül aktív vagy.` : 'Heti bejegyzések: edzések, felvett gyakorlatok és havas elemzések.'),
+    bars,
+    trails.length ? [h('h3', null, 'Havas mutatók alakulása'),
+      h('ul', { class: 'rows' }, trails.map(t => h('li', null,
+        h('span', null, M[t.id], h('span', { class: 'dots', role: 'img', 'aria-label': t.points.map(p => (p.band === 'ok' ? 'rendben' : 'javítandó')).join(', ') },
+          t.points.slice(-8).map(p => h('span', { class: 'dot ' + (p.band === 'ok' ? 'ok' : 'off') })))),
+        h('span', { class: 'badge ' + (t.trend === 'better' ? 'good' : t.trend === 'worse' ? 'warn' : '') }, LABEL[t.trend])))),
+      note('Egy pötty egy elemzés: zöld, ha a mutató rendben volt, sárga, ha javítandó. Balról jobbra halad az idő.', 'small')] : null);
+}
+
+/* Napi terv a hegyre: az utolsó elemzés fő hibájára épülő három gyakorlat, kipipálható, a végén újrafilmezés. */
+export async function dayView() {
+  const items = await itemsAll(), sport = S.settings.sport;
+  const last = items.find(i => i.kind === 'snow' && i.sport === sport);
+  if (!last) return page('Mai terv a hegyen', card(h('p', null, 'A napi terv az utolsó havas elemzésedre épül. Előbb tölts fel egy videót.'), link('#/snow', 'Havas elemzés', 'btn primary')));
+  const plan = dayPlan(last.coach, D.faults, D.lessons.lessons, sport, S.settings.level);
+  const today = new Date().toDateString();
+  let state = await kvGet('dayplan', null);
+  if (!state || state.day !== today || state.basis !== last.id) state = { day: today, basis: last.id, done: {} };
+  const doneCount = () => plan.drills.filter(id => state.done[id]).length + (state.done.warmup ? 1 : 0);
+  const total = plan.drills.length + 1;
+  const bar = h('progress', { max: total, value: doneCount() });
+  const finish = h('div', { 'aria-live': 'polite' });
+  const refresh = () => {
+    bar.value = doneCount();
+    clear(finish);
+    if (doneCount() >= total) finish.append(card(h('h2', null, 'Megvan a mai adag'), h('p', null, 'Most filmeztesd le magad újra ugyanabból a nézetből, és nézd meg, változott-e a mérés.'), link('#/snow', 'Újrafilmezés és elemzés', 'btn primary')));
+  };
+  const row = (id, title, sub, href) => {
+    const box = h('input', { type: 'checkbox', checked: !!state.done[id], onchange: async () => { if (box.checked) state.done[id] = Date.now(); else delete state.done[id]; await kvSet('dayplan', state); refresh(); } });
+    return h('li', null, h('label', { class: 'check plan-item' }, box, h('span', null, h('strong', null, title), h('br'), h('span', { class: 'muted small' }, sub))), link(href, 'Megnyitás', 'btn small'));
+  };
+  refresh();
+  return page('Mai terv a hegyen',
+    h('p', { class: 'muted' }, `A ${fmtDate(last.date)}-i elemzésed alapján`),
+    card(h('h2', null, 'Erre figyelj ma'), h('p', { class: 'lead' }, last.coach.main_issue.what), last.coach.cue ? h('p', { class: 'cue' }, last.coach.cue) : null),
+    card(h('h2', null, 'Teendők'), bar,
+      h('ul', { class: 'rows plan' },
+        row('warmup', 'Bemelegítés', '5 perc az első csúszás előtt', '#/l/guide_mountain_routine'),
+        plan.drills.map(id => { const l = D.lesson[id]; return row(id, l.title, l.terrain || (l.kind === 'drill' ? 'Javító gyakorlat' : 'Lecke'), '#/l/' + id); })),
+      note('Egy csúszásra egy gyakorlatot vigyél. Könnyű, belátható pályán gyakorolj.', 'small')),
+    finish, link('#/a/' + last.id, 'Az elemzés megnyitása', 'btn'));
+}
+
 export async function logView() {
   const items = await itemsAll();
   if (!items.length) return page('Napló', card(h('p', null, 'Még nincs bejegyzésed. Az elemzéseid és a felvett gyakorlataid ide kerülnek.'), h('div', { class: 'row' }, link('#/prep', 'Felkészülés', 'btn primary'), link('#/snow', 'Havas elemzés', 'btn'))));
@@ -114,7 +173,7 @@ export async function logView() {
     }));
   };
   draw(items);
-  return page('Napló', rows);
+  return page('Napló', progressCard(items), rows);
 }
 
 export async function settingsView() {

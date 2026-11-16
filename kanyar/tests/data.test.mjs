@@ -6,6 +6,7 @@ import { ANALYZERS, analyzeExercise } from '../js/core/exercise.js';
 import { TESTS, WEAK_ORDER, buildProfile, buildProgram, sessionSteps, sessionMinutes } from '../js/core/program.js';
 import { analyzeRun, THRESHOLDS } from '../js/core/snow.js';
 import { localSnowCoach, localPrepCoach, validSnowCoach, validPrepCoach, triggeredFaults } from '../js/core/coach.js';
+import { weekStart, weeklyActivity, weekStreak, metricTrails, dayPlan } from '../js/core/progress.js';
 import { series, wave } from './synth.mjs';
 
 const load = n => JSON.parse(readFileSync(new URL('../data/' + n, import.meta.url), 'utf8'));
@@ -207,4 +208,44 @@ test('filmező mód: a telefon dőlése álló és fekvő tartásban is helyesen
   assert.equal(rollFrom(0, -6, 180), 6);
   assert.equal(rollFrom(null, 3, 0), null);
   assert.equal(rollFrom(0, 170, 0), 90, 'korlátozva');
+});
+
+test('haladás: heti bontás, sorozat és a mutatók alakulása', () => {
+  const now = new Date(2026, 10, 18, 12).getTime(); /* szerda */
+  const day = 24 * 3600 * 1000;
+  assert.equal(new Date(weekStart(now)).getDay(), 1, 'a hét hétfővel kezdődik');
+  const items = [
+    { kind: 'workout', date: now }, { kind: 'exercise', date: now - day }, { kind: 'snow', date: now - 8 * day },
+    { kind: 'workout', date: now - 15 * day }, { kind: 'workout', date: now - 40 * day }, { kind: 'egyéb', date: now },
+  ];
+  const w = weeklyActivity(items, now);
+  assert.equal(w.length, 8);
+  assert.deepEqual(w.slice(-3).map(x => x.total), [1, 1, 2]);
+  assert.deepEqual([w[7].workouts, w[7].exercises, w[7].snow], [1, 1, 0]);
+  assert.equal(weekStreak(items, now), 3);
+  assert.equal(weekStreak([{ kind: 'workout', date: now - 7 * day }], now), 1, 'az üres folyó hét nem töri meg a sorozatot');
+  assert.equal(weekStreak([], now), 0);
+  const run = (date, band, conf = 0.9) => ({ kind: 'snow', sport: 'ski', date, analysis: { ok: true, metrics: { foreAft: { usable: true, confidence: conf, band }, hands: { usable: false, confidence: 0, band: null } } } });
+  const t = metricTrails([run(3, 'ok'), run(1, 'low'), run(2, 'low'), run(4, 'low', 0.3), { kind: 'snow', sport: 'snowboard', date: 5, analysis: run(5, 'low').analysis }], 'ski');
+  assert.equal(t.length, 1);
+  assert.deepEqual(t[0].points.map(p => p.band), ['low', 'low', 'ok'], 'időrendben, a bizonytalan és a más sportágú mérés nélkül');
+  assert.equal(t[0].trend, 'better');
+  assert.deepEqual(metricTrails([run(1, 'low')], 'ski'), [], 'egy mérésből nincs alakulás');
+});
+
+test('napi terv: az edző gyakorlata az első, a hiba többi gyakorlata követi, a szint leckéi töltik fel; legfeljebb három', () => {
+  const coach = { main_issue: { id: 'backseat' }, drill_id: 'drill_hands_forward' };
+  const p = dayPlan(coach, FA, LES.lessons, 'ski', 2);
+  assert.equal(p.faultId, 'backseat');
+  assert.deepEqual(p.drills.slice(0, 2), ['drill_hands_forward', 'drill_shin_pressure']);
+  assert.equal(p.drills.length, 3);
+  assert.ok(lesson[p.drills[2]].level === 2 && lesson[p.drills[2]].sport === 'ski');
+  /* nincs megnevezett hiba: a szint leckéiből áll össze */
+  const none = dayPlan({ main_issue: { id: null }, drill_id: null }, FA, LES.lessons, 'snowboard', 1);
+  assert.equal(none.faultId, null);
+  assert.equal(none.drills.length, 3);
+  assert.ok(none.drills.every(id => lesson[id].sport === 'snowboard' && lesson[id].level === 1));
+  /* ismeretlen azonosító nem kerül a tervbe */
+  assert.ok(!dayPlan({ main_issue: { id: 'backseat' }, drill_id: 'nincs_ilyen' }, FA, LES.lessons, 'ski', 2).drills.includes('nincs_ilyen'));
+  for (const f of FA.faults) for (const lv of [1, 3, 5]) assert.equal(dayPlan({ main_issue: { id: f.id }, drill_id: f.drills[0] }, FA, LES.lessons, f.sports[0], lv).drills.length, 3, f.id);
 });
