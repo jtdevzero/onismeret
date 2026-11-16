@@ -44,9 +44,25 @@ const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '
   });
   assert.deepEqual({ ...live, aspect: live.aspect > 0 }, { n: 3, increasing: true, shape: true, aspect: true, stopped: true, after: null });
   assert.equal(typeof res.poses, 'number');
+  /* filmező kamera (teszt-kamerával): rögzít, a felvétel nem üres videó, a keretezés megítélhető */
+  const film = await page.evaluate(async () => {
+    const { openFilmCamera } = await import('./js/ui/pose.js');
+    const cam = await openFilmCamera();
+    cam.start();
+    await new Promise(r => setTimeout(r, 1500));
+    let chk = null;
+    for (let i = 0; i < 40 && chk === null; i++) { chk = cam.frameCheck(); if (chk === null) await new Promise(r => setTimeout(r, 250)); }
+    const blob = await cam.stop();
+    const track = cam.el.srcObject.getTracks()[0];
+    cam.close();
+    return { size: blob.size > 1000, type: /^video\//.test(blob.type), check: chk && typeof chk.ok === 'boolean', reason: chk && chk.reason, stopped: track.readyState === 'ended' };
+  });
+  assert.deepEqual({ ...film, reason: undefined }, { size: true, type: true, check: true, reason: undefined, stopped: true });
+  assert.equal(film.reason, 'no_person', 'a teszt-kamerán nincs ember');
   assert.deepEqual(external, [], 'a pózbecslő nem hív külső szervert');
   assert.deepEqual(errors, [], errors.join(' | '));
   await browser.close(); srv.close();
+  console.log('ok   a filmező kamera rögzít, és megítéli a keretezést');
   console.log('ok   az élő kamera képkockákat ad, és lezáráskor leáll');
   console.log('ok   a pózbecslő betöltődik és lefut a szigorú CSP mellett, külső hívás nélkül (talált póz: ' + res.poses + ')');
 })().catch(e => { console.error(e); process.exit(1); });

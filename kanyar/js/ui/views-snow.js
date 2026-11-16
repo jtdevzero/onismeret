@@ -8,11 +8,12 @@ import { snowCoach } from './coach-client.js';
 import { compareRuns } from '../core/compare.js';
 import { getProfile } from './views-train.js';
 import { replay } from './overlay.js';
+import { recorder } from './recorder.js';
 
 const VIEWS = [['side', 'Oldalról'], ['front', 'Szemből'], ['back', 'Hátulról']];
 const viewName = v => (VIEWS.find(x => x[0] === v) || [0, v])[1].toLowerCase();
 
-export async function snowView() {
+export async function snowView(_arg, onCleanup) {
   const form = { sport: S.settings.sport, view: 'side', travel: 'right' };
   const extra = h('div');
   const drawExtra = () => {
@@ -46,6 +47,8 @@ export async function snowView() {
     await itemPut({ id, kind: 'snow', date: Date.now(), sport: form.sport, view: form.view, level: S.settings.level, analysis, coach, frames: packFrames(frames), hasVideo, thumb: images[0] || null });
     location.hash = '#/a/' + id;
   });
+  const film = recorder(blob => picker.run(blob));
+  if (onCleanup) onCleanup(film.stop);
   return page('Havas elemzés',
     card(h('h2', null, 'Mit elemezzek?'),
       h('h3', null, 'Sportág'),
@@ -57,7 +60,8 @@ export async function snowView() {
       h('p', null, '10–30 másodperc, legalább 4–6 kanyar, a csúszó végig tetőtől talpig látszik. A telefont vízszintesen és egyenesen tartsátok.'),
       link('#/l/guide_filming', 'Részletes filmezési útmutató'),
       note('A videó a telefonodon marad; az elemzés a készüléken fut.', 'small'),
-      picker.el),
+      picker.el,
+      h('h3', null, 'Vagy vegyétek fel itt'), film.el),
     link('#/l/guide_limits', 'Mit tud és mit nem az elemzés?'));
 }
 

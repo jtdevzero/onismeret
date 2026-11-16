@@ -193,3 +193,18 @@ test('vezetett edzés: a lépések a program szerint következnek, oldalanként 
   assert.deepEqual(steps.map(x => x.type === 'rest' ? 'rest' + x.seconds : x.exercise + ':' + x.side), ['side_plank:left', 'side_plank:right', 'rest15', 'side_plank:left', 'side_plank:right', 'rest15', 'stretch_calf:left', 'stretch_calf:right']);
   assert.throws(() => sessionSteps({ blocks: [{ exercise: 'nincs', sets: 1, reps: 5 }] }, ex));
 });
+
+test('filmező mód: a telefon dőlése álló és fekvő tartásban is helyesen számolódik', async () => {
+  globalThis.document = globalThis.document || {};
+  const src = readFileSync(new URL('../js/ui/recorder.js', import.meta.url), 'utf8');
+  /* a rollFrom tiszta függvény; a modul többi része DOM-ot igényel, ezért kiemelve próbáljuk ki */
+  const body = /export function rollFrom\(beta, gamma, angle\) \{([\s\S]*?)\n\}/.exec(src)[1];
+  const rollFrom = new Function('beta', 'gamma', 'angle', body);
+  assert.equal(rollFrom(80, 0, 0), 0, 'álló, egyenes');
+  assert.equal(rollFrom(80, 7, 0), 7, 'álló, jobbra dől');
+  assert.equal(rollFrom(5, 80, 90), -5, 'fekvő, dől');
+  assert.equal(rollFrom(-4, 80, 270), -4);
+  assert.equal(rollFrom(0, -6, 180), 6);
+  assert.equal(rollFrom(null, 3, 0), null);
+  assert.equal(rollFrom(0, 170, 0), 90, 'korlátozva');
+});

@@ -179,3 +179,50 @@ export async function benchmark() {
   for (let i = 0; i < 5; i++) run();
   return { loadMs: Math.round(load), frameMs: Math.round((performance.now() - t1) / 5) };
 }
+
+/* Filmező kamera: a hátsó kamerával rögzít, és közben megnézi, jól van-e keretezve a csúszó.
+   A felvétel a készüléken marad. → { el, frameCheck(), start(), stop(): Promise<Blob>, close() } */
+export async function openFilmCamera() {
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || typeof MediaRecorder === 'undefined') throw Object.assign(new Error('no_camera'), { code: 'no_camera' });
+  let stream;
+  try { stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 }, frameRate: { ideal: 30 } } }); }
+  catch (e) { throw Object.assign(new Error('camera_denied'), { code: 'camera_denied' }); }
+  const video = document.createElement('video');
+  video.muted = true; video.playsInline = true; video.autoplay = true; video.srcObject = stream;
+  video.className = 'film-video';
+  await video.play().catch(() => {});
+  if (video.readyState < 2) await once(video, 'loadeddata');
+  const mime = ['video/mp4', 'video/webm;codecs=vp9', 'video/webm;codecs=vp8', 'video/webm'].find(m => MediaRecorder.isTypeSupported(m)) || '';
+  let rec = null, chunks = [], lm = null;
+  /* a pózbecslő a háttérben töltődik; amíg nincs meg, a keretezést nem tudjuk megítélni */
+  loadPose().then(x => { lm = x; }).catch(() => {});
+  return {
+    el: video,
+    /* → null (még nem tudni) | { ok, reason: 'no_person' | 'too_far' | 'cut_off' | null } */
+    frameCheck() {
+      if (!lm || video.readyState < 2) return null;
+      const f = detect(lm, video, 0);
+      if (!f.lm) return { ok: false, reason: 'no_person' };
+      const key = [11, 12, 23, 24, 25, 26, 27, 28].map(i => f.lm[i]);
+      if (key.reduce((a, p) => a + p[3], 0) / key.length < 0.5) return { ok: false, reason: 'no_person' };
+      const ys = [f.lm[0][1], f.lm[27][1], f.lm[28][1]];
+      if (Math.min(...ys) < 0.02 || Math.max(...ys) > 0.98 || key.some(p => p[0] < 0.02 || p[0] > 0.98)) return { ok: false, reason: 'cut_off' };
+      const height = Math.max(f.lm[27][1], f.lm[28][1]) - f.lm[0][1];
+      return height < 0.3 ? { ok: false, reason: 'too_far' } : { ok: true, reason: null };
+    },
+    start() {
+      chunks = [];
+      rec = new MediaRecorder(stream, mime ? { mimeType: mime, videoBitsPerSecond: 4000000 } : undefined);
+      rec.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
+      rec.start(1000);
+    },
+    stop() {
+      return new Promise(resolve => {
+        if (!rec || rec.state === 'inactive') return resolve(null);
+        rec.onstop = () => resolve(new Blob(chunks, { type: (rec.mimeType || mime || 'video/webm').split(';')[0] }));
+        rec.stop();
+      });
+    },
+    close() { try { if (rec && rec.state !== 'inactive') rec.stop(); } catch { /* már leállt */ } stream.getTracks().forEach(tr => tr.stop()); video.srcObject = null; },
+  };
+}

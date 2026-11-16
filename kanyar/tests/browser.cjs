@@ -91,6 +91,37 @@ const go = async (page, hash) => { await page.evaluate(h => { if (location.hash 
     assert.match(await text(), /Hátraülsz/);
   });
 
+  await step('filmező mód: jelzi a keretezést, a rövid felvételt elutasítja, a jót elemzi', async () => {
+    await go(page, '#/snow');
+    await fakePose(page, 'ski-side-backseat');
+    await page.evaluate(async () => {
+      const w = await import('./js/ui/widgets.js');
+      window.__film = { check: { ok: false, reason: 'too_far' }, closed: 0 };
+      w.setRunner({ tick: 4, openFilmCamera: async () => ({ el: null, frameCheck: () => window.__film.check, start() {}, stop: async () => new Blob(['felvétel'], { type: 'video/webm' }), close() { window.__film.closed++; } }) });
+    });
+    await page.getByRole('button', { name: 'Felvétel az appban' }).click();
+    await page.waitForFunction(() => /Túl messze van/.test(document.querySelector('.film-frame')?.textContent || ''));
+    await page.evaluate(() => { window.__film.check = { ok: true, reason: null }; });
+    await page.waitForFunction(() => /Jó a keret/.test(document.querySelector('.film-frame')?.textContent || ''));
+    await shot('film');
+    /* túl rövid felvétel (valós idejű órával, hogy a leállítás biztosan 5 mp előtt jöjjön) */
+    await page.evaluate(async () => { const w = await import('./js/ui/widgets.js'); w.setRunner({ tick: 1000 }); });
+    await page.getByRole('button', { name: 'Felvétel indítása' }).click();
+    await page.getByRole('button', { name: 'Leállítás és elemzés' }).click();
+    await page.waitForFunction(() => /A felvétel túl rövid/.test(document.getElementById('main').innerText));
+    assert.equal(await page.evaluate(() => window.__film.closed), 1, 'a kamera leáll');
+    assert.equal(await page.evaluate(() => location.hash), '#/snow');
+    /* elég hosszú felvétel: elemzés lesz belőle */
+    await page.evaluate(async () => { const w = await import('./js/ui/widgets.js'); w.setRunner({ tick: 4 }); });
+    await page.getByRole('button', { name: 'Felvétel az appban' }).click();
+    await page.getByRole('button', { name: 'Felvétel indítása' }).click();
+    /* a felgyorsított órával a felvétel a 45 mp-es felső határnál magától leáll, és indul az elemzés */
+    await page.waitForFunction(() => (document.documentElement.dataset.view || '').startsWith('#/a/'));
+    assert.equal(await page.evaluate(() => window.__film.closed), 2, 'a kamera a második felvétel után is leáll');
+    assert.match(await text(), /Hátraülsz/);
+    await page.evaluate(async () => { const w = await import('./js/ui/widgets.js'); w.setRunner({ tick: 1000 }); });
+  });
+
   await step('követhetetlen felvétel: nincs elemzés, filmezési tanácsot ad', async () => {
     await go(page, '#/snow');
     await fakePose(page, 'none');
