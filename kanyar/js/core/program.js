@@ -89,3 +89,30 @@ export function buildProgram(profile, sport, exercises, health = {}) {
   }
   return { sport, weeks, jumps: jumpsOk, focus, retestWeek: 3 };
 }
+
+/* Egy edzés lépésekre bontva a vezetett edzéshez. A lépések: munka (work) és pihenő (rest).
+   Az oldalanként végzett, időre menő gyakorlat két külön lépés (bal, jobb); az ismétléses egy lépés mindkét oldalra.
+   session: a program egy edzése · exercises: { id: { type, name } } · restSeconds: pihenő két kör között */
+export function sessionSteps(session, exercises, restSeconds = 30) {
+  const steps = [];
+  session.blocks.forEach((b, bi) => {
+    const ex = exercises[b.exercise];
+    if (!ex) throw new Error('Ismeretlen gyakorlat az edzésben: ' + b.exercise);
+    const light = ex.type === 'mobility' || ex.type === 'warmup';
+    for (let set = 1; set <= b.sets; set++) {
+      const base = { type: 'work', exercise: b.exercise, block: bi, set, sets: b.sets };
+      if (b.seconds && b.perSide) steps.push({ ...base, seconds: b.seconds, side: 'left' }, { ...base, seconds: b.seconds, side: 'right' });
+      else if (b.seconds) steps.push({ ...base, seconds: b.seconds, side: null });
+      else steps.push({ ...base, reps: b.reps, side: b.perSide ? 'both' : null });
+      /* pihenő a körök között és a gyakorlatok között; nyújtás és bemelegítés után nincs */
+      const last = bi === session.blocks.length - 1 && set === b.sets;
+      if (!last && !light) steps.push({ type: 'rest', seconds: restSeconds, block: bi });
+    }
+  });
+  return steps;
+}
+/* Az edzés becsült hossza percben (ismétlésenként 3 mp-cel számolva). */
+export function sessionMinutes(steps) {
+  const sec = steps.reduce((a, st) => a + (st.seconds || (st.reps || 0) * 3 * (st.side === 'both' ? 2 : 1)), 0);
+  return Math.round(sec / 60);
+}

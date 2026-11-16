@@ -100,6 +100,11 @@ export async function logView() {
         h('a', { href: '#/a/' + it.id, class: 'log-item' },
           h('strong', null, `${sportName(it.sport)} · ${fmtDate(it.date)}`),
           h('span', { class: 'muted' }, it.coach.main_issue.what)));
+      if (it.kind === 'workout') return h('li', null,
+        h('div', { class: 'log-item' },
+          h('strong', null, `Edzés · ${fmtDate(it.date)}`),
+          h('span', { class: 'muted' }, `${it.week}. hét, ${it.session + 1}. edzés: ${it.name} · ${it.minutes} perc`)),
+        btn('Törlés', async () => { await itemDelete(it.id); draw(await itemsAll()); }, 'small danger'));
       const ex = D.ex[it.exercise], r = it.result;
       return h('li', null,
         h('div', { class: 'log-item' },

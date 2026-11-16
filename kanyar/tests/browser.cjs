@@ -91,6 +91,37 @@ const go = async (page, hash) => { await page.evaluate(h => { if (location.hash 
     assert.match(await text(), /Hátraülsz/);
   });
 
+  await step('filmező mód: jelzi a keretezést, a rövid felvételt elutasítja, a jót elemzi', async () => {
+    await go(page, '#/snow');
+    await fakePose(page, 'ski-side-backseat');
+    await page.evaluate(async () => {
+      const w = await import('./js/ui/widgets.js');
+      window.__film = { check: { ok: false, reason: 'too_far' }, closed: 0 };
+      w.setRunner({ tick: 4, openFilmCamera: async () => ({ el: null, frameCheck: () => window.__film.check, start() {}, stop: async () => new Blob(['felvétel'], { type: 'video/webm' }), close() { window.__film.closed++; } }) });
+    });
+    await page.getByRole('button', { name: 'Felvétel az appban' }).click();
+    await page.waitForFunction(() => /Túl messze van/.test(document.querySelector('.film-frame')?.textContent || ''));
+    await page.evaluate(() => { window.__film.check = { ok: true, reason: null }; });
+    await page.waitForFunction(() => /Jó a keret/.test(document.querySelector('.film-frame')?.textContent || ''));
+    await shot('film');
+    /* túl rövid felvétel (valós idejű órával, hogy a leállítás biztosan 5 mp előtt jöjjön) */
+    await page.evaluate(async () => { const w = await import('./js/ui/widgets.js'); w.setRunner({ tick: 1000 }); });
+    await page.getByRole('button', { name: 'Felvétel indítása' }).click();
+    await page.getByRole('button', { name: 'Leállítás és elemzés' }).click();
+    await page.waitForFunction(() => /A felvétel túl rövid/.test(document.getElementById('main').innerText));
+    assert.equal(await page.evaluate(() => window.__film.closed), 1, 'a kamera leáll');
+    assert.equal(await page.evaluate(() => location.hash), '#/snow');
+    /* elég hosszú felvétel: elemzés lesz belőle */
+    await page.evaluate(async () => { const w = await import('./js/ui/widgets.js'); w.setRunner({ tick: 4 }); });
+    await page.getByRole('button', { name: 'Felvétel az appban' }).click();
+    await page.getByRole('button', { name: 'Felvétel indítása' }).click();
+    /* a felgyorsított órával a felvétel a 45 mp-es felső határnál magától leáll, és indul az elemzés */
+    await page.waitForFunction(() => (document.documentElement.dataset.view || '').startsWith('#/a/'));
+    assert.equal(await page.evaluate(() => window.__film.closed), 2, 'a kamera a második felvétel után is leáll');
+    assert.match(await text(), /Hátraülsz/);
+    await page.evaluate(async () => { const w = await import('./js/ui/widgets.js'); w.setRunner({ tick: 1000 }); });
+  });
+
   await step('követhetetlen felvétel: nincs elemzés, filmezési tanácsot ad', async () => {
     await go(page, '#/snow');
     await fakePose(page, 'none');
@@ -159,6 +190,35 @@ const go = async (page, hash) => { await page.evaluate(h => { if (location.hash 
     await shot('program');
   });
 
+  await step('vezetett edzés: lépésről lépésre végigmegy, az időzítő magától lép, a végén naplóz és kipipál', async () => {
+    await page.evaluate(async () => { const w = await import('./js/ui/widgets.js'); w.setRunner({ tick: 2 }); });
+    await go(page, '#/program');
+    await page.locator('a[href="#/session/1-1"]').click();
+    await shown(page, '#/session/1-1');
+    assert.match(await text(), /1 \/ \d+ lépés/);
+    assert.match(await text(), /Bemelegítés/);
+    await shot('workout');
+    let guard = 0, sawRest = false, sawSide = false;
+    while (!/Edzés kész/.test(await text())) {
+      assert.ok(++guard < 200, 'az edzés véget ér');
+      const t = await text();
+      if (/PIHENŐ/i.test(t) && /Következik/.test(t)) sawRest = true;
+      if (/bal oldal|jobb oldal/.test(t)) sawSide = true;
+      const start = page.getByRole('button', { name: 'Indítás', exact: true });
+      if (await start.isVisible().catch(() => false)) { await start.click().catch(() => {}); await page.waitForTimeout(30); continue; }
+      const done = page.getByRole('button', { name: 'Kész, tovább' });
+      if (await done.isVisible().catch(() => false)) { await done.click().catch(() => {}); continue; }
+      await page.waitForTimeout(20);
+    }
+    assert.ok(sawRest, 'volt pihenő a következő gyakorlat nevével');
+    assert.ok(sawSide, 'az oldalankénti, időre menő gyakorlat külön lépés oldalanként');
+    await go(page, '#/prep');
+    assert.match(await text(), /2 \/ 18 edzés kész/);
+    await go(page, '#/log');
+    assert.match(await text(), /Edzés · [\s\S]*1\. hét, 2\. edzés: Oldalirány és törzs/);
+    await page.evaluate(async () => { const w = await import('./js/ui/widgets.js'); w.setRunner({ tick: 1000 }); });
+  });
+
   await step('tananyag, lecke, beállítások megjelennek; a külső videólink biztonságosan nyílik', async () => {
     await go(page, '#/learn');
     assert.match(await text(), /1\. szint: Hóeke/);
@@ -204,6 +264,12 @@ const go = async (page, hash) => { await page.evaluate(h => { if (location.hash 
     assert.equal(await page.locator('#main img').count(), 0);
     assert.equal(await page.evaluate(() => window.__xss), undefined);
     assert.match(await text(), /Tálca a kézben/);
+    const [mdl] = await Promise.all([page.waitForEvent('download'), page.getByRole('button', { name: 'Mérési adatok letöltése' }).click()]);
+    const meas = JSON.parse(fs.readFileSync(await mdl.path(), 'utf8'));
+    assert.equal(meas.kind, 'snow-measurement');
+    assert.ok(meas.frames.length > 100 && meas.frames[0].lm.length === 33, 'a testpontok benne vannak');
+    assert.equal(meas.analysis.metrics.foreAft.band, 'low');
+    assert.ok(!JSON.stringify(meas).includes('data:image') && !JSON.stringify(meas).includes('titkos-kod-123'), 'kép és belépőkód nincs benne');
     assert.match(await text(), /Változás az előző elemzéshez képest[\s\S]*Súlypont elöl–hátul[\s\S]*Változatlan/, 'az előző, azonos nézetű elemzéssel összeveti');
     assert.equal(sent.key, 'titkos-kod-123');
     assert.equal(sent.body.kind, 'snow');
