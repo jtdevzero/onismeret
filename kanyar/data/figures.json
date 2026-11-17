@@ -1,61 +1,984 @@
 {
-  "note": "Pálcikafigurák a gyakorlatokhoz (js/core/figure.js szögkonvenciója). Szemléltetés, nem pontos mérés.",
-  "figures": {
-    "squat": { "frames": [
-      { "label": "Kiinduló helyzet", "pose": { "t": 180, "aN": [5, 8], "aF": [-5, -3], "lN": [0, 0, 90], "lF": [0, 0, 90] } },
-      { "label": "Lent", "pose": { "t": 145, "aN": [95, 95], "aF": [85, 88], "lN": [85, -25, 90], "lF": [80, -28, 90] } } ] },
-    "deep_squat": { "frames": [
-      { "label": "Kiinduló helyzet", "pose": { "t": 180, "aN": [5, 8], "aF": [-5, -3], "lN": [0, 0, 90], "lF": [0, 0, 90] } },
-      { "label": "Lent, sarok a talajon", "pose": { "t": 140, "aN": [100, 100], "aF": [95, 95], "lN": [105, -35, 90], "lF": [100, -35, 90] } } ] },
-    "sl_squat": { "frames": [
-      { "label": "Egy lábon", "pose": { "t": 180, "aN": [60, 85], "aF": [55, 85], "lN": [0, 0, 90], "lF": [40, 15, 90] } },
-      { "label": "Lent", "pose": { "t": 150, "aN": [95, 95], "aF": [90, 92], "lN": [80, -25, 90], "lF": [72, 80, 90] } } ] },
-    "reverse_lunge": { "frames": [
-      { "label": "Kiinduló helyzet", "pose": { "t": 180, "aN": [5, 8], "aF": [-5, -3], "lN": [0, 0, 90], "lF": [0, 0, 90] } },
-      { "label": "Lent", "pose": { "t": 180, "aN": [10, 10], "aF": [-10, -10], "lN": [88, 0, 90], "lF": [-15, -95, 30] } } ] },
-    "lateral_lunge": { "front": true, "frames": [
-      { "label": "Kiinduló helyzet", "pose": { "t": 180, "aN": [12, 30], "aF": [-12, -30], "lN": [8, 0, 90], "lF": [-8, 0, -90] } },
-      { "label": "Oldalra ülve", "pose": { "t": 165, "aN": [25, 70], "aF": [-5, 60], "lN": [60, -10, 90], "lF": [-58, -58, -90] } } ] },
-    "glute_bridge": { "frames": [
-      { "label": "Kiinduló helyzet", "pose": { "t": -90, "h": -90, "aN": [90, 90], "aF": [92, 92], "lN": [135, -10, 90], "lF": [138, -8, 90] } },
-      { "label": "Fent", "pose": { "t": -75, "h": -80, "aN": [90, 90], "aF": [92, 92], "lN": [95, -15, 90], "lF": [98, -13, 90] } } ] },
-    "calf_raise": { "frames": [
-      { "label": "Kiinduló helyzet", "pose": { "t": 180, "aN": [5, 8], "aF": [-5, -3], "lN": [0, 0, 90], "lF": [0, 0, 90] } },
-      { "label": "Lábujjhegyen", "pose": { "t": 180, "aN": [5, 8], "aF": [-5, -3], "lN": [0, 0, 30], "lF": [0, 0, 30] } } ] },
-    "plank": { "frames": [
-      { "label": "Egyenes testtel tartva", "pose": { "t": 90, "h": 95, "aN": [0, 90], "aF": [4, 90], "lN": [-90, -90, 0], "lF": [-88, -88, 0] } } ] },
-    "side_plank": { "front": true, "frames": [
-      { "label": "Egyenes testtel tartva", "pose": { "t": 112, "h": 118, "aN": [0, 90], "aF": [165, 165], "lN": [-68, -68, -20], "lF": [-66, -66, -20] } } ] },
-    "dead_bug": { "frames": [
-      { "label": "Kiinduló helyzet", "pose": { "t": -90, "h": -90, "aN": [180, 180], "aF": [178, 178], "lN": [180, 90, 150], "lF": [178, 90, 150] } },
-      { "label": "Ellentétes kar és láb ki", "pose": { "t": -90, "h": -90, "aN": [-145, -150], "aF": [178, 178], "lN": [180, 90, 150], "lF": [98, 95, 150] } } ] },
-    "bird_dog": { "frames": [
-      { "label": "Négykézláb", "pose": { "t": 90, "h": 100, "aN": [0, 0], "aF": [2, 2], "lN": [0, -90, -90], "lF": [2, -90, -90] } },
-      { "label": "Ellentétes kar és láb ki", "pose": { "t": 90, "h": 95, "aN": [0, 0], "aF": [92, 92], "lN": [0, -90, -90], "lF": [-90, -90, -10] } } ] },
-    "sl_stand": { "front": true, "frames": [
-      { "label": "Egy lábon, csípőre tett kézzel", "pose": { "t": 180, "aN": [35, -40], "aF": [-35, 40], "lN": [2, 0, 90], "lF": [-12, 35, -90] } } ] },
-    "sl_reach": { "frames": [
-      { "label": "Egy lábon", "pose": { "t": 180, "aN": [5, 8], "aF": [-5, -3], "lN": [3, -3, 90], "lF": [-15, -15, 60] } },
-      { "label": "Előrenyúlva, egyenes háttal", "pose": { "t": 98, "h": 104, "aN": [5, 5], "aF": [0, 0], "lN": [8, -8, 90], "lF": [-82, -82, -5] } } ] },
-    "lateral_hops": { "front": true, "frames": [
-      { "label": "Érkezés jobb lábra", "pose": { "t": 168, "aN": [30, 60], "aF": [-40, -20], "lN": [25, -10, 90], "lF": [-25, 45, -90] } },
-      { "label": "Érkezés bal lábra", "pose": { "t": 192, "aN": [40, 20], "aF": [-30, -60], "lN": [25, -45, 90], "lF": [-25, 10, -90] } } ] },
-    "squat_jump": { "frames": [
-      { "label": "Fél guggolás", "pose": { "t": 150, "aN": [-30, -20], "aF": [-35, -25], "lN": [65, -25, 90], "lF": [62, -27, 90] } },
-      { "label": "Felugrás", "pose": { "t": 180, "aN": [170, 170], "aF": [168, 168], "lN": [3, -3, 35], "lF": [0, 0, 35], "lift": 18 } } ] },
-    "wall_sit": { "wall": "back", "frames": [
-      { "label": "Térd derékszögben, hát a falon", "pose": { "t": 180, "aN": [8, 8], "aF": [5, 5], "lN": [90, 0, 90], "lF": [88, 0, 90] } } ] },
-    "interval_squat": { "frames": [
-      { "label": "Fél guggolásban rugózva", "pose": { "t": 155, "aN": [80, 85], "aF": [75, 80], "lN": [55, -20, 90], "lF": [52, -22, 90] } } ] },
-    "ankle_wall": { "wall": "front", "frames": [
-      { "label": "Térd a fal felé, sarok lent", "pose": { "t": 175, "aN": [70, 80], "aF": [65, 80], "lN": [30, -32, 90], "lF": [-18, -18, 90] } } ] },
-    "stretch_hipflexor": { "frames": [
-      { "label": "Fél térden, csípő előre", "pose": { "t": 180, "aN": [-20, 20], "aF": [-25, 15], "lN": [90, 0, 90], "lF": [-10, -92, -92] } } ] },
-    "stretch_hamstring": { "frames": [
-      { "label": "Sarok megemelve, csípőből dőlve", "pose": { "t": 145, "h": 150, "aN": [60, 70], "aF": [55, 65], "lN": [78, 80, 165], "lF": [0, 0, 90] } } ] },
-    "stretch_calf": { "wall": "front", "frames": [
-      { "label": "Hátsó sarok a talajon", "pose": { "t": 160, "aN": [100, 100], "aF": [98, 98], "lN": [25, -12, 90], "lF": [-22, -22, 90] } } ] },
-    "stretch_quad": { "frames": [
-      { "label": "Sarok a fenék felé", "pose": { "t": 180, "aN": [10, 10], "aF": [-30, -160], "lN": [0, 0, 90], "lF": [5, -172, -120] } } ] }
+ "note": "Pálcikafigurák a gyakorlatokhoz (js/core/figure.js szögkonvenciója). Szemléltetés, nem pontos mérés.",
+ "figures": {
+  "squat": {
+   "frames": [
+    {
+     "label": "Kiinduló helyzet",
+     "pose": {
+      "t": 180,
+      "aN": [
+       5,
+       8
+      ],
+      "aF": [
+       -5,
+       -3
+      ],
+      "lN": [
+       0,
+       0,
+       90
+      ],
+      "lF": [
+       0,
+       0,
+       90
+      ]
+     }
+    },
+    {
+     "label": "Lent",
+     "pose": {
+      "t": 145,
+      "aN": [
+       95,
+       95
+      ],
+      "aF": [
+       85,
+       88
+      ],
+      "lN": [
+       85,
+       -25,
+       90
+      ],
+      "lF": [
+       80,
+       -28,
+       90
+      ]
+     }
+    }
+   ]
+  },
+  "deep_squat": {
+   "frames": [
+    {
+     "label": "Kiinduló helyzet",
+     "pose": {
+      "t": 180,
+      "aN": [
+       5,
+       8
+      ],
+      "aF": [
+       -5,
+       -3
+      ],
+      "lN": [
+       0,
+       0,
+       90
+      ],
+      "lF": [
+       0,
+       0,
+       90
+      ]
+     }
+    },
+    {
+     "label": "Lent, sarok a talajon",
+     "pose": {
+      "t": 140,
+      "aN": [
+       100,
+       100
+      ],
+      "aF": [
+       95,
+       95
+      ],
+      "lN": [
+       105,
+       -35,
+       90
+      ],
+      "lF": [
+       100,
+       -35,
+       90
+      ]
+     }
+    }
+   ]
+  },
+  "sl_squat": {
+   "frames": [
+    {
+     "label": "Egy lábon",
+     "pose": {
+      "t": 180,
+      "aN": [
+       60,
+       85
+      ],
+      "aF": [
+       55,
+       85
+      ],
+      "lN": [
+       0,
+       0,
+       90
+      ],
+      "lF": [
+       40,
+       15,
+       90
+      ]
+     }
+    },
+    {
+     "label": "Lent",
+     "pose": {
+      "t": 150,
+      "aN": [
+       95,
+       95
+      ],
+      "aF": [
+       90,
+       92
+      ],
+      "lN": [
+       80,
+       -25,
+       90
+      ],
+      "lF": [
+       72,
+       80,
+       90
+      ]
+     }
+    }
+   ]
+  },
+  "reverse_lunge": {
+   "frames": [
+    {
+     "label": "Kiinduló helyzet",
+     "pose": {
+      "t": 180,
+      "aN": [
+       5,
+       8
+      ],
+      "aF": [
+       -5,
+       -3
+      ],
+      "lN": [
+       0,
+       0,
+       90
+      ],
+      "lF": [
+       0,
+       0,
+       90
+      ]
+     }
+    },
+    {
+     "label": "Lent",
+     "pose": {
+      "t": 180,
+      "aN": [
+       10,
+       10
+      ],
+      "aF": [
+       -10,
+       -10
+      ],
+      "lN": [
+       88,
+       0,
+       90
+      ],
+      "lF": [
+       -15,
+       -95,
+       30
+      ]
+     }
+    }
+   ]
+  },
+  "lateral_lunge": {
+   "front": true,
+   "frames": [
+    {
+     "label": "Kiinduló helyzet",
+     "pose": {
+      "t": 180,
+      "aN": [
+       12,
+       30
+      ],
+      "aF": [
+       -12,
+       -30
+      ],
+      "lN": [
+       8,
+       0,
+       90
+      ],
+      "lF": [
+       -8,
+       0,
+       -90
+      ]
+     }
+    },
+    {
+     "label": "Oldalra ülve",
+     "pose": {
+      "t": 165,
+      "aN": [
+       25,
+       70
+      ],
+      "aF": [
+       -5,
+       60
+      ],
+      "lN": [
+       60,
+       -10,
+       90
+      ],
+      "lF": [
+       -58,
+       -58,
+       -90
+      ]
+     }
+    }
+   ]
+  },
+  "glute_bridge": {
+   "frames": [
+    {
+     "label": "Kiinduló helyzet",
+     "pose": {
+      "t": -90,
+      "h": -90,
+      "aN": [
+       90,
+       90
+      ],
+      "aF": [
+       92,
+       92
+      ],
+      "lN": [
+       135,
+       -10,
+       90
+      ],
+      "lF": [
+       138,
+       -8,
+       90
+      ]
+     }
+    },
+    {
+     "label": "Fent",
+     "pose": {
+      "t": -75,
+      "h": -80,
+      "aN": [
+       90,
+       90
+      ],
+      "aF": [
+       92,
+       92
+      ],
+      "lN": [
+       95,
+       -15,
+       90
+      ],
+      "lF": [
+       98,
+       -13,
+       90
+      ]
+     }
+    }
+   ]
+  },
+  "calf_raise": {
+   "frames": [
+    {
+     "label": "Kiinduló helyzet",
+     "pose": {
+      "t": 180,
+      "aN": [
+       5,
+       8
+      ],
+      "aF": [
+       -5,
+       -3
+      ],
+      "lN": [
+       0,
+       0,
+       90
+      ],
+      "lF": [
+       0,
+       0,
+       90
+      ]
+     }
+    },
+    {
+     "label": "Lábujjhegyen",
+     "pose": {
+      "t": 180,
+      "aN": [
+       5,
+       8
+      ],
+      "aF": [
+       -5,
+       -3
+      ],
+      "lN": [
+       0,
+       0,
+       30
+      ],
+      "lF": [
+       0,
+       0,
+       30
+      ]
+     }
+    }
+   ]
+  },
+  "plank": {
+   "frames": [
+    {
+     "label": "Egyenes testtel tartva",
+     "pose": {
+      "t": 90,
+      "h": 95,
+      "aN": [
+       0,
+       90
+      ],
+      "aF": [
+       4,
+       90
+      ],
+      "lN": [
+       -90,
+       -90,
+       0
+      ],
+      "lF": [
+       -88,
+       -88,
+       0
+      ]
+     }
+    }
+   ]
+  },
+  "side_plank": {
+   "front": true,
+   "frames": [
+    {
+     "label": "Egyenes testtel tartva",
+     "pose": {
+      "t": 112,
+      "h": 118,
+      "aN": [
+       0,
+       90
+      ],
+      "aF": [
+       165,
+       165
+      ],
+      "lN": [
+       -68,
+       -68,
+       -20
+      ],
+      "lF": [
+       -66,
+       -66,
+       -20
+      ]
+     }
+    }
+   ]
+  },
+  "dead_bug": {
+   "frames": [
+    {
+     "label": "Kiinduló helyzet",
+     "pose": {
+      "t": -90,
+      "h": -90,
+      "aN": [
+       180,
+       180
+      ],
+      "aF": [
+       178,
+       178
+      ],
+      "lN": [
+       180,
+       90,
+       150
+      ],
+      "lF": [
+       178,
+       90,
+       150
+      ]
+     }
+    },
+    {
+     "label": "Ellentétes kar és láb ki",
+     "pose": {
+      "t": -90,
+      "h": -90,
+      "aN": [
+       -145,
+       -150
+      ],
+      "aF": [
+       178,
+       178
+      ],
+      "lN": [
+       180,
+       90,
+       150
+      ],
+      "lF": [
+       98,
+       95,
+       150
+      ]
+     }
+    }
+   ]
+  },
+  "bird_dog": {
+   "frames": [
+    {
+     "label": "Négykézláb",
+     "pose": {
+      "t": 90,
+      "h": 100,
+      "aN": [
+       0,
+       0
+      ],
+      "aF": [
+       2,
+       2
+      ],
+      "lN": [
+       0,
+       -90,
+       -90
+      ],
+      "lF": [
+       2,
+       -90,
+       -90
+      ]
+     }
+    },
+    {
+     "label": "Ellentétes kar és láb ki",
+     "pose": {
+      "t": 90,
+      "h": 95,
+      "aN": [
+       0,
+       0
+      ],
+      "aF": [
+       92,
+       92
+      ],
+      "lN": [
+       0,
+       -90,
+       -90
+      ],
+      "lF": [
+       -90,
+       -90,
+       -10
+      ]
+     }
+    }
+   ]
+  },
+  "sl_stand": {
+   "front": true,
+   "frames": [
+    {
+     "label": "Egy lábon, csípőre tett kézzel",
+     "pose": {
+      "t": 180,
+      "aN": [
+       35,
+       -40
+      ],
+      "aF": [
+       -35,
+       40
+      ],
+      "lN": [
+       2,
+       0,
+       90
+      ],
+      "lF": [
+       -12,
+       35,
+       -90
+      ]
+     }
+    }
+   ]
+  },
+  "sl_reach": {
+   "frames": [
+    {
+     "label": "Egy lábon",
+     "pose": {
+      "t": 180,
+      "aN": [
+       5,
+       8
+      ],
+      "aF": [
+       -5,
+       -3
+      ],
+      "lN": [
+       3,
+       -3,
+       90
+      ],
+      "lF": [
+       -15,
+       -15,
+       60
+      ]
+     }
+    },
+    {
+     "label": "Előrenyúlva, egyenes háttal",
+     "pose": {
+      "t": 98,
+      "h": 104,
+      "aN": [
+       5,
+       5
+      ],
+      "aF": [
+       0,
+       0
+      ],
+      "lN": [
+       8,
+       -8,
+       90
+      ],
+      "lF": [
+       -82,
+       -82,
+       -5
+      ]
+     }
+    }
+   ]
+  },
+  "lateral_hops": {
+   "front": true,
+   "frames": [
+    {
+     "label": "Érkezés jobb lábra",
+     "pose": {
+      "t": 168,
+      "aN": [
+       30,
+       60
+      ],
+      "aF": [
+       -40,
+       -20
+      ],
+      "lN": [
+       25,
+       -10,
+       90
+      ],
+      "lF": [
+       -25,
+       45,
+       -90
+      ]
+     }
+    },
+    {
+     "label": "Érkezés bal lábra",
+     "pose": {
+      "t": 192,
+      "aN": [
+       40,
+       20
+      ],
+      "aF": [
+       -30,
+       -60
+      ],
+      "lN": [
+       25,
+       -45,
+       90
+      ],
+      "lF": [
+       -25,
+       10,
+       -90
+      ]
+     }
+    }
+   ]
+  },
+  "squat_jump": {
+   "frames": [
+    {
+     "label": "Fél guggolás",
+     "pose": {
+      "t": 150,
+      "aN": [
+       -30,
+       -20
+      ],
+      "aF": [
+       -35,
+       -25
+      ],
+      "lN": [
+       65,
+       -25,
+       90
+      ],
+      "lF": [
+       62,
+       -27,
+       90
+      ]
+     }
+    },
+    {
+     "label": "Felugrás",
+     "pose": {
+      "t": 180,
+      "aN": [
+       170,
+       170
+      ],
+      "aF": [
+       168,
+       168
+      ],
+      "lN": [
+       3,
+       -3,
+       35
+      ],
+      "lF": [
+       0,
+       0,
+       35
+      ],
+      "lift": 18
+     }
+    }
+   ]
+  },
+  "wall_sit": {
+   "wall": "back",
+   "frames": [
+    {
+     "label": "Térd derékszögben, hát a falon",
+     "pose": {
+      "t": 180,
+      "aN": [
+       8,
+       8
+      ],
+      "aF": [
+       5,
+       5
+      ],
+      "lN": [
+       90,
+       0,
+       90
+      ],
+      "lF": [
+       88,
+       0,
+       90
+      ]
+     }
+    }
+   ]
+  },
+  "interval_squat": {
+   "frames": [
+    {
+     "label": "Fél guggolásban rugózva",
+     "pose": {
+      "t": 155,
+      "aN": [
+       80,
+       85
+      ],
+      "aF": [
+       75,
+       80
+      ],
+      "lN": [
+       55,
+       -20,
+       90
+      ],
+      "lF": [
+       52,
+       -22,
+       90
+      ]
+     }
+    }
+   ]
+  },
+  "ankle_wall": {
+   "wall": "front",
+   "frames": [
+    {
+     "label": "Térd a fal felé, sarok lent",
+     "pose": {
+      "t": 175,
+      "aN": [
+       70,
+       80
+      ],
+      "aF": [
+       65,
+       80
+      ],
+      "lN": [
+       30,
+       -32,
+       90
+      ],
+      "lF": [
+       -18,
+       -18,
+       90
+      ]
+     }
+    }
+   ]
+  },
+  "stretch_hipflexor": {
+   "frames": [
+    {
+     "label": "Fél térden, csípő előre",
+     "pose": {
+      "t": 180,
+      "aN": [
+       -20,
+       20
+      ],
+      "aF": [
+       -25,
+       15
+      ],
+      "lN": [
+       90,
+       0,
+       90
+      ],
+      "lF": [
+       -10,
+       -92,
+       -92
+      ]
+     }
+    }
+   ]
+  },
+  "stretch_hamstring": {
+   "frames": [
+    {
+     "label": "Sarok megemelve, csípőből dőlve",
+     "pose": {
+      "t": 145,
+      "h": 150,
+      "aN": [
+       60,
+       70
+      ],
+      "aF": [
+       55,
+       65
+      ],
+      "lN": [
+       78,
+       80,
+       165
+      ],
+      "lF": [
+       0,
+       0,
+       90
+      ]
+     }
+    }
+   ]
+  },
+  "stretch_calf": {
+   "wall": "front",
+   "frames": [
+    {
+     "label": "Hátsó sarok a talajon",
+     "pose": {
+      "t": 160,
+      "aN": [
+       100,
+       100
+      ],
+      "aF": [
+       98,
+       98
+      ],
+      "lN": [
+       25,
+       -12,
+       90
+      ],
+      "lF": [
+       -22,
+       -22,
+       90
+      ]
+     }
+    }
+   ]
+  },
+  "stretch_quad": {
+   "frames": [
+    {
+     "label": "Sarok a fenék felé",
+     "pose": {
+      "t": 180,
+      "aN": [
+       10,
+       10
+      ],
+      "aF": [
+       -30,
+       -160
+      ],
+      "lN": [
+       0,
+       0,
+       90
+      ],
+      "lF": [
+       5,
+       -172,
+       -120
+      ]
+     }
+    }
+   ]
+  },
+  "warmup_routine": {
+   "frames": [
+    {
+     "label": "Helyben járás magas térdemeléssel",
+     "pose": {
+      "t": 180,
+      "aN": [
+       -35,
+       10
+      ],
+      "aF": [
+       40,
+       100
+      ],
+      "lN": [
+       90,
+       0,
+       90
+      ],
+      "lF": [
+       0,
+       0,
+       90
+      ]
+     }
+    }
+   ]
+  },
+  "stretch_glute": {
+   "frames": [
+    {
+     "label": "Boka a térden, combot a mellkas felé",
+     "pose": {
+      "t": -90,
+      "h": -90,
+      "aN": [
+       140,
+       150
+      ],
+      "aF": [
+       145,
+       155
+      ],
+      "lN": [
+       -170,
+       60,
+       150
+      ],
+      "lF": [
+       -150,
+       90,
+       180
+      ]
+     }
+    }
+   ]
   }
+ }
 }

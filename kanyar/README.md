@@ -2,7 +2,7 @@
 
 Telefonra telepíthető webapp két részből:
 
-- **Felkészülés a szezon előtt:** hét kamerás mozgásfelmérő teszt, ebből személyre szabott 6 hetes program, a felvett gyakorlatokon ismétlésszámlálás és formaértékelés, gyakorlatonként belinkelt bemutató videó, és 22 gyakorlathoz saját ábra (pálcikafigura a kiinduló és a végső helyzetről, `data/figures.json`), ami offline is látszik, a vezetett edzés közben is.
+- **Felkészülés a szezon előtt:** hét kamerás mozgásfelmérő teszt, ebből személyre szabott 6 hetes program, a felvett gyakorlatokon ismétlésszámlálás és formaértékelés, gyakorlatonként belinkelt bemutató videó, és 24 gyakorlathoz saját ábra (pálcikafigura a kiinduló és a végső helyzetről, `data/figures.json`), ami offline is látszik, a vezetett edzés közben is.
 - **Havas elemzés:** a csúszásról készült 10–30 másodperces videóból testtartás-mérés, kanyarfelismerés, mutatók, és visszajelzés: mi megy jól, mi a fő hiba, melyik gyakorlat javítja.
 
 A videó a készüléken marad. A pózbecslés (MediaPipe Pose Landmarker) a böngészőben fut, a `vendor/` mappából.
