@@ -6,7 +6,8 @@ import { prepare } from '../js/core/series.js';
 import { analyzeRun, detectTurns, RELIABLE, viewMismatch } from '../js/core/snow.js';
 import { analyzeExercise, detectReps } from '../js/core/exercise.js';
 import { compareRuns, comparable } from '../js/core/compare.js';
-import { series, wave } from './synth.mjs';
+import { trackSubject, pickNearest, hipOf, crowdLevel } from '../js/core/track.js';
+import { series, wave, pose } from './synth.mjs';
 
 const A = 1; /* képarány a szintetikus adatokhoz */
 const run = (frames, o) => analyzeRun(frames, { aspect: A, sport: 'ski', view: 'front', ...o });
@@ -211,4 +212,41 @@ test('nézetellenőrzés: sínél jelzi, ha a megadott nézet ellentmond a testt
   const wrong = run(sideFrames, { view: 'front' });
   assert.equal(wrong.metrics.foreAft.usable, false);
   assert.equal(run(sideFrames, { view: viewMismatch(wrong) }).metrics.foreAft.band, 'low');
+});
+
+test('több ember a képen: a középen követett csúszót választja, a nagy, szélen álló nézőt és az átúszó síelőt nem', () => {
+  const fps = 15, out = [];
+  for (let i = 0; i <= 15 * fps; i++) {
+    const t = i / fps;
+    const skier = pose({ legTilt: 15 * wave(t, 3), torsoTilt: 4 * wave(t, 3), cx: 0.5, scale: 0.9 });
+    const bystander = pose({ cx: 0.13, scale: 1.25, footY: 0.97 });            /* közelebb áll, nagyobb, de végig a szélén */
+    const poses = [bystander, skier];
+    if (t > 4 && t < 7) poses.unshift(pose({ cx: 0.95 - 0.25 * (t - 4), scale: 0.8 }));  /* egy másik síelő átúszik a képen */
+    if (i % 2) poses.reverse();                                                /* a pózbecslő sorrendje nem állandó */
+    out.push({ t, poses });
+  }
+  const tracked = trackSubject(out);
+  assert.equal(tracked.length, out.length);
+  assert.ok(tracked.every(f => f.lm && Math.abs(hipOf(f.lm)[0] - 0.5) < 0.1), 'végig a középen lévő csúszó');
+  const r = analyzeRun(tracked, { aspect: A, sport: 'ski', view: 'front' });
+  assert.ok(Math.abs(r.turnCount - 10) <= 1, `a csúszó kanyarjai: ${r.turnCount}`);
+  assert.ok(crowdLevel(out) > 0.9);
+  /* ha a legnagyobbat vennénk, a nézőt elemeznénk: kanyar nélkül */
+  const naive = out.map(f => ({ t: f.t, lm: f.poses.reduce((a, b) => (Math.abs(hipOf(a)[0] - 0.13) < 0.05 ? a : b)) }));
+  assert.equal(analyzeRun(naive, { aspect: A, sport: 'ski', view: 'front' }).turnCount, 0);
+});
+
+test('nyomkövetés: rövid kiesés után folytatja ugyanazt az alakot; láthatatlan alakot nem választ; egy alakkal is működik', () => {
+  const frames = series(6, t => ((t > 2 && t < 2.3) ? null : { legTilt: 10 * wave(t, 2) }), { noise: 0 }).map(f => ({ t: f.t, poses: f.lm ? [f.lm] : [] }));
+  const tr = trackSubject(frames);
+  assert.equal(tr.filter(f => f.lm).length, frames.filter(f => f.poses.length).length, 'a kiesés előtt és után is ugyanaz a nyomvonal');
+  assert.deepEqual(trackSubject([{ t: 0, poses: [pose({ vis: 0.1 })] }]), [{ t: 0, lm: null }]);
+  assert.deepEqual(trackSubject([]), []);
+  /* régi formátum ({ t, lm }) is elfogadott */
+  assert.ok(trackSubject([{ t: 0, lm: pose({}) }])[0].lm);
+  /* élő mód: az előző helyhez legközelebbi alak, nem a legnagyobb */
+  const near = pose({ cx: 0.3, scale: 0.7 }), big = pose({ cx: 0.8, scale: 1.2 });
+  assert.equal(pickNearest([big, near], [0.31, hipOf(near)[1]]), near);
+  assert.equal(pickNearest([near, big], null), big, 'előzmény nélkül a legnagyobb');
+  assert.equal(pickNearest([], null), null);
 });
