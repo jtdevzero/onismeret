@@ -182,6 +182,19 @@ progress { width: 100%; height: 10px; accent-color: var(--accent); border-radius
 .live-count { font-size: 4rem; font-weight: 800; font-variant-numeric: tabular-nums; }
 .live-label { font-size: .9rem; font-weight: 600; }
 
+/* ---- gyakorlatábrák ---- */
+.figs { display: flex; align-items: center; justify-content: center; gap: 6px; margin: 4px 0 14px; padding: 12px 8px 8px; border-radius: var(--radius-s); background: var(--bg-2); color: var(--accent); }
+.fig-frame { margin: 0; flex: 1; max-width: 170px; text-align: center; }
+.fig { width: 100%; height: 150px; display: block; }
+.figs.compact { margin: 6px auto 4px; padding: 6px; max-width: 320px; }
+.figs.compact .fig { height: 96px; }
+.fig-frame figcaption { margin-top: 4px; font-size: .8rem; font-weight: 650; color: var(--muted); line-height: 1.3; }
+.fig-arrow { font-size: 1.4rem; font-weight: 800; color: var(--muted); flex: none; }
+.fig-limb { fill: none; stroke: currentColor; stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; }
+.fig-far { opacity: .38; }
+.fig-head { fill: currentColor; }
+.fig-ground { stroke: var(--muted); stroke-width: 2.5; stroke-linecap: round; opacity: .55; }
+
 /* ---- naptár ---- */
 .days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin: 4px 0 2px; }
 .day-pick { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px 0; border: 1.5px solid var(--line); border-radius: 12px; font-weight: 700; font-size: .85rem; cursor: pointer; }

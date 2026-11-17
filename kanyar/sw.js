@@ -1,7 +1,7 @@
 /* Kanyar service worker. GENERÁLT FÁJL (kanyar/build.py), ne szerkeszd kézzel.
    Az app váza, a kód és a tananyag telepítéskor a gyorsítótárba kerül. A pózbecslő (kb. 16 MB) az első
    használatkor, vagy a Beállítások „Letöltés offline használatra” gombjával. Az AI-kérések nem mennek át rajta. */
-const SHELL = 'kanyar-shell-95cc3ebe76';
+const SHELL = 'kanyar-shell-05b368f5d4';
 const VENDOR = 'kanyar-vendor-62fc9e8c57';
 const PRECACHE = [
 "./",
@@ -24,6 +24,7 @@ const PRECACHE = [
 "js/core/coach.js",
 "js/core/compare.js",
 "js/core/exercise.js",
+"js/core/figure.js",
 "js/core/geometry.js",
 "js/core/program.js",
 "js/core/progress.js",
@@ -34,6 +35,7 @@ const PRECACHE = [
 "js/ui/coach-client.js",
 "js/ui/data.js",
 "js/ui/dom.js",
+"js/ui/figure.js",
 "js/ui/live.js",
 "js/ui/overlay.js",
 "js/ui/pose.js",
@@ -45,6 +47,7 @@ const PRECACHE = [
 "js/ui/widgets.js",
 "data/exercises.json",
 "data/faults.json",
+"data/figures.json",
 "data/lessons.json"
 ];
 self.addEventListener('install', e => {
