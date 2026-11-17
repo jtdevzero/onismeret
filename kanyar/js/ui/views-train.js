@@ -5,6 +5,7 @@ import { D, S } from './data.js';
 import { kvGet, kvSet, itemPut, itemsAll } from './store.js';
 import { analyzeExercise, isAnalyzable } from '../core/exercise.js';
 import { TESTS, buildProfile, buildProgram, sessionSteps, sessionMinutes } from '../core/program.js';
+import { buildIcs } from '../core/calendar.js';
 import { prepCoach } from './coach-client.js';
 import { liveCounter, speak } from './live.js';
 
@@ -66,6 +67,45 @@ export async function prepView() {
     note('A felkészülési rész nem orvosi eszköz. A gyakorlatokat és a határértékeket szakember még nem lektorálta.', 'small'));
 }
 
+const DAYS = [[1, 'H'], [2, 'K'], [3, 'Sze'], [4, 'Cs'], [5, 'P'], [6, 'Szo'], [0, 'V']];
+const DAY_NAMES = { 0: 'vasárnap', 1: 'hétfő', 2: 'kedd', 3: 'szerda', 4: 'csütörtök', 5: 'péntek', 6: 'szombat' };
+
+/* Emlékeztetők a telefon naptárában: a program edzései naptárfájlként, 15 perccel előtte jelzéssel. */
+async function calendarCard(prog) {
+  const saved = await kvGet('calendar', null) || { weekdays: [1, 3, 5], time: '18:00' };
+  const picked = new Set(saved.weekdays);
+  const msg = h('p', { class: 'small', 'aria-live': 'polite' });
+  const time = h('input', { type: 'time', value: saved.time, 'aria-label': 'Az edzések kezdési ideje' });
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const iso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  const start = h('input', { type: 'date', value: iso(today), min: iso(today), 'aria-label': 'Az első nap' });
+  const boxes = DAYS.map(([d, label]) => {
+    const box = h('input', { type: 'checkbox', checked: picked.has(d), onchange: () => { if (box.checked) picked.add(d); else picked.delete(d); } });
+    return h('label', { class: 'day-pick', title: DAY_NAMES[d] }, box, h('span', null, label));
+  });
+  const download = async () => {
+    if (picked.size !== 3) { msg.textContent = 'Pontosan három napot válassz.'; return; }
+    if (!/^\d{2}:\d{2}$/.test(time.value) || !start.value) { msg.textContent = 'Adj meg kezdési időt és első napot.'; return; }
+    const weekdays = [...picked];
+    await kvSet('calendar', { weekdays, time: time.value });
+    const ics = buildIcs(prog.program, {
+      start: new Date(start.value + 'T00:00'), weekdays, time: time.value, minutes: 30,
+      title: (w, i) => `Kanyar: ${w}. hét, ${i + 1}. edzés – ${SESSION[prog.program.weeks[w - 1].sessions[i].key]}`,
+      body: (w, i) => prog.program.weeks[w - 1].sessions[i].blocks.map(b => `${D.ex[b.exercise].name}: ${dose(b)}`).join('\n'),
+      url: location.href.replace(/#.*$/, '') + '#/program',
+    });
+    const url = URL.createObjectURL(new Blob([ics], { type: 'text/calendar;charset=utf-8' }));
+    const a = h('a', { href: url, download: 'kanyar-edzesterv.ics' });
+    document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 5000);
+    msg.textContent = 'Kész. Nyisd meg a letöltött fájlt, és add hozzá a naptáradhoz: minden edzés előtt 15 perccel szól.';
+  };
+  return card(h('h2', null, 'Emlékeztetők a naptárban'),
+    h('p', null, 'Válassz három napot és egy időpontot: a 18 edzés bekerül a telefonod naptárába, és mindegyik előtt 15 perccel jelez.'),
+    h('div', { class: 'days', role: 'group', 'aria-label': 'Edzésnapok' }, boxes),
+    h('div', { class: 'row' }, h('label', { class: 'field inline' }, h('span', null, 'Időpont'), time), h('label', { class: 'field inline' }, h('span', null, 'Első nap'), start)),
+    btn('Naptárfájl letöltése', download, 'primary'), msg);
+}
+
 export async function programView() {
   const prog = await kvGet('program', null);
   if (!prog) return page('Program', card(h('p', null, 'Még nincs programod.'), link('#/prep', 'Vissza a felkészüléshez', 'btn')));
@@ -89,6 +129,7 @@ export async function programView() {
     })));
   return page('6 hetes program',
     note(prog.program.jumps ? 'A programban ugrások is vannak: csak puha, hangtalan érkezéssel csináld őket.' : 'A program ugrások nélkül készült.'),
+    await calendarCard(prog),
     weeks, link('#/prep', '← Felkészülés', 'btn'));
 }
 
