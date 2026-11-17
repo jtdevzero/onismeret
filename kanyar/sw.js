@@ -1,7 +1,7 @@
 /* Kanyar service worker. GENERÁLT FÁJL (kanyar/build.py), ne szerkeszd kézzel.
    Az app váza, a kód és a tananyag telepítéskor a gyorsítótárba kerül. A pózbecslő (kb. 16 MB) az első
    használatkor, vagy a Beállítások „Letöltés offline használatra” gombjával. Az AI-kérések nem mennek át rajta. */
-const SHELL = 'kanyar-shell-591f973e48';
+const SHELL = 'kanyar-shell-cc181a5959';
 const VENDOR = 'kanyar-vendor-62fc9e8c57';
 const PRECACHE = [
 "./",

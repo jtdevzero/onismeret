@@ -208,3 +208,12 @@ export function analyzeRun(raw, opts = {}) {
 
 /* A megbízható, használható mutatók azonosítói. */
 export const reliableMetrics = a => Object.keys(a.metrics || {}).filter(id => a.metrics[id].usable && a.metrics[id].confidence >= RELIABLE);
+
+/* A megadott kameraállás ellentmond-e annak, amit a testtartás mutat? Csak sínél dönthető el:
+   snowboardon a test eleve oldalt áll a deszkán, így a vállszélességből nem látszik a nézet.
+   → 'side' | 'frontal' (amire érdemes váltani) vagy null */
+export function viewMismatch(analysis) {
+  if (!analysis || analysis.sport !== 'ski' || !analysis.quality || !analysis.quality.viewGuess) return null;
+  const chosen = analysis.view === 'side' ? 'side' : 'frontal';
+  return analysis.quality.viewGuess === chosen ? null : analysis.quality.viewGuess;
+}

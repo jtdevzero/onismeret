@@ -3,7 +3,7 @@ import { h, clear, uid, fmtDate, toast } from './dom.js';
 import { page, card, btn, link, note, choice, videoPicker, confBadge, sourceBadge, captureFrames, packFrames } from './widgets.js';
 import { D, S, sportName, levelName } from './data.js';
 import { itemPut, itemGet, itemsAll, itemDelete, videoPut, videoGet } from './store.js';
-import { analyzeRun, RELIABLE } from '../core/snow.js';
+import { analyzeRun, RELIABLE, viewMismatch } from '../core/snow.js';
 import { snowCoach } from './coach-client.js';
 import { compareRuns } from '../core/compare.js';
 import { getProfile } from './views-train.js';
@@ -44,7 +44,7 @@ export async function snowView(_arg, onCleanup) {
     const coach = await snowCoach(analysis, { level: S.settings.level, profile: await getProfile(), history }, images);
     const id = uid();
     const hasVideo = await videoPut(id, blob);
-    await itemPut({ id, kind: 'snow', date: Date.now(), sport: form.sport, view: form.view, level: S.settings.level, analysis, coach, frames: packFrames(frames), hasVideo, thumb: images[0] || null });
+    await itemPut({ id, kind: 'snow', date: Date.now(), sport: form.sport, view: form.view, level: S.settings.level, analysis, coach, frames: packFrames(frames), aspect, travel: form.sport === 'snowboard' && form.view === 'side' ? form.travel : null, hasVideo, thumb: images[0] || null });
     location.hash = '#/a/' + id;
   });
   const film = recorder(blob => picker.run(blob));
@@ -108,6 +108,25 @@ export async function analysisView(id, onCleanup) {
       link('#/a/' + o.id, 'Az előző elemzés megnyitása'));
     break;
   }
+  /* a megadott nézet nem egyezik azzal, amit a testtartás mutat: a tárolt testpontokból újraszámolható, videó nélkül */
+  const guess = viewMismatch(a);
+  let mismatch = null;
+  if (guess && it.frames && it.frames.length) {
+    const target = guess === 'side' ? 'side' : 'front';
+    mismatch = card(h('h2', null, 'Biztos jó a megadott nézet?'),
+      h('p', null, guess === 'side'
+        ? 'A testtartásod alapján ez a felvétel inkább oldalról készült, nem szemből vagy hátulról. Rossz nézettel a mutatók félrevezetők.'
+        : 'A testtartásod alapján ez a felvétel inkább szemből vagy hátulról készült, nem oldalról. Rossz nézettel a mutatók félrevezetők.'),
+      btn(guess === 'side' ? 'Újraszámolás oldalnézetként' : 'Újraszámolás szemből nézetként', async () => {
+        const again = analyzeRun(it.frames, { aspect: it.aspect || 16 / 9, sport: it.sport, view: target });
+        if (!again.ok) { toast('Ezzel a nézettel nem sikerült újraszámolni.'); return; }
+        const coach = await snowCoach(again, { level: it.level, profile: await getProfile(), history: null }, []);
+        await itemPut({ ...it, view: target, analysis: again, coach, recomputed: Date.now() });
+        toast('Újraszámoltam a másik nézettel.');
+        dispatchEvent(new HashChangeEvent('hashchange'));
+      }, 'primary'),
+      note('Az újraszámolás a már kimért testpontokból dolgozik, a videót nem kell újra feltölteni.', 'small'));
+  }
   const drill = c.drill_id && D.lesson[c.drill_id], home = c.home_drill_id && D.ex[c.home_drill_id];
   const fb = h('div', { class: 'row' });
   const drawFb = () => {
@@ -117,6 +136,7 @@ export async function analysisView(id, onCleanup) {
   drawFb();
   return page(`${sportName(it.sport)} · ${fmtDate(it.date)}`,
     h('p', { class: 'muted' }, `Nézet: ${viewName(it.view)} · szint: ${levelName(it.sport, it.level)} · ${a.turnCount} kanyar · a képkockák ${Math.round(a.quality.tracked * 100)}%-án követhető`),
+    mismatch,
     player ? player.el : note('A videó nincs elmentve (túl nagy volt, vagy nem volt hely), ezért nincs visszajátszás.', 'small'),
     card(h('div', { class: 'row' }, h('h2', null, 'Visszajelzés'), sourceBadge(c), confBadge(c.confidence)),
       h('p', { class: 'lead' }, c.summary),

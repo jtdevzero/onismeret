@@ -122,6 +122,23 @@ const go = async (page, hash) => { await page.evaluate(h => { if (location.hash 
     await page.evaluate(async () => { const w = await import('./js/ui/widgets.js'); w.setRunner({ tick: 1000 }); });
   });
 
+  await step('rosszul megadott nézet: jelzi, és a tárolt testpontokból újraszámolja', async () => {
+    await go(page, '#/snow');
+    await fakePose(page, 'ski-side-backseat');
+    await page.getByText('Szemből', { exact: true }).click();
+    await upload(page);
+    await page.waitForFunction(() => (document.documentElement.dataset.view || '').startsWith('#/a/'));
+    let t = await text();
+    assert.match(t, /Biztos jó a megadott nézet\?/);
+    assert.doesNotMatch(t, /Hátraülsz/, 'rossz nézettel a hátraülés nem látszik');
+    await shot('view-mismatch');
+    await page.getByRole('button', { name: 'Újraszámolás oldalnézetként' }).click();
+    await page.waitForFunction(() => /Hátraülsz/.test(document.getElementById('main').innerText));
+    t = await text();
+    assert.doesNotMatch(t, /Biztos jó a megadott nézet\?/);
+    assert.match(t, /Nézet: oldalról/);
+  });
+
   await step('követhetetlen felvétel: nincs elemzés, filmezési tanácsot ad', async () => {
     await go(page, '#/snow');
     await fakePose(page, 'none');
@@ -338,6 +355,20 @@ const go = async (page, hash) => { await page.evaluate(h => { if (location.hash 
     assert.equal(data.app, 'kanyar');
     assert.ok(data.items.length >= 3);
     assert.ok(!JSON.stringify(data).includes('titkos-kod-123'));
+  });
+
+  await step('akadálymentesség (axe, WCAG 2 A/AA): a fő képernyőkön nincs hiba', async () => {
+    const axe = fs.readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
+    const snowId = await page.evaluate(async () => { const st = await import('./js/ui/store.js'); return (await st.itemsAll()).find(i => i.kind === 'snow').id; });
+    const found = [];
+    for (const hash of ['#/', '#/prep', '#/program', '#/session/2-0', '#/ex/squat', '#/snow', '#/a/' + snowId, '#/day', '#/learn', '#/l/ski_1_stance', '#/log', '#/settings', '#/start']) {
+      await go(page, hash);
+      await page.evaluate(src => { if (!window.axe) (0, eval)(src); }, axe).catch(() => {});
+      if (!(await page.evaluate(() => !!window.axe))) await page.addScriptTag({ content: axe }).catch(() => {});
+      const res = await page.evaluate(async () => (window.axe ? (await window.axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'] } })).violations.map(v => v.id + ': ' + v.nodes.length + ' elem, pl. ' + v.nodes[0].html.slice(0, 90)) : ['az axe nem töltődött be']));
+      for (const v of res) found.push(hash + ' → ' + v);
+    }
+    assert.deepEqual(found, [], found.join('\n     '));
   });
 
   await step('nincs konzolhiba és CSP-sértés', async () => { assert.deepEqual(problems, [], problems.join(' | ')); });
