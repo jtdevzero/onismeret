@@ -3,7 +3,7 @@ import { h, clear, uid, fmtDate, toast } from './dom.js';
 import { page, card, btn, link, note, choice, videoPicker, confBadge, sourceBadge, captureFrames, packFrames } from './widgets.js';
 import { D, S, sportName, levelName } from './data.js';
 import { itemPut, itemGet, itemsAll, itemDelete, videoPut, videoGet } from './store.js';
-import { analyzeRun, RELIABLE } from '../core/snow.js';
+import { analyzeRun, RELIABLE, viewMismatch } from '../core/snow.js';
 import { snowCoach } from './coach-client.js';
 import { compareRuns } from '../core/compare.js';
 import { getProfile } from './views-train.js';
@@ -44,7 +44,7 @@ export async function snowView(_arg, onCleanup) {
     const coach = await snowCoach(analysis, { level: S.settings.level, profile: await getProfile(), history }, images);
     const id = uid();
     const hasVideo = await videoPut(id, blob);
-    await itemPut({ id, kind: 'snow', date: Date.now(), sport: form.sport, view: form.view, level: S.settings.level, analysis, coach, frames: packFrames(frames), hasVideo, thumb: images[0] || null });
+    await itemPut({ id, kind: 'snow', date: Date.now(), sport: form.sport, view: form.view, level: S.settings.level, analysis, coach, frames: packFrames(frames), aspect, travel: form.sport === 'snowboard' && form.view === 'side' ? form.travel : null, hasVideo, thumb: images[0] || null });
     location.hash = '#/a/' + id;
   });
   const film = recorder(blob => picker.run(blob));
@@ -108,6 +108,25 @@ export async function analysisView(id, onCleanup) {
       link('#/a/' + o.id, 'Az előző elemzés megnyitása'));
     break;
   }
+  /* a megadott nézet nem egyezik azzal, amit a testtartás mutat: a tárolt testpontokból újraszámolható, videó nélkül */
+  const guess = viewMismatch(a);
+  let mismatch = null;
+  if (guess && it.frames && it.frames.length) {
+    const target = guess === 'side' ? 'side' : 'front';
+    mismatch = card(h('h2', null, 'Biztos jó a megadott nézet?'),
+      h('p', null, guess === 'side'
+        ? 'A testtartásod alapján ez a felvétel inkább oldalról készült, nem szemből vagy hátulról. Rossz nézettel a mutatók félrevezetők.'
+        : 'A testtartásod alapján ez a felvétel inkább szemből vagy hátulról készült, nem oldalról. Rossz nézettel a mutatók félrevezetők.'),
+      btn(guess === 'side' ? 'Újraszámolás oldalnézetként' : 'Újraszámolás szemből nézetként', async () => {
+        const again = analyzeRun(it.frames, { aspect: it.aspect || 16 / 9, sport: it.sport, view: target });
+        if (!again.ok) { toast('Ezzel a nézettel nem sikerült újraszámolni.'); return; }
+        const coach = await snowCoach(again, { level: it.level, profile: await getProfile(), history: null }, []);
+        await itemPut({ ...it, view: target, analysis: again, coach, recomputed: Date.now() });
+        toast('Újraszámoltam a másik nézettel.');
+        dispatchEvent(new HashChangeEvent('hashchange'));
+      }, 'primary'),
+      note('Az újraszámolás a már kimért testpontokból dolgozik, a videót nem kell újra feltölteni.', 'small'));
+  }
   const drill = c.drill_id && D.lesson[c.drill_id], home = c.home_drill_id && D.ex[c.home_drill_id];
   const fb = h('div', { class: 'row' });
   const drawFb = () => {
@@ -117,6 +136,7 @@ export async function analysisView(id, onCleanup) {
   drawFb();
   return page(`${sportName(it.sport)} · ${fmtDate(it.date)}`,
     h('p', { class: 'muted' }, `Nézet: ${viewName(it.view)} · szint: ${levelName(it.sport, it.level)} · ${a.turnCount} kanyar · a képkockák ${Math.round(a.quality.tracked * 100)}%-án követhető`),
+    mismatch,
     player ? player.el : note('A videó nincs elmentve (túl nagy volt, vagy nem volt hely), ezért nincs visszajátszás.', 'small'),
     card(h('div', { class: 'row' }, h('h2', null, 'Visszajelzés'), sourceBadge(c), confBadge(c.confidence)),
       h('p', { class: 'lead' }, c.summary),
@@ -139,6 +159,56 @@ export async function analysisView(id, onCleanup) {
         const el = h('a', { href: url, download: 'kanyar-meres-' + it.id + '.json' });
         document.body.append(el); el.click(); el.remove(); setTimeout(() => URL.revokeObjectURL(url), 5000);
       })),
-    h('div', { class: 'row' }, link('#/snow', 'Új elemzés', 'btn primary'), link('#/log', 'Napló', 'btn'),
+    h('div', { class: 'row' }, link('#/day', 'Mai terv a hegyen', 'btn primary'), btn('Eredmény megosztása', () => shareCard(it)), link('#/snow', 'Új elemzés', 'btn'), link('#/log', 'Napló', 'btn'),
       btn('Törlés', async () => { if (confirm('Törlöd ezt az elemzést és a hozzá mentett videót?')) { await itemDelete(id); toast('Törölve.'); location.hash = '#/log'; } }, 'danger')));
+}
+
+/* Sortörés a vászonra: a szöveget a megadott szélességhez tördeli. */
+function wrap(ctx, text, max) {
+  const lines = [];
+  let line = '';
+  for (const word of String(text).split(/\s+/)) {
+    const t = line ? line + ' ' + word : word;
+    if (ctx.measureText(t).width > max && line) { lines.push(line); line = word; } else line = t;
+  }
+  if (line) lines.push(line);
+  return lines;
+}
+/* Megosztható eredménykártya: kép az elemzés lényegével. Videó, arc és mérési adat nincs rajta. */
+export async function shareCard(it) {
+  const W = 1080, H = 1350, c = document.createElement('canvas');
+  c.width = W; c.height = H;
+  const g = c.getContext('2d');
+  const grad = g.createLinearGradient(0, 0, W, H);
+  grad.addColorStop(0, '#0b2545'); grad.addColorStop(0.6, '#13539a'); grad.addColorStop(1, '#2f8fd8');
+  g.fillStyle = grad; g.fillRect(0, 0, W, H);
+  g.fillStyle = 'rgba(255,255,255,.14)';
+  g.beginPath(); g.moveTo(0, H); g.lineTo(260, H - 330); g.lineTo(420, H - 200); g.lineTo(640, H - 460); g.lineTo(860, H - 220); g.lineTo(W, H - 340); g.lineTo(W, H); g.closePath(); g.fill();
+  g.fillStyle = '#ffd166'; g.beginPath(); g.arc(W - 150, 150, 62, 0, 7); g.fill();
+  const F = 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif';
+  g.fillStyle = '#fff'; g.textBaseline = 'top';
+  g.font = '800 96px ' + F; g.fillText('Kanyar', 80, 90);
+  g.font = '600 40px ' + F; g.fillStyle = 'rgba(255,255,255,.85)';
+  g.fillText(`${sportName(it.sport)} · ${fmtDate(it.date)}` + (it.analysis.turnCount ? ` · ${it.analysis.turnCount} kanyar` : ''), 80, 210);
+  let y = 330;
+  const block = (label, text, size, weight) => {
+    g.font = '700 30px ' + F; g.fillStyle = '#ffd166'; g.fillText(label.toUpperCase(), 80, y); y += 50;
+    g.font = `${weight} ${size}px ${F}`; g.fillStyle = '#fff';
+    for (const line of wrap(g, text, W - 160).slice(0, 5)) { g.fillText(line, 80, y); y += Math.round(size * 1.28); }
+    y += 46;
+  };
+  block('Ami jól megy', it.coach.strength, 46, 600);
+  block(it.coach.main_issue.id ? 'Amin dolgozom' : 'Amit láttunk', it.coach.main_issue.what, 54, 800);
+  if (it.coach.cue) block('Erre figyelek', it.coach.cue, 46, 600);
+  g.font = '500 30px ' + F; g.fillStyle = 'rgba(255,255,255,.75)';
+  g.fillText('Videóból, a telefonon elemezve · a mérés becslés', 80, H - 90);
+  const blob = await new Promise(resolve => c.toBlob(resolve, 'image/png'));
+  if (!blob) { toast('Nem sikerült elkészíteni a képet.'); return null; }
+  const file = new File([blob], 'kanyar-eredmeny.png', { type: 'image/png' });
+  try {
+    if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: 'Kanyar' }); return blob; }
+  } catch (e) { if (e && e.name === 'AbortError') return blob; }
+  const url = URL.createObjectURL(blob), a = h('a', { href: url, download: 'kanyar-eredmeny.png' });
+  document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 5000);
+  return blob;
 }

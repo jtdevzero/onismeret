@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { angleAt, tilt, percentile, movingAverage } from '../js/core/geometry.js';
 import { prepare } from '../js/core/series.js';
-import { analyzeRun, detectTurns, RELIABLE } from '../js/core/snow.js';
+import { analyzeRun, detectTurns, RELIABLE, viewMismatch } from '../js/core/snow.js';
 import { analyzeExercise, detectReps } from '../js/core/exercise.js';
 import { compareRuns, comparable } from '../js/core/compare.js';
 import { series, wave } from './synth.mjs';
@@ -195,4 +195,20 @@ test('összehasonlítás: a megszűnt hátraülés „javult”, az új „romlo
   assert.equal(compareRuns(back, { ok: false }), null);
   /* a szemből nem mérhető mutató nem kerül a listába */
   assert.equal(compareRuns(front, front).rows.some(r => r.id === 'foreAft'), false);
+});
+
+test('nézetellenőrzés: sínél jelzi, ha a megadott nézet ellentmond a testtartásnak; snowboardon nem ítél', () => {
+  const sideFrames = series(10, () => ({ view: 'side', shin: 5, thigh: 60, torso: 30 }));
+  const frontFrames = series(12, t => ({ legTilt: 12 * wave(t, 3) }));
+  assert.equal(viewMismatch(run(sideFrames, { view: 'side' })), null);
+  assert.equal(viewMismatch(run(sideFrames, { view: 'front' })), 'side');
+  assert.equal(viewMismatch(run(frontFrames, { view: 'back' })), null);
+  assert.equal(viewMismatch(run(frontFrames, { view: 'side' })), 'frontal');
+  assert.equal(viewMismatch(analyzeRun(frontFrames, { aspect: A, sport: 'snowboard', view: 'side' })), null);
+  assert.equal(viewMismatch(null), null);
+  assert.equal(viewMismatch({ ok: false, sport: 'ski', view: 'side', quality: { viewGuess: null } }), null);
+  /* rossz nézettel a hátraülés nem látszik; a helyes nézettel újraszámolva igen */
+  const wrong = run(sideFrames, { view: 'front' });
+  assert.equal(wrong.metrics.foreAft.usable, false);
+  assert.equal(run(sideFrames, { view: viewMismatch(wrong) }).metrics.foreAft.band, 'low');
 });

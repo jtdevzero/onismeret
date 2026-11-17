@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: '22'
       - run: node --test tarsas/tests/v2-smoke.test.cjs
-      - run: npm install --no-save playwright@1.56.1
+      - run: npm install --no-save playwright@1.63.0
       - run: npx playwright install --with-deps chromium
       - name: Start preview server
         run: python3 -m http.server 8765 --bind 127.0.0.1 > /tmp/party-server.log 2>&1 &

@@ -15,6 +15,10 @@ A videó a készüléken marad. A pózbecslés (MediaPipe Pose Landmarker) a bö
 - Tananyag mind az öt szinthez van (sí és snowboard, szintenként 4–5 lecke). A felület magyar.
 - AI-szerver nélkül a helyi, szabályalapú edző válaszol; a `worker/` telepítése után az AI-edző.
 - Az otthoni gyakorlatoknál van élő ismétlésszámlálás kamerával, hangos számolással; a formaértékelés a sorozat végén jön.
+- Nézetellenőrzés: sínél jelzi, ha a megadott kameraállás ellentmond a testtartásnak, és a tárolt testpontokból videó nélkül újraszámol.
+- A böngészős teszt axe-core-ral (WCAG 2 A/AA) ellenőrzi a fő képernyők akadálymentességét.
+- Napi terv a hegyre: az utolsó elemzés fő hibájára épülő bemelegítés és három gyakorlat, kipipálható, a végén újrafilmezés.
+- Haladás a naplóban: heti aktivitás és a havas mutatók alakulása elemzésről elemzésre; megosztható eredménykártya (kép).
 - Filmező mód: felvétel az appban a hátsó kamerával; közben jelzi, ha a telefon ferde, vagy ha a csúszó túl messze van, lelóg a képről vagy nem látszik.
 - Vezetett edzés: a program edzéseit lépésről lépésre viszi időzítővel, pihenővel és hangos bemondással; a végén naplóz.
 - Egy havas elemzés mérési adatai (testpontok és mutatók, videó nélkül) letölthetők a határértékek hangolásához.
