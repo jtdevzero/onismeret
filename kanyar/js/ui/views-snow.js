@@ -27,7 +27,7 @@ export async function snowView(_arg, onCleanup) {
       : 'Szemből vagy hátulról a kanyarok látszanak: dőlés, a két irány különbsége, ritmus.', 'small'));
   };
   drawExtra();
-  const picker = videoPicker('Videó felvétele vagy feltöltése', async ({ blob, frames, aspect }, say) => {
+  const picker = videoPicker('Videó felvétele vagy feltöltése', async ({ blob, frames, aspect, crowd }, say) => {
     const analysis = analyzeRun(frames, { aspect, sport: form.sport, view: form.view, travel: form.sport === 'snowboard' && form.view === 'side' ? form.travel : undefined });
     if (!analysis.ok) {
       clear(picker.status).append(note(analysis.reason === 'too_short'
@@ -44,7 +44,7 @@ export async function snowView(_arg, onCleanup) {
     const coach = await snowCoach(analysis, { level: S.settings.level, profile: await getProfile(), history }, images);
     const id = uid();
     const hasVideo = await videoPut(id, blob);
-    await itemPut({ id, kind: 'snow', date: Date.now(), sport: form.sport, view: form.view, level: S.settings.level, analysis, coach, frames: packFrames(frames), aspect, travel: form.sport === 'snowboard' && form.view === 'side' ? form.travel : null, hasVideo, thumb: images[0] || null });
+    await itemPut({ id, kind: 'snow', date: Date.now(), sport: form.sport, view: form.view, level: S.settings.level, analysis, coach, frames: packFrames(frames), aspect, crowd: crowd || 0, travel: form.sport === 'snowboard' && form.view === 'side' ? form.travel : null, hasVideo, thumb: images[0] || null });
     location.hash = '#/a/' + id;
   });
   const film = recorder(blob => picker.run(blob));
@@ -137,6 +137,7 @@ export async function analysisView(id, onCleanup) {
   return page(`${sportName(it.sport)} · ${fmtDate(it.date)}`,
     h('p', { class: 'muted' }, `Nézet: ${viewName(it.view)} · szint: ${levelName(it.sport, it.level)} · ${a.turnCount} kanyar · a képkockák ${Math.round(a.quality.tracked * 100)}%-án követhető`),
     mismatch,
+    (it.crowd || 0) >= 0.1 ? note('Több embert is láttam a felvételen. Azt követtem, aki végig középen volt a képen; ha nem téged, a visszajátszáson látod, kin van a csontváz.', 'small') : null,
     player ? player.el : note('A videó nincs elmentve (túl nagy volt, vagy nem volt hely), ezért nincs visszajátszás.', 'small'),
     card(h('div', { class: 'row' }, h('h2', null, 'Visszajelzés'), sourceBadge(c), confBadge(c.confidence)),
       h('p', { class: 'lead' }, c.summary),

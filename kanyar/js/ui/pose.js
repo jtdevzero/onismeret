@@ -1,5 +1,6 @@
 /* Pózbecslés a készüléken (MediaPipe Pose Landmarker). A videó nem hagyja el a telefont:
    a modell és a WebAssembly-futtató a saját szerverünkről (vendor/) töltődik, külső hívás nincs. */
+import { trackSubject, pickNearest, hipOf, heightOf, crowdLevel } from '../core/track.js';
 const VENDOR = new URL('../../vendor/mediapipe/', import.meta.url);
 export const MIN_SECONDS = 3, MAX_SECONDS = 60;
 const SAMPLE_GAP = 1 / 15; /* legfeljebb 15 minta másodpercenként */
@@ -14,7 +15,7 @@ export function loadPose() {
     const fileset = await FilesetResolver.forVisionTasks(new URL('wasm', VENDOR).href);
     const make = delegate => PoseLandmarker.createFromOptions(fileset, {
       baseOptions: { modelAssetPath: new URL('pose_landmarker_lite.task', VENDOR).href, delegate },
-      runningMode: 'VIDEO', numPoses: 1,
+      runningMode: 'VIDEO', numPoses: 3,
     });
     /* GPU-val gyorsabb; ha a készülék nem támogatja, processzoron fut */
     try { landmarker = await make('GPU'); } catch { landmarker = await make('CPU'); }
@@ -47,8 +48,10 @@ export async function openVideo(blob) {
 function detect(lm, video, t) {
   clock = Math.max(clock + 1, Math.round(performance.now()));
   const res = lm.detectForVideo(video, clock);
-  const p = res && res.landmarks && res.landmarks[0];
-  return { t, lm: p ? p.map(q => [q.x, q.y, q.z, q.visibility ?? 1]) : null };
+  const poses = ((res && res.landmarks) || []).map(p => p.map(q => [q.x, q.y, q.z, q.visibility ?? 1]));
+  /* lm: a legnagyobb alak (egyszerű esetekre); a több ember közüli választást a track.js végzi */
+  const main = poses.length ? poses.reduce((a, b) => (heightOf(b) > heightOf(a) ? b : a)) : null;
+  return { t, lm: main, poses };
 }
 
 /* A teljes videó feldolgozása. onProgress(0…1). → { frames, aspect, duration, seconds (feldolgozási idő) } */
@@ -70,11 +73,13 @@ export async function analyzeVideo(blob, onProgress = () => {}) {
     detect(lm, video, 0);
     const cost = performance.now() - t0;
     const canPlay = 'requestVideoFrameCallback' in HTMLVideoElement.prototype && cost < 90;
-    const frames = canPlay
+    const raw = canPlay
       ? await byPlayback(lm, video, duration, onProgress, cost < 45 ? 1 : 0.5)
       : await bySeeking(lm, video, duration, onProgress);
     onProgress(1);
-    return { frames, aspect, duration, seconds: (performance.now() - started) / 1000 };
+    /* ha több ember van a képen, a csúszót követjük végig */
+    const frames = trackSubject(raw);
+    return { frames, aspect, duration, crowd: crowdLevel(raw), seconds: (performance.now() - started) / 1000 };
   } finally { release(); }
 }
 
@@ -147,7 +152,7 @@ export async function openCamera() {
   await video.play().catch(() => {});
   if (video.readyState < 2) await once(video, 'loadeddata');
   const start = performance.now();
-  let last = -1, open = true;
+  let last = -1, open = true, prevHip = null;
   const nextFrame = () => new Promise(resolve => ('requestVideoFrameCallback' in video ? video.requestVideoFrameCallback(() => resolve()) : requestAnimationFrame(() => resolve())));
   return {
     el: video,
@@ -158,7 +163,11 @@ export async function openCamera() {
         const t = (performance.now() - start) / 1000;
         if (t - last < SAMPLE_GAP * 0.9) continue;
         last = t;
-        return detect(lm, video, t);
+        /* élőben a legutóbb követett alakhoz legközelebbit vesszük, hogy ne ugorjon át másra */
+        const f = detect(lm, video, t);
+        const pick = pickNearest(f.poses, prevHip);
+        if (pick) prevHip = hipOf(pick);
+        return { t: f.t, lm: pick };
       }
       return null;
     },
