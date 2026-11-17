@@ -8,6 +8,7 @@ import { TESTS, buildProfile, buildProgram, sessionSteps, sessionMinutes } from 
 import { buildIcs } from '../core/calendar.js';
 import { prepCoach } from './coach-client.js';
 import { liveCounter, speak } from './live.js';
+import { figureStrip } from './figure.js';
 
 const pain = () => !!(S.settings.health && S.settings.health.pain);
 const exMap = () => Object.fromEntries(Object.values(D.ex).map(e => [e.id, e]));
@@ -198,7 +199,7 @@ export async function exerciseView(id, onCleanup) {
   return page(ex.name,
     h('p', { class: 'muted' }, D.exercises.typeNames[ex.type] + (ex.dose.seconds ? ' · ' + fmtSec(ex.dose.seconds) : ' · ' + ex.dose.reps + ' ismétlés') + (ex.perSide ? ' oldalanként' : '')),
     ['power'].includes(ex.type) && pain() ? note('Fájdalmat jeleztél: ezt az ugrásos gyakorlatot most hagyd ki.', 'warn') : null,
-    card(h('h2', null, 'Hogyan csináld'), h('p', null, ex.how), h('h3', null, 'Három dolog, amire figyelj'), list(ex.points),
+    card(h('h2', null, 'Hogyan csináld'), figureStrip(D.figures[ex.id]), h('p', null, ex.how), h('h3', null, 'Három dolog, amire figyelj'), list(ex.points),
       h('h3', null, 'Miért számít a havon'), h('p', null, ex.onSnow)),
     analyze, out, history, card(videoLinks(ex)),
     link(isTest ? '#/prep' : '#/prep', '← Felkészülés', 'btn'));
@@ -278,11 +279,11 @@ export async function sessionView(key, onCleanup) {
       const go = btn('Indítás', () => { go.hidden = true; pause.hidden = false; run(); }, 'primary');
       const pause = btn('Szünet', () => { if (running) { stop(); pause.textContent = 'Folytatás'; } else { pause.textContent = 'Szünet'; run(); } });
       pause.hidden = true;
-      clear(stage).append(card(head, st.side ? h('p', { class: 'badge' }, SIDE[st.side]) : null, clock, points,
+      clear(stage).append(card(head, st.side ? h('p', { class: 'badge' }, SIDE[st.side]) : null, figureStrip(D.figures[ex.id], true), clock, points,
         h('div', { class: 'row' }, go, pause, btn('Kész, tovább', next)), more), nav);
       speak(ex.name + (st.side ? ', ' + SIDE[st.side] : '') + ', ' + st.seconds + ' másodperc', voice.checked);
     } else {
-      clear(stage).append(card(head, h('div', { class: 'workout-clock' }, String(st.reps)),
+      clear(stage).append(card(head, figureStrip(D.figures[ex.id], true), h('div', { class: 'workout-clock' }, String(st.reps)),
         h('p', { class: 'workout-unit' }, 'ismétlés' + (st.side === 'both' ? ' oldalanként' : '')), points,
         h('div', { class: 'row' }, btn('Kész, tovább', next, 'primary')), more), nav);
       speak(ex.name + ', ' + st.reps + ' ismétlés' + (st.side === 'both' ? ' oldalanként' : ''), voice.checked);

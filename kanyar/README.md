@@ -2,7 +2,7 @@
 
 Telefonra telepíthető webapp két részből:
 
-- **Felkészülés a szezon előtt:** hét kamerás mozgásfelmérő teszt, ebből személyre szabott 6 hetes program, a felvett gyakorlatokon ismétlésszámlálás és formaértékelés, gyakorlatonként belinkelt bemutató videó.
+- **Felkészülés a szezon előtt:** hét kamerás mozgásfelmérő teszt, ebből személyre szabott 6 hetes program, a felvett gyakorlatokon ismétlésszámlálás és formaértékelés, gyakorlatonként belinkelt bemutató videó, és 22 gyakorlathoz saját ábra (pálcikafigura a kiinduló és a végső helyzetről, `data/figures.json`), ami offline is látszik, a vezetett edzés közben is.
 - **Havas elemzés:** a csúszásról készült 10–30 másodperces videóból testtartás-mérés, kanyarfelismerés, mutatók, és visszajelzés: mi megy jól, mi a fő hiba, melyik gyakorlat javítja.
 
 A videó a készüléken marad. A pózbecslés (MediaPipe Pose Landmarker) a böngészőben fut, a `vendor/` mappából.
@@ -11,7 +11,7 @@ A videó a készüléken marad. A pózbecslés (MediaPipe Pose Landmarker) a bö
 
 - A mutatók **szintetikus mozgásadatokon** vannak tesztelve. Valódi sí- és snowboardvideón még senki nem próbálta ki; a sávhatárok (`js/core/snow.js`, `js/core/exercise.js`) szakmai becslések, kalibrálásra várnak.
 - A tananyagot, a hibakatalógust és a gyakorlatokat **szakember még nem lektorálta** (`"reviewed": false` a `data/` fájlokban).
-- A bemutató videók YouTube-keresésből, cím alapján kerültek be; a tartalmukat senki nem nézte át.
+- A bemutató videók YouTube-keresésből, cím alapján kerültek be; a tartalmukat senki nem nézte át. A gyakorlatábrák szemléltetők, nem szakember rajzolta őket.
 - Tananyag mind az öt szinthez van (sí és snowboard, szintenként 4–5 lecke). A felület magyar.
 - AI-szerver nélkül a helyi, szabályalapú edző válaszol; a `worker/` telepítése után az AI-edző.
 - Az otthoni gyakorlatoknál van élő ismétlésszámlálás kamerával, hangos számolással; a formaértékelés a sorozat végén jön.
