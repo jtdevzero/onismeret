@@ -7,6 +7,7 @@ import { TESTS, WEAK_ORDER, buildProfile, buildProgram, sessionSteps, sessionMin
 import { analyzeRun, THRESHOLDS } from '../js/core/snow.js';
 import { localSnowCoach, localPrepCoach, validSnowCoach, validPrepCoach, triggeredFaults } from '../js/core/coach.js';
 import { weekStart, weeklyActivity, weekStreak, metricTrails, dayPlan } from '../js/core/progress.js';
+import { buildIcs, scheduleDates, fold, icsText } from '../js/core/calendar.js';
 import { series, wave } from './synth.mjs';
 
 const load = n => JSON.parse(readFileSync(new URL('../data/' + n, import.meta.url), 'utf8'));
@@ -248,4 +249,29 @@ test('napi terv: az edző gyakorlata az első, a hiba többi gyakorlata követi,
   /* ismeretlen azonosító nem kerül a tervbe */
   assert.ok(!dayPlan({ main_issue: { id: 'backseat' }, drill_id: 'nincs_ilyen' }, FA, LES.lessons, 'ski', 2).drills.includes('nincs_ilyen'));
   for (const f of FA.faults) for (const lv of [1, 3, 5]) assert.equal(dayPlan({ main_issue: { id: f.id }, drill_id: f.drills[0] }, FA, LES.lessons, f.sports[0], lv).drills.length, 3, f.id);
+});
+
+test('naptárfájl: 18 edzés a választott napokon, emlékeztetővel, szabályos iCalendar formában', () => {
+  const p = buildProgram({ weak: [], done: 7 }, 'ski', ex);
+  const start = new Date(2026, 10, 18); /* szerda */
+  const dates = scheduleDates(6, start, [5, 1, 3]);
+  assert.equal(dates.length, 18);
+  assert.ok(dates.every((d, i) => i === 0 || d.date > dates[i - 1].date), 'időrendben');
+  assert.ok(dates.every(d => d.date >= new Date(2026, 10, 18)), 'nincs edzés a kezdőnap előtt');
+  assert.ok(dates.every(d => [1, 3, 5].includes(d.date.getDay())), 'csak a választott napokon');
+  assert.equal(dates[0].date.getDate(), 18, 'az első edzés a kezdőnap (szerda)');
+  assert.throws(() => scheduleDates(6, start, [1, 1, 3]));
+  const ics = buildIcs(p, { start, weekdays: [1, 3, 5], time: '07:30', minutes: 30, now: new Date(Date.UTC(2026, 10, 17, 8)),
+    title: (w, i) => `Kanyar: ${w}. hét, ${i + 1}. edzés`, body: (w, i) => 'Guggolás: 12 ism.; Plank, 30 mp\nnyújtás', url: 'https://example.com/kanyar/#/program' });
+  assert.match(ics, /^BEGIN:VCALENDAR\r\n/);
+  assert.match(ics, /END:VCALENDAR\r\n$/);
+  assert.equal((ics.match(/BEGIN:VEVENT/g) || []).length, 18);
+  assert.equal((ics.match(/TRIGGER:-PT15M/g) || []).length, 18);
+  assert.match(ics, /DTSTART:20261118T073000\r\nDTEND:20261118T080000/);
+  assert.match(ics, /DTSTAMP:20261117T080000Z/);
+  assert.match(ics, /DESCRIPTION:Guggolás: 12 ism\.\\; Plank\\, 30 mp\\nnyújtás/, 'a különleges karakterek védve');
+  assert.equal(new Set(ics.match(/^UID:.*$/gm)).size, 18, 'egyedi azonosítók');
+  for (const line of ics.split('\r\n')) assert.ok(new TextEncoder().encode(line).length <= 75, 'legfeljebb 75 bájtos sorok: ' + line);
+  assert.equal(fold('a'.repeat(80)), 'a'.repeat(75) + '\r\n ' + 'a'.repeat(5));
+  assert.equal(icsText('a,b;c\\d\ne'), 'a\\,b\\;c\\\\d\\ne');
 });

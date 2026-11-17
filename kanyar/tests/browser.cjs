@@ -202,6 +202,16 @@ const go = async (page, hash) => { await page.evaluate(h => { if (location.hash 
     assert.match(t, /1\. hét/);
     assert.doesNotMatch(t, /Guggolásból felugrás|Korcsolyázó szökdelés/);
     await page.locator('.session-head input').first().check();
+    /* naptárfájl: három nap kell; utána letölthető, 18 eseménnyel */
+    await page.locator('.day-pick input').nth(1).check();
+    await page.getByRole('button', { name: 'Naptárfájl letöltése' }).click();
+    assert.match(await text(), /Pontosan három napot válassz/);
+    await page.locator('.day-pick input').nth(1).uncheck();
+    const [cal] = await Promise.all([page.waitForEvent('download'), page.getByRole('button', { name: 'Naptárfájl letöltése' }).click()]);
+    assert.equal(cal.suggestedFilename(), 'kanyar-edzesterv.ics');
+    const icsText = fs.readFileSync(await cal.path(), 'utf8');
+    assert.equal((icsText.match(/BEGIN:VEVENT/g) || []).length, 18);
+    assert.match(icsText, /SUMMARY:Kanyar: 1\. hét\\, 1\. edzés – Erő/);
     await go(page, '#/prep');
     assert.match(await text(), /1 \/ 18 edzés kész/);
     await shot('program');
