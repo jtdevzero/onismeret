@@ -5,6 +5,7 @@
 - `parliamo/`: nyelvtanuló PWA. Forrás: `parliamo/src/` (`js/NN-*.js` számsorrendben), a `parliamo/build.py` generálja az `app.html`-t, az `index.html`-t és az `sw.js`-t. Tesztek: `node parliamo/tests/run.js` és a `.github/workflows/test.yml`-ben felsorolt többi fájl.
 - `parliamo/worker/`: Cloudflare Worker (AI-proxy, szinkron, push). Teszt: `cd parliamo/worker && npm ci && npm test`.
 - `kanyar/`: sí- és snowboard-elemző PWA. Forrás: `kanyar/src/shell.html`, `kanyar/js/` (ES-modulok), `kanyar/data/`; a `kanyar/build.py` generálja az `index.html`-t és az `sw.js`-t. Tesztek: `node --test kanyar/tests/*.test.mjs`, `node kanyar/tests/browser.cjs`, `node kanyar/tests/pose-smoke.cjs`. Worker: `cd kanyar/worker && npm ci && npm test`. A `kanyar/vendor/` vendorolt, ne módosítsd.
+- `forma/`: kor szerinti állapotfelmérő és otthoni edzés PWA. Forrás: `forma/src/shell.html`, `forma/js/` (ES-modulok, `core/` tiszta függvények), `forma/data/`; a `forma/build.py` generálja az `index.html`-t és az `sw.js`-t. Tesztek: `node --test forma/tests/*.test.mjs`, `node forma/tests/browser.cjs`, `node forma/tests/pose-smoke.cjs`. A `forma/vendor/` a Kanyaréval azonos vendorolt pózbecslő, ne módosítsd (teszt ellenőrzi az egyezést).
 - Generált fájlt ne szerkessz kézzel: módosítsd a forrást, és futtasd a buildet. A CI ellenőrzi, hogy a generált fájlok egyeznek-e.
 
 ## Biztonsági szabályok

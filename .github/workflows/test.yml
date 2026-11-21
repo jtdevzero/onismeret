@@ -26,8 +26,9 @@ jobs:
           python3 tools/build.py
           python3 parliamo/build.py
           python3 kanyar/build.py
+          python3 forma/build.py
           if ! git diff --quiet; then
-            echo "A build után generálatlan módosítás maradt. Futtasd helyben: python3 tools/build.py, python3 parliamo/build.py és python3 kanyar/build.py"
+            echo "A build után generálatlan módosítás maradt. Futtasd helyben: python3 tools/build.py, python3 parliamo/build.py, python3 kanyar/build.py és python3 forma/build.py"
             git diff --stat
             exit 1
           fi
@@ -94,3 +95,11 @@ jobs:
         run: |
           node kanyar/tests/browser.cjs
           node kanyar/tests/pose-smoke.cjs
+      - name: Forma pontozómag, tartalom és build
+        if: ${{ !cancelled() }}
+        run: node --test forma/tests/*.test.mjs
+      - name: Forma böngészős végpontteszt és pózbecslő
+        if: ${{ !cancelled() }}
+        run: |
+          node forma/tests/browser.cjs
+          node forma/tests/pose-smoke.cjs
