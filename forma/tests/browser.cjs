@@ -257,10 +257,32 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     assert.match(await text(), /Kardió: 80 \/ 150 perc/);
   });
 
+  await step('naptár és havi összefoglaló a naplóban, lapozás hónapok között', async () => {
+    await go(page, '#/log');
+    const t = await text();
+    assert.match(t, /A hónap összefoglalója/i);
+    assert.ok(await page.locator('.cal-day.today').count() === 1);
+    assert.ok(await page.locator('.cal-day.active').count() >= 1, 'van jelölt nap');
+    await shot('calendar');
+    const title = await page.locator('.cal-head h2').innerText();
+    await page.locator('.cal-head a').first().click();
+    await page.waitForFunction(t => /^#\/log\/\d{4}-\d{2}$/.test(location.hash) && document.querySelector('.cal-head h2').innerText !== t, title);
+    assert.equal(await page.locator('.cal-day.today').count(), 0, 'az előző hónapban nincs „ma”');
+  });
+
+  await step('eszközök: húzódzkodó rúddal a program húzódzkodásra vált', async () => {
+    await go(page, '#/settings');
+    await page.getByText(/Húzódzkodó rúd/).click();
+    await page.getByRole('button', { name: 'Eszközök mentése' }).click();
+    await page.waitForFunction(async () => ((await (await import('./js/ui/state.js')).getProgram()).equipment || []).includes('bar'));
+    await go(page, '#/program');
+    assert.match(await text(), /Húzódzkodás rúdon/);
+  });
+
   await step('akadálymentesség (axe, WCAG 2 A/AA): a fő képernyőkön nincs hiba', async () => {
     const axe = fs.readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
     const found = [];
-    for (const hash of ['#/', '#/assess', '#/test/pushup', '#/test/deep_squat', '#/test/vitals', '#/result', '#/program', '#/session/mobility', '#/ex/squat', '#/log', '#/settings', '#/cardio', '#/check/strengthA']) {
+    for (const hash of ['#/', '#/assess', '#/test/pushup', '#/test/deep_squat', '#/test/vitals', '#/result', '#/program', '#/session/mobility', '#/ex/squat', '#/log', '#/settings', '#/cardio', '#/check/strengthA', '#/ex/pull_up']) {
       await go(page, hash);
       /* a Playwright evaluate-je nem esik a lap CSP-je alá, így beágyazott szkript nélkül töltjük be */
       await page.evaluate(src => { if (!window.axe) (0, eval)(src); }, axe).catch(() => {});

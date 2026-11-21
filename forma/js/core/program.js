@@ -7,7 +7,10 @@ export const SESSION_TITLES = {
   strengthA: 'Erő A: guggolás és nyomás', strengthB: 'Erő B: egy láb és húzás', strengthC: 'Erő C: teljes test',
   speedA: 'Gyorsaság A: ugrás és lábmunka', speedB: 'Gyorsaság B: intervallum', mobility: 'Mobilitás és egyensúly',
 };
-export const LADDERS = ['push', 'squat', 'lunge', 'hinge', 'pull', 'core', 'side', 'power', 'speed', 'balance'];
+export const LADDERS = ['push', 'squat', 'lunge', 'hinge', 'pull', 'pull_band', 'pull_bar', 'core', 'side', 'power', 'speed', 'balance'];
+/* Húzás eszköz szerint: rúd > gumiszalag > eszköz nélkül. A többi gyakorlatsor eszköz nélküli. */
+export const EQUIPMENT = [['bar', 'Húzódzkodó rúd (ajtókeretbe vagy falra szerelt)'], ['band', 'Gumiszalag (erősítő szalag)']];
+export const pullLadder = (equipment = []) => (equipment.includes('bar') ? 'pull_bar' : equipment.includes('band') ? 'pull_band' : 'pull');
 export const CYCLE_WEEKS = 6; /* 5 hét terhelés, a 6. könnyített hét, utána újramérés */
 
 const DAY = 86400000;
@@ -34,6 +37,8 @@ export function initialLevels(results = {}, evaluation = { tests: {}, areas: {} 
   const str = area('strength');
   L.hinge = str == null ? 0 : str >= 75 ? 2 : str >= 40 ? 1 : 0;
   L.pull = [0, 0, 1, 2, 3][L.push];
+  L.pull_band = Math.min(2, L.pull);
+  L.pull_bar = L.pull >= 2 ? 1 : 0;
   L.core = step(r('plank'), [30, 60, 120]) ?? 1;
   L.side = [0, 1, 1, 2][L.core];
   const bj = pct('broad_jump');
@@ -113,10 +118,11 @@ export function buildSession(key, state, exercises, now = Date.now(), opts = {})
   if (warm && key !== 'mobility') blocks.push({ exercise: warm.id, sets: 1, seconds: warm.dose.seconds[key.startsWith('speed') ? 1 : 0], rest: 0, part: 'warmup' });
   blocks.push(...mobilityBlock(exercises, state.targets || [], key === 'mobility'));
   for (const [ladder, sets0, rest] of PLAN[key] || []) {
-    const ex = exerciseFor(ladders, ladder, (state.levels || {})[ladder], state.lowImpact);
+    const eff = ladder === 'pull' ? pullLadder(state.equipment) : ladder;
+    const ex = exerciseFor(ladders, eff, (state.levels || {})[eff], state.lowImpact);
     if (!ex) continue;
     const sets = wk.deload || opts.light ? Math.max(1, sets0 - 1) : sets0;
-    blocks.push({ exercise: ex.id, ladder, sets, ...doseFor(ex, wk.cycleWeek, wk.deload), rest, rate: !opts.light, part: 'main' });
+    blocks.push({ exercise: ex.id, ladder: eff, sets, ...doseFor(ex, wk.cycleWeek, wk.deload), rest, rate: !opts.light, part: 'main' });
   }
   return { key, title: SESSION_TITLES[key], blocks, week: wk, light: !!opts.light };
 }

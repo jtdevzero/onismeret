@@ -309,3 +309,25 @@ progress { -webkit-appearance: none; appearance: none; border: 0; background: va
 progress::-webkit-progress-bar { background: var(--bg-2); border-radius: 999px; }
 progress::-webkit-progress-value { background: linear-gradient(90deg, var(--accent), var(--sun)); border-radius: 999px; }
 progress::-moz-progress-bar { background: linear-gradient(90deg, var(--accent), var(--sun)); border-radius: 999px; }
+
+/* ---- havi naptár ---- */
+.cal-head { justify-content: space-between; margin-bottom: 10px; }
+.cal-head h2 { margin: 0; text-align: center; flex: 1; }
+.cal { display: grid; gap: 4px; }
+.cal-row { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.cal-wd { text-align: center; font-size: .72rem; font-weight: 800; color: var(--muted); }
+.cal-day { display: grid; justify-items: center; align-content: start; gap: 3px; min-height: 46px; padding: 5px 0; border-radius: 10px; background: var(--bg-2); }
+.cal-day.out { background: transparent; color: var(--muted); }
+.cal-day.active { background: var(--accent-soft); }
+.cal-day.today { box-shadow: inset 0 0 0 2px var(--accent); }
+.cal-n { font-size: .82rem; font-weight: 750; }
+.cal-dots { display: flex; gap: 3px; min-height: 8px; }
+.cal-dots i { width: 8px; height: 8px; border-radius: 50%; }
+.d-w { background: var(--accent); }
+.d-w.light { background: transparent; box-shadow: inset 0 0 0 2px var(--accent); }
+.d-c { background: var(--teal); }
+.d-a { background: var(--sun); }
+.legend .lg-w::before { border-top-color: var(--accent); }
+.legend .lg-c::before { border-top-color: var(--teal); }
+.legend .lg-a::before { border-top-color: var(--sun); }
+.stat-row + .stat-row { margin-top: 12px; }

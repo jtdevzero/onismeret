@@ -9,6 +9,8 @@ Telefonra telepíthető webapp. Felméri, hol tartasz a korosztályodhoz képest
 - **Állóképesség:** kardió napló (séta, kocogás, futás, kerékpár, úszás), heti 150 perces WHO-cél (az intenzív perc duplán számít), személyre szabott pulzuszónák (Tanaka-maximum, Karvonen-féle pulzustartalék a felmérés nyugalmi pulzusából), szinttől függő heti javaslat.
 - **Napi ellenőrzés:** edzés előtt alvás, izomláz, energia és fájdalom; rossz napon könnyített edzést (eggyel kevesebb kör, értékelés nélkül) vagy csak mobilitást ajánl.
 - **Heti cél** a kezdőlapon: 5 edzés és 150 kardióperc.
+- **Naptár és havi összefoglaló** a naplóban: napi jelölés (edzés, kardió, felmérés), lapozható hónapok, összevetés az előző hónappal.
+- **Eszközök:** húzódzkodó rúd vagy gumiszalag esetén a húzógyakorlatok ahhoz igazodnak (függeszkedés → negatív → húzódzkodás; széthúzás → evezés).
 - **Kamerás mérés (béta):** a letámasztott telefon kamerája előtt élőben számolja az ismétléseket vagy a kitartott időt, hangosan is, és a végén visszajelez a formáról. Tesztekhez (fekvőtámasz, 30 mp felállás, plank, egylábas állás: az eredmény a mezőbe kerül), a gyakorlatleírásnál és a vezetett edzésben. A pózbecslő (MediaPipe, kb. 15 MB) a Kanyaréval azonos, a készüléken fut, és csak az első használatkor töltődik le.
 - **Adatvédelem:** minden adat a készüléken marad (IndexedDB). Nincs szerver, fiók, és nincs külső kérés (CSP: csak `'self'`; a `'wasm-unsafe-eval'` a pózbecslő WebAssembly-futtatójához kell).
 - **Dizájn:** neonos naplemente (rózsaszín, narancs, türkiz), vastag, dőlt címek, saját rajzolású pálmás naplemente. Márkaelemet, logót vagy betűtípust nem vettünk át.
@@ -21,6 +23,8 @@ Telefonra telepíthető webapp. Felméri, hol tartasz a korosztályodhoz képest
 - A kamerás elemzés **szintetikus mozgásadatokon** van tesztelve; valódi felvételen még nincs kalibrálva, a formaküszöbök szakmai becslések. A mért eredményt az app beírja, de javítható.
 - Nincs benne: szinkron több eszköz között, AI-edző.
 - Nem orvosi eszköz.
+
+A következő 20 bővítés terve: [ROADMAP.md](ROADMAP.md).
 
 ## Felépítés
 

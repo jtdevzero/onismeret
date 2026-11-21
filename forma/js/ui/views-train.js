@@ -4,7 +4,7 @@ import { page, card, btn, link, note, list, speak, beep, tickMs, videoSearch } f
 import { D, lowImpact } from './data.js';
 import { itemPut } from './store.js';
 import { getProgram, setProgram, latestAssessment } from './state.js';
-import { ROTATION, SESSION_TITLES, LADDERS, RATINGS, buildSession, sessionSteps, sessionMinutes, nextKey, weekInfo, laddersOf, exerciseFor, applyRatings, CYCLE_WEEKS } from '../core/program.js';
+import { ROTATION, SESSION_TITLES, LADDERS, RATINGS, pullLadder, buildSession, sessionSteps, sessionMinutes, nextKey, weekInfo, laddersOf, exerciseFor, applyRatings, CYCLE_WEEKS } from '../core/program.js';
 import { figureStrip } from './figure.js';
 import { weekStrip } from './views-main.js';
 import { liveCounter } from './live.js';
@@ -33,7 +33,7 @@ export async function programView() {
     card(h('h2', null, 'Forgó rend'), weekStrip(prog), h('p', { class: 'small muted' }, '3 erőnap, 2 gyorsasági nap és 2 mobilitásnap. Minden edzés napi mobilitással kezdődik. Az ismétlésszám hétről hétre nő, a gyakorlat pedig nehezebbre vált, ha kétszer egymás után könnyűnek értékeled.')),
     sessions,
     card(h('h2', null, 'Állóképesség'), h('p', null, 'A forgó rend mellé heti 150 perc kardió: tempós séta, kocogás vagy kerékpár, a pulzustartományodban.'), h('div', { class: 'row' }, link('#/cardio', 'Kardió napló és pulzuszónák', 'btn'))),
-    card(h('h2', null, 'Szintjeid'), h('ul', { class: 'rows' }, LADDERS.map(l => {
+    card(h('h2', null, 'Szintjeid'), h('ul', { class: 'rows' }, LADDERS.filter(l => !l.startsWith('pull') || l === pullLadder(prog.equipment)).map(l => {
       const ex = exerciseFor(lad, l, prog.levels[l], prog.lowImpact);
       return ex ? h('li', null, h('span', { class: 'log-item' }, h('strong', null, D.exercises.ladders[l]), link('#/ex/' + ex.id, ex.name)), lvlDots(prog.levels[l] ?? 0, lad[l].length)) : null;
     }))));

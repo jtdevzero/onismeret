@@ -35,6 +35,7 @@ export function parseBackup(text, ctx) {
     lowImpact: typeof s.lowImpact === 'boolean' ? s.lowImpact : undefined,
     parq: s.parq && typeof s.parq === 'object' ? Object.fromEntries(Object.entries(s.parq).filter(([k, v]) => /^[a-z]{2,16}$/.test(k) && typeof v === 'boolean')) : undefined,
     reminder: s.reminder && /^\d{2}:\d{2}$/.test(s.reminder.time || '') ? { time: s.reminder.time } : undefined,
+    equipment: Array.isArray(s.equipment) ? s.equipment.filter(e => e === 'bar' || e === 'band') : undefined,
   });
 
   let program = null;
@@ -45,6 +46,7 @@ export function parseBackup(text, ctx) {
     program = clean({
       start: p.start, levels: numbers(p.levels, ctx.ladders, 0, 10), ratings,
       targets: Array.isArray(p.targets) ? p.targets.filter(t => typeof t === 'string' && /^[a-z]{3,16}$/.test(t)).slice(0, 10) : [],
+      equipment: Array.isArray(p.equipment) ? p.equipment.filter(e => e === 'bar' || e === 'band') : [],
       lowImpact: !!p.lowImpact, done: num(p.done, 0, 1e6) ?? 0, lastDone: num(p.lastDone, 0, 1e14),
       levelLog: Array.isArray(p.levelLog) ? p.levelLog.filter(c => c && ctx.ladders.includes(c.ladder)).map(c => clean({ ladder: c.ladder, from: num(c.from, 0, 10), to: num(c.to, 0, 10), date: num(c.date, 0, 1e14) })).slice(-100) : [],
       fromAssessment: str(p.fromAssessment),

@@ -4,12 +4,14 @@ import { page, card, btn, link, note, choice, list, levelBadge, sized } from './
 import { D, S, saveSettings, profile } from './data.js';
 import { exportAll, wipeAll, restoreAll } from './store.js';
 import { parseBackup } from '../core/backup.js';
-import { RATINGS, LADDERS } from '../core/program.js';
+import { RATINGS, LADDERS, EQUIPMENT } from '../core/program.js';
 import { getProgram, setProgram, latestAssessment, workouts, assessments, evaluateItem } from './state.js';
 import { ROTATION, SESSION_TITLES, buildSession, sessionSteps, sessionMinutes, nextKey, weekInfo, reassessDue, streak } from '../core/program.js';
 import { LEVEL_NAMES } from '../core/score.js';
 import { buildDailyIcs } from '../core/calendar.js';
 import { weeklyCardio, weeklyWorkouts } from '../core/cardio.js';
+import { monthGrid, monthSummary, MONTHS } from '../core/history.js';
+import { itemsAll } from './store.js';
 import { cardioItems, CARDIO_TYPES } from './views-cardio.js';
 
 export const PARQ = [
@@ -116,8 +118,35 @@ export async function homeView() {
 }
 const levelKey = s => (s >= D.norms.levels.top ? 'top' : s >= D.norms.levels.low ? 'mid' : 'low');
 
-export async function logView() {
-  const ws = await workouts(), as = await assessments();
+/* Havi naptár: napi jelölés edzésre, kardióra, felmérésre. arg: 'ÉÉÉÉ-HH' (alapból az aktuális hónap) */
+function calendarCard(all, ym) {
+  const now = new Date();
+  let [y, mo] = /^\d{4}-\d{2}$/.test(ym || '') ? ym.split('-').map(Number) : [now.getFullYear(), now.getMonth() + 1];
+  const g = monthGrid(all, y, mo - 1), s = monthSummary(all, y, mo - 1);
+  const shift = d => { const t = new Date(y, mo - 1 + d, 1); return `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}`; };
+  const delta = (a, b) => (b ? ` (${a - b >= 0 ? '+' : ''}${a - b})` : '');
+  const cell = c => {
+    const marks = [c.workout ? 'edzés' : null, c.cardio ? 'kardió' : null, c.assessment ? 'felmérés' : null].filter(Boolean);
+    return h('div', { class: 'cal-day' + (c.inMonth ? '' : ' out') + (c.today ? ' today' : '') + (marks.length ? ' active' : ''), role: 'gridcell', 'aria-label': `${MONTHS[new Date(c.date).getMonth()]} ${c.day}.${marks.length ? ': ' + marks.join(', ') : ''}` },
+      h('span', { class: 'cal-n' }, String(c.day)),
+      h('span', { class: 'cal-dots', 'aria-hidden': 'true' }, c.workout ? h('i', { class: 'd-w' + (c.light ? ' light' : '') }) : null, c.cardio ? h('i', { class: 'd-c' }) : null, c.assessment ? h('i', { class: 'd-a' }) : null));
+  };
+  return card(
+    h('div', { class: 'row tight cal-head' }, link('#/log/' + shift(-1), '‹', 'btn small'), h('h2', null, `${y}. ${MONTHS[mo - 1]}`), link('#/log/' + shift(1), '›', 'btn small')),
+    h('div', { class: 'cal', role: 'grid', 'aria-label': 'Havi naptár' },
+      h('div', { class: 'cal-row', role: 'row' }, ['H', 'K', 'Sze', 'Cs', 'P', 'Szo', 'V'].map(d => h('div', { class: 'cal-wd', role: 'columnheader' }, d))),
+      g.weeks.map(w => h('div', { class: 'cal-row', role: 'row' }, w.map(cell)))),
+    h('div', { class: 'legend' }, h('span', { class: 'lg-w' }, 'edzés'), h('span', { class: 'lg-c' }, 'kardió'), h('span', { class: 'lg-a' }, 'felmérés')),
+    h('h3', null, 'A hónap összefoglalója'),
+    h('div', { class: 'stat-row' },
+      h('div', { class: 'stat' }, h('span', { class: 'muted' }, 'Edzés'), h('strong', null, String(s.workouts)), h('span', { class: 'small muted' }, 'előző hónap: ' + s.prev.workouts)),
+      h('div', { class: 'stat' }, h('span', { class: 'muted' }, 'Aktív nap'), h('strong', null, String(s.activeDays)), h('span', { class: 'small muted' }, `leghosszabb sorozat: ${s.bestStreak} nap`)),
+      h('div', { class: 'stat' }, h('span', { class: 'muted' }, 'Mozgás'), h('strong', null, s.minutes + ' p'), h('span', { class: 'small muted' }, 'ebből kardió: ' + s.cardioMinutes + ' p' + delta(s.cardioMinutes, s.prev.cardioMinutes))),
+      h('div', { class: 'stat' }, h('span', { class: 'muted' }, 'Szintlépés'), h('strong', null, String(s.levelUps)), h('span', { class: 'small muted' }, s.assessments ? 'felmérés is volt' : 'nehezebb gyakorlatra váltás'))));
+}
+
+export async function logView(ym) {
+  const ws = await workouts(), as = await assessments(), all = await itemsAll();
   /* az utolsó 8 hét edzésszáma */
   const DAY = 86400000, now = new Date(); now.setHours(0, 0, 0, 0);
   const monday = new Date(now); monday.setDate(now.getDate() - ((now.getDay() + 6) % 7));
@@ -139,6 +168,7 @@ export async function logView() {
       first.fitnessAge != null && lastE.fitnessAge != null ? h('p', { class: 'small' }, `Fittségi kor: ${first.fitnessAge} → ${lastE.fitnessAge} év.`) : null);
   }
   return page('Napló',
+    calendarCard(all, ym),
     card(h('h2', null, 'Edzések hetente'), bars),
     compare,
     card(h('h2', null, 'Felmérések'), as.length ? h('ul', { class: 'rows' }, as.map(a => { const e = evaluateItem(a); return h('li', null, link('#/result/' + a.id, fmtDate(a.date)), h('span', { class: 'muted small' }, (e.overall != null ? e.overall + ' / 100' : '') + (e.fitnessAge != null ? ' · fittségi kor ' + e.fitnessAge : ''))); })) : h('p', { class: 'muted' }, 'Még nincs felmérés.')),
@@ -177,6 +207,8 @@ export async function settingsView() {
   const st = { age: p.age, sex: p.sex };
   const age = h('input', { type: 'number', inputMode: 'numeric', min: 18, max: 99, value: st.age ?? '', oninput: () => { st.age = Number(age.value); } });
   const low = h('input', { type: 'checkbox', checked: !!S.settings.lowImpact });
+  const eq = new Set(S.settings.equipment || []);
+  const eqBoxes = EQUIPMENT.map(([k, label]) => h('label', { class: 'check' }, h('input', { type: 'checkbox', checked: eq.has(k), onchange: e => { if (e.target.checked) eq.add(k); else eq.delete(k); } }), h('span', null, label)));
   const time = h('input', { type: 'time', value: (S.settings.reminder && S.settings.reminder.time) || '07:00' });
   return page('Beállítások',
     card(h('h2', null, 'Profil'),
@@ -191,6 +223,15 @@ export async function settingsView() {
         toast('Elmentettem.');
       }, 'primary')),
       h('p', { class: 'small muted' }, 'A korábbi felmérések a felméréskori életkorral maradnak meg.')),
+    card(h('h2', null, 'Eszközeid'),
+      h('p', { class: 'small muted' }, 'A húzógyakorlatok ehhez igazodnak: rúddal húzódzkodás felé haladsz, gumiszalaggal evezéssel; ha egyik sincs, asztal alatti húzással.'),
+      eqBoxes,
+      h('div', { class: 'row' }, btn('Eszközök mentése', async () => {
+        await saveSettings({ equipment: [...eq] });
+        const prog = await getProgram();
+        if (prog) await setProgram({ ...prog, equipment: [...eq] });
+        toast('Elmentettem. A következő edzéstől érvényes.');
+      }))),
     card(h('h2', null, 'Napi emlékeztető'),
       h('p', null, 'Naptárfájlt kapsz, ami a következő 6 hétben minden nap jelez a választott időpont előtt 10 perccel. A telefon naptára emlékeztet, szerver nélkül.'),
       h('label', { class: 'field inline' }, 'Időpont', time),

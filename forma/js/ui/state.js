@@ -31,7 +31,7 @@ export async function programFromAssessment(item) {
   const levels = {};
   for (const k of LADDERS) levels[k] = old && old.levels ? Math.max(old.levels[k] ?? 0, init[k] ?? 0) : init[k] ?? 0;
   const prog = {
-    start: Date.now(), levels, targets: mobilityTargets(ev, D.tests).map(t => t.target), lowImpact: lowImpact(),
+    start: Date.now(), levels, targets: mobilityTargets(ev, D.tests).map(t => t.target), lowImpact: lowImpact(), equipment: (S.settings && S.settings.equipment) || [],
     done: old ? old.done || 0 : 0, ratings: {}, levelLog: old ? old.levelLog || [] : [], fromAssessment: item.id,
   };
   await setProgram(prog);
