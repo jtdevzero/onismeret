@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 160" preserveAspectRatio="xMidYMax slice">
 <!-- Saját rajz: lemenő nap csíkokkal, tenger, pálmasziluettek. -->
 <defs><linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe066"/><stop offset=".55" stop-color="#ff8a3d"/><stop offset="1" stop-color="#ff3d7f"/></linearGradient></defs>
-<g transform="translate(300 118)">
+<g transform="translate(352 44) scale(.55)">
 <circle r="58" fill="url(#s)"/>
 <g fill="#2a0f3d" opacity=".55"><rect x="-60" y="10" width="120" height="5"/><rect x="-60" y="22" width="120" height="7"/><rect x="-60" y="36" width="120" height="9"/></g>
 </g>

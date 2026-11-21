@@ -36,6 +36,8 @@ export function parseBackup(text, ctx) {
     parq: s.parq && typeof s.parq === 'object' ? Object.fromEntries(Object.entries(s.parq).filter(([k, v]) => /^[a-z]{2,16}$/.test(k) && typeof v === 'boolean')) : undefined,
     reminder: s.reminder && /^\d{2}:\d{2}$/.test(s.reminder.time || '') ? { time: s.reminder.time } : undefined,
     duration: [0, 15, 25, 35].includes(s.duration) ? s.duration : undefined,
+    theme: ['auto', 'light', 'dark'].includes(s.theme) ? s.theme : undefined,
+    size: ['normal', 'large'].includes(s.size) ? s.size : undefined,
     equipment: Array.isArray(s.equipment) ? s.equipment.filter(e => ['bar', 'band', 'dumbbell'].includes(e)) : undefined,
   });
 

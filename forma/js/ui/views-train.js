@@ -5,11 +5,24 @@ import { D, S, lowImpact } from './data.js';
 import { itemPut } from './store.js';
 import { getProgram, setProgram, latestAssessment } from './state.js';
 import { ROTATION, SESSION_TITLES, LADDERS, RATINGS, effLadder, baseLadder, buildSession, sessionSteps, sessionMinutes, nextKey, weekInfo, laddersOf, exerciseFor, applyRatings, doseFor, fitSession, CYCLE_WEEKS } from '../core/program.js';
-import { figureStrip } from './figure.js';
+import { figureStrip, figureAnim } from './figure.js';
 import { weekStrip } from './views-main.js';
 import { liveCounter } from './live.js';
 
 const SIDE = { left: 'bal oldal', right: 'jobb oldal', both: 'oldalanként' };
+/* rezgés (ha a készülék tudja): edzés közben hang nélkül is jelez */
+const buzz = p => { try { if (navigator.vibrate) navigator.vibrate(p); } catch { /* nem létfontosságú */ } };
+/* Kör alakú visszaszámláló: a gyűrű a hátralévő idő arányában fogy, a szám a közepén. */
+const SVGNS = 'http://www.w3.org/2000/svg';
+function ringClock(clock) {
+  const R = 54, C = 2 * Math.PI * R;
+  const mk = (tag, a) => { const e = document.createElementNS(SVGNS, tag); for (const [k, v] of Object.entries(a)) e.setAttribute(k, String(v)); return e; };
+  const svg = mk('svg', { viewBox: '0 0 120 120', class: 'ring-svg', 'aria-hidden': 'true' });
+  const bg = mk('circle', { cx: 60, cy: 60, r: R, class: 'ring-bg' }), fg = mk('circle', { cx: 60, cy: 60, r: R, class: 'ring-fg', 'stroke-dasharray': C.toFixed(1), 'stroke-dashoffset': '0' });
+  svg.append(bg, fg);
+  const el = h('div', { class: 'ring' }, svg, clock);
+  return { el, set: f => fg.setAttribute('stroke-dashoffset', (C * (1 - Math.max(0, Math.min(1, f)))).toFixed(1)) };
+}
 const doseText = b => (b.seconds ? fmtSec(b.seconds) : b.reps + ' ism.') + (D.ex[b.exercise] && D.ex[b.exercise].perSide ? ' oldalanként' : '') + (b.sets > 1 ? ' × ' + b.sets : '');
 const lvlDots = (level, max) => h('span', { class: 'lvl', role: 'img', 'aria-label': `${level + 1}. szint a ${max}-ből` }, Array.from({ length: max }, (_, i) => h('i', { class: i <= level ? 'on' : '' })));
 
@@ -123,25 +136,28 @@ export async function sessionView(key, onCleanup) {
   function show() {
     if (liveStop) { liveStop(); liveStop = null; }
     const st = steps[at];
+    buzz(st.type === 'rest' ? 60 : [40, 40, 40]);
     bar.value = at; count.textContent = `${at + 1} / ${total} lépés`;
     const nav = h('div', { class: 'row' },
       at > 0 ? btn('Vissza', back, 'small') : null,
       btn('Befejezés most', () => { if (confirm('Befejezed most az edzést? A hátralévő lépések kimaradnak, de az edzés bekerül a naplóba.')) finish(true); }, 'small'));
     const clock = h('div', { class: 'workout-clock', role: 'timer' });
-    const draw = () => { clock.textContent = left >= 60 ? Math.floor(left / 60) + ':' + String(left % 60).padStart(2, '0') : String(left); };
+    const full = st.seconds || 1;
+    const ring = ringClock(clock);
+    const draw = () => { clock.textContent = left >= 60 ? Math.floor(left / 60) + ':' + String(left % 60).padStart(2, '0') : String(left); ring.set(left / full); };
     const run = () => {
       if (running) return;
       running = true;
       timer = setInterval(() => {
         left--; draw();
         if (left === 3) speak('három', voice.checked);
-        if (left <= 0) { beep(660, 120); next(); }
+        if (left <= 0) { beep(660, 120); buzz([120, 60, 120]); next(); }
       }, tickMs());
     };
     if (st.type === 'rest') {
       const after = steps[at + 1];
       left = st.seconds; draw();
-      clear(stage).append(card(h('p', { class: 'workout-kicker' }, 'Pihenő'), clock,
+      clear(stage).append(card(h('p', { class: 'workout-kicker' }, 'Pihenő'), ring.el,
         after ? h('p', null, 'Következik: ', h('strong', null, D.ex[after.exercise].name)) : null,
         h('div', { class: 'row' }, btn('Pihenő kihagyása', next, 'primary'))), nav);
       speak('Pihenő', voice.checked);
@@ -159,23 +175,33 @@ export async function sessionView(key, onCleanup) {
       const go = btn('Indítás', () => { go.hidden = true; pause.hidden = false; run(); }, 'primary');
       const pause = btn('Szünet', () => { if (running) { stop(); pause.textContent = 'Folytatás'; } else { pause.textContent = 'Szünet'; run(); } });
       pause.hidden = true;
-      clear(stage).append(card(head, st.side ? h('p', { class: 'badge' }, SIDE[st.side]) : null, figureStrip(D.figures[ex.figure], true), clock, points,
+      clear(stage).append(card(head, st.side ? h('p', { class: 'badge' }, SIDE[st.side]) : null, figureAnim(D.figures[ex.figure], { compact: true }), ring.el, points,
         h('div', { class: 'row' }, go, pause, btn('Kész, tovább', next)), swap, more), nav);
       speak(ex.name + (st.side ? ', ' + SIDE[st.side] : '') + ', ' + st.seconds + ' másodperc', voice.checked);
     } else {
       const live = st.part === 'main' ? liveCounter(ex.id, { startLabel: 'Számolj kamerával' }) : null;
       if (live) liveStop = live.stop;
-      clear(stage).append(card(head, figureStrip(D.figures[ex.figure], true), h('div', { class: 'workout-clock' }, String(st.reps)),
+      clear(stage).append(card(head, figureAnim(D.figures[ex.figure], { compact: true }), h('div', { class: 'workout-clock reps' }, String(st.reps)),
         h('p', { class: 'workout-unit' }, 'ismétlés' + (st.side === 'both' ? ' oldalanként' : '')), points,
         h('div', { class: 'row' }, btn('Kész, tovább', next, 'primary')), swap,
         live ? h('details', { class: 'live-box' }, h('summary', null, 'Számolás kamerával'), live.el) : null, more), nav);
       speak(ex.name + ', ' + st.reps + ' ismétlés' + (st.side === 'both' ? ' oldalanként' : ''), voice.checked);
     }
   }
+  /* lapozás: balra húzva tovább, jobbra húzva vissza (az értékelésnél nem) */
+  let sx = null, sy = null;
+  stage.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse') { sx = e.clientX; sy = e.clientY; } });
+  stage.addEventListener('pointerup', e => {
+    if (sx == null || finished) return;
+    const dx = e.clientX - sx, dy = e.clientY - sy; sx = null;
+    if (Math.abs(dx) < 70 || Math.abs(dy) > Math.abs(dx) * 0.6 || stage.querySelector('.rate')) return;
+    if (dx < 0) next(); else back();
+  });
   show();
   return page(session.title,
     h('p', { class: 'muted' }, `Kb. ${sessionMinutes(steps)} perc · ${session.blocks.length} gyakorlat` + (session.week.deload ? ' · könnyített hét' : '') + (light ? ' · könnyített edzés, értékelés nélkül' : '') + (session.fit ? ` · ${session.fit.target} perces keretre igazítva` : '')),
     bar, h('div', { class: 'row tight workout-meta' }, count, h('label', { class: 'check' }, voice, h('span', null, 'Hangos bemondás'))),
+    h('p', { class: 'small muted swipe-hint' }, 'Tipp: balra húzva a következő lépésre ugrasz, jobbra húzva vissza.'),
     note('Ha valami fáj, hagyd ki, vagy válts könnyebbre. Szédülés vagy mellkasi panasz esetén azonnal állj meg.', 'small'),
     stage);
 }
@@ -189,7 +215,7 @@ export async function exerciseView(id, onCleanup) {
   const dose = ex.dose.reps ? `${ex.dose.reps[0]}–${ex.dose.reps[1]} ismétlés` : `${ex.dose.seconds[0]}–${ex.dose.seconds[1]} másodperc`;
   return page(ex.name,
     h('p', { class: 'muted' }, D.exercises.typeNames[ex.type] + ' · ' + dose + (ex.perSide ? ' oldalanként' : '') + (ex.impact ? ' · ugrásos' : '')),
-    card(h('h2', null, 'Hogyan csináld'), figureStrip(D.figures[ex.figure]), h('p', null, ex.how), h('h3', null, 'Három dolog, amire figyelj'), list(ex.points), videoSearch(ex)),
+    card(h('h2', null, 'Hogyan csináld'), figureAnim(D.figures[ex.figure]), figureStrip(D.figures[ex.figure], true), h('p', null, ex.how), h('h3', null, 'Három dolog, amire figyelj'), list(ex.points), videoSearch(ex)),
     live ? card(h('h2', null, 'Számolás és formaellenőrzés kamerával'), live.el) : null,
     lad ? card(h('h2', null, D.exercises.ladders[ex.ladder]), h('p', { class: 'small muted' }, 'A gyakorlatsor szintjei, a legkönnyebbtől:'),
       h('ol', null, lad.map(e => h('li', null, e.id === id ? h('strong', null, e.name) : link('#/ex/' + e.id, e.name), e.impact ? h('span', { class: 'muted small' }, ' · ugrásos') : null)))) : null,

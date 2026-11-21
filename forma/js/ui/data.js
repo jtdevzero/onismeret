@@ -27,3 +27,10 @@ export async function saveSettings(patch) {
 }
 export const profile = () => (S.settings && S.settings.profile) || {};
 export const lowImpact = () => !!(S.settings && S.settings.lowImpact);
+
+/* Megjelenés: téma (auto / világos / sötét) és betűméret, a gyökérelem adatattribútumaival. */
+export function applyLook(st = S.settings || {}) {
+  const r = document.documentElement;
+  if (st.theme === 'light' || st.theme === 'dark') r.dataset.theme = st.theme; else delete r.dataset.theme;
+  if (st.size === 'large') r.dataset.size = 'large'; else delete r.dataset.size;
+}
