@@ -13,7 +13,7 @@ Telefonra telepíthető webapp. Felméri, hol tartasz a korosztályodhoz képest
 
 - A normák **egy része becsült** (`"quality": "B"` a `data/norms.json`-ban): a fekvőtámasz és az ülve előrenyúlás CSEP-norma, a többi több forrásból becsült érték. Az app ezt tesztenként jelzi.
 - A normákat, a teszteket és a gyakorlatokat **szakember még nem lektorálta** (`"reviewed": false`).
-- 34 gyakorlathoz van pálcikafigurás ábra (egy részük a Kanyarból). Ábra nélkül maradt, ami bútort igényel (asztal, szék), és néhány oldalt fekvő vagy szemből értelmezhető gyakorlat.
+- 53 gyakorlatból 41-hez van pálcikafigurás ábra (egy részük a Kanyarból). Ábra nélkül maradt, ami bútort igényel (asztal, szék), és néhány oldalt fekvő vagy szemből értelmezhető gyakorlat.
 - Nincs benne: kamerás ismétlésszámlálás (a Kanyar pózbecslőjével ez a következő lépés lehet), szinkron több eszköz között, AI-edző.
 - Nem orvosi eszköz.
 
