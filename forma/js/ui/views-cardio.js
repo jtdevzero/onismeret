@@ -29,6 +29,7 @@ export async function cardioView() {
       h('div', { class: 'goal' }, h('progress', { max: 100, value: week.pct, 'aria-label': `Heti kardiócél: ${week.pct}%` }),
         h('p', null, h('strong', null, `${week.equivalent} / ${week.goal} perc`), h('span', { class: 'muted small' }, ' (az intenzív perc duplán számít, a WHO ajánlása szerint)'))),
       h('p', null, plan.text), plan.left ? h('p', { class: 'small muted' }, `Ezen a héten még ${plan.left} perc van hátra.`) : h('p', { class: 'small' }, 'Megvan a heti cél. 🎉')),
+    card(h('h2', null, 'Futóprogram nulláról 5 km-ig'), h('p', null, '9 hét, hetente 3 alkalom: séta–futás intervallumokkal jutsz el a 30 perc folyamatos futásig. Hangosan vezet, és magától naplóz.'), h('div', { class: 'row' }, link('#/run', 'Futóprogram', 'btn primary'))),
     card(h('h2', null, 'A pulzustartományaid'),
       zones.length ? h('ul', { class: 'rows' }, zones.map(z => h('li', null, h('span', { class: 'log-item' }, h('strong', null, z.name), h('span', { class: 'muted small' }, z.what)), h('span', { class: 'badge mid' }, `${z.lo}–${z.hi}`)))) : null,
       h('p', { class: 'small muted' }, `Becsült maximális pulzus: ${maxHr(p.age) ?? '–'} ütés/perc (Tanaka-képlet). ` + (zones[0] && zones[0].method === 'reserve' ? `A felmérésben megadott nyugalmi pulzusod (${rhr}) alapján, pulzustartalékkal számolva.` : 'Nyugalmi pulzus nélkül a maximum százalékában; a felmérés alapadataival pontosabb.')),

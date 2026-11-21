@@ -128,7 +128,16 @@ export function liveCounter(exerciseId, opts = {}) {
     const got = frames; frames = [];
     if (!evaluate) return;
     const r = analyzeExercise(got, { aspect, exercise: exerciseId });
-    clear(status).append(feedback(r));
+    /* mérési adat a küszöbök hangolásához: csak testpontok, kép nélkül; a telefonon marad, amíg te el nem küldöd */
+    const data = () => JSON.stringify({ app: 'forma', kind: 'pose-data', version: 1, exercise: exerciseId, aspect, recorded: new Date().toISOString(),
+      result: { reps: r.reps ?? null, holdSeconds: r.holdSeconds ?? null, checks: r.checks || [] },
+      frames: got.map(f => ({ t: Math.round(f.t * 1000) / 1000, lm: f.lm ? f.lm.map(p => p.map(v => Math.round(v * 1000) / 1000)) : null })) });
+    const dl = h('button', { type: 'button', class: 'btn small', onclick: () => {
+      const url = URL.createObjectURL(new Blob([data()], { type: 'application/json' }));
+      const a = h('a', { href: url, download: `forma-meres-${exerciseId}.json` });
+      document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 2000);
+    } }, 'Mérési adat letöltése');
+    clear(status).append(feedback(r), got.length ? h('div', { class: 'row' }, dl, h('span', { class: 'small muted' }, 'Testpontok kép nélkül, a hangoláshoz. Csak akkor kerül bárhová, ha te elküldöd.')) : null);
     if (opts.onDone) opts.onDone(r);
   }
 

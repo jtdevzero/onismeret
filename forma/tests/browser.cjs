@@ -228,6 +228,7 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     const v = Number(await page.locator('#val').inputValue());
     assert.ok(Math.abs(v - 15) <= 1, 'mért érték: ' + v);
     assert.match(await text(), /Teljes felállás/);
+    assert.equal(await page.getByRole('button', { name: 'Mérési adat letöltése' }).count(), 1);
     await shot('camera-result');
   });
 
@@ -319,10 +320,48 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     await shot('swap');
   });
 
+  await step('edzésidő: 15 percre állítva a mai edzés belefér', async () => {
+    await go(page, '#/settings');
+    await page.getByText('15 perc', { exact: true }).click();
+    await page.waitForFunction(async () => (await (await import('./js/ui/store.js')).kvGet('settings')).duration === 15);
+    await go(page, '#/');
+    const m = (await text()).match(/Kb\. (\d+) perc/);
+    assert.ok(m && Number(m[1]) <= 15, 'kezdőlap: ' + (m && m[1]));
+    await go(page, '#/session/strengthC');
+    assert.match(await text(), /15 perces keretre igazítva/);
+  });
+
+  await step('futóprogram: vezetett intervallumok, leállítás naplóz, de nem léptet', async () => {
+    /* a visszatöltés után az oldal újratöltődött: a gyorsított időzítőt újra be kell állítani */
+    await page.evaluate(async () => { (await import('./js/ui/widgets.js')).setTick(15); });
+    await go(page, '#/run');
+    assert.match(await text(), /1\. hét \/ 9, 1\. alkalom/);
+    assert.match(await text(), /8 × \(1 perc futás, 1,5 perc séta\)/);
+    await page.getByRole('button', { name: 'Indítás' }).click();
+    await page.waitForFunction(() => /Futás · 2\. szakasz/i.test(document.getElementById('main').textContent), null, { timeout: 30000 });
+    await shot('run');
+    await page.getByRole('button', { name: 'Befejezés most' }).click();
+    await page.waitForFunction(() => /Leállítva/.test(document.getElementById('main').innerText));
+    const run = await page.evaluate(async () => (await import('./js/ui/views-run.js')).getRun());
+    assert.deepEqual(run, { week: 1, day: 1, done: false });
+    const last = await page.evaluate(async () => (await (await import('./js/ui/store.js')).itemsAll('cardio'))[0]);
+    assert.equal(last.type, 'run'); assert.equal(last.partial, true);
+  });
+
+  await step('súlyzó: az eszközök közt bejelölve serleg guggolás kerül a programba', async () => {
+    await go(page, '#/settings');
+    await page.getByText(/Kettlebell vagy kézisúlyzó/).click();
+    await page.getByRole('button', { name: 'Eszközök mentése' }).click();
+    await page.waitForFunction(async () => ((await (await import('./js/ui/state.js')).getProgram()).equipment || []).includes('dumbbell'));
+    await go(page, '#/program');
+    assert.match(await text(), /Serleg guggolás|Hátralépő kitörés súlyzóval|Bolgár guggolás súlyzóval/);
+    assert.match(await text(), /Húzódzkodás rúdon/, 'a rúd elsőbbséget élvez a húzásnál');
+  });
+
   await step('akadálymentesség (axe, WCAG 2 A/AA): a fő képernyőkön nincs hiba', async () => {
     const axe = fs.readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
     const found = [];
-    for (const hash of ['#/', '#/assess', '#/test/pushup', '#/test/deep_squat', '#/test/vitals', '#/result', '#/program', '#/session/mobility', '#/ex/squat', '#/log', '#/settings', '#/cardio', '#/check/strengthA', '#/ex/pull_up', '#/progress', '#/mini']) {
+    for (const hash of ['#/', '#/assess', '#/test/pushup', '#/test/deep_squat', '#/test/vitals', '#/result', '#/program', '#/session/mobility', '#/ex/squat', '#/log', '#/settings', '#/cardio', '#/check/strengthA', '#/ex/pull_up', '#/progress', '#/mini', '#/run']) {
       await go(page, hash);
       /* a Playwright evaluate-je nem esik a lap CSP-je alá, így beágyazott szkript nélkül töltjük be */
       await page.evaluate(src => { if (!window.axe) (0, eval)(src); }, axe).catch(() => {});

@@ -7,10 +7,18 @@ export const SESSION_TITLES = {
   strengthA: 'Erő A: guggolás és nyomás', strengthB: 'Erő B: egy láb és húzás', strengthC: 'Erő C: teljes test',
   speedA: 'Gyorsaság A: ugrás és lábmunka', speedB: 'Gyorsaság B: intervallum', mobility: 'Mobilitás és egyensúly',
 };
-export const LADDERS = ['push', 'squat', 'lunge', 'hinge', 'pull', 'pull_band', 'pull_bar', 'core', 'side', 'power', 'speed', 'balance'];
-/* Húzás eszköz szerint: rúd > gumiszalag > eszköz nélkül. A többi gyakorlatsor eszköz nélküli. */
-export const EQUIPMENT = [['bar', 'Húzódzkodó rúd (ajtókeretbe vagy falra szerelt)'], ['band', 'Gumiszalag (erősítő szalag)']];
-export const pullLadder = (equipment = []) => (equipment.includes('bar') ? 'pull_bar' : equipment.includes('band') ? 'pull_band' : 'pull');
+export const LADDERS = ['push', 'squat', 'squat_db', 'lunge', 'hinge', 'hinge_db', 'pull', 'pull_band', 'pull_db', 'pull_bar', 'core', 'side', 'power', 'speed', 'balance'];
+export const EQUIPMENT = [['bar', 'Húzódzkodó rúd (ajtókeretbe vagy falra szerelt)'], ['dumbbell', 'Kettlebell vagy kézisúlyzó'], ['band', 'Gumiszalag (erősítő szalag)']];
+/* Eszközös változatok, elsőbbségi sorrendben: ha megvan az eszköz, az alap gyakorlatsor helyett ez fut. */
+const EQUIP_LADDERS = {
+  squat: [['dumbbell', 'squat_db']],
+  hinge: [['dumbbell', 'hinge_db']],
+  pull: [['bar', 'pull_bar'], ['dumbbell', 'pull_db'], ['band', 'pull_band']],
+};
+export const effLadder = (ladder, equipment = []) => ((EQUIP_LADDERS[ladder] || []).find(([e]) => equipment.includes(e)) || [null, ladder])[1];
+export const pullLadder = (equipment = []) => effLadder('pull', equipment);
+/* az alap gyakorlatsor, amelyiknek a helyére egy eszközös lép (a szintek listájához) */
+export const baseLadder = l => Object.keys(EQUIP_LADDERS).find(b => EQUIP_LADDERS[b].some(([, x]) => x === l)) || l;
 export const CYCLE_WEEKS = 6; /* 5 hét terhelés, a 6. könnyített hét, utána újramérés */
 
 const DAY = 86400000;
@@ -39,6 +47,9 @@ export function initialLevels(results = {}, evaluation = { tests: {}, areas: {} 
   L.pull = [0, 0, 1, 2, 3][L.push];
   L.pull_band = Math.min(2, L.pull);
   L.pull_bar = L.pull >= 2 ? 1 : 0;
+  L.pull_db = Math.min(2, L.pull);
+  L.squat_db = Math.min(2, Math.max(0, L.squat - 1));
+  L.hinge_db = Math.min(2, L.hinge);
   L.core = step(r('plank'), [30, 60, 120]) ?? 1;
   L.side = [0, 1, 1, 2][L.core];
   const bj = pct('broad_jump');
@@ -118,7 +129,7 @@ export function buildSession(key, state, exercises, now = Date.now(), opts = {})
   if (warm && key !== 'mobility') blocks.push({ exercise: warm.id, sets: 1, seconds: warm.dose.seconds[key.startsWith('speed') ? 1 : 0], rest: 0, part: 'warmup' });
   blocks.push(...mobilityBlock(exercises, state.targets || [], key === 'mobility'));
   for (const [ladder, sets0, rest] of PLAN[key] || []) {
-    const eff = ladder === 'pull' ? pullLadder(state.equipment) : ladder;
+    const eff = effLadder(ladder, state.equipment);
     const ex = exerciseFor(ladders, eff, (state.levels || {})[eff], state.lowImpact);
     if (!ex) continue;
     const sets = wk.deload || opts.light ? Math.max(1, sets0 - 1) : sets0;
@@ -195,4 +206,36 @@ export function streak(dates, now = Date.now()) {
   let n = 0;
   while (set.has(d)) { n++; d = day(d - DAY / 2); }
   return n;
+}
+
+/* Időkeret: az edzés igazítása a választott hosszhoz (15 / 25 / 35 perc). Rövidítéskor sorrendben: rövidebb
+   mobilitás, rövidebb bemelegítés, szuperszett-szerű rövidebb pihenő, kevesebb kör (legalább 2), végül a sor
+   végéről a kevésbé fontos gyakorlatok. Hosszabbításkor a fő gyakorlatok egy kört kapnak (legfeljebb 4).
+   → az új edzés (a bemenetet nem módosítja), fit: { target, minutes } */
+export const DURATIONS = [[0, 'Ahogy a program adja'], [15, '15 perc'], [25, '25 perc'], [35, '35 perc']];
+export function fitSession(session, exById, target) {
+  if (!target) return session;
+  const s = { ...session, blocks: session.blocks.map(b => ({ ...b })) };
+  const mins = () => sessionMinutes(sessionSteps(s, exById));
+  const main = () => s.blocks.filter(b => b.part === 'main');
+  const steps = [
+    () => { /* mobilitás: a két napi alapgyakorlat és egy célzott marad */
+      const mob = s.blocks.filter(b => b.part === 'mobility');
+      if (mob.length <= 3) return false;
+      const keep = new Set(mob.slice(0, 3));
+      s.blocks = s.blocks.filter(b => b.part !== 'mobility' || keep.has(b));
+      return true;
+    },
+    () => { const w = s.blocks.find(b => b.part === 'warmup' && b.seconds > 90); if (!w) return false; w.seconds = 90; return true; },
+    () => { let ch = false; for (const b of main()) if (b.rest > 30) { b.rest = Math.max(20, Math.round(b.rest * 0.6 / 5) * 5); ch = true; } return ch; },
+    () => { const b = [...main()].reverse().find(x => x.sets > 2); if (!b) return false; b.sets--; return true; },
+    () => { const m = main(); if (m.length <= 2) return false; s.blocks = s.blocks.filter(b => b !== m[m.length - 1]); return true; },
+    () => { const b = [...main()].reverse().find(x => x.sets > 1); if (!b) return false; b.sets--; return true; },
+  ];
+  let guard = 0;
+  while (mins() > target && guard++ < 40) {
+    if (!steps.some(fn => fn())) break;
+  }
+  if (target >= 35) for (const b of main()) { if (mins() + 2 > target) break; if (b.sets < 4) b.sets++; }
+  return { ...s, fit: { target, minutes: mins() } };
 }

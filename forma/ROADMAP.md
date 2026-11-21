@@ -6,18 +6,18 @@ Méret: **K** = kicsi (egy commit), **K+** = közepes, **N** = nagy (több lép�
 ## A. Mérés és szakmai pontosság
 
 1. **Szakmai lektorálás csomag (N, külső)** – a normák, a tesztleírások és a gyakorlatok összegyűjtése egy átnézhető dokumentumba gyógytornásznak vagy edzőnek; a visszajelzés után `reviewed: true`. *Kell hozzá: egy szakember.*
-2. **Pontosabb normák forrásokból (K+)** – a „B” minőségű normák (plank, távolugrás, egylábas állás, lépcsőteszt) felülvizsgálata publikált referenciatáblákkal; a forrás tételesen a `norms.json`-ban.
-3. **Kamerás elemzés kalibrálása valódi felvételen (K+)** – „mérési adat letöltése” gomb (testpontok videó nélkül), ebből a küszöbök hangolása; a felhasználó önként küldi el, az app semmit nem küld magától.
+2. **◐ Pontosabb normák forrásokból (K+)** – a plank 18–29-es sávja forrásból pontosítva; az egylábas állásnál a források protokollja eltér, a többinél folytatandó. – a „B” minőségű normák (plank, távolugrás, egylábas állás, lépcsőteszt) felülvizsgálata publikált referenciatáblákkal; a forrás tételesen a `norms.json`-ban.
+3. **◐ Kamerás elemzés kalibrálása valódi felvételen (K+)** – a mérési adat letöltése kész; a hangoláshoz valódi felvételek kellenek. – „mérési adat letöltése” gomb (testpontok videó nélkül), ebből a küszöbök hangolása; a felhasználó önként küldi el, az app semmit nem küld magától.
 4. **✓ Rövid félidős mérés (K)** – a 3. héten 5 perces mini-teszt (fekvőtámasz, plank, egylábas állás), hogy ne csak 6 hetente lásd a fejlődést.
 5. **✓ Testösszetétel-követés (K)** – derékbőség és testsúly hetente; a derékbőség a fittségi kor képletében is benne van, így a változás azonnal látszik.
 
 ## B. Program és edzés
 
-6. **Szuperszettek és időbeosztás (K+)** – a választott időkerethez (15 / 25 / 35 perc) igazított edzés: párosított gyakorlatok, rövidebb pihenő.
+6. **✓ Szuperszettek és időbeosztás (K+)** – a választott időkerethez (15 / 25 / 35 perc) igazított edzés: párosított gyakorlatok, rövidebb pihenő.
 7. **Sérülés- és panaszmód (K+)** – „fáj a térdem / derekam / vállam” beállítás: a terhelő gyakorlatok helyett kímélő változatok, és több célzott mobilitás. *A szakmai lektorálás előtt csak óvatos, általános szabályokkal.*
 8. **✓ Gyakorlatcsere (K)** – egy gyakorlat helyett a sor egy azonos szintű másik változata (unalom, helyhiány, eszköz).
-9. **Súlyzós bővítés (K+)** – kettlebell / kézisúlyzó gyakorlatsorok (goblet guggolás, evezés, román felhúzás, swing), az eszközválasztóban.
-10. **Futóprogram (K+)** – nulláról 5 km-ig, 8–10 hetes szakaszolt terv a kardió oldalon (séta–futás intervallumok), a pulzuszónákkal.
+9. **✓ Súlyzós bővítés (K+)** – kettlebell / kézisúlyzó gyakorlatsorok (goblet guggolás, evezés, román felhúzás, swing), az eszközválasztóban.
+10. **✓ Futóprogram (K+)** – nulláról 5 km-ig, 8–10 hetes szakaszolt terv a kardió oldalon (séta–futás intervallumok), a pulzuszónákkal.
 11. **Időszakolás hosszabb távra (N)** – 6 hetes ciklusok egymás után eltérő fókusszal (alapozás → erő → robbanékonyság), a felmérés gyenge pontjai szerint.
 
 ## C. Motiváció és visszajelzés
@@ -38,6 +38,7 @@ Méret: **K** = kicsi (egy commit), **K+** = közepes, **N** = nagy (több lép�
 ## Javasolt sorrend
 
 - **Kész:** 4, 5, 8, 12, 13
-- **Következő:** 6, 9, 10, 2, 3
+- **Kész:** 6, 9, 10; részben: 2, 3
+- **Következő:** 14, 15, 19, 16, 20
 - **Szakemberrel:** 1, 7
 - **Később, egyeztetés után:** 11, 14–20

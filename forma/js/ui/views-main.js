@@ -4,7 +4,7 @@ import { page, card, btn, link, note, choice, list, levelBadge, sized } from './
 import { D, S, saveSettings, profile } from './data.js';
 import { exportAll, wipeAll, restoreAll } from './store.js';
 import { parseBackup } from '../core/backup.js';
-import { RATINGS, LADDERS, EQUIPMENT } from '../core/program.js';
+import { RATINGS, LADDERS, EQUIPMENT, DURATIONS, fitSession } from '../core/program.js';
 import { getProgram, setProgram, latestAssessment, workouts, assessments, evaluateItem } from './state.js';
 import { ROTATION, SESSION_TITLES, buildSession, sessionSteps, sessionMinutes, nextKey, weekInfo, reassessDue, streak } from '../core/program.js';
 import { LEVEL_NAMES } from '../core/score.js';
@@ -90,7 +90,7 @@ export async function homeView() {
   }
   const kids = [];
   if (prog) {
-    const key = nextKey(prog), session = buildSession(key, prog, D.exercises.exercises), steps = sessionSteps(session, D.ex);
+    const key = nextKey(prog), session = fitSession(buildSession(key, prog, D.exercises.exercises), D.ex, S.settings.duration || 0), steps = sessionSteps(session, D.ex);
     const doneToday = ws.some(w => new Date(w.date).toDateString() === new Date().toDateString());
     const wk = weekInfo(prog.start);
     kids.push(h('section', { class: 'hero' }, h('h1', null, doneToday ? 'Mai edzés kész' : 'Mai edzés'),
@@ -227,6 +227,9 @@ export async function settingsView() {
         toast('Elmentettem.');
       }, 'primary')),
       h('p', { class: 'small muted' }, 'A korábbi felmérések a felméréskori életkorral maradnak meg.')),
+    card(h('h2', null, 'Edzésidő'),
+      h('p', { class: 'small muted' }, 'Ha kevés az időd, az edzést a választott hosszhoz igazítom: rövidebb mobilitás és pihenő, kevesebb kör. 35 percnél a fő gyakorlatok egy kört kapnak.'),
+      choice('dur', DURATIONS, S.settings.duration || 0, async v => { await saveSettings({ duration: v }); toast('Elmentettem. A következő edzéstől érvényes.'); }, 'Edzésidő')),
     card(h('h2', null, 'Eszközeid'),
       h('p', { class: 'small muted' }, 'A húzógyakorlatok ehhez igazodnak: rúddal húzódzkodás felé haladsz, gumiszalaggal evezéssel; ha egyik sincs, asztal alatti húzással.'),
       eqBoxes,

@@ -340,3 +340,4 @@ ul.badges { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
 .badge-item.earned .badge-ic { color: var(--sun); text-shadow: 0 0 10px color-mix(in srgb, var(--sun) 60%, transparent); }
 .log-item progress { margin: 4px 0; }
 .swap { margin-top: 8px; }
+.workout-clock.run { color: var(--teal); text-shadow: 0 0 22px color-mix(in srgb, var(--teal) 45%, transparent); }

@@ -1,10 +1,10 @@
 /* Program, vezetett edzés értékeléssel és szintlépéssel, gyakorlatleírás. */
 import { h, clear, fmtSec, uid, toast } from './dom.js';
 import { page, card, btn, link, note, list, speak, beep, tickMs, videoSearch } from './widgets.js';
-import { D, lowImpact } from './data.js';
+import { D, S, lowImpact } from './data.js';
 import { itemPut } from './store.js';
 import { getProgram, setProgram, latestAssessment } from './state.js';
-import { ROTATION, SESSION_TITLES, LADDERS, RATINGS, pullLadder, buildSession, sessionSteps, sessionMinutes, nextKey, weekInfo, laddersOf, exerciseFor, applyRatings, doseFor, CYCLE_WEEKS } from '../core/program.js';
+import { ROTATION, SESSION_TITLES, LADDERS, RATINGS, effLadder, baseLadder, buildSession, sessionSteps, sessionMinutes, nextKey, weekInfo, laddersOf, exerciseFor, applyRatings, doseFor, fitSession, CYCLE_WEEKS } from '../core/program.js';
 import { figureStrip } from './figure.js';
 import { weekStrip } from './views-main.js';
 import { liveCounter } from './live.js';
@@ -22,7 +22,7 @@ export async function programView() {
   }
   const wk = weekInfo(prog.start), key = nextKey(prog), lad = laddersOf(D.exercises.exercises);
   const sessions = [...new Set(ROTATION)].map(k => {
-    const s = buildSession(k, prog, D.exercises.exercises), steps = sessionSteps(s, D.ex);
+    const s = fitSession(buildSession(k, prog, D.exercises.exercises), D.ex, S.settings.duration || 0), steps = sessionSteps(s, D.ex);
     return h('details', { class: 'card' }, h('summary', null, h('h2', null, s.title), h('span', { class: 'badge' + (k === key ? ' good' : '') }, k === key ? 'Következik' : sessionMinutes(steps) + ' perc')),
       h('ol', { class: 'blocks' }, s.blocks.map(b => h('li', null, link('#/ex/' + b.exercise, D.ex[b.exercise].name), h('span', { class: 'muted small' }, ' · ' + doseText(b) + (b.part === 'mobility' ? ' · mobilitás' : ''))))),
       h('div', { class: 'row' }, link('#/check/' + k, k === key ? 'Indítás' : 'Ezt csinálom inkább', 'btn' + (k === key ? ' primary' : ' small'))));
@@ -33,7 +33,7 @@ export async function programView() {
     card(h('h2', null, 'Forgó rend'), weekStrip(prog), h('p', { class: 'small muted' }, '3 erőnap, 2 gyorsasági nap és 2 mobilitásnap. Minden edzés napi mobilitással kezdődik. Az ismétlésszám hétről hétre nő, a gyakorlat pedig nehezebbre vált, ha kétszer egymás után könnyűnek értékeled.')),
     sessions,
     card(h('h2', null, 'Állóképesség'), h('p', null, 'A forgó rend mellé heti 150 perc kardió: tempós séta, kocogás vagy kerékpár, a pulzustartományodban.'), h('div', { class: 'row' }, link('#/cardio', 'Kardió napló és pulzuszónák', 'btn'))),
-    card(h('h2', null, 'Szintjeid'), h('ul', { class: 'rows' }, LADDERS.filter(l => !l.startsWith('pull') || l === pullLadder(prog.equipment)).map(l => {
+    card(h('h2', null, 'Szintjeid'), h('ul', { class: 'rows' }, LADDERS.filter(l => effLadder(baseLadder(l), prog.equipment) === l).map(l => {
       const ex = exerciseFor(lad, l, prog.levels[l], prog.lowImpact);
       return ex ? h('li', null, h('span', { class: 'log-item' }, h('strong', null, D.exercises.ladders[l]), link('#/ex/' + ex.id, ex.name)), lvlDots(prog.levels[l] ?? 0, lad[l].length)) : null;
     }))));
@@ -46,7 +46,7 @@ export async function sessionView(key, onCleanup) {
   const light = mode === 'light';
   key = k0;
   if (!prog || !SESSION_TITLES[key]) return page('Nincs ilyen edzés', link('#/program', '← Program', 'btn'));
-  const session = buildSession(key, prog, D.exercises.exercises, Date.now(), { light }), steps = sessionSteps(session, D.ex), total = steps.length, started = Date.now();
+  const session = fitSession(buildSession(key, prog, D.exercises.exercises, Date.now(), { light }), D.ex, S.settings.duration || 0), steps = sessionSteps(session, D.ex), total = steps.length, started = Date.now();
   const ratings = {};
   let at = 0, left = 0, timer = null, running = false, wake = null, finished = false;
   const voice = h('input', { type: 'checkbox', checked: true });
@@ -174,7 +174,7 @@ export async function sessionView(key, onCleanup) {
   }
   show();
   return page(session.title,
-    h('p', { class: 'muted' }, `Kb. ${sessionMinutes(steps)} perc · ${session.blocks.length} gyakorlat` + (session.week.deload ? ' · könnyített hét' : '') + (light ? ' · könnyített edzés, értékelés nélkül' : '')),
+    h('p', { class: 'muted' }, `Kb. ${sessionMinutes(steps)} perc · ${session.blocks.length} gyakorlat` + (session.week.deload ? ' · könnyített hét' : '') + (light ? ' · könnyített edzés, értékelés nélkül' : '') + (session.fit ? ` · ${session.fit.target} perces keretre igazítva` : '')),
     bar, h('div', { class: 'row tight workout-meta' }, count, h('label', { class: 'check' }, voice, h('span', null, 'Hangos bemondás'))),
     note('Ha valami fáj, hagyd ki, vagy válts könnyebbre. Szédülés vagy mellkasi panasz esetén azonnal állj meg.', 'small'),
     stage);

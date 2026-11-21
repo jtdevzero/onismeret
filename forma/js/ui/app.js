@@ -7,13 +7,14 @@ import { assessView, testView, resultView } from './views-assess.js';
 import { programView, sessionView, exerciseView } from './views-train.js';
 import { cardioView, checkView } from './views-cardio.js';
 import { progressView, miniView } from './views-progress.js';
+import { runView } from './views-run.js';
 
 const main = document.getElementById('main'), nav = document.getElementById('nav');
 const ROUTES = {
   '': homeView, start: startView, assess: assessView, test: testView, result: resultView,
-  program: programView, session: sessionView, ex: exerciseView, log: logView, settings: settingsView, cardio: cardioView, check: checkView, progress: progressView, mini: miniView,
+  program: programView, session: sessionView, ex: exerciseView, log: logView, settings: settingsView, cardio: cardioView, check: checkView, progress: progressView, mini: miniView, run: runView,
 };
-const TAB = { '': '', assess: 'assess', test: 'assess', result: 'result', program: 'program', session: 'program', ex: 'program', cardio: 'program', check: 'program', progress: 'result', mini: 'result', log: 'log', settings: 'settings' };
+const TAB = { '': '', assess: 'assess', test: 'assess', result: 'result', program: 'program', session: 'program', ex: 'program', cardio: 'program', check: 'program', progress: 'result', mini: 'result', run: 'program', log: 'log', settings: 'settings' };
 let cleanups = [], seq = 0;
 
 async function route() {

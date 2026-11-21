@@ -35,7 +35,8 @@ export function parseBackup(text, ctx) {
     lowImpact: typeof s.lowImpact === 'boolean' ? s.lowImpact : undefined,
     parq: s.parq && typeof s.parq === 'object' ? Object.fromEntries(Object.entries(s.parq).filter(([k, v]) => /^[a-z]{2,16}$/.test(k) && typeof v === 'boolean')) : undefined,
     reminder: s.reminder && /^\d{2}:\d{2}$/.test(s.reminder.time || '') ? { time: s.reminder.time } : undefined,
-    equipment: Array.isArray(s.equipment) ? s.equipment.filter(e => e === 'bar' || e === 'band') : undefined,
+    duration: [0, 15, 25, 35].includes(s.duration) ? s.duration : undefined,
+    equipment: Array.isArray(s.equipment) ? s.equipment.filter(e => ['bar', 'band', 'dumbbell'].includes(e)) : undefined,
   });
 
   let program = null;
@@ -46,7 +47,7 @@ export function parseBackup(text, ctx) {
     program = clean({
       start: p.start, levels: numbers(p.levels, ctx.ladders, 0, 10), ratings,
       targets: Array.isArray(p.targets) ? p.targets.filter(t => typeof t === 'string' && /^[a-z]{3,16}$/.test(t)).slice(0, 10) : [],
-      equipment: Array.isArray(p.equipment) ? p.equipment.filter(e => e === 'bar' || e === 'band') : [],
+      equipment: Array.isArray(p.equipment) ? p.equipment.filter(e => ['bar', 'band', 'dumbbell'].includes(e)) : [],
       lowImpact: !!p.lowImpact, done: num(p.done, 0, 1e6) ?? 0, lastDone: num(p.lastDone, 0, 1e14),
       levelLog: Array.isArray(p.levelLog) ? p.levelLog.filter(c => c && ctx.ladders.includes(c.ladder)).map(c => clean({ ladder: c.ladder, from: num(c.from, 0, 10), to: num(c.to, 0, 10), date: num(c.date, 0, 1e14) })).slice(-100) : [],
       fromAssessment: str(p.fromAssessment),
@@ -83,9 +84,12 @@ export function parseBackup(text, ctx) {
     } else if (it.kind === 'cardio' && (ctx.cardioTypes || []).includes(it.type)) {
       const minutes = num(it.minutes, 1, 600);
       if (minutes === undefined) continue;
-      items.push({ id, kind: 'cardio', date, type: it.type, minutes, intensity: it.intensity === 'vigorous' ? 'vigorous' : 'moderate' });
+      const plan = it.plan && num(it.plan.week, 1, 9) !== undefined && num(it.plan.day, 1, 3) !== undefined ? { week: it.plan.week, day: it.plan.day } : undefined;
+      items.push(clean({ id, kind: 'cardio', date, type: it.type, minutes, intensity: it.intensity === 'vigorous' ? 'vigorous' : 'moderate', plan, partial: it.partial === true ? true : undefined }));
     } else continue;
     seen.add(id);
   }
-  return { ok: true, data: { settings, program, items } };
+  const r = raw.run;
+  const run = r && typeof r === 'object' && num(r.week, 1, 9) !== undefined && num(r.day, 1, 3) !== undefined ? { week: r.week, day: r.day, done: r.done === true } : null;
+  return { ok: true, data: { settings, program, run, items } };
 }

@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { monthGrid, monthSummary } from '../js/core/history.js';
-import { buildSession, initialLevels, pullLadder, laddersOf, LADDERS } from '../js/core/program.js';
+import { buildSession, initialLevels, pullLadder, laddersOf, LADDERS, baseLadder, effLadder } from '../js/core/program.js';
 
 const at = (y, m, d, h = 12) => new Date(y, m, d, h).getTime();
 
@@ -40,8 +40,11 @@ test('eszközök: rúddal húzódzkodás, szalaggal evezés, eszköz nélkül as
   const ex = JSON.parse(readFileSync(new URL('../data/exercises.json', import.meta.url), 'utf8')).exercises;
   assert.equal(pullLadder([]), 'pull'); assert.equal(pullLadder(['band']), 'pull_band'); assert.equal(pullLadder(['band', 'bar']), 'pull_bar');
   const lad = laddersOf(ex);
-  for (const k of ['pull_band', 'pull_bar']) assert.ok(lad[k].every(e => e.equipment), k);
-  for (const k of LADDERS.filter(k => !k.startsWith('pull_'))) assert.ok(lad[k].every(e => !e.equipment), 'eszköz nélküli sor: ' + k);
+  for (const k of LADDERS) {
+    const equip = baseLadder(k) !== k;
+    assert.ok(lad[k].every(e => !!e.equipment === equip), (equip ? 'eszközös' : 'eszköz nélküli') + ' sor: ' + k);
+  }
+  assert.equal(effLadder('squat', ['dumbbell']), 'squat_db'); assert.equal(effLadder('pull', ['dumbbell', 'band']), 'pull_db'); assert.equal(effLadder('core', ['dumbbell']), 'core');
   const L = initialLevels({ pushup: 20 }, { tests: {}, areas: {} }, { sex: 'male' });
   assert.equal(L.pull_bar, 1, 'erős felsőtesttel a negatív húzódzkodásról indul');
   const st = { levels: L, targets: [], start: Date.now() };
