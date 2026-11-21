@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 160" preserveAspectRatio="xMidYMax slice">
+<!-- Saját rajz: lemenő nap csíkokkal, tenger, pálmasziluettek. -->
+<defs><linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe066"/><stop offset=".55" stop-color="#ff8a3d"/><stop offset="1" stop-color="#ff3d7f"/></linearGradient></defs>
+<g transform="translate(300 118)">
+<circle r="58" fill="url(#s)"/>
+<g fill="#2a0f3d" opacity=".55"><rect x="-60" y="10" width="120" height="5"/><rect x="-60" y="22" width="120" height="7"/><rect x="-60" y="36" width="120" height="9"/></g>
+</g>
+<rect y="140" width="400" height="20" fill="#1a0b2e" opacity=".75"/>
+<g fill="#120720">
+<path d="M62 160 C66 120 70 92 80 62 L84 63 C76 92 72 122 70 160 Z"/>
+<path d="M82 62 C66 50 46 52 30 64 C48 56 64 58 80 66 Z"/>
+<path d="M82 62 C70 40 52 34 38 36 C56 42 68 50 79 64 Z"/>
+<path d="M82 62 C92 42 110 36 126 40 C108 44 96 52 85 65 Z"/>
+<path d="M82 62 C100 54 120 58 134 72 C116 64 100 62 84 66 Z"/>
+<path d="M82 62 C80 44 86 30 96 22 C90 36 88 48 85 63 Z"/>
+<path d="M150 160 C152 132 156 112 162 92 L165 93 C160 114 157 134 157 160 Z"/>
+<path d="M163 92 C152 84 138 85 128 93 C140 88 151 89 162 95 Z"/>
+<path d="M163 92 C172 80 186 78 196 82 C184 84 174 89 165 95 Z"/>
+<path d="M163 92 C158 78 148 72 138 72 C150 77 157 84 161 94 Z"/>
+<path d="M163 92 C176 88 188 92 196 102 C184 96 174 94 165 95 Z"/>
+</g>
+</svg>

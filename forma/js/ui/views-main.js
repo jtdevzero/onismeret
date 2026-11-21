@@ -1,0 +1,181 @@
+/* Kezdőképernyő (első indítás), a mai nap, napló és beállítások. */
+import { h, clear, fmtDate, toast } from './dom.js';
+import { page, card, btn, link, note, choice, list, levelBadge, sized } from './widgets.js';
+import { D, S, saveSettings, profile } from './data.js';
+import { exportAll, wipeAll } from './store.js';
+import { getProgram, setProgram, latestAssessment, workouts, assessments, evaluateItem } from './state.js';
+import { ROTATION, SESSION_TITLES, buildSession, sessionSteps, sessionMinutes, nextKey, weekInfo, reassessDue, streak } from '../core/program.js';
+import { LEVEL_NAMES } from '../core/score.js';
+import { buildDailyIcs } from '../core/calendar.js';
+
+export const PARQ = [
+  ['heart', 'Mondta-e valaha orvos, hogy szívbetegséged vagy magas vérnyomásod van?'],
+  ['chest', 'Érzel-e mellkasi fájdalmat nyugalomban, hétköznapi tevékenység közben vagy mozgás közben?'],
+  ['dizzy', 'Előfordult-e az elmúlt egy évben, hogy szédülés miatt elvesztetted az egyensúlyod, vagy elájultál?'],
+  ['chronic', 'Van-e más, orvos által megállapított krónikus betegséged (például cukorbetegség, asztma, csontritkulás)?'],
+  ['meds', 'Szedsz-e rendszeresen gyógyszert valamilyen krónikus betegségre?'],
+  ['joint', 'Van-e olyan csont-, ízületi, izom- vagy ínproblémád, amit a több mozgás rosszabbíthat?'],
+  ['supervised', 'Mondta-e orvos, hogy csak orvosi felügyelet mellett mozoghatsz?'],
+];
+const ageOk = a => Number.isInteger(a) && a >= 18 && a <= 99;
+
+export async function startView() {
+  const st = { age: profile().age ?? null, sex: profile().sex ?? null, parq: { ...((S.settings && S.settings.parq) || {}) }, ok: false };
+  const go = btn('Kezdjük', async () => {
+    const anyYes = PARQ.some(([k]) => st.parq[k] === true);
+    await saveSettings({ accepted: true, profile: { age: st.age, sex: st.sex }, parq: st.parq, lowImpact: anyYes || !!(S.settings && S.settings.lowImpact) });
+    location.hash = '#/';
+  }, 'primary');
+  const warn = h('div', { 'aria-live': 'polite' });
+  const refresh = () => {
+    const answered = PARQ.every(([k]) => typeof st.parq[k] === 'boolean');
+    const anyYes = PARQ.some(([k]) => st.parq[k] === true);
+    clear(warn);
+    if (st.age != null && !ageOk(st.age)) warn.append(note(st.age < 18 ? 'A Forma felnőtteknek készült (18 év fölött). Gyerekeknek és serdülőknek más tesztek és normák kellenek.' : 'Adj meg egy 18 és 99 közötti életkort.', 'warn'));
+    else if (st.age > 69) warn.append(note('70 év fölött a 60–69 évesek normáihoz hasonlítunk, ezért az eredmény csak tájékoztató.', 'warn'));
+    if (anyYes) warn.append(note('Legalább egy kérdésre igent válaszoltál. Mielőtt elkezded a felmérést és az edzést, beszélj az orvosoddal. Az appban kímélő módot kapcsolok be: kimaradnak az ugrások és a terheléses lépcsőteszt.', 'warn'));
+    go.disabled = !(ageOk(st.age) && st.sex && answered && st.ok);
+  };
+  const age = h('input', { type: 'number', inputMode: 'numeric', min: 18, max: 99, value: st.age ?? '', 'aria-describedby': 'age-hint', oninput: () => { st.age = age.value === '' ? null : Number(age.value); refresh(); } });
+  const parq = h('div', null, PARQ.map(([k, q]) => h('fieldset', { class: 'session' },
+    h('legend', { class: 'small' }, q),
+    h('div', { class: 'row tight' }, ...[[false, 'Nem'], [true, 'Igen']].map(([v, t]) =>
+      h('label', { class: 'check' }, h('input', { type: 'radio', name: 'parq-' + k, checked: st.parq[k] === v, onchange: () => { st.parq[k] = v; refresh(); } }), h('span', null, t)))))));
+  const accept = h('label', { class: 'check' }, h('input', { type: 'checkbox', onchange: e => { st.ok = e.target.checked; refresh(); } }),
+    h('span', null, 'Megértettem: a Forma nem orvosi eszköz és nem helyettesít orvosi vizsgálatot. Ha edzés közben fájdalmat, szédülést, mellkasi szorítást vagy szokatlan légszomjat érzek, abbahagyom.'));
+  refresh();
+  return h('div', { class: 'page' },
+    h('section', { class: 'hero' }, h('h1', null, 'Forma'), h('p', { class: 'hero-sub' }, 'Állapotfelmérés és otthoni edzés'),
+      h('p', { class: 'hero-lead' }, 'Hol tartasz a korosztályodhoz képest, és hogyan érheted el, vagy előzheted meg?')),
+    card(h('h2', null, 'Hogyan működik?'), list([
+      'Kb. 25 perces felmérés otthon, eszköz nélkül: mobilitás, hajlékonyság, erő, törzs, gyorsaság, egyensúly, állóképesség.',
+      'Minden eredményt a korod és a nemed szerinti normához mérek, és kiszámolom a becsült fittségi korodat.',
+      'Ebből napi 15–25 perces programot kapsz. Ha egy gyakorlat könnyű, nehezebbre váltok; 6 hetente újramérünk.',
+      'Minden adat a telefonodon marad. Nincs fiók, és nincs szerver.'])),
+    card(h('h2', null, 'Rólad'),
+      h('label', { class: 'field' }, 'Életkor', h('span', { class: 'hint', id: 'age-hint' }, 'A normák korsávonként mások.'), age),
+      h('p', { class: 'small muted' }, 'A normák nemenként különböznek:'),
+      choice('sex', [['male', 'Férfi'], ['female', 'Nő']], st.sex, v => { st.sex = v; refresh(); }, 'Nem')),
+    card(h('h2', null, 'Egészségügyi szűrés'), h('p', { class: 'small muted' }, 'A PAR-Q+ kérdőív alapján. A válaszaid csak a telefonodon tárolódnak.'), parq),
+    card(accept, warn, h('div', { class: 'row' }, go)));
+}
+
+const DAYS = ['H', 'K', 'Sze', 'Cs', 'P', 'Szo', 'V'];
+export function weekStrip(prog) {
+  const pos = (prog.done || 0) % ROTATION.length;
+  return h('div', { class: 'week-strip', role: 'list', 'aria-label': 'A heti forgó rend' }, ROTATION.map((k, i) =>
+    h('div', { class: 'week-day' + (i < pos ? ' done' : i === pos ? ' next' : ''), role: 'listitem', 'aria-label': `${i + 1}. nap: ${SESSION_TITLES[k]}${i < pos ? ', kész' : i === pos ? ', következik' : ''}` },
+      h('b', null, String(i + 1)), h('span', null, k.startsWith('strength') ? 'Erő' : k.startsWith('speed') ? 'Gyors' : 'Mobil'))));
+}
+
+export async function homeView() {
+  const prog = await getProgram(), last = await latestAssessment(), ws = await workouts();
+  const ev = last ? evaluateItem(last) : null;
+  if (!last) {
+    return h('div', { class: 'page' },
+      h('section', { class: 'hero' }, h('h1', null, 'Forma'), h('p', { class: 'hero-sub' }, 'Kezdjük a felméréssel'),
+        h('div', { class: 'hero-next' }, h('h2', null, 'Felmérés, kb. 25 perc'),
+          h('p', null, '13 rövid teszt, egyenként vezetve. Kell hozzá egy szék, egy fal, egy mérőszalag vagy vonalzó, és ha van, egy kb. 30 cm magas lépcsőfok.'),
+          link('#/assess', 'Felmérés indítása', 'btn light'))),
+      card(h('h2', null, 'Mire számíts?'), list(['Bemelegítés után végezd, kipihenten.', 'Részletekben is csinálhatod: az eredmények mentődnek.', 'Ami fáj, azt hagyd ki. Kihagyott teszttel is kapsz eredményt.'])));
+  }
+  const kids = [];
+  if (prog) {
+    const key = nextKey(prog), session = buildSession(key, prog, D.exercises.exercises), steps = sessionSteps(session, D.ex);
+    const doneToday = ws.some(w => new Date(w.date).toDateString() === new Date().toDateString());
+    const wk = weekInfo(prog.start);
+    kids.push(h('section', { class: 'hero' }, h('h1', null, doneToday ? 'Mai edzés kész' : 'Mai edzés'),
+      h('p', { class: 'hero-sub' }, `${wk.week}. hét` + (wk.deload ? ' · könnyített hét' : '') + ` · ${streak(ws.map(w => w.date))} napos sorozat`),
+      h('div', { class: 'hero-next' }, h('h2', null, (doneToday ? 'Holnap: ' : '') + session.title),
+        h('p', null, `Kb. ${sessionMinutes(steps)} perc · ${session.blocks.length} gyakorlat`),
+        h('div', { class: 'row' }, link('#/session/' + key, doneToday ? 'Mehet még egy' : 'Indítás', 'btn light'), link('#/program', 'Program', 'btn small')))));
+    kids.push(card(h('h2', null, 'A heti rend'), weekStrip(prog), h('p', { class: 'small muted' }, 'A rend a teljesített edzések szerint halad: ha kihagysz egy napot, ott folytatod, ahol abbahagytad.')));
+  } else {
+    kids.push(h('section', { class: 'hero' }, h('h1', null, 'Forma'), h('div', { class: 'hero-next' }, h('h2', null, 'Megvan a felmérés'),
+      h('p', null, 'Nézd meg az eredményt, és készítsd el belőle a programodat.'), link('#/result', 'Eredmény és program', 'btn light'))));
+  }
+  if (reassessDue(last.date, prog)) kids.push(note('Eltelt 6 hét az utolsó felmérés óta: ideje újramérni, hogy lásd a fejlődésed, és a program is igazodjon.', 'warn'), h('p', null, link('#/assess', 'Újramérés', 'btn')));
+  const p = profile();
+  kids.push(card(h('div', { class: 'row tight' }, h('h2', null, 'Az állapotod'), h('span', { class: 'muted small' }, fmtDate(last.date))),
+    h('div', { class: 'stat-row' },
+      h('div', { class: 'stat' }, h('span', { class: 'muted' }, 'Fittségi kor'), h('strong', null, ev.fitnessAge != null ? ev.fitnessAge + ' év' : '–'), h('span', { class: 'small muted' }, 'naptári: ' + (last.profile.age ?? p.age) + ' év')),
+      h('div', { class: 'stat' }, h('span', { class: 'muted' }, 'Összesített'), h('strong', null, ev.overall != null ? ev.overall + ' / 100' : '–'), ev.overall != null ? levelBadge(levelKey(ev.overall), LEVEL_NAMES[levelKey(ev.overall)]) : null)),
+    ev.weakest.length ? h('p', { class: 'small' }, 'Most leginkább ezen dolgozunk: ' + ev.weakest.map(a => D.area[a].name.toLowerCase()).join(' és ') + '.') : null,
+    link('#/result', 'Részletes eredmény')));
+  return h('div', { class: 'page' }, kids);
+}
+const levelKey = s => (s >= D.norms.levels.top ? 'top' : s >= D.norms.levels.low ? 'mid' : 'low');
+
+export async function logView() {
+  const ws = await workouts(), as = await assessments();
+  /* az utolsó 8 hét edzésszáma */
+  const DAY = 86400000, now = new Date(); now.setHours(0, 0, 0, 0);
+  const monday = new Date(now); monday.setDate(now.getDate() - ((now.getDay() + 6) % 7));
+  const weeks = Array.from({ length: 8 }, (_, i) => { const s = monday.getTime() - (7 - i) * 7 * DAY; return { s, n: ws.filter(w => w.date >= s && w.date < s + 7 * DAY).length }; });
+  const max = Math.max(7, ...weeks.map(w => w.n));
+  const bars = h('div', { class: 'bars', role: 'img', 'aria-label': 'Edzések hetente az utolsó 8 hétben: ' + weeks.map(w => w.n).join(', ') }, weeks.map((w, i) =>
+    h('div', { class: 'bar-col' }, h('span', { class: 'bar-n' }, w.n ? String(w.n) : ''),
+      h('div', { class: 'bar-track' }, sized(h('div', { class: 'bar' + (w.n ? '' : ' empty') }), 'height', Math.max(4, (w.n / max) * 100))),
+      h('span', { class: 'bar-l' }, i === 7 ? 'e hét' : (7 - i) + ' h'))));
+  let compare = null;
+  if (as.length >= 2) {
+    const first = evaluateItem(as[as.length - 1]), lastE = evaluateItem(as[0]);
+    compare = card(h('h2', null, 'Fejlődés az első felmérés óta'), h('table', { class: 'tests-table' },
+      h('thead', null, h('tr', null, h('th', null, 'Terület'), h('th', null, 'Első'), h('th', null, 'Utolsó'))),
+      h('tbody', null, D.tests.areas.filter(a => first.areas[a.id] || lastE.areas[a.id]).map(a => {
+        const f = first.areas[a.id], l = lastE.areas[a.id], d = f && l ? l.score - f.score : null;
+        return h('tr', null, h('td', null, a.name), h('td', null, f ? String(f.score) : '–'), h('td', null, l ? String(l.score) + (d ? ` (${d > 0 ? '+' : ''}${d})` : '') : '–'));
+      }))),
+      first.fitnessAge != null && lastE.fitnessAge != null ? h('p', { class: 'small' }, `Fittségi kor: ${first.fitnessAge} → ${lastE.fitnessAge} év.`) : null);
+  }
+  return page('Napló',
+    card(h('h2', null, 'Edzések hetente'), bars),
+    compare,
+    card(h('h2', null, 'Felmérések'), as.length ? h('ul', { class: 'rows' }, as.map(a => { const e = evaluateItem(a); return h('li', null, link('#/result/' + a.id, fmtDate(a.date)), h('span', { class: 'muted small' }, (e.overall != null ? e.overall + ' / 100' : '') + (e.fitnessAge != null ? ' · fittségi kor ' + e.fitnessAge : ''))); })) : h('p', { class: 'muted' }, 'Még nincs felmérés.')),
+    card(h('h2', null, 'Edzések'), ws.length ? h('ul', { class: 'rows' }, ws.slice(0, 30).map(w => h('li', null,
+      h('span', { class: 'log-item' }, h('strong', null, SESSION_TITLES[w.key] || w.key), h('span', { class: 'muted small' }, fmtDate(w.date) + ' · ' + w.minutes + ' perc' + (w.partial ? ' · részben' : ''))),
+      w.changes && w.changes.length ? h('span', { class: 'badge good' }, 'Szintlépés') : null))) : h('p', { class: 'muted' }, 'Még nincs edzés.')));
+}
+
+function download(name, text, type) {
+  const url = URL.createObjectURL(new Blob([text], { type }));
+  const a = h('a', { href: url, download: name });
+  document.body.append(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+}
+
+export async function settingsView() {
+  const p = profile();
+  const st = { age: p.age, sex: p.sex };
+  const age = h('input', { type: 'number', inputMode: 'numeric', min: 18, max: 99, value: st.age ?? '', oninput: () => { st.age = Number(age.value); } });
+  const low = h('input', { type: 'checkbox', checked: !!S.settings.lowImpact });
+  const time = h('input', { type: 'time', value: (S.settings.reminder && S.settings.reminder.time) || '07:00' });
+  return page('Beállítások',
+    card(h('h2', null, 'Profil'),
+      h('label', { class: 'field' }, 'Életkor', age),
+      choice('sex-s', [['male', 'Férfi'], ['female', 'Nő']], st.sex, v => { st.sex = v; }, 'Nem'),
+      h('label', { class: 'check' }, low, h('span', null, 'Kímélő mód: ugrások és ugrásos intervallumok nélkül (ízületi panasz, túlsúly, vagy ha az orvos így javasolja)')),
+      h('div', { class: 'row' }, btn('Mentés', async () => {
+        if (!ageOk(st.age)) { toast('Adj meg egy 18 és 99 közötti életkort.'); return; }
+        await saveSettings({ profile: { age: st.age, sex: st.sex }, lowImpact: low.checked });
+        const prog = await getProgram();
+        if (prog) await setProgram({ ...prog, lowImpact: low.checked });
+        toast('Elmentettem.');
+      }, 'primary')),
+      h('p', { class: 'small muted' }, 'A korábbi felmérések a felméréskori életkorral maradnak meg.')),
+    card(h('h2', null, 'Napi emlékeztető'),
+      h('p', null, 'Naptárfájlt kapsz, ami a következő 6 hétben minden nap jelez a választott időpont előtt 10 perccel. A telefon naptára emlékeztet, szerver nélkül.'),
+      h('label', { class: 'field inline' }, 'Időpont', time),
+      h('div', { class: 'row' }, btn('Naptárfájl letöltése', async () => {
+        await saveSettings({ reminder: { time: time.value } });
+        download('forma-emlekezteto.ics', buildDailyIcs({ time: time.value, start: new Date(), days: 42, title: 'Forma: mai edzés', body: 'Napi 15–25 perc. Nyisd meg a Formát, és indítsd a mai edzést.' }), 'text/calendar');
+      }))),
+    card(h('h2', null, 'Adataid'),
+      h('p', null, 'Minden adat ezen a telefonon, ebben a böngészőben van. Ha törlöd a böngésző adatait, ezek is elvesznek: ments fájlba időnként.'),
+      h('div', { class: 'row' },
+        btn('Mentés fájlba', async () => download('forma-mentes.json', JSON.stringify(await exportAll(), null, 1), 'application/json')),
+        btn('Minden adat törlése', async () => { if (!confirm('Biztosan törlöd az összes felmérést, edzést és beállítást? Ez nem vonható vissza.')) return; await wipeAll(); S.settings = null; location.hash = '#/start'; location.reload(); }, 'danger'))),
+    card(h('h2', null, 'A normákról'),
+      h('p', null, 'A percentilisek publikált felnőtt normákból származnak (CSEP, YMCA, Rikli–Jones, Araújo, Springer, Nes és mtsai.). Ahol kevés az adat, ott becsültünk; ezt a teszteknél „becsült norma” jelzi. A normákat és a gyakorlatokat szakember még nem lektorálta.'),
+      h('p', { class: 'small muted' }, 'A Forma nem orvosi eszköz.')));
+}
