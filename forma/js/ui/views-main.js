@@ -11,8 +11,10 @@ import { LEVEL_NAMES } from '../core/score.js';
 import { buildDailyIcs } from '../core/calendar.js';
 import { weeklyCardio, weeklyWorkouts } from '../core/cardio.js';
 import { monthGrid, monthSummary, MONTHS } from '../core/history.js';
+import { miniDue } from '../core/achievements.js';
 import { itemsAll } from './store.js';
 import { cardioItems, CARDIO_TYPES } from './views-cardio.js';
+import { GOAL_METRICS } from './views-progress.js';
 
 export const PARQ = [
   ['heart', 'Mondta-e valaha orvos, hogy szívbetegséged vagy magas vérnyomásod van?'],
@@ -106,6 +108,8 @@ export async function homeView() {
     kids.push(h('section', { class: 'hero' }, h('h1', null, 'Forma'), h('div', { class: 'hero-next' }, h('h2', null, 'Megvan a felmérés'),
       h('p', null, 'Nézd meg az eredményt, és készítsd el belőle a programodat.'), link('#/result', 'Eredmény és program', 'btn light'))));
   }
+  const allItems = await itemsAll();
+  if (prog && miniDue(allItems, prog)) kids.push(card(h('h2', null, 'Félidős mini-teszt'), h('p', null, 'A ciklus közepén vagy: egy 5 perces mini-teszttel (fekvőtámasz, plank, egylábas állás) láthatod, merre haladsz.'), h('div', { class: 'row' }, link('#/mini', 'Mini-teszt', 'btn primary'))));
   if (reassessDue(last.date, prog)) kids.push(note('Eltelt 6 hét az utolsó felmérés óta: ideje újramérni, hogy lásd a fejlődésed, és a program is igazodjon.', 'warn'), h('p', null, link('#/assess', 'Újramérés', 'btn')));
   const p = profile();
   kids.push(card(h('div', { class: 'row tight' }, h('h2', null, 'Az állapotod'), h('span', { class: 'muted small' }, fmtDate(last.date))),
@@ -113,7 +117,7 @@ export async function homeView() {
       h('div', { class: 'stat' }, h('span', { class: 'muted' }, 'Fittségi kor'), h('strong', null, ev.fitnessAge != null ? ev.fitnessAge + ' év' : '–'), h('span', { class: 'small muted' }, 'naptári: ' + (last.profile.age ?? p.age) + ' év')),
       h('div', { class: 'stat' }, h('span', { class: 'muted' }, 'Összesített'), h('strong', null, ev.overall != null ? ev.overall + ' / 100' : '–'), ev.overall != null ? levelBadge(levelKey(ev.overall), LEVEL_NAMES[levelKey(ev.overall)]) : null)),
     ev.weakest.length ? h('p', { class: 'small' }, 'Most leginkább ezen dolgozunk: ' + ev.weakest.map(a => D.area[a].name.toLowerCase()).join(' és ') + '.') : null,
-    link('#/result', 'Részletes eredmény')));
+    h('div', { class: 'row' }, link('#/result', 'Részletes eredmény', 'btn small'), link('#/progress', 'Fejlődés, célok, jelvények', 'btn small'))));
   return h('div', { class: 'page' }, kids);
 }
 const levelKey = s => (s >= D.norms.levels.top ? 'top' : s >= D.norms.levels.low ? 'mid' : 'low');
@@ -183,7 +187,7 @@ export function restorePicker() {
     const file = input.files && input.files[0];
     input.value = '';
     if (!file) return;
-    const res = parseBackup(await file.text(), { testIds: D.tests.tests.map(t => t.id), ladders: LADDERS, sessionKeys: Object.keys(SESSION_TITLES), ratingKeys: RATINGS.map(([k]) => k), cardioTypes: CARDIO_TYPES.map(([k]) => k) });
+    const res = parseBackup(await file.text(), { testIds: D.tests.tests.map(t => t.id), ladders: LADDERS, sessionKeys: Object.keys(SESSION_TITLES), ratingKeys: RATINGS.map(([k]) => k), cardioTypes: CARDIO_TYPES.map(([k]) => k), goalMetrics: GOAL_METRICS().map(([k]) => k) });
     if (!res.ok) { toast(res.error); return; }
     const { items } = res.data, na = items.filter(i => i.kind === 'assessment').length, nw = items.length - na;
     if (!confirm(`A mentésben ${na} felmérés és ${nw} edzés van. Visszatöltöd? Ami most a telefonon van, annak a helyére kerül.`)) return;

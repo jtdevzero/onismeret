@@ -204,7 +204,7 @@ test('napi emlékeztető naptárfájl', () => {
 
 test('mentésfájl: érvényes visszatöltés, idegen és sérült fájl elutasítása, ismeretlen mezők kiszűrése', async () => {
   const { parseBackup } = await import('../js/core/backup.js');
-  const ctx = { testIds: tests.tests.map(t => t.id), ladders: LADDERS, sessionKeys: [...new Set(ROTATION)], ratingKeys: ['easy', 'ok', 'hard', 'fail'], cardioTypes: ['walk', 'run'] };
+  const ctx = { testIds: tests.tests.map(t => t.id), ladders: LADDERS, sessionKeys: [...new Set(ROTATION)], ratingKeys: ['easy', 'ok', 'hard', 'fail'], cardioTypes: ['walk', 'run'], goalMetrics: ['pushup', 'waist'] };
   const good = {
     app: 'forma', version: 1,
     settings: { accepted: true, profile: { age: 34, sex: 'male' }, lowImpact: false, parq: { heart: false }, evil: '<script>' },
@@ -214,6 +214,8 @@ test('mentésfájl: érvényes visszatöltés, idegen és sérült fájl elutas�
       { id: 'w1', kind: 'workout', date: 1700000100000, key: 'strengthA', minutes: 25, ratings: { push: 'easy' } },
       { id: 'w1', kind: 'workout', date: 1700000100000, key: 'strengthA', minutes: 25 },
       { id: 'c1', kind: 'cardio', date: 5, type: 'walk', minutes: 30, intensity: 'vigorous' }, { id: 'c2', kind: 'cardio', date: 6, type: 'repülés', minutes: 30 },
+      { id: 'b1', kind: 'body', date: 7, waist: 88, weight: 999 }, { id: 'g1', kind: 'goal', date: 8, metric: 'pushup', start: 20, target: 30 }, { id: 'g2', kind: 'goal', date: 9, metric: 'hack', start: 1, target: 2 },
+      { id: 'm1', kind: 'mini', date: 10, profile: { age: 34, sex: 'male' }, results: { pushup: 22, chair_stand: 5 } },
       { id: 'x', kind: 'mystery', date: 1 }, { id: 'w2', kind: 'workout', date: 2, key: 'nincs' },
     ],
   };
@@ -223,7 +225,9 @@ test('mentésfájl: érvényes visszatöltés, idegen és sérült fájl elutas�
   assert.deepEqual(r.data.program.levels, { push: 3 });
   assert.deepEqual(r.data.program.ratings.push, ['easy']);
   assert.deepEqual(r.data.program.targets, ['ankle']);
-  assert.equal(r.data.items.length, 3, 'ismétlődő, ismeretlen típusú és ismeretlen edzésű tétel kimarad');
+  assert.equal(r.data.items.length, 6, 'ismétlődő, ismeretlen típusú és ismeretlen edzésű tétel kimarad');
+  assert.deepEqual(r.data.items.find(i => i.kind === 'body'), { id: 'b1', kind: 'body', date: 7, waist: 88 });
+  assert.deepEqual(r.data.items.find(i => i.kind === 'mini').results, { pushup: 22 });
   assert.deepEqual(r.data.items.find(i => i.kind === 'cardio'), { id: 'c1', kind: 'cardio', date: 5, type: 'walk', minutes: 30, intensity: 'vigorous' });
   assert.deepEqual(r.data.items[0].results, { pushup: 20 });
   assert.equal(parseBackup('nem json', ctx).ok, false);

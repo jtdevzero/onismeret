@@ -331,3 +331,12 @@ progress::-moz-progress-bar { background: linear-gradient(90deg, var(--accent), 
 .legend .lg-c::before { border-top-color: var(--teal); }
 .legend .lg-a::before { border-top-color: var(--sun); }
 .stat-row + .stat-row { margin-top: 12px; }
+
+/* ---- jelvények ---- */
+ul.badges { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.badge-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border-radius: var(--radius-s); background: var(--bg-2); color: var(--muted); }
+.badge-item.earned { background: var(--accent-soft); color: var(--text); }
+.badge-ic { font-size: 1.3rem; line-height: 1.2; color: var(--muted); }
+.badge-item.earned .badge-ic { color: var(--sun); text-shadow: 0 0 10px color-mix(in srgb, var(--sun) 60%, transparent); }
+.log-item progress { margin: 4px 0; }
+.swap { margin-top: 8px; }

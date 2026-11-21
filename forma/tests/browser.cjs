@@ -279,10 +279,50 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     assert.match(await text(), /Húzódzkodás rúdon/);
   });
 
+  await step('fejlődés: testméret, cél, jelvények, rekordok', async () => {
+    await go(page, '#/progress');
+    assert.match(await text(), /Jelvények/i);
+    assert.match(await text(), /Az első edzés/);
+    await page.locator('#bwaist').fill('86');
+    await page.getByRole('button', { name: 'Mentés', exact: true }).click();
+    await page.waitForFunction(() => /−?-?2 cm az első mérés óta|86 cm/.test(document.getElementById('main').innerText));
+    assert.equal(await page.locator('#gmetric').inputValue(), 'pushup', 'a választó a mentendő értéket mutatja');
+    await page.locator('#gmetric').selectOption('pushup');
+    await page.locator('#gtarget').fill('30');
+    await page.getByRole('button', { name: 'Cél mentése' }).click();
+    await page.waitForFunction(() => /Fekvőtámasz kifáradásig: 30 ismétlés/.test(document.getElementById('main').innerText));
+    assert.match(await text(), /most 20, indulás 20/);
+    await shot('progress');
+  });
+
+  await step('mini-teszt: mentés és összevetés az előző méréssel', async () => {
+    await go(page, '#/mini');
+    await page.locator('#m-pushup').fill('24');
+    await page.locator('#m-plank').fill('80');
+    await page.getByRole('button', { name: 'Mentés és összevetés' }).click();
+    await page.waitForFunction(() => [...document.querySelectorAll('h2')].some(e => e.innerText === 'Összevetés'));
+    assert.match(await text(), /\+4/);
+    await shot('mini');
+    await go(page, '#/progress');
+    assert.match(await text(), /most 24, indulás 20/, 'a cél a mini-teszt eredményét is látja');
+  });
+
+  await step('gyakorlatcsere: edzés közben könnyebbre cserélhető, és akkor nem kér értékelést', async () => {
+    await go(page, '#/session/strengthA');
+    for (let i = 0; i < 40 && !(await page.getByRole('button', { name: 'Könnyebbre cserélem' }).count()); i++) {
+      if (await page.getByRole('button', { name: 'Pihenő kihagyása' }).count()) await page.getByRole('button', { name: 'Pihenő kihagyása' }).click({ timeout: 1000 }).catch(() => {});
+      else await page.getByRole('button', { name: 'Kész, tovább' }).click({ timeout: 1000 }).catch(() => {});
+    }
+    const before = await page.locator('.workout-title').innerText();
+    await page.getByRole('button', { name: 'Könnyebbre cserélem' }).click();
+    await page.waitForFunction(b => document.querySelector('.workout-title').innerText !== b, before);
+    await shot('swap');
+  });
+
   await step('akadálymentesség (axe, WCAG 2 A/AA): a fő képernyőkön nincs hiba', async () => {
     const axe = fs.readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
     const found = [];
-    for (const hash of ['#/', '#/assess', '#/test/pushup', '#/test/deep_squat', '#/test/vitals', '#/result', '#/program', '#/session/mobility', '#/ex/squat', '#/log', '#/settings', '#/cardio', '#/check/strengthA', '#/ex/pull_up']) {
+    for (const hash of ['#/', '#/assess', '#/test/pushup', '#/test/deep_squat', '#/test/vitals', '#/result', '#/program', '#/session/mobility', '#/ex/squat', '#/log', '#/settings', '#/cardio', '#/check/strengthA', '#/ex/pull_up', '#/progress', '#/mini']) {
       await go(page, hash);
       /* a Playwright evaluate-je nem esik a lap CSP-je alá, így beágyazott szkript nélkül töltjük be */
       await page.evaluate(src => { if (!window.axe) (0, eval)(src); }, axe).catch(() => {});

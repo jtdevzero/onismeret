@@ -10,6 +10,9 @@ Telefonra telepíthető webapp. Felméri, hol tartasz a korosztályodhoz képest
 - **Napi ellenőrzés:** edzés előtt alvás, izomláz, energia és fájdalom; rossz napon könnyített edzést (eggyel kevesebb kör, értékelés nélkül) vagy csak mobilitást ajánl.
 - **Heti cél** a kezdőlapon: 5 edzés és 150 kardióperc.
 - **Naptár és havi összefoglaló** a naplóban: napi jelölés (edzés, kardió, felmérés), lapozható hónapok, összevetés az előző hónappal.
+- **Fejlődés oldal:** célok határidővel és haladással, 12 jelvény (csak a saját eredményeidhez mérve), egyéni rekordok tesztenként, heti derékbőség- és testsúlynapló, és a fittségi kor újraszámolása a friss derékbőséggel.
+- **Félidős mini-teszt** a ciklus 3. hetében (fekvőtámasz, plank, egylábas állás), összevetéssel; a kezdőlap figyelmeztet rá.
+- **Gyakorlatcsere** edzés közben: eggyel könnyebb vagy nehezebb változat arra az edzésre, értékelés nélkül.
 - **Eszközök:** húzódzkodó rúd vagy gumiszalag esetén a húzógyakorlatok ahhoz igazodnak (függeszkedés → negatív → húzódzkodás; széthúzás → evezés).
 - **Kamerás mérés (béta):** a letámasztott telefon kamerája előtt élőben számolja az ismétléseket vagy a kitartott időt, hangosan is, és a végén visszajelez a formáról. Tesztekhez (fekvőtámasz, 30 mp felállás, plank, egylábas állás: az eredmény a mezőbe kerül), a gyakorlatleírásnál és a vezetett edzésben. A pózbecslő (MediaPipe, kb. 15 MB) a Kanyaréval azonos, a készüléken fut, és csak az első használatkor töltődik le.
 - **Adatvédelem:** minden adat a készüléken marad (IndexedDB). Nincs szerver, fiók, és nincs külső kérés (CSP: csak `'self'`; a `'wasm-unsafe-eval'` a pózbecslő WebAssembly-futtatójához kell).

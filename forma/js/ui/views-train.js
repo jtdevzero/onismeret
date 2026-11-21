@@ -4,7 +4,7 @@ import { page, card, btn, link, note, list, speak, beep, tickMs, videoSearch } f
 import { D, lowImpact } from './data.js';
 import { itemPut } from './store.js';
 import { getProgram, setProgram, latestAssessment } from './state.js';
-import { ROTATION, SESSION_TITLES, LADDERS, RATINGS, pullLadder, buildSession, sessionSteps, sessionMinutes, nextKey, weekInfo, laddersOf, exerciseFor, applyRatings, CYCLE_WEEKS } from '../core/program.js';
+import { ROTATION, SESSION_TITLES, LADDERS, RATINGS, pullLadder, buildSession, sessionSteps, sessionMinutes, nextKey, weekInfo, laddersOf, exerciseFor, applyRatings, doseFor, CYCLE_WEEKS } from '../core/program.js';
 import { figureStrip } from './figure.js';
 import { weekStrip } from './views-main.js';
 import { liveCounter } from './live.js';
@@ -99,6 +99,25 @@ export async function sessionView(key, onCleanup) {
       h('div', { class: 'row' }, link('#/', 'Kezdőlap', 'btn primary'), link('#/log', 'Napló', 'btn'))));
   }
 
+  /* Gyakorlatcsere erre az edzésre: a sor eggyel könnyebb vagy nehezebb tagja, azonos adagolási formával.
+     A cserélt gyakorlat nem kér értékelést, hogy a szintlépés a kiírt gyakorlatra vonatkozzon. */
+  const lad = laddersOf(D.exercises.exercises);
+  const neighbor = (ex, dir) => {
+    const list = lad[ex.ladder] || [], i = list.indexOf(ex) + dir, n = list[i];
+    if (!n || (prog.lowImpact && n.impact) || !!n.dose.reps !== !!ex.dose.reps || !!n.perSide !== !!ex.perSide) return null;
+    return n;
+  };
+  function swapTo(blockIdx, n) {
+    const d = doseFor(n, session.week.cycleWeek, session.week.deload);
+    for (const s of steps) if (s.block === blockIdx && s.type !== 'rest') { s.exercise = n.id; s.rate = undefined; if (s.reps) s.reps = d.reps; if (s.seconds) s.seconds = d.seconds; }
+    toast('Erre az edzésre: ' + n.name);
+    stop(); show();
+  }
+  function swapRow(st, ex) {
+    const easier = neighbor(ex, -1), harder = neighbor(ex, 1);
+    if (!easier && !harder) return null;
+    return h('div', { class: 'row swap' }, easier ? btn('Könnyebbre cserélem', () => swapTo(st.block, easier), 'small') : null, harder ? btn('Nehezebbre cserélem', () => swapTo(st.block, harder), 'small') : null);
+  }
   let liveStop = null;
   onCleanup(() => { if (liveStop) liveStop(); });
   function show() {
@@ -134,20 +153,21 @@ export async function sessionView(key, onCleanup) {
     const head = [kicker ? h('p', { class: 'workout-kicker' }, kicker) : null, h('h2', { class: 'workout-title' }, ex.name)];
     const points = h('ul', { class: 'plain' }, ex.points.map(p => h('li', null, p)));
     const more = link('#/ex/' + ex.id, 'Leírás');
+    const swap = st.part === 'main' ? swapRow(st, ex) : null;
     if (st.seconds) {
       left = st.seconds; draw();
       const go = btn('Indítás', () => { go.hidden = true; pause.hidden = false; run(); }, 'primary');
       const pause = btn('Szünet', () => { if (running) { stop(); pause.textContent = 'Folytatás'; } else { pause.textContent = 'Szünet'; run(); } });
       pause.hidden = true;
       clear(stage).append(card(head, st.side ? h('p', { class: 'badge' }, SIDE[st.side]) : null, figureStrip(D.figures[ex.figure], true), clock, points,
-        h('div', { class: 'row' }, go, pause, btn('Kész, tovább', next)), more), nav);
+        h('div', { class: 'row' }, go, pause, btn('Kész, tovább', next)), swap, more), nav);
       speak(ex.name + (st.side ? ', ' + SIDE[st.side] : '') + ', ' + st.seconds + ' másodperc', voice.checked);
     } else {
       const live = st.part === 'main' ? liveCounter(ex.id, { startLabel: 'Számolj kamerával' }) : null;
       if (live) liveStop = live.stop;
       clear(stage).append(card(head, figureStrip(D.figures[ex.figure], true), h('div', { class: 'workout-clock' }, String(st.reps)),
         h('p', { class: 'workout-unit' }, 'ismétlés' + (st.side === 'both' ? ' oldalanként' : '')), points,
-        h('div', { class: 'row' }, btn('Kész, tovább', next, 'primary')),
+        h('div', { class: 'row' }, btn('Kész, tovább', next, 'primary')), swap,
         live ? h('details', { class: 'live-box' }, h('summary', null, 'Számolás kamerával'), live.el) : null, more), nav);
       speak(ex.name + ', ' + st.reps + ' ismétlés' + (st.side === 'both' ? ' oldalanként' : ''), voice.checked);
     }

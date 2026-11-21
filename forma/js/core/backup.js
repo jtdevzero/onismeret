@@ -18,7 +18,7 @@ function profile(p) {
   return age !== undefined && sex ? { age, sex } : null;
 }
 
-/* text: a fájl tartalma · ctx: { testIds, ladders, sessionKeys, ratingKeys, cardioTypes }
+/* text: a fájl tartalma · ctx: { testIds, ladders, sessionKeys, ratingKeys, cardioTypes, goalMetrics }
    → { ok: true, data: { settings, program, items } } vagy { ok: false, error } */
 export function parseBackup(text, ctx) {
   if (typeof text !== 'string' || !text.length) return { ok: false, error: 'Üres fájl.' };
@@ -67,6 +67,19 @@ export function parseBackup(text, ctx) {
       for (const l of ctx.ladders) if (it.ratings && ctx.ratingKeys.includes(it.ratings[l])) ratings[l] = it.ratings[l];
       items.push(clean({ id, kind: 'workout', date, key: it.key, minutes: num(it.minutes, 0, 600) ?? 0, steps: num(it.steps, 0, 1000), partial: !!it.partial, ratings,
         changes: Array.isArray(it.changes) ? it.changes.filter(c => c && ctx.ladders.includes(c.ladder)).map(c => clean({ ladder: c.ladder, from: num(c.from, 0, 10), to: num(c.to, 0, 10), date: num(c.date, 0, 1e14) })) : [] }));
+    } else if (it.kind === 'mini') {
+      const pr = profile(it.profile);
+      const results = numbers(it.results, ['pushup', 'plank', 'sl_stance'], 0, 1000);
+      if (!pr || !Object.keys(results).length) continue;
+      items.push({ id, kind: 'mini', date, profile: pr, results });
+    } else if (it.kind === 'body') {
+      const waist = num(it.waist, 50, 180), weight = num(it.weight, 30, 250);
+      if (waist === undefined && weight === undefined) continue;
+      items.push(clean({ id, kind: 'body', date, waist, weight }));
+    } else if (it.kind === 'goal' && (ctx.goalMetrics || []).includes(it.metric)) {
+      const start = num(it.start, -100, 1000), target = num(it.target, -100, 1000);
+      if (start === undefined || target === undefined) continue;
+      items.push(clean({ id, kind: 'goal', date, metric: it.metric, start, target, deadline: num(it.deadline, 0, 1e14) }));
     } else if (it.kind === 'cardio' && (ctx.cardioTypes || []).includes(it.type)) {
       const minutes = num(it.minutes, 1, 600);
       if (minutes === undefined) continue;

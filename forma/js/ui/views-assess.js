@@ -43,7 +43,7 @@ export async function assessView() {
 const unitOf = t => (t.input.type === 'choice' ? 'pont' : t.input.unit);
 
 /* Időzítő a teszthez. mode: countdown | stopwatch | counter | step. onValue(v): az eredmény beírása a mezőbe. */
-function timerWidget(cfg, onValue, onCleanup) {
+export function timerWidget(cfg, onValue, onCleanup) {
   const clock = h('div', { class: 'timer-clock', role: 'timer', 'aria-live': 'off' }, '0');
   const status = h('p', { class: 'small muted', 'aria-live': 'polite' });
   const row = h('div', { class: 'row' });
@@ -228,6 +228,7 @@ export async function resultView(id) {
         h('p', { class: 'small' }, 'A „pc.” percentilist jelent: 60. pc. = a korosztályod 60%-ánál jobb eredmény. A funkcionális küszöbök kortól függetlenek (például a teljes mély guggolás minden felnőttnek elérhető cél).'),
         h('ul', { class: 'plain small' }, Object.entries(D.norms.tests).map(([k, n]) => h('li', null, h('strong', null, D.test[k].name + ': '), n.source)), h('li', null, D.norms.vo2.source)),
         h('p', { class: 'small muted' }, 'Szakember még nem lektorálta. A Forma nem orvosi eszköz.'))),
+    card(h('p', null, 'Célokat itt tűzhetsz ki, és itt látod a rekordjaidat és a jelvényeidet.'), h('div', { class: 'row' }, link('#/progress', 'Fejlődés', 'btn'))),
     card(h('p', null, prog ? 'A programod szintjei nem csökkennek, a mobilitási fókusz és a gyakorlatok igazodnak az új eredményhez.' : 'A program a gyenge területekre több időt szán, és a mért szintedről indul.'), h('div', { class: 'row' }, progBtn)));
 }
 const lvl = s => (s >= D.norms.levels.top ? 'top' : s >= D.norms.levels.low ? 'mid' : 'low');
