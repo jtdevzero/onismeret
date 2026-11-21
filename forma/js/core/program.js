@@ -102,7 +102,9 @@ const PLAN = {
 };
 
 /* Egy edzés összeállítása. state: { levels, targets, lowImpact, start } · → { key, title, blocks, week } */
-export function buildSession(key, state, exercises, now = Date.now()) {
+/* opts.light: könnyített edzés (rossz nap): minden gyakorlatból eggyel kevesebb kör, és nem kér értékelést,
+   hogy a fáradtan „könnyűnek” vagy „nehéznek” érzett kör ne torzítsa a szintlépést. */
+export function buildSession(key, state, exercises, now = Date.now(), opts = {}) {
   const ladders = laddersOf(exercises);
   const wk = weekInfo(state.start ?? now, now);
   const warm = exercises.find(e => e.id === 'warmup');
@@ -113,10 +115,10 @@ export function buildSession(key, state, exercises, now = Date.now()) {
   for (const [ladder, sets0, rest] of PLAN[key] || []) {
     const ex = exerciseFor(ladders, ladder, (state.levels || {})[ladder], state.lowImpact);
     if (!ex) continue;
-    const sets = wk.deload ? Math.max(1, sets0 - 1) : sets0;
-    blocks.push({ exercise: ex.id, ladder, sets, ...doseFor(ex, wk.cycleWeek, wk.deload), rest, rate: true, part: 'main' });
+    const sets = wk.deload || opts.light ? Math.max(1, sets0 - 1) : sets0;
+    blocks.push({ exercise: ex.id, ladder, sets, ...doseFor(ex, wk.cycleWeek, wk.deload), rest, rate: !opts.light, part: 'main' });
   }
-  return { key, title: SESSION_TITLES[key], blocks, week: wk };
+  return { key, title: SESSION_TITLES[key], blocks, week: wk, light: !!opts.light };
 }
 
 export const nextKey = state => ROTATION[(state.done || 0) % ROTATION.length];

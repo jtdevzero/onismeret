@@ -9,6 +9,8 @@ import { getProgram, setProgram, latestAssessment, workouts, assessments, evalua
 import { ROTATION, SESSION_TITLES, buildSession, sessionSteps, sessionMinutes, nextKey, weekInfo, reassessDue, streak } from '../core/program.js';
 import { LEVEL_NAMES } from '../core/score.js';
 import { buildDailyIcs } from '../core/calendar.js';
+import { weeklyCardio, weeklyWorkouts } from '../core/cardio.js';
+import { cardioItems, CARDIO_TYPES } from './views-cardio.js';
 
 export const PARQ = [
   ['heart', 'Mondta-e valaha orvos, hogy szívbetegséged vagy magas vérnyomásod van?'],
@@ -91,7 +93,12 @@ export async function homeView() {
       h('p', { class: 'hero-sub' }, `${wk.week}. hét` + (wk.deload ? ' · könnyített hét' : '') + ` · ${streak(ws.map(w => w.date))} napos sorozat`),
       h('div', { class: 'hero-next' }, h('h2', null, (doneToday ? 'Holnap: ' : '') + session.title),
         h('p', null, `Kb. ${sessionMinutes(steps)} perc · ${session.blocks.length} gyakorlat`),
-        h('div', { class: 'row' }, link('#/session/' + key, doneToday ? 'Mehet még egy' : 'Indítás', 'btn light'), link('#/program', 'Program', 'btn small')))));
+        h('div', { class: 'row' }, link('#/check/' + key, doneToday ? 'Mehet még egy' : 'Indítás', 'btn light'), link('#/program', 'Program', 'btn small')))));
+    const cw = weeklyCardio(await cardioItems()), ww = weeklyWorkouts(ws);
+    kids.push(card(h('h2', null, 'Heti cél'),
+      h('div', { class: 'goal' }, h('span', { class: 'small' }, `Edzés: ${ww.n} / ${ww.goal}`), h('progress', { max: 100, value: ww.pct, 'aria-label': `Heti edzéscél: ${ww.n} a ${ww.goal}-ből` })),
+      h('div', { class: 'goal' }, h('span', { class: 'small' }, `Kardió: ${cw.equivalent} / ${cw.goal} perc`), h('progress', { max: 100, value: cw.pct, 'aria-label': `Heti kardiócél: ${cw.equivalent} a ${cw.goal} percből` })),
+      h('div', { class: 'row' }, link('#/cardio', 'Kardió rögzítése', 'btn small'))));
     kids.push(card(h('h2', null, 'A heti rend'), weekStrip(prog), h('p', { class: 'small muted' }, 'A rend a teljesített edzések szerint halad: ha kihagysz egy napot, ott folytatod, ahol abbahagytad.')));
   } else {
     kids.push(h('section', { class: 'hero' }, h('h1', null, 'Forma'), h('div', { class: 'hero-next' }, h('h2', null, 'Megvan a felmérés'),
@@ -146,7 +153,7 @@ export function restorePicker() {
     const file = input.files && input.files[0];
     input.value = '';
     if (!file) return;
-    const res = parseBackup(await file.text(), { testIds: D.tests.tests.map(t => t.id), ladders: LADDERS, sessionKeys: Object.keys(SESSION_TITLES), ratingKeys: RATINGS.map(([k]) => k) });
+    const res = parseBackup(await file.text(), { testIds: D.tests.tests.map(t => t.id), ladders: LADDERS, sessionKeys: Object.keys(SESSION_TITLES), ratingKeys: RATINGS.map(([k]) => k), cardioTypes: CARDIO_TYPES.map(([k]) => k) });
     if (!res.ok) { toast(res.error); return; }
     const { items } = res.data, na = items.filter(i => i.kind === 'assessment').length, nw = items.length - na;
     if (!confirm(`A mentésben ${na} felmérés és ${nw} edzés van. Visszatöltöd? Ami most a telefonon van, annak a helyére kerül.`)) return;

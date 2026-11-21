@@ -299,3 +299,13 @@ ul.rows.plan > li { align-items: center; }
 .live-result { margin-top: 12px; text-align: left; }
 .live-box { margin-top: 14px; text-align: left; }
 .live-box > summary { cursor: pointer; font-weight: 700; color: var(--accent); min-height: 44px; display: flex; align-items: center; }
+
+/* ---- heti cél ---- */
+.goal { display: grid; gap: 4px; margin: 0 0 10px; }
+.goal progress { height: 12px; accent-color: var(--accent); }
+
+/* ---- folyamatjelző sávok a színvilágban ---- */
+progress { -webkit-appearance: none; appearance: none; border: 0; background: var(--bg-2); overflow: hidden; }
+progress::-webkit-progress-bar { background: var(--bg-2); border-radius: 999px; }
+progress::-webkit-progress-value { background: linear-gradient(90deg, var(--accent), var(--sun)); border-radius: 999px; }
+progress::-moz-progress-bar { background: linear-gradient(90deg, var(--accent), var(--sun)); border-radius: 999px; }

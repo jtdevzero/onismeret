@@ -25,13 +25,14 @@ export async function programView() {
     const s = buildSession(k, prog, D.exercises.exercises), steps = sessionSteps(s, D.ex);
     return h('details', { class: 'card' }, h('summary', null, h('h2', null, s.title), h('span', { class: 'badge' + (k === key ? ' good' : '') }, k === key ? 'Következik' : sessionMinutes(steps) + ' perc')),
       h('ol', { class: 'blocks' }, s.blocks.map(b => h('li', null, link('#/ex/' + b.exercise, D.ex[b.exercise].name), h('span', { class: 'muted small' }, ' · ' + doseText(b) + (b.part === 'mobility' ? ' · mobilitás' : ''))))),
-      h('div', { class: 'row' }, link('#/session/' + k, k === key ? 'Indítás' : 'Ezt csinálom inkább', 'btn' + (k === key ? ' primary' : ' small'))));
+      h('div', { class: 'row' }, link('#/check/' + k, k === key ? 'Indítás' : 'Ezt csinálom inkább', 'btn' + (k === key ? ' primary' : ' small'))));
   });
   return page('Program',
     h('p', { class: 'muted' }, `${wk.week}. hét (a ${wk.cycle}. ciklus ${wk.cycleWeek}. hete a ${CYCLE_WEEKS}-ből)` + (prog.lowImpact ? ' · kímélő mód' : '')),
     wk.deload ? note('Könnyített hét: kevesebb kör, a kezdő ismétlésszámokkal. A hét végén mérd fel újra magad.', 'warn') : null,
     card(h('h2', null, 'Forgó rend'), weekStrip(prog), h('p', { class: 'small muted' }, '3 erőnap, 2 gyorsasági nap és 2 mobilitásnap. Minden edzés napi mobilitással kezdődik. Az ismétlésszám hétről hétre nő, a gyakorlat pedig nehezebbre vált, ha kétszer egymás után könnyűnek értékeled.')),
     sessions,
+    card(h('h2', null, 'Állóképesség'), h('p', null, 'A forgó rend mellé heti 150 perc kardió: tempós séta, kocogás vagy kerékpár, a pulzustartományodban.'), h('div', { class: 'row' }, link('#/cardio', 'Kardió napló és pulzuszónák', 'btn'))),
     card(h('h2', null, 'Szintjeid'), h('ul', { class: 'rows' }, LADDERS.map(l => {
       const ex = exerciseFor(lad, l, prog.levels[l], prog.lowImpact);
       return ex ? h('li', null, h('span', { class: 'log-item' }, h('strong', null, D.exercises.ladders[l]), link('#/ex/' + ex.id, ex.name)), lvlDots(prog.levels[l] ?? 0, lad[l].length)) : null;
@@ -41,8 +42,11 @@ export async function programView() {
 /* Vezetett edzés: lépésről lépésre, időzítővel, pihenővel, hangos bemondással; a gyakorlatok végén értékelés. */
 export async function sessionView(key, onCleanup) {
   const prog = await getProgram();
+  const [k0, mode] = String(key || '').split('.');
+  const light = mode === 'light';
+  key = k0;
   if (!prog || !SESSION_TITLES[key]) return page('Nincs ilyen edzés', link('#/program', '← Program', 'btn'));
-  const session = buildSession(key, prog, D.exercises.exercises), steps = sessionSteps(session, D.ex), total = steps.length, started = Date.now();
+  const session = buildSession(key, prog, D.exercises.exercises, Date.now(), { light }), steps = sessionSteps(session, D.ex), total = steps.length, started = Date.now();
   const ratings = {};
   let at = 0, left = 0, timer = null, running = false, wake = null, finished = false;
   const voice = h('input', { type: 'checkbox', checked: true });
@@ -80,7 +84,7 @@ export async function sessionView(key, onCleanup) {
     /* a forgó rendben csak a soron következő edzés teljesítése lép tovább */
     const done = key === nextKey(fresh) ? (fresh.done || 0) + 1 : fresh.done || 0;
     await setProgram({ ...state, done, lastDone: Date.now() });
-    await itemPut({ id: uid(), kind: 'workout', date: Date.now(), key, minutes, steps: total, partial, ratings, changes });
+    await itemPut({ id: uid(), kind: 'workout', date: Date.now(), key, minutes, steps: total, partial, ratings, changes, light });
     speak('Kész az edzés. Szép munka!', voice.checked);
     beep(880, 200);
     bar.value = total; count.textContent = `${total} / ${total} lépés`;
@@ -150,7 +154,7 @@ export async function sessionView(key, onCleanup) {
   }
   show();
   return page(session.title,
-    h('p', { class: 'muted' }, `Kb. ${sessionMinutes(steps)} perc · ${session.blocks.length} gyakorlat` + (session.week.deload ? ' · könnyített hét' : '')),
+    h('p', { class: 'muted' }, `Kb. ${sessionMinutes(steps)} perc · ${session.blocks.length} gyakorlat` + (session.week.deload ? ' · könnyített hét' : '') + (light ? ' · könnyített edzés, értékelés nélkül' : '')),
     bar, h('div', { class: 'row tight workout-meta' }, count, h('label', { class: 'check' }, voice, h('span', null, 'Hangos bemondás'))),
     note('Ha valami fáj, hagyd ki, vagy válts könnyebbre. Szédülés vagy mellkasi panasz esetén azonnal állj meg.', 'small'),
     stage);

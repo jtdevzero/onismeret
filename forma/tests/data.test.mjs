@@ -68,7 +68,7 @@ test('build: a generált index.html és sw.js egyezik a forrással, szigorú CSP
 });
 
 test('biztonság: a felület nem ír HTML-t szövegből', () => {
-  for (const f of ['dom.js', 'widgets.js', 'views-main.js', 'views-assess.js', 'views-train.js', 'radar.js', 'figure.js', 'app.js', 'state.js', 'live.js', 'pose.js']) {
+  for (const f of ['dom.js', 'widgets.js', 'views-main.js', 'views-assess.js', 'views-train.js', 'radar.js', 'figure.js', 'app.js', 'state.js', 'live.js', 'pose.js', 'views-cardio.js']) {
     const src = readFileSync(new URL('js/ui/' + f, root), 'utf8');
     assert.doesNotMatch(src, /innerHTML|outerHTML|insertAdjacentHTML|document\.write/, f);
   }

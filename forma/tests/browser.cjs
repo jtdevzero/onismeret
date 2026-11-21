@@ -231,10 +231,36 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     await shot('camera-result');
   });
 
+  await step('napi ellenőrzés: rossz napon könnyített edzést ajánl, az értékelés nélküli', async () => {
+    await go(page, '#/check/strengthB');
+    assert.match(await text(), /Hogy vagy ma/i);
+    await page.getByText('Rosszul aludtam').click();
+    await page.getByText('Nincs', { exact: true }).click();
+    await page.getByText('Friss vagyok').click();
+    await page.getByRole('link', { name: 'Könnyített edzés' }).click();
+    await shown(page, '#/session/strengthB.light');
+    assert.match(await text(), /könnyített edzés, értékelés nélkül/);
+    await shot('session-light');
+  });
+
+  await step('kardió: pulzuszónák, rögzítés, heti cél a kezdőlapon', async () => {
+    await go(page, '#/cardio');
+    assert.match(await text(), /2\. zóna/);
+    assert.match(await text(), /nyugalmi pulzusod \(62\)/);
+    await page.getByText('Kocogás').click();
+    await page.locator('#cmin').fill('40');
+    await page.getByText(/Intenzív: csak pár szó/).click();
+    await page.getByRole('button', { name: 'Mentés' }).click();
+    await page.waitForFunction(() => /80 \/ 150 perc/.test(document.getElementById('main').innerText));
+    await shot('cardio');
+    await go(page, '#/');
+    assert.match(await text(), /Kardió: 80 \/ 150 perc/);
+  });
+
   await step('akadálymentesség (axe, WCAG 2 A/AA): a fő képernyőkön nincs hiba', async () => {
     const axe = fs.readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
     const found = [];
-    for (const hash of ['#/', '#/assess', '#/test/pushup', '#/test/deep_squat', '#/test/vitals', '#/result', '#/program', '#/session/mobility', '#/ex/squat', '#/log', '#/settings']) {
+    for (const hash of ['#/', '#/assess', '#/test/pushup', '#/test/deep_squat', '#/test/vitals', '#/result', '#/program', '#/session/mobility', '#/ex/squat', '#/log', '#/settings', '#/cardio', '#/check/strengthA']) {
       await go(page, hash);
       /* a Playwright evaluate-je nem esik a lap CSP-je alá, így beágyazott szkript nélkül töltjük be */
       await page.evaluate(src => { if (!window.axe) (0, eval)(src); }, axe).catch(() => {});
