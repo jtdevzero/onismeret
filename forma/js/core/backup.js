@@ -38,6 +38,7 @@ export function parseBackup(text, ctx) {
     duration: [0, 15, 25, 35].includes(s.duration) ? s.duration : undefined,
     theme: ['auto', 'light', 'dark'].includes(s.theme) ? s.theme : undefined,
     size: ['normal', 'large'].includes(s.size) ? s.size : undefined,
+    complaints: Array.isArray(s.complaints) ? s.complaints.filter(c => ['knee', 'back', 'shoulder'].includes(c)) : undefined,
     equipment: Array.isArray(s.equipment) ? s.equipment.filter(e => ['bar', 'band', 'dumbbell'].includes(e)) : undefined,
   });
 
@@ -50,6 +51,7 @@ export function parseBackup(text, ctx) {
       start: p.start, levels: numbers(p.levels, ctx.ladders, 0, 10), ratings,
       targets: Array.isArray(p.targets) ? p.targets.filter(t => typeof t === 'string' && /^[a-z]{3,16}$/.test(t)).slice(0, 10) : [],
       equipment: Array.isArray(p.equipment) ? p.equipment.filter(e => ['bar', 'band', 'dumbbell'].includes(e)) : [],
+      complaints: Array.isArray(p.complaints) ? p.complaints.filter(c => ['knee', 'back', 'shoulder'].includes(c)) : [],
       lowImpact: !!p.lowImpact, done: num(p.done, 0, 1e6) ?? 0, lastDone: num(p.lastDone, 0, 1e14),
       levelLog: Array.isArray(p.levelLog) ? p.levelLog.filter(c => c && ctx.ladders.includes(c.ladder)).map(c => clean({ ladder: c.ladder, from: num(c.from, 0, 10), to: num(c.to, 0, 10), date: num(c.date, 0, 1e14) })).slice(-100) : [],
       fromAssessment: str(p.fromAssessment),
@@ -93,5 +95,9 @@ export function parseBackup(text, ctx) {
   }
   const r = raw.run;
   const run = r && typeof r === 'object' && num(r.week, 1, 9) !== undefined && num(r.day, 1, 3) !== undefined ? { week: r.week, day: r.day, done: r.done === true } : null;
-  return { ok: true, data: { settings, program, run, items } };
+  const nutrition = {};
+  if (raw.nutrition && typeof raw.nutrition === 'object') for (const [k, v] of Object.entries(raw.nutrition).slice(-60)) {
+    if (/^\d{4}-\d{2}-\d{2}$/.test(k) && v && typeof v === 'object') nutrition[k] = { p: num(v.p, 0, 50) ?? 0, w: num(v.w, 0, 50) ?? 0 };
+  }
+  return { ok: true, data: { settings, program, run, nutrition: Object.keys(nutrition).length ? nutrition : null, items } };
 }

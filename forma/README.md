@@ -17,6 +17,12 @@ Telefonra telepíthető webapp. Felméri, hol tartasz a korosztályodhoz képest
 - **Gyakorlatcsere** edzés közben: eggyel könnyebb vagy nehezebb változat arra az edzésre, értékelés nélkül.
 - **Edzésidő:** 15, 25 vagy 35 perces keretre igazított edzés (rövidebb mobilitás és pihenő, kevesebb kör; 35 percnél plusz kör).
 - **Futóprogram nulláról 5 km-ig:** 9 hét, hetente 3 alkalom, vezetett séta–futás intervallumok hangos bemondással, automatikus naplózással.
+- **Heti áttekintés** vasárnap és hétfőn a kezdőlapon (mi sikerült, mi maradt el, jövő heti fókusz), korábbi hetek a Fejlődés oldalról.
+- **Regeneráció:** 4 perces vezetett levezetés edzés után (célzott nyújtás, lassú légzés); rossz alvásnál tippek és link az Önismeret alvásoldalára.
+- **Fehérje és víz:** napi adag- és pohárszámláló a testsúlyból (1,6 g/ttkg, 33 ml/ttkg; általános irányelv).
+- **Időszakolás:** a 6 hetes ciklusok fókusza váltakozik (alapozás → erő → robbanékonyság).
+- **Panaszmód** (térd, derék, váll): kímélőbb változatok óvatos, általános szabályokkal; szakember még nem lektorálta.
+- **Dizájn:** mozgó gyakorlatábrák, gyűrűs visszaszámláló, rezgés és lapozás edzés közben, négy menüpont, téma- és betűméret-kapcsoló, lépésenkénti bevezetés.
 - **Eszközök:** húzódzkodó rúd, kettlebell/kézisúlyzó vagy gumiszalag esetén a gyakorlatsorok ahhoz igazodnak (rúd: függeszkedés → negatív → húzódzkodás; súlyzó: serleg guggolás, román felhúzás, lendítés, evezés; szalag: széthúzás → evezés).
 - **Kamerás mérés (béta):** a letámasztott telefon kamerája előtt élőben számolja az ismétléseket vagy a kitartott időt, hangosan is, és a végén visszajelez a formáról. Tesztekhez (fekvőtámasz, 30 mp felállás, plank, egylábas állás: az eredmény a mezőbe kerül), a gyakorlatleírásnál és a vezetett edzésben. A pózbecslő (MediaPipe, kb. 15 MB) a Kanyaréval azonos, a készüléken fut, és csak az első használatkor töltődik le.
 - **Adatvédelem:** minden adat a készüléken marad (IndexedDB). Nincs szerver, fiók, és nincs külső kérés (CSP: csak `'self'`; a `'wasm-unsafe-eval'` a pózbecslő WebAssembly-futtatójához kell).

@@ -375,10 +375,40 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     assert.match(await text(), /Húzódzkodás rúdon/, 'a rúd elsőbbséget élvez a húzásnál');
   });
 
+  await step('levezetés edzés után, fehérje- és vízcél, panaszmód, alvási tipp', async () => {
+    await go(page, '#/cooldown');
+    assert.match(await text(), /Levezetés/);
+    assert.match(await text(), /1 \/ \d+/);
+    await go(page, '#/');
+    assert.match(await text(), /Add meg a testsúlyod/, 'testsúly nélkül kéri');
+    await page.evaluate(async () => { await (await import('./js/ui/store.js')).itemPut({ id: 'teszt-suly', kind: 'body', date: Date.now(), weight: 80 }); });
+    await go(page, '#/');
+    assert.match(await text(), /Fehérje és víz ma/);
+    assert.match(await text(), /Fehérjeadag 0 \/ 5/);
+    await page.locator('.nut-row').first().getByRole('button', { name: '+' }).click();
+    await until(page, async () => { const n = await (await import('./js/ui/store.js')).kvGet('nutrition'); return n && Object.values(n).some(v => v.p === 1); });
+    await go(page, '#/settings');
+    await page.getByRole('checkbox', { name: 'Térd' }).check();
+    await until(page, async () => ((await (await import('./js/ui/state.js')).getProgram()).complaints || []).includes('knee'));
+    const jumps = await page.evaluate(async () => {
+      const { buildSession, ROTATION } = await import('./js/core/program.js'), { D } = await import('./js/ui/data.js'), s = await import('./js/ui/state.js');
+      const p = await s.getProgram();
+      return ROTATION.flatMap(k => buildSession(k, { ...p, lowImpact: false }, D.exercises.exercises).blocks).filter(b => D.ex[b.exercise].impact).length;
+    });
+    assert.equal(jumps, 0, 'térdpanasznál nincs ugrás');
+    await go(page, '#/check/strengthA');
+    await page.getByText('Rosszul aludtam').click();
+    assert.match(await text(), /Alvás és edzés/);
+    await go(page, '#/review');
+    assert.match(await text(), /Ez a hét/);
+    await go(page, '#/program');
+    assert.match(await text(), /A ciklus fókusza: Alapozás/);
+  });
+
   await step('akadálymentesség (axe, WCAG 2 A/AA): a fő képernyőkön nincs hiba', async () => {
     const axe = fs.readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
     const found = [];
-    for (const hash of ['#/more', '#/', '#/assess', '#/test/pushup', '#/test/deep_squat', '#/test/vitals', '#/result', '#/program', '#/session/mobility', '#/ex/squat', '#/log', '#/settings', '#/cardio', '#/check/strengthA', '#/ex/pull_up', '#/progress', '#/mini', '#/run']) {
+    for (const hash of ['#/more', '#/', '#/assess', '#/test/pushup', '#/test/deep_squat', '#/test/vitals', '#/result', '#/program', '#/session/mobility', '#/ex/squat', '#/log', '#/settings', '#/cardio', '#/check/strengthA', '#/ex/pull_up', '#/progress', '#/mini', '#/run', '#/review', '#/cooldown']) {
       await go(page, hash);
       /* a Playwright evaluate-je nem esik a lap CSP-je alá, így beágyazott szkript nélkül töltjük be */
       await page.evaluate(src => { if (!window.axe) (0, eval)(src); }, axe).catch(() => {});

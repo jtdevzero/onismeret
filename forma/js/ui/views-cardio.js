@@ -1,6 +1,6 @@
 /* Állóképesség (kardió) napló pulzuszónákkal, és a napi „hogy vagy?” ellenőrzés edzés előtt. */
 import { h, clear, fmtDate, uid, toast } from './dom.js';
-import { page, card, btn, link, note, choice } from './widgets.js';
+import { page, card, btn, link, note, choice, list } from './widgets.js';
 import { D, profile } from './data.js';
 import { kvSet, itemPut, itemsAll, itemDelete } from './store.js';
 import { latestAssessment, evaluateItem } from './state.js';
@@ -65,13 +65,16 @@ export async function checkView(key) {
       link('#/session/mobility', 'Csak mobilitás', 'btn' + (r.level === 'rest' ? ' primary' : '')),
       r.level !== 'go' ? link('#/session/' + key, 'Mégis a teljeset', 'btn small') : null)));
   };
+  /* rossz alvásnál tippek, és az Önismeret alvásoldala */
+  const sleepTip = h('div', { 'aria-live': 'polite' });
+  const showSleep = () => { clear(sleepTip); if (st.sleep === 1) sleepTip.append(card(h('h2', null, 'Alvás és edzés'), list(['Ma este 30 perccel korábban feküdj le, képernyő nélkül.', 'Délután 2 után már ne igyál koffeint.', 'Rossz alvás után a könnyített edzés is teljes értékű: a fejlődés a pihenés alatt történik.']), h('p', null, h('a', { href: '../alvas.html' }, 'Részletesebben: az Önismeret alvásoldala')))); };
   const pain = h('input', { type: 'checkbox', onchange: e => { st.pain = e.target.checked; refresh(); } });
   return page('Hogy vagy ma?',
     h('p', { class: 'muted' }, `Mielőtt elkezded: ${SESSION_TITLES[key]}. Három gyors kérdés, hogy a mai edzés illeszkedjen a napodhoz.`),
-    card(h('h2', null, 'Alvás'), choice('sleep', opts3('Rosszul aludtam', 'Közepesen', 'Jól kialudtam magam'), null, v => { st.sleep = v; refresh(); }, 'Alvás'),
+    card(h('h2', null, 'Alvás'), choice('sleep', opts3('Rosszul aludtam', 'Közepesen', 'Jól kialudtam magam'), null, v => { st.sleep = v; showSleep(); refresh(); }, 'Alvás'),
       h('h3', null, 'Izomláz'), choice('sore', opts3('Erős izomlázam van', 'Enyhe', 'Nincs'), null, v => { st.soreness = v; refresh(); }, 'Izomláz'),
       h('h3', null, 'Energia'), choice('energy', opts3('Fáradt vagyok', 'Átlagos', 'Friss vagyok'), null, v => { st.energy = v; refresh(); }, 'Energia'),
       h('label', { class: 'check' }, pain, h('span', null, 'Valamim fáj (nem izomláz, hanem éles vagy ízületi fájdalom)'))),
-    out,
+    out, sleepTip,
     h('p', null, link('#/session/' + key, 'Kihagyom a kérdéseket, indulok', 'small')));
 }

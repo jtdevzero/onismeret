@@ -4,7 +4,7 @@ import { page, card, btn, link, note, choice, list, levelBadge, sized } from './
 import { D, S, saveSettings, profile, applyLook } from './data.js';
 import { exportAll, wipeAll, restoreAll } from './store.js';
 import { parseBackup } from '../core/backup.js';
-import { RATINGS, LADDERS, EQUIPMENT, DURATIONS, fitSession } from '../core/program.js';
+import { RATINGS, LADDERS, EQUIPMENT, DURATIONS, COMPLAINTS, fitSession } from '../core/program.js';
 import { getProgram, setProgram, latestAssessment, workouts, assessments, evaluateItem } from './state.js';
 import { ROTATION, SESSION_TITLES, buildSession, sessionSteps, sessionMinutes, nextKey, weekInfo, reassessDue, streak } from '../core/program.js';
 import { LEVEL_NAMES } from '../core/score.js';
@@ -15,6 +15,7 @@ import { miniDue } from '../core/achievements.js';
 import { itemsAll } from './store.js';
 import { cardioItems, CARDIO_TYPES } from './views-cardio.js';
 import { GOAL_METRICS } from './views-progress.js';
+import { reviewCard, nutritionCard } from './views-wellness.js';
 
 export const PARQ = [
   ['heart', 'Mondta-e valaha orvos, hogy szívbetegséged vagy magas vérnyomásod van?'],
@@ -137,6 +138,8 @@ export async function homeView() {
       h('p', null, 'Nézd meg az eredményt, és készítsd el belőle a programodat.'), link('#/result', 'Eredmény és program', 'btn light'))));
   }
   const allItems = await itemsAll();
+  const rv = await reviewCard(allItems);
+  if (rv) kids.push(rv);
   if (prog && miniDue(allItems, prog)) kids.push(card(h('h2', null, 'Félidős mini-teszt'), h('p', null, 'A ciklus közepén vagy: egy 5 perces mini-teszttel (fekvőtámasz, plank, egylábas állás) láthatod, merre haladsz.'), h('div', { class: 'row' }, link('#/mini', 'Mini-teszt', 'btn primary'))));
   if (reassessDue(last.date, prog)) kids.push(note('Eltelt 6 hét az utolsó felmérés óta: ideje újramérni, hogy lásd a fejlődésed, és a program is igazodjon.', 'warn'), h('p', null, link('#/assess', 'Újramérés', 'btn')));
   const p = profile();
@@ -146,6 +149,7 @@ export async function homeView() {
       h('div', { class: 'stat' }, h('span', { class: 'muted' }, 'Összesített'), h('strong', null, ev.overall != null ? ev.overall + ' / 100' : '–'), ev.overall != null ? levelBadge(levelKey(ev.overall), LEVEL_NAMES[levelKey(ev.overall)]) : null)),
     ev.weakest.length ? h('p', { class: 'small' }, 'Most leginkább ezen dolgozunk: ' + ev.weakest.map(a => D.area[a].name.toLowerCase()).join(' és ') + '.') : null,
     h('div', { class: 'row' }, link('#/result', 'Részletes eredmény', 'btn small'), link('#/progress', 'Fejlődés, célok, jelvények', 'btn small'))));
+  kids.push(await nutritionCard(allItems));
   return h('div', { class: 'page' }, kids);
 }
 const levelKey = s => (s >= D.norms.levels.top ? 'top' : s >= D.norms.levels.low ? 'mid' : 'low');
@@ -263,6 +267,14 @@ export async function settingsView() {
     card(h('h2', null, 'Edzésidő'),
       h('p', { class: 'small muted' }, 'Ha kevés az időd, az edzést a választott hosszhoz igazítom: rövidebb mobilitás és pihenő, kevesebb kör. 35 percnél a fő gyakorlatok egy kört kapnak.'),
       choice('dur', DURATIONS, S.settings.duration || 0, async v => { await saveSettings({ duration: v }); toast('Elmentettem. A következő edzéstől érvényes.'); }, 'Edzésidő')),
+    card(h('h2', null, 'Panaszmód'),
+      h('p', { class: 'small muted' }, 'Ha valamelyik ízületed érzékeny, a program kímélőbb változatokat ad: térdnél ugrás és mély egylábas guggolás nélkül, deréknál lendítés és hollow nélkül, vállnál fekvőtámasz térdelve és rúd nélkül. Általános, óvatos szabályok; szakember még nem lektorálta. Tartós vagy éles fájdalommal fordulj orvoshoz vagy gyógytornászhoz.'),
+      COMPLAINTS.map(([k, label]) => h('label', { class: 'check' }, h('input', { type: 'checkbox', checked: (S.settings.complaints || []).includes(k), onchange: async e => {
+        const set = new Set(S.settings.complaints || []); if (e.target.checked) set.add(k); else set.delete(k);
+        await saveSettings({ complaints: [...set] });
+        const prog = await getProgram(); if (prog) await setProgram({ ...prog, complaints: [...set] });
+        toast('Elmentettem. A következő edzéstől érvényes.');
+      } }), h('span', null, label)))),
     card(h('h2', null, 'Eszközeid'),
       h('p', { class: 'small muted' }, 'A húzógyakorlatok ehhez igazodnak: rúddal húzódzkodás felé haladsz, gumiszalaggal evezéssel; ha egyik sincs, asztal alatti húzással.'),
       eqBoxes,

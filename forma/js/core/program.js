@@ -118,6 +118,27 @@ const PLAN = {
 };
 
 /* Egy edzés összeállítása. state: { levels, targets, lowImpact, start } · → { key, title, blocks, week } */
+/* Időszakolás: a 6 hetes ciklusok fókusza váltakozik. alap → erő → robbanékonyság, majd újra. */
+export const PHASES = [
+  { id: 'base', name: 'Alapozás', about: 'Kiegyensúlyozott terhelés, technika és állóképesség.' },
+  { id: 'strength', name: 'Erő', about: 'Erőnapokon több kör, kevesebb ismétlés, hosszabb pihenő: nehezebb változat felé.' },
+  { id: 'power', name: 'Robbanékonyság', about: 'Gyorsasági napokon több kör, az erőnapokon fenntartó adag.' },
+];
+export const phaseOf = cycle => PHASES[((cycle || 1) - 1) % PHASES.length];
+
+/* Panaszmód (térd, derék, váll): óvatos, általános szabályok; szakember még nem lektorálta.
+   → { caps: { gyakorlatsor: legfeljebb szint }, noImpact, noBar, skip: [gyakorlatok] } */
+export const COMPLAINTS = [['knee', 'Térd'], ['back', 'Derék'], ['shoulder', 'Váll']];
+export function complaintRules(list = []) {
+  const caps = {}, skip = new Set();
+  const cap = (k, v) => { caps[k] = Math.min(caps[k] ?? 99, v); };
+  let noImpact = false, noBar = false;
+  if (list.includes('knee')) { noImpact = true; cap('squat', 1); cap('squat_db', 0); cap('lunge', 0); cap('balance', 1); }
+  if (list.includes('back')) { noImpact = true; cap('hinge', 0); cap('hinge_db', 0); cap('core', 1); cap('speed', 2); skip.add('worlds_greatest'); }
+  if (list.includes('shoulder')) { cap('push', 2); cap('pull_db', 0); cap('pull', 1); noBar = true; skip.add('towel_dislocate'); skip.add('wall_slide'); }
+  return { caps, noImpact, noBar, skip: [...skip] };
+}
+
 /* opts.light: könnyített edzés (rossz nap): minden gyakorlatból eggyel kevesebb kör, és nem kér értékelést,
    hogy a fáradtan „könnyűnek” vagy „nehéznek” érzett kör ne torzítsa a szintlépést. */
 export function buildSession(key, state, exercises, now = Date.now(), opts = {}) {
@@ -125,17 +146,25 @@ export function buildSession(key, state, exercises, now = Date.now(), opts = {})
   const wk = weekInfo(state.start ?? now, now);
   const warm = exercises.find(e => e.id === 'warmup');
   const blocks = [];
+  const rules = complaintRules(state.complaints), phase = phaseOf(wk.cycle);
+  const equipment = rules.noBar ? (state.equipment || []).filter(e => e !== 'bar') : state.equipment;
   /* ugrás és erő előtt általános bemelegítés; a mobilitásnap maga a bemelegítés */
   if (warm && key !== 'mobility') blocks.push({ exercise: warm.id, sets: 1, seconds: warm.dose.seconds[key.startsWith('speed') ? 1 : 0], rest: 0, part: 'warmup' });
-  blocks.push(...mobilityBlock(exercises, state.targets || [], key === 'mobility'));
+  blocks.push(...mobilityBlock(exercises.filter(e => !rules.skip.includes(e.id)), state.targets || [], key === 'mobility'));
   for (const [ladder, sets0, rest] of PLAN[key] || []) {
-    const eff = effLadder(ladder, state.equipment);
-    const ex = exerciseFor(ladders, eff, (state.levels || {})[eff], state.lowImpact);
+    const eff = effLadder(ladder, equipment);
+    const lvl = Math.min((state.levels || {})[eff] ?? 0, rules.caps[eff] ?? 99);
+    const ex = exerciseFor(ladders, eff, lvl, state.lowImpact || rules.noImpact);
     if (!ex) continue;
-    const sets = wk.deload || opts.light ? Math.max(1, sets0 - 1) : sets0;
-    blocks.push({ exercise: ex.id, ladder: eff, sets, ...doseFor(ex, wk.cycleWeek, wk.deload), rest, rate: !opts.light, part: 'main' });
+    let sets = sets0, rst = rest, dose = doseFor(ex, wk.cycleWeek, wk.deload);
+    /* a ciklus fókusza */
+    const isStrength = ex.type === 'strength', isFast = ex.type === 'power' || ex.type === 'speed';
+    if (phase.id === 'strength' && isStrength) { sets = Math.min(4, sets + 1); rst += 15; if (dose.reps) dose = { reps: Math.max(3, Math.round(dose.reps * 0.8)) }; }
+    if (phase.id === 'power') { if (isFast) sets = Math.min(sets + 1, ex.type === 'speed' ? 10 : 5); else if (isStrength) sets = Math.max(2, sets - 1); }
+    if (wk.deload || opts.light) sets = Math.max(1, sets - 1);
+    blocks.push({ exercise: ex.id, ladder: eff, sets, ...dose, rest: rst, rate: !opts.light, part: 'main' });
   }
-  return { key, title: SESSION_TITLES[key], blocks, week: wk, light: !!opts.light };
+  return { key, title: SESSION_TITLES[key], blocks, week: wk, light: !!opts.light, phase, complaints: state.complaints || [] };
 }
 
 export const nextKey = state => ROTATION[(state.done || 0) % ROTATION.length];

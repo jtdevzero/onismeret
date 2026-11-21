@@ -2,7 +2,7 @@
   "note": "Testsúlyos gyakorlatok otthonra, eszköz nélkül (szék, asztal, fal, törölköző). A leírásokat edző vagy gyógytornász még nem lektorálta.",
   "reviewed": false,
   "typeNames": {
-    "warmup": "Bemelegítés", "mobility": "Mobilitás", "strength": "Erő", "core": "Törzs", "power": "Robbanékonyság",
+    "warmup": "Bemelegítés", "recovery": "Levezetés", "mobility": "Mobilitás", "strength": "Erő", "core": "Törzs", "power": "Robbanékonyság",
     "speed": "Gyorsaság", "balance": "Egyensúly", "cardio": "Állóképesség"
   },
   "ladders": {
@@ -204,6 +204,9 @@
       "how": "Helyben járás magas térdemeléssel, karkörzés előre és hátra, csípőkörzés, 10 laza guggolás, 10 váltott lábas kitörés. A végére melegedj ki, de ne fáradj el.",
       "points": ["Fokozatosan nagyobb mozdulatok", "Rugózás és rángatás nélkül", "A végén kicsit szaporább a légzésed"], "figure": null, "query": "5 minute warm up routine at home" },
 
+    { "id": "breathing", "name": "Lassú légzés", "type": "recovery", "dose": { "seconds": [60, 120] },
+      "how": "Feküdj hanyatt vagy ülj kényelmesen. Lélegezz be az orrodon 4 másodpercig, tartsd bent 4-ig, fújd ki 6 másodperc alatt. A kilégzés legyen hosszabb, mint a belégzés: ez segít lecsendesedni edzés után.",
+      "points": ["Hasi légzés, a váll laza", "Hosszabb kilégzés", "Ha szédülsz, lélegezz normálisan"], "figure": null, "query": "box breathing recovery" },
     { "id": "cat_cow", "name": "Macska–tehén", "type": "mobility", "target": ["thoracic"], "daily": true, "dose": { "reps": [8, 10] },
       "how": "Négykézláb belégzéssel engedd le a hasad és emeld a fejed, kilégzéssel domborítsd a hátad, áll a mellkas felé. Csigolyáról csigolyára.",
       "points": ["Lassú, a légzéshez igazítva", "Az egész gerinc mozog", "Fájdalom nélkül"], "figure": "cat_cow", "query": "cat cow stretch" },

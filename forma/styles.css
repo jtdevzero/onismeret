@@ -393,3 +393,6 @@ ul.badges { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
 .spark polyline { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .spark circle { fill: var(--accent); }
 details.section > summary { cursor: pointer; font-weight: 750; min-height: 44px; display: flex; align-items: center; }
+.nut-row { justify-content: space-between; }
+.nut-row > span { flex: 1; }
+.nut-row .btn.small { min-width: 44px; }

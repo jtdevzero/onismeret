@@ -83,7 +83,7 @@ export async function progressView(arg, onCleanup) {
         toast('Bekerült a naplóba.'); reload('#/progress');
       }, 'primary')),
       body.weight ? h('p', { class: 'small' }, `Testsúly: ${fmtNum(body.weight.value)} kg` + (body.weight.change != null ? ` (${body.weight.change > 0 ? '+' : ''}${fmtNum(body.weight.change)} kg az első mérés óta)` : '')) : null),
-    h('div', { class: 'row' }, link('#/mini', 'Mini-teszt (5 perc)', 'btn'), link('#/result', 'Legutóbbi felmérés', 'btn')));
+    h('div', { class: 'row' }, link('#/review', 'Heti áttekintés', 'btn'), link('#/mini', 'Mini-teszt (5 perc)', 'btn'), link('#/result', 'Legutóbbi felmérés', 'btn')));
 }
 
 /* Félidős mini-teszt: fekvőtámasz, plank, egylábas állás, a felmérés időzítőivel. */
