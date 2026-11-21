@@ -1,10 +1,10 @@
 /* Kezdőképernyő (első indítás), a mai nap, napló és beállítások. */
 import { h, clear, fmtDate, toast } from './dom.js';
 import { page, card, btn, link, note, choice, list, levelBadge, sized } from './widgets.js';
-import { D, S, saveSettings, profile } from './data.js';
+import { D, S, saveSettings, profile, applyLook } from './data.js';
 import { exportAll, wipeAll, restoreAll } from './store.js';
 import { parseBackup } from '../core/backup.js';
-import { RATINGS, LADDERS, EQUIPMENT, DURATIONS, fitSession } from '../core/program.js';
+import { RATINGS, LADDERS, EQUIPMENT, DURATIONS, COMPLAINTS, fitSession } from '../core/program.js';
 import { getProgram, setProgram, latestAssessment, workouts, assessments, evaluateItem } from './state.js';
 import { ROTATION, SESSION_TITLES, buildSession, sessionSteps, sessionMinutes, nextKey, weekInfo, reassessDue, streak } from '../core/program.js';
 import { LEVEL_NAMES } from '../core/score.js';
@@ -15,6 +15,7 @@ import { miniDue } from '../core/achievements.js';
 import { itemsAll } from './store.js';
 import { cardioItems, CARDIO_TYPES } from './views-cardio.js';
 import { GOAL_METRICS } from './views-progress.js';
+import { reviewCard, nutritionCard } from './views-wellness.js';
 
 export const PARQ = [
   ['heart', 'Mondta-e valaha orvos, hogy szívbetegséged vagy magas vérnyomásod van?'],
@@ -35,7 +36,7 @@ export async function startView() {
     location.hash = '#/';
   }, 'primary');
   const warn = h('div', { 'aria-live': 'polite' });
-  const refresh = () => {
+  let refresh = () => {
     const answered = PARQ.every(([k]) => typeof st.parq[k] === 'boolean');
     const anyYes = PARQ.some(([k]) => st.parq[k] === true);
     clear(warn);
@@ -51,22 +52,50 @@ export async function startView() {
       h('label', { class: 'check' }, h('input', { type: 'radio', name: 'parq-' + k, checked: st.parq[k] === v, onchange: () => { st.parq[k] = v; refresh(); } }), h('span', null, t)))))));
   const accept = h('label', { class: 'check' }, h('input', { type: 'checkbox', onchange: e => { st.ok = e.target.checked; refresh(); } }),
     h('span', null, 'Megértettem: a Forma nem orvosi eszköz és nem helyettesít orvosi vizsgálatot. Ha edzés közben fájdalmat, szédülést, mellkasi szorítást vagy szokatlan légszomjat érzek, abbahagyom.'));
-  refresh();
+  /* négy rövid lépés: bemutatás → rólad → egészségügyi szűrés → elfogadás */
+  let step = 0;
+  const dots = h('div', { class: 'steps-dots', role: 'progressbar', 'aria-valuemin': 1, 'aria-valuemax': 4, 'aria-label': 'Bevezetés lépései' }, [0, 1, 2, 3].map(() => h('i')));
+  const next1 = btn('Tovább', () => goStep(2), 'primary'), next2 = btn('Tovább', () => goStep(3), 'primary');
+  const back = n => btn('Vissza', () => goStep(n), 'small');
+  const sections = [
+    h('div', null,
+      card(h('h2', null, 'Hogyan működik?'), list([
+        'Kb. 25 perces felmérés otthon, eszköz nélkül: mobilitás, hajlékonyság, erő, törzs, gyorsaság, egyensúly, állóképesség.',
+        'Minden eredményt a korod és a nemed szerinti normához mérek, és kiszámolom a becsült fittségi korodat.',
+        'Ebből napi 15–25 perces programot kapsz. Ha egy gyakorlat könnyű, nehezebbre váltok; 6 hetente újramérünk.',
+        'Minden adat a telefonodon marad. Nincs fiók, és nincs szerver.']),
+        h('div', { class: 'row' }, btn('Kezdjük el', () => goStep(1), 'primary'))),
+      card(h('h2', null, 'Van már mentésed?'), h('p', { class: 'small muted' }, 'Ha új telefonra költözöl, a Beállításokban készített mentésfájlból minden visszatölthető.'), h('div', { class: 'row' }, restorePicker()))),
+    card(h('h2', { tabIndex: -1 }, 'Rólad'),
+      h('label', { class: 'field' }, 'Életkor', h('span', { class: 'hint', id: 'age-hint' }, 'A normák korsávonként mások.'), age),
+      h('p', { class: 'small muted' }, 'A normák nemenként különböznek:'),
+      choice('sex', [['male', 'Férfi'], ['female', 'Nő']], st.sex, v => { st.sex = v; refresh(); }, 'Nem'),
+      h('div', { class: 'row' }, next1, back(0))),
+    card(h('h2', { tabIndex: -1 }, 'Egészségügyi szűrés'), h('p', { class: 'small muted' }, 'A PAR-Q+ kérdőív alapján. A válaszaid csak a telefonodon tárolódnak.'), parq,
+      h('div', { class: 'row' }, next2, back(1))),
+    card(h('h2', { tabIndex: -1 }, 'Utolsó lépés'), accept, h('div', { class: 'row' }, go, back(2))),
+  ];
+  function goStep(n) {
+    step = n;
+    sections.forEach((el, i) => { el.hidden = i !== n; });
+    [...dots.children].forEach((d, i) => d.classList.toggle('on', i <= n));
+    dots.setAttribute('aria-valuenow', String(n + 1));
+    refresh();
+    const h2 = sections[n].querySelector('h2');
+    if (n && h2) h2.focus({ preventScroll: false });
+  }
+  const oldRefresh = refresh;
+  refresh = () => {
+    oldRefresh();
+    const answered = PARQ.every(([k]) => typeof st.parq[k] === 'boolean');
+    next1.disabled = !(ageOk(st.age) && st.sex);
+    next2.disabled = !answered;
+  };
+  goStep(0);
   return h('div', { class: 'page' },
     h('section', { class: 'hero' }, h('h1', null, 'Forma'), h('p', { class: 'hero-sub' }, 'Állapotfelmérés és otthoni edzés'),
       h('p', { class: 'hero-lead' }, 'Hol tartasz a korosztályodhoz képest, és hogyan érheted el, vagy előzheted meg?')),
-    card(h('h2', null, 'Hogyan működik?'), list([
-      'Kb. 25 perces felmérés otthon, eszköz nélkül: mobilitás, hajlékonyság, erő, törzs, gyorsaság, egyensúly, állóképesség.',
-      'Minden eredményt a korod és a nemed szerinti normához mérek, és kiszámolom a becsült fittségi korodat.',
-      'Ebből napi 15–25 perces programot kapsz. Ha egy gyakorlat könnyű, nehezebbre váltok; 6 hetente újramérünk.',
-      'Minden adat a telefonodon marad. Nincs fiók, és nincs szerver.'])),
-    card(h('h2', null, 'Rólad'),
-      h('label', { class: 'field' }, 'Életkor', h('span', { class: 'hint', id: 'age-hint' }, 'A normák korsávonként mások.'), age),
-      h('p', { class: 'small muted' }, 'A normák nemenként különböznek:'),
-      choice('sex', [['male', 'Férfi'], ['female', 'Nő']], st.sex, v => { st.sex = v; refresh(); }, 'Nem')),
-    card(h('h2', null, 'Egészségügyi szűrés'), h('p', { class: 'small muted' }, 'A PAR-Q+ kérdőív alapján. A válaszaid csak a telefonodon tárolódnak.'), parq),
-    card(accept, warn, h('div', { class: 'row' }, go)),
-    card(h('h2', null, 'Van már mentésed?'), h('p', { class: 'small muted' }, 'Ha új telefonra költözöl, a Beállításokban készített mentésfájlból minden visszatölthető.'), h('div', { class: 'row' }, restorePicker())));
+    dots, warn, sections);
 }
 
 const DAYS = ['H', 'K', 'Sze', 'Cs', 'P', 'Szo', 'V'];
@@ -109,6 +138,8 @@ export async function homeView() {
       h('p', null, 'Nézd meg az eredményt, és készítsd el belőle a programodat.'), link('#/result', 'Eredmény és program', 'btn light'))));
   }
   const allItems = await itemsAll();
+  const rv = await reviewCard(allItems);
+  if (rv) kids.push(rv);
   if (prog && miniDue(allItems, prog)) kids.push(card(h('h2', null, 'Félidős mini-teszt'), h('p', null, 'A ciklus közepén vagy: egy 5 perces mini-teszttel (fekvőtámasz, plank, egylábas állás) láthatod, merre haladsz.'), h('div', { class: 'row' }, link('#/mini', 'Mini-teszt', 'btn primary'))));
   if (reassessDue(last.date, prog)) kids.push(note('Eltelt 6 hét az utolsó felmérés óta: ideje újramérni, hogy lásd a fejlődésed, és a program is igazodjon.', 'warn'), h('p', null, link('#/assess', 'Újramérés', 'btn')));
   const p = profile();
@@ -118,6 +149,7 @@ export async function homeView() {
       h('div', { class: 'stat' }, h('span', { class: 'muted' }, 'Összesített'), h('strong', null, ev.overall != null ? ev.overall + ' / 100' : '–'), ev.overall != null ? levelBadge(levelKey(ev.overall), LEVEL_NAMES[levelKey(ev.overall)]) : null)),
     ev.weakest.length ? h('p', { class: 'small' }, 'Most leginkább ezen dolgozunk: ' + ev.weakest.map(a => D.area[a].name.toLowerCase()).join(' és ') + '.') : null,
     h('div', { class: 'row' }, link('#/result', 'Részletes eredmény', 'btn small'), link('#/progress', 'Fejlődés, célok, jelvények', 'btn small'))));
+  kids.push(await nutritionCard(allItems));
   return h('div', { class: 'page' }, kids);
 }
 const levelKey = s => (s >= D.norms.levels.top ? 'top' : s >= D.norms.levels.low ? 'mid' : 'low');
@@ -227,9 +259,22 @@ export async function settingsView() {
         toast('Elmentettem.');
       }, 'primary')),
       h('p', { class: 'small muted' }, 'A korábbi felmérések a felméréskori életkorral maradnak meg.')),
+    card(h('h2', null, 'Megjelenés'),
+      h('h3', null, 'Téma'),
+      choice('theme', [['auto', 'A telefon beállítása szerint'], ['light', 'Világos (naplemente)'], ['dark', 'Sötét (éjszakai neon)']], S.settings.theme || 'auto', async v => { await saveSettings({ theme: v }); applyLook(); }, 'Téma'),
+      h('h3', null, 'Betűméret'),
+      choice('size', [['normal', 'Normál'], ['large', 'Nagy (edzés közben is jól olvasható)']], S.settings.size || 'normal', async v => { await saveSettings({ size: v }); applyLook(); }, 'Betűméret')),
     card(h('h2', null, 'Edzésidő'),
       h('p', { class: 'small muted' }, 'Ha kevés az időd, az edzést a választott hosszhoz igazítom: rövidebb mobilitás és pihenő, kevesebb kör. 35 percnél a fő gyakorlatok egy kört kapnak.'),
       choice('dur', DURATIONS, S.settings.duration || 0, async v => { await saveSettings({ duration: v }); toast('Elmentettem. A következő edzéstől érvényes.'); }, 'Edzésidő')),
+    card(h('h2', null, 'Panaszmód'),
+      h('p', { class: 'small muted' }, 'Ha valamelyik ízületed érzékeny, a program kímélőbb változatokat ad: térdnél ugrás és mély egylábas guggolás nélkül, deréknál lendítés és hollow nélkül, vállnál fekvőtámasz térdelve és rúd nélkül. Általános, óvatos szabályok; szakember még nem lektorálta. Tartós vagy éles fájdalommal fordulj orvoshoz vagy gyógytornászhoz.'),
+      COMPLAINTS.map(([k, label]) => h('label', { class: 'check' }, h('input', { type: 'checkbox', checked: (S.settings.complaints || []).includes(k), onchange: async e => {
+        const set = new Set(S.settings.complaints || []); if (e.target.checked) set.add(k); else set.delete(k);
+        await saveSettings({ complaints: [...set] });
+        const prog = await getProgram(); if (prog) await setProgram({ ...prog, complaints: [...set] });
+        toast('Elmentettem. A következő edzéstől érvényes.');
+      } }), h('span', null, label)))),
     card(h('h2', null, 'Eszközeid'),
       h('p', { class: 'small muted' }, 'A húzógyakorlatok ehhez igazodnak: rúddal húzódzkodás felé haladsz, gumiszalaggal evezéssel; ha egyik sincs, asztal alatti húzással.'),
       eqBoxes,
@@ -255,4 +300,17 @@ export async function settingsView() {
     card(h('h2', null, 'A normákról'),
       h('p', null, 'A percentilisek publikált felnőtt normákból származnak (CSEP, YMCA, Rikli–Jones, Araújo, Springer, Nes és mtsai.). Ahol kevés az adat, ott becsültünk; ezt a teszteknél „becsült norma” jelzi. A normákat és a gyakorlatokat szakember még nem lektorálta.'),
       h('p', { class: 'small muted' }, 'A Forma nem orvosi eszköz.')));
+}
+
+/* Több: a ritkábban használt oldalak egy helyen. */
+export async function moreView() {
+  const item = (href, ic, title, sub) => h('li', null, h('a', { href }, h('span', { class: 'tile-ic' }, h('span', { class: 'ic ic-' + ic, 'aria-hidden': 'true' })), h('span', null, h('strong', null, title), h('span', { class: 'small' }, sub))));
+  return page('Több',
+    h('ul', { class: 'menu-list' },
+      item('#/assess', 'check', 'Felmérés', '13 teszt a korosztályodhoz mérve; 6 hetente újra'),
+      item('#/result', 'chart', 'Legutóbbi eredmény', 'Pókhálóábra, fittségi kor, területek'),
+      item('#/cardio', 'train', 'Állóképesség', 'Kardiónapló, pulzuszónák, heti 150 perc'),
+      item('#/run', 'train', 'Futóprogram', 'Nulláról 5 km-ig, 9 hét'),
+      item('#/log', 'log', 'Napló', 'Naptár, havi összefoglaló, edzések'),
+      item('#/settings', 'gear', 'Beállítások', 'Profil, eszközök, edzésidő, megjelenés, mentés')));
 }

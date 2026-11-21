@@ -21,6 +21,8 @@ function serve() {
   });
 }
 const shown = (page, hash) => page.waitForFunction(h => document.documentElement.dataset.view === h, hash);
+/* aszinkron feltétel valódi kivárása (a lapon futó, Promise-t adó ellenőrzéssel) */
+const until = async (page, fn, arg, ms = 5000) => { const t0 = Date.now(); while (Date.now() - t0 < ms) { if (await page.evaluate(fn, arg)) return; await page.waitForTimeout(50); } throw new Error('A feltétel nem teljesült időben.'); };
 const go = async (page, hash) => { await page.evaluate(h => { if (location.hash === h) dispatchEvent(new HashChangeEvent('hashchange')); else location.hash = h; }, hash); await page.waitForTimeout(50); await shown(page, hash); };
 
 const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0, hip_flexor: 2, chair_stand: 22, plank: 70, broad_jump: 205, tapping: 40, sl_stance: 7, sit_rise: 9, step_test: 100 };
@@ -44,24 +46,33 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
   /* gyors időzítő a tesztekhez */
   await page.evaluate(async () => { (await import('./js/ui/widgets.js')).setTick(15); });
 
-  await step('első indítás: profil és szűrés nélkül nem lehet továbblépni, minden út ide visz', async () => {
-    assert.match(await text(), /Egészségügyi szűrés/);
+  await step('első indítás: négy lépés, adatok nélkül nem lehet továbblépni, minden út ide visz', async () => {
+    assert.match(await text(), /Hogyan működik/);
     assert.equal(await page.locator('#nav').isVisible(), false);
     await go(page, '#/program');
-    assert.match(await text(), /Egészségügyi szűrés/);
-    const start = page.getByRole('button', { name: 'Kezdjük' });
-    assert.equal(await start.isDisabled(), true);
+    assert.match(await text(), /Hogyan működik/);
+    await shot('start');
+    await page.getByRole('button', { name: 'Kezdjük el' }).click();
+    const next = page.getByRole('button', { name: 'Tovább' }).first();
+    assert.equal(await next.isDisabled(), true);
     await page.getByLabel('Életkor').fill('16');
     assert.match(await text(), /felnőtteknek készült/);
     await page.getByLabel('Életkor').fill('34');
     await page.getByText('Férfi', { exact: true }).click();
+    await next.click();
+    assert.match(await text(), /Egészségügyi szűrés/);
+    const next2 = page.locator('section.card:not([hidden])').getByRole('button', { name: 'Tovább' });
+    assert.equal(await next2.isDisabled(), true);
     for (const fs of await page.locator('fieldset').all()) await fs.getByText('Nem', { exact: true }).click();
+    await shot('start-parq');
+    await next2.click();
+    const start = page.getByRole('button', { name: 'Kezdjük', exact: true });
     assert.equal(await start.isDisabled(), true, 'elfogadás nélkül tiltva');
     await page.getByText(/Megértettem: a Forma nem orvosi eszköz/).click();
-    await shot('start');
     await start.click();
     await page.waitForFunction(() => /Felmérés indítása/i.test(document.getElementById('main').innerText));
     assert.equal(await page.locator('#nav').isVisible(), true);
+    assert.equal(await page.locator('#nav a').count(), 4, 'négy menüpont');
     await shot('home-empty');
   });
 
@@ -119,7 +130,8 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     assert.match(t, /\d+ év/);
     assert.match(t, /Területenként/);
     assert.match(t, /Erre fókuszálunk/);
-    assert.match(t, /becsült norma/);
+    await page.locator('summary', { hasText: 'Tesztek részletesen' }).click();
+    assert.match(await text(), /becsült norma/);
     assert.equal(await page.locator('svg.radar').count(), 1);
     await shot('result');
   });
@@ -170,7 +182,8 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     await shot('log');
     await go(page, '#/ex/push_full');
     assert.match(await text(), /Hogyan csináld/);
-    assert.equal(await page.locator('svg.fig').count(), 2, 'a fekvőtámasz ábrája két képkocka');
+    assert.equal(await page.locator('.fig-live svg.fig').count(), 1, 'mozgó ábra');
+    assert.equal(await page.locator('.figs svg.fig').count(), 2, 'alatta a két képkocka');
     await shot('exercise');
   });
 
@@ -178,7 +191,7 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     await go(page, '#/settings');
     await page.getByText(/Kímélő mód/).click();
     await page.getByRole('button', { name: 'Mentés', exact: true }).click();
-    await page.waitForFunction(async () => (await (await import('./js/ui/state.js')).getProgram()).lowImpact === true);
+    await until(page, async () => (await (await import('./js/ui/state.js')).getProgram()).lowImpact === true);
     const jumps = await page.evaluate(async () => {
       const { buildSession, ROTATION } = await import('./js/core/program.js'), { D } = await import('./js/ui/data.js'), s = await import('./js/ui/state.js');
       const p = await s.getProgram();
@@ -273,9 +286,13 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
 
   await step('eszközök: húzódzkodó rúddal a program húzódzkodásra vált', async () => {
     await go(page, '#/settings');
-    await page.getByText(/Húzódzkodó rúd/).click();
+    const box = page.getByRole('checkbox', { name: /Húzódzkodó rúd/ });
+    await box.check();
+    assert.equal(await box.isChecked(), true);
     await page.getByRole('button', { name: 'Eszközök mentése' }).click();
-    await page.waitForFunction(async () => ((await (await import('./js/ui/state.js')).getProgram()).equipment || []).includes('bar'));
+    let eq = [];
+    for (let i = 0; i < 40 && !eq.includes('bar'); i++) { await page.waitForTimeout(50); eq = (await page.evaluate(async () => (await (await import('./js/ui/state.js')).getProgram()).equipment)) || []; }
+    assert.ok(eq.includes('bar'), 'mentett eszközök: ' + JSON.stringify(eq));
     await go(page, '#/program');
     assert.match(await text(), /Húzódzkodás rúdon/);
   });
@@ -323,7 +340,7 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
   await step('edzésidő: 15 percre állítva a mai edzés belefér', async () => {
     await go(page, '#/settings');
     await page.getByText('15 perc', { exact: true }).click();
-    await page.waitForFunction(async () => (await (await import('./js/ui/store.js')).kvGet('settings')).duration === 15);
+    await until(page, async () => (await (await import('./js/ui/store.js')).kvGet('settings')).duration === 15);
     await go(page, '#/');
     const m = (await text()).match(/Kb\. (\d+) perc/);
     assert.ok(m && Number(m[1]) <= 15, 'kezdőlap: ' + (m && m[1]));
@@ -352,16 +369,46 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     await go(page, '#/settings');
     await page.getByText(/Kettlebell vagy kézisúlyzó/).click();
     await page.getByRole('button', { name: 'Eszközök mentése' }).click();
-    await page.waitForFunction(async () => ((await (await import('./js/ui/state.js')).getProgram()).equipment || []).includes('dumbbell'));
+    await until(page, async () => ((await (await import('./js/ui/state.js')).getProgram()).equipment || []).includes('dumbbell'));
     await go(page, '#/program');
     assert.match(await text(), /Serleg guggolás|Hátralépő kitörés súlyzóval|Bolgár guggolás súlyzóval/);
     assert.match(await text(), /Húzódzkodás rúdon/, 'a rúd elsőbbséget élvez a húzásnál');
   });
 
+  await step('levezetés edzés után, fehérje- és vízcél, panaszmód, alvási tipp', async () => {
+    await go(page, '#/cooldown');
+    assert.match(await text(), /Levezetés/);
+    assert.match(await text(), /1 \/ \d+/);
+    await go(page, '#/');
+    assert.match(await text(), /Add meg a testsúlyod/, 'testsúly nélkül kéri');
+    await page.evaluate(async () => { await (await import('./js/ui/store.js')).itemPut({ id: 'teszt-suly', kind: 'body', date: Date.now(), weight: 80 }); });
+    await go(page, '#/');
+    assert.match(await text(), /Fehérje és víz ma/);
+    assert.match(await text(), /Fehérjeadag 0 \/ 5/);
+    await page.locator('.nut-row').first().getByRole('button', { name: '+' }).click();
+    await until(page, async () => { const n = await (await import('./js/ui/store.js')).kvGet('nutrition'); return n && Object.values(n).some(v => v.p === 1); });
+    await go(page, '#/settings');
+    await page.getByRole('checkbox', { name: 'Térd' }).check();
+    await until(page, async () => ((await (await import('./js/ui/state.js')).getProgram()).complaints || []).includes('knee'));
+    const jumps = await page.evaluate(async () => {
+      const { buildSession, ROTATION } = await import('./js/core/program.js'), { D } = await import('./js/ui/data.js'), s = await import('./js/ui/state.js');
+      const p = await s.getProgram();
+      return ROTATION.flatMap(k => buildSession(k, { ...p, lowImpact: false }, D.exercises.exercises).blocks).filter(b => D.ex[b.exercise].impact).length;
+    });
+    assert.equal(jumps, 0, 'térdpanasznál nincs ugrás');
+    await go(page, '#/check/strengthA');
+    await page.getByText('Rosszul aludtam').click();
+    assert.match(await text(), /Alvás és edzés/);
+    await go(page, '#/review');
+    assert.match(await text(), /Ez a hét/);
+    await go(page, '#/program');
+    assert.match(await text(), /A ciklus fókusza: Alapozás/);
+  });
+
   await step('akadálymentesség (axe, WCAG 2 A/AA): a fő képernyőkön nincs hiba', async () => {
     const axe = fs.readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
     const found = [];
-    for (const hash of ['#/', '#/assess', '#/test/pushup', '#/test/deep_squat', '#/test/vitals', '#/result', '#/program', '#/session/mobility', '#/ex/squat', '#/log', '#/settings', '#/cardio', '#/check/strengthA', '#/ex/pull_up', '#/progress', '#/mini', '#/run']) {
+    for (const hash of ['#/more', '#/', '#/assess', '#/test/pushup', '#/test/deep_squat', '#/test/vitals', '#/result', '#/program', '#/session/mobility', '#/ex/squat', '#/log', '#/settings', '#/cardio', '#/check/strengthA', '#/ex/pull_up', '#/progress', '#/mini', '#/run', '#/review', '#/cooldown']) {
       await go(page, hash);
       /* a Playwright evaluate-je nem esik a lap CSP-je alá, így beágyazott szkript nélkül töltjük be */
       await page.evaluate(src => { if (!window.axe) (0, eval)(src); }, axe).catch(() => {});

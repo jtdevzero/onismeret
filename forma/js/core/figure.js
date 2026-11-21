@@ -27,3 +27,16 @@ export function figurePoints(pose) {
   const ys = all.map(p => p.y).concat([head.y - LEN.head]);
   return { ...pts, ground, box: { x0: Math.min(...xs), x1: Math.max(...xs), y0: Math.min(...ys), y1: ground } };
 }
+
+/* Két póz közötti átmenet (animációhoz): a szögek lineárisan, a rövidebb úton. f: 0…1 */
+const lerpA = (a, b, f) => { let d = ((b - a + 540) % 360) - 180; return a + d * f; };
+export function lerpPose(a, b, f) {
+  const out = {};
+  for (const k of new Set([...Object.keys(a), ...Object.keys(b)])) {
+    const x = a[k], y = b[k];
+    if (Array.isArray(x) && Array.isArray(y)) out[k] = x.map((v, i) => lerpA(v, y[i] ?? v, f));
+    else if (typeof x === 'number' && typeof y === 'number') out[k] = k === 'lift' ? x + (y - x) * f : lerpA(x, y, f);
+    else out[k] = x ?? y;
+  }
+  return out;
+}

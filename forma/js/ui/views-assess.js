@@ -175,6 +175,20 @@ async function vitalsView() {
 
 /* ---- eredmény ---- */
 const QUALITY = { A: 'publikált norma', B: 'becsült norma' };
+/* apró vonaldiagram a változásról (legalább két felmérésnél) */
+function spark(vals, name) {
+  if (vals.length < 2) return null;
+  const NS = 'http://www.w3.org/2000/svg', W = 72, H = 22;
+  const svg = document.createElementNS(NS, 'svg');
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`); svg.setAttribute('class', 'spark'); svg.setAttribute('role', 'img');
+  svg.setAttribute('aria-label', `${name}: ${vals.join(' → ')}`);
+  const pts = vals.map((v, i) => [2 + i * (W - 4) / (vals.length - 1), H - 2 - (v / 100) * (H - 4)]);
+  const pl = document.createElementNS(NS, 'polyline'); pl.setAttribute('points', pts.map(p => p.map(x => x.toFixed(1)).join(',')).join(' '));
+  const dot = document.createElementNS(NS, 'circle'); const [lx, ly] = pts[pts.length - 1];
+  dot.setAttribute('cx', lx.toFixed(1)); dot.setAttribute('cy', ly.toFixed(1)); dot.setAttribute('r', '2.5');
+  svg.append(pl, dot);
+  return h('p', { class: 'small muted' }, 'Változás: ', svg, ' ' + vals.join(' → '));
+}
 function meter(score) {
   return h('div', null, h('div', { class: 'meter', role: 'img', 'aria-label': `${score} a 100-ból` }, sized(h('span', { class: 'meter-fill' }), 'left', score)),
     h('div', { class: 'meter-scale', 'aria-hidden': 'true' }, h('span', null, '0'), h('span', null, 'fejlesztendő | átlag | felső negyed'), h('span', null, '100')));
@@ -202,9 +216,12 @@ export async function resultView(id) {
     await programFromAssessment(item); toast(prog ? 'A program frissült, új 6 hetes ciklus indul.' : 'Kész a programod.'); location.hash = '#/program';
   }, 'primary');
   const ageDiff = ev.fitnessAge != null ? p.age - ev.fitnessAge : null;
+  /* a terület pontszáma felmérésről felmérésre (a legrégebbitől a megjelenítettig) */
+  const upto = all.slice(all.indexOf(item)).reverse().map(evaluateItem);
+  const history = id => upto.map(e => (e.areas[id] ? e.areas[id].score : null)).filter(v => v != null);
   return page('Eredmény',
     h('p', { class: 'muted' }, `${fmtDate(item.date)} · ${p.age} éves ${p.sex === 'female' ? 'nő' : 'férfi'}, a korosztályod normáihoz mérve`),
-    card(axes.length >= 3 ? radar(axes, { label: 'Területek pontszáma: ' + axes.map(a => `${a.label} ${a.value}`).join(', ') }) : null,
+    h('section', { class: 'card accent' }, axes.length >= 3 ? radar(axes, { label: 'Területek pontszáma: ' + axes.map(a => `${a.label} ${a.value}`).join(', ') }) : null,
       h('div', { class: 'legend' }, h('span', null, 'most'), h('span', { class: 'lg-ref' }, 'korosztályos átlag (50)'), prev ? h('span', { class: 'lg-prev' }, 'előző felmérés') : null),
       h('div', { class: 'stat-row' },
         h('div', { class: 'stat' }, h('span', { class: 'muted' }, 'Fittségi kor'), h('strong', null, ev.fitnessAge != null ? ev.fitnessAge + ' év' : '–'),
@@ -213,12 +230,14 @@ export async function resultView(id) {
           ev.overall != null ? levelBadge(lvl(ev.overall), LEVEL_NAMES[lvl(ev.overall)]) : null)),
       ev.vo2 != null ? h('p', { class: 'small muted' }, `Becsült VO₂max: ${fmtNum(ev.vo2)} ml/kg/perc (edzés nélküli becslés, ±5–6 ml pontosságú).`) : null),
     ev.pain.length ? note('Fájdalmat jeleztél: ' + ev.pain.map(t => D.test[t].name.toLowerCase()).join(', ') + '. Ezt érdemes orvossal vagy gyógytornásszal megnézetni; a programban a kapcsolódó gyakorlatok a legkönnyebb szinten indulnak.', 'warn') : null,
+    card(h('h2', null, 'Erre fókuszálunk'), ev.weakest.map(a => h('p', null, h('strong', null, D.area[a].name + ': '), ADVICE[a])),
+      h('p', { class: 'small muted' }, prog ? 'A programod szintjei nem csökkennek, a mobilitási fókusz és a gyakorlatok igazodnak az új eredményhez.' : 'A program a gyenge területekre több időt szán, és a mért szintedről indul.'),
+      h('div', { class: 'row' }, progBtn, link('#/progress', 'Célok és rekordok', 'btn small'))),
     card(h('h2', null, 'Területenként'), h('p', { class: 'small muted' }, 'Cél: minden terület legalább a korosztályos szinten (40 fölött), utána a felső negyedben (75 fölött).'),
       areas.map(a => { const r = ev.areas[a.id], pr = prev && prev.areas[a.id]; return h('div', { class: 'area-row' },
         h('div', { class: 'area-top' }, h('span', null, a.name), h('span', null, String(r.score) + (pr ? ` (${r.score - pr.score >= 0 ? '+' : ''}${r.score - pr.score})` : ''), ' ', levelBadge(r.level, LEVEL_NAMES[r.level]))),
-        meter(r.score), h('p', { class: 'small muted' }, a.about)); })),
-    ev.weakest.length ? card(h('h2', null, 'Erre fókuszálunk'), ev.weakest.map(a => h('p', null, h('strong', null, D.area[a].name + ': '), ADVICE[a]))) : null,
-    card(h('h2', null, 'Tesztek'), h('table', { class: 'tests-table' },
+        meter(r.score), spark(history(a.id), a.name)); })),
+    h('details', { class: 'card section' }, h('summary', null, h('h2', null, 'Tesztek részletesen')), h('table', { class: 'tests-table' },
       h('thead', null, h('tr', null, h('th', null, 'Teszt'), h('th', null, 'Eredmény'), h('th', null, 'Pont'))),
       h('tbody', null, D.tests.tests.filter(t => ev.tests[t.id]).map(t => { const s = ev.tests[t.id]; return h('tr', null,
         h('td', null, t.name, h('br'), h('span', { class: 'small muted' }, s.kind === 'norm' ? QUALITY[s.quality] + (s.outside ? ', korsávon kívül' : '') : s.kind === 'criterion' ? 'funkcionális küszöb' : 'saját alapvonal')),
@@ -227,8 +246,6 @@ export async function resultView(id) {
       h('details', null, h('summary', null, 'Források és pontosság'),
         h('p', { class: 'small' }, 'A „pc.” percentilist jelent: 60. pc. = a korosztályod 60%-ánál jobb eredmény. A funkcionális küszöbök kortól függetlenek (például a teljes mély guggolás minden felnőttnek elérhető cél).'),
         h('ul', { class: 'plain small' }, Object.entries(D.norms.tests).map(([k, n]) => h('li', null, h('strong', null, D.test[k].name + ': '), n.source)), h('li', null, D.norms.vo2.source)),
-        h('p', { class: 'small muted' }, 'Szakember még nem lektorálta. A Forma nem orvosi eszköz.'))),
-    card(h('p', null, 'Célokat itt tűzhetsz ki, és itt látod a rekordjaidat és a jelvényeidet.'), h('div', { class: 'row' }, link('#/progress', 'Fejlődés', 'btn'))),
-    card(h('p', null, prog ? 'A programod szintjei nem csökkennek, a mobilitási fókusz és a gyakorlatok igazodnak az új eredményhez.' : 'A program a gyenge területekre több időt szán, és a mért szintedről indul.'), h('div', { class: 'row' }, progBtn)));
+        h('p', { class: 'small muted' }, 'Szakember még nem lektorálta. A Forma nem orvosi eszköz.'))));
 }
 const lvl = s => (s >= D.norms.levels.top ? 'top' : s >= D.norms.levels.low ? 'mid' : 'low');
