@@ -119,10 +119,18 @@ export async function testView(id, onCleanup) {
     input.setValue = v => { el.value = v; value = v; };
   }
   const timer = t.timer ? timerWidget(t.timer, v => input.setValue && input.setValue(v), onCleanup) : null;
+  /* korábbi mérések ebből a tesztből: a legutóbbi az összevetéshez */
+  const past = (await assessments()).filter(a => a.results && a.results[id] != null).slice(0, 5);
+  const history = past.length ? card(h('h2', null, 'Korábbi eredményeid'), h('ul', { class: 'rows' }, past.map(a => {
+    const sc = evaluateItem(a).tests[id];
+    return h('li', null, h('span', null, fmtDate(a.date)), h('span', null, h('strong', null, (t.input.type === 'choice' ? a.results[id] + ' / 3' : fmtNum(a.results[id]) + ' ' + t.input.unit)),
+      sc && sc.score != null ? h('span', { class: 'muted small' }, ' · ' + (sc.kind === 'norm' ? sc.score + '. pc.' : sc.score + ' pont')) : null));
+  }))) : null;
   return page(t.name,
     h('p', { class: 'muted' }, `${idx + 1}. teszt a ${tests.length}-ből · ${D.area[t.area].name}` + (t.kind === 'baseline' ? ' · saját alapvonal' : t.kind === 'criterion' ? ' · funkcionális küszöb' : '')),
     card(h('h2', null, 'Hogyan csináld'), h('p', null, t.how), t.safety ? note(t.safety, 'warn') : null),
     timer ? card(timer) : null,
+    history,
     card(input, h('div', { class: 'row' }, save, btn('Kihagyom', async () => {
       const fresh = await getDraft(); delete fresh.results[id]; fresh.skipped[id] = true; await setDraft(fresh); goNext();
     }))),

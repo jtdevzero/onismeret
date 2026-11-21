@@ -2,7 +2,9 @@
 import { h, clear, fmtDate, toast } from './dom.js';
 import { page, card, btn, link, note, choice, list, levelBadge, sized } from './widgets.js';
 import { D, S, saveSettings, profile } from './data.js';
-import { exportAll, wipeAll } from './store.js';
+import { exportAll, wipeAll, restoreAll } from './store.js';
+import { parseBackup } from '../core/backup.js';
+import { RATINGS, LADDERS } from '../core/program.js';
 import { getProgram, setProgram, latestAssessment, workouts, assessments, evaluateItem } from './state.js';
 import { ROTATION, SESSION_TITLES, buildSession, sessionSteps, sessionMinutes, nextKey, weekInfo, reassessDue, streak } from '../core/program.js';
 import { LEVEL_NAMES } from '../core/score.js';
@@ -57,7 +59,8 @@ export async function startView() {
       h('p', { class: 'small muted' }, 'A normák nemenként különböznek:'),
       choice('sex', [['male', 'Férfi'], ['female', 'Nő']], st.sex, v => { st.sex = v; refresh(); }, 'Nem')),
     card(h('h2', null, 'Egészségügyi szűrés'), h('p', { class: 'small muted' }, 'A PAR-Q+ kérdőív alapján. A válaszaid csak a telefonodon tárolódnak.'), parq),
-    card(accept, warn, h('div', { class: 'row' }, go)));
+    card(accept, warn, h('div', { class: 'row' }, go)),
+    card(h('h2', null, 'Van már mentésed?'), h('p', { class: 'small muted' }, 'Ha új telefonra költözöl, a Beállításokban készített mentésfájlból minden visszatölthető.'), h('div', { class: 'row' }, restorePicker())));
 }
 
 const DAYS = ['H', 'K', 'Sze', 'Cs', 'P', 'Szo', 'V'];
@@ -137,6 +140,24 @@ export async function logView() {
       w.changes && w.changes.length ? h('span', { class: 'badge good' }, 'Szintlépés') : null))) : h('p', { class: 'muted' }, 'Még nincs edzés.')));
 }
 
+/* Visszatöltés mentésfájlból: ellenőrzés, megerősítés, majd az app újraindítása a visszatöltött adatokkal. */
+export function restorePicker() {
+  const input = h('input', { type: 'file', accept: 'application/json,.json', class: 'visually-hidden', onchange: async () => {
+    const file = input.files && input.files[0];
+    input.value = '';
+    if (!file) return;
+    const res = parseBackup(await file.text(), { testIds: D.tests.tests.map(t => t.id), ladders: LADDERS, sessionKeys: Object.keys(SESSION_TITLES), ratingKeys: RATINGS.map(([k]) => k) });
+    if (!res.ok) { toast(res.error); return; }
+    const { items } = res.data, na = items.filter(i => i.kind === 'assessment').length, nw = items.length - na;
+    if (!confirm(`A mentésben ${na} felmérés és ${nw} edzés van. Visszatöltöd? Ami most a telefonon van, annak a helyére kerül.`)) return;
+    await restoreAll(res.data);
+    toast('Visszatöltöttem.');
+    location.hash = '#/';
+    setTimeout(() => location.reload(), 300);
+  } });
+  return h('label', { class: 'btn' }, 'Visszatöltés fájlból', input);
+}
+
 function download(name, text, type) {
   const url = URL.createObjectURL(new Blob([text], { type }));
   const a = h('a', { href: url, download: name });
@@ -174,6 +195,7 @@ export async function settingsView() {
       h('p', null, 'Minden adat ezen a telefonon, ebben a böngészőben van. Ha törlöd a böngésző adatait, ezek is elvesznek: ments fájlba időnként.'),
       h('div', { class: 'row' },
         btn('Mentés fájlba', async () => download('forma-mentes.json', JSON.stringify(await exportAll(), null, 1), 'application/json')),
+        restorePicker(),
         btn('Minden adat törlése', async () => { if (!confirm('Biztosan törlöd az összes felmérést, edzést és beállítást? Ez nem vonható vissza.')) return; await wipeAll(); S.settings = null; location.hash = '#/start'; location.reload(); }, 'danger'))),
     card(h('h2', null, 'A normákról'),
       h('p', null, 'A percentilisek publikált felnőtt normákból származnak (CSEP, YMCA, Rikli–Jones, Araújo, Springer, Nes és mtsai.). Ahol kevés az adat, ott becsültünk; ezt a teszteknél „becsült norma” jelzi. A normákat és a gyakorlatokat szakember még nem lektorálta.'),

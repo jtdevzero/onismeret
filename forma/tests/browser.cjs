@@ -188,6 +188,32 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     await shot('settings');
   });
 
+  await step('tesztoldal: látszanak a korábbi eredmények', async () => {
+    await go(page, '#/test/pushup');
+    const t = await text();
+    assert.match(t, /Korábbi eredményeid/);
+    assert.match(t, /20 ismétlés/);
+  });
+
+  await step('mentés és visszatöltés: törlés után a mentésfájlból minden visszajön', async () => {
+    const backup = await page.evaluate(async () => JSON.stringify(await (await import('./js/ui/store.js')).exportAll()));
+    const before = await page.evaluate(async () => (await (await import('./js/ui/store.js')).itemsAll()).length);
+    await page.evaluate(async () => { await (await import('./js/ui/store.js')).wipeAll(); });
+    await page.reload();
+    await page.waitForFunction(() => document.documentElement.dataset.ready === '1');
+    await page.evaluate(async () => { (await import('./js/ui/widgets.js')).setTick(15); });
+    assert.match(await text(), /Van már mentésed/);
+    await page.setInputFiles('input[type=file]', { name: 'forma-mentes.json', mimeType: 'application/json', buffer: Buffer.from(backup) });
+    await page.waitForFunction(() => /Mai edzés/i.test(document.getElementById('main').innerText), null, { timeout: 10000 });
+    const after = await page.evaluate(async () => (await (await import('./js/ui/store.js')).itemsAll()).length);
+    assert.equal(after, before);
+    /* idegen fájl: hibaüzenet, nincs változás */
+    await go(page, '#/settings');
+    await page.setInputFiles('input[type=file]', { name: 'x.json', mimeType: 'application/json', buffer: Buffer.from('{"app":"mas"}') });
+    await page.waitForSelector('.toast');
+    assert.match(await page.locator('.toast').innerText(), /nem a Forma mentésfájlja/);
+  });
+
   await step('akadálymentesség (axe, WCAG 2 A/AA): a fő képernyőkön nincs hiba', async () => {
     const axe = fs.readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
     const found = [];

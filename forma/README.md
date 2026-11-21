@@ -5,7 +5,7 @@ Telefonra telepíthető webapp. Felméri, hol tartasz a korosztályodhoz képest
 - **Felmérés (kb. 25 perc, 13 teszt):** mély guggolás, váll- és bokamobilitás, ülve előrenyúlás, csípőhajlító-teszt, fekvőtámasz, 30 mp felállás székről, plank, helyből távolugrás, gyors lábmunka, egylábas állás csukott szemmel, leülés–felállás a földről, 3 perces lépcsőteszt. Vezetett tesztek visszaszámlálással, stopperrel, ismétlésszámlálóval, metronómmal. Részletekben is elvégezhető.
 - **Kiértékelés:** hét terület (mobilitás, hajlékonyság, erő, törzs, gyorsaság, egyensúly, állóképesség) 0–100 pontos skálán, kor és nem szerinti percentilisekkel, pókhálóábrával. **Fittségi kor** a Nes-féle (HUNT) edzés nélküli VO₂max-becslésből.
 - **Program:** hétnapos forgó rend (3 erőnap, 2 gyorsasági nap, 2 mobilitásnap). Minden nap a leggyengébb ízületekre szabott mobilitással indul. A gyakorlatok szintekre bontott sorokban vannak (pl. fekvőtámasz falnál → … → megemelt lábbal); két „könnyű” értékelés után nehezebb változat jön. 5 hét terhelés, 1 könnyített hét, utána újramérés.
-- **Egyéb:** vezetett edzés hangos bemondással, napló, fejlődés felmérésről felmérésre, napi emlékeztető naptárfájlként (.ics), kímélő (ugrásmentes) mód, PAR-Q+ alapú egészségügyi szűrés, mentés fájlba. Offline is működik.
+- **Egyéb:** vezetett edzés hangos bemondással, napló, fejlődés felmérésről felmérésre (tesztenként is), napi emlékeztető naptárfájlként (.ics), kímélő (ugrásmentes) mód, PAR-Q+ alapú egészségügyi szűrés, mentés fájlba és visszatöltés ellenőrzéssel (telefoncseréhez). Offline is működik.
 - **Adatvédelem:** minden adat a készüléken marad (IndexedDB). Nincs szerver, fiók, és nincs külső kérés (CSP: csak `'self'`).
 - **Dizájn:** neonos naplemente (rózsaszín, narancs, türkiz), vastag, dőlt címek, saját rajzolású pálmás naplemente. Márkaelemet, logót vagy betűtípust nem vettünk át.
 
@@ -13,7 +13,7 @@ Telefonra telepíthető webapp. Felméri, hol tartasz a korosztályodhoz képest
 
 - A normák **egy része becsült** (`"quality": "B"` a `data/norms.json`-ban): a fekvőtámasz és az ülve előrenyúlás CSEP-norma, a többi több forrásból becsült érték. Az app ezt tesztenként jelzi.
 - A normákat, a teszteket és a gyakorlatokat **szakember még nem lektorálta** (`"reviewed": false`).
-- A gyakorlatábrák egy része a Kanyar ábráiból jön; nem minden gyakorlathoz van ábra.
+- 34 gyakorlathoz van pálcikafigurás ábra (egy részük a Kanyarból). Ábra nélkül maradt, ami bútort igényel (asztal, szék), és néhány oldalt fekvő vagy szemből értelmezhető gyakorlat.
 - Nincs benne: kamerás ismétlésszámlálás (a Kanyar pózbecslőjével ez a következő lépés lehet), szinkron több eszköz között, AI-edző.
 - Nem orvosi eszköz.
 

@@ -50,3 +50,11 @@ export async function wipeAll() {
 export async function exportAll() {
   return { app: 'forma', version: 1, exported: new Date().toISOString(), settings: await kvGet('settings', {}), program: await kvGet('program', null), items: await itemsAll() };
 }
+
+/* Visszatöltés ellenőrzött mentésből (core/backup.js): minden meglévő adat helyére. */
+export async function restoreAll({ settings, program, items }) {
+  await wipeAll();
+  if (settings) await kvSet('settings', settings);
+  if (program) await kvSet('program', program);
+  for (const it of items) await itemPut(it);
+}

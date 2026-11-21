@@ -1,6 +1,6 @@
 /* Forma service worker. GENERÁLT FÁJL (forma/build.py), ne szerkeszd kézzel.
    Az app váza, a kód és a tartalom telepítéskor a gyorsítótárba kerül, így az app offline is működik. */
-const SHELL = 'forma-shell-b8e095fc08';
+const SHELL = 'forma-shell-6fbe350d4f';
 const PRECACHE = [
 "./",
 "index.html",
@@ -17,6 +17,7 @@ const PRECACHE = [
 "icons/ui-home.svg",
 "icons/ui-log.svg",
 "icons/ui-train.svg",
+"js/core/backup.js",
 "js/core/calendar.js",
 "js/core/figure.js",
 "js/core/program.js",

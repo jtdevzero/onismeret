@@ -201,3 +201,31 @@ test('napi emlékeztető naptárfájl', () => {
   assert.equal(icsText('a\nb'), 'a\\nb');
   assert.equal(fold('x'.repeat(80)).split('\r\n ').length, 2);
 });
+
+test('mentésfájl: érvényes visszatöltés, idegen és sérült fájl elutasítása, ismeretlen mezők kiszűrése', async () => {
+  const { parseBackup } = await import('../js/core/backup.js');
+  const ctx = { testIds: tests.tests.map(t => t.id), ladders: LADDERS, sessionKeys: [...new Set(ROTATION)], ratingKeys: ['easy', 'ok', 'hard', 'fail'] };
+  const good = {
+    app: 'forma', version: 1,
+    settings: { accepted: true, profile: { age: 34, sex: 'male' }, lowImpact: false, parq: { heart: false }, evil: '<script>' },
+    program: { start: 1700000000000, levels: { push: 3, bogus: 9 }, ratings: { push: ['easy', 'x'] }, done: 4, targets: ['ankle', '<img>'] },
+    items: [
+      { id: 'a1', kind: 'assessment', date: 1700000000000, profile: { age: 34, sex: 'male' }, results: { pushup: 20, hack: 5, plank: 'sok' }, vitals: { rhr: 60 } },
+      { id: 'w1', kind: 'workout', date: 1700000100000, key: 'strengthA', minutes: 25, ratings: { push: 'easy' } },
+      { id: 'w1', kind: 'workout', date: 1700000100000, key: 'strengthA', minutes: 25 },
+      { id: 'x', kind: 'mystery', date: 1 }, { id: 'w2', kind: 'workout', date: 2, key: 'nincs' },
+    ],
+  };
+  const r = parseBackup(JSON.stringify(good), ctx);
+  assert.equal(r.ok, true);
+  assert.deepEqual(r.data.settings, { accepted: true, profile: { age: 34, sex: 'male' }, lowImpact: false, parq: { heart: false } });
+  assert.deepEqual(r.data.program.levels, { push: 3 });
+  assert.deepEqual(r.data.program.ratings.push, ['easy']);
+  assert.deepEqual(r.data.program.targets, ['ankle']);
+  assert.equal(r.data.items.length, 2, 'ismétlődő, ismeretlen típusú és ismeretlen edzésű tétel kimarad');
+  assert.deepEqual(r.data.items[0].results, { pushup: 20 });
+  assert.equal(parseBackup('nem json', ctx).ok, false);
+  assert.equal(parseBackup(JSON.stringify({ app: 'kanyar', version: 1, items: [] }), ctx).ok, false);
+  assert.equal(parseBackup(JSON.stringify({ app: 'forma', version: 1, items: 'x' }), ctx).ok, false);
+  assert.equal(parseBackup('', ctx).ok, false);
+});
