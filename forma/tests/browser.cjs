@@ -6,7 +6,7 @@ const http = require('http'), fs = require('fs'), path = require('path');
 const assert = require('assert/strict');
 
 const ROOT = path.resolve(__dirname, '..');
-const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png', '.webmanifest': 'application/manifest+json' };
+const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.mjs': 'text/javascript', '.wasm': 'application/wasm', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png', '.webmanifest': 'application/manifest+json' };
 const SHOTS = process.env.FORMA_SHOTS;
 
 function serve() {
@@ -212,6 +212,23 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     await page.setInputFiles('input[type=file]', { name: 'x.json', mimeType: 'application/json', buffer: Buffer.from('{"app":"mas"}') });
     await page.waitForSelector('.toast');
     assert.match(await page.locator('.toast').innerText(), /nem a Forma mentésfájlja/);
+  });
+
+  await step('kamerás mérés (hamis kamerával): 30 mp felállás megszámolva, az eredmény a mezőbe kerül', async () => {
+    await page.evaluate(async () => {
+      const w = await import('./js/ui/widgets.js'), s = await import('./tests/synth.mjs');
+      const frames = s.series(32, t => { const k = (1 + Math.cos(2 * Math.PI * t / 2)) / 2; return { view: 'side', shin: 5, thigh: 90 * (1 - k), torso: 25 * (1 - k) }; });
+      w.setRunner({ countdown: 0, openCamera: async () => { let i = 0; return { el: null, aspect: 1, read: async () => (i < frames.length ? frames[i++] : null), close() {} }; } });
+    });
+    await go(page, '#/test/chair_stand');
+    await page.locator('summary', { hasText: 'Mérés kamerával' }).click();
+    await shot('camera-test');
+    await page.getByRole('button', { name: 'Mérés kamerával' }).click();
+    await page.waitForFunction(() => /felállás|ismétlés/.test((document.querySelector('.live-result') || {}).innerText || ''), null, { timeout: 10000 });
+    const v = Number(await page.locator('#val').inputValue());
+    assert.ok(Math.abs(v - 15) <= 1, 'mért érték: ' + v);
+    assert.match(await text(), /Teljes felállás/);
+    await shot('camera-result');
   });
 
   await step('akadálymentesség (axe, WCAG 2 A/AA): a fő képernyőkön nincs hiba', async () => {

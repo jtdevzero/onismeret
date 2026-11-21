@@ -98,6 +98,8 @@ jobs:
       - name: Forma pontozómag, tartalom és build
         if: ${{ !cancelled() }}
         run: node --test forma/tests/*.test.mjs
-      - name: Forma böngészős végpontteszt
+      - name: Forma böngészős végpontteszt és pózbecslő
         if: ${{ !cancelled() }}
-        run: node forma/tests/browser.cjs
+        run: |
+          node forma/tests/browser.cjs
+          node forma/tests/pose-smoke.cjs

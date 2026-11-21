@@ -60,15 +60,23 @@ test('build: a generált index.html és sw.js egyezik a forrással, szigorú CSP
   execFileSync('python3', [new URL('build.py', root).pathname]);
   const after = [readFileSync(new URL('index.html', root), 'utf8'), readFileSync(new URL('sw.js', root), 'utf8')];
   assert.deepEqual(after, before, 'futtasd: python3 forma/build.py');
-  assert.match(after[0], /Content-Security-Policy" content="default-src 'self'; script-src 'self';/);
-  assert.doesNotMatch(after[0], /unsafe-inline|unsafe-eval/);
+  assert.match(after[0], /Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval';/);
+  assert.doesNotMatch(after[0], /'unsafe-inline'|'unsafe-eval'/);
+  assert.match(after[1], /const VENDOR = 'forma-vendor-[0-9a-f]{10}'/);
   const list = JSON.parse(after[1].match(/const PRECACHE = (\[[\s\S]*?\]);/)[1]);
   for (const f of list) if (f !== './') assert.ok(existsSync(new URL(f, root)), 'hiányzik: ' + f);
 });
 
 test('biztonság: a felület nem ír HTML-t szövegből', () => {
-  for (const f of ['dom.js', 'widgets.js', 'views-main.js', 'views-assess.js', 'views-train.js', 'radar.js', 'figure.js', 'app.js', 'state.js']) {
+  for (const f of ['dom.js', 'widgets.js', 'views-main.js', 'views-assess.js', 'views-train.js', 'radar.js', 'figure.js', 'app.js', 'state.js', 'live.js', 'pose.js']) {
     const src = readFileSync(new URL('js/ui/' + f, root), 'utf8');
     assert.doesNotMatch(src, /innerHTML|outerHTML|insertAdjacentHTML|document\.write/, f);
+  }
+});
+
+test('pózbecslő: a vendorolt fájlok megegyeznek a Kanyaréval (egy forrás, két másolat)', () => {
+  for (const f of ['vision_bundle.mjs', 'pose_landmarker_lite.task', 'wasm/vision_wasm_internal.wasm', 'wasm/vision_wasm_internal.js']) {
+    const a = readFileSync(new URL('vendor/mediapipe/' + f, root)), b = readFileSync(new URL('../kanyar/vendor/mediapipe/' + f, root));
+    assert.ok(a.equals(b), f);
   }
 });

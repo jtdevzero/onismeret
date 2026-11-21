@@ -7,6 +7,7 @@ import { getProgram, setProgram, latestAssessment } from './state.js';
 import { ROTATION, SESSION_TITLES, LADDERS, RATINGS, buildSession, sessionSteps, sessionMinutes, nextKey, weekInfo, laddersOf, exerciseFor, applyRatings, CYCLE_WEEKS } from '../core/program.js';
 import { figureStrip } from './figure.js';
 import { weekStrip } from './views-main.js';
+import { liveCounter } from './live.js';
 
 const SIDE = { left: 'bal oldal', right: 'jobb oldal', both: 'oldalanként' };
 const doseText = b => (b.seconds ? fmtSec(b.seconds) : b.reps + ' ism.') + (D.ex[b.exercise] && D.ex[b.exercise].perSide ? ' oldalanként' : '') + (b.sets > 1 ? ' × ' + b.sets : '');
@@ -94,7 +95,10 @@ export async function sessionView(key, onCleanup) {
       h('div', { class: 'row' }, link('#/', 'Kezdőlap', 'btn primary'), link('#/log', 'Napló', 'btn'))));
   }
 
+  let liveStop = null;
+  onCleanup(() => { if (liveStop) liveStop(); });
   function show() {
+    if (liveStop) { liveStop(); liveStop = null; }
     const st = steps[at];
     bar.value = at; count.textContent = `${at + 1} / ${total} lépés`;
     const nav = h('div', { class: 'row' },
@@ -135,9 +139,12 @@ export async function sessionView(key, onCleanup) {
         h('div', { class: 'row' }, go, pause, btn('Kész, tovább', next)), more), nav);
       speak(ex.name + (st.side ? ', ' + SIDE[st.side] : '') + ', ' + st.seconds + ' másodperc', voice.checked);
     } else {
+      const live = st.part === 'main' ? liveCounter(ex.id, { startLabel: 'Számolj kamerával' }) : null;
+      if (live) liveStop = live.stop;
       clear(stage).append(card(head, figureStrip(D.figures[ex.figure], true), h('div', { class: 'workout-clock' }, String(st.reps)),
         h('p', { class: 'workout-unit' }, 'ismétlés' + (st.side === 'both' ? ' oldalanként' : '')), points,
-        h('div', { class: 'row' }, btn('Kész, tovább', next, 'primary')), more), nav);
+        h('div', { class: 'row' }, btn('Kész, tovább', next, 'primary')),
+        live ? h('details', { class: 'live-box' }, h('summary', null, 'Számolás kamerával'), live.el) : null, more), nav);
       speak(ex.name + ', ' + st.reps + ' ismétlés' + (st.side === 'both' ? ' oldalanként' : ''), voice.checked);
     }
   }
@@ -149,14 +156,17 @@ export async function sessionView(key, onCleanup) {
     stage);
 }
 
-export async function exerciseView(id) {
+export async function exerciseView(id, onCleanup) {
   const ex = D.ex[id];
+  const live = ex ? liveCounter(id, { startLabel: 'Végrehajtás kamerával' }) : null;
+  if (live) onCleanup(live.stop);
   if (!ex) return page('Nincs ilyen gyakorlat', link('#/program', '← Program', 'btn'));
   const lad = ex.ladder ? laddersOf(D.exercises.exercises)[ex.ladder] : null;
   const dose = ex.dose.reps ? `${ex.dose.reps[0]}–${ex.dose.reps[1]} ismétlés` : `${ex.dose.seconds[0]}–${ex.dose.seconds[1]} másodperc`;
   return page(ex.name,
     h('p', { class: 'muted' }, D.exercises.typeNames[ex.type] + ' · ' + dose + (ex.perSide ? ' oldalanként' : '') + (ex.impact ? ' · ugrásos' : '')),
     card(h('h2', null, 'Hogyan csináld'), figureStrip(D.figures[ex.figure]), h('p', null, ex.how), h('h3', null, 'Három dolog, amire figyelj'), list(ex.points), videoSearch(ex)),
+    live ? card(h('h2', null, 'Számolás és formaellenőrzés kamerával'), live.el) : null,
     lad ? card(h('h2', null, D.exercises.ladders[ex.ladder]), h('p', { class: 'small muted' }, 'A gyakorlatsor szintjei, a legkönnyebbtől:'),
       h('ol', null, lad.map(e => h('li', null, e.id === id ? h('strong', null, e.name) : link('#/ex/' + e.id, e.name), e.impact ? h('span', { class: 'muted small' }, ' · ugrásos') : null)))) : null,
     D.exercises.reviewed ? null : note('A leírásokat szakember még nem lektorálta.', 'small'),

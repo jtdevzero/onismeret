@@ -16,6 +16,12 @@ export function choice(name, options, value, onchange, label) {
       h('span', null, text))));
 }
 
+/* A kamera és a pózbecslés a tesztekben lecserélhető (valódi kamera nélkül nem lehet determinisztikusan tesztelni). */
+let runner = { openCamera: async () => (await import('./pose.js')).openCamera(), countdown: 5 };
+export const setRunner = r => { runner = { ...runner, ...r }; };
+export const openCamera = () => runner.openCamera();
+export const liveCountdown = () => runner.countdown;
+
 /* Az időzítő üteme a tesztekben felgyorsítható. */
 let tick = 1000;
 export const setTick = ms => { tick = ms; };

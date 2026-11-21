@@ -5,6 +5,7 @@ import { D, profile, lowImpact } from './data.js';
 import { getDraft, setDraft, saveAssessment, assessments, evaluateItem, programFromAssessment, getProgram } from './state.js';
 import { LEVEL_NAMES } from '../core/score.js';
 import { radar } from './radar.js';
+import { liveCounter } from './live.js';
 
 const isDone = (d, id) => d.results[id] != null || d.skipped[id];
 const testsFor = () => D.tests.tests.filter(t => !(lowImpact() && t.impact));
@@ -119,6 +120,19 @@ export async function testView(id, onCleanup) {
     input.setValue = v => { el.value = v; value = v; };
   }
   const timer = t.timer ? timerWidget(t.timer, v => input.setValue && input.setValue(v), onCleanup) : null;
+  /* kamerás mérés: az eredmény a mezőbe kerül, ellenőrizheted és javíthatod */
+  const live = liveCounter(id, {
+    maxSeconds: t.timer && t.timer.mode === 'countdown' ? t.timer.seconds : undefined,
+    startLabel: 'Mérés kamerával',
+    onDone: r => {
+      if (!r.ok || !input.setValue) return;
+      const hs = r.holdSides;
+      const v = id === 'sl_stance' && hs && hs.left != null && hs.right != null ? Math.round((hs.left + hs.right) * 2) / 4 : r.holdSeconds != null && !r.reps ? Math.floor(r.holdSeconds) : r.reps;
+      input.setValue(v);
+      toast('Beírtam a mért eredményt; ha kell, javítsd, majd mentsd.');
+    },
+  });
+  if (live) onCleanup(live.stop);
   /* korábbi mérések ebből a tesztből: a legutóbbi az összevetéshez */
   const past = (await assessments()).filter(a => a.results && a.results[id] != null).slice(0, 5);
   const history = past.length ? card(h('h2', null, 'Korábbi eredményeid'), h('ul', { class: 'rows' }, past.map(a => {
@@ -130,6 +144,7 @@ export async function testView(id, onCleanup) {
     h('p', { class: 'muted' }, `${idx + 1}. teszt a ${tests.length}-ből · ${D.area[t.area].name}` + (t.kind === 'baseline' ? ' · saját alapvonal' : t.kind === 'criterion' ? ' · funkcionális küszöb' : '')),
     card(h('h2', null, 'Hogyan csináld'), h('p', null, t.how), t.safety ? note(t.safety, 'warn') : null),
     timer ? card(timer) : null,
+    live ? h('details', { class: 'card' }, h('summary', null, h('h2', null, 'Mérés kamerával'), h('span', { class: 'badge' }, 'béta')), id === 'sl_stance' ? h('p', { class: 'small' }, 'Szemből vedd fel: előbb a bal, aztán a jobb lábon állj, csukott szemmel. A két idő átlagát írom be.') : t.timer && t.timer.mode === 'countdown' ? h('p', { class: 'small' }, `A visszaszámlálás után ${t.timer.seconds} másodpercig számolok, aztán magamtól leállok.`) : null, live.el) : null,
     history,
     card(input, h('div', { class: 'row' }, save, btn('Kihagyom', async () => {
       const fresh = await getDraft(); delete fresh.results[id]; fresh.skipped[id] = true; await setDraft(fresh); goNext();
