@@ -54,7 +54,18 @@ Telefonra telepíthető webapp. Segít felmérni az erősségeidet és a fejlesz
 - Nincs benne: szinkron több eszköz között, AI-edző.
 - Nem orvosi eszköz.
 
-A következő 20 bővítés terve: [ROADMAP.md](ROADMAP.md).
+A következő 20 bővítés terve: [ROADMAP.md](ROADMAP.md). A FORMA ULTIMATE (U0–U1) munka terve és ellenőrzőpont-naplója: [docs/ultimate-terv.md](docs/ultimate-terv.md).
+
+### FORMA ULTIMATE – U0 és U1 (fejlesztés alatt, nincs élesítve)
+
+- **Megbízhatóság:** a program és az edzésbejegyzés egyetlen tranzakcióban mentődik; íráshibánál látható üzenet és újrapróba, duplikátum nélkül. Az időzítő a valós eltelt időből számol. A heti határok naptári lépéssel számolódnak, így a nyári időszámítás váltásakor sem esik ki edzés a hétből.
+- **Mentésfájl 2-es verzió:** sorozatnapló, elfogadott súlyok, aktív kihívás és blokk is benne van. A régi fájl betölthető; egy újabb, ismeretlen verziót az app nem tölt vissza.
+- **Sorozatnapló:** az edzés végén, nem kötelezően: sorozatonként a tényleges ismétlés vagy idő, súlyzónál a súly, az utolsó sorozatnál RIR, az egész edzésre RPE. Ezek önbevallásos becslések.
+- **Súlyjavaslat:** súlyzós gyakorlatnál, a naplóból, konzervatív szabályokkal (panasznál nincs emelés, RIR nélkül nincs emelés). Csak az „Elfogadom” gombra változik a program, naplózva.
+- **Programszerkesztő:** a gyakorlatsorok szintje tartósan, kézzel is állítható; egy gombbal vissza lehet állni az ajánlottra. A korábbi edzések nem változnak.
+- **Ma képernyő:** egy fő művelet, heti edzés és kardió, cél és az újramérés ideje.
+- **Fejlődés:** 8 hetes edzésterhelés-táblázat (sorozat, ismétlés, tartás, ismert külső súly × ismétlés, RPE × perc, kardió, mindegyik külön egységben) és gyakorlatonkénti trend.
+- **Kamerás mérés:** a követés megbízhatósága (jó / korlátozott / nem megbízható) látható; nem megbízható mérés nem kerül magától a tesztmezőbe.
 
 ## Felépítés
 

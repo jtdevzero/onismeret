@@ -1,7 +1,7 @@
 /* Forma service worker. GENERÁLT FÁJL (forma/build.py), ne szerkeszd kézzel.
    Az app váza, a kód és a tartalom telepítéskor a gyorsítótárba kerül, így az app offline is működik.
    A pózbecslő (kb. 15 MB) csak a kamera első használatakor töltődik le, utána az is offline megy. */
-const SHELL = 'forma-shell-096f45ad3b';
+const SHELL = 'forma-shell-e11c475726';
 const VENDOR = 'forma-vendor-62fc9e8c57';
 const PRECACHE = [
 "./",
@@ -32,25 +32,32 @@ const PRECACHE = [
 "icons/ui-train.svg",
 "assets/forma-sunset.webp",
 "js/core/achievements.js",
+"js/core/analytics.js",
 "js/core/assessment.js",
 "js/core/backup.js",
 "js/core/calendar.js",
 "js/core/cardio.js",
+"js/core/dashboard.js",
 "js/core/exercise.js",
 "js/core/extras.js",
 "js/core/figure.js",
 "js/core/geometry.js",
 "js/core/history.js",
+"js/core/load.js",
+"js/core/motion-quality.js",
 "js/core/posture.js",
 "js/core/program.js",
 "js/core/progress.js",
+"js/core/progression.js",
 "js/core/reaction.js",
 "js/core/runplan.js",
 "js/core/score.js",
 "js/core/sensors.js",
 "js/core/series.js",
+"js/core/share.js",
 "js/core/track.js",
 "js/core/wellness.js",
+"js/core/workout-schema.js",
 "js/ui/app.js",
 "js/ui/data.js",
 "js/ui/dom.js",
@@ -59,8 +66,10 @@ const PRECACHE = [
 "js/ui/pose.js",
 "js/ui/progress-card.js",
 "js/ui/radar.js",
+"js/ui/share-card.js",
 "js/ui/state.js",
 "js/ui/store.js",
+"js/ui/views-analytics.js",
 "js/ui/views-assess.js",
 "js/ui/views-cardio.js",
 "js/ui/views-diag.js",

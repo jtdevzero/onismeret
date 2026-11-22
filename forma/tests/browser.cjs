@@ -208,6 +208,110 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     assert.equal(prog.done, 1, 'csak a soron következő edzés léptette a rendet');
   });
 
+  await step('sorozatnapló: előtöltött, javítható, RPE-vel menthető; a hiányzó súly nem lesz kilogramm', async () => {
+    await page.locator('details.setlog > summary').click();
+    const first = page.locator('.setlog-row input[type="number"]').first();
+    await first.fill('7');
+    await page.getByLabel('Az edzés érzett nehézsége (RPE)').selectOption('7');
+    await page.locator('.setlog-row input[type="checkbox"]').last().uncheck();
+    await page.getByRole('button', { name: 'Napló mentése' }).click();
+    await page.getByRole('status').filter({ hasText: 'Elmentve.' }).waitFor();
+    const w = await page.evaluate(async () => (await (await import('./js/ui/store.js')).itemsAll('workout'))[0]);
+    assert.equal(w.schemaVersion, 2);
+    assert.equal(w.rpe, 7);
+    assert.ok(w.log.length >= 1);
+    assert.equal(w.log[0].sets[0].reps ?? w.log[0].sets[0].seconds, 7);
+    assert.equal(w.log.at(-1).sets.at(-1).done, false);
+    assert.ok(w.log.every(e => e.sets.every(st => st.weightKg === undefined)), 'testsúlyos edzésnél nincs kitalált súly');
+    const d = w.done.find(x => x.ex === w.log[0].ex);
+    assert.ok(d, 'a done összesítés a naplóból frissült');
+    /* a meglévő mezők megmaradtak */
+    assert.ok(w.ratings && Array.isArray(w.changes) && w.key === 'strengthA');
+  });
+
+  await step('súlyjavaslat: csak jóváhagyás után változik a program, naplózva', async () => {
+    const saved = await page.evaluate(async () => {
+      const st = await import('./js/ui/state.js'), store = await import('./js/ui/store.js');
+      const prog = await st.getProgram();
+      await st.setProgram({ ...prog, equipment: ['dumbbell'] });
+      const sets = rir => [1, 2, 3].map(i => ({ reps: 10, weightKg: 8, done: true, ...(i === 3 ? { rir } : {}) }));
+      const ids = [];
+      for (const [i, d] of [[0, 4], [1, 2]]) {
+        const id = 'seed-db-' + i; ids.push(id);
+        await store.itemPut({ id, kind: 'workout', date: Date.now() - d * 86400000, key: 'strengthA', minutes: 20, steps: 10, partial: false, ratings: {}, changes: [], done: [], schemaVersion: 2,
+          log: (await import('./js/ui/data.js')).D.exercises.exercises.filter(e => e.equipment === 'dumbbell').map(e => ({ ex: e.id, sets: sets(3) })) });
+      }
+      return { prog, ids };
+    });
+    await go(page, '#/program');
+    assert.match(await text(), /Súlyok/);
+    const accept = page.getByRole('button', { name: /^Elfogadom: 9 kg$/ }).first();
+    const before = await page.evaluate(async () => (await (await import('./js/ui/state.js')).getProgram()).loads || null);
+    assert.equal(before, null, 'a javaslat megjelenítése nem változtat a programon');
+    await accept.click();
+    await until(page, async () => { const p = await (await import('./js/ui/state.js')).getProgram(); return p.loads && Object.values(p.loads).includes(9); });
+    const after = await page.evaluate(async () => (await (await import('./js/ui/state.js')).getProgram()));
+    assert.equal(Object.keys(after.loads).length, 1);
+    assert.equal(after.loadLog.at(-1).source, 'suggestion');
+    assert.equal(after.loadLog.at(-1).from, 8);
+    /* visszaállítás, hogy a további lépések az eredeti programmal fussanak */
+    await page.evaluate(async ({ prog, ids }) => {
+      const st = await import('./js/ui/state.js'), store = await import('./js/ui/store.js');
+      await st.setProgram(prog); for (const id of ids) await store.itemDelete(id);
+    }, saved);
+  });
+
+  await step('programszerkesztő: kézi szintállítás naplózva, vissza az ajánlotthoz', async () => {
+    const lvl = async () => page.evaluate(async () => (await (await import('./js/ui/state.js')).getProgram()).levels.push ?? 0);
+    const before = await lvl();
+    await go(page, '#/program');
+    await page.getByRole('button', { name: /^Nyomás.*: könnyebb szint$/ }).click();
+    await until(page, async b => ((await (await import('./js/ui/state.js')).getProgram()).levels.push ?? 0) === b - 1, before);
+    await page.waitForFunction(() => /kézzel állítva/.test(document.getElementById('main').innerText));
+    const p1 = await page.evaluate(async () => (await (await import('./js/ui/state.js')).getProgram()));
+    assert.equal(p1.levelLog.at(-1).source, 'manual');
+    await page.getByRole('button', { name: 'Vissza az ajánlott szintekhez' }).click();
+    await until(page, async b => ((await (await import('./js/ui/state.js')).getProgram()).levels.push ?? 0) === b, before);
+    assert.equal(await lvl(), before);
+  });
+
+  await step('felméréskártya: alapból nincs személyes adat, választható, PNG-be menthető', async () => {
+    await go(page, '#/result');
+    await page.locator('details.share-card > summary').click();
+    const sum = page.locator('.share-card p[aria-live]');
+    assert.doesNotMatch(await sum.innerText(), /éves|Fittségi kor/);
+    await page.locator('.share-card').getByText('Életkor és nem').click();
+    await page.waitForFunction(() => /éves/.test(document.querySelector('.share-card p[aria-live]').innerText));
+    if (SHOTS) await page.locator('.share-preview').screenshot({ path: path.join(SHOTS, 'share-card.png') });
+    const [download] = await Promise.all([page.waitForEvent('download'), page.locator('.share-card').getByRole('button', { name: 'Kártya mentése képként' }).click()]);
+    assert.equal(download.suggestedFilename(), 'forma-felmeres.png');
+  });
+
+  await step('edzés vége íráshibánál: nincs félkész mentés, az újrapróba egyszer ír', async () => {
+    const before = await page.evaluate(async () => ({ n: (await (await import('./js/ui/store.js')).itemsAll('workout')).length, done: (await (await import('./js/ui/state.js')).getProgram()).done }));
+    await go(page, '#/session/mobility');
+    await page.evaluate(() => {
+      const orig = IDBDatabase.prototype.transaction;
+      window.restoreTx = () => { IDBDatabase.prototype.transaction = orig; };
+      IDBDatabase.prototype.transaction = function (names, mode) {
+        const t = orig.call(this, names, mode);
+        if (Array.isArray(names) && names.includes('kv') && names.includes('items') && mode === 'readwrite') queueMicrotask(() => t.abort());
+        return t;
+      };
+    });
+    await page.getByRole('button', { name: 'Befejezés most' }).click();
+    await page.getByRole('alert').filter({ hasText: 'nem fogadta' }).waitFor();
+    const mid = await page.evaluate(async () => ({ n: (await (await import('./js/ui/store.js')).itemsAll('workout')).length, done: (await (await import('./js/ui/state.js')).getProgram()).done }));
+    assert.deepEqual(mid, before, 'hibánál sem a napló, sem a program nem változott');
+    await page.evaluate(() => window.restoreTx());
+    await page.getByRole('button', { name: 'Újrapróba' }).click();
+    await page.waitForFunction(() => /Edzés kész/i.test(document.getElementById('main').innerText));
+    const after = await page.evaluate(async () => (await (await import('./js/ui/store.js')).itemsAll('workout')).length);
+    assert.equal(after, before.n + 1, 'pontosan egy új edzésbejegyzés');
+    /* a felső figyelmeztetés megjelent a hibánál */
+    assert.equal(await page.locator('#storage-notice').isVisible(), true);
+  });
+
   await step('napló és gyakorlatleírás', async () => {
     await go(page, '#/log');
     const t = await text();

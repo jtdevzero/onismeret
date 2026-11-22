@@ -6,7 +6,7 @@ import { kvGet, kvSet, itemsAll } from './store.js';
 import { getProgram } from './state.js';
 import { weeklyReview, cooldownSteps, nutritionTargets, dayKey } from '../core/wellness.js';
 import { bodyTrend } from '../core/achievements.js';
-import { weekStart } from '../core/cardio.js';
+import { weekStart, weeksBack } from '../core/cardio.js';
 import { figureAnim } from './figure.js';
 
 const DAY = 86400000;
@@ -27,7 +27,7 @@ export async function reviewCard(items, { compact = false } = {}) {
   const now = new Date(), wd = now.getDay();
   if (wd !== 0 && wd !== 1) return null;
   /* vasárnap az aktuális, hétfőn az előző hét */
-  const start = wd === 0 ? weekStart(now.getTime()) : weekStart(now.getTime()) - 7 * DAY;
+  const start = wd === 0 ? weekStart(now.getTime()) : weeksBack(now.getTime(), 1);
   if ((await kvGet('reviewSeen', 0)) === start) return null;
   const r = weeklyReview(items, { start });
   if (r.empty) return null;
@@ -39,7 +39,7 @@ export async function reviewCard(items, { compact = false } = {}) {
 
 export async function reviewView() {
   const items = await itemsAll(), now = Date.now();
-  const weeks = [0, 1, 2, 3].map(i => weeklyReview(items, { start: weekStart(now) - i * 7 * DAY }));
+  const weeks = [0, 1, 2, 3].map(i => weeklyReview(items, { start: weeksBack(now, i) }));
   return page('Heti áttekintés',
     weeks.map((r, i) => card(h('h2', null, i === 0 ? 'Ez a hét (eddig)' : `${fmtDate(r.start)} – ${fmtDate(r.end - DAY)}`), r.empty ? h('p', { class: 'muted' }, 'Nincs bejegyzés.') : reviewBody(r))));
 }

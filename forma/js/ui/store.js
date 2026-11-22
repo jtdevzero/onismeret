@@ -64,18 +64,43 @@ export async function itemsAll(kind) {
 }
 export const itemDelete = id => tx('items', 'readwrite', s => (s ? s.delete(id) : (mem.items.delete(id), null)));
 
+/* Több kulcs és tétel egyetlen tranzakcióban (pl. edzés vége: program + naplóbejegyzés).
+   Vagy minden íródik, vagy semmi; ugyanazzal az azonosítóval megismételve nem keletkezik duplikátum. */
+export async function commit(values = {}, items = []) {
+  const data = structuredClone({ values, items });
+  if (data.items.some(it => !it || typeof it.id !== 'string' || !it.id)) throw new Error('Hibás mentési adat.');
+  const db = await open();
+  if (!db) {
+    for (const [k, v] of Object.entries(data.values)) mem.kv.set(k, v);
+    for (const it of data.items) mem.items.set(it.id, it);
+    return;
+  }
+  return new Promise((resolve, reject) => {
+    let t;
+    const fail = e => { report({ writeError: true }); reject(e || new Error('A mentés nem sikerült.')); };
+    try {
+      t = db.transaction(['kv', 'items'], 'readwrite');
+      t.oncomplete = () => resolve();
+      t.onerror = t.onabort = () => fail(t.error);
+      const kv = t.objectStore('kv'), store = t.objectStore('items');
+      for (const [k, v] of Object.entries(data.values)) kv.put(v, k);
+      for (const it of data.items) store.put(it);
+    } catch (e) { if (t) t.abort(); fail(e); }
+  });
+}
+
 export async function wipeAll() {
   await replaceAll({}, []);
 }
 /* Mentés fájlba: beállítások, program, felmérések és edzések. */
 export async function exportAll() {
-  return { app: 'forma', version: 1, exported: new Date().toISOString(), settings: await kvGet('settings', {}), program: await kvGet('program', null), run: await kvGet('run', null), nutrition: await kvGet('nutrition', null), favs: await kvGet('favs', null), custom: await kvGet('custom', null), items: await itemsAll() };
+  return { app: 'forma', version: 2, exported: new Date().toISOString(), settings: await kvGet('settings', {}), program: await kvGet('program', null), run: await kvGet('run', null), nutrition: await kvGet('nutrition', null), favs: await kvGet('favs', null), custom: await kvGet('custom', null), challenge: await kvGet('challenge', null), block: await kvGet('block', null), items: await itemsAll() };
 }
 
 /* Visszatöltés ellenőrzött mentésből (core/backup.js): minden meglévő adat helyére. */
-export async function restoreAll({ settings, program, run, nutrition, favs, custom, items }) {
+export async function restoreAll({ settings, program, run, nutrition, favs, custom, challenge, block, items }) {
   // Másolási/bemeneti hiba még a régi állomány érintése előtt derüljön ki.
-  const data = structuredClone({ settings, program, run, nutrition, favs, custom, items });
+  const data = structuredClone({ settings, program, run, nutrition, favs, custom, challenge, block, items });
   if (!Array.isArray(data.items) || data.items.some(it => !it || typeof it.id !== 'string' || !it.id)) throw new Error('Hibás visszatöltési adat.');
   const kv = Object.fromEntries(Object.entries(data).filter(([k, v]) => k !== 'items' && v != null));
   await replaceAll(kv, data.items);

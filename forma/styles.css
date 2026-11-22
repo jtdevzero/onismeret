@@ -674,3 +674,30 @@ details.more-group[open] > summary::after { content: "▴"; }
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
   .celebration { display: none; }
 }
+
+/* Sorozatnapló az edzés végén (U1-105/106) */
+.setlog { margin: 12px 0; text-align: left; }
+.setlog > summary { cursor: pointer; font-weight: 700; padding: 11px 0; }
+.setlog-ex { margin: 12px 0; }
+.setlog-ex h3 { font-size: 1rem; margin: 0 0 6px; }
+.setlog-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; padding: 4px 0; }
+.setlog-row input[type="number"] { width: 5.5em; min-height: 44px; padding: 6px 8px; border: 1.5px solid var(--line); border-radius: var(--radius-s); background: var(--bg); color: var(--text); font: inherit; }
+.setlog-row select, .setlog select { min-height: 44px; padding: 6px 8px; border: 1.5px solid var(--line); border-radius: var(--radius-s); background: var(--bg); color: var(--text); font: inherit; max-width: 100%; }
+.setlog-row .check { min-height: 44px; }
+
+/* Adattáblák (analitika): vízszintesen görgethető, a sorfejléc rögzített */
+.table-wrap { overflow-x: auto; margin: 8px 0; border-radius: var(--radius-s); border: 1px solid var(--line); }
+.table-wrap:focus-visible { outline: 3px solid var(--teal); outline-offset: 2px; }
+.data-table { border-collapse: collapse; width: 100%; font-size: .9rem; font-variant-numeric: tabular-nums; }
+.data-table th, .data-table td { padding: 8px 10px; text-align: right; white-space: nowrap; border-bottom: 1px solid var(--line); }
+.data-table thead th { font-weight: 700; color: var(--muted); background: var(--surface); }
+.data-table tbody th { text-align: left; font-weight: 600; position: sticky; left: 0; background: var(--surface); }
+.data-table tbody tr:last-child th, .data-table tbody tr:last-child td { border-bottom: 0; }
+
+/* Programszerkesztő: szintállító gombok */
+.level-edit { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.level-edit .btn.icon { min-width: 44px; min-height: 44px; padding: 0; font-size: 1.2rem; line-height: 1; }
+
+/* Felméréses megosztókártya */
+.share-preview { display: block; width: 100%; max-width: 360px; height: auto; aspect-ratio: 1080 / 1350; margin: 10px auto; border-radius: var(--radius-s); }
+.share-opts { border: 0; padding: 0; margin: 8px 0; display: grid; gap: 4px; }

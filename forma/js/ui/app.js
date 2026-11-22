@@ -63,10 +63,12 @@ async function route() {
 
 initErrorLog();
 
+/* aktív edzés, mérés vagy futás közben a frissítés csak megerősítéssel indul (ami még nincs mentve, elveszne) */
+const busy = () => /^#\/(session|test|run|mini|cooldown|pulse|posture)(\/|$)/.test(location.hash);
 function updateBanner() {
   if (document.querySelector('.update-bar')) return;
   const bar = h('div', { class: 'update-bar', role: 'status' }, h('span', null, 'Új változat érhető el.'),
-    h('button', { type: 'button', class: 'btn small light', onclick: () => location.reload() }, 'Frissítés'),
+    h('button', { type: 'button', class: 'btn small light', onclick: () => { if (busy() && !confirm('Most egy edzés, mérés vagy futás fut. A frissítés megszakítja, és ami még nincs elmentve, elveszhet. Frissítesz most?')) return; location.reload(); } }, 'Frissítés'),
     h('button', { type: 'button', class: 'btn small', 'aria-label': 'Később', onclick: () => bar.remove() }, '×'));
   document.body.append(bar);
 }

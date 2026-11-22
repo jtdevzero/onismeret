@@ -2,12 +2,15 @@
 import { h, clear, fmtSec, fmtDate, uid, toast } from './dom.js';
 import { page, card, btn, link, note, list, speak, beep, tickMs, videoSearch, celebrate } from './widgets.js';
 import { D, S, lowImpact } from './data.js';
-import { itemPut, itemGet, itemsAll, kvGet } from './store.js';
+import { itemPut, itemGet, itemsAll, kvGet, commit } from './store.js';
 import { getProgram, setProgram, latestAssessment } from './state.js';
+import { setLevel, manualOverrides, revertManual } from '../core/program.js';
 import { ROTATION, SESSION_TITLES, LADDERS, RATINGS, effLadder, baseLadder, buildSession, sessionSteps, sessionMinutes, nextKey, weekInfo, laddersOf, exerciseFor, applyRatings, doseFor, fitSession, phaseOf, freeSession, partnerSteps, GOALS, CYCLE_WEEKS } from '../core/program.js';
 import { figureStrip, figureAnim } from './figure.js';
 import { weekStrip } from './views-main.js';
 import { liveCounter } from './live.js';
+import { suggestProgression, applyLoadChange } from '../core/progression.js';
+import { plannedLog, cleanLog, cleanRpe, mergeDone, WORKOUT_SCHEMA } from '../core/workout-schema.js';
 import { blockProgress } from './views-extra.js';
 
 const SIDE = { left: 'bal oldal', right: 'jobb oldal', both: 'oldalanként' };
@@ -25,6 +28,47 @@ function noteBox(id) {
     await itemPut({ ...it, note: t.slice(0, 280) }); toast('Elmentettem a jegyzetet.'); save.disabled = true;
   }, 'small');
   return h('div', { class: 'note-box' }, h('label', { class: 'field' }, 'Egy mondat a mai edzésről (nem kötelező)', ta), save);
+}
+
+/* Sorozatnapló az edzés végén (nem kötelező): a tervezett számokkal előtöltve, javítható.
+   Súlymező csak súlyzós gyakorlatnál; testsúlyos gyakorlathoz nem számolunk kilogrammot. Az RPE és a RIR önbevallás. */
+export function setLogEditor(id, base) {
+  const rows = [], rpeSel = h('select', { 'aria-label': 'Az edzés érzett nehézsége (RPE)' }, h('option', { value: '' }, 'Nem adom meg'),
+    Array.from({ length: 11 }, (_, i) => h('option', { value: String(i) }, `${i}${i === 0 ? ' – pihenés' : i <= 2 ? ' – nagyon könnyű' : i <= 4 ? ' – könnyű' : i <= 6 ? ' – közepes' : i <= 8 ? ' – nehéz' : i === 9 ? ' – nagyon nehéz' : ' – maximális'}`)));
+  const blocks = base.map(e => {
+    const ex = D.ex[e.ex], weighted = ex && ex.equipment === 'dumbbell';
+    const sets = e.sets.map((st, i) => {
+      const val = h('input', { type: 'number', inputMode: 'numeric', min: 0, max: st.seconds ? 7200 : 1000, value: String(st.reps ?? st.seconds), 'aria-label': `${ex.name}, ${i + 1}. sorozat: ${st.seconds ? 'másodperc' : 'ismétlés'}` });
+      const kg = weighted ? h('input', { type: 'number', inputMode: 'decimal', min: 0, max: 300, step: 0.5, value: st.weightKg != null ? String(st.weightKg) : '', placeholder: 'kg', 'aria-label': `${ex.name}, ${i + 1}. sorozat: súly kilogrammban (egy súlyzó)` }) : null;
+      const ok = h('input', { type: 'checkbox', checked: true, 'aria-label': `${ex.name}, ${i + 1}. sorozat teljesítve` });
+      const rir = i === e.sets.length - 1 ? h('select', { 'aria-label': `${ex.name}: hány szabályos ismétlés maradt még az utolsó sorozat végén (RIR)` }, h('option', { value: '' }, 'RIR –'), [0, 1, 2, 3, 4, 5].map(n => h('option', { value: String(n) }, n === 5 ? 'RIR 5+' : 'RIR ' + n))) : null;
+      rows.push({ ex: e.ex, seconds: !!st.seconds, val, kg, ok, rir });
+      return h('li', { class: 'setlog-row' }, h('span', { class: 'muted small' }, `${i + 1}.`), val, h('span', { class: 'small' }, st.seconds ? 'mp' : 'ism.'), kg, kg ? h('span', { class: 'small' }, 'kg') : null, h('label', { class: 'check small' }, ok, h('span', null, 'kész')), rir);
+    });
+    return h('div', { class: 'setlog-ex' }, h('h3', null, ex ? ex.name : e.ex), h('ol', { class: 'plain' }, sets));
+  });
+  const status = h('p', { class: 'small muted', role: 'status' });
+  const save = btn('Napló mentése', async () => {
+    const numOf = el => (el && el.value.trim() !== '' && Number.isFinite(Number(el.value)) ? Number(el.value) : undefined);
+    const byEx = new Map();
+    for (const r of rows) {
+      const v = numOf(r.val);
+      if (v === undefined) continue;
+      const set = { [r.seconds ? 'seconds' : 'reps']: v, weightKg: numOf(r.kg), rir: r.rir && r.rir.value !== '' ? Number(r.rir.value) : undefined, done: r.ok.checked };
+      (byEx.get(r.ex) || byEx.set(r.ex, []).get(r.ex)).push(set);
+    }
+    const log = cleanLog([...byEx].map(([ex, sets]) => ({ ex, sets })), Object.keys(D.ex));
+    const rpe = cleanRpe(rpeSel.value === '' ? undefined : Number(rpeSel.value));
+    const it = await itemGet(id);
+    if (!it) return;
+    const next = { ...it, rpe };
+    if (log) Object.assign(next, { schemaVersion: WORKOUT_SCHEMA, log, done: mergeDone(it.done, log) });
+    try { await itemPut(next); } catch { status.textContent = 'Nem sikerült menteni; próbáld újra.'; return; }
+    status.textContent = 'Elmentve.'; toast('Elmentettem a sorozatnaplót.');
+  }, 'small');
+  return h('details', { class: 'setlog' }, h('summary', null, 'Sorozatnapló és nehézség (nem kötelező)'),
+    h('p', { class: 'small muted' }, 'A tervezett számokat írtam be; javítsd, ha mást csináltál. RPE: mennyire volt nehéz az egész edzés (0–10). RIR: hány szabályos ismétlés maradt volna még. Mindkettő becslés, kihagyható.'),
+    h('label', { class: 'field' }, 'Nehézség (RPE)', rpeSel), blocks, h('div', { class: 'row' }, save), status);
 }
 
 /* rutin vagy saját edzés keresése a kulcs alapján */
@@ -48,6 +92,67 @@ function ringClock(clock) {
 }
 const doseText = b => (b.seconds ? fmtSec(b.seconds) : b.reps + ' ism.') + (D.ex[b.exercise] && D.ex[b.exercise].perSide ? ' oldalanként' : '') + (b.sets > 1 ? ' × ' + b.sets : '');
 const lvlDots = (level, max) => h('span', { class: 'lvl', role: 'img', 'aria-label': `${level + 1}. szint a ${max}-ből` }, Array.from({ length: max }, (_, i) => h('i', { class: i <= level ? 'on' : '' })));
+
+/* Szintek és tartós, kézi szintállítás (programszerkesztő). Egy edzésre szóló csere a vezetett edzésben van. */
+function levelsCard(prog, lad) {
+  const ov = manualOverrides(prog);
+  const save = async (next, msg) => {
+    try { await setProgram(next); } catch { toast('Nem sikerült menteni; próbáld újra.'); return; }
+    toast(msg); dispatchEvent(new HashChangeEvent('hashchange'));
+  };
+  const change = async (l, dir) => {
+    const fresh = await getProgram(), from = fresh.levels[l] ?? 0;
+    const a = exerciseFor(lad, l, from, fresh.lowImpact), b = exerciseFor(lad, l, from + dir, fresh.lowImpact);
+    if (!b || (a && a.id === b.id)) { toast(dir > 0 ? 'Ez a sor legnehezebb elérhető szintje.' : 'Ez a sor legkönnyebb szintje.'); return; }
+    if (!confirm(`Tartósan átállítod: ${a ? a.name : ''} → ${b.name}? A korábbi edzéseid nem változnak, és bármikor visszaállhatsz az ajánlott szintre.`)) return;
+    await save(setLevel(fresh, l, from + dir, D.exercises.exercises), 'Szint átállítva: ' + b.name);
+  };
+  const manual = Object.keys(ov).filter(l => ov[l].recommended !== ov[l].current);
+  return card(h('h2', null, 'Szintjeid'),
+    h('p', { class: 'small muted' }, 'A szint magától lép, ha kétszer egymás után könnyűnek értékeled. Itt tartósan, kézzel is állíthatod; a panasz- és kímélő mód korlátai ekkor is érvényesek.'),
+    h('ul', { class: 'rows levels' }, LADDERS.filter(l => effLadder(baseLadder(l), prog.equipment) === l).map(l => {
+      const ex = exerciseFor(lad, l, prog.levels[l], prog.lowImpact);
+      if (!ex) return null;
+      const name = D.exercises.ladders[l];
+      return h('li', null, h('span', { class: 'log-item' }, h('strong', null, name), link('#/ex/' + ex.id, ex.name), ov[l] && ov[l].recommended !== ov[l].current ? h('span', { class: 'badge mid' }, 'kézzel állítva') : null),
+        h('span', { class: 'level-edit' }, lvlDots(prog.levels[l] ?? 0, lad[l].length),
+          h('button', { type: 'button', class: 'btn small icon', 'aria-label': name + ': könnyebb szint', onclick: () => change(l, -1) }, '−'),
+          h('button', { type: 'button', class: 'btn small icon', 'aria-label': name + ': nehezebb szint', onclick: () => change(l, 1) }, '+')));
+    })),
+    manual.length ? h('div', { class: 'row' }, btn('Vissza az ajánlott szintekhez', async () => {
+      if (!confirm('Visszaállítod a kézzel módosított szinteket az ajánlottra? A korábbi edzéseid nem változnak.')) return;
+      await save(revertManual(await getProgram()), 'Visszaálltál az ajánlott szintekre.');
+    }, 'small')) : null);
+}
+
+/* Súlyok súlyzós gyakorlatokhoz: elfogadott súly, javaslat indoklással, jóváhagyás vagy kézi beállítás. */
+async function loadsCard(prog, lad) {
+  if (!(prog.equipment || []).includes('dumbbell')) return null;
+  const exs = LADDERS.filter(l => effLadder(baseLadder(l), prog.equipment) === l).map(l => exerciseFor(lad, l, prog.levels[l], prog.lowImpact)).filter(e => e && e.equipment === 'dumbbell');
+  if (!exs.length) return null;
+  const ws = await itemsAll('workout');
+  const apply = async (change, source) => {
+    const fresh = await getProgram();
+    const next = applyLoadChange(fresh, change, { source });
+    if (next === fresh) { toast('Ez már be van állítva.'); return; }
+    try { await setProgram(next); } catch { toast('Nem sikerült menteni; próbáld újra.'); return; }
+    toast(`${D.ex[change.ex].name}: ${change.to} kg`);
+    dispatchEvent(new HashChangeEvent('hashchange'));
+  };
+  const LABEL = { increase: 'Javaslat: emelés', decrease: 'Javaslat: könnyítés', maintain: 'Maradj ennél', insufficient_data: 'Kevés adat', needs_review: 'Óvatosan' };
+  return card(h('h2', null, 'Súlyok'), h('p', { class: 'small muted' }, 'Egy súlyzó súlya kilogrammban. A javaslat a sorozatnaplódból jön (teljesített sorozatok és RIR); csak akkor változik, ha elfogadod.'),
+    h('ul', { class: 'rows loads' }, exs.map(ex => {
+      const cur = prog.loads && Number.isFinite(prog.loads[ex.id]) ? prog.loads[ex.id] : null;
+      const sug = suggestProgression({ exercise: ex, workouts: ws, currentKg: cur, complaints: prog.complaints || [] });
+      const input = h('input', { type: 'number', inputMode: 'decimal', min: 0, max: 300, step: 0.5, value: cur != null ? String(cur) : '', 'aria-label': ex.name + ': súly kilogrammban' });
+      return h('li', { class: 'load-row' }, h('div', null, h('strong', null, ex.name), h('span', { class: 'muted small' }, cur != null ? ` · most ${cur} kg` : ' · még nincs beállítva'),
+        h('p', { class: 'small' }, h('span', { class: 'badge' + (sug.action === 'increase' ? ' good' : sug.action === 'needs_review' || sug.action === 'decrease' ? ' warn' : '') }, LABEL[sug.action]), ' ', sug.reasons[0] || ''),
+        h('div', { class: 'row' },
+          sug.proposedChange ? btn(`Elfogadom: ${sug.proposedChange.to} kg`, () => apply(sug.proposedChange, 'suggestion'), 'small primary') : null,
+          h('label', { class: 'field inline small' }, 'Kézzel', input),
+          btn('Mentés', () => { const v = input.value.trim() === '' ? NaN : Number(input.value); if (!(Number.isFinite(v) && v >= 0 && v <= 300)) { toast('Adj meg 0 és 300 közötti súlyt.'); return; } apply({ ex: ex.id, from: cur, to: Math.round(v * 2) / 2 }, 'manual'); }, 'small'))));
+    })));
+}
 
 export async function programView() {
   const prog = await getProgram();
@@ -76,10 +181,8 @@ export async function programView() {
       h('label', { class: 'field' }, 'Fókusz', (() => { const s = h('select', { id: 'goalfocus', onchange: async () => { const p = await getProgram(); await setProgram({ ...p, goalFocus: s.value || null }); toast(s.value ? 'Célprogram beállítva.' : 'Célprogram kikapcsolva.'); } },
         h('option', { value: '' }, 'Nincs külön cél'), GOALS.map(([k, t]) => h('option', { value: k }, t))); s.value = prog.goalFocus || ''; return s; })())),
     card(h('h2', null, 'Állóképesség'), h('p', null, 'A forgó rend mellé heti 150 perc kardió: tempós séta, kocogás vagy kerékpár, a pulzustartományodban.'), h('div', { class: 'row' }, link('#/cardio', 'Kardió napló és pulzuszónák', 'btn'))),
-    card(h('h2', null, 'Szintjeid'), h('ul', { class: 'rows' }, LADDERS.filter(l => effLadder(baseLadder(l), prog.equipment) === l).map(l => {
-      const ex = exerciseFor(lad, l, prog.levels[l], prog.lowImpact);
-      return ex ? h('li', null, h('span', { class: 'log-item' }, h('strong', null, D.exercises.ladders[l]), link('#/ex/' + ex.id, ex.name)), lvlDots(prog.levels[l] ?? 0, lad[l].length)) : null;
-    }))));
+    await loadsCard(prog, lad),
+    levelsCard(prog, lad));
 }
 
 /* Vezetett edzés: lépésről lépésre, időzítővel, pihenővel, hangos bemondással; a gyakorlatok végén értékelés. */
@@ -109,6 +212,18 @@ export async function sessionView(key, onCleanup) {
   onCleanup(release);
   try { wake = await navigator.wakeLock.request('screen'); } catch { wake = null; }
 
+  /* Visszaszámlálás a valós eltelt időből: háttérbe kerülés vagy lassú időzítő után is a tényleges hátralévő időt mutatja. */
+  function countdown(onTick, onDone) {
+    const unit = tickMs(), deadline = Date.now() + left * unit;
+    timer = setInterval(() => {
+      const prev = left;
+      left = Math.max(0, Math.ceil((deadline - Date.now()) / unit));
+      if (left === prev) return;
+      onTick();
+      if (prev > 3 && left <= 3 && left > 0) speak('három', voice.checked);
+      if (left <= 0) onDone();
+    }, Math.max(10, Math.round(unit / 4)));
+  }
   const advance = () => { stop(); at++; if (at >= total) finish(false); else show(); };
   /* az utolsó kör után megkérdezzük, milyen volt: ebből jön a szintlépés */
   const next = () => {
@@ -126,10 +241,13 @@ export async function sessionView(key, onCleanup) {
     speak('Milyen volt?', voice.checked);
   }
 
+  /* A mentendő állapot egyszer számolódik ki; újrapróbánál ugyanez íródik (ugyanazzal az azonosítóval), így nincs duplikátum. */
+  let pending = null;
   async function finish(partial) {
     if (finished) return;
     finished = true; release();
-    const minutes = Math.max(1, Math.round((Date.now() - started) / 60000));
+    const endedAt = Date.now();
+    const minutes = Math.max(1, Math.round((endedAt - started) / 60000));
     let changes = [];
     /* az elvégzett gyakorlatok (az első személy lépései, az aktuális ponttal bezárólag) a gyakorlatonkénti előzményhez */
     const doneMap = new Map();
@@ -138,23 +256,39 @@ export async function sessionView(key, onCleanup) {
       d.sets++; if (s.reps) d.reps += s.reps * (s.side === 'both' ? 2 : 1); if (s.seconds) d.seconds += s.seconds; doneMap.set(s.exercise, d);
     });
     const done = [...doneMap.values()].map(d => ({ ex: d.ex, sets: d.sets, ...(d.reps ? { reps: d.reps } : {}), ...(d.seconds ? { seconds: d.seconds } : {}) }));
-    const workoutId = uid();
+    const workoutId = uid(), values = {};
+    let item;
     if (session.free) {
-      if (key.startsWith('routine-')) await blockProgress(key.slice(8));
-      await itemPut({ id: workoutId, kind: 'workout', date: Date.now(), key: key.startsWith('routine-') ? 'routine' : 'custom', title: session.title, minutes, steps: total, partial, ratings: {}, changes: [], done, partner: partner.checked || undefined });
+      item = { id: workoutId, kind: 'workout', date: endedAt, key: key.startsWith('routine-') ? 'routine' : 'custom', title: session.title, minutes, steps: total, partial, ratings: {}, changes: [], done, partner: partner.checked || undefined };
     } else {
       const fresh = (await getProgram()) || prog;
       const res = applyRatings(fresh, ratings, D.exercises.exercises);
       changes = res.changes;
       /* a forgó rendben csak a soron következő edzés teljesítése lép tovább */
       const doneCount = key === nextKey(fresh) ? (fresh.done || 0) + 1 : fresh.done || 0;
-      await setProgram({ ...res.state, done: doneCount, lastDone: Date.now() });
-      await itemPut({ id: workoutId, kind: 'workout', date: Date.now(), key, minutes, steps: total, partial, ratings, changes, light, done, partner: partner.checked || undefined });
+      values.program = { ...res.state, done: doneCount, lastDone: endedAt };
+      item = { id: workoutId, kind: 'workout', date: endedAt, key, minutes, steps: total, partial, ratings, changes, light, done, partner: partner.checked || undefined };
     }
+    pending = { values, item, changes, minutes, logBase: plannedLog(steps, partial ? at : steps.length, (values.program || prog).loads || {}) };
+    bar.value = total; count.textContent = `${total} / ${total} lépés`;
+    clear(stage).append(card(h('p', { role: 'status' }, 'Mentés…')));
+    await save();
+  }
+
+  async function save() {
+    const { values, item, changes, minutes } = pending;
+    try { await commit(values, [item]); }
+    catch {
+      clear(stage).append(card(h('h2', null, 'Az edzést nem sikerült menteni'),
+        h('p', { role: 'alert' }, 'Az eredményed itt még megvan, de a telefon tárolója most nem fogadta. Próbáld újra; ha továbbra sem megy, a lap tetején lévő „Mentés fájlba” gombbal mentsd el az eddigi adataidat.'),
+        h('div', { class: 'row' }, btn('Újrapróba', save, 'primary'))));
+      return;
+    }
+    if (session.free && key.startsWith('routine-')) { try { await blockProgress(key.slice(8)); } catch { /* a blokk számlálója nem létfontosságú */ } }
+    const workoutId = item.id;
     speak('Kész az edzés. Szép munka!', voice.checked);
     if (changes.some(c => c.to > c.from)) celebrate();
     beep(880, 200);
-    bar.value = total; count.textContent = `${total} / ${total} lépés`;
     const lad = laddersOf(D.exercises.exercises);
     clear(stage).append(card(h('h2', null, 'Edzés kész'),
       h('p', { class: 'lead' }, `${session.title}, ${minutes} perc.`),
@@ -163,6 +297,7 @@ export async function sessionView(key, onCleanup) {
         return (c.to > c.from ? 'Feljebb: ' : 'Visszább: ') + (a ? a.name : '') + ' → ' + (b ? b.name : '');
       }))) : null,
       h('p', null, 'Bekerült a naplódba.'),
+      pending.logBase.length ? setLogEditor(workoutId, pending.logBase) : null,
       noteBox(workoutId),
       h('p', { class: 'small muted' }, 'Ha van még 4 perced: a levezetés csökkenti a másnapi merevséget.'),
       h('div', { class: 'row' }, link('#/cooldown', 'Levezetés (4 perc)', 'btn primary'), link('#/', 'Kezdőlap', 'btn'), link('#/log', 'Napló', 'btn small'))));
@@ -204,11 +339,7 @@ export async function sessionView(key, onCleanup) {
     const run = () => {
       if (running) return;
       running = true;
-      timer = setInterval(() => {
-        left--; draw();
-        if (left === 3) speak('három', voice.checked);
-        if (left <= 0) { beep(660, 120); buzz([120, 60, 120]); next(); }
-      }, tickMs());
+      countdown(() => draw(), () => { beep(660, 120); buzz([120, 60, 120]); next(); });
     };
     if (st.type === 'rest') {
       const after = steps[at + 1];
@@ -258,7 +389,7 @@ export async function sessionView(key, onCleanup) {
         instructions(live ? h('details', { class: 'live-box' }, h('summary', null, 'Számolás kamerával'), live.el) : null)), nav);
       speak(ex.name + ', ' + st.reps + ' ismétlés' + (st.side === 'both' ? ' oldalanként' : '') + (S.settings.voiceMode ? '. ' + ex.points.join('. ') : ''), voice.checked);
       /* hangos módban az ismétlések becsült ideje után magától továbblép */
-      if (S.settings.voiceMode) { left = st.reps * 3 * (st.side === 'both' ? 2 : 1) + 6; running = true; timer = setInterval(() => { left--; if (left === 3) speak('három', voice.checked); if (left <= 0) { beep(660, 120); next(); } }, tickMs()); }
+      if (S.settings.voiceMode) { left = st.reps * 3 * (st.side === 'both' ? 2 : 1) + 6; running = true; countdown(() => {}, () => { beep(660, 120); next(); }); }
     }
   }
   /* lapozás: balra húzva tovább, jobbra húzva vissza (az értékelésnél nem) */
@@ -305,5 +436,5 @@ export async function exerciseView(id, onCleanup) {
     lad ? card(h('h2', null, D.exercises.ladders[ex.ladder]), h('p', { class: 'small muted' }, 'A gyakorlatsor szintjei, a legkönnyebbtől:'),
       h('ol', null, lad.map(e => h('li', null, e.id === id ? h('strong', null, e.name) : link('#/ex/' + e.id, e.name), e.impact ? h('span', { class: 'muted small' }, ' · ugrásos') : null)))) : null,
     D.exercises.reviewed ? null : note('A leírásokat szakember még nem lektorálta.', 'small'),
-    h('div', { class: 'row' }, btn('← Vissza', () => history.back())));
+    h('div', { class: 'row' }, btn('← Vissza', () => window.history.back())));
 }

@@ -1,7 +1,7 @@
 /* Fejlődés: egyéni rekordok, jelvények, célok, aktuális fittségi kor a friss derékbőséggel, és a félidős mini-teszt.
    Tiszta függvények, DOM nélkül. items: a tárolt tételek (assessment, mini, workout, cardio, body, goal). */
 import { estimateVo2, fitnessAge } from './score.js';
-import { weekStart, weeklyCardio } from './cardio.js';
+import { weekStart, weeksBack, weeklyCardio } from './cardio.js';
 
 const DAY = 86400000;
 export const MINI_TESTS = ['pushup', 'plank', 'sl_stance'];
@@ -80,7 +80,7 @@ export function badges(items, ctx = {}) {
   for (const w of ws) { const k = weekStart(w.date); weeks.set(k, (weeks.get(k) || 0) + 1); }
   let run = 0, fourWeeks = null;
   for (const k of [...weeks.keys()].sort((a, b) => a - b)) {
-    const prev = weeks.has(k - 7 * DAY) && weeks.get(k - 7 * DAY) >= 4;
+    const pk = weeksBack(k, 1), prev = weeks.has(pk) && weeks.get(pk) >= 4;
     run = weeks.get(k) >= 4 ? (prev ? run + 1 : 1) : 0;
     if (run >= 4 && !fourWeeks) fourWeeks = k;
   }

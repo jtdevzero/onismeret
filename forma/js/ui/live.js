@@ -5,6 +5,7 @@ import { h, clear } from './dom.js';
 import { note, openCamera, liveCountdown, speak } from './widgets.js';
 import { analyzeExercise, isAnalyzable } from '../core/exercise.js';
 import { BONES } from '../core/geometry.js';
+import { measurementReliability } from '../core/motion-quality.js';
 
 const UPDATE_EVERY = 0.5; /* ennyi időnként számolunk újra (mp) */
 const ERR = {
@@ -44,15 +45,23 @@ function drawSkeleton(canvas, lm) {
   }
 }
 
+/* A követés megbízhatósága (nem a mozgás minősítése): szöveggel, nem csak színnel. */
+function reliabilityNote(r) {
+  const m = measurementReliability(r);
+  return h('div', { class: 'live-reliability' }, h('p', { class: 'small' }, 'Mérés megbízhatósága: ', h('strong', null, m.label), ` · használható képkockák: ${m.trackedPct}%`),
+    m.reasons.length ? h('ul', { class: 'plain small muted' }, m.reasons.map(x => h('li', null, x))) : null,
+    m.level === 'unreliable' ? note('Ezt a mérést nem írom be magától. Mérj újra jobb fényben és kameraállással, vagy írd be kézzel.', 'warn') : null);
+}
+
 /* Az elemzés eredménye szövegesen: mit mértem, és min javíts. */
 export function feedback(r) {
-  if (!r.ok) return note(r.reason === 'not_tracked' ? 'Nem láttalak elég jól. Támaszd le a telefont úgy, hogy tetőtől talpig beleférj, oldalról, jó fényben.' : 'Nem találtam a gyakorlat mozgását. Ellenőrizd a kameraállást.', 'warn');
+  if (!r.ok) return h('div', null, note(r.reason === 'not_tracked' ? 'Nem láttalak elég jól. Támaszd le a telefont úgy, hogy tetőtől talpig beleférj, oldalról, jó fényben.' : 'Nem találtam a gyakorlat mozgását. Ellenőrizd a kameraállást.', 'warn'), reliabilityNote(r));
   const fixes = r.checks.filter(c => c.band === 'fix');
   return h('div', { class: 'live-result' },
     h('p', { class: 'lead' }, r.jumpCm != null ? `Legjobb ugrás: ${Math.round(r.jumpCm)} cm (${r.reps} ugrás)` : r.holdSeconds != null && !r.reps ? `${Math.floor(r.holdSeconds)} másodperc` : `${r.reps} ismétlés`),
     r.checks.length ? h('ul', { class: 'rows' }, r.checks.map(c => h('li', null, h('span', null, CHECK_NAMES[c.id] || c.id), h('span', { class: 'badge ' + (c.band === 'ok' ? 'good' : 'warn') }, c.band === 'ok' ? 'Rendben' : 'Javítandó')))) : null,
     fixes.length ? h('ul', { class: 'plain' }, fixes.map(c => h('li', null, FIX[c.id] || ''))) : null,
-    r.confidence != null && r.confidence < 0.6 ? note('A mérés bizonytalan (rossz látási viszonyok); kezeld fenntartással.', 'small') : null,
+    reliabilityNote(r),
     note('Béta mérés: a pontosságot valódi felvételeken még nem validáltuk. A formaküszöbök szakmai becslések, szakember még nem kalibrálta őket. Az eredményt ellenőrizd és szükség esetén javítsd.', 'small'));
 }
 
