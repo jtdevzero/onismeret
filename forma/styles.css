@@ -791,3 +791,4 @@ body { background: var(--bg) linear-gradient(180deg, var(--bg-2), var(--bg) 420p
 .hero.art-balance, .art-banner.art-balance { background-image: url(assets/art/balance.webp); }
 .hero.art-night-run, .art-banner.art-night-run { background-image: url(assets/art/night-run.webp); }
 .hero.art-plank, .art-banner.art-plank { background-image: url(assets/art/plank.webp); }
+.age-select { font-size: 1.25rem; font-variant-numeric: tabular-nums; max-width: 9rem; }

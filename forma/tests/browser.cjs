@@ -55,9 +55,10 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     await page.getByRole('button', { name: 'Kezdjük el' }).click();
     const next = page.getByRole('button', { name: 'Tovább' }).first();
     assert.equal(await next.isDisabled(), true);
-    await page.getByLabel('Életkor').fill('16');
+    assert.equal(await page.getByLabel('Életkor').locator('option').count(), 100, 'pörgethető lista 1–99 (és üres)');
+    await page.getByLabel('Életkor').selectOption('16');
     assert.match(await text(), /felnőtteknek készült/);
-    await page.getByLabel('Életkor').fill('34');
+    await page.getByLabel('Életkor').selectOption('34');
     await page.getByText('Férfi', { exact: true }).click();
     await next.click();
     assert.match(await text(), /Egészségügyi szűrés/);
@@ -536,7 +537,7 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
 
   await step('nyelv: angolra váltva a menü és a kezdőlap angol, a html lang is; vissza magyarra', async () => {
     await go(page, '#/settings');
-    await Promise.all([page.waitForNavigation(), page.getByText('English (béta)').click()]);
+    await Promise.all([page.waitForNavigation(), page.getByText('English', { exact: true }).click()]);
     await page.waitForFunction(() => document.documentElement.dataset.ready === '1');
     await page.waitForFunction(() => document.documentElement.lang === 'en');
     await page.evaluate(async () => { (await import('./js/ui/widgets.js')).setTick(15); });

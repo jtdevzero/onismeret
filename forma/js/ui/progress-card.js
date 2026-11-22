@@ -1,14 +1,15 @@
 import { h, toast } from './dom.js';
 import { btn } from './widgets.js';
 import { progressSummary } from '../core/progress.js';
+import { tr, dateLocale } from './i18n.js';
 
 export function progressCard(items) {
   const s = progressSummary(items);
-  const change = s.delta == null ? 'Minden alkalom számít.' : `${s.delta > 0 ? '+' : ''}${s.delta} pont a két felmérés között`;
-  const caveat = s.delta == null ? 'Két azonos pontozású, azonos teszteket tartalmazó felmérés után a pontszámváltozásod is itt látszik.' : `${s.before} → ${s.after} pont · ${s.measuredDays} nap telt el a két mérés között. Saját pontszám, nem percentilis.`;
-  const metrics = [[s.workouts, 'edzés'], [s.activeDays, 'aktív nap'], [s.minutes, 'perc mozgás']];
+  const change = s.delta == null ? tr('Minden alkalom számít.') : tr('{p0}{p1} pont a két felmérés között', { p0: s.delta > 0 ? '+' : '', p1: s.delta });
+  const caveat = s.delta == null ? tr('Két azonos pontozású, azonos teszteket tartalmazó felmérés után a pontszámváltozásod is itt látszik.') : tr('{p0} → {p1} pont · {p2} nap telt el a két mérés között. Saját pontszám, nem percentilis.', { p0: s.before, p1: s.after, p2: s.measuredDays });
+  const metrics = [[s.workouts, tr('edzés')], [s.activeDays, tr('aktív nap')], [s.minutes, tr('perc mozgás')]];
   let busy = false;
-  const save = btn('Kártya mentése képként', async () => {
+  const save = btn(tr('Kártya mentése képként'), async () => {
     if (busy) return; busy = true; save.disabled = true;
     try {
       const canvas = document.createElement('canvas'); canvas.width = 1080; canvas.height = 1080;
@@ -27,9 +28,9 @@ export function progressCard(items) {
         g.fillStyle = '#ffd5e6'; g.font = '500 29px sans-serif'; g.fillText(label, x, 665);
       });
       g.fillStyle = '#ffffff'; g.font = '500 27px sans-serif';
-      const lines = s.delta == null ? ['A fejlődésed a saját történeted.', 'Összevethető felmérések után pontszámváltozással.'] : [`${s.before} → ${s.after} pont · ${s.measuredDays} nap a két mérés között.`, 'Saját pontszám, nem korosztályos percentilis.'];
+      const lines = s.delta == null ? [tr('A fejlődésed a saját történeted.'), tr('Összevethető felmérések után pontszámváltozással.')] : [tr('{p0} → {p1} pont · {p2} nap a két mérés között.', { p0: s.before, p1: s.after, p2: s.measuredDays }), tr('Saját pontszám, nem korosztályos percentilis.')];
       lines.forEach((line, i) => g.fillText(line, 80, 810 + i * 44, 920));
-      const date = t => new Date(t).toLocaleDateString('hu-HU');
+      const date = t => new Date(t).toLocaleDateString(dateLocale());
       g.fillStyle = '#ffd5e6'; g.font = '500 24px sans-serif'; g.fillText(`${date(s.from)} – ${date(s.to)}`, 80, 980);
       const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
       if (!blob) throw new Error('blob');
@@ -40,10 +41,10 @@ export function progressCard(items) {
     finally { busy = false; save.disabled = false; }
   }, 'primary');
   return h('section', { class: 'card progress-poster' },
-    h('p', { class: 'eyebrow' }, 'A saját történeted'), h('h2', null, 'Az elmúlt 6 heted'),
+    h('p', { class: 'eyebrow' }, tr('A saját történeted')), h('h2', null, tr('Az elmúlt 6 heted')),
     h('p', { class: 'progress-change' }, change),
     h('div', { class: 'poster-metrics' }, metrics.map(([value, label]) => h('div', null, h('strong', null, String(value)), h('span', null, label)))),
     h('p', { class: 'small' }, caveat),
-    h('p', { class: 'small' }, 'A kép ezeket az összesített adatokat tartalmazza. Te döntöd el, kivel osztod meg.'),
+    h('p', { class: 'small' }, tr('A kép ezeket az összesített adatokat tartalmazza. Te döntöd el, kivel osztod meg.')),
     h('div', { class: 'row' }, save));
 }

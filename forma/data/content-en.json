@@ -1,0 +1,968 @@
+{
+ "note": "Angol tartalomréteg (gyakorlatok, tesztek, területek, rutinok, blokkok). A forrás a magyar adatfájl; azonosító szerint felülír, a számokat és a szerkezetet nem érinti.",
+ "typeNames": {
+  "warmup": "Warm-up",
+  "recovery": "Cool-down",
+  "mobility": "Mobility",
+  "strength": "Strength",
+  "core": "Core",
+  "power": "Power",
+  "speed": "Speed",
+  "balance": "Balance",
+  "cardio": "Endurance"
+ },
+ "ladders": {
+  "push": "Push (chest, shoulders, triceps)",
+  "squat": "Squat (thighs, glutes)",
+  "lunge": "Lunge (single-leg strength)",
+  "hinge": "Hip hinge (glutes, hamstrings)",
+  "pull": "Pull (back, rear shoulders)",
+  "pull_band": "Band pull",
+  "pull_bar": "Pull-ups on a bar",
+  "pull_db": "Dumbbell row",
+  "squat_db": "Dumbbell squat",
+  "hinge_db": "Dumbbell hip hinge",
+  "core": "Front core",
+  "side": "Side core",
+  "power": "Power (jumps)",
+  "speed": "Speed (footwork, intervals)",
+  "balance": "Balance"
+ },
+ "exercises": {
+  "push_wall": {
+   "name": "Wall push-up",
+   "how": "Stand an arm's length from the wall, hands at shoulder height, slightly wider than shoulder width. Lean towards the wall with a straight body until your nose almost touches it, then push yourself away.",
+   "points": [
+    "One line from head to heels",
+    "Elbows at about 45 degrees, not out to the side",
+    "Slow down, powerful up"
+   ]
+  },
+  "push_incline": {
+   "name": "Incline push-up on a table",
+   "how": "Put your hands on the edge of a sturdy table or counter. Lower your chest to the edge with a straight body, then push back. The lower the support, the harder it gets.",
+   "points": [
+    "Abs and glutes tight, hips don't sag",
+    "Chest reaches first, not the chin",
+    "Full range of motion"
+   ]
+  },
+  "push_knee": {
+   "name": "Kneeling push-up",
+   "how": "In a kneeling plank with hands under the shoulders and the body straight from knees to head. Lower your chest to a few centimetres above the floor, then push up.",
+   "points": [
+    "Hips in line with shoulders and knees",
+    "Elbows back, not out to the side",
+    "A brief pause at the bottom"
+   ]
+  },
+  "push_full": {
+   "name": "Push-up",
+   "how": "In a high plank with hands under the shoulders and the body straight from head to heels. Lower your chest to a fist's height, then push up to fully straight arms.",
+   "points": [
+    "Hips neither rise nor sag",
+    "Elbows at about 45 degrees to the torso",
+    "At the top, push the shoulder blades apart too"
+   ]
+  },
+  "push_decline": {
+   "name": "Decline push-up (feet raised)",
+   "how": "Feet on the edge of a chair or sofa, hands on the floor. Lower your chest with a straight body, then push up. A slow 3-second descent makes it even harder.",
+   "points": [
+    "Straight torso, no arching of the lower back",
+    "Head in line with the spine",
+    "Slow descent"
+   ]
+  },
+  "squat_box": {
+   "name": "Sit to stand from a chair",
+   "how": "Stand in front of a chair, feet hip-width apart. Starting with the hips going back, sit down until you touch, arms forward, then stand up without using your hands.",
+   "points": [
+    "Knees point in the direction of the toes",
+    "Heels stay on the floor",
+    "Just touch the chair, don't drop onto it"
+   ]
+  },
+  "squat": {
+   "name": "Squat",
+   "how": "Feet shoulder-width apart, toes slightly out. Squat down until your thighs are at least horizontal, chest up, then push up through your heels.",
+   "points": [
+    "Knees don't cave in",
+    "Straight back, chest facing forward",
+    "Weight on the whole foot"
+   ]
+  },
+  "split_squat": {
+   "name": "Split squat",
+   "how": "Take a big step back with the back heel raised. Lower your back knee straight down to just above the floor, then push back up with the front leg. Do all reps on one side, then the other.",
+   "points": [
+    "Front knee over the foot",
+    "Upright torso",
+    "Back knee almost to the floor"
+   ]
+  },
+  "bulgarian": {
+   "name": "Bulgarian split squat (back foot on a chair)",
+   "how": "Back foot on a chair, the front foot about a big step in front. Lower yourself until the front thigh is horizontal, then push up through the front heel.",
+   "points": [
+    "Weight on the front leg",
+    "Front knee doesn't cave in",
+    "Controlled way down"
+   ]
+  },
+  "pistol_box": {
+   "name": "Single-leg squat to a chair",
+   "how": "Standing on one leg in front of a chair, the other leg stretched forward. Slowly sit down until you touch, then stand up on the same leg. If it's easy, use a lower seat.",
+   "points": [
+    "Knee towards the toes, not inwards",
+    "Slow 3-second sit",
+    "Arms stretched forward help"
+   ]
+  },
+  "reverse_lunge": {
+   "name": "Reverse lunge",
+   "how": "Take a big step back, lower your back knee to just above the floor, then push back to the start with the front leg. Alternate legs or do one side at a time.",
+   "points": [
+    "Front knee over the foot",
+    "Upright torso",
+    "Push back with the front leg"
+   ]
+  },
+  "lateral_lunge": {
+   "name": "Side lunge",
+   "how": "From a wide stance, sit onto one leg while the other stays straight, both soles on the floor. Push back to the middle.",
+   "points": [
+    "Hips go back",
+    "Bent knee over the foot",
+    "The straight leg's sole stays down"
+   ]
+  },
+  "tempo_lunge": {
+   "name": "Lunge with slow lowering",
+   "how": "A reverse lunge, but lower yourself over 4 seconds, hold for 1 second at the bottom, then push up explosively.",
+   "points": [
+    "Count the 4 seconds",
+    "Stable knee at the bottom",
+    "Fast way up"
+   ]
+  },
+  "glute_bridge": {
+   "name": "Glute bridge",
+   "how": "Lying on your back, knees bent, feet on the floor. Lift your hips until knees, hips and shoulders form a line, and squeeze your glutes for a moment at the top.",
+   "points": [
+    "Push through the heels, not the toes",
+    "Don't arch your back at the top",
+    "Lower slowly"
+   ]
+  },
+  "sl_bridge": {
+   "name": "Single-leg glute bridge",
+   "how": "A glute bridge with one leg in the air, bent or straight. Keep the hips level throughout.",
+   "points": [
+    "The pelvis doesn't tilt to the side",
+    "Hold for one second at the top",
+    "Even tempo"
+   ]
+  },
+  "sl_hip_thrust": {
+   "name": "Single-leg hip thrust on a sofa",
+   "how": "Shoulder blades on the edge of a sofa or sturdy chair, one foot on the floor. Lift your hips to horizontal, then lower to just above the floor.",
+   "points": [
+    "Chin slightly tucked",
+    "Knee over the foot",
+    "Level pelvis"
+   ]
+  },
+  "prone_ytw": {
+   "name": "Prone Y–T–W raise",
+   "how": "Lying face down, forehead on the floor. Raise your arms in a Y shape, then a T shape, finally with bent elbows in a W shape, squeezing the shoulder blades each time. That is one rep.",
+   "points": [
+    "Thumbs point up",
+    "Shoulder blades back and down",
+    "Slowly, without swinging"
+   ]
+  },
+  "snow_angel": {
+   "name": "Reverse snow angel (prone)",
+   "how": "Lying face down, lift your chest and arms slightly off the floor. Sweep your arms in an arc from beside the hips to above your head and back, keeping them in the air.",
+   "points": [
+    "Arms stay lifted",
+    "Long neck, look at the floor",
+    "Slow, even arc"
+   ]
+  },
+  "table_row_bent": {
+   "name": "Table row, knees bent",
+   "how": "Lie under a very stable, heavy table and grip the edge shoulder-width apart. Knees bent, feet on the floor: pull your chest up to the edge, then lower slowly. Check first that the table can't tip over.",
+   "points": [
+    "Only with a completely stable table",
+    "Squeeze the shoulder blades at the top",
+    "Body straight from knees to head"
+   ]
+  },
+  "table_row": {
+   "name": "Table row, legs straight",
+   "how": "Like the previous one, but with straight legs and heels on the floor. The body stays a straight plank. Only with a stable table that can't tip over.",
+   "points": [
+    "Hips don't sag",
+    "Chest touches the table edge",
+    "Slow lowering"
+   ]
+  },
+  "band_pull_apart": {
+   "name": "Band pull-apart",
+   "how": "Hold the band shoulder-width apart, arms straight in front at shoulder height. Pull the band apart until it touches your chest, squeezing the shoulder blades together. Return slowly.",
+   "points": [
+    "Shoulders stay down, not up to the ears",
+    "Shoulder blades back and down",
+    "Slow return"
+   ]
+  },
+  "band_row": {
+   "name": "Band row",
+   "how": "Anchor the band at waist height (with a door anchor or around a sturdy post). Step back so it's taut and pull your hands to your ribs, elbows going back. Return slowly.",
+   "points": [
+    "Elbows travel back close to the body",
+    "Straight back, torso doesn't lean back",
+    "A brief squeeze at the end"
+   ]
+  },
+  "band_row_single": {
+   "name": "Single-arm band row",
+   "how": "Like the band row, but with one arm, in a split stance, with more tension. Don't let the torso rotate with the pull.",
+   "points": [
+    "Torso stays square",
+    "Full range of motion",
+    "Controlled return"
+   ]
+  },
+  "dead_hang": {
+   "name": "Dead hang on a bar",
+   "how": "Grip the bar shoulder-width with an overhand grip and hang with straight arms. Finally pull the shoulder blades down a little (the body rises a few centimetres) and hold. If your feet touch the floor, bend your knees.",
+   "points": [
+    "Only on a stable, securely mounted bar",
+    "Active shoulders, not hanging up to your ears",
+    "Step down slowly, don't jump"
+   ]
+  },
+  "negative_pullup": {
+   "name": "Slow lowering (negative pull-up)",
+   "how": "Using a chair, step up so your chin is above the bar. From there, lower yourself over 4–5 seconds to straight arms. Step back on the chair and repeat.",
+   "points": [
+    "Count the 4–5 seconds",
+    "Tight abs throughout",
+    "Place the chair safely"
+   ]
+  },
+  "chin_up": {
+   "name": "Chin-up",
+   "how": "Hang from the bar with an underhand grip, shoulder-width, and pull yourself up until your chin is above the bar. Lower slowly to straight arms. This is easier than the overhand grip.",
+   "points": [
+    "No swinging",
+    "Full extension at the bottom",
+    "Chest towards the bar"
+   ]
+  },
+  "pull_up": {
+   "name": "Pull-up",
+   "how": "Hang with an overhand grip slightly wider than shoulder width and pull yourself up until your chin is above the bar. Lower slowly to straight arms.",
+   "points": [
+    "No swinging or kicking",
+    "Start by pulling the shoulder blades down",
+    "Full extension at the bottom"
+   ]
+  },
+  "goblet_squat": {
+   "name": "Goblet squat",
+   "how": "Hold the weight in front of your chest with both hands (a kettlebell by the horns, a dumbbell by one end). Squat until your thighs are at least horizontal, elbows between the knees, then push up. Choose a weight with which the last 2 reps are hard but still clean. If it gets easy, increase the weight first, and only then switch to a harder exercise.",
+   "points": [
+    "Weight close to the chest",
+    "Knees in the direction of the toes",
+    "Straight back, chest up"
+   ]
+  },
+  "goblet_lunge": {
+   "name": "Reverse lunge with a weight",
+   "how": "Holding the weight in front of your chest, step back, lower your back knee to just above the floor, then push back with the front leg. Choose a weight with which the last 2 reps are hard but still clean. If it gets easy, increase the weight first, and only then switch to a harder exercise.",
+   "points": [
+    "Front knee over the foot",
+    "Upright torso",
+    "Controlled lowering"
+   ]
+  },
+  "goblet_bulgarian": {
+   "name": "Bulgarian split squat with a weight",
+   "how": "Back foot on a chair, the weight in front of your chest. Lower yourself until the front thigh is horizontal, then push up through the front heel. Choose a weight with which the last 2 reps are hard but still clean. If it gets easy, increase the weight first, and only then switch to a harder exercise.",
+   "points": [
+    "Weight on the front leg",
+    "Front knee doesn't cave in",
+    "Slow way down"
+   ]
+  },
+  "db_rdl": {
+   "name": "Dumbbell Romanian deadlift",
+   "how": "Stand hip-width with the weight in front of your thighs. With slightly bent knees and a straight back, push your hips back and lower the weight to mid-shin, then stand up using your glutes. Choose a weight with which the last 2 reps are hard but still clean. If it gets easy, increase the weight first, and only then switch to a harder exercise.",
+   "points": [
+    "Back straight throughout",
+    "The weight travels close to your legs",
+    "The hips go back; the back doesn't round"
+   ]
+  },
+  "kb_swing": {
+   "name": "Kettlebell swing",
+   "how": "In a wide stance, holding the weight with both hands, swing it back between your legs, then with a fast, powerful hip extension swing it forward to chest height. The arms only guide; the hips provide the momentum. It also works with a dumbbell held by one end. Choose a weight with which the last 2 reps are hard but still clean. If it gets easy, increase the weight first, and only then switch to a harder exercise.",
+   "points": [
+    "From the hips, not a squat",
+    "Straight body at the top, glutes squeezed",
+    "Back straight throughout"
+   ]
+  },
+  "sl_db_rdl": {
+   "name": "Single-leg dumbbell Romanian deadlift",
+   "how": "Standing on one leg with the weight in the opposite hand. Lean forward with a straight back as the free leg reaches back, then stand up. Choose a weight with which the last 2 reps are hard but still clean. If it gets easy, increase the weight first, and only then switch to a harder exercise.",
+   "points": [
+    "Hips stay level",
+    "Straight back",
+    "Slow and controlled"
+   ]
+  },
+  "db_row": {
+   "name": "Single-arm dumbbell row",
+   "how": "Support yourself with one hand and knee on the edge of a chair or bench, back horizontal. With the other hand pull the weight towards your hip, elbow close to the body, then lower slowly. Choose a weight with which the last 2 reps are hard but still clean. If it gets easy, increase the weight first, and only then switch to a harder exercise.",
+   "points": [
+    "Back horizontal and straight",
+    "Elbow pulls towards the hip",
+    "Torso doesn't rotate"
+   ]
+  },
+  "db_row_pause": {
+   "name": "Dumbbell row with a pause at the top",
+   "how": "Like the single-arm row, but hold the weight at the top for 2 seconds with the shoulder blades squeezed, and lower it over 3 seconds. Choose a weight with which the last 2 reps are hard but still clean. If it gets easy, increase the weight first, and only then switch to a harder exercise.",
+   "points": [
+    "2 seconds at the top",
+    "Slow lowering",
+    "Shoulder down, not at the ear"
+   ]
+  },
+  "db_row_bent": {
+   "name": "Bent-over row with two dumbbells",
+   "how": "With slightly bent knees and a straight back, lean forward about 45 degrees, weights hanging. Pull both weights towards your hips together, then lower slowly. Choose a weight with which the last 2 reps are hard but still clean. If it gets easy, increase the weight first, and only then switch to a harder exercise.",
+   "points": [
+    "Back straight throughout",
+    "Torso stays still",
+    "Elbows back, close to the body"
+   ]
+  },
+  "dead_bug": {
+   "name": "Dead bug",
+   "how": "Lying on your back, arms up, knees and hips at 90 degrees. Slowly extend the opposite arm and leg to just above the floor while your lower back stays on the floor. Return, then the other side.",
+   "points": [
+    "Lower back pressed to the floor throughout",
+    "Slowly, breathing out",
+    "Only extend as far as the lower back stays down"
+   ]
+  },
+  "plank": {
+   "name": "Forearm plank",
+   "how": "On your forearms with elbows under the shoulders, body straight from head to heels. Brace your abs and glutes and hold.",
+   "points": [
+    "Hips neither rise nor sag",
+    "Steady breathing",
+    "Stop if your lower back starts to shake"
+   ]
+  },
+  "plank_taps": {
+   "name": "Plank shoulder taps",
+   "how": "In a high plank with feet a little wider, tap the opposite shoulder with alternating hands without letting the hips rock.",
+   "points": [
+    "Hips stay still",
+    "Slow taps",
+    "Abs tight throughout"
+   ]
+  },
+  "hollow": {
+   "name": "Hollow body hold",
+   "how": "Lying on your back, lift your shoulders and straight legs off the floor, arms beside your head. Keep your lower back on the floor. Easier: knees bent, arms by your sides.",
+   "points": [
+    "Lower back on the floor",
+    "Banana shape",
+    "If the lower back lifts, raise your legs higher"
+   ]
+  },
+  "side_plank_knee": {
+   "name": "Kneeling side plank",
+   "how": "Lying on your side, prop yourself on your forearm with knees bent. Lift your hips so knees, hips and shoulders form a line, and hold.",
+   "points": [
+    "Elbow under the shoulder",
+    "Hips pushed forward",
+    "Steady breathing"
+   ]
+  },
+  "side_plank": {
+   "name": "Side plank",
+   "how": "Lying on your side on your forearm with straight legs, feet stacked. Lift your hips to a straight body and hold.",
+   "points": [
+    "Body straight from head to heels",
+    "Hips don't drop",
+    "Top arm on the hip or in the air"
+   ]
+  },
+  "side_plank_lift": {
+   "name": "Side plank with leg lift",
+   "how": "In a side plank, slowly lift the top leg and lower it again while the hips stay up.",
+   "points": [
+    "Hips don't sink",
+    "Top leg straight, slightly behind",
+    "Slow lift"
+   ]
+  },
+  "speed_squat": {
+   "name": "Fast squat to toes",
+   "how": "Squat halfway down, then stand up onto your toes as fast as you can with an arm swing. No jumping; gentle on the knees.",
+   "points": [
+    "Explosive way up",
+    "Soft return onto the heels",
+    "Every rep at maximum speed"
+   ]
+  },
+  "squat_jump": {
+   "name": "Squat jump",
+   "how": "Squat halfway down and jump as high as you can. Land softly with bent knees, straight into the next squat.",
+   "points": [
+    "Quiet, soft landing",
+    "Knees don't cave in",
+    "Quality before quantity"
+   ]
+  },
+  "broad_jump_rep": {
+   "name": "Standing broad jump",
+   "how": "With an arm swing, jump forward as far as you can and land stably on both feet with bent knees. Walk back; that's the rest.",
+   "points": [
+    "Stable, held landing",
+    "Arm swing",
+    "Every jump at maximum"
+   ]
+  },
+  "skater": {
+   "name": "Skater hops",
+   "how": "Jump sideways from one leg to the other and land on one leg, as if skating. Gradually increase the distance.",
+   "points": [
+    "Land on one leg and hold",
+    "Knee towards the toes",
+    "Rhythmic but controlled"
+   ]
+  },
+  "tuck_jump": {
+   "name": "Tuck jump",
+   "how": "Jump up from standing and pull your knees towards your chest in the air. Soft landing, a short pause, then the next.",
+   "points": [
+    "Soft landing",
+    "A high jump, not a fast series",
+    "Stop when tired"
+   ]
+  },
+  "fast_feet": {
+   "name": "Fast feet on the spot",
+   "how": "With slightly bent knees, on your toes, tap on the spot as fast as you can, feet barely leaving the floor.",
+   "points": [
+    "As many contacts as possible",
+    "Relaxed shoulders, arms working too",
+    "On your toes"
+   ]
+  },
+  "high_knees": {
+   "name": "High knees on the spot",
+   "how": "Run on the spot, raising your knees to hip height with fast arm work. Short, all-out bursts.",
+   "points": [
+    "Knees to hip height",
+    "Upright torso",
+    "Quick ground contact"
+   ]
+  },
+  "mountain_climber": {
+   "name": "Mountain climber",
+   "how": "In a high plank, drive your knees alternately towards your chest at a fast pace. Keep your hips at shoulder and heel height.",
+   "points": [
+    "Shoulders over the hands",
+    "Hips don't rise",
+    "Fast but precise switches"
+   ]
+  },
+  "burpee": {
+   "name": "Burpee",
+   "how": "Squat, hands to the floor, feet back into a plank, feet back in, stand up and do a small jump. In a steady, continuous rhythm.",
+   "points": [
+    "Straight body in the plank",
+    "Soft landing",
+    "Better slower but with good technique"
+   ]
+  },
+  "sl_stand": {
+   "name": "Single-leg stand",
+   "how": "Stand on one leg with the other knee slightly raised. Look at one point. If it's easy, slowly turn your head left and right.",
+   "points": [
+    "Standing knee slightly bent",
+    "Level pelvis",
+    "Touch the wall with a fingertip if needed"
+   ]
+  },
+  "sl_stand_closed": {
+   "name": "Single-leg stand, eyes closed",
+   "how": "A single-leg stand, but with your eyes closed. Stand close to a wall or the back of a chair so you can hold on.",
+   "points": [
+    "A safe spot with something to hold",
+    "Small corrections at the ankle",
+    "Slow, calm breathing"
+   ]
+  },
+  "sl_reach": {
+   "name": "Single-leg forward reach",
+   "how": "Standing on one leg, lean forward with a straight back as the free leg reaches back and your hand reaches towards the floor. Return slowly.",
+   "points": [
+    "Straight back",
+    "Hips level, not opening",
+    "Slow and controlled"
+   ]
+  },
+  "warmup": {
+   "name": "Warm-up",
+   "how": "March on the spot with high knees, arm circles forwards and backwards, hip circles, 10 easy squats, 10 alternating lunges. Get warm by the end, but don't get tired.",
+   "points": [
+    "Gradually bigger movements",
+    "No bouncing or jerking",
+    "Slightly faster breathing at the end"
+   ]
+  },
+  "breathing": {
+   "name": "Slow breathing",
+   "how": "Lie on your back or sit comfortably. Breathe in through your nose for 4 seconds, hold for 4, breathe out over 6 seconds. Make the exhale longer than the inhale: it helps you calm down after training.",
+   "points": [
+    "Belly breathing, relaxed shoulders",
+    "Longer exhale",
+    "If you feel dizzy, breathe normally"
+   ]
+  },
+  "cat_cow": {
+   "name": "Cat–cow",
+   "how": "On all fours, as you breathe in let your belly drop and lift your head; as you breathe out round your back, chin towards your chest. One vertebra at a time.",
+   "points": [
+    "Slow, in time with the breath",
+    "The whole spine moves",
+    "Pain-free"
+   ]
+  },
+  "worlds_greatest": {
+   "name": "Lunge with elbow to instep and rotation",
+   "how": "A big forward lunge, back knee down or up. Bring the elbow on the same side as the front leg towards the inside of the ankle, then reach the same arm to the ceiling, rotating the torso. Finally straighten the front leg, hips back.",
+   "points": [
+    "Back hip pushed forward",
+    "Follow your hand with your eyes when rotating",
+    "Slowly, 2 breaths in each position"
+   ]
+  },
+  "open_book": {
+   "name": "Open book (thoracic rotation)",
+   "how": "Lying on your side, knees bent, arms stretched forward on top of each other. Sweep the top arm in an arc to the other side, eyes following, knees staying put. Return.",
+   "points": [
+    "Knees stay together",
+    "Open as you breathe out",
+    "Only in a pain-free range"
+   ]
+  },
+  "wall_slide": {
+   "name": "Wall slide",
+   "how": "Back against the wall, with lower back, back and head on the wall. Arms in a W shape against the wall: slide them up to a Y while arms and hands stay on the wall, then back.",
+   "points": [
+    "Lower back doesn't arch away from the wall",
+    "Elbows and wrists on the wall",
+    "Only as far as the arms stay on the wall"
+   ]
+  },
+  "towel_dislocate": {
+   "name": "Shoulder pass-through with a towel",
+   "how": "Hold a long towel with a wide grip. With straight arms, take it over your head to behind you, then back to the front. If it's hard, grip wider.",
+   "points": [
+    "Straight arms",
+    "Ribs don't flare",
+    "Slowly, without jerking"
+   ]
+  },
+  "squat_hold": {
+   "name": "Deep squat hold",
+   "how": "Squat as deep as you can with heels on the floor. Push your knees out with your elbows, chest up. If your heels lift, hold on to a door frame.",
+   "points": [
+    "Heels down",
+    "Knees in the direction of the toes",
+    "Calm breathing"
+   ]
+  },
+  "ankle_rock": {
+   "name": "Knee to wall (ankle mobility)",
+   "how": "In a split stance facing the wall, front toes 5–10 cm from the wall. The heel stays down; push the knee forward towards the wall, then back.",
+   "points": [
+    "The heel doesn't lift",
+    "Knee towards the second toe",
+    "Rhythmic, without bouncing"
+   ]
+  },
+  "hip_9090": {
+   "name": "90/90 hip switch",
+   "how": "Sit with both knees at 90 degrees, one leg in front of you, the other to the side. Slowly rotate your knees to the other side with a straight back. If it's hard, support yourself with your hands behind you.",
+   "points": [
+    "Straight back",
+    "Slow switch",
+    "Pain-free only"
+   ]
+  },
+  "couch_stretch": {
+   "name": "Hip flexor stretch",
+   "how": "In a half-kneeling position (cushion under the knee), push forward with your hips and squeeze the glute on the back-leg side. Feel the stretch at the front of the thigh.",
+   "points": [
+    "Glute tight",
+    "Lower back doesn't arch",
+    "Steady breathing"
+   ]
+  },
+  "hamstring_stretch": {
+   "name": "Hamstring stretch",
+   "how": "Lying on your back, lift one straight leg and hold it behind the thigh (or with a towel around the foot). Pull it towards you until you feel a pleasant stretch.",
+   "points": [
+    "Other leg straight on the floor",
+    "Knee almost straight",
+    "No jerking"
+   ]
+  },
+  "glute_stretch": {
+   "name": "Glute stretch (figure four)",
+   "how": "Lying on your back, put one ankle on the other thigh and pull your legs towards your chest. You feel it on the outer side of the glute.",
+   "points": [
+    "Stretch, don't force",
+    "Head on the floor",
+    "Slow exhale"
+   ]
+  },
+  "calf_stretch": {
+   "name": "Calf stretch at the wall",
+   "how": "In a split stance, lean on the wall with the back leg straight and the heel on the floor. Push your hips forward.",
+   "points": [
+    "Back heel down",
+    "Foot points forward",
+    "No bouncing"
+   ]
+  },
+  "child_pose": {
+   "name": "Child's pose with breathing",
+   "how": "From kneeling, sit back on your heels and stretch your arms forward on the floor, forehead down. Breathe deeply into your back.",
+   "points": [
+    "Slow, deep breathing",
+    "Shoulders relax",
+    "Hips towards the heels"
+   ]
+  }
+ },
+ "areas": {
+  "mobility": {
+   "name": "Mobility",
+   "short": "Mobility",
+   "about": "How large a range your joints move through under control: squat, shoulder, ankle."
+  },
+  "flexibility": {
+   "name": "Flexibility",
+   "short": "Flexibility",
+   "about": "How stretchable your muscles are: hamstrings, hip flexors."
+  },
+  "strength": {
+   "name": "Strength",
+   "short": "Strength",
+   "about": "Upper body and legs, with your own body weight."
+  },
+  "core": {
+   "name": "Core endurance",
+   "short": "Core",
+   "about": "How long you can hold your torso stable: this protects your lower back."
+  },
+  "power": {
+   "name": "Speed and power",
+   "short": "Speed",
+   "about": "How much force you can produce quickly: jumping, changing direction."
+  },
+  "balance": {
+   "name": "Balance and coordination",
+   "short": "Balance",
+   "about": "On one leg, with eyes closed, and down to the floor and up."
+  },
+  "cardio": {
+   "name": "Endurance",
+   "short": "Endurance",
+   "about": "The capacity of your heart and lungs. Your fitness age comes from this."
+  }
+ },
+ "tests": {
+  "deep_squat": {
+   "name": "Deep squat",
+   "how": "Barefoot, feet hip-width apart, arms stretched overhead. Squat as deep as you can and hold for 3 seconds. Ask someone to watch from the side, or check yourself in a mirror.",
+   "options": [
+    "Thighs below horizontal, heels down, torso roughly upright, arms stay up",
+    "I get down, but my heels lift or my torso leans far forward",
+    "My thighs don't even reach horizontal",
+    "I feel pain while doing it"
+   ]
+  },
+  "shoulder_reach": {
+   "name": "Hands meeting behind the back",
+   "how": "Standing, bring one hand from above and the other from below behind your back and try to bring your fists towards each other in one movement. Measure the distance between the fists relative to your hand length (wrist to the tip of the middle finger). Do it the other way too, and enter the worse side.",
+   "options": [
+    "Closer than one hand length",
+    "Between one and one and a half hand lengths",
+    "Further than one and a half hand lengths",
+    "I feel pain while doing it"
+   ]
+  },
+  "ankle_wall": {
+   "name": "Knee to wall (ankle)",
+   "how": "Stand in a split stance facing the wall, front toes towards the wall. Keep your heel down and push your knee to the wall. Find the largest toe–wall distance from which the knee can still just touch the wall. Measure both sides and enter the worse one."
+  },
+  "sit_reach": {
+   "name": "Sit and reach",
+   "how": "Sit on the floor with straight legs, soles against a wall or box. After warming up, slowly reach forward with one hand on top of the other as far as you can and hold for 2 seconds. Measure how many centimetres you reached past your toes (positive number) or how many were missing (negative number). Best of two attempts."
+  },
+  "hip_flexor": {
+   "name": "Hip flexor test on the edge of a bed",
+   "how": "Sit on the edge of a bed and lie back while pulling one knee to your chest. The other leg hangs loosely off the bed. Look (or ask someone) where the hanging thigh is. Both sides; enter the worse one.",
+   "options": [
+    "The thigh lies on the bed or below it, the knee bends to about a right angle",
+    "The thigh is on the bed, but the knee straightens and doesn't bend to a right angle",
+    "The thigh rises above the level of the bed",
+    "I feel pain while doing it"
+   ]
+  },
+  "pushup": {
+   "name": "Push-ups to fatigue",
+   "how": "Men do full push-ups, women kneeling push-ups (this is how the CSEP norm measures). Chest down to a fist's height, up to fully straight arms, with a straight body. Keep going without stopping as long as your technique holds. The last, incomplete rep doesn't count.",
+   "safety": "Skip it if your shoulder or wrist hurts.",
+   "unit": "reps"
+  },
+  "chair_stand": {
+   "name": "30-second chair stand",
+   "how": "Sit on a chair about 43–45 cm high, placed against a wall, arms crossed over your chest. On the signal, for 30 seconds stand up fully and sit back down as fast as you safely can. Count the full stands.",
+   "unit": "stands"
+  },
+  "plank": {
+   "name": "Forearm plank to fatigue",
+   "how": "On your forearms with elbows under the shoulders, body straight from head to heels. Start the stopwatch and hold as long as your body stays straight. Stop as soon as your hips drop or rise.",
+   "safety": "Stop immediately if your lower back hurts.",
+   "unit": "s"
+  },
+  "broad_jump": {
+   "name": "Standing broad jump",
+   "how": "After warming up, stand behind a line and with an arm swing jump forward from two feet to two feet. Measure from the line to your back heel. Jump three times and enter the best. On a non-slip surface.",
+   "safety": "Skip it if your knee, ankle or lower back hurts.",
+   "unit": "cm"
+  },
+  "tapping": {
+   "name": "15-second fast feet",
+   "how": "On your toes, tap on the spot as fast as you can for 15 seconds and count the floor contacts of your right foot (or record a video and count afterwards). There is no age norm for this: it measures your own progress.",
+   "unit": "taps"
+  },
+  "reaction": {
+   "name": "Reaction time",
+   "how": "Hold the phone comfortably in your hand. When the field changes colour, tap it as fast as you can. There are five trials; if you tap too early, that trial doesn't count. The measured time includes the phone's latency, so always measure on the same phone and only look at your own progress.",
+   "unit": "ms"
+  },
+  "vertical_jump": {
+   "name": "Vertical jump height",
+   "how": "Prop the phone up to the side, about 2–3 metres away, so your whole body is visible. Stand upright, then with an arm swing jump as high as you can from standing and land softly. Jump three times with a few seconds' pause; the best jump counts. The camera estimates from the time spent in the air; accuracy has not yet been validated on real recordings. Check the result and correct it if needed. Without a camera: stand next to a wall, mark the highest point with your arm stretched, then again when jumping, and enter the difference.",
+   "safety": "Skip it if your knee, ankle or lower back hurts.",
+   "unit": "cm"
+  },
+  "sl_stance": {
+   "name": "Single-leg stance with eyes closed",
+   "how": "Barefoot, hands on hips, stand on one leg, lift the other and close your eyes. Time stops when you open your eyes, put your foot down or your sole moves. Measure both the right and the left leg and enter the average. Stand close to a wall.",
+   "unit": "s"
+  },
+  "sway": {
+   "name": "Balance with the accelerometer",
+   "how": "Press the phone to your chest with both hands, stand on one leg and look at one point. For 20 seconds I measure your sway with the phone's motion sensor. 100 is completely still; the higher, the more stable. Stand close to a wall.",
+   "unit": "points"
+  },
+  "tug": {
+   "name": "Timed up and go (TUG)",
+   "how": "Sit on a chair with armrests, back against the backrest. On the signal, stand up, walk at your usual pace to a mark 3 metres away, turn around, walk back and sit down. Measure the time from starting to sitting back down. Above 12 seconds it's worth talking to a doctor or physiotherapist about fall prevention.",
+   "safety": "Only if you can walk safely; if you use a walking stick, do it with the stick.",
+   "unit": "s"
+  },
+  "sit_rise": {
+   "name": "Sit down on the floor and stand up",
+   "how": "Barefoot and standing, without using your hands or knees, sit down cross-legged, then stand up the same way. You start from 10 points and lose a point for every support you use with a hand, forearm, knee or the side of your leg (one point per support, both when sitting down and standing up), plus half a point if you lose balance. Enter the final score (0–10).",
+   "unit": "points"
+  },
+  "step_test": {
+   "name": "3-minute step test",
+   "how": "You need a step or stable stool about 30 cm high. To the beat of the metronome (96 beats per minute, i.e. 24 full step-ups) step up-up-down-down for 3 minutes. Then sit down immediately and count your heartbeats at your wrist over the next full 60 seconds. Enter the total number of beats counted. A watch's momentary heart rate shown at the end of a minute is a different measurement and can't be used for this norm. If you measured that way before, repeat the test with this method.",
+   "safety": "Stop immediately if you feel dizzy, have chest pain or very strong shortness of breath. With heart disease or blood pressure medication (beta blockers) this test does not give a reliable result.",
+   "unit": "beats/min"
+  }
+ },
+ "vitals": {
+  "how": "For your fitness age: resting heart rate (in the morning before getting up, or after 5 minutes of sitting calmly), waist (at navel height, at the end of an exhale) and three questions about your weekly activity.",
+  "frequency": [
+   "Never, or less than once a week",
+   "Once a week",
+   "2–3 times a week",
+   "Almost every day"
+  ],
+  "intensity": [
+   "Easily, I don't sweat or get out of breath",
+   "I get out of breath and sweat",
+   "I push myself to near exhaustion"
+  ],
+  "duration": [
+   "Less than 15 minutes",
+   "15–29 minutes",
+   "30–60 minutes",
+   "More than an hour"
+  ]
+ },
+ "routines": {
+  "morning": {
+   "name": "Morning wake-up",
+   "about": "Loosening up after waking: spine, hips, shoulders."
+  },
+  "office": {
+   "name": "Office mobility",
+   "about": "After a lot of sitting: thoracic rotation, hip flexors, shoulders. Can also be done at a chair."
+  },
+  "evening": {
+   "name": "Evening stretch",
+   "about": "Slow stretching and breathing before bed, to help you fall asleep."
+  },
+  "ski": {
+   "name": "Pre-ski preparation",
+   "about": "Leg strength, lateral stability and balance before the season. The detailed version personalised with a movement assessment is in Kanyar."
+  },
+  "core": {
+   "name": "Core strength",
+   "about": "Front and side core, glutes: the basis of the pre-beach-season block."
+  },
+  "runner": {
+   "name": "For runners",
+   "about": "Ankle, calf and glutes: preventing the most common running injuries (knee, Achilles)."
+  },
+  "cyclist": {
+   "name": "For cyclists",
+   "about": "Counterbalancing the forward-leaning position: hip flexors, thoracic spine, glutes and core."
+  },
+  "tennis": {
+   "name": "For tennis players",
+   "about": "Lateral movement, trunk rotation and shoulder stability."
+  },
+  "football": {
+   "name": "For footballers",
+   "about": "Knee and ankle stability, hamstrings and groin: preventing common football injuries."
+  },
+  "balance60": {
+   "name": "Balance over 60",
+   "about": "Safe balance and strength exercises with something to hold on to (chair, wall)."
+  }
+ },
+ "blocks": {
+  "ski": {
+   "name": "Pre-ski preparation",
+   "about": "In autumn, before the season: leg strength, lateral stability, balance."
+  },
+  "summer_run": {
+   "name": "Summer running season",
+   "about": "In spring: injury prevention alongside running (best together with the running programme)."
+  },
+  "beach": {
+   "name": "Core before beach season",
+   "about": "In early summer: core and glutes with short, intense sessions."
+  }
+ },
+ "captions": {
+  "Alsó fogás · áll a rúd fölé": "Underhand grip · chin over the bar",
+  "Boka a térden, combot a mellkas felé": "Ankle on knee, thigh towards the chest",
+  "Csípő a sarok felé, karok előre nyújtva": "Hips towards the heels, arms stretched forward",
+  "Csípő fent, a derék nem homorít": "Hips up, lower back not arched",
+  "Csípő hátra, súly a lábak között": "Hips back, weight between the legs",
+  "Csípőnyújtás, a kar nem húz": "Hip extension, arms don't pull",
+  "Döntött törzs, súlyok lógnak": "Torso leaned forward, weights hanging",
+  "Egy lábon": "On one leg",
+  "Egy lábon, csípőre tett kézzel": "On one leg, hands on hips",
+  "Egyenes testtel tartva": "Held with a straight body",
+  "Egyik kéz és térd a padon": "One hand and knee on the bench",
+  "Ellentétes kar és láb ki": "Opposite arm and leg out",
+  "Előrenyúlva, egyenes háttal": "Reaching forward, straight back",
+  "Fej fölött": "Overhead",
+  "Felső fogás · áll a rúd fölé": "Overhand grip · chin over the bar",
+  "Felső kar a másik oldalra, térdek együtt": "Top arm to the other side, knees together",
+  "Felugrás": "Jump",
+  "Felülnézet · oldalt fekve, térdek egymáson": "Top view · lying on the side, knees stacked",
+  "Fent": "Up",
+  "Fent 2 mp tartás, majd 3 mp leengedés": "Hold 2 s at the top, then lower over 3 s",
+  "Fent · stabil asztalon támaszkodva": "Up · leaning on a stable table",
+  "Fent, egyenes testtel": "Up, with a straight body",
+  "Fent, térdtől egyenesen": "Up, straight from the knees",
+  "Fél guggolás": "Half squat",
+  "Fél térden, csípő előre": "Half-kneeling, hips forward",
+  "Félguggolás": "Half squat",
+  "Hátra": "Back",
+  "Hátsó láb stabil széken": "Back foot on a stable chair",
+  "Hátsó sarok a talajon": "Back heel on the floor",
+  "Kar a csípő mellett, emelve": "Arms by the hips, lifted",
+  "Kar a plafon felé": "Arm towards the ceiling",
+  "Kar csúszik felfelé Y alakba": "Arms slide up into a Y",
+  "Kar előre": "Arms forward",
+  "Kar nyújtva · csak stabil asztal alatt": "Arms straight · only under a stable table",
+  "Karnyújtásnyira a faltól": "An arm's length from the wall",
+  "Karok oldalra, vállak lent": "Arms out to the sides, shoulders down",
+  "Kiindulás fent, áll a rúd fölött": "Start at the top, chin over the bar",
+  "Kiinduló függeszkedés": "Starting hang",
+  "Kiinduló helyzet": "Starting position",
+  "Kitörés, könyök a boka felé": "Lunge, elbow towards the ankle",
+  "Kényelmes ülés · belégzés 4 mp": "Comfortable seat · inhale 4 s",
+  "Könyök hátra, hát egyenes": "Elbows back, back straight",
+  "Könyök hátra, lapockák közelítenek": "Elbows back, shoulder blades together",
+  "Lapocka a kanapén, egyik láb elemelve": "Shoulder blades on the sofa, one leg lifted",
+  "Lassan fordítsd át a térdeket": "Slowly rotate the knees across",
+  "Lassan le, az első lábbal emelkedj": "Slowly down, rise with the front leg",
+  "Lassú kilégzés 6 mp": "Slow exhale 6 s",
+  "Lassú, kontrollált leengedés": "Slow, controlled lowering",
+  "Laza helyben járás, váltott térdemeléssel": "Easy marching on the spot, alternating knee lifts",
+  "Lendítés hátra": "Swing back",
+  "Lent": "Down",
+  "Lent, mellkas a talaj fölött": "Down, chest above the floor",
+  "Lent, sarok a talajon": "Down, heels on the floor",
+  "Láb stabil széken, kar nyújtva": "Feet on a stable chair, arms straight",
+  "Lábujjhegyen, gyors tipegés": "On the toes, quick tapping",
+  "Macska: fej le": "Cat: head down",
+  "Magas támasz, egy kéz a vállon": "High plank, one hand on the shoulder",
+  "Mellkas a fal közelében": "Chest close to the wall",
+  "Mellkas a talaj felé": "Chest towards the floor",
+  "Mellkas az asztal felé, egyenes testtel": "Chest towards the table, straight body",
+  "Mellkas az asztal széle felé": "Chest towards the table edge",
+  "Nyújtott karral, stabil rúdon tartva": "Straight arms, holding a stable bar",
+  "Oldalra ülve": "Sitting to the side",
+  "Pálcikafigurák a gyakorlatokhoz (js/core/figure.js szögkonvenciója). A Kanyar ábráiból átvéve, kiegészítve. Szemléltetés, nem pontos mérés.": "Stick figures for the exercises (angle convention of js/core/figure.js). Adapted from the Kanyar figures and extended. Illustrative, not exact measurements.",
+  "Sarok megemelve, csípőből dőlve": "Heel raised, leaning from the hips",
+  "Szalag biztonságosan rögzítve": "Band securely anchored",
+  "Szalag mellmagasságban · elölnézet": "Band at chest height · front view",
+  "Súly a csípőhöz, törzs stabil": "Weight to the hip, torso stable",
+  "Tehén: fej fel": "Cow: head up",
+  "Támasz": "Plank",
+  "Térd a fal felé, sarok lent": "Knee towards the wall, heel down",
+  "Térd a mellkas felé a levegőben": "Knees towards the chest in the air",
+  "Térd a mellkas felé, váltva": "Knee towards the chest, alternating",
+  "Térd csípőmagasságig": "Knees to hip height",
+  "Térden és alkaron támasz, csípő elemelve": "Support on knee and forearm, hips lifted",
+  "Ugrás előre": "Jump forward",
+  "Váll és láb a levegőben, derék lent": "Shoulders and legs in the air, lower back down",
+  "W alak · hát a falon, elölnézet": "W shape · back on the wall, front view",
+  "W: könyök hátra húzva": "W: elbows pulled back",
+  "Y: kar előre, emelve": "Y: arms forward, lifted",
+  "Érkezés bal lábra": "Land on the left leg",
+  "Érkezés jobb lábra": "Land on the right leg",
+  "Íven át a fej fölé": "In an arc overhead",
+  "Ülés · mindkét térd derékszögben": "Seated · both knees at right angles"
+ }
+}
