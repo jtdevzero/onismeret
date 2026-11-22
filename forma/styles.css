@@ -701,3 +701,52 @@ details.more-group[open] > summary::after { content: "▴"; }
 /* Felméréses megosztókártya */
 .share-preview { display: block; width: 100%; max-width: 360px; height: auto; aspect-ratio: 1080 / 1350; margin: 10px auto; border-radius: var(--radius-s); }
 .share-opts { border: 0; padding: 0; margin: 8px 0; display: grid; gap: 4px; }
+
+/* Fejlécképek (saját, generált naplementés sportillusztrációk); a sötét átmenet a szöveg olvashatóságát adja */
+.hero.art { background-position: 70% center; }
+.hero.art-home { background-image: url(assets/art/home.webp); }
+.hero.art-strength { background-image: url(assets/art/strength.webp); }
+.hero.art-strength2 { background-image: url(assets/art/strength2.webp); }
+.hero.art-speed { background-image: url(assets/art/speed.webp); }
+.hero.art-speed2 { background-image: url(assets/art/speed2.webp); }
+.hero.art-mobility { background-image: url(assets/art/mobility.webp); }
+.hero.art-mobility2 { background-image: url(assets/art/mobility2.webp); }
+.hero.art-cardio { background-image: url(assets/art/cardio.webp); }
+.hero.art-swim { background-image: url(assets/art/swim.webp); }
+.hero.art-climb { background-image: url(assets/art/climb.webp); }
+.hero.art-kick { background-image: url(assets/art/kick.webp); }
+.art-banner { position: relative; overflow: hidden; border-radius: var(--radius); min-height: 150px; margin: 0 0 14px; padding: 18px; display: flex; flex-direction: column; justify-content: flex-end; background: #2a0f3d center / cover no-repeat; color: #fff; }
+.art-banner::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(26, 11, 46, .1), rgba(26, 11, 46, .88)); }
+.art-banner > * { position: relative; margin: 0; }
+.art-banner .eyebrow { color: rgba(255, 255, 255, .85); }
+.art-banner h2 { color: #fff; font-style: italic; text-transform: uppercase; text-shadow: 2px 2px 0 #2a0f3d; }
+.art-banner.art-strength { background-image: url(assets/art/strength.webp); }
+.art-banner.art-strength2 { background-image: url(assets/art/strength2.webp); }
+.art-banner.art-speed { background-image: url(assets/art/speed.webp); }
+.art-banner.art-speed2 { background-image: url(assets/art/speed2.webp); }
+.art-banner.art-mobility { background-image: url(assets/art/mobility.webp); }
+.art-banner.art-mobility2 { background-image: url(assets/art/mobility2.webp); }
+.art-banner.art-cardio { background-image: url(assets/art/cardio.webp); }
+.art-banner.art-swim { background-image: url(assets/art/swim.webp); }
+.art-banner.art-climb { background-image: url(assets/art/climb.webp); }
+.art-banner.art-kick { background-image: url(assets/art/kick.webp); }
+.art-banner.art-home { background-image: url(assets/art/home.webp); }
+
+/* kis oszlopdiagram (analitika) */
+.mini-bars { display: block; width: 100%; max-width: 420px; height: auto; margin: 6px auto 0; }
+.mini-bars .bar { fill: var(--teal); opacity: .55; }
+.mini-bars .bar.now { opacity: 1; }
+.mini-bars .bar.empty { fill: var(--line); opacity: 1; }
+.mini-bars .bar-label, .mini-bars .bar-val { fill: var(--muted); font-size: 10px; font-family: inherit; }
+.mini-bars .bar-val { fill: var(--text); font-weight: 700; }
+
+/* Első hét lista */
+.checklist { list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 8px; }
+.checklist li { display: flex; align-items: center; gap: 10px; }
+.checklist .tick { flex: none; width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--line); display: grid; place-items: center; font-weight: 800; color: #fff; }
+.checklist li.done .tick { background: var(--teal); border-color: var(--teal); }
+.checklist li.done > span:nth-child(2) { color: var(--muted); text-decoration: line-through; }
+
+/* ismétlés javítása edzés közben */
+.reps-adjust { display: flex; justify-content: center; gap: 10px; margin-top: 6px; }
+.reps-adjust .btn.icon { min-width: 44px; min-height: 44px; padding: 0; font-size: 1.3rem; line-height: 1; }

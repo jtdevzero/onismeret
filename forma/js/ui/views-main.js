@@ -1,7 +1,7 @@
 /* Kezdőképernyő (első indítás), a mai nap, napló és beállítások. */
 import { h, clear, fmtDate, toast } from './dom.js';
-import { page, card, btn, link, note, choice, list, sized, heroTime, emptyState } from './widgets.js';
-import { D, S, saveSettings, profile, applyLook } from './data.js';
+import { page, card, btn, link, note, choice, list, sized, heroTime, artClass, emptyState } from './widgets.js';
+import { D, S, saveSettings, profile, applyLook, weeklyGoal } from './data.js';
 import { exportAll, wipeAll, restoreAll } from './store.js';
 import { parseBackup } from '../core/backup.js';
 import { sameScoring } from '../core/assessment.js';
@@ -134,7 +134,7 @@ export async function homeView() {
   const ev = last ? evaluateItem(last) : null;
   if (!last) {
     return h('div', { class: 'page home-page' },
-      h('section', { class: 'hero ' + heroTime() }, h('h1', null, 'Forma'), h('p', { class: 'hero-sub' }, 'Kezdjük a felméréssel'),
+      h('section', { class: 'hero ' + heroTime() + ' ' + artClass('home') }, h('h1', null, 'Forma'), h('p', { class: 'hero-sub' }, 'Kezdjük a felméréssel'),
         h('div', { class: 'hero-next' }, h('h2', null, 'Felmérés, kb. 25 perc'),
           h('p', null, `${visibleTests()} rövid teszt, egyenként vezetve. Kell hozzá egy szék, egy fal, egy mérőszalag vagy vonalzó, és ha van, egy kb. 30 cm magas lépcsőfok.`),
           link('#/assess', 'Felmérés indítása', 'btn primary home-start'))),
@@ -146,24 +146,24 @@ export async function homeView() {
     const key = nextKey(prog), session = fitSession(buildSession(key, prog, D.exercises.exercises), D.ex, S.settings.duration || 0), steps = sessionSteps(session, D.ex);
     const doneToday = ws.some(w => new Date(w.date).toDateString() === new Date().toDateString());
     const wk = weekInfo(prog.start);
-    kids.push(h('section', { class: 'hero ' + heroTime() }, h('h1', null, doneToday ? 'Mai edzés kész' : 'Mai edzés'),
+    kids.push(h('section', { class: 'hero ' + heroTime() + ' ' + artClass(key) }, h('h1', null, doneToday ? 'Mai edzés kész' : 'Mai edzés'),
       h('p', { class: 'hero-sub' }, `${wk.week}. hét` + (wk.deload ? ' · könnyített hét' : '') + (streak(ws.map(w => w.date)) ? ` · ${streak(ws.map(w => w.date))} napos sorozat` : '')),
       h('div', { class: 'hero-next' }, h('h2', null, (doneToday ? 'Holnap: ' : '') + session.title),
         h('p', null, `Kb. ${sessionMinutes(steps)} perc · ${session.blocks.length} gyakorlat`),
         h('div', { class: 'row' }, link('#/check/' + key, doneToday ? 'Mehet még egy' : 'Indítás', 'btn primary home-start')))));
     /* két kis csempe: heti cél és regeneráció; a részletek egy koppintással elérhetők (a számok a dashboard-rétegből) */
     const everything = await itemsAll();
-    dash = buildDashboard({ program: prog, items: everything, now: Date.now(), profile: profile(), norms: D.norms });
+    dash = buildDashboard({ program: prog, items: everything, now: Date.now(), profile: profile(), norms: D.norms, weeklyGoal: weeklyGoal() });
     const ww = { n: dash.weeklyWorkouts.completed, goal: dash.weeklyWorkouts.goal, pct: dash.weeklyWorkouts.pct }, cw = dash.weeklyCardio;
     const rec = await recoveryTileData(everything);
     kids.push(h('div', { class: 'tiles' },
-      h('a', { class: 'tile mini', href: '#/program', 'aria-label': `Heti cél: ${ww.n} edzés az 5-ből, ${cw.equivalent} kardióperc a 150-ből` },
+      h('a', { class: 'tile mini', href: '#/program', 'aria-label': `Heti cél: ${ww.n} edzés a ${ww.goal}-ből, ${cw.equivalent} kardióperc a 150-ből` },
         h('span', { class: 'muted small' }, 'Heti cél'), h('strong', null, `${ww.n} / ${ww.goal}`), h('progress', { max: 100, value: ww.pct, 'aria-hidden': 'true' }),
         h('span', { class: 'small muted' }, `kardió ${cw.equivalent} / ${cw.goal} p`)),
       h('a', { class: 'tile mini', href: rec ? '#/check/' + key : '#/pulse', 'aria-label': rec ? `Regeneráció: ${rec.score} a 100-ból` : 'Regeneráció: mérd a reggeli pulzusod' },
         h('span', { class: 'muted small' }, 'Regeneráció'), h('strong', null, rec ? `${rec.score}` : '–'), rec ? h('span', { class: 'badge ' + (rec.level === 'go' ? 'good' : rec.level === 'light' ? 'mid' : 'warn') }, { go: 'mehet', light: 'könnyíts', rest: 'pihenj' }[rec.level]) : h('span', { class: 'small muted' }, 'reggeli pulzus →'))));
   } else {
-    kids.push(h('section', { class: 'hero ' + heroTime() }, h('h1', null, 'Forma'), h('div', { class: 'hero-next' }, h('h2', null, 'Megvan a felmérés'),
+    kids.push(h('section', { class: 'hero ' + heroTime() + ' ' + artClass('home') }, h('h1', null, 'Forma'), h('div', { class: 'hero-next' }, h('h2', null, 'Megvan a felmérés'),
       h('p', null, 'Nézd meg az eredményt, és készítsd el belőle a programodat.'), link('#/result', 'Eredmény és program', 'btn primary home-start'))));
   }
   const allItems = await itemsAll();
@@ -178,6 +178,10 @@ export async function homeView() {
       a ? h('a', { class: 'tile mini', href: '#/assess', 'aria-label': a.due ? 'Újramérés esedékes' : `Következő felmérés ${a.daysLeft} nap múlva` },
         h('span', { class: 'muted small' }, 'Újramérés'), h('strong', null, a.due ? 'Esedékes' : `${a.daysLeft} nap`), h('span', { class: 'small muted' }, `utoljára ${a.daysSince} napja`)) : null));
     if (dash.insight) kids.push(h('p', { class: 'small muted center home-insight' }, dash.insight.text));
+    if (dash.firstWeek) kids.push(card(h('h2', null, `Első heted · ${dash.firstWeek.day}. nap`),
+      h('p', { class: 'small muted' }, 'Négy lépés, hogy megismerd az appot. Nem kell mind ma; ami kész, kipipálódik.'),
+      h('ul', { class: 'checklist first-week' }, dash.firstWeek.steps.map(st => h('li', { class: st.done ? 'done' : '' },
+        h('span', { class: 'tick', 'aria-hidden': 'true' }, st.done ? '✓' : ''), h('span', null, st.label), h('span', { class: 'visually-hidden' }, st.done ? ' – kész' : ' – még nincs kész'))))));
   }
   const rv = await reviewCard(allItems, { compact: true });
   if (rv) kids.push(rv);
@@ -332,6 +336,9 @@ export async function settingsView() {
       choice('theme', [['auto', 'A telefon beállítása szerint'], ['light', 'Világos (naplemente)'], ['dark', 'Sötét (éjszakai neon)'], ['sun', 'Napfény: nagy kontraszt szabadtéren']], S.settings.theme || 'auto', async v => { await saveSettings({ theme: v }); applyLook(); }, 'Téma'),
       h('h3', null, 'Betűméret'),
       choice('size', [['normal', 'Normál'], ['large', 'Nagy (edzés közben is jól olvasható)']], S.settings.size || 'normal', async v => { await saveSettings({ size: v }); applyLook(); }, 'Betűméret')),
+    card(h('h2', null, 'Heti edzéscél'),
+      h('p', { class: 'small muted' }, 'Hány edzést tűzöl ki egy hétre. Ez szokáscél: a kezdőlapon, a heti áttekintésben és a Fejlődés oldalon ehhez mérem a hetedet. A forgó rend ettől nem változik.'),
+      choice('wgoal', [2, 3, 4, 5, 6, 7].map(n => [n, n + ' edzés']), weeklyGoal(), async v => { await saveSettings({ weeklyGoal: v }); toast('Elmentettem a heti célt.'); }, 'Heti edzéscél')),
     card(h('h2', null, 'Edzésidő'),
       h('p', { class: 'small muted' }, 'Ha kevés az időd, az edzést a választott hosszhoz igazítom: rövidebb mobilitás és pihenő, kevesebb kör. 35 percnél a fő gyakorlatok egy kört kapnak.'),
       choice('dur', DURATIONS, S.settings.duration || 0, async v => { await saveSettings({ duration: v }); toast('Elmentettem. A következő edzéstől érvényes.'); }, 'Edzésidő')),

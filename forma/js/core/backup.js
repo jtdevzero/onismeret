@@ -58,6 +58,7 @@ export function parseBackup(text, ctx) {
     parq: s.parq && typeof s.parq === 'object' ? Object.fromEntries(Object.entries(s.parq).filter(([k, v]) => /^[a-z]{2,16}$/.test(k) && typeof v === 'boolean')) : undefined,
     reminder: s.reminder && /^\d{2}:\d{2}$/.test(s.reminder.time || '') ? { time: s.reminder.time } : undefined,
     duration: [0, 15, 25, 35].includes(s.duration) ? s.duration : undefined,
+    weeklyGoal: Number.isInteger(s.weeklyGoal) && s.weeklyGoal >= 2 && s.weeklyGoal <= 7 ? s.weeklyGoal : undefined,
     voiceMode: typeof s.voiceMode === 'boolean' ? s.voiceMode : undefined,
     showAll: typeof s.showAll === 'boolean' ? s.showAll : undefined,
     theme: ['auto', 'light', 'dark', 'sun'].includes(s.theme) ? s.theme : undefined,
@@ -97,6 +98,10 @@ export function parseBackup(text, ctx) {
       const scoring = it.scoring == null ? undefined : cleanScoring(it.scoring, ctx.testIds, ctx.areaIds || []);
       if (scoring === null) return { ok: false, error: 'A mentés pontozási előzménye sérült vagy újabb alkalmazásverziót igényel. A jelenlegi adatok megmaradnak.' };
       items.push(clean({ id, kind: 'assessment', date, profile: pr, results: numbers(it.results, ctx.testIds, -100, 2000), vitals: numbers(it.vitals, ['rhr', 'waist', 'frequency', 'intensity', 'duration'], 0, 300), scoring }));
+    } else if (it.kind === 'check' && /^check-\d{4}-\d{2}-\d{2}$/.test(id)) {
+      const v = k => ([1, 2, 3].includes(it[k]) ? it[k] : undefined);
+      if (!v('sleep') && !v('soreness') && !v('energy') && it.pain !== true) continue;
+      items.push(clean({ id, kind: 'check', date, sleep: v('sleep'), soreness: v('soreness'), energy: v('energy'), pain: it.pain === true, level: ['go', 'light', 'rest'].includes(it.level) ? it.level : undefined }));
     } else if (it.kind === 'pulse') {
       const bpm = num(it.bpm, 30, 220);
       if (bpm === undefined) continue;

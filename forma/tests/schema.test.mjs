@@ -130,3 +130,23 @@ test('napló tisztítás: ismeretlen gyakorlat és üres sorozat kimarad, a korl
   assert.equal(cleanLog(big)[0].sets.length, 20);
   assert.deepEqual(cleanLog([{ ex: 'zz_unknown', sets: [{ reps: 1 }] }], exerciseIds), undefined);
 });
+
+test('napi ellenőrzés: érvényes bejegyzés visszatöltődik, hibás kimarad', () => {
+  const good = { id: 'check-2026-11-18', kind: 'check', date: T0, sleep: 2, soreness: 3, energy: 1, pain: false, level: 'light' };
+  const r = parseBackup(JSON.stringify({ ...legacyFile, version: 2, items: [good, { ...good, id: 'x', sleep: 9 }, { ...good, id: 'check-2026-11-19', sleep: 7, soreness: 0, energy: 'a' }] }), ctx);
+  assert.deepEqual(r.data.items.filter(i => i.kind === 'check'), [good]);
+});
+
+test('tervezett napló: az edzés közben rögzített tényleges érték felülírja a tervet', () => {
+  const steps = [
+    { type: 'work', part: 'main', exercise: 'push_wall', reps: 10, actualReps: 7 },
+    { type: 'work', part: 'main', exercise: 'lunge', reps: 8, side: 'both', actualReps: 6 },
+    { type: 'work', part: 'main', exercise: 'plank', seconds: 30, actualSeconds: 22 },
+    { type: 'work', part: 'main', exercise: 'plank', seconds: 30, actualSeconds: 0 },
+  ];
+  assert.deepEqual(plannedLog(steps), [
+    { ex: 'push_wall', sets: [{ reps: 7, done: true }] },
+    { ex: 'lunge', sets: [{ reps: 12, done: true }] },
+    { ex: 'plank', sets: [{ seconds: 22, done: true }, { seconds: 0, done: true }] },
+  ]);
+});

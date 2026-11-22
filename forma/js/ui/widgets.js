@@ -119,6 +119,15 @@ export function countUp(el, target, suffix = '', ms = 700) {
 }
 
 /* Napszak a nyitórajzhoz: reggel, nappal, naplemente, éjszaka. */
+/* Fejlécképek (assets/art/): edzéstípusonként. Nem töltődnek le előre: első megnyitáskor jönnek, utána offline is megvannak. */
+export const ART = { strength: ['strength', 'strength2'], speed: ['speed', 'speed2'], mobility: ['mobility', 'mobility2'], cardio: ['cardio', 'swim'], home: ['home'], progress: ['climb'], run: ['speed2'], kick: ['kick'] };
+export function artClass(kind, d = new Date()) {
+  const k = String(kind || '').startsWith('strength') ? 'strength' : String(kind || '').startsWith('speed') ? 'speed' : kind;
+  const list = ART[k] || ART.home;
+  return 'art art-' + list[d.getDate() % list.length];
+}
+/* képes fejlécsáv egy oldal tetejére (dekoráció: a cím szövegként is ott van) */
+export const artBanner = (kind, eyebrow, title) => h('div', { class: 'art-banner ' + artClass(kind).replace('art ', '') }, eyebrow ? h('p', { class: 'eyebrow' }, eyebrow) : null, h('h2', null, title));
 export function heroTime(d = new Date()) {
   const hr = d.getHours();
   return hr >= 5 && hr < 10 ? 'morning' : hr >= 10 && hr < 17 ? 'day' : hr >= 17 && hr < 21 ? 'sunset' : 'night';

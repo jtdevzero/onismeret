@@ -1,12 +1,13 @@
 /* Állóképesség (kardió) napló pulzuszónákkal, és a napi „hogy vagy?” ellenőrzés edzés előtt. */
 import { h, clear, fmtDate, uid, toast } from './dom.js';
-import { page, card, btn, link, note, choice, list } from './widgets.js';
+import { page, card, btn, link, note, choice, list, artBanner } from './widgets.js';
 import { profile } from './data.js';
-import { kvSet, itemPut, itemsAll, itemDelete } from './store.js';
+import { kvSet, itemPut, itemsAll, itemDelete, commit } from './store.js';
 import { latestAssessment, evaluateItem } from './state.js';
 import { hrZones, weeklyCardio, cardioPlan, readiness, maxHr } from '../core/cardio.js';
 import { parseGpx, parseCsv } from '../core/extras.js';
 import { SESSION_TITLES } from '../core/program.js';
+import { dayKey } from '../core/wellness.js';
 
 export const CARDIO_TYPES = [['walk', 'Tempós séta'], ['jog', 'Kocogás'], ['run', 'Futás'], ['bike', 'Kerékpár'], ['swim', 'Úszás'], ['other', 'Egyéb']];
 const TYPE = Object.fromEntries(CARDIO_TYPES);
@@ -25,6 +26,7 @@ export async function cardioView() {
     btn('Törlés', async () => { if (!confirm('Törlöd ezt a bejegyzést?')) return; await itemDelete(i.id); location.hash = '#/cardio'; dispatchEvent(new HashChangeEvent('hashchange')); }, 'small')))) : h('p', { class: 'muted' }, 'Még nincs bejegyzés.'));
   draw(items);
   return page('Állóképesség',
+    artBanner('cardio', 'Heti cél: 150 perc', 'Mozogj a zónádban'),
     h('p', { class: 'muted' }, 'A fittségi korodat leginkább ez javítja. Az erő- és mobilitásnapok mellé, külön alkalomként.'),
     card(h('h2', null, 'E heti kardió'),
       h('div', { class: 'goal' }, h('progress', { max: 100, value: week.pct, 'aria-label': `Heti kardiócél: ${week.pct}%` }),
@@ -72,7 +74,10 @@ export async function checkView(key) {
     const r = readiness(st);
     clear(out);
     if (!r) return;
-    await kvSet('readiness', { date: Date.now(), ...st, level: r.level });
+    /* a legutóbbi állapot (regenerációs pontszámhoz) és a napi bejegyzés (idősorhoz) együtt; naponta egy bejegyzés, felülírva */
+    const now = Date.now(), entry = { date: now, ...st, level: r.level };
+    try { await commit({ readiness: entry }, [{ id: 'check-' + dayKey(now), kind: 'check', ...entry, pain: !!st.pain }]); }
+    catch { await kvSet('readiness', entry).catch(() => {}); }
     out.append(card(h('p', { class: 'lead' }, r.text), h('div', { class: 'row' },
       r.level === 'go' ? link('#/session/' + key, 'Teljes edzés: ' + SESSION_TITLES[key], 'btn primary') : null,
       r.level !== 'rest' && key !== 'mobility' ? link('#/session/' + key + '.light', 'Könnyített edzés', 'btn' + (r.level === 'light' ? ' primary' : '')) : null,

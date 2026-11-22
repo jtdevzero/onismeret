@@ -50,3 +50,17 @@ test('felmérés-összevetés: eltérő pontozásnál nincs pontszámkülönbsé
   assert.equal(same.scoreDelta, 6);
   assert.equal(buildAssessmentComparison([a]).reason, 'not_enough');
 });
+
+test('regenerációs idősor: napi bejegyzés az aznapi edzéssel, hiányzó nap nélkül', async () => {
+  const { buildRecoveryTimeline } = await import('../js/core/analytics.js');
+  const items = [
+    { id: 'check-1', kind: 'check', date: NOW - 2 * DAY, sleep: 1, soreness: 2, energy: 2, pain: false, level: 'light' },
+    { id: 'check-2', kind: 'check', date: NOW - DAY, sleep: 3, soreness: 3, energy: 3, level: 'go' },
+    { id: 'check-old', kind: 'check', date: NOW - 30 * DAY, sleep: 3 },
+    W('w1', 2, { light: true }),
+  ];
+  const t = buildRecoveryTimeline(items, { days: 14, now: NOW });
+  assert.equal(t.length, 2);
+  assert.equal(t[0].level, 'go'); assert.equal(t[0].workouts, 0);
+  assert.equal(t[1].workouts, 1); assert.equal(t[1].light, true); assert.equal(t[1].sleep, 1);
+});

@@ -10,7 +10,7 @@ const DAY = 86400000;
 const sameDay = (a, b) => new Date(a).toDateString() === new Date(b).toDateString();
 
 /* program: a tárolt program (vagy null) · items: minden tétel · profile, norms: a cél aktuális értékéhez */
-export function buildDashboard({ program = null, items = [], now = Date.now(), profile = null, norms = null } = {}) {
+export function buildDashboard({ program = null, items = [], now = Date.now(), profile = null, norms = null, weeklyGoal = 5 } = {}) {
   const by = k => items.filter(i => i && i.kind === k).sort((a, b) => b.date - a.date);
   const assessments = by('assessment'), workouts = by('workout'), cardio = by('cardio'), goals = by('goal');
   const last = assessments[0] || null;
@@ -25,7 +25,7 @@ export function buildDashboard({ program = null, items = [], now = Date.now(), p
   }
 
   const cycle = program && program.start ? { ...weekInfo(program.start, now), weeks: CYCLE_WEEKS } : null;
-  const ww = weeklyWorkouts(workouts, now), cw = weeklyCardio(cardio, now);
+  const ww = weeklyWorkouts(workouts, now, weeklyGoal), cw = weeklyCardio(cardio, now);
   const load = aggregateWeeklyLoad(items, { weeks: 4, now });
   const thisWeek = load[load.length - 1];
 
@@ -48,7 +48,21 @@ export function buildDashboard({ program = null, items = [], now = Date.now(), p
   const lastWorkout = workouts[0] ? workouts[0].date : null;
   if (lastWorkout && now - lastWorkout > 14 * DAY) warnings.push('Két hétnél régebben edzettél: az első edzés óvatosabb lesz.');
 
+  /* első hét: a program indulása utáni 7 napban rövid, adatokból kipipálódó lista; ha minden kész, eltűnik */
+  let firstWeek = null;
+  if (program && program.start && now - program.start < 7 * DAY && now >= program.start) {
+    const since = i => i.date >= program.start;
+    const steps = [
+      { id: 'workout', label: 'Az első edzés', done: workouts.some(since) },
+      { id: 'check', label: 'Egy „Hogy vagy ma?” kérdőív edzés előtt', done: items.some(i => i && i.kind === 'check' && since(i)) },
+      { id: 'log', label: 'Egy edzés végén a sorozatnapló vagy a nehézség (nem kötelező)', done: workouts.some(w => since(w) && (w.log || w.rpe != null)) },
+      { id: 'cardio', label: 'Egy kardióalkalom (séta is számít)', done: cardio.some(since) },
+    ];
+    if (!steps.every(x => x.done)) firstWeek = { day: Math.floor((now - program.start) / DAY) + 1, steps };
+  }
+
   return {
+    firstWeek,
     nextAction,
     currentCycle: cycle,
     weeklyWorkouts: { completed: ww.n, goal: ww.goal, pct: ww.pct, unit: 'edzés' },

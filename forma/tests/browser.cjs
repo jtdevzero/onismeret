@@ -181,6 +181,8 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     await shot('program');
     await go(page, '#/');
     assert.match(await text(), /Mai edzés/i);
+    assert.match(await text(), /Első heted · 1\. nap/);
+    assert.equal(await page.locator('.first-week li.done').count(), 0, 'új programnál még semmi nincs kipipálva');
     await shot('home');
   });
 
@@ -395,6 +397,17 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     await shot('session-light');
   });
 
+  await step('napi ellenőrzés idősora: naponta egy bejegyzés, a Fejlődés oldalon megjelenik', async () => {
+    const checks = await page.evaluate(async () => (await (await import('./js/ui/store.js')).itemsAll('check')));
+    assert.equal(checks.length, 1, 'ugyanazon a napon egy bejegyzés (felülírva)');
+    assert.equal(checks[0].sleep, 1);
+    assert.equal(checks[0].level, 'light');
+    await go(page, '#/progress');
+    assert.match(await text(), /Regeneráció \(14 nap\)/);
+    assert.match(await text(), /nem jelenti, hogy egyik okozza a másikat/);
+    assert.ok(await page.locator('svg.mini-bars').count() >= 1, 'heti oszlopdiagram');
+  });
+
   await step('kardió: pulzuszónák, rögzítés, heti cél a kezdőlapon', async () => {
     await go(page, '#/cardio');
     assert.match(await text(), /2\. zóna/);
@@ -482,6 +495,27 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     await page.getByRole('button', { name: 'Könnyebbre cserélem' }).click();
     await page.waitForFunction(b => document.querySelector('.workout-title').innerText !== b, before);
     await shot('swap');
+  });
+
+  await step('edzés közbeni rögzítés: a −/+ gombbal javított ismétlés kerül a sorozatnaplóba; tartós csere választható', async () => {
+    await go(page, '#/session/strengthC');
+    for (let i = 0; i < 60; i++) {
+      if (await page.getByRole('button', { name: 'Eggyel több ismétlés' }).count()) break;
+      if (await page.getByRole('button', { name: 'Pihenő kihagyása' }).count()) await page.getByRole('button', { name: 'Pihenő kihagyása' }).click({ timeout: 1000 }).catch(() => {});
+      else await page.getByRole('button', { name: 'Kész, tovább' }).click({ timeout: 1000 }).catch(() => {});
+    }
+    const planned = Number(await page.locator('.workout-clock.reps').innerText());
+    await page.getByRole('button', { name: 'Eggyel több ismétlés' }).click();
+    await page.getByRole('button', { name: 'Eggyel több ismétlés' }).click();
+    assert.equal(Number(await page.locator('.workout-clock.reps').innerText()), planned + 2);
+    await page.locator('.workout-details > summary').click();
+    if (await page.getByRole('button', { name: /cserélem/ }).count()) assert.equal(await page.getByText(/A következő edzésektől is/).count(), 1);
+    await page.getByRole('button', { name: 'Kész, tovább' }).click();
+    await page.getByRole('button', { name: 'Befejezés most' }).click();
+    await page.waitForFunction(() => /Edzés kész/i.test(document.getElementById('main').innerText));
+    await page.locator('details.setlog > summary').click();
+    const vals = await page.locator('.setlog-row input[type="number"]').evaluateAll(els => els.map(e => Number(e.value)));
+    assert.ok(vals.includes(planned + 2) || vals.includes((planned + 2) * 2), 'a javított érték az előtöltésben: ' + vals.join(','));
   });
 
   await step('edzésidő: 15 percre állítva a mai edzés belefér', async () => {

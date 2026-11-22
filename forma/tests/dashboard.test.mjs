@@ -72,3 +72,16 @@ test('sérült vagy hiányos tétel nem dönti el', () => {
   const d = buildDashboard({ program: prog(), items: [null, { kind: 'workout' }, A('a', 10)], now: NOW });
   assert.equal(d.nextAction.type, 'workout');
 });
+
+test('első hét: a program első 7 napjában lista, a teljesített lépés kipipálva; utána vagy ha minden kész, nincs', () => {
+  const p = prog(2), items = [A('a', 3), { id: 'w', kind: 'workout', date: NOW - DAY, done: [], rpe: 6 }];
+  const d = buildDashboard({ program: p, items, now: NOW });
+  assert.equal(d.firstWeek.day, 3);
+  assert.deepEqual(d.firstWeek.steps.map(s => [s.id, s.done]), [['workout', true], ['check', false], ['log', true], ['cardio', false]]);
+  assert.equal(buildDashboard({ program: prog(8), items, now: NOW }).firstWeek, null);
+  const all = [...items, { id: 'check-x', kind: 'check', date: NOW - DAY }, { id: 'c', kind: 'cardio', date: NOW - DAY, minutes: 20 }];
+  assert.equal(buildDashboard({ program: p, items: all, now: NOW }).firstWeek, null);
+  /* a program indulása előtti edzés nem számít */
+  const old = buildDashboard({ program: p, items: [A('a', 3), { id: 'w0', kind: 'workout', date: NOW - 5 * DAY, done: [] }], now: NOW });
+  assert.equal(old.firstWeek.steps[0].done, false);
+});
