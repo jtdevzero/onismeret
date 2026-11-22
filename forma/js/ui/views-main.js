@@ -132,11 +132,11 @@ export async function homeView() {
   const prog = await getProgram(), last = await latestAssessment(), ws = await workouts();
   const ev = last ? evaluateItem(last) : null;
   if (!last) {
-    return h('div', { class: 'page' },
+    return h('div', { class: 'page home-page' },
       h('section', { class: 'hero ' + heroTime() }, h('h1', null, 'Forma'), h('p', { class: 'hero-sub' }, 'Kezdjük a felméréssel'),
         h('div', { class: 'hero-next' }, h('h2', null, 'Felmérés, kb. 25 perc'),
           h('p', null, `${visibleTests()} rövid teszt, egyenként vezetve. Kell hozzá egy szék, egy fal, egy mérőszalag vagy vonalzó, és ha van, egy kb. 30 cm magas lépcsőfok.`),
-          link('#/assess', 'Felmérés indítása', 'btn light'))),
+          link('#/assess', 'Felmérés indítása', 'btn primary home-start'))),
       card(h('h2', null, 'Mire számíts?'), list(['Bemelegítés után végezd, kipihenten.', 'Részletekben is csinálhatod: az eredmények mentődnek.', 'Ami fáj, azt hagyd ki. Kihagyott teszttel is kapsz eredményt.'])));
   }
   const kids = [];
@@ -148,7 +148,7 @@ export async function homeView() {
       h('p', { class: 'hero-sub' }, `${wk.week}. hét` + (wk.deload ? ' · könnyített hét' : '') + ` · ${streak(ws.map(w => w.date))} napos sorozat`),
       h('div', { class: 'hero-next' }, h('h2', null, (doneToday ? 'Holnap: ' : '') + session.title),
         h('p', null, `Kb. ${sessionMinutes(steps)} perc · ${session.blocks.length} gyakorlat`),
-        h('div', { class: 'row' }, link('#/check/' + key, doneToday ? 'Mehet még egy' : 'Indítás', 'btn light'), link('#/program', 'Program', 'btn small')))));
+        h('div', { class: 'row' }, link('#/check/' + key, doneToday ? 'Mehet még egy' : 'Indítás', 'btn primary home-start')))));
     /* két kis csempe: heti cél és regeneráció; a részletek egy koppintással elérhetők */
     const cw = weeklyCardio(await cardioItems()), ww = weeklyWorkouts(ws);
     const rec = await recoveryTileData(await itemsAll());
@@ -160,16 +160,16 @@ export async function homeView() {
         h('span', { class: 'muted small' }, 'Regeneráció'), h('strong', null, rec ? `${rec.score}` : '–'), rec ? h('span', { class: 'badge ' + (rec.level === 'go' ? 'good' : rec.level === 'light' ? 'mid' : 'warn') }, { go: 'mehet', light: 'könnyíts', rest: 'pihenj' }[rec.level]) : h('span', { class: 'small muted' }, 'reggeli pulzus →'))));
   } else {
     kids.push(h('section', { class: 'hero ' + heroTime() }, h('h1', null, 'Forma'), h('div', { class: 'hero-next' }, h('h2', null, 'Megvan a felmérés'),
-      h('p', null, 'Nézd meg az eredményt, és készítsd el belőle a programodat.'), link('#/result', 'Eredmény és program', 'btn light'))));
+      h('p', null, 'Nézd meg az eredményt, és készítsd el belőle a programodat.'), link('#/result', 'Eredmény és program', 'btn primary home-start'))));
   }
   const allItems = await itemsAll();
-  const rv = await reviewCard(allItems);
+  const rv = await reviewCard(allItems, { compact: true });
   if (rv) kids.push(rv);
   if (prog && miniDue(allItems, prog)) kids.push(card(h('h2', null, 'Félidős mini-teszt'), h('p', null, 'A ciklus közepén vagy: egy 5 perces mini-teszttel (fekvőtámasz, plank, egylábas állás) láthatod, merre haladsz.'), h('div', { class: 'row' }, link('#/mini', 'Mini-teszt', 'btn primary'))));
   if (reassessDue(last.date, prog)) kids.push(note('Eltelt 6 hét az utolsó felmérés óta: ideje újramérni, hogy lásd a fejlődésed, és a program is igazodjon.', 'warn'), h('p', null, link('#/assess', 'Újramérés', 'btn')));
   const fNow = currentFitnessAge(allItems, profile(), D.norms);
   kids.push(h('p', { class: 'center small' }, link('#/progress', `Fittségi kor: ${(fNow ? fNow.age : ev.fitnessAge) ?? '–'} év · részletek a Fejlődés oldalon`)));
-  return h('div', { class: 'page' }, kids);
+  return h('div', { class: 'page home-page' }, kids);
 }
 
 /* A hónap számai egy megosztható képen (vászonra rajzolva, a telefonon készül). */

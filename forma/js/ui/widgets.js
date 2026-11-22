@@ -101,11 +101,10 @@ export function initHaptics() {
   }, { passive: true });
 }
 
-/* Ünneplés: rövid konfetti a képernyő tetején (csökkentett mozgásnál kimarad). */
+/* Rövid szintlépés-visszajelzés; csökkentett mozgásnál nem takarja a képernyőt. */
 export function celebrate() {
   if (typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const box = h('div', { class: 'confetti', 'aria-hidden': 'true' });
-  for (let i = 0; i < 28; i++) { const p = h('i'); p.style.left = (Math.random() * 100).toFixed(1) + '%'; p.style.animationDelay = (Math.random() * 0.4).toFixed(2) + 's'; p.style.setProperty('--hue', String(Math.floor(Math.random() * 3))); box.append(p); }
+  const box = h('div', { class: 'celebration', role: 'status' }, h('span', { 'aria-hidden': 'true' }, '✓'), 'Szintet léptél!');
   document.body.append(box);
   setTimeout(() => box.remove(), 2200);
 }

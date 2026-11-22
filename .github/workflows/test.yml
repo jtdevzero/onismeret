@@ -102,5 +102,6 @@ jobs:
         if: ${{ !cancelled() }}
         run: |
           node forma/tests/onboarding.cjs
+          node forma/tests/focus.cjs
           node forma/tests/browser.cjs
           node forma/tests/pose-smoke.cjs

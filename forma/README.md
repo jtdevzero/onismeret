@@ -76,6 +76,7 @@ python3 forma/build.py                    # index.html és sw.js
 node --test forma/tests/*.test.mjs        # pontozás, program, tartalom, build
 node forma/tests/browser.cjs              # böngészős végpontteszt (FORMA_SHOTS=mappa: képernyőképek)
 node forma/tests/onboarding.cjs           # első indítás a #/ linken, mentési hiba és újrapróba
+node forma/tests/focus.cjs                # kis/fekvő kijelző, előnézet, nagy betű, csökkentett mozgás
 node forma/tests/pose-smoke.cjs           # a valódi pózbecslő betöltése
 python3 -m http.server 8765               # helyi kipróbálás: http://localhost:8765/forma/
 ```
@@ -88,3 +89,9 @@ python3 -m http.server 8765               # helyi kipróbálás: http://localhos
 - A Fejlődés oldalon az elmúlt 42 naptári nap naplóadataiból hathetes kártya készül, helyben letölthető 1080 × 1080-as PNG-ként. Pontszámkülönbséget csak az időszakon belüli, azonos pontozású és azonos teszt-/területkészletű felmérésekből számít; a ténylegesen eltelt mérési napok is szerepelnek rajta.
 - A „Kezdjük” akkor is továbblép, ha az első indítás eleve a `#/` címen történik. Mentési hibánál látható üzenet és újrapróba jelenik meg; a még el nem mentett beállítások nem számítanak elfogadottnak.
 - Opcionális WebKit-ellenőrzés (ha a motor és rendszerkönyvtárai telepítve vannak): `FORMA_BROWSER=webkit node forma/tests/onboarding.cjs`.
+
+### Fókusz és visszafogott arculat
+
+A kezdőlapon egy kiemelt művelet van; a heti áttekintés lenyitható, elolvasás után a teljes blokk eltűnik. A háttér és a kártyák nyugodtabbak, a haladás és az aktív menü türkiz, a fő gomb rózsaszín.
+
+Az ábrák a meglévő ízületi pontokra rajzolt sportos sziluetteket használnak, az eszközök és a mozdulatok geometriája megmarad. A fő edzésvezérlők normál betűmérettel 320×568-as és fekvő telefonos nézetben is az alsó menü fölött elérhetők; nagy betűméretnél szükség szerint görgethető a felület. A következő mozdulat előnézete állókép. Csökkentett mozgásnál az aktív ábra is áll, a belépő animáció és a rövid szintlépés-visszajelzés kimarad. Opcionális WebKit-fókuszteszt: `FORMA_BROWSER=webkit node forma/tests/focus.cjs`.

@@ -213,9 +213,11 @@ export async function sessionView(key, onCleanup) {
     if (st.type === 'rest') {
       const after = steps[at + 1];
       left = st.seconds; draw();
-      clear(stage).append(card(h('p', { class: 'workout-kicker' }, 'Pihenő'), ring.el,
-        after ? h('p', null, 'Következik: ', h('strong', null, D.ex[after.exercise].name)) : null,
-        h('div', { class: 'row' }, btn('Pihenő kihagyása', next, 'primary'))), nav);
+      clear(stage).append(h('section', { class: 'card workout-focus workout-rest' }, h('p', { class: 'workout-kicker' }, 'Pihenő'),
+        h('div', { class: 'workout-visual' }, after ? figureAnim(D.figures[D.ex[after.exercise].figure], { compact: true, still: true }) : null,
+          h('div', { class: 'workout-readout' }, ring.el)),
+        after ? h('p', { class: 'workout-cue' }, 'Következik: ', h('strong', null, D.ex[after.exercise].name)) : null,
+        h('div', { class: 'row workout-actions' }, btn('Pihenő kihagyása', next, 'primary'))), nav);
       speak('Pihenő', voice.checked);
       run();
       return;
@@ -227,7 +229,12 @@ export async function sessionView(key, onCleanup) {
     const more = link('#/ex/' + ex.id, 'Leírás');
     const swap = st.part === 'main' ? swapRow(st, ex) : null;
     const upcoming = steps[at + 1];
-    const nextHint = h('p', { class: 'next-up' }, upcoming ? 'Következik: ' + (upcoming.type === 'rest' ? 'Pihenő' : D.ex[upcoming.exercise].name) : 'Ez az utolsó lépés.');
+    const nextMovement = steps.slice(at + 1).find(s => s.type !== 'rest');
+    const nextExercise = nextMovement && D.ex[nextMovement.exercise];
+    const nextHint = nextExercise ? h('aside', { class: 'next-preview', 'aria-label': 'Következő gyakorlat' },
+      figureAnim(D.figures[nextExercise.figure], { compact: true, still: true }),
+      h('div', null, h('p', { class: 'eyebrow' }, upcoming.type === 'rest' ? 'A pihenő után' : 'Következik'), h('p', null, nextExercise.name)))
+      : h('p', { class: 'next-up' }, 'Ez az utolsó lépés.');
     const instructions = (...extra) => h('details', { class: 'workout-details' }, h('summary', null, 'Instrukciók és gyakorlatcsere'), points, swap, extra, more);
     const focus = (...kids) => h('section', { class: 'card workout-focus' }, h('div', { class: 'workout-heading' }, head), kids);
     if (st.seconds) {
@@ -267,11 +274,11 @@ export async function sessionView(key, onCleanup) {
   if (S.settings.voiceMode) stage.classList.add('voice-mode');
   const view = page(session.title,
     h('p', { class: 'muted' }, `Kb. ${sessionMinutes(steps)} perc · ${session.blocks.length} gyakorlat` + (session.week.deload ? ' · könnyített hét' : '') + (light ? ' · könnyített edzés, értékelés nélkül' : '') + (session.fit ? ` · ${session.fit.target} perces keretre igazítva` : '')),
-    bar, count,
+    h('div', { class: 'session-progress' }, bar, count),
     session.returning ? note('Üdv újra! Két hétnél hosszabb szünet után óvatosabban indulunk: minden gyakorlatból eggyel kevesebb kör.', 'small') : null,
     session.goalFocus ? note('Célprogram: ' + (GOALS.find(([k]) => k === session.goalFocus) || ['', ''])[1] + '. Ez a gyakorlatsor plusz kört kap.', 'small') : null,
     session.complaints.length ? note('Panaszmód: ' + session.complaints.map(c => ({ knee: 'térd', back: 'derék', shoulder: 'váll' })[c]).join(', ') + '. Csak fájdalommentes tartományban mozogj.', 'warn') : null,
-    note('Ha valami fáj, hagyd ki, vagy válts könnyebbre. Szédülés vagy mellkasi panasz esetén azonnal állj meg.', 'small'),
+    note('Fájdalomnál hagyd ki. Szédülés vagy mellkasi panasz esetén állj meg.', 'small session-safety'),
     stage,
     h('details', { class: 'card session-options' }, h('summary', null, 'Edzés beállításai'),
       h('label', { class: 'check' }, voice, h('span', null, 'Hangos bemondás')),
