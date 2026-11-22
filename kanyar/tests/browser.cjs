@@ -239,6 +239,16 @@ const go = async (page, hash) => { await page.evaluate(h => { if (location.hash 
     }
     assert.ok(sawRest, 'volt pihenő a következő gyakorlat nevével');
     assert.ok(sawSide, 'az oldalankénti, időre menő gyakorlat külön lépés oldalanként');
+    assert.match(await text(), /Milyen volt\?/);
+    await shot('workout-feel');
+    const first = page.locator('fieldset.feel').first();
+    const exName = (await first.locator('legend').textContent()).trim();
+    await first.getByText('Könnyű', { exact: true }).click();
+    await page.getByRole('button', { name: 'Mentés', exact: true }).click();
+    await page.getByText(/Elmentve\. A következő edzéseken/).waitFor();
+    await go(page, '#/program');
+    const blocks = await page.locator('ol.blocks li').allTextContents();
+    assert.ok(blocks.some(b => b.includes(exName) && /emelve/.test(b)), 'a könnyűnek jelölt gyakorlat adagja emelve: ' + exName);
     await go(page, '#/prep');
     assert.match(await text(), /2 \/ 18 edzés kész/);
     await go(page, '#/log');

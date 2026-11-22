@@ -182,6 +182,16 @@ progress { width: 100%; height: 10px; accent-color: var(--accent); border-radius
 .live-count { font-size: 4rem; font-weight: 800; font-variant-numeric: tabular-nums; }
 .live-label { font-size: .9rem; font-weight: 600; }
 
+/* ---- edzés utáni visszajelzés ---- */
+.feel { border: 0; margin: 0 0 12px; padding: 0; }
+.feel legend { font-weight: 650; margin-bottom: 6px; padding: 0; }
+.seg { display: flex; gap: 6px; flex-wrap: wrap; }
+.seg label { flex: 1; min-width: 88px; }
+.seg input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.seg span { display: block; text-align: center; padding: 10px 8px; min-height: 44px; border: 1.5px solid var(--line); border-radius: var(--radius-s); font-weight: 650; cursor: pointer; }
+.seg input:checked + span { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
+.seg input:focus-visible + span { outline: 3px solid var(--accent); outline-offset: 2px; }
+
 /* ---- gyakorlatábrák ---- */
 .figs { display: flex; align-items: center; justify-content: center; gap: 6px; margin: 4px 0 14px; padding: 12px 8px 8px; border-radius: var(--radius-s); background: var(--bg-2); color: var(--accent); }
 .fig-frame { margin: 0; flex: 1; max-width: 170px; text-align: center; }

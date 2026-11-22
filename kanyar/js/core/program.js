@@ -92,6 +92,41 @@ export function buildProgram(profile, sport, exercises, health = {}) {
   return { sport, weeks, jumps: jumpsOk, focus, retestWeek: 3 };
 }
 
+/* ---- magától igazodó adag ----
+   Edzés után gyakorlatonként jelezhető, milyen volt: könnyű, rendben, nehéz. Ebből gyakorlatonként egy lépcső lesz
+   (−2…+3), lépcsőnként 10% több vagy kevesebb ismétlés, illetve idő. Fájdalomnál nem emelünk. */
+export const FEEL = ['easy', 'ok', 'hard'];
+export const RATED_TYPES = ['strength', 'core', 'balance', 'power', 'endurance'];
+const ADJ_MIN = -2, ADJ_MAX = 3, ADJ_STEP = 0.1;
+
+/* adjust: { gyakorlat: lépcső } · ratings: { gyakorlat: 'easy'|'ok'|'hard' } → új adjust */
+export function nextAdjust(adjust = {}, ratings = {}, pain = false) {
+  const out = { ...adjust };
+  for (const [id, feel] of Object.entries(ratings)) {
+    if (!FEEL.includes(feel)) continue;
+    const cur = out[id] || 0;
+    let n = cur + (feel === 'easy' ? 1 : feel === 'hard' ? -1 : 0);
+    if (pain && n > cur) n = cur;
+    n = Math.max(ADJ_MIN, Math.min(ADJ_MAX, n));
+    if (n) out[id] = n; else delete out[id];
+  }
+  return out;
+}
+/* Az edzés blokkjai az igazított adaggal. A blokk kap egy adjusted mezőt (a lépcső), ha változott. */
+export function adjustSession(session, adjust = {}) {
+  return {
+    ...session,
+    blocks: session.blocks.map(b => {
+      const step = adjust[b.exercise] || 0;
+      if (!step) return b;
+      const f = 1 + ADJ_STEP * step, out = { ...b, adjusted: step };
+      if (b.seconds) out.seconds = Math.max(5, Math.round(b.seconds * f / 5) * 5);
+      else if (b.reps) out.reps = Math.max(1, Math.round(b.reps * f));
+      return out;
+    }),
+  };
+}
+
 /* Egy edzés lépésekre bontva a vezetett edzéshez. A lépések: munka (work) és pihenő (rest).
    Az oldalanként végzett, időre menő gyakorlat két külön lépés (bal, jobb); az ismétléses egy lépés mindkét oldalra.
    session: a program egy edzése · exercises: { id: { type, name } } · restSeconds: pihenő két kör között */

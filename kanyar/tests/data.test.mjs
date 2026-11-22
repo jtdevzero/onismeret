@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { ANALYZERS, analyzeExercise } from '../js/core/exercise.js';
-import { TESTS, WEAK_ORDER, buildProfile, buildProgram, sessionSteps, sessionMinutes } from '../js/core/program.js';
+import { TESTS, WEAK_ORDER, buildProfile, buildProgram, sessionSteps, sessionMinutes, nextAdjust, adjustSession } from '../js/core/program.js';
 import { analyzeRun, THRESHOLDS } from '../js/core/snow.js';
 import { localSnowCoach, localPrepCoach, validSnowCoach, validPrepCoach, triggeredFaults } from '../js/core/coach.js';
 import { weekStart, weeklyActivity, weekStreak, metricTrails, dayPlan } from '../js/core/progress.js';
@@ -275,4 +275,24 @@ test('naptárfájl: 18 edzés a választott napokon, emlékeztetővel, szabályo
   for (const line of ics.split('\r\n')) assert.ok(new TextEncoder().encode(line).length <= 75, 'legfeljebb 75 bájtos sorok: ' + line);
   assert.equal(fold('a'.repeat(80)), 'a'.repeat(75) + '\r\n ' + 'a'.repeat(5));
   assert.equal(icsText('a,b;c\\d\ne'), 'a\\,b\\;c\\\\d\\ne');
+});
+
+test('magától igazodó adag: könnyű emel, nehéz csökkent, fájdalomnál nincs emelés, korlátok között', () => {
+  let a = nextAdjust({}, { squat: 'easy', plank: 'hard', glute_bridge: 'ok' });
+  assert.deepEqual(a, { squat: 1, plank: -1 });
+  a = nextAdjust(a, { squat: 'easy', plank: 'easy' });
+  assert.deepEqual(a, { squat: 2 }, 'a nullára visszaálló lépcső eltűnik');
+  for (let k = 0; k < 5; k++) a = nextAdjust(a, { squat: 'easy' });
+  assert.equal(a.squat, 3, 'legfeljebb +3');
+  assert.equal(nextAdjust({ squat: 1 }, { squat: 'easy' }, true).squat, 1, 'fájdalomnál nem emel');
+  assert.equal(nextAdjust({ squat: 1 }, { squat: 'hard' }, true).squat, undefined, 'fájdalomnál csökkenteni lehet');
+  assert.equal(nextAdjust({}, { squat: 'bogus' }).squat, undefined);
+  const s = { key: 'strength', blocks: [{ exercise: 'squat', sets: 3, reps: 12 }, { exercise: 'plank', sets: 3, seconds: 30 }, { exercise: 'sl_stand', sets: 2, seconds: 30 }] };
+  const adj = adjustSession(s, { squat: 2, plank: -2 });
+  assert.equal(adj.blocks[0].reps, 14);
+  assert.equal(adj.blocks[0].adjusted, 2);
+  assert.equal(adj.blocks[1].seconds, 25);
+  assert.deepEqual(adj.blocks[2], s.blocks[2], 'a nem igazított blokk változatlan');
+  assert.equal(s.blocks[0].reps, 12, 'az eredeti program nem módosul');
+  assert.deepEqual(adjustSession(s, undefined), s);
 });
