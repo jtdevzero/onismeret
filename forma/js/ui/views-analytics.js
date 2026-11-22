@@ -1,0 +1,50 @@
+/* Fejlődés oldal: edzésterhelés és gyakorlattrend táblázatosan (a számok a core/load.js és core/analytics.js modulból).
+   Minden oszlopnak saját egysége van; a hiányzó adat „–”, nem nulla. */
+import { h, clear, fmtDate } from './dom.js';
+import { card, note } from './widgets.js';
+import { D } from './data.js';
+import { aggregateWeeklyLoad } from '../core/load.js';
+import { buildExerciseProgress, loggedExercises, buildConsistencyStats } from '../core/analytics.js';
+
+const dash = v => (v == null ? '–' : String(v));
+const fmtWeek = ts => { const d = new Date(ts); return `${d.getMonth() + 1}. ${d.getDate()}.`; };
+const kg = v => (v == null ? '–' : Math.round(v).toLocaleString('hu-HU'));
+
+function table(caption, head, rows) {
+  return h('div', { class: 'table-wrap', tabIndex: 0, role: 'region', 'aria-label': caption },
+    h('table', { class: 'data-table' }, h('caption', { class: 'visually-hidden' }, caption),
+      h('thead', null, h('tr', null, head.map(([t, abbr]) => h('th', { scope: 'col', title: abbr || null }, t)))),
+      h('tbody', null, rows.map(r => h('tr', null, r.map((c, i) => (i === 0 ? h('th', { scope: 'row' }, c) : h('td', null, c))))))));
+}
+
+export function trainingLoadCard(items, now = Date.now()) {
+  const wk = aggregateWeeklyLoad(items, { weeks: 8, now });
+  if (!wk.some(w => w.workouts || w.cardioMinutes)) return card(h('h2', null, 'Edzésterhelés'), h('p', { class: 'small muted' }, 'Még nincs edzésed vagy kardiód az elmúlt 8 hétben. Az első edzés után itt hetente látod a sorozatokat, az ismétléseket és az időt.'));
+  const cs = buildConsistencyStats(items, { weeks: 8, now });
+  const anyLog = wk.some(w => w.logged), anyKg = wk.some(w => w.externalKgReps != null), anyRpe = wk.some(w => w.sessionLoad != null);
+  const head = [['Hét'], ['Edzés'], ['Perc'], ['Sorozat'], ['Ismétlés'], ['Tartás (mp)'], ...(anyKg ? [['kg × ism.', 'ismert külső súly × ismétlés']] : []), ...(anyRpe ? [['RPE × perc', 'érzett nehézség × edzésidő']] : []), ['Kardió (perc)']];
+  const rows = wk.map(w => [fmtWeek(w.start), String(w.workouts), String(w.minutes), w.workouts ? String(w.sets) : '–', w.workouts ? String(w.reps) : '–', w.workouts ? String(w.seconds) : '–', ...(anyKg ? [kg(w.externalKgReps)] : []), ...(anyRpe ? [dash(w.sessionLoad)] : []), String(w.cardioMinutes)]);
+  return card(h('h2', null, 'Edzésterhelés (8 hét)'),
+    h('p', { class: 'small muted' }, `Hétfőtől vasárnapig. Az elmúlt ${cs.completeWeeks} lezárt hétből ${cs.activeWeeks} héten edzettél, ${cs.weeksMeetingGoal} héten legalább ${cs.goal}-ször.`),
+    table('Heti edzésterhelés', head, rows),
+    h('p', { class: 'small muted' }, (anyLog ? 'A sorozatnaplóval rögzített edzéseknél a tényleges számok; a többinél a tervezett mennyiség. ' : 'A számok a tervezett mennyiségből jönnek; az edzés végén a sorozatnaplóban rögzítheted a ténylegeset. ') +
+      'A testsúlyos ismétlést nem számoljuk át kilogrammra, és a különböző egységeket nem adjuk össze.'));
+}
+
+export function exerciseTrendCard(items) {
+  const list = loggedExercises(items).filter(x => D.ex[x.id] && !['warmup', 'mobility', 'recovery'].includes(D.ex[x.id].type));
+  if (!list.length) return null;
+  const out = h('div', { 'aria-live': 'polite' });
+  const sel = h('select', { id: 'trend-ex', onchange: () => draw(sel.value) }, list.map(x => h('option', { value: x.id }, `${D.ex[x.id].name} (${x.count})`)));
+  function draw(id) {
+    const p = buildExerciseProgress(items, id).slice(-8).reverse();
+    const perSide = D.ex[id] && D.ex[id].perSide;
+    clear(out).append(p.length ? table('Gyakorlat trendje: ' + D.ex[id].name, [['Dátum'], ['Sorozat'], ['Legjobb sorozat'], ['Összesen'], ['Max súly (kg)'], ['Forrás']],
+      p.map(r => [fmtDate(r.date), String(r.sets), r.bestReps != null ? r.bestReps + ' ism.' : r.bestSeconds != null ? r.bestSeconds + ' mp' : '–',
+        r.totalReps != null ? r.totalReps + ' ism.' : r.totalSeconds != null ? r.totalSeconds + ' mp' : '–', dash(r.maxKg), r.source === 'log' ? 'napló' : 'terv'])) : note('Ehhez a gyakorlathoz nincs teljesített sorozat.', 'small'),
+      perSide ? h('p', { class: 'small muted' }, 'Oldalankénti gyakorlat: az ismétlésszám a két oldal együtt.') : null);
+  }
+  draw(list[0].id);
+  return card(h('h2', null, 'Gyakorlat trendje'), h('label', { class: 'field' }, 'Gyakorlat', sel), out,
+    h('p', { class: 'small muted' }, 'Csak ugyanannak a gyakorlatnak az alkalmait vetjük össze; egy könnyebb vagy nehezebb változat külön szerepel.'));
+}
