@@ -69,13 +69,13 @@ export async function wipeAll() {
 }
 /* Mentés fájlba: beállítások, program, felmérések és edzések. */
 export async function exportAll() {
-  return { app: 'forma', version: 1, exported: new Date().toISOString(), settings: await kvGet('settings', {}), program: await kvGet('program', null), run: await kvGet('run', null), nutrition: await kvGet('nutrition', null), favs: await kvGet('favs', null), custom: await kvGet('custom', null), items: await itemsAll() };
+  return { app: 'forma', version: 2, exported: new Date().toISOString(), settings: await kvGet('settings', {}), program: await kvGet('program', null), run: await kvGet('run', null), nutrition: await kvGet('nutrition', null), favs: await kvGet('favs', null), custom: await kvGet('custom', null), challenge: await kvGet('challenge', null), block: await kvGet('block', null), items: await itemsAll() };
 }
 
 /* Visszatöltés ellenőrzött mentésből (core/backup.js): minden meglévő adat helyére. */
-export async function restoreAll({ settings, program, run, nutrition, favs, custom, items }) {
+export async function restoreAll({ settings, program, run, nutrition, favs, custom, challenge, block, items }) {
   // Másolási/bemeneti hiba még a régi állomány érintése előtt derüljön ki.
-  const data = structuredClone({ settings, program, run, nutrition, favs, custom, items });
+  const data = structuredClone({ settings, program, run, nutrition, favs, custom, challenge, block, items });
   if (!Array.isArray(data.items) || data.items.some(it => !it || typeof it.id !== 'string' || !it.id)) throw new Error('Hibás visszatöltési adat.');
   const kv = Object.fromEntries(Object.entries(data).filter(([k, v]) => k !== 'items' && v != null));
   await replaceAll(kv, data.items);

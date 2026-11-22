@@ -305,5 +305,5 @@ export async function exerciseView(id, onCleanup) {
     lad ? card(h('h2', null, D.exercises.ladders[ex.ladder]), h('p', { class: 'small muted' }, 'A gyakorlatsor szintjei, a legkönnyebbtől:'),
       h('ol', null, lad.map(e => h('li', null, e.id === id ? h('strong', null, e.name) : link('#/ex/' + e.id, e.name), e.impact ? h('span', { class: 'muted small' }, ' · ugrásos') : null)))) : null,
     D.exercises.reviewed ? null : note('A leírásokat szakember még nem lektorálta.', 'small'),
-    h('div', { class: 'row' }, btn('← Vissza', () => history.back())));
+    h('div', { class: 'row' }, btn('← Vissza', () => window.history.back())));
 }

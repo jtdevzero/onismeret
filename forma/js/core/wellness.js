@@ -1,12 +1,12 @@
 /* Heti áttekintés, levezetés, fehérje- és vízcél. Tiszta függvények, DOM nélkül. Általános irányelvek, nem orvosi tanács. */
-import { weekStart, weeklyCardio, WEEKLY_GOAL } from './cardio.js';
+import { weekStart, weekEnd, weeksBack, weeklyCardio, WEEKLY_GOAL } from './cardio.js';
 
 const DAY = 86400000;
 
 /* Heti áttekintés egy hétről (alapból az előző, lezárt hét). → { start, workouts, goal, cardio, levelUps, light, minis, bodyChange, wins: [], misses: [], focus } */
 export function weeklyReview(items, opts = {}) {
   const now = opts.now ?? Date.now();
-  const start = opts.start ?? weekStart(now) - 7 * DAY, end = start + 7 * DAY;
+  const start = opts.start ?? weeksBack(now, 1), end = weekEnd(start);
   const inW = items.filter(i => i.date >= start && i.date < end);
   const ws = inW.filter(i => i.kind === 'workout');
   const cardio = weeklyCardio(items.filter(i => i.kind === 'cardio'), start + DAY);

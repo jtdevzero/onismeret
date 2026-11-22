@@ -2,12 +2,30 @@
    így egy hibás vagy idegen fájl nem tud ismeretlen adatot vagy rossz típust bejuttatni az appba. */
 
 import { cleanScoring } from './assessment.js';
+import { cleanLog, cleanRpe, WORKOUT_SCHEMA } from './workout-schema.js';
+
+/* Mentésfájl-verziók: 1 = régi; 2 = sorozatnapló, elfogadott súlyjavaslatok, kihívás- és blokkállapot.
+   Újabb (ismeretlen) verziót nem töltünk vissza, mert veszteséges lenne. */
+export const BACKUP_VERSION = 2;
+const SUPPORTED = [1, 2];
 
 const MAX_BYTES = 5 * 1024 * 1024, MAX_ITEMS = 5000;
 const num = (v, lo, hi) => (typeof v === 'number' && Number.isFinite(v) && v >= lo && v <= hi ? v : undefined);
 const str = (v, max = 80) => (typeof v === 'string' && v.length > 0 && v.length <= max ? v : undefined);
 const clean = o => Object.fromEntries(Object.entries(o).filter(([, v]) => v !== undefined));
 
+const exOk = (id, ids) => typeof id === 'string' && /^[a-z0-9_]{2,30}$/.test(id) && (!ids || ids.includes(id));
+function loadsOf(o, ids) {
+  if (!o || typeof o !== 'object') return undefined;
+  const out = {};
+  for (const [k, v] of Object.entries(o).slice(0, 100)) if (exOk(k, ids) && num(v, 0, 300) !== undefined) out[k] = v;
+  return Object.keys(out).length ? out : undefined;
+}
+/* v2 mezők egy edzésrekordon: csak érvényes napló esetén jelöljük 2-es sémának */
+function v2Fields(it, ctx) {
+  const log = cleanLog(it.log, ctx.exerciseIds);
+  return { log, rpe: cleanRpe(it.rpe), schemaVersion: log ? WORKOUT_SCHEMA : undefined };
+}
 const cleanDone = d => (Array.isArray(d) ? d.slice(0, 40).filter(x => x && /^[a-z0-9_]{2,30}$/.test(x.ex || '')).map(x => clean({ ex: x.ex, sets: num(x.sets, 0, 50), reps: num(x.reps, 0, 5000), seconds: num(x.seconds, 0, 20000) })) : undefined);
 function numbers(obj, keys, lo, hi) {
   const out = {};
@@ -28,7 +46,8 @@ export function parseBackup(text, ctx) {
   if (text.length > MAX_BYTES) return { ok: false, error: 'A fájl túl nagy.' };
   let raw;
   try { raw = JSON.parse(text); } catch { return { ok: false, error: 'Ez nem érvényes mentésfájl (nem JSON).' }; }
-  if (!raw || raw.app !== 'forma' || raw.version !== 1) return { ok: false, error: 'Ez nem a Forma mentésfájlja.' };
+  if (!raw || raw.app !== 'forma' || !Number.isInteger(raw.version)) return { ok: false, error: 'Ez nem a Forma mentésfájlja.' };
+  if (!SUPPORTED.includes(raw.version)) return { ok: false, error: 'Ezt a mentést egy újabb Forma-változat készítette. Frissítsd az appot, és próbáld újra. A jelenlegi adatok megmaradtak.' };
   if (!Array.isArray(raw.items) || raw.items.length > MAX_ITEMS) return { ok: false, error: 'A mentésfájl sérült.' };
 
   const s = raw.settings || {};
@@ -62,6 +81,8 @@ export function parseBackup(text, ctx) {
       fromAssessment: str(p.fromAssessment),
       cycleBase: num(p.cycleBase, 0, 1000),
       goalFocus: ['push', 'pull', 'squat', 'core', 'power', 'balance'].includes(p.goalFocus) ? p.goalFocus : undefined,
+      loads: loadsOf(p.loads, ctx.exerciseIds),
+      loadLog: Array.isArray(p.loadLog) ? p.loadLog.filter(c => c && exOk(c.ex, ctx.exerciseIds)).map(c => clean({ ex: c.ex, from: num(c.from, 0, 300), to: num(c.to, 0, 300), date: num(c.date, 0, 1e14), source: c.source === 'suggestion' ? 'suggestion' : 'manual' })).filter(c => c.to !== undefined && c.date !== undefined).slice(-100) : undefined,
     });
   }
 
@@ -90,13 +111,13 @@ export function parseBackup(text, ctx) {
       if (!Object.keys(metrics).length) continue;
       items.push({ id, kind: 'posture', date, metrics });
     } else if (it.kind === 'workout' && ['routine', 'custom'].includes(it.key)) {
-      items.push(clean({ id, kind: 'workout', date, key: it.key, title: str(it.title, 60), minutes: num(it.minutes, 0, 600) ?? 0, steps: num(it.steps, 0, 1000), partial: !!it.partial, ratings: {}, changes: [], note: str(it.note, 280), done: cleanDone(it.done), partner: it.partner === true ? true : undefined }));
+      items.push(clean({ id, kind: 'workout', date, key: it.key, title: str(it.title, 60), minutes: num(it.minutes, 0, 600) ?? 0, steps: num(it.steps, 0, 1000), partial: !!it.partial, ratings: {}, changes: [], note: str(it.note, 280), done: cleanDone(it.done), partner: it.partner === true ? true : undefined, ...v2Fields(it, ctx) }));
     } else if (it.kind === 'workout' && ctx.sessionKeys.includes(it.key)) {
       const ratings = {};
       for (const l of ctx.ladders) if (it.ratings && ctx.ratingKeys.includes(it.ratings[l])) ratings[l] = it.ratings[l];
       items.push(clean({ id, kind: 'workout', date, key: it.key, minutes: num(it.minutes, 0, 600) ?? 0, steps: num(it.steps, 0, 1000), partial: !!it.partial, ratings,
         changes: Array.isArray(it.changes) ? it.changes.filter(c => c && ctx.ladders.includes(c.ladder)).map(c => clean({ ladder: c.ladder, from: num(c.from, 0, 10), to: num(c.to, 0, 10), date: num(c.date, 0, 1e14) })) : [],
-        note: str(it.note, 280), done: cleanDone(it.done), light: it.light === true ? true : undefined, partner: it.partner === true ? true : undefined }));
+        note: str(it.note, 280), done: cleanDone(it.done), light: it.light === true ? true : undefined, partner: it.partner === true ? true : undefined, ...v2Fields(it, ctx) }));
     } else if (it.kind === 'mini') {
       const pr = profile(it.profile);
       const results = numbers(it.results, ['pushup', 'plank', 'sl_stance'], 0, 1000);
@@ -131,5 +152,9 @@ export function parseBackup(text, ctx) {
     const blocks = Array.isArray(c && c.blocks) ? c.blocks.filter(b => Array.isArray(b) && exIds.has(b[0])).slice(0, 30).map(([id, sets, dose]) => [id, num(sets, 1, 6) ?? 1, dose && num(dose.reps, 1, 600) !== undefined ? { reps: dose.reps } : { seconds: num(dose && dose.seconds, 1, 600) ?? 30 }]) : [];
     return name && cid && blocks.length ? { id: cid, name, blocks } : null;
   }).filter(Boolean) : null;
-  return { ok: true, data: { settings, program, run, nutrition: Object.keys(nutrition).length ? nutrition : null, favs, custom, items } };
+  /* aktív 30 napos kihívás és szezonális blokk (régebbi mentésben nincs: ilyenkor nincs aktív) */
+  const ch = raw.challenge, bl = raw.block;
+  const challenge = ch && typeof ch === 'object' && /^[a-z0-9]{3,12}$/.test(ch.id || '') && (!ctx.challengeIds || ctx.challengeIds.includes(ch.id)) && num(ch.start, 0, 1e14) !== undefined ? { id: ch.id, start: ch.start } : null;
+  const block = bl && typeof bl === 'object' && /^[a-z0-9_-]{2,30}$/.test(bl.id || '') && (!ctx.blockIds || ctx.blockIds.includes(bl.id)) && num(bl.start, 0, 1e14) !== undefined ? { id: bl.id, start: bl.start, done: num(bl.done, 0, 1000) ?? 0 } : null;
+  return { ok: true, data: { settings, program, run, nutrition: Object.keys(nutrition).length ? nutrition : null, favs, custom, challenge, block, items } };
 }

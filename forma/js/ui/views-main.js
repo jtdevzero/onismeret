@@ -10,7 +10,7 @@ import { getProgram, setProgram, latestAssessment, workouts, assessments, evalua
 import { ROTATION, SESSION_TITLES, buildSession, sessionSteps, sessionMinutes, nextKey, weekInfo, reassessDue, streak } from '../core/program.js';
 
 import { buildDailyIcs } from '../core/calendar.js';
-import { weeklyCardio, weeklyWorkouts } from '../core/cardio.js';
+import { weeklyCardio, weeklyWorkouts, weeksBack, weekEnd } from '../core/cardio.js';
 import { monthGrid, monthSummary, MONTHS } from '../core/history.js';
 import { miniDue, currentFitnessAge } from '../core/achievements.js';
 import { itemsAll } from './store.js';
@@ -18,7 +18,7 @@ import { cardioItems, CARDIO_TYPES } from './views-cardio.js';
 import { GOAL_METRICS } from './views-progress.js';
 import { reviewCard } from './views-wellness.js';
 import { recoveryTileData } from './views-extra.js';
-import { breaksIcs } from '../core/extras.js';
+import { breaksIcs, CHALLENGES } from '../core/extras.js';
 
 export const PARQ = [
   ['heart', 'Mondta-e valaha orvos, hogy szívbetegséged vagy magas vérnyomásod van?'],
@@ -229,7 +229,7 @@ export async function logView(ym) {
   /* az utolsó 8 hét edzésszáma */
   const DAY = 86400000, now = new Date(); now.setHours(0, 0, 0, 0);
   const monday = new Date(now); monday.setDate(now.getDate() - ((now.getDay() + 6) % 7));
-  const weeks = Array.from({ length: 8 }, (_, i) => { const s = monday.getTime() - (7 - i) * 7 * DAY; return { s, n: ws.filter(w => w.date >= s && w.date < s + 7 * DAY).length }; });
+  const weeks = Array.from({ length: 8 }, (_, i) => { const s = weeksBack(monday.getTime(), 7 - i), e = weekEnd(s); return { s, n: ws.filter(w => w.date >= s && w.date < e).length }; });
   const max = Math.max(7, ...weeks.map(w => w.n));
   const bars = h('div', { class: 'bars', role: 'img', 'aria-label': 'Edzések hetente az utolsó 8 hétben: ' + weeks.map(w => w.n).join(', ') }, weeks.map((w, i) =>
     h('div', { class: 'bar-col' }, h('span', { class: 'bar-n' }, w.n ? String(w.n) : ''),
@@ -266,7 +266,7 @@ export function restorePicker() {
     let res;
     try {
       if (file.size > 5 * 1024 * 1024) { toast('A fájl túl nagy.'); return; }
-      res = parseBackup(await file.text(), { testIds: D.tests.tests.map(t => t.id), areaIds: D.tests.areas.map(a => a.id), ladders: LADDERS, sessionKeys: Object.keys(SESSION_TITLES), ratingKeys: RATINGS.map(([k]) => k), cardioTypes: CARDIO_TYPES.map(([k]) => k), goalMetrics: GOAL_METRICS().map(([k]) => k), exerciseIds: D.exercises.exercises.map(e => e.id) });
+      res = parseBackup(await file.text(), { testIds: D.tests.tests.map(t => t.id), areaIds: D.tests.areas.map(a => a.id), ladders: LADDERS, sessionKeys: Object.keys(SESSION_TITLES), ratingKeys: RATINGS.map(([k]) => k), cardioTypes: CARDIO_TYPES.map(([k]) => k), goalMetrics: GOAL_METRICS().map(([k]) => k), exerciseIds: D.exercises.exercises.map(e => e.id), challengeIds: CHALLENGES.map(c => c.id) });
     } catch { toast('A fájlt nem sikerült beolvasni. A jelenlegi adatok megmaradtak.'); return; }
     if (!res.ok) { toast(res.error); return; }
     const { items } = res.data, na = items.filter(i => i.kind === 'assessment').length, nw = items.length - na;
