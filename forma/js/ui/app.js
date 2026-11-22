@@ -68,10 +68,16 @@ initErrorLog();
 
 /* aktív edzés, mérés vagy futás közben a frissítés csak megerősítéssel indul (ami még nincs mentve, elveszne) */
 const busy = () => /^#\/(session|test|run|mini|cooldown|pulse|posture)(\/|$)/.test(location.hash);
-function updateBanner() {
+let updateRequested = false;
+function updateBanner(reg) {
   if (document.querySelector('.update-bar')) return;
   const bar = h('div', { class: 'update-bar', role: 'status' }, h('span', null, tr('Új változat érhető el.')),
-    h('button', { type: 'button', class: 'btn small light', onclick: () => { if (busy() && !confirm(tr('Most egy edzés, mérés vagy futás fut. A frissítés megszakítja, és ami még nincs elmentve, elveszhet. Frissítesz most?'))) return; location.reload(); } }, tr('Frissítés')),
+    h('button', { type: 'button', class: 'btn small light', onclick: () => {
+      if (busy() && !confirm(tr('Most egy edzés, mérés vagy futás fut. A frissítés megszakítja, és ami még nincs elmentve, elveszhet. Frissítesz most?'))) return;
+      if (!reg.waiting) { bar.remove(); return; }
+      updateRequested = true;
+      reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+    } }, tr('Frissítés')),
     h('button', { type: 'button', class: 'btn small', 'aria-label': tr('Később'), onclick: () => bar.remove() }, '×'));
   document.body.append(bar);
 }
@@ -85,10 +91,19 @@ async function boot() {
   /* tartós tárolás kérése, amint van mit megőrizni (a böngésző dönt; csendben, felugró ablak nélkül) */
   if (settingsReady()) requestPersist();
   if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
-    /* új változat: a service worker azonnal átveszi az irányítást; szólunk, de nem töltünk újra magunktól (edzés közben se szakadjon meg) */
-    const hadController = !!navigator.serviceWorker.controller;
-    navigator.serviceWorker.addEventListener('controllerchange', () => { if (hadController) updateBanner(); });
-    navigator.serviceWorker.register('sw.js').then(reg => { setInterval(() => reg.update().catch(() => {}), 30 * 60000); }).catch(() => {});
+    /* Az új worker várakozik, amíg a felhasználó kéri a frissítést.
+       Az aktív edzés közben a régi cache marad irányítás alatt. */
+    navigator.serviceWorker.addEventListener('controllerchange', () => { if (updateRequested) location.reload(); });
+    navigator.serviceWorker.register('sw.js').then(reg => {
+      if (reg.waiting && navigator.serviceWorker.controller) updateBanner(reg);
+      reg.addEventListener('updatefound', () => {
+        const installing = reg.installing;
+        if (installing) installing.addEventListener('statechange', () => {
+          if (installing.state === 'installed' && navigator.serviceWorker.controller) updateBanner(reg);
+        });
+      });
+      setInterval(() => reg.update().catch(() => {}), 30 * 60000);
+    }).catch(() => {});
   }
 }
 boot();

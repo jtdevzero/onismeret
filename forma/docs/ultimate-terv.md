@@ -160,3 +160,12 @@ Hatókör: kizárólag `forma/`. Engedélyezett: U0 és U1, a `claude/elegant-ha
 - `ui/store.js`: atomi visszatöltés a többi adattal együtt; érvénytelen helyi checkpoint esetén a fájlexport hibaüzenettel megáll, nem állít elő megtévesztően teljes mentést.
 - `tests/workout-draft.test.mjs`, `tests/reliability.test.mjs`, `tests/schema.test.mjs`: v3 körút, v2 kompatibilitás, sérült checkpoint elutasítása és adatok megtartása. Helyben build **PASS**, unit **155/155 PASS**.
 - Korlát: az aktív edzés UI-jának és a mentésfájl tényleges böngészős visszatöltésének CI-/eszközös ellenőrzése még szükséges; a mentett checkpointot a programnézet a jelenlegi edzéstervhez is ellenőrzi.
+
+## Phase 2 – Service Worker kiadásvédelmi ellenőrzőpont
+
+- A korábbi `sw.js` telepítéskor automatikusan `skipWaiting()`-et hívott: egy megnyitott edzés közben a friss cache átvehette az irányítást, a később betöltött modulok eltérő verziójúak lehettek.
+- `build.py`: új worker sikeres telepítés után várakozik, és csak a `SKIP_WAITING` felhasználó által indított üzenetre aktiválódik. Első telepítésnél nincs korábbi aktív worker, így az offline PWA elindulhat.
+- `js/ui/app.js`: `registration.waiting` és `updatefound` figyelése, „Frissítés” jóváhagyása, aktív edzés/mérés/futás esetén megerősítés; oldalfrissítés csak az engedélyezett `controllerchange` után. A „Később” nem aktiválja a várakozó verziót.
+- `tests/data.test.mjs`: automatikus `skipWaiting` tilalma és jóváhagyott üzenetkontraktus. Helyben build és unit **155/155 PASS**.
+- A négy kötelező böngészős parancsot elindítottuk, mindegyik **blokkolt** a hiányzó Playwright Chromium bináris miatt. A `/usr/bin/chromium` alternatívával a `socket() failed: Operation not permitted` környezeti hiba miatt szintén nem indítható. Ezekből nincs sikeres böngészős QA.
+- A release továbbra is **NO-GO** a tényleges böngészős SW-váltási és offline próba, WebKit/Android, valódi készülék, valamint a Motion Lab valós videós validációja előtt.

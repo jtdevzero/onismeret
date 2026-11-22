@@ -65,6 +65,8 @@ test('build: a generált index.html és sw.js egyezik a forrással, szigorú CSP
   assert.match(after[0], /Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval';/);
   assert.doesNotMatch(after[0], /'unsafe-inline'|'unsafe-eval'/);
   assert.match(after[1], /const VENDOR = 'forma-vendor-[0-9a-f]{10}'/);
+  assert.doesNotMatch(after[1], /addAll\(PRECACHE\)\)\.then\(\(\) => self\.skipWaiting\(\)\)/, 'frissítéskor nem lehet automatikus worker-csere');
+  assert.match(after[1], /e\.data\.type === 'SKIP_WAITING'/, 'jóváhagyott frissítési üzenet szükséges');
   const list = JSON.parse(after[1].match(/const PRECACHE = (\[[\s\S]*?\]);/)[1]);
   for (const f of list) if (f !== './') assert.ok(existsSync(new URL(f, root)), 'hiányzik: ' + f);
   /* offline teljesség: minden saját modul és adatfájl előtöltődik (egy új modul nem maradhat ki a gyorsítótárból) */

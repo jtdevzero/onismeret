@@ -68,3 +68,35 @@ Nincs sikeresnek jelentett, ténylegesen végre nem hajtott ellenőrzés. A 320�
 Az újabb `main` (`8f0b109`) változásaival integrált fejlesztői változat a helyi edzés-folytatási checkpointot implementálja. A félkész állapot egy `workoutDraft` kv-rekord, a sikeres befejezéskor az ugyanazzal az ID-val írt edzéssel egy atomi tranzakcióban törlődik. A `core/workout-draft.js` szigorúan ellenőrzi a verziót és a lépésszámot. Nem validált továbbra sem a Safari/WebKit, az offline PWA cache-életciklus és a valódi IndexedDB hiba-/újraindítási browser teszt; ezért az eredeti NO-GO döntés továbbra is érvényes. Az U2-P0 checkpoint implementációs részfeladata elkészült, a teljes elfogadási tesztje még nyitott.
 
 **Analytics kiegészítés:** 7/30/90 napos helyi, naptári időszaki összesítő és CSV-export bekerült a Fejlődés oldalra. A hiányzó adat nem lesz nulla, a külső súlyos volumen és RPE-terhelés külön egységben szerepel, a testsúly és derékbőség külön idősor-adat. A kontrollált unit futás 147/147 sikeres. A browser/mobile ellenőrzések és a teljes kétnyelvű fordítás továbbra is nyitottak.
+
+## Záró fejlesztői ellenőrzés – 2026-11-22
+
+Ez a rész a fenti **korábbi állapotot** aktualizálja; a korábbi tesztszámok történeti ellenőrzőpontok.
+
+| Funkciócsomag | Jelenlegi bizonyítható állapot | Megmaradt feltétel |
+| --- | --- | --- |
+| Reliability / Training | Atomi edzésmentés, stabil ID, visszatölthető checkpoint, elvetési megerősítés, v3 fájlmentés (v1/v2 importtal) | Valós IndexedDB, megszakítás, export/import és többtabos ütközés e2e |
+| Training Engine | Sorozatnapló (RPE/RIR, súly, idő/ismétlés), gyakorlatszint, egyszeri/tartós csere, napok átrendezése, könnyített mód | Edzés közbeni minden mező külön checkpointja, progresszió egységes jóváhagyási auditja |
+| Adaptive Coach | Offline szabálymotor, bizonyítéktípus és adatfrissesség, jóváhagyásos súlyjavaslat | Szabálymagyarázatok és szakmai küszöbök szélesebb, valós adatos ellenőrzése |
+| Motion Lab | Lokális pose, minőségi jelzés, hiányzó FPS elutasítása, béta címke | Felcímkézett valódi videók, kalibráció pontossága, iOS/Android kamera |
+| Analytics Pro | 7/30/90, terhelés és regeneráció, text/CSV, külön mértékegységek | Egységes heti/havi riport, további kardió/futás mélytrendek |
+| Premium UI | Meglévő naplementés arculat, kontrasztregresszió, téma és reduced motion | Teljes mobil QA, 200% szöveg, valódi kontraszt- és teljesítménymérés |
+| Offline PWA | Teljes saját core/UI/data előcache; felhasználó által jóváhagyott várakozó Service Worker aktiválás | Valódi offline reload és SW verzióváltás böngészős tesztje |
+| Szakmai státusz | Tulajdonos személyi edzőként végzett belső ellenőrzése, verziózott nyilvántartás; nem külső validáció | Becslések és kamera referenciaadatainak további felülvizsgálata |
+
+### Legutóbbi helyi tesztjelentés
+
+- `python3 forma/build.py`: **PASS**.
+- `TZ=Europe/Budapest node --test forma/tests/*.test.mjs`: **155/155 PASS**.
+- `node forma/tests/browser.cjs`, `onboarding.cjs`, `focus.cjs`, `pose-smoke.cjs`: **BLOCKED** (a Playwright által elvárt Chromium bináris hiányzik). A `/usr/bin/chromium` alternatívája `socket() failed: Operation not permitted` hibával nem indult.
+- GitHub Actions korábbi, `61de692` commiton indult böngészős ellenőrzése **FAIL**. A különálló edzéshelyreállítási eset átment, de további e2e tesztállapot-ütközés és kontraszthiba volt; ezeket későbbi commitok javították. Az új commitok **teljes** GitHub CI eredménye nem áll rendelkezésre, tehát nem tekinthető zöldnek.
+- Valódi iOS Safari, Android Chrome, 320×568 / 375×812 / 390×844 / 430×932, fekvő mobil, tablet, 200%-os szöveg, reduced motion, világos/sötét és offline telepített PWA: **NOT RUN** ezen az ellenőrzőponton. Az automatizált kódellenőrzés nem egyenértékű valós készülékkel.
+
+### Adatbiztonság és kiadási javaslat
+
+- Nem adtunk hozzá AI-szolgáltatót, titkot, felhőt, követőkódot vagy személyesadat-küldést. A kamera a helyi feldolgozási modellen maradt. A fájl-export kifejezett felhasználói művelet.
+- A v3 mentés tartalmazza a félkész edzést; sérült visszatöltés előbb elutasított, mint hogy a régi adatok törlésre kerülhetnének. Memóriamódban továbbra sincs tartóssági garancia.
+- **U2-P0:** sikeres teljes CI; browser IndexedDB hibainjektálás, SW váltás, offline PWA, mobil/Safari e2e és valós eszközös mátrix. Ezek kiadásblokkolók.
+- **U2-P1:** sorozatonkénti mentési visszajelzés, egységes manuális progressziójóváhagyás és visszavonás, kamera valódi videós validációja, analitikai riportok teljessége, kétnyelvű szakmai lektorálás.
+- **U3:** online coach, szinkron, külső szolgáltatók – külön költség-, adatvédelmi és technológiai jóváhagyás nélkül nem aktiválhatók.
+- **Release: NO-GO.** Kész a fejlesztői implementáció több jelentős része, de a Phase 2 teljes, hiteles elfogadási lezárása a P0 bizonyítékok hiányában **nem állítható**. Nincs main push vagy élesítés.

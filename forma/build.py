@@ -51,7 +51,12 @@ const VENDOR = 'forma-vendor-__VENDOR__';
 const ART = 'forma-art-__ART__';
 const PRECACHE = __LIST__;
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(SHELL).then(c => c.addAll(PRECACHE)).then(() => self.skipWaiting()));
+  /* Frissítéskor várakozunk, amíg a felhasználó jóváhagyja a váltást.
+     Első telepítéskor a worker aktívvá válhat beavatkozás nélkül. */
+  e.waitUntil(caches.open(SHELL).then(c => c.addAll(PRECACHE)));
+});
+self.addEventListener('message', e => {
+  if (e.data && e.data.type === 'SKIP_WAITING') e.waitUntil(self.skipWaiting());
 });
 self.addEventListener('activate', e => {
   e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k.startsWith('forma-') && k !== SHELL && k !== VENDOR && k !== ART).map(k => caches.delete(k))))

@@ -1,7 +1,7 @@
 /* Forma service worker. GENERÁLT FÁJL (forma/build.py), ne szerkeszd kézzel.
    Az app váza, a kód és a tartalom telepítéskor a gyorsítótárba kerül, így az app offline is működik.
    A pózbecslő (kb. 15 MB) csak a kamera első használatakor töltődik le, utána az is offline megy. */
-const SHELL = 'forma-shell-71007da22b';
+const SHELL = 'forma-shell-8551059128';
 const VENDOR = 'forma-vendor-62fc9e8c57';
 const ART = 'forma-art-5de026015b';
 const PRECACHE = [
@@ -103,7 +103,12 @@ const PRECACHE = [
 "data/tests.json"
 ];
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(SHELL).then(c => c.addAll(PRECACHE)).then(() => self.skipWaiting()));
+  /* Frissítéskor várakozunk, amíg a felhasználó jóváhagyja a váltást.
+     Első telepítéskor a worker aktívvá válhat beavatkozás nélkül. */
+  e.waitUntil(caches.open(SHELL).then(c => c.addAll(PRECACHE)));
+});
+self.addEventListener('message', e => {
+  if (e.data && e.data.type === 'SKIP_WAITING') e.waitUntil(self.skipWaiting());
 });
 self.addEventListener('activate', e => {
   e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k.startsWith('forma-') && k !== SHELL && k !== VENDOR && k !== ART).map(k => caches.delete(k))))
