@@ -166,7 +166,7 @@ export function buildSession(key, state, exercises, now = Date.now(), opts = {})
   const wk = weekInfo(state.start ?? now, now);
   const warm = exercises.find(e => e.id === 'warmup');
   const blocks = [];
-  const rules = complaintRules(state.complaints), phase = phaseOf(wk.cycle);
+  const rules = complaintRules(state.complaints), phase = phaseOf((state.cycleBase || 0) + wk.cycle);
   const equipment = rules.noBar ? (state.equipment || []).filter(e => e !== 'bar') : state.equipment;
   /* ugrás és erő előtt általános bemelegítés; a mobilitásnap maga a bemelegítés */
   if (warm && key !== 'mobility') blocks.push({ exercise: warm.id, sets: 1, seconds: warm.dose.seconds[key.startsWith('speed') ? 1 : 0], rest: 0, part: 'warmup' });

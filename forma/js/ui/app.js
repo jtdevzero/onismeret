@@ -26,7 +26,9 @@ let cleanups = [], seq = 0;
 async function route() {
   const my = ++seq;
   cleanups.splice(0).forEach(fn => { try { fn(); } catch (e) { console.error(e); } });
-  const [name = '', arg] = location.hash.replace(/^#\/?/, '').split('/').map(decodeURIComponent);
+  /* hibás %-kódolású címnél se dőljön el az app: a dekódolhatatlan részt változatlanul hagyjuk */
+  const safe = s => { try { return decodeURIComponent(s); } catch { return s; } };
+  const [name = '', arg] = location.hash.replace(/^#\/?/, '').split('/').map(safe);
   /* első indításkor, amíg nincs elfogadott beállítás, minden út a kezdőképernyőre visz */
   const ready = settingsReady();
   const key = !ready ? 'start' : Object.prototype.hasOwnProperty.call(ROUTES, name) ? name : '';
