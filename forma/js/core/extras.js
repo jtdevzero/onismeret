@@ -33,10 +33,10 @@ export function recoveryScore({ readiness, pulses = [], workouts = [], now = Dat
 
 /* 30 napos kihívások: napi adag fokozatos emeléssel, minden 4. nap könnyebb. */
 export const CHALLENGES = [
-  { id: 'plank30', name: '30 napos plank', exercise: 'plank', unit: 'mp', start: 20, step: 5, max: 180 },
+  { id: 'plank30', name: '30 napos plank', exercise: 'plank', unit: tr('mp'), start: 20, step: 5, max: 180 },
   { id: 'squat30', name: tr('30 napos guggolás'), exercise: 'squat', unit: tr('ismétlés'), start: 15, step: 3, max: 100 },
   { id: 'push30', name: tr('30 napos fekvőtámasz'), exercise: 'push_knee', unit: tr('ismétlés'), start: 5, step: 1, max: 40 },
-  { id: 'mob30', name: tr('30 napos mobilitás'), exercise: 'squat_hold', unit: 'mp', start: 30, step: 5, max: 180 },
+  { id: 'mob30', name: tr('30 napos mobilitás'), exercise: 'squat_hold', unit: tr('mp'), start: 30, step: 5, max: 180 },
 ];
 export function challengeDose(ch, day) {
   if (!ch || day < 1 || day > 30) return null;

@@ -128,7 +128,7 @@ const DAYS = [tr('H'), tr('K'), tr('Sze'), tr('Cs'), tr('P'), tr('Szo'), tr('V')
 export function weekStrip(prog) {
   const rot = rotationOf(prog), pos = (prog.done || 0) % rot.length;
   return h('div', { class: 'week-strip', role: 'list', 'aria-label': tr('A heti forgó rend') }, rot.map((k, i) =>
-    h('div', { class: 'week-day' + (i < pos ? ' done' : i === pos ? ' next' : ''), role: 'listitem', 'aria-label': `${i + 1}. nap: ${SESSION_TITLES[k]}${i < pos ? ', kész' : i === pos ? ', következik' : ''}` },
+    h('div', { class: 'week-day' + (i < pos ? ' done' : i === pos ? ' next' : ''), role: 'listitem', 'aria-label': tr('{p0}. nap: {p1}{p2}', { p0: i + 1, p1: SESSION_TITLES[k], p2: i < pos ? ', kész' : i === pos ? ', következik' : '' }) },
       h('b', null, String(i + 1)), h('span', null, k.startsWith('strength') ? tr('Erő') : k.startsWith('speed') ? tr('Gyors') : tr('Mobil')))));
 }
 
@@ -207,7 +207,7 @@ async function monthImage(y, mo, s) {
   g.fillStyle = sun; g.beginPath(); g.arc(W - 220, 260, 150, 0, Math.PI * 2); g.fill();
   g.fillStyle = '#fff'; g.font = 'italic 900 120px system-ui, sans-serif'; g.fillText('FORMA', 80, 200);
   g.font = '700 54px system-ui, sans-serif'; g.fillText(`${y}. ${MONTHS[mo - 1]}`, 80, 290);
-  const rows = [[tr('Edzés'), s.workouts], [tr('Aktív nap'), s.activeDays], [tr('Mozgás'), s.minutes + ' perc'], [tr('Kardió'), s.cardioMinutes + ' perc'], [tr('Szintlépés'), s.levelUps], [tr('Leghosszabb sorozat'), s.bestStreak + ' nap']];
+  const rows = [[tr('Edzés'), s.workouts], [tr('Aktív nap'), s.activeDays], [tr('Mozgás'), s.minutes + tr(' perc')], [tr('Kardió'), s.cardioMinutes + tr(' perc')], [tr('Szintlépés'), s.levelUps], [tr('Leghosszabb sorozat'), s.bestStreak + tr(' nap')]];
   rows.forEach(([k, v], i) => {
     const x = 80 + (i % 2) * 470, yy = 470 + Math.floor(i / 2) * 250;
     g.fillStyle = 'rgba(26,11,46,.55)'; g.beginPath(); g.roundRect ? g.roundRect(x, yy, 430, 210, 32) : g.rect(x, yy, 430, 210); g.fill();
@@ -244,7 +244,7 @@ function calendarCard(all, ym) {
     h('h3', null, tr('A hónap összefoglalója')),
     h('div', { class: 'stat-row' },
       h('div', { class: 'stat' }, h('span', { class: 'muted' }, tr('Edzés')), h('strong', null, String(s.workouts)), h('span', { class: 'small muted' }, tr('előző hónap: ') + s.prev.workouts)),
-      h('div', { class: 'stat' }, h('span', { class: 'muted' }, tr('Aktív nap')), h('strong', null, String(s.activeDays)), h('span', { class: 'small muted' }, `leghosszabb sorozat: ${s.bestStreak} nap`)),
+      h('div', { class: 'stat' }, h('span', { class: 'muted' }, tr('Aktív nap')), h('strong', null, String(s.activeDays)), h('span', { class: 'small muted' }, tr('leghosszabb sorozat: {p0} nap', { p0: s.bestStreak }))),
       h('div', { class: 'stat' }, h('span', { class: 'muted' }, tr('Mozgás')), h('strong', null, s.minutes + ' p'), h('span', { class: 'small muted' }, tr('ebből kardió: ') + s.cardioMinutes + ' p' + delta(s.cardioMinutes, s.prev.cardioMinutes))),
       h('div', { class: 'stat' }, h('span', { class: 'muted' }, tr('Szintlépés')), h('strong', null, String(s.levelUps)), h('span', { class: 'small muted' }, s.assessments ? tr('felmérés is volt') : tr('nehezebb gyakorlatra váltás')))));
 }
@@ -278,7 +278,7 @@ export async function logView(ym) {
     compare,
     card(h('h2', null, tr('Felmérések')), as.length ? h('ul', { class: 'rows' }, as.map(a => { const e = evaluateItem(a); return h('li', null, link('#/result/' + a.id, fmtDate(a.date)), h('span', { class: 'muted small' }, (e.overall != null ? e.overall + ' / 100' : '') + (e.fitnessAge != null ? tr(' · fittségi kor ') + e.fitnessAge : ''))); })) : h('p', { class: 'muted' }, tr('Még nincs felmérés.'))),
     card(h('h2', null, tr('Edzések')), ws.length ? h('ul', { class: 'rows' }, ws.slice(0, 30).map(w => h('li', null,
-      h('span', { class: 'log-item' }, h('strong', null, w.title || SESSION_TITLES[w.key] || w.key), h('span', { class: 'muted small' }, fmtDate(w.date) + ' · ' + w.minutes + ' perc' + (w.partial ? tr(' · részben') : '') + (w.partner ? ' · ketten' : '')), w.note ? h('span', { class: 'small log-note' }, '„' + w.note + '”') : null),
+      h('span', { class: 'log-item' }, h('strong', null, w.title || SESSION_TITLES[w.key] || w.key), h('span', { class: 'muted small' }, fmtDate(w.date) + ' · ' + w.minutes + tr(' perc') + (w.partial ? tr(' · részben') : '') + (w.partner ? ' · ketten' : '')), w.note ? h('span', { class: 'small log-note' }, '„' + w.note + '”') : null),
       w.changes && w.changes.length ? h('span', { class: 'badge good' }, tr('Szintlépés')) : null))) : emptyState(tr('Még nincs edzés. Az első mindig a legnehezebb, utána jön a lendület.'), link('#/', tr('Mai edzés'), 'btn small'))));
 }
 
@@ -343,7 +343,7 @@ export async function settingsView() {
       choice('size', [['normal', tr('Normál')], ['large', tr('Nagy (edzés közben is jól olvasható)')]], S.settings.size || 'normal', async v => { await saveSettings({ size: v }); applyLook(); }, tr('Betűméret'))),
     card(h('h2', null, tr('Nyelv')),
       choice('lang', LOCALES, getLocale(), async v => { await saveSettings({ lang: v }); setLocale(v); location.reload(); }, tr('Nyelv')),
-      getLocale() === 'en' ? h('p', { class: 'small muted' }, tr('Az angol felület béta: a menü, a bevezetés, a kezdőlap és a Több oldal angol, a többi képernyő egyelőre magyar.')) : null),
+      getLocale() === 'en' ? h('p', { class: 'small muted' }, tr('Az angol szövegeket (a teszt- és gyakorlatleírásokat is) anyanyelvi szakember még nem nézte át.')) : null),
     card(h('h2', null, tr('Heti edzéscél')),
       h('p', { class: 'small muted' }, tr('Hány edzést tűzöl ki egy hétre. Ez szokáscél: a kezdőlapon, a heti áttekintésben és a Fejlődés oldalon ehhez mérem a hetedet. A forgó rend ettől nem változik.')),
       choice('wgoal', [2, 3, 4, 5, 6, 7].map(n => [n, n + tr(' edzés')]), weeklyGoal(), async v => { await saveSettings({ weeklyGoal: v }); toast('Elmentettem a heti célt.'); }, tr('Heti edzéscél'))),

@@ -65,6 +65,7 @@ A következő 20 bővítés terve: [ROADMAP.md](ROADMAP.md). A FORMA ULTIMATE (U
 - **Programszerkesztő:** a gyakorlatsorok szintje tartósan, kézzel is állítható; egy gombbal vissza lehet állni az ajánlottra. A korábbi edzések nem változnak.
 - **Ma képernyő:** egy fő művelet, heti edzés és kardió, cél és az újramérés ideje.
 - **Fejlődés:** 8 hetes edzésterhelés-táblázat (sorozat, ismétlés, tartás, ismert külső súly × ismétlés, RPE × perc, kardió, mindegyik külön egységben) és gyakorlatonkénti trend.
+- **Angol felület:** Beállítások → Nyelv. Minden képernyő, a teszt- és gyakorlatleírások és az ábrafeliratok is angolul (`data/content-en.json`); az angol szakmai szövegeket anyanyelvi szakember még nem nézte át.
 - **Kamerás mérés:** a követés megbízhatósága (jó / korlátozott / nem megbízható) látható; nem megbízható mérés nem kerül magától a tesztmezőbe.
 
 ## Felépítés

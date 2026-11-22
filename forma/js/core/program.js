@@ -347,7 +347,7 @@ export function streak(dates, now = Date.now()) {
    mobilitás, rövidebb bemelegítés, szuperszett-szerű rövidebb pihenő, kevesebb kör (legalább 2), végül a sor
    végéről a kevésbé fontos gyakorlatok. Hosszabbításkor a fő gyakorlatok egy kört kapnak (legfeljebb 4).
    → az új edzés (a bemenetet nem módosítja), fit: { target, minutes } */
-export const DURATIONS = [[0, tr('Ahogy a program adja')], [15, '15 perc'], [25, '25 perc'], [35, '35 perc']];
+export const DURATIONS = [[0, tr('Ahogy a program adja')], [15, tr('15 perc')], [25, tr('25 perc')], [35, tr('35 perc')]];
 export function fitSession(session, exById, target) {
   if (!target) return session;
   const s = { ...session, blocks: session.blocks.map(b => ({ ...b })) };

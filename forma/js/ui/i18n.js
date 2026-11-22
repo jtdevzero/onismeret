@@ -5,7 +5,7 @@ import EN from './i18n-en.js';
 
 /* induláskor szinkron is beolvassuk (localStorage), hogy a modulok szintjén definiált szövegek is a jó nyelven készüljenek */
 let locale = (() => { try { return localStorage.getItem('forma-lang') === 'en' ? 'en' : 'hu'; } catch { return 'hu'; } })();
-export const LOCALES = [['hu', 'Magyar'], ['en', 'English (béta)']];
+export const LOCALES = [['hu', 'Magyar'], ['en', 'English']];
 export const getLocale = () => locale;
 export function setLocale(l) {
   locale = l === 'en' ? 'en' : 'hu';

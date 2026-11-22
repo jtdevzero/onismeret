@@ -45,7 +45,7 @@ export function setLogEditor(id, base) {
       const ok = h('input', { type: 'checkbox', checked: true, 'aria-label': tr('{p0}, {p1}. sorozat teljesítve', { p0: ex.name, p1: i + 1 }) });
       const rir = i === e.sets.length - 1 ? h('select', { 'aria-label': tr('{p0}: hány szabályos ismétlés maradt még az utolsó sorozat végén (RIR)', { p0: ex.name }) }, h('option', { value: '' }, tr('RIR –')), [0, 1, 2, 3, 4, 5].map(n => h('option', { value: String(n) }, n === 5 ? tr('RIR 5+') : tr('RIR ') + n))) : null;
       rows.push({ ex: e.ex, seconds: !!st.seconds, val, kg, ok, rir });
-      return h('li', { class: 'setlog-row' }, h('span', { class: 'muted small' }, `${i + 1}.`), val, h('span', { class: 'small' }, st.seconds ? 'mp' : 'ism.'), kg, kg ? h('span', { class: 'small' }, 'kg') : null, h('label', { class: 'check small' }, ok, h('span', null, tr('kész'))), rir);
+      return h('li', { class: 'setlog-row' }, h('span', { class: 'muted small' }, `${i + 1}.`), val, h('span', { class: 'small' }, st.seconds ? tr('mp') : tr('ism.')), kg, kg ? h('span', { class: 'small' }, 'kg') : null, h('label', { class: 'check small' }, ok, h('span', null, tr('kész'))), rir);
     });
     return h('div', { class: 'setlog-ex' }, h('h3', null, ex ? ex.name : e.ex), h('ol', { class: 'plain' }, sets));
   });
@@ -92,7 +92,7 @@ function ringClock(clock) {
   const el = h('div', { class: 'ring' }, svg, clock);
   return { el, set: f => fg.setAttribute('stroke-dashoffset', (C * (1 - Math.max(0, Math.min(1, f)))).toFixed(1)) };
 }
-const doseText = b => (b.seconds ? fmtSec(b.seconds) : b.reps + ' ism.') + (D.ex[b.exercise] && D.ex[b.exercise].perSide ? tr(' oldalanként') : '') + (b.sets > 1 ? ' × ' + b.sets : '');
+const doseText = b => (b.seconds ? fmtSec(b.seconds) : b.reps + tr(' ism.')) + (D.ex[b.exercise] && D.ex[b.exercise].perSide ? tr(' oldalanként') : '') + (b.sets > 1 ? ' × ' + b.sets : '');
 const lvlDots = (level, max) => h('span', { class: 'lvl', role: 'img', 'aria-label': tr('{p0}. szint a {p1}-ből', { p0: level + 1, p1: max }) }, Array.from({ length: max }, (_, i) => h('i', { class: i <= level ? 'on' : '' })));
 
 /* A forgó rend napjainak átrendezése: ugyanazok a napok, más sorrendben (a teljesített edzések száma nem változik). */
@@ -106,8 +106,8 @@ function orderEditor(prog) {
   return h('details', { class: 'order-edit' }, h('summary', null, tr('Sorrend módosítása') + (custom ? tr(' (egyéni)') : '')),
     h('p', { class: 'small muted' }, tr('Ugyanaz a 7 nap, más sorrendben. Érdemes két erőnap közé gyorsasági vagy mobilitásnapot tenni.')),
     h('ol', { class: 'rows' }, rot.map((k, i) => h('li', null, h('span', null, SESSION_TITLES[k]), h('span', { class: 'level-edit' },
-      h('button', { type: 'button', class: 'btn small icon', 'aria-label': `${i + 1}. nap (${SESSION_TITLES[k]}) feljebb`, disabled: i === 0, onclick: () => swap(i, i - 1) }, '↑'),
-      h('button', { type: 'button', class: 'btn small icon', 'aria-label': `${i + 1}. nap (${SESSION_TITLES[k]}) lejjebb`, disabled: i === rot.length - 1, onclick: () => swap(i, i + 1) }, '↓'))))),
+      h('button', { type: 'button', class: 'btn small icon', 'aria-label': tr('{p0}. nap ({p1}) feljebb', { p0: i + 1, p1: SESSION_TITLES[k] }), disabled: i === 0, onclick: () => swap(i, i - 1) }, '↑'),
+      h('button', { type: 'button', class: 'btn small icon', 'aria-label': tr('{p0}. nap ({p1}) lejjebb', { p0: i + 1, p1: SESSION_TITLES[k] }), disabled: i === rot.length - 1, onclick: () => swap(i, i + 1) }, '↓'))))),
     custom ? h('div', { class: 'row' }, btn(tr('Vissza az alap sorrendhez'), async () => { const p = await getProgram(); await save({ ...p, rotation: undefined }); }, 'small')) : null);
 }
 
@@ -181,7 +181,7 @@ export async function programView() {
   const wk = weekInfo(prog.start), key = nextKey(prog), lad = laddersOf(D.exercises.exercises);
   const sessions = [...new Set(ROTATION)].map(k => {
     const s = fitSession(buildSession(k, prog, D.exercises.exercises), D.ex, S.settings.duration || 0), steps = sessionSteps(s, D.ex);
-    return h('details', { class: 'card' }, h('summary', null, h('h2', null, s.title), h('span', { class: 'badge' + (k === key ? ' good' : '') }, k === key ? tr('Következik') : sessionMinutes(steps) + ' perc')),
+    return h('details', { class: 'card' }, h('summary', null, h('h2', null, s.title), h('span', { class: 'badge' + (k === key ? ' good' : '') }, k === key ? tr('Következik') : sessionMinutes(steps) + tr(' perc'))),
       h('ol', { class: 'blocks' }, s.blocks.map(b => h('li', null, link('#/ex/' + b.exercise, D.ex[b.exercise].name), h('span', { class: 'muted small' }, ' · ' + doseText(b) + (b.part === 'mobility' ? tr(' · mobilitás') : ''))))),
       h('div', { class: 'row' }, link('#/check/' + k, k === key ? tr('Indítás') : tr('Ezt csinálom inkább'), 'btn' + (k === key ? ' primary' : ' small'))));
   });
@@ -310,7 +310,7 @@ export async function sessionView(key, onCleanup) {
     beep(880, 200);
     const lad = laddersOf(D.exercises.exercises);
     clear(stage).append(card(h('h2', null, tr('Edzés kész')),
-      h('p', { class: 'lead' }, `${session.title}, ${minutes} perc.`),
+      h('p', { class: 'lead' }, tr('{p0}, {p1} perc.', { p0: session.title, p1: minutes })),
       changes.length ? h('div', null, h('h3', null, tr('Szintváltás')), list(changes.map(c => {
         const a = exerciseFor(lad, c.ladder, c.from, lowImpact()), b = exerciseFor(lad, c.ladder, c.to, lowImpact());
         return (c.to > c.from ? tr('Feljebb: ') : tr('Visszább: ')) + (a ? a.name : '') + ' → ' + (b ? b.name : '');
@@ -439,7 +439,7 @@ export async function sessionView(key, onCleanup) {
   show();
   if (S.settings.voiceMode) stage.classList.add('voice-mode');
   const view = page(session.title,
-    h('p', { class: 'muted' }, `Kb. ${sessionMinutes(steps)} perc · ${session.blocks.length} gyakorlat` + (session.week.deload ? tr(' · könnyített hét') : '') + (light ? tr(' · könnyített edzés, értékelés nélkül') : '') + (session.fit ? tr(' · {p0} perces keretre igazítva', { p0: session.fit.target }) : '')),
+    h('p', { class: 'muted' }, tr('Kb. {p0} perc · {p1} gyakorlat', { p0: sessionMinutes(steps), p1: session.blocks.length }) + (session.week.deload ? tr(' · könnyített hét') : '') + (light ? tr(' · könnyített edzés, értékelés nélkül') : '') + (session.fit ? tr(' · {p0} perces keretre igazítva', { p0: session.fit.target }) : '')),
     h('div', { class: 'session-progress' }, bar, count),
     session.returning ? note(tr('Üdv újra! Két hétnél hosszabb szünet után óvatosabban indulunk: minden gyakorlatból eggyel kevesebb kör.'), 'small') : null,
     session.goalFocus ? note(tr('Célprogram: ') + (GOALS.find(([k]) => k === session.goalFocus) || ['', ''])[1] + tr('. Ez a gyakorlatsor plusz kört kap.'), 'small') : null,
@@ -466,7 +466,7 @@ export async function exerciseView(id, onCleanup) {
     h('p', { class: 'muted' }, D.exercises.typeNames[ex.type] + ' · ' + dose + (ex.perSide ? tr(' oldalanként') : '') + (ex.impact ? tr(' · ugrásos') : '')),
     card(figureAnim(D.figures[ex.figure], { big: true }), h('h3', null, tr('Három dolog, amire figyelj')), list(ex.points),
       h('details', { class: 'section' }, h('summary', null, tr('Részletes leírás')), figureStrip(D.figures[ex.figure], true), h('p', null, ex.how), videoSearch(ex))),
-    history.length ? card(h('h2', null, tr('Az előzményed')), exSpark(history), h('ul', { class: 'rows' }, history.slice(-6).reverse().map(x => h('li', null, h('span', null, fmtDate(x.date)), h('span', { class: 'muted small' }, tr('{p0} kör', { p0: x.sets }) + (x.reps ? tr(' · {p0} ismétlés', { p0: x.reps }) : '') + (x.seconds ? ` · ${x.seconds} mp` : '')))))) : null,
+    history.length ? card(h('h2', null, tr('Az előzményed')), exSpark(history), h('ul', { class: 'rows' }, history.slice(-6).reverse().map(x => h('li', null, h('span', null, fmtDate(x.date)), h('span', { class: 'muted small' }, tr('{p0} kör', { p0: x.sets }) + (x.reps ? tr(' · {p0} ismétlés', { p0: x.reps }) : '') + (x.seconds ? tr(' · {p0} mp', { p0: x.seconds }) : '')))))) : null,
     live ? card(h('h2', null, tr('Számolás és formaellenőrzés kamerával')), live.el) : null,
     lad ? card(h('h2', null, D.exercises.ladders[ex.ladder]), h('p', { class: 'small muted' }, tr('A gyakorlatsor szintjei, a legkönnyebbtől:')),
       h('ol', null, lad.map(e => h('li', null, e.id === id ? h('strong', null, e.name) : link('#/ex/' + e.id, e.name), e.impact ? h('span', { class: 'muted small' }, tr(' · ugrásos')) : null)))) : null,

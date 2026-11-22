@@ -1,5 +1,6 @@
 /* Pulzusmérés kamerával, regenerációs pontszám, 30 napos kihívások, szezonális blokkok, kihíváskód, nyomtatható összefoglaló. */
 import { h, clear, uid, fmtDate, toast } from './dom.js';
+import { applyBlocks } from '../core/content-i18n.js';
 import { page, card, btn, link, note, list, speak, beep, openPpg, celebrate, fmtNum } from './widgets.js';
 import { D, profile } from './data.js';
 import { kvGet, kvSet, itemPut, itemsAll } from './store.js';
@@ -70,7 +71,7 @@ export async function challengeView() {
   const ch = CHALLENGES.find(c => c.id === st.id), day = challengeDay(st.start), dose = challengeDose(ch, day);
   const doneDays = new Set(items.filter(i => i.challenge === st.id && i.date >= st.start).map(i => i.day));
   const ex = D.ex[ch.exercise];
-  const grid = h('div', { class: 'ch-grid', role: 'list', 'aria-label': tr('A 30 nap') }, Array.from({ length: 30 }, (_, i) => h('span', { role: 'listitem', class: 'ch-day' + (doneDays.has(i + 1) ? ' done' : i + 1 === day ? ' today' : i + 1 < day ? ' missed' : ''), 'aria-label': `${i + 1}. nap${doneDays.has(i + 1) ? ', kész' : ''}` }, String(i + 1))));
+  const grid = h('div', { class: 'ch-grid', role: 'list', 'aria-label': tr('A 30 nap') }, Array.from({ length: 30 }, (_, i) => h('span', { role: 'listitem', class: 'ch-day' + (doneDays.has(i + 1) ? ' done' : i + 1 === day ? ' today' : i + 1 < day ? ' missed' : ''), 'aria-label': tr('{p0}. nap{p1}', { p0: i + 1, p1: doneDays.has(i + 1) ? ', kész' : '' }) }, String(i + 1))));
   const finished = day > 30 || doneDays.size >= 30;
   return page(ch.name,
     h('p', { class: 'muted' }, finished ? tr('A 30 nap véget ért.') : tr('{p0}. nap a 30-ból · {p1} nap teljesítve', { p0: day, p1: doneDays.size })),
@@ -87,7 +88,7 @@ export async function challengeView() {
 
 /* ---- szezonális blokkok ---- */
 export async function blocksView() {
-  const blocks = await (await fetch(new URL('../../data/blocks.json', import.meta.url))).json();
+  const blocks = applyBlocks(await (await fetch(new URL('../../data/blocks.json', import.meta.url))).json(), D.content);
   const st = await kvGet('block', null);
   const R = Object.fromEntries(D.routines.map(r => [r.id, r]));
   if (st) {
@@ -111,7 +112,7 @@ export async function blocksView() {
 export async function blockProgress(routineId) {
   const st = await kvGet('block', null);
   if (!st) return;
-  const blocks = await (await fetch(new URL('../../data/blocks.json', import.meta.url))).json();
+  const blocks = applyBlocks(await (await fetch(new URL('../../data/blocks.json', import.meta.url))).json(), D.content);
   const b = blocks.blocks.find(x => x.id === st.id);
   if (b && b.routines.includes(routineId)) await kvSet('block', { ...st, done: (st.done || 0) + 1 });
 }

@@ -67,7 +67,7 @@ export function buildDashboard({ program = null, items = [], now = Date.now(), p
     nextAction,
     currentCycle: cycle,
     weeklyWorkouts: { completed: ww.n, goal: ww.goal, pct: ww.pct, unit: tr('edzés') },
-    weeklyCardio: { minutes: cw.minutes, equivalent: cw.equivalent, goal: cw.goal, pct: cw.pct, unit: 'perc' },
+    weeklyCardio: { minutes: cw.minutes, equivalent: cw.equivalent, goal: cw.goal, pct: cw.pct, unit: tr('perc') },
     weeklyLoad: thisWeek ? { sets: thisWeek.sets, reps: thisWeek.reps, seconds: thisWeek.seconds, externalKgReps: thisWeek.externalKgReps, logged: thisWeek.logged } : null,
     primaryGoal,
     assessmentDue,

@@ -39,7 +39,7 @@ export function trainingLoadCard(items, now = Date.now()) {
   if (!wk.some(w => w.workouts || w.cardioMinutes)) return card(h('h2', null, tr('Edzésterhelés')), h('p', { class: 'small muted' }, tr('Még nincs edzésed vagy kardiód az elmúlt 8 hétben. Az első edzés után itt hetente látod a sorozatokat, az ismétléseket és az időt.')));
   const cs = buildConsistencyStats(items, { weeks: 8, now, goal: weeklyGoal() });
   const anyLog = wk.some(w => w.logged), anyKg = wk.some(w => w.externalKgReps != null), anyRpe = wk.some(w => w.sessionLoad != null);
-  const head = [[tr('Hét')], [tr('Edzés')], [tr('Perc')], [tr('Sorozat')], [tr('Ismétlés')], [tr('Tartás (mp)')], ...(anyKg ? [['kg × ism.', tr('ismert külső súly × ismétlés')]] : []), ...(anyRpe ? [[tr('RPE × perc'), tr('érzett nehézség × edzésidő')]] : []), [tr('Kardió (perc)')]];
+  const head = [[tr('Hét')], [tr('Edzés')], [tr('Perc')], [tr('Sorozat')], [tr('Ismétlés')], [tr('Tartás (mp)')], ...(anyKg ? [[tr('kg × ism.'), tr('ismert külső súly × ismétlés')]] : []), ...(anyRpe ? [[tr('RPE × perc'), tr('érzett nehézség × edzésidő')]] : []), [tr('Kardió (perc)')]];
   const rows = wk.map(w => [fmtWeek(w.start), String(w.workouts), String(w.minutes), w.workouts ? String(w.sets) : '–', w.workouts ? String(w.reps) : '–', w.workouts ? String(w.seconds) : '–', ...(anyKg ? [kg(w.externalKgReps)] : []), ...(anyRpe ? [dash(w.sessionLoad)] : []), String(w.cardioMinutes)]);
   return card(h('h2', null, tr('Edzésterhelés (8 hét)')),
     bars(wk.map(w => w.workouts ? w.sets : null), wk.map(w => fmtWeek(w.start)), tr('Sorozatok hetente')),
@@ -59,8 +59,8 @@ export function exerciseTrendCard(items) {
     const p = buildExerciseProgress(items, id).slice(-8).reverse();
     const perSide = D.ex[id] && D.ex[id].perSide;
     clear(out).append(p.length ? table(tr('Gyakorlat trendje: ') + D.ex[id].name, [[tr('Dátum')], [tr('Sorozat')], [tr('Legjobb sorozat')], [tr('Összesen')], [tr('Max súly (kg)')], [tr('Forrás')]],
-      p.map(r => [fmtDate(r.date), String(r.sets), r.bestReps != null ? r.bestReps + ' ism.' : r.bestSeconds != null ? r.bestSeconds + ' mp' : '–',
-        r.totalReps != null ? r.totalReps + ' ism.' : r.totalSeconds != null ? r.totalSeconds + ' mp' : '–', dash(r.maxKg), r.source === 'log' ? tr('napló') : 'terv'])) : note(tr('Ehhez a gyakorlathoz nincs teljesített sorozat.'), 'small'),
+      p.map(r => [fmtDate(r.date), String(r.sets), r.bestReps != null ? r.bestReps + tr(' ism.') : r.bestSeconds != null ? r.bestSeconds + tr(' mp') : '–',
+        r.totalReps != null ? r.totalReps + tr(' ism.') : r.totalSeconds != null ? r.totalSeconds + tr(' mp') : '–', dash(r.maxKg), r.source === 'log' ? tr('napló') : 'terv'])) : note(tr('Ehhez a gyakorlathoz nincs teljesített sorozat.'), 'small'),
       perSide ? h('p', { class: 'small muted' }, tr('Oldalankénti gyakorlat: az ismétlésszám a két oldal együtt.')) : null);
   }
   draw(list[0].id);

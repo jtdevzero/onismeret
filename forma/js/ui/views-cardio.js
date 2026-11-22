@@ -23,7 +23,7 @@ export async function cardioView() {
   const mins = h('input', { type: 'number', inputMode: 'numeric', min: 5, max: 300, value: 30, id: 'cmin', oninput: () => { st.minutes = Number(mins.value); } });
   const list = h('div');
   const draw = all => clear(list).append(all.length ? h('ul', { class: 'rows' }, all.slice(0, 20).map(i => h('li', null,
-    h('span', { class: 'log-item' }, h('strong', null, `${TYPE[i.type] || 'Kardió'}, ${i.minutes} perc` + (i.km ? `, ${String(i.km).replace('.', ',')} km` : '')), h('span', { class: 'muted small' }, fmtDate(i.date) + (i.intensity === 'vigorous' ? tr(' · intenzív') : tr(' · közepes')))),
+    h('span', { class: 'log-item' }, h('strong', null, tr('{p0}, {p1} perc', { p0: TYPE[i.type] || 'Kardió', p1: i.minutes }) + (i.km ? `, ${String(i.km).replace('.', ',')} km` : '')), h('span', { class: 'muted small' }, fmtDate(i.date) + (i.intensity === 'vigorous' ? tr(' · intenzív') : tr(' · közepes')))),
     btn(tr('Törlés'), async () => { if (!confirm(tr('Törlöd ezt a bejegyzést?'))) return; await itemDelete(i.id); location.hash = '#/cardio'; dispatchEvent(new HashChangeEvent('hashchange')); }, 'small')))) : h('p', { class: 'muted' }, tr('Még nincs bejegyzés.')));
   draw(items);
   return page(tr('Állóképesség'),
@@ -31,7 +31,7 @@ export async function cardioView() {
     h('p', { class: 'muted' }, tr('A fittségi korodat leginkább ez javítja. Az erő- és mobilitásnapok mellé, külön alkalomként.')),
     card(h('h2', null, tr('E heti kardió')),
       h('div', { class: 'goal' }, h('progress', { max: 100, value: week.pct, 'aria-label': tr('Heti kardiócél: {p0}%', { p0: week.pct }) }),
-        h('p', null, h('strong', null, `${week.equivalent} / ${week.goal} perc`), h('span', { class: 'muted small' }, tr(' (az intenzív perc duplán számít, a WHO ajánlása szerint)')))),
+        h('p', null, h('strong', null, tr('{p0} / {p1} perc', { p0: week.equivalent, p1: week.goal })), h('span', { class: 'muted small' }, tr(' (az intenzív perc duplán számít, a WHO ajánlása szerint)')))),
       h('p', null, plan.text), plan.left ? h('p', { class: 'small muted' }, tr('Ezen a héten még {p0} perc van hátra.', { p0: plan.left })) : h('p', { class: 'small' }, tr('Megvan a heti cél. 🎉'))),
     card(h('h2', null, tr('Futóprogram nulláról 5 km-ig')), h('p', null, tr('9 hét, hetente 3 alkalom: séta–futás intervallumokkal jutsz el a 30 perc folyamatos futásig. Hangosan vezet, és magától naplóz.')), h('div', { class: 'row' }, link('#/run', tr('Futóprogram'), 'btn primary'))),
     card(h('h2', null, tr('A pulzustartományaid')),

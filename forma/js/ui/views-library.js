@@ -8,7 +8,7 @@ import { tr } from './i18n.js';
 const reload = hash => { location.hash = hash; dispatchEvent(new HashChangeEvent('hashchange')); };
 const getFavs = async () => new Set((await kvGet('favs', [])) || []);
 export const getCustom = async () => (await kvGet('custom', [])) || [];
-const doseText = d => (d.reps ? d.reps + ' ism.' : d.seconds + ' mp');
+const doseText = d => (d.reps ? d.reps + tr(' ism.') : d.seconds + tr(' mp'));
 
 export async function libraryView() {
   const favs = await getFavs(), all = D.exercises.exercises;
@@ -66,7 +66,7 @@ export async function customView(arg) {
       upd();
     } });
     return h('li', { class: 'pick' }, h('label', { class: 'check' }, box, h('span', null, (favs.has(e.id) ? '★ ' : '') + e.name)),
-      h('span', { class: 'pick-dose' }, sets, h('span', { class: 'small muted' }, '×'), amt, h('span', { class: 'small muted' }, e.dose.reps ? 'ism.' : 'mp')));
+      h('span', { class: 'pick-dose' }, sets, h('span', { class: 'small muted' }, '×'), amt, h('span', { class: 'small muted' }, e.dose.reps ? tr('ism.') : tr('mp'))));
   });
   upd();
   return page(editing ? tr('Saját edzés szerkesztése') : tr('Új saját edzés'),

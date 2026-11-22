@@ -537,7 +537,7 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
 
   await step('nyelv: angolra váltva a menü és a kezdőlap angol, a html lang is; vissza magyarra', async () => {
     await go(page, '#/settings');
-    await Promise.all([page.waitForNavigation(), page.getByText('English (béta)').click()]);
+    await Promise.all([page.waitForNavigation(), page.getByText('English', { exact: true }).click()]);
     await page.waitForFunction(() => document.documentElement.dataset.ready === '1');
     await page.waitForFunction(() => document.documentElement.lang === 'en');
     await page.evaluate(async () => { (await import('./js/ui/widgets.js')).setTick(15); });

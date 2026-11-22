@@ -1,6 +1,7 @@
 /* A tartalom (tesztek, normák, gyakorlatok, ábrák) betöltése és a közös állapot. */
 import { setLocale, getLocale, tr } from './i18n.js';
 import { kvGet, kvSet } from './store.js';
+import { applyContent } from '../core/content-i18n.js';
 
 export const D = { tests: null, norms: null, exercises: null, routines: [], figures: {}, ex: {}, test: {}, area: {} };
 /* beállítások: { accepted, profile: { age, sex }, parq: { kérdés: igen/nem }, lowImpact, reminder: { time } } */
@@ -19,6 +20,8 @@ export async function loadData() {
   D.figures = figures.figures;
   D.ex = Object.fromEntries(D.exercises.exercises.map(e => [e.id, e]));
   D.test = Object.fromEntries(D.tests.tests.map(t => [t.id, t]));
+  /* angolul a tartalmi szövegek az angol rétegből (azonosító szerint); hiba esetén a magyar marad */
+  if (getLocale() === 'en') { try { D.content = await load('content-en.json'); applyContent({ exercises: D.exercises, tests: D.tests, routines: D.routines, figures: D.figures }, D.content); } catch { D.content = null; } }
   D.area = Object.fromEntries(D.tests.areas.map(a => [a.id, a]));
   S.settings = await kvGet('settings', null);
 }
