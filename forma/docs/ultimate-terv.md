@@ -125,6 +125,12 @@ Hatókör: kizárólag `forma/`. Engedélyezett: U0 és U1, a `claude/elegant-ha
 - A főágban már szereplő angol i18n **béta**, nem teljes felületfordítás; az új időszaki analitika jelenleg magyarul jelenik meg. A teljes kétnyelvűség külön backlogtétel.
 - A böngészőtesztek környezeti korlátja, a valódi mobil QA és a kamera valós videós validáció nem oldódott meg: a release továbbra is **NO-GO**.
 
+## Phase 2 – browser recovery regresszió (CI-re vár)
+
+- `tests/browser.cjs`: új izolált böngészős eset a félbehagyott edzés `workoutDraft` mentésére, az újratöltés utáni felhasználó által jóváhagyott folytatásra és az egyszeri végleges naplómentésre.
+- A teszt része a stabil edzésazonosító, a javított ismétlésszám és az atomi drafttörlés ellenőrzése; csak tényleges GitHub Actions futás után minősíthető sikeresnek.
+- Helyben: build, 151/151 unit teszt és `node --check forma/tests/browser.cjs` sikeres. A valódi böngészős futás még nem igazolt.
+
 ## Phase 2 – további megbízhatóság és coach
 
 - A helyi coach csak az utolsó 21 nap edzésnaplójára alapozhat új súlyemelési javaslatot, régi adatokból nem. Az adatfrissességi kategória a képernyőn megjelenik, a javaslat továbbra is csak jóváhagyással alkalmazható.

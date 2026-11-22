@@ -521,6 +521,67 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     assert.ok(vals.includes(planned + 2) || vals.includes((planned + 2) * 2), 'a javított érték az előtöltésben: ' + vals.join(','));
   });
 
+  await step('félbehagyott edzés: checkpoint, újratöltés, folytatás és egyszeri végleges mentés', async () => {
+    const seed = await page.evaluate(async () => {
+      const store = await import('./js/ui/store.js');
+      return { settings: await store.kvGet('settings'), program: await store.kvGet('program') };
+    });
+    const context = await browser.newContext({ ...devices['Pixel 7'] });
+    const p = await context.newPage();
+    p.on('dialog', d => d.accept());
+    try {
+      await p.goto(base); await p.waitForFunction(() => document.documentElement.dataset.ready === '1');
+      await p.evaluate(async data => {
+        const store = await import('./js/ui/store.js');
+        await store.kvSet('settings', data.settings);
+        await store.kvSet('program', data.program);
+      }, seed);
+      await p.reload();
+      await p.waitForFunction(() => document.documentElement.dataset.ready === '1');
+      await p.goto(base + '#/session/strengthA');
+      await p.waitForFunction(() => document.documentElement.dataset.view === '#/session/strengthA');
+      await p.waitForFunction(async () => !!(await (await import('./js/ui/store.js')).kvGet('workoutDraft')));
+      const start = await p.evaluate(async () => (await (await import('./js/ui/store.js')).kvGet('workoutDraft')));
+      assert.ok(start && start.workoutId && start.at === 0);
+      for (let i = 0; i < 30; i++) {
+        if (await p.getByRole('button', { name: 'Eggyel több ismétlés' }).count()) break;
+        if (await p.getByRole('button', { name: 'Pihenő kihagyása' }).count()) await p.getByRole('button', { name: 'Pihenő kihagyása' }).click();
+        else await p.getByRole('button', { name: 'Kész, tovább' }).click();
+      }
+      await p.getByRole('button', { name: 'Eggyel több ismétlés' }).click();
+      const state = await p.evaluate(async () => {
+        const store = await import('./js/ui/store.js');
+        for (let i = 0; i < 50; i++) {
+          const d = await store.kvGet('workoutDraft');
+          if (d?.steps[d.at]?.actualReps != null) return d;
+          await new Promise(r => setTimeout(r, 20));
+        }
+        return null;
+      });
+      assert.ok(state && state.at >= 0, 'a módosított sorozat checkpointja megmarad');
+      await p.reload();
+      await p.waitForFunction(() => document.documentElement.dataset.ready === '1');
+      await p.waitForFunction(() => document.documentElement.dataset.view === '#/session/strengthA');
+      const resumed = await p.evaluate(async () => (await (await import('./js/ui/store.js')).kvGet('workoutDraft')));
+      assert.equal(resumed.workoutId, state.workoutId);
+      assert.equal(resumed.at, state.at);
+      assert.equal(resumed.steps[state.at].actualReps, state.steps[state.at].actualReps);
+      await p.getByRole('button', { name: 'Befejezés most' }).click();
+      await p.waitForFunction(() => /Edzés kész/.test(document.querySelector('#main')?.innerText || ''));
+      const done = await p.evaluate(async id => {
+        const store = await import('./js/ui/store.js');
+        return { record: await store.itemGet(id), draft: await store.kvGet('workoutDraft'), count: (await store.itemsAll('workout')).filter(x => x.id === id).length };
+      }, state.workoutId);
+      assert.ok(done.record && done.record.partial);
+      assert.equal(done.draft, null);
+      assert.equal(done.count, 1);
+      await p.reload();
+      await p.waitForFunction(() => document.documentElement.dataset.ready === '1');
+      const after = await p.evaluate(async id => (await (await import('./js/ui/store.js')).itemsAll('workout')).filter(x => x.id === id).length, state.workoutId);
+      assert.equal(after, 1);
+    } finally { await context.close(); }
+  });
+
   await step('mentés-emlékeztető: a kezdőlapon szól, fájlba mentés után eltűnik; dátumos fájlnév', async () => {
     await page.evaluate(async () => { const st = await import('./js/ui/store.js'); await st.kvSet('lastBackup', null); await st.kvSet('backupSnooze', 0); });
     await go(page, '#/');
