@@ -151,6 +151,17 @@ test('tervezett napló: az edzés közben rögzített tényleges érték felül�
   ]);
 });
 
+test('edzés közbeni súly és RIR sorozatonként felülírja a tervértéket', () => {
+  const steps = [
+    { part: 'main', exercise: 'push_wall', reps: 8, actualReps: 7, weightKg: 12.5, rir: 2 },
+    { part: 'main', exercise: 'push_wall', reps: 8, actualReps: 6, weightKg: 14, rir: 1 },
+  ];
+  assert.deepEqual(plannedLog(steps, steps.length, { push_wall: 10 }), [{ ex: 'push_wall', sets: [
+    { reps: 7, weightKg: 12.5, rir: 2, done: true },
+    { reps: 6, weightKg: 14, rir: 1, done: true },
+  ] }]);
+});
+
 test('lezárt edzés összesítése: tényleges érték, páros mód és félbehagyott lépéshatár', () => {
   const steps = [
     { exercise: 'march', part: 'warmup', reps: 12 },

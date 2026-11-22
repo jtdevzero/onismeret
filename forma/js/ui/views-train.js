@@ -347,7 +347,10 @@ export async function sessionView(key, onCleanup) {
       values.program = { ...res.state, done: doneCount, lastDone: endedAt };
       item = { id: workoutId, kind: 'workout', date: endedAt, key, minutes, steps: total, partial, ratings, changes, light, done, partner: partner.checked || undefined };
     }
-    pending = { values, item, changes, minutes, logBase: plannedLog(steps, partial ? at : steps.length, (values.program || prog).loads || {}) };
+    const logBase = plannedLog(steps, partial ? at : steps.length, (values.program || prog).loads || {});
+    const log = cleanLog(logBase, Object.keys(D.ex));
+    if (log) { item.schemaVersion = WORKOUT_SCHEMA; item.log = log; item.done = mergeDone(item.done, log); }
+    pending = { values, item, changes, minutes, logBase };
     bar.value = total; count.textContent = tr('{p0} / {p1} lépés', { p0: total, p1: total });
     clear(stage).append(card(h('p', { role: 'status' }, tr('Mentés…'))));
     await save();
@@ -396,7 +399,7 @@ export async function sessionView(key, onCleanup) {
   };
   async function swapTo(blockIdx, n, persist) {
     const d = doseFor(n, session.week.cycleWeek, session.week.deload);
-    for (const s of steps) if (s.block === blockIdx && s.type !== 'rest') { s.exercise = n.id; s.rate = undefined; if (s.reps) s.reps = d.reps; if (s.seconds) s.seconds = d.seconds; s.actualReps = undefined; }
+    for (const s of steps) if (s.block === blockIdx && s.type !== 'rest') { s.exercise = n.id; s.rate = undefined; if (s.reps) s.reps = d.reps; if (s.seconds) s.seconds = d.seconds; s.actualReps = undefined; s.actualSeconds = undefined; s.weightKg = undefined; s.rir = undefined; }
     /* tartós csere: a gyakorlatsor szintje is átáll (naplózva, visszaállítható a Program oldalon); ma nem kér értékelést */
     if (persist && !session.free && n.ladder) {
       try {
@@ -464,6 +467,15 @@ export async function sessionView(key, onCleanup) {
       : h('p', { class: 'next-up' }, tr('Ez az utolsó lépés.'));
     const instructions = (...extra) => h('details', { class: 'workout-details' }, h('summary', null, tr('Instrukciók és gyakorlatcsere')), points, swap, extra, more);
     const focus = (...kids) => h('section', { class: 'card workout-focus' }, h('div', { class: 'workout-heading' }, head), priorLine, kids);
+    const setCapture = st.part === 'main' && (st.person || 1) === 1 ? h('div', { class: 'row workout-set-capture' },
+      ex.equipment === 'dumbbell' ? h('label', { class: 'field small' }, tr('Súly (kg, egy súlyzó)'),
+        h('input', { type: 'number', inputMode: 'decimal', min: 0, max: 300, step: 0.5,
+          value: st.weightKg ?? (prog.loads || {})[ex.id] ?? '',
+          onchange: e => { const v = e.target.value.trim(); if (v !== '' && (!Number.isFinite(Number(v)) || Number(v) < 0 || Number(v) > 300)) { toast(tr('Érvénytelen súlyérték.')); return; } st.weightKg = v === '' ? undefined : Number(v); checkpoint(); } })) : null,
+      h('label', { class: 'field small' }, tr('RIR (maradt ismétlés)'),
+        h('select', { onchange: e => { st.rir = e.target.value === '' ? undefined : Number(e.target.value); checkpoint(); } },
+          h('option', { value: '' }, tr('Nem adom meg')),
+          Array.from({ length: 6 }, (_, i) => h('option', { value: String(i), selected: st.rir === i }, i === 5 ? tr('5 vagy több') : String(i))))) : null;
     if (st.seconds) {
       left = st.seconds; draw();
       let startedTimer = false;
@@ -473,7 +485,7 @@ export async function sessionView(key, onCleanup) {
       clear(stage).append(focus(st.side ? h('p', { class: 'badge' }, SIDE[st.side]) : null,
         h('div', { class: 'workout-visual' }, figureAnim(D.figures[ex.figure], { compact: true }), h('div', { class: 'workout-readout' }, ring.el, h('p', { class: 'workout-unit' }, tr('másodperc')))),
         h('p', { class: 'workout-cue' }, ex.points[0]),
-        h('div', { class: 'row workout-actions' }, go, pause, btn(tr('Kész, tovább'), () => { if (startedTimer && st.part === 'main') st.actualSeconds = Math.max(0, st.seconds - left); next(); })), nextHint, instructions()), nav);
+        setCapture, h('div', { class: 'row workout-actions' }, go, pause, btn(tr('Kész, tovább'), () => { if (startedTimer && st.part === 'main') st.actualSeconds = Math.max(0, st.seconds - left); next(); })), nextHint, instructions()), nav);
       speak(ex.name + (st.side ? ', ' + SIDE[st.side] : '') + ', ' + st.seconds + tr(' másodperc'), voice.checked);
     } else {
       /* a ténylegesen elvégzett ismétlés edzés közben is javítható (a sorozatnaplóba kerül) */
@@ -488,7 +500,7 @@ export async function sessionView(key, onCleanup) {
         h('div', { class: 'workout-visual' }, figureAnim(D.figures[ex.figure], { compact: true }), h('div', { class: 'workout-readout' }, repsClock,
           h('p', { class: 'workout-unit' }, tr('ismétlés') + (st.side === 'both' ? tr(' oldalanként') : '')), adjust)),
         h('p', { class: 'workout-cue' }, ex.points[0]),
-        h('div', { class: 'row workout-actions' }, btn(tr('Kész, tovább'), next, 'primary')), nextHint,
+        setCapture, h('div', { class: 'row workout-actions' }, btn(tr('Kész, tovább'), next, 'primary')), nextHint,
         instructions(live ? h('details', { class: 'live-box' }, h('summary', null, tr('Számolás kamerával')), live.el) : null)), nav);
       speak(ex.name + ', ' + st.reps + tr(' ismétlés') + (st.side === 'both' ? tr(' oldalanként') : '') + (S.settings.voiceMode ? '. ' + ex.points.join('. ') : ''), voice.checked);
       /* hangos módban az ismétlések becsült ideje után magától továbblép */

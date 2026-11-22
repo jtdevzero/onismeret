@@ -82,6 +82,14 @@ Kizárólag `forma/`, a Phase 2 fejlesztői változatára épülve. A Phase 2 va
 - Az edzés végén a UI minden felmerülő szintváltáshoz külön megerősítést kér az aktuális és a javasolt gyakorlattal, az indokkal és a bizonytalansággal. A javaslat nem mért biomechanikai tény. A magyar/angol magyarázó feliratok és a kapcsolódó szövegek is módosultak.
 - Célzott regresszió: `tests/core.test.mjs` jóváhagyott/elutasított/nem javasolt szintváltás, eredeti állapot változatlansága. A teljes Phase 3 továbbra sem kiadáskész; az edzésmentés valódi böngészős jóváhagyási útját is ellenőrizni kell.
 
+### P3-11b – sorozatonkénti súly és RIR már edzés közben
+
+- A vezetett edzés fő sorozatánál az első személy súlyzós gyakorlataihoz külön **kg (egy kézisúlyzó)** mező, minden fő sorozathoz **RIR** mező került. Mindkettő opcionális, a változtatás azonnal bekerül a helyi edzés-checkpointba.
+- A v3 mentésfájl a checkpoint új `weightKg` (0–300) és `rir` (egész 0–10) mezőit ellenőrzött módon őrzi meg; hibás érték importálása elutasított. A meglévő v1/v2 fájlok és a korábbi checkpointok továbbra is olvashatók.
+- Az edzés végén a fő sorozatok `log` adata az atomikus edzésmentés része, így a sorozatonként már rögzített értékek nem függnek a későbbi, opcionális naplószerkesztés megnyitásától. A szerkesztő továbbra is módosíthatja őket. Gyakorlatcserekor a régi gyakorlat súly/RIR és tényleges teljesítmény értékei törlődnek a még meg nem erősített lépésekből.
+- `tests/schema.test.mjs` és `tests/workout-draft.test.mjs`: több sorozat súly/RIR, terv felülírása, mentésfájl kompatibilitás és tartománykorlátok. `styles.css`: minimum 48 px magas mezők és rugalmas mobil/fekvő elrendezés; angol feliratok pótlása.
+- Helyi build és **173/173 unit PASS** (2026-11-22). **Valós Android/iOS UI, offline IndexedDB és böngészős e2e nem igazolt**, a P3-10 akadály miatt továbbra is NO-GO.
+
 ## P3-02 – online generatív coach biztonsági architektúra (csak terv)
 
 1. **Alapbeállítás:** offline szabálymotor, nincs AI-kérés, API-kulcs vagy háttérszinkron.

@@ -1,5 +1,9 @@
 /* Angol fordítások. Kulcs: a magyar forrásszöveg (pontosan). Generált? Nem: kézzel szerkesztett szótár; a teszt jelzi a hiányzó kulcsokat. */
 export default {
+ "Súly (kg, egy súlyzó)": "Weight (kg, one dumbbell)",
+ "RIR (maradt ismétlés)": "RIR (reps in reserve)",
+ "5 vagy több": "5 or more",
+ "Érvénytelen súlyérték.": "Invalid weight value.",
  "3 erőnap, 2 gyorsasági nap és 2 mobilitásnap. Minden edzés napi mobilitással kezdődik. Az ismétlésszám hétről hétre nő; kétszeri könnyű értékelés után a nehezebb változathoz külön jóváhagyást kérünk.": "3 strength, 2 speed and 2 mobility days. Every workout starts with daily mobility. Repetitions increase week by week; a harder variant requires your approval after two easy ratings.",
  "Az utolsó kör alapján. Két azonos értékelés után szintváltást javasolhatunk, amelyet külön jóvá kell hagynod.": "Based on the last round. After two matching ratings, we may suggest a level change that you must approve separately.",
  "Edzésprogram-javaslat (jóváhagyás szükséges): ": "Training programme suggestion (approval required): ",

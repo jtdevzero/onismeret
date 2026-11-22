@@ -653,6 +653,9 @@ details.more-group[open] > summary::after { content: "▴"; }
 .workout-cue { margin: 10px 0; font-size: .9rem; line-height: 1.35; }
 .workout-actions { margin-top: 8px; }
 .workout-actions { display: flex; flex-wrap: wrap; gap: 8px; min-width: 0; }
+.workout-set-capture { display: flex; flex-wrap: wrap; gap: 8px 12px; min-width: 0; }
+.workout-set-capture .field { flex: 1 1 140px; min-width: 0; margin-bottom: 4px; }
+.workout-set-capture input, .workout-set-capture select { min-height: 48px; }
 .workout-actions .btn { flex: 1 1 130px; min-width: 0; min-height: 56px; }
 .session-page .workout-title, .session-page .workout-cue { overflow-wrap: anywhere; }
 .next-preview { display: flex; align-items: center; gap: 12px; border-top: 1px solid var(--line); margin-top: 14px; padding-top: 10px; text-align: left; }
@@ -693,7 +696,7 @@ details.more-group[open] > summary::after { content: "▴"; }
   .workout-focus > .workout-visual { grid-column: 1; grid-row: 3 / span 4; align-self: start; }
   .workout-visual .fig-live .fig { height: 125px; }
   .workout-readout .ring { max-width: 118px; }
-  .workout-focus > .workout-cue, .workout-focus > .workout-actions, .workout-focus > .next-preview, .workout-focus > .workout-details { grid-column: 2; }
+  .workout-focus > .workout-cue, .workout-focus > .workout-set-capture, .workout-focus > .workout-actions, .workout-focus > .next-preview, .workout-focus > .workout-details { grid-column: 2; }
   .workout-rest > .workout-kicker { grid-column: 1 / -1; }
 }
 

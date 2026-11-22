@@ -25,7 +25,7 @@ export function backupDraft(d) {
   }
   const steps = [];
   for (const s of d.steps) {
-    const keys = ['type', 'exercise', 'set', 'sets', 'block', 'part', 'seconds', 'reps', 'side', 'rate', 'person', 'actualReps', 'actualSeconds'];
+    const keys = ['type', 'exercise', 'set', 'sets', 'block', 'part', 'seconds', 'reps', 'side', 'rate', 'person', 'actualReps', 'actualSeconds', 'weightKg', 'rir'];
     if (Object.keys(s).some(k => !keys.includes(k))) return null;
     if (s.type !== undefined && s.type !== 'rest') return null;
     if (s.exercise !== undefined && (!bounded(s.exercise, 40) || !/^[a-z0-9_]+$/.test(s.exercise))) return null;
@@ -33,6 +33,8 @@ export function backupDraft(d) {
     if (s.side !== undefined && !['left', 'right', 'both'].includes(s.side)) return null;
     if (s.rate !== undefined && (!bounded(s.rate, 40) || !/^[a-z_]+$/.test(s.rate))) return null;
     if (['set', 'sets', 'block', 'seconds', 'reps', 'person', 'actualReps', 'actualSeconds'].some(k => s[k] !== undefined && !finite(s[k], 0, 10000))) return null;
+    if (s.weightKg !== undefined && !finite(s.weightKg, 0, 300)) return null;
+    if (s.rir !== undefined && (!Number.isInteger(s.rir) || !finite(s.rir, 0, 10))) return null;
     steps.push(Object.fromEntries(keys.filter(k => s[k] !== undefined).map(k => [k, s[k]])));
   }
   return { version: DRAFT_VERSION, key: d.key, workoutId: d.workoutId, started: d.started,

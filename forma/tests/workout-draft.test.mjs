@@ -27,6 +27,18 @@ test('v3 fájlmentés megőrzi a félbehagyott edzés lépéseit, a v2 továbbra
   assert.equal(parseBackup(JSON.stringify({ ...file, version: 2 }), ctx).data.workoutDraft, null);
 });
 
+test('sorozatonkénti súly és RIR checkpoint export/import után is megmarad', () => {
+  const d = draft(); d.steps[0].weightKg = 12.5; d.steps[0].rir = 2;
+  const ctx = { ladders: [], ratingKeys: [], sessionKeys: ['strengthA'], exerciseIds: ['pushup'], testIds: [] };
+  const parsed = parseBackup(JSON.stringify({ app: 'forma', version: BACKUP_VERSION, items: [], workoutDraft: d }), ctx);
+  assert.equal(parsed.ok, true);
+  assert.equal(parsed.data.workoutDraft.steps[0].weightKg, 12.5);
+  assert.equal(parsed.data.workoutDraft.steps[0].rir, 2);
+  for (const bad of [{ weightKg: -1 }, { weightKg: 301 }, { rir: 1.5 }, { rir: 11 }]) {
+    assert.equal(backupDraft({ ...d, steps: [{ ...d.steps[0], ...bad }, d.steps[1]] }), null);
+  }
+});
+
 test('sérült v3 checkpointnál az egész import elutasított, idegen mezők nem kerülnek át', () => {
   const ctx = { ladders: [], ratingKeys: [], sessionKeys: ['strengthA'], exerciseIds: ['pushup'], testIds: [] };
   for (const bad of [{ ...draft(), at: 99 }, { ...draft(), steps: [{ exercise: 'pushup', reps: -8 }] },

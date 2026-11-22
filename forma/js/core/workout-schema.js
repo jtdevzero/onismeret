@@ -60,7 +60,8 @@ export function plannedLog(steps, upTo = steps.length, loads = {}) {
     const factor = s.side === 'both' ? 2 : 1;
     /* edzés közben rögzített tényleges érték, ha van (actualReps oldalanként, actualSeconds), különben a tervezett */
     const reps = Number.isFinite(s.actualReps) ? s.actualReps : s.reps, secs = Number.isFinite(s.actualSeconds) ? s.actualSeconds : s.seconds;
-    e.sets.push(clean({ reps: s.reps ? reps * factor : undefined, seconds: s.seconds ? secs : undefined, weightKg: num(loads[s.exercise], 0, 300), done: true }));
+    e.sets.push(clean({ reps: s.reps ? reps * factor : undefined, seconds: s.seconds ? secs : undefined,
+      weightKg: num(s.weightKg, 0, 300) ?? num(loads[s.exercise], 0, 300), rir: num(s.rir, 0, 10), done: true }));
     map.set(s.exercise, e);
   }
   return [...map.values()];
