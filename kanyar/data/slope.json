@@ -1,0 +1,26 @@
+{
+  "note": "Pályanapi bemelegítés és napló. A bemelegítő lépéseket edző még nem lektorálta.",
+  "warmup": {
+    "ski": [
+      { "name": "Helyben járás karlendítéssel", "seconds": 45, "cue": "Lépj nagyokat a lécen, lendítsd a karod. Melegedj át." },
+      { "name": "Rugózás térdből és bokából", "seconds": 30, "cue": "A sípcsontod nyomja a cipő nyelvét, aztán engedj. Lassan, ritmusra." },
+      { "name": "Súlyáthelyezés", "seconds": 40, "cue": "Előre–hátra, aztán jobbra–balra. Érezd, hol van a talpad közepe." },
+      { "name": "Csípőkörzés", "seconds": 30, "cue": "Támaszkodj a botokra, és nagy köröket írj le a csípőddel, mindkét irányba." },
+      { "name": "Lábemelés oldalra", "seconds": 40, "cue": "Egyik lábon állva emeld oldalra a másik lécet, aztán válts. A törzsed maradjon egyenes." },
+      { "name": "Törzsfordítás bottal", "seconds": 30, "cue": "Fektesd a botot a válladra, és fordulj lassan jobbra, aztán balra. A csípőd előre néz." },
+      { "name": "Karkörzés", "seconds": 30, "cue": "Nagy körök előre, aztán hátra. Lazán." }
+    ],
+    "snowboard": [
+      { "name": "Helyben járás karlendítéssel", "seconds": 45, "cue": "A deszka mellett, kicsatolt lábbal. Melegedj át." },
+      { "name": "Lassú guggolás", "seconds": 30, "cue": "Tíz lassú guggolás, a térd a lábujjak irányába néz." },
+      { "name": "Bokakörzés és lábujjhegy–sarok", "seconds": 40, "cue": "Körözz a bokáddal, aztán billegj lábujjhegyről sarokra. Ez kell az élváltáshoz." },
+      { "name": "Csípőkörzés", "seconds": 30, "cue": "Nagy körök a csípőddel, mindkét irányba." },
+      { "name": "Kitörés váltott lábbal", "seconds": 40, "cue": "Lassú kitörések, a hátsó térd majdnem a hóig ér." },
+      { "name": "Törzsfordítás", "seconds": 30, "cue": "Lazán lógó karral fordulj jobbra és balra. A deszkán így vezeted a kanyart." },
+      { "name": "Csukló- és karkörzés", "seconds": 30, "cue": "Esésnél a csukló sérül a leggyakrabban: körözz vele, aztán nagy karkörzés." }
+    ]
+  },
+  "snow": ["Porhó", "Puha, pályás", "Kemény, tömör", "Jeges", "Latyakos"],
+  "visibility": ["Jó", "Közepes", "Rossz (köd vagy hóesés)"],
+  "tired": ["Friss", "Kicsit fáradt", "Fáradt", "Nagyon fáradt", "Kimerült"]
+}

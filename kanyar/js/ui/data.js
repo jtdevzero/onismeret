@@ -1,7 +1,7 @@
 /* A tartalom (gyakorlatok, leckék, hibakatalógus) betöltése és a közös állapot. */
 import { kvGet, kvSet } from './store.js';
 
-export const D = { exercises: null, lessons: null, faults: null, figures: {}, ex: {}, lesson: {} };
+export const D = { exercises: null, lessons: null, faults: null, figures: {}, slope: null, safety: null, ex: {}, lesson: {} };
 export const S = { settings: null }; /* beállítások: { sport, level, stance, health: { pain }, accepted, ai: { url, code } } */
 
 const DATA = new URL('../../data/', import.meta.url);
@@ -12,7 +12,7 @@ async function load(name) {
 }
 export async function loadData() {
   let figures;
-  [D.exercises, D.lessons, D.faults, figures] = await Promise.all([load('exercises.json'), load('lessons.json'), load('faults.json'), load('figures.json')]);
+  [D.exercises, D.lessons, D.faults, figures, D.slope, D.safety] = await Promise.all([load('exercises.json'), load('lessons.json'), load('faults.json'), load('figures.json'), load('slope.json'), load('safety.json')]);
   D.figures = figures.figures;
   D.ex = Object.fromEntries(D.exercises.exercises.map(e => [e.id, e]));
   D.lesson = Object.fromEntries(D.lessons.lessons.map(l => [l.id, l]));

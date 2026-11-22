@@ -239,6 +239,16 @@ const go = async (page, hash) => { await page.evaluate(h => { if (location.hash 
     }
     assert.ok(sawRest, 'volt pihenő a következő gyakorlat nevével');
     assert.ok(sawSide, 'az oldalankénti, időre menő gyakorlat külön lépés oldalanként');
+    assert.match(await text(), /Milyen volt\?/);
+    await shot('workout-feel');
+    const first = page.locator('fieldset.feel').first();
+    const exName = (await first.locator('legend').textContent()).trim();
+    await first.getByText('Könnyű', { exact: true }).click();
+    await page.getByRole('button', { name: 'Mentés', exact: true }).click();
+    await page.getByText(/Elmentve\. A következő edzéseken/).waitFor();
+    await go(page, '#/program');
+    const blocks = await page.locator('ol.blocks li').allTextContents();
+    assert.ok(blocks.some(b => b.includes(exName) && /emelve/.test(b)), 'a könnyűnek jelölt gyakorlat adagja emelve: ' + exName);
     await go(page, '#/prep');
     assert.match(await text(), /2 \/ 18 edzés kész/);
     await go(page, '#/log');
@@ -358,6 +368,61 @@ const go = async (page, hash) => { await page.evaluate(h => { if (location.hash 
     if (SHOTS) fs.copyFileSync(await dl.path(), path.join(SHOTS, 'share-card.png'));
   });
 
+  await step('pályanap: vezetett bemelegítés, napló mentése és szerkesztése, a nap elemzései', async () => {
+    await page.evaluate(async () => { const w = await import('./js/ui/widgets.js'); w.setRunner({ tick: 2 }); });
+    await go(page, '#/');
+    await page.locator('a.tile[href="#/slope"]').click();
+    await shown(page, '#/slope');
+    let t = await text();
+    assert.match(t, /Bemelegítés sícipőben/);
+    assert.match(t, /Mai elemzések[\s\S]*Hátraülsz/i, 'a ma készült elemzés megjelenik');
+    await page.getByRole('button', { name: 'Bemelegítés indítása' }).click();
+    await page.waitForFunction(() => /Kész a bemelegítés/i.test(document.getElementById('main').innerText), null, { timeout: 15000 });
+    await page.evaluate(async () => { const w = await import('./js/ui/widgets.js'); w.setRunner({ tick: 1000 }); });
+    await page.getByText('Kemény, tömör', { exact: true }).click();
+    await page.getByText('Jó', { exact: true }).click();
+    await page.getByText('Nagyon fáradt', { exact: true }).click();
+    await page.getByLabel('Jegyzet').fill('<b>élvezet</b> a piroson');
+    await page.getByRole('button', { name: 'Mentés', exact: true }).click();
+    await page.getByText(/Fáradtan nő a sérülés kockázata/).waitFor();
+    await shot('slope');
+    await go(page, '#/slope');
+    assert.match(await text(), /Mai napló \(szerkesztés\)/);
+    assert.equal(await page.getByLabel('Jegyzet').inputValue(), '<b>élvezet</b> a piroson');
+    await go(page, '#/log');
+    t = await text();
+    assert.match(t, /Pályanap · [\s\S]*Hó: kemény, tömör · látás: jó · nagyon fáradt · \d+ elemzés/);
+    assert.match(t, /<b>élvezet<\/b> a piroson/, 'a jegyzet szövegként jelenik meg');
+    assert.equal(await page.locator('.log b').count(), 0, 'a jegyzetből nem lesz HTML');
+  });
+
+  await step('biztonság: szabályok, kvíz azonnali visszajelzéssel; snowboard beállítás-segéd', async () => {
+    await go(page, '#/');
+    await page.locator('a.tile[href="#/safety"]').click();
+    await shown(page, '#/safety');
+    let t = await text();
+    assert.match(t, /A pálya szabályai[\s\S]*Az elöl haladónak elsőbbsége van/);
+    assert.match(t, /Pályán kívül[\s\S]*lavinatanfolyam/);
+    await page.getByText('Neked, mert hátulról érkezel', { exact: true }).click();
+    await page.getByText('Jó válasz', { exact: true }).first().waitFor();
+    await page.getByText('Csak balról', { exact: true }).click();
+    assert.match(await text(), /Nem ez a jó válasz[\s\S]*bőséges távolsággal|bőséges távolsággal[\s\S]*Nem ez a jó válasz/);
+    assert.match(await text(), /2 \/ 6 kérdés megválaszolva/);
+    await shot('safety');
+    await go(page, '#/stance');
+    await page.getByRole('button', { name: 'Kiszámolom' }).click();
+    assert.match(await text(), /Add meg a testmagasságod/);
+    await page.getByLabel('Testmagasság (cm)').fill('175');
+    await page.getByLabel('Cipőméret, EU (nem kötelező)').fill('46');
+    await page.getByText('Park és freestyle', { exact: true }).click();
+    await page.getByRole('button', { name: 'Kiszámolom' }).click();
+    t = await text();
+    assert.match(t, /52 cm/);
+    assert.match(t, /\+15°[\s\S]*−15°/);
+    assert.match(t, /széles \(wide\) deszka/);
+    await shot('stance');
+  });
+
   await step('mentés fájlba: a belépőkód nem kerül bele', async () => {
     await go(page, '#/settings');
     const [dl] = await Promise.all([page.waitForEvent('download'), page.getByRole('button', { name: 'Mentés fájlba' }).click()]);
@@ -371,7 +436,7 @@ const go = async (page, hash) => { await page.evaluate(h => { if (location.hash 
     const axe = fs.readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
     const snowId = await page.evaluate(async () => { const st = await import('./js/ui/store.js'); return (await st.itemsAll()).find(i => i.kind === 'snow').id; });
     const found = [];
-    for (const hash of ['#/', '#/prep', '#/program', '#/session/2-0', '#/ex/squat', '#/snow', '#/a/' + snowId, '#/day', '#/learn', '#/l/ski_1_stance', '#/log', '#/settings', '#/start']) {
+    for (const hash of ['#/', '#/prep', '#/program', '#/session/2-0', '#/ex/squat', '#/snow', '#/a/' + snowId, '#/day', '#/slope', '#/safety', '#/stance', '#/learn', '#/l/ski_1_stance', '#/log', '#/settings', '#/start']) {
       await go(page, hash);
       await page.evaluate(src => { if (!window.axe) (0, eval)(src); }, axe).catch(() => {});
       if (!(await page.evaluate(() => !!window.axe))) await page.addScriptTag({ content: axe }).catch(() => {});

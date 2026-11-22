@@ -530,6 +530,11 @@ function mockProxy(store) {
   await p.waitForFunction(() => document.querySelector('[data-d]')); await p.waitForTimeout(300);
   await p.evaluate(() => { D = { k: 'dict', ok: 0, n: 0, done: false }; nextDrill(); });
   await p.waitForSelector('#dans');
+  /* a diktált mondat véletlenszerű: ha nincs benne legalább 4 betűs szó, új mondatot kérünk */
+  for (let k = 0; k < 30 && !(await p.evaluate(() => document.querySelector('[data-say]').dataset.say.split(' ').some(x => deacc(norm(x)).length >= 4))); k++) {
+    await p.evaluate(() => { D = { k: 'dict', ok: 0, n: 0, done: false }; nextDrill(); });
+    await p.waitForSelector('#dans');
+  }
   await p.evaluate(() => { const it = document.querySelector('[data-say]').dataset.say; const w = it.split(' '); const i = w.findIndex(x => deacc(norm(x)).length >= 4); w[i] = w[i].slice(1); $('#dans').value = w.join(' '); $('#dgo').click(); });
   ok(await p.evaluate(() => !!document.querySelector('#dfb .feedback.near')), 'diktálásban az egy betűs elírás sárga visszajelzést ad');
   await p.evaluate(() => { D = null; go('ma'); });
