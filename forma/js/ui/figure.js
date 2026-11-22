@@ -81,7 +81,7 @@ export function figureStrip(spec, compact = false) {
   return h('div', { class: 'figs' + (compact ? ' compact' : ''), role: 'img', 'aria-label': 'Ábra: ' + spec.frames.map(f => f.label).join(', majd ') },
     spec.frames.map((fr, i) => [
       i ? h('span', { class: 'fig-arrow', 'aria-hidden': 'true' }, '→') : null,
-      h('figure', { class: 'fig-frame' }, frameSvg(fr, spec), compact ? null : h('figcaption', null, fr.label)),
+      h('figure', { class: 'fig-frame' }, frameSvg(fr, spec), h('figcaption', null, `${i + 1}. ${fr.label}`)),
     ]));
 }
 

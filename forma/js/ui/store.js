@@ -30,7 +30,11 @@ function open() {
         if (!db.objectStoreNames.contains('kv')) db.createObjectStore('kv');
         if (!db.objectStoreNames.contains('items')) db.createObjectStore('items', { keyPath: 'id' });
       };
-      req.onsuccess = () => finish(req.result);
+      req.onsuccess = () => {
+        const db = req.result;
+        db.onversionchange = () => { db.close(); dbp = null; report({ mode: 'pending' }); };
+        finish(db);
+      };
       req.onerror = () => finish(null);
       req.onblocked = () => finish(null);
     } catch { finish(null); }
@@ -84,6 +88,7 @@ export async function restoreAll({ settings, program, run, nutrition, favs, cust
 /* Egyetlen tranzakció: megszakításkor a törlés és az összes írás együtt visszagördül. */
 async function replaceAll(values, items) {
   const db = await open();
+  const previousEpoch = epoch++;
   if (!db) {
     const kv = new Map(Object.entries(values)), nextItems = new Map(items.map(it => [it.id, it]));
     mem.kv = kv; mem.items = nextItems;
@@ -91,7 +96,7 @@ async function replaceAll(values, items) {
   }
   return new Promise((resolve, reject) => {
     let t;
-    const fail = e => { report({ writeError: true }); reject(e || new Error('A visszatöltés nem sikerült.')); };
+    const fail = e => { if (epoch === previousEpoch + 1) epoch = previousEpoch; report({ writeError: true }); reject(e || new Error('A visszatöltés nem sikerült.')); };
     try {
       t = db.transaction(['kv', 'items'], 'readwrite');
       t.oncomplete = () => resolve();
@@ -101,5 +106,47 @@ async function replaceAll(values, items) {
       for (const [key, value] of Object.entries(values)) kv.put(value, key);
       for (const it of items) store.put(it);
     } catch (e) { if (t) t.abort(); fail(e); }
+  });
+}
+
+/* Edzésnapló és program együtt: sikertelen íráskor egyik sem lép tovább.
+   A stabil azonosítóval ismételt befejezés sem növeli kétszer a programszámlálót. */
+let epoch = 0;
+export const storageEpoch = () => epoch;
+export async function checkpointSession(draft, expectedEpoch) {
+  const db = await open();
+  if (expectedEpoch !== epoch) return false;
+  if (!db) {
+    if (mem.items.has(draft.id)) return false;
+    mem.kv.set('activeSession', structuredClone(draft)); return true;
+  }
+  return new Promise((resolve, reject) => {
+    const t = db.transaction(['kv', 'items'], 'readwrite');
+    let written = false;
+    t.oncomplete = () => resolve(written);
+    t.onerror = t.onabort = () => { report({ writeError: true }); reject(t.error || new Error('Az edzésállás mentése nem sikerült.')); };
+    const completed = t.objectStore('items').get(draft.id);
+    completed.onsuccess = () => { if (!completed.result) { t.objectStore('kv').put(draft, 'activeSession'); written = true; } };
+  });
+}
+export async function completeSession(item, program, expectedEpoch) {
+  const db = await open();
+  if (expectedEpoch !== epoch) throw new Error('Az adatok közben megváltoztak. Nyisd meg újra az edzést.');
+  if (!db) {
+    if (mem.items.has(item.id)) return;
+    mem.items.set(item.id, structuredClone(item));
+    if (program) mem.kv.set('program', structuredClone(program));
+    mem.kv.delete('activeSession'); return;
+  }
+  await new Promise((resolve, reject) => {
+    const t = db.transaction(['kv', 'items'], 'readwrite');
+    t.oncomplete = resolve;
+    t.onerror = t.onabort = () => { report({ writeError: true }); reject(t.error || new Error('Az edzés mentése nem sikerült.')); };
+    const store = t.objectStore('items'), kv = t.objectStore('kv');
+    const old = store.get(item.id);
+    old.onsuccess = () => {
+      if (old.result) return;
+      store.put(item); if (program) kv.put(program, 'program'); kv.delete('activeSession');
+    };
   });
 }

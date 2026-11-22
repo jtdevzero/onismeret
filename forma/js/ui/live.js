@@ -52,7 +52,7 @@ export function feedback(r) {
     h('p', { class: 'lead' }, r.jumpCm != null ? `Legjobb ugrás: ${Math.round(r.jumpCm)} cm (${r.reps} ugrás)` : r.holdSeconds != null && !r.reps ? `${Math.floor(r.holdSeconds)} másodperc` : `${r.reps} ismétlés`),
     r.checks.length ? h('ul', { class: 'rows' }, r.checks.map(c => h('li', null, h('span', null, CHECK_NAMES[c.id] || c.id), h('span', { class: 'badge ' + (c.band === 'ok' ? 'good' : 'warn') }, c.band === 'ok' ? 'Rendben' : 'Javítandó')))) : null,
     fixes.length ? h('ul', { class: 'plain' }, fixes.map(c => h('li', null, FIX[c.id] || ''))) : null,
-    r.confidence != null && r.confidence < 0.6 ? note('A mérés bizonytalan (rossz látási viszonyok); kezeld fenntartással.', 'small') : null,
+    r.confidence != null && r.confidence < 0.6 ? note('Bizonytalan felismerés: ellenőrizd kézzel az ismétlésszámot és a végrehajtást, vagy mérj újra jobb kameraállással. Ez nem szakmai mozgásvizsgálat.', 'small') : null,
     note('Béta mérés: a pontosságot valódi felvételeken még nem validáltuk. A formaküszöbök szakmai becslések, szakember még nem kalibrálta őket. Az eredményt ellenőrizd és szükség esetén javítsd.', 'small'));
 }
 
@@ -138,7 +138,8 @@ export function liveCounter(exerciseId, opts = {}) {
       document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 2000);
     } }, 'Mérési adat letöltése');
     clear(status).append(feedback(r), got.length ? h('div', { class: 'row' }, dl, h('span', { class: 'small muted' }, 'Testpontok kép nélkül, a hangoláshoz. Csak akkor kerül bárhová, ha te elküldöd.')) : null);
-    if (opts.onDone) opts.onDone(r);
+    if (opts.onDone && r.ok && !(r.confidence != null && r.confidence < 0.6)) opts.onDone(r);
+    else if (opts.onDone) status.append(note('Nem írtam be automatikus eredményt. Add meg kézzel, vagy mérj újra.', 'warn'));
   }
 
   const el = h('div', { class: 'live' },

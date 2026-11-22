@@ -33,6 +33,8 @@ export function parseBackup(text, ctx) {
 
   const s = raw.settings || {};
   const settings = clean({
+    nickname: str(s.nickname, 24),
+    pinnedRoutine: typeof s.pinnedRoutine === 'string' && /^(routine|custom)-[a-zA-Z0-9_-]{1,80}$/.test(s.pinnedRoutine) ? s.pinnedRoutine : undefined,
     accepted: s.accepted === true ? true : undefined,
     profile: profile(s.profile) || undefined,
     lowImpact: typeof s.lowImpact === 'boolean' ? s.lowImpact : undefined,
@@ -90,13 +92,13 @@ export function parseBackup(text, ctx) {
       if (!Object.keys(metrics).length) continue;
       items.push({ id, kind: 'posture', date, metrics });
     } else if (it.kind === 'workout' && ['routine', 'custom'].includes(it.key)) {
-      items.push(clean({ id, kind: 'workout', date, key: it.key, title: str(it.title, 60), minutes: num(it.minutes, 0, 600) ?? 0, steps: num(it.steps, 0, 1000), partial: !!it.partial, ratings: {}, changes: [], note: str(it.note, 280), done: cleanDone(it.done), partner: it.partner === true ? true : undefined }));
+      items.push(clean({ id, kind: 'workout', date, key: it.key, title: str(it.title, 60), minutes: num(it.minutes, 0, 600) ?? 0, steps: num(it.steps, 0, 1000), partial: !!it.partial, ratings: {}, changes: [], feedback: cleanFeedback(it.feedback), note: str(it.note, 280), done: cleanDone(it.done), partner: it.partner === true ? true : undefined }));
     } else if (it.kind === 'workout' && ctx.sessionKeys.includes(it.key)) {
       const ratings = {};
       for (const l of ctx.ladders) if (it.ratings && ctx.ratingKeys.includes(it.ratings[l])) ratings[l] = it.ratings[l];
       items.push(clean({ id, kind: 'workout', date, key: it.key, minutes: num(it.minutes, 0, 600) ?? 0, steps: num(it.steps, 0, 1000), partial: !!it.partial, ratings,
         changes: Array.isArray(it.changes) ? it.changes.filter(c => c && ctx.ladders.includes(c.ladder)).map(c => clean({ ladder: c.ladder, from: num(c.from, 0, 10), to: num(c.to, 0, 10), date: num(c.date, 0, 1e14) })) : [],
-        note: str(it.note, 280), done: cleanDone(it.done), light: it.light === true ? true : undefined, partner: it.partner === true ? true : undefined }));
+        feedback: cleanFeedback(it.feedback), note: str(it.note, 280), done: cleanDone(it.done), light: it.light === true ? true : undefined, partner: it.partner === true ? true : undefined }));
     } else if (it.kind === 'mini') {
       const pr = profile(it.profile);
       const results = numbers(it.results, ['pushup', 'plank', 'sl_stance'], 0, 1000);
@@ -132,4 +134,9 @@ export function parseBackup(text, ctx) {
     return name && cid && blocks.length ? { id: cid, name, blocks } : null;
   }).filter(Boolean) : null;
   return { ok: true, data: { settings, program, run, nutrition: Object.keys(nutrition).length ? nutrition : null, favs, custom, items } };
+}
+
+function cleanFeedback(f) {
+  if (!f || typeof f !== 'object') return undefined;
+  return clean({ effort: ['easy', 'ok', 'hard'].includes(f.effort) ? f.effort : undefined, pain: ['none', 'yes'].includes(f.pain) ? f.pain : undefined, mood: ['better', 'same', 'worse'].includes(f.mood) ? f.mood : undefined });
 }

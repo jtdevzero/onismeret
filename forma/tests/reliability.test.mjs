@@ -82,3 +82,17 @@ test('memóriamód állapota megfigyelhető, hibás visszatöltés az eredeti ad
   await s.restoreAll({ settings: { profile }, items: [a] });
   assert.deepEqual(await s.itemGet('a1'), a);
 });
+
+test('mentésköltözés: becenév, rutin és visszajelzés ellenőrzötten megmarad, aktív edzés nem importálódik', () => {
+  const raw = { app: 'forma', version: 1, settings: { nickname: 'Teszt név', pinnedRoutine: 'routine-morning' }, activeSession: { untrusted: true }, items: [{ id: 'w', kind: 'workout', date: 1000, key: 'routine', minutes: 8, feedback: { effort: 'hard', pain: 'yes', mood: 'better', unsafe: 'x' } }] };
+  const parsed = parseBackup(JSON.stringify(raw), ctx);
+  assert.equal(parsed.ok, true);
+  assert.equal(parsed.data.settings.nickname, 'Teszt név');
+  assert.equal(parsed.data.settings.pinnedRoutine, 'routine-morning');
+  assert.deepEqual(parsed.data.items[0].feedback, { effort: 'hard', pain: 'yes', mood: 'better' });
+  assert.equal(parsed.data.activeSession, undefined);
+  raw.settings.pinnedRoutine = 'javascript:alert(1)'; raw.items[0].feedback = { effort: 'x', pain: true, mood: 3 };
+  const bad = parseBackup(JSON.stringify(raw), ctx);
+  assert.equal(bad.data.settings.pinnedRoutine, undefined);
+  assert.deepEqual(bad.data.items[0].feedback, {});
+});

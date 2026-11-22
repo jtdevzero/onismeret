@@ -12,6 +12,8 @@ import { TRIALS, reactionResult, randomDelay } from '../core/reaction.js';
 import { swayMetrics } from '../core/sensors.js';
 import { liveCounter } from './live.js';
 
+import { remaining } from '../core/session.js';
+
 const isDone = (d, id) => d.results[id] != null || d.skipped[id];
 const testsFor = () => D.tests.tests.filter(t => !(lowImpact() && t.impact) && !(t.minAge && !(profile().age >= t.minAge)));
 const vitalsDone = v => ['rhr', 'waist', 'frequency', 'intensity', 'duration'].every(k => Number.isFinite(v[k]));
@@ -38,6 +40,7 @@ export async function assessView() {
     h('p', { class: 'muted' }, `${done} / ${tests.length} teszt kész` + (vitalsDone(d.vitals) ? ' · alapadatok megvannak' : '')),
     h('progress', { max: tests.length + 1, value: done + (vitalsDone(d.vitals) ? 1 : 0), 'aria-label': 'A felmérés előrehaladása' }),
     lowImpact() ? note('Kímélő mód: a távolugrás és a lépcsőteszt kimarad.', 'small') : null,
+    card(h('h2', null, 'Indulás előtti ellenőrzés'), h('div', { class: 'preflight-checks' }, ['Szabad, csúszásmentes hely; stabil szék, fal és mérőszalag előkészítve.', 'Kipihent vagyok, most nincs fájdalom vagy rosszullét.', 'Bemelegítettem, elolvasom az egyes tesztek pontos menetét.', 'Összehasonlításhoz az előzővel azonos módon mérek.'].map(text => h('label', { class: 'check small' }, h('input', { type: 'checkbox' }), h('span', null, text))))),
     card(h('h2', null, 'Előtte'), h('p', null, '5 perc bemelegítés: helyben járás, karkörzés, néhány laza guggolás. A teszteket bármilyen sorrendben, akár több napra elosztva is csinálhatod; amit beírsz, megmarad.'),
       h('div', { class: 'row' }, nextTest ? link('#/test/' + nextTest.id, done ? 'Következő teszt' : 'Első teszt', 'btn primary') : null, link('#/test/vitals', 'Alapadatok (fittségi korhoz)', 'btn'))),
     card(h('ul', { class: 'rows plan' }, groups),
@@ -59,8 +62,9 @@ export function timerWidget(cfg, onValue, onCleanup) {
   const fmt = s => (s >= 60 ? Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0') : String(Math.floor(s)));
   /* 3-2-1 visszaszámlálás, utána indul a mérés */
   const countIn = then => {
+    const deadline = Date.now() + 3 * tickMs();
     let n = 3; clock.textContent = String(n); speak('három'); status.textContent = 'Felkészülni…';
-    iv = setInterval(() => { n--; if (n > 0) { clock.textContent = String(n); speak(n === 2 ? 'kettő' : 'egy'); } else { clearInterval(iv); iv = null; beep(1040, 150); speak('Rajt!'); then(); } }, tickMs());
+    iv = setInterval(() => { n = remaining(deadline, Date.now(), tickMs()); if (n > 0) { clock.textContent = String(n); speak(n === 2 ? 'kettő' : 'egy'); } else { clearInterval(iv); iv = null; beep(1040, 150); speak('Rajt!'); then(); } }, tickMs());
   };
   if (cfg.mode === 'countdown' || cfg.mode === 'step') {
     let left = cfg.seconds; clock.textContent = fmt(left);
@@ -69,15 +73,17 @@ export function timerWidget(cfg, onValue, onCleanup) {
       countIn(() => {
         status.textContent = cfg.mode === 'step' ? 'Fel-fel-le-le, a hangjelzés ütemére' : 'Mehet!';
         if (cfg.mode === 'step') metro = setInterval(() => beep(660, 60), (60000 / cfg.bpm) * tickMs() / 1000);
+        const deadline = Date.now() + cfg.seconds * tickMs();
         iv = setInterval(() => {
-          left--; clock.textContent = fmt(left);
+          left = remaining(deadline, Date.now(), tickMs()); clock.textContent = fmt(left);
           if (left === 10 && cfg.seconds > 20) speak('még tíz másodperc');
           if (left <= 0) {
             stop(); beep(520, 400);
             if (cfg.mode === 'step') {
               speak('Állj meg, ülj le, és számold a szívveréseidet a teljes következő percben.');
               let rec = cfg.recovery; clock.textContent = fmt(rec); status.textContent = 'Ülj le, és most kezdd számolni a szívveréseidet 60 másodpercig!';
-              iv = setInterval(() => { rec--; clock.textContent = fmt(rec); if (rec <= 0) { stop(); beep(520, 400); speak('Vége. Írd be a teljes perc alatt számolt szívverések számát.'); status.textContent = 'Kész. Írd be a 60 másodperc alatt összesen számolt szívveréseket, ne az óra pillanatnyi pulzusát.'; abort.hidden = true; } }, tickMs());
+              const recoveryEnd = Date.now() + rec * tickMs();
+              iv = setInterval(() => { rec = remaining(recoveryEnd, Date.now(), tickMs()); clock.textContent = fmt(rec); if (rec <= 0) { stop(); beep(520, 400); speak('Vége. Írd be a teljes perc alatt számolt szívverések számát.'); status.textContent = 'Kész. Írd be a 60 másodperc alatt összesen számolt szívveréseket, ne az óra pillanatnyi pulzusát.'; abort.hidden = true; } }, tickMs());
             } else { speak('Vége'); status.textContent = 'Kész. Írd be az eredményt.'; abort.hidden = true; }
           }
         }, tickMs());
@@ -88,7 +94,7 @@ export function timerWidget(cfg, onValue, onCleanup) {
     row.append(start, abort);
   } else if (cfg.mode === 'stopwatch') {
     let t = 0;
-    const start = btn('Indítás', () => { start.hidden = true; halt.hidden = false; t = 0; countIn(() => { status.textContent = 'Mérés…'; iv = setInterval(() => { t++; clock.textContent = fmt(t); if (t % 30 === 0) speak(t + ' másodperc'); }, tickMs()); }); }, 'primary');
+    const start = btn('Indítás', () => { start.hidden = true; halt.hidden = false; t = 0; countIn(() => { status.textContent = 'Mérés…'; const begun = Date.now(); iv = setInterval(() => { t = Math.floor((Date.now() - begun) / tickMs()); clock.textContent = fmt(t); if (t % 30 === 0) speak(t + ' másodperc'); }, tickMs()); }); }, 'primary');
     const halt = btn('Megállt', () => { stop(); halt.hidden = true; start.hidden = false; start.textContent = 'Újra'; status.textContent = 'Beírtam az időt; ha kell, javítsd.'; onValue(t); beep(520, 200); }, 'primary');
     halt.hidden = true;
     row.append(start, halt);
@@ -127,9 +133,9 @@ export function timerWidget(cfg, onValue, onCleanup) {
       start.hidden = true;
       countIn(() => {
         motion.samples.length = 0;
-        let left = cfg.seconds; status.textContent = 'Állj nyugodtan…';
+        let left = cfg.seconds; const deadline = Date.now() + left * tickMs(); status.textContent = 'Állj nyugodtan…';
         iv = setInterval(() => {
-          left--; clock.textContent = String(left);
+          left = remaining(deadline, Date.now(), tickMs()); clock.textContent = String(left);
           if (left <= 0) {
             stop(); motion.stop(); beep(520, 300);
             const r = swayMetrics(motion.samples);
@@ -148,6 +154,13 @@ export function timerWidget(cfg, onValue, onCleanup) {
     row.append(tap, btn('Nullázás', () => { n = 0; clock.textContent = '0'; onValue(''); }, 'small'));
     status.textContent = 'Koppints minden teljes ismétlés után, vagy írd be a számot alul.';
   }
+  const background = () => {
+    if (!document.hidden || (!iv && !metro)) return;
+    stop(); status.textContent = 'A mérés megszakadt a háttérbe kerüléskor. Az eredményt ne használd; nyisd meg újra a tesztet és mérj újra.';
+    row.querySelectorAll('button').forEach(b => { b.disabled = true; });
+  };
+  document.addEventListener('visibilitychange', background);
+  onCleanup(() => document.removeEventListener('visibilitychange', background));
   return box;
 }
 

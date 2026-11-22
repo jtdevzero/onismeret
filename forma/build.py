@@ -92,6 +92,7 @@ def main():
     shell = ['index.html', 'styles.css', 'manifest.webmanifest']
     shell += rel((HERE / 'icons').glob('*.*'))
     shell += rel((HERE / 'assets').glob('*.webp'))
+    shell += ['docs/telefonos-ellenorzes.md', 'docs/szakmai-atnezes.html']
     shell += rel((HERE / 'js').rglob('*.js'))
     shell += rel((HERE / 'data').glob('*.json'))
     vendor = [p for p in sorted((HERE / 'vendor').rglob('*')) if p.is_file() and p.suffix != '.md']
@@ -118,6 +119,9 @@ def review_pack():
            '<h1>Forma – szakmai átnézés</h1>',
            '<p>Ez a dokumentum a Forma alkalmazás normáit, tesztjeit, gyakorlatait és kímélő szabályait gyűjti össze gyógytornász vagy edző számára. '
            'Minden résznél van hely a megjegyzéseknek. Nyomtatható, PDF-be menthető.</p>',
+           '<h2>Lektorálási jegyzőkönyv</h2><p>Állapot: szakmai jóváhagyás még nincs rögzítve. Lektor neve, szakterülete, dátum, vizsgált verzió és a jóváhagyás terjedelme:</p><div class="box"></div>',
+           f'<p>Tesztverzió: {e(tests["version"])}. Normaverzió: {e(norms["version"])}.</p>',
+           '<p>Kiemelt ellenőrzés: lépcsőteszt után a teljes 60 másodperc alatt számolt szívverések; panasz miatti kizárások; becsült normák; adagolás és rövidített / ugrásmentes edzések.</p>',
            f'<h2>1. Normák (korsávok: {e(bands)})</h2><p>Töréspontok: a 20., 40., 60. és 80. percentilis értéke. A minőség: A = publikált, B = becsült.</p>']
     for k, n in norms['tests'].items():
         out.append(f'<h3>{e(k)} <span class="q">[{e(n["quality"])}]</span>{" (kisebb a jobb)" if n.get("lower") else ""}</h3><p>{e(n["source"])}</p><table><tr><th>Nem</th>'
