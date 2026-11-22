@@ -5,13 +5,14 @@ import { startView, homeView, learnView, lessonView, logView, settingsView, dayV
 import { prepView, programView, exerciseView, sessionView } from './views-train.js';
 import { snowView, analysisView } from './views-snow.js';
 import { slopeView } from './views-slope.js';
+import { safetyView, stanceView } from './views-extra.js';
 
 const main = document.getElementById('main'), nav = document.getElementById('nav');
 const ROUTES = {
   '': homeView, start: startView, prep: prepView, program: programView, ex: exerciseView, snow: snowView,
-  a: analysisView, learn: learnView, l: lessonView, log: logView, settings: settingsView, session: sessionView, day: dayView, slope: slopeView,
+  a: analysisView, learn: learnView, l: lessonView, log: logView, settings: settingsView, session: sessionView, day: dayView, slope: slopeView, safety: safetyView, stance: stanceView,
 };
-const TAB = { '': '', prep: 'prep', program: 'prep', ex: 'prep', session: 'prep', day: 'snow', slope: 'snow', snow: 'snow', a: 'snow', learn: 'learn', l: 'learn', log: 'log', settings: 'settings' };
+const TAB = { '': '', prep: 'prep', program: 'prep', ex: 'prep', session: 'prep', day: 'snow', slope: 'snow', snow: 'snow', a: 'snow', learn: 'learn', l: 'learn', safety: 'learn', stance: 'learn', log: 'log', settings: 'settings' };
 let cleanups = [], seq = 0;
 
 async function route() {

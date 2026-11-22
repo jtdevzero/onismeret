@@ -5,6 +5,8 @@ Telefonra telepíthető webapp két részből:
 - **Felkészülés a szezon előtt:** nyolc kamerás mozgásfelmérő teszt (köztük leérkezés-teszt: beesik-e a térd érkezéskor, ami a keresztszalag-sérülés ismert kockázati jele), ebből személyre szabott 6 hetes program, a felvett gyakorlatokon ismétlésszámlálás és formaértékelés, gyakorlatonként belinkelt bemutató videó, és 25 gyakorlathoz saját ábra (pálcikafigura a kiinduló és a végső helyzetről, `data/figures.json`), ami offline is látszik, a vezetett edzés közben is.
 - **Magától igazodó program:** edzés után gyakorlatonként jelezheted, hogy könnyű, rendben vagy nehéz volt; a következő edzéseken ehhez igazodik az ismétlésszám és az idő (lépcsőnként 10%, fájdalomnál nincs emelés).
 - **Pályanap:** vezetett, hangos bemelegítés sícipőben (sízőknek és snowboardosoknak külön), napi napló (hó, látás, fáradtság, lesiklások, jegyzet), és az aznapi elemzések egy helyen. Nagy fáradtságnál figyelmeztet.
+- **Biztonság:** a pálya tíz magatartási szabálya (a FIS szabályainak saját szavas összefoglalása), kvíz azonnali visszajelzéssel, felszerelés, és figyelmeztetés a pályán kívüli csúszásról.
+- **Snowboard beállítás-segéd:** kiinduló állásszélesség és kötésszög a testmagasság és a stílus alapján, nagy cipőméretnél figyelmeztetéssel (ökölszabály, nem mérés).
 - **Havas elemzés:** a csúszásról készült 10–30 másodperces videóból testtartás-mérés, kanyarfelismerés, mutatók, és visszajelzés: mi megy jól, mi a fő hiba, melyik gyakorlat javítja.
 
 A videó a készüléken marad. A pózbecslés (MediaPipe Pose Landmarker) a böngészőben fut, a `vendor/` mappából.

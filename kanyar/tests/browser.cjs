@@ -396,6 +396,33 @@ const go = async (page, hash) => { await page.evaluate(h => { if (location.hash 
     assert.equal(await page.locator('.log b').count(), 0, 'a jegyzetből nem lesz HTML');
   });
 
+  await step('biztonság: szabályok, kvíz azonnali visszajelzéssel; snowboard beállítás-segéd', async () => {
+    await go(page, '#/');
+    await page.locator('a.tile[href="#/safety"]').click();
+    await shown(page, '#/safety');
+    let t = await text();
+    assert.match(t, /A pálya szabályai[\s\S]*Az elöl haladónak elsőbbsége van/);
+    assert.match(t, /Pályán kívül[\s\S]*lavinatanfolyam/);
+    await page.getByText('Neked, mert hátulról érkezel', { exact: true }).click();
+    await page.getByText('Jó válasz', { exact: true }).first().waitFor();
+    await page.getByText('Csak balról', { exact: true }).click();
+    assert.match(await text(), /Nem ez a jó válasz[\s\S]*bőséges távolsággal|bőséges távolsággal[\s\S]*Nem ez a jó válasz/);
+    assert.match(await text(), /2 \/ 6 kérdés megválaszolva/);
+    await shot('safety');
+    await go(page, '#/stance');
+    await page.getByRole('button', { name: 'Kiszámolom' }).click();
+    assert.match(await text(), /Add meg a testmagasságod/);
+    await page.getByLabel('Testmagasság (cm)').fill('175');
+    await page.getByLabel('Cipőméret, EU (nem kötelező)').fill('46');
+    await page.getByText('Park és freestyle', { exact: true }).click();
+    await page.getByRole('button', { name: 'Kiszámolom' }).click();
+    t = await text();
+    assert.match(t, /52 cm/);
+    assert.match(t, /\+15°[\s\S]*−15°/);
+    assert.match(t, /széles \(wide\) deszka/);
+    await shot('stance');
+  });
+
   await step('mentés fájlba: a belépőkód nem kerül bele', async () => {
     await go(page, '#/settings');
     const [dl] = await Promise.all([page.waitForEvent('download'), page.getByRole('button', { name: 'Mentés fájlba' }).click()]);
@@ -409,7 +436,7 @@ const go = async (page, hash) => { await page.evaluate(h => { if (location.hash 
     const axe = fs.readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
     const snowId = await page.evaluate(async () => { const st = await import('./js/ui/store.js'); return (await st.itemsAll()).find(i => i.kind === 'snow').id; });
     const found = [];
-    for (const hash of ['#/', '#/prep', '#/program', '#/session/2-0', '#/ex/squat', '#/snow', '#/a/' + snowId, '#/day', '#/slope', '#/learn', '#/l/ski_1_stance', '#/log', '#/settings', '#/start']) {
+    for (const hash of ['#/', '#/prep', '#/program', '#/session/2-0', '#/ex/squat', '#/snow', '#/a/' + snowId, '#/day', '#/slope', '#/safety', '#/stance', '#/learn', '#/l/ski_1_stance', '#/log', '#/settings', '#/start']) {
       await go(page, hash);
       await page.evaluate(src => { if (!window.axe) (0, eval)(src); }, axe).catch(() => {});
       if (!(await page.evaluate(() => !!window.axe))) await page.addScriptTag({ content: axe }).catch(() => {});

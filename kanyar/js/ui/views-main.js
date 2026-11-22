@@ -61,7 +61,8 @@ export async function homeView() {
       tile('#/snow', 'video', 'Havas elemzés', 'Videóból visszajelzés'),
       tile('#/learn', 'book', 'Tananyag', 'Leckék és gyakorlatok'),
       tile('#/log', 'log', 'Napló', items.length + ' bejegyzés'),
-      tile('#/slope', 'mountain', 'Pályanap', 'Bemelegítés és napló')),
+      tile('#/slope', 'mountain', 'Pályanap', 'Bemelegítés és napló'),
+      tile('#/safety', 'shield', 'Biztonság', 'Szabályok és kvíz')),
     s.health && s.health.pain ? note('Fájdalmat vagy sérülést jeleztél: a program kíméletes, ugrások nélkül. A Beállításokban módosíthatod.', 'warn') : null);
 }
 
@@ -78,7 +79,9 @@ export async function learnView() {
     levelCards,
     card(h('h2', null, 'Javító gyakorlatok'), h('p', null, 'Ezeket ajánlja az elemzés egy-egy hibára.'),
       h('ul', { class: 'rows' }, lessonsFor(sport, 'drill').map(l => h('li', null, link('#/l/' + l.id, l.title))))),
-    card(h('h2', null, 'Útmutatók'), h('ul', { class: 'rows' }, D.lessons.lessons.filter(l => l.kind === 'guide').map(l => h('li', null, link('#/l/' + l.id, l.title))))),
+    card(h('h2', null, 'Útmutatók'), h('ul', { class: 'rows' }, D.lessons.lessons.filter(l => l.kind === 'guide').map(l => h('li', null, link('#/l/' + l.id, l.title))),
+      h('li', null, link('#/safety', 'Biztonság: a pálya szabályai és kvíz')),
+      sport === 'snowboard' ? h('li', null, link('#/stance', 'Snowboard beállítás: állásszélesség és kötésszög')) : null)),
     D.lessons.reviewed ? null : note('A tananyagot képesített oktató még nem lektorálta.', 'small'));
 }
 

@@ -1,0 +1,33 @@
+{
+  "note": "A FIS magatartási szabályainak saját szavas összefoglalása. Szakember még nem lektorálta.",
+  "rules": [
+    { "title": "Vigyázz másokra", "text": "Úgy csússz, hogy senkit ne veszélyeztess, és ne okozz kárt." },
+    { "title": "Igazítsd a sebességed", "text": "A sebességed és a csúszásod módja feleljen meg a tudásodnak, a terepnek, a hónak, a látási viszonyoknak és a forgalomnak. Mindig meg tudj állni, vagy ki tudj térni." },
+    { "title": "Az elöl haladónak elsőbbsége van", "text": "A hátulról érkező választja meg az útvonalát úgy, hogy ne veszélyeztesse az előtte csúszót. Az előtted lévő nem lát téged." },
+    { "title": "Előzés bőséges távolsággal", "text": "Előzni felülről és alulról, jobbról és balról is lehet, de mindig akkora távolsággal, hogy a megelőzött bármerre kanyarodhasson." },
+    { "title": "Indulás előtt nézz fel", "text": "Ha beállsz a pályára, megállás után elindulsz, vagy felfelé mész, nézz fel és le, hogy senkit ne veszélyeztess." },
+    { "title": "Ne állj meg rossz helyen", "text": "Ne állj meg szűk vagy nem belátható helyen, például bukkanó vagy törés alatt. Ha elestél, a lehető leghamarabb húzódj a pálya szélére." },
+    { "title": "Gyalog a pálya szélén", "text": "Ha gyalog mész fel vagy le, a pálya szélén haladj." },
+    { "title": "Tartsd be a jelzéseket", "text": "Tartsd tiszteletben a táblákat és a pályajelzéseket, a lezárt pálya lezárt pálya." },
+    { "title": "Segíts balesetnél", "text": "Balesetnél mindenki köteles segíteni: biztosítsd a helyet (például a léceket keresztben leszúrva feljebb), és hívj segítséget." },
+    { "title": "Add meg az adataid", "text": "Ha részese vagy tanúja voltál egy balesetnek, add meg a nevedet és az elérhetőséged." }
+  ],
+  "quiz": [
+    { "q": "Lefelé csúszol, és lassabban csúszik előtted valaki. Kinek kell vigyáznia az ütközés elkerülésére?", "options": ["Neked, mert hátulról érkezel", "Neki, mert neki kell figyelnie, ki jön mögötte", "Annak, aki gyorsabb a pályán"], "answer": 0, "why": "Az elöl haladónak elsőbbsége van: nem lát téged, ezért a hátulról érkezőnek kell kikerülnie." },
+    { "q": "Elestél egy bukkanó mögött. Mit csinálsz?", "options": ["Ott maradok, amíg kipihenem magam", "A lehető leghamarabb a pálya szélére húzódom", "Integetek, hogy kikerüljenek"], "answer": 1, "why": "Bukkanó vagy törés alatt felülről nem látnak, ezért a leggyorsabban húzódj félre." },
+    { "q": "Megálltál a pálya szélén, és indulnál tovább. Mit kell előtte tenned?", "options": ["Semmit, a pálya szélén elsőbbségem van", "Felnézni a pályán, hogy jön-e valaki", "Hangosan szólni, hogy indulok"], "answer": 1, "why": "Induláskor te lépsz be a forgalomba: nézz fel, és csak akkor indulj, ha senkit nem veszélyeztetsz." },
+    { "q": "Melyik oldalról szabad előzni?", "options": ["Csak balról", "Csak felülről", "Bármelyik oldalról, de bőséges távolsággal"], "answer": 2, "why": "Bármerről szabad, de akkora távolsággal, hogy a megelőzött bármerre kanyarodhasson." },
+    { "q": "Ködben rosszul látsz. Mit jelent ez a sebességedre?", "options": ["Semmit, a pálya ugyanolyan", "Lassabban csúszom, hogy mindig meg tudjak állni", "Gyorsabban csúszom, hogy hamarabb leérjek"], "answer": 1, "why": "A sebességet a látási viszonyokhoz is igazítani kell: annyira, hogy a látótávolságon belül meg tudj állni." },
+    { "q": "Balesetet láttál. Mi a teendőd?", "options": ["Továbbcsúszom, a pályamentők majd intézik", "Segítek, biztosítom a helyet, segítséget hívok, és megadom az adataim", "Lefényképezem, és továbbmegyek"], "answer": 1, "why": "Balesetnél mindenki köteles segíteni, és tanúként a nevedet és az elérhetőséged is meg kell adnod." }
+  ],
+  "offpiste": [
+    "Pályán kívül nincs pályamentés, nincs lavinavédelem, és a terep nincs előkészítve.",
+    "Csak lavinaismerettel, teljes felszereléssel (lavinajeladó, szonda, lapát) és társsal menj, a helyi lavinaveszély-előrejelzés ismeretében.",
+    "Ez az app nem tanít lavinaismeretet, és nem helyettesíti a tanfolyamot. Ha pályán kívül csúsznál, előbb végezz el egy lavinatanfolyamot."
+  ],
+  "gear": [
+    "Viselj bukósisakot.",
+    "A sí kötését szakember állítsa be a súlyod, magasságod, tudásod és cipőd alapján, évente ellenőriztetve.",
+    "Snowboardon csuklóvédő ajánlott, főleg kezdőként: esésnél a csukló sérül a leggyakrabban."
+  ]
+}

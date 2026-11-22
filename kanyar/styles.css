@@ -61,6 +61,7 @@ p { margin: 0 0 10px; }
 .ic-log { --i: url(icons/ui-log.svg); }
 .ic-gear { --i: url(icons/ui-gear.svg); }
 .ic-mountain { --i: url(icons/ui-mountain.svg); }
+.ic-shield { --i: url(icons/ui-shield.svg); }
 
 /* ---- nyitó sáv a kezdőlapon ---- */
 .hero {
@@ -130,6 +131,7 @@ ul.rows, ol.blocks { list-style: none; margin: 0 0 10px; padding: 0; }
 ul.rows > li { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 52px; padding: 8px 0; border-top: 1px solid var(--line); }
 ul.rows > li:first-child { border-top: 0; }
 ul.rows > li.dim { opacity: .6; }
+ul.rows > li > strong { white-space: nowrap; }
 ul.rows > li > a { font-weight: 650; text-decoration: none; padding: 6px 0; }
 ol.blocks > li { padding: 7px 0; margin: 0; border-top: 1px dashed var(--line); }
 ol.blocks > li:first-child { border-top: 0; }
@@ -182,6 +184,13 @@ progress { width: 100%; height: 10px; accent-color: var(--accent); border-radius
 .live-hud { position: absolute; left: 12px; top: 12px; min-width: 96px; padding: 10px 18px; border-radius: 16px; background: rgba(6, 22, 42, .72); color: #fff; line-height: 1.2; text-align: center; }
 .live-count { font-size: 4rem; font-weight: 800; font-variant-numeric: tabular-nums; }
 .live-label { font-size: .9rem; font-weight: 600; }
+
+/* ---- biztonság ---- */
+.rules { padding-left: 1.4em; margin: 0 0 10px; }
+.rules li { margin-bottom: 10px; }
+.rules li strong { display: block; }
+.quiz { border: 0; margin: 0 0 16px; padding: 0; }
+.quiz legend { font-weight: 650; margin-bottom: 8px; padding: 0; line-height: 1.4; }
 
 /* ---- edzés utáni visszajelzés ---- */
 .feel { border: 0; margin: 0 0 12px; padding: 0; }

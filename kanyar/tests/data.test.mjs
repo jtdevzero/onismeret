@@ -313,3 +313,28 @@ test('pályanap: a napló mezői ellenőrizve, a nap elemzései dátum szerint',
   assert.equal(runsOfDay(items, { date: day }).length, 1);
   assert.ok(sameDay(day, day + 3600e3) && !sameDay(day, day + 24 * 3600e3));
 });
+
+test('biztonság: tíz szabály, a kvíz válaszai érvényesek', () => {
+  const s = JSON.parse(readFileSync(new URL('../data/safety.json', import.meta.url)));
+  assert.equal(s.rules.length, 10);
+  assert.ok(s.rules.every(r => r.title && r.text));
+  assert.ok(s.quiz.length >= 5);
+  for (const q of s.quiz) assert.ok(q.q && q.why && q.options.length >= 2 && Number.isInteger(q.answer) && q.answer >= 0 && q.answer < q.options.length, q.q);
+  assert.ok(s.offpiste.length && s.gear.length);
+});
+
+test('snowboard beállítás: szélesség a magassággal nő, stílusonként más szög, hibás bemenetre hiba', async () => {
+  const { stanceAdvice, fmtAngle, STYLES } = await import('../js/core/stance.js');
+  const a = stanceAdvice({ height: 175, style: 'allmountain' });
+  assert.equal(a.width, 52);
+  assert.deepEqual([a.min, a.max, a.front, a.back], [50, 54, 15, -6]);
+  assert.equal(a.wide, null, 'cipőméret nélkül nincs vélemény');
+  assert.ok(stanceAdvice({ height: 190, style: 'beginner' }).width > stanceAdvice({ height: 160, style: 'beginner' }).width);
+  assert.equal(stanceAdvice({ height: 180, boot: 46, style: 'carving' }).wide, true);
+  assert.equal(stanceAdvice({ height: 180, boot: 42, style: 'carving' }).wide, false);
+  assert.equal(stanceAdvice({ height: 80, style: 'beginner' }).error, 'height');
+  assert.equal(stanceAdvice({ height: 'abc', style: 'beginner' }).error, 'height');
+  assert.equal(stanceAdvice({ height: 175, style: 'nincs' }).error, 'style');
+  assert.ok(Object.values(STYLES).every(s => s.front >= s.back));
+  assert.deepEqual([fmtAngle(15), fmtAngle(-6), fmtAngle(0)], ['+15°', '−6°', '0°']);
+});
