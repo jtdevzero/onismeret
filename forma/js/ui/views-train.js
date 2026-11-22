@@ -11,7 +11,7 @@ import { weekStrip } from './views-main.js';
 import { liveCounter } from './live.js';
 import { dumbbellExercises } from './helpers.js';
 import { suggestProgression, applyLoadChange } from '../core/progression.js';
-import { plannedLog, cleanLog, cleanRpe, mergeDone, WORKOUT_SCHEMA } from '../core/workout-schema.js';
+import { plannedLog, completedSteps, cleanLog, cleanRpe, mergeDone, WORKOUT_SCHEMA } from '../core/workout-schema.js';
 import { blockProgress } from './views-extra.js';
 import { DRAFT_VERSION, validDraft } from '../core/workout-draft.js';
 import { previousExercisePerformance } from '../core/workout-previous.js';
@@ -323,12 +323,7 @@ export async function sessionView(key, onCleanup) {
     const minutes = Math.max(1, Math.round((endedAt - started) / 60000));
     let changes = [];
     /* az elvégzett gyakorlatok (az első személy lépései, az aktuális ponttal bezárólag) a gyakorlatonkénti előzményhez */
-    const doneMap = new Map();
-    steps.slice(0, partial ? at : steps.length).filter(s => s.type !== 'rest' && (s.person || 1) === 1).forEach(s => {
-      const d = doneMap.get(s.exercise) || { ex: s.exercise, sets: 0, reps: 0, seconds: 0 };
-      d.sets++; if (s.reps) d.reps += s.reps * (s.side === 'both' ? 2 : 1); if (s.seconds) d.seconds += s.seconds; doneMap.set(s.exercise, d);
-    });
-    const done = [...doneMap.values()].map(d => ({ ex: d.ex, sets: d.sets, ...(d.reps ? { reps: d.reps } : {}), ...(d.seconds ? { seconds: d.seconds } : {}) }));
+    const done = completedSteps(steps, partial ? at : steps.length);
     const values = {};
     let item;
     if (session.free) {

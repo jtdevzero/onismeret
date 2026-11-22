@@ -68,6 +68,13 @@ Kizárólag `forma/`, a Phase 2 fejlesztői változatára épülve. A Phase 2 va
 - `tests/workout-layout.test.mjs`: CSS szerződésellenőrzés a gombméretre, tördelésre és mobil breakpointokra. Build **PASS**, unit **169/169 PASS**.
 - **Korlát:** ez automatizált statikus stílusellenőrzés, nem bizonyítja a 320×568 és fekvő telefonos valós megjelenést. A Playwright/valós eszközös ellenőrzés továbbra is kiadásblokkoló.
 
+## P3-09 – vezetett edzés összesítésének adatpontossága
+
+- A vezetett edzés végleges `done` összesítése a sorozatnál módosított `actualReps` és `actualSeconds` értékét veszi át, nem írja vissza helyette a tervezett mennyiséget. Az oldalankénti ismétléseket továbbra is két oldalra összesíti; a második partner sorozata nem kerül az első személy eredményébe.
+- A tiszta `core/workout-schema.js` `completedSteps` függvény részleges edzésnél csak a lezárt lépéseket számolja; a régi naplókat nem írja át. `tests/schema.test.mjs` lefedi a módosított értékeket, a nullát, a partner módot, a részleges mentést és a bemenet változatlanságát.
+- A sorozatonkénti utólagos szerkesztő működése változatlan. A valós IndexedDB-, offline- és mobilböngészős regresszió továbbra is kiadásblokkoló.
+- 2026-11-22: `python3 forma/build.py` **PASS**; `TZ=Europe/Budapest node --test forma/tests/*.test.mjs` **170/170 PASS**. `node forma/tests/browser.cjs` **nem futott le sikeresen**: a Playwright Chromium headless shell nem található a környezetben; a valós böngészős és eszközös QA nyitott.
+
 ## P3-02 – online generatív coach biztonsági architektúra (csak terv)
 
 1. **Alapbeállítás:** offline szabálymotor, nincs AI-kérés, API-kulcs vagy háttérszinkron.

@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { parseBackup, BACKUP_VERSION } from '../js/core/backup.js';
-import { cleanLog, cleanSet, normalizeWorkout, plannedLog, doneFromLog, mergeDone } from '../js/core/workout-schema.js';
+import { cleanLog, cleanSet, normalizeWorkout, plannedLog, completedSteps, doneFromLog, mergeDone } from '../js/core/workout-schema.js';
 import { LADDERS, ROTATION } from '../js/core/program.js';
 
 const tests = JSON.parse(readFileSync(new URL('../data/tests.json', import.meta.url)));
@@ -149,6 +149,28 @@ test('tervezett napló: az edzés közben rögzített tényleges érték felül�
     { ex: 'lunge', sets: [{ reps: 12, done: true }] },
     { ex: 'plank', sets: [{ seconds: 22, done: true }, { seconds: 0, done: true }] },
   ]);
+});
+
+test('lezárt edzés összesítése: tényleges érték, páros mód és félbehagyott lépéshatár', () => {
+  const steps = [
+    { exercise: 'march', part: 'warmup', reps: 12 },
+    { exercise: 'lunge', part: 'main', reps: 8, actualReps: 5, side: 'both' },
+    { type: 'rest', seconds: 30 },
+    { exercise: 'lunge', part: 'main', reps: 8, actualReps: 11, side: 'both', person: 2 },
+    { exercise: 'plank', part: 'main', seconds: 30, actualSeconds: 18 },
+    { exercise: 'lunge', part: 'main', reps: 8, actualReps: 0, side: 'both' },
+  ];
+  const frozen = structuredClone(steps);
+  assert.deepEqual(completedSteps(steps), [
+    { ex: 'march', sets: 1, reps: 12 },
+    { ex: 'lunge', sets: 2, reps: 10 },
+    { ex: 'plank', sets: 1, seconds: 18 },
+  ]);
+  assert.deepEqual(completedSteps(steps, 4), [
+    { ex: 'march', sets: 1, reps: 12 },
+    { ex: 'lunge', sets: 1, reps: 10 },
+  ]);
+  assert.deepEqual(steps, frozen);
 });
 
 test('mentésfájl: az egyéni sorrend átmegy, az érvénytelen kimarad', () => {

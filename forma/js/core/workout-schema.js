@@ -66,6 +66,25 @@ export function plannedLog(steps, upTo = steps.length, loads = {}) {
   return [...map.values()];
 }
 
+/* A vezetett edzés összesítése a valóban beállított ismétléssel/idővel.
+   A bemelegítés és mobilitás is a régi `done` rekord része marad; a második
+   személy lépéseit nem számoljuk bele az első személy előzményébe. */
+export function completedSteps(steps, upTo = steps.length) {
+  const map = new Map();
+  for (const s of steps.slice(0, upTo)) {
+    if (!s || s.type === 'rest' || (s.person || 1) !== 1 || !s.exercise) continue;
+    const d = map.get(s.exercise) || { ex: s.exercise, sets: 0, reps: 0, seconds: 0 };
+    d.sets++;
+    const reps = Number.isFinite(s.actualReps) ? s.actualReps : s.reps;
+    const seconds = Number.isFinite(s.actualSeconds) ? s.actualSeconds : s.seconds;
+    if (Number.isFinite(reps) && reps >= 0) d.reps += reps * (s.side === 'both' ? 2 : 1);
+    if (Number.isFinite(seconds) && seconds >= 0) d.seconds += seconds;
+    map.set(s.exercise, d);
+  }
+  return [...map.values()].map(d => clean({ ex: d.ex, sets: d.sets,
+    reps: d.reps || undefined, seconds: d.seconds || undefined }));
+}
+
 /* A napló összesítése a régi `done` formára, hogy a gyakorlatonkénti előzmény a javított számokat mutassa. */
 export function doneFromLog(log) {
   return (log || []).map(e => {
