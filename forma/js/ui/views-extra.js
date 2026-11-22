@@ -54,9 +54,14 @@ export async function recoveryTileData(items) {
 export async function recoveryCard(items) {
   const r = recoveryScore({ readiness: await kvGet('readiness', null), pulses: items.filter(i => i.kind === 'pulse'), workouts: items.filter(i => i.kind === 'workout') });
   const label = { go: tr('Mehet a teljes edzés'), light: tr('Könnyített edzés javasolt'), rest: tr('Ma inkább regenerálódj') };
-  if (!r) return card(h('h2', null, tr('Regeneráció')), h('p', { class: 'small muted' }, tr('A napi „hogy vagy?” kérdésekből és a reggeli pulzusból számolom.')), h('div', { class: 'row' }, link('#/pulse', tr('Reggeli pulzus mérése'), 'btn small')));
+  if (!r) return card(h('h2', null, tr('Regeneráció')), h('p', { class: 'small muted' }, tr('Ma nincs elég friss adat a regenerációs pontszámhoz. A korábbi edzésterhelés önmagában nem bizonyítja a mai állapotodat.')), h('div', { class: 'row' }, link('#/pulse', tr('Reggeli pulzus mérése'), 'btn small')));
   return card(h('div', { class: 'row tight' }, h('h2', null, tr('Regeneráció')), h('span', { class: 'badge ' + (r.level === 'go' ? 'good' : r.level === 'light' ? 'mid' : 'warn') }, `${r.score} / 100`)),
     h('p', null, label[r.level]), h('p', { class: 'small muted' }, r.parts.map(([n, v]) => n === tr('Reggeli pulzus') ? tr('{p0}: {p1}/perc az átlaghoz', { p0: n, p1: (v > 0 ? '+' : '') + v }) : n === tr('Terhelés (3 nap)') ? tr('{p0}: {p1} perc', { p0: n, p1: v }) : `${n}: ${v}%`).join(' · ')),
+    h('p', { class: 'small muted' }, tr('Adatforrás: ') + [r.evidence.selfReport ? tr('mai önbevallás') : null,
+      r.evidence.pulseComparison ? tr('reggeli pulzus összevetése') : null,
+      r.evidence.trainingLoad ? tr('naplózott edzésterhelés') : null].filter(Boolean).join(' · ') +
+      (r.confidence === 'limited' ? tr(' · Korlátozott bizonyosság: hiányzik a közérzet vagy az összevethető pulzus.') : '')),
+    h('p', { class: 'small muted' }, tr('Tájékoztató szabályalapú becslés, nem egészségügyi diagnózis. A javaslatot te döntöd el.')),
     h('div', { class: 'row' }, link('#/pulse', tr('Reggeli pulzus'), 'btn small')));
 }
 

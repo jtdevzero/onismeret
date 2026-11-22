@@ -39,6 +39,14 @@ test('regenerációs pontszám: jó közérzet, emelkedett reggeli pulzus, nagy 
   const tired = recoveryScore({ readiness: { date: now, sleep: 1, soreness: 1, energy: 2 }, pulses, workouts: [{ date: now - DAY, minutes: 150 }], now });
   assert.equal(tired.level, 'rest');
   assert.equal(recoveryScore({ now }), null);
+  assert.equal(recoveryScore({ now, workouts: [{ date: now - DAY, minutes: 160 }] }), null,
+    'terhelés önmagában nem bizonyíthatja a mai jó regenerációt');
+  assert.equal(good.evidence.selfReport, true);
+  assert.equal(good.confidence, 'limited');
+  assert.equal(high.confidence, 'more_data');
+  const future = recoveryScore({ readiness: { date: now, sleep: 3, soreness: 3, energy: 3 },
+    pulses: [...pulses, { date: now + DAY, bpm: 200 }], now });
+  assert.equal(future.score, high.score, 'jövőbeli pulzus nem befolyásolhatja a becslést');
 });
 
 test('30 napos kihívás: fokozatos adag, minden 4. nap könnyebb, a napszámítás a kezdéstől', () => {

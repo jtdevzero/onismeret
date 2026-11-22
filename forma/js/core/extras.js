@@ -11,24 +11,30 @@ const dayStart = ts => { const d = new Date(ts); d.setHours(0, 0, 0, 0); return 
 export function recoveryScore({ readiness, pulses = [], workouts = [], now = Date.now() } = {}) {
   const parts = [];
   let score = 70, n = 0;
+  let checkAvailable = false, pulseAvailable = false;
   if (readiness && dayStart(readiness.date) === dayStart(now) && [readiness.sleep, readiness.soreness, readiness.energy].every(v => [1, 2, 3].includes(v))) {
     const r = ((readiness.sleep + readiness.soreness + readiness.energy) - 3) / 6; /* 0…1 */
-    score = 40 + 60 * r; n++; parts.push([tr('Közérzet'), Math.round(100 * r)]);
+    score = 40 + 60 * r; n++; checkAvailable = true; parts.push([tr('Közérzet'), Math.round(100 * r)]);
     if (readiness.pain) { score = Math.min(score, 30); parts.push([tr('Fájdalom'), 0]); }
   }
-  const ps = pulses.filter(p => p.date >= now - 14 * DAY && Number.isFinite(p.bpm)).sort((a, b) => a.date - b.date);
+  const ps = pulses.filter(p => Number.isFinite(p.date) && p.date <= now && p.date >= now - 14 * DAY && Number.isFinite(p.bpm) && p.bpm >= 30 && p.bpm <= 220).sort((a, b) => a.date - b.date);
   const today = ps.filter(p => dayStart(p.date) === dayStart(now)).pop();
   const base = ps.filter(p => dayStart(p.date) < dayStart(now));
   if (today && base.length >= 3) {
     const avg = base.reduce((s, p) => s + p.bpm, 0) / base.length, diff = today.bpm - avg;
     const adj = diff >= 10 ? -25 : diff >= 6 ? -12 : diff <= -3 ? 5 : 0;
-    score += adj; n++; parts.push([tr('Reggeli pulzus'), Math.round(diff)]);
+    score += adj; n++; pulseAvailable = true; parts.push([tr('Reggeli pulzus'), Math.round(diff)]);
   }
-  const load = workouts.filter(w => w.date >= dayStart(now) - 3 * DAY && w.date < dayStart(now)).reduce((s, w) => s + (w.minutes || 0), 0);
+  const cutoff = new Date(dayStart(now)); cutoff.setDate(cutoff.getDate() - 3);
+  const load = workouts.filter(w => Number.isFinite(w.date) && w.date >= cutoff.getTime() && w.date < dayStart(now))
+    .reduce((s, w) => s + (Number.isFinite(w.minutes) && w.minutes > 0 ? w.minutes : 0), 0);
   if (load > 120) { score -= 10; parts.push([tr('Terhelés (3 nap)'), load]); } else if (load) parts.push([tr('Terhelés (3 nap)'), load]);
-  if (!n && !load) return null;
+  /* A korábbi terhelés önmagában nem igazolja a mai regenerációt. */
+  if (!n) return null;
   score = Math.round(Math.max(0, Math.min(100, score)));
-  return { score, level: score >= 65 ? 'go' : score >= 40 ? 'light' : 'rest', parts };
+  return { score, level: score >= 65 ? 'go' : score >= 40 ? 'light' : 'rest', parts,
+    evidence: { selfReport: checkAvailable, pulseComparison: pulseAvailable, trainingLoad: load > 0 },
+    confidence: checkAvailable && pulseAvailable ? 'more_data' : 'limited' };
 }
 
 /* 30 napos kihívások: napi adag fokozatos emeléssel, minden 4. nap könnyebb. */

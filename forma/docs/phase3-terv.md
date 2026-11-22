@@ -33,6 +33,14 @@ Kizárólag `forma/`, a Phase 2 fejlesztői változatára épülve. A Phase 2 va
 - `styles.css` és `i18n-en.js`: arculatba illeszkedő, magyar/angol vezérlők. Build **PASS**, unit **163/163 PASS**. Drag-and-drop érintéses kezelés külön iteráció; a jelenlegi nyílgombos felület a hozzáférhető alternatíva.
 - A teljes böngészős szerkesztés/mentés és mobilos UI ellenőrzése továbbra is szükséges a kiadási jóváhagyáshoz.
 
+## P3-06 – Recovery Center 3.0 első biztonsági iteráció
+
+- `core/extras.js`: a korábbi 3 nap edzésterhelése **önmagában nem alapoz meg regenerációs pontszámot**; legalább egy friss, teljes napi önbevallás vagy összevethető reggeli pulzus szükséges. A jövőbeli és irreális pulzusértékeket a bemenetből kizárjuk, a 3 napos terhelési ablak helyi naptári napokra épül.
+- A pontszámhoz `evidence` (önbevallás / pulzus-összevetés / edzésnapló) és `confidence` (`more_data` vagy `limited`) metaadat tartozik. Ezek információforrást és hiányosságot jelölnek, **nem klinikai bizonyosságot**.
+- `ui/views-extra.js`: adatforrások, hiányzó adat és bizonytalanság külön magyar/angol magyarázata. Nincs automatikus terhelésmódosítás, orvosi diagnózis vagy külső adatküldés.
+- `tests/extras.test.mjs`: csak terhelés, jövőbeli pulzus, bizonyosság és forrástípus regressziók. Build **PASS**, unit **163/163 PASS**.
+- A regenerációs algoritmus szakmai küszöbeinek és a valós mobilos megjelenítésnek a külső, reprezentatív validációja továbbra is szükséges; a kijelzett érték tájékoztató.
+
 ## P3-02 – online generatív coach biztonsági architektúra (csak terv)
 
 1. **Alapbeállítás:** offline szabálymotor, nincs AI-kérés, API-kulcs vagy háttérszinkron.

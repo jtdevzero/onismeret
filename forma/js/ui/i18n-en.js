@@ -1240,6 +1240,13 @@ export default {
  "Lejjebb: ": "Move down: ",
  "Gyakorlatok sorrendje": "Exercise order",
  "A nyilakkal állítsd be az edzés sorrendjét. A változás a Mentés gombbal lép életbe.": "Use the arrows to set exercise order. Changes take effect when you save.",
+ "Ma nincs elég friss adat a regenerációs pontszámhoz. A korábbi edzésterhelés önmagában nem bizonyítja a mai állapotodat.": "There is not enough fresh data for today's recovery estimate. Previous training load alone cannot establish today's condition.",
+ "Adatforrás: ": "Data source: ",
+ "mai önbevallás": "today's self-report",
+ "reggeli pulzus összevetése": "morning pulse comparison",
+ "naplózott edzésterhelés": "logged training load",
+ " · Korlátozott bizonyosság: hiányzik a közérzet vagy az összevethető pulzus.": " · Limited confidence: self-report or comparable pulse data is missing.",
+ "Tájékoztató szabályalapú becslés, nem egészségügyi diagnózis. A javaslatot te döntöd el.": "Indicative rule-based estimate, not a medical diagnosis. You make the decision.",
  "{p0} edzés, {p1} perc az utolsó {p2} napban.": "{p0} workouts, {p1} minutes over the last {p2} days.",
  "{p0} edzés, {p1} perc az utolsó 7 napban.": "{p0} workouts, {p1} minutes over the last 7 days.",
  "{p0} regenerációs bejegyzés, {p1} fájdalomjelzés. Ez önbevallás.": "{p0} recovery check-ins, {p1} pain reports. These are self-reported."
