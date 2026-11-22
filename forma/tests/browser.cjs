@@ -181,7 +181,7 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     assert.match(t, /Szintlépés/);
     await shot('log');
     await go(page, '#/ex/push_full');
-    assert.match(await text(), /Hogyan csináld/);
+    assert.match(await text(), /Három dolog, amire figyelj/i);
     assert.equal(await page.locator('.fig-live svg.fig').count(), 1, 'mozgó ábra');
     assert.equal(await page.locator('.figs svg.fig').count(), 2, 'alatta a két képkocka');
     await shot('exercise');
@@ -268,7 +268,7 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     await page.waitForFunction(() => /80 \/ 150 perc/.test(document.getElementById('main').innerText));
     await shot('cardio');
     await go(page, '#/');
-    assert.match(await text(), /Kardió: 80 \/ 150 perc/);
+    assert.match(await text(), /kardió 80 \/ 150 p/);
   });
 
   await step('naptár és havi összefoglaló a naplóban, lapozás hónapok között', async () => {
@@ -379,10 +379,10 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     await go(page, '#/cooldown');
     assert.match(await text(), /Levezetés/);
     assert.match(await text(), /1 \/ \d+/);
-    await go(page, '#/');
+    await go(page, '#/progress');
     assert.match(await text(), /Add meg a testsúlyod/, 'testsúly nélkül kéri');
     await page.evaluate(async () => { await (await import('./js/ui/store.js')).itemPut({ id: 'teszt-suly', kind: 'body', date: Date.now(), weight: 80 }); });
-    await go(page, '#/');
+    await go(page, '#/progress');
     assert.match(await text(), /Fehérje és víz ma/);
     assert.match(await text(), /Fehérjeadag 0 \/ 5/);
     await page.locator('.nut-row').first().getByRole('button', { name: '+' }).click();
@@ -519,10 +519,46 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     await page.evaluate(async () => { const d = await import('./js/ui/data.js'); await d.saveSettings({ theme: 'auto' }); d.applyLook(); });
   });
 
+  await step('edzésjegyzet, elvégzett gyakorlatok előzménye, partner mód, Több oldal, eszközpróba', async () => {
+    await page.evaluate(async () => { (await import('./js/ui/widgets.js')).setTick(5); });
+    await go(page, '#/session/routine-morning');
+    await page.getByText(/Ketten csináljuk/).click();
+    assert.match(await text(), /1\. személy/);
+    const tap = async name => { const b = page.getByRole('button', { name }); return (await b.count()) ? b.click({ timeout: 1000 }).then(() => true, () => false) : false; };
+    let saw2 = false;
+    for (let g = 0; g < 200; g++) {
+      const t = await text();
+      if (/2\. személy/.test(t)) saw2 = true;
+      if (/Edzés kész/i.test(t)) break;
+      if (await tap('Pihenő kihagyása')) continue;
+      if (await tap('Kész, tovább')) continue;
+      await page.waitForTimeout(60);
+    }
+    assert.ok(saw2, 'a 2. személy is sorra került');
+    await page.locator('.note-input').fill('Jól ment, a csípőm laza volt.');
+    await page.getByRole('button', { name: 'Jegyzet mentése' }).click();
+    await until(page, async () => ((await (await import('./js/ui/store.js')).itemsAll('workout'))[0] || {}).note === 'Jól ment, a csípőm laza volt.');
+    const w = await page.evaluate(async () => (await (await import('./js/ui/store.js')).itemsAll('workout'))[0]);
+    assert.ok(Array.isArray(w.done) && w.done.some(d => d.ex === 'cat_cow'), 'elvégzett gyakorlatok listája');
+    assert.equal(w.partner, true);
+    await go(page, '#/ex/cat_cow');
+    assert.match(await text(), /Az előzményed/i);
+    await go(page, '#/log');
+    assert.match(await text(), /Jól ment, a csípőm laza volt/);
+    await go(page, '#/more');
+    assert.equal(await page.locator('.quick').count(), 4);
+    assert.match(await text(), /Extrák/i);
+    await go(page, '#/diag');
+    assert.match(await text(), /Böngésző:/);
+    await go(page, '#/qa');
+    assert.match(await text(), /0 \/ 11 kipróbálva/);
+    await page.evaluate(async () => { (await import('./js/ui/widgets.js')).setTick(15); });
+  });
+
   await step('akadálymentesség (axe, WCAG 2 A/AA): a fő képernyőkön nincs hiba', async () => {
     const axe = fs.readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
     const found = [];
-    for (const hash of ['#/more', '#/', '#/assess', '#/test/pushup', '#/test/deep_squat', '#/test/vitals', '#/result', '#/program', '#/session/mobility', '#/ex/squat', '#/log', '#/settings', '#/cardio', '#/check/strengthA', '#/ex/pull_up', '#/progress', '#/mini', '#/run', '#/review', '#/cooldown', '#/library', '#/routines', '#/custom', '#/posture', '#/test/reaction', '#/pulse', '#/challenge', '#/blocks', '#/report', '#/test/sway']) {
+    for (const hash of ['#/more', '#/', '#/assess', '#/test/pushup', '#/test/deep_squat', '#/test/vitals', '#/result', '#/program', '#/session/mobility', '#/ex/squat', '#/log', '#/settings', '#/cardio', '#/check/strengthA', '#/ex/pull_up', '#/progress', '#/mini', '#/run', '#/review', '#/cooldown', '#/library', '#/routines', '#/custom', '#/posture', '#/test/reaction', '#/pulse', '#/challenge', '#/blocks', '#/report', '#/test/sway', '#/more', '#/diag', '#/qa']) {
       await go(page, hash);
       /* a Playwright evaluate-je nem esik a lap CSP-je alá, így beágyazott szkript nélkül töltjük be */
       await page.evaluate(src => { if (!window.axe) (0, eval)(src); }, axe).catch(() => {});

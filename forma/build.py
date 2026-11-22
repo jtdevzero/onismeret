@@ -36,7 +36,7 @@ HEAD = f"""<!doctype html>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Forma">
 <link rel="stylesheet" href="styles.css">
-<script type="module" src="js/ui/app.js"></script>
+__PRELOAD__<script type="module" src="js/ui/app.js"></script>
 </head>
 <body>
 """
@@ -82,7 +82,11 @@ def rel(paths):
 
 def main():
     shell_html = (HERE / 'src' / 'shell.html').read_text(encoding='utf-8')
-    (HERE / 'index.html').write_text(HEAD + shell_html.rstrip() + '\n' + FOOT, encoding='utf-8')
+    # a modulok előre jelezve: a böngésző párhuzamosan tölti őket, nem egymás után fedezi fel az importokat
+    mods = [p for p in rel((HERE / 'js').rglob('*.js')) if not p.endswith('/pose.js')]
+    preload = ''.join(f'<link rel="modulepreload" href="{m}">\n' for m in mods)
+    (HERE / 'index.html').write_text(HEAD.replace('__PRELOAD__', preload) + shell_html.rstrip() + '\n' + FOOT, encoding='utf-8')
+    review_pack()
 
     shell = ['index.html', 'styles.css', 'manifest.webmanifest']
     shell += rel((HERE / 'icons').glob('*.*'))
@@ -94,6 +98,55 @@ def main():
             .replace('__LIST__', json.dumps(['./'] + shell, indent=0, ensure_ascii=False)))
     (HERE / 'sw.js').write_text(sw, encoding='utf-8')
     print('forma: index.html és sw.js kész')
+
+
+def review_pack():
+    """Szakmai átnézés csomag: a normák, tesztek, gyakorlatok és a panaszmód egy nyomtatható oldalon (docs/szakmai-atnezes.html)."""
+    import html
+    load = lambda n: json.loads((HERE / 'data' / n).read_text(encoding='utf-8'))
+    norms, tests, ex, routines = load('norms.json'), load('tests.json'), load('exercises.json'), load('routines.json')
+    e = html.escape
+    bands = ', '.join(f'{a}–{b}' for a, b in norms['bands'])
+    out = ['<!doctype html><html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">',
+           "<meta http-equiv=\"Content-Security-Policy\" content=\"default-src 'none'; style-src 'unsafe-inline'\">",
+           '<title>Forma – szakmai átnézés</title><style>body{font:15px/1.5 system-ui,sans-serif;max-width:900px;margin:24px auto;padding:0 16px;color:#111}'
+           'table{border-collapse:collapse;width:100%;margin:8px 0 18px}td,th{border:1px solid #bbb;padding:4px 6px;text-align:left;vertical-align:top;font-size:13px}'
+           'h2{margin-top:32px;border-bottom:2px solid #8a1f6b}.q{color:#8a1f6b;font-weight:700}.box{border:1px dashed #999;min-height:40px;margin:4px 0 12px;padding:4px;color:#777}</style></head><body>',
+           '<!-- GENERÁLT FÁJL: a forma/build.py állítja elő a data/ mappából. Ne szerkeszd kézzel. -->',
+           '<h1>Forma – szakmai átnézés</h1>',
+           '<p>Ez a dokumentum a Forma alkalmazás normáit, tesztjeit, gyakorlatait és kímélő szabályait gyűjti össze gyógytornász vagy edző számára. '
+           'Minden résznél van hely a megjegyzéseknek. Nyomtatható, PDF-be menthető.</p>',
+           f'<h2>1. Normák (korsávok: {e(bands)})</h2><p>Töréspontok: a 20., 40., 60. és 80. percentilis értéke. A minőség: A = publikált, B = becsült.</p>']
+    for k, n in norms['tests'].items():
+        out.append(f'<h3>{e(k)} <span class="q">[{e(n["quality"])}]</span>{" (kisebb a jobb)" if n.get("lower") else ""}</h3><p>{e(n["source"])}</p><table><tr><th>Nem</th>'
+                   + ''.join(f'<th>{a}–{b}</th>' for a, b in norms['bands']) + '</tr>'
+                   + ''.join(f'<tr><td>{"férfi" if sex == "male" else "nő"}</td>' + ''.join(f'<td>{" / ".join(str(x) for x in c)}</td>' for c in n[sex]) + '</tr>' for sex in ('male', 'female'))
+                   + '</table><div class="box">Megjegyzés:</div>')
+    out.append('<h2>2. Tesztek</h2>')
+    for t in tests['tests']:
+        extra = f' · csak {t["minAge"]} év fölött' if t.get('minAge') else ''
+        out.append(f'<h3>{e(t["name"])} <span class="q">[{e(t["kind"])}{e(extra)}]</span></h3><p>{e(t["how"])}</p>'
+                   + (f'<p><b>Biztonság:</b> {e(t["safety"])}</p>' if t.get('safety') else '')
+                   + (f'<p><b>Pontozás:</b> {e(json.dumps(t["map"], ensure_ascii=False))}</p>' if t.get('map') else '') + '<div class="box">Megjegyzés:</div>')
+    out.append('<h2>3. Gyakorlatok és gyakorlatsorok</h2><table><tr><th>Gyakorlat</th><th>Sor / szint</th><th>Adag</th><th>Leírás</th></tr>')
+    for x in ex['exercises']:
+        dose = x['dose'].get('reps') or x['dose'].get('seconds')
+        out.append(f'<tr><td>{e(x["name"])}{" · ugrásos" if x.get("impact") else ""}{" · " + e(x["equipment"]) if x.get("equipment") else ""}</td>'
+                   f'<td>{e(x.get("ladder", x["type"]))} {x.get("level", "")}</td><td>{dose[0]}–{dose[1]} {"ism." if "reps" in x["dose"] else "mp"}</td><td>{e(x["how"])}</td></tr>')
+    out.append('</table><div class="box">Megjegyzés:</div><h2>4. Rutinok</h2><ul>')
+    for r in routines['routines']:
+        out.append(f'<li><b>{e(r["name"])}</b> ({r["minutes"]} perc): {e(", ".join(b[0] for b in r["blocks"]))}</li>')
+    out.append('</ul><div class="box">Megjegyzés:</div><h2>5. Panaszmód (js/core/program.js, complaintRules)</h2><ul>'
+               '<li><b>Térd:</b> nincs ugrás; guggolás legfeljebb a 2. szintig (testsúlyos guggolás), kitörés az 1. szinten, egyensúly legfeljebb a 2. szinten.</li>'
+               '<li><b>Derék:</b> nincs ugrás; csípőfeszítés az 1. szinten (csípőemelés), törzs legfeljebb a plankig, burpee nélkül, a kitöréses forgatás kimarad.</li>'
+               '<li><b>Váll:</b> fekvőtámasz legfeljebb térdelve, rúd nélkül, húzás legfeljebb a 2. szintig; a törölközős vállkörzés és a falcsúsztatás kimarad.</li>'
+               '</ul><div class="box">Megjegyzés:</div><h2>6. Egyéb küszöbök</h2><ul>'
+               '<li>Regeneráció: közérzet 40–100 pont; a reggeli pulzus +6/perc fölött −12, +10 fölött −25; 3 nap alatt 120 percnél több edzés −10.</li>'
+               '<li>Testtartás: váll- és csípődőlés 3° fölött, a fej előretolódása a törzshossz 15%-a fölött „figyelj rá”.</li>'
+               '<li>Fehérje 1,6 g/ttkg, víz 33 ml/ttkg; pulzuszónák: Tanaka-maximum, Karvonen-módszer.</li>'
+               '</ul><div class="box">Megjegyzés:</div></body></html>')
+    (HERE / 'docs').mkdir(exist_ok=True)
+    (HERE / 'docs' / 'szakmai-atnezes.html').write_text('\n'.join(out) + '\n', encoding='utf-8')
 
 
 if __name__ == '__main__':

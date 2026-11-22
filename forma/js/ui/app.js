@@ -13,13 +13,14 @@ import { reviewView, cooldownView } from './views-wellness.js';
 import { libraryView, routinesView, customView } from './views-library.js';
 import { postureView } from './views-posture.js';
 import { pulseView, challengeView, blocksView, reportView } from './views-extra.js';
+import { diagView, qaView, initErrorLog } from './views-diag.js';
 
 const main = document.getElementById('main'), nav = document.getElementById('nav');
 const ROUTES = {
   '': homeView, start: startView, assess: assessView, test: testView, result: resultView,
-  program: programView, session: sessionView, ex: exerciseView, log: logView, settings: settingsView, cardio: cardioView, check: checkView, progress: progressView, mini: miniView, run: runView, more: moreView, review: reviewView, cooldown: cooldownView, library: libraryView, routines: routinesView, custom: customView, posture: postureView, pulse: pulseView, challenge: challengeView, blocks: blocksView, report: reportView,
+  program: programView, session: sessionView, ex: exerciseView, log: logView, settings: settingsView, cardio: cardioView, check: checkView, progress: progressView, mini: miniView, run: runView, more: moreView, review: reviewView, cooldown: cooldownView, library: libraryView, routines: routinesView, custom: customView, posture: postureView, pulse: pulseView, challenge: challengeView, blocks: blocksView, report: reportView, diag: diagView, qa: qaView,
 };
-const TAB = { '': '', program: 'program', session: 'program', ex: 'program', check: 'program', progress: 'progress', mini: 'progress', result: 'progress', assess: 'more', test: 'more', cardio: 'more', run: 'more', log: 'more', settings: 'more', more: 'more', review: 'progress', cooldown: 'program', library: 'more', routines: 'more', custom: 'more', posture: 'more', pulse: 'more', challenge: 'more', blocks: 'more', report: 'more' };
+const TAB = { '': '', program: 'program', session: 'program', ex: 'program', check: 'program', progress: 'progress', mini: 'progress', result: 'progress', assess: 'more', test: 'more', cardio: 'more', run: 'more', log: 'more', settings: 'more', more: 'more', review: 'progress', cooldown: 'program', library: 'more', routines: 'more', custom: 'more', posture: 'more', pulse: 'more', challenge: 'more', blocks: 'more', report: 'more', diag: 'more', qa: 'more' };
 let cleanups = [], seq = 0;
 
 async function route() {
@@ -41,6 +42,8 @@ async function route() {
   const h1 = main.querySelector('h1');
   if (h1) { h1.tabIndex = -1; h1.focus({ preventScroll: true }); }
 }
+
+initErrorLog();
 
 async function boot() {
   try { await loadData(); applyLook(); initHaptics(); }

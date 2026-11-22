@@ -6,6 +6,7 @@ const num = (v, lo, hi) => (typeof v === 'number' && Number.isFinite(v) && v >= 
 const str = (v, max = 80) => (typeof v === 'string' && v.length > 0 && v.length <= max ? v : undefined);
 const clean = o => Object.fromEntries(Object.entries(o).filter(([, v]) => v !== undefined));
 
+const cleanDone = d => (Array.isArray(d) ? d.slice(0, 40).filter(x => x && /^[a-z0-9_]{2,30}$/.test(x.ex || '')).map(x => clean({ ex: x.ex, sets: num(x.sets, 0, 50), reps: num(x.reps, 0, 5000), seconds: num(x.seconds, 0, 20000) })) : undefined);
 function numbers(obj, keys, lo, hi) {
   const out = {};
   if (!obj || typeof obj !== 'object') return out;
@@ -37,6 +38,7 @@ export function parseBackup(text, ctx) {
     reminder: s.reminder && /^\d{2}:\d{2}$/.test(s.reminder.time || '') ? { time: s.reminder.time } : undefined,
     duration: [0, 15, 25, 35].includes(s.duration) ? s.duration : undefined,
     voiceMode: typeof s.voiceMode === 'boolean' ? s.voiceMode : undefined,
+    showAll: typeof s.showAll === 'boolean' ? s.showAll : undefined,
     theme: ['auto', 'light', 'dark', 'sun'].includes(s.theme) ? s.theme : undefined,
     size: ['normal', 'large'].includes(s.size) ? s.size : undefined,
     complaints: Array.isArray(s.complaints) ? s.complaints.filter(c => ['knee', 'back', 'shoulder'].includes(c)) : undefined,
@@ -56,6 +58,7 @@ export function parseBackup(text, ctx) {
       lowImpact: !!p.lowImpact, done: num(p.done, 0, 1e6) ?? 0, lastDone: num(p.lastDone, 0, 1e14),
       levelLog: Array.isArray(p.levelLog) ? p.levelLog.filter(c => c && ctx.ladders.includes(c.ladder)).map(c => clean({ ladder: c.ladder, from: num(c.from, 0, 10), to: num(c.to, 0, 10), date: num(c.date, 0, 1e14) })).slice(-100) : [],
       fromAssessment: str(p.fromAssessment),
+      goalFocus: ['push', 'pull', 'squat', 'core', 'power', 'balance'].includes(p.goalFocus) ? p.goalFocus : undefined,
     });
   }
 
@@ -82,12 +85,13 @@ export function parseBackup(text, ctx) {
       if (!Object.keys(metrics).length) continue;
       items.push({ id, kind: 'posture', date, metrics });
     } else if (it.kind === 'workout' && ['routine', 'custom'].includes(it.key)) {
-      items.push(clean({ id, kind: 'workout', date, key: it.key, title: str(it.title, 60), minutes: num(it.minutes, 0, 600) ?? 0, steps: num(it.steps, 0, 1000), partial: !!it.partial, ratings: {}, changes: [] }));
+      items.push(clean({ id, kind: 'workout', date, key: it.key, title: str(it.title, 60), minutes: num(it.minutes, 0, 600) ?? 0, steps: num(it.steps, 0, 1000), partial: !!it.partial, ratings: {}, changes: [], note: str(it.note, 280), done: cleanDone(it.done), partner: it.partner === true ? true : undefined }));
     } else if (it.kind === 'workout' && ctx.sessionKeys.includes(it.key)) {
       const ratings = {};
       for (const l of ctx.ladders) if (it.ratings && ctx.ratingKeys.includes(it.ratings[l])) ratings[l] = it.ratings[l];
       items.push(clean({ id, kind: 'workout', date, key: it.key, minutes: num(it.minutes, 0, 600) ?? 0, steps: num(it.steps, 0, 1000), partial: !!it.partial, ratings,
-        changes: Array.isArray(it.changes) ? it.changes.filter(c => c && ctx.ladders.includes(c.ladder)).map(c => clean({ ladder: c.ladder, from: num(c.from, 0, 10), to: num(c.to, 0, 10), date: num(c.date, 0, 1e14) })) : [] }));
+        changes: Array.isArray(it.changes) ? it.changes.filter(c => c && ctx.ladders.includes(c.ladder)).map(c => clean({ ladder: c.ladder, from: num(c.from, 0, 10), to: num(c.to, 0, 10), date: num(c.date, 0, 1e14) })) : [],
+        note: str(it.note, 280), done: cleanDone(it.done), light: it.light === true ? true : undefined, partner: it.partner === true ? true : undefined }));
     } else if (it.kind === 'mini') {
       const pr = profile(it.profile);
       const results = numbers(it.results, ['pushup', 'plank', 'sl_stance'], 0, 1000);

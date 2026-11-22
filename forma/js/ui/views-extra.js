@@ -45,7 +45,10 @@ export async function pulseView(arg, onCleanup) {
     note('Tájékoztató mérés, nem orvosi eszköz. Szabálytalan szívverés gyanújával fordulj orvoshoz.', 'small'));
 }
 
-/* ---- regenerációs pontszám a kezdőlapon ---- */
+/* ---- regenerációs pontszám ---- */
+export async function recoveryTileData(items) {
+  return recoveryScore({ readiness: await kvGet('readiness', null), pulses: items.filter(i => i.kind === 'pulse'), workouts: items.filter(i => i.kind === 'workout') });
+}
 export async function recoveryCard(items) {
   const r = recoveryScore({ readiness: await kvGet('readiness', null), pulses: items.filter(i => i.kind === 'pulse'), workouts: items.filter(i => i.kind === 'workout') });
   const label = { go: 'Mehet a teljes edzés', light: 'Könnyített edzés javasolt', rest: 'Ma inkább regenerálódj' };
