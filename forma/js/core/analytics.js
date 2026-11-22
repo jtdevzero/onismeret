@@ -58,3 +58,15 @@ export function buildAssessmentComparison(list, evaluate) {
   const scoreDelta = ea && eb && Number.isFinite(ea.overall) && Number.isFinite(eb.overall) ? eb.overall - ea.overall : null;
   return { comparable: true, reason: null, scoreDelta, raw, from: a.date, to: b.date };
 }
+
+/* Regenerációs idősor: a napi „hogy vagy?” bejegyzések és az aznapi edzés egymás mellett, a legutóbbi elöl.
+   Csak naplózott együttjárás, nem ok-okozat és nem orvosi értékelés. Hiányzó nap nem kerül bele (nem „rossz nap”). */
+export function buildRecoveryTimeline(items, { days = 14, now = Date.now() } = {}) {
+  const all = dedupe(items), from = now - days * 86400000;
+  const sameDay = (a, b) => new Date(a).toDateString() === new Date(b).toDateString();
+  const ws = all.filter(i => i.kind === 'workout');
+  return all.filter(i => i.kind === 'check' && i.date >= from && i.date <= now).sort((a, b) => b.date - a.date).map(c => {
+    const day = ws.filter(w => sameDay(w.date, c.date));
+    return { date: c.date, sleep: c.sleep ?? null, soreness: c.soreness ?? null, energy: c.energy ?? null, pain: !!c.pain, level: c.level ?? null, workouts: day.length, light: day.some(w => w.light) };
+  });
+}

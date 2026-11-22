@@ -130,3 +130,9 @@ test('napló tisztítás: ismeretlen gyakorlat és üres sorozat kimarad, a korl
   assert.equal(cleanLog(big)[0].sets.length, 20);
   assert.deepEqual(cleanLog([{ ex: 'zz_unknown', sets: [{ reps: 1 }] }], exerciseIds), undefined);
 });
+
+test('napi ellenőrzés: érvényes bejegyzés visszatöltődik, hibás kimarad', () => {
+  const good = { id: 'check-2026-11-18', kind: 'check', date: T0, sleep: 2, soreness: 3, energy: 1, pain: false, level: 'light' };
+  const r = parseBackup(JSON.stringify({ ...legacyFile, version: 2, items: [good, { ...good, id: 'x', sleep: 9 }, { ...good, id: 'check-2026-11-19', sleep: 7, soreness: 0, energy: 'a' }] }), ctx);
+  assert.deepEqual(r.data.items.filter(i => i.kind === 'check'), [good]);
+});

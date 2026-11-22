@@ -2,11 +2,12 @@
 import { h, clear, fmtDate, uid, toast } from './dom.js';
 import { page, card, btn, link, note, choice, list, artBanner } from './widgets.js';
 import { profile } from './data.js';
-import { kvSet, itemPut, itemsAll, itemDelete } from './store.js';
+import { kvSet, itemPut, itemsAll, itemDelete, commit } from './store.js';
 import { latestAssessment, evaluateItem } from './state.js';
 import { hrZones, weeklyCardio, cardioPlan, readiness, maxHr } from '../core/cardio.js';
 import { parseGpx, parseCsv } from '../core/extras.js';
 import { SESSION_TITLES } from '../core/program.js';
+import { dayKey } from '../core/wellness.js';
 
 export const CARDIO_TYPES = [['walk', 'Tempós séta'], ['jog', 'Kocogás'], ['run', 'Futás'], ['bike', 'Kerékpár'], ['swim', 'Úszás'], ['other', 'Egyéb']];
 const TYPE = Object.fromEntries(CARDIO_TYPES);
@@ -73,7 +74,10 @@ export async function checkView(key) {
     const r = readiness(st);
     clear(out);
     if (!r) return;
-    await kvSet('readiness', { date: Date.now(), ...st, level: r.level });
+    /* a legutóbbi állapot (regenerációs pontszámhoz) és a napi bejegyzés (idősorhoz) együtt; naponta egy bejegyzés, felülírva */
+    const now = Date.now(), entry = { date: now, ...st, level: r.level };
+    try { await commit({ readiness: entry }, [{ id: 'check-' + dayKey(now), kind: 'check', ...entry, pain: !!st.pain }]); }
+    catch { await kvSet('readiness', entry).catch(() => {}); }
     out.append(card(h('p', { class: 'lead' }, r.text), h('div', { class: 'row' },
       r.level === 'go' ? link('#/session/' + key, 'Teljes edzés: ' + SESSION_TITLES[key], 'btn primary') : null,
       r.level !== 'rest' && key !== 'mobility' ? link('#/session/' + key + '.light', 'Könnyített edzés', 'btn' + (r.level === 'light' ? ' primary' : '')) : null,

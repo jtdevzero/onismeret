@@ -395,6 +395,17 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     await shot('session-light');
   });
 
+  await step('napi ellenőrzés idősora: naponta egy bejegyzés, a Fejlődés oldalon megjelenik', async () => {
+    const checks = await page.evaluate(async () => (await (await import('./js/ui/store.js')).itemsAll('check')));
+    assert.equal(checks.length, 1, 'ugyanazon a napon egy bejegyzés (felülírva)');
+    assert.equal(checks[0].sleep, 1);
+    assert.equal(checks[0].level, 'light');
+    await go(page, '#/progress');
+    assert.match(await text(), /Regeneráció \(14 nap\)/);
+    assert.match(await text(), /nem jelenti, hogy egyik okozza a másikat/);
+    assert.ok(await page.locator('svg.mini-bars').count() >= 1, 'heti oszlopdiagram');
+  });
+
   await step('kardió: pulzuszónák, rögzítés, heti cél a kezdőlapon', async () => {
     await go(page, '#/cardio');
     assert.match(await text(), /2\. zóna/);

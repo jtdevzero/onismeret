@@ -731,3 +731,11 @@ details.more-group[open] > summary::after { content: "▴"; }
 .art-banner.art-climb { background-image: url(assets/art/climb.webp); }
 .art-banner.art-kick { background-image: url(assets/art/kick.webp); }
 .art-banner.art-home { background-image: url(assets/art/home.webp); }
+
+/* kis oszlopdiagram (analitika) */
+.mini-bars { display: block; width: 100%; max-width: 420px; height: auto; margin: 6px auto 0; }
+.mini-bars .bar { fill: var(--teal); opacity: .55; }
+.mini-bars .bar.now { opacity: 1; }
+.mini-bars .bar.empty { fill: var(--line); opacity: 1; }
+.mini-bars .bar-label, .mini-bars .bar-val { fill: var(--muted); font-size: 10px; font-family: inherit; }
+.mini-bars .bar-val { fill: var(--text); font-weight: 700; }

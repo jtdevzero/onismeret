@@ -1,5 +1,5 @@
 /* Fejlődés: rekordok, jelvények, célok, testméretek, és a félidős mini-teszt. */
-import { trainingLoadCard, exerciseTrendCard } from './views-analytics.js';
+import { trainingLoadCard, exerciseTrendCard, recoveryTimelineCard } from './views-analytics.js';
 import { h, clear, fmtDate, uid, toast } from './dom.js';
 import { page, card, btn, link, fmtNum, emptyState, artBanner } from './widgets.js';
 import { D, profile } from './data.js';
@@ -54,6 +54,7 @@ export async function progressView(arg, onCleanup) {
     progressCard(items),
     trainingLoadCard(items),
     exerciseTrendCard(items),
+    recoveryTimelineCard(items),
     card(h('h2', null, 'Fittségi kor most'),
       h('p', { class: 'small muted' }, 'Tájékoztató VO₂max-becslés az alapadatokból, jelentős egyéni bizonytalansággal. Nem a biológiai kor vagy a teljes mozgásfelmérés mérése. Az előrejelzés csak azonos pontozási verziójú felméréseket használ.'),
       h('div', { class: 'stat-row' },
