@@ -261,6 +261,20 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     }, saved);
   });
 
+  await step('programszerkesztő: kézi szintállítás naplózva, vissza az ajánlotthoz', async () => {
+    const lvl = async () => page.evaluate(async () => (await (await import('./js/ui/state.js')).getProgram()).levels.push ?? 0);
+    const before = await lvl();
+    await go(page, '#/program');
+    await page.getByRole('button', { name: /^Nyomás.*: könnyebb szint$/ }).click();
+    await until(page, async b => ((await (await import('./js/ui/state.js')).getProgram()).levels.push ?? 0) === b - 1, before);
+    await page.waitForFunction(() => /kézzel állítva/.test(document.getElementById('main').innerText));
+    const p1 = await page.evaluate(async () => (await (await import('./js/ui/state.js')).getProgram()));
+    assert.equal(p1.levelLog.at(-1).source, 'manual');
+    await page.getByRole('button', { name: 'Vissza az ajánlott szintekhez' }).click();
+    await until(page, async b => ((await (await import('./js/ui/state.js')).getProgram()).levels.push ?? 0) === b, before);
+    assert.equal(await lvl(), before);
+  });
+
   await step('edzés vége íráshibánál: nincs félkész mentés, az újrapróba egyszer ír', async () => {
     const before = await page.evaluate(async () => ({ n: (await (await import('./js/ui/store.js')).itemsAll('workout')).length, done: (await (await import('./js/ui/state.js')).getProgram()).done }));
     await go(page, '#/session/mobility');

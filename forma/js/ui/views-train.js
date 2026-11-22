@@ -4,6 +4,7 @@ import { page, card, btn, link, note, list, speak, beep, tickMs, videoSearch, ce
 import { D, S, lowImpact } from './data.js';
 import { itemPut, itemGet, itemsAll, kvGet, commit } from './store.js';
 import { getProgram, setProgram, latestAssessment } from './state.js';
+import { setLevel, manualOverrides, revertManual } from '../core/program.js';
 import { ROTATION, SESSION_TITLES, LADDERS, RATINGS, effLadder, baseLadder, buildSession, sessionSteps, sessionMinutes, nextKey, weekInfo, laddersOf, exerciseFor, applyRatings, doseFor, fitSession, phaseOf, freeSession, partnerSteps, GOALS, CYCLE_WEEKS } from '../core/program.js';
 import { figureStrip, figureAnim } from './figure.js';
 import { weekStrip } from './views-main.js';
@@ -92,6 +93,38 @@ function ringClock(clock) {
 const doseText = b => (b.seconds ? fmtSec(b.seconds) : b.reps + ' ism.') + (D.ex[b.exercise] && D.ex[b.exercise].perSide ? ' oldalanként' : '') + (b.sets > 1 ? ' × ' + b.sets : '');
 const lvlDots = (level, max) => h('span', { class: 'lvl', role: 'img', 'aria-label': `${level + 1}. szint a ${max}-ből` }, Array.from({ length: max }, (_, i) => h('i', { class: i <= level ? 'on' : '' })));
 
+/* Szintek és tartós, kézi szintállítás (programszerkesztő). Egy edzésre szóló csere a vezetett edzésben van. */
+function levelsCard(prog, lad) {
+  const ov = manualOverrides(prog);
+  const save = async (next, msg) => {
+    try { await setProgram(next); } catch { toast('Nem sikerült menteni; próbáld újra.'); return; }
+    toast(msg); dispatchEvent(new HashChangeEvent('hashchange'));
+  };
+  const change = async (l, dir) => {
+    const fresh = await getProgram(), from = fresh.levels[l] ?? 0;
+    const a = exerciseFor(lad, l, from, fresh.lowImpact), b = exerciseFor(lad, l, from + dir, fresh.lowImpact);
+    if (!b || (a && a.id === b.id)) { toast(dir > 0 ? 'Ez a sor legnehezebb elérhető szintje.' : 'Ez a sor legkönnyebb szintje.'); return; }
+    if (!confirm(`Tartósan átállítod: ${a ? a.name : ''} → ${b.name}? A korábbi edzéseid nem változnak, és bármikor visszaállhatsz az ajánlott szintre.`)) return;
+    await save(setLevel(fresh, l, from + dir, D.exercises.exercises), 'Szint átállítva: ' + b.name);
+  };
+  const manual = Object.keys(ov).filter(l => ov[l].recommended !== ov[l].current);
+  return card(h('h2', null, 'Szintjeid'),
+    h('p', { class: 'small muted' }, 'A szint magától lép, ha kétszer egymás után könnyűnek értékeled. Itt tartósan, kézzel is állíthatod; a panasz- és kímélő mód korlátai ekkor is érvényesek.'),
+    h('ul', { class: 'rows levels' }, LADDERS.filter(l => effLadder(baseLadder(l), prog.equipment) === l).map(l => {
+      const ex = exerciseFor(lad, l, prog.levels[l], prog.lowImpact);
+      if (!ex) return null;
+      const name = D.exercises.ladders[l];
+      return h('li', null, h('span', { class: 'log-item' }, h('strong', null, name), link('#/ex/' + ex.id, ex.name), ov[l] && ov[l].recommended !== ov[l].current ? h('span', { class: 'badge mid' }, 'kézzel állítva') : null),
+        h('span', { class: 'level-edit' }, lvlDots(prog.levels[l] ?? 0, lad[l].length),
+          h('button', { type: 'button', class: 'btn small icon', 'aria-label': name + ': könnyebb szint', onclick: () => change(l, -1) }, '−'),
+          h('button', { type: 'button', class: 'btn small icon', 'aria-label': name + ': nehezebb szint', onclick: () => change(l, 1) }, '+')));
+    })),
+    manual.length ? h('div', { class: 'row' }, btn('Vissza az ajánlott szintekhez', async () => {
+      if (!confirm('Visszaállítod a kézzel módosított szinteket az ajánlottra? A korábbi edzéseid nem változnak.')) return;
+      await save(revertManual(await getProgram()), 'Visszaálltál az ajánlott szintekre.');
+    }, 'small')) : null);
+}
+
 /* Súlyok súlyzós gyakorlatokhoz: elfogadott súly, javaslat indoklással, jóváhagyás vagy kézi beállítás. */
 async function loadsCard(prog, lad) {
   if (!(prog.equipment || []).includes('dumbbell')) return null;
@@ -149,10 +182,7 @@ export async function programView() {
         h('option', { value: '' }, 'Nincs külön cél'), GOALS.map(([k, t]) => h('option', { value: k }, t))); s.value = prog.goalFocus || ''; return s; })())),
     card(h('h2', null, 'Állóképesség'), h('p', null, 'A forgó rend mellé heti 150 perc kardió: tempós séta, kocogás vagy kerékpár, a pulzustartományodban.'), h('div', { class: 'row' }, link('#/cardio', 'Kardió napló és pulzuszónák', 'btn'))),
     await loadsCard(prog, lad),
-    card(h('h2', null, 'Szintjeid'), h('ul', { class: 'rows' }, LADDERS.filter(l => effLadder(baseLadder(l), prog.equipment) === l).map(l => {
-      const ex = exerciseFor(lad, l, prog.levels[l], prog.lowImpact);
-      return ex ? h('li', null, h('span', { class: 'log-item' }, h('strong', null, D.exercises.ladders[l]), link('#/ex/' + ex.id, ex.name)), lvlDots(prog.levels[l] ?? 0, lad[l].length)) : null;
-    }))));
+    levelsCard(prog, lad));
 }
 
 /* Vezetett edzés: lépésről lépésre, időzítővel, pihenővel, hangos bemondással; a gyakorlatok végén értékelés. */

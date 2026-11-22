@@ -273,6 +273,42 @@ export function applyRatings(state, ratings, exercises, now = Date.now()) {
   return { state: { ...state, levels, ratings: hist, levelLog: [...(state.levelLog || []), ...changes].slice(-100) }, changes };
 }
 
+/* Programszerkesztő: egy gyakorlatsor szintjének tartós, kézi beállítása. Nem módosítja a bemenetet;
+   azonos értéknél változatlanul adja vissza (idempotens). A változás a levelLog-ba kerül source: 'manual' jelöléssel,
+   a sor értékelési előzménye törlődik (a kétszeri „könnyű” az új szinttől számít). A panaszkorlát (complaintRules)
+   és a kímélő mód az edzés összeállításakor továbbra is érvényesül, ezért kézzel sem kerülhető meg. */
+export function setLevel(state, ladder, to, exercises, now = Date.now()) {
+  const ladders = laddersOf(exercises);
+  if (!state || !ladders[ladder] || !Number.isInteger(to)) return state;
+  const max = ladders[ladder].length - 1, from = (state.levels || {})[ladder] ?? 0;
+  const next = Math.max(0, Math.min(max, to));
+  if (next === from) return state;
+  const ratings = { ...(state.ratings || {}) }; ratings[ladder] = [];
+  return { ...state, levels: { ...(state.levels || {}), [ladder]: next }, ratings, levelLog: [...(state.levelLog || []), { ladder, from, to: next, date: now, source: 'manual' }].slice(-100) };
+}
+/* a kézi szintállítások listája sorrendben, soronként a kézi lánc előtti (ajánlott) szinttel */
+export function manualOverrides(state) {
+  /* csak az aktuális program (utolsó felmérés) óta: egy újramérés új ajánlott szinteket ad */
+  const log = ((state && state.levelLog) || []).filter(c => !(state.start > c.date)), out = {};
+  const ladders = [...new Set(log.map(c => c.ladder))];
+  for (const l of ladders) {
+    const mine = log.filter(c => c.ladder === l);
+    let i = mine.length - 1;
+    while (i >= 0 && mine[i].source === 'manual') i--;
+    if (i < mine.length - 1) out[l] = { recommended: mine[i + 1].from, current: mine[mine.length - 1].to };
+  }
+  return out;
+}
+/* vissza az ajánlott szintekhez: minden kézzel állított sor a kézi lánc előtti szintre (source: 'revert') */
+export function revertManual(state, now = Date.now()) {
+  const ov = manualOverrides(state);
+  const keys = Object.keys(ov).filter(l => ov[l].recommended !== ov[l].current);
+  if (!keys.length) return state;
+  const levels = { ...(state.levels || {}) }, entries = [];
+  for (const l of keys) { entries.push({ ladder: l, from: levels[l] ?? 0, to: ov[l].recommended, date: now, source: 'revert' }); levels[l] = ov[l].recommended; }
+  return { ...state, levels, levelLog: [...(state.levelLog || []), ...entries].slice(-100) };
+}
+
 /* Esedékes-e az újramérés? Az utolsó felmérés óta legalább 6 hét, vagy a könnyített hétre értünk. */
 export function reassessDue(lastAssessment, state, now = Date.now()) {
   if (!lastAssessment) return true;

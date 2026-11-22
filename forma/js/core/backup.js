@@ -77,7 +77,7 @@ export function parseBackup(text, ctx) {
       equipment: Array.isArray(p.equipment) ? p.equipment.filter(e => ['bar', 'band', 'dumbbell'].includes(e)) : [],
       complaints: Array.isArray(p.complaints) ? p.complaints.filter(c => ['knee', 'back', 'shoulder'].includes(c)) : [],
       lowImpact: !!p.lowImpact, done: num(p.done, 0, 1e6) ?? 0, lastDone: num(p.lastDone, 0, 1e14),
-      levelLog: Array.isArray(p.levelLog) ? p.levelLog.filter(c => c && ctx.ladders.includes(c.ladder)).map(c => clean({ ladder: c.ladder, from: num(c.from, 0, 10), to: num(c.to, 0, 10), date: num(c.date, 0, 1e14) })).slice(-100) : [],
+      levelLog: Array.isArray(p.levelLog) ? p.levelLog.filter(c => c && ctx.ladders.includes(c.ladder)).map(c => clean({ ladder: c.ladder, from: num(c.from, 0, 10), to: num(c.to, 0, 10), date: num(c.date, 0, 1e14), source: ['manual', 'revert'].includes(c.source) ? c.source : undefined })).slice(-100) : [],
       fromAssessment: str(p.fromAssessment),
       cycleBase: num(p.cycleBase, 0, 1000),
       goalFocus: ['push', 'pull', 'squat', 'core', 'power', 'balance'].includes(p.goalFocus) ? p.goalFocus : undefined,

@@ -235,3 +235,28 @@ test('mentésfájl: érvényes visszatöltés, idegen és sérült fájl elutas�
   assert.equal(parseBackup(JSON.stringify({ app: 'forma', version: 1, items: 'x' }), ctx).ok, false);
   assert.equal(parseBackup('', ctx).ok, false);
 });
+
+test('programszerkesztő: kézi szint, naplózva és idempotensen; vissza az ajánlotthoz', async () => {
+  const { setLevel, manualOverrides, revertManual, applyRatings } = await import('../js/core/program.js');
+  const base = Object.freeze({ start: 100, levels: Object.freeze({ push: 1 }), ratings: Object.freeze({ push: ['easy'] }), levelLog: Object.freeze([{ ladder: 'push', from: 0, to: 1, date: 150 }]) });
+  const up = setLevel(base, 'push', 2, ex, 200);
+  assert.equal(up.levels.push, 2);
+  assert.deepEqual(up.ratings.push, [], 'az értékelési előzmény az új szinttől indul');
+  assert.deepEqual(up.levelLog.at(-1), { ladder: 'push', from: 1, to: 2, date: 200, source: 'manual' });
+  assert.deepEqual(base.levels, { push: 1 }, 'a bemenet változatlan');
+  assert.equal(setLevel(up, 'push', 2, ex, 300), up, 'azonos szint: nincs új bejegyzés');
+  assert.equal(setLevel(base, 'nincs', 2, ex), base);
+  assert.equal(setLevel(base, 'push', 99, ex).levels.push, laddersOf(ex).push.length - 1, 'a sor végére korlátozva');
+  const up2 = setLevel(up, 'push', 3, ex, 250);
+  assert.deepEqual(manualOverrides(up2), { push: { recommended: 1, current: 3 } });
+  const back = revertManual(up2, 400);
+  assert.equal(back.levels.push, 1);
+  assert.equal(back.levelLog.at(-1).source, 'revert');
+  assert.deepEqual(manualOverrides(back), {});
+  assert.equal(revertManual(back), back);
+  /* egy automatikus szintlépés lezárja a kézi láncot */
+  const auto = applyRatings({ ...up, ratings: { push: ['easy'] } }, { push: 'easy' }, ex, 260).state;
+  assert.deepEqual(manualOverrides(auto), {});
+  /* új program (újramérés) után a korábbi kézi beállítás már nem számít */
+  assert.deepEqual(manualOverrides({ ...up2, start: 500 }), {});
+});

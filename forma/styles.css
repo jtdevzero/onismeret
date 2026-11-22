@@ -693,3 +693,7 @@ details.more-group[open] > summary::after { content: "▴"; }
 .data-table thead th { font-weight: 700; color: var(--muted); background: var(--surface); }
 .data-table tbody th { text-align: left; font-weight: 600; position: sticky; left: 0; background: var(--surface); }
 .data-table tbody tr:last-child th, .data-table tbody tr:last-child td { border-bottom: 0; }
+
+/* Programszerkesztő: szintállító gombok */
+.level-edit { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.level-edit .btn.icon { min-width: 44px; min-height: 44px; padding: 0; font-size: 1.2rem; line-height: 1; }
