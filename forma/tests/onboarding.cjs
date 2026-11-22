@@ -10,7 +10,7 @@ async function fillOnboarding(page, url) {
   await page.goto(url);
   await page.waitForFunction(() => document.documentElement.dataset.ready === '1');
   await page.getByRole('button', { name: 'Kezdjük el', exact: true }).click();
-  await page.getByLabel('Életkor').fill('34');
+  await page.getByLabel('Életkor').selectOption('34');
   await page.getByText('Nő', { exact: true }).click();
   await page.getByRole('button', { name: 'Tovább', exact: true }).first().click();
   for (const q of await page.locator('fieldset.parq-q').all()) await q.getByText('Nem', { exact: true }).click();

@@ -9,6 +9,14 @@ export const note = (text, cls = '') => h('p', { class: 'note ' + cls }, text);
 export const list = items => h('ul', { class: 'plain' }, items.map(i => h('li', null, i)));
 
 /* Választógombok (rádiócsoport). options: [[érték, felirat]] */
+/* Életkor pörgethető listából (1–99): telefonon a rendszer forgókerekes választója jelenik meg.
+   A felnőtt korhatárt (18+) a hívó ellenőrzi és jelzi; a lista csak a beírást könnyíti. */
+export function ageSelect(value, onchange, attrs = {}) {
+  const sel = h('select', { class: 'age-select', ...attrs, onchange: () => onchange(sel.value === '' ? null : Number(sel.value)) },
+    h('option', { value: '' }, '–'), Array.from({ length: 99 }, (_, i) => h('option', { value: String(i + 1) }, String(i + 1))));
+  sel.value = Number.isInteger(value) ? String(value) : '';
+  return sel;
+}
 export function choice(name, options, value, onchange, label) {
   return h('div', { class: 'choice', role: 'radiogroup', 'aria-label': label }, options.map(([v, text]) =>
     h('label', { class: 'choice-item' },

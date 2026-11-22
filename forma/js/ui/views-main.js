@@ -1,6 +1,6 @@
 /* Kezdőképernyő (első indítás), a mai nap, napló és beállítások. */
 import { h, clear, fmtDate, toast } from './dom.js';
-import { page, card, btn, link, note, choice, list, sized, heroTime, artClass, emptyState } from './widgets.js';
+import { page, card, btn, link, note, choice, list, sized, heroTime, artClass, emptyState, ageSelect } from './widgets.js';
 import { D, S, saveSettings, profile, applyLook, weeklyGoal, reviewed } from './data.js';
 import { exportAll, wipeAll, restoreAll } from './store.js';
 import { parseBackup } from '../core/backup.js';
@@ -69,7 +69,7 @@ export async function startView() {
     if (anyYes) warn.append(note(t('Legalább egy kérdésre igent válaszoltál. Mielőtt elkezded a felmérést és az edzést, beszélj az orvosoddal. Az appban kímélő módot kapcsolok be: kimaradnak az ugrások és a terheléses lépcsőteszt.'), 'warn'));
     go.disabled = saving || !(ageOk(st.age) && st.sex && answered && st.ok);
   };
-  const age = h('input', { type: 'number', inputMode: 'numeric', min: 18, max: 99, value: st.age ?? '', 'aria-describedby': 'age-hint', oninput: () => { st.age = age.value === '' ? null : Number(age.value); refresh(); } });
+  const age = ageSelect(st.age, v => { st.age = v; refresh(); }, { 'aria-describedby': 'age-hint' });
   /* minden kérdés egy blokk, alatta két nagy gomb (Nem | Igen); a rádiógomb rejtett, de billentyűzettel és felolvasóval működik */
   const parq = h('div', { class: 'parq' }, PARQ.map(([k, q], i) => h('fieldset', { class: 'parq-q' },
     h('legend', null, h('span', { class: 'parq-n', 'aria-hidden': 'true' }, String(i + 1)), q),
@@ -318,7 +318,7 @@ function download(name, text, type) {
 export async function settingsView() {
   const p = profile();
   const st = { age: p.age, sex: p.sex };
-  const age = h('input', { type: 'number', inputMode: 'numeric', min: 18, max: 99, value: st.age ?? '', oninput: () => { st.age = Number(age.value); } });
+  const age = ageSelect(st.age, v => { st.age = v; });
   const low = h('input', { type: 'checkbox', checked: !!S.settings.lowImpact });
   const eq = new Set(S.settings.equipment || []);
   const eqBoxes = EQUIPMENT.map(([k, label]) => h('label', { class: 'check' }, h('input', { type: 'checkbox', checked: eq.has(k), onchange: e => { if (e.target.checked) eq.add(k); else eq.delete(k); } }), h('span', null, label)));
