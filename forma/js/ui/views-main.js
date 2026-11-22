@@ -400,21 +400,22 @@ export async function moreView() {
   const newbie = !(S.settings && S.settings.showAll) && (!first || Date.now() - first < 7 * 86400000);
   const group = (title, items, open = true) => h('details', { class: 'more-group', open: open || undefined }, h('summary', null, h('h2', null, title)), h('ul', { class: 'menu-list' }, items));
   return page('Több',
-    h('nav', { class: 'quick-row', 'aria-label': 'Gyorsgombok' }, quick('#/assess', 'check', 'Felmérés'), quick('#/routines', 'train', 'Rutinok'), quick('#/cardio', 'chart', 'Kardió'), quick('#/log', 'log', 'Napló')),
+    /* a leggyakrabban kellő négy: felmérés, kardió, napló, beállítások (mentés); a ritkábbak csoportokban, az extrák összecsukva */
+    h('nav', { class: 'quick-row', 'aria-label': 'Gyorsgombok' }, quick('#/assess', 'check', 'Felmérés'), quick('#/cardio', 'chart', 'Kardió'), quick('#/log', 'log', 'Napló'), quick('#/settings', 'gear', 'Beállítások')),
     group('Mérések', [
       item('#/result', 'chart', 'Legutóbbi eredmény', 'Pókhálóábra, fittségi kor, területek'),
       item('#/posture', 'check', 'Testtartás', 'Szemből és oldalról, kamerával'),
       item('#/pulse', 'chart', 'Reggeli pulzus', 'Kamerával, a regenerációs pontszámhoz')]),
     group('Edzések', [
+      item('#/routines', 'train', 'Rövid rutinok', 'Reggeli ébresztő, irodai mobilitás, esti nyújtás'),
       item('#/library', 'log', 'Gyakorlattár', 'Minden gyakorlat, kedvencek, saját edzés'),
       item('#/run', 'train', 'Futóprogram', 'Nulláról 5 km-ig, 9 hét')]),
-    group(newbie ? 'Extrák (az első hét után nyílik ki)' : 'Extrák', [
+    group(newbie ? 'Extrák (később is ráérnek)' : 'Extrák', [
       item('#/blocks', 'train', 'Szezonális programok', 'Sí, nyári futás, strandszezon: 4–6 hetes blokkok'),
       item('#/challenge', 'check', '30 napos kihívás', 'Plank, guggolás, fekvőtámasz, mobilitás'),
-      item('#/report', 'log', 'Összefoglaló orvosnak, edzőnek', 'Nyomtatható, PDF-be menthető')], !newbie),
-    group('Beállítások és segítség', [
-      item('#/settings', 'gear', 'Beállítások', 'Profil, eszközök, edzésidő, megjelenés, mentés'),
+      item('#/report', 'log', 'Összefoglaló orvosnak, edzőnek', 'Nyomtatható, PDF-be menthető')], false),
+    group('Segítség', [
       item('#/qa', 'check', 'Kipróbálási lista', 'A valódi telefonos próba lépései'),
       item('#/diag', 'gear', 'Eszközpróba és hibajelentés', 'Ha valami nem működik'),
-      item('../', 'home', 'Önismereti oldalak', 'Az Önismeret többi oldala: alvás, szokások, energia')]));
+      item('../', 'home', 'Önismereti oldalak', 'Az Önismeret többi oldala: alvás, szokások, energia')], false));
 }

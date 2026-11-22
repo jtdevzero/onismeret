@@ -53,7 +53,6 @@ export async function progressView(arg, onCleanup) {
   const coachProg = await getProgram();
   return page('Fejlődés',
     artBanner('progress', 'A saját történeted', 'Lépésről lépésre feljebb'),
-    progressCard(items),
     coachProg ? coachCard(coachProg, items) : null,
     trainingLoadCard(items),
     exerciseTrendCard(items),
@@ -85,6 +84,7 @@ export async function progressView(arg, onCleanup) {
         await itemPut({ id: uid(), kind: 'goal', date: Date.now(), metric: gs.metric, start, target, deadline });
         toast('Elmentettem a célt.'); reload('#/progress');
       }, 'primary'))),
+    progressCard(items),
     card(h('h2', null, 'Jelvények'), h('p', { class: 'small muted' }, `${bs.filter(b => b.earned).length} / ${bs.length} megszerezve. Csak a saját eredményeidhez mérve.`),
       h('ul', { class: 'badges' }, bs.map(b => h('li', { class: 'badge-item' + (b.earned ? ' earned' : '') },
         h('span', { class: 'badge-ic', 'aria-hidden': 'true' }, b.earned ? '★' : '☆'),
