@@ -534,6 +534,22 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     assert.match(await text(), /Utolsó mentés:/);
   });
 
+  await step('nyelv: angolra váltva a menü és a kezdőlap angol, a html lang is; vissza magyarra', async () => {
+    await go(page, '#/settings');
+    await Promise.all([page.waitForNavigation(), page.getByText('English (béta)').click()]);
+    await page.waitForFunction(() => document.documentElement.dataset.ready === '1');
+    await page.waitForFunction(() => document.documentElement.lang === 'en');
+    await page.evaluate(async () => { (await import('./js/ui/widgets.js')).setTick(15); });
+    assert.match(await page.locator('#nav').innerText(), /Today[\s\S]*Training[\s\S]*Progress[\s\S]*More/);
+    await go(page, '#/');
+    assert.match(await text(), /Today's workout/i);
+    await go(page, '#/settings');
+    await Promise.all([page.waitForNavigation(), page.getByText('Magyar', { exact: true }).click()]);
+    await page.waitForFunction(() => document.documentElement.dataset.ready === '1');
+    assert.equal(await page.evaluate(() => document.documentElement.lang), 'hu');
+    assert.match(await page.locator('#nav').innerText(), /Ma[\s\S]*Edzés/);
+  });
+
   await step('edzésidő: 15 percre állítva a mai edzés belefér', async () => {
     await go(page, '#/settings');
     await page.getByText('15 perc', { exact: true }).click();
