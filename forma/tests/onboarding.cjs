@@ -37,7 +37,7 @@ async function fillOnboarding(page, url) {
         page.on('pageerror', e => errors.push(e.message));
         await fillOnboarding(page, base + hash);
         await page.getByRole('button', { name: 'Kezdjük', exact: true }).click();
-        await page.waitForFunction(() => !document.getElementById('nav').hidden, null, { timeout: 3000 });
+        await page.waitForFunction(() => !document.getElementById('nav').hidden && /Felmérés indítása/.test(document.getElementById('main').innerText), null, { timeout: 3000 });
         assert.match(await page.locator('#main').innerText(), /Felmérés indítása/);
         await page.reload();
         await page.waitForFunction(() => document.documentElement.dataset.ready === '1');
