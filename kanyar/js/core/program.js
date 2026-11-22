@@ -1,7 +1,7 @@
 /* Mozgásfelmérés → profil → 6 hetes felkészülési program. Tiszta, determinisztikus függvények.
    A határértékek és a program szabályai szakmai becslések; edző vagy gyógytornász még nem lektorálta őket. */
 
-export const TESTS = ['deep_squat', 'sl_squat', 'sl_stand', 'ankle_wall', 'lateral_hops', 'wall_sit', 'trunk_rotation'];
+export const TESTS = ['deep_squat', 'drop_landing', 'sl_squat', 'sl_stand', 'ankle_wall', 'lateral_hops', 'wall_sit', 'trunk_rotation'];
 /* A gyenge pontok fontossági sorrendje: előbb a biztonság (térdkontroll), aztán a sítartáshoz kellő mozgékonyság. */
 export const WEAK_ORDER = ['knee_control', 'ankle_mobility', 'balance', 'leg_strength', 'leg_endurance', 'hip_mobility', 'rotation', 'power'];
 const ASYM_LIMIT = 15;   /* % bal–jobb különbség, ami fölött szólunk */
@@ -21,6 +21,8 @@ export function buildProfile(results = {}) {
     if (id === 'deep_squat') {
       if (fixed(r, 'depth') || fixed(r, 'chest_up')) mark(id, 'hip_mobility');
       if (fixed(r, 'knees_out')) mark(id, 'knee_control');
+    } else if (id === 'drop_landing') {
+      if (fixed(r, 'knees_out') || fixed(r, 'soft_landing') || fixed(r, 'even_landing')) mark(id, 'knee_control');
     } else if (id === 'sl_squat') {
       if (fixed(r, 'knee_line') || fixed(r, 'pelvis_level')) mark(id, 'knee_control');
       if (fixed(r, 'depth')) mark(id, 'leg_strength');

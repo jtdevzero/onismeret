@@ -60,7 +60,7 @@ export async function prepView() {
   return page('Felkészülés',
     pain() ? note('Fájdalmat vagy friss sérülést jeleztél. A program ugrások nélkül készül, és nem javasol nehezítést. Kezdés előtt beszélj orvossal vagy gyógytornásszal.', 'warn') : null,
     card(h('h2', null, 'Mozgásfelmérés'),
-      h('p', null, `Hét rövid teszt a telefon kamerájával, összesen nagyjából 10 perc. Eddig ${profile.done} / ${profile.total} készült el.`),
+      h('p', null, `Nyolc rövid teszt a telefon kamerájával, összesen nagyjából 10 perc. Eddig ${profile.done} / ${profile.total} készült el.`),
       tests, weak, asym),
     programCard,
     card(h('h2', null, 'Gyakorlatok'), groups),

@@ -163,7 +163,7 @@ const go = async (page, hash) => { await page.evaluate(h => { if (location.hash 
     await shot('exercise-result');
     await go(page, '#/prep');
     const p = await text();
-    assert.match(p, /Eddig 1 \/ 7 készült el/);
+    assert.match(p, /Eddig 1 \/ 8 készült el/);
     assert.match(p, /térdkontroll/);
     await shot('prep');
   });

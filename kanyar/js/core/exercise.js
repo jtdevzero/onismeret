@@ -225,6 +225,33 @@ function singleLegStand(F, t) {
   return res;
 }
 
+/* Leérkezés-teszt szemből: lelépés egy alacsony lépcsőről, két lábra érkezve.
+   Szemből a térdszög nem mutatja a hajlítást (a comb rövidül a képen), ezért az érkezést a csípő süllyedése jelzi:
+   a csípő–boka függőleges távolság az álló helyzethez képest. Az érkezés ennek a mélypontja.
+   Mért: beesik-e a térd (térd- és bokatávolság aránya), elég puha-e az érkezés, és vízszintes marad-e a medence.
+   A térd befelé esése érkezéskor a keresztszalag-sérülés ismert kockázati jele. */
+function dropLanding(F) {
+  const hh = F.map(f => f.b.A.y - f.b.H.y), stand = percentile(hh, 0.9) || 1;
+  const rel = hh.map(v => v / stand);
+  const reps = detectReps(rel, 0.08);
+  const perRep = reps.map(r => {
+    const f = F[r.bottom], b = f.b;
+    const pelvis = Math.abs(Math.atan2(f.p[LM.lHip].y - f.p[LM.rHip].y, Math.abs(f.p[LM.lHip].x - f.p[LM.rHip].x) || 1e-6) * DEG);
+    return { frontal: isFrontal(b), drop: 1 - rel[r.bottom], valgus: b.kneeDist / (b.ankleDist || 1), pelvis };
+  });
+  const fr = perRep.filter(r => r.frontal), checks = [];
+  if (fr.length) {
+    /* a legrosszabb érkezés számít, nem az átlag: egyetlen beeső térd is jelzés */
+    const v = Math.min(...fr.map(r => r.valgus));
+    checks.push(check('knees_out', v >= 0.8, v, 'ratio'));
+    const drop = mean(fr.map(r => r.drop));
+    checks.push(check('soft_landing', drop >= 0.15, drop, 'ratio'));
+    const pv = mean(fr.map(r => r.pelvis));
+    checks.push(check('even_landing', pv <= 8, pv));
+  }
+  return { reps: reps.length, perRep: perRep.map(({ frontal, ...r }) => ({ view: frontal ? 'frontal' : 'side', ...r })), checks };
+}
+
 /* Törzsfordítás ülve, szemből: a vállak látszó szélessége csökken, az irányt a vállak mélysége (z) adja. */
 function trunkRotation(F) {
   const w = F.map(f => f.b.shoulderW), max = percentile(w, 0.95) || 1;
@@ -249,7 +276,7 @@ function ankleWall(F) {
 export const ANALYZERS = {
   squat, deep_squat: squat, sl_squat: singleLegSquat, reverse_lunge: lunge, lateral_lunge: lateralLunge,
   glute_bridge: gluteBridge, lateral_hops: lateralHops, wall_sit: wallSit, plank, side_plank: plank,
-  sl_stand: singleLegStand, trunk_rotation: trunkRotation, ankle_wall: ankleWall,
+  sl_stand: singleLegStand, trunk_rotation: trunkRotation, ankle_wall: ankleWall, drop_landing: dropLanding,
 };
 export const isAnalyzable = id => Object.prototype.hasOwnProperty.call(ANALYZERS, id);
 

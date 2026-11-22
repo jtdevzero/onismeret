@@ -250,3 +250,18 @@ test('nyomkövetés: rövid kiesés után folytatja ugyanazt az alakot; láthata
   assert.equal(pickNearest([near, big], null), big, 'előzmény nélkül a legnagyobb');
   assert.equal(pickNearest([], null), null);
 });
+
+/* lelépés: 3 mp-enként egy érkezés; gyors hajlás a csúcsig, rövid megtartás, felállás */
+const landFlex = (peak, t) => { const ph = t % 3; return ph < 0.5 ? 5 : ph < 0.7 ? 5 + (peak - 5) * (ph - 0.5) / 0.2 : ph < 1.6 ? peak : ph < 2.1 ? peak - (peak - 5) * (ph - 1.6) / 0.5 : 5; };
+test('leérkezés-teszt: 5 érkezés; beeső térd és merev érkezés javítandó', () => {
+  const good = ex('drop_landing', series(15.2, t => ({ flex: landFlex(75, t), stance: 0.18, kneeW: 0.2 })));
+  assert.equal(good.reps, 5);
+  assert.equal(chk(good, 'knees_out'), 'ok');
+  assert.equal(chk(good, 'soft_landing'), 'ok');
+  assert.equal(chk(good, 'even_landing'), 'ok');
+  const valgus = ex('drop_landing', series(15.2, t => ({ flex: landFlex(75, t), stance: 0.18, kneeW: 0.2 - 0.1 * (landFlex(75, t) - 5) / 70 })));
+  assert.equal(valgus.reps, 5);
+  assert.equal(chk(valgus, 'knees_out'), 'fix');
+  const stiff = ex('drop_landing', series(15.2, t => ({ flex: landFlex(38, t), stance: 0.18, kneeW: 0.2 })));
+  assert.ok(stiff.reps === 0 || chk(stiff, 'soft_landing') === 'fix', 'merev érkezés');
+});
