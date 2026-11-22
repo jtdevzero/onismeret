@@ -4,6 +4,7 @@
 import { cleanScoring } from './assessment.js';
 import { cleanLog, cleanRpe, WORKOUT_SCHEMA } from './workout-schema.js';
 import { backupDraft } from './workout-draft.js';
+import { normalizeHomeCards, normalizeHiddenHomeCards } from './home-layout.js';
 
 /* Mentésfájl-verziók: 1 = régi; 2 = sorozatnapló, elfogadott súlyjavaslatok, kihívás- és blokkállapot.
    Újabb (ismeretlen) verziót nem töltünk vissza, mert veszteséges lenne. */
@@ -66,8 +67,11 @@ export function parseBackup(text, ctx) {
     weeklyGoal: Number.isInteger(s.weeklyGoal) && s.weeklyGoal >= 2 && s.weeklyGoal <= 7 ? s.weeklyGoal : undefined,
     voiceMode: typeof s.voiceMode === 'boolean' ? s.voiceMode : undefined,
     showAll: typeof s.showAll === 'boolean' ? s.showAll : undefined,
-    theme: ['auto', 'light', 'dark', 'sun'].includes(s.theme) ? s.theme : undefined,
+    theme: ['auto', 'light', 'dark', 'sun', 'oled'].includes(s.theme) ? s.theme : undefined,
     size: ['normal', 'large'].includes(s.size) ? s.size : undefined,
+    density: ['normal', 'compact'].includes(s.density) ? s.density : undefined,
+    homeCards: Array.isArray(s.homeCards) ? normalizeHomeCards(s.homeCards) : undefined,
+    hiddenHomeCards: Array.isArray(s.hiddenHomeCards) ? normalizeHiddenHomeCards(s.hiddenHomeCards) : undefined,
     complaints: Array.isArray(s.complaints) ? s.complaints.filter(c => ['knee', 'back', 'shoulder'].includes(c)) : undefined,
     equipment: Array.isArray(s.equipment) ? s.equipment.filter(e => ['bar', 'band', 'dumbbell'].includes(e)) : undefined,
   });

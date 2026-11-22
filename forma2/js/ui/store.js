@@ -101,11 +101,38 @@ export async function commit(values = {}, items = [], deleteKeys = []) {
 export async function wipeAll() {
   await replaceAll({}, []);
 }
+/* Egyetlen, konzisztens pillanatkép a KV-kulcsokból és a naplóból. Az exportot
+   közben érkező edzésmentés nem oszthatja ketté (régi program + új napló). */
+const EXPORT_KEYS = ['settings', 'program', 'run', 'nutrition', 'favs', 'custom', 'challenge', 'block', 'workoutDraft'];
+export async function exportSnapshot() {
+  const db = await open();
+  if (!db) return structuredClone({
+    values: Object.fromEntries(EXPORT_KEYS.map(key => [key, mem.kv.get(key)])),
+    items: [...mem.items.values()].sort((a, b) => b.date - a.date),
+  });
+  return new Promise((resolve, reject) => {
+    try {
+      const t = db.transaction(['kv', 'items'], 'readonly');
+      const kv = t.objectStore('kv');
+      const requests = Object.fromEntries(EXPORT_KEYS.map(key => [key, kv.get(key)]));
+      const items = t.objectStore('items').getAll();
+      t.oncomplete = () => resolve({
+        values: Object.fromEntries(EXPORT_KEYS.map(key => [key, requests[key].result])),
+        items: (items.result || []).sort((a, b) => b.date - a.date),
+      });
+      t.onerror = t.onabort = () => reject(t.error || new Error(tr('A mentésfájl nem készíthető el.')));
+    } catch (e) { reject(e); }
+  });
+}
 /* Mentés fájlba: beállítások, program, felmérések és edzések. */
 export async function exportAll() {
-  const draft = await kvGet('workoutDraft', null);
+  const { values, items } = await exportSnapshot();
+  const draft = values.workoutDraft;
   if (draft && !backupDraft(draft)) throw new Error(tr('A félbehagyott edzés mentése sérült. A fájlexport megszakadt.'));
-  return { app: 'forma', version: BACKUP_VERSION, exported: new Date().toISOString(), settings: await kvGet('settings', {}), program: await kvGet('program', null), run: await kvGet('run', null), nutrition: await kvGet('nutrition', null), favs: await kvGet('favs', null), custom: await kvGet('custom', null), challenge: await kvGet('challenge', null), block: await kvGet('block', null), workoutDraft: backupDraft(draft), items: await itemsAll() };
+  return { app: 'forma', version: BACKUP_VERSION, exported: new Date().toISOString(),
+    settings: values.settings ?? {}, program: values.program ?? null, run: values.run ?? null,
+    nutrition: values.nutrition ?? null, favs: values.favs ?? null, custom: values.custom ?? null,
+    challenge: values.challenge ?? null, block: values.block ?? null, workoutDraft: backupDraft(draft), items };
 }
 
 /* Visszatöltés ellenőrzött mentésből (core/backup.js): minden meglévő adat helyére. */

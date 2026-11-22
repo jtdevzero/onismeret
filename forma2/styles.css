@@ -15,6 +15,8 @@
   --shadow: 0 2px 10px rgba(26, 20, 39, .045);
   --radius: 18px; --radius-s: 12px;
   --display: "Anton", "Arial Narrow", "Roboto Condensed", "Helvetica Neue", system-ui, sans-serif;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 24px;
+  --tap-target: 44px; --radius-card: 18px;
   color-scheme: light dark;
 }
 @media (prefers-color-scheme: dark) {
@@ -34,6 +36,15 @@
   --good: #5ff0d0; --good-bg: #0f3a36; --warn: #ffc074; --warn-bg: #45260a; --danger: #ff8a9e;
   --hero-a: #1a0b2e; --hero-b: #6b1659; --hero-c: #ff4f7b;
   --shadow: 0 2px 10px rgba(0, 0, 0, .12);
+}
+/* OLED: ugyanaz a Miami-neon karakter, valóban fekete felületekkel. */
+:root[data-theme="oled"] {
+  --bg: #000; --bg-2: #0d0614; --surface: #08040d; --text: #fff5ff; --muted: #d0bfdc; --line: #51305e;
+  --accent: #ff65ad; --accent-strong: #ff8fc4; --accent-soft: #301026; --accent-text: #180514;
+  --sun: #ffae5e; --title-b: #ffae5e; --sun-soft: #27130b; --teal: #65f5e8;
+  --good: #70f1d6; --good-bg: #0c2924; --warn: #ffd09b; --warn-bg: #2e1b0b; --danger: #ff9baa;
+  --hero-a: #10051a; --hero-b: #521244; --hero-c: #da4475; --shadow: none;
+  color-scheme: dark;
 }
 :root[data-theme="light"] { color-scheme: light; }
 :root[data-theme="dark"] { color-scheme: dark; }
@@ -507,6 +518,37 @@ ul.rows.lib > li .log-item { flex: 1; }
 .tile.mini { min-width: 0; min-height: 88px; gap: 4px; padding: 14px; overflow-wrap: anywhere; }
 .tile.mini strong { font-size: clamp(1.25rem, 6vw, 1.8rem); line-height: 1.1; font-family: var(--display); font-style: italic; overflow-wrap: anywhere; }
 .tile.mini progress { height: 8px; }
+/* Napi gyorsműveletek: ismert útvonalak, biztonságos méret és egykezes elérés. */
+.home-quick { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-2); margin: 0 0 var(--space-4); }
+.home-quick-link { min-width: 0; min-height: var(--tap-target); display: flex; align-items: center; justify-content: center; text-align: center; padding: 10px 5px; border-radius: var(--radius-s); border: 1px solid var(--line); background: var(--surface); color: var(--text); font-size: .82rem; font-weight: 750; text-decoration: none; overflow-wrap: anywhere; }
+.home-quick-link:hover, .home-quick-link:focus-visible { border-color: var(--accent); background: var(--accent-soft); }
+.home-last { margin-bottom: var(--space-3); }
+.home-last-heading { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-2); flex-wrap: wrap; }
+.home-last-heading a { font-size: .875rem; }
+.home-last-heading h2 { margin-bottom: 4px; }
+.home-last > p:last-child { margin: 4px 0 0; }
+.home-preview { margin: -8px 0 14px; }
+.home-preview > summary { gap: 8px; }
+.home-preview > summary h2 { font-size: 1rem; }
+.home-preview-list { margin: 0; padding-left: 22px; }
+.home-preview-list li { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 2px 10px; border-bottom: 1px solid var(--line); padding: 8px 0; }
+.home-preview-list li:last-child { border-bottom: 0; }
+.home-order-list { display: grid; gap: 8px; }
+.home-order-item { display: flex; align-items: center; justify-content: space-between; gap: 10px; border: 1px solid var(--line); border-radius: var(--radius-s); padding: 6px 9px; }
+.home-order-item > .check { flex: 1; min-width: 0; }
+.home-order-buttons { display: flex; gap: 6px; }
+.home-order-buttons .btn { min-width: var(--tap-target); min-height: var(--tap-target); padding: 5px; }
+.progress-shortcuts { display: flex; gap: 8px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; padding: 4px 1px 10px; margin: 0 0 8px; scrollbar-width: thin; }
+.progress-shortcuts .btn { white-space: nowrap; flex: none; min-height: 44px; scroll-snap-align: start; }
+[id^="progress-"] { scroll-margin-top: 18px; }
+:root[data-density="compact"] .home-page .hero { padding: 20px 18px; }
+:root[data-density="compact"] .home-page .hero-next { margin-top: 12px; }
+:root[data-density="compact"] .home-page .tiles { margin: 8px 0 12px; gap: 8px; }
+:root[data-density="compact"] .home-page .tile.mini { min-height: 72px; padding: 10px; }
+:root[data-density="compact"] .home-page .card { padding: 14px; }
+:root[data-density="compact"] .home-quick { gap: 6px; }
+@media (max-width: 370px) { .home-quick { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 800px) { .home-page { max-width: 840px; } }
 @media (max-width: 350px) { .home-page .tiles { grid-template-columns: minmax(0, 1fr); gap: 8px; } }
 .center { text-align: center; }
 
@@ -788,6 +830,28 @@ details.more-group[open] > summary::after { content: "▴"; }
 /* ismétlés javítása edzés közben */
 .reps-adjust { display: flex; justify-content: center; gap: 10px; margin-top: 6px; }
 .reps-adjust .btn.icon { min-width: 44px; min-height: 44px; padding: 0; font-size: 1.3rem; line-height: 1; }
+.reps-adjust input { width: clamp(76px, 24vw, 120px); min-width: 0; min-height: 48px; border: 1.5px solid var(--line); border-radius: var(--radius-s); background: var(--bg); color: var(--text); font: inherit; font-weight: 750; text-align: center; font-variant-numeric: tabular-nums; }
+.workout-quick-weight { display: flex; align-items: stretch; gap: 5px; min-width: 0; }
+.workout-quick-weight input { width: 100%; flex: 1; min-width: 65px; padding: 6px; text-align: center; font-weight: 700; }
+.workout-quick-weight .btn { flex: none; min-width: 44px; min-height: 48px; padding: 4px; font-size: 1.2rem; }
+.rest-adjust { justify-content: center; gap: 12px; margin: 10px 0; }
+.rest-adjust .btn { min-width: 96px; min-height: 48px; font-variant-numeric: tabular-nums; }
+
+/* Analitika: a táblázatok szűk telefonon görgethetők, a fő vezérlők 44px-esek. */
+.table-wrap { max-width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; -webkit-overflow-scrolling: touch; }
+.table-wrap:focus-visible { outline: 3px solid var(--teal); outline-offset: 3px; }
+.table-wrap .data-table { width: max-content; min-width: 100%; }
+.table-wrap .data-table th, .table-wrap .data-table td { font-variant-numeric: tabular-nums; }
+.page select[aria-label="Elemzési időszak"], .page #trend-ex { min-height: 48px; max-width: 100%; }
+.page .btn.small { min-height: 44px; }
+@media (max-width: 370px) {
+  .rest-adjust { gap: 8px; }
+  .rest-adjust .btn { min-width: 0; flex: 1 1 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .table-wrap { scroll-behavior: auto; }
+}
+@media (max-width: 350px) { .workout-quick-weight .btn { min-width: 42px; } }
 
 /* helyi edző */
 .coach-list { display: grid; gap: 12px; margin: 6px 0; }

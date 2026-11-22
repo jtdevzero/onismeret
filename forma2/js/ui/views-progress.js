@@ -23,6 +23,23 @@ export { GOAL_METRICS };
 const metricName = id => (GOAL_METRICS().find(m => m[0] === id) || [id, id, ''])[1];
 const metricUnit = id => (GOAL_METRICS().find(m => m[0] === id) || [id, id, ''])[2];
 
+/* Rövid szekciónavigáció nagyobb fejlődési naplóhoz; nem módosít route-ot vagy adatot. */
+const anchor = (name, element) => { if (element) element.id = 'progress-' + name; return element; };
+function progressShortcuts() {
+  const groups = [
+    ['overview', tr('Áttekintés')], ['load', tr('Terhelés')], ['exercises', tr('Gyakorlatok')],
+    ['goals', tr('Célok')], ['records', tr('Rekordok')], ['body', tr('Testméretek')],
+  ];
+  return h('nav', { class: 'progress-shortcuts', 'aria-label': tr('Fejlődési szekciók') }, groups.map(([id, text]) =>
+    btn(text, () => {
+      const target = document.getElementById('progress-' + id);
+      if (!target) return;
+      target.scrollIntoView({ block: 'start', behavior: 'auto' });
+      const heading = target.querySelector('h2');
+      if (heading) { heading.tabIndex = -1; heading.focus({ preventScroll: true }); }
+    }, 'small')));
+}
+
 export async function progressView(arg, onCleanup) {
   const items = await itemsAll(), p = profile();
   const recs = records(items, numericTests().map(t => t.id));
@@ -52,11 +69,12 @@ export async function progressView(arg, onCleanup) {
   const coachProg = await getProgram();
   return page(tr('Fejlődés'),
     artBanner('progress', tr('A saját történeted'), tr('Lépésről lépésre feljebb')),
+    progressShortcuts(),
     coachProg ? coachCard(coachProg, items) : null,
     weeklyCoachCard(items),
-    periodAnalyticsCard(items),
-    trainingLoadCard(items),
-    exerciseTrendCard(items),
+    anchor('overview', periodAnalyticsCard(items)),
+    anchor('load', trainingLoadCard(items)),
+    anchor('exercises', exerciseTrendCard(items)),
     recoveryTimelineCard(items),
     card(h('h2', null, tr('Fittségi kor most')),
       h('p', { class: 'small muted' }, tr('Tájékoztató VO₂max-becslés az alapadatokból, jelentős egyéni bizonytalansággal. Nem a biológiai kor vagy a teljes mozgásfelmérés mérése. Az előrejelzés csak azonos pontozási verziójú felméréseket használ.')),
@@ -66,7 +84,7 @@ export async function progressView(arg, onCleanup) {
           h('span', { class: 'small muted' }, body.waist && body.waist.change != null ? tr('{p0}{p1} cm az első mérés óta', { p0: body.waist.change > 0 ? '+' : '', p1: fmtNum(body.waist.change) }) : tr('heti méréssel követhető')))),
       fc ? h('p', { class: 'forecast' }, tr('Ha így folytatod, 3 hónap múlva a fittségi korod kb. {p0} év lehet', { p0: fc.in90 }), h('span', { class: 'small muted' }, tr(' (havi {p0}{p1} év a felméréseid alapján)', { p0: fc.perMonth > 0 ? '+' : '', p1: String(fc.perMonth).replace('.', ',') }))) : h('p', { class: 'small muted' }, tr('Két felmérés után (legalább 3 hét különbséggel) előrejelzést is mutatok.')),
       fa && fa.waistUpdated ? h('p', { class: 'small muted' }, tr('A fittségi kort az aktuális normákkal és a legfrissebb derékbőséggel számoltam újra; a pulzus és a mozgás a legutóbbi felmérésből van. A felméréskor mentett eredmény ettől nem változik.')) : null),
-    card(h('h2', null, tr('Célok')),
+    anchor('goals', card(h('h2', null, tr('Célok')),
       gp.length ? h('ul', { class: 'rows' }, gp.map(({ g, s }) => h('li', null,
         h('span', { class: 'log-item' }, h('strong', null, `${metricName(g.metric)}: ${fmtNum(g.target)} ${metricUnit(g.metric)}`),
           h('progress', { max: 100, value: s.pct, 'aria-label': tr('{p0} cél: {p1}%', { p0: metricName(g.metric), p1: s.pct }) }),
@@ -84,17 +102,17 @@ export async function progressView(arg, onCleanup) {
         const deadline = gDate.value ? new Date(gDate.value + 'T23:59:00').getTime() : null;
         await itemPut({ id: uid(), kind: 'goal', date: Date.now(), metric: gs.metric, start, target, deadline });
         toast('Elmentettem a célt.'); reload('#/progress');
-      }, 'primary'))),
+      }, 'primary')))),
     progressCard(items),
     card(h('h2', null, tr('Jelvények')), h('p', { class: 'small muted' }, tr('{p0} / {p1} megszerezve. Csak a saját eredményeidhez mérve.', { p0: bs.filter(b => b.earned).length, p1: bs.length })),
       h('ul', { class: 'badges' }, bs.map(b => h('li', { class: 'badge-item' + (b.earned ? ' earned' : '') },
         h('span', { class: 'badge-ic', 'aria-hidden': 'true' }, b.earned ? '★' : '☆'),
         h('span', null, h('strong', null, b.name), h('span', { class: 'small muted' }, ' · ' + b.about + (b.earned && b.date ? ` (${fmtDate(b.date)})` : ''))))))),
-    card(h('h2', null, tr('Egyéni rekordok')),
+    anchor('records', card(h('h2', null, tr('Egyéni rekordok')),
       recs.length ? h('ul', { class: 'rows' }, recs.map(r => { const t = D.test[r.id]; return h('li', null,
         h('span', { class: 'log-item' }, h('strong', null, t.name), h('span', { class: 'muted small' }, tr('{p0} · {p1} mérés', { p0: fmtDate(r.date), p1: r.count }))),
-        h('span', { class: 'badge ' + (r.improved ? 'good' : '') }, `${fmtNum(r.best)} ${t.input.unit}`)); })) : h('p', { class: 'muted' }, tr('Az első felmérés után itt látszanak.'))),
-    card(h('h2', null, tr('Testméretek')), h('p', { class: 'small muted' }, tr('Hetente egyszer, reggel, ugyanúgy mérve. A derékbőség a köldök magasságában, kilégzés végén.')),
+        h('span', { class: 'badge ' + (r.improved ? 'good' : '') }, `${fmtNum(r.best)} ${t.input.unit}`)); })) : h('p', { class: 'muted' }, tr('Az első felmérés után itt látszanak.')))),
+    anchor('body', card(h('h2', null, tr('Testméretek')), h('p', { class: 'small muted' }, tr('Hetente egyszer, reggel, ugyanúgy mérve. A derékbőség a köldök magasságában, kilégzés végén.')),
       h('label', { class: 'field' }, tr('Derékbőség (cm)'), bw), h('label', { class: 'field' }, tr('Testsúly (kg, nem kötelező)'), bkg),
       h('div', { class: 'row' }, btn(tr('Mentés'), async () => {
         const waist = bw.value ? Number(bw.value) : null, weight = bkg.value ? Number(bkg.value) : null;
@@ -104,7 +122,7 @@ export async function progressView(arg, onCleanup) {
         await itemPut({ id: uid(), kind: 'body', date: Date.now(), ...(waist != null ? { waist } : {}), ...(weight != null ? { weight } : {}) });
         toast('Bekerült a naplóba.'); reload('#/progress');
       }, 'primary')),
-      body.weight ? h('p', { class: 'small' }, tr('Testsúly: {p0} kg', { p0: fmtNum(body.weight.value) }) + (body.weight.change != null ? tr(' ({p0}{p1} kg az első mérés óta)', { p0: body.weight.change > 0 ? '+' : '', p1: fmtNum(body.weight.change) }) : '')) : null),
+      body.weight ? h('p', { class: 'small' }, tr('Testsúly: {p0} kg', { p0: fmtNum(body.weight.value) }) + (body.weight.change != null ? tr(' ({p0}{p1} kg az első mérés óta)', { p0: body.weight.change > 0 ? '+' : '', p1: fmtNum(body.weight.change) }) : '')) : null)),
     await recoveryCard(items),
     await nutritionCard(items),
     await friendCard(items),
@@ -143,7 +161,7 @@ export async function miniView(arg, onCleanup) {
         return h('li', null, h('span', { class: 'log-item' }, h('strong', null, t.name), h('span', { class: 'muted small' }, `${fmtNum(v)} ${t.input.unit}` + (s && s.score != null ? ` · ${s.score}. percentilis` : ''))),
           diff != null ? h('span', { class: 'badge ' + (better ? 'good' : diff === 0 ? '' : 'warn') }, `${diff > 0 ? '+' : ''}${fmtNum(Math.round(diff * 10) / 10)}`) : h('span', { class: 'badge' }, tr('első mérés')));
       })), h('p', { class: 'small muted' }, tr('A mini-teszt nem írja át a programot; a teljes újramérés a ciklus végén jön.')), link('#/progress', tr('Fejlődés'), 'btn')));
-      out.scrollIntoView({ behavior: 'smooth' });
+      out.scrollIntoView({ behavior: 'auto' });
     }, 'primary')),
     out);
 }

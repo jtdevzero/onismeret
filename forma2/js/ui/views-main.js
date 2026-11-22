@@ -24,6 +24,10 @@ import { tr, LOCALES, getLocale, setLocale } from './i18n.js';
 import { backupReminderCard, backupSettingsBlock } from './backup-ui.js';
 import { coachCard } from './views-coach.js';
 import { resumableHomeDraft } from '../core/home-action.js';
+import { latestWorkoutSummary } from '../core/home-summary.js';
+import { HOME_CARDS, normalizeHomeCards, normalizeHiddenHomeCards, moveHomeCard } from '../core/home-layout.js';
+
+const HOME_CARD_LABELS = { weekly: 'Heti cél és regeneráció', last: 'Utolsó edzés', quick: 'Gyors műveletek', goals: 'Cél és újramérés' };
 
 export const PARQ = [
   ['heart', tr('Mondta-e valaha orvos, hogy szívbetegséged vagy magas vérnyomásod van?')],
@@ -144,7 +148,7 @@ export async function homeView() {
           link('#/assess', tr('Felmérés indítása'), 'btn primary home-start'))),
       card(h('h2', null, tr('Mire számíts?')), list([tr('Bemelegítés után végezd, kipihenten.'), tr('Részletekben is csinálhatod: az eredmények mentődnek.'), tr('Ami fáj, azt hagyd ki. Kihagyott teszttel is kapsz eredményt.')])));
   }
-  const kids = [];
+  const kids = [], homeWidgets = {};
   let dash = null;
   if (prog) {
     const key = nextKey(prog), session = fitSession(buildSession(key, prog, D.exercises.exercises), D.ex, S.settings.duration || 0), steps = sessionSteps(session, D.ex);
@@ -156,38 +160,63 @@ export async function homeView() {
       h('div', { class: 'hero-next' }, h('h2', null, resume ? tr('Félbehagyott edzés') : (doneToday ? tr('Holnap: ') : '') + session.title),
         h('p', null, resume ? tr('{p0}. lépés / {p1} · a mentett állapot megmaradt', { p0: resume.at, p1: resume.total }) : tr('Kb. {m} perc · {n} gyakorlat', { m: sessionMinutes(steps), n: session.blocks.length })),
         h('div', { class: 'row' }, link(resume ? resume.href : '#/check/' + key, resume ? tr('Félbehagyott edzés folytatása') : doneToday ? tr('Mehet még egy') : tr('Indítás'), 'btn primary home-start')))));
+    const mainBlocks = session.blocks.filter(b => b.part === 'main' && D.ex[b.exercise]);
+    if (mainBlocks.length) kids.push(h('details', { class: 'card home-preview' },
+      h('summary', null, h('h2', null, tr('Mai program előnézete')), h('span', { class: 'badge' }, tr('{n} fő gyakorlat', { n: mainBlocks.length }))),
+      h('ol', { class: 'home-preview-list' }, mainBlocks.map(b => h('li', null,
+        h('span', null, D.ex[b.exercise].name), h('span', { class: 'small muted' }, `${b.sets} × ${b.seconds ? b.seconds + tr(' mp') : b.reps + tr(' ism.')}`))))));
     /* két kis csempe: heti cél és regeneráció; a részletek egy koppintással elérhetők (a számok a dashboard-rétegből) */
     const everything = await itemsAll();
     dash = buildDashboard({ program: prog, items: everything, now: Date.now(), profile: profile(), norms: D.norms, weeklyGoal: weeklyGoal() });
     const ww = { n: dash.weeklyWorkouts.completed, goal: dash.weeklyWorkouts.goal, pct: dash.weeklyWorkouts.pct }, cw = dash.weeklyCardio;
     const rec = await recoveryTileData(everything);
-    kids.push(h('div', { class: 'tiles' },
+    homeWidgets.weekly = h('div', { class: 'tiles', 'aria-label': tr('Heti cél és regeneráció') },
       h('a', { class: 'tile mini', href: '#/program', 'aria-label': tr('Heti cél: {p0} edzés a {p1}-ből, {p2} kardióperc a 150-ből', { p0: ww.n, p1: ww.goal, p2: cw.equivalent }) },
         h('span', { class: 'muted small' }, tr('Heti cél')), h('strong', null, `${ww.n} / ${ww.goal}`), h('progress', { max: 100, value: ww.pct, 'aria-hidden': 'true' }),
         h('span', { class: 'small muted' }, tr('kardió {a} / {b} p', { a: cw.equivalent, b: cw.goal }))),
       h('a', { class: 'tile mini', href: '#/check/' + key, 'aria-label': rec ? tr('Regeneráció: {p0} a 100-ból', { p0: rec.score }) : tr('Napi közérzetellenőrzés indítása') },
         h('span', { class: 'muted small' }, tr('Regeneráció')), h('strong', null, rec ? `${rec.score}` : '–'), rec ? h('span', { class: 'badge ' + (rec.level === 'go' ? 'good' : rec.level === 'light' ? 'mid' : 'warn') }, { go: tr('mehet'), light: tr('könnyíts'), rest: tr('pihenj') }[rec.level]) : h('span', { class: 'small muted' }, tr('Napi ellenőrzés →')),
-        rec?.confidence === 'limited' ? h('span', { class: 'small muted' }, tr('Korlátozott adat')) : null)));
+        rec?.confidence === 'limited' ? h('span', { class: 'small muted' }, tr('Korlátozott adat')) : null));
   } else {
     kids.push(h('section', { class: 'hero ' + heroTime() + ' ' + artClass('home') }, h('h1', null, tr('Forma')), h('div', { class: 'hero-next' }, h('h2', null, tr('Megvan a felmérés')),
       h('p', null, tr('Nézd meg az eredményt, és készítsd el belőle a programodat.')), link('#/result', tr('Eredmény és program'), 'btn primary home-start'))));
   }
   const allItems = await itemsAll();
+  const latest = latestWorkoutSummary(ws);
+  if (latest) homeWidgets.last = h('section', { class: 'home-last card', 'aria-label': tr('Utolsó edzés') },
+    h('div', { class: 'home-last-heading' }, h('h2', null, tr('Utolsó edzés')), link('#/log', tr('Napló megnyitása'), 'small')),
+    h('strong', null, latest.title || tr('Edzés')),
+    h('p', { class: 'small muted' }, fmtDate(latest.date) + (latest.minutes != null ? ' · ' + latest.minutes + tr(' perc') : '') + (latest.partial ? tr(' · részben') : '')));
+  homeWidgets.quick = h('nav', { class: 'home-quick', 'aria-label': tr('Gyors műveletek') },
+    link(prog ? '#/check/' + nextKey(prog) : '#/program', tr('Mai edzés'), 'home-quick-link'),
+    link('#/library', tr('Gyakorlatok'), 'home-quick-link'),
+    link('#/progress', tr('Fejlődés'), 'home-quick-link'),
+    link(prog ? '#/check/' + nextKey(prog) : '#/program', tr('Közérzet'), 'home-quick-link'),
+    link('#/log', tr('Napló'), 'home-quick-link'),
+    link('#/program', tr('Program'), 'home-quick-link'),
+    link('#/cardio', tr('Kardió'), 'home-quick-link'),
+    link('#/assess', tr('Felmérés'), 'home-quick-link'));
   if (dash) {
     const g = dash.primaryGoal, a = dash.assessmentDue;
     const metric = g ? (GOAL_METRICS().find(m => m[0] === g.goal.metric) || [g.goal.metric, g.goal.metric, '']) : null;
-    kids.push(h('div', { class: 'tiles' },
+    homeWidgets.goals = h('div', { class: 'tiles', 'aria-label': tr('Cél és újramérés') },
       g ? h('a', { class: 'tile mini', href: '#/progress', 'aria-label': tr('Cél: {p0} {p1} {p2}, most {p3}, {p4}%', { p0: metric[1], p1: g.goal.target, p2: metric[2], p3: g.current ?? 'nincs adat', p4: g.pct }) },
         h('span', { class: 'muted small' }, tr('Cél')), h('strong', null, `${metric[1]}: ${g.goal.target}${metric[2] ? ' ' + metric[2] : ''}`), h('progress', { max: 100, value: g.pct, 'aria-hidden': 'true' }),
         h('span', { class: 'small muted' }, g.current == null ? tr('még nincs mérés') : tr('most {n}', { n: g.current }) + (g.daysLeft != null ? ` · ${g.daysLeft >= 0 ? g.daysLeft + tr(' nap van hátra') : tr('lejárt')}` : '')))
         : h('a', { class: 'tile mini', href: '#/progress', 'aria-label': tr('Cél kitűzése a Fejlődés oldalon') }, h('span', { class: 'muted small' }, tr('Cél')), h('strong', null, tr('Nincs még')), h('span', { class: 'small muted' }, tr('kitűzés →'))),
       a ? h('a', { class: 'tile mini', href: '#/assess', 'aria-label': a.due ? tr('Újramérés esedékes') : tr('Következő felmérés {p0} nap múlva', { p0: a.daysLeft }) },
-        h('span', { class: 'muted small' }, tr('Újramérés')), h('strong', null, a.due ? tr('Esedékes') : tr('{n} nap', { n: a.daysLeft })), h('span', { class: 'small muted' }, tr('utoljára {n} napja', { n: a.daysSince }))) : null));
+        h('span', { class: 'muted small' }, tr('Újramérés')), h('strong', null, a.due ? tr('Esedékes') : tr('{n} nap', { n: a.daysLeft })), h('span', { class: 'small muted' }, tr('utoljára {n} napja', { n: a.daysSince }))) : null);
+    const hidden = normalizeHiddenHomeCards(S.settings?.hiddenHomeCards);
+    for (const name of normalizeHomeCards(S.settings?.homeCards)) if (!hidden.includes(name) && homeWidgets[name]) kids.push(homeWidgets[name]);
     if (dash.insight) kids.push(h('p', { class: 'small muted center home-insight' }, dash.insight.text));
     if (dash.firstWeek) kids.push(card(h('h2', null, tr('Első heted · {n}. nap', { n: dash.firstWeek.day })),
       h('p', { class: 'small muted' }, tr('Négy lépés, hogy megismerd az appot. Nem kell mind ma; ami kész, kipipálódik.')),
       h('ul', { class: 'checklist first-week' }, dash.firstWeek.steps.map(st => h('li', { class: st.done ? 'done' : '' },
         h('span', { class: 'tick', 'aria-hidden': 'true' }, st.done ? '✓' : ''), h('span', null, st.label), h('span', { class: 'visually-hidden' }, st.done ? tr(' – kész') : tr(' – még nincs kész')))))));
+  }
+  else {
+    const hidden = normalizeHiddenHomeCards(S.settings?.hiddenHomeCards);
+    for (const name of normalizeHomeCards(S.settings?.homeCards)) if (!hidden.includes(name) && homeWidgets[name]) kids.push(homeWidgets[name]);
   }
   const br = await backupReminderCard(); if (br) kids.push(br);
   if (prog) { const cc = coachCard(prog, allItems, { compact: true }); if (cc) kids.push(cc); }
@@ -321,6 +350,24 @@ function download(name, text, type) {
 export async function settingsView() {
   const p = profile();
   const st = { age: p.age, sex: p.sex };
+  let cardOrder = normalizeHomeCards(S.settings.homeCards);
+  let hiddenHome = normalizeHiddenHomeCards(S.settings.hiddenHomeCards);
+  const homeCardControls = h('div', { class: 'home-order-list' });
+  const persistHome = async () => {
+    try { await saveSettings({ homeCards: cardOrder, hiddenHomeCards: hiddenHome }); }
+    catch { toast(tr('Nem sikerült menteni a kezdőlap beállításait.')); }
+  };
+  const drawHomeControls = () => {
+    clear(homeCardControls).append(cardOrder.map((key, i) => h('div', { class: 'home-order-item' },
+      h('label', { class: 'check' }, h('input', { type: 'checkbox', checked: !hiddenHome.includes(key), onchange: async e => {
+        hiddenHome = e.target.checked ? hiddenHome.filter(x => x !== key) : [...hiddenHome, key];
+        await persistHome();
+      } }), h('span', null, tr(HOME_CARD_LABELS[key]))),
+      h('div', { class: 'home-order-buttons' },
+        h('button', { type: 'button', class: 'btn small', disabled: i === 0, 'aria-label': tr('Feljebb: ') + tr(HOME_CARD_LABELS[key]), onclick: async () => { cardOrder = moveHomeCard(cardOrder, key, -1); drawHomeControls(); await persistHome(); } }, '↑'),
+        h('button', { type: 'button', class: 'btn small', disabled: i === cardOrder.length - 1, 'aria-label': tr('Lejjebb: ') + tr(HOME_CARD_LABELS[key]), onclick: async () => { cardOrder = moveHomeCard(cardOrder, key, 1); drawHomeControls(); await persistHome(); } }, '↓')))));
+  };
+  drawHomeControls();
   const age = ageSelect(st.age, v => { st.age = v; });
   const low = h('input', { type: 'checkbox', checked: !!S.settings.lowImpact });
   const eq = new Set(S.settings.equipment || []);
@@ -341,9 +388,15 @@ export async function settingsView() {
       h('p', { class: 'small muted' }, tr('A korábbi felmérések a felméréskori életkorral maradnak meg.'))),
     card(h('h2', null, tr('Megjelenés')),
       h('h3', null, tr('Téma')),
-      choice('theme', [['auto', tr('A telefon beállítása szerint')], ['light', tr('Világos (naplemente)')], ['dark', tr('Sötét (éjszakai neon)')], ['sun', tr('Napfény: nagy kontraszt szabadtéren')]], S.settings.theme || 'auto', async v => { await saveSettings({ theme: v }); applyLook(); }, tr('Téma')),
+      choice('theme', [['auto', tr('A telefon beállítása szerint')], ['light', tr('Világos (naplemente)')], ['dark', tr('Sötét (éjszakai neon)')], ['oled', tr('OLED fekete')], ['sun', tr('Napfény: nagy kontraszt szabadtéren')]], S.settings.theme || 'auto', async v => { await saveSettings({ theme: v }); applyLook(); }, tr('Téma')),
       h('h3', null, tr('Betűméret')),
-      choice('size', [['normal', tr('Normál')], ['large', tr('Nagy (edzés közben is jól olvasható)')]], S.settings.size || 'normal', async v => { await saveSettings({ size: v }); applyLook(); }, tr('Betűméret'))),
+      choice('size', [['normal', tr('Normál')], ['large', tr('Nagy (edzés közben is jól olvasható)')]], S.settings.size || 'normal', async v => { await saveSettings({ size: v }); applyLook(); }, tr('Betűméret')),
+      h('h3', null, tr('Elrendezés')),
+      choice('density', [['normal', tr('Kényelmes')], ['compact', tr('Kompakt')]], S.settings.density || 'normal', async v => { await saveSettings({ density: v }); applyLook(); }, tr('Elrendezés'))),
+    card(h('h2', null, tr('Kezdőlap személyre szabása')),
+      h('p', { class: 'small muted' }, tr('A nyilakkal változtathatod a kártyák sorrendjét, a pipával elrejtheted őket. A mai edzés főgombja mindig látható marad.')),
+      homeCardControls,
+      h('div', { class: 'row' }, btn(tr('Alapértelmezett sorrend'), async () => { cardOrder = [...HOME_CARDS]; hiddenHome = []; drawHomeControls(); await persistHome(); }, 'small'))),
     card(h('h2', null, tr('Nyelv')),
       choice('lang', LOCALES, getLocale(), async v => { await saveSettings({ lang: v }); setLocale(v); location.reload(); }, tr('Nyelv')),
       getLocale() === 'en' ? h('p', { class: 'small muted' }, tr('Az angol szövegeket (a teszt- és gyakorlatleírásokat is) anyanyelvi szakember még nem nézte át.')) : null),
