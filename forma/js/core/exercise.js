@@ -259,6 +259,36 @@ function ankleWall(F) {
   return { reps: reps.length, perRep, checks, ...(reps.length >= 2 ? sides(perRep, 'shin', false) : { sides: null, asymmetry: null, weaker: null }) };
 }
 
+/* Felugrás magassága a repülési időből: h = g · t² / 8. Mindkét boka a talajszint fölött → levegőben.
+   A talajszint az álló helyzet bokamagassága (a felvétel első harmadának mediánja). 15 kép/mp mellett a mérés
+   kb. ±3–5 cm pontosságú; a legjobb ugrás számít. */
+function verticalJump(F, t0, raw) {
+  /* a repülési időhöz a nyers (simítatlan) testpontok kellenek: a simítás elkenné a felszállás pillanatát */
+  const R = (raw || []).filter(f => f && f.lm && f.lm.length >= 33 && Math.min(f.lm[LM.lAnkle][3] ?? 1, f.lm[LM.rAnkle][3] ?? 1) >= 0.5).sort((a, b) => a.t - b.t);
+  const useRaw = R.length >= 10;
+  const t = useRaw ? R.map(f => f.t) : t0;
+  const ank = useRaw ? R.map(f => Math.max(f.lm[LM.lAnkle][1], f.lm[LM.rAnkle][1])) : F.map(f => Math.max(f.p[LM.lAnkle].y, f.p[LM.rAnkle].y));
+  const base = median(ank.slice(0, Math.max(5, Math.floor(ank.length / 3))));
+  const thr = 0.025 * (median(F.map(f => f.b.bodyLen)) || 1);
+  const air = ank.map(y => y < base - thr);
+  const jumps = [];
+  let s = -1;
+  for (let i = 0; i < air.length; i++) {
+    if (air[i] && s < 0) s = i;
+    if ((!air[i] || i === air.length - 1) && s >= 0) {
+      const e = air[i] ? i : i - 1;
+      /* a felszállás és a földet érés a két szomszédos kép közé esik: fél-fél képközt hozzáadunk */
+      const dtPrev = s > 0 ? (t[s] - t[s - 1]) / 2 : 0, dtNext = e + 1 < t.length ? (t[e + 1] - t[e]) / 2 : 0;
+      const flight = t[e] - t[s] + dtPrev + dtNext;
+      if (flight >= 0.12 && flight <= 1.2) jumps.push({ flight, cm: round(981 * flight * flight / 8) });
+      s = -1;
+    }
+  }
+  const best = jumps.reduce((a, b) => (b.cm > (a ? a.cm : -1) ? b : a), null);
+  const checks = best ? [check('soft_landing', percentile(F.map(f => Math.min(f.b.kneeL, f.b.kneeR)), 0.1) <= 150, percentile(F.map(f => Math.min(f.b.kneeL, f.b.kneeR)), 0.1))] : [];
+  return { reps: jumps.length, perRep: jumps, checks, jumpCm: best ? best.cm : null };
+}
+
 /* A Forma gyakorlatai és tesztjei → elemző. Ami nincs itt, azt csak kézzel lehet számolni. */
 export const ANALYZERS = {
   pushup, push_wall: pushup, push_incline: pushup, push_knee: pushup, push_full: pushup, push_decline: pushup,
@@ -266,7 +296,7 @@ export const ANALYZERS = {
   reverse_lunge: lunge, lateral_lunge: lateralLunge, tempo_lunge: lunge,
   glute_bridge: gluteBridge, sl_bridge: gluteBridge,
   plank, side_plank: plank, sl_stance: singleLegStand, sl_stand: singleLegStand, sl_stand_closed: singleLegStand,
-  ankle_rock: ankleWall, skater: lateralHops,
+  ankle_rock: ankleWall, skater: lateralHops, vertical_jump: verticalJump, squat_jump: verticalJump,
 };
 export const isAnalyzable = id => Object.prototype.hasOwnProperty.call(ANALYZERS, id);
 
@@ -278,13 +308,13 @@ export function analyzeExercise(raw, opts = {}) {
   if (!isAnalyzable(id)) return { ok: false, reason: 'unknown_exercise', ...base };
   const F = frames.filter(f => f.p).map(f => ({ t: f.t, p: f.p, b: bodyOf(f.p) }));
   if (F.length < 10 || quality.tracked < 0.4) return { ok: false, reason: 'not_tracked', ...base };
-  const res = ANALYZERS[id](F, F.map(f => f.t));
+  const res = ANALYZERS[id](F, F.map(f => f.t), raw);
   const vis = visibilityOf(frames, [LM.lHip, LM.rHip, LM.lKnee, LM.rKnee, LM.lAnkle, LM.rAnkle, LM.lShoulder, LM.rShoulder]);
   const found = res.reps > 0 || (res.holdSeconds || 0) > 1 || res.checks.length > 0;
   return {
     ok: found, ...(found ? {} : { reason: 'no_movement' }), ...base,
     reps: res.reps, holdSeconds: res.holdSeconds ?? null, rate: res.rate ?? null,
-    checks: res.checks, sides: res.sides ?? null, holdSides: res.holdSides ?? null, asymmetry: res.asymmetry ?? null, weaker: res.weaker ?? null,
+    checks: res.checks, sides: res.sides ?? null, holdSides: res.holdSides ?? null, jumpCm: res.jumpCm ?? null, asymmetry: res.asymmetry ?? null, weaker: res.weaker ?? null,
     perRep: (res.perRep || []).map(r => Object.fromEntries(Object.entries(r).map(([k, v]) => [k, typeof v === 'number' ? round(v, 3) : v]))),
     confidence: round(clamp(Math.min(1, quality.tracked / 0.8) * vis, 0, 1), 2),
   };

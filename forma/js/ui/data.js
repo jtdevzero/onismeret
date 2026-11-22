@@ -1,7 +1,7 @@
 /* A tartalom (tesztek, normák, gyakorlatok, ábrák) betöltése és a közös állapot. */
 import { kvGet, kvSet } from './store.js';
 
-export const D = { tests: null, norms: null, exercises: null, figures: {}, ex: {}, test: {}, area: {} };
+export const D = { tests: null, norms: null, exercises: null, routines: [], figures: {}, ex: {}, test: {}, area: {} };
 /* beállítások: { accepted, profile: { age, sex }, parq: { kérdés: igen/nem }, lowImpact, reminder: { time } } */
 export const S = { settings: null };
 
@@ -12,8 +12,9 @@ async function load(name) {
   return r.json();
 }
 export async function loadData() {
-  let figures;
-  [D.tests, D.norms, D.exercises, figures] = await Promise.all([load('tests.json'), load('norms.json'), load('exercises.json'), load('figures.json')]);
+  let figures, routines;
+  [D.tests, D.norms, D.exercises, figures, routines] = await Promise.all([load('tests.json'), load('norms.json'), load('exercises.json'), load('figures.json'), load('routines.json')]);
+  D.routines = routines.routines;
   D.figures = figures.figures;
   D.ex = Object.fromEntries(D.exercises.exercises.map(e => [e.id, e]));
   D.test = Object.fromEntries(D.tests.tests.map(t => [t.id, t]));

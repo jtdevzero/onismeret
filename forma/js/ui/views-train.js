@@ -2,14 +2,20 @@
 import { h, clear, fmtSec, uid, toast } from './dom.js';
 import { page, card, btn, link, note, list, speak, beep, tickMs, videoSearch } from './widgets.js';
 import { D, S, lowImpact } from './data.js';
-import { itemPut } from './store.js';
+import { itemPut, kvGet } from './store.js';
 import { getProgram, setProgram, latestAssessment } from './state.js';
-import { ROTATION, SESSION_TITLES, LADDERS, RATINGS, effLadder, baseLadder, buildSession, sessionSteps, sessionMinutes, nextKey, weekInfo, laddersOf, exerciseFor, applyRatings, doseFor, fitSession, phaseOf, CYCLE_WEEKS } from '../core/program.js';
+import { ROTATION, SESSION_TITLES, LADDERS, RATINGS, effLadder, baseLadder, buildSession, sessionSteps, sessionMinutes, nextKey, weekInfo, laddersOf, exerciseFor, applyRatings, doseFor, fitSession, phaseOf, freeSession, CYCLE_WEEKS } from '../core/program.js';
 import { figureStrip, figureAnim } from './figure.js';
 import { weekStrip } from './views-main.js';
 import { liveCounter } from './live.js';
 
 const SIDE = { left: 'bal oldal', right: 'jobb oldal', both: 'oldalanként' };
+/* rutin vagy saját edzés keresése a kulcs alapján */
+export async function freeSessionFor(key) {
+  if (key.startsWith('routine-')) { const r = D.routines.find(x => 'routine-' + x.id === key); return r ? freeSession(key, r.name, r.blocks, D.ex) : null; }
+  if (key.startsWith('custom-')) { const c = ((await kvGet('custom', [])) || []).find(x => 'custom-' + x.id === key); return c ? freeSession(key, c.name, c.blocks, D.ex) : null; }
+  return null;
+}
 /* rezgés (ha a készülék tudja): edzés közben hang nélkül is jelez */
 const buzz = p => { try { if (navigator.vibrate) navigator.vibrate(p); } catch { /* nem létfontosságú */ } };
 /* Kör alakú visszaszámláló: a gyűrű a hátralévő idő arányában fogy, a szám a közepén. */
@@ -56,12 +62,14 @@ export async function programView() {
 
 /* Vezetett edzés: lépésről lépésre, időzítővel, pihenővel, hangos bemondással; a gyakorlatok végén értékelés. */
 export async function sessionView(key, onCleanup) {
-  const prog = await getProgram();
+  const prog = (await getProgram()) || { levels: {}, done: 0 };
   const [k0, mode] = String(key || '').split('.');
   const light = mode === 'light';
   key = k0;
-  if (!prog || !SESSION_TITLES[key]) return page('Nincs ilyen edzés', link('#/program', '← Program', 'btn'));
-  const session = fitSession(buildSession(key, prog, D.exercises.exercises, Date.now(), { light }), D.ex, S.settings.duration || 0), steps = sessionSteps(session, D.ex), total = steps.length, started = Date.now();
+  /* önálló edzés: rutin (routine-…) vagy saját összeállítás (custom-…) */
+  const free = await freeSessionFor(key);
+  if (!free && (!SESSION_TITLES[key] || !prog.start)) return page('Nincs ilyen edzés', link('#/program', '← Program', 'btn'));
+  const session = free || fitSession(buildSession(key, prog, D.exercises.exercises, Date.now(), { light }), D.ex, S.settings.duration || 0), steps = sessionSteps(session, D.ex), total = steps.length, started = Date.now();
   const ratings = {};
   let at = 0, left = 0, timer = null, running = false, wake = null, finished = false;
   const voice = h('input', { type: 'checkbox', checked: true });
@@ -94,12 +102,18 @@ export async function sessionView(key, onCleanup) {
     if (finished) return;
     finished = true; release();
     const minutes = Math.max(1, Math.round((Date.now() - started) / 60000));
-    const fresh = (await getProgram()) || prog;
-    const { state, changes } = applyRatings(fresh, ratings, D.exercises.exercises);
-    /* a forgó rendben csak a soron következő edzés teljesítése lép tovább */
-    const done = key === nextKey(fresh) ? (fresh.done || 0) + 1 : fresh.done || 0;
-    await setProgram({ ...state, done, lastDone: Date.now() });
-    await itemPut({ id: uid(), kind: 'workout', date: Date.now(), key, minutes, steps: total, partial, ratings, changes, light });
+    let changes = [];
+    if (session.free) {
+      await itemPut({ id: uid(), kind: 'workout', date: Date.now(), key: key.startsWith('routine-') ? 'routine' : 'custom', title: session.title, minutes, steps: total, partial, ratings: {}, changes: [] });
+    } else {
+      const fresh = (await getProgram()) || prog;
+      const res = applyRatings(fresh, ratings, D.exercises.exercises);
+      changes = res.changes;
+      /* a forgó rendben csak a soron következő edzés teljesítése lép tovább */
+      const done = key === nextKey(fresh) ? (fresh.done || 0) + 1 : fresh.done || 0;
+      await setProgram({ ...res.state, done, lastDone: Date.now() });
+      await itemPut({ id: uid(), kind: 'workout', date: Date.now(), key, minutes, steps: total, partial, ratings, changes, light });
+    }
     speak('Kész az edzés. Szép munka!', voice.checked);
     beep(880, 200);
     bar.value = total; count.textContent = `${total} / ${total} lépés`;

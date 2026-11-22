@@ -49,7 +49,7 @@ export function feedback(r) {
   if (!r.ok) return note(r.reason === 'not_tracked' ? 'Nem láttalak elég jól. Támaszd le a telefont úgy, hogy tetőtől talpig beleférj, oldalról, jó fényben.' : 'Nem találtam a gyakorlat mozgását. Ellenőrizd a kameraállást.', 'warn');
   const fixes = r.checks.filter(c => c.band === 'fix');
   return h('div', { class: 'live-result' },
-    h('p', { class: 'lead' }, r.holdSeconds != null && !r.reps ? `${Math.floor(r.holdSeconds)} másodperc` : `${r.reps} ismétlés`),
+    h('p', { class: 'lead' }, r.jumpCm != null ? `Legjobb ugrás: ${Math.round(r.jumpCm)} cm (${r.reps} ugrás)` : r.holdSeconds != null && !r.reps ? `${Math.floor(r.holdSeconds)} másodperc` : `${r.reps} ismétlés`),
     r.checks.length ? h('ul', { class: 'rows' }, r.checks.map(c => h('li', null, h('span', null, CHECK_NAMES[c.id] || c.id), h('span', { class: 'badge ' + (c.band === 'ok' ? 'good' : 'warn') }, c.band === 'ok' ? 'Rendben' : 'Javítandó')))) : null,
     fixes.length ? h('ul', { class: 'plain' }, fixes.map(c => h('li', null, FIX[c.id] || ''))) : null,
     r.confidence != null && r.confidence < 0.6 ? note('A mérés bizonytalan (rossz látási viszonyok); kezeld fenntartással.', 'small') : null,

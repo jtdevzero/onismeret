@@ -18,7 +18,7 @@ function profile(p) {
   return age !== undefined && sex ? { age, sex } : null;
 }
 
-/* text: a fájl tartalma · ctx: { testIds, ladders, sessionKeys, ratingKeys, cardioTypes, goalMetrics }
+/* text: a fájl tartalma · ctx: { testIds, ladders, sessionKeys, ratingKeys, cardioTypes, goalMetrics, exerciseIds }
    → { ok: true, data: { settings, program, items } } vagy { ok: false, error } */
 export function parseBackup(text, ctx) {
   if (typeof text !== 'string' || !text.length) return { ok: false, error: 'Üres fájl.' };
@@ -67,6 +67,13 @@ export function parseBackup(text, ctx) {
       const pr = profile(it.profile);
       if (!pr) continue;
       items.push({ id, kind: 'assessment', date, profile: pr, results: numbers(it.results, ctx.testIds, -100, 1000), vitals: numbers(it.vitals, ['rhr', 'waist', 'frequency', 'intensity', 'duration'], 0, 300) });
+    } else if (it.kind === 'posture' && it.metrics && typeof it.metrics === 'object') {
+      const metrics = {};
+      for (const k of ['shoulder_tilt', 'hip_tilt', 'head_forward']) { const m = it.metrics[k]; if (m && num(m.value, -100, 100) !== undefined && (m.band === 'ok' || m.band === 'fix')) metrics[k] = { value: m.value, band: m.band }; }
+      if (!Object.keys(metrics).length) continue;
+      items.push({ id, kind: 'posture', date, metrics });
+    } else if (it.kind === 'workout' && ['routine', 'custom'].includes(it.key)) {
+      items.push(clean({ id, kind: 'workout', date, key: it.key, title: str(it.title, 60), minutes: num(it.minutes, 0, 600) ?? 0, steps: num(it.steps, 0, 1000), partial: !!it.partial, ratings: {}, changes: [] }));
     } else if (it.kind === 'workout' && ctx.sessionKeys.includes(it.key)) {
       const ratings = {};
       for (const l of ctx.ladders) if (it.ratings && ctx.ratingKeys.includes(it.ratings[l])) ratings[l] = it.ratings[l];
@@ -99,5 +106,12 @@ export function parseBackup(text, ctx) {
   if (raw.nutrition && typeof raw.nutrition === 'object') for (const [k, v] of Object.entries(raw.nutrition).slice(-60)) {
     if (/^\d{4}-\d{2}-\d{2}$/.test(k) && v && typeof v === 'object') nutrition[k] = { p: num(v.p, 0, 50) ?? 0, w: num(v.w, 0, 50) ?? 0 };
   }
-  return { ok: true, data: { settings, program, run, nutrition: Object.keys(nutrition).length ? nutrition : null, items } };
+  const exIds = new Set(ctx.exerciseIds || []);
+  const favs = Array.isArray(raw.favs) ? raw.favs.filter(f => exIds.has(f)).slice(0, 200) : null;
+  const custom = Array.isArray(raw.custom) ? raw.custom.slice(0, 50).map(c => {
+    const name = str(c && c.name, 40), cid = str(c && c.id);
+    const blocks = Array.isArray(c && c.blocks) ? c.blocks.filter(b => Array.isArray(b) && exIds.has(b[0])).slice(0, 30).map(([id, sets, dose]) => [id, num(sets, 1, 6) ?? 1, dose && num(dose.reps, 1, 600) !== undefined ? { reps: dose.reps } : { seconds: num(dose && dose.seconds, 1, 600) ?? 30 }]) : [];
+    return name && cid && blocks.length ? { id: cid, name, blocks } : null;
+  }).filter(Boolean) : null;
+  return { ok: true, data: { settings, program, run, nutrition: Object.keys(nutrition).length ? nutrition : null, favs, custom, items } };
 }

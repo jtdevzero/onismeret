@@ -63,7 +63,7 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     assert.match(await text(), /Egészségügyi szűrés/);
     const next2 = page.locator('section.card:not([hidden])').getByRole('button', { name: 'Tovább' });
     assert.equal(await next2.isDisabled(), true);
-    for (const fs of await page.locator('fieldset').all()) await fs.getByText('Nem', { exact: true }).click();
+    for (const fs of await page.locator('fieldset.parq-q').all()) await fs.getByText('Nem', { exact: true }).click();
     await shot('start-parq');
     await next2.click();
     const start = page.getByRole('button', { name: 'Kezdjük', exact: true });
@@ -78,7 +78,7 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
 
   await step('felmérés: időzítős teszt (számláló, visszaszámlálás, stopper), kihagyás, alapadatok', async () => {
     await go(page, '#/assess');
-    assert.match(await text(), /0 \/ 13 teszt kész/);
+    assert.match(await text(), /0 \/ 15 teszt kész/);
     assert.equal(await page.getByRole('button', { name: 'Kiértékelés' }).isDisabled(), true);
     /* fekvőtámasz: koppintós számláló tölti a mezőt */
     await go(page, '#/test/pushup');
@@ -405,10 +405,76 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     assert.match(await text(), /A ciklus fókusza: Alapozás/);
   });
 
+  await step('reakcióidő-teszt: öt koppintás, a medián a mezőbe kerül', async () => {
+    await page.evaluate(async () => { (await import('./js/ui/widgets.js')).setTick(5); });
+    await go(page, '#/test/reaction');
+    const pad = page.locator('.react-pad');
+    await pad.dispatchEvent('pointerdown');
+    for (let i = 0; i < 5; i++) {
+      await page.waitForSelector('.react-pad.go', { timeout: 5000 });
+      await page.waitForTimeout(160);
+      await pad.dispatchEvent('pointerdown');
+    }
+    const v = Number(await page.locator('#val').inputValue());
+    assert.ok(v >= 100 && v < 1500, 'medián: ' + v);
+    await page.evaluate(async () => { (await import('./js/ui/widgets.js')).setTick(15); });
+  });
+
+  await step('testtartás (hamis kamerával): szemből és oldalról, eredmény és javaslat', async () => {
+    await page.evaluate(async () => {
+      const w = await import('./js/ui/widgets.js'), s = await import('./tests/synth.mjs');
+      const mk = side => { const lm = s.pose({ view: side ? 'side' : 'frontal', shin: 0, thigh: 0, torso: 0, flex: 0, stance: 0.12 }); if (!side) lm[12][1] += 0.03; else { const x = (lm[11][0] + lm[12][0]) / 2; lm[7] = [x + 0.09, lm[11][1] - 0.06, 0, 0.95]; lm[0] = [x + 0.12, lm[11][1] - 0.06, 0, 0.95]; } return lm; };
+      let n = 0;
+      w.setRunner({ countdown: 0, openCamera: async () => { const side = n++ > 0; let t = 0; return { el: null, aspect: 1, read: async () => ({ t: (t += 0.1), lm: mk(side) }), close() {} }; } });
+    });
+    await go(page, '#/posture');
+    await page.getByRole('button', { name: 'Szemből: mérés' }).click();
+    await page.waitForFunction(() => /✓ Megvan/.test(document.getElementById('main').innerText), null, { timeout: 10000 });
+    await page.getByRole('button', { name: 'Oldalról: mérés' }).click();
+    await page.waitForFunction(() => /Mit tehetsz/i.test(document.getElementById('main').innerText), null, { timeout: 10000 });
+    const t = await text();
+    assert.match(t, /Vállak egy magasságban/); assert.match(t, /Fej a váll fölött/);
+    await shot('posture');
+    await page.getByRole('button', { name: 'Vegye fel a programom a fókuszba' }).click();
+    await until(page, async () => ((await (await import('./js/ui/state.js')).getProgram()).targets || []).includes('thoracic'));
+  });
+
+  await step('gyakorlattár, saját edzés és rutin: összeállítás, futtatás, naplózás', async () => {
+    await go(page, '#/library');
+    await page.locator('.search').fill('plank');
+    assert.match(await text(), /Alkartámasz \(plank\)/);
+    await page.getByRole('button', { name: /Kedvencekhez: Alkartámasz/ }).click();
+    await until(page, async () => ((await (await import('./js/ui/store.js')).kvGet('favs')) || []).includes('plank'));
+    await shot('library');
+    await go(page, '#/custom');
+    await page.locator('#cname').fill('Reggeli 10');
+    for (const n of ['Alkartámasz (plank)', 'Guggolás']) await page.locator('li.pick', { hasText: n }).first().getByRole('checkbox').check();
+    await page.getByRole('button', { name: 'Mentés', exact: true }).click();
+    await shown(page, '#/routines');
+    assert.match(await text(), /Reggeli 10/);
+    assert.match(await text(), /Irodai mobilitás/);
+    await shot('routines');
+    const before = await page.evaluate(async () => (await (await import('./js/ui/state.js')).getProgram()).done);
+    await page.getByRole('link', { name: /Irodai mobilitás/ }).click();
+    await page.waitForFunction(() => (document.documentElement.dataset.view || '').startsWith('#/session/routine-office'));
+    const tap = async name => { const b = page.getByRole('button', { name }); return (await b.count()) ? b.click({ timeout: 1000 }).then(() => true, () => false) : false; };
+    for (let g = 0; g < 200; g++) {
+      if (/Edzés kész/i.test(await text())) break;
+      if (await tap('Pihenő kihagyása')) continue;
+      if (await tap('Kész, tovább')) continue;
+      await page.waitForTimeout(80);
+    }
+    assert.match(await text(), /Edzés kész/i);
+    const after = await page.evaluate(async () => (await (await import('./js/ui/state.js')).getProgram()).done);
+    assert.equal(after, before, 'a rutin nem lépteti a forgó rendet');
+    const last = await page.evaluate(async () => (await (await import('./js/ui/store.js')).itemsAll('workout'))[0]);
+    assert.equal(last.key, 'routine'); assert.equal(last.title, 'Irodai mobilitás');
+  });
+
   await step('akadálymentesség (axe, WCAG 2 A/AA): a fő képernyőkön nincs hiba', async () => {
     const axe = fs.readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
     const found = [];
-    for (const hash of ['#/more', '#/', '#/assess', '#/test/pushup', '#/test/deep_squat', '#/test/vitals', '#/result', '#/program', '#/session/mobility', '#/ex/squat', '#/log', '#/settings', '#/cardio', '#/check/strengthA', '#/ex/pull_up', '#/progress', '#/mini', '#/run', '#/review', '#/cooldown']) {
+    for (const hash of ['#/more', '#/', '#/assess', '#/test/pushup', '#/test/deep_squat', '#/test/vitals', '#/result', '#/program', '#/session/mobility', '#/ex/squat', '#/log', '#/settings', '#/cardio', '#/check/strengthA', '#/ex/pull_up', '#/progress', '#/mini', '#/run', '#/review', '#/cooldown', '#/library', '#/routines', '#/custom', '#/posture', '#/test/reaction']) {
       await go(page, hash);
       /* a Playwright evaluate-je nem esik a lap CSP-je alá, így beágyazott szkript nélkül töltjük be */
       await page.evaluate(src => { if (!window.axe) (0, eval)(src); }, axe).catch(() => {});
