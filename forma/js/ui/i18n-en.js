@@ -1247,6 +1247,9 @@ export default {
  "naplózott edzésterhelés": "logged training load",
  " · Korlátozott bizonyosság: hiányzik a közérzet vagy az összevethető pulzus.": " · Limited confidence: self-report or comparable pulse data is missing.",
  "Tájékoztató szabályalapú becslés, nem egészségügyi diagnózis. A javaslatot te döntöd el.": "Indicative rule-based estimate, not a medical diagnosis. You make the decision.",
+ "Folytatásra váró edzés": "Workout waiting to resume",
+ "Félbehagyott edzés folytatása": "Resume unfinished workout",
+ "{p0}. lépés / {p1} · a mentett állapot megmaradt": "Step {p0} of {p1} · your saved progress is preserved",
  "{p0} edzés, {p1} perc az utolsó {p2} napban.": "{p0} workouts, {p1} minutes over the last {p2} days.",
  "{p0} edzés, {p1} perc az utolsó 7 napban.": "{p0} workouts, {p1} minutes over the last 7 days.",
  "{p0} regenerációs bejegyzés, {p1} fájdalomjelzés. Ez önbevallás.": "{p0} recovery check-ins, {p1} pain reports. These are self-reported."

@@ -41,6 +41,13 @@ Kizárólag `forma/`, a Phase 2 fejlesztői változatára épülve. A Phase 2 va
 - `tests/extras.test.mjs`: csak terhelés, jövőbeli pulzus, bizonyosság és forrástípus regressziók. Build **PASS**, unit **163/163 PASS**.
 - A regenerációs algoritmus szakmai küszöbeinek és a valós mobilos megjelenítésnek a külső, reprezentatív validációja továbbra is szükséges; a kijelzett érték tájékoztató.
 
+## P3-07 – FORMA Today 3.0: félbehagyott edzés elsőbbsége
+
+- A kezdőlap napi CTA-ja jelenleg a következő programedzést mutatta, akkor is, ha egy másik edzés félbe volt hagyva. `ui/views-main.js` most ellenőrzött `workoutDraft` esetén elsőként a **Folytatás** műveletet és a megőrzött lépésszámot mutatja.
+- `core/home-action.js`: szigorúan ellenőrzött, támogatott edzésazonosító, érvényes checkpoint és még nem mentett végleges edzés szükséges. A tényleges folytatás továbbra is a session nézetben felhasználói jóváhagyással történik; a kezdőlap semmit nem töröl vagy ír felül.
+- `tests/home-action.test.mjs`: folytatható, lezárt, sérült és idegen edzés esetei; `i18n-en.js`: új magyar és angol szövegek. Build **PASS**, unit **165/165 PASS**.
+- A valós iOS/Android kezdőlapi megjelenítés, e2e navigáció és offline visszatöltés további kiadásblokkoló teszt.
+
 ## P3-02 – online generatív coach biztonsági architektúra (csak terv)
 
 1. **Alapbeállítás:** offline szabálymotor, nincs AI-kérés, API-kulcs vagy háttérszinkron.

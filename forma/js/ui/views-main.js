@@ -2,7 +2,7 @@
 import { h, clear, fmtDate, toast } from './dom.js';
 import { page, card, btn, link, note, choice, list, sized, heroTime, artClass, emptyState, ageSelect } from './widgets.js';
 import { D, S, saveSettings, profile, applyLook, weeklyGoal, reviewed } from './data.js';
-import { exportAll, wipeAll, restoreAll } from './store.js';
+import { exportAll, wipeAll, restoreAll, kvGet } from './store.js';
 import { parseBackup } from '../core/backup.js';
 import { sameScoring } from '../core/assessment.js';
 import { RATINGS, LADDERS, EQUIPMENT, DURATIONS, COMPLAINTS, fitSession } from '../core/program.js';
@@ -23,6 +23,7 @@ import { buildDashboard } from '../core/dashboard.js';
 import { tr, LOCALES, getLocale, setLocale } from './i18n.js';
 import { backupReminderCard, backupSettingsBlock } from './backup-ui.js';
 import { coachCard } from './views-coach.js';
+import { resumableHomeDraft } from '../core/home-action.js';
 
 export const PARQ = [
   ['heart', tr('Mondta-e valaha orvos, hogy szívbetegséged vagy magas vérnyomásod van?')],
@@ -147,13 +148,14 @@ export async function homeView() {
   let dash = null;
   if (prog) {
     const key = nextKey(prog), session = fitSession(buildSession(key, prog, D.exercises.exercises), D.ex, S.settings.duration || 0), steps = sessionSteps(session, D.ex);
+    const resume = resumableHomeDraft(await kvGet('workoutDraft', null), ws);
     const doneToday = ws.some(w => new Date(w.date).toDateString() === new Date().toDateString());
     const wk = weekInfo(prog.start);
-    kids.push(h('section', { class: 'hero ' + heroTime() + ' ' + artClass(key) }, h('h1', null, doneToday ? tr('Mai edzés kész') : tr('Mai edzés')),
+    kids.push(h('section', { class: 'hero ' + heroTime() + ' ' + artClass(resume ? resume.key : key) }, h('h1', null, resume ? tr('Folytatásra váró edzés') : doneToday ? tr('Mai edzés kész') : tr('Mai edzés')),
       h('p', { class: 'hero-sub' }, tr('{n}. hét', { n: wk.week }) + (wk.deload ? tr(' · könnyített hét') : '') + (streak(ws.map(w => w.date)) ? tr(' · {n} napos sorozat', { n: streak(ws.map(w => w.date)) }) : '')),
-      h('div', { class: 'hero-next' }, h('h2', null, (doneToday ? tr('Holnap: ') : '') + session.title),
-        h('p', null, tr('Kb. {m} perc · {n} gyakorlat', { m: sessionMinutes(steps), n: session.blocks.length })),
-        h('div', { class: 'row' }, link('#/check/' + key, doneToday ? tr('Mehet még egy') : tr('Indítás'), 'btn primary home-start')))));
+      h('div', { class: 'hero-next' }, h('h2', null, resume ? tr('Félbehagyott edzés') : (doneToday ? tr('Holnap: ') : '') + session.title),
+        h('p', null, resume ? tr('{p0}. lépés / {p1} · a mentett állapot megmaradt', { p0: resume.at, p1: resume.total }) : tr('Kb. {m} perc · {n} gyakorlat', { m: sessionMinutes(steps), n: session.blocks.length })),
+        h('div', { class: 'row' }, link(resume ? resume.href : '#/check/' + key, resume ? tr('Félbehagyott edzés folytatása') : doneToday ? tr('Mehet még egy') : tr('Indítás'), 'btn primary home-start')))));
     /* két kis csempe: heti cél és regeneráció; a részletek egy koppintással elérhetők (a számok a dashboard-rétegből) */
     const everything = await itemsAll();
     dash = buildDashboard({ program: prog, items: everything, now: Date.now(), profile: profile(), norms: D.norms, weeklyGoal: weeklyGoal() });
