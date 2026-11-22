@@ -61,6 +61,13 @@ Kizárólag `forma/`, a Phase 2 fejlesztői változatára épülve. A Phase 2 va
 - Az instrukció magyar és angol változata frissült; a korábbi nagy érintéses vezérlők, a mentési checkpoint és a saját vizuális arculat érintetlenek.
 - `tests/workout-navigation.test.mjs`: gesztus, görgetés, interaktív célpont és értékelés regresszió. Build **PASS**, unit **167/167 PASS**. A valós érintéses Safari/Android ellenőrzés továbbra is nyitott.
 
+### P3-08b – kis képernyős edzésfókusz
+
+- `styles.css`: 740 px-nél alacsonyabb telefonon kisebb másodlagos térközök, kompakt előző teljesítmény és következő gyakorlat előnézet; az aktuális gyakorlatábra és az ismétlés/idő marad az elsődleges. 350 px alatt a kéthasábos vizuális blokk rugalmasabb.
+- A fő edzésvezérlők legalább 56 CSS-pixel magasak, több sorra törhetnek; a hosszú címek nem okozhatnak szándékos vízszintes túlcsordulást. A reduced-motion korábbi szabályai megmaradtak.
+- `tests/workout-layout.test.mjs`: CSS szerződésellenőrzés a gombméretre, tördelésre és mobil breakpointokra. Build **PASS**, unit **169/169 PASS**.
+- **Korlát:** ez automatizált statikus stílusellenőrzés, nem bizonyítja a 320×568 és fekvő telefonos valós megjelenést. A Playwright/valós eszközös ellenőrzés továbbra is kiadásblokkoló.
+
 ## P3-02 – online generatív coach biztonsági architektúra (csak terv)
 
 1. **Alapbeállítás:** offline szabálymotor, nincs AI-kérés, API-kulcs vagy háttérszinkron.
