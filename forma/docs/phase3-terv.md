@@ -90,6 +90,13 @@ Kizárólag `forma/`, a Phase 2 fejlesztői változatára épülve. A Phase 2 va
 - `tests/schema.test.mjs` és `tests/workout-draft.test.mjs`: több sorozat súly/RIR, terv felülírása, mentésfájl kompatibilitás és tartománykorlátok. `styles.css`: minimum 48 px magas mezők és rugalmas mobil/fekvő elrendezés; angol feliratok pótlása.
 - Helyi build és **173/173 unit PASS** (2026-11-22). **Valós Android/iOS UI, offline IndexedDB és böngészős e2e nem igazolt**, a P3-10 akadály miatt továbbra is NO-GO.
 
+## P3-17 – FORMA 2 elkülönített előnézet (fejlesztői ág)
+
+- A `build.py` új `forma/forma2/index.html` belépési pontot generál, amely a közös `forma/js/`, `styles.css` és `data/` állományokra hivatkozik; nincs asset- vagy kameramodell-duplikáció. A fő alkalmazás továbbra is a `forma/index.html` fájlból működik.
+- A `forma2` útvonalon a tároló `forma2-preview` IndexedDB névvel nyílik meg, így a már meglévő `forma` felhasználói adatbázist nem olvassa és nem írja felül. Az előnézet nem regisztrál új Service Workert és nem használja a fő PWA manifestet; nem tekinthető önálló offline PWA-nak.
+- A belépőképernyő külön figyelmeztet, hogy fejlesztői előnézetet használnak. `tests/preview.test.mjs` ellenőrzi a belépési pontot, forráshivatkozásokat és izolációs kódot.
+- A GitHub fejlesztői ág forráskódja elérhető, de a GitHub Pages **éles** `/forma/forma2/` URL-je csak külön jóváhagyott publikálás után használható. Tényleges mobilböngészős megnyitás még nincs igazolva.
+
 ## P3-02 – online generatív coach biztonsági architektúra (csak terv)
 
 1. **Alapbeállítás:** offline szabálymotor, nincs AI-kérés, API-kulcs vagy háttérszinkron.

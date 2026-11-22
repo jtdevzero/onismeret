@@ -108,6 +108,17 @@ def main():
     mods = static_closure(HERE / 'js' / 'ui' / 'app.js')
     preload = ''.join(f'<link rel="modulepreload" href="{m}">\n' for m in mods)
     (HERE / 'index.html').write_text(HEAD.replace('__PRELOAD__', preload) + shell_html.rstrip() + '\n' + FOOT, encoding='utf-8')
+    # Önálló, külön tárolóval működő előnézeti belépési pont ugyanahhoz a forráskódhoz.
+    # Nincs kód/asset másolat, nincs újabb 15 MB-os modell és nincs előnézeti SW.
+    preview = HERE / 'forma2'
+    preview.mkdir(exist_ok=True)
+    preview_head = HEAD.replace('__PRELOAD__', preload)
+    for asset in ['manifest.webmanifest', 'icons/icon.svg', 'icons/apple-touch-icon.png', 'styles.css', 'assets/forma-sunset.webp', 'js/ui/app.js'] + mods:
+        preview_head = preview_head.replace('"' + asset + '"', '"../' + asset + '"')
+    preview_head = preview_head.replace('<title>Forma</title>', '<title>Forma 2 – fejlesztői előnézet</title>')
+    preview_head = preview_head.replace('<link rel="manifest" href="../manifest.webmanifest">', '')
+    banner = '<p class="card" role="status"><strong>FORMA 2 – FEJLESZTŐI ELŐNÉZET.</strong> Külön helyi adatbázis, nem az éles alkalmazás. A böngészőben itt megadott adatok nem jelennek meg a fő Forma alkalmazásban.</p>\n'
+    (preview / 'index.html').write_text(preview_head + banner + shell_html.rstrip() + '\n' + FOOT, encoding='utf-8')
     review_pack()
 
     shell = ['index.html', 'styles.css', 'manifest.webmanifest']

@@ -4,7 +4,9 @@ import { BACKUP_VERSION } from '../core/backup.js';
 import { backupDraft } from '../core/workout-draft.js';
 /* Helyi tárolás IndexedDB-ben: beállítások és állapot (kv), felmérések és edzések (items).
    Minden adat a készüléken marad. Ha az IndexedDB nem érhető el (pl. privát ablak), memóriában dolgozunk tovább. */
-const DB = 'forma', VERSION = 1;
+/* Az előnézet saját tárolót kap: sem az élő Forma, sem a telefonon mentett
+   korábbi edzések nem olvashatók/felülírhatók a forma2 belépési pontból. */
+const DB = typeof location !== 'undefined' && /(?:^|\/)forma2(?:\/|$)/.test(location.pathname) ? 'forma2-preview' : 'forma', VERSION = 1;
 let dbp = null;
 const mem = { kv: new Map(), items: new Map() };
 let status = { mode: 'pending', writeError: false };

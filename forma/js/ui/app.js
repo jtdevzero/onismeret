@@ -90,7 +90,9 @@ async function boot() {
   document.documentElement.dataset.ready = '1';
   /* tartós tárolás kérése, amint van mit megőrizni (a böngésző dönt; csendben, felugró ablak nélkül) */
   if (settingsReady()) requestPersist();
-  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+  /* Az elkülönített forma2 előnézet nem telepít saját SW-t és nem frissíti
+     a fő alkalmazás workerét; az offline PWA tesztje külön feladat. */
+  if (!/(?:^|\/)forma2(?:\/|$)/.test(location.pathname) && 'serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
     /* Az új worker várakozik, amíg a felhasználó kéri a frissítést.
        Az aktív edzés közben a régi cache marad irányítás alatt. */
     navigator.serviceWorker.addEventListener('controllerchange', () => { if (updateRequested) location.reload(); });
