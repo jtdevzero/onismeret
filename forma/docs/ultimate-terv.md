@@ -52,7 +52,7 @@ Hatókör: kizárólag `forma/`. Engedélyezett: U0 és U1, a `claude/elegant-ha
 
 ## Szerződések
 
-- **Mentésfájl:** `version: 2` (`js/core/backup.js` `BACKUP_VERSION`). Az 1-es fájl továbbra is betölthető; ismeretlen újabb verziót az app elutasít, nem butítja le.
+- **Mentésfájl:** aktuálisan `version: 3` (`js/core/backup.js` `BACKUP_VERSION`); a v2 a sorozatnaplót, a v3 a félbehagyott edzés checkpointját adta hozzá. Az 1-es és 2-es fájl továbbra is betölthető; ismeretlen újabb verziót az app elutasít, nem butítja le.
 - **Edzésrekord:** a régi mezők változatlanok; új, opcionális: `schemaVersion: 2`, `log[{ ex, sets[{ reps?, seconds?, weightKg?, rir?, done }] }]`, `rpe` (0–10). Olvasóadapter: `normalizeWorkout`. A `weightKg` egy eszköz súlya; testsúlyos gyakorlatnál nincs, és nem is becsüljük.
 - **Program:** új, opcionális `loads` (gyakorlat → elfogadott külső súly) és `loadLog` (`source: 'suggestion' | 'manual'`); a `levelLog` bejegyzés opcionális `source: 'manual' | 'revert'` jelölést kaphat.
 - **Javaslat ≠ változás:** a `suggestProgression` csak javasol (`requiresApproval: true`); a program kizárólag az `applyLoadChange` / `setLevel` hívással változik, felhasználói gombnyomásra.
@@ -152,3 +152,11 @@ Hatókör: kizárólag `forma/`. Engedélyezett: U0 és U1, a `claude/elegant-ha
 - `ui/views-train.js`: elutasítás esetén védett döntési képernyő jelenik meg. A félkész adatok változatlanul megmaradnak; az újrakezdés csak külön, kifejezett törlési megerősítés és sikeres IndexedDB-törlés után lehetséges. Van visszalépési és folytatási lehetőség.
 - `ui/i18n-en.js`: az új állapot angol szövegei; `tests/browser.cjs`: izolált visszatöltési próba az elutasítás utáni checkpoint-változatlanságra.
 - Helyi build és **152/152** unit teszt sikeres, a böngészős regresszió a CI tényleges lefutásáig **nem igazolt**. Nem érintett éles vagy valós felhasználói adatot.
+
+## Phase 2 – mentésfájl v3: félbehagyott edzés visszatöltése
+
+- A korábbi v2 export nem tartalmazta az aktív `workoutDraft` checkpointot, így fájlból visszatöltve a félbehagyott sorozatok elveszhettek. A `store.exportAll()` most v3 mentésbe írja a checkpointot, beleértve a javított ismétlésszámot és az edzéslépés indexét.
+- `core/backup.js` és `core/workout-draft.js`: korlátozott mezők és típusok ellenőrzése; hibás v3 draftnál **a teljes import elutasítva**, a jelenlegi adatok érintetlenek maradnak. A v1 és v2 mentések beolvasása változatlanul támogatott, azokból félkész edzés nem állítható elő.
+- `ui/store.js`: atomi visszatöltés a többi adattal együtt; érvénytelen helyi checkpoint esetén a fájlexport hibaüzenettel megáll, nem állít elő megtévesztően teljes mentést.
+- `tests/workout-draft.test.mjs`, `tests/reliability.test.mjs`, `tests/schema.test.mjs`: v3 körút, v2 kompatibilitás, sérült checkpoint elutasítása és adatok megtartása. Helyben build **PASS**, unit **155/155 PASS**.
+- Korlát: az aktív edzés UI-jának és a mentésfájl tényleges böngészős visszatöltésének CI-/eszközös ellenőrzése még szükséges; a mentett checkpointot a programnézet a jelenlegi edzéstervhez is ellenőrzi.

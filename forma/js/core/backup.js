@@ -3,11 +3,12 @@
 
 import { cleanScoring } from './assessment.js';
 import { cleanLog, cleanRpe, WORKOUT_SCHEMA } from './workout-schema.js';
+import { backupDraft } from './workout-draft.js';
 
 /* Mentésfájl-verziók: 1 = régi; 2 = sorozatnapló, elfogadott súlyjavaslatok, kihívás- és blokkállapot.
    Újabb (ismeretlen) verziót nem töltünk vissza, mert veszteséges lenne. */
-export const BACKUP_VERSION = 2;
-const SUPPORTED = [1, 2];
+export const BACKUP_VERSION = 3;
+const SUPPORTED = [1, 2, 3];
 
 const MAX_BYTES = 5 * 1024 * 1024, MAX_ITEMS = 5000;
 const num = (v, lo, hi) => (typeof v === 'number' && Number.isFinite(v) && v >= lo && v <= hi ? v : undefined);
@@ -49,6 +50,9 @@ export function parseBackup(text, ctx) {
   if (!raw || raw.app !== 'forma' || !Number.isInteger(raw.version)) return { ok: false, error: 'Ez nem a Forma mentésfájlja.' };
   if (!SUPPORTED.includes(raw.version)) return { ok: false, error: 'Ezt a mentést egy újabb Forma-változat készítette. Frissítsd az appot, és próbáld újra. A jelenlegi adatok megmaradtak.' };
   if (!Array.isArray(raw.items) || raw.items.length > MAX_ITEMS) return { ok: false, error: 'A mentésfájl sérült.' };
+  const workoutDraft = raw.version >= 3 && raw.workoutDraft != null ? backupDraft(raw.workoutDraft) : null;
+  if (raw.version >= 3 && raw.workoutDraft != null && !workoutDraft)
+    return { ok: false, error: 'A félbehagyott edzés mentése sérült. A jelenlegi adatok megmaradtak.' };
 
   const s = raw.settings || {};
   const settings = clean({
@@ -163,5 +167,5 @@ export function parseBackup(text, ctx) {
   const ch = raw.challenge, bl = raw.block;
   const challenge = ch && typeof ch === 'object' && /^[a-z0-9]{3,12}$/.test(ch.id || '') && (!ctx.challengeIds || ctx.challengeIds.includes(ch.id)) && num(ch.start, 0, 1e14) !== undefined ? { id: ch.id, start: ch.start } : null;
   const block = bl && typeof bl === 'object' && /^[a-z0-9_-]{2,30}$/.test(bl.id || '') && (!ctx.blockIds || ctx.blockIds.includes(bl.id)) && num(bl.start, 0, 1e14) !== undefined ? { id: bl.id, start: bl.start, done: num(bl.done, 0, 1000) ?? 0 } : null;
-  return { ok: true, data: { settings, program, run, nutrition: Object.keys(nutrition).length ? nutrition : null, favs, custom, challenge, block, items } };
+  return { ok: true, data: { settings, program, run, nutrition: Object.keys(nutrition).length ? nutrition : null, favs, custom, challenge, block, workoutDraft, items } };
 }

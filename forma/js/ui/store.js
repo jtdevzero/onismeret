@@ -1,5 +1,7 @@
 
 import { tr } from './i18n.js';
+import { BACKUP_VERSION } from '../core/backup.js';
+import { backupDraft } from '../core/workout-draft.js';
 /* Helyi tárolás IndexedDB-ben: beállítások és állapot (kv), felmérések és edzések (items).
    Minden adat a készüléken marad. Ha az IndexedDB nem érhető el (pl. privát ablak), memóriában dolgozunk tovább. */
 const DB = 'forma', VERSION = 1;
@@ -99,14 +101,21 @@ export async function wipeAll() {
 }
 /* Mentés fájlba: beállítások, program, felmérések és edzések. */
 export async function exportAll() {
-  return { app: 'forma', version: 2, exported: new Date().toISOString(), settings: await kvGet('settings', {}), program: await kvGet('program', null), run: await kvGet('run', null), nutrition: await kvGet('nutrition', null), favs: await kvGet('favs', null), custom: await kvGet('custom', null), challenge: await kvGet('challenge', null), block: await kvGet('block', null), items: await itemsAll() };
+  const draft = await kvGet('workoutDraft', null);
+  if (draft && !backupDraft(draft)) throw new Error(tr('A félbehagyott edzés mentése sérült. A fájlexport megszakadt.'));
+  return { app: 'forma', version: BACKUP_VERSION, exported: new Date().toISOString(), settings: await kvGet('settings', {}), program: await kvGet('program', null), run: await kvGet('run', null), nutrition: await kvGet('nutrition', null), favs: await kvGet('favs', null), custom: await kvGet('custom', null), challenge: await kvGet('challenge', null), block: await kvGet('block', null), workoutDraft: backupDraft(draft), items: await itemsAll() };
 }
 
 /* Visszatöltés ellenőrzött mentésből (core/backup.js): minden meglévő adat helyére. */
-export async function restoreAll({ settings, program, run, nutrition, favs, custom, challenge, block, items }) {
+export async function restoreAll({ settings, program, run, nutrition, favs, custom, challenge, block, workoutDraft, items }) {
   // Másolási/bemeneti hiba még a régi állomány érintése előtt derüljön ki.
-  const data = structuredClone({ settings, program, run, nutrition, favs, custom, challenge, block, items });
+  const data = structuredClone({ settings, program, run, nutrition, favs, custom, challenge, block, workoutDraft, items });
   if (!Array.isArray(data.items) || data.items.some(it => !it || typeof it.id !== 'string' || !it.id)) throw new Error(tr('Hibás visszatöltési adat.'));
+  if (data.workoutDraft != null) {
+    const validated = backupDraft(data.workoutDraft);
+    if (!validated) throw new Error(tr('Hibás visszatöltési adat.'));
+    data.workoutDraft = validated;
+  }
   const kv = Object.fromEntries(Object.entries(data).filter(([k, v]) => k !== 'items' && v != null));
   await replaceAll(kv, data.items);
 }

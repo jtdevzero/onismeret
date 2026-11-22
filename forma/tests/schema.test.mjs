@@ -54,7 +54,7 @@ test('2-es mentés: sorozatnapló, RPE, súlycél, kihívás és blokk oda-vissz
 });
 
 test('ismeretlen, újabb mentésverziót nem tölt vissza veszteségesen', () => {
-  const r = parseBackup(JSON.stringify({ ...legacyFile, version: 3 }), ctx);
+  const r = parseBackup(JSON.stringify({ ...legacyFile, version: BACKUP_VERSION + 1 }), ctx);
   assert.equal(r.ok, false);
   assert.match(r.error, /újabb Forma-változat/);
   assert.equal(parseBackup(JSON.stringify({ ...legacyFile, version: '2' }), ctx).ok, false);

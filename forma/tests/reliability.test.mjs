@@ -82,3 +82,20 @@ test('memóriamód állapota megfigyelhető, hibás visszatöltés az eredeti ad
   await s.restoreAll({ settings: { profile }, items: [a] });
   assert.deepEqual(await s.itemGet('a1'), a);
 });
+
+test('félbehagyott edzés fájlexportja és visszatöltése megőrzi a módosított sorozatot', async () => {
+  const s = await import('../js/ui/store.js');
+  const draft = { version: 1, key: 'strengthA', workoutId: 'workout-backup-1', started: Date.now() - 1000,
+    at: 0, steps: [{ exercise: 'push_wall', reps: 10, actualReps: 12, block: 0, set: 1, sets: 2 }], ratings: {}, partner: false };
+  await s.kvSet('workoutDraft', draft);
+  const exported = await s.exportAll();
+  assert.equal(exported.version, 3);
+  assert.equal(exported.workoutDraft.steps[0].actualReps, 12);
+  await s.restoreAll({ ...exported, workoutDraft: exported.workoutDraft });
+  assert.deepEqual(await s.kvGet('workoutDraft'), exported.workoutDraft);
+  const before = await s.exportAll();
+  await assert.rejects(s.restoreAll({ ...exported, workoutDraft: { ...draft, at: 10 } }));
+  const after = await s.exportAll();
+  delete before.exported; delete after.exported;
+  assert.deepEqual(after, before, 'sérült visszatöltés nem írhatja felül az edzést');
+});

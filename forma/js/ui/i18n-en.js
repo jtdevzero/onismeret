@@ -1185,6 +1185,7 @@ export default {
  "Nem sikerült törölni a félkész edzést.": "Could not discard the unfinished workout.",
  "Van egy félbehagyott edzésed. Folytatod onnan, ahol abbahagytad?": "You have an unfinished workout. Resume where you left off?",
  "A félbehagyott edzésed megmaradt": "Your unfinished workout is preserved",
+ "A félbehagyott edzés mentése sérült. A fájlexport megszakadt.": "The unfinished workout checkpoint is damaged. The backup export was stopped.",
  "Az újrakezdés törölné a korábban rögzített sorozatokat. Ezt külön jóvá kell hagynod.": "Starting over would delete the sets you already logged. You must explicitly confirm this.",
  "Vissza a programhoz": "Back to programme",
  "Nem sikerült a félbehagyott edzést menteni.": "Could not save the unfinished workout.",
