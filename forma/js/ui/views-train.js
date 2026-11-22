@@ -65,9 +65,10 @@ export async function programView() {
   });
   return page('Program',
     h('p', { class: 'muted' }, `${wk.week}. hét (a ${wk.cycle}. ciklus ${wk.cycleWeek}. hete a ${CYCLE_WEEKS}-ből)` + (prog.lowImpact ? ' · kímélő mód' : '')),
-    h('section', { class: 'card accent' }, h('h2', null, `A ciklus fókusza: ${phaseOf(wk.cycle).name}`), h('p', null, phaseOf(wk.cycle).about),
-      h('div', { class: 'timeline', role: 'img', 'aria-label': `A ${CYCLE_WEEKS} hetes ciklus: most a ${wk.cycleWeek}. hét` }, Array.from({ length: CYCLE_WEEKS }, (_, i) => h('span', { class: 'tl-week' + (i + 1 < wk.cycleWeek ? ' past' : i + 1 === wk.cycleWeek ? ' now' : '') + (i + 1 === CYCLE_WEEKS ? ' deload' : '') }, i + 1 === CYCLE_WEEKS ? 'könnyű' : `${i + 1}. hét`))),
-      h('p', { class: 'small muted' }, 'A 6 hetes ciklusok fókusza váltakozik: alapozás → erő → robbanékonyság, majd újra elölről.')),
+    h('section', { class: 'card accent' }, h('h2', null, `A ciklus fókusza: ${phaseOf((prog.cycleBase || 0) + wk.cycle).name}`), h('p', null, phaseOf((prog.cycleBase || 0) + wk.cycle).about),
+      h('div', { class: 'timeline', role: 'img', 'aria-label': `A ${CYCLE_WEEKS} hetes ciklus: most a ${wk.cycleWeek}. hét` }, Array.from({ length: CYCLE_WEEKS }, (_, i) => h('span', { class: 'tl-week' + (i + 1 < wk.cycleWeek ? ' past' : i + 1 === wk.cycleWeek ? ' now' : '') + (i + 1 === CYCLE_WEEKS ? ' deload' : '') }, i + 1 === CYCLE_WEEKS ? `${i + 1}. ↓` : `${i + 1}.`))),
+      h('p', { class: 'small muted' }, `${wk.cycleWeek}. hét a ${CYCLE_WEEKS}-ből; a ${CYCLE_WEEKS}. (↓) könnyített hét, utána újramérés.`),
+      h('p', { class: 'small muted' }, 'A ciklusok fókusza váltakozik: alapozás → erő → robbanékonyság, majd újra elölről.')),
     wk.deload ? note('Könnyített hét: kevesebb kör, a kezdő ismétlésszámokkal. A hét végén mérd fel újra magad.', 'warn') : null,
     card(h('h2', null, 'Forgó rend'), weekStrip(prog), h('p', { class: 'small muted' }, '3 erőnap, 2 gyorsasági nap és 2 mobilitásnap. Minden edzés napi mobilitással kezdődik. Az ismétlésszám hétről hétre nő, a gyakorlat pedig nehezebbre vált, ha kétszer egymás után könnyűnek értékeled.')),
     sessions,

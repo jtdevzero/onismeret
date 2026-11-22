@@ -68,10 +68,12 @@ export function figureAnim(spec, opts = {}) {
   const still = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (frames.length > 1 && !still && typeof requestAnimationFrame === 'function') {
     const seg = 1400, hold = 500, n = frames.length, cycle = (n - 1) * 2 * (seg + hold);
-    let t0 = null;
+    let t0 = null, seen = false, waits = 0;
     const ease = x => (x < 0.5 ? 2 * x * x : 1 - (-2 * x + 2) ** 2 / 2);
     const tick = ts => {
-      if (!box.isConnected && t0 != null) return; /* lekerült a lapról: leáll */
+      /* ha még nincs a lapon, legfeljebb kb. 2 mp-ig vár rá; ha már volt rajta és lekerült, leáll */
+      if (!box.isConnected) { if (seen || ++waits > 120) return; requestAnimationFrame(tick); return; }
+      seen = true;
       if (t0 == null) t0 = ts;
       let t = (ts - t0) % cycle;
       /* oda: 0→1→…→n-1, vissza: n-1→…→0 */

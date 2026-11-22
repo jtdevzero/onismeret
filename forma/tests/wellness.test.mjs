@@ -66,3 +66,11 @@ test('panaszmód: térdnél nincs ugrás és mély egylábas guggolás, vállná
   assert.ok(back.blocks.every(b => b.exercise !== 'kb_swing' && b.exercise !== 'hollow'));
   assert.deepEqual(complaintRules([]).caps, {});
 });
+
+test('időszakolás újramérés után is továbblép (a ciklusszámláló megmarad)', () => {
+  const now = Date.now();
+  /* új program (start = most), de már két ciklus eltelt korábban */
+  const s = buildSession('strengthA', { ...st0, start: now - DAY, cycleBase: 1 }, ex, now);
+  assert.equal(s.phase.id, 'strength');
+  assert.equal(buildSession('strengthA', { ...st0, start: now - DAY, cycleBase: 2 }, ex, now).phase.id, 'power');
+});

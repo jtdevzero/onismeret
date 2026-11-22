@@ -11,7 +11,7 @@ import { ROTATION, SESSION_TITLES, buildSession, sessionSteps, sessionMinutes, n
 import { buildDailyIcs } from '../core/calendar.js';
 import { weeklyCardio, weeklyWorkouts } from '../core/cardio.js';
 import { monthGrid, monthSummary, MONTHS } from '../core/history.js';
-import { miniDue } from '../core/achievements.js';
+import { miniDue, currentFitnessAge } from '../core/achievements.js';
 import { itemsAll } from './store.js';
 import { cardioItems, CARDIO_TYPES } from './views-cardio.js';
 import { GOAL_METRICS } from './views-progress.js';
@@ -150,7 +150,8 @@ export async function homeView() {
   if (rv) kids.push(rv);
   if (prog && miniDue(allItems, prog)) kids.push(card(h('h2', null, 'Félidős mini-teszt'), h('p', null, 'A ciklus közepén vagy: egy 5 perces mini-teszttel (fekvőtámasz, plank, egylábas állás) láthatod, merre haladsz.'), h('div', { class: 'row' }, link('#/mini', 'Mini-teszt', 'btn primary'))));
   if (reassessDue(last.date, prog)) kids.push(note('Eltelt 6 hét az utolsó felmérés óta: ideje újramérni, hogy lásd a fejlődésed, és a program is igazodjon.', 'warn'), h('p', null, link('#/assess', 'Újramérés', 'btn')));
-  kids.push(h('p', { class: 'center small' }, link('#/progress', `Fittségi kor: ${ev.fitnessAge ?? '–'} év · részletek a Fejlődés oldalon`)));
+  const fNow = currentFitnessAge(allItems, profile(), D.norms);
+  kids.push(h('p', { class: 'center small' }, link('#/progress', `Fittségi kor: ${(fNow ? fNow.age : ev.fitnessAge) ?? '–'} év · részletek a Fejlődés oldalon`)));
   return h('div', { class: 'page' }, kids);
 }
 

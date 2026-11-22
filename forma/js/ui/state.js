@@ -30,8 +30,11 @@ export async function programFromAssessment(item) {
   const old = await getProgram();
   const levels = {};
   for (const k of LADDERS) levels[k] = old && old.levels ? Math.max(old.levels[k] ?? 0, init[k] ?? 0) : init[k] ?? 0;
+  /* az eltelt ciklusok száma megmarad (különben minden újramérés után újra „Alapozás” jönne), és a célprogram is */
+  const DAY = 86400000;
+  const cycleBase = old ? (old.cycleBase || 0) + (old.start && Date.now() - old.start >= 28 * DAY ? Math.max(1, Math.round((Date.now() - old.start) / (42 * DAY))) : 0) : 0;
   const prog = {
-    start: Date.now(), levels, targets: mobilityTargets(ev, D.tests).map(t => t.target), lowImpact: lowImpact(), equipment: (S.settings && S.settings.equipment) || [], complaints: (S.settings && S.settings.complaints) || [],
+    start: Date.now(), cycleBase, goalFocus: old ? old.goalFocus || null : null, lastDone: old ? old.lastDone : undefined, levels, targets: mobilityTargets(ev, D.tests).map(t => t.target), lowImpact: lowImpact(), equipment: (S.settings && S.settings.equipment) || [], complaints: (S.settings && S.settings.complaints) || [],
     done: old ? old.done || 0 : 0, ratings: {}, levelLog: old ? old.levelLog || [] : [], fromAssessment: item.id,
   };
   await setProgram(prog);

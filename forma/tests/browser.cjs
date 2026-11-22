@@ -555,6 +555,27 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     await page.evaluate(async () => { (await import('./js/ui/widgets.js')).setTick(15); });
   });
 
+  await step('újramérés: a ciklusszámláló, a célprogram és a szintek megmaradnak', async () => {
+    const r = await page.evaluate(async () => {
+      const s = await import('./js/ui/state.js');
+      const p = await s.getProgram();
+      await s.setProgram({ ...p, start: Date.now() - 50 * 86400000, cycleBase: 0, goalFocus: 'pull', levels: { ...p.levels, push: 4 } });
+      const item = (await s.assessments())[0];
+      const np = await s.programFromAssessment(item);
+      return { cycleBase: np.cycleBase, goal: np.goalFocus, push: np.levels.push };
+    });
+    assert.ok(r.cycleBase >= 1, 'ciklus: ' + r.cycleBase);
+    assert.equal(r.goal, 'pull'); assert.equal(r.push, 4);
+    await go(page, '#/program');
+    assert.match(await text(), /A ciklus fókusza: Erő/);
+  });
+
+  await step('hibás cím: nem dől el az app', async () => {
+    await page.evaluate(() => { location.hash = '#/ex/%E0%A4%A'; });
+    await page.waitForTimeout(300);
+    assert.match(await text(), /Nincs ilyen gyakorlat/);
+  });
+
   await step('akadálymentesség (axe, WCAG 2 A/AA): a fő képernyőkön nincs hiba', async () => {
     const axe = fs.readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
     const found = [];
