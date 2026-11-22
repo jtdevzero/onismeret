@@ -4,6 +4,7 @@ import { page, card, btn, link, note, typeIcon, emptyState } from './widgets.js'
 import { D } from './data.js';
 import { kvGet, kvSet } from './store.js';
 import { tr } from './i18n.js';
+import { moveCustomExercise, selectedCustomBlocks } from '../core/custom-order.js';
 
 const reload = hash => { location.hash = hash; dispatchEvent(new HashChangeEvent('hashchange')); };
 const getFavs = async () => new Set((await kvGet('favs', [])) || []);
@@ -43,8 +44,9 @@ export async function routinesView() {
       h('span', { class: 'routine-min' }, `${r.minutes}′`), h('span', null, h('strong', null, r.name), h('span', { class: 'small' }, r.about)))))),
     h('h2', { class: 'section-title' }, tr('Saját edzéseid')),
     custom.length ? h('ul', { class: 'menu-list' }, custom.map(c => h('li', null, h('a', { href: '#/session/custom-' + c.id },
-      h('span', { class: 'routine-min' }, String(c.blocks.length)), h('span', null, h('strong', null, c.name), h('span', { class: 'small' }, c.blocks.map(b => D.ex[b[0]] ? D.ex[b[0]].name : '').filter(Boolean).join(', '))))))) : emptyState(tr('Még nincs saját edzésed. Jelölj kedvenceket a gyakorlattárban, és állíts össze belőlük egyet.')),
-    h('div', { class: 'row' }, link('#/custom', tr('Új saját edzés'), 'btn primary'), custom.length ? link('#/custom/' + custom[0].id, tr('Szerkesztés'), 'btn small') : null));
+      h('span', { class: 'routine-min' }, String(c.blocks.length)), h('span', null, h('strong', null, c.name), h('span', { class: 'small' }, c.blocks.map(b => D.ex[b[0]] ? D.ex[b[0]].name : '').filter(Boolean).join(', ')))),
+      link('#/custom/' + c.id, tr('Szerkesztés'), 'btn small')))) : emptyState(tr('Még nincs saját edzésed. Jelölj kedvenceket a gyakorlattárban, és állíts össze belőlük egyet.')),
+    h('div', { class: 'row' }, link('#/custom', tr('Új saját edzés'), 'btn primary')));
 }
 
 /* Saját edzés összeállítása vagy szerkesztése. arg: a szerkesztendő edzés azonosítója */
@@ -52,17 +54,27 @@ export async function customView(arg) {
   const custom = await getCustom(), favs = await getFavs();
   const editing = custom.find(c => c.id === arg) || null;
   const chosen = new Map((editing ? editing.blocks : []).map(([id, sets, dose]) => [id, { sets, dose }]));
+  let order = editing ? editing.blocks.map(([id]) => id) : [];
   const name = h('input', { type: 'text', maxLength: 40, value: editing ? editing.name : '', id: 'cname', placeholder: tr('Pl. Reggeli 10 perc') });
   const sorted = [...D.exercises.exercises].sort((a, b) => (favs.has(b.id) - favs.has(a.id)) || a.name.localeCompare(b.name, 'hu'));
   const summary = h('p', { class: 'small muted', 'aria-live': 'polite' });
-  const upd = () => { summary.textContent = chosen.size ? tr('{p0} gyakorlat kiválasztva.', { p0: chosen.size }) : tr('Válassz legalább két gyakorlatot.'); };
+  const orderList = h('ol', { class: 'custom-order-list', 'aria-label': tr('Kiválasztott gyakorlatok sorrendje') });
+  const upd = () => {
+    summary.textContent = chosen.size ? tr('{p0} gyakorlat kiválasztva.', { p0: chosen.size }) : tr('Válassz legalább két gyakorlatot.');
+    clear(orderList).append(...order.filter(id => chosen.has(id)).map((id, i) => h('li', null,
+      h('span', null, D.ex[id]?.name || id),
+      h('div', { class: 'row custom-order-controls' },
+        h('button', { type: 'button', class: 'btn small', disabled: i === 0, 'aria-label': tr('Feljebb: ') + (D.ex[id]?.name || id), onclick: () => { order = moveCustomExercise(order, id, -1); upd(); } }, '↑'),
+        h('button', { type: 'button', class: 'btn small', disabled: i === order.length - 1, 'aria-label': tr('Lejjebb: ') + (D.ex[id]?.name || id), onclick: () => { order = moveCustomExercise(order, id, 1); upd(); } }, '↓')))));
+  };
   const rows = sorted.map(e => {
     const base = e.dose.reps ? { reps: e.dose.reps[0] } : { seconds: e.dose.seconds[0] };
     const cur = chosen.get(e.id) || { sets: 2, dose: base };
     const sets = h('input', { type: 'number', min: 1, max: 6, value: cur.sets, class: 'mini-num', 'aria-label': e.name + tr(': körök'), oninput: () => { if (chosen.has(e.id)) chosen.get(e.id).sets = Number(sets.value) || 1; } });
     const amt = h('input', { type: 'number', min: 1, max: 600, value: cur.dose.reps || cur.dose.seconds, class: 'mini-num', 'aria-label': e.name + (e.dose.reps ? tr(': ismétlés') : tr(': másodperc')), oninput: () => { if (chosen.has(e.id)) chosen.get(e.id).dose = e.dose.reps ? { reps: Number(amt.value) || 1 } : { seconds: Number(amt.value) || 5 }; } });
     const box = h('input', { type: 'checkbox', checked: chosen.has(e.id), onchange: () => {
-      if (box.checked) chosen.set(e.id, { sets: Number(sets.value) || 1, dose: e.dose.reps ? { reps: Number(amt.value) || 1 } : { seconds: Number(amt.value) || 5 } }); else chosen.delete(e.id);
+      if (box.checked) { chosen.set(e.id, { sets: Number(sets.value) || 1, dose: e.dose.reps ? { reps: Number(amt.value) || 1 } : { seconds: Number(amt.value) || 5 } }); if (!order.includes(e.id)) order.push(e.id); }
+      else { chosen.delete(e.id); order = order.filter(id => id !== e.id); }
       upd();
     } });
     return h('li', { class: 'pick' }, h('label', { class: 'check' }, box, h('span', null, (favs.has(e.id) ? '★ ' : '') + e.name)),
@@ -75,12 +87,12 @@ export async function customView(arg) {
         const nm = name.value.trim();
         if (!nm) { toast('Adj nevet az edzésnek.'); return; }
         if (chosen.size < 2) { toast('Válassz legalább két gyakorlatot.'); return; }
-        /* a sorrend a lista sorrendje (kedvencek elöl); edzés közben is lapozható */
-        const blocks = sorted.filter(e => chosen.has(e.id)).map(e => { const c = chosen.get(e.id); return [e.id, Math.max(1, Math.min(6, c.sets)), c.dose]; });
+        const blocks = selectedCustomBlocks(order, chosen);
         const item = { id: editing ? editing.id : uid(), name: nm.slice(0, 40), blocks };
         await kvSet('custom', [...custom.filter(c => c.id !== item.id), item]);
         toast('Elmentettem.'); reload('#/routines');
       }, 'primary'), editing ? btn(tr('Törlés'), async () => { if (!confirm(tr('Törlöd ezt a saját edzést?'))) return; await kvSet('custom', custom.filter(c => c.id !== editing.id)); reload('#/routines'); }, 'danger') : null)),
+    card(h('h2', null, tr('Gyakorlatok sorrendje')), h('p', { class: 'small muted' }, tr('A nyilakkal állítsd be az edzés sorrendjét. A változás a Mentés gombbal lép életbe.')), orderList),
     card(h('h2', null, tr('Gyakorlatok')), h('p', { class: 'small muted' }, tr('Pipáld ki, amit szeretnél, és állítsd be a köröket és az adagot. A kedvenceid (★) elöl vannak.')), h('ul', { class: 'rows' }, rows)),
     note(tr('A saját edzés nem igazodik a szintedhez: válassz olyan változatot, ami most megy.'), 'small'));
 }

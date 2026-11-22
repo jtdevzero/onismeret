@@ -25,6 +25,14 @@ Kizárólag `forma/`, a Phase 2 fejlesztői változatára épülve. A Phase 2 va
 - `styles.css`: kisméretű, egységes előzmény- és státuszsor, fekvő elrendezési korrekció; a FORMA színei és illusztrációi maradnak.
 - Célzott tesztek: `tests/workout-previous.test.mjs`; build és **161/161** helyi unit PASS. A mobil böngészőteszt és az élő mentésmegszakítási UX még nyitott.
 
+## P3-05 – Program Builder Pro első iteráció
+
+- `ui/views-library.js`: minden saját edzés saját **Szerkesztés** linket kapott; az eddig csak az első edzéshez tartozó szerkesztőlinket megszüntettük.
+- A gyakorlatok sorrendje a szerkesztőben fel/le vezérlőkkel állítható. A kiválasztási lista sorrendje (kedvencek előre) nem írja felül a mentett edzéssorrendet; a módosítás csak a felhasználó Mentés műveletére kerül a helyi tárolóba. A gombok minimum 44 CSS-pixelesek, billentyűzettel is használhatók.
+- `core/custom-order.js` tiszta sorrendmozgatás és deduplikált mentési lista; `tests/custom-order.test.mjs` ellenőrzi a sorrendet, határhelyzeteket és a bemenet változatlanságát.
+- `styles.css` és `i18n-en.js`: arculatba illeszkedő, magyar/angol vezérlők. Build **PASS**, unit **163/163 PASS**. Drag-and-drop érintéses kezelés külön iteráció; a jelenlegi nyílgombos felület a hozzáférhető alternatíva.
+- A teljes böngészős szerkesztés/mentés és mobilos UI ellenőrzése továbbra is szükséges a kiadási jóváhagyáshoz.
+
 ## P3-02 – online generatív coach biztonsági architektúra (csak terv)
 
 1. **Alapbeállítás:** offline szabálymotor, nincs AI-kérés, API-kulcs vagy háttérszinkron.

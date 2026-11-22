@@ -632,6 +632,15 @@ details.more-group[open] > summary::after { content: "▴"; }
 .session-progress p { margin: 0; white-space: nowrap; font-size: .72rem; }
 .session-save-state { margin: 0 0 4px; min-height: 1.1em; font-size: .7rem; }
 .workout-previous { margin: 0 0 8px; padding: 7px 10px; background: var(--bg-2); border-radius: 10px; line-height: 1.35; }
+.custom-order-list { padding-left: 1.8rem; margin: 0; }
+.custom-order-list li { padding: 6px 0; border-bottom: 1px solid var(--line); }
+.custom-order-list li:last-child { border-bottom: 0; }
+.custom-order-list li::marker { color: var(--accent); font-weight: 800; }
+.custom-order-list li { display: list-item; }
+.custom-order-list li > span { display: inline-block; max-width: calc(100% - 110px); vertical-align: middle; }
+.custom-order-controls { display: inline-flex; float: right; gap: 5px; margin: 0; }
+.custom-order-controls .btn { min-width: 44px; min-height: 44px; padding: 6px; }
+.custom-order-list li::after { content: ''; display: block; clear: both; }
 .session-safety { padding: 0; margin: 8px 0 12px; border: 0; background: none; color: var(--muted); font-size: .78rem; line-height: 1.35; }
 .workout-focus { padding: 16px; box-shadow: none; }
 .workout-heading { margin-bottom: 6px; }

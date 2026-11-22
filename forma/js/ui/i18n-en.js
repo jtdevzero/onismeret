@@ -1235,6 +1235,11 @@ export default {
  "Ideiglenes mentés: bezáráskor elveszhet.": "Temporary save: it may be lost when the app closes.",
  "Mentési hiba – ez a módosítás még nincs biztonságban.": "Save failed – this change is not yet safely stored.",
  "Előző alkalom: ": "Previous session: ",
+ "Kiválasztott gyakorlatok sorrendje": "Selected exercise order",
+ "Feljebb: ": "Move up: ",
+ "Lejjebb: ": "Move down: ",
+ "Gyakorlatok sorrendje": "Exercise order",
+ "A nyilakkal állítsd be az edzés sorrendjét. A változás a Mentés gombbal lép életbe.": "Use the arrows to set exercise order. Changes take effect when you save.",
  "{p0} edzés, {p1} perc az utolsó {p2} napban.": "{p0} workouts, {p1} minutes over the last {p2} days.",
  "{p0} edzés, {p1} perc az utolsó 7 napban.": "{p0} workouts, {p1} minutes over the last 7 days.",
  "{p0} regenerációs bejegyzés, {p1} fájdalomjelzés. Ez önbevallás.": "{p0} recovery check-ins, {p1} pain reports. These are self-reported."
