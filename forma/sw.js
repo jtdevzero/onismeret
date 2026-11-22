@@ -1,8 +1,9 @@
 /* Forma service worker. GENERÁLT FÁJL (forma/build.py), ne szerkeszd kézzel.
    Az app váza, a kód és a tartalom telepítéskor a gyorsítótárba kerül, így az app offline is működik.
    A pózbecslő (kb. 15 MB) csak a kamera első használatakor töltődik le, utána az is offline megy. */
-const SHELL = 'forma-shell-e11c475726';
+const SHELL = 'forma-shell-988fee19f9';
 const VENDOR = 'forma-vendor-62fc9e8c57';
+const ART = 'forma-art-f7b1555b99';
 const PRECACHE = [
 "./",
 "index.html",
@@ -93,12 +94,17 @@ self.addEventListener('install', e => {
   e.waitUntil(caches.open(SHELL).then(c => c.addAll(PRECACHE)).then(() => self.skipWaiting()));
 });
 self.addEventListener('activate', e => {
-  e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k.startsWith('forma-') && k !== SHELL && k !== VENDOR).map(k => caches.delete(k))))
+  e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k.startsWith('forma-') && k !== SHELL && k !== VENDOR && k !== ART).map(k => caches.delete(k))))
     .then(() => self.clients.claim()));
 });
 self.addEventListener('fetch', e => {
   const req = e.request, url = new URL(req.url);
   if (req.method !== 'GET' || url.origin !== location.origin) return;
+  if (url.pathname.includes('/assets/art/')) {
+    /* fejlécképek: első megnyitáskor töltődnek, utána a gyorsítótárból (offline is) */
+    e.respondWith(caches.open(ART).then(c => c.match(req).then(hit => hit || fetch(req).then(r => { if (r.ok) c.put(req, r.clone()); return r; }))));
+    return;
+  }
   if (url.pathname.includes('/vendor/')) {
     /* pózbecslő: gyorsítótár először, különben hálózat és mentés */
     e.respondWith(caches.open(VENDOR).then(c => c.match(req).then(hit => hit || fetch(req).then(r => { if (r.ok) c.put(req, r.clone()); return r; }))));

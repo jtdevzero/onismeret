@@ -99,3 +99,14 @@ test('gyorsítás: minden modul előre jelezve (a pózbecslőt kivéve, az csak 
   assert.ok((html.match(/rel="modulepreload"/g) || []).length >= 30);
   assert.doesNotMatch(html, /modulepreload" href="js\/ui\/pose\.js"/);
 });
+
+test('fejlécképek: minden CSS-ben hivatkozott kép létezik, 150 kB alatti, és a service worker futás közben gyorsítótárazza', () => {
+  const css = readFileSync(new URL('styles.css', root), 'utf8');
+  const refs = [...new Set([...css.matchAll(/url\((assets\/art\/[a-z0-9]+\.webp)\)/g)].map(m => m[1]))];
+  assert.ok(refs.length >= 8);
+  for (const r of refs) { assert.ok(existsSync(new URL(r, root)), r); assert.ok(readFileSync(new URL(r, root)).length < 150 * 1024, r + ' túl nagy'); }
+  const sw = readFileSync(new URL('sw.js', root), 'utf8');
+  assert.match(sw, /const ART = 'forma-art-[0-9a-f]{10}'/);
+  assert.match(sw, /\/assets\/art\//);
+  for (const f of readdirSync(new URL('assets/art/', root))) assert.ok(refs.includes('assets/art/' + f), 'nem használt kép: ' + f);
+});

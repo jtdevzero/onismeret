@@ -1,6 +1,6 @@
 /* Program, vezetett edzés értékeléssel és szintlépéssel, gyakorlatleírás. */
 import { h, clear, fmtSec, fmtDate, uid, toast } from './dom.js';
-import { page, card, btn, link, note, list, speak, beep, tickMs, videoSearch, celebrate } from './widgets.js';
+import { page, card, btn, link, note, list, speak, beep, tickMs, videoSearch, celebrate, artBanner } from './widgets.js';
 import { D, S, lowImpact } from './data.js';
 import { itemPut, itemGet, itemsAll, kvGet, commit } from './store.js';
 import { getProgram, setProgram, latestAssessment } from './state.js';
@@ -169,6 +169,7 @@ export async function programView() {
       h('div', { class: 'row' }, link('#/check/' + k, k === key ? 'Indítás' : 'Ezt csinálom inkább', 'btn' + (k === key ? ' primary' : ' small'))));
   });
   return page('Program',
+    artBanner(key, `${wk.week}. hét · következik`, SESSION_TITLES[key]),
     h('p', { class: 'muted' }, `${wk.week}. hét (a ${wk.cycle}. ciklus ${wk.cycleWeek}. hete a ${CYCLE_WEEKS}-ből)` + (prog.lowImpact ? ' · kímélő mód' : '')),
     h('section', { class: 'card accent' }, h('h2', null, `A ciklus fókusza: ${phaseOf((prog.cycleBase || 0) + wk.cycle).name}`), h('p', null, phaseOf((prog.cycleBase || 0) + wk.cycle).about),
       h('div', { class: 'timeline', role: 'img', 'aria-label': `A ${CYCLE_WEEKS} hetes ciklus: most a ${wk.cycleWeek}. hét` }, Array.from({ length: CYCLE_WEEKS }, (_, i) => h('span', { class: 'tl-week' + (i + 1 < wk.cycleWeek ? ' past' : i + 1 === wk.cycleWeek ? ' now' : '') + (i + 1 === CYCLE_WEEKS ? ' deload' : '') }, i + 1 === CYCLE_WEEKS ? `${i + 1}. ↓` : `${i + 1}.`))),

@@ -1,7 +1,7 @@
 /* Fejlődés: rekordok, jelvények, célok, testméretek, és a félidős mini-teszt. */
 import { trainingLoadCard, exerciseTrendCard } from './views-analytics.js';
 import { h, clear, fmtDate, uid, toast } from './dom.js';
-import { page, card, btn, link, fmtNum, emptyState } from './widgets.js';
+import { page, card, btn, link, fmtNum, emptyState, artBanner } from './widgets.js';
 import { D, profile } from './data.js';
 import { itemPut, itemsAll, itemDelete } from './store.js';
 import { timerWidget } from './views-assess.js';
@@ -50,6 +50,7 @@ export async function progressView(arg, onCleanup) {
   const faPoints = history.filter(a => sameScoring(a, history[0])).map(a => ({ date: a.date, age: evaluateItem(a).fitnessAge })).filter(x => x.age != null);
   const fc = forecastFitnessAge(faPoints);
   return page('Fejlődés',
+    artBanner('progress', 'A saját történeted', 'Lépésről lépésre feljebb'),
     progressCard(items),
     trainingLoadCard(items),
     exerciseTrendCard(items),

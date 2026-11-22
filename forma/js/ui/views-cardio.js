@@ -1,6 +1,6 @@
 /* Állóképesség (kardió) napló pulzuszónákkal, és a napi „hogy vagy?” ellenőrzés edzés előtt. */
 import { h, clear, fmtDate, uid, toast } from './dom.js';
-import { page, card, btn, link, note, choice, list } from './widgets.js';
+import { page, card, btn, link, note, choice, list, artBanner } from './widgets.js';
 import { profile } from './data.js';
 import { kvSet, itemPut, itemsAll, itemDelete } from './store.js';
 import { latestAssessment, evaluateItem } from './state.js';
@@ -25,6 +25,7 @@ export async function cardioView() {
     btn('Törlés', async () => { if (!confirm('Törlöd ezt a bejegyzést?')) return; await itemDelete(i.id); location.hash = '#/cardio'; dispatchEvent(new HashChangeEvent('hashchange')); }, 'small')))) : h('p', { class: 'muted' }, 'Még nincs bejegyzés.'));
   draw(items);
   return page('Állóképesség',
+    artBanner('cardio', 'Heti cél: 150 perc', 'Mozogj a zónádban'),
     h('p', { class: 'muted' }, 'A fittségi korodat leginkább ez javítja. Az erő- és mobilitásnapok mellé, külön alkalomként.'),
     card(h('h2', null, 'E heti kardió'),
       h('div', { class: 'goal' }, h('progress', { max: 100, value: week.pct, 'aria-label': `Heti kardiócél: ${week.pct}%` }),

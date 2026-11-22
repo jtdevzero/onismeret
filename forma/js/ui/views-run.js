@@ -1,6 +1,6 @@
 /* Futóprogram nulláról 5 km-ig: vezetett intervallumok hangos bemondással; a végén kardióként naplóz és továbblép. */
 import { h, clear, uid, toast } from './dom.js';
-import { page, card, btn, link, note, speak, beep, tickMs, openMotion } from './widgets.js';
+import { page, card, btn, link, note, speak, beep, tickMs, openMotion, artBanner } from './widgets.js';
 import { stepCount } from '../core/sensors.js';
 import { kvGet, kvSet, itemPut } from './store.js';
 import { runSession, totalSeconds, runSeconds, describe, nextRun, repeatWeek, RUN_WEEKS, RUN_DAYS } from '../core/runplan.js';
@@ -79,6 +79,7 @@ export async function runView(arg, onCleanup) {
   stage.append(card(kicker, clock, next, cad, h('div', { class: 'row' }, go, pause, end), h('label', { class: 'field inline' }, 'Ütem a futáshoz', bpmSel)));
 
   return page('Futóprogram',
+    artBanner('run', '9 hét, heti 3 alkalom', 'Nulláról 5 km-ig'),
     h('p', { class: 'muted' }, `${st.week}. hét / ${RUN_WEEKS}, ${st.day}. alkalom / ${RUN_DAYS} · ${Math.round(total / 60)} perc, ebből ${Math.round(runSeconds(segs) / 60)} perc futás`),
     card(h('h2', null, 'A mai alkalom'), h('p', null, describe(segs)), h('p', { class: 'small muted' }, 'Előtte 5 perc bemelegítő séta, utána 5 perc levezetés. A futás legyen olyan tempójú, hogy közben még tudj beszélni (2. zóna). Két futás között legyen legalább egy pihenőnap.')),
     bar, h('div', { class: 'row tight workout-meta' }, h('span', { class: 'muted small' }, 'Telefon a zsebben is mehet: hangosan szólok a váltásoknál.'), h('label', { class: 'check' }, voice, h('span', null, 'Hangos bemondás'))),

@@ -1,6 +1,6 @@
 /* Kezdőképernyő (első indítás), a mai nap, napló és beállítások. */
 import { h, clear, fmtDate, toast } from './dom.js';
-import { page, card, btn, link, note, choice, list, sized, heroTime, emptyState } from './widgets.js';
+import { page, card, btn, link, note, choice, list, sized, heroTime, artClass, emptyState } from './widgets.js';
 import { D, S, saveSettings, profile, applyLook } from './data.js';
 import { exportAll, wipeAll, restoreAll } from './store.js';
 import { parseBackup } from '../core/backup.js';
@@ -134,7 +134,7 @@ export async function homeView() {
   const ev = last ? evaluateItem(last) : null;
   if (!last) {
     return h('div', { class: 'page home-page' },
-      h('section', { class: 'hero ' + heroTime() }, h('h1', null, 'Forma'), h('p', { class: 'hero-sub' }, 'Kezdjük a felméréssel'),
+      h('section', { class: 'hero ' + heroTime() + ' ' + artClass('home') }, h('h1', null, 'Forma'), h('p', { class: 'hero-sub' }, 'Kezdjük a felméréssel'),
         h('div', { class: 'hero-next' }, h('h2', null, 'Felmérés, kb. 25 perc'),
           h('p', null, `${visibleTests()} rövid teszt, egyenként vezetve. Kell hozzá egy szék, egy fal, egy mérőszalag vagy vonalzó, és ha van, egy kb. 30 cm magas lépcsőfok.`),
           link('#/assess', 'Felmérés indítása', 'btn primary home-start'))),
@@ -146,7 +146,7 @@ export async function homeView() {
     const key = nextKey(prog), session = fitSession(buildSession(key, prog, D.exercises.exercises), D.ex, S.settings.duration || 0), steps = sessionSteps(session, D.ex);
     const doneToday = ws.some(w => new Date(w.date).toDateString() === new Date().toDateString());
     const wk = weekInfo(prog.start);
-    kids.push(h('section', { class: 'hero ' + heroTime() }, h('h1', null, doneToday ? 'Mai edzés kész' : 'Mai edzés'),
+    kids.push(h('section', { class: 'hero ' + heroTime() + ' ' + artClass(key) }, h('h1', null, doneToday ? 'Mai edzés kész' : 'Mai edzés'),
       h('p', { class: 'hero-sub' }, `${wk.week}. hét` + (wk.deload ? ' · könnyített hét' : '') + (streak(ws.map(w => w.date)) ? ` · ${streak(ws.map(w => w.date))} napos sorozat` : '')),
       h('div', { class: 'hero-next' }, h('h2', null, (doneToday ? 'Holnap: ' : '') + session.title),
         h('p', null, `Kb. ${sessionMinutes(steps)} perc · ${session.blocks.length} gyakorlat`),
@@ -163,7 +163,7 @@ export async function homeView() {
       h('a', { class: 'tile mini', href: rec ? '#/check/' + key : '#/pulse', 'aria-label': rec ? `Regeneráció: ${rec.score} a 100-ból` : 'Regeneráció: mérd a reggeli pulzusod' },
         h('span', { class: 'muted small' }, 'Regeneráció'), h('strong', null, rec ? `${rec.score}` : '–'), rec ? h('span', { class: 'badge ' + (rec.level === 'go' ? 'good' : rec.level === 'light' ? 'mid' : 'warn') }, { go: 'mehet', light: 'könnyíts', rest: 'pihenj' }[rec.level]) : h('span', { class: 'small muted' }, 'reggeli pulzus →'))));
   } else {
-    kids.push(h('section', { class: 'hero ' + heroTime() }, h('h1', null, 'Forma'), h('div', { class: 'hero-next' }, h('h2', null, 'Megvan a felmérés'),
+    kids.push(h('section', { class: 'hero ' + heroTime() + ' ' + artClass('home') }, h('h1', null, 'Forma'), h('div', { class: 'hero-next' }, h('h2', null, 'Megvan a felmérés'),
       h('p', null, 'Nézd meg az eredményt, és készítsd el belőle a programodat.'), link('#/result', 'Eredmény és program', 'btn primary home-start'))));
   }
   const allItems = await itemsAll();
