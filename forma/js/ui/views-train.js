@@ -8,6 +8,7 @@ import { ROTATION, SESSION_TITLES, LADDERS, RATINGS, effLadder, baseLadder, buil
 import { figureStrip, figureAnim } from './figure.js';
 import { weekStrip } from './views-main.js';
 import { liveCounter } from './live.js';
+import { suggestProgression, applyLoadChange } from '../core/progression.js';
 import { plannedLog, cleanLog, cleanRpe, mergeDone, WORKOUT_SCHEMA } from '../core/workout-schema.js';
 import { blockProgress } from './views-extra.js';
 
@@ -91,6 +92,35 @@ function ringClock(clock) {
 const doseText = b => (b.seconds ? fmtSec(b.seconds) : b.reps + ' ism.') + (D.ex[b.exercise] && D.ex[b.exercise].perSide ? ' oldalanként' : '') + (b.sets > 1 ? ' × ' + b.sets : '');
 const lvlDots = (level, max) => h('span', { class: 'lvl', role: 'img', 'aria-label': `${level + 1}. szint a ${max}-ből` }, Array.from({ length: max }, (_, i) => h('i', { class: i <= level ? 'on' : '' })));
 
+/* Súlyok súlyzós gyakorlatokhoz: elfogadott súly, javaslat indoklással, jóváhagyás vagy kézi beállítás. */
+async function loadsCard(prog, lad) {
+  if (!(prog.equipment || []).includes('dumbbell')) return null;
+  const exs = LADDERS.filter(l => effLadder(baseLadder(l), prog.equipment) === l).map(l => exerciseFor(lad, l, prog.levels[l], prog.lowImpact)).filter(e => e && e.equipment === 'dumbbell');
+  if (!exs.length) return null;
+  const ws = await itemsAll('workout');
+  const apply = async (change, source) => {
+    const fresh = await getProgram();
+    const next = applyLoadChange(fresh, change, { source });
+    if (next === fresh) { toast('Ez már be van állítva.'); return; }
+    try { await setProgram(next); } catch { toast('Nem sikerült menteni; próbáld újra.'); return; }
+    toast(`${D.ex[change.ex].name}: ${change.to} kg`);
+    dispatchEvent(new HashChangeEvent('hashchange'));
+  };
+  const LABEL = { increase: 'Javaslat: emelés', decrease: 'Javaslat: könnyítés', maintain: 'Maradj ennél', insufficient_data: 'Kevés adat', needs_review: 'Óvatosan' };
+  return card(h('h2', null, 'Súlyok'), h('p', { class: 'small muted' }, 'Egy súlyzó súlya kilogrammban. A javaslat a sorozatnaplódból jön (teljesített sorozatok és RIR); csak akkor változik, ha elfogadod.'),
+    h('ul', { class: 'rows loads' }, exs.map(ex => {
+      const cur = prog.loads && Number.isFinite(prog.loads[ex.id]) ? prog.loads[ex.id] : null;
+      const sug = suggestProgression({ exercise: ex, workouts: ws, currentKg: cur, complaints: prog.complaints || [] });
+      const input = h('input', { type: 'number', inputMode: 'decimal', min: 0, max: 300, step: 0.5, value: cur != null ? String(cur) : '', 'aria-label': ex.name + ': súly kilogrammban' });
+      return h('li', { class: 'load-row' }, h('div', null, h('strong', null, ex.name), h('span', { class: 'muted small' }, cur != null ? ` · most ${cur} kg` : ' · még nincs beállítva'),
+        h('p', { class: 'small' }, h('span', { class: 'badge' + (sug.action === 'increase' ? ' good' : sug.action === 'needs_review' || sug.action === 'decrease' ? ' warn' : '') }, LABEL[sug.action]), ' ', sug.reasons[0] || ''),
+        h('div', { class: 'row' },
+          sug.proposedChange ? btn(`Elfogadom: ${sug.proposedChange.to} kg`, () => apply(sug.proposedChange, 'suggestion'), 'small primary') : null,
+          h('label', { class: 'field inline small' }, 'Kézzel', input),
+          btn('Mentés', () => { const v = input.value.trim() === '' ? NaN : Number(input.value); if (!(Number.isFinite(v) && v >= 0 && v <= 300)) { toast('Adj meg 0 és 300 közötti súlyt.'); return; } apply({ ex: ex.id, from: cur, to: Math.round(v * 2) / 2 }, 'manual'); }, 'small'))));
+    })));
+}
+
 export async function programView() {
   const prog = await getProgram();
   if (!prog) {
@@ -118,6 +148,7 @@ export async function programView() {
       h('label', { class: 'field' }, 'Fókusz', (() => { const s = h('select', { id: 'goalfocus', onchange: async () => { const p = await getProgram(); await setProgram({ ...p, goalFocus: s.value || null }); toast(s.value ? 'Célprogram beállítva.' : 'Célprogram kikapcsolva.'); } },
         h('option', { value: '' }, 'Nincs külön cél'), GOALS.map(([k, t]) => h('option', { value: k }, t))); s.value = prog.goalFocus || ''; return s; })())),
     card(h('h2', null, 'Állóképesség'), h('p', null, 'A forgó rend mellé heti 150 perc kardió: tempós séta, kocogás vagy kerékpár, a pulzustartományodban.'), h('div', { class: 'row' }, link('#/cardio', 'Kardió napló és pulzuszónák', 'btn'))),
+    await loadsCard(prog, lad),
     card(h('h2', null, 'Szintjeid'), h('ul', { class: 'rows' }, LADDERS.filter(l => effLadder(baseLadder(l), prog.equipment) === l).map(l => {
       const ex = exerciseFor(lad, l, prog.levels[l], prog.lowImpact);
       return ex ? h('li', null, h('span', { class: 'log-item' }, h('strong', null, D.exercises.ladders[l]), link('#/ex/' + ex.id, ex.name)), lvlDots(prog.levels[l] ?? 0, lad[l].length)) : null;

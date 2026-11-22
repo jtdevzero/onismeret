@@ -229,6 +229,38 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     assert.ok(w.ratings && Array.isArray(w.changes) && w.key === 'strengthA');
   });
 
+  await step('súlyjavaslat: csak jóváhagyás után változik a program, naplózva', async () => {
+    const saved = await page.evaluate(async () => {
+      const st = await import('./js/ui/state.js'), store = await import('./js/ui/store.js');
+      const prog = await st.getProgram();
+      await st.setProgram({ ...prog, equipment: ['dumbbell'] });
+      const sets = rir => [1, 2, 3].map(i => ({ reps: 10, weightKg: 8, done: true, ...(i === 3 ? { rir } : {}) }));
+      const ids = [];
+      for (const [i, d] of [[0, 4], [1, 2]]) {
+        const id = 'seed-db-' + i; ids.push(id);
+        await store.itemPut({ id, kind: 'workout', date: Date.now() - d * 86400000, key: 'strengthA', minutes: 20, steps: 10, partial: false, ratings: {}, changes: [], done: [], schemaVersion: 2,
+          log: (await import('./js/ui/data.js')).D.exercises.exercises.filter(e => e.equipment === 'dumbbell').map(e => ({ ex: e.id, sets: sets(3) })) });
+      }
+      return { prog, ids };
+    });
+    await go(page, '#/program');
+    assert.match(await text(), /Súlyok/);
+    const accept = page.getByRole('button', { name: /^Elfogadom: 9 kg$/ }).first();
+    const before = await page.evaluate(async () => (await (await import('./js/ui/state.js')).getProgram()).loads || null);
+    assert.equal(before, null, 'a javaslat megjelenítése nem változtat a programon');
+    await accept.click();
+    await until(page, async () => { const p = await (await import('./js/ui/state.js')).getProgram(); return p.loads && Object.values(p.loads).includes(9); });
+    const after = await page.evaluate(async () => (await (await import('./js/ui/state.js')).getProgram()));
+    assert.equal(Object.keys(after.loads).length, 1);
+    assert.equal(after.loadLog.at(-1).source, 'suggestion');
+    assert.equal(after.loadLog.at(-1).from, 8);
+    /* visszaállítás, hogy a további lépések az eredeti programmal fussanak */
+    await page.evaluate(async ({ prog, ids }) => {
+      const st = await import('./js/ui/state.js'), store = await import('./js/ui/store.js');
+      await st.setProgram(prog); for (const id of ids) await store.itemDelete(id);
+    }, saved);
+  });
+
   await step('edzés vége íráshibánál: nincs félkész mentés, az újrapróba egyszer ír', async () => {
     const before = await page.evaluate(async () => ({ n: (await (await import('./js/ui/store.js')).itemsAll('workout')).length, done: (await (await import('./js/ui/state.js')).getProgram()).done }));
     await go(page, '#/session/mobility');
