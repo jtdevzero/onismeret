@@ -41,6 +41,11 @@ Telefonra telepíthető webapp. Felméri, hol tartasz a korosztályodhoz képest
 
 ## Állapot: mit tud és mit nem
 
+- **Újramérés:** a frissen mért teljesítmény lefelé is módosíthatja a gyakorlat szintjét. Kihagyott tesztnél a korábbi szint megmarad; guggolási vagy vállfájdalom jelzésénél a kapcsolódó eszközös változatok is a legkönnyebb szintre kerülnek.
+- **Megőrzött kiértékelés:** az új felmérésekhez az eredményt és a pontozás, a normák, illetve a tesztek verzióját is elmentjük. Frissítés és export/import után az eredeti pontszám marad látható. Verzió nélküli régi adatnál az app jelzi az aktuális normákkal végzett újraszámolást; eltérő verziókból nem számít pontszámváltozást vagy előrejelzést. Új program mindig az aktuális normákkal készül. Norma- vagy tesztmódosításkor a megfelelő JSON `version` mezőjét, számításmód-változáskor a `SCORING_VERSION` értékét is növelni kell.
+- **Biztonságos visszatöltés:** a meglévő adatok cseréje egyetlen IndexedDB-tranzakcióban történik. Hiba vagy megszakítás esetén az eredeti adatok megmaradnak. A memória módot és a sikertelen írást állandó figyelmeztetés jelzi; memória módban az import nem tölti újra az oldalt.
+- **Becslések:** a funkcionális pontszám nem népességi percentilis; a saját alapvonalú tesztek önmagadhoz viszonyítanak. A fittségi kor a kérdőíves VO₂max-becslés átszámítása, nem a teljes mozgásfelmérés vagy a biológiai kor mérése. A kamerás méréshez nem állítunk még nem igazolt centiméteres pontosságot.
+
 - A normák **egy része becsült** (`"quality": "B"` a `data/norms.json`-ban): a fekvőtámasz és az ülve előrenyúlás CSEP-norma, a többi több forrásból becsült érték. Az app ezt tesztenként jelzi.
 - A normákat, a teszteket és a gyakorlatokat **szakember még nem lektorálta** (`"reviewed": false`).
 - 53 gyakorlatból 41-hez van pálcikafigurás ábra (egy részük a Kanyarból). Ábra nélkül maradt, ami bútort igényel (asztal, szék), és néhány oldalt fekvő vagy szemből értelmezhető gyakorlat.

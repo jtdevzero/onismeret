@@ -43,6 +43,10 @@ export function currentFitnessAge(items, profile, norms) {
   if (!a) return null;
   const t = bodyTrend(items), vitals = { ...a.vitals };
   if (t.waist && t.waist.date > a.date) vitals.waist = t.waist.value;
+  if (a.scoring && vitals.waist === a.vitals.waist && profile.age === a.profile?.age && profile.sex === a.profile?.sex) {
+    const e = a.scoring.evaluation;
+    return e.vo2 == null ? null : { age: e.fitnessAge, vo2: e.vo2, waistUpdated: false };
+  }
   const vo2 = estimateVo2(profile, vitals, norms);
   return vo2 == null ? null : { age: fitnessAge(vo2, profile.sex, norms), vo2, waistUpdated: vitals.waist !== a.vitals.waist };
 }

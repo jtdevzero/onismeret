@@ -1,6 +1,8 @@
 /* Mentésfájl ellenőrzése visszatöltés előtt. Tiszta függvény: csak az ismert mezőket veszi át, típusellenőrzéssel,
    így egy hibás vagy idegen fájl nem tud ismeretlen adatot vagy rossz típust bejuttatni az appba. */
 
+import { cleanScoring } from './assessment.js';
+
 const MAX_BYTES = 5 * 1024 * 1024, MAX_ITEMS = 5000;
 const num = (v, lo, hi) => (typeof v === 'number' && Number.isFinite(v) && v >= lo && v <= hi ? v : undefined);
 const str = (v, max = 80) => (typeof v === 'string' && v.length > 0 && v.length <= max ? v : undefined);
@@ -71,7 +73,9 @@ export function parseBackup(text, ctx) {
     if (it.kind === 'assessment') {
       const pr = profile(it.profile);
       if (!pr) continue;
-      items.push({ id, kind: 'assessment', date, profile: pr, results: numbers(it.results, ctx.testIds, -100, 1000), vitals: numbers(it.vitals, ['rhr', 'waist', 'frequency', 'intensity', 'duration'], 0, 300) });
+      const scoring = it.scoring == null ? undefined : cleanScoring(it.scoring, ctx.testIds, ctx.areaIds || []);
+      if (scoring === null) return { ok: false, error: 'A mentés pontozási előzménye sérült vagy újabb alkalmazásverziót igényel. A jelenlegi adatok megmaradnak.' };
+      items.push(clean({ id, kind: 'assessment', date, profile: pr, results: numbers(it.results, ctx.testIds, -100, 2000), vitals: numbers(it.vitals, ['rhr', 'waist', 'frequency', 'intensity', 'duration'], 0, 300), scoring }));
     } else if (it.kind === 'pulse') {
       const bpm = num(it.bpm, 30, 220);
       if (bpm === undefined) continue;

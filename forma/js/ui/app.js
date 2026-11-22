@@ -3,6 +3,7 @@ import { h, clear } from './dom.js';
 import { loadData, applyLook } from './data.js';
 import { initHaptics } from './widgets.js';
 import { settingsReady } from './state.js';
+import { watchStorage, exportAll } from './store.js';
 import { startView, homeView, logView, settingsView, moreView } from './views-main.js';
 import { assessView, testView, resultView } from './views-assess.js';
 import { programView, sessionView, exerciseView } from './views-train.js';
@@ -16,6 +17,21 @@ import { pulseView, challengeView, blocksView, reportView } from './views-extra.
 import { diagView, qaView, initErrorLog } from './views-diag.js';
 
 const main = document.getElementById('main'), nav = document.getElementById('nav');
+const storageNotice = document.getElementById('storage-notice');
+watchStorage(({ mode, writeError }) => {
+  clear(storageNotice);
+  storageNotice.hidden = mode !== 'memory' && !writeError;
+  if (storageNotice.hidden) return;
+  storageNotice.append(h('strong', null, mode === 'memory' ? 'Az adatok most csak ideiglenesen tárolódnak.' : 'Egy mentés nem sikerült.'),
+    h('p', null, mode === 'memory' ? 'A böngésző tartós tárolója nem érhető el. Az oldal bezárásakor vagy újratöltésekor az adataid elvesznek. Ments fájlba, mielőtt kilépsz.' : 'A legutóbbi változtatások egy része nem került a tartós tárolóba. A mentett előzményekből készíts fájlos másolatot, és ellenőrizd az utolsó bejegyzést.'),
+    h('button', { type: 'button', class: 'btn small', onclick: async () => {
+      const url = URL.createObjectURL(new Blob([JSON.stringify(await exportAll(), null, 1)], { type: 'application/json' }));
+      const a = h('a', { href: url, download: 'forma-mentes.json' });
+      document.body.append(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 2000);
+    } }, 'Mentés fájlba'),
+    h('a', { href: '#/settings' }, 'Beállítások'));
+});
 const ROUTES = {
   '': homeView, start: startView, assess: assessView, test: testView, result: resultView,
   program: programView, session: sessionView, ex: exerciseView, log: logView, settings: settingsView, cardio: cardioView, check: checkView, progress: progressView, mini: miniView, run: runView, more: moreView, review: reviewView, cooldown: cooldownView, library: libraryView, routines: routinesView, custom: customView, posture: postureView, pulse: pulseView, challenge: challengeView, blocks: blocksView, report: reportView, diag: diagView, qa: qaView,

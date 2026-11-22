@@ -150,6 +150,7 @@ export async function reportView() {
     h('div', { class: 'row no-print' }, btn('Nyomtatás vagy mentés PDF-be', () => print(), 'primary'), link('#/', 'Vissza', 'btn small')),
     ev ? h('section', null, h('h2', null, `Legutóbbi felmérés (${fmtDate(last.date)})`),
       h('p', null, `Fittségi kor: ${ev.fitnessAge ?? '–'} év · összesített pontszám: ${ev.overall ?? '–'} / 100`),
+      h('p', { class: 'small muted' }, last.scoring ? `A felméréskor mentett kiértékelés; pontozás ${last.scoring.version}, normák ${last.scoring.normsVersion}, tesztek ${last.scoring.testsVersion}.` : 'Régi felmérés: az eredeti pontozási verzió nem ismert; a jelenlegi normákkal újraszámolva.'),
       h('table', { class: 'tests-table' }, h('thead', null, h('tr', null, h('th', null, 'Terület'), h('th', null, 'Pont'))),
         h('tbody', null, D.tests.areas.filter(a => ev.areas[a.id]).map(a => h('tr', null, h('td', null, a.name), h('td', null, String(ev.areas[a.id].score)))))),
       h('table', { class: 'tests-table' }, h('thead', null, h('tr', null, h('th', null, 'Teszt'), h('th', null, 'Eredmény'))),

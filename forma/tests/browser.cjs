@@ -224,7 +224,7 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     await go(page, '#/settings');
     await page.setInputFiles('input[type=file]', { name: 'x.json', mimeType: 'application/json', buffer: Buffer.from('{"app":"mas"}') });
     await page.waitForSelector('.toast');
-    assert.match(await page.locator('.toast').innerText(), /nem a Forma mentésfájlja/);
+    assert.match(await page.locator('.toast').last().innerText(), /nem a Forma mentésfájlja/);
   });
 
   await step('kamerás mérés (hamis kamerával): 30 mp felállás megszámolva, az eredmény a mezőbe kerül', async () => {
@@ -555,19 +555,89 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     await page.evaluate(async () => { (await import('./js/ui/widgets.js')).setTick(15); });
   });
 
-  await step('újramérés: a ciklusszámláló, a célprogram és a szintek megmaradnak', async () => {
+  await step('újramérés: a ciklusszámláló és cél megmarad, a gyengébb mérés csökkenti a szintet', async () => {
     const r = await page.evaluate(async () => {
       const s = await import('./js/ui/state.js');
       const p = await s.getProgram();
       await s.setProgram({ ...p, start: Date.now() - 50 * 86400000, cycleBase: 0, goalFocus: 'pull', levels: { ...p.levels, push: 4 } });
       const item = (await s.assessments())[0];
-      const np = await s.programFromAssessment(item);
+      const np = await s.programFromAssessment({ ...item, results: { ...item.results, pushup: 2 } });
       return { cycleBase: np.cycleBase, goal: np.goalFocus, push: np.levels.push };
     });
     assert.ok(r.cycleBase >= 1, 'ciklus: ' + r.cycleBase);
-    assert.equal(r.goal, 'pull'); assert.equal(r.push, 4);
+    assert.equal(r.goal, 'pull'); assert.equal(r.push, 0);
     await go(page, '#/program');
     assert.match(await text(), /A ciklus fókusza: Erő/);
+  });
+
+  await step('tárolás: megszakított import visszagördül, a sikeres import megmarad újratöltés után', async () => {
+    const context = await browser.newContext(), p = await context.newPage();
+    try {
+      await p.goto(base); await p.waitForFunction(() => document.documentElement.dataset.ready === '1');
+      const r = await p.evaluate(async () => {
+        const store = await import('./js/ui/store.js'), state = await import('./js/ui/state.js'), data = await import('./js/ui/data.js');
+        const settings = { accepted: true, profile: { age: 34, sex: 'male' } };
+        data.S.settings = settings; await store.kvSet('settings', settings);
+        const a = await state.saveAssessment({ results: { pushup: 20, plank: 70 }, vitals: {} });
+        await store.kvSet('old-key', 'megmarad');
+        const before = await store.exportAll(); delete before.exported;
+        const put = IDBObjectStore.prototype.put;
+        let triggered = false, rejected = false;
+        IDBObjectStore.prototype.put = function (...args) {
+          const req = put.apply(this, args);
+          if (this.name === 'items' && !triggered) {
+            triggered = true; req.addEventListener('success', () => req.transaction.abort(), { once: true });
+          }
+          return req;
+        };
+        try { await store.restoreAll({ settings: { ...settings, lowImpact: true }, items: [{ ...a, id: 'replacement' }] }); }
+        catch { rejected = true; }
+        finally { IDBObjectStore.prototype.put = put; }
+        const after = await store.exportAll(); delete after.exported;
+        return { triggered, rejected, before, after, old: await store.kvGet('old-key'), status: store.storageStatus() };
+      });
+      assert.equal(r.triggered, true); assert.equal(r.rejected, true);
+      assert.deepEqual(r.after, r.before); assert.equal(r.old, 'megmarad'); assert.equal(r.status.writeError, true);
+      assert.match(await p.locator('#storage-notice').innerText(), /Egy mentés nem sikerült/);
+      const saved = await p.evaluate(async () => {
+        const s = await import('./js/ui/store.js'), a = (await s.itemsAll('assessment'))[0];
+        await s.restoreAll({ settings: await s.kvGet('settings'), items: [{ ...a, id: 'restored' }] });
+        return { item: await s.itemGet('restored'), old: await s.kvGet('old-key'), count: (await s.itemsAll()).length };
+      });
+      assert.equal(saved.old, null); assert.equal(saved.count, 1);
+      await p.reload(); await p.waitForFunction(() => document.documentElement.dataset.ready === '1');
+      const roundtrip = await p.evaluate(async () => {
+        const s = await import('./js/ui/store.js'), state = await import('./js/ui/state.js'), { D } = await import('./js/ui/data.js');
+        const a = await s.itemGet('restored');
+        D.norms.tests.pushup.male[1] = [1, 2, 3, 4];
+        return { a, ev: state.evaluateItem(a) };
+      });
+      assert.deepEqual(roundtrip.a, saved.item);
+      assert.deepEqual(roundtrip.ev, saved.item.scoring.evaluation);
+    } finally { await context.close(); }
+  });
+
+  await step('memóriamód: állandó figyelmeztetés, fájlos import újratöltés és adatvesztés nélkül', async () => {
+    const context = await browser.newContext();
+    await context.addInitScript(() => Object.defineProperty(window, 'indexedDB', { get() { throw new Error('Letiltott tárhely'); } }));
+    const p = await context.newPage(); p.on('dialog', d => d.accept());
+    try {
+      await p.goto(base); await p.waitForFunction(() => document.documentElement.dataset.ready === '1');
+      assert.match(await p.locator('#storage-notice').innerText(), /csak ideiglenesen/);
+      assert.equal(await p.locator('#storage-notice').getByRole('button', { name: 'Mentés fájlba' }).isVisible(), true);
+      const backup = { app: 'forma', version: 1, settings: { accepted: true, profile: { age: 34, sex: 'male' } }, items: [{ id: 'memory-a', kind: 'assessment', date: 1000, profile: { age: 34, sex: 'male' }, results: { pushup: 20 }, vitals: {} }] };
+      let navigations = 0; p.on('request', req => { if (req.isNavigationRequest() && req.frame() === p.mainFrame()) navigations++; });
+      await p.locator('input[type="file"]').setInputFiles({ name: 'mentes.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(backup)) });
+      await p.waitForFunction(() => !document.getElementById('nav').hidden);
+      await p.waitForTimeout(500); // a korábbi, 300 ms-os automatikus újratöltés is kiderülne
+      assert.equal(navigations, 0);
+      const a = await p.evaluate(async () => (await import('./js/ui/store.js')).itemGet('memory-a'));
+      assert.equal(a.results.pushup, 20);
+      assert.equal(await p.locator('#storage-notice').isVisible(), true);
+      await p.getByRole('link', { name: 'Beállítások', exact: true }).click();
+      await p.waitForFunction(() => document.documentElement.dataset.view === '#/settings');
+      assert.equal(await p.locator('#storage-notice').isVisible(), true);
+    } finally { await context.close(); }
   });
 
   await step('hibás cím: nem dől el az app', async () => {

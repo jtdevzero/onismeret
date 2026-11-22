@@ -1,4 +1,5 @@
 {
+  "version": "2026-11-22.1",
   "note": "A felmérés tesztjei. kind: 'norm' = kor- és nemszerinti percentilis (norms.json); 'criterion' = funkcionális küszöbök, kortól független; 'baseline' = csak a saját fejlődésed követésére. A leírásokat szakember még nem lektorálta.",
   "reviewed": false,
   "areas": [
@@ -67,7 +68,7 @@
       "how": "Tartsd a telefont kényelmesen a kezedben. Amikor a mező színe vált, koppints rá amilyen gyorsan csak tudsz. Öt próba van; ha túl korán koppintasz, az a próba nem számít. A mért idő a telefon késleltetését is tartalmazza, ezért mindig ugyanazon a telefonon mérd, és csak a saját fejlődésedet nézd.",
       "input": { "type": "number", "unit": "ms", "min": 100, "max": 1500, "step": 1 }, "timer": { "mode": "reaction" } },
     { "id": "vertical_jump", "area": "power", "kind": "baseline", "name": "Felugrás magassága", "impact": true,
-      "how": "Támaszd le a telefont oldalt, kb. 2–3 méterre, hogy tetőtől talpig látsszál. Állj egyenesen, majd karlendítéssel ugorj fel helyből, amilyen magasra csak tudsz, és érkezz puhán. Háromszor ugorj, pár másodperc szünettel; a legjobb ugrás számít. A kamera a levegőben töltött időből számol (kb. ±3–5 cm pontosság). Kamera nélkül: állj a fal mellé, nyújtott karral jelöld meg a legmagasabb pontot, majd ugorva is, és a különbséget írd be.",
+      "how": "Támaszd le a telefont oldalt, kb. 2–3 méterre, hogy tetőtől talpig látsszál. Állj egyenesen, majd karlendítéssel ugorj fel helyből, amilyen magasra csak tudsz, és érkezz puhán. Háromszor ugorj, pár másodperc szünettel; a legjobb ugrás számít. A kamera a levegőben töltött időből becsül; a pontosságot valódi felvételeken még nem validáltuk. Ellenőrizd az eredményt, és szükség esetén javítsd. Kamera nélkül: állj a fal mellé, nyújtott karral jelöld meg a legmagasabb pontot, majd ugorva is, és a különbséget írd be.",
       "safety": "Ha a térded, a bokád vagy a derekad fáj, hagyd ki.",
       "input": { "type": "number", "unit": "cm", "min": 5, "max": 120, "step": 1 } },
     { "id": "sl_stance", "area": "balance", "kind": "norm", "name": "Egylábas állás csukott szemmel",
