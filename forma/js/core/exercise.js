@@ -5,7 +5,7 @@
 
    Eredmény: { ok, exercise, quality, reps, holdSeconds, checks: [{ id, band: 'ok'|'fix', value, unit }],
                sides: { left, right } | null, asymmetry: % | null, perRep: [...] } */
-import { LM, mid, clamp, mean, std, median, percentile, round, angleAt, tilt, movingAverage } from './geometry.js';
+import { LM, clamp, mean, std, median, percentile, round, angleAt, tilt, movingAverage } from './geometry.js';
 import { prepare, bodyOf, visibilityOf } from './series.js';
 
 const DEG = 180 / Math.PI;

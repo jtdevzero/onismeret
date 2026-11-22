@@ -1,13 +1,13 @@
 /* Kezdőképernyő (első indítás), a mai nap, napló és beállítások. */
 import { h, clear, fmtDate, toast } from './dom.js';
-import { page, card, btn, link, note, choice, list, levelBadge, sized, heroTime, emptyState } from './widgets.js';
+import { page, card, btn, link, note, choice, list, sized, heroTime, emptyState } from './widgets.js';
 import { D, S, saveSettings, profile, applyLook } from './data.js';
 import { exportAll, wipeAll, restoreAll } from './store.js';
 import { parseBackup } from '../core/backup.js';
 import { RATINGS, LADDERS, EQUIPMENT, DURATIONS, COMPLAINTS, fitSession } from '../core/program.js';
 import { getProgram, setProgram, latestAssessment, workouts, assessments, evaluateItem } from './state.js';
 import { ROTATION, SESSION_TITLES, buildSession, sessionSteps, sessionMinutes, nextKey, weekInfo, reassessDue, streak } from '../core/program.js';
-import { LEVEL_NAMES } from '../core/score.js';
+
 import { buildDailyIcs } from '../core/calendar.js';
 import { weeklyCardio, weeklyWorkouts } from '../core/cardio.js';
 import { monthGrid, monthSummary, MONTHS } from '../core/history.js';
@@ -15,7 +15,7 @@ import { miniDue } from '../core/achievements.js';
 import { itemsAll } from './store.js';
 import { cardioItems, CARDIO_TYPES } from './views-cardio.js';
 import { GOAL_METRICS } from './views-progress.js';
-import { reviewCard, nutritionCard } from './views-wellness.js';
+import { reviewCard } from './views-wellness.js';
 import { recoveryTileData } from './views-extra.js';
 import { breaksIcs } from '../core/extras.js';
 
@@ -153,7 +153,6 @@ export async function homeView() {
   kids.push(h('p', { class: 'center small' }, link('#/progress', `Fittségi kor: ${ev.fitnessAge ?? '–'} év · részletek a Fejlődés oldalon`)));
   return h('div', { class: 'page' }, kids);
 }
-const levelKey = s => (s >= D.norms.levels.top ? 'top' : s >= D.norms.levels.low ? 'mid' : 'low');
 
 /* A hónap számai egy megosztható képen (vászonra rajzolva, a telefonon készül). */
 async function monthImage(y, mo, s) {

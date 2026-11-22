@@ -1,6 +1,6 @@
 /* Felmérés: tesztlista, vezetett teszt időzítővel, alapadatok, eredmény. */
 import { h, clear, fmtDate, toast } from './dom.js';
-import { page, card, btn, link, note, choice, speak, beep, tickMs, levelBadge, fmtNum, sized, openMotion, celebrate, countUp } from './widgets.js';
+import { page, card, btn, link, note, choice, speak, beep, tickMs, levelBadge, fmtNum, sized, openMotion, countUp } from './widgets.js';
 import { D, profile, lowImpact } from './data.js';
 import { getDraft, setDraft, saveAssessment, assessments, evaluateItem, programFromAssessment, getProgram } from './state.js';
 import { LEVEL_NAMES } from '../core/score.js';
