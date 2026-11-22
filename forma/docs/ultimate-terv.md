@@ -130,6 +130,7 @@ Hatókör: kizárólag `forma/`. Engedélyezett: U0 és U1, a `claude/elegant-ha
 - `tests/browser.cjs`: új izolált böngészős eset a félbehagyott edzés `workoutDraft` mentésére, az újratöltés utáni felhasználó által jóváhagyott folytatásra és az egyszeri végleges naplómentésre.
 - A teszt része a stabil edzésazonosító, a javított ismétlésszám és az atomi drafttörlés ellenőrzése; csak tényleges GitHub Actions futás után minősíthető sikeresnek.
 - Helyben: build, 151/151 unit teszt és `node --check forma/tests/browser.cjs` sikeres. A valódi böngészős futás még nem igazolt.
+- Kiegészített izolált offline PWA-próba (`tests/browser.cjs`): a Service Worker cache telepítése és aktiválása után a böngésző hálózata lekapcsol, az app újratöltődik és az indulási modulok betöltését ellenőrzi. A próba csak a GitHub Actions tényleges eredményével igazolható, és nem helyettesíti az iOS/Android eszközös tesztet.
 
 ## Phase 2 – további megbízhatóság és coach
 

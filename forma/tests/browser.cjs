@@ -916,6 +916,31 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     } finally { await context.close(); }
   });
 
+  await step('offline PWA: service worker telepítés után az induló oldal és a modulok hálózat nélkül betöltődnek', async () => {
+    const context = await browser.newContext({ serviceWorkers: 'allow' });
+    const p = await context.newPage();
+    try {
+      await p.goto(base);
+      await p.waitForFunction(() => document.documentElement.dataset.ready === '1');
+      await p.evaluate(async () => {
+        const reg = await navigator.serviceWorker.register('sw.js');
+        await navigator.serviceWorker.ready;
+        if (reg.installing) await new Promise(resolve => {
+          const installing = reg.installing;
+          if (installing.state === 'activated') return resolve();
+          installing.addEventListener('statechange', () => { if (installing.state === 'activated') resolve(); });
+        });
+      });
+      await p.waitForFunction(() => !!navigator.serviceWorker.controller);
+      await context.setOffline(true);
+      await p.reload();
+      await p.waitForFunction(() => document.documentElement.dataset.ready === '1');
+      assert.equal(await p.locator('#main').isVisible(), true);
+      assert.equal(await p.evaluate(() => navigator.onLine), false);
+      assert.equal(await p.evaluate(() => !!navigator.serviceWorker.controller), true);
+    } finally { await context.setOffline(false); await context.close(); }
+  });
+
   await step('hibás cím: nem dől el az app', async () => {
     await page.evaluate(() => { location.hash = '#/ex/%E0%A4%A'; });
     await page.waitForTimeout(300);
