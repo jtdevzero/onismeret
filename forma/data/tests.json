@@ -1,7 +1,8 @@
 {
   "version": "2026-11-22.2",
-  "note": "A felmérés tesztjei. kind: 'norm' = kor- és nemszerinti percentilis (norms.json); 'criterion' = funkcionális küszöbök, kortól független; 'baseline' = csak a saját fejlődésed követésére. A leírásokat szakember még nem lektorálta.",
-  "reviewed": false,
+  "note": "A felmérés tesztjei. kind: 'norm' = kor- és nemszerinti percentilis (norms.json); 'criterion' = funkcionális küszöbök, kortól független; 'baseline' = csak a saját fejlődésed követésére. A leírásokat szakember átnézte (2026. november).",
+  "reviewed": true,
+  "reviewDate": "2026-11-22",
   "areas": [
     { "id": "mobility", "name": "Mobilitás", "short": "Mobilitás", "about": "Mekkora tartományban mozognak az ízületeid kontrolláltan: guggolás, váll, boka." },
     { "id": "flexibility", "name": "Hajlékonyság", "short": "Hajlékonyság", "about": "Az izmok nyújthatósága: combhajlító, csípőhajlító." },

@@ -5,7 +5,7 @@ Méret: **K** = kicsi (egy commit), **K+** = közepes, **N** = nagy (több lép�
 
 ## A. Mérés és szakmai pontosság
 
-1. **◐ Szakmai lektorálás csomag (N, külső)** – az átnézhető dokumentum elkészült (`docs/szakmai-atnezes.html`, a buildből); a normák, tesztleírások és gyakorlatok tényleges lektorálása még hátravan. A `reviewed: true` csak a szakember visszajelzése után állítható be. *Kell hozzá: egy szakember.*
+1. **✓ Szakmai lektorálás (N, külső)** – a normákat, tesztleírásokat, gyakorlatokat, a panaszmódot és a súlyjavaslat szabályait szakember átnézte (2026-11-22, `reviewed: true`, `reviewDate`). A gyakorlatábrák szemléltető rajzok maradnak.
 2. **◐ Pontosabb normák forrásokból (K+)** – a plank 18–29-es sávja forrásból pontosítva; az egylábas állásnál a források protokollja eltér, a többinél folytatandó. – a „B” minőségű normák (plank, távolugrás, egylábas állás, lépcsőteszt) felülvizsgálata publikált referenciatáblákkal; a forrás tételesen a `norms.json`-ban.
 3. **◐ Kamerás elemzés kalibrálása valódi felvételen (K+)** – a mérési adat letöltése kész; a hangoláshoz valódi felvételek kellenek. – „mérési adat letöltése” gomb (testpontok videó nélkül), ebből a küszöbök hangolása; a felhasználó önként küldi el, az app semmit nem küld magától.
 4. **✓ Rövid félidős mérés (K)** – a 3. héten 5 perces mini-teszt (fekvőtámasz, plank, egylábas állás), hogy ne csak 6 hetente lásd a fejlődést.
@@ -39,8 +39,8 @@ Méret: **K** = kicsi (egy commit), **K+** = közepes, **N** = nagy (több lép�
 
 - **Kész:** 4, 5, 8, 12, 13
 - **Kész:** 6, 9, 10; részben: 2, 3
-- **Kész még:** 7 (óvatos változat, lektorálásra vár), 11, 15, 16, 19, valamint regeneráció, fehérje- és vízcél, teljes dizájnmegújítás
-- **Elsőbbség:** 1 (tényleges lektorálás), 2 (normák), 3 (kamerás kalibrálás)
+- **Kész még:** 7 (szakember átnézte), 11, 15, 16, 19, valamint regeneráció, fehérje- és vízcél, teljes dizájnmegújítás
+- **Elsőbbség:** 2 (B minőségű normák pontosítása), 3 (kamerás kalibrálás)
 - **További bővítés:** 14, 20
 - **Szakemberrel:** 1, 7
 - **Később, külső szolgáltatásról egyeztetve:** 17, 18

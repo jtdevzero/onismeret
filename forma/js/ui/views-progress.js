@@ -1,5 +1,6 @@
 /* Fejlődés: rekordok, jelvények, célok, testméretek, és a félidős mini-teszt. */
 import { trainingLoadCard, exerciseTrendCard, recoveryTimelineCard } from './views-analytics.js';
+import { coachCard } from './views-coach.js';
 import { h, clear, fmtDate, uid, toast } from './dom.js';
 import { page, card, btn, link, fmtNum, emptyState, artBanner } from './widgets.js';
 import { D, profile } from './data.js';
@@ -9,7 +10,7 @@ import { scoreTest } from '../core/score.js';
 import { forecastFitnessAge } from '../core/extras.js';
 import { friendCard, recoveryCard } from './views-extra.js';
 import { nutritionCard } from './views-wellness.js';
-import { evaluateItem } from './state.js';
+import { evaluateItem, getProgram } from './state.js';
 import { sameScoring } from '../core/assessment.js';
 import { progressCard } from './progress-card.js';
 import { MINI_TESTS, records, badges, bodyTrend, currentFitnessAge, goalProgress, metricValue, latestValue, LOWER_BETTER } from '../core/achievements.js';
@@ -49,9 +50,11 @@ export async function progressView(arg, onCleanup) {
   const history = items.filter(i => i.kind === 'assessment').sort((a, b) => b.date - a.date);
   const faPoints = history.filter(a => sameScoring(a, history[0])).map(a => ({ date: a.date, age: evaluateItem(a).fitnessAge })).filter(x => x.age != null);
   const fc = forecastFitnessAge(faPoints);
+  const coachProg = await getProgram();
   return page('Fejlődés',
     artBanner('progress', 'A saját történeted', 'Lépésről lépésre feljebb'),
     progressCard(items),
+    coachProg ? coachCard(coachProg, items) : null,
     trainingLoadCard(items),
     exerciseTrendCard(items),
     recoveryTimelineCard(items),

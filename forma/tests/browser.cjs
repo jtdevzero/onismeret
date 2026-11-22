@@ -404,6 +404,8 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     assert.equal(checks[0].level, 'light');
     await go(page, '#/progress');
     assert.match(await text(), /Regeneráció \(14 nap\)/);
+    assert.match(await text(), /Helyi edző/);
+    assert.match(await text(), /Miből gondolom:|Most nincs külön megjegyzésem/);
     assert.match(await text(), /nem jelenti, hogy egyik okozza a másikat/);
     assert.ok(await page.locator('svg.mini-bars').count() >= 1, 'heti oszlopdiagram');
   });

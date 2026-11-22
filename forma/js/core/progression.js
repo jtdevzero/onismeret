@@ -1,6 +1,6 @@
 /* Súlyprogresszió-javaslat súlyzós gyakorlatokhoz (tiszta függvények).
    A javaslat NEM mutáció: a program csak a felhasználó jóváhagyása után változik (applyLoadChange).
-   Konzervatív szabályok, szakember még nem lektorálta:
+   Konzervatív szabályok, szakember átnézte (2026-11-22):
    - nincs elég naplózott, súllyal rögzített adat → insufficient_data;
    - a gyakorlatot érintő panasz (térd, derék, váll) → needs_review, emelést nem javasol;
    - a legutóbbi edzésen legalább 2 sorozat nem teljesült → decrease (egy lépcsővel könnyebb);

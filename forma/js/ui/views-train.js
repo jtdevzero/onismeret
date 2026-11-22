@@ -4,7 +4,7 @@ import { page, card, btn, link, note, list, speak, beep, tickMs, videoSearch, ce
 import { D, S, lowImpact } from './data.js';
 import { itemPut, itemGet, itemsAll, kvGet, commit } from './store.js';
 import { getProgram, setProgram, latestAssessment } from './state.js';
-import { setLevel, manualOverrides, revertManual } from '../core/program.js';
+import { setLevel, manualOverrides, revertManual, rotationOf, moveDay } from '../core/program.js';
 import { ROTATION, SESSION_TITLES, LADDERS, RATINGS, effLadder, baseLadder, buildSession, sessionSteps, sessionMinutes, nextKey, weekInfo, laddersOf, exerciseFor, applyRatings, doseFor, fitSession, phaseOf, freeSession, partnerSteps, GOALS, CYCLE_WEEKS } from '../core/program.js';
 import { figureStrip, figureAnim } from './figure.js';
 import { weekStrip } from './views-main.js';
@@ -93,6 +93,22 @@ function ringClock(clock) {
 const doseText = b => (b.seconds ? fmtSec(b.seconds) : b.reps + ' ism.') + (D.ex[b.exercise] && D.ex[b.exercise].perSide ? ' oldalanként' : '') + (b.sets > 1 ? ' × ' + b.sets : '');
 const lvlDots = (level, max) => h('span', { class: 'lvl', role: 'img', 'aria-label': `${level + 1}. szint a ${max}-ből` }, Array.from({ length: max }, (_, i) => h('i', { class: i <= level ? 'on' : '' })));
 
+/* A forgó rend napjainak átrendezése: ugyanazok a napok, más sorrendben (a teljesített edzések száma nem változik). */
+function orderEditor(prog) {
+  const rot = rotationOf(prog), custom = rot !== ROTATION;
+  const save = async next => {
+    try { await setProgram(next); } catch { toast('Nem sikerült menteni; próbáld újra.'); return; }
+    toast('Elmentettem a sorrendet.'); dispatchEvent(new HashChangeEvent('hashchange'));
+  };
+  const swap = async (i, j) => save(moveDay(await getProgram(), i, j));
+  return h('details', { class: 'order-edit' }, h('summary', null, 'Sorrend módosítása' + (custom ? ' (egyéni)' : '')),
+    h('p', { class: 'small muted' }, 'Ugyanaz a 7 nap, más sorrendben. Érdemes két erőnap közé gyorsasági vagy mobilitásnapot tenni.'),
+    h('ol', { class: 'rows' }, rot.map((k, i) => h('li', null, h('span', null, SESSION_TITLES[k]), h('span', { class: 'level-edit' },
+      h('button', { type: 'button', class: 'btn small icon', 'aria-label': `${i + 1}. nap (${SESSION_TITLES[k]}) feljebb`, disabled: i === 0, onclick: () => swap(i, i - 1) }, '↑'),
+      h('button', { type: 'button', class: 'btn small icon', 'aria-label': `${i + 1}. nap (${SESSION_TITLES[k]}) lejjebb`, disabled: i === rot.length - 1, onclick: () => swap(i, i + 1) }, '↓'))))),
+    custom ? h('div', { class: 'row' }, btn('Vissza az alap sorrendhez', async () => { const p = await getProgram(); await save({ ...p, rotation: undefined }); }, 'small')) : null);
+}
+
 /* Szintek és tartós, kézi szintállítás (programszerkesztő). Egy edzésre szóló csere a vezetett edzésben van. */
 function levelsCard(prog, lad) {
   const ov = manualOverrides(prog);
@@ -126,9 +142,13 @@ function levelsCard(prog, lad) {
 }
 
 /* Súlyok súlyzós gyakorlatokhoz: elfogadott súly, javaslat indoklással, jóváhagyás vagy kézi beállítás. */
+/* a program jelenlegi súlyzós gyakorlatai (a súlyjavaslathoz és a helyi edzőhöz) */
+export function dumbbellExercises(prog, lad = laddersOf(D.exercises.exercises)) {
+  if (!prog || !(prog.equipment || []).includes('dumbbell')) return [];
+  return LADDERS.filter(l => effLadder(baseLadder(l), prog.equipment) === l).map(l => exerciseFor(lad, l, (prog.levels || {})[l], prog.lowImpact)).filter(e => e && e.equipment === 'dumbbell');
+}
 async function loadsCard(prog, lad) {
-  if (!(prog.equipment || []).includes('dumbbell')) return null;
-  const exs = LADDERS.filter(l => effLadder(baseLadder(l), prog.equipment) === l).map(l => exerciseFor(lad, l, prog.levels[l], prog.lowImpact)).filter(e => e && e.equipment === 'dumbbell');
+  const exs = dumbbellExercises(prog, lad);
   if (!exs.length) return null;
   const ws = await itemsAll('workout');
   const apply = async (change, source) => {
@@ -176,7 +196,8 @@ export async function programView() {
       h('p', { class: 'small muted' }, `${wk.cycleWeek}. hét a ${CYCLE_WEEKS}-ből; a ${CYCLE_WEEKS}. (↓) könnyített hét, utána újramérés.`),
       h('p', { class: 'small muted' }, 'A ciklusok fókusza váltakozik: alapozás → erő → robbanékonyság, majd újra elölről.')),
     wk.deload ? note('Könnyített hét: kevesebb kör, a kezdő ismétlésszámokkal. A hét végén mérd fel újra magad.', 'warn') : null,
-    card(h('h2', null, 'Forgó rend'), weekStrip(prog), h('p', { class: 'small muted' }, '3 erőnap, 2 gyorsasági nap és 2 mobilitásnap. Minden edzés napi mobilitással kezdődik. Az ismétlésszám hétről hétre nő, a gyakorlat pedig nehezebbre vált, ha kétszer egymás után könnyűnek értékeled.')),
+    card(h('h2', null, 'Forgó rend'), weekStrip(prog), h('p', { class: 'small muted' }, '3 erőnap, 2 gyorsasági nap és 2 mobilitásnap. Minden edzés napi mobilitással kezdődik. Az ismétlésszám hétről hétre nő, a gyakorlat pedig nehezebbre vált, ha kétszer egymás után könnyűnek értékeled.'),
+      orderEditor(prog)),
     sessions,
     card(h('h2', null, 'Célprogram'), h('p', { class: 'small muted' }, 'Ha van egy konkrét célod, az a gyakorlatsor minden erőnapon plusz kört kap, a gyorsasági és mobilitásnapokon pedig egy rövid blokkot.'),
       h('label', { class: 'field' }, 'Fókusz', (() => { const s = h('select', { id: 'goalfocus', onchange: async () => { const p = await getProgram(); await setProgram({ ...p, goalFocus: s.value || null }); toast(s.value ? 'Célprogram beállítva.' : 'Célprogram kikapcsolva.'); } },

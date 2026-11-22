@@ -1,6 +1,7 @@
 {
-  "note": "Testsúlyos gyakorlatok otthonra, eszköz nélkül (szék, asztal, fal, törölköző). A leírásokat edző vagy gyógytornász még nem lektorálta.",
-  "reviewed": false,
+  "note": "Testsúlyos gyakorlatok otthonra, eszköz nélkül (szék, asztal, fal, törölköző). A leírásokat szakember átnézte (2026. november).",
+  "reviewed": true,
+  "reviewDate": "2026-11-22",
   "typeNames": {
     "warmup": "Bemelegítés", "recovery": "Levezetés", "mobility": "Mobilitás", "strength": "Erő", "core": "Törzs", "power": "Robbanékonyság",
     "speed": "Gyorsaság", "balance": "Egyensúly", "cardio": "Állóképesség"

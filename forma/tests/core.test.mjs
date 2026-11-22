@@ -260,3 +260,18 @@ test('programszerkesztő: kézi szint, naplózva és idempotensen; vissza az aj�
   /* új program (újramérés) után a korábbi kézi beállítás már nem számít */
   assert.deepEqual(manualOverrides({ ...up2, start: 500 }), {});
 });
+
+test('forgó rend átrendezése: csak ugyanazokból a napokból, a következő edzés a saját sorrendből jön', async () => {
+  const { isRotation, rotationOf, moveDay, nextKey: nk } = await import('../js/core/program.js');
+  assert.equal(isRotation(ROTATION), true);
+  assert.equal(isRotation(['strengthA', 'strengthA', 'mobility', 'strengthB', 'speedB', 'strengthC', 'mobility']), false, 'más összetétel tilos');
+  assert.equal(isRotation(['x']), false);
+  const base = Object.freeze({ done: 1 });
+  const moved = moveDay(base, 1, 2);
+  assert.deepEqual(moved.rotation, ['strengthA', 'mobility', 'speedA', 'strengthB', 'speedB', 'strengthC', 'mobility']);
+  assert.equal(nk(moved), 'mobility');
+  assert.equal(nk(base), 'speedA');
+  assert.equal(moveDay(moved, 1, 2).rotation, undefined, 'visszacserélve az alap sorrend, külön mező nélkül');
+  assert.equal(moveDay(base, 0, 9), base);
+  assert.equal(rotationOf({ rotation: ['bad'] }), ROTATION, 'érvénytelen tárolt sorrendnél az alap');
+});

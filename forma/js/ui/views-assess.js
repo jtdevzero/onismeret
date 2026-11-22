@@ -1,7 +1,7 @@
 /* Felmérés: tesztlista, vezetett teszt időzítővel, alapadatok, eredmény. */
 import { h, clear, fmtDate, toast } from './dom.js';
 import { page, card, btn, link, note, choice, speak, beep, tickMs, levelBadge, fmtNum, sized, openMotion, countUp } from './widgets.js';
-import { D, profile, lowImpact } from './data.js';
+import { D, profile, lowImpact, reviewed, reviewText } from './data.js';
 import { getDraft, setDraft, saveAssessment, assessments, evaluateItem, programFromAssessment, getProgram } from './state.js';
 import { LEVEL_NAMES } from '../core/score.js';
 import { sameScoring } from '../core/assessment.js';
@@ -302,7 +302,7 @@ export async function resultView(id) {
     h('p', { class: 'muted' }, `${fmtDate(item.date)} · ${p.age} éves ${p.sex === 'female' ? 'nő' : 'férfi'} · normák, funkcionális küszöbök és saját alapvonal`),
     !item.scoring ? note('Régi felmérés: az eredeti pontozás verziója nem ismert. Ezt az eredményt a jelenlegi normákkal számoltam újra; a nyers mérési adatok változatlanok.', 'warn') : null,
     prevItem && !comparable ? note('Az előző felmérés pontozási verziója eltér vagy nem ismert. A pontszámokból nem jelzek fejlődést vagy visszaesést; a nyers teszteredményeket csak azonos mérési móddal érdemes összevetni.', 'small') : null,
-    note('Tájékoztató önfelmérés, szakmai lektorálás nélkül. A pontszám nem korosztályos helyezés, a fittségi kor kérdőíves becslés.', 'small'),
+    note((reviewed() ? 'Tájékoztató önfelmérés; a tesztleírásokat és a normákat szakember átnézte. ' : 'Tájékoztató önfelmérés, szakmai lektorálás nélkül. ') + 'A pontszám nem korosztályos helyezés, a fittségi kor kérdőíves becslés.', 'small'),
     h('section', { class: 'card accent result-overview' }, h('p', { class: 'eyebrow' }, 'A mostani kiindulópontod'),
       h('div', { class: 'stat-row' },
         h('div', { class: 'stat' }, h('span', { class: 'muted' }, 'Fittségi kor'), countUp(h('strong'), ev.fitnessAge, ' év'),
@@ -335,6 +335,6 @@ export async function resultView(id) {
         item.scoring && item.scoring.normsVersion !== D.norms.version ? h('p', { class: 'small' }, 'Az alábbi forráslista az aktuális normákhoz tartozik; a fenti mentett eredmény korábbi normaverzióval készült.') : null,
         h('p', { class: 'small' }, 'A „pc.” percentilist jelent: 60. pc. = a korosztályod 60%-ánál jobb eredmény. A funkcionális küszöbök kortól függetlenek (például a teljes mély guggolás minden felnőttnek elérhető cél).'),
         h('ul', { class: 'plain small' }, Object.entries(D.norms.tests).map(([k, n]) => h('li', null, h('strong', null, D.test[k].name + ': '), n.source)), h('li', null, D.norms.vo2.source)),
-        h('p', { class: 'small muted' }, 'Szakember még nem lektorálta. A Forma nem orvosi eszköz.'))));
+        h('p', { class: 'small muted' }, reviewText() + ' A Forma nem orvosi eszköz.'))));
 }
 const lvl = s => (s >= D.norms.levels.top ? 'top' : s >= D.norms.levels.low ? 'mid' : 'low');

@@ -1,13 +1,13 @@
 /* Kezdőképernyő (első indítás), a mai nap, napló és beállítások. */
 import { h, clear, fmtDate, toast } from './dom.js';
 import { page, card, btn, link, note, choice, list, sized, heroTime, artClass, emptyState } from './widgets.js';
-import { D, S, saveSettings, profile, applyLook, weeklyGoal } from './data.js';
+import { D, S, saveSettings, profile, applyLook, weeklyGoal, reviewed } from './data.js';
 import { exportAll, wipeAll, restoreAll } from './store.js';
 import { parseBackup } from '../core/backup.js';
 import { sameScoring } from '../core/assessment.js';
 import { RATINGS, LADDERS, EQUIPMENT, DURATIONS, COMPLAINTS, fitSession } from '../core/program.js';
 import { getProgram, setProgram, latestAssessment, workouts, assessments, evaluateItem } from './state.js';
-import { ROTATION, SESSION_TITLES, buildSession, sessionSteps, sessionMinutes, nextKey, weekInfo, reassessDue, streak } from '../core/program.js';
+import { ROTATION, rotationOf, SESSION_TITLES, buildSession, sessionSteps, sessionMinutes, nextKey, weekInfo, reassessDue, streak } from '../core/program.js';
 
 import { buildDailyIcs } from '../core/calendar.js';
 import { weeklyCardio, weeklyWorkouts, weeksBack, weekEnd } from '../core/cardio.js';
@@ -20,6 +20,7 @@ import { reviewCard } from './views-wellness.js';
 import { recoveryTileData } from './views-extra.js';
 import { breaksIcs, CHALLENGES } from '../core/extras.js';
 import { buildDashboard } from '../core/dashboard.js';
+import { coachCard } from './views-coach.js';
 
 export const PARQ = [
   ['heart', 'Mondta-e valaha orvos, hogy szívbetegséged vagy magas vérnyomásod van?'],
@@ -84,7 +85,7 @@ export async function startView() {
       card(h('h2', null, 'Hogyan működik?'), list([
         'Kb. 25 perces felmérés otthon, eszköz nélkül: mobilitás, hajlékonyság, erő, törzs, gyorsaság, egyensúly, állóképesség.',
         'Egyes teszteket a korod és a nemed szerinti normákhoz hasonlítok, másokat funkcionális küszöbhöz vagy a saját korábbi eredményedhez.',
-        'A normák egy része becsült, szakember még nem lektorálta. A fittségi kor a pulzusodból, derékbőségedből és aktivitásodból becsült VO₂max átszámítása, nem az összes mozgásteszt eredménye.',
+        (reviewed() ? 'A normák egy része becsült; a normákat, a teszteket és a gyakorlatokat szakember átnézte. ' : 'A normák egy része becsült, szakember még nem lektorálta. ') + 'A fittségi kor a pulzusodból, derékbőségedből és aktivitásodból becsült VO₂max átszámítása, nem az összes mozgásteszt eredménye.',
         'Ebből napi 15–25 perces programot kapsz. Ha egy gyakorlat könnyű, nehezebbre váltok; 6 hetente újramérünk.',
         'Minden adat a telefonodon marad. Nincs fiók, és nincs szerver.']),
         h('div', { class: 'row' }, btn('Kezdjük el', () => goStep(1), 'primary'))),
@@ -123,8 +124,8 @@ export async function startView() {
 
 const DAYS = ['H', 'K', 'Sze', 'Cs', 'P', 'Szo', 'V'];
 export function weekStrip(prog) {
-  const pos = (prog.done || 0) % ROTATION.length;
-  return h('div', { class: 'week-strip', role: 'list', 'aria-label': 'A heti forgó rend' }, ROTATION.map((k, i) =>
+  const rot = rotationOf(prog), pos = (prog.done || 0) % rot.length;
+  return h('div', { class: 'week-strip', role: 'list', 'aria-label': 'A heti forgó rend' }, rot.map((k, i) =>
     h('div', { class: 'week-day' + (i < pos ? ' done' : i === pos ? ' next' : ''), role: 'listitem', 'aria-label': `${i + 1}. nap: ${SESSION_TITLES[k]}${i < pos ? ', kész' : i === pos ? ', következik' : ''}` },
       h('b', null, String(i + 1)), h('span', null, k.startsWith('strength') ? 'Erő' : k.startsWith('speed') ? 'Gyors' : 'Mobil'))));
 }
@@ -183,6 +184,7 @@ export async function homeView() {
       h('ul', { class: 'checklist first-week' }, dash.firstWeek.steps.map(st => h('li', { class: st.done ? 'done' : '' },
         h('span', { class: 'tick', 'aria-hidden': 'true' }, st.done ? '✓' : ''), h('span', null, st.label), h('span', { class: 'visually-hidden' }, st.done ? ' – kész' : ' – még nincs kész'))))));
   }
+  if (prog) { const cc = coachCard(prog, allItems, { compact: true }); if (cc) kids.push(cc); }
   const rv = await reviewCard(allItems, { compact: true });
   if (rv) kids.push(rv);
   if (prog && (dash ? dash.miniDue : miniDue(allItems, prog))) kids.push(card(h('h2', null, 'Félidős mini-teszt'), h('p', null, 'A ciklus közepén vagy: egy 5 perces mini-teszttel (fekvőtámasz, plank, egylábas állás) láthatod, merre haladsz.'), h('div', { class: 'row' }, link('#/mini', 'Mini-teszt', 'btn primary'))));
@@ -343,7 +345,7 @@ export async function settingsView() {
       h('p', { class: 'small muted' }, 'Ha kevés az időd, az edzést a választott hosszhoz igazítom: rövidebb mobilitás és pihenő, kevesebb kör. 35 percnél a fő gyakorlatok egy kört kapnak.'),
       choice('dur', DURATIONS, S.settings.duration || 0, async v => { await saveSettings({ duration: v }); toast('Elmentettem. A következő edzéstől érvényes.'); }, 'Edzésidő')),
     card(h('h2', null, 'Panaszmód'),
-      h('p', { class: 'small muted' }, 'Ha valamelyik ízületed érzékeny, a program kímélőbb változatokat ad: térdnél ugrás és mély egylábas guggolás nélkül, deréknál lendítés és hollow nélkül, vállnál fekvőtámasz térdelve és rúd nélkül. Általános, óvatos szabályok; szakember még nem lektorálta. Tartós vagy éles fájdalommal fordulj orvoshoz vagy gyógytornászhoz.'),
+      h('p', { class: 'small muted' }, 'Ha valamelyik ízületed érzékeny, a program kímélőbb változatokat ad: térdnél ugrás és mély egylábas guggolás nélkül, deréknál lendítés és hollow nélkül, vállnál fekvőtámasz térdelve és rúd nélkül. Általános, óvatos szabályok' + (reviewed() ? ', szakember átnézte' : '; szakember még nem lektorálta') + '. Tartós vagy éles fájdalommal fordulj orvoshoz vagy gyógytornászhoz.'),
       COMPLAINTS.map(([k, label]) => h('label', { class: 'check' }, h('input', { type: 'checkbox', checked: (S.settings.complaints || []).includes(k), onchange: async e => {
         const set = new Set(S.settings.complaints || []); if (e.target.checked) set.add(k); else set.delete(k);
         await saveSettings({ complaints: [...set] });
@@ -384,7 +386,7 @@ export async function settingsView() {
         restorePicker(),
         btn('Minden adat törlése', async () => { if (!confirm('Biztosan törlöd az összes felmérést, edzést és beállítást? Ez nem vonható vissza.')) return; await wipeAll(); S.settings = null; location.hash = '#/start'; location.reload(); }, 'danger'))),
     card(h('h2', null, 'A normákról'),
-      h('p', null, 'A percentilisek egy része publikált felnőtt normákra épül (CSEP); más normákat eltérő minták és mérési módszerek alapján becsültünk. Ezt tesztenként jelöljük. A funkcionális küszöb pontszám, nem népességi percentilis. A normákat és a gyakorlatokat szakember még nem lektorálta.'),
+      h('p', null, 'A percentilisek egy része publikált felnőtt normákra épül (CSEP); más normákat eltérő minták és mérési módszerek alapján becsültünk. Ezt tesztenként jelöljük. A funkcionális küszöb pontszám, nem népességi percentilis. ' + (reviewed() ? 'A normákat, a teszteket és a gyakorlatokat szakember átnézte.' : 'A normákat és a gyakorlatokat szakember még nem lektorálta.')),
       h('p', { class: 'small muted' }, 'A Forma nem orvosi eszköz.')));
 }
 
