@@ -8,6 +8,7 @@ import { ROTATION, SESSION_TITLES, LADDERS, RATINGS, effLadder, baseLadder, buil
 import { figureStrip, figureAnim } from './figure.js';
 import { weekStrip } from './views-main.js';
 import { liveCounter } from './live.js';
+import { plannedLog, cleanLog, cleanRpe, mergeDone, WORKOUT_SCHEMA } from '../core/workout-schema.js';
 import { blockProgress } from './views-extra.js';
 
 const SIDE = { left: 'bal oldal', right: 'jobb oldal', both: 'oldalanként' };
@@ -25,6 +26,47 @@ function noteBox(id) {
     await itemPut({ ...it, note: t.slice(0, 280) }); toast('Elmentettem a jegyzetet.'); save.disabled = true;
   }, 'small');
   return h('div', { class: 'note-box' }, h('label', { class: 'field' }, 'Egy mondat a mai edzésről (nem kötelező)', ta), save);
+}
+
+/* Sorozatnapló az edzés végén (nem kötelező): a tervezett számokkal előtöltve, javítható.
+   Súlymező csak súlyzós gyakorlatnál; testsúlyos gyakorlathoz nem számolunk kilogrammot. Az RPE és a RIR önbevallás. */
+export function setLogEditor(id, base) {
+  const rows = [], rpeSel = h('select', { 'aria-label': 'Az edzés érzett nehézsége (RPE)' }, h('option', { value: '' }, 'Nem adom meg'),
+    Array.from({ length: 11 }, (_, i) => h('option', { value: String(i) }, `${i}${i === 0 ? ' – pihenés' : i <= 2 ? ' – nagyon könnyű' : i <= 4 ? ' – könnyű' : i <= 6 ? ' – közepes' : i <= 8 ? ' – nehéz' : i === 9 ? ' – nagyon nehéz' : ' – maximális'}`)));
+  const blocks = base.map(e => {
+    const ex = D.ex[e.ex], weighted = ex && ex.equipment === 'dumbbell';
+    const sets = e.sets.map((st, i) => {
+      const val = h('input', { type: 'number', inputMode: 'numeric', min: 0, max: st.seconds ? 7200 : 1000, value: String(st.reps ?? st.seconds), 'aria-label': `${ex.name}, ${i + 1}. sorozat: ${st.seconds ? 'másodperc' : 'ismétlés'}` });
+      const kg = weighted ? h('input', { type: 'number', inputMode: 'decimal', min: 0, max: 300, step: 0.5, value: st.weightKg != null ? String(st.weightKg) : '', placeholder: 'kg', 'aria-label': `${ex.name}, ${i + 1}. sorozat: súly kilogrammban (egy súlyzó)` }) : null;
+      const ok = h('input', { type: 'checkbox', checked: true, 'aria-label': `${ex.name}, ${i + 1}. sorozat teljesítve` });
+      const rir = i === e.sets.length - 1 ? h('select', { 'aria-label': `${ex.name}: hány szabályos ismétlés maradt még az utolsó sorozat végén (RIR)` }, h('option', { value: '' }, 'RIR –'), [0, 1, 2, 3, 4, 5].map(n => h('option', { value: String(n) }, n === 5 ? 'RIR 5+' : 'RIR ' + n))) : null;
+      rows.push({ ex: e.ex, seconds: !!st.seconds, val, kg, ok, rir });
+      return h('li', { class: 'setlog-row' }, h('span', { class: 'muted small' }, `${i + 1}.`), val, h('span', { class: 'small' }, st.seconds ? 'mp' : 'ism.'), kg, kg ? h('span', { class: 'small' }, 'kg') : null, h('label', { class: 'check small' }, ok, h('span', null, 'kész')), rir);
+    });
+    return h('div', { class: 'setlog-ex' }, h('h3', null, ex ? ex.name : e.ex), h('ol', { class: 'plain' }, sets));
+  });
+  const status = h('p', { class: 'small muted', role: 'status' });
+  const save = btn('Napló mentése', async () => {
+    const numOf = el => (el && el.value.trim() !== '' && Number.isFinite(Number(el.value)) ? Number(el.value) : undefined);
+    const byEx = new Map();
+    for (const r of rows) {
+      const v = numOf(r.val);
+      if (v === undefined) continue;
+      const set = { [r.seconds ? 'seconds' : 'reps']: v, weightKg: numOf(r.kg), rir: r.rir && r.rir.value !== '' ? Number(r.rir.value) : undefined, done: r.ok.checked };
+      (byEx.get(r.ex) || byEx.set(r.ex, []).get(r.ex)).push(set);
+    }
+    const log = cleanLog([...byEx].map(([ex, sets]) => ({ ex, sets })), Object.keys(D.ex));
+    const rpe = cleanRpe(rpeSel.value === '' ? undefined : Number(rpeSel.value));
+    const it = await itemGet(id);
+    if (!it) return;
+    const next = { ...it, rpe };
+    if (log) Object.assign(next, { schemaVersion: WORKOUT_SCHEMA, log, done: mergeDone(it.done, log) });
+    try { await itemPut(next); } catch { status.textContent = 'Nem sikerült menteni; próbáld újra.'; return; }
+    status.textContent = 'Elmentve.'; toast('Elmentettem a sorozatnaplót.');
+  }, 'small');
+  return h('details', { class: 'setlog' }, h('summary', null, 'Sorozatnapló és nehézség (nem kötelező)'),
+    h('p', { class: 'small muted' }, 'A tervezett számokat írtam be; javítsd, ha mást csináltál. RPE: mennyire volt nehéz az egész edzés (0–10). RIR: hány szabályos ismétlés maradt volna még. Mindkettő becslés, kihagyható.'),
+    h('label', { class: 'field' }, 'Nehézség (RPE)', rpeSel), blocks, h('div', { class: 'row' }, save), status);
 }
 
 /* rutin vagy saját edzés keresése a kulcs alapján */
@@ -166,7 +208,7 @@ export async function sessionView(key, onCleanup) {
       values.program = { ...res.state, done: doneCount, lastDone: endedAt };
       item = { id: workoutId, kind: 'workout', date: endedAt, key, minutes, steps: total, partial, ratings, changes, light, done, partner: partner.checked || undefined };
     }
-    pending = { values, item, changes, minutes };
+    pending = { values, item, changes, minutes, logBase: plannedLog(steps, partial ? at : steps.length, (values.program || prog).loads || {}) };
     bar.value = total; count.textContent = `${total} / ${total} lépés`;
     clear(stage).append(card(h('p', { role: 'status' }, 'Mentés…')));
     await save();
@@ -194,6 +236,7 @@ export async function sessionView(key, onCleanup) {
         return (c.to > c.from ? 'Feljebb: ' : 'Visszább: ') + (a ? a.name : '') + ' → ' + (b ? b.name : '');
       }))) : null,
       h('p', null, 'Bekerült a naplódba.'),
+      pending.logBase.length ? setLogEditor(workoutId, pending.logBase) : null,
       noteBox(workoutId),
       h('p', { class: 'small muted' }, 'Ha van még 4 perced: a levezetés csökkenti a másnapi merevséget.'),
       h('div', { class: 'row' }, link('#/cooldown', 'Levezetés (4 perc)', 'btn primary'), link('#/', 'Kezdőlap', 'btn'), link('#/log', 'Napló', 'btn small'))));

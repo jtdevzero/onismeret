@@ -208,6 +208,27 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     assert.equal(prog.done, 1, 'csak a soron következő edzés léptette a rendet');
   });
 
+  await step('sorozatnapló: előtöltött, javítható, RPE-vel menthető; a hiányzó súly nem lesz kilogramm', async () => {
+    await page.locator('details.setlog > summary').click();
+    const first = page.locator('.setlog-row input[type="number"]').first();
+    await first.fill('7');
+    await page.getByLabel('Az edzés érzett nehézsége (RPE)').selectOption('7');
+    await page.locator('.setlog-row input[type="checkbox"]').last().uncheck();
+    await page.getByRole('button', { name: 'Napló mentése' }).click();
+    await page.getByRole('status').filter({ hasText: 'Elmentve.' }).waitFor();
+    const w = await page.evaluate(async () => (await (await import('./js/ui/store.js')).itemsAll('workout'))[0]);
+    assert.equal(w.schemaVersion, 2);
+    assert.equal(w.rpe, 7);
+    assert.ok(w.log.length >= 1);
+    assert.equal(w.log[0].sets[0].reps ?? w.log[0].sets[0].seconds, 7);
+    assert.equal(w.log.at(-1).sets.at(-1).done, false);
+    assert.ok(w.log.every(e => e.sets.every(st => st.weightKg === undefined)), 'testsúlyos edzésnél nincs kitalált súly');
+    const d = w.done.find(x => x.ex === w.log[0].ex);
+    assert.ok(d, 'a done összesítés a naplóból frissült');
+    /* a meglévő mezők megmaradtak */
+    assert.ok(w.ratings && Array.isArray(w.changes) && w.key === 'strengthA');
+  });
+
   await step('edzés vége íráshibánál: nincs félkész mentés, az újrapróba egyszer ír', async () => {
     const before = await page.evaluate(async () => ({ n: (await (await import('./js/ui/store.js')).itemsAll('workout')).length, done: (await (await import('./js/ui/state.js')).getProgram()).done }));
     await go(page, '#/session/mobility');
