@@ -10,6 +10,7 @@ import { itemsAll } from './store.js';
 import { LOWER_BETTER } from '../core/achievements.js';
 import { TRIALS, reactionResult, randomDelay } from '../core/reaction.js';
 import { swayMetrics } from '../core/sensors.js';
+import { measurementReliability } from '../core/motion-quality.js';
 import { liveCounter } from './live.js';
 
 const isDone = (d, id) => d.results[id] != null || d.skipped[id];
@@ -180,11 +181,13 @@ export async function testView(id, onCleanup) {
     startLabel: 'Mérés kamerával',
     onDone: r => {
       if (!r.ok || !input.setValue) return;
+      const rel = measurementReliability(r);
+      if (!rel.autofill) { toast('A kamerás mérés nem volt megbízható, ezért nem írtam be. Mérj újra, vagy írd be kézzel.'); return; }
       const hs = r.holdSides;
       const v = id === 'vertical_jump' ? r.jumpCm : id === 'sl_stance' && hs && hs.left != null && hs.right != null ? Math.round((hs.left + hs.right) * 2) / 4 : r.holdSeconds != null && !r.reps ? Math.floor(r.holdSeconds) : r.reps;
       if (v == null) return;
       input.setValue(v);
-      toast('Beírtam a mért eredményt; ha kell, javítsd, majd mentsd.');
+      toast(rel.level === 'limited' ? 'Beírtam a mért eredményt, de a mérés megbízhatósága korlátozott: ellenőrizd, és ha kell, javítsd.' : 'Beírtam a mért eredményt; ha kell, javítsd, majd mentsd.');
     },
   });
   if (live) onCleanup(live.stop);
