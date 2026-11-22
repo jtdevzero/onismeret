@@ -137,3 +137,11 @@ Hatókör: kizárólag `forma/`. Engedélyezett: U0 és U1, a `claude/elegant-ha
 - A helyi coach csak az utolsó 21 nap edzésnaplójára alapozhat új súlyemelési javaslatot, régi adatokból nem. Az adatfrissességi kategória a képernyőn megjelenik, a javaslat továbbra is csak jóváhagyással alkalmazható.
 - Az edzés véglegesítésénél `saving`/`saved` állapot korlátozza a párhuzamos mentési és képernyőoldali mellékhatásokat; a stabil edzésazonosító és az atomi tranzakció változatlan.
 - Új regressziós próba a régi súlynapló tiltására; a tesztek és a build eredménye az adott commitnál rögzítendő.
+
+## Phase 2 – CI-visszajelzés és browser-fixture javítás
+
+- A `79f36ac` commit GitHub Actions böngészős futása **sikertelen** volt. Az önálló félbehagyott-edzés helyreállítási próba átment, de a közös böngészőoldalon több további eset a korábban szándékosan megőrzött `workoutDraft` miatt másik edzés folytatási felületére került. Ez a tesztadatok izolációs hibája, nem ok a felhasználói draft automatikus törlésére.
+- `tests/browser.cjs`: az egymástól független session-fixture-ök indítása előtt kilépés a programnézetre, majd **kizárólag a tesztprofilban** a félkész draft törlése. A helyreállítási eset saját, külön böngészőkontextusban ellenőrzi a tényleges adatmegőrzést. A rutinból indított edzés fixture-jét is izoláltuk.
+- A CI akadálymentességi vizsgálata a Beállítások oldal elsődleges Mentés gombján szövegkontraszt-hibát jelzett. `styles.css`: a fő CTA gradiens két végpontja kontrasztellenőrzött akcentusszín; `tests/contrast.test.mjs`: mindhárom téma második végpontját is ellenőrzi.
+- Ezen a munkapéldányon `python3 forma/build.py` **PASS**, `TZ=Europe/Budapest node --test forma/tests/*.test.mjs` **152/152 PASS**. `node forma/tests/browser.cjs` **nem futott végig**, mert a Playwright Chromium binárisa helyben nem elérhető. A böngészőteszt és az offline PWA javításának eredménye új CI-futásig **nem igazolt**.
+- Kiadási állapot változatlanul **NO-GO**: mobil Safari/Android, valódi offline PWA és kamerás validáció külön igazolandó. A fejlesztői ág nem élesítés.

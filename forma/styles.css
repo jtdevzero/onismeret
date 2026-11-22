@@ -771,7 +771,9 @@ h1, .page > h1 { letter-spacing: .015em; font-style: normal; }
 @media (forced-colors: active) { .page > h1 { color: CanvasText; background: none; } }
 .hero h1, .art-banner h2 { font-style: normal; letter-spacing: .03em; text-shadow: 0 0 18px rgba(255, 79, 163, .55), 3px 3px 0 #2a0f3d; }
 .card > h2:first-child, details > summary h2 { font-family: var(--display); font-weight: 400; letter-spacing: .02em; font-size: 1.3rem; }
-.btn.primary { background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 70%, var(--sun))); border: 0; }
+/* A fő gomb mindhárom témában a kontraszt-ellenőrzött akcentus két árnyalatát használja.
+   A korábbi narancsos gradiens fehér felirattal egyes pontokon 4,5:1 alá esett. */
+.btn.primary { background: linear-gradient(90deg, var(--accent), var(--accent-strong)); border: 0; }
 .btn.primary:hover { background: var(--accent-strong); }
 /* naplementés háttér a lap tetején, éjszakai neon a sötét témában */
 body { background: var(--bg) linear-gradient(180deg, var(--bg-2), var(--bg) 420px) no-repeat; }

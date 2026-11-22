@@ -23,7 +23,20 @@ function serve() {
 const shown = (page, hash) => page.waitForFunction(h => document.documentElement.dataset.view === h, hash);
 /* aszinkron feltétel valódi kivárása (a lapon futó, Promise-t adó ellenőrzéssel) */
 const until = async (page, fn, arg, ms = 5000) => { const t0 = Date.now(); while (Date.now() - t0 < ms) { if (await page.evaluate(fn, arg)) return; await page.waitForTimeout(50); } throw new Error('A feltétel nem teljesült időben.'); };
-const go = async (page, hash) => { await page.evaluate(h => { if (location.hash === h) dispatchEvent(new HashChangeEvent('hashchange')); else location.hash = h; }, hash); await page.waitForTimeout(50); await shown(page, hash); };
+const go = async (page, hash) => {
+  /* A közös e2e fixture az edzéseket egymástól függetlenül indítja.
+     Az előző edzés lezárásakor a checkpoint később is beíródhat, ezért előbb
+     kilépünk a session nézetből, és csak utána töröljük a TESZT-félkész állapotot.
+     A folytatás saját izolált tesztje külön ellenőrzi a valódi megőrzést. */
+  if (/^#\/session\//.test(hash)) {
+    await page.evaluate(() => { location.hash = '#/program'; });
+    await shown(page, '#/program');
+    await page.evaluate(async () => (await import('./js/ui/store.js')).kvDelete('workoutDraft'));
+  }
+  await page.evaluate(h => { if (location.hash === h) dispatchEvent(new HashChangeEvent('hashchange')); else location.hash = h; }, hash);
+  await page.waitForTimeout(50);
+  await shown(page, hash);
+};
 
 const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0, hip_flexor: 2, chair_stand: 22, plank: 70, broad_jump: 205, tapping: 40, sl_stance: 7, sit_rise: 9, step_test: 100 };
 
@@ -730,6 +743,7 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     assert.match(await text(), /Irodai mobilitás/);
     await shot('routines');
     const before = await page.evaluate(async () => (await (await import('./js/ui/state.js')).getProgram()).done);
+    await page.evaluate(async () => (await import('./js/ui/store.js')).kvDelete('workoutDraft'));
     await page.getByRole('link', { name: /Irodai mobilitás/ }).click();
     await page.waitForFunction(() => (document.documentElement.dataset.view || '').startsWith('#/session/routine-office'));
     const tap = async name => { const b = page.getByRole('button', { name }); return (await b.count()) ? b.click({ timeout: 1000 }).then(() => true, () => false) : false; };

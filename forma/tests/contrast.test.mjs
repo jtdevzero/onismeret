@@ -18,10 +18,14 @@ const UI = [['teal', 'surface'], ['accent', 'bg'], ['title-b', 'bg'], ['title-b'
 
 for (const [name, t] of [['világos', light], ['sötét', dark], ...(sun ? [['napfény', sun]] : [])]) {
   test(`kontraszt (${name} téma): szöveg legalább 4,5:1, felületi elem legalább 3:1`, () => {
-    for (const [f, b] of TEXT) assert.ok(ratio(t[f], t[b]) >= 4.5, `${name}: --${f} a --${b} háttéren ${ratio(t[f], t[b]).toFixed(2)}:1`);
+    for (const [f, b] of [...TEXT, ['accent-text', 'accent-strong']]) assert.ok(ratio(t[f], t[b]) >= 4.5, `${name}: --${f} a --${b} háttéren ${ratio(t[f], t[b]).toFixed(2)}:1`);
     for (const [f, b] of UI) assert.ok(ratio(t[f], t[b]) >= 3, `${name}: --${f} a --${b} háttéren ${ratio(t[f], t[b]).toFixed(2)}:1`);
   });
 }
+
+test('a fő CTA gradiens két végpontja kontrasztbiztos akcentusszín', () => {
+  assert.match(css, /\.btn\.primary\s*\{\s*background:\s*linear-gradient\(90deg, var\(--accent\), var\(--accent-strong\)\)/);
+});
 
 test('a sötét téma a rendszerbeállításnál és a kézi kapcsolónál azonos', () => {
   const sys = vars(blockAfter(':root:not([data-theme="light"]) {'));
