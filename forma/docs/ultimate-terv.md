@@ -40,14 +40,14 @@ Hatókör: kizárólag `forma/`. Engedélyezett: U0 és U1, a `claude/elegant-ha
 | U0-005 | Kamera: megbízhatósági címke, leállítás minden kilépésnél | kész (a leállítás már megvolt; valós validáció külső kapu) |
 | U0-006 | Build/PWA: új modul a cache-ben, frissítés edzés közben | kész (a frissítési megerősítés kézi ellenőrzésű) |
 | U1-101/102/103 | Dashboard domainréteg (`core/dashboard.js`), Ma képernyő cél- és újramérés-csempével, „Edzés” menüpont | kész |
-| U1-104 | Designtokenek egységesítése | részben: az új elemek a meglévő tokeneket használják; teljes tokenaudit hátravan |
+| U1-104 | Designtokenek és arculat | kész: saját Miami-naplemente illusztrációk (`assets/art/`), képes fejlécek; automatikus kontrasztteszt minden témára (`tests/contrast.test.mjs`) |
 | U1-105/106 | Sorozatnapló az edzés végén (ismétlés/idő, súly súlyzónál, RIR, RPE) | kész (edzés közbeni, sorozatonkénti rögzítés nincs; a végén javítható) |
 | U1-107/108 | Terhelés (`core/load.js`) és jóváhagyandó súlyjavaslat (`core/progression.js`), Súlyok kártya | kész |
 | U1-109 | Programszerkesztő: tartós kézi szint, vissza az ajánlotthoz | kész (napok átrendezése és gyakorlatonkénti tartós csere nincs) |
-| U1-110/111 | Analitika (`core/analytics.js`): 8 hetes terhelés, gyakorlattrend | kész (grafikon helyett táblázat; regeneráció- és testtrend-fül hátravan) |
+| U1-110/111 | Analitika (`core/analytics.js`): 8 hetes terhelés oszlopdiagrammal, gyakorlattrend, 14 napos regenerációs idősor | kész (a testadat a meglévő Fejlődés-kártyán marad) |
 | U1-112 | Célok és rekordok egységesítése | részben: a Ma képernyő a legközelebbi határidejű aktív célt mutatja |
 | U1-113 | Felméréses radar-kártya és megosztási adatválasztó | kész (`core/share.js`, `ui/share-card.js`; alapból nincs személyes adat, fejlődési különbség nincs a kártyán) |
-| U1-114 | Első hét | a meglévő négylépéses bevezetés és az első heti összecsukott extrák megmaradtak; külön munka nem történt |
+| U1-114 | Első hét | kész: kipipálódó négylépéses lista a kezdőlapon az első 7 napban |
 | U1-115 | Kiadási QA | Chromium automatikus tesztek zöldek; WebKit nincs telepítve, valódi iPhone/Android és VoiceOver/TalkBack nem futott; éles publikálás nem történt |
 
 ## Szerződések
@@ -71,8 +71,19 @@ Hatókör: kizárólag `forma/`. Engedélyezett: U0 és U1, a `claude/elegant-ha
 
 - **CP10 – U1-113:** felméréses megosztókártya az Eredmény oldalon. `tests/share.test.mjs` 3/3; böngészős teszt: alapból nincs életkor, választásra van, PNG letöltés. Unit 119/119, browser 38/38.
 
+- **CP11 – arculat:** 11 saját illusztráció WebP-ben (65–117 kB), futás közbeni service worker gyorsítótár (`forma-art-…`), teszt a méretre és a hivatkozásokra.
+- **CP12 – U1-111/114/104:** napi kérdőív bejegyzésként (`kind: 'check'`), regenerációs idősor, oszlopdiagram, első hét lista, kontrasztteszt. Unit 127/127, browser 39/39, focus 3/3.
+
 ## Következő lépések
 
-1. U1-111 folytatás: regeneráció- és testtrend-fül, egyszerű SVG-grafikon a táblázat mellé.
-2. U1-104: tokenaudit a `styles.css`-ben, kontrasztmérés világos és sötét témában.
-3. U1-115: WebKit-futtatás (a böngésző telepítése engedélyhez kötött), valódi eszközös próba, majd a felhasználó jóváhagyásával élesítés.
+1. U1-112: szokáscél (heti edzésszám) beállíthatóvá tétele, külön a teljesítménycéloktól.
+2. U1-109 folytatás: tartós gyakorlatcsere és napok átrendezése.
+3. U1-115: WebKit és valódi eszközös próba.
+4. U2/U3: döntések kellenek (lásd lent).
+
+## Döntésre vár (U2/U3)
+
+- **Kamerás validáció:** önkéntes, hozzájárulással készült valódi felvételek (fekvőtámasz, felállás, guggolás), kézzel számolt ismétlésszámmal.
+- **AI coach:** szolgáltató (pl. Claude API), havi költségkeret, a backend helye (a Kanyar/Parliamo worker mintájára Cloudflare Worker), API-kulcs `wrangler secret put`-tal.
+- **Felhő és szinkron:** szolgáltató, titkosítási modell, adatkezelési tájékoztató.
+- **Szakmai lektorálás:** normák, panaszmód, súlyjavaslat szabályai.
