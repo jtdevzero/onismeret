@@ -23,7 +23,7 @@ function reviewBody(r) {
 }
 
 /* Kezdőlapi kártya: hétfőn és vasárnap, amíg el nem olvasod. → elem vagy null */
-export async function reviewCard(items) {
+export async function reviewCard(items, { compact = false } = {}) {
   const now = new Date(), wd = now.getDay();
   if (wd !== 0 && wd !== 1) return null;
   /* vasárnap az aktuális, hétfőn az előző hét */
@@ -31,7 +31,8 @@ export async function reviewCard(items) {
   if ((await kvGet('reviewSeen', 0)) === start) return null;
   const r = weeklyReview(items, { start });
   if (r.empty) return null;
-  const el = h('section', { class: 'card accent' }, h('h2', null, wd === 0 ? 'Az e heti áttekintésed' : 'A múlt heted'), ...reviewBody(r),
+  const title = h('h2', null, wd === 0 ? 'Az e heti áttekintésed' : 'A múlt heted');
+  const el = h(compact ? 'details' : 'section', { class: compact ? 'card home-summary' : 'card accent' }, compact ? h('summary', null, title) : title, ...reviewBody(r),
     h('div', { class: 'row' }, btn('Rendben', async () => { await kvSet('reviewSeen', start); el.remove(); }, 'primary'), link('#/review', 'Korábbi hetek', 'btn small')));
   return el;
 }
