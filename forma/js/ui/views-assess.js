@@ -12,6 +12,7 @@ import { TRIALS, reactionResult, randomDelay } from '../core/reaction.js';
 import { swayMetrics } from '../core/sensors.js';
 import { measurementReliability } from '../core/motion-quality.js';
 import { liveCounter } from './live.js';
+import { assessmentShareCard } from './share-card.js';
 
 const isDone = (d, id) => d.results[id] != null || d.skipped[id];
 const testsFor = () => D.tests.tests.filter(t => !(lowImpact() && t.impact) && !(t.minAge && !(profile().age >= t.minAge)));
@@ -314,6 +315,7 @@ export async function resultView(id) {
         h('p', { class: 'small muted' }, 'A területi és az összesített pontszám különböző mércéket átlagol: nem percentilis, és nem mutatja a korosztályon belüli helyezésedet. A fittségi kor az alapadatokból becsült VO₂max átszámítása, nem a teljes mozgásfelmérés vagy a biológiai kor mérése.'),
         ev.vo2 != null ? h('p', { class: 'small muted' }, `Becsült VO₂max: ${fmtNum(ev.vo2)} ml/kg/perc. Kérdőíves becslés, jelentős egyéni bizonytalansággal; a Forma pontosságát saját mérésen még nem validáltuk.`) : null,
         item.scoring ? h('p', { class: 'small muted' }, `A felméréskor mentett kiértékelés. Pontozás: ${item.scoring.version}; normák: ${item.scoring.normsVersion}; tesztek: ${item.scoring.testsVersion}.`) : null)),
+    areas.length >= 3 ? assessmentShareCard(item, ev, areas) : null,
     recordIds.length ? h('section', { class: 'card accent record-card' }, h('h2', null, '🏆 Új egyéni csúcs'), h('p', null, recordIds.map(id => `${D.test[id].name}: ${fmtNum(item.results[id])} ${D.test[id].input.unit}`).join(' · '))) : null,
     ev.pain.length ? note('Fájdalmat jeleztél: ' + ev.pain.map(t => D.test[t].name.toLowerCase()).join(', ') + '. Ezt érdemes orvossal vagy gyógytornásszal megnézetni; a programban a kapcsolódó gyakorlatok a legkönnyebb szinten indulnak.', 'warn') : null,
     card(h('h2', null, 'Erre fókuszálunk'), ev.weakest.map(a => h('p', null, h('strong', null, D.area[a].name + ': '), ADVICE[a])),

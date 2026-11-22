@@ -24,7 +24,7 @@ Méret: **K** = kicsi (egy commit), **K+** = közepes, **N** = nagy (több lép�
 
 12. **✓ Célok és határidők (K)** – például „30 fekvőtámasz júniusra” vagy „fittségi kor 30 év alatt”, a haladással a kezdőlapon.
 13. **✓ Jelvények és rekordok (K)** – egyéni csúcs tesztenként, első húzódzkodás, 4 teljes hét kihagyás nélkül; csak a saját eredményeidhez mérve, más felhasználóhoz nem.
-14. **◐ Megosztható eredménykártya (K)** – a hathetes mozgás- és fejlődéskártya kész, a Fejlődés oldalról helyben PNG-be menthető. A külön pókhálóábrás felméréskártya még hátravan.
+14. **✓ Megosztható eredménykártya (K)** – a hathetes mozgás- és fejlődéskártya a Fejlődés oldalon, a pókhálóábrás felméréskártya az Eredmény oldalon, helyben PNG-be menthető; a személyes adatok alapból kimaradnak.
 15. **✓ Heti áttekintés (K)** – vasárnap este rövid összefoglaló: mi sikerült, mi maradt el, és mi a következő heti fókusz.
 
 ## D. Kényelem és technika

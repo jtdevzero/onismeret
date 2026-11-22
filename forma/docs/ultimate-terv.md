@@ -46,7 +46,7 @@ Hatókör: kizárólag `forma/`. Engedélyezett: U0 és U1, a `claude/elegant-ha
 | U1-109 | Programszerkesztő: tartós kézi szint, vissza az ajánlotthoz | kész (napok átrendezése és gyakorlatonkénti tartós csere nincs) |
 | U1-110/111 | Analitika (`core/analytics.js`): 8 hetes terhelés, gyakorlattrend | kész (grafikon helyett táblázat; regeneráció- és testtrend-fül hátravan) |
 | U1-112 | Célok és rekordok egységesítése | részben: a Ma képernyő a legközelebbi határidejű aktív célt mutatja |
-| U1-113 | Felméréses radar-kártya és megosztási adatválasztó | hátravan |
+| U1-113 | Felméréses radar-kártya és megosztási adatválasztó | kész (`core/share.js`, `ui/share-card.js`; alapból nincs személyes adat, fejlődési különbség nincs a kártyán) |
 | U1-114 | Első hét | a meglévő négylépéses bevezetés és az első heti összecsukott extrák megmaradtak; külön munka nem történt |
 | U1-115 | Kiadási QA | Chromium automatikus tesztek zöldek; WebKit nincs telepítve, valódi iPhone/Android és VoiceOver/TalkBack nem futott; éles publikálás nem történt |
 
@@ -69,9 +69,10 @@ Hatókör: kizárólag `forma/`. Engedélyezett: U0 és U1, a `claude/elegant-ha
 - **CP8 – U1-110/111:** `core/analytics.js` (`tests/analytics.test.mjs` 4/4), `js/ui/views-analytics.js` a Fejlődés oldalon.
 - **CP9 – U1-109:** `setLevel`, `manualOverrides`, `revertManual` (unit és böngészős teszt). Összesen: unit 116/116, browser 37/37, onboarding 3/3, focus 3/3, pose-smoke ok (Chromium).
 
+- **CP10 – U1-113:** felméréses megosztókártya az Eredmény oldalon. `tests/share.test.mjs` 3/3; böngészős teszt: alapból nincs életkor, választásra van, PNG letöltés. Unit 119/119, browser 38/38.
+
 ## Következő lépések
 
-1. U1-113: felméréses radar-kártya PNG-ben, megosztás előtt adatválasztóval (kor, testsúly, derékbőség kikapcsolható).
-2. U1-111 folytatás: regeneráció- és testtrend-fül, egyszerű SVG-grafikon a táblázat mellé.
-3. U1-104: tokenaudit a `styles.css`-ben, kontrasztmérés világos és sötét témában.
-4. U1-115: WebKit-futtatás (a böngésző telepítése engedélyhez kötött), valódi eszközös próba, majd a felhasználó jóváhagyásával élesítés.
+1. U1-111 folytatás: regeneráció- és testtrend-fül, egyszerű SVG-grafikon a táblázat mellé.
+2. U1-104: tokenaudit a `styles.css`-ben, kontrasztmérés világos és sötét témában.
+3. U1-115: WebKit-futtatás (a böngésző telepítése engedélyhez kötött), valódi eszközös próba, majd a felhasználó jóváhagyásával élesítés.

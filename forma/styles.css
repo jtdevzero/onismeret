@@ -697,3 +697,7 @@ details.more-group[open] > summary::after { content: "▴"; }
 /* Programszerkesztő: szintállító gombok */
 .level-edit { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
 .level-edit .btn.icon { min-width: 44px; min-height: 44px; padding: 0; font-size: 1.2rem; line-height: 1; }
+
+/* Felméréses megosztókártya */
+.share-preview { display: block; width: 100%; max-width: 360px; height: auto; aspect-ratio: 1080 / 1350; margin: 10px auto; border-radius: var(--radius-s); }
+.share-opts { border: 0; padding: 0; margin: 8px 0; display: grid; gap: 4px; }

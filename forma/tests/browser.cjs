@@ -275,6 +275,18 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     assert.equal(await lvl(), before);
   });
 
+  await step('felméréskártya: alapból nincs személyes adat, választható, PNG-be menthető', async () => {
+    await go(page, '#/result');
+    await page.locator('details.share-card > summary').click();
+    const sum = page.locator('.share-card p[aria-live]');
+    assert.doesNotMatch(await sum.innerText(), /éves|Fittségi kor/);
+    await page.locator('.share-card').getByText('Életkor és nem').click();
+    await page.waitForFunction(() => /éves/.test(document.querySelector('.share-card p[aria-live]').innerText));
+    if (SHOTS) await page.locator('.share-preview').screenshot({ path: path.join(SHOTS, 'share-card.png') });
+    const [download] = await Promise.all([page.waitForEvent('download'), page.locator('.share-card').getByRole('button', { name: 'Kártya mentése képként' }).click()]);
+    assert.equal(download.suggestedFilename(), 'forma-felmeres.png');
+  });
+
   await step('edzés vége íráshibánál: nincs félkész mentés, az újrapróba egyszer ír', async () => {
     const before = await page.evaluate(async () => ({ n: (await (await import('./js/ui/store.js')).itemsAll('workout')).length, done: (await (await import('./js/ui/state.js')).getProgram()).done }));
     await go(page, '#/session/mobility');
