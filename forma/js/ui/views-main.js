@@ -178,6 +178,10 @@ export async function homeView() {
       a ? h('a', { class: 'tile mini', href: '#/assess', 'aria-label': a.due ? 'Újramérés esedékes' : `Következő felmérés ${a.daysLeft} nap múlva` },
         h('span', { class: 'muted small' }, 'Újramérés'), h('strong', null, a.due ? 'Esedékes' : `${a.daysLeft} nap`), h('span', { class: 'small muted' }, `utoljára ${a.daysSince} napja`)) : null));
     if (dash.insight) kids.push(h('p', { class: 'small muted center home-insight' }, dash.insight.text));
+    if (dash.firstWeek) kids.push(card(h('h2', null, `Első heted · ${dash.firstWeek.day}. nap`),
+      h('p', { class: 'small muted' }, 'Négy lépés, hogy megismerd az appot. Nem kell mind ma; ami kész, kipipálódik.'),
+      h('ul', { class: 'checklist first-week' }, dash.firstWeek.steps.map(st => h('li', { class: st.done ? 'done' : '' },
+        h('span', { class: 'tick', 'aria-hidden': 'true' }, st.done ? '✓' : ''), h('span', null, st.label), h('span', { class: 'visually-hidden' }, st.done ? ' – kész' : ' – még nincs kész'))))));
   }
   const rv = await reviewCard(allItems, { compact: true });
   if (rv) kids.push(rv);

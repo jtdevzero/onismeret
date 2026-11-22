@@ -739,3 +739,10 @@ details.more-group[open] > summary::after { content: "▴"; }
 .mini-bars .bar.empty { fill: var(--line); opacity: 1; }
 .mini-bars .bar-label, .mini-bars .bar-val { fill: var(--muted); font-size: 10px; font-family: inherit; }
 .mini-bars .bar-val { fill: var(--text); font-weight: 700; }
+
+/* Első hét lista */
+.checklist { list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 8px; }
+.checklist li { display: flex; align-items: center; gap: 10px; }
+.checklist .tick { flex: none; width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--line); display: grid; place-items: center; font-weight: 800; color: #fff; }
+.checklist li.done .tick { background: var(--teal); border-color: var(--teal); }
+.checklist li.done > span:nth-child(2) { color: var(--muted); text-decoration: line-through; }

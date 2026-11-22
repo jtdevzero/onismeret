@@ -181,6 +181,8 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     await shot('program');
     await go(page, '#/');
     assert.match(await text(), /Mai edzés/i);
+    assert.match(await text(), /Első heted · 1\. nap/);
+    assert.equal(await page.locator('.first-week li.done').count(), 0, 'új programnál még semmi nincs kipipálva');
     await shot('home');
   });
 
