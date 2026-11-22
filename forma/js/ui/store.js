@@ -64,6 +64,31 @@ export async function itemsAll(kind) {
 }
 export const itemDelete = id => tx('items', 'readwrite', s => (s ? s.delete(id) : (mem.items.delete(id), null)));
 
+/* Több kulcs és tétel egyetlen tranzakcióban (pl. edzés vége: program + naplóbejegyzés).
+   Vagy minden íródik, vagy semmi; ugyanazzal az azonosítóval megismételve nem keletkezik duplikátum. */
+export async function commit(values = {}, items = []) {
+  const data = structuredClone({ values, items });
+  if (data.items.some(it => !it || typeof it.id !== 'string' || !it.id)) throw new Error('Hibás mentési adat.');
+  const db = await open();
+  if (!db) {
+    for (const [k, v] of Object.entries(data.values)) mem.kv.set(k, v);
+    for (const it of data.items) mem.items.set(it.id, it);
+    return;
+  }
+  return new Promise((resolve, reject) => {
+    let t;
+    const fail = e => { report({ writeError: true }); reject(e || new Error('A mentés nem sikerült.')); };
+    try {
+      t = db.transaction(['kv', 'items'], 'readwrite');
+      t.oncomplete = () => resolve();
+      t.onerror = t.onabort = () => fail(t.error);
+      const kv = t.objectStore('kv'), store = t.objectStore('items');
+      for (const [k, v] of Object.entries(data.values)) kv.put(v, k);
+      for (const it of data.items) store.put(it);
+    } catch (e) { if (t) t.abort(); fail(e); }
+  });
+}
+
 export async function wipeAll() {
   await replaceAll({}, []);
 }

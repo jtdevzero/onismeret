@@ -208,6 +208,31 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     assert.equal(prog.done, 1, 'csak a soron következő edzés léptette a rendet');
   });
 
+  await step('edzés vége íráshibánál: nincs félkész mentés, az újrapróba egyszer ír', async () => {
+    const before = await page.evaluate(async () => ({ n: (await (await import('./js/ui/store.js')).itemsAll('workout')).length, done: (await (await import('./js/ui/state.js')).getProgram()).done }));
+    await go(page, '#/session/mobility');
+    await page.evaluate(() => {
+      const orig = IDBDatabase.prototype.transaction;
+      window.restoreTx = () => { IDBDatabase.prototype.transaction = orig; };
+      IDBDatabase.prototype.transaction = function (names, mode) {
+        const t = orig.call(this, names, mode);
+        if (Array.isArray(names) && names.includes('kv') && names.includes('items') && mode === 'readwrite') queueMicrotask(() => t.abort());
+        return t;
+      };
+    });
+    await page.getByRole('button', { name: 'Befejezés most' }).click();
+    await page.getByRole('alert').filter({ hasText: 'nem fogadta' }).waitFor();
+    const mid = await page.evaluate(async () => ({ n: (await (await import('./js/ui/store.js')).itemsAll('workout')).length, done: (await (await import('./js/ui/state.js')).getProgram()).done }));
+    assert.deepEqual(mid, before, 'hibánál sem a napló, sem a program nem változott');
+    await page.evaluate(() => window.restoreTx());
+    await page.getByRole('button', { name: 'Újrapróba' }).click();
+    await page.waitForFunction(() => /Edzés kész/i.test(document.getElementById('main').innerText));
+    const after = await page.evaluate(async () => (await (await import('./js/ui/store.js')).itemsAll('workout')).length);
+    assert.equal(after, before.n + 1, 'pontosan egy új edzésbejegyzés');
+    /* a felső figyelmeztetés megjelent a hibánál */
+    assert.equal(await page.locator('#storage-notice').isVisible(), true);
+  });
+
   await step('napló és gyakorlatleírás', async () => {
     await go(page, '#/log');
     const t = await text();

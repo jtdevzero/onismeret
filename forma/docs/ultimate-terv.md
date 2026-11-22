@@ -26,8 +26,8 @@ Hatókör: kizárólag `forma/`. Engedélyezett: U0 és U1, a `claude/elegant-ha
 1. **Javítva (U0-003):** az export nem tartalmazta az aktív kihívást és blokkot; visszatöltés után eltűntek.
 2. **Javítva (U0-003):** a heti határ `+7 × 24 óra` volt; a nyári időszámítás végének hetén a vasárnap 23 óra utáni edzés kiesett a hétből, és a négyhetes jelvény sorozata megszakadt. Most naptári lépés (`weekEnd`, `weeksBack`).
 3. **Javítva:** a gyakorlatoldal „← Vissza” gombja hibára futott (a helyi `history` tömb elfedte a `window.history`-t).
-4. A vezetett edzés időzítője `setInterval`-lel számol vissza; háttérben lelassulhat (U0-004/U1-106).
-5. Edzés befejezésekor a program előbb mentődik, mint a naplóbejegyzés; íráshibánál nincs újrapróba (U0-004).
+4. **Javítva (U0-004):** a vezetett edzés időzítője lépésenként csökkentett számláló volt; háttérben lelassult. Most a valós határidőből számol.
+5. **Javítva (U0-004):** edzés végén a program előbb mentődött, mint a naplóbejegyzés, külön tranzakcióban, újrapróba nélkül. Most egy atomi tranzakció (`store.commit`), hibánál látható üzenet és idempotens újrapróba.
 
 ## Backlog és állapot
 
@@ -35,7 +35,7 @@ Hatókör: kizárólag `forma/`. Engedélyezett: U0 és U1, a `claude/elegant-ha
 | --- | --- | --- |
 | U0-001 | Baseline, adat- és útvonaltérkép | kész (ez a fájl) |
 | U0-003 | Mentési szerződés v2, sorozatnapló-séma, fixture-ök, DST | kész |
-| U0-004 | Tárolási hibabiztonság: edzés mentése újrapróbával, idempotens befejezés, valós idejű időzítő | következő |
+| U0-004 | Tárolási hibabiztonság: edzés mentése újrapróbával, idempotens befejezés, valós idejű időzítő | kész |
 | U0-002 | Normaaudit: dokumentált minőség és korlát a felületen | szakember nélkül csak jelölés |
 | U0-005 | Kamera: megbízhatósági címke, leállítás minden kilépésnél | tervezett |
 | U0-006 | Build/PWA: új modul a cache-ben, frissítés edzés közben | tervezett |
@@ -55,3 +55,4 @@ Hatókör: kizárólag `forma/`. Engedélyezett: U0 és U1, a `claude/elegant-ha
 ## Ellenőrzőpont-napló
 
 - **CP1 – U0-001 + U0-003:** új `js/core/workout-schema.js`, `tests/schema.test.mjs`, `tests/dst.test.mjs`. Unit 88/88, browser 33/33. A DST-tesztek a régi kódon elbuknak (3/5), az újon átmennek.
+- **CP2 – U0-004:** `store.commit` (kv + items egy tranzakcióban), `views-train.js` mentés/újrapróba, valós idejű visszaszámlálás. Új böngészős lépés: íráshibánál sem a napló, sem a program nem változik; az újrapróba pontosan egy bejegyzést ír. Browser 34/34.

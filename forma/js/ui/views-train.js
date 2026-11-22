@@ -2,7 +2,7 @@
 import { h, clear, fmtSec, fmtDate, uid, toast } from './dom.js';
 import { page, card, btn, link, note, list, speak, beep, tickMs, videoSearch, celebrate } from './widgets.js';
 import { D, S, lowImpact } from './data.js';
-import { itemPut, itemGet, itemsAll, kvGet } from './store.js';
+import { itemPut, itemGet, itemsAll, kvGet, commit } from './store.js';
 import { getProgram, setProgram, latestAssessment } from './state.js';
 import { ROTATION, SESSION_TITLES, LADDERS, RATINGS, effLadder, baseLadder, buildSession, sessionSteps, sessionMinutes, nextKey, weekInfo, laddersOf, exerciseFor, applyRatings, doseFor, fitSession, phaseOf, freeSession, partnerSteps, GOALS, CYCLE_WEEKS } from '../core/program.js';
 import { figureStrip, figureAnim } from './figure.js';
@@ -109,6 +109,18 @@ export async function sessionView(key, onCleanup) {
   onCleanup(release);
   try { wake = await navigator.wakeLock.request('screen'); } catch { wake = null; }
 
+  /* Visszaszámlálás a valós eltelt időből: háttérbe kerülés vagy lassú időzítő után is a tényleges hátralévő időt mutatja. */
+  function countdown(onTick, onDone) {
+    const unit = tickMs(), deadline = Date.now() + left * unit;
+    timer = setInterval(() => {
+      const prev = left;
+      left = Math.max(0, Math.ceil((deadline - Date.now()) / unit));
+      if (left === prev) return;
+      onTick();
+      if (prev > 3 && left <= 3 && left > 0) speak('három', voice.checked);
+      if (left <= 0) onDone();
+    }, Math.max(10, Math.round(unit / 4)));
+  }
   const advance = () => { stop(); at++; if (at >= total) finish(false); else show(); };
   /* az utolsó kör után megkérdezzük, milyen volt: ebből jön a szintlépés */
   const next = () => {
@@ -126,10 +138,13 @@ export async function sessionView(key, onCleanup) {
     speak('Milyen volt?', voice.checked);
   }
 
+  /* A mentendő állapot egyszer számolódik ki; újrapróbánál ugyanez íródik (ugyanazzal az azonosítóval), így nincs duplikátum. */
+  let pending = null;
   async function finish(partial) {
     if (finished) return;
     finished = true; release();
-    const minutes = Math.max(1, Math.round((Date.now() - started) / 60000));
+    const endedAt = Date.now();
+    const minutes = Math.max(1, Math.round((endedAt - started) / 60000));
     let changes = [];
     /* az elvégzett gyakorlatok (az első személy lépései, az aktuális ponttal bezárólag) a gyakorlatonkénti előzményhez */
     const doneMap = new Map();
@@ -138,23 +153,39 @@ export async function sessionView(key, onCleanup) {
       d.sets++; if (s.reps) d.reps += s.reps * (s.side === 'both' ? 2 : 1); if (s.seconds) d.seconds += s.seconds; doneMap.set(s.exercise, d);
     });
     const done = [...doneMap.values()].map(d => ({ ex: d.ex, sets: d.sets, ...(d.reps ? { reps: d.reps } : {}), ...(d.seconds ? { seconds: d.seconds } : {}) }));
-    const workoutId = uid();
+    const workoutId = uid(), values = {};
+    let item;
     if (session.free) {
-      if (key.startsWith('routine-')) await blockProgress(key.slice(8));
-      await itemPut({ id: workoutId, kind: 'workout', date: Date.now(), key: key.startsWith('routine-') ? 'routine' : 'custom', title: session.title, minutes, steps: total, partial, ratings: {}, changes: [], done, partner: partner.checked || undefined });
+      item = { id: workoutId, kind: 'workout', date: endedAt, key: key.startsWith('routine-') ? 'routine' : 'custom', title: session.title, minutes, steps: total, partial, ratings: {}, changes: [], done, partner: partner.checked || undefined };
     } else {
       const fresh = (await getProgram()) || prog;
       const res = applyRatings(fresh, ratings, D.exercises.exercises);
       changes = res.changes;
       /* a forgó rendben csak a soron következő edzés teljesítése lép tovább */
       const doneCount = key === nextKey(fresh) ? (fresh.done || 0) + 1 : fresh.done || 0;
-      await setProgram({ ...res.state, done: doneCount, lastDone: Date.now() });
-      await itemPut({ id: workoutId, kind: 'workout', date: Date.now(), key, minutes, steps: total, partial, ratings, changes, light, done, partner: partner.checked || undefined });
+      values.program = { ...res.state, done: doneCount, lastDone: endedAt };
+      item = { id: workoutId, kind: 'workout', date: endedAt, key, minutes, steps: total, partial, ratings, changes, light, done, partner: partner.checked || undefined };
     }
+    pending = { values, item, changes, minutes };
+    bar.value = total; count.textContent = `${total} / ${total} lépés`;
+    clear(stage).append(card(h('p', { role: 'status' }, 'Mentés…')));
+    await save();
+  }
+
+  async function save() {
+    const { values, item, changes, minutes } = pending;
+    try { await commit(values, [item]); }
+    catch {
+      clear(stage).append(card(h('h2', null, 'Az edzést nem sikerült menteni'),
+        h('p', { role: 'alert' }, 'Az eredményed itt még megvan, de a telefon tárolója most nem fogadta. Próbáld újra; ha továbbra sem megy, a lap tetején lévő „Mentés fájlba” gombbal mentsd el az eddigi adataidat.'),
+        h('div', { class: 'row' }, btn('Újrapróba', save, 'primary'))));
+      return;
+    }
+    if (session.free && key.startsWith('routine-')) { try { await blockProgress(key.slice(8)); } catch { /* a blokk számlálója nem létfontosságú */ } }
+    const workoutId = item.id;
     speak('Kész az edzés. Szép munka!', voice.checked);
     if (changes.some(c => c.to > c.from)) celebrate();
     beep(880, 200);
-    bar.value = total; count.textContent = `${total} / ${total} lépés`;
     const lad = laddersOf(D.exercises.exercises);
     clear(stage).append(card(h('h2', null, 'Edzés kész'),
       h('p', { class: 'lead' }, `${session.title}, ${minutes} perc.`),
@@ -204,11 +235,7 @@ export async function sessionView(key, onCleanup) {
     const run = () => {
       if (running) return;
       running = true;
-      timer = setInterval(() => {
-        left--; draw();
-        if (left === 3) speak('három', voice.checked);
-        if (left <= 0) { beep(660, 120); buzz([120, 60, 120]); next(); }
-      }, tickMs());
+      countdown(() => draw(), () => { beep(660, 120); buzz([120, 60, 120]); next(); });
     };
     if (st.type === 'rest') {
       const after = steps[at + 1];
@@ -258,7 +285,7 @@ export async function sessionView(key, onCleanup) {
         instructions(live ? h('details', { class: 'live-box' }, h('summary', null, 'Számolás kamerával'), live.el) : null)), nav);
       speak(ex.name + ', ' + st.reps + ' ismétlés' + (st.side === 'both' ? ' oldalanként' : '') + (S.settings.voiceMode ? '. ' + ex.points.join('. ') : ''), voice.checked);
       /* hangos módban az ismétlések becsült ideje után magától továbblép */
-      if (S.settings.voiceMode) { left = st.reps * 3 * (st.side === 'both' ? 2 : 1) + 6; running = true; timer = setInterval(() => { left--; if (left === 3) speak('három', voice.checked); if (left <= 0) { beep(660, 120); next(); } }, tickMs()); }
+      if (S.settings.voiceMode) { left = st.reps * 3 * (st.side === 'both' ? 2 : 1) + 6; running = true; countdown(() => {}, () => { beep(660, 120); next(); }); }
     }
   }
   /* lapozás: balra húzva tovább, jobbra húzva vissza (az értékelésnél nem) */
