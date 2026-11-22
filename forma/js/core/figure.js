@@ -8,6 +8,19 @@ const R = Math.PI / 180;
 const step = (p, a, len) => ({ x: p.x + Math.sin(a * R) * len, y: p.y + Math.cos(a * R) * len });
 
 export function figurePoints(pose) {
+  /* Egyedi vetület a bútoros, függeszkedő és szemből mutatott gyakorlatokhoz.
+     A koordináták kézzel szerkesztett szemléltető ábrák, nem pózbecslő-adatok. */
+  if (pose.points) {
+    const point = ([x, y]) => ({ x, y });
+    const p = pose.points;
+    const out = { pelvis: point(p.pelvis), neck: point(p.neck), head: point(p.head),
+      armN: p.armN.map(point), armF: p.armF.map(point), legN: p.legN.map(point), legF: p.legF.map(point) };
+    const all = [out.pelvis, out.neck, ...out.armN, ...out.armF, ...out.legN, ...out.legF];
+    out.ground = pose.ground ?? Math.max(...all.map(p => p.y));
+    out.box = { x0: Math.min(...all.map(p => p.x), out.head.x - LEN.head), x1: Math.max(...all.map(p => p.x), out.head.x + LEN.head),
+      y0: Math.min(...all.map(p => p.y), out.head.y - LEN.head), y1: Math.max(out.ground, out.head.y + LEN.head, ...all.map(p => p.y)) };
+    return out;
+  }
   const pelvis = { x: 0, y: 0 };
   const neck = step(pelvis, pose.t, LEN.torso);
   const head = step(neck, pose.h ?? pose.t, LEN.neck);
@@ -34,8 +47,11 @@ export function lerpPose(a, b, f) {
   const out = {};
   for (const k of new Set([...Object.keys(a), ...Object.keys(b)])) {
     const x = a[k], y = b[k];
-    if (Array.isArray(x) && Array.isArray(y)) out[k] = x.map((v, i) => lerpA(v, y[i] ?? v, f));
-    else if (typeof x === 'number' && typeof y === 'number') out[k] = k === 'lift' ? x + (y - x) * f : lerpA(x, y, f);
+    if (k === 'points' && x && y) {
+      const mix = (p, q) => p.map((v, i) => v + (q[i] - v) * f);
+      out[k] = Object.fromEntries(Object.keys(x).map(key => [key, Array.isArray(x[key][0]) ? x[key].map((p, i) => mix(p, y[key][i])) : mix(x[key], y[key])]));
+    } else if (Array.isArray(x) && Array.isArray(y)) out[k] = x.map((v, i) => lerpA(v, y[i] ?? v, f));
+    else if (typeof x === 'number' && typeof y === 'number') out[k] = k === 'lift' || k === 'ground' ? x + (y - x) * f : lerpA(x, y, f);
     else out[k] = x ?? y;
   }
   return out;

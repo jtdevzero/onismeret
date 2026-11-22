@@ -226,21 +226,29 @@ export async function sessionView(key, onCleanup) {
     const points = h('ul', { class: 'plain' }, ex.points.map(p => h('li', null, p)));
     const more = link('#/ex/' + ex.id, 'Leírás');
     const swap = st.part === 'main' ? swapRow(st, ex) : null;
+    const upcoming = steps[at + 1];
+    const nextHint = h('p', { class: 'next-up' }, upcoming ? 'Következik: ' + (upcoming.type === 'rest' ? 'Pihenő' : D.ex[upcoming.exercise].name) : 'Ez az utolsó lépés.');
+    const instructions = (...extra) => h('details', { class: 'workout-details' }, h('summary', null, 'Instrukciók és gyakorlatcsere'), points, swap, extra, more);
+    const focus = (...kids) => h('section', { class: 'card workout-focus' }, h('div', { class: 'workout-heading' }, head), kids);
     if (st.seconds) {
       left = st.seconds; draw();
       const go = btn('Indítás', () => { go.hidden = true; pause.hidden = false; run(); }, 'primary');
       const pause = btn('Szünet', () => { if (running) { stop(); pause.textContent = 'Folytatás'; } else { pause.textContent = 'Szünet'; run(); } });
       pause.hidden = true;
-      clear(stage).append(card(head, st.side ? h('p', { class: 'badge' }, SIDE[st.side]) : null, figureAnim(D.figures[ex.figure], { compact: true }), ring.el, points,
-        h('div', { class: 'row' }, go, pause, btn('Kész, tovább', next)), swap, more), nav);
+      clear(stage).append(focus(st.side ? h('p', { class: 'badge' }, SIDE[st.side]) : null,
+        h('div', { class: 'workout-visual' }, figureAnim(D.figures[ex.figure], { compact: true }), h('div', { class: 'workout-readout' }, ring.el, h('p', { class: 'workout-unit' }, 'másodperc'))),
+        h('p', { class: 'workout-cue' }, ex.points[0]),
+        h('div', { class: 'row workout-actions' }, go, pause, btn('Kész, tovább', next)), nextHint, instructions()), nav);
       speak(ex.name + (st.side ? ', ' + SIDE[st.side] : '') + ', ' + st.seconds + ' másodperc', voice.checked);
     } else {
       const live = st.part === 'main' ? liveCounter(ex.id, { startLabel: 'Számolj kamerával' }) : null;
       if (live) liveStop = live.stop;
-      clear(stage).append(card(head, figureAnim(D.figures[ex.figure], { compact: true }), h('div', { class: 'workout-clock reps' }, String(st.reps)),
-        h('p', { class: 'workout-unit' }, 'ismétlés' + (st.side === 'both' ? ' oldalanként' : '')), points,
-        h('div', { class: 'row' }, btn('Kész, tovább', next, 'primary')), swap,
-        live ? h('details', { class: 'live-box' }, h('summary', null, 'Számolás kamerával'), live.el) : null, more), nav);
+      clear(stage).append(focus(
+        h('div', { class: 'workout-visual' }, figureAnim(D.figures[ex.figure], { compact: true }), h('div', { class: 'workout-readout' }, h('div', { class: 'workout-clock reps' }, String(st.reps)),
+          h('p', { class: 'workout-unit' }, 'ismétlés' + (st.side === 'both' ? ' oldalanként' : '')))),
+        h('p', { class: 'workout-cue' }, ex.points[0]),
+        h('div', { class: 'row workout-actions' }, btn('Kész, tovább', next, 'primary')), nextHint,
+        instructions(live ? h('details', { class: 'live-box' }, h('summary', null, 'Számolás kamerával'), live.el) : null)), nav);
       speak(ex.name + ', ' + st.reps + ' ismétlés' + (st.side === 'both' ? ' oldalanként' : '') + (S.settings.voiceMode ? '. ' + ex.points.join('. ') : ''), voice.checked);
       /* hangos módban az ismétlések becsült ideje után magától továbblép */
       if (S.settings.voiceMode) { left = st.reps * 3 * (st.side === 'both' ? 2 : 1) + 6; running = true; timer = setInterval(() => { left--; if (left === 3) speak('három', voice.checked); if (left <= 0) { beep(660, 120); next(); } }, tickMs()); }
@@ -257,16 +265,20 @@ export async function sessionView(key, onCleanup) {
   });
   show();
   if (S.settings.voiceMode) stage.classList.add('voice-mode');
-  return page(session.title,
+  const view = page(session.title,
     h('p', { class: 'muted' }, `Kb. ${sessionMinutes(steps)} perc · ${session.blocks.length} gyakorlat` + (session.week.deload ? ' · könnyített hét' : '') + (light ? ' · könnyített edzés, értékelés nélkül' : '') + (session.fit ? ` · ${session.fit.target} perces keretre igazítva` : '')),
-    bar, h('div', { class: 'row tight workout-meta' }, count, h('label', { class: 'check' }, voice, h('span', null, 'Hangos bemondás'))),
-    h('label', { class: 'check small' }, partner, h('span', null, 'Ketten csináljuk (felváltva, egy telefonon)')),
+    bar, count,
     session.returning ? note('Üdv újra! Két hétnél hosszabb szünet után óvatosabban indulunk: minden gyakorlatból eggyel kevesebb kör.', 'small') : null,
     session.goalFocus ? note('Célprogram: ' + (GOALS.find(([k]) => k === session.goalFocus) || ['', ''])[1] + '. Ez a gyakorlatsor plusz kört kap.', 'small') : null,
-    h('p', { class: 'small muted swipe-hint' }, 'Tipp: balra húzva a következő lépésre ugrasz, jobbra húzva vissza.'),
     session.complaints.length ? note('Panaszmód: ' + session.complaints.map(c => ({ knee: 'térd', back: 'derék', shoulder: 'váll' })[c]).join(', ') + '. Csak fájdalommentes tartományban mozogj.', 'warn') : null,
     note('Ha valami fáj, hagyd ki, vagy válts könnyebbre. Szédülés vagy mellkasi panasz esetén azonnal állj meg.', 'small'),
-    stage);
+    stage,
+    h('details', { class: 'card session-options' }, h('summary', null, 'Edzés beállításai'),
+      h('label', { class: 'check' }, voice, h('span', null, 'Hangos bemondás')),
+      h('label', { class: 'check small' }, partner, h('span', null, 'Ketten csináljuk (felváltva, egy telefonon)')),
+      h('p', { class: 'small muted swipe-hint' }, 'Tipp: balra húzva a következő lépésre ugrasz, jobbra húzva vissza.')));
+  view.classList.add('session-page');
+  return view;
 }
 
 export async function exerciseView(id, onCleanup) {

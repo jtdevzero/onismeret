@@ -2,10 +2,10 @@
 
 Élő változat (a `main` ágról, GitHub Pages): https://jtdevzero.github.io/onismeret/forma/
 
-Telefonra telepíthető webapp. Felméri, hol tartasz a korosztályodhoz képest, és napi rövid, eszköz nélküli edzéssel visz a korosztályos szintre, majd afölé.
+Telefonra telepíthető webapp. Segít felmérni az erősségeidet és a fejlesztendő területeket, majd napi rövid, eszköz nélküli edzést ajánl. Egyes tesztek korosztályos normához viszonyítanak; a területi és összesített pontszám a Forma saját skálája.
 
 - **Felmérés (kb. 25 perc, 15 teszt):** mély guggolás, váll- és bokamobilitás, ülve előrenyúlás, csípőhajlító-teszt, fekvőtámasz, 30 mp felállás székről, plank, helyből távolugrás, gyors lábmunka, reakcióidő, felugrás (kamerával), egylábas állás csukott szemmel, leülés–felállás a földről, 3 perces lépcsőteszt. Vezetett tesztek visszaszámlálással, stopperrel, ismétlésszámlálóval, metronómmal. Részletekben is elvégezhető.
-- **Kiértékelés:** hét terület (mobilitás, hajlékonyság, erő, törzs, gyorsaság, egyensúly, állóképesség) 0–100 pontos skálán, kor és nem szerinti percentilisekkel, pókhálóábrával. **Fittségi kor** a Nes-féle (HUNT) edzés nélküli VO₂max-becslésből.
+- **Kiértékelés:** hét terület (mobilitás, hajlékonyság, erő, törzs, gyorsaság, egyensúly, állóképesség) 0–100 pontos skálán, pókhálóábrával. A normatesztek külön kor és nem szerinti percentilist kapnak; a területi és összesített átlag nem percentilis. Saját pontszámsávok: 40 alatt alacsony, 40-től közepes, 75-től magas. **Fittségi kor** a Nes-féle (HUNT) edzés nélküli VO₂max-becslésből.
 - **Program:** hétnapos forgó rend (3 erőnap, 2 gyorsasági nap, 2 mobilitásnap). Minden nap a leggyengébb ízületekre szabott mobilitással indul. A gyakorlatok szintekre bontott sorokban vannak (pl. fekvőtámasz falnál → … → megemelt lábbal); két „könnyű” értékelés után nehezebb változat jön. 5 hét terhelés, 1 könnyített hét, utána újramérés.
 - **Egyéb:** vezetett edzés hangos bemondással, napló, fejlődés felmérésről felmérésre (tesztenként is), napi emlékeztető naptárfájlként (.ics), kímélő (ugrásmentes) mód, PAR-Q+ alapú egészségügyi szűrés, mentés fájlba és visszatöltés ellenőrzéssel (telefoncseréhez). Offline is működik.
 - **Állóképesség:** kardió napló (séta, kocogás, futás, kerékpár, úszás), heti 150 perces WHO-cél (az intenzív perc duplán számít), személyre szabott pulzuszónák (Tanaka-maximum, Karvonen-féle pulzustartalék a felmérés nyugalmi pulzusából), szinttől függő heti javaslat.
@@ -41,6 +41,7 @@ Telefonra telepíthető webapp. Felméri, hol tartasz a korosztályodhoz képest
 
 ## Állapot: mit tud és mit nem
 
+- **Lépcsőteszt:** a 3 perc lépcsőzés után ülve, a következő teljes 60 másodpercben számolt összes szívverést kell megadni. Az óra egy perc végén kijelzett pillanatnyi pulzusa más mérés. A tesztleírás verziója `2026-11-22.2`; korábbi verzióval nem jelenik meg pontszámváltozás, a mentett pontszámok megmaradnak. Korábbi pillanatnyi pulzusból a teljes perces érték nem rekonstruálható; új mérés szükséges.
 - **Újramérés:** a frissen mért teljesítmény lefelé is módosíthatja a gyakorlat szintjét. Kihagyott tesztnél a korábbi szint megmarad; guggolási vagy vállfájdalom jelzésénél a kapcsolódó eszközös változatok is a legkönnyebb szintre kerülnek.
 - **Megőrzött kiértékelés:** az új felmérésekhez az eredményt és a pontozás, a normák, illetve a tesztek verzióját is elmentjük. Frissítés és export/import után az eredeti pontszám marad látható. Verzió nélküli régi adatnál az app jelzi az aktuális normákkal végzett újraszámolást; eltérő verziókból nem számít pontszámváltozást vagy előrejelzést. Új program mindig az aktuális normákkal készül. Norma- vagy tesztmódosításkor a megfelelő JSON `version` mezőjét, számításmód-változáskor a `SCORING_VERSION` értékét is növelni kell.
 - **Biztonságos visszatöltés:** a meglévő adatok cseréje egyetlen IndexedDB-tranzakcióban történik. Hiba vagy megszakítás esetén az eredeti adatok megmaradnak. A memória módot és a sikertelen írást állandó figyelmeztetés jelzi; memória módban az import nem tölti újra az oldalt.
@@ -48,7 +49,7 @@ Telefonra telepíthető webapp. Felméri, hol tartasz a korosztályodhoz képest
 
 - A normák **egy része becsült** (`"quality": "B"` a `data/norms.json`-ban): a fekvőtámasz és az ülve előrenyúlás CSEP-norma, a többi több forrásból becsült érték. Az app ezt tesztenként jelzi.
 - A normákat, a teszteket és a gyakorlatokat **szakember még nem lektorálta** (`"reviewed": false`).
-- 53 gyakorlatból 41-hez van pálcikafigurás ábra (egy részük a Kanyarból). Ábra nélkül maradt, ami bútort igényel (asztal, szék), és néhány oldalt fekvő vagy szemből értelmezhető gyakorlat.
+- Mind a 70 gyakorlathoz van egységes vektorábra. A bútoros és eszközös mozdulatoknál a támasz, rúd, szalag vagy súly is megjelenik. Az új koordinátás vetületek szemléltető rajzok; szakmai lektorálásuk még hátravan.
 - A kamerás elemzés **szintetikus mozgásadatokon** van tesztelve; valódi felvételen még nincs kalibrálva, a formaküszöbök szakmai becslések. A mért eredményt az app beírja, de javítható. A kamerás mérés után a „Mérési adat letöltése” gomb a testpontokat (kép nélkül) fájlba menti: ezekből lehet a küszöböket valódi mozgáson hangolni.
 - Nincs benne: szinkron több eszköz között, AI-edző.
 - Nem orvosi eszköz.
@@ -74,6 +75,16 @@ Generált fájl az `index.html` és az `sw.js`: ne szerkeszd kézzel, futtasd a 
 python3 forma/build.py                    # index.html és sw.js
 node --test forma/tests/*.test.mjs        # pontozás, program, tartalom, build
 node forma/tests/browser.cjs              # böngészős végpontteszt (FORMA_SHOTS=mappa: képernyőképek)
+node forma/tests/onboarding.cjs           # első indítás a #/ linken, mentési hiba és újrapróba
 node forma/tests/pose-smoke.cjs           # a valódi pózbecslő betöltése
 python3 -m http.server 8765               # helyi kipróbálás: http://localhost:8765/forma/
 ```
+
+## Forma stúdió és indulási javítás
+
+- Saját, generált naplementés sportillusztráció: `assets/forma-sunset.webp` (kb. 192 kB). A build előtölti és az offline csomagba is felveszi; a CSP továbbra is csak saját forrást enged.
+- Edzés közben a mozdulat és az idő/ismétlés a fő elem, alatta egy rövid instrukció és a következő lépés. A részletes leírás és gyakorlatcsere, valamint a hang és partner mód külön lenyitható.
+- Az eredményoldal rövid összefoglalóval indul; a részletes magyarázat és pontozási verzió a „Mit jelentenek ezek a számok?” részben olvasható. A becslés korlátaira utaló rövid jelzés mindig látszik.
+- A Fejlődés oldalon az elmúlt 42 naptári nap naplóadataiból hathetes kártya készül, helyben letölthető 1080 × 1080-as PNG-ként. Pontszámkülönbséget csak az időszakon belüli, azonos pontozású és azonos teszt-/területkészletű felmérésekből számít; a ténylegesen eltelt mérési napok is szerepelnek rajta.
+- A „Kezdjük” akkor is továbblép, ha az első indítás eleve a `#/` címen történik. Mentési hibánál látható üzenet és újrapróba jelenik meg; a még el nem mentett beállítások nem számítanak elfogadottnak.
+- Opcionális WebKit-ellenőrzés (ha a motor és rendszerkönyvtárai telepítve vannak): `FORMA_BROWSER=webkit node forma/tests/onboarding.cjs`.
