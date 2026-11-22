@@ -3,7 +3,7 @@ import { h } from './dom.js';
 import { card, link } from './widgets.js';
 import { D, profile, weeklyGoal } from './data.js';
 import { generateLocalInsights } from '../core/coach-rules.js';
-import { dumbbellExercises } from './views-train.js';
+import { dumbbellExercises } from './helpers.js';
 
 const ICON = { safety: '⚠', recovery: '◐', consistency: '◷', progress: '↗', info: 'ℹ' };
 

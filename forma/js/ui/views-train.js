@@ -9,6 +9,7 @@ import { ROTATION, SESSION_TITLES, LADDERS, RATINGS, effLadder, baseLadder, buil
 import { figureStrip, figureAnim } from './figure.js';
 import { weekStrip } from './views-main.js';
 import { liveCounter } from './live.js';
+import { dumbbellExercises } from './helpers.js';
 import { suggestProgression, applyLoadChange } from '../core/progression.js';
 import { plannedLog, cleanLog, cleanRpe, mergeDone, WORKOUT_SCHEMA } from '../core/workout-schema.js';
 import { blockProgress } from './views-extra.js';
@@ -142,11 +143,6 @@ function levelsCard(prog, lad) {
 }
 
 /* Súlyok súlyzós gyakorlatokhoz: elfogadott súly, javaslat indoklással, jóváhagyás vagy kézi beállítás. */
-/* a program jelenlegi súlyzós gyakorlatai (a súlyjavaslathoz és a helyi edzőhöz) */
-export function dumbbellExercises(prog, lad = laddersOf(D.exercises.exercises)) {
-  if (!prog || !(prog.equipment || []).includes('dumbbell')) return [];
-  return LADDERS.filter(l => effLadder(baseLadder(l), prog.equipment) === l).map(l => exerciseFor(lad, l, (prog.levels || {})[l], prog.lowImpact)).filter(e => e && e.equipment === 'dumbbell');
-}
 async function loadsCard(prog, lad) {
   const exs = dumbbellExercises(prog, lad);
   if (!exs.length) return null;

@@ -120,7 +120,7 @@ export function countUp(el, target, suffix = '', ms = 700) {
 
 /* Napszak a nyitórajzhoz: reggel, nappal, naplemente, éjszaka. */
 /* Fejlécképek (assets/art/): edzéstípusonként. Nem töltődnek le előre: első megnyitáskor jönnek, utána offline is megvannak. */
-export const ART = { strength: ['strength', 'strength2'], speed: ['speed', 'speed2'], mobility: ['mobility', 'mobility2'], cardio: ['cardio', 'swim'], home: ['home'], progress: ['climb'], run: ['speed2'], kick: ['kick'] };
+export const ART = { strength: ['strength', 'strength2', 'curl', 'press', 'pushup', 'plank'], speed: ['speed', 'speed2', 'runner'], mobility: ['mobility', 'mobility2', 'balance', 'walk'], cardio: ['cardio', 'swim', 'ride', 'spin'], home: ['home', 'walk'], progress: ['progress2', 'climb', 'flag'], run: ['duo-run', 'night-run', 'speed2'], kick: ['kick'] };
 export function artClass(kind, d = new Date()) {
   const k = String(kind || '').startsWith('strength') ? 'strength' : String(kind || '').startsWith('speed') ? 'speed' : kind;
   const list = ART[k] || ART.home;

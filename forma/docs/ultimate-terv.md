@@ -78,6 +78,11 @@ Hatókör: kizárólag `forma/`. Engedélyezett: U0 és U1, a `claude/elegant-ha
 - **CP14 – szakmai átnézés:** `reviewed: true`, `reviewDate: 2026-11-22` a normákon, teszteken és gyakorlatokon (a tulajdonos közlése alapján); a normaverzió nem változott.
 - **CP15 – U2-203 helyi edző:** `core/coach-rules.js` (`tests/coach.test.mjs`), `ui/views-coach.js`: legfeljebb 3 megfigyelés bizonyítékkal, a Ma képernyőn 1. Unit 134/134, browser 40/40.
 
+- **CP16 – arculat 2:** Anton display betű (OFL, helyben), erősebb naplemente-paletta, 24 saját illusztráció; kontrasztteszt a címek színeire.
+- **CP17 – mentés:** emlékeztető (14 nap), küldés e-mailben a megosztó ablakkal, dátumos fájlnév, tartós tárolás kérése.
+- **CP18 – egyszerűsítés és sebesség:** Több és Fejlődés átrendezve; a nagy képernyők dinamikus importtal (hideg indulás 4,3 s → 3,3 s, 427 → 264 kB).
+- **CP19 – U3-304 angol (béta):** `ui/i18n.js`, `ui/i18n-en.js` (kulcs = magyar szöveg), nyelvválasztó; angolul a menü, a bevezetés, a kezdőlap és a Több oldal. A többi képernyő és az adatfájlok (tesztleírások, gyakorlatok, rutinok) fordítása hátravan; a szakmai szövegek angol változatát ellenőriztetni kell.
+
 ## Következő lépések
 
 1. U1-115: WebKit és valódi eszközös próba (a felhasználó telefonján).

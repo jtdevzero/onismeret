@@ -100,11 +100,15 @@ test('gyorsítás: minden modul előre jelezve (a pózbecslőt kivéve, az csak 
   const html = readFileSync(new URL('index.html', root), 'utf8');
   assert.ok((html.match(/rel="modulepreload"/g) || []).length >= 30);
   assert.doesNotMatch(html, /modulepreload" href="js\/ui\/pose\.js"/);
+  /* a nagy, később megnyitott képernyők nem töltődnek az első képernyő előtt (az offline csomagban viszont benne vannak) */
+  for (const m of ['views-assess', 'views-train', 'views-progress', 'live', 'views-run', 'views-library', 'views-posture']) assert.doesNotMatch(html, new RegExp(`modulepreload" href="js/ui/${m}\\.js"`), m);
+  const sw = readFileSync(new URL('sw.js', root), 'utf8');
+  for (const m of ['views-assess', 'views-train', 'views-progress', 'live']) assert.ok(sw.includes(`"js/ui/${m}.js"`), m + ' az offline csomagban');
 });
 
 test('fejlécképek: minden CSS-ben hivatkozott kép létezik, 150 kB alatti, és a service worker futás közben gyorsítótárazza', () => {
   const css = readFileSync(new URL('styles.css', root), 'utf8');
-  const refs = [...new Set([...css.matchAll(/url\((assets\/art\/[a-z0-9]+\.webp)\)/g)].map(m => m[1]))];
+  const refs = [...new Set([...css.matchAll(/url\((assets\/art\/[a-z0-9-]+\.webp)\)/g)].map(m => m[1]))];
   assert.ok(refs.length >= 8);
   for (const r of refs) { assert.ok(existsSync(new URL(r, root)), r); assert.ok(readFileSync(new URL(r, root)).length < 150 * 1024, r + ' túl nagy'); }
   const sw = readFileSync(new URL('sw.js', root), 'utf8');

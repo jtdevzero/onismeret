@@ -1,4 +1,5 @@
 /* Fejlődés: rekordok, jelvények, célok, testméretek, és a félidős mini-teszt. */
+import { GOAL_METRICS } from './helpers.js';
 import { trainingLoadCard, exerciseTrendCard, recoveryTimelineCard } from './views-analytics.js';
 import { coachCard } from './views-coach.js';
 import { h, clear, fmtDate, uid, toast } from './dom.js';
@@ -17,10 +18,7 @@ import { MINI_TESTS, records, badges, bodyTrend, currentFitnessAge, goalProgress
 
 const reload = hash => { location.hash = hash; dispatchEvent(new HashChangeEvent('hashchange')); };
 const numericTests = () => D.tests.tests.filter(t => t.kind === 'norm' && t.input.type === 'number');
-export const GOAL_METRICS = () => [
-  ...numericTests().map(t => [t.id, t.name, t.input.unit]),
-  ['fitness_age', 'Fittségi kor', 'év'], ['waist', 'Derékbőség', 'cm'], ['weight', 'Testsúly', 'kg'],
-];
+export { GOAL_METRICS };
 const metricName = id => (GOAL_METRICS().find(m => m[0] === id) || [id, id, ''])[1];
 const metricUnit = id => (GOAL_METRICS().find(m => m[0] === id) || [id, id, ''])[2];
 
@@ -53,7 +51,6 @@ export async function progressView(arg, onCleanup) {
   const coachProg = await getProgram();
   return page('Fejlődés',
     artBanner('progress', 'A saját történeted', 'Lépésről lépésre feljebb'),
-    progressCard(items),
     coachProg ? coachCard(coachProg, items) : null,
     trainingLoadCard(items),
     exerciseTrendCard(items),
@@ -85,6 +82,7 @@ export async function progressView(arg, onCleanup) {
         await itemPut({ id: uid(), kind: 'goal', date: Date.now(), metric: gs.metric, start, target, deadline });
         toast('Elmentettem a célt.'); reload('#/progress');
       }, 'primary'))),
+    progressCard(items),
     card(h('h2', null, 'Jelvények'), h('p', { class: 'small muted' }, `${bs.filter(b => b.earned).length} / ${bs.length} megszerezve. Csak a saját eredményeidhez mérve.`),
       h('ul', { class: 'badges' }, bs.map(b => h('li', { class: 'badge-item' + (b.earned ? ' earned' : '') },
         h('span', { class: 'badge-ic', 'aria-hidden': 'true' }, b.earned ? '★' : '☆'),

@@ -14,7 +14,7 @@ const lum = hex => { const c = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 
 const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
 
 const TEXT = [['text', 'bg'], ['text', 'surface'], ['muted', 'surface'], ['muted', 'bg'], ['accent-text', 'accent'], ['accent', 'surface'], ['good', 'good-bg'], ['warn', 'warn-bg'], ['danger', 'surface']];
-const UI = [['teal', 'surface'], ['accent', 'bg']];
+const UI = [['teal', 'surface'], ['accent', 'bg'], ['title-b', 'bg'], ['title-b', 'bg-2'], ['accent', 'bg-2']]; /* a színátmenetes oldalcímek két vége (nagy betű: 3:1) */
 
 for (const [name, t] of [['világos', light], ['sötét', dark], ...(sun ? [['napfény', sun]] : [])]) {
   test(`kontraszt (${name} téma): szöveg legalább 4,5:1, felületi elem legalább 3:1`, () => {
