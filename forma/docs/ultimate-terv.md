@@ -74,12 +74,15 @@ Hatókör: kizárólag `forma/`. Engedélyezett: U0 és U1, a `claude/elegant-ha
 - **CP11 – arculat:** 11 saját illusztráció WebP-ben (65–117 kB), futás közbeni service worker gyorsítótár (`forma-art-…`), teszt a méretre és a hivatkozásokra.
 - **CP12 – U1-111/114/104:** napi kérdőív bejegyzésként (`kind: 'check'`), regenerációs idősor, oszlopdiagram, első hét lista, kontrasztteszt. Unit 127/127, browser 39/39, focus 3/3.
 
+- **CP13 – U1-112/106/109:** beállítható heti edzéscél, edzés közbeni rögzítés (−/+, valós tartásidő), tartós csere, a forgó rend napjainak átrendezése (`rotationOf`, `moveDay`; csak ugyanazokból a napokból).
+- **CP14 – szakmai átnézés:** `reviewed: true`, `reviewDate: 2026-11-22` a normákon, teszteken és gyakorlatokon (a tulajdonos közlése alapján); a normaverzió nem változott.
+- **CP15 – U2-203 helyi edző:** `core/coach-rules.js` (`tests/coach.test.mjs`), `ui/views-coach.js`: legfeljebb 3 megfigyelés bizonyítékkal, a Ma képernyőn 1. Unit 134/134, browser 40/40.
+
 ## Következő lépések
 
-1. U1-112: szokáscél (heti edzésszám) beállíthatóvá tétele, külön a teljesítménycéloktól.
-2. U1-109 folytatás: tartós gyakorlatcsere és napok átrendezése.
-3. U1-115: WebKit és valódi eszközös próba.
-4. U2/U3: döntések kellenek (lásd lent).
+1. U1-115: WebKit és valódi eszközös próba (a felhasználó telefonján).
+2. U2-201/202: kamerás validáció valódi felvételekkel.
+3. U2-204/205 és U3: döntések kellenek (lásd lent).
 
 ## Döntésre vár (U2/U3)
 

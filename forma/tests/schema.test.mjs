@@ -150,3 +150,11 @@ test('tervezett napló: az edzés közben rögzített tényleges érték felül�
     { ex: 'plank', sets: [{ seconds: 22, done: true }, { seconds: 0, done: true }] },
   ]);
 });
+
+test('mentésfájl: az egyéni sorrend átmegy, az érvénytelen kimarad', () => {
+  const rot = ['strengthA', 'mobility', 'speedA', 'strengthB', 'speedB', 'strengthC', 'mobility'];
+  const ok = parseBackup(JSON.stringify({ ...legacyFile, version: 2, program: { ...legacyFile.program, rotation: rot } }), ctx);
+  assert.deepEqual(ok.data.program.rotation, rot);
+  const bad = parseBackup(JSON.stringify({ ...legacyFile, version: 2, program: { ...legacyFile.program, rotation: ['strengthA', 'strengthA', 'speedA', 'strengthB', 'speedB', 'strengthC', 'mobility'] } }), ctx);
+  assert.equal(bad.data.program.rotation, undefined);
+});

@@ -82,6 +82,7 @@ export function parseBackup(text, ctx) {
       fromAssessment: str(p.fromAssessment),
       cycleBase: num(p.cycleBase, 0, 1000),
       goalFocus: ['push', 'pull', 'squat', 'core', 'power', 'balance'].includes(p.goalFocus) ? p.goalFocus : undefined,
+      rotation: Array.isArray(p.rotation) && p.rotation.length === 7 && p.rotation.every(k => ctx.sessionKeys.includes(k)) && [...p.rotation].sort().join() === ['mobility', 'mobility', 'speedA', 'speedB', 'strengthA', 'strengthB', 'strengthC'].join() ? [...p.rotation] : undefined,
       loads: loadsOf(p.loads, ctx.exerciseIds),
       loadLog: Array.isArray(p.loadLog) ? p.loadLog.filter(c => c && exOk(c.ex, ctx.exerciseIds)).map(c => clean({ ex: c.ex, from: num(c.from, 0, 300), to: num(c.to, 0, 300), date: num(c.date, 0, 1e14), source: c.source === 'suggestion' ? 'suggestion' : 'manual' })).filter(c => c.to !== undefined && c.date !== undefined).slice(-100) : undefined,
     });

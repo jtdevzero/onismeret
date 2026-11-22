@@ -221,7 +221,22 @@ export function buildSession(key, state, exercises, now = Date.now(), opts = {})
   return { key, title: SESSION_TITLES[key], blocks, week: wk, light: !!opts.light, returning, phase, complaints: state.complaints || [], goalFocus: state.goalFocus || null };
 }
 
-export const nextKey = state => ROTATION[(state.done || 0) % ROTATION.length];
+/* A forgó rend sorrendje: a felhasználó átrendezheti, de csak ugyanazokból a napokból (ugyanannyi erő-, gyorsasági és
+   mobilitásnap), így a heti terhelés összetétele nem változik. Érvénytelen sorrendnél az alap marad. */
+export function isRotation(list) {
+  if (!Array.isArray(list) || list.length !== ROTATION.length) return false;
+  const a = [...list].sort().join(','), b = [...ROTATION].sort().join(',');
+  return a === b;
+}
+export const rotationOf = state => (state && isRotation(state.rotation) ? state.rotation : ROTATION);
+/* két nap felcserélése a sorrendben (i ↔ j); a bemenetet nem módosítja */
+export function moveDay(state, i, j) {
+  const r = [...rotationOf(state)];
+  if (!Number.isInteger(i) || !Number.isInteger(j) || i < 0 || j < 0 || i >= r.length || j >= r.length || i === j) return state;
+  [r[i], r[j]] = [r[j], r[i]];
+  return { ...state, rotation: r.join() === ROTATION.join() ? undefined : r };
+}
+export const nextKey = state => { const r = rotationOf(state); return r[(state.done || 0) % r.length]; };
 
 /* Lépések a vezetett edzéshez. exById: { id: gyakorlat } */
 export function sessionSteps(session, exById) {

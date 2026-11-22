@@ -750,3 +750,11 @@ details.more-group[open] > summary::after { content: "▴"; }
 /* ismétlés javítása edzés közben */
 .reps-adjust { display: flex; justify-content: center; gap: 10px; margin-top: 6px; }
 .reps-adjust .btn.icon { min-width: 44px; min-height: 44px; padding: 0; font-size: 1.3rem; line-height: 1; }
+
+/* helyi edző */
+.coach-list { display: grid; gap: 12px; margin: 6px 0; }
+.coach-item { display: flex; gap: 10px; align-items: flex-start; }
+.coach-item p { margin: 0 0 4px; }
+.coach-ic { flex: none; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); font-weight: 800; }
+.coach-item.safety .coach-ic { background: var(--warn-bg); color: var(--warn); }
+.coach-item.progress .coach-ic { background: var(--good-bg); color: var(--good); }
