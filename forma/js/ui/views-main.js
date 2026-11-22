@@ -165,8 +165,9 @@ export async function homeView() {
       h('a', { class: 'tile mini', href: '#/program', 'aria-label': tr('Heti cél: {p0} edzés a {p1}-ből, {p2} kardióperc a 150-ből', { p0: ww.n, p1: ww.goal, p2: cw.equivalent }) },
         h('span', { class: 'muted small' }, tr('Heti cél')), h('strong', null, `${ww.n} / ${ww.goal}`), h('progress', { max: 100, value: ww.pct, 'aria-hidden': 'true' }),
         h('span', { class: 'small muted' }, tr('kardió {a} / {b} p', { a: cw.equivalent, b: cw.goal }))),
-      h('a', { class: 'tile mini', href: rec ? '#/check/' + key : '#/pulse', 'aria-label': rec ? tr('Regeneráció: {p0} a 100-ból', { p0: rec.score }) : tr('Regeneráció: mérd a reggeli pulzusod') },
-        h('span', { class: 'muted small' }, tr('Regeneráció')), h('strong', null, rec ? `${rec.score}` : '–'), rec ? h('span', { class: 'badge ' + (rec.level === 'go' ? 'good' : rec.level === 'light' ? 'mid' : 'warn') }, { go: tr('mehet'), light: tr('könnyíts'), rest: tr('pihenj') }[rec.level]) : h('span', { class: 'small muted' }, tr('reggeli pulzus →')))));
+      h('a', { class: 'tile mini', href: '#/check/' + key, 'aria-label': rec ? tr('Regeneráció: {p0} a 100-ból', { p0: rec.score }) : tr('Napi közérzetellenőrzés indítása') },
+        h('span', { class: 'muted small' }, tr('Regeneráció')), h('strong', null, rec ? `${rec.score}` : '–'), rec ? h('span', { class: 'badge ' + (rec.level === 'go' ? 'good' : rec.level === 'light' ? 'mid' : 'warn') }, { go: tr('mehet'), light: tr('könnyíts'), rest: tr('pihenj') }[rec.level]) : h('span', { class: 'small muted' }, tr('Napi ellenőrzés →')),
+        rec?.confidence === 'limited' ? h('span', { class: 'small muted' }, tr('Korlátozott adat')) : null)));
   } else {
     kids.push(h('section', { class: 'hero ' + heroTime() + ' ' + artClass('home') }, h('h1', null, tr('Forma')), h('div', { class: 'hero-next' }, h('h2', null, tr('Megvan a felmérés')),
       h('p', null, tr('Nézd meg az eredményt, és készítsd el belőle a programodat.')), link('#/result', tr('Eredmény és program'), 'btn primary home-start'))));

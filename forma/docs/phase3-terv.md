@@ -48,6 +48,12 @@ Kizárólag `forma/`, a Phase 2 fejlesztői változatára épülve. A Phase 2 va
 - `tests/home-action.test.mjs`: folytatható, lezárt, sérült és idegen edzés esetei; `i18n-en.js`: új magyar és angol szövegek. Build **PASS**, unit **165/165 PASS**.
 - A valós iOS/Android kezdőlapi megjelenítés, e2e navigáció és offline visszatöltés további kiadásblokkoló teszt.
 
+### P3-07b – kompakt napi állapot és 320 px-es kialakítás
+
+- `views-main.js`: hiányzó regenerációs becslésnél a napi közérzetellenőrzéshez vezető csempe; korlátozott bizonyosság esetén erre külön látható jelzés figyelmeztet. A pulzusmérés önmagában nem helyettesíti a napi önbevallást.
+- `styles.css`: a kezdőlapi csempék rugalmas `minmax(0, 1fr)` oszlopok, szövegtörés és skálázott számok; legfeljebb 350 CSS-pixel szélességben egy oszlopba kerülnek a túlzsúfoltság helyett. Megmaradnak a meglévő Miami-színek és CTA.
+- `i18n-en.js`: magyar/angol állapotjelzések. Helyi build és unit **165/165 PASS**. A 320 × 568, nagy szöveg, VoiceOver és tényleges egykezes használat vizuális/eszközös validációja **nem futott**, kiadás előtt szükséges.
+
 ## P3-02 – online generatív coach biztonsági architektúra (csak terv)
 
 1. **Alapbeállítás:** offline szabálymotor, nincs AI-kérés, API-kulcs vagy háttérszinkron.

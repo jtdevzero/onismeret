@@ -503,10 +503,11 @@ ul.rows.lib > li .log-item { flex: 1; }
 }
 
 /* ---- egyszerűbb kezdőlap: két csempe ---- */
-.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 0 14px; }
-.tile.mini { min-height: 0; gap: 4px; padding: 14px; }
-.tile.mini strong { font-size: 1.8rem; line-height: 1.1; font-family: var(--display); font-style: italic; }
+.tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 0 0 14px; }
+.tile.mini { min-width: 0; min-height: 88px; gap: 4px; padding: 14px; overflow-wrap: anywhere; }
+.tile.mini strong { font-size: clamp(1.25rem, 6vw, 1.8rem); line-height: 1.1; font-family: var(--display); font-style: italic; overflow-wrap: anywhere; }
 .tile.mini progress { height: 8px; }
+@media (max-width: 350px) { .home-page .tiles { grid-template-columns: minmax(0, 1fr); gap: 8px; } }
 .center { text-align: center; }
 
 /* ---- Több oldal: gyorsgombok, csoportok ---- */

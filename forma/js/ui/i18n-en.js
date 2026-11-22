@@ -1250,6 +1250,9 @@ export default {
  "Folytatásra váró edzés": "Workout waiting to resume",
  "Félbehagyott edzés folytatása": "Resume unfinished workout",
  "{p0}. lépés / {p1} · a mentett állapot megmaradt": "Step {p0} of {p1} · your saved progress is preserved",
+ "Napi közérzetellenőrzés indítása": "Start daily wellbeing check",
+ "Napi ellenőrzés →": "Daily check →",
+ "Korlátozott adat": "Limited data",
  "{p0} edzés, {p1} perc az utolsó {p2} napban.": "{p0} workouts, {p1} minutes over the last {p2} days.",
  "{p0} edzés, {p1} perc az utolsó 7 napban.": "{p0} workouts, {p1} minutes over the last 7 days.",
  "{p0} regenerációs bejegyzés, {p1} fájdalomjelzés. Ez önbevallás.": "{p0} recovery check-ins, {p1} pain reports. These are self-reported."
