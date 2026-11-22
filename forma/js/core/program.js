@@ -289,6 +289,24 @@ export function applyRatings(state, ratings, exercises, now = Date.now()) {
   return { state: { ...state, levels, ratings: hist, levelLog: [...(state.levelLog || []), ...changes].slice(-100) }, changes };
 }
 
+/* Az automatikus javaslat nem programváltoztatás. Elutasításkor a felhasználó
+   értékelése megmarad, de új, jóváhagyott javaslatig nem halmozódik küszöb fölé. */
+export function reviewRatings(state, ratings, exercises, approved = [], now = Date.now()) {
+  const proposed = applyRatings(state, ratings, exercises, now);
+  const allowed = new Set(approved);
+  const declined = proposed.changes.filter(c => !allowed.has(c.ladder));
+  if (!declined.length) return { ...proposed, suggestions: proposed.changes };
+  const levels = { ...proposed.state.levels }, history = { ...proposed.state.ratings };
+  for (const c of declined) {
+    levels[c.ladder] = (state.levels || {})[c.ladder] ?? 0;
+    history[c.ladder] = [ratings[c.ladder]];
+  }
+  const accepted = proposed.changes.filter(c => allowed.has(c.ladder));
+  return { state: { ...proposed.state, levels, ratings: history,
+    levelLog: [...(state.levelLog || []), ...accepted].slice(-100) },
+    changes: accepted, suggestions: proposed.changes };
+}
+
 /* Programszerkesztő: egy gyakorlatsor szintjének tartós, kézi beállítása. Nem módosítja a bemenetet;
    azonos értéknél változatlanul adja vissza (idempotens). A változás a levelLog-ba kerül source: 'manual' jelöléssel,
    a sor értékelési előzménye törlődik (a kétszeri „könnyű” az új szinttől számít). A panaszkorlát (complaintRules)

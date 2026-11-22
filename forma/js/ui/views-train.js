@@ -5,7 +5,7 @@ import { D, S, lowImpact } from './data.js';
 import { itemPut, itemGet, itemsAll, kvGet, kvSet, kvDelete, commit, storageStatus } from './store.js';
 import { getProgram, setProgram, latestAssessment } from './state.js';
 import { setLevel, manualOverrides, revertManual, rotationOf, moveDay } from '../core/program.js';
-import { ROTATION, SESSION_TITLES, LADDERS, RATINGS, effLadder, baseLadder, buildSession, sessionSteps, sessionMinutes, nextKey, weekInfo, laddersOf, exerciseFor, applyRatings, doseFor, fitSession, phaseOf, freeSession, partnerSteps, GOALS, CYCLE_WEEKS } from '../core/program.js';
+import { ROTATION, SESSION_TITLES, LADDERS, RATINGS, effLadder, baseLadder, buildSession, sessionSteps, sessionMinutes, nextKey, weekInfo, laddersOf, exerciseFor, applyRatings, reviewRatings, doseFor, fitSession, phaseOf, freeSession, partnerSteps, GOALS, CYCLE_WEEKS } from '../core/program.js';
 import { figureStrip, figureAnim } from './figure.js';
 import { weekStrip } from './views-main.js';
 import { liveCounter } from './live.js';
@@ -196,7 +196,7 @@ export async function programView() {
       h('p', { class: 'small muted' }, tr('{p0}. hét a {p1}-ből; a {p2}. (↓) könnyített hét, utána újramérés.', { p0: wk.cycleWeek, p1: CYCLE_WEEKS, p2: CYCLE_WEEKS })),
       h('p', { class: 'small muted' }, tr('A ciklusok fókusza váltakozik: alapozás → erő → robbanékonyság, majd újra elölről.'))),
     wk.deload ? note(tr('Könnyített hét: kevesebb kör, a kezdő ismétlésszámokkal. A hét végén mérd fel újra magad.'), 'warn') : null,
-    card(h('h2', null, tr('Forgó rend')), weekStrip(prog), h('p', { class: 'small muted' }, tr('3 erőnap, 2 gyorsasági nap és 2 mobilitásnap. Minden edzés napi mobilitással kezdődik. Az ismétlésszám hétről hétre nő, a gyakorlat pedig nehezebbre vált, ha kétszer egymás után könnyűnek értékeled.')),
+    card(h('h2', null, tr('Forgó rend')), weekStrip(prog), h('p', { class: 'small muted' }, tr('3 erőnap, 2 gyorsasági nap és 2 mobilitásnap. Minden edzés napi mobilitással kezdődik. Az ismétlésszám hétről hétre nő; kétszeri könnyű értékelés után a nehezebb változathoz külön jóváhagyást kérünk.')),
       orderEditor(prog)),
     sessions,
     card(h('h2', null, tr('Célprogram')), h('p', { class: 'small muted' }, tr('Ha van egy konkrét célod, az a gyakorlatsor minden erőnapon plusz kört kap, a gyorsasági és mobilitásnapokon pedig egy rövid blokkot.')),
@@ -309,7 +309,7 @@ export async function sessionView(key, onCleanup) {
   function askRating(st) {
     const ex = D.ex[st.exercise];
     clear(stage).append(card(h('p', { class: 'workout-kicker' }, tr('Milyen volt?')), h('h2', { class: 'workout-title' }, ex.name),
-      h('p', null, tr('Az utolsó kör alapján. Ha kétszer egymás után könnyű, a következő edzéstől nehezebb változatot kapsz.')),
+      h('p', null, tr('Az utolsó kör alapján. Két azonos értékelés után szintváltást javasolhatunk, amelyet külön jóvá kell hagynod.')),
       h('div', { class: 'rate' }, RATINGS.map(([k, t]) => btn(t, () => { ratings[st.rate] = k; checkpoint(); advance(); }, k === 'ok' ? 'primary' : '')))));
     speak(tr('Milyen volt?'), voice.checked);
   }
@@ -330,7 +330,17 @@ export async function sessionView(key, onCleanup) {
       item = { id: workoutId, kind: 'workout', date: endedAt, key: key.startsWith('routine-') ? 'routine' : 'custom', title: session.title, minutes, steps: total, partial, ratings: {}, changes: [], done, partner: partner.checked || undefined };
     } else {
       const fresh = (await getProgram()) || prog;
-      const res = applyRatings(fresh, ratings, D.exercises.exercises);
+      const proposals = applyRatings(fresh, ratings, D.exercises.exercises).changes;
+      const approved = proposals.filter(c => {
+        const from = exerciseFor(laddersOf(D.exercises.exercises), c.ladder, c.from, lowImpact());
+        const to = exerciseFor(laddersOf(D.exercises.exercises), c.ladder, c.to, lowImpact());
+        return confirm(tr('Edzésprogram-javaslat (jóváhagyás szükséges): ') +
+          (from?.name || c.ladder) + ' → ' + (to?.name || c.ladder) + '\n' +
+          tr('Indok: két egymást követő azonos önbevallás alapján javasolt szintváltás. ') +
+          tr('Ez nem mért biomechanikai teljesítmény; a bizonytalanság magas. ') +
+          tr('Alkalmazod a következő edzésekre?'));
+      }).map(c => c.ladder);
+      const res = reviewRatings(fresh, ratings, D.exercises.exercises, approved);
       changes = res.changes;
       /* a forgó rendben csak a soron következő edzés teljesítése lép tovább */
       const doneCount = key === nextKey(fresh) ? (fresh.done || 0) + 1 : fresh.done || 0;

@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { percentile, bandIndex, scoreTest, evaluate, estimateVo2, fitnessAge, paIndex, levelOf, mobilityTargets, vo2Percentile } from '../js/core/score.js';
-import { initialLevels, laddersOf, exerciseFor, weekInfo, doseFor, buildSession, sessionSteps, sessionMinutes, applyRatings, nextKey, reassessDue, streak, ROTATION, LADDERS } from '../js/core/program.js';
+import { initialLevels, laddersOf, exerciseFor, weekInfo, doseFor, buildSession, sessionSteps, sessionMinutes, applyRatings, reviewRatings, nextKey, reassessDue, streak, ROTATION, LADDERS } from '../js/core/program.js';
 import { buildDailyIcs, fold, icsText } from '../js/core/calendar.js';
 
 const json = f => JSON.parse(readFileSync(new URL('../data/' + f, import.meta.url), 'utf8'));
@@ -176,6 +176,22 @@ test('szintlépés: két könnyű → fel, két „nem ment” → le, a csúcso
   const mixed = applyRatings({ levels: { push: 2 }, ratings: { push: ['easy'] } }, { push: 'ok' }, ex);
   assert.equal(mixed.state.levels.push, 2);
   assert.equal(applyRatings({ levels: {} }, { nope: 'easy', push: 'bogus' }, ex).changes.length, 0, 'ismeretlen bemenet nem változtat');
+});
+
+test('szintváltási javaslat: csak kifejezett jóváhagyás módosít programot', () => {
+  const before = Object.freeze({ levels: { push: 2 }, ratings: { push: ['easy'] }, levelLog: [] });
+  const denied = reviewRatings(before, { push: 'easy' }, ex, [], 1000);
+  assert.equal(denied.suggestions.length, 1);
+  assert.deepEqual(denied.changes, []);
+  assert.equal(denied.state.levels.push, 2);
+  assert.deepEqual(denied.state.ratings.push, ['easy']);
+  assert.deepEqual(denied.state.levelLog, []);
+  assert.equal(before.levels.push, 2);
+  const accepted = reviewRatings(before, { push: 'easy' }, ex, ['push'], 1000);
+  assert.equal(accepted.state.levels.push, 3);
+  assert.equal(accepted.changes.length, 1);
+  assert.equal(accepted.state.levelLog.length, 1);
+  assert.equal(reviewRatings(before, { push: 'ok' }, ex, []).suggestions.length, 0);
 });
 
 test('forgó rend, újramérés, sorozat', () => {

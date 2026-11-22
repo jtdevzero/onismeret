@@ -75,6 +75,13 @@ Kizárólag `forma/`, a Phase 2 fejlesztői változatára épülve. A Phase 2 va
 - A sorozatonkénti utólagos szerkesztő működése változatlan. A valós IndexedDB-, offline- és mobilböngészős regresszió továbbra is kiadásblokkoló.
 - 2026-11-22: `python3 forma/build.py` **PASS**; `TZ=Europe/Budapest node --test forma/tests/*.test.mjs` **170/170 PASS**. `node forma/tests/browser.cjs` **nem futott le sikeresen**: a Playwright Chromium headless shell nem található a környezetben; a valós böngészős és eszközös QA nyitott.
 
+## P3-10 / P3-11 – böngészős tesztblokkoló és jóváhagyott progresszió (első egység)
+
+- P3-10 diagnosztika: mind a négy Playwright belépőpont (`browser.cjs`, `onboarding.cjs`, `focus.cjs`, `pose-smoke.cjs`) nem indítható a hiányzó Playwright Chromium headless shell miatt. A telepített `/usr/bin/chromium` alternatíva `socket() failed: Operation not permitted` hibával áll meg ebben a környezetben. **Nincs sikeres böngészős vagy valós eszközös teszt.** A tesztfuttató függőségeit nem módosítottuk.
+- P3-11: `core/program.js` `reviewRatings` a felkínált automatikus szintváltásokat csak a kifejezetten jóváhagyott gyakorlatsoroknál alkalmazza. Elutasításkor a valódi önbevallás megmarad, a program szintje és változásnaplója változatlan marad.
+- Az edzés végén a UI minden felmerülő szintváltáshoz külön megerősítést kér az aktuális és a javasolt gyakorlattal, az indokkal és a bizonytalansággal. A javaslat nem mért biomechanikai tény. A magyar/angol magyarázó feliratok és a kapcsolódó szövegek is módosultak.
+- Célzott regresszió: `tests/core.test.mjs` jóváhagyott/elutasított/nem javasolt szintváltás, eredeti állapot változatlansága. A teljes Phase 3 továbbra sem kiadáskész; az edzésmentés valódi böngészős jóváhagyási útját is ellenőrizni kell.
+
 ## P3-02 – online generatív coach biztonsági architektúra (csak terv)
 
 1. **Alapbeállítás:** offline szabálymotor, nincs AI-kérés, API-kulcs vagy háttérszinkron.
