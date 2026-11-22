@@ -1,3 +1,4 @@
+import { tr } from '../ui/i18n.js';
 /* Futóprogram nulláról 5 km-ig (kb. 30 perc folyamatos futás): 9 hét, hetente 3 alkalom, séta–futás intervallumokkal.
    Minden alkalom 5 perc bemelegítő sétával kezdődik és 5 perc levezető sétával zárul.
    Tiszta függvények, DOM nélkül. Időtartamok másodpercben. */
@@ -30,7 +31,7 @@ export const runSeconds = segs => segs.filter(s => s.type === 'run').reduce((a, 
 /* Rövid leírás: „8 × (1 perc futás, 1,5 perc séta)” jellegű összefoglaló. */
 export function describe(segs) {
   const core = segs.filter(s => s.type === 'run' || s.type === 'walk');
-  const fmt = s => (s % 60 ? (s / 60).toFixed(1).replace('.', ',') : String(s / 60)) + ' perc';
+  const fmt = s => (s % 60 ? (s / 60).toFixed(1).replace('.', ',') : String(s / 60)) + tr(' perc');
   if (core.length === 1) return `${fmt(core[0].seconds)} folyamatos futás`;
   const txt = list => list.map(s => `${fmt(s.seconds)} ${s.type === 'run' ? 'futás' : 'séta'}`).join(', ');
   /* ismétlődő minta: „n × (…)” */

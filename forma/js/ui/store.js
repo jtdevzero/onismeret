@@ -1,3 +1,5 @@
+
+import { tr } from './i18n.js';
 /* Helyi tárolás IndexedDB-ben: beállítások és állapot (kv), felmérések és edzések (items).
    Minden adat a készüléken marad. Ha az IndexedDB nem érhető el (pl. privát ablak), memóriában dolgozunk tovább. */
 const DB = 'forma', VERSION = 1;
@@ -42,7 +44,7 @@ async function tx(store, mode, fn) {
   if (!db) { const r = fn(null); return r ? r.result : undefined; }
   return new Promise((resolve, reject) => {
     let t, req;
-    const fail = e => { if (mode === 'readwrite') report({ writeError: true }); reject(e || new Error('Tárolási hiba')); };
+    const fail = e => { if (mode === 'readwrite') report({ writeError: true }); reject(e || new Error(tr('Tárolási hiba'))); };
     try {
       t = db.transaction(store, mode);
       t.oncomplete = () => resolve(req ? req.result : undefined);
@@ -68,8 +70,8 @@ export const itemDelete = id => tx('items', 'readwrite', s => (s ? s.delete(id) 
    Vagy minden íródik, vagy semmi; ugyanazzal az azonosítóval megismételve nem keletkezik duplikátum. */
 export async function commit(values = {}, items = [], deleteKeys = []) {
   const data = structuredClone({ values, items, deleteKeys });
-  if (data.items.some(it => !it || typeof it.id !== 'string' || !it.id)) throw new Error('Hibás mentési adat.');
-  if (!Array.isArray(data.deleteKeys) || data.deleteKeys.some(k => typeof k !== 'string' || !k)) throw new Error('Hibás törlési kulcs.');
+  if (data.items.some(it => !it || typeof it.id !== 'string' || !it.id)) throw new Error(tr('Hibás mentési adat.'));
+  if (!Array.isArray(data.deleteKeys) || data.deleteKeys.some(k => typeof k !== 'string' || !k)) throw new Error(tr('Hibás törlési kulcs.'));
   const db = await open();
   if (!db) {
     for (const [k, v] of Object.entries(data.values)) mem.kv.set(k, v);
@@ -79,7 +81,7 @@ export async function commit(values = {}, items = [], deleteKeys = []) {
   }
   return new Promise((resolve, reject) => {
     let t;
-    const fail = e => { report({ writeError: true }); reject(e || new Error('A mentés nem sikerült.')); };
+    const fail = e => { report({ writeError: true }); reject(e || new Error(tr('A mentés nem sikerült.'))); };
     try {
       t = db.transaction(['kv', 'items'], 'readwrite');
       t.oncomplete = () => resolve();
@@ -104,7 +106,7 @@ export async function exportAll() {
 export async function restoreAll({ settings, program, run, nutrition, favs, custom, challenge, block, items }) {
   // Másolási/bemeneti hiba még a régi állomány érintése előtt derüljön ki.
   const data = structuredClone({ settings, program, run, nutrition, favs, custom, challenge, block, items });
-  if (!Array.isArray(data.items) || data.items.some(it => !it || typeof it.id !== 'string' || !it.id)) throw new Error('Hibás visszatöltési adat.');
+  if (!Array.isArray(data.items) || data.items.some(it => !it || typeof it.id !== 'string' || !it.id)) throw new Error(tr('Hibás visszatöltési adat.'));
   const kv = Object.fromEntries(Object.entries(data).filter(([k, v]) => k !== 'items' && v != null));
   await replaceAll(kv, data.items);
 }
@@ -119,7 +121,7 @@ async function replaceAll(values, items) {
   }
   return new Promise((resolve, reject) => {
     let t;
-    const fail = e => { report({ writeError: true }); reject(e || new Error('A visszatöltés nem sikerült.')); };
+    const fail = e => { report({ writeError: true }); reject(e || new Error(tr('A visszatöltés nem sikerült.'))); };
     try {
       t = db.transaction(['kv', 'items'], 'readwrite');
       t.oncomplete = () => resolve();

@@ -10,6 +10,7 @@ import { cardioView, checkView } from './views-cardio.js';
 import { reviewView, cooldownView } from './views-wellness.js';
 import { pulseView, challengeView, blocksView, reportView } from './views-extra.js';
 import { diagView, qaView, initErrorLog } from './views-diag.js';
+import { tr } from './i18n.js';
 
 const main = document.getElementById('main'), nav = document.getElementById('nav');
 const storageNotice = document.getElementById('storage-notice');
@@ -17,12 +18,12 @@ watchStorage(({ mode, writeError }) => {
   clear(storageNotice);
   storageNotice.hidden = mode !== 'memory' && !writeError;
   if (storageNotice.hidden) return;
-  storageNotice.append(h('strong', null, mode === 'memory' ? 'Az adatok most csak ideiglenesen tárolódnak.' : 'Egy mentés nem sikerült.'),
-    h('p', null, mode === 'memory' ? 'A böngésző tartós tárolója nem érhető el. Az oldal bezárásakor vagy újratöltésekor az adataid elvesznek. Ments fájlba, mielőtt kilépsz.' : 'A legutóbbi változtatások egy része nem került a tartós tárolóba. A mentett előzményekből készíts fájlos másolatot, és ellenőrizd az utolsó bejegyzést.'),
+  storageNotice.append(h('strong', null, mode === 'memory' ? tr('Az adatok most csak ideiglenesen tárolódnak.') : tr('Egy mentés nem sikerült.')),
+    h('p', null, mode === 'memory' ? tr('A böngésző tartós tárolója nem érhető el. Az oldal bezárásakor vagy újratöltésekor az adataid elvesznek. Ments fájlba, mielőtt kilépsz.') : tr('A legutóbbi változtatások egy része nem került a tartós tárolóba. A mentett előzményekből készíts fájlos másolatot, és ellenőrizd az utolsó bejegyzést.')),
     h('button', { type: 'button', class: 'btn small', onclick: async () => {
       await downloadBackup();
-    } }, 'Mentés fájlba'),
-    h('a', { href: '#/settings' }, 'Beállítások'));
+    } }, tr('Mentés fájlba')),
+    h('a', { href: '#/settings' }, tr('Beállítások')));
 });
 /* A ritkábban vagy később megnyitott képernyők csak megnyitáskor töltődnek be (gyorsabb első indulás);
    a service worker ezeket is az offline csomagba teszi. */
@@ -54,7 +55,7 @@ async function route() {
   for (const a of nav.querySelectorAll('a')) { const on = a.dataset.tab === TAB[key]; a.classList.toggle('on', on); if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); }
   let view;
   try { view = await ROUTES[key](arg, fn => cleanups.push(fn)); }
-  catch (e) { console.error(e); view = h('div', { class: 'page' }, h('h1', null, 'Hiba történt'), h('p', null, 'Ezt az oldalt most nem sikerült megjeleníteni. Töltsd újra az appot.')); }
+  catch (e) { console.error(e); view = h('div', { class: 'page' }, h('h1', null, tr('Hiba történt')), h('p', null, tr('Ezt az oldalt most nem sikerült megjeleníteni. Töltsd újra az appot.'))); }
   if (my !== seq) return; /* közben máshova navigáltak */
   clear(main).append(view);
   document.documentElement.dataset.view = location.hash;
@@ -69,15 +70,15 @@ initErrorLog();
 const busy = () => /^#\/(session|test|run|mini|cooldown|pulse|posture)(\/|$)/.test(location.hash);
 function updateBanner() {
   if (document.querySelector('.update-bar')) return;
-  const bar = h('div', { class: 'update-bar', role: 'status' }, h('span', null, 'Új változat érhető el.'),
-    h('button', { type: 'button', class: 'btn small light', onclick: () => { if (busy() && !confirm('Most egy edzés, mérés vagy futás fut. A frissítés megszakítja, és ami még nincs elmentve, elveszhet. Frissítesz most?')) return; location.reload(); } }, 'Frissítés'),
-    h('button', { type: 'button', class: 'btn small', 'aria-label': 'Később', onclick: () => bar.remove() }, '×'));
+  const bar = h('div', { class: 'update-bar', role: 'status' }, h('span', null, tr('Új változat érhető el.')),
+    h('button', { type: 'button', class: 'btn small light', onclick: () => { if (busy() && !confirm(tr('Most egy edzés, mérés vagy futás fut. A frissítés megszakítja, és ami még nincs elmentve, elveszhet. Frissítesz most?'))) return; location.reload(); } }, tr('Frissítés')),
+    h('button', { type: 'button', class: 'btn small', 'aria-label': tr('Később'), onclick: () => bar.remove() }, '×'));
   document.body.append(bar);
 }
 
 async function boot() {
   try { await loadData(); applyLook(); initHaptics(); }
-  catch (e) { console.error(e); clear(main).append(h('div', { class: 'page' }, h('h1', null, 'Nem sikerült betölteni'), h('p', null, 'Ellenőrizd az internetkapcsolatot, és töltsd újra az oldalt.'))); return; }
+  catch (e) { console.error(e); clear(main).append(h('div', { class: 'page' }, h('h1', null, tr('Nem sikerült betölteni')), h('p', null, tr('Ellenőrizd az internetkapcsolatot, és töltsd újra az oldalt.')))); return; }
   addEventListener('hashchange', route);
   await route();
   document.documentElement.dataset.ready = '1';

@@ -1,3 +1,4 @@
+import { tr } from '../ui/i18n.js';
 /* Naptárnézet és havi összefoglaló a naplóból. Tiszta függvények, DOM nélkül.
    items: a tárolt tételek ({ kind: 'workout'|'cardio'|'assessment', date, … }) */
 
@@ -54,4 +55,4 @@ export function monthSummary(items, year, month) {
   return { ...sum(year, month), prev: sum(py, pm) };
 }
 
-export const MONTHS = ['január', 'február', 'március', 'április', 'május', 'június', 'július', 'augusztus', 'szeptember', 'október', 'november', 'december'];
+export const MONTHS = [tr('január'), tr('február'), tr('március'), tr('április'), tr('május'), tr('június'), tr('július'), tr('augusztus'), tr('szeptember'), tr('október'), tr('november'), tr('december')];

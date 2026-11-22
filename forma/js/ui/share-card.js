@@ -3,6 +3,7 @@
 import { h, toast } from './dom.js';
 import { btn } from './widgets.js';
 import { buildAssessmentShare, SHARE_DEFAULTS } from '../core/share.js';
+import { tr } from './i18n.js';
 
 function draw(canvas, s) {
   const W = 1080, H = 1350, g = canvas.getContext('2d');
@@ -45,12 +46,12 @@ export function assessmentShareCard(item, ev, areas) {
     const s = buildAssessmentShare(item, ev, areas, opts);
     try { draw(canvas, s); } catch { /* vászon nélkül is menjen a szöveg */ }
     const text = `A képen: ${s.when}; ${s.axes.map(a => `${a.label} ${a.value}`).join(', ')}` + (s.lines.length ? '; ' + s.lines.join('; ') : '') + '.';
-    canvas.setAttribute('aria-label', 'A megosztókártya előnézete. ' + text);
+    canvas.setAttribute('aria-label', tr('A megosztókártya előnézete. ') + text);
     summary.textContent = text;
   };
   const toggle = (key, label) => h('label', { class: 'check small' }, h('input', { type: 'checkbox', checked: opts[key], onchange: e => { opts[key] = e.target.checked; refresh(); } }), h('span', null, label));
   let busy = false;
-  const save = btn('Kártya mentése képként', async () => {
+  const save = btn(tr('Kártya mentése képként'), async () => {
     if (busy) return; busy = true; save.disabled = true;
     try {
       refresh();
@@ -63,9 +64,9 @@ export function assessmentShareCard(item, ev, areas) {
     finally { busy = false; save.disabled = false; }
   });
   refresh();
-  return h('details', { class: 'card section share-card' }, h('summary', null, h('h2', null, 'Megosztható kártya')),
-    h('p', { class: 'small muted' }, 'Név és személyes adat alapból nincs rajta. Válaszd ki, mi kerüljön még rá. A kép a telefonodon készül, az app nem küldi sehova.'),
-    h('fieldset', { class: 'share-opts' }, h('legend', { class: 'small' }, 'A képen legyen'),
-      toggle('age', 'Életkor és nem'), toggle('fitnessAge', 'Fittségi kor'), toggle('exactDate', 'Pontos nap (különben csak a hónap)')),
+  return h('details', { class: 'card section share-card' }, h('summary', null, h('h2', null, tr('Megosztható kártya'))),
+    h('p', { class: 'small muted' }, tr('Név és személyes adat alapból nincs rajta. Válaszd ki, mi kerüljön még rá. A kép a telefonodon készül, az app nem küldi sehova.')),
+    h('fieldset', { class: 'share-opts' }, h('legend', { class: 'small' }, tr('A képen legyen')),
+      toggle('age', tr('Életkor és nem')), toggle('fitnessAge', tr('Fittségi kor')), toggle('exactDate', tr('Pontos nap (különben csak a hónap)'))),
     canvas, summary, h('div', { class: 'row' }, save));
 }

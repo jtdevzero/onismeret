@@ -1,14 +1,15 @@
+import { tr } from '../ui/i18n.js';
 /* Programgenerátor: hétnapos forgó rend, gyakorlatsorok szintekkel, heti adagolás, szintlépés az értékelésekből.
    Tiszta függvények, DOM nélkül. A gyakorlatok a data/exercises.json-ból jönnek (paraméterként). */
 
 /* A forgó rend a teljesített edzések szerint halad, nem a naptár szerint: ha kimarad egy nap, nem csúszik el. */
 export const ROTATION = ['strengthA', 'speedA', 'mobility', 'strengthB', 'speedB', 'strengthC', 'mobility'];
 export const SESSION_TITLES = {
-  strengthA: 'Erő A: guggolás és nyomás', strengthB: 'Erő B: egy láb és húzás', strengthC: 'Erő C: teljes test',
-  speedA: 'Gyorsaság A: ugrás és lábmunka', speedB: 'Gyorsaság B: intervallum', mobility: 'Mobilitás és egyensúly',
+  strengthA: tr('Erő A: guggolás és nyomás'), strengthB: tr('Erő B: egy láb és húzás'), strengthC: tr('Erő C: teljes test'),
+  speedA: tr('Gyorsaság A: ugrás és lábmunka'), speedB: tr('Gyorsaság B: intervallum'), mobility: tr('Mobilitás és egyensúly'),
 };
 export const LADDERS = ['push', 'squat', 'squat_db', 'lunge', 'hinge', 'hinge_db', 'pull', 'pull_band', 'pull_db', 'pull_bar', 'core', 'side', 'power', 'speed', 'balance'];
-export const EQUIPMENT = [['bar', 'Húzódzkodó rúd (ajtókeretbe vagy falra szerelt)'], ['dumbbell', 'Kettlebell vagy kézisúlyzó'], ['band', 'Gumiszalag (erősítő szalag)']];
+export const EQUIPMENT = [['bar', tr('Húzódzkodó rúd (ajtókeretbe vagy falra szerelt)')], ['dumbbell', tr('Kettlebell vagy kézisúlyzó')], ['band', tr('Gumiszalag (erősítő szalag)')]];
 /* Eszközös változatok, elsőbbségi sorrendben: ha megvan az eszköz, az alap gyakorlatsor helyett ez fut. */
 const EQUIP_LADDERS = {
   squat: [['dumbbell', 'squat_db']],
@@ -145,7 +146,7 @@ export const WARMUP_FOR = {
   speedA: ['ankle_rock', 'squat_hold'], speedB: ['ankle_rock'],
 };
 /* célprogramok: egy gyakorlatsorra fókuszál 6 hétig */
-export const GOALS = [['push', 'Több fekvőtámasz'], ['pull', 'Első vagy több húzódzkodás'], ['squat', 'Erősebb láb'], ['core', 'Erősebb törzs'], ['power', 'Magasabb ugrás'], ['balance', 'Jobb egyensúly']];
+export const GOALS = [['push', tr('Több fekvőtámasz')], ['pull', tr('Első vagy több húzódzkodás')], ['squat', tr('Erősebb láb')], ['core', tr('Erősebb törzs')], ['power', tr('Magasabb ugrás')], ['balance', tr('Jobb egyensúly')]];
 
 /* Edzéspartner mód: minden gyakorlati lépés kétszer, felváltva (1. és 2. személy); pihenő csak a pár után.
    Az értékelés csak az 1. személynél (a telefon gazdájánál) marad. */
@@ -160,15 +161,15 @@ export function partnerSteps(steps) {
 }
 
 export const PHASES = [
-  { id: 'base', name: 'Alapozás', about: 'Kiegyensúlyozott terhelés, technika és állóképesség.' },
-  { id: 'strength', name: 'Erő', about: 'Erőnapokon több kör, kevesebb ismétlés, hosszabb pihenő: nehezebb változat felé.' },
-  { id: 'power', name: 'Robbanékonyság', about: 'Gyorsasági napokon több kör, az erőnapokon fenntartó adag.' },
+  { id: 'base', name: tr('Alapozás'), about: tr('Kiegyensúlyozott terhelés, technika és állóképesség.') },
+  { id: 'strength', name: tr('Erő'), about: tr('Erőnapokon több kör, kevesebb ismétlés, hosszabb pihenő: nehezebb változat felé.') },
+  { id: 'power', name: tr('Robbanékonyság'), about: tr('Gyorsasági napokon több kör, az erőnapokon fenntartó adag.') },
 ];
 export const phaseOf = cycle => PHASES[((cycle || 1) - 1) % PHASES.length];
 
 /* Panaszmód (térd, derék, váll): óvatos, általános szabályok; szakember átnézte (2026-11-22).
    → { caps: { gyakorlatsor: legfeljebb szint }, noImpact, noBar, skip: [gyakorlatok] } */
-export const COMPLAINTS = [['knee', 'Térd'], ['back', 'Derék'], ['shoulder', 'Váll']];
+export const COMPLAINTS = [['knee', tr('Térd')], ['back', tr('Derék')], ['shoulder', tr('Váll')]];
 export function complaintRules(list = []) {
   const caps = {}, skip = new Set();
   const cap = (k, v) => { caps[k] = Math.min(caps[k] ?? 99, v); };
@@ -267,7 +268,7 @@ export function sessionMinutes(steps) {
   return Math.max(1, Math.round(s / 60));
 }
 
-export const RATINGS = [['easy', 'Könnyű volt'], ['ok', 'Pont jó'], ['hard', 'Nehéz volt'], ['fail', 'Nem ment végig']];
+export const RATINGS = [['easy', tr('Könnyű volt')], ['ok', tr('Pont jó')], ['hard', tr('Nehéz volt')], ['fail', tr('Nem ment végig')]];
 
 /* Szintlépés: két egymást követő „könnyű” → egy szinttel feljebb; két „nem ment” → egy szinttel lejjebb.
    → { state, changes: [{ ladder, from, to }] } (a bemenetet nem módosítja) */
@@ -346,7 +347,7 @@ export function streak(dates, now = Date.now()) {
    mobilitás, rövidebb bemelegítés, szuperszett-szerű rövidebb pihenő, kevesebb kör (legalább 2), végül a sor
    végéről a kevésbé fontos gyakorlatok. Hosszabbításkor a fő gyakorlatok egy kört kapnak (legfeljebb 4).
    → az új edzés (a bemenetet nem módosítja), fit: { target, minutes } */
-export const DURATIONS = [[0, 'Ahogy a program adja'], [15, '15 perc'], [25, '25 perc'], [35, '35 perc']];
+export const DURATIONS = [[0, tr('Ahogy a program adja')], [15, tr('15 perc')], [25, tr('25 perc')], [35, tr('35 perc')]];
 export function fitSession(session, exById, target) {
   if (!target) return session;
   const s = { ...session, blocks: session.blocks.map(b => ({ ...b })) };

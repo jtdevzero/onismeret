@@ -83,6 +83,8 @@ Hatókör: kizárólag `forma/`. Engedélyezett: U0 és U1, a `claude/elegant-ha
 - **CP18 – egyszerűsítés és sebesség:** Több és Fejlődés átrendezve; a nagy képernyők dinamikus importtal (hideg indulás 4,3 s → 3,3 s, 427 → 264 kB).
 - **CP19 – U3-304 angol (béta):** `ui/i18n.js`, `ui/i18n-en.js` (kulcs = magyar szöveg), nyelvválasztó; angolul a menü, a bevezetés, a kezdőlap és a Több oldal. A többi képernyő és az adatfájlok (tesztleírások, gyakorlatok, rutinok) fordítása hátravan; a szakmai szövegek angol változatát ellenőriztetni kell.
 
+- **CP20 – angol felület teljes:** minden képernyő és a core szövegei `tr()`-rel (kb. 1160 tétel), angol tartalomréteg (`data/content-en.json`: 70 gyakorlat, 16 teszt, 7 terület, rutinok, blokkok, 84 ábrafelirat) a `core/content-i18n.js`-szel; nyelv induláskor szinkron (localStorage). Pörgethető életkor-választó (1–99). Az angol szakmai szövegek anyanyelvi ellenőrzése hátravan.
+
 ## Következő lépések
 
 1. U1-115: WebKit és valódi eszközös próba (a felhasználó telefonján).

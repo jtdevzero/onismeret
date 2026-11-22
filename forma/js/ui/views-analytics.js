@@ -5,10 +5,11 @@ import { card, note } from './widgets.js';
 import { D, weeklyGoal } from './data.js';
 import { aggregateWeeklyLoad } from '../core/load.js';
 import { buildExerciseProgress, loggedExercises, buildConsistencyStats, buildRecoveryTimeline, periodSummary, periodSummaryCsv } from '../core/analytics.js';
+import { tr, dateLocale } from './i18n.js';
 
 const dash = v => (v == null ? '–' : String(v));
 const fmtWeek = ts => { const d = new Date(ts); return `${d.getMonth() + 1}. ${d.getDate()}.`; };
-const kg = v => (v == null ? '–' : Math.round(v).toLocaleString('hu-HU'));
+const kg = v => (v == null ? '–' : Math.round(v).toLocaleString(dateLocale()));
 
 /* egyszerű oszlopdiagram SVG-ben; a pontos számok a mellette lévő táblázatban vannak (szöveges alternatíva) */
 const SVGNS = 'http://www.w3.org/2000/svg';
@@ -35,47 +36,47 @@ function table(caption, head, rows) {
 
 export function periodAnalyticsCard(items, now = Date.now()) {
   const out = h('div', { 'aria-live': 'polite' });
-  const choice = h('select', { 'aria-label': 'Elemzési időszak', onchange: render },
-    [7, 30, 90].map(n => h('option', { value: String(n) }, `${n} nap`)));
+  const choice = h('select', { 'aria-label': tr('Elemzési időszak'), onchange: render },
+    [7, 30, 90].map(n => h('option', { value: String(n) }, tr('{p0} nap', { p0: n }))));
   choice.value = '30';
   function render() {
     const summary = periodSummary(items, { days: Number(choice.value), now });
     const rows = [
-      ['Edzések', summary.workouts, 'alkalom'], ['Edzésidő', summary.workoutMinutes, 'perc'],
-      ['Sorozatok', summary.sets, 'db'], ['Ismétlések', summary.reps, 'db'],
-      ['Tartások', summary.seconds, 'mp'], ['Külső súlyos volumen', summary.externalKgReps, 'kg × ism.'],
-      ['Érzett terhelés', summary.sessionLoad, 'RPE × perc'], ['Kardió', summary.cardioMinutes, 'perc'],
-      ['Testsúly – utolsó', summary.weight?.last, 'kg'], ['Derékbőség – utolsó', summary.waist?.last, 'cm'],
-      ['Regenerációs bejegyzések', summary.recoveryDays, 'nap']
+      [tr('Edzések'), summary.workouts, tr('alkalom')], [tr('Edzésidő'), summary.workoutMinutes, tr('perc')],
+      [tr('Sorozatok'), summary.sets, tr('db')], [tr('Ismétlések'), summary.reps, tr('db')],
+      [tr('Tartások'), summary.seconds, tr('mp')], [tr('Külső súlyos volumen'), summary.externalKgReps, tr('kg × ism.')],
+      [tr('Érzett terhelés'), summary.sessionLoad, tr('RPE × perc')], [tr('Kardió'), summary.cardioMinutes, tr('perc')],
+      [tr('Testsúly – utolsó'), summary.weight?.last, 'kg'], [tr('Derékbőség – utolsó'), summary.waist?.last, 'cm'],
+      [tr('Regenerációs bejegyzések'), summary.recoveryDays, tr('nap')]
     ];
     const download = h('button', { type: 'button', class: 'btn small', onclick: () => {
       const blob = new Blob([periodSummaryCsv(summary)], { type: 'text/csv;charset=utf-8' });
       const url = URL.createObjectURL(blob), a = document.createElement('a');
       a.href = url; a.download = `forma-analitika-${summary.days}-nap.csv`; document.body.append(a); a.click(); a.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 2000); toast('A helyi összesítést letöltöttem.');
-    } }, 'CSV letöltése');
-    clear(out).append(table(`${summary.days} napos mozgásösszesítő`, [['Mutató'], ['Érték'], ['Egység']],
+      setTimeout(() => URL.revokeObjectURL(url), 2000); toast(tr('A helyi összesítést letöltöttem.'));
+    } }, tr('CSV letöltése'));
+    clear(out).append(table(tr('{p0} napos mozgásösszesítő', { p0: summary.days }), [[tr('Mutató')], [tr('Érték')], [tr('Egység')]],
       rows.map(([name, value, unit]) => [name, dash(value), unit])),
-      h('p', { class: 'small muted' }, 'A napló alapján készült összesítés. A hiányzó adat „–”, nem nulla. A tervezett és a tényleges sorozatnaplós számok forrása eltérhet; eltérő mérési protokollokat nem hasonlítunk össze.'), download);
+      h('p', { class: 'small muted' }, tr('A napló alapján készült összesítés. A hiányzó adat „–”, nem nulla. A tervezett és a tényleges sorozatnaplós számok forrása eltérhet; eltérő mérési protokollokat nem hasonlítunk össze.')), download);
   }
   render();
-  return card(h('h2', null, 'Analytics Pro – időszaki összesítő'), h('label', { class: 'field' }, 'Időszak', choice), out);
+  return card(h('h2', null, tr('Analytics Pro – időszaki összesítő')), h('label', { class: 'field' }, tr('Időszak'), choice), out);
 }
 
 export function trainingLoadCard(items, now = Date.now()) {
   const wk = aggregateWeeklyLoad(items, { weeks: 8, now });
-  if (!wk.some(w => w.workouts || w.cardioMinutes)) return card(h('h2', null, 'Edzésterhelés'), h('p', { class: 'small muted' }, 'Még nincs edzésed vagy kardiód az elmúlt 8 hétben. Az első edzés után itt hetente látod a sorozatokat, az ismétléseket és az időt.'));
+  if (!wk.some(w => w.workouts || w.cardioMinutes)) return card(h('h2', null, tr('Edzésterhelés')), h('p', { class: 'small muted' }, tr('Még nincs edzésed vagy kardiód az elmúlt 8 hétben. Az első edzés után itt hetente látod a sorozatokat, az ismétléseket és az időt.')));
   const cs = buildConsistencyStats(items, { weeks: 8, now, goal: weeklyGoal() });
   const anyLog = wk.some(w => w.logged), anyKg = wk.some(w => w.externalKgReps != null), anyRpe = wk.some(w => w.sessionLoad != null);
-  const head = [['Hét'], ['Edzés'], ['Perc'], ['Sorozat'], ['Ismétlés'], ['Tartás (mp)'], ...(anyKg ? [['kg × ism.', 'ismert külső súly × ismétlés']] : []), ...(anyRpe ? [['RPE × perc', 'érzett nehézség × edzésidő']] : []), ['Kardió (perc)']];
+  const head = [[tr('Hét')], [tr('Edzés')], [tr('Perc')], [tr('Sorozat')], [tr('Ismétlés')], [tr('Tartás (mp)')], ...(anyKg ? [[tr('kg × ism.'), tr('ismert külső súly × ismétlés')]] : []), ...(anyRpe ? [[tr('RPE × perc'), tr('érzett nehézség × edzésidő')]] : []), [tr('Kardió (perc)')]];
   const rows = wk.map(w => [fmtWeek(w.start), String(w.workouts), String(w.minutes), w.workouts ? String(w.sets) : '–', w.workouts ? String(w.reps) : '–', w.workouts ? String(w.seconds) : '–', ...(anyKg ? [kg(w.externalKgReps)] : []), ...(anyRpe ? [dash(w.sessionLoad)] : []), String(w.cardioMinutes)]);
-  return card(h('h2', null, 'Edzésterhelés (8 hét)'),
-    bars(wk.map(w => w.workouts ? w.sets : null), wk.map(w => fmtWeek(w.start)), 'Sorozatok hetente'),
-    h('p', { class: 'small muted center' }, 'Teljesített sorozatok hetente; a legutóbbi hét kiemelve.'),
-    h('p', { class: 'small muted' }, `Hétfőtől vasárnapig. Az elmúlt ${cs.completeWeeks} lezárt hétből ${cs.activeWeeks} héten edzettél, ${cs.weeksMeetingGoal} héten legalább ${cs.goal}-ször.`),
-    table('Heti edzésterhelés', head, rows),
-    h('p', { class: 'small muted' }, (anyLog ? 'A sorozatnaplóval rögzített edzéseknél a tényleges számok; a többinél a tervezett mennyiség. ' : 'A számok a tervezett mennyiségből jönnek; az edzés végén a sorozatnaplóban rögzítheted a ténylegeset. ') +
-      'A testsúlyos ismétlést nem számoljuk át kilogrammra, és a különböző egységeket nem adjuk össze.'));
+  return card(h('h2', null, tr('Edzésterhelés (8 hét)')),
+    bars(wk.map(w => w.workouts ? w.sets : null), wk.map(w => fmtWeek(w.start)), tr('Sorozatok hetente')),
+    h('p', { class: 'small muted center' }, tr('Teljesített sorozatok hetente; a legutóbbi hét kiemelve.')),
+    h('p', { class: 'small muted' }, tr('Hétfőtől vasárnapig. Az elmúlt {p0} lezárt hétből {p1} héten edzettél, {p2} héten legalább {p3}-ször.', { p0: cs.completeWeeks, p1: cs.activeWeeks, p2: cs.weeksMeetingGoal, p3: cs.goal })),
+    table(tr('Heti edzésterhelés'), head, rows),
+    h('p', { class: 'small muted' }, (anyLog ? tr('A sorozatnaplóval rögzített edzéseknél a tényleges számok; a többinél a tervezett mennyiség. ') : tr('A számok a tervezett mennyiségből jönnek; az edzés végén a sorozatnaplóban rögzítheted a ténylegeset. ')) +
+      tr('A testsúlyos ismétlést nem számoljuk át kilogrammra, és a különböző egységeket nem adjuk össze.')));
 }
 
 export function exerciseTrendCard(items) {
@@ -86,23 +87,23 @@ export function exerciseTrendCard(items) {
   function draw(id) {
     const p = buildExerciseProgress(items, id).slice(-8).reverse();
     const perSide = D.ex[id] && D.ex[id].perSide;
-    clear(out).append(p.length ? table('Gyakorlat trendje: ' + D.ex[id].name, [['Dátum'], ['Sorozat'], ['Legjobb sorozat'], ['Összesen'], ['Max súly (kg)'], ['Forrás']],
-      p.map(r => [fmtDate(r.date), String(r.sets), r.bestReps != null ? r.bestReps + ' ism.' : r.bestSeconds != null ? r.bestSeconds + ' mp' : '–',
-        r.totalReps != null ? r.totalReps + ' ism.' : r.totalSeconds != null ? r.totalSeconds + ' mp' : '–', dash(r.maxKg), r.source === 'log' ? 'napló' : 'terv'])) : note('Ehhez a gyakorlathoz nincs teljesített sorozat.', 'small'),
-      perSide ? h('p', { class: 'small muted' }, 'Oldalankénti gyakorlat: az ismétlésszám a két oldal együtt.') : null);
+    clear(out).append(p.length ? table(tr('Gyakorlat trendje: ') + D.ex[id].name, [[tr('Dátum')], [tr('Sorozat')], [tr('Legjobb sorozat')], [tr('Összesen')], [tr('Max súly (kg)')], [tr('Forrás')]],
+      p.map(r => [fmtDate(r.date), String(r.sets), r.bestReps != null ? r.bestReps + tr(' ism.') : r.bestSeconds != null ? r.bestSeconds + tr(' mp') : '–',
+        r.totalReps != null ? r.totalReps + tr(' ism.') : r.totalSeconds != null ? r.totalSeconds + tr(' mp') : '–', dash(r.maxKg), r.source === 'log' ? tr('napló') : 'terv'])) : note(tr('Ehhez a gyakorlathoz nincs teljesített sorozat.'), 'small'),
+      perSide ? h('p', { class: 'small muted' }, tr('Oldalankénti gyakorlat: az ismétlésszám a két oldal együtt.')) : null);
   }
   draw(list[0].id);
-  return card(h('h2', null, 'Gyakorlat trendje'), h('label', { class: 'field' }, 'Gyakorlat', sel), out,
-    h('p', { class: 'small muted' }, 'Csak ugyanannak a gyakorlatnak az alkalmait vetjük össze; egy könnyebb vagy nehezebb változat külön szerepel.'));
+  return card(h('h2', null, tr('Gyakorlat trendje')), h('label', { class: 'field' }, tr('Gyakorlat'), sel), out,
+    h('p', { class: 'small muted' }, tr('Csak ugyanannak a gyakorlatnak az alkalmait vetjük össze; egy könnyebb vagy nehezebb változat külön szerepel.')));
 }
 
-const LVL = { go: 'teljes', light: 'könnyített', rest: 'pihenő' };
-const S3 = ['', 'rossz', 'közepes', 'jó'], SORE = ['', 'erős', 'enyhe', 'nincs'];
+const LVL = { go: 'teljes', light: tr('könnyített'), rest: tr('pihenő') };
+const S3 = ['', 'rossz', tr('közepes'), tr('jó')], SORE = ['', tr('erős'), 'enyhe', 'nincs'];
 export function recoveryTimelineCard(items, now = Date.now()) {
   const t = buildRecoveryTimeline(items, { days: 14, now });
-  if (!t.length) return card(h('h2', null, 'Regeneráció'), h('p', { class: 'small muted' }, 'Az edzés előtti „Hogy vagy ma?” válaszaid itt naponta megjelennek, az aznapi edzéssel együtt.'));
-  return card(h('h2', null, 'Regeneráció (14 nap)'),
-    table('Napi állapot és edzés', [['Nap'], ['Alvás'], ['Izomláz'], ['Energia'], ['Fájdalom'], ['Javaslat'], ['Edzés']],
-      t.map(r => [fmtDate(r.date), S3[r.sleep] || '–', SORE[r.soreness] || '–', S3[r.energy] || '–', r.pain ? 'igen' : 'nem', LVL[r.level] || '–', r.workouts ? (r.light ? 'könnyített' : String(r.workouts)) : '–'])),
-    h('p', { class: 'small muted' }, 'Önbevallás, nem orvosi értékelés. Az, hogy két dolog együtt jár (például rossz alvás és könnyebb edzés), nem jelenti, hogy egyik okozza a másikat. Ahol nincs sor, ott nem töltötted ki a kérdőívet.'));
+  if (!t.length) return card(h('h2', null, tr('Regeneráció')), h('p', { class: 'small muted' }, tr('Az edzés előtti „Hogy vagy ma?” válaszaid itt naponta megjelennek, az aznapi edzéssel együtt.')));
+  return card(h('h2', null, tr('Regeneráció (14 nap)')),
+    table(tr('Napi állapot és edzés'), [[tr('Nap')], [tr('Alvás')], [tr('Izomláz')], [tr('Energia')], [tr('Fájdalom')], [tr('Javaslat')], [tr('Edzés')]],
+      t.map(r => [fmtDate(r.date), S3[r.sleep] || '–', SORE[r.soreness] || '–', S3[r.energy] || '–', r.pain ? 'igen' : 'nem', LVL[r.level] || '–', r.workouts ? (r.light ? tr('könnyített') : String(r.workouts)) : '–'])),
+    h('p', { class: 'small muted' }, tr('Önbevallás, nem orvosi értékelés. Az, hogy két dolog együtt jár (például rossz alvás és könnyebb edzés), nem jelenti, hogy egyik okozza a másikat. Ahol nincs sor, ott nem töltötted ki a kérdőívet.')));
 }

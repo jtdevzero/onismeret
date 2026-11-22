@@ -1,3 +1,4 @@
+import { dateLocale } from './i18n.js';
 /* DOM-segédek. Minden szöveg textContentként kerül a lapra, soha nem HTML-ként: így az AI-válasz, a felhasználói
    bevitel és az importált adat nem tud kódot bejuttatni. */
 
@@ -32,7 +33,7 @@ export function extLink(url, text, cls) {
   return h('a', { href: url, target: '_blank', rel: 'noopener noreferrer', class: cls }, text);
 }
 
-export const fmtDate = ts => new Date(ts).toLocaleDateString('hu-HU', { year: 'numeric', month: 'short', day: 'numeric' });
+export const fmtDate = ts => new Date(ts).toLocaleDateString(dateLocale(), { year: 'numeric', month: 'short', day: 'numeric' });
 export const fmtSec = s => (s >= 60 ? Math.floor(s / 60) + ' p ' + Math.round(s % 60) + ' mp' : Math.round(s) + ' mp');
 export const uid = () => Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8);
 
