@@ -1,0 +1,41 @@
+{
+ "note": "Szezonális programok: 4–6 hetes blokkok, hetente 3 alkalom a megadott rutinokból, a forgó rend mellé. Szakember még nem lektorálta.",
+ "blocks": [
+  {
+   "id": "ski",
+   "name": "Sí előtti felkészülés",
+   "weeks": 6,
+   "perWeek": 3,
+   "routines": [
+    "ski",
+    "balance60",
+    "core"
+   ],
+   "about": "Ősszel, a szezon előtt: láberő, oldalirányú stabilitás, egyensúly."
+  },
+  {
+   "id": "summer_run",
+   "name": "Nyári futószezon",
+   "weeks": 6,
+   "perWeek": 3,
+   "routines": [
+    "runner",
+    "cyclist",
+    "morning"
+   ],
+   "about": "Tavasszal: sérülésmegelőzés a futás mellé (a futóprogrammal együtt a legjobb)."
+  },
+  {
+   "id": "beach",
+   "name": "Strandszezon előtti törzs",
+   "weeks": 4,
+   "perWeek": 3,
+   "routines": [
+    "core",
+    "morning",
+    "core"
+   ],
+   "about": "Kora nyáron: törzs és far, rövid, intenzív alkalmakkal."
+  }
+ ]
+}

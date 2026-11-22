@@ -1,0 +1,480 @@
+{
+ "note": "Rövid, önálló rutinok a forgó rend mellé. Nem léptetik a programot és nem kérnek értékelést. Szakember még nem lektorálta.",
+ "routines": [
+  {
+   "id": "morning",
+   "name": "Reggeli ébresztő",
+   "minutes": 5,
+   "about": "Átmozgatás ébredés után: gerinc, csípő, váll.",
+   "blocks": [
+    [
+     "cat_cow",
+     1,
+     {
+      "reps": 8
+     }
+    ],
+    [
+     "worlds_greatest",
+     1,
+     {
+      "reps": 3
+     }
+    ],
+    [
+     "squat_hold",
+     1,
+     {
+      "seconds": 30
+     }
+    ],
+    [
+     "wall_slide",
+     1,
+     {
+      "reps": 8
+     }
+    ],
+    [
+     "sl_stand",
+     1,
+     {
+      "seconds": 20
+     }
+    ]
+   ],
+   "category": "daily"
+  },
+  {
+   "id": "office",
+   "name": "Irodai mobilitás",
+   "minutes": 5,
+   "about": "Sok ülés után: háti forgatás, csípőhajlító, vállak. Széknél is elvégezhető.",
+   "blocks": [
+    [
+     "open_book",
+     1,
+     {
+      "reps": 6
+     }
+    ],
+    [
+     "couch_stretch",
+     1,
+     {
+      "seconds": 30
+     }
+    ],
+    [
+     "wall_slide",
+     1,
+     {
+      "reps": 10
+     }
+    ],
+    [
+     "squat_box",
+     1,
+     {
+      "reps": 10
+     }
+    ],
+    [
+     "calf_stretch",
+     1,
+     {
+      "seconds": 30
+     }
+    ]
+   ],
+   "category": "daily"
+  },
+  {
+   "id": "evening",
+   "name": "Esti nyújtás",
+   "minutes": 8,
+   "about": "Lassú nyújtás és légzés lefekvés előtt, hogy könnyebben elaludj.",
+   "blocks": [
+    [
+     "child_pose",
+     1,
+     {
+      "seconds": 60
+     }
+    ],
+    [
+     "hamstring_stretch",
+     1,
+     {
+      "seconds": 40
+     }
+    ],
+    [
+     "glute_stretch",
+     1,
+     {
+      "seconds": 40
+     }
+    ],
+    [
+     "couch_stretch",
+     1,
+     {
+      "seconds": 40
+     }
+    ],
+    [
+     "breathing",
+     1,
+     {
+      "seconds": 90
+     }
+    ]
+   ],
+   "category": "daily"
+  },
+  {
+   "id": "ski",
+   "name": "Sí előtti felkészítés",
+   "minutes": 12,
+   "about": "Láberő, oldalirányú stabilitás és egyensúly a szezon előtt. A részletes, mozgásfelméréssel személyre szabott változat a Kanyarban van.",
+   "blocks": [
+    [
+     "warmup",
+     1,
+     {
+      "seconds": 120
+     }
+    ],
+    [
+     "squat",
+     2,
+     {
+      "reps": 12
+     }
+    ],
+    [
+     "lateral_lunge",
+     2,
+     {
+      "reps": 8
+     }
+    ],
+    [
+     "skater",
+     2,
+     {
+      "seconds": 20
+     }
+    ],
+    [
+     "sl_reach",
+     2,
+     {
+      "reps": 6
+     }
+    ],
+    [
+     "side_plank",
+     2,
+     {
+      "seconds": 25
+     }
+    ]
+   ],
+   "category": "daily"
+  },
+  {
+   "id": "core",
+   "name": "Törzserősítő",
+   "minutes": 10,
+   "category": "season",
+   "about": "Elülső és oldalsó törzs, far: a strandszezon előtti blokk alapja.",
+   "blocks": [
+    [
+     "dead_bug",
+     2,
+     {
+      "reps": 8
+     }
+    ],
+    [
+     "plank",
+     2,
+     {
+      "seconds": 30
+     }
+    ],
+    [
+     "side_plank",
+     2,
+     {
+      "seconds": 20
+     }
+    ],
+    [
+     "glute_bridge",
+     2,
+     {
+      "reps": 12
+     }
+    ],
+    [
+     "mountain_climber",
+     2,
+     {
+      "seconds": 20
+     }
+    ]
+   ]
+  },
+  {
+   "id": "runner",
+   "name": "Futóknak",
+   "minutes": 10,
+   "category": "sport",
+   "about": "Boka, vádli és far: a leggyakoribb futósérülések (térd, Achilles) megelőzése.",
+   "blocks": [
+    [
+     "ankle_rock",
+     1,
+     {
+      "reps": 12
+     }
+    ],
+    [
+     "sl_bridge",
+     2,
+     {
+      "reps": 10
+     }
+    ],
+    [
+     "reverse_lunge",
+     2,
+     {
+      "reps": 8
+     }
+    ],
+    [
+     "sl_reach",
+     2,
+     {
+      "reps": 6
+     }
+    ],
+    [
+     "side_plank",
+     1,
+     {
+      "seconds": 25
+     }
+    ],
+    [
+     "couch_stretch",
+     1,
+     {
+      "seconds": 40
+     }
+    ]
+   ]
+  },
+  {
+   "id": "cyclist",
+   "name": "Kerékpárosoknak",
+   "minutes": 8,
+   "category": "sport",
+   "about": "Az előredőlt ülés ellensúlyozása: csípőhajlító, háti gerinc, far és törzs.",
+   "blocks": [
+    [
+     "couch_stretch",
+     1,
+     {
+      "seconds": 45
+     }
+    ],
+    [
+     "open_book",
+     1,
+     {
+      "reps": 8
+     }
+    ],
+    [
+     "glute_bridge",
+     2,
+     {
+      "reps": 12
+     }
+    ],
+    [
+     "plank",
+     1,
+     {
+      "seconds": 30
+     }
+    ],
+    [
+     "wall_slide",
+     1,
+     {
+      "reps": 10
+     }
+    ],
+    [
+     "hamstring_stretch",
+     1,
+     {
+      "seconds": 40
+     }
+    ]
+   ]
+  },
+  {
+   "id": "tennis",
+   "name": "Teniszezőknek",
+   "minutes": 10,
+   "category": "sport",
+   "about": "Oldalirányú mozgás, törzsforgás és vállstabilitás.",
+   "blocks": [
+    [
+     "lateral_lunge",
+     2,
+     {
+      "reps": 8
+     }
+    ],
+    [
+     "skater",
+     2,
+     {
+      "seconds": 20
+     }
+    ],
+    [
+     "side_plank",
+     2,
+     {
+      "seconds": 20
+     }
+    ],
+    [
+     "prone_ytw",
+     2,
+     {
+      "reps": 8
+     }
+    ],
+    [
+     "open_book",
+     1,
+     {
+      "reps": 8
+     }
+    ],
+    [
+     "sl_stand",
+     1,
+     {
+      "seconds": 30
+     }
+    ]
+   ]
+  },
+  {
+   "id": "football",
+   "name": "Focistáknak",
+   "minutes": 10,
+   "category": "sport",
+   "about": "Térd- és bokastabilitás, combhajlító és ágyék: a gyakori focisérülések megelőzése.",
+   "blocks": [
+    [
+     "lateral_lunge",
+     2,
+     {
+      "reps": 8
+     }
+    ],
+    [
+     "sl_reach",
+     2,
+     {
+      "reps": 6
+     }
+    ],
+    [
+     "sl_bridge",
+     2,
+     {
+      "reps": 10
+     }
+    ],
+    [
+     "side_plank",
+     1,
+     {
+      "seconds": 25
+     }
+    ],
+    [
+     "hip_9090",
+     1,
+     {
+      "reps": 8
+     }
+    ],
+    [
+     "squat_jump",
+     2,
+     {
+      "reps": 5
+     }
+    ]
+   ]
+  },
+  {
+   "id": "balance60",
+   "name": "Egyensúly 60 fölött",
+   "minutes": 8,
+   "category": "senior",
+   "about": "Biztonságos egyensúly- és erőgyakorlatok, kapaszkodási lehetőséggel (szék, fal).",
+   "blocks": [
+    [
+     "sl_stand",
+     2,
+     {
+      "seconds": 20
+     }
+    ],
+    [
+     "squat_box",
+     2,
+     {
+      "reps": 10
+     }
+    ],
+    [
+     "glute_bridge",
+     2,
+     {
+      "reps": 10
+     }
+    ],
+    [
+     "wall_slide",
+     1,
+     {
+      "reps": 8
+     }
+    ],
+    [
+     "calf_stretch",
+     1,
+     {
+      "seconds": 30
+     }
+    ]
+   ]
+  }
+ ]
+}
