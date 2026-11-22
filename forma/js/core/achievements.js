@@ -2,6 +2,7 @@
    Tiszta függvények, DOM nélkül. items: a tárolt tételek (assessment, mini, workout, cardio, body, goal). */
 import { estimateVo2, fitnessAge } from './score.js';
 import { weekStart, weeksBack, weeklyCardio } from './cardio.js';
+import { tr } from '../ui/i18n.js';
 
 const DAY = 86400000;
 export const MINI_TESTS = ['pushup', 'plank', 'sl_stance'];
@@ -91,18 +92,18 @@ export function badges(items, ctx = {}) {
   const pushFull = ups.find(u => u.ladder === 'push' && u.to >= 3);
   const recs = (ctx.records || []).filter(r => r.improved);
   const list = [
-    ['first', 'Az első edzés', 'Elkezdted.', nth(1)],
-    ['ten', '10 edzés', 'A szokás kezd kialakulni.', nth(10)],
-    ['fifty', '50 edzés', 'Ez már életmód.', nth(50)],
-    ['hundred', '100 edzés', 'Kitartás felsőfokon.', nth(100)],
-    ['levelup', 'Első szintlépés', 'Egy gyakorlat könnyűvé vált, jöhet a nehezebb.', ups.length ? ups[0].date : null],
-    ['fourweeks', 'Négy erős hét', 'Négy hét egymás után, hetente legalább 4 edzéssel.', fourWeeks],
-    ['cardio150', 'Heti 150 perc', 'Egy héten belül teljesítetted a WHO kardióajánlását.', cardioWeek],
-    ['pushup', 'Teljes fekvőtámasz', 'Elérted a teljes fekvőtámasz szintjét.', pushFull ? pushFull.date : null],
-    ['pullup', 'Első húzódzkodás', 'Elérted a húzódzkodás szintjét a rúdon.', pullUp ? pullUp.date : null],
-    ['record', 'Egyéni csúcs', 'Megdöntötted egy saját tesztrekordodat.', recs.length ? Math.min(...recs.map(r => r.date)) : null],
-    ['younger', 'Fiatalabb a korodnál', 'A fittségi korod alacsonyabb a naptári korodnál.', ctx.fitnessAge != null && ctx.age != null && ctx.fitnessAge < ctx.age ? ctx.now || Date.now() : null],
-    ['goal', 'Cél teljesítve', 'Elérted az egyik kitűzött célodat.', ctx.goalDone ? ctx.now || Date.now() : null],
+    ['first', tr('Az első edzés'), tr('Elkezdted.'), nth(1)],
+    ['ten', tr('10 edzés'), tr('A szokás kezd kialakulni.'), nth(10)],
+    ['fifty', tr('50 edzés'), tr('Ez már életmód.'), nth(50)],
+    ['hundred', tr('100 edzés'), tr('Kitartás felsőfokon.'), nth(100)],
+    ['levelup', tr('Első szintlépés'), tr('Egy gyakorlat könnyűvé vált, jöhet a nehezebb.'), ups.length ? ups[0].date : null],
+    ['fourweeks', tr('Négy erős hét'), tr('Négy hét egymás után, hetente legalább 4 edzéssel.'), fourWeeks],
+    ['cardio150', tr('Heti 150 perc'), tr('Egy héten belül teljesítetted a WHO kardióajánlását.'), cardioWeek],
+    ['pushup', tr('Teljes fekvőtámasz'), tr('Elérted a teljes fekvőtámasz szintjét.'), pushFull ? pushFull.date : null],
+    ['pullup', tr('Első húzódzkodás'), tr('Elérted a húzódzkodás szintjét a rúdon.'), pullUp ? pullUp.date : null],
+    ['record', tr('Egyéni csúcs'), tr('Megdöntötted egy saját tesztrekordodat.'), recs.length ? Math.min(...recs.map(r => r.date)) : null],
+    ['younger', tr('Fiatalabb a korodnál'), tr('A fittségi korod alacsonyabb a naptári korodnál.'), ctx.fitnessAge != null && ctx.age != null && ctx.fitnessAge < ctx.age ? ctx.now || Date.now() : null],
+    ['goal', tr('Cél teljesítve'), tr('Elérted az egyik kitűzött célodat.'), ctx.goalDone ? ctx.now || Date.now() : null],
   ];
   return list.map(([id, name, about, date]) => ({ id, name, about, earned: date != null, date }));
 }

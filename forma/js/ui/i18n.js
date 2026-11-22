@@ -3,11 +3,13 @@
    Paraméter: t('{n}. hét', { n: 3 }). A belső adatok (kg, cm, másodperc, időbélyeg) nyelvtől függetlenek. */
 import EN from './i18n-en.js';
 
-let locale = 'hu';
+/* induláskor szinkron is beolvassuk (localStorage), hogy a modulok szintjén definiált szövegek is a jó nyelven készüljenek */
+let locale = (() => { try { return localStorage.getItem('forma-lang') === 'en' ? 'en' : 'hu'; } catch { return 'hu'; } })();
 export const LOCALES = [['hu', 'Magyar'], ['en', 'English (béta)']];
 export const getLocale = () => locale;
 export function setLocale(l) {
   locale = l === 'en' ? 'en' : 'hu';
+  try { localStorage.setItem('forma-lang', locale); } catch { /* privát mód: csak a mentett beállítás számít */ }
   if (typeof document !== 'undefined') document.documentElement.lang = locale;
 }
 export function t(s, params) {
@@ -15,6 +17,9 @@ export function t(s, params) {
   if (params) out = out.replace(/\{(\w+)\}/g, (m, k) => (params[k] != null ? String(params[k]) : m));
   return out;
 }
+/* egyedi nevű alias: a képernyőkben ezt használjuk, hogy egy helyi `t` változó ne fedje el */
+export const tr = t;
 /* számok és dátumok a nyelv szerint */
 export const fmtNumber = (v, opts) => new Intl.NumberFormat(locale === 'en' ? 'en-GB' : 'hu-HU', opts).format(v);
+export const dateLocale = () => (locale === 'en' ? 'en-GB' : 'hu-HU');
 export const fmtDay = ts => new Date(ts).toLocaleDateString(locale === 'en' ? 'en-GB' : 'hu-HU');

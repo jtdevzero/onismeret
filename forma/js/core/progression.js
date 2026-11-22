@@ -10,6 +10,7 @@
    Az összehasonlítás csak azonos gyakorlaton (azonos változaton) történik. */
 import { normalizeWorkout } from './workout-schema.js';
 import { complaintRules } from './program.js';
+import { tr } from '../ui/i18n.js';
 
 export const ACTIONS = ['increase', 'maintain', 'decrease', 'insufficient_data', 'needs_review'];
 /* súlylépcső: könnyű súlyzónál 1 kg, egyébként 2 kg; 0,5 kg-ra kerekítve */
@@ -27,31 +28,31 @@ export function exerciseEvidence(workouts, exId) {
 /* exercise: { id, ladder, equipment } · workouts: nyers rekordok · currentKg: az elfogadott súly (vagy null) · complaints: ['knee', …] */
 export function suggestProgression({ exercise, workouts = [], currentKg = null, complaints = [] }) {
   const base = { exerciseId: exercise && exercise.id, requiresApproval: true, proposedChange: null, evidence: [], reasons: [], confidence: 'low' };
-  if (!exercise || exercise.equipment !== 'dumbbell') return { ...base, action: 'insufficient_data', reasons: ['Csak súlyzós gyakorlathoz adok súlyjavaslatot.'] };
+  if (!exercise || exercise.equipment !== 'dumbbell') return { ...base, action: 'insufficient_data', reasons: [tr('Csak súlyzós gyakorlathoz adok súlyjavaslatot.')] };
   const ev = exerciseEvidence(workouts, exercise.id);
   const evidence = ev.slice(-2).map(x => ({ date: x.date, workoutId: x.id, sets: x.entry.sets }));
   const lastKg = ev.length ? Math.max(...ev[ev.length - 1].entry.sets.filter(s => Number.isFinite(s.weightKg)).map(s => s.weightKg)) : null;
   const from = Number.isFinite(currentKg) && currentKg > 0 ? currentKg : lastKg;
   if (complaintRules(complaints).caps[exercise.ladder] !== undefined) {
-    return { ...base, action: 'needs_review', evidence, reasons: ['Jelzett panaszod érinti ezt a gyakorlatot: emelést nem javaslok. Csak fájdalommentesen dolgozz, és ha kell, kérj szakembertől tanácsot.'] };
+    return { ...base, action: 'needs_review', evidence, reasons: [tr('Jelzett panaszod érinti ezt a gyakorlatot: emelést nem javaslok. Csak fájdalommentesen dolgozz, és ha kell, kérj szakembertől tanácsot.')] };
   }
-  if (!ev.length || from == null) return { ...base, action: 'insufficient_data', evidence, reasons: ['Még nincs súllyal rögzített sorozatod ebből a gyakorlatból. A sorozatnaplóban add meg a súlyt.'] };
+  if (!ev.length || from == null) return { ...base, action: 'insufficient_data', evidence, reasons: [tr('Még nincs súllyal rögzített sorozatod ebből a gyakorlatból. A sorozatnaplóban add meg a súlyt.')] };
   const last = ev[ev.length - 1].entry.sets;
   const failed = last.filter(s => s.done === false).length;
   if (failed >= 2) {
     const to = round05(Math.max(0, from - stepFor(from)));
-    return { ...base, action: 'decrease', evidence, confidence: 'medium', proposedChange: to < from ? { ex: exercise.id, from, to } : null, reasons: [`A legutóbbi edzésen ${failed} sorozat nem sikerült ${from} kg-mal. Egy lépcsővel könnyebb súllyal biztosabb a technika.`] };
+    return { ...base, action: 'decrease', evidence, confidence: 'medium', proposedChange: to < from ? { ex: exercise.id, from, to } : null, reasons: [tr('A legutóbbi edzésen {p0} sorozat nem sikerült {p1} kg-mal. Egy lépcsővel könnyebb súllyal biztosabb a technika.', { p0: failed, p1: from })] };
   }
-  if (ev.length < 2) return { ...base, action: 'insufficient_data', evidence, reasons: ['Egy edzés még kevés: két, súllyal rögzített edzés után javaslok.'] };
+  if (ev.length < 2) return { ...base, action: 'insufficient_data', evidence, reasons: [tr('Egy edzés még kevés: két, súllyal rögzített edzés után javaslok.')] };
   const lastTwo = ev.slice(-2).map(x => x.entry.sets);
   const allDone = lastTwo.every(sets => sets.every(s => s.done !== false));
   const rirs = lastTwo.map(sets => { const r = sets.filter(s => Number.isInteger(s.rir)).map(s => s.rir); return r.length ? Math.min(...r) : null; });
-  if (allDone && rirs.some(r => r == null)) return { ...base, action: 'maintain', evidence, reasons: ['Minden sorozat sikerült, de RIR nélkül nem tudom, mennyi tartalékod volt. Ha az utolsó sorozatnál megadod a RIR-t, javasolhatok emelést.'] };
+  if (allDone && rirs.some(r => r == null)) return { ...base, action: 'maintain', evidence, reasons: [tr('Minden sorozat sikerült, de RIR nélkül nem tudom, mennyi tartalékod volt. Ha az utolsó sorozatnál megadod a RIR-t, javasolhatok emelést.')] };
   if (allDone && rirs.every(r => r >= 3)) {
     const to = round05(from + stepFor(from));
-    return { ...base, action: 'increase', evidence, confidence: 'medium', proposedChange: { ex: exercise.id, from, to }, reasons: [`Az utolsó két edzésen minden sorozat sikerült, és mindkétszer legalább 3 ismétlés tartalékod maradt (RIR ${rirs.join(', ')}).`] };
+    return { ...base, action: 'increase', evidence, confidence: 'medium', proposedChange: { ex: exercise.id, from, to }, reasons: [tr('Az utolsó két edzésen minden sorozat sikerült, és mindkétszer legalább 3 ismétlés tartalékod maradt (RIR {p0}).', { p0: rirs.join(', ') })] };
   }
-  return { ...base, action: 'maintain', evidence, reasons: ['Maradj ennél a súlynál: még nem volt két egymás utáni, bőven tartalékos edzés.'] };
+  return { ...base, action: 'maintain', evidence, reasons: [tr('Maradj ennél a súlynál: még nem volt két egymás utáni, bőven tartalékos edzés.')] };
 }
 
 /* Jóváhagyott súlyváltozás a programba. Nem módosítja a bemenetet; ha már ez az érték, változatlanul adja vissza (idempotens). */

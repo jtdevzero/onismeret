@@ -1,4 +1,5 @@
 /* Közös felületi elemek, hang és időzítő. */
+import { getLocale, tr } from './i18n.js';
 import { h, extLink } from './dom.js';
 
 export const page = (title, ...kids) => h('div', { class: 'page' }, h('h1', null, title), kids);
@@ -74,7 +75,7 @@ export const tickMs = () => tick;
 
 export function speak(text, enabled = true) {
   if (!enabled || !('speechSynthesis' in window)) return;
-  try { const u = new SpeechSynthesisUtterance(text); u.lang = 'hu-HU'; u.rate = 1.1; speechSynthesis.cancel(); speechSynthesis.speak(u); } catch { /* a hang nem létfontosságú */ }
+  try { const u = new SpeechSynthesisUtterance(text); u.lang = getLocale() === 'en' ? 'en-GB' : 'hu-HU'; u.rate = 1.1; speechSynthesis.cancel(); speechSynthesis.speak(u); } catch { /* a hang nem létfontosságú */ }
 }
 
 /* Rövid hangjelzés (metronóm, időzítő vége). A hangkimenetet csak felhasználói mozdulat után indítjuk. */
@@ -91,7 +92,7 @@ export function beep(freq = 880, ms = 90) {
 
 export function videoSearch(ex) {
   const q = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(ex.query || ex.name);
-  return h('p', { class: 'small' }, extLink(q, 'Bemutató videók keresése a YouTube-on'), h('span', { class: 'muted' }, ' · új lapon nyílik'));
+  return h('p', { class: 'small' }, extLink(q, tr('Bemutató videók keresése a YouTube-on')), h('span', { class: 'muted' }, tr(' · új lapon nyílik')));
 }
 
 export const levelBadge = (level, text) => h('span', { class: 'badge ' + level }, text);
@@ -112,7 +113,7 @@ export function initHaptics() {
 /* Rövid szintlépés-visszajelzés; csökkentett mozgásnál nem takarja a képernyőt. */
 export function celebrate() {
   if (typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const box = h('div', { class: 'celebration', role: 'status' }, h('span', { 'aria-hidden': 'true' }, '✓'), 'Szintet léptél!');
+  const box = h('div', { class: 'celebration', role: 'status' }, h('span', { 'aria-hidden': 'true' }, '✓'), tr('Szintet léptél!'));
   document.body.append(box);
   setTimeout(() => box.remove(), 2200);
 }

@@ -6,10 +6,10 @@ import EN from '../js/ui/i18n-en.js';
 import { t, setLocale } from '../js/ui/i18n.js';
 
 test('minden t() kulcsnak van angol fordítása, üres fordítás nincs', () => {
-  const dir = new URL('../js/ui/', import.meta.url), missing = [];
-  for (const f of readdirSync(dir).filter(x => x.endsWith('.js'))) {
-    const src = readFileSync(new URL(f, dir), 'utf8');
-    for (const m of src.matchAll(/\bt\('((?:[^'\\]|\\.)+)'/g)) if (!(m[1] in EN)) missing.push(f + ': ' + m[1]);
+  const missing = [];
+  for (const d of ['../js/ui/', '../js/core/']) for (const f of readdirSync(new URL(d, import.meta.url)).filter(x => x.endsWith('.js'))) {
+    const src = readFileSync(new URL(d + f, import.meta.url), 'utf8');
+    for (const m of src.matchAll(/\btr?\('((?:[^'\\]|\\.)+)'/g)) if (!(m[1].replace(/\\n/g, '\n').replace(/\\'/g, "'") in EN)) missing.push(f + ': ' + m[1]);
   }
   assert.deepEqual(missing, []);
   for (const [k, v] of Object.entries(EN)) assert.ok(typeof v === 'string' && v.length, k);
