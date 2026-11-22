@@ -68,6 +68,21 @@
       "query": "overhead deep squat assessment"
     },
     {
+      "id": "drop_landing", "name": "Leérkezés (teszt)", "type": "test", "view": "front", "perSide": false, "dose": { "reps": 5 },
+      "how": "Állj fel egy alacsony, stabil lépcsőfokra (20–30 cm), szemben a kamerával. Lépj le előre, és érkezz puhán, egyszerre két lábra, csípőszélességű terpeszben. Az érkezés után maradj mozdulatlanul két másodpercig, aztán lépj vissza. Ötször. Ha fáj a térded, vagy az elmúlt egy évben térdsérülésed volt, ezt hagyd ki.",
+      "camera": "Szemből, 2–3 méterre, térdmagasságban. A lépcsőfok és a talaj is látszódjon, a lábfejed is legyen a képen.",
+      "points": ["Egyszerre, két lábra érkezz", "A térd a lábujjak fölött marad, nem esik befelé", "Hajlíts térdben és csípőben, puhán fogd meg az érkezést"],
+      "checkpoints": {
+        "knees_out": { "good": "Érkezéskor a térded a lábfejed fölött maradt.", "fix": "Érkezéskor a térded befelé esik. Ez a mozgásminta terheli a legjobban a keresztszalagot, a síelésben is.", "cue": "Érkezéskor told a térded kifelé, a második lábujjad irányába." },
+        "soft_landing": { "good": "Puhán, elég mély hajlítással érkeztél.", "fix": "Túl merev lábbal érkezel, a térded alig hajlik.", "cue": "Érkezz úgy, mintha egy székre ülnél le: csípő hátra, térd hajlik." },
+        "even_landing": { "good": "A két lábad egyformán vette fel a terhelést.", "fix": "Az egyik lábadra jobban érkezel, mint a másikra.", "cue": "Figyeld, hogy a két talpad egyszerre érjen földet, és egyformán hajoljon a két térded." }
+      },
+      "onSnow": "A buckákon, ugratón és egy-egy elkapott élnél ugyanígy kell elnyelned a terhelést. Ha itt beesik a térd, a pályán is be fog.",
+      "easier": null, "harder": null,
+      "videos": [],
+      "query": "drop landing test knee valgus"
+    },
+    {
       "id": "sl_squat", "name": "Egylábas guggolás székre", "type": "strength", "view": "front", "perSide": true, "dose": { "reps": 6 },
       "how": "Állj egy szék elé, emeld meg az egyik lábad, és lassan ülj le a másikon, majd állj fel. Előbb a bal, aztán a jobb lábon.",
       "camera": "Szemből, 2–3 méterről. Előbb a bal lábon csináld az ismétléseket, aztán a jobbon.",

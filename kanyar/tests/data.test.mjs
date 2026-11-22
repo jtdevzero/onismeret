@@ -36,6 +36,7 @@ test('minden elemezhető gyakorlathoz van kameratanács és szöveg az összes e
     lateral_lunge: ['depth', 'other_leg_straight', 'chest_up'], glute_bridge: ['hips_high', 'tempo'], lateral_hops: ['rhythm', 'soft_landing'],
     wall_sit: ['knee_angle', 'steady'], plank: ['straight_line', 'steady'], side_plank: ['straight_line', 'steady'],
     sl_stand: ['still', 'hold_time'], trunk_rotation: ['range'], ankle_wall: ['ankle_range'],
+    drop_landing: ['knees_out', 'soft_landing', 'even_landing'],
   };
   assert.deepEqual(Object.keys(produced).sort(), Object.keys(ANALYZERS).sort());
   for (const [id, checks] of Object.entries(produced)) {

@@ -45,7 +45,7 @@ export async function homeView() {
   const lastSnow = items.find(i => i.kind === 'snow');
   const progDone = prog ? Object.keys(prog.done || {}).length : 0;
   let next;
-  if (!profile.done) next = ['Kezdd a mozgásfelméréssel', 'Hét rövid teszt a kamerával, nagyjából 10 perc. Ebből készül a személyre szabott programod.', '#/prep', 'Felmérés indítása'];
+  if (!profile.done) next = ['Kezdd a mozgásfelméréssel', 'Nyolc rövid teszt a kamerával, nagyjából 10 perc. Ebből készül a személyre szabott programod.', '#/prep', 'Felmérés indítása'];
   else if (!prog) next = ['Készítsd el a programod', `A felmérésből ${profile.done} teszt megvan. Mehet a 6 hetes program.`, '#/prep', 'Program készítése'];
   else if (!lastSnow) next = ['Folytasd az edzést', `${progDone} / 18 edzés kész. A hegyen töltsd fel az első videód.`, '#/program', 'Program megnyitása'];
   else next = ['Mai terv a hegyen', lastSnow.coach.main_issue.what + (lastSnow.coach.cue ? ' ' + lastSnow.coach.cue : ''), '#/day', 'Terv megnyitása'];
