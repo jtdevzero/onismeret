@@ -677,7 +677,7 @@ details.more-group[open] > summary::after { content: "▴"; }
 
 /* Sorozatnapló az edzés végén (U1-105/106) */
 .setlog { margin: 12px 0; text-align: left; }
-.setlog > summary { cursor: pointer; font-weight: 700; min-height: 44px; display: flex; align-items: center; }
+.setlog > summary { cursor: pointer; font-weight: 700; padding: 11px 0; }
 .setlog-ex { margin: 12px 0; }
 .setlog-ex h3 { font-size: 1rem; margin: 0 0 6px; }
 .setlog-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; padding: 4px 0; }
