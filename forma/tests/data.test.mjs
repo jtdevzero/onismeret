@@ -28,7 +28,9 @@ test('tesztek: egyedi azonosító, ismert terület, érvényes bevitel és ponto
   }
   /* minden területhez legalább egy pontozható teszt */
   for (const a of tests.areas) assert.ok(tests.tests.some(t => t.area === a.id && t.kind !== 'baseline'), a.id);
-  assert.equal(norms.reviewed, false, 'amíg szakember nem nézte át, a jelzés marad');
+  /* átnézettnek csak dátummal jelölhető, és mindhárom adatfájl együtt */
+  for (const d of [norms, tests, ex]) if (d.reviewed) assert.match(d.reviewDate || '', /^\d{4}-\d{2}-\d{2}$/, 'átnézés dátuma');
+  assert.equal(new Set([norms.reviewed, tests.reviewed, ex.reviewed]).size, 1, 'a három adatfájl átnézési jelzése egyezik');
 });
 
 test('gyakorlatok: egyedi azonosító, adagolás, leírás, ismert típus és gyakorlatsor, létező ábra', () => {

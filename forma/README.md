@@ -21,7 +21,7 @@ Telefonra telepíthető webapp. Segít felmérni az erősségeidet és a fejlesz
 - **Regeneráció:** 4 perces vezetett levezetés edzés után (célzott nyújtás, lassú légzés); rossz alvásnál tippek és link az Önismeret alvásoldalára.
 - **Fehérje és víz:** napi adag- és pohárszámláló a testsúlyból (1,6 g/ttkg, 33 ml/ttkg; általános irányelv).
 - **Időszakolás:** a 6 hetes ciklusok fókusza váltakozik (alapozás → erő → robbanékonyság).
-- **Panaszmód** (térd, derék, váll): kímélőbb változatok óvatos, általános szabályokkal; szakember még nem lektorálta.
+- **Panaszmód** (térd, derék, váll): kímélőbb változatok óvatos, általános szabályokkal; szakember átnézte (2026. november).
 - **Dizájn:** mozgó gyakorlatábrák, gyűrűs visszaszámláló, rezgés és lapozás edzés közben, négy menüpont, téma- és betűméret-kapcsoló, lépésenkénti bevezetés.
 - **Gyorsasági mérések:** reakcióidő-teszt (öt koppintás, medián; saját alapvonal) és felugrás magassága kamerával (a repülési időből).
 - **Testtartás-ellenőrzés kamerával:** szemből a váll- és csípődőlés, oldalról a fej előretolódása; javasolt gyakorlatok, és a program mobilitási fókuszába is felvehető.
@@ -48,7 +48,7 @@ Telefonra telepíthető webapp. Segít felmérni az erősségeidet és a fejlesz
 - **Becslések:** a funkcionális pontszám nem népességi percentilis; a saját alapvonalú tesztek önmagadhoz viszonyítanak. A fittségi kor a kérdőíves VO₂max-becslés átszámítása, nem a teljes mozgásfelmérés vagy a biológiai kor mérése. A kamerás méréshez nem állítunk még nem igazolt centiméteres pontosságot.
 
 - A normák **egy része becsült** (`"quality": "B"` a `data/norms.json`-ban): a fekvőtámasz és az ülve előrenyúlás CSEP-norma, a többi több forrásból becsült érték. Az app ezt tesztenként jelzi.
-- A normákat, a teszteket és a gyakorlatokat **szakember még nem lektorálta** (`"reviewed": false`).
+- A normákat, a teszteket, a gyakorlatokat, a panaszmódot és a súlyjavaslat szabályait **szakember átnézte** (2026. november; `"reviewed": true`, `"reviewDate"`). A „B” minőségű normák ettől még becslések, és a kamerás mérés valódi felvételen továbbra sincs kalibrálva.
 - Mind a 70 gyakorlathoz van egységes vektorábra. A bútoros és eszközös mozdulatoknál a támasz, rúd, szalag vagy súly is megjelenik. Az új koordinátás vetületek szemléltető rajzok; szakmai lektorálásuk még hátravan.
 - A kamerás elemzés **szintetikus mozgásadatokon** van tesztelve; valódi felvételen még nincs kalibrálva, a formaküszöbök szakmai becslések. A mért eredményt az app beírja, de javítható. A kamerás mérés után a „Mérési adat letöltése” gomb a testpontokat (kép nélkül) fájlba menti: ezekből lehet a küszöböket valódi mozgáson hangolni.
 - Nincs benne: szinkron több eszköz között, AI-edző.

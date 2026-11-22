@@ -86,4 +86,4 @@ Hatókör: kizárólag `forma/`. Engedélyezett: U0 és U1, a `claude/elegant-ha
 - **Kamerás validáció:** önkéntes, hozzájárulással készült valódi felvételek (fekvőtámasz, felállás, guggolás), kézzel számolt ismétlésszámmal.
 - **AI coach:** szolgáltató (pl. Claude API), havi költségkeret, a backend helye (a Kanyar/Parliamo worker mintájára Cloudflare Worker), API-kulcs `wrangler secret put`-tal.
 - **Felhő és szinkron:** szolgáltató, titkosítási modell, adatkezelési tájékoztató.
-- **Szakmai lektorálás:** normák, panaszmód, súlyjavaslat szabályai.
+- **Szakmai lektorálás:** kész (2026-11-22, a tulajdonos közlése szerint szakember átnézte a normákat, a teszteket, a gyakorlatokat, a panaszmódot és a súlyjavaslat szabályait). A szakember írásos visszajelzését érdemes a repón kívül megőrizni.

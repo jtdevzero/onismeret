@@ -38,3 +38,7 @@ export function applyLook(st = S.settings || {}) {
 
 /* heti edzéscél (szokáscél): a beállításból, alapból 5 */
 export const weeklyGoal = () => (S.settings && Number.isInteger(S.settings.weeklyGoal) ? S.settings.weeklyGoal : 5);
+
+/* szakmai átnézés: csak akkor igaz, ha a normák, a tesztek és a gyakorlatok is átnézettként vannak jelölve */
+export const reviewed = () => !!(D.norms && D.norms.reviewed && D.tests && D.tests.reviewed && D.exercises && D.exercises.reviewed);
+export const reviewText = () => (reviewed() ? `Szakember átnézte (${String(D.norms.reviewDate || '').slice(0, 7).replace('-', '. ')}.).` : 'Szakember még nem lektorálta.');

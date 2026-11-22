@@ -1,7 +1,7 @@
 /* Kezdőképernyő (első indítás), a mai nap, napló és beállítások. */
 import { h, clear, fmtDate, toast } from './dom.js';
 import { page, card, btn, link, note, choice, list, sized, heroTime, artClass, emptyState } from './widgets.js';
-import { D, S, saveSettings, profile, applyLook, weeklyGoal } from './data.js';
+import { D, S, saveSettings, profile, applyLook, weeklyGoal, reviewed } from './data.js';
 import { exportAll, wipeAll, restoreAll } from './store.js';
 import { parseBackup } from '../core/backup.js';
 import { sameScoring } from '../core/assessment.js';
@@ -84,7 +84,7 @@ export async function startView() {
       card(h('h2', null, 'Hogyan működik?'), list([
         'Kb. 25 perces felmérés otthon, eszköz nélkül: mobilitás, hajlékonyság, erő, törzs, gyorsaság, egyensúly, állóképesség.',
         'Egyes teszteket a korod és a nemed szerinti normákhoz hasonlítok, másokat funkcionális küszöbhöz vagy a saját korábbi eredményedhez.',
-        'A normák egy része becsült, szakember még nem lektorálta. A fittségi kor a pulzusodból, derékbőségedből és aktivitásodból becsült VO₂max átszámítása, nem az összes mozgásteszt eredménye.',
+        (reviewed() ? 'A normák egy része becsült; a normákat, a teszteket és a gyakorlatokat szakember átnézte. ' : 'A normák egy része becsült, szakember még nem lektorálta. ') + 'A fittségi kor a pulzusodból, derékbőségedből és aktivitásodból becsült VO₂max átszámítása, nem az összes mozgásteszt eredménye.',
         'Ebből napi 15–25 perces programot kapsz. Ha egy gyakorlat könnyű, nehezebbre váltok; 6 hetente újramérünk.',
         'Minden adat a telefonodon marad. Nincs fiók, és nincs szerver.']),
         h('div', { class: 'row' }, btn('Kezdjük el', () => goStep(1), 'primary'))),
@@ -343,7 +343,7 @@ export async function settingsView() {
       h('p', { class: 'small muted' }, 'Ha kevés az időd, az edzést a választott hosszhoz igazítom: rövidebb mobilitás és pihenő, kevesebb kör. 35 percnél a fő gyakorlatok egy kört kapnak.'),
       choice('dur', DURATIONS, S.settings.duration || 0, async v => { await saveSettings({ duration: v }); toast('Elmentettem. A következő edzéstől érvényes.'); }, 'Edzésidő')),
     card(h('h2', null, 'Panaszmód'),
-      h('p', { class: 'small muted' }, 'Ha valamelyik ízületed érzékeny, a program kímélőbb változatokat ad: térdnél ugrás és mély egylábas guggolás nélkül, deréknál lendítés és hollow nélkül, vállnál fekvőtámasz térdelve és rúd nélkül. Általános, óvatos szabályok; szakember még nem lektorálta. Tartós vagy éles fájdalommal fordulj orvoshoz vagy gyógytornászhoz.'),
+      h('p', { class: 'small muted' }, 'Ha valamelyik ízületed érzékeny, a program kímélőbb változatokat ad: térdnél ugrás és mély egylábas guggolás nélkül, deréknál lendítés és hollow nélkül, vállnál fekvőtámasz térdelve és rúd nélkül. Általános, óvatos szabályok' + (reviewed() ? ', szakember átnézte' : '; szakember még nem lektorálta') + '. Tartós vagy éles fájdalommal fordulj orvoshoz vagy gyógytornászhoz.'),
       COMPLAINTS.map(([k, label]) => h('label', { class: 'check' }, h('input', { type: 'checkbox', checked: (S.settings.complaints || []).includes(k), onchange: async e => {
         const set = new Set(S.settings.complaints || []); if (e.target.checked) set.add(k); else set.delete(k);
         await saveSettings({ complaints: [...set] });
@@ -384,7 +384,7 @@ export async function settingsView() {
         restorePicker(),
         btn('Minden adat törlése', async () => { if (!confirm('Biztosan törlöd az összes felmérést, edzést és beállítást? Ez nem vonható vissza.')) return; await wipeAll(); S.settings = null; location.hash = '#/start'; location.reload(); }, 'danger'))),
     card(h('h2', null, 'A normákról'),
-      h('p', null, 'A percentilisek egy része publikált felnőtt normákra épül (CSEP); más normákat eltérő minták és mérési módszerek alapján becsültünk. Ezt tesztenként jelöljük. A funkcionális küszöb pontszám, nem népességi percentilis. A normákat és a gyakorlatokat szakember még nem lektorálta.'),
+      h('p', null, 'A percentilisek egy része publikált felnőtt normákra épül (CSEP); más normákat eltérő minták és mérési módszerek alapján becsültünk. Ezt tesztenként jelöljük. A funkcionális küszöb pontszám, nem népességi percentilis. ' + (reviewed() ? 'A normákat, a teszteket és a gyakorlatokat szakember átnézte.' : 'A normákat és a gyakorlatokat szakember még nem lektorálta.')),
       h('p', { class: 'small muted' }, 'A Forma nem orvosi eszköz.')));
 }
 

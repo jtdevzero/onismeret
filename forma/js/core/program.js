@@ -166,7 +166,7 @@ export const PHASES = [
 ];
 export const phaseOf = cycle => PHASES[((cycle || 1) - 1) % PHASES.length];
 
-/* Panaszmód (térd, derék, váll): óvatos, általános szabályok; szakember még nem lektorálta.
+/* Panaszmód (térd, derék, váll): óvatos, általános szabályok; szakember átnézte (2026-11-22).
    → { caps: { gyakorlatsor: legfeljebb szint }, noImpact, noBar, skip: [gyakorlatok] } */
 export const COMPLAINTS = [['knee', 'Térd'], ['back', 'Derék'], ['shoulder', 'Váll']];
 export function complaintRules(list = []) {
