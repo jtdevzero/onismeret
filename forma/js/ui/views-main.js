@@ -20,6 +20,7 @@ import { reviewCard } from './views-wellness.js';
 import { recoveryTileData } from './views-extra.js';
 import { breaksIcs, CHALLENGES } from '../core/extras.js';
 import { buildDashboard } from '../core/dashboard.js';
+import { backupReminderCard, backupSettingsBlock } from './backup-ui.js';
 import { coachCard } from './views-coach.js';
 
 export const PARQ = [
@@ -184,6 +185,7 @@ export async function homeView() {
       h('ul', { class: 'checklist first-week' }, dash.firstWeek.steps.map(st => h('li', { class: st.done ? 'done' : '' },
         h('span', { class: 'tick', 'aria-hidden': 'true' }, st.done ? '✓' : ''), h('span', null, st.label), h('span', { class: 'visually-hidden' }, st.done ? ' – kész' : ' – még nincs kész'))))));
   }
+  const br = await backupReminderCard(); if (br) kids.push(br);
   if (prog) { const cc = coachCard(prog, allItems, { compact: true }); if (cc) kids.push(cc); }
   const rv = await reviewCard(allItems, { compact: true });
   if (rv) kids.push(rv);
@@ -380,9 +382,9 @@ export async function settingsView() {
         download('forma-emlekezteto.ics', buildDailyIcs({ time: time.value, start: new Date(), days: 42, title: 'Forma: mai edzés', body: 'Napi 15–25 perc. Nyisd meg a Formát, és indítsd a mai edzést.' }), 'text/calendar');
       }))),
     card(h('h2', null, 'Adataid'),
-      h('p', null, 'Minden adat ezen a telefonon, ebben a böngészőben van. Ha törlöd a böngésző adatait, ezek is elvesznek: ments fájlba időnként.'),
+      h('p', null, 'Minden adat ezen a telefonon, ebben a böngészőben van. Ha törlöd a böngésző adatait, ezek is elvesznek: ments fájlba vagy küldd el magadnak e-mailben időnként.'),
+      await backupSettingsBlock(),
       h('div', { class: 'row' },
-        btn('Mentés fájlba', async () => download('forma-mentes.json', JSON.stringify(await exportAll(), null, 1), 'application/json')),
         restorePicker(),
         btn('Minden adat törlése', async () => { if (!confirm('Biztosan törlöd az összes felmérést, edzést és beállítást? Ez nem vonható vissza.')) return; await wipeAll(); S.settings = null; location.hash = '#/start'; location.reload(); }, 'danger'))),
     card(h('h2', null, 'A normákról'),

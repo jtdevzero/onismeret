@@ -98,6 +98,7 @@ def main():
     shell = ['index.html', 'styles.css', 'manifest.webmanifest']
     shell += rel((HERE / 'icons').glob('*.*'))
     shell += rel((HERE / 'assets').glob('*.webp'))
+    shell += rel((HERE / 'assets' / 'fonts').glob('*.woff2'))
     shell += rel((HERE / 'js').rglob('*.js'))
     shell += rel((HERE / 'data').glob('*.json'))
     vendor = [p for p in sorted((HERE / 'vendor').rglob('*')) if p.is_file() and p.suffix != '.md']

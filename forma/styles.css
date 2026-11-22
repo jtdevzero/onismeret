@@ -1,31 +1,36 @@
+/* Display betű: Anton (SIL Open Font License 1.1, assets/fonts/OFL-Anton.txt), helyben tárolva (CSP: csak saját forrás) */
+@font-face { font-family: "Anton"; font-style: normal; font-weight: 400; font-display: swap; src: url(assets/fonts/anton-latin-ext-400-normal.woff2) format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Anton"; font-style: normal; font-weight: 400; font-display: swap; src: url(assets/fonts/anton-latin-400-normal.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
 /* Forma – mobil-első felület, a Kanyar felépítésére. Nagy érintési felületek (edzés közben, izzadt kézzel), erős kontraszt.
    Stílus: neonos naplemente, tengerparti éjszaka. Forró rózsaszín és türkiz, narancs–sárga napkorong,
    vastag, dőlt, nagybetűs címek. Saját rajzok és rendszerbetűk: márkaelem, logó vagy betűtípus nincs átvéve. */
 :root {
-  --bg: #f7f7fa; --bg-2: #eef0f4; --surface: #ffffff; --text: #221b30; --muted: #625b70; --line: #e4e2e9;
-  --accent: #b3155b; --accent-strong: #8f0f48; --accent-soft: #ffe0ec; --accent-text: #ffffff;
-  --sun: #ff8a3d; --sun-soft: #fff0dc; --teal: #086b6f;
+  --bg: #fbf5fa; --bg-2: #ffe1ec; --surface: #ffffff; --text: #231338; --muted: #5f5170; --line: #eadbe8;
+  --accent: #c2125f; --accent-strong: #970c4a; --accent-soft: #ffe0ee; --accent-text: #ffffff;
+  --sun: #ff7a33; --title-b: #6d28d9; --sun-soft: #fff0dc; --teal: #086b6f;
   --good: #0b6f62; --good-bg: #d6f5ef; --warn: #8a3d00; --warn-bg: #ffe6cc; --danger: #b3122f;
   --hero-a: #2a0f3d; --hero-b: #8a1f6b; --hero-c: #ff5a7a;
   --shadow: 0 2px 10px rgba(26, 20, 39, .045);
   --radius: 18px; --radius-s: 12px;
-  --display: "Arial Narrow", "Roboto Condensed", "Helvetica Neue", system-ui, sans-serif;
+  --display: "Anton", "Arial Narrow", "Roboto Condensed", "Helvetica Neue", system-ui, sans-serif;
   color-scheme: light dark;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #110e1c; --bg-2: #231d31; --surface: #1b1628; --text: #f4effa; --muted: #c0b6cd; --line: #342c44;
-    --accent: #ff5fa2; --accent-strong: #ff8cbf; --accent-soft: #3d1238; --accent-text: #1a0614;
-    --sun: #ffb347; --sun-soft: #3a2010; --teal: #3ee6e0;
+    --bg: #12081f; --bg-2: #2b1240; --surface: #1d1030; --text: #fbf2ff; --muted: #c9b8d9; --line: #3a2452;
+    --accent: #ff4fa3; --accent-strong: #ff86c0; --accent-soft: #3f1040; --accent-text: #1a0614;
+    --sun: #ffa94d; --title-b: #ffa94d; --sun-soft: #3a1c10; --teal: #34f0e6;
     --good: #5ff0d0; --good-bg: #0f3a36; --warn: #ffc074; --warn-bg: #45260a; --danger: #ff8a9e;
     --hero-a: #1a0b2e; --hero-b: #6b1659; --hero-c: #ff4f7b;
     --shadow: 0 2px 10px rgba(0, 0, 0, .12);
   }
 }
 :root[data-theme="dark"] {
-  --bg: #110e1c; --bg-2: #231d31; --surface: #1b1628; --text: #f4effa; --muted: #c0b6cd; --line: #342c44;
-  --accent: #ff5fa2; --accent-strong: #ff8cbf; --accent-soft: #3d1238; --accent-text: #1a0614;
-  --sun: #ffb347; --sun-soft: #3a2010; --teal: #3ee6e0;
+  --bg: #12081f; --bg-2: #2b1240; --surface: #1d1030; --text: #fbf2ff; --muted: #c9b8d9; --line: #3a2452;
+  --accent: #ff4fa3; --accent-strong: #ff86c0; --accent-soft: #3f1040; --accent-text: #1a0614;
+  --sun: #ffa94d; --title-b: #ffa94d; --sun-soft: #3a1c10; --teal: #34f0e6;
   --good: #5ff0d0; --good-bg: #0f3a36; --warn: #ffc074; --warn-bg: #45260a; --danger: #ff8a9e;
   --hero-a: #1a0b2e; --hero-b: #6b1659; --hero-c: #ff4f7b;
   --shadow: 0 2px 10px rgba(0, 0, 0, .12);
@@ -758,3 +763,31 @@ details.more-group[open] > summary::after { content: "▴"; }
 .coach-ic { flex: none; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); font-weight: 800; }
 .coach-item.safety .coach-ic { background: var(--warn-bg); color: var(--warn); }
 .coach-item.progress .coach-ic { background: var(--good-bg); color: var(--good); }
+
+/* Miami-naplemente tipográfia: keskeny, vastag, nagybetűs címek (Anton egyetlen vastagsággal: nincs műdöntés/vastagítás) */
+h1, .hero h1, .page > h1, .tile.mini strong, .progress-poster h2, .art-banner h2, .live-count, .workout-clock, .big-num { font-family: var(--display); font-weight: 400; font-synthesis: none; }
+h1, .page > h1 { letter-spacing: .015em; font-style: normal; }
+.page > h1 { font-size: 2rem; background: linear-gradient(90deg, var(--accent), var(--title-b)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+@media (forced-colors: active) { .page > h1 { color: CanvasText; background: none; } }
+.hero h1, .art-banner h2 { font-style: normal; letter-spacing: .03em; text-shadow: 0 0 18px rgba(255, 79, 163, .55), 3px 3px 0 #2a0f3d; }
+.card > h2:first-child, details > summary h2 { font-family: var(--display); font-weight: 400; letter-spacing: .02em; font-size: 1.3rem; }
+.btn.primary { background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 70%, var(--sun))); border: 0; }
+.btn.primary:hover { background: var(--accent-strong); }
+/* naplementés háttér a lap tetején, éjszakai neon a sötét témában */
+body { background: var(--bg) linear-gradient(180deg, var(--bg-2), var(--bg) 420px) no-repeat; }
+#nav { border-top: 2px solid transparent; border-image: linear-gradient(90deg, var(--accent), var(--sun), var(--teal)) 1; }
+#nav a.on { color: var(--teal); background: color-mix(in srgb, var(--teal) 14%, transparent); }
+:root[data-theme="dark"] .card, :root:not([data-theme="light"]) .card { border-color: color-mix(in srgb, var(--accent) 22%, var(--line)); }
+.hero.art-flag, .art-banner.art-flag { background-image: url(assets/art/flag.webp); }
+.hero.art-runner, .art-banner.art-runner { background-image: url(assets/art/runner.webp); }
+.hero.art-duo-run, .art-banner.art-duo-run { background-image: url(assets/art/duo-run.webp); }
+.hero.art-curl, .art-banner.art-curl { background-image: url(assets/art/curl.webp); }
+.hero.art-ride, .art-banner.art-ride { background-image: url(assets/art/ride.webp); }
+.hero.art-progress2, .art-banner.art-progress2 { background-image: url(assets/art/progress2.webp); }
+.hero.art-walk, .art-banner.art-walk { background-image: url(assets/art/walk.webp); }
+.hero.art-press, .art-banner.art-press { background-image: url(assets/art/press.webp); }
+.hero.art-spin, .art-banner.art-spin { background-image: url(assets/art/spin.webp); }
+.hero.art-pushup, .art-banner.art-pushup { background-image: url(assets/art/pushup.webp); }
+.hero.art-balance, .art-banner.art-balance { background-image: url(assets/art/balance.webp); }
+.hero.art-night-run, .art-banner.art-night-run { background-image: url(assets/art/night-run.webp); }
+.hero.art-plank, .art-banner.art-plank { background-image: url(assets/art/plank.webp); }

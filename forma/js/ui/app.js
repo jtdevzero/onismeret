@@ -3,7 +3,8 @@ import { h, clear } from './dom.js';
 import { loadData, applyLook } from './data.js';
 import { initHaptics } from './widgets.js';
 import { settingsReady } from './state.js';
-import { watchStorage, exportAll } from './store.js';
+import { watchStorage } from './store.js';
+import { downloadBackup, requestPersist } from './backup-ui.js';
 import { startView, homeView, logView, settingsView, moreView } from './views-main.js';
 import { assessView, testView, resultView } from './views-assess.js';
 import { programView, sessionView, exerciseView } from './views-train.js';
@@ -25,10 +26,7 @@ watchStorage(({ mode, writeError }) => {
   storageNotice.append(h('strong', null, mode === 'memory' ? 'Az adatok most csak ideiglenesen tárolódnak.' : 'Egy mentés nem sikerült.'),
     h('p', null, mode === 'memory' ? 'A böngésző tartós tárolója nem érhető el. Az oldal bezárásakor vagy újratöltésekor az adataid elvesznek. Ments fájlba, mielőtt kilépsz.' : 'A legutóbbi változtatások egy része nem került a tartós tárolóba. A mentett előzményekből készíts fájlos másolatot, és ellenőrizd az utolsó bejegyzést.'),
     h('button', { type: 'button', class: 'btn small', onclick: async () => {
-      const url = URL.createObjectURL(new Blob([JSON.stringify(await exportAll(), null, 1)], { type: 'application/json' }));
-      const a = h('a', { href: url, download: 'forma-mentes.json' });
-      document.body.append(a); a.click(); a.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 2000);
+      await downloadBackup();
     } }, 'Mentés fájlba'),
     h('a', { href: '#/settings' }, 'Beállítások'));
 });
@@ -79,6 +77,8 @@ async function boot() {
   addEventListener('hashchange', route);
   await route();
   document.documentElement.dataset.ready = '1';
+  /* tartós tárolás kérése, amint van mit megőrizni (a böngésző dönt; csendben, felugró ablak nélkül) */
+  if (settingsReady()) requestPersist();
   if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
     /* új változat: a service worker azonnal átveszi az irányítást; szólunk, de nem töltünk újra magunktól (edzés közben se szakadjon meg) */
     const hadController = !!navigator.serviceWorker.controller;

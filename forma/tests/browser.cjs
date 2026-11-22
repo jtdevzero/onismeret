@@ -520,6 +520,20 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     assert.ok(vals.includes(planned + 2) || vals.includes((planned + 2) * 2), 'a javított érték az előtöltésben: ' + vals.join(','));
   });
 
+  await step('mentés-emlékeztető: a kezdőlapon szól, fájlba mentés után eltűnik; dátumos fájlnév', async () => {
+    await page.evaluate(async () => { const st = await import('./js/ui/store.js'); await st.kvSet('lastBackup', null); await st.kvSet('backupSnooze', 0); });
+    await go(page, '#/');
+    assert.match(await text(), /Mentsd el az adataidat/);
+    assert.equal(await page.getByRole('button', { name: 'Küldés e-mailben' }).count(), 1);
+    const [download] = await Promise.all([page.waitForEvent('download'), page.locator('.backup-reminder').getByRole('button', { name: 'Mentés fájlba' }).click()]);
+    assert.match(download.suggestedFilename(), /^forma-mentes-\d{4}-\d{2}-\d{2}\.json$/);
+    await until(page, async () => typeof (await (await import('./js/ui/store.js')).kvGet('lastBackup')) === 'number');
+    await go(page, '#/');
+    assert.doesNotMatch(await text(), /Mentsd el az adataidat/);
+    await go(page, '#/settings');
+    assert.match(await text(), /Utolsó mentés:/);
+  });
+
   await step('edzésidő: 15 percre állítva a mai edzés belefér', async () => {
     await go(page, '#/settings');
     await page.getByText('15 perc', { exact: true }).click();

@@ -104,7 +104,7 @@ test('gyorsítás: minden modul előre jelezve (a pózbecslőt kivéve, az csak 
 
 test('fejlécképek: minden CSS-ben hivatkozott kép létezik, 150 kB alatti, és a service worker futás közben gyorsítótárazza', () => {
   const css = readFileSync(new URL('styles.css', root), 'utf8');
-  const refs = [...new Set([...css.matchAll(/url\((assets\/art\/[a-z0-9]+\.webp)\)/g)].map(m => m[1]))];
+  const refs = [...new Set([...css.matchAll(/url\((assets\/art\/[a-z0-9-]+\.webp)\)/g)].map(m => m[1]))];
   assert.ok(refs.length >= 8);
   for (const r of refs) { assert.ok(existsSync(new URL(r, root)), r); assert.ok(readFileSync(new URL(r, root)).length < 150 * 1024, r + ' túl nagy'); }
   const sw = readFileSync(new URL('sw.js', root), 'utf8');
