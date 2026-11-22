@@ -119,6 +119,26 @@ const PLAN = {
 
 /* Egy edzés összeállítása. state: { levels, targets, lowImpact, start } · → { key, title, blocks, week } */
 /* Időszakolás: a 6 hetes ciklusok fókusza váltakozik. alap → erő → robbanékonyság, majd újra. */
+/* edzéshez szabott bemelegítés (a fő rész ízületei) */
+export const WARMUP_FOR = {
+  strengthA: ['ankle_rock', 'wall_slide'], strengthB: ['hip_9090', 'open_book'], strengthC: ['worlds_greatest'],
+  speedA: ['ankle_rock', 'squat_hold'], speedB: ['ankle_rock'],
+};
+/* célprogramok: egy gyakorlatsorra fókuszál 6 hétig */
+export const GOALS = [['push', 'Több fekvőtámasz'], ['pull', 'Első vagy több húzódzkodás'], ['squat', 'Erősebb láb'], ['core', 'Erősebb törzs'], ['power', 'Magasabb ugrás'], ['balance', 'Jobb egyensúly']];
+
+/* Edzéspartner mód: minden gyakorlati lépés kétszer, felváltva (1. és 2. személy); pihenő csak a pár után.
+   Az értékelés csak az 1. személynél (a telefon gazdájánál) marad. */
+export function partnerSteps(steps) {
+  const out = [];
+  for (const s of steps) {
+    if (s.type === 'rest') { out.push(s); continue; }
+    out.push({ ...s, person: 1, rate: undefined }, { ...s, person: 2, rate: undefined });
+    if (s.rate) out[out.length - 2].rate = s.rate;
+  }
+  return out;
+}
+
 export const PHASES = [
   { id: 'base', name: 'Alapozás', about: 'Kiegyensúlyozott terhelés, technika és állóképesség.' },
   { id: 'strength', name: 'Erő', about: 'Erőnapokon több kör, kevesebb ismétlés, hosszabb pihenő: nehezebb változat felé.' },
@@ -150,6 +170,13 @@ export function buildSession(key, state, exercises, now = Date.now(), opts = {})
   const equipment = rules.noBar ? (state.equipment || []).filter(e => e !== 'bar') : state.equipment;
   /* ugrás és erő előtt általános bemelegítés; a mobilitásnap maga a bemelegítés */
   if (warm && key !== 'mobility') blocks.push({ exercise: warm.id, sets: 1, seconds: warm.dose.seconds[key.startsWith('speed') ? 1 : 0], rest: 0, part: 'warmup' });
+  /* a mai edzéshez szabott bemelegítés: azokat az ízületeket készíti fel, amelyeket a fő rész terhel */
+  for (const id of WARMUP_FOR[key] || []) {
+    const e = exercises.find(x => x.id === id);
+    if (e && !rules.skip.includes(id)) blocks.push({ exercise: id, sets: 1, ...(e.dose.reps ? { reps: e.dose.reps[0] } : { seconds: e.dose.seconds[0] }), rest: 0, part: 'warmup' });
+  }
+  /* visszatérés: ha 14 napnál régebben volt edzés, óvatosabb újrakezdés */
+  const returning = state.lastDone != null && now - state.lastDone > 14 * 86400000;
   blocks.push(...mobilityBlock(exercises.filter(e => !rules.skip.includes(e.id)), state.targets || [], key === 'mobility'));
   for (const [ladder, sets0, rest] of PLAN[key] || []) {
     const eff = effLadder(ladder, equipment);
@@ -161,10 +188,17 @@ export function buildSession(key, state, exercises, now = Date.now(), opts = {})
     const isStrength = ex.type === 'strength', isFast = ex.type === 'power' || ex.type === 'speed';
     if (phase.id === 'strength' && isStrength) { sets = Math.min(4, sets + 1); rst += 15; if (dose.reps) dose = { reps: Math.max(3, Math.round(dose.reps * 0.8)) }; }
     if (phase.id === 'power') { if (isFast) sets = Math.min(sets + 1, ex.type === 'speed' ? 10 : 5); else if (isStrength) sets = Math.max(2, sets - 1); }
-    if (wk.deload || opts.light) sets = Math.max(1, sets - 1);
+    /* célprogram: a kiválasztott gyakorlatsor egy kört kap pluszban */
+    if (state.goalFocus && eff === effLadder(state.goalFocus, equipment) && !opts.light) sets = Math.min(5, sets + 1);
+    if (wk.deload || opts.light || returning) sets = Math.max(1, sets - 1);
     blocks.push({ exercise: ex.id, ladder: eff, sets, ...dose, rest: rst, rate: !opts.light, part: 'main' });
   }
-  return { key, title: SESSION_TITLES[key], blocks, week: wk, light: !!opts.light, phase, complaints: state.complaints || [] };
+  /* célprogram: a gyorsasági és mobilitásnapokon is kerül egy rövid blokk a célgyakorlatból */
+  if (state.goalFocus && !opts.light && (key.startsWith('speed') || key === 'mobility') && !blocks.some(b => b.ladder === effLadder(state.goalFocus, equipment))) {
+    const eff = effLadder(state.goalFocus, equipment), ex = exerciseFor(ladders, eff, Math.min((state.levels || {})[eff] ?? 0, rules.caps[eff] ?? 99), state.lowImpact || rules.noImpact);
+    if (ex) blocks.push({ exercise: ex.id, ladder: eff, sets: 2, ...doseFor(ex, wk.cycleWeek, wk.deload), rest: 60, rate: false, part: 'main' });
+  }
+  return { key, title: SESSION_TITLES[key], blocks, week: wk, light: !!opts.light, returning, phase, complaints: state.complaints || [], goalFocus: state.goalFocus || null };
 }
 
 export const nextKey = state => ROTATION[(state.done || 0) % ROTATION.length];

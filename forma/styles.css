@@ -499,3 +499,38 @@ ul.rows.lib > li .log-item { flex: 1; }
   .report h1, .report h2 { color: #000; }
   .tests-table th, .tests-table td { border-color: #999; }
 }
+
+/* ---- egyszerűbb kezdőlap: két csempe ---- */
+.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 0 14px; }
+.tile.mini { min-height: 0; gap: 4px; padding: 14px; }
+.tile.mini strong { font-size: 1.8rem; line-height: 1.1; font-family: var(--display); font-style: italic; }
+.tile.mini progress { height: 8px; }
+.center { text-align: center; }
+
+/* ---- Több oldal: gyorsgombok, csoportok ---- */
+.quick-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 0 0 16px; }
+.quick { display: grid; justify-items: center; gap: 6px; padding: 12px 4px; border-radius: var(--radius-s); background: var(--surface); border: 1px solid var(--line); color: var(--text); text-decoration: none; font-size: .8rem; font-weight: 750; box-shadow: var(--shadow); }
+.quick .ic { color: var(--accent); }
+details.more-group { margin: 0 0 14px; }
+details.more-group > summary { cursor: pointer; list-style: none; min-height: 44px; display: flex; align-items: center; }
+details.more-group > summary::-webkit-details-marker { display: none; }
+details.more-group > summary h2 { margin: 0; font-size: 1rem; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+details.more-group > summary::after { content: "▾"; margin-left: 8px; color: var(--muted); }
+details.more-group[open] > summary::after { content: "▴"; }
+
+/* ---- edzés: partner, jegyzet, előzmény ---- */
+.badge.person { margin: 0 auto 6px; display: inline-block; }
+.badge.person.p1 { background: var(--accent-soft); color: var(--accent-strong); }
+.badge.person.p2 { background: color-mix(in srgb, var(--teal) 18%, transparent); color: var(--teal); }
+.note-input { width: 100%; padding: 10px 12px; border: 1.5px solid var(--line); border-radius: var(--radius-s); background: var(--bg); color: var(--text); font: inherit; resize: vertical; }
+.note-box { margin: 10px 0; text-align: left; }
+.log-note { color: var(--text); font-style: italic; }
+.ex-bars { display: flex; align-items: flex-end; gap: 4px; height: 70px; margin: 4px 0 10px; }
+.ex-bars span { flex: 1; border-radius: 4px 4px 2px 2px; background: linear-gradient(180deg, var(--accent), color-mix(in srgb, var(--accent) 55%, var(--sun))); }
+.fig-live.big { max-width: 440px; }
+.fig-live.big .fig { height: 230px; }
+
+/* ---- egységes kártyák és kisebb oldalcímek ---- */
+.page > h1 { font-size: 1.75rem; margin-bottom: 10px; }
+.card + .card { margin-top: 0; }
+.card h2:only-child { margin: 0; }

@@ -68,7 +68,7 @@ test('build: a generált index.html és sw.js egyezik a forrással, szigorú CSP
 });
 
 test('biztonság: a felület nem ír HTML-t szövegből', () => {
-  for (const f of ['dom.js', 'widgets.js', 'views-main.js', 'views-assess.js', 'views-train.js', 'radar.js', 'figure.js', 'app.js', 'state.js', 'live.js', 'pose.js', 'views-cardio.js', 'views-progress.js', 'views-wellness.js', 'views-run.js', 'views-library.js', 'views-posture.js', 'views-extra.js']) {
+  for (const f of ['dom.js', 'widgets.js', 'views-main.js', 'views-assess.js', 'views-train.js', 'radar.js', 'figure.js', 'app.js', 'state.js', 'live.js', 'pose.js', 'views-cardio.js', 'views-progress.js', 'views-wellness.js', 'views-run.js', 'views-library.js', 'views-posture.js', 'views-extra.js', 'views-diag.js']) {
     const src = readFileSync(new URL('js/ui/' + f, root), 'utf8');
     assert.doesNotMatch(src, /innerHTML|outerHTML|insertAdjacentHTML|document\.write/, f);
   }
@@ -79,4 +79,18 @@ test('pózbecslő: a vendorolt fájlok megegyeznek a Kanyaréval (egy forrás, k
     const a = readFileSync(new URL('vendor/mediapipe/' + f, root)), b = readFileSync(new URL('../kanyar/vendor/mediapipe/' + f, root));
     assert.ok(a.equals(b), f);
   }
+});
+
+test('szakmai átnézés csomag: generált, minden normát, tesztet és gyakorlatot tartalmaz, szkript nélkül', () => {
+  const doc = readFileSync(new URL('docs/szakmai-atnezes.html', root), 'utf8');
+  assert.doesNotMatch(doc, /<script/i);
+  for (const t of tests.tests) assert.ok(doc.includes(t.name.replace(/&/g, '&amp;')), t.id);
+  for (const e of ex.exercises) assert.ok(doc.includes(e.name.replace(/&/g, '&amp;')), e.id);
+  for (const k of Object.keys(norms.tests)) assert.ok(doc.includes(`<h3>${k} `), k);
+});
+
+test('gyorsítás: minden modul előre jelezve (a pózbecslőt kivéve, az csak kameránál töltődik)', () => {
+  const html = readFileSync(new URL('index.html', root), 'utf8');
+  assert.ok((html.match(/rel="modulepreload"/g) || []).length >= 30);
+  assert.doesNotMatch(html, /modulepreload" href="js\/ui\/pose\.js"/);
 });

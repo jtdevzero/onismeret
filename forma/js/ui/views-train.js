@@ -1,16 +1,32 @@
 /* Program, vezetett edzés értékeléssel és szintlépéssel, gyakorlatleírás. */
-import { h, clear, fmtSec, uid, toast } from './dom.js';
+import { h, clear, fmtSec, fmtDate, uid, toast } from './dom.js';
 import { page, card, btn, link, note, list, speak, beep, tickMs, videoSearch, celebrate } from './widgets.js';
 import { D, S, lowImpact } from './data.js';
-import { itemPut, kvGet } from './store.js';
+import { itemPut, itemGet, itemsAll, kvGet } from './store.js';
 import { getProgram, setProgram, latestAssessment } from './state.js';
-import { ROTATION, SESSION_TITLES, LADDERS, RATINGS, effLadder, baseLadder, buildSession, sessionSteps, sessionMinutes, nextKey, weekInfo, laddersOf, exerciseFor, applyRatings, doseFor, fitSession, phaseOf, freeSession, CYCLE_WEEKS } from '../core/program.js';
+import { ROTATION, SESSION_TITLES, LADDERS, RATINGS, effLadder, baseLadder, buildSession, sessionSteps, sessionMinutes, nextKey, weekInfo, laddersOf, exerciseFor, applyRatings, doseFor, fitSession, phaseOf, freeSession, partnerSteps, GOALS, CYCLE_WEEKS } from '../core/program.js';
 import { figureStrip, figureAnim } from './figure.js';
 import { weekStrip } from './views-main.js';
 import { liveCounter } from './live.js';
 import { blockProgress } from './views-extra.js';
 
 const SIDE = { left: 'bal oldal', right: 'jobb oldal', both: 'oldalanként' };
+/* az elvégzett mennyiség (ismétlés vagy másodperc) edzésről edzésre, apró oszlopdiagramon */
+function exSpark(hist) {
+  const vals = hist.slice(-12).map(x => x.reps || x.seconds || x.sets), max = Math.max(...vals, 1);
+  return h('div', { class: 'ex-bars', role: 'img', 'aria-label': 'Az utolsó edzések mennyisége: ' + vals.join(', ') }, vals.map(v => { const b = h('span'); b.style.height = Math.max(8, Math.round(100 * v / max)) + '%'; return b; }));
+}
+/* Jegyzet az edzéshez: egy mondat, ami később a naplóban visszaolvasható (szövegként jelenik meg, nem HTML-ként). */
+function noteBox(id) {
+  const ta = h('textarea', { maxLength: 280, rows: 2, class: 'note-input', placeholder: 'Pl. a bal térdem kicsit érezte a kitörést', 'aria-label': 'Jegyzet ehhez az edzéshez' });
+  const save = btn('Jegyzet mentése', async () => {
+    const t = ta.value.trim(); if (!t) return;
+    const it = await itemGet(id); if (!it) return;
+    await itemPut({ ...it, note: t.slice(0, 280) }); toast('Elmentettem a jegyzetet.'); save.disabled = true;
+  }, 'small');
+  return h('div', { class: 'note-box' }, h('label', { class: 'field' }, 'Egy mondat a mai edzésről (nem kötelező)', ta), save);
+}
+
 /* rutin vagy saját edzés keresése a kulcs alapján */
 export async function freeSessionFor(key) {
   if (key.startsWith('routine-')) { const r = D.routines.find(x => 'routine-' + x.id === key); return r ? freeSession(key, r.name, r.blocks, D.ex) : null; }
@@ -55,6 +71,9 @@ export async function programView() {
     wk.deload ? note('Könnyített hét: kevesebb kör, a kezdő ismétlésszámokkal. A hét végén mérd fel újra magad.', 'warn') : null,
     card(h('h2', null, 'Forgó rend'), weekStrip(prog), h('p', { class: 'small muted' }, '3 erőnap, 2 gyorsasági nap és 2 mobilitásnap. Minden edzés napi mobilitással kezdődik. Az ismétlésszám hétről hétre nő, a gyakorlat pedig nehezebbre vált, ha kétszer egymás után könnyűnek értékeled.')),
     sessions,
+    card(h('h2', null, 'Célprogram'), h('p', { class: 'small muted' }, 'Ha van egy konkrét célod, az a gyakorlatsor minden erőnapon plusz kört kap, a gyorsasági és mobilitásnapokon pedig egy rövid blokkot.'),
+      h('label', { class: 'field' }, 'Fókusz', (() => { const s = h('select', { id: 'goalfocus', onchange: async () => { const p = await getProgram(); await setProgram({ ...p, goalFocus: s.value || null }); toast(s.value ? 'Célprogram beállítva.' : 'Célprogram kikapcsolva.'); } },
+        h('option', { value: '' }, 'Nincs külön cél'), GOALS.map(([k, t]) => h('option', { value: k }, t))); s.value = prog.goalFocus || ''; return s; })())),
     card(h('h2', null, 'Állóképesség'), h('p', null, 'A forgó rend mellé heti 150 perc kardió: tempós séta, kocogás vagy kerékpár, a pulzustartományodban.'), h('div', { class: 'row' }, link('#/cardio', 'Kardió napló és pulzuszónák', 'btn'))),
     card(h('h2', null, 'Szintjeid'), h('ul', { class: 'rows' }, LADDERS.filter(l => effLadder(baseLadder(l), prog.equipment) === l).map(l => {
       const ex = exerciseFor(lad, l, prog.levels[l], prog.lowImpact);
@@ -71,10 +90,16 @@ export async function sessionView(key, onCleanup) {
   /* önálló edzés: rutin (routine-…) vagy saját összeállítás (custom-…) */
   const free = await freeSessionFor(key);
   if (!free && (!SESSION_TITLES[key] || !prog.start)) return page('Nincs ilyen edzés', link('#/program', '← Program', 'btn'));
-  const session = free || fitSession(buildSession(key, prog, D.exercises.exercises, Date.now(), { light }), D.ex, S.settings.duration || 0), steps = sessionSteps(session, D.ex), total = steps.length, started = Date.now();
+  const session = free || fitSession(buildSession(key, prog, D.exercises.exercises, Date.now(), { light }), D.ex, S.settings.duration || 0), baseSteps = sessionSteps(session, D.ex), started = Date.now();
+  let steps = baseSteps, total = steps.length;
   const ratings = {};
   let at = 0, left = 0, timer = null, running = false, wake = null, finished = false;
   const voice = h('input', { type: 'checkbox', checked: true });
+  /* edzéspartner mód: csak az edzés elején kapcsolható */
+  const partner = h('input', { type: 'checkbox', onchange: () => {
+    if (at > 0) { partner.checked = !partner.checked; toast('Az edzéspartner módot az edzés elején lehet bekapcsolni.'); return; }
+    steps = partner.checked ? partnerSteps(baseSteps) : baseSteps; total = steps.length; bar.max = total; show();
+  } });
   const bar = h('progress', { max: total, value: 0, 'aria-label': 'Az edzés előrehaladása' });
   const count = h('p', { class: 'muted small' });
   const stage = h('div', { class: 'workout', 'aria-live': 'polite' });
@@ -105,17 +130,25 @@ export async function sessionView(key, onCleanup) {
     finished = true; release();
     const minutes = Math.max(1, Math.round((Date.now() - started) / 60000));
     let changes = [];
+    /* az elvégzett gyakorlatok (az első személy lépései, az aktuális ponttal bezárólag) a gyakorlatonkénti előzményhez */
+    const doneMap = new Map();
+    steps.slice(0, partial ? at : steps.length).filter(s => s.type !== 'rest' && (s.person || 1) === 1).forEach(s => {
+      const d = doneMap.get(s.exercise) || { ex: s.exercise, sets: 0, reps: 0, seconds: 0 };
+      d.sets++; if (s.reps) d.reps += s.reps * (s.side === 'both' ? 2 : 1); if (s.seconds) d.seconds += s.seconds; doneMap.set(s.exercise, d);
+    });
+    const done = [...doneMap.values()].map(d => ({ ex: d.ex, sets: d.sets, ...(d.reps ? { reps: d.reps } : {}), ...(d.seconds ? { seconds: d.seconds } : {}) }));
+    const workoutId = uid();
     if (session.free) {
       if (key.startsWith('routine-')) await blockProgress(key.slice(8));
-      await itemPut({ id: uid(), kind: 'workout', date: Date.now(), key: key.startsWith('routine-') ? 'routine' : 'custom', title: session.title, minutes, steps: total, partial, ratings: {}, changes: [] });
+      await itemPut({ id: workoutId, kind: 'workout', date: Date.now(), key: key.startsWith('routine-') ? 'routine' : 'custom', title: session.title, minutes, steps: total, partial, ratings: {}, changes: [], done, partner: partner.checked || undefined });
     } else {
       const fresh = (await getProgram()) || prog;
       const res = applyRatings(fresh, ratings, D.exercises.exercises);
       changes = res.changes;
       /* a forgó rendben csak a soron következő edzés teljesítése lép tovább */
-      const done = key === nextKey(fresh) ? (fresh.done || 0) + 1 : fresh.done || 0;
-      await setProgram({ ...res.state, done, lastDone: Date.now() });
-      await itemPut({ id: uid(), kind: 'workout', date: Date.now(), key, minutes, steps: total, partial, ratings, changes, light });
+      const doneCount = key === nextKey(fresh) ? (fresh.done || 0) + 1 : fresh.done || 0;
+      await setProgram({ ...res.state, done: doneCount, lastDone: Date.now() });
+      await itemPut({ id: workoutId, kind: 'workout', date: Date.now(), key, minutes, steps: total, partial, ratings, changes, light, done, partner: partner.checked || undefined });
     }
     speak('Kész az edzés. Szép munka!', voice.checked);
     if (changes.some(c => c.to > c.from)) celebrate();
@@ -129,6 +162,7 @@ export async function sessionView(key, onCleanup) {
         return (c.to > c.from ? 'Feljebb: ' : 'Visszább: ') + (a ? a.name : '') + ' → ' + (b ? b.name : '');
       }))) : null,
       h('p', null, 'Bekerült a naplódba.'),
+      noteBox(workoutId),
       h('p', { class: 'small muted' }, 'Ha van még 4 perced: a levezetés csökkenti a másnapi merevséget.'),
       h('div', { class: 'row' }, link('#/cooldown', 'Levezetés (4 perc)', 'btn primary'), link('#/', 'Kezdőlap', 'btn'), link('#/log', 'Napló', 'btn small'))));
   }
@@ -187,7 +221,7 @@ export async function sessionView(key, onCleanup) {
     }
     const ex = D.ex[st.exercise];
     const kicker = [st.part === 'mobility' ? 'Mobilitás' : st.part === 'warmup' ? null : D.exercises.typeNames[ex.type], st.sets > 1 ? `${st.set}. kör / ${st.sets}` : null].filter(Boolean).join(' · ');
-    const head = [kicker ? h('p', { class: 'workout-kicker' }, kicker) : null, h('h2', { class: 'workout-title' }, ex.name)];
+    const head = [st.person ? h('p', { class: 'badge person p' + st.person }, st.person + '. személy') : null, kicker ? h('p', { class: 'workout-kicker' }, kicker) : null, h('h2', { class: 'workout-title' }, ex.name)];
     const points = h('ul', { class: 'plain' }, ex.points.map(p => h('li', null, p)));
     const more = link('#/ex/' + ex.id, 'Leírás');
     const swap = st.part === 'main' ? swapRow(st, ex) : null;
@@ -225,6 +259,9 @@ export async function sessionView(key, onCleanup) {
   return page(session.title,
     h('p', { class: 'muted' }, `Kb. ${sessionMinutes(steps)} perc · ${session.blocks.length} gyakorlat` + (session.week.deload ? ' · könnyített hét' : '') + (light ? ' · könnyített edzés, értékelés nélkül' : '') + (session.fit ? ` · ${session.fit.target} perces keretre igazítva` : '')),
     bar, h('div', { class: 'row tight workout-meta' }, count, h('label', { class: 'check' }, voice, h('span', null, 'Hangos bemondás'))),
+    h('label', { class: 'check small' }, partner, h('span', null, 'Ketten csináljuk (felváltva, egy telefonon)')),
+    session.returning ? note('Üdv újra! Két hétnél hosszabb szünet után óvatosabban indulunk: minden gyakorlatból eggyel kevesebb kör.', 'small') : null,
+    session.goalFocus ? note('Célprogram: ' + (GOALS.find(([k]) => k === session.goalFocus) || ['', ''])[1] + '. Ez a gyakorlatsor plusz kört kap.', 'small') : null,
     h('p', { class: 'small muted swipe-hint' }, 'Tipp: balra húzva a következő lépésre ugrasz, jobbra húzva vissza.'),
     session.complaints.length ? note('Panaszmód: ' + session.complaints.map(c => ({ knee: 'térd', back: 'derék', shoulder: 'váll' })[c]).join(', ') + '. Csak fájdalommentes tartományban mozogj.', 'warn') : null,
     note('Ha valami fáj, hagyd ki, vagy válts könnyebbre. Szédülés vagy mellkasi panasz esetén azonnal állj meg.', 'small'),
@@ -237,10 +274,13 @@ export async function exerciseView(id, onCleanup) {
   if (live) onCleanup(live.stop);
   if (!ex) return page('Nincs ilyen gyakorlat', link('#/program', '← Program', 'btn'));
   const lad = ex.ladder ? laddersOf(D.exercises.exercises)[ex.ladder] : null;
+  const history = (await itemsAll('workout')).flatMap(w => (Array.isArray(w.done) ? w.done : []).filter(d => d.ex === id).map(d => ({ ...d, date: w.date }))).sort((a, b) => a.date - b.date);
   const dose = ex.dose.reps ? `${ex.dose.reps[0]}–${ex.dose.reps[1]} ismétlés` : `${ex.dose.seconds[0]}–${ex.dose.seconds[1]} másodperc`;
   return page(ex.name,
     h('p', { class: 'muted' }, D.exercises.typeNames[ex.type] + ' · ' + dose + (ex.perSide ? ' oldalanként' : '') + (ex.impact ? ' · ugrásos' : '')),
-    card(h('h2', null, 'Hogyan csináld'), figureAnim(D.figures[ex.figure]), figureStrip(D.figures[ex.figure], true), h('p', null, ex.how), h('h3', null, 'Három dolog, amire figyelj'), list(ex.points), videoSearch(ex)),
+    card(figureAnim(D.figures[ex.figure], { big: true }), h('h3', null, 'Három dolog, amire figyelj'), list(ex.points),
+      h('details', { class: 'section' }, h('summary', null, 'Részletes leírás'), figureStrip(D.figures[ex.figure], true), h('p', null, ex.how), videoSearch(ex))),
+    history.length ? card(h('h2', null, 'Az előzményed'), exSpark(history), h('ul', { class: 'rows' }, history.slice(-6).reverse().map(x => h('li', null, h('span', null, fmtDate(x.date)), h('span', { class: 'muted small' }, `${x.sets} kör` + (x.reps ? ` · ${x.reps} ismétlés` : '') + (x.seconds ? ` · ${x.seconds} mp` : '')))))) : null,
     live ? card(h('h2', null, 'Számolás és formaellenőrzés kamerával'), live.el) : null,
     lad ? card(h('h2', null, D.exercises.ladders[ex.ladder]), h('p', { class: 'small muted' }, 'A gyakorlatsor szintjei, a legkönnyebbtől:'),
       h('ol', null, lad.map(e => h('li', null, e.id === id ? h('strong', null, e.name) : link('#/ex/' + e.id, e.name), e.impact ? h('span', { class: 'muted small' }, ' · ugrásos') : null)))) : null,

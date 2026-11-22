@@ -52,3 +52,22 @@ test('futóprogram: 9 hét, a futásidő nő, a végén 30 perc folyamatos futá
   assert.deepEqual(nextRun(null), { week: 1, day: 2, done: false });
   assert.deepEqual(repeatWeek({ week: 4, day: 3 }), { week: 4, day: 1, done: false });
 });
+
+test('bemelegítés az edzéshez szabva, visszatérés szünet után, célprogram, edzéspartner', async () => {
+  const { WARMUP_FOR, partnerSteps } = await import('../js/core/program.js');
+  const a = buildSession('strengthA', st, ex);
+  for (const id of WARMUP_FOR.strengthA) assert.ok(a.blocks.some(b => b.exercise === id && b.part === 'warmup'), id);
+  const now = Date.now();
+  const back = buildSession('strengthA', { ...st, lastDone: now - 20 * 86400000 }, ex, now);
+  assert.equal(back.returning, true);
+  const main = s => s.blocks.filter(b => b.part === 'main');
+  main(back).forEach((b, i) => assert.equal(b.sets, Math.max(1, main(a)[i].sets - 1)));
+  const goal = buildSession('strengthA', { ...st, goalFocus: 'push' }, ex);
+  assert.equal(goal.blocks.find(b => b.ladder === 'push').sets, a.blocks.find(b => b.ladder === 'push').sets + 1);
+  const sp = buildSession('speedA', { ...st, goalFocus: 'push' }, ex);
+  assert.ok(sp.blocks.some(b => b.ladder === 'push'), 'gyorsasági napon is van célblokk');
+  const steps = sessionSteps(a, byId), ps = partnerSteps(steps);
+  assert.equal(ps.filter(s => s.type !== 'rest').length, 2 * steps.filter(s => s.type !== 'rest').length);
+  assert.equal(ps.filter(s => s.rate).length, steps.filter(s => s.rate).length, 'értékelés csak az 1. személynél');
+  assert.ok(ps.filter(s => s.rate).every(s => s.person === 1));
+});

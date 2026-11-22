@@ -6,7 +6,8 @@ import { itemPut, itemsAll, itemDelete } from './store.js';
 import { timerWidget } from './views-assess.js';
 import { scoreTest } from '../core/score.js';
 import { forecastFitnessAge } from '../core/extras.js';
-import { friendCard } from './views-extra.js';
+import { friendCard, recoveryCard } from './views-extra.js';
+import { nutritionCard } from './views-wellness.js';
 import { evaluateItem } from './state.js';
 import { MINI_TESTS, records, badges, bodyTrend, currentFitnessAge, goalProgress, metricValue, latestValue, LOWER_BETTER } from '../core/achievements.js';
 
@@ -90,6 +91,8 @@ export async function progressView(arg, onCleanup) {
         toast('Bekerült a naplóba.'); reload('#/progress');
       }, 'primary')),
       body.weight ? h('p', { class: 'small' }, `Testsúly: ${fmtNum(body.weight.value)} kg` + (body.weight.change != null ? ` (${body.weight.change > 0 ? '+' : ''}${fmtNum(body.weight.change)} kg az első mérés óta)` : '')) : null),
+    await recoveryCard(items),
+    await nutritionCard(items),
     await friendCard(items),
     h('div', { class: 'row' }, link('#/review', 'Heti áttekintés', 'btn'), link('#/mini', 'Mini-teszt (5 perc)', 'btn'), link('#/result', 'Legutóbbi felmérés', 'btn')));
 }

@@ -94,3 +94,14 @@ Méret: **K** kicsi, **K+** közepes, **N** nagy. *Külső*: szerver, szolgálta
 10. **✓ Finom rezgés gombnyomásra** a fontos műveleteknél (indítás, kész, értékelés).
 
 **Állapot:** a fenti ötletek és dizájnjavaslatok elkészültek, kivéve a 18. (AI-edző: szerver és API-kulcs kell) és a 20. (hangparancsok: külső beszédfelismerés) pontot, valamint a QR-kódot, amelyek egyeztetésre várnak.
+
+---
+
+# Minőségi kör (kész)
+
+- Kipróbálási lista az appban (Több → Kipróbálási lista), eszközpróba és hibajelentés (Több → Eszközpróba).
+- Egyszerűbb kezdőlap, csoportosított Több oldal, fokozatosan megjelenő extrák; egységesebb kártyák, kisebb oldalcímek, nagyobb ábra a gyakorlatoldalon.
+- Modulok előtöltése (`modulepreload`); szakmai átnézés csomag a buildből (`docs/szakmai-atnezes.html`).
+- Új: edzésjegyzet, gyakorlatonkénti előzmény, edzéspartner mód, edzéshez szabott bemelegítés, visszatérés szünet után, célprogram, reggeli nyújtás.
+
+**Egyeztetésre vár:** időjárásfüggő javaslat (külső időjárás-szolgáltatás), heti e-mail vagy értesítés (szerver), Apple Health és Google Fit (natív csomagolás), AI-edző (szerver, API-kulcs), hangparancsok (külső beszédfelismerés), QR-kód (új programkönyvtár).

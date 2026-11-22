@@ -64,7 +64,7 @@ export function figureAnim(spec, opts = {}) {
   };
   draw(frames[0].pose);
   const label = h('figcaption', { class: 'fig-live-label' }, frames[0].label);
-  const box = h('figure', { class: 'fig-live' + (opts.compact ? ' compact' : ''), role: 'img', 'aria-label': 'Ábra: ' + frames.map(f => f.label).join(', majd ') }, svg, label);
+  const box = h('figure', { class: 'fig-live' + (opts.compact ? ' compact' : '') + (opts.big ? ' big' : ''), role: 'img', 'aria-label': 'Ábra: ' + frames.map(f => f.label).join(', majd ') }, svg, label);
   const still = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (frames.length > 1 && !still && typeof requestAnimationFrame === 'function') {
     const seg = 1400, hold = 500, n = frames.length, cycle = (n - 1) * 2 * (seg + hold);
