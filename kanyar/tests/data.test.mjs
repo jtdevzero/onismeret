@@ -296,3 +296,20 @@ test('magától igazodó adag: könnyű emel, nehéz csökkent, fájdalomnál ni
   assert.equal(s.blocks[0].reps, 12, 'az eredeti program nem módosul');
   assert.deepEqual(adjustSession(s, undefined), s);
 });
+
+test('pályanap: a napló mezői ellenőrizve, a nap elemzései dátum szerint', async () => {
+  const { cleanDay, runsOfDay, sameDay } = await import('../js/core/progress.js');
+  const lists = JSON.parse(readFileSync(new URL('../data/slope.json', import.meta.url)));
+  assert.deepEqual(cleanDay({ snow: 2, vis: 0, tired: 4, runs: 12, note: '  jó nap  ' }, lists), { snow: 2, vis: 0, tired: 4, runs: 12, note: 'jó nap' });
+  assert.deepEqual(cleanDay({ snow: 9, vis: -1, tired: '2', runs: 1000, note: 5 }, lists), { snow: null, vis: null, tired: null, runs: null, note: '' });
+  assert.equal(cleanDay({ note: 'x'.repeat(500) }, lists).note.length, 300);
+  assert.equal(cleanDay(null, lists), null);
+  for (const sport of ['ski', 'snowboard']) {
+    const w = lists.warmup[sport];
+    assert.ok(w.length >= 5 && w.every(s => s.name && s.cue && s.seconds >= 20 && s.seconds <= 60), sport);
+  }
+  const day = new Date(2026, 11, 20, 9).getTime();
+  const items = [{ kind: 'snow', date: day + 3600e3 }, { kind: 'snow', date: day - 24 * 3600e3 }, { kind: 'exercise', date: day }];
+  assert.equal(runsOfDay(items, { date: day }).length, 1);
+  assert.ok(sameDay(day, day + 3600e3) && !sameDay(day, day + 24 * 3600e3));
+});

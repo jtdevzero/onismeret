@@ -1,5 +1,5 @@
 /* Haladás és napi terv: tiszta függvények a naplóbejegyzésekből.
-   A bejegyzések: { kind: 'snow' | 'exercise' | 'workout', date, ... } */
+   A bejegyzések: { kind: 'snow' | 'exercise' | 'workout' | 'day', date, ... } */
 import { RELIABLE } from './snow.js';
 
 const WEEK = 7 * 24 * 3600 * 1000;
@@ -16,12 +16,12 @@ export function weeklyActivity(items, now = Date.now(), weeks = 8) {
   const last = weekStart(now), out = [];
   for (let i = weeks - 1; i >= 0; i--) {
     const d = new Date(last); d.setDate(d.getDate() - 7 * i);
-    out.push({ start: d.getTime(), workouts: 0, exercises: 0, snow: 0, total: 0 });
+    out.push({ start: d.getTime(), workouts: 0, exercises: 0, snow: 0, days: 0, total: 0 });
   }
   for (const it of items) {
     const w = out.find(x => x.start === weekStart(it.date));
     if (!w) continue;
-    if (it.kind === 'workout') w.workouts++; else if (it.kind === 'exercise') w.exercises++; else if (it.kind === 'snow') w.snow++; else continue;
+    if (it.kind === 'workout') w.workouts++; else if (it.kind === 'exercise') w.exercises++; else if (it.kind === 'snow') w.snow++; else if (it.kind === 'day') w.days++; else continue;
     w.total++;
   }
   return out;
@@ -70,4 +70,19 @@ export function dayPlan(coach, catalog, lessons, sport, level) {
   const own = lessons.filter(l => l.kind === 'lesson' && l.sport === sport && l.level === level).map(l => l.id).reverse();
   own.forEach(add);
   return { faultId: fault ? fault.id : null, drills: picks };
+}
+
+/* Ugyanarra a naptári napra esik-e két időpont (helyi idő szerint). */
+export const sameDay = (a, b) => new Date(a).toDateString() === new Date(b).toDateString();
+/* Egy pályanap-bejegyzéshez tartozó havas elemzések: amelyek ugyanazon a napon készültek. */
+export const runsOfDay = (items, day) => items.filter(i => i.kind === 'snow' && sameDay(i.date, day.date));
+/* A pályanap rögzített mezőinek ellenőrzése (az importált adatnál is). → tisztított bejegyzés vagy null */
+export function cleanDay(o, lists) {
+  if (!o || typeof o !== 'object') return null;
+  const pick = (v, arr) => (Number.isInteger(v) && v >= 0 && v < arr.length ? v : null);
+  const runs = Number.isInteger(o.runs) && o.runs >= 0 && o.runs <= 200 ? o.runs : null;
+  return {
+    snow: pick(o.snow, lists.snow), vis: pick(o.vis, lists.visibility), tired: pick(o.tired, lists.tired), runs,
+    note: typeof o.note === 'string' ? o.note.trim().slice(0, 300) : '',
+  };
 }

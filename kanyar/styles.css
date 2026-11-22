@@ -60,6 +60,7 @@ p { margin: 0 0 10px; }
 .ic-book { --i: url(icons/ui-book.svg); }
 .ic-log { --i: url(icons/ui-log.svg); }
 .ic-gear { --i: url(icons/ui-gear.svg); }
+.ic-mountain { --i: url(icons/ui-mountain.svg); }
 
 /* ---- nyitó sáv a kezdőlapon ---- */
 .hero {

@@ -368,6 +368,34 @@ const go = async (page, hash) => { await page.evaluate(h => { if (location.hash 
     if (SHOTS) fs.copyFileSync(await dl.path(), path.join(SHOTS, 'share-card.png'));
   });
 
+  await step('pályanap: vezetett bemelegítés, napló mentése és szerkesztése, a nap elemzései', async () => {
+    await page.evaluate(async () => { const w = await import('./js/ui/widgets.js'); w.setRunner({ tick: 2 }); });
+    await go(page, '#/');
+    await page.locator('a.tile[href="#/slope"]').click();
+    await shown(page, '#/slope');
+    let t = await text();
+    assert.match(t, /Bemelegítés sícipőben/);
+    assert.match(t, /Mai elemzések[\s\S]*Hátraülsz/i, 'a ma készült elemzés megjelenik');
+    await page.getByRole('button', { name: 'Bemelegítés indítása' }).click();
+    await page.waitForFunction(() => /Kész a bemelegítés/i.test(document.getElementById('main').innerText), null, { timeout: 15000 });
+    await page.evaluate(async () => { const w = await import('./js/ui/widgets.js'); w.setRunner({ tick: 1000 }); });
+    await page.getByText('Kemény, tömör', { exact: true }).click();
+    await page.getByText('Jó', { exact: true }).click();
+    await page.getByText('Nagyon fáradt', { exact: true }).click();
+    await page.getByLabel('Jegyzet').fill('<b>élvezet</b> a piroson');
+    await page.getByRole('button', { name: 'Mentés', exact: true }).click();
+    await page.getByText(/Fáradtan nő a sérülés kockázata/).waitFor();
+    await shot('slope');
+    await go(page, '#/slope');
+    assert.match(await text(), /Mai napló \(szerkesztés\)/);
+    assert.equal(await page.getByLabel('Jegyzet').inputValue(), '<b>élvezet</b> a piroson');
+    await go(page, '#/log');
+    t = await text();
+    assert.match(t, /Pályanap · [\s\S]*Hó: kemény, tömör · látás: jó · nagyon fáradt · \d+ elemzés/);
+    assert.match(t, /<b>élvezet<\/b> a piroson/, 'a jegyzet szövegként jelenik meg');
+    assert.equal(await page.locator('.log b').count(), 0, 'a jegyzetből nem lesz HTML');
+  });
+
   await step('mentés fájlba: a belépőkód nem kerül bele', async () => {
     await go(page, '#/settings');
     const [dl] = await Promise.all([page.waitForEvent('download'), page.getByRole('button', { name: 'Mentés fájlba' }).click()]);
@@ -381,7 +409,7 @@ const go = async (page, hash) => { await page.evaluate(h => { if (location.hash 
     const axe = fs.readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
     const snowId = await page.evaluate(async () => { const st = await import('./js/ui/store.js'); return (await st.itemsAll()).find(i => i.kind === 'snow').id; });
     const found = [];
-    for (const hash of ['#/', '#/prep', '#/program', '#/session/2-0', '#/ex/squat', '#/snow', '#/a/' + snowId, '#/day', '#/learn', '#/l/ski_1_stance', '#/log', '#/settings', '#/start']) {
+    for (const hash of ['#/', '#/prep', '#/program', '#/session/2-0', '#/ex/squat', '#/snow', '#/a/' + snowId, '#/day', '#/slope', '#/learn', '#/l/ski_1_stance', '#/log', '#/settings', '#/start']) {
       await go(page, hash);
       await page.evaluate(src => { if (!window.axe) (0, eval)(src); }, axe).catch(() => {});
       if (!(await page.evaluate(() => !!window.axe))) await page.addScriptTag({ content: axe }).catch(() => {});
