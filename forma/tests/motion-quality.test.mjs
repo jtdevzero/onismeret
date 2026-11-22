@@ -34,6 +34,10 @@ test('hiányzó mezők nem okoznak hibát vagy hamis bizonyosságot', () => {
   const m = measurementReliability({ ok: true });
   assert.equal(m.level, 'unreliable');
   assert.equal(m.trackedPct, 0);
+  const noFps = measurementReliability(ok({ quality: { tracked: 0.95, bodyHeight: 0.7 } }));
+  assert.equal(noFps.level, 'unreliable');
+  assert.equal(noFps.autofill, false);
+  assert.match(noFps.reasons.join(' '), /képkockasebesség/);
 });
 
 test('szintetikus felállás székről: teljes látás mellett nem „nem megbízható”, kitakarva igen', () => {

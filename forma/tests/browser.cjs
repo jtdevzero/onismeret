@@ -29,7 +29,7 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
 
 (async () => {
   const srv = await serve(), base = `http://127.0.0.1:${srv.address().port}/`;
-  const browser = await chromium.launch();
+  const browser = await chromium.launch({ executablePath: process.env.FORMA_CHROMIUM_PATH || undefined });
   const ctx = await browser.newContext({ ...devices['Pixel 7'] });
   const page = await ctx.newPage();
   const problems = [];

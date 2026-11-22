@@ -1,6 +1,7 @@
 /* U2-203: helyi edző – minden állítás adatra vezethető vissza, hiányzó adatnál nem mond semmit. */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
 import { generateLocalInsights } from '../js/core/coach-rules.js';
 
 const DAY = 86400000, NOW = new Date(2026, 10, 20, 12).getTime(); /* péntek */
@@ -19,8 +20,24 @@ test('fájdalom elöl, linkkel; minden megfigyelésnek van bizonyítéka', () =>
   assert.equal(r[0].id, 'pain');
   assert.ok(r.some(x => x.id === 'tired'));
   for (const x of r) assert.ok(x.evidence && x.evidence.length > 5, x.id);
+  assert.equal(r[0].sourceType, 'self_report');
+  assert.equal(r[0].reversible, true);
   assert.doesNotMatch(JSON.stringify(r), /diagnózis|sérülésed van/);
 });
+
+test('a hét napja nyári időszámítási váltáskor is helyes', () => {
+  // Europe/Budapest: a vasárnapi 25 órás nap végén sem keletkezhet 7. hétköznap.
+  const code = `import { generateLocalInsights } from './forma/js/core/coach-rules.js';
+    const now = new Date(2026,9,25,23,30).getTime();
+    const p = {start: now - 20*86400000,done: 1,ratings:{}};
+    const items = [{id:'w',kind:'workout',date:now-86400000}];
+    console.log(JSON.stringify(generateLocalInsights({program:p,items,now,weeklyGoal:3})));`;
+  // Külön folyamatban ellenőrizzük a lokális időzónát.
+  const out = execFileSync(process.execPath, ['--input-type=module', '-e', code], { cwd: process.cwd(), env: { ...process.env, TZ: 'Europe/Budapest' }, encoding: 'utf8' });
+  const goal = JSON.parse(out).find(x => x.id === 'goal');
+  assert.equal(goal, undefined); // 1 hátralévő napra 2 edzés már nem fér bele
+});
+
 
 test('hosszú szünet és heti cél', () => {
   const gap = generateLocalInsights({ program: prog, items: [A, W('w', 10)], now: NOW });
@@ -39,4 +56,12 @@ test('súlyjavaslat csak jelzés, a program nem változik; legfeljebb a megadott
   assert.ok(r.some(x => x.id === 'almost'));
   assert.deepEqual(p.loads, { db_row: 8 });
   assert.ok(generateLocalInsights({ program: p, items, now: NOW, weeklyGoal: 2, exercises: [] }, 1).length <= 1);
+});
+
+test('régi teljesítményből nem keletkezik friss súlyemelési javaslat', () => {
+  const p = { ...prog, loads: { db_row: 8 } };
+  const sets = [1, 2, 3].map(i => ({ reps: 10, weightKg: 8, done: true, ...(i === 3 ? { rir: 4 } : {}) }));
+  const items = [W('old-a', 42, { log: [{ ex: 'db_row', sets }] }), W('old-b', 38, { log: [{ ex: 'db_row', sets }] })];
+  const r = generateLocalInsights({ program: p, items, now: NOW, exercises: [{ id: 'db_row', name: 'Evezés', ladder: 'pull_db', equipment: 'dumbbell' }] });
+  assert.equal(r.some(x => x.id === 'load-db_row'), false);
 });

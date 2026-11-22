@@ -66,13 +66,15 @@ export const itemDelete = id => tx('items', 'readwrite', s => (s ? s.delete(id) 
 
 /* Több kulcs és tétel egyetlen tranzakcióban (pl. edzés vége: program + naplóbejegyzés).
    Vagy minden íródik, vagy semmi; ugyanazzal az azonosítóval megismételve nem keletkezik duplikátum. */
-export async function commit(values = {}, items = []) {
-  const data = structuredClone({ values, items });
+export async function commit(values = {}, items = [], deleteKeys = []) {
+  const data = structuredClone({ values, items, deleteKeys });
   if (data.items.some(it => !it || typeof it.id !== 'string' || !it.id)) throw new Error('Hibás mentési adat.');
+  if (!Array.isArray(data.deleteKeys) || data.deleteKeys.some(k => typeof k !== 'string' || !k)) throw new Error('Hibás törlési kulcs.');
   const db = await open();
   if (!db) {
     for (const [k, v] of Object.entries(data.values)) mem.kv.set(k, v);
     for (const it of data.items) mem.items.set(it.id, it);
+    for (const k of data.deleteKeys) mem.kv.delete(k);
     return;
   }
   return new Promise((resolve, reject) => {
@@ -85,6 +87,7 @@ export async function commit(values = {}, items = []) {
       const kv = t.objectStore('kv'), store = t.objectStore('items');
       for (const [k, v] of Object.entries(data.values)) kv.put(v, k);
       for (const it of data.items) store.put(it);
+      for (const k of data.deleteKeys) kv.delete(k);
     } catch (e) { if (t) t.abort(); fail(e); }
   });
 }

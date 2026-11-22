@@ -5,7 +5,6 @@ import { buildDashboard } from './dashboard.js';
 import { aggregateWeeklyLoad, buildLoadTrend } from './load.js';
 import { buildRecoveryTimeline } from './analytics.js';
 import { suggestProgression } from './progression.js';
-import { weekStart } from './cardio.js';
 
 const DAY = 86400000;
 const PRIORITY = { safety: 0, recovery: 1, consistency: 2, progress: 3, info: 4 };
@@ -16,8 +15,9 @@ export function generateLocalInsights({ program = null, items = [], now = Date.n
   const out = [];
   const dash = buildDashboard({ program, items, now, profile, norms, weeklyGoal });
   if (!program || !program.start) return out;
-  const workouts = items.filter(i => i && i.kind === 'workout').sort((a, b) => b.date - a.date);
-  const dayOfWeek = Math.floor((now - weekStart(now)) / DAY); /* 0 = hétfő */
+  const workouts = items.filter(i => i && i.kind === 'workout' && Number.isFinite(i.date) && i.date <= now).sort((a, b) => b.date - a.date);
+  /* Naptári hétköznap, nem eltelt 24 órás blokkok: DST-átálláskor is pontos. */
+  const dayOfWeek = (new Date(now).getDay() + 6) % 7; /* 0 = hétfő */
 
   /* fájdalom a legutóbbi napi kérdőívben: biztonság elöl */
   const rec = buildRecoveryTimeline(items, { days: 3, now });
@@ -42,7 +42,9 @@ export function generateLocalInsights({ program = null, items = [], now = Date.n
 
   /* súlyjavaslat elfogadásra vár */
   for (const ex of exercises) {
-    const s = suggestProgression({ exercise: ex, workouts, currentKg: program.loads ? program.loads[ex.id] ?? null : null, complaints: program.complaints || [] });
+    /* Régi edzésekre nem javasolunk ma súlyemelést; 21 napnál frissebb napló kell. */
+    const recent = workouts.filter(w => now - w.date <= 21 * DAY);
+    const s = suggestProgression({ exercise: ex, workouts: recent, currentKg: program.loads ? program.loads[ex.id] ?? null : null, complaints: program.complaints || [] });
     if (s.action === 'increase' && s.proposedChange) { out.push({ id: 'load-' + ex.id, kind: 'progress', text: `${ex.name}: a naplód alapján jöhet a ${s.proposedChange.to} kg. Csak akkor változik, ha a Program oldalon elfogadod.`, evidence: s.reasons[0], action: { href: '#/program', label: 'Súlyok' } }); break; }
   }
 
@@ -53,5 +55,12 @@ export function generateLocalInsights({ program = null, items = [], now = Date.n
   /* újramérés */
   if (dash.assessmentDue && dash.assessmentDue.due) out.push({ id: 'reassess', kind: 'info', text: 'Eltelt a 6 hét: egy újraméréssel láthatod a fejlődést, és a program is igazodik.', evidence: `Utolsó felmérés ${dash.assessmentDue.daysSince} napja.`, action: { href: '#/assess', label: 'Újramérés' } });
 
-  return out.sort((a, b) => PRIORITY[a.kind] - PRIORITY[b.kind]).slice(0, limit);
+  const provenance = { pain: 'self_report', tired: 'self_report', gap: 'measured_record', goal: 'calculation', spike: 'calculation', almost: 'self_report', reassess: 'calculation' };
+  return out.sort((a, b) => PRIORITY[a.kind] - PRIORITY[b.kind]).slice(0, limit).map(insight => ({
+    ...insight,
+    sourceType: insight.id.startsWith('load-') ? 'rule_based' : provenance[insight.id],
+    confidence: insight.id === 'spike' || insight.id.startsWith('load-') ? 'limited' : 'record_based',
+    freshness: insight.id === 'pain' || insight.id === 'tired' ? 'last_7_days' : insight.id.startsWith('load-') ? 'last_21_days' : 'derived_from_history',
+    reversible: true,
+  }));
 }

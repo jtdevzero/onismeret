@@ -16,7 +16,7 @@ const engine = process.env.FORMA_BROWSER === 'webkit' ? webkit : chromium;
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   let browser;
   try {
-    browser = await engine.launch();
+    browser = await engine.launch({ executablePath: process.env.FORMA_BROWSER === 'webkit' ? undefined : (process.env.FORMA_CHROMIUM_PATH || undefined) });
     const page = await browser.newPage({ viewport: { width: 393, height: 852 }, isMobile: true, hasTouch: true, reducedMotion: 'no-preference' });
     // Vasárnapi történet: a heti áttekintés a futtatás napjától függetlenül tesztelhető.
     await page.addInitScript(fixed => {

@@ -1,6 +1,6 @@
 /* Fejlődés: rekordok, jelvények, célok, testméretek, és a félidős mini-teszt. */
 import { GOAL_METRICS } from './helpers.js';
-import { trainingLoadCard, exerciseTrendCard, recoveryTimelineCard } from './views-analytics.js';
+import { trainingLoadCard, exerciseTrendCard, recoveryTimelineCard, periodAnalyticsCard } from './views-analytics.js';
 import { coachCard } from './views-coach.js';
 import { h, clear, fmtDate, uid, toast } from './dom.js';
 import { page, card, btn, link, fmtNum, emptyState, artBanner } from './widgets.js';
@@ -52,6 +52,7 @@ export async function progressView(arg, onCleanup) {
   return page('Fejlődés',
     artBanner('progress', 'A saját történeted', 'Lépésről lépésre feljebb'),
     coachProg ? coachCard(coachProg, items) : null,
+    periodAnalyticsCard(items),
     trainingLoadCard(items),
     exerciseTrendCard(items),
     recoveryTimelineCard(items),

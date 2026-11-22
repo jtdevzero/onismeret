@@ -28,7 +28,7 @@ async function fillOnboarding(page, url) {
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   let browser;
   try {
-    browser = await engine.launch();
+    browser = await engine.launch({ executablePath: process.env.FORMA_BROWSER === 'webkit' ? undefined : (process.env.FORMA_CHROMIUM_PATH || undefined) });
     const base = `http://127.0.0.1:${server.address().port}/`;
     for (const hash of ['#/', '#/start', '']) {
       const ctx = await browser.newContext({ ...devices['iPhone 13'] });

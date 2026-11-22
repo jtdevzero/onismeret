@@ -2,7 +2,7 @@
 import { h, clear, fmtSec, fmtDate, uid, toast } from './dom.js';
 import { page, card, btn, link, note, list, speak, beep, tickMs, videoSearch, celebrate, artBanner } from './widgets.js';
 import { D, S, lowImpact } from './data.js';
-import { itemPut, itemGet, itemsAll, kvGet, commit } from './store.js';
+import { itemPut, itemGet, itemsAll, kvGet, kvSet, kvDelete, commit } from './store.js';
 import { getProgram, setProgram, latestAssessment } from './state.js';
 import { setLevel, manualOverrides, revertManual, rotationOf, moveDay } from '../core/program.js';
 import { ROTATION, SESSION_TITLES, LADDERS, RATINGS, effLadder, baseLadder, buildSession, sessionSteps, sessionMinutes, nextKey, weekInfo, laddersOf, exerciseFor, applyRatings, doseFor, fitSession, phaseOf, freeSession, partnerSteps, GOALS, CYCLE_WEEKS } from '../core/program.js';
@@ -13,6 +13,7 @@ import { dumbbellExercises } from './helpers.js';
 import { suggestProgression, applyLoadChange } from '../core/progression.js';
 import { plannedLog, cleanLog, cleanRpe, mergeDone, WORKOUT_SCHEMA } from '../core/workout-schema.js';
 import { blockProgress } from './views-extra.js';
+import { DRAFT_VERSION, validDraft } from '../core/workout-draft.js';
 
 const SIDE = { left: 'bal oldal', right: 'jobb oldal', both: 'oldalanként' };
 /* az elvégzett mennyiség (ismétlés vagy másodperc) edzésről edzésre, apró oszlopdiagramon */
@@ -212,22 +213,49 @@ export async function sessionView(key, onCleanup) {
   /* önálló edzés: rutin (routine-…) vagy saját összeállítás (custom-…) */
   const free = await freeSessionFor(key);
   if (!free && (!SESSION_TITLES[key] || !prog.start)) return page('Nincs ilyen edzés', link('#/program', '← Program', 'btn'));
-  const session = free || fitSession(buildSession(key, prog, D.exercises.exercises, Date.now(), { light }), D.ex, S.settings.duration || 0), baseSteps = sessionSteps(session, D.ex), started = Date.now();
+  const session = free || fitSession(buildSession(key, prog, D.exercises.exercises, Date.now(), { light }), D.ex, S.settings.duration || 0), baseSteps = sessionSteps(session, D.ex);
+  const draftKey = 'workoutDraft';
+  const draft = await kvGet(draftKey, null);
+  if (draft && validDraft(draft, draft.key, draft.steps.length) && draft.key !== key && !await itemGet(draft.workoutId)) {
+    return page('Félbehagyott edzés', card(h('h2', null, 'Előbb dönts a korábbi edzésről'),
+      h('p', null, 'Egy másik edzésed még nincs befejezve. Folytathatod, vagy elvetheted a félkész adatokat.'),
+      h('div', { class: 'row' }, link('#/session/' + encodeURIComponent(draft.key), 'Korábbi edzés folytatása', 'btn primary'),
+        btn('Félkész edzés elvetése', async () => {
+          if (!confirm('Biztosan elveted a félbehagyott edzés adatait?')) return;
+          try { await kvDelete(draftKey); dispatchEvent(new HashChangeEvent('hashchange')); }
+          catch { toast('Nem sikerült törölni a félkész edzést.'); }
+        }, 'small'))));
+  }
+  let resumed = false;
+  if (draft && draft.key === key && validDraft(draft, key, draft.partner ? partnerSteps(baseSteps).length : baseSteps.length) && !await itemGet(draft.workoutId)) {
+    resumed = confirm('Van egy félbehagyott edzésed. Folytatod onnan, ahol abbahagytad?');
+  }
+  const started = resumed ? draft.started : Date.now();
+  const workoutId = resumed ? draft.workoutId : uid();
   let steps = baseSteps, total = steps.length;
-  const ratings = {};
+  const ratings = resumed ? { ...draft.ratings } : {};
   let at = 0, left = 0, timer = null, running = false, wake = null, finished = false;
+  if (resumed) { steps = draft.steps; total = steps.length; at = draft.at; }
+  let checkpointQueue = Promise.resolve();
+  const checkpoint = () => {
+    if (finished) return checkpointQueue;
+    const snapshot = { version: DRAFT_VERSION, key, workoutId, started, at, steps: structuredClone(steps), ratings: { ...ratings }, partner: partner.checked };
+    checkpointQueue = checkpointQueue.catch(() => {}).then(() => kvSet(draftKey, snapshot)).catch(() => { toast('Nem sikerült a félbehagyott edzést menteni.'); });
+    return checkpointQueue;
+  };
   const voice = h('input', { type: 'checkbox', checked: true });
   /* edzéspartner mód: csak az edzés elején kapcsolható */
   const partner = h('input', { type: 'checkbox', onchange: () => {
     if (at > 0) { partner.checked = !partner.checked; toast('Az edzéspartner módot az edzés elején lehet bekapcsolni.'); return; }
-    steps = partner.checked ? partnerSteps(baseSteps) : baseSteps; total = steps.length; bar.max = total; show();
+    steps = partner.checked ? partnerSteps(baseSteps) : baseSteps; total = steps.length; bar.max = total; checkpoint(); show();
   } });
+  partner.checked = resumed && draft.partner === true;
   const bar = h('progress', { max: total, value: 0, 'aria-label': 'Az edzés előrehaladása' });
   const count = h('p', { class: 'muted small' });
   const stage = h('div', { class: 'workout', 'aria-live': 'polite' });
   const stop = () => { if (timer) { clearInterval(timer); timer = null; } running = false; };
   const release = () => { stop(); if (wake) { wake.release().catch(() => {}); wake = null; } try { if ('speechSynthesis' in window) speechSynthesis.cancel(); } catch { /* a hang nem létfontosságú */ } };
-  onCleanup(release);
+  onCleanup(() => { checkpoint(); release(); });
   try { wake = await navigator.wakeLock.request('screen'); } catch { wake = null; }
 
   /* Visszaszámlálás a valós eltelt időből: háttérbe kerülés vagy lassú időzítő után is a tényleges hátralévő időt mutatja. */
@@ -242,25 +270,25 @@ export async function sessionView(key, onCleanup) {
       if (left <= 0) onDone();
     }, Math.max(10, Math.round(unit / 4)));
   }
-  const advance = () => { stop(); at++; if (at >= total) finish(false); else show(); };
+  const advance = () => { stop(); at++; if (at >= total) finish(false); else { checkpoint(); show(); } };
   /* az utolsó kör után megkérdezzük, milyen volt: ebből jön a szintlépés */
   const next = () => {
     const st = steps[at];
     if (st && st.rate && !ratings[st.rate]) { stop(); askRating(st); return; }
     advance();
   };
-  const back = () => { stop(); if (at > 0) { at--; show(); } };
+  const back = () => { stop(); if (at > 0) { at--; checkpoint(); show(); } };
 
   function askRating(st) {
     const ex = D.ex[st.exercise];
     clear(stage).append(card(h('p', { class: 'workout-kicker' }, 'Milyen volt?'), h('h2', { class: 'workout-title' }, ex.name),
       h('p', null, 'Az utolsó kör alapján. Ha kétszer egymás után könnyű, a következő edzéstől nehezebb változatot kapsz.'),
-      h('div', { class: 'rate' }, RATINGS.map(([k, t]) => btn(t, () => { ratings[st.rate] = k; advance(); }, k === 'ok' ? 'primary' : '')))));
+      h('div', { class: 'rate' }, RATINGS.map(([k, t]) => btn(t, () => { ratings[st.rate] = k; checkpoint(); advance(); }, k === 'ok' ? 'primary' : '')))));
     speak('Milyen volt?', voice.checked);
   }
 
   /* A mentendő állapot egyszer számolódik ki; újrapróbánál ugyanez íródik (ugyanazzal az azonosítóval), így nincs duplikátum. */
-  let pending = null;
+  let pending = null, saving = false, saved = false;
   async function finish(partial) {
     if (finished) return;
     finished = true; release();
@@ -274,7 +302,7 @@ export async function sessionView(key, onCleanup) {
       d.sets++; if (s.reps) d.reps += s.reps * (s.side === 'both' ? 2 : 1); if (s.seconds) d.seconds += s.seconds; doneMap.set(s.exercise, d);
     });
     const done = [...doneMap.values()].map(d => ({ ex: d.ex, sets: d.sets, ...(d.reps ? { reps: d.reps } : {}), ...(d.seconds ? { seconds: d.seconds } : {}) }));
-    const workoutId = uid(), values = {};
+    const values = {};
     let item;
     if (session.free) {
       item = { id: workoutId, kind: 'workout', date: endedAt, key: key.startsWith('routine-') ? 'routine' : 'custom', title: session.title, minutes, steps: total, partial, ratings: {}, changes: [], done, partner: partner.checked || undefined };
@@ -294,14 +322,19 @@ export async function sessionView(key, onCleanup) {
   }
 
   async function save() {
+    if (saving || saved) return;
+    saving = true;
     const { values, item, changes, minutes } = pending;
-    try { await commit(values, [item]); }
+    try { await checkpointQueue; await commit(values, [item], [draftKey]); }
     catch {
+      saving = false;
       clear(stage).append(card(h('h2', null, 'Az edzést nem sikerült menteni'),
         h('p', { role: 'alert' }, 'Az eredményed itt még megvan, de a telefon tárolója most nem fogadta. Próbáld újra; ha továbbra sem megy, a lap tetején lévő „Mentés fájlba” gombbal mentsd el az eddigi adataidat.'),
         h('div', { class: 'row' }, btn('Újrapróba', save, 'primary'))));
       return;
     }
+    saved = true;
+    saving = false;
     if (session.free && key.startsWith('routine-')) { try { await blockProgress(key.slice(8)); } catch { /* a blokk számlálója nem létfontosságú */ } }
     const workoutId = item.id;
     speak('Kész az edzés. Szép munka!', voice.checked);
@@ -340,7 +373,7 @@ export async function sessionView(key, onCleanup) {
         toast('Mostantól: ' + n.name);
       } catch { toast('Erre az edzésre cseréltem, de a tartós beállítást nem sikerült menteni.'); }
     } else toast('Erre az edzésre: ' + n.name);
-    stop(); show();
+    checkpoint(); stop(); show();
   }
   function swapRow(st, ex) {
     const easier = neighbor(ex, -1), harder = neighbor(ex, 1);
@@ -409,7 +442,7 @@ export async function sessionView(key, onCleanup) {
     } else {
       /* a ténylegesen elvégzett ismétlés edzés közben is javítható (a sorozatnaplóba kerül) */
       const repsClock = h('div', { class: 'workout-clock reps', 'aria-live': 'polite' }, String(st.actualReps ?? st.reps));
-      const setReps = v => { st.actualReps = Math.max(0, Math.min(999, v)); repsClock.textContent = String(st.actualReps); };
+      const setReps = v => { st.actualReps = Math.max(0, Math.min(999, v)); repsClock.textContent = String(st.actualReps); checkpoint(); };
       const adjust = st.part === 'main' ? h('div', { class: 'reps-adjust' },
         h('button', { type: 'button', class: 'btn small icon', 'aria-label': 'Eggyel kevesebb ismétlés', onclick: () => setReps((st.actualReps ?? st.reps) - 1) }, '−'),
         h('button', { type: 'button', class: 'btn small icon', 'aria-label': 'Eggyel több ismétlés', onclick: () => setReps((st.actualReps ?? st.reps) + 1) }, '+')) : null;
@@ -436,6 +469,7 @@ export async function sessionView(key, onCleanup) {
     if (dx < 0) next(); else back();
   });
   show();
+  checkpoint();
   if (S.settings.voiceMode) stage.classList.add('voice-mode');
   const view = page(session.title,
     h('p', { class: 'muted' }, `Kb. ${sessionMinutes(steps)} perc · ${session.blocks.length} gyakorlat` + (session.week.deload ? ' · könnyített hét' : '') + (light ? ' · könnyített edzés, értékelés nélkül' : '') + (session.fit ? ` · ${session.fit.target} perces keretre igazítva` : '')),

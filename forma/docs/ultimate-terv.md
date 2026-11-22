@@ -94,4 +94,37 @@ Hatókör: kizárólag `forma/`. Engedélyezett: U0 és U1, a `claude/elegant-ha
 - **Kamerás validáció:** önkéntes, hozzájárulással készült valódi felvételek (fekvőtámasz, felállás, guggolás), kézzel számolt ismétlésszámmal.
 - **AI coach:** szolgáltató (pl. Claude API), havi költségkeret, a backend helye (a Kanyar/Parliamo worker mintájára Cloudflare Worker), API-kulcs `wrangler secret put`-tal.
 - **Felhő és szinkron:** szolgáltató, titkosítási modell, adatkezelési tájékoztató.
-- **Szakmai lektorálás:** kész (2026-11-22, a tulajdonos közlése szerint szakember átnézte a normákat, a teszteket, a gyakorlatokat, a panaszmódot és a súlyjavaslat szabályait). A szakember írásos visszajelzését érdemes a repón kívül megőrizni.
+- **Szakmai ellenőrzés:** a tulajdonos személyi edzőként belső szakmai ellenőrzést végzett (2026-11-22). Ez **nem** független külső validáció. A státuszokat a [verziózott nyilvántartás](szakmai-felulvizsgalatok.md) különíti el.
+
+## Phase 2 ellenőrzőpont – 2026-11-22 (fejlesztői ág)
+
+- Ág: `feat/forma-ultimate-phase2`; kiinduló HEAD: `8b92bdc`; friss klón tiszta, `main` és referencia azonos. A külső `FORMA_ULTIMATE_MASTER_SPEC.md` nincs a klónban, ezért a teljes specifikáció szerinti megfelelést nem lehet igazolni.
+- Új helyi edző metaadat: önbevallás / naplózott adat / számítás / szabályalapú javaslat, korlátozott bizonyosság kijelzése. Nincs automatikus adat- vagy programváltozás.
+- DST: a coach hétköznapját helyi naptári napból számoljuk, nem eltelt 24 órából.
+- Motion Lab: hiányzó vagy nulla FPS esetén a követés nem megbízható, nincs automatikus eredménybeírás. Ez nem validálja a kamerás pontosságot.
+- Szakmai státusz: `docs/szakmai-felulvizsgalatok.md`, az eredeti `reviewed: true` adatok változtatása nélkül.
+- Előzetes tesztek: build sikeres; unit 134/134. A böngészős csomagok indítása a Playwright elvárt binárisának hiánya miatt sikertelen; nem számítanak lefutott tesztnek.
+- **Kiadásblokkolók:** félbehagyott edzés tartós helyreállítása, valódi mobil Safari/Android ellenőrzés, offline PWA frissítés- és adatvesztés-teszt. Jelen ellenőrzőpont nem ad kiadási jóváhagyást.
+- Részletes funkcióleltár, módosításjegyzék, adatbiztonsági, mobil és QA-jelentés: [Phase 2 audit](phase2-audit-2026-11-22.md). Végső unit tesztek: **135/135**. Chromium próbálkozás: környezeti `socket() failed: Operation not permitted`, ezért a böngészős tesztek **blokkoltak**, nem zöldek.
+
+## Phase 2 következő ellenőrzőpont – friss main integráció
+
+- A `8f0b109` (`main`) új megjelenési, lazy-loading, béta angol nyelvi és mentési emlékeztető funkcióit a fejlesztői ággal összevezettük. A generált `sw.js` ütközését az aktuális `build.py` újrafuttatása oldja fel; kézi generált kódmódosítás nincs.
+- Új `core/workout-draft.js`: a checkpoint verzióját, edzésazonosságát, lépésszámát és indexét ellenőrzi; idegen vagy sérült állapotot nem tölt be.
+- `ui/views-train.js`: edzéslépések és tényleges ismétlés módosításának IndexedDB checkpointja; folytatás felhasználói döntéssel; másik edzés indításakor a félkész edzés megtartása. Sikeres befejezéskor az edzésnapló és a draft törlése egyetlen `store.commit` tranzakcióban történik, stabil edzésazonosítóval.
+- **Korlát:** a checkpoint a lépéshatár és a felhasználói javítás állapotát tárolja, nem millimásodperc-pontos szünetidőt; a korábbi draft nem része a fájlexportnak. Az automatikus browser-recovery teszt és a valós eszközös használat még hátra van. A memória-módban továbbra sem garantált a tartósság.
+- Új `tests/workout-draft.test.mjs`; csak az igazoltan futó tesztek zöldek. Élesítés továbbra sincs engedélyezve.
+
+## Phase 2 – időszaki analitika ellenőrzőpont
+
+- `core/analytics.js`: naptári 7/30/90 napos, duplikációt elkerülő és hiányzó értékeket elkülönítő összesítő, testsúly/derékbőség, regeneráció, különálló terhelési dimenziók.
+- `ui/views-analytics.js` + `views-progress.js`: választó, akadálymentes szöveges táblázat, helyi CSV-export, magyar mértékegységek; nincs adatküldés.
+- `tests/period-analytics.test.mjs`: időszak, deduplikáció, hiányzó adat, DST. `TZ=Europe/Budapest node --test forma/tests/*.test.mjs`: **147/147 PASS**.
+- A főágban már szereplő angol i18n **béta**, nem teljes felületfordítás; az új időszaki analitika jelenleg magyarul jelenik meg. A teljes kétnyelvűség külön backlogtétel.
+- A böngészőtesztek környezeti korlátja, a valódi mobil QA és a kamera valós videós validáció nem oldódott meg: a release továbbra is **NO-GO**.
+
+## Phase 2 – további megbízhatóság és coach
+
+- A helyi coach csak az utolsó 21 nap edzésnaplójára alapozhat új súlyemelési javaslatot, régi adatokból nem. Az adatfrissességi kategória a képernyőn megjelenik, a javaslat továbbra is csak jóváhagyással alkalmazható.
+- Az edzés véglegesítésénél `saving`/`saved` állapot korlátozza a párhuzamos mentési és képernyőoldali mellékhatásokat; a stabil edzésazonosító és az atomi tranzakció változatlan.
+- Új regressziós próba a régi súlynapló tiltására; a tesztek és a build eredménye az adott commitnál rögzítendő.

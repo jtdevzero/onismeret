@@ -1,10 +1,10 @@
 /* Fejlődés oldal: edzésterhelés és gyakorlattrend táblázatosan (a számok a core/load.js és core/analytics.js modulból).
    Minden oszlopnak saját egysége van; a hiányzó adat „–”, nem nulla. */
-import { h, clear, fmtDate } from './dom.js';
+import { h, clear, fmtDate, toast } from './dom.js';
 import { card, note } from './widgets.js';
 import { D, weeklyGoal } from './data.js';
 import { aggregateWeeklyLoad } from '../core/load.js';
-import { buildExerciseProgress, loggedExercises, buildConsistencyStats, buildRecoveryTimeline } from '../core/analytics.js';
+import { buildExerciseProgress, loggedExercises, buildConsistencyStats, buildRecoveryTimeline, periodSummary, periodSummaryCsv } from '../core/analytics.js';
 
 const dash = v => (v == null ? '–' : String(v));
 const fmtWeek = ts => { const d = new Date(ts); return `${d.getMonth() + 1}. ${d.getDate()}.`; };
@@ -31,6 +31,35 @@ function table(caption, head, rows) {
     h('table', { class: 'data-table' }, h('caption', { class: 'visually-hidden' }, caption),
       h('thead', null, h('tr', null, head.map(([t, abbr]) => h('th', { scope: 'col', title: abbr || null }, t)))),
       h('tbody', null, rows.map(r => h('tr', null, r.map((c, i) => (i === 0 ? h('th', { scope: 'row' }, c) : h('td', null, c))))))));
+}
+
+export function periodAnalyticsCard(items, now = Date.now()) {
+  const out = h('div', { 'aria-live': 'polite' });
+  const choice = h('select', { 'aria-label': 'Elemzési időszak', onchange: render },
+    [7, 30, 90].map(n => h('option', { value: String(n) }, `${n} nap`)));
+  choice.value = '30';
+  function render() {
+    const summary = periodSummary(items, { days: Number(choice.value), now });
+    const rows = [
+      ['Edzések', summary.workouts, 'alkalom'], ['Edzésidő', summary.workoutMinutes, 'perc'],
+      ['Sorozatok', summary.sets, 'db'], ['Ismétlések', summary.reps, 'db'],
+      ['Tartások', summary.seconds, 'mp'], ['Külső súlyos volumen', summary.externalKgReps, 'kg × ism.'],
+      ['Érzett terhelés', summary.sessionLoad, 'RPE × perc'], ['Kardió', summary.cardioMinutes, 'perc'],
+      ['Testsúly – utolsó', summary.weight?.last, 'kg'], ['Derékbőség – utolsó', summary.waist?.last, 'cm'],
+      ['Regenerációs bejegyzések', summary.recoveryDays, 'nap']
+    ];
+    const download = h('button', { type: 'button', class: 'btn small', onclick: () => {
+      const blob = new Blob([periodSummaryCsv(summary)], { type: 'text/csv;charset=utf-8' });
+      const url = URL.createObjectURL(blob), a = document.createElement('a');
+      a.href = url; a.download = `forma-analitika-${summary.days}-nap.csv`; document.body.append(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 2000); toast('A helyi összesítést letöltöttem.');
+    } }, 'CSV letöltése');
+    clear(out).append(table(`${summary.days} napos mozgásösszesítő`, [['Mutató'], ['Érték'], ['Egység']],
+      rows.map(([name, value, unit]) => [name, dash(value), unit])),
+      h('p', { class: 'small muted' }, 'A napló alapján készült összesítés. A hiányzó adat „–”, nem nulla. A tervezett és a tényleges sorozatnaplós számok forrása eltérhet; eltérő mérési protokollokat nem hasonlítunk össze.'), download);
+  }
+  render();
+  return card(h('h2', null, 'Analytics Pro – időszaki összesítő'), h('label', { class: 'field' }, 'Időszak', choice), out);
 }
 
 export function trainingLoadCard(items, now = Date.now()) {

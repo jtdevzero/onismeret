@@ -3,8 +3,47 @@
 import { normalizeWorkout } from './workout-schema.js';
 import { sameScoring } from './assessment.js';
 import { weekEnd, weeksBack } from './cardio.js';
+import { summarizeWorkout } from './load.js';
 
 const dedupe = items => { const seen = new Set(); return items.filter(i => i && (!i.id || (!seen.has(i.id) && seen.add(i.id)))); };
+
+/* Naptári napok helyi kezdőponttal: DST-váltásnál nem 24 órás periódusokat vonunk ki.
+   A hiányzó metrika null, nem 0; külön mértékegységeket nem adunk össze. */
+export function periodSummary(items, { days = 30, now = Date.now() } = {}) {
+  if (![7, 30, 90].includes(days)) throw new RangeError('Csak 7, 30 vagy 90 nap kérhető.');
+  const from = new Date(now); from.setHours(0, 0, 0, 0); from.setDate(from.getDate() - days + 1);
+  const filtered = dedupe(items).filter(i => Number.isFinite(i.date) && i.date >= from.getTime() && i.date <= now);
+  const workouts = filtered.filter(i => i.kind === 'workout').map(summarizeWorkout).filter(Boolean);
+  const cardio = filtered.filter(i => i.kind === 'cardio');
+  const body = filtered.filter(i => i.kind === 'body').sort((a, b) => a.date - b.date);
+  const recovery = filtered.filter(i => i.kind === 'check');
+  const sum = (arr, key) => arr.reduce((a, x) => a + x[key], 0);
+  const known = (arr, key) => { const v = arr.filter(x => Number.isFinite(x[key])); return v.length ? sum(v, key) : null; };
+  const firstLast = key => {
+    const rows = body.filter(x => Number.isFinite(x[key]));
+    return rows.length ? { first: rows[0][key], last: rows.at(-1)[key], count: rows.length } : null;
+  };
+  return { days, from: from.getTime(), to: now,
+    workouts: workouts.length, workoutMinutes: sum(workouts, 'minutes'), sets: workouts.length ? sum(workouts, 'sets') : null,
+    reps: workouts.length ? sum(workouts, 'reps') : null, seconds: workouts.length ? sum(workouts, 'seconds') : null,
+    externalKgReps: known(workouts, 'externalKgReps'), sessionLoad: known(workouts, 'sessionLoad'),
+    loggedWorkouts: workouts.filter(w => w.source === 'log').length, lightWorkouts: workouts.filter(w => w.light).length,
+    cardioSessions: cardio.length, cardioMinutes: known(cardio, 'minutes'),
+    weight: firstLast('weight'), waist: firstLast('waist'), recoveryDays: recovery.length,
+    painReports: recovery.filter(c => c.pain === true).length };
+}
+
+export function periodSummaryCsv(summary) {
+  const lines = [['Mutató', 'Érték', 'Egység'],
+    ['Időszak', summary.days, 'nap'], ['Edzések', summary.workouts, 'alkalom'],
+    ['Edzésidő', summary.workoutMinutes, 'perc'], ['Sorozatok', summary.sets, 'db'],
+    ['Ismétlések', summary.reps, 'db'], ['Kitartások', summary.seconds, 'másodperc'],
+    ['Külső súlyos volumen', summary.externalKgReps, 'kg × ismétlés'],
+    ['Észlelt terhelés', summary.sessionLoad, 'RPE × perc'],
+    ['Kardió', summary.cardioMinutes, 'perc'], ['Testsúly legutóbbi', summary.weight?.last, 'kg'],
+    ['Derékbőség legutóbbi', summary.waist?.last, 'cm'], ['Regenerációs kérdőív', summary.recoveryDays, 'nap']];
+  return '\uFEFF' + lines.map(row => row.map(v => '"' + String(v ?? 'nincs adat').replaceAll('"', '""') + '"').join(';')).join('\r\n') + '\r\n';
+}
 
 /* Egy gyakorlat edzésenkénti trendje. Forrás: sorozatnapló (log), régi rekordnál az összesített done (tervből jön).
    → [{ date, source, sets, bestReps, bestSeconds, maxKg, totalReps, totalSeconds }] időrendben */
