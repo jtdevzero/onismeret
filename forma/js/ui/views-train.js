@@ -15,6 +15,7 @@ import { plannedLog, cleanLog, cleanRpe, mergeDone, WORKOUT_SCHEMA } from '../co
 import { blockProgress } from './views-extra.js';
 import { DRAFT_VERSION, validDraft } from '../core/workout-draft.js';
 import { previousExercisePerformance } from '../core/workout-previous.js';
+import { swipeStep } from '../core/workout-navigation.js';
 import { tr } from './i18n.js';
 
 const SIDE = { left: 'bal oldal', right: 'jobb oldal', both: tr('oldalanként') };
@@ -491,13 +492,26 @@ export async function sessionView(key, onCleanup) {
   }
   /* lapozás: balra húzva tovább, jobbra húzva vissza (az értékelésnél nem) */
   let sx = null, sy = null;
-  stage.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse') { sx = e.clientX; sy = e.clientY; } });
+  const controls = 'button, a, input, select, textarea, summary, label';
+  stage.addEventListener('pointerdown', e => {
+    sx = null;
+    if (e.pointerType !== 'mouse' && !e.target.closest(controls)) { sx = e.clientX; sy = e.clientY; }
+  });
+  stage.addEventListener('pointercancel', () => { sx = null; });
   stage.addEventListener('pointerup', e => {
     if (sx == null || finished) return;
     const dx = e.clientX - sx, dy = e.clientY - sy; sx = null;
-    if (Math.abs(dx) < 70 || Math.abs(dy) > Math.abs(dx) * 0.6 || stage.querySelector('.rate')) return;
-    if (dx < 0) next(); else back();
+    const direction = swipeStep(dx, dy, { interactive: !!e.target.closest(controls), rating: !!stage.querySelector('.rate') });
+    if (direction === 'next') next(); else if (direction === 'back') back();
   });
+  const keyNavigate = e => {
+    if (finished || !document.contains(stage) || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey ||
+        e.target.closest(controls) || stage.querySelector('.rate')) return;
+    if (e.key === 'ArrowRight') { e.preventDefault(); next(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); back(); }
+  };
+  addEventListener('keydown', keyNavigate);
+  onCleanup(() => removeEventListener('keydown', keyNavigate));
   show();
   checkpoint();
   if (S.settings.voiceMode) stage.classList.add('voice-mode');
@@ -513,7 +527,7 @@ export async function sessionView(key, onCleanup) {
     h('details', { class: 'card session-options' }, h('summary', null, tr('Edzés beállításai')),
       h('label', { class: 'check' }, voice, h('span', null, tr('Hangos bemondás'))),
       h('label', { class: 'check small' }, partner, h('span', null, tr('Ketten csináljuk (felváltva, egy telefonon)'))),
-      h('p', { class: 'small muted swipe-hint' }, tr('Tipp: balra húzva a következő lépésre ugrasz, jobbra húzva vissza.'))));
+      h('p', { class: 'small muted swipe-hint' }, tr('Tipp: balra húzva vagy → billentyűvel a következő lépésre ugrasz; jobbra húzva vagy ← billentyűvel vissza. A gombokon indított mozdulat nem lapoz.'))));
   view.classList.add('session-page');
   return view;
 }

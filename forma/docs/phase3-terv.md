@@ -54,6 +54,13 @@ Kizárólag `forma/`, a Phase 2 fejlesztői változatára épülve. A Phase 2 va
 - `styles.css`: a kezdőlapi csempék rugalmas `minmax(0, 1fr)` oszlopok, szövegtörés és skálázott számok; legfeljebb 350 CSS-pixel szélességben egy oszlopba kerülnek a túlzsúfoltság helyett. Megmaradnak a meglévő Miami-színek és CTA.
 - `i18n-en.js`: magyar/angol állapotjelzések. Helyi build és unit **165/165 PASS**. A 320 × 568, nagy szöveg, VoiceOver és tényleges egykezes használat vizuális/eszközös validációja **nem futott**, kiadás előtt szükséges.
 
+## P3-08 – Workout Cockpit: biztonságos gesztus és billentyűzetes kezelés
+
+- `core/workout-navigation.js`: tiszta `swipeStep` döntés; 70 px-nél rövidebb, túlságosan függőleges, nem véges, interaktív vezérlőn indított vagy értékelés alatti gesztus nem lapozhat.
+- `ui/views-train.js`: a pointer események csak nem interaktív felületen indulva navigálnak; `pointercancel` törli a kezdőpontot. A bal/jobb nyílbillentyűk előre/vissza mozgatnak, de mezőben, gombon, módosítóbillentyűvel vagy értékelés alatt nem; az eseményfigyelő nézetelhagyáskor felszabadul.
+- Az instrukció magyar és angol változata frissült; a korábbi nagy érintéses vezérlők, a mentési checkpoint és a saját vizuális arculat érintetlenek.
+- `tests/workout-navigation.test.mjs`: gesztus, görgetés, interaktív célpont és értékelés regresszió. Build **PASS**, unit **167/167 PASS**. A valós érintéses Safari/Android ellenőrzés továbbra is nyitott.
+
 ## P3-02 – online generatív coach biztonsági architektúra (csak terv)
 
 1. **Alapbeállítás:** offline szabálymotor, nincs AI-kérés, API-kulcs vagy háttérszinkron.

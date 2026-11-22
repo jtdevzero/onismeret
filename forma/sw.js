@@ -1,7 +1,7 @@
 /* Forma service worker. GENERÁLT FÁJL (forma/build.py), ne szerkeszd kézzel.
    Az app váza, a kód és a tartalom telepítéskor a gyorsítótárba kerül, így az app offline is működik.
    A pózbecslő (kb. 15 MB) csak a kamera első használatakor töltődik le, utána az is offline megy. */
-const SHELL = 'forma-shell-f43553029e';
+const SHELL = 'forma-shell-e2f2d7423c';
 const VENDOR = 'forma-vendor-62fc9e8c57';
 const ART = 'forma-art-5de026015b';
 const PRECACHE = [
@@ -67,6 +67,7 @@ const PRECACHE = [
 "js/core/track.js",
 "js/core/wellness.js",
 "js/core/workout-draft.js",
+"js/core/workout-navigation.js",
 "js/core/workout-previous.js",
 "js/core/workout-schema.js",
 "js/ui/app.js",
