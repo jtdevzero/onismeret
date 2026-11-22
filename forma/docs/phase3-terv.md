@@ -18,6 +18,13 @@ Kizárólag `forma/`, a Phase 2 fejlesztői változatára épülve. A Phase 2 va
 - A havi riport nem szorozza fel a heti edzéscélt tetszőleges becsléssé; a havi célt ismeretlennek jelöli. Hiányzó regenerációból továbbra sem következtet jó állapotra.
 - `core/coach-weekly.js`, `views-coach.js`, `tests/coach-weekly.test.mjs` célzott módosításai; az automatikus tervváltoztatás továbbra is tiltott.
 
+## P3-04 – Workout Cockpit első mobilos iteráció
+
+- `ui/views-train.js`: minden sorozat/checkpoint után látható, képernyőolvasó által felolvasható mentési állapot (`mentés…` → `mentve` vagy hiba). Memóriamódban a státusz kifejezetten ideiglenes mentést jelez, nem tartósságot.
+- Az aktuális gyakorlatnál röviden látszik a korábbi, naplózott edzés dátuma, sorozat- és ismétlésszáma vagy tartási ideje. `core/workout-previous.js` azonosító alapján deduplikál, jövőbeli/sérült adatot elutasít, csak ténylegesen mentett edzésből dolgozik.
+- `styles.css`: kisméretű, egységes előzmény- és státuszsor, fekvő elrendezési korrekció; a FORMA színei és illusztrációi maradnak.
+- Célzott tesztek: `tests/workout-previous.test.mjs`; build és **161/161** helyi unit PASS. A mobil böngészőteszt és az élő mentésmegszakítási UX még nyitott.
+
 ## P3-02 – online generatív coach biztonsági architektúra (csak terv)
 
 1. **Alapbeállítás:** offline szabálymotor, nincs AI-kérés, API-kulcs vagy háttérszinkron.

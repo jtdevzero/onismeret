@@ -2,7 +2,7 @@
 import { h, clear, fmtSec, fmtDate, uid, toast } from './dom.js';
 import { page, card, btn, link, note, list, speak, beep, tickMs, videoSearch, celebrate, artBanner } from './widgets.js';
 import { D, S, lowImpact } from './data.js';
-import { itemPut, itemGet, itemsAll, kvGet, kvSet, kvDelete, commit } from './store.js';
+import { itemPut, itemGet, itemsAll, kvGet, kvSet, kvDelete, commit, storageStatus } from './store.js';
 import { getProgram, setProgram, latestAssessment } from './state.js';
 import { setLevel, manualOverrides, revertManual, rotationOf, moveDay } from '../core/program.js';
 import { ROTATION, SESSION_TITLES, LADDERS, RATINGS, effLadder, baseLadder, buildSession, sessionSteps, sessionMinutes, nextKey, weekInfo, laddersOf, exerciseFor, applyRatings, doseFor, fitSession, phaseOf, freeSession, partnerSteps, GOALS, CYCLE_WEEKS } from '../core/program.js';
@@ -14,6 +14,7 @@ import { suggestProgression, applyLoadChange } from '../core/progression.js';
 import { plannedLog, cleanLog, cleanRpe, mergeDone, WORKOUT_SCHEMA } from '../core/workout-schema.js';
 import { blockProgress } from './views-extra.js';
 import { DRAFT_VERSION, validDraft } from '../core/workout-draft.js';
+import { previousExercisePerformance } from '../core/workout-previous.js';
 import { tr } from './i18n.js';
 
 const SIDE = { left: 'bal oldal', right: 'jobb oldal', both: tr('oldalanként') };
@@ -215,6 +216,8 @@ export async function sessionView(key, onCleanup) {
   const free = await freeSessionFor(key);
   if (!free && (!SESSION_TITLES[key] || !prog.start)) return page(tr('Nincs ilyen edzés'), link('#/program', '← Program', 'btn'));
   const session = free || fitSession(buildSession(key, prog, D.exercises.exercises, Date.now(), { light }), D.ex, S.settings.duration || 0), baseSteps = sessionSteps(session, D.ex);
+  /* Előző teljesítmény az aktuális edzés közben is látható; csak korábbi, mentett naplóból. */
+  const previous = previousExercisePerformance(await itemsAll('workout'));
   const draftKey = 'workoutDraft';
   const draft = await kvGet(draftKey, null);
   if (draft && validDraft(draft, draft.key, draft.steps.length) && draft.key !== key && !await itemGet(draft.workoutId)) {
@@ -250,10 +253,20 @@ export async function sessionView(key, onCleanup) {
   let at = 0, left = 0, timer = null, running = false, wake = null, finished = false;
   if (resumed) { steps = draft.steps; total = steps.length; at = draft.at; }
   let checkpointQueue = Promise.resolve();
+  const saveState = h('p', { class: 'small muted session-save-state', role: 'status', 'aria-live': 'polite' });
+  let checkpointNumber = 0;
   const checkpoint = () => {
     if (finished) return checkpointQueue;
+    const serial = ++checkpointNumber;
+    saveState.textContent = tr('Sorozat mentése…');
     const snapshot = { version: DRAFT_VERSION, key, workoutId, started, at, steps: structuredClone(steps), ratings: { ...ratings }, partner: partner.checked };
-    checkpointQueue = checkpointQueue.catch(() => {}).then(() => kvSet(draftKey, snapshot)).catch(() => { toast(tr('Nem sikerült a félbehagyott edzést menteni.')); });
+    checkpointQueue = checkpointQueue.catch(() => {}).then(() => kvSet(draftKey, snapshot)).then(() => {
+      if (serial === checkpointNumber) saveState.textContent = storageStatus().mode === 'persistent'
+        ? tr('Sorozat mentve ezen az eszközön.') : tr('Ideiglenes mentés: bezáráskor elveszhet.');
+    }).catch(() => {
+      if (serial === checkpointNumber) saveState.textContent = tr('Mentési hiba – ez a módosítás még nincs biztonságban.');
+      toast(tr('Nem sikerült a félbehagyott edzést menteni.'));
+    });
     return checkpointQueue;
   };
   const voice = h('input', { type: 'checkbox', checked: true });
@@ -430,6 +443,10 @@ export async function sessionView(key, onCleanup) {
     const kicker = [st.part === 'mobility' ? tr('Mobilitás') : st.part === 'warmup' ? null : D.exercises.typeNames[ex.type], st.sets > 1 ? tr('{p0}. kör / {p1}', { p0: st.set, p1: st.sets }) : null].filter(Boolean).join(' · ');
     const head = [st.person ? h('p', { class: 'badge person p' + st.person }, st.person + tr('. személy')) : null, kicker ? h('p', { class: 'workout-kicker' }, kicker) : null, h('h2', { class: 'workout-title' }, ex.name)];
     const points = h('ul', { class: 'plain' }, ex.points.map(p => h('li', null, p)));
+    const prior = previous.get(ex.id);
+    const priorLine = prior ? h('p', { class: 'small muted workout-previous' }, tr('Előző alkalom: ') + fmtDate(prior.date) + ' · ' +
+      tr('{p0} kör', { p0: prior.sets }) + (prior.reps ? tr(' · {p0} ismétlés', { p0: prior.reps }) : '') +
+      (prior.seconds ? tr(' · {p0} mp', { p0: prior.seconds }) : '')) : null;
     const more = link('#/ex/' + ex.id, tr('Leírás'));
     const swap = st.part === 'main' ? swapRow(st, ex) : null;
     const upcoming = steps[at + 1];
@@ -440,7 +457,7 @@ export async function sessionView(key, onCleanup) {
       h('div', null, h('p', { class: 'eyebrow' }, upcoming.type === 'rest' ? tr('A pihenő után') : tr('Következik')), h('p', null, nextExercise.name)))
       : h('p', { class: 'next-up' }, tr('Ez az utolsó lépés.'));
     const instructions = (...extra) => h('details', { class: 'workout-details' }, h('summary', null, tr('Instrukciók és gyakorlatcsere')), points, swap, extra, more);
-    const focus = (...kids) => h('section', { class: 'card workout-focus' }, h('div', { class: 'workout-heading' }, head), kids);
+    const focus = (...kids) => h('section', { class: 'card workout-focus' }, h('div', { class: 'workout-heading' }, head), priorLine, kids);
     if (st.seconds) {
       left = st.seconds; draw();
       let startedTimer = false;
@@ -487,6 +504,7 @@ export async function sessionView(key, onCleanup) {
   const view = page(session.title,
     h('p', { class: 'muted' }, tr('Kb. {p0} perc · {p1} gyakorlat', { p0: sessionMinutes(steps), p1: session.blocks.length }) + (session.week.deload ? tr(' · könnyített hét') : '') + (light ? tr(' · könnyített edzés, értékelés nélkül') : '') + (session.fit ? tr(' · {p0} perces keretre igazítva', { p0: session.fit.target }) : '')),
     h('div', { class: 'session-progress' }, bar, count),
+    saveState,
     session.returning ? note(tr('Üdv újra! Két hétnél hosszabb szünet után óvatosabban indulunk: minden gyakorlatból eggyel kevesebb kör.'), 'small') : null,
     session.goalFocus ? note(tr('Célprogram: ') + (GOALS.find(([k]) => k === session.goalFocus) || ['', ''])[1] + tr('. Ez a gyakorlatsor plusz kört kap.'), 'small') : null,
     session.complaints.length ? note(tr('Panaszmód: ') + session.complaints.map(c => ({ knee: tr('térd'), back: tr('derék'), shoulder: tr('váll') })[c]).join(', ') + tr('. Csak fájdalommentes tartományban mozogj.'), 'warn') : null,
