@@ -6,14 +6,8 @@ import { settingsReady } from './state.js';
 import { watchStorage } from './store.js';
 import { downloadBackup, requestPersist } from './backup-ui.js';
 import { startView, homeView, logView, settingsView, moreView } from './views-main.js';
-import { assessView, testView, resultView } from './views-assess.js';
-import { programView, sessionView, exerciseView } from './views-train.js';
 import { cardioView, checkView } from './views-cardio.js';
-import { progressView, miniView } from './views-progress.js';
-import { runView } from './views-run.js';
 import { reviewView, cooldownView } from './views-wellness.js';
-import { libraryView, routinesView, customView } from './views-library.js';
-import { postureView } from './views-posture.js';
 import { pulseView, challengeView, blocksView, reportView } from './views-extra.js';
 import { diagView, qaView, initErrorLog } from './views-diag.js';
 
@@ -30,6 +24,16 @@ watchStorage(({ mode, writeError }) => {
     } }, 'Mentés fájlba'),
     h('a', { href: '#/settings' }, 'Beállítások'));
 });
+/* A ritkábban vagy később megnyitott képernyők csak megnyitáskor töltődnek be (gyorsabb első indulás);
+   a service worker ezeket is az offline csomagba teszi. */
+const lazy = (load, name) => async (arg, onCleanup) => (await load())[name](arg, onCleanup);
+const A = () => import('./views-assess.js'), T = () => import('./views-train.js'), P = () => import('./views-progress.js');
+const L = () => import('./views-library.js');
+const assessView = lazy(A, 'assessView'), testView = lazy(A, 'testView'), resultView = lazy(A, 'resultView');
+const programView = lazy(T, 'programView'), sessionView = lazy(T, 'sessionView'), exerciseView = lazy(T, 'exerciseView');
+const progressView = lazy(P, 'progressView'), miniView = lazy(P, 'miniView');
+const runView = lazy(() => import('./views-run.js'), 'runView'), postureView = lazy(() => import('./views-posture.js'), 'postureView');
+const libraryView = lazy(L, 'libraryView'), routinesView = lazy(L, 'routinesView'), customView = lazy(L, 'customView');
 const ROUTES = {
   '': homeView, start: startView, assess: assessView, test: testView, result: resultView,
   program: programView, session: sessionView, ex: exerciseView, log: logView, settings: settingsView, cardio: cardioView, check: checkView, progress: progressView, mini: miniView, run: runView, more: moreView, review: reviewView, cooldown: cooldownView, library: libraryView, routines: routinesView, custom: customView, posture: postureView, pulse: pulseView, challenge: challengeView, blocks: blocksView, report: reportView, diag: diagView, qa: qaView,

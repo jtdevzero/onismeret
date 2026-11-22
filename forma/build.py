@@ -8,7 +8,7 @@ Ez a szkript állítja elő:
 Futtatás: python3 forma/build.py
 """
 import hashlib
-import json
+import json, re
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -88,9 +88,19 @@ def rel(paths):
 
 
 def main():
+    # csak az első képernyőhöz kellő modulok (az app.js statikus import-lezártja); a dinamikusan betöltött képernyők nem
+    def static_closure(start):
+        seen, todo = [], [start]
+        while todo:
+            f = todo.pop()
+            if f in seen: continue
+            seen.append(f)
+            for m in re.findall(r"^import [^;]*? from '(\.{1,2}/[^']+\.js)';", f.read_text(encoding='utf-8'), re.M):
+                todo.append((f.parent / m).resolve())
+        return sorted(str(p.relative_to(HERE)).replace('\\', '/') for p in seen)
     shell_html = (HERE / 'src' / 'shell.html').read_text(encoding='utf-8')
     # a modulok előre jelezve: a böngésző párhuzamosan tölti őket, nem egymás után fedezi fel az importokat
-    mods = [p for p in rel((HERE / 'js').rglob('*.js')) if not p.endswith('/pose.js')]
+    mods = static_closure(HERE / 'js' / 'ui' / 'app.js')
     preload = ''.join(f'<link rel="modulepreload" href="{m}">\n' for m in mods)
     (HERE / 'index.html').write_text(HEAD.replace('__PRELOAD__', preload) + shell_html.rstrip() + '\n' + FOOT, encoding='utf-8')
     review_pack()

@@ -15,7 +15,7 @@ import { monthGrid, monthSummary, MONTHS } from '../core/history.js';
 import { miniDue, currentFitnessAge } from '../core/achievements.js';
 import { itemsAll } from './store.js';
 import { cardioItems, CARDIO_TYPES } from './views-cardio.js';
-import { GOAL_METRICS } from './views-progress.js';
+import { GOAL_METRICS } from './helpers.js';
 import { reviewCard } from './views-wellness.js';
 import { recoveryTileData } from './views-extra.js';
 import { breaksIcs, CHALLENGES } from '../core/extras.js';

@@ -1,4 +1,5 @@
 /* Fejlődés: rekordok, jelvények, célok, testméretek, és a félidős mini-teszt. */
+import { GOAL_METRICS } from './helpers.js';
 import { trainingLoadCard, exerciseTrendCard, recoveryTimelineCard } from './views-analytics.js';
 import { coachCard } from './views-coach.js';
 import { h, clear, fmtDate, uid, toast } from './dom.js';
@@ -17,10 +18,7 @@ import { MINI_TESTS, records, badges, bodyTrend, currentFitnessAge, goalProgress
 
 const reload = hash => { location.hash = hash; dispatchEvent(new HashChangeEvent('hashchange')); };
 const numericTests = () => D.tests.tests.filter(t => t.kind === 'norm' && t.input.type === 'number');
-export const GOAL_METRICS = () => [
-  ...numericTests().map(t => [t.id, t.name, t.input.unit]),
-  ['fitness_age', 'Fittségi kor', 'év'], ['waist', 'Derékbőség', 'cm'], ['weight', 'Testsúly', 'kg'],
-];
+export { GOAL_METRICS };
 const metricName = id => (GOAL_METRICS().find(m => m[0] === id) || [id, id, ''])[1];
 const metricUnit = id => (GOAL_METRICS().find(m => m[0] === id) || [id, id, ''])[2];
 
