@@ -1,6 +1,7 @@
 /* Belépési pont: adatok betöltése, útválasztás a hash alapján. */
 import { h, clear } from './dom.js';
 import { loadData, applyLook } from './data.js';
+import { initHaptics } from './widgets.js';
 import { settingsReady } from './state.js';
 import { startView, homeView, logView, settingsView, moreView } from './views-main.js';
 import { assessView, testView, resultView } from './views-assess.js';
@@ -11,13 +12,14 @@ import { runView } from './views-run.js';
 import { reviewView, cooldownView } from './views-wellness.js';
 import { libraryView, routinesView, customView } from './views-library.js';
 import { postureView } from './views-posture.js';
+import { pulseView, challengeView, blocksView, reportView } from './views-extra.js';
 
 const main = document.getElementById('main'), nav = document.getElementById('nav');
 const ROUTES = {
   '': homeView, start: startView, assess: assessView, test: testView, result: resultView,
-  program: programView, session: sessionView, ex: exerciseView, log: logView, settings: settingsView, cardio: cardioView, check: checkView, progress: progressView, mini: miniView, run: runView, more: moreView, review: reviewView, cooldown: cooldownView, library: libraryView, routines: routinesView, custom: customView, posture: postureView,
+  program: programView, session: sessionView, ex: exerciseView, log: logView, settings: settingsView, cardio: cardioView, check: checkView, progress: progressView, mini: miniView, run: runView, more: moreView, review: reviewView, cooldown: cooldownView, library: libraryView, routines: routinesView, custom: customView, posture: postureView, pulse: pulseView, challenge: challengeView, blocks: blocksView, report: reportView,
 };
-const TAB = { '': '', program: 'program', session: 'program', ex: 'program', check: 'program', progress: 'progress', mini: 'progress', result: 'progress', assess: 'more', test: 'more', cardio: 'more', run: 'more', log: 'more', settings: 'more', more: 'more', review: 'progress', cooldown: 'program', library: 'more', routines: 'more', custom: 'more', posture: 'more' };
+const TAB = { '': '', program: 'program', session: 'program', ex: 'program', check: 'program', progress: 'progress', mini: 'progress', result: 'progress', assess: 'more', test: 'more', cardio: 'more', run: 'more', log: 'more', settings: 'more', more: 'more', review: 'progress', cooldown: 'program', library: 'more', routines: 'more', custom: 'more', posture: 'more', pulse: 'more', challenge: 'more', blocks: 'more', report: 'more' };
 let cleanups = [], seq = 0;
 
 async function route() {
@@ -41,7 +43,7 @@ async function route() {
 }
 
 async function boot() {
-  try { await loadData(); applyLook(); }
+  try { await loadData(); applyLook(); initHaptics(); }
   catch (e) { console.error(e); clear(main).append(h('div', { class: 'page' }, h('h1', null, 'Nem sikerült betölteni'), h('p', null, 'Ellenőrizd az internetkapcsolatot, és töltsd újra az oldalt.'))); return; }
   addEventListener('hashchange', route);
   await route();

@@ -1,6 +1,6 @@
 /* Kezdőképernyő (első indítás), a mai nap, napló és beállítások. */
 import { h, clear, fmtDate, toast } from './dom.js';
-import { page, card, btn, link, note, choice, list, levelBadge, sized } from './widgets.js';
+import { page, card, btn, link, note, choice, list, levelBadge, sized, heroTime, emptyState } from './widgets.js';
 import { D, S, saveSettings, profile, applyLook } from './data.js';
 import { exportAll, wipeAll, restoreAll } from './store.js';
 import { parseBackup } from '../core/backup.js';
@@ -16,6 +16,8 @@ import { itemsAll } from './store.js';
 import { cardioItems, CARDIO_TYPES } from './views-cardio.js';
 import { GOAL_METRICS } from './views-progress.js';
 import { reviewCard, nutritionCard } from './views-wellness.js';
+import { recoveryCard } from './views-extra.js';
+import { breaksIcs } from '../core/extras.js';
 
 export const PARQ = [
   ['heart', 'Mondta-e valaha orvos, hogy szívbetegséged vagy magas vérnyomásod van?'],
@@ -27,6 +29,8 @@ export const PARQ = [
   ['supervised', 'Mondta-e orvos, hogy csak orvosi felügyelet mellett mozoghatsz?'],
 ];
 const ageOk = a => Number.isInteger(a) && a >= 18 && a <= 99;
+/* a felhasználónak látható tesztek száma (kímélő mód és korhatár szerint) */
+const visibleTests = () => D.tests.tests.filter(t => !(S.settings && S.settings.lowImpact && t.impact) && !(t.minAge && !(profile().age >= t.minAge))).length;
 
 export async function startView() {
   const st = { age: profile().age ?? null, sex: profile().sex ?? null, parq: { ...((S.settings && S.settings.parq) || {}) }, ok: false };
@@ -94,7 +98,7 @@ export async function startView() {
   };
   goStep(0);
   return h('div', { class: 'page' },
-    h('section', { class: 'hero' }, h('h1', null, 'Forma'), h('p', { class: 'hero-sub' }, 'Állapotfelmérés és otthoni edzés'),
+    h('section', { class: 'hero ' + heroTime() }, h('h1', null, 'Forma'), h('p', { class: 'hero-sub' }, 'Állapotfelmérés és otthoni edzés'),
       h('p', { class: 'hero-lead' }, 'Hol tartasz a korosztályodhoz képest, és hogyan érheted el, vagy előzheted meg?')),
     dots, sections, warn);
 }
@@ -112,9 +116,9 @@ export async function homeView() {
   const ev = last ? evaluateItem(last) : null;
   if (!last) {
     return h('div', { class: 'page' },
-      h('section', { class: 'hero' }, h('h1', null, 'Forma'), h('p', { class: 'hero-sub' }, 'Kezdjük a felméréssel'),
+      h('section', { class: 'hero ' + heroTime() }, h('h1', null, 'Forma'), h('p', { class: 'hero-sub' }, 'Kezdjük a felméréssel'),
         h('div', { class: 'hero-next' }, h('h2', null, 'Felmérés, kb. 25 perc'),
-          h('p', null, `${D.tests.tests.length} rövid teszt, egyenként vezetve. Kell hozzá egy szék, egy fal, egy mérőszalag vagy vonalzó, és ha van, egy kb. 30 cm magas lépcsőfok.`),
+          h('p', null, `${visibleTests()} rövid teszt, egyenként vezetve. Kell hozzá egy szék, egy fal, egy mérőszalag vagy vonalzó, és ha van, egy kb. 30 cm magas lépcsőfok.`),
           link('#/assess', 'Felmérés indítása', 'btn light'))),
       card(h('h2', null, 'Mire számíts?'), list(['Bemelegítés után végezd, kipihenten.', 'Részletekben is csinálhatod: az eredmények mentődnek.', 'Ami fáj, azt hagyd ki. Kihagyott teszttel is kapsz eredményt.'])));
   }
@@ -123,7 +127,7 @@ export async function homeView() {
     const key = nextKey(prog), session = fitSession(buildSession(key, prog, D.exercises.exercises), D.ex, S.settings.duration || 0), steps = sessionSteps(session, D.ex);
     const doneToday = ws.some(w => new Date(w.date).toDateString() === new Date().toDateString());
     const wk = weekInfo(prog.start);
-    kids.push(h('section', { class: 'hero' }, h('h1', null, doneToday ? 'Mai edzés kész' : 'Mai edzés'),
+    kids.push(h('section', { class: 'hero ' + heroTime() }, h('h1', null, doneToday ? 'Mai edzés kész' : 'Mai edzés'),
       h('p', { class: 'hero-sub' }, `${wk.week}. hét` + (wk.deload ? ' · könnyített hét' : '') + ` · ${streak(ws.map(w => w.date))} napos sorozat`),
       h('div', { class: 'hero-next' }, h('h2', null, (doneToday ? 'Holnap: ' : '') + session.title),
         h('p', null, `Kb. ${sessionMinutes(steps)} perc · ${session.blocks.length} gyakorlat`),
@@ -135,7 +139,7 @@ export async function homeView() {
       h('div', { class: 'row' }, link('#/cardio', 'Kardió rögzítése', 'btn small'))));
     kids.push(card(h('h2', null, 'A heti rend'), weekStrip(prog), h('p', { class: 'small muted' }, 'A rend a teljesített edzések szerint halad: ha kihagysz egy napot, ott folytatod, ahol abbahagytad.')));
   } else {
-    kids.push(h('section', { class: 'hero' }, h('h1', null, 'Forma'), h('div', { class: 'hero-next' }, h('h2', null, 'Megvan a felmérés'),
+    kids.push(h('section', { class: 'hero ' + heroTime() }, h('h1', null, 'Forma'), h('div', { class: 'hero-next' }, h('h2', null, 'Megvan a felmérés'),
       h('p', null, 'Nézd meg az eredményt, és készítsd el belőle a programodat.'), link('#/result', 'Eredmény és program', 'btn light'))));
   }
   const allItems = await itemsAll();
@@ -150,10 +154,35 @@ export async function homeView() {
       h('div', { class: 'stat' }, h('span', { class: 'muted' }, 'Összesített'), h('strong', null, ev.overall != null ? ev.overall + ' / 100' : '–'), ev.overall != null ? levelBadge(levelKey(ev.overall), LEVEL_NAMES[levelKey(ev.overall)]) : null)),
     ev.weakest.length ? h('p', { class: 'small' }, 'Most leginkább ezen dolgozunk: ' + ev.weakest.map(a => D.area[a].name.toLowerCase()).join(' és ') + '.') : null,
     h('div', { class: 'row' }, link('#/result', 'Részletes eredmény', 'btn small'), link('#/progress', 'Fejlődés, célok, jelvények', 'btn small'))));
+  kids.push(await recoveryCard(allItems));
   kids.push(await nutritionCard(allItems));
   return h('div', { class: 'page' }, kids);
 }
 const levelKey = s => (s >= D.norms.levels.top ? 'top' : s >= D.norms.levels.low ? 'mid' : 'low');
+
+/* A hónap számai egy megosztható képen (vászonra rajzolva, a telefonon készül). */
+async function monthImage(y, mo, s) {
+  const W = 1080, H = 1350, c = document.createElement('canvas'); c.width = W; c.height = H;
+  const g = c.getContext('2d');
+  const grad = g.createLinearGradient(0, 0, 0, H); grad.addColorStop(0, '#2a0f3d'); grad.addColorStop(0.6, '#8a1f6b'); grad.addColorStop(1, '#ff5a7a');
+  g.fillStyle = grad; g.fillRect(0, 0, W, H);
+  const sun = g.createLinearGradient(0, 120, 0, 420); sun.addColorStop(0, '#ffe066'); sun.addColorStop(1, '#ff3d7f');
+  g.fillStyle = sun; g.beginPath(); g.arc(W - 220, 260, 150, 0, Math.PI * 2); g.fill();
+  g.fillStyle = '#fff'; g.font = 'italic 900 120px system-ui, sans-serif'; g.fillText('FORMA', 80, 200);
+  g.font = '700 54px system-ui, sans-serif'; g.fillText(`${y}. ${MONTHS[mo - 1]}`, 80, 290);
+  const rows = [['Edzés', s.workouts], ['Aktív nap', s.activeDays], ['Mozgás', s.minutes + ' perc'], ['Kardió', s.cardioMinutes + ' perc'], ['Szintlépés', s.levelUps], ['Leghosszabb sorozat', s.bestStreak + ' nap']];
+  rows.forEach(([k, v], i) => {
+    const x = 80 + (i % 2) * 470, yy = 470 + Math.floor(i / 2) * 250;
+    g.fillStyle = 'rgba(26,11,46,.55)'; g.beginPath(); g.roundRect ? g.roundRect(x, yy, 430, 210, 32) : g.rect(x, yy, 430, 210); g.fill();
+    g.fillStyle = 'rgba(255,255,255,.8)'; g.font = '600 40px system-ui, sans-serif'; g.fillText(k, x + 36, yy + 70);
+    g.fillStyle = '#fff'; g.font = 'italic 900 84px system-ui, sans-serif'; g.fillText(String(v), x + 36, yy + 170);
+  });
+  g.fillStyle = 'rgba(255,255,255,.85)'; g.font = '600 34px system-ui, sans-serif'; g.fillText('jtdevzero.github.io/onismeret/forma', 80, H - 70);
+  const blob = await new Promise(r => c.toBlob(r, 'image/png'));
+  const file = new File([blob], `forma-${y}-${String(mo).padStart(2, '0')}.png`, { type: 'image/png' });
+  try { if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: 'Forma – havi összefoglaló' }); return; } } catch { /* a megosztást elvethette */ }
+  const url = URL.createObjectURL(blob), a = h('a', { href: url, download: file.name }); document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 2000);
+}
 
 /* Havi naptár: napi jelölés edzésre, kardióra, felmérésre. arg: 'ÉÉÉÉ-HH' (alapból az aktuális hónap) */
 function calendarCard(all, ym) {
@@ -174,6 +203,7 @@ function calendarCard(all, ym) {
       h('div', { class: 'cal-row', role: 'row' }, ['H', 'K', 'Sze', 'Cs', 'P', 'Szo', 'V'].map(d => h('div', { class: 'cal-wd', role: 'columnheader' }, d))),
       g.weeks.map(w => h('div', { class: 'cal-row', role: 'row' }, w.map(cell)))),
     h('div', { class: 'legend' }, h('span', { class: 'lg-w' }, 'edzés'), h('span', { class: 'lg-c' }, 'kardió'), h('span', { class: 'lg-a' }, 'felmérés')),
+    h('div', { class: 'row' }, btn('Havi kép mentése', () => monthImage(y, mo, s), 'small')),
     h('h3', null, 'A hónap összefoglalója'),
     h('div', { class: 'stat-row' },
       h('div', { class: 'stat' }, h('span', { class: 'muted' }, 'Edzés'), h('strong', null, String(s.workouts)), h('span', { class: 'small muted' }, 'előző hónap: ' + s.prev.workouts)),
@@ -211,7 +241,7 @@ export async function logView(ym) {
     card(h('h2', null, 'Felmérések'), as.length ? h('ul', { class: 'rows' }, as.map(a => { const e = evaluateItem(a); return h('li', null, link('#/result/' + a.id, fmtDate(a.date)), h('span', { class: 'muted small' }, (e.overall != null ? e.overall + ' / 100' : '') + (e.fitnessAge != null ? ' · fittségi kor ' + e.fitnessAge : ''))); })) : h('p', { class: 'muted' }, 'Még nincs felmérés.')),
     card(h('h2', null, 'Edzések'), ws.length ? h('ul', { class: 'rows' }, ws.slice(0, 30).map(w => h('li', null,
       h('span', { class: 'log-item' }, h('strong', null, w.title || SESSION_TITLES[w.key] || w.key), h('span', { class: 'muted small' }, fmtDate(w.date) + ' · ' + w.minutes + ' perc' + (w.partial ? ' · részben' : ''))),
-      w.changes && w.changes.length ? h('span', { class: 'badge good' }, 'Szintlépés') : null))) : h('p', { class: 'muted' }, 'Még nincs edzés.')));
+      w.changes && w.changes.length ? h('span', { class: 'badge good' }, 'Szintlépés') : null))) : emptyState('Még nincs edzés. Az első mindig a legnehezebb, utána jön a lendület.', link('#/', 'Mai edzés', 'btn small'))));
 }
 
 /* Visszatöltés mentésfájlból: ellenőrzés, megerősítés, majd az app újraindítása a visszatöltött adatokkal. */
@@ -262,7 +292,7 @@ export async function settingsView() {
       h('p', { class: 'small muted' }, 'A korábbi felmérések a felméréskori életkorral maradnak meg.')),
     card(h('h2', null, 'Megjelenés'),
       h('h3', null, 'Téma'),
-      choice('theme', [['auto', 'A telefon beállítása szerint'], ['light', 'Világos (naplemente)'], ['dark', 'Sötét (éjszakai neon)']], S.settings.theme || 'auto', async v => { await saveSettings({ theme: v }); applyLook(); }, 'Téma'),
+      choice('theme', [['auto', 'A telefon beállítása szerint'], ['light', 'Világos (naplemente)'], ['dark', 'Sötét (éjszakai neon)'], ['sun', 'Napfény: nagy kontraszt szabadtéren']], S.settings.theme || 'auto', async v => { await saveSettings({ theme: v }); applyLook(); }, 'Téma'),
       h('h3', null, 'Betűméret'),
       choice('size', [['normal', 'Normál'], ['large', 'Nagy (edzés közben is jól olvasható)']], S.settings.size || 'normal', async v => { await saveSettings({ size: v }); applyLook(); }, 'Betűméret')),
     card(h('h2', null, 'Edzésidő'),
@@ -285,6 +315,12 @@ export async function settingsView() {
         if (prog) await setProgram({ ...prog, equipment: [...eq] });
         toast('Elmentettem. A következő edzéstől érvényes.');
       }))),
+    card(h('h2', null, 'Hangos mód'),
+      h('label', { class: 'check' }, h('input', { type: 'checkbox', checked: !!S.settings.voiceMode, onchange: async e => { await saveSettings({ voiceMode: e.target.checked }); toast(e.target.checked ? 'Bekapcsolva: az edzés képernyő nélkül is vezet.' : 'Kikapcsolva.'); } }),
+        h('span', null, 'Edzés képernyő nélkül: minden lépést és a figyelmeztetéseket is felolvasom, az ismétléses gyakorlatok után magától továbblép, és egyetlen nagy „Tovább” gomb marad.'))),
+    card(h('h2', null, 'Mozgásszünetek munka közben'),
+      h('p', null, 'Hétköznap, munkaidőben óránként 2 perces mozgásszünetre emlékeztet a naptárad (4 hétig).'),
+      h('div', { class: 'row' }, ...[[8, 16], [9, 17], [10, 18]].map(([f, t]) => btn(`${f}–${t} óra`, () => download('forma-mozgasszunet.ics', breaksIcs({ from: f, to: t }), 'text/calendar'), 'small')))),
     card(h('h2', null, 'Napi emlékeztető'),
       h('p', null, 'Naptárfájlt kapsz, ami a következő 6 hétben minden nap jelez a választott időpont előtt 10 perccel. A telefon naptára emlékeztet, szerver nélkül.'),
       h('label', { class: 'field inline' }, 'Időpont', time),
@@ -308,13 +344,18 @@ export async function moreView() {
   const item = (href, ic, title, sub) => h('li', null, h('a', { href }, h('span', { class: 'tile-ic' }, h('span', { class: 'ic ic-' + ic, 'aria-hidden': 'true' })), h('span', null, h('strong', null, title), h('span', { class: 'small' }, sub))));
   return page('Több',
     h('ul', { class: 'menu-list' },
-      item('#/assess', 'check', 'Felmérés', `${D.tests.tests.length} teszt a korosztályodhoz mérve; 6 hetente újra`),
+      item('#/assess', 'check', 'Felmérés', `${visibleTests()} teszt a korosztályodhoz mérve; 6 hetente újra`),
       item('#/result', 'chart', 'Legutóbbi eredmény', 'Pókhálóábra, fittségi kor, területek'),
       item('#/routines', 'train', 'Rövid rutinok', 'Reggeli, irodai, esti, sí előtti; és a saját edzéseid'),
       item('#/library', 'log', 'Gyakorlattár', 'Minden gyakorlat, kedvencek, saját edzés összeállítása'),
       item('#/posture', 'check', 'Testtartás', 'Szemből és oldalról, kamerával'),
+      item('#/blocks', 'train', 'Szezonális programok', 'Sí, nyári futás, strandszezon: 4–6 hetes blokkok'),
+      item('#/challenge', 'check', '30 napos kihívás', 'Plank, guggolás, fekvőtámasz, mobilitás'),
+      item('#/pulse', 'chart', 'Reggeli pulzus', 'Kamerával, a regenerációs pontszámhoz'),
       item('#/cardio', 'train', 'Állóképesség', 'Kardiónapló, pulzuszónák, heti 150 perc'),
       item('#/run', 'train', 'Futóprogram', 'Nulláról 5 km-ig, 9 hét'),
       item('#/log', 'log', 'Napló', 'Naptár, havi összefoglaló, edzések'),
-      item('#/settings', 'gear', 'Beállítások', 'Profil, eszközök, edzésidő, megjelenés, mentés')));
+      item('#/settings', 'gear', 'Beállítások', 'Profil, eszközök, edzésidő, megjelenés, mentés'),
+      item('#/report', 'log', 'Összefoglaló orvosnak, edzőnek', 'Nyomtatható, PDF-be menthető'),
+      item('../', 'home', 'Önismereti oldalak', 'Az Önismeret többi oldala: alvás, szokások, energia')));
 }

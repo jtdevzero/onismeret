@@ -1,10 +1,13 @@
 /* Fejlődés: rekordok, jelvények, célok, testméretek, és a félidős mini-teszt. */
 import { h, clear, fmtDate, uid, toast } from './dom.js';
-import { page, card, btn, link, fmtNum } from './widgets.js';
+import { page, card, btn, link, fmtNum, emptyState } from './widgets.js';
 import { D, profile } from './data.js';
 import { itemPut, itemsAll, itemDelete } from './store.js';
 import { timerWidget } from './views-assess.js';
 import { scoreTest } from '../core/score.js';
+import { forecastFitnessAge } from '../core/extras.js';
+import { friendCard } from './views-extra.js';
+import { evaluateItem } from './state.js';
 import { MINI_TESTS, records, badges, bodyTrend, currentFitnessAge, goalProgress, metricValue, latestValue, LOWER_BETTER } from '../core/achievements.js';
 
 const reload = hash => { location.hash = hash; dispatchEvent(new HashChangeEvent('hashchange')); };
@@ -38,19 +41,23 @@ export async function progressView(arg, onCleanup) {
   sel.value = gs.metric;
   const hint = h('span', { class: 'hint' }, curText());
 
+  /* fittségi kor előrejelzés a felmérésekből */
+  const faPoints = items.filter(i => i.kind === 'assessment').map(a => ({ date: a.date, age: evaluateItem(a).fitnessAge })).filter(x => x.age != null);
+  const fc = forecastFitnessAge(faPoints);
   return page('Fejlődés',
     card(h('h2', null, 'Fittségi kor most'),
       h('div', { class: 'stat-row' },
         h('div', { class: 'stat' }, h('span', { class: 'muted' }, 'Becsült fittségi kor'), h('strong', null, fa ? fa.age + ' év' : '–'), h('span', { class: 'small muted' }, 'naptári: ' + p.age + ' év')),
         h('div', { class: 'stat' }, h('span', { class: 'muted' }, 'Derékbőség'), h('strong', null, body.waist ? fmtNum(body.waist.value) + ' cm' : '–'),
           h('span', { class: 'small muted' }, body.waist && body.waist.change != null ? `${body.waist.change > 0 ? '+' : ''}${fmtNum(body.waist.change)} cm az első mérés óta` : 'heti méréssel követhető'))),
+      fc ? h('p', { class: 'forecast' }, `Ha így folytatod, 3 hónap múlva a fittségi korod kb. ${fc.in90} év lehet`, h('span', { class: 'small muted' }, ` (havi ${fc.perMonth > 0 ? '+' : ''}${String(fc.perMonth).replace('.', ',')} év a felméréseid alapján)`)) : h('p', { class: 'small muted' }, 'Két felmérés után (legalább 3 hét különbséggel) előrejelzést is mutatok.'),
       fa && fa.waistUpdated ? h('p', { class: 'small muted' }, 'A fittségi kort a legfrissebb derékbőséggel számoltam újra; a pulzus és a mozgás a legutóbbi felmérésből van.') : null),
     card(h('h2', null, 'Célok'),
       gp.length ? h('ul', { class: 'rows' }, gp.map(({ g, s }) => h('li', null,
         h('span', { class: 'log-item' }, h('strong', null, `${metricName(g.metric)}: ${fmtNum(g.target)} ${metricUnit(g.metric)}`),
           h('progress', { max: 100, value: s.pct, 'aria-label': `${metricName(g.metric)} cél: ${s.pct}%` }),
           h('span', { class: 'muted small' }, (s.current != null ? `most ${fmtNum(s.current)}, indulás ${fmtNum(g.start)}` : 'még nincs mérés') + (s.done ? ' · teljesítve!' : s.daysLeft != null ? (s.daysLeft >= 0 ? ` · még ${s.daysLeft} nap` : ' · lejárt') : ''))),
-        btn('Törlés', async () => { if (confirm('Törlöd ezt a célt?')) { await itemDelete(g.id); reload('#/progress'); } }, 'small')))) : h('p', { class: 'muted' }, 'Még nincs célod. Egy konkrét, határidős cél sokat segít.'),
+        btn('Törlés', async () => { if (confirm('Törlöd ezt a célt?')) { await itemDelete(g.id); reload('#/progress'); } }, 'small')))) : emptyState('Még nincs célod. Egy konkrét, határidős cél (például „30 fekvőtámasz júniusra”) sokat segít.'),
       h('h3', null, 'Új cél'),
       h('label', { class: 'field' }, 'Mit', sel, hint),
       h('label', { class: 'field' }, 'Célérték', gTarget),
@@ -83,6 +90,7 @@ export async function progressView(arg, onCleanup) {
         toast('Bekerült a naplóba.'); reload('#/progress');
       }, 'primary')),
       body.weight ? h('p', { class: 'small' }, `Testsúly: ${fmtNum(body.weight.value)} kg` + (body.weight.change != null ? ` (${body.weight.change > 0 ? '+' : ''}${fmtNum(body.weight.change)} kg az első mérés óta)` : '')) : null),
+    await friendCard(items),
     h('div', { class: 'row' }, link('#/review', 'Heti áttekintés', 'btn'), link('#/mini', 'Mini-teszt (5 perc)', 'btn'), link('#/result', 'Legutóbbi felmérés', 'btn')));
 }
 

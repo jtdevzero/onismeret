@@ -27,6 +27,11 @@ Telefonra telepíthető webapp. Felméri, hol tartasz a korosztályodhoz képest
 - **Testtartás-ellenőrzés kamerával:** szemből a váll- és csípődőlés, oldalról a fej előretolódása; javasolt gyakorlatok, és a program mobilitási fókuszába is felvehető.
 - **Gyakorlattár** kereséssel, típusszűrővel és kedvencekkel; **saját edzés** összeállítása a kedvencekből.
 - **Rövid rutinok:** reggeli ébresztő, irodai mobilitás, esti nyújtás, sí előtti felkészítés (nem léptetik a programot, de naplózódnak).
+- **Érzékelős mérések:** egyensúlyteszt a gyorsulásmérővel; futókadencia és metronóm a futóprogramban; reggeli pulzus a kamera fényjeléből (ujj a lencsén).
+- **Regenerációs pontszám** a napi ellenőrzésből, a reggeli pulzusból és az elmúlt napok terheléséből.
+- **30 napos kihívások** (plank, guggolás, fekvőtámasz, mobilitás), **szezonális programok** (sí, nyári futás, strandszezon), **sportrutinok** (futó, kerékpáros, tenisz, foci) és **60 év fölötti modul** (felállás és séta teszt, egyensúlyrutin).
+- **Fittségi kor előrejelzés**, **kihíváskód** barátoknak (szerver nélkül), **havi kép**, **új egyéni csúcs** jelzése, **nyomtatható összefoglaló** (PDF), **GPX/CSV import**, **mozgásszünetek** naptárfájlban, **hangos mód** képernyő nélküli edzéshez.
+- **Dizájn:** napszakhoz igazodó nyitórajz, ünneplés szintlépéskor, felpörgő számok, pókháló-csúszka, típusikonok, fekvő nézet, napfény téma, üres állapotok, ciklus-idővonal, finom rezgés.
 - **Eszközök:** húzódzkodó rúd, kettlebell/kézisúlyzó vagy gumiszalag esetén a gyakorlatsorok ahhoz igazodnak (rúd: függeszkedés → negatív → húzódzkodás; súlyzó: serleg guggolás, román felhúzás, lendítés, evezés; szalag: széthúzás → evezés).
 - **Kamerás mérés (béta):** a letámasztott telefon kamerája előtt élőben számolja az ismétléseket vagy a kitartott időt, hangosan is, és a végén visszajelez a formáról. Tesztekhez (fekvőtámasz, 30 mp felállás, plank, egylábas állás: az eredmény a mezőbe kerül), a gyakorlatleírásnál és a vezetett edzésben. A pózbecslő (MediaPipe, kb. 15 MB) a Kanyaréval azonos, a készüléken fut, és csak az első használatkor töltődik le.
 - **Adatvédelem:** minden adat a készüléken marad (IndexedDB). Nincs szerver, fiók, és nincs külső kérés (CSP: csak `'self'`; a `'wasm-unsafe-eval'` a pózbecslő WebAssembly-futtatójához kell).

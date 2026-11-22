@@ -78,7 +78,7 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
 
   await step('felmérés: időzítős teszt (számláló, visszaszámlálás, stopper), kihagyás, alapadatok', async () => {
     await go(page, '#/assess');
-    assert.match(await text(), /0 \/ 15 teszt kész/);
+    assert.match(await text(), /0 \/ 16 teszt kész/);
     assert.equal(await page.getByRole('button', { name: 'Kiértékelés' }).isDisabled(), true);
     /* fekvőtámasz: koppintós számláló tölti a mezőt */
     await go(page, '#/test/pushup');
@@ -471,10 +471,58 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     assert.equal(last.key, 'routine'); assert.equal(last.title, 'Irodai mobilitás');
   });
 
+  await step('pulzus (hamis kamerával), regeneráció, egyensúly (hamis érzékelővel)', async () => {
+    await page.evaluate(async () => {
+      const w = await import('./js/ui/widgets.js');
+      w.setTick(5);
+      w.setRunner({
+        openPpg: async () => { let i = 0; return { torch: true, read: async () => { const t = i++ / 30; await new Promise(r => setTimeout(r, 0)); return { t, v: 150 + 2 * Math.sin(2 * Math.PI * 1.1 * t) }; }, close() {} }; },
+        openMotion: async () => { const samples = []; let i = 0; const iv = setInterval(() => { for (let k = 0; k < 4; k++, i++) samples.push({ t: i / 20, x: 0.03 * Math.sin(i / 3), y: 9.81, z: 0.03 * Math.cos(i / 4) }); }, 5); return { samples, stop: () => clearInterval(iv) }; },
+      });
+    });
+    await go(page, '#/pulse');
+    await page.getByRole('button', { name: 'Mérés indítása' }).click();
+    await page.waitForFunction(() => /ütés\/perc/.test(document.getElementById('main').innerText), null, { timeout: 15000 });
+    assert.match(await text(), /6[4-8] ütés\/perc/);
+    await go(page, '#/');
+    assert.match(await text(), /Regeneráció/);
+    await go(page, '#/test/sway');
+    await page.getByRole('button', { name: 'Indítás' }).click();
+    await page.waitForFunction(() => /Stabilitás: \d+ \/ 100/.test(document.getElementById('main').innerText), null, { timeout: 15000 });
+    assert.ok(Number(await page.locator('#val').inputValue()) > 80);
+    await page.evaluate(async () => { (await import('./js/ui/widgets.js')).setTick(15); });
+  });
+
+  await step('kihívás, szezonális blokk, kihíváskód, összefoglaló, napfény téma', async () => {
+    await go(page, '#/challenge');
+    await page.getByText('30 napos plank').click();
+    await page.waitForFunction(() => /Mai adag: 20 mp/.test(document.getElementById('main').innerText));
+    await page.getByRole('button', { name: 'Kész, megcsináltam' }).click();
+    await page.waitForFunction(() => /Mára kész/.test(document.getElementById('main').innerText));
+    await shot('challenge');
+    await go(page, '#/blocks');
+    await page.getByText('Strandszezon előtti törzs').click();
+    await page.waitForFunction(() => /Következő alkalom/i.test(document.getElementById('main').innerText));
+    assert.match(await text(), /0 \/ 12 alkalom/);
+    await go(page, '#/progress');
+    assert.match(await text(), /Kihívás egy baráttal/);
+    const code = await page.evaluate(async () => (await import('./js/core/extras.js')).encodeChallenge({ name: 'Barát', results: { pushup: 30, plank: 50 } }));
+    await page.locator('#fcode').fill(code);
+    await page.getByRole('button', { name: 'Összevetés' }).click();
+    await page.waitForFunction(() => /Barátod/.test(document.getElementById('main').innerText) && document.querySelectorAll('.tests-table tbody tr').length >= 1);
+    await go(page, '#/report');
+    assert.match(await text(), /Forma – összefoglaló/);
+    await page.evaluate(async () => { const d = await import('./js/ui/data.js'); await d.saveSettings({ theme: 'sun' }); d.applyLook(); });
+    await go(page, '#/');
+    assert.equal(await page.evaluate(() => document.documentElement.dataset.theme), 'sun');
+    await shot('sun-theme');
+    await page.evaluate(async () => { const d = await import('./js/ui/data.js'); await d.saveSettings({ theme: 'auto' }); d.applyLook(); });
+  });
+
   await step('akadálymentesség (axe, WCAG 2 A/AA): a fő képernyőkön nincs hiba', async () => {
     const axe = fs.readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
     const found = [];
-    for (const hash of ['#/more', '#/', '#/assess', '#/test/pushup', '#/test/deep_squat', '#/test/vitals', '#/result', '#/program', '#/session/mobility', '#/ex/squat', '#/log', '#/settings', '#/cardio', '#/check/strengthA', '#/ex/pull_up', '#/progress', '#/mini', '#/run', '#/review', '#/cooldown', '#/library', '#/routines', '#/custom', '#/posture', '#/test/reaction']) {
+    for (const hash of ['#/more', '#/', '#/assess', '#/test/pushup', '#/test/deep_squat', '#/test/vitals', '#/result', '#/program', '#/session/mobility', '#/ex/squat', '#/log', '#/settings', '#/cardio', '#/check/strengthA', '#/ex/pull_up', '#/progress', '#/mini', '#/run', '#/review', '#/cooldown', '#/library', '#/routines', '#/custom', '#/posture', '#/test/reaction', '#/pulse', '#/challenge', '#/blocks', '#/report', '#/test/sway']) {
       await go(page, hash);
       /* a Playwright evaluate-je nem esik a lap CSP-je alá, így beágyazott szkript nélkül töltjük be */
       await page.evaluate(src => { if (!window.axe) (0, eval)(src); }, axe).catch(() => {});

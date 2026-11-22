@@ -1,6 +1,6 @@
 /* Program, vezetett edzés értékeléssel és szintlépéssel, gyakorlatleírás. */
 import { h, clear, fmtSec, uid, toast } from './dom.js';
-import { page, card, btn, link, note, list, speak, beep, tickMs, videoSearch } from './widgets.js';
+import { page, card, btn, link, note, list, speak, beep, tickMs, videoSearch, celebrate } from './widgets.js';
 import { D, S, lowImpact } from './data.js';
 import { itemPut, kvGet } from './store.js';
 import { getProgram, setProgram, latestAssessment } from './state.js';
@@ -8,6 +8,7 @@ import { ROTATION, SESSION_TITLES, LADDERS, RATINGS, effLadder, baseLadder, buil
 import { figureStrip, figureAnim } from './figure.js';
 import { weekStrip } from './views-main.js';
 import { liveCounter } from './live.js';
+import { blockProgress } from './views-extra.js';
 
 const SIDE = { left: 'bal oldal', right: 'jobb oldal', both: 'oldalanként' };
 /* rutin vagy saját edzés keresése a kulcs alapján */
@@ -49,6 +50,7 @@ export async function programView() {
   return page('Program',
     h('p', { class: 'muted' }, `${wk.week}. hét (a ${wk.cycle}. ciklus ${wk.cycleWeek}. hete a ${CYCLE_WEEKS}-ből)` + (prog.lowImpact ? ' · kímélő mód' : '')),
     h('section', { class: 'card accent' }, h('h2', null, `A ciklus fókusza: ${phaseOf(wk.cycle).name}`), h('p', null, phaseOf(wk.cycle).about),
+      h('div', { class: 'timeline', role: 'img', 'aria-label': `A ${CYCLE_WEEKS} hetes ciklus: most a ${wk.cycleWeek}. hét` }, Array.from({ length: CYCLE_WEEKS }, (_, i) => h('span', { class: 'tl-week' + (i + 1 < wk.cycleWeek ? ' past' : i + 1 === wk.cycleWeek ? ' now' : '') + (i + 1 === CYCLE_WEEKS ? ' deload' : '') }, i + 1 === CYCLE_WEEKS ? 'könnyű' : `${i + 1}. hét`))),
       h('p', { class: 'small muted' }, 'A 6 hetes ciklusok fókusza váltakozik: alapozás → erő → robbanékonyság, majd újra elölről.')),
     wk.deload ? note('Könnyített hét: kevesebb kör, a kezdő ismétlésszámokkal. A hét végén mérd fel újra magad.', 'warn') : null,
     card(h('h2', null, 'Forgó rend'), weekStrip(prog), h('p', { class: 'small muted' }, '3 erőnap, 2 gyorsasági nap és 2 mobilitásnap. Minden edzés napi mobilitással kezdődik. Az ismétlésszám hétről hétre nő, a gyakorlat pedig nehezebbre vált, ha kétszer egymás után könnyűnek értékeled.')),
@@ -104,6 +106,7 @@ export async function sessionView(key, onCleanup) {
     const minutes = Math.max(1, Math.round((Date.now() - started) / 60000));
     let changes = [];
     if (session.free) {
+      if (key.startsWith('routine-')) await blockProgress(key.slice(8));
       await itemPut({ id: uid(), kind: 'workout', date: Date.now(), key: key.startsWith('routine-') ? 'routine' : 'custom', title: session.title, minutes, steps: total, partial, ratings: {}, changes: [] });
     } else {
       const fresh = (await getProgram()) || prog;
@@ -115,6 +118,7 @@ export async function sessionView(key, onCleanup) {
       await itemPut({ id: uid(), kind: 'workout', date: Date.now(), key, minutes, steps: total, partial, ratings, changes, light });
     }
     speak('Kész az edzés. Szép munka!', voice.checked);
+    if (changes.some(c => c.to > c.from)) celebrate();
     beep(880, 200);
     bar.value = total; count.textContent = `${total} / ${total} lépés`;
     const lad = laddersOf(D.exercises.exercises);
@@ -202,7 +206,9 @@ export async function sessionView(key, onCleanup) {
         h('p', { class: 'workout-unit' }, 'ismétlés' + (st.side === 'both' ? ' oldalanként' : '')), points,
         h('div', { class: 'row' }, btn('Kész, tovább', next, 'primary')), swap,
         live ? h('details', { class: 'live-box' }, h('summary', null, 'Számolás kamerával'), live.el) : null, more), nav);
-      speak(ex.name + ', ' + st.reps + ' ismétlés' + (st.side === 'both' ? ' oldalanként' : ''), voice.checked);
+      speak(ex.name + ', ' + st.reps + ' ismétlés' + (st.side === 'both' ? ' oldalanként' : '') + (S.settings.voiceMode ? '. ' + ex.points.join('. ') : ''), voice.checked);
+      /* hangos módban az ismétlések becsült ideje után magától továbblép */
+      if (S.settings.voiceMode) { left = st.reps * 3 * (st.side === 'both' ? 2 : 1) + 6; running = true; timer = setInterval(() => { left--; if (left === 3) speak('három', voice.checked); if (left <= 0) { beep(660, 120); next(); } }, tickMs()); }
     }
   }
   /* lapozás: balra húzva tovább, jobbra húzva vissza (az értékelésnél nem) */
@@ -215,6 +221,7 @@ export async function sessionView(key, onCleanup) {
     if (dx < 0) next(); else back();
   });
   show();
+  if (S.settings.voiceMode) stage.classList.add('voice-mode');
   return page(session.title,
     h('p', { class: 'muted' }, `Kb. ${sessionMinutes(steps)} perc · ${session.blocks.length} gyakorlat` + (session.week.deload ? ' · könnyített hét' : '') + (light ? ' · könnyített edzés, értékelés nélkül' : '') + (session.fit ? ` · ${session.fit.target} perces keretre igazítva` : '')),
     bar, h('div', { class: 'row tight workout-meta' }, count, h('label', { class: 'check' }, voice, h('span', null, 'Hangos bemondás'))),
