@@ -98,7 +98,7 @@ export async function blocksView() {
       return page(b.name, h('p', { class: 'muted' }, `${Math.min(week, b.weeks)}. hét a ${b.weeks}-ből · ${st.done || 0} / ${total} alkalom`),
         h('progress', { max: total, value: st.done || 0, 'aria-label': 'A blokk haladása' }),
         finished ? card(h('h2', null, 'Kész a blokk! 🎉'), h('p', null, 'Szép munka. Indíthatsz egy újat, vagy maradhatsz a forgó rendnél.'))
-          : h('section', { class: 'card accent' }, h('h2', null, 'Következő alkalom'), h('p', { class: 'lead' }, next.name), h('p', { class: 'small muted' }, next.about), h('div', { class: 'row' }, link('#/session/routine-' + next.id, 'Indítás', 'btn primary'))),
+          : h('section', { class: 'card accent' }, h('h2', null, 'Következő alkalom'), h('p', { class: 'lead' }, next.name), h('p', { class: 'small muted' }, next.about), h('div', { class: 'row' }, link('#/prepare/routine-' + next.id, 'Indítás', 'btn primary'))),
         h('div', { class: 'row' }, btn(finished ? 'Új blokk' : 'Blokk befejezése', async () => { if (!finished && !confirm('Befejezed ezt a blokkot?')) return; await kvSet('block', null); reload('#/blocks'); }, 'small')));
     }
   }

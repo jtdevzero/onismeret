@@ -6,7 +6,7 @@ import { settingsReady } from './state.js';
 import { watchStorage, exportAll } from './store.js';
 import { startView, homeView, logView, settingsView, moreView } from './views-main.js';
 import { assessView, testView, resultView } from './views-assess.js';
-import { programView, sessionView, exerciseView } from './views-train.js';
+import { programView, sessionView, prepareView, exerciseView } from './views-train.js';
 import { cardioView, checkView } from './views-cardio.js';
 import { progressView, miniView } from './views-progress.js';
 import { runView } from './views-run.js';
@@ -34,9 +34,9 @@ watchStorage(({ mode, writeError }) => {
 });
 const ROUTES = {
   '': homeView, start: startView, assess: assessView, test: testView, result: resultView,
-  program: programView, session: sessionView, ex: exerciseView, log: logView, settings: settingsView, cardio: cardioView, check: checkView, progress: progressView, mini: miniView, run: runView, more: moreView, review: reviewView, cooldown: cooldownView, library: libraryView, routines: routinesView, custom: customView, posture: postureView, pulse: pulseView, challenge: challengeView, blocks: blocksView, report: reportView, diag: diagView, qa: qaView,
+  program: programView, session: sessionView, prepare: prepareView, ex: exerciseView, log: logView, settings: settingsView, cardio: cardioView, check: checkView, progress: progressView, mini: miniView, run: runView, more: moreView, review: reviewView, cooldown: cooldownView, library: libraryView, routines: routinesView, custom: customView, posture: postureView, pulse: pulseView, challenge: challengeView, blocks: blocksView, report: reportView, diag: diagView, qa: qaView,
 };
-const TAB = { '': '', program: 'program', session: 'program', ex: 'program', check: 'program', progress: 'progress', mini: 'progress', result: 'progress', assess: 'more', test: 'more', cardio: 'more', run: 'more', log: 'more', settings: 'more', more: 'more', review: 'progress', cooldown: 'program', library: 'more', routines: 'more', custom: 'more', posture: 'more', pulse: 'more', challenge: 'more', blocks: 'more', report: 'more', diag: 'more', qa: 'more' };
+const TAB = { '': '', program: 'program', session: 'program', prepare: 'program', ex: 'program', check: 'program', progress: 'progress', mini: 'progress', result: 'progress', assess: 'more', test: 'more', cardio: 'more', run: 'more', log: 'more', settings: 'more', more: 'more', review: 'progress', cooldown: 'program', library: 'more', routines: 'more', custom: 'more', posture: 'more', pulse: 'more', challenge: 'more', blocks: 'more', report: 'more', diag: 'more', qa: 'more' };
 let cleanups = [], seq = 0;
 
 async function route() {

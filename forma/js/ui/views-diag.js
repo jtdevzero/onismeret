@@ -78,6 +78,8 @@ export async function qaView() {
   upd();
   return page('Kipróbálási lista',
     h('p', { class: 'muted' }, 'A kamerás és érzékelős méréseket csak valódi telefonon lehet beállítani. Menj végig a listán; ahol valami furcsa, az Eszközpróba oldalon küldj jelentést.'),
+    h('p', null, 'Kijelölt próbakészülék: iPhone 15 Pro Max. Külön ellenőrizendő a Safari, a kezdőképernyős app és az alkalmazáson belüli böngésző.'),
+    h('p', null, link('docs/telefonos-ellenorzes.md', 'Részletes telefonos és kalibrációs jegyzőkönyv'), ' · ', link('docs/szakmai-atnezes.html', 'Nyomtatható szakmai anyag')),
     prog,
     card(h('ul', { class: 'rows' }, QA.map(([k, text, href]) => h('li', null,
       h('label', { class: 'check' }, h('input', { type: 'checkbox', checked: done.has(k), onchange: async e => { if (e.target.checked) done.add(k); else done.delete(k); await kvSet('qa', [...done]); upd(); } }), h('span', null, text)),

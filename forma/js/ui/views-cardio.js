@@ -74,10 +74,10 @@ export async function checkView(key) {
     if (!r) return;
     await kvSet('readiness', { date: Date.now(), ...st, level: r.level });
     out.append(card(h('p', { class: 'lead' }, r.text), h('div', { class: 'row' },
-      r.level === 'go' ? link('#/session/' + key, 'Teljes edzés: ' + SESSION_TITLES[key], 'btn primary') : null,
-      r.level !== 'rest' && key !== 'mobility' ? link('#/session/' + key + '.light', 'Könnyített edzés', 'btn' + (r.level === 'light' ? ' primary' : '')) : null,
-      link('#/session/mobility', 'Csak mobilitás', 'btn' + (r.level === 'rest' ? ' primary' : '')),
-      r.level !== 'go' ? link('#/session/' + key, 'Mégis a teljeset', 'btn small') : null)));
+      r.level === 'go' ? link('#/prepare/' + key, 'Teljes edzés: ' + SESSION_TITLES[key], 'btn primary') : null,
+      r.level !== 'rest' && key !== 'mobility' ? link('#/prepare/' + key + '.light', 'Könnyített edzés', 'btn' + (r.level === 'light' ? ' primary' : '')) : null,
+      link('#/prepare/mobility', 'Csak mobilitás', 'btn' + (r.level === 'rest' ? ' primary' : '')),
+      r.level !== 'go' ? link('#/prepare/' + key, 'Mégis a teljeset', 'btn small') : null)));
   };
   /* rossz alvásnál tippek, és az Önismeret alvásoldala */
   const sleepTip = h('div', { 'aria-live': 'polite' });
@@ -90,5 +90,5 @@ export async function checkView(key) {
       h('h3', null, 'Energia'), choice('energy', opts3('Fáradt vagyok', 'Átlagos', 'Friss vagyok'), null, v => { st.energy = v; refresh(); }, 'Energia'),
       h('label', { class: 'check' }, pain, h('span', null, 'Valamim fáj (nem izomláz, hanem éles vagy ízületi fájdalom)'))),
     out, sleepTip,
-    h('p', null, link('#/session/' + key, 'Kihagyom a kérdéseket, indulok', 'small')));
+    h('p', null, link('#/prepare/' + key, 'Kihagyom a kérdéseket, indulok', 'small')));
 }

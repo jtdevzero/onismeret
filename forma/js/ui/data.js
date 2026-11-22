@@ -21,10 +21,16 @@ export async function loadData() {
   D.area = Object.fromEntries(D.tests.areas.map(a => [a.id, a]));
   S.settings = await kvGet('settings', null);
 }
-export async function saveSettings(patch) {
-  S.settings = { ...(S.settings || {}), ...patch };
-  await kvSet('settings', S.settings);
-  return S.settings;
+let settingsQueue = Promise.resolve();
+export function saveSettings(patch) {
+  const save = settingsQueue.catch(() => {}).then(async () => {
+    const next = { ...(S.settings || {}), ...patch };
+    await kvSet('settings', next);
+    S.settings = next;
+    return next;
+  });
+  settingsQueue = save;
+  return save;
 }
 export const profile = () => (S.settings && S.settings.profile) || {};
 export const lowImpact = () => !!(S.settings && S.settings.lowImpact);

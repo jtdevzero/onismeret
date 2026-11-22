@@ -1,8 +1,11 @@
 /* Gyakorlattár (keresés, szűrés, kedvencek), rutinok és saját edzés összeállítása. */
 import { h, clear, uid, toast } from './dom.js';
 import { page, card, btn, link, note, typeIcon, emptyState } from './widgets.js';
-import { D } from './data.js';
+import { D, S, saveSettings } from './data.js';
 import { kvGet, kvSet } from './store.js';
+
+import { figureAnim } from './figure.js';
+import { equipmentText } from './views-train.js';
 
 const reload = hash => { location.hash = hash; dispatchEvent(new HashChangeEvent('hashchange')); };
 const getFavs = async () => new Set((await kvGet('favs', [])) || []);
@@ -26,23 +29,24 @@ export async function libraryView() {
         if (favs.has(e.id)) favs.delete(e.id); else favs.add(e.id);
         await kvSet('favs', [...favs]); star.classList.toggle('on', favs.has(e.id)); star.setAttribute('aria-pressed', favs.has(e.id) ? 'true' : 'false'); star.textContent = favs.has(e.id) ? '★' : '☆';
       } }, favs.has(e.id) ? '★' : '☆');
-      return h('li', null, typeIcon(e.type), h('span', { class: 'log-item' }, link('#/ex/' + e.id, e.name), h('span', { class: 'muted small' }, D.exercises.typeNames[e.type] + (e.equipment ? ' · eszközzel' : '') + (e.impact ? ' · ugrásos' : ''))), star);
-    })) : h('p', { class: 'muted' }, 'Nincs találat.'));
+      return h('li', null, figureAnim(D.figures[e.figure], { compact: true, still: true }), h('span', { class: 'log-item' }, link('#/ex/' + e.id, e.name), h('span', { class: 'muted small' }, D.exercises.typeNames[e.type] + (' · ' + equipmentText(e)) + (e.impact ? ' · ugrásos' : ''))), star);
+    })) : emptyState('Nincs találat. Próbálj másik nevet vagy kategóriát.', btn('Szűrés törlése', () => { search.value = ''; st.q = ''; st.type = 'all'; chips.firstChild.click(); }, 'small')));
   }
   draw();
   return page('Gyakorlattár', h('p', { class: 'muted' }, `${all.length} gyakorlat. A csillaggal kedvencnek jelölheted, a kedvencekből saját edzést állíthatsz össze.`),
-    search, chips, card(listEl), h('div', { class: 'row' }, link('#/routines', 'Rutinok és saját edzések', 'btn primary')));
+    h('div', { class: 'library-categories' }, [['push_full', 'strength', 'Erő'], ['cat_cow', 'mobility', 'Mobilitás'], ['plank', 'core', 'Törzs'], ['sl_stance', 'balance', 'Egyensúly']].map(([id, type, name]) => { const ex = D.ex[id] || all.find(e => e.type === type); return h('button', { type: 'button', 'aria-label': name, onclick: () => { const c = [...chips.children].find(c => c.textContent === D.exercises.typeNames[type]); if (c) c.click(); } }, ex ? figureAnim(D.figures[ex.figure], { compact: true, still: true }) : null, h('strong', null, name)); })), search, chips, card(listEl), h('div', { class: 'row' }, link('#/routines', 'Rutinok és saját edzések', 'btn primary')));
 }
 
 export async function routinesView() {
   const custom = await getCustom();
+  const pin = (key, name) => btn(S.settings.pinnedRoutine === key ? 'Kitűzve a kezdőlapra' : 'Kitűzés: ' + name, async () => { await saveSettings({ pinnedRoutine: S.settings.pinnedRoutine === key ? '' : key }); reload('#/routines'); }, 'small');
   return page('Rutinok',
     h('p', { class: 'muted' }, 'Rövid, önálló edzések a forgó rend mellé. Nem léptetik a programot, de bekerülnek a naplóba.'),
-    h('ul', { class: 'menu-list' }, D.routines.map(r => h('li', null, h('a', { href: '#/session/routine-' + r.id },
-      h('span', { class: 'routine-min' }, `${r.minutes}′`), h('span', null, h('strong', null, r.name), h('span', { class: 'small' }, r.about)))))),
+    h('ul', { class: 'menu-list' }, D.routines.map(r => h('li', null, h('a', { href: '#/prepare/routine-' + r.id },
+      h('span', { class: 'routine-min' }, `${r.minutes}′`), h('span', null, h('strong', null, r.name), h('span', { class: 'small' }, r.about))), pin('routine-' + r.id, r.name)))),
     h('h2', { class: 'section-title' }, 'Saját edzéseid'),
-    custom.length ? h('ul', { class: 'menu-list' }, custom.map(c => h('li', null, h('a', { href: '#/session/custom-' + c.id },
-      h('span', { class: 'routine-min' }, String(c.blocks.length)), h('span', null, h('strong', null, c.name), h('span', { class: 'small' }, c.blocks.map(b => D.ex[b[0]] ? D.ex[b[0]].name : '').filter(Boolean).join(', '))))))) : emptyState('Még nincs saját edzésed. Jelölj kedvenceket a gyakorlattárban, és állíts össze belőlük egyet.'),
+    custom.length ? h('ul', { class: 'menu-list' }, custom.map(c => h('li', null, h('a', { href: '#/prepare/custom-' + c.id },
+      h('span', { class: 'routine-min' }, String(c.blocks.length)), h('span', null, h('strong', null, c.name), h('span', { class: 'small' }, c.blocks.map(b => D.ex[b[0]] ? D.ex[b[0]].name : '').filter(Boolean).join(', ')))), pin('custom-' + c.id, c.name)))) : emptyState('Még nincs saját edzésed. Jelölj kedvenceket a gyakorlattárban, és állíts össze belőlük egyet.', link('#/library', 'Gyakorlatok böngészése', 'btn small')),
     h('div', { class: 'row' }, link('#/custom', 'Új saját edzés', 'btn primary'), custom.length ? link('#/custom/' + custom[0].id, 'Szerkesztés', 'btn small') : null));
 }
 

@@ -26,6 +26,7 @@ const engine = process.env.FORMA_BROWSER === 'webkit' ? webkit : chromium;
         static now() { return fixed; }
       };
     }, new Date(2026, 10, 22, 12).getTime());
+    page.on('dialog', d => d.accept());
     const errors = []; page.on('pageerror', e => errors.push(e.message));
     await page.goto(`http://127.0.0.1:${server.address().port}/#/`);
     await page.waitForFunction(() => document.documentElement.dataset.ready === '1');
@@ -45,6 +46,11 @@ const engine = process.env.FORMA_BROWSER === 'webkit' ? webkit : chromium;
       await page.evaluate(h => { location.hash = h; }, hash);
       await page.waitForFunction(h => document.documentElement.dataset.view === h, hash);
       await page.waitForTimeout(200);
+      if (hash.startsWith('#/session/') && await page.getByRole('button', { name: 'Új edzés a félbehagyott helyett', exact: true }).count()) {
+        await page.getByRole('button', { name: 'Új edzés a félbehagyott helyett', exact: true }).click();
+        await page.getByRole('link', { name: 'Edzés indítása', exact: true }).click();
+        await page.waitForFunction(h => document.documentElement.dataset.view === h, hash);
+      }
     };
     await go('#/program'); await go('#/');
     assert.equal(await page.locator('.hero .btn.primary').count(), 1, 'egy kiemelt művelet a kezdőlapon');

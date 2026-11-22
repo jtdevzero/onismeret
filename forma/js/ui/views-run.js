@@ -5,6 +5,8 @@ import { stepCount } from '../core/sensors.js';
 import { kvGet, kvSet, itemPut } from './store.js';
 import { runSession, totalSeconds, runSeconds, describe, nextRun, repeatWeek, RUN_WEEKS, RUN_DAYS } from '../core/runplan.js';
 
+import { remaining } from '../core/session.js';
+
 const LABEL = { warm: 'Bemelegítő séta', walk: 'Séta', run: 'Futás', cool: 'Levezető séta' };
 const SAY = { warm: 'Bemelegítő séta, öt perc.', walk: 'Most sétálj.', run: 'Most fuss!', cool: 'Kész a futás. Levezető séta.' };
 const fmt = s => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
@@ -41,9 +43,10 @@ export async function runView(arg, onCleanup) {
     next.textContent = n ? `Következik: ${LABEL[n.type]}, ${fmt(n.seconds)}` : 'Ez az utolsó szakasz.';
     bar.value = elapsed;
   };
-  const enter = () => { left = segs[i].seconds; draw(); speak(SAY[segs[i].type], voice.checked); beep(segs[i].type === 'run' ? 880 : 520, 250); };
+  let deadline = 0;
+  const enter = () => { left = segs[i].seconds; deadline = Date.now() + left * tickMs(); draw(); speak(SAY[segs[i].type], voice.checked); beep(segs[i].type === 'run' ? 880 : 520, 250); };
   const tick = () => {
-    left--; elapsed++;
+    const before = left; left = remaining(deadline, Date.now(), tickMs()); elapsed += Math.max(0, before - left);
     if (left === 10 && segs[i + 1]) speak(`Tíz másodperc, aztán ${segs[i + 1].type === 'run' ? 'futás' : 'séta'}.`, voice.checked);
     if (left <= 0) { i++; if (i >= segs.length) { finish(false); return; } enter(); return; }
     if (motion && elapsed % 5 === 0) { const s = motion.samples, recent = s.filter(p => p.t >= s[s.length - 1].t - 15); const c = stepCount(recent); cad.textContent = c.cadence ? `Kadencia: ${c.cadence} lépés/perc (cél futásnál 165–180)` : ''; if (s.length > 6000) s.splice(0, s.length - 3000); }
@@ -72,8 +75,10 @@ export async function runView(arg, onCleanup) {
     setMetro();
     openMotion().then(m => { motion = m; }, () => { motion = null; });
   }, 'primary');
-  const pause = btn('Szünet', () => { if (timer) { stop(); pause.textContent = 'Folytatás'; } else { pause.textContent = 'Szünet'; timer = setInterval(tick, tickMs()); setMetro(); } });
+  const pause = btn('Szünet', () => { if (timer) { stop(); pause.textContent = 'Folytatás'; } else { pause.textContent = 'Szünet'; deadline = Date.now() + left * tickMs(); timer = setInterval(tick, tickMs()); setMetro(); } });
   const end = btn('Befejezés most', () => { if (confirm('Befejezed most? Az eddigi idő bekerül a naplóba, de a program nem lép tovább.')) finish(true); }, 'small');
+  const hidden = () => { if (document.hidden && timer) { stop(); pause.textContent = 'Folytatás'; next.textContent = 'Háttérbe kerülés miatt szünetel. Visszatérés után koppints a Folytatásra.'; } };
+  document.addEventListener('visibilitychange', hidden); onCleanup(() => document.removeEventListener('visibilitychange', hidden));
   pause.hidden = true; end.hidden = true;
   draw();
   stage.append(card(kicker, clock, next, cad, h('div', { class: 'row' }, go, pause, end), h('label', { class: 'field inline' }, 'Ütem a futáshoz', bpmSel)));
@@ -81,7 +86,7 @@ export async function runView(arg, onCleanup) {
   return page('Futóprogram',
     h('p', { class: 'muted' }, `${st.week}. hét / ${RUN_WEEKS}, ${st.day}. alkalom / ${RUN_DAYS} · ${Math.round(total / 60)} perc, ebből ${Math.round(runSeconds(segs) / 60)} perc futás`),
     card(h('h2', null, 'A mai alkalom'), h('p', null, describe(segs)), h('p', { class: 'small muted' }, 'Előtte 5 perc bemelegítő séta, utána 5 perc levezetés. A futás legyen olyan tempójú, hogy közben még tudj beszélni (2. zóna). Két futás között legyen legalább egy pihenőnap.')),
-    bar, h('div', { class: 'row tight workout-meta' }, h('span', { class: 'muted small' }, 'Telefon a zsebben is mehet: hangosan szólok a váltásoknál.'), h('label', { class: 'check' }, voice, h('span', null, 'Hangos bemondás'))),
+    bar, h('div', { class: 'row tight workout-meta' }, h('span', { class: 'muted small' }, 'Tartsd előtérben az appot. Képernyőzárnál vagy háttérbe kerüléskor az edzés szünetel.'), h('label', { class: 'check' }, voice, h('span', null, 'Hangos bemondás'))),
     note('Ha mellkasi fájdalmat, szédülést vagy szokatlan légszomjat érzel, azonnal állj meg. Ízületi fájdalomnál válts sétára.', 'small'),
     stage);
 }

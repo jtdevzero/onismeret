@@ -44,6 +44,8 @@ export async function reviewView() {
     weeks.map((r, i) => card(h('h2', null, i === 0 ? 'Ez a hét (eddig)' : `${fmtDate(r.start)} – ${fmtDate(r.end - DAY)}`), r.empty ? h('p', { class: 'muted' }, 'Nincs bejegyzés.') : reviewBody(r))));
 }
 
+import { remaining } from '../core/session.js';
+
 /* Levezetés: nyújtás és lassú légzés, időzítővel. */
 export async function cooldownView(arg, onCleanup) {
   const prog = await getProgram();
@@ -62,9 +64,12 @@ export async function cooldownView(arg, onCleanup) {
       figureAnim(D.figures[ex.figure], { compact: true }), clock, h('p', { class: 'small' }, ex.how),
       h('div', { class: 'row' }, btn('Tovább', () => { i++; show(); }, 'primary'))));
     speak(ex.name + (st.side ? ', ' + st.side : ''));
-    timer = setInterval(() => { left--; clock.textContent = String(left); if (left <= 0) { beep(520, 200); i++; show(); } }, tickMs());
+    const deadline = Date.now() + left * tickMs();
+    timer = setInterval(() => { left = remaining(deadline, Date.now(), tickMs()); clock.textContent = String(left); if (left <= 0) { beep(520, 200); i++; show(); } }, tickMs());
   };
   show();
+  const hidden = () => { if (document.hidden && timer) { stop(); stage.append(note('A levezetés szünetel.', 'small'), btn('Aktuális nyújtás újrakezdése', show)); } };
+  document.addEventListener('visibilitychange', hidden); onCleanup(() => document.removeEventListener('visibilitychange', hidden));
   return page('Levezetés', h('p', { class: 'muted' }, 'Kb. 4 perc nyújtás és lassú légzés: segít lecsendesedni, és csökkenti a másnapi merevséget.'), stage);
 }
 
