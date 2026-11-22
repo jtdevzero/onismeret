@@ -145,3 +145,10 @@ Hatókör: kizárólag `forma/`. Engedélyezett: U0 és U1, a `claude/elegant-ha
 - A CI akadálymentességi vizsgálata a Beállítások oldal elsődleges Mentés gombján szövegkontraszt-hibát jelzett. `styles.css`: a fő CTA gradiens két végpontja kontrasztellenőrzött akcentusszín; `tests/contrast.test.mjs`: mindhárom téma második végpontját is ellenőrzi.
 - Ezen a munkapéldányon `python3 forma/build.py` **PASS**, `TZ=Europe/Budapest node --test forma/tests/*.test.mjs` **152/152 PASS**. `node forma/tests/browser.cjs` **nem futott végig**, mert a Playwright Chromium binárisa helyben nem elérhető. A böngészőteszt és az offline PWA javításának eredménye új CI-futásig **nem igazolt**.
 - Kiadási állapot változatlanul **NO-GO**: mobil Safari/Android, valódi offline PWA és kamerás validáció külön igazolandó. A fejlesztői ág nem élesítés.
+
+## Phase 2 – félbehagyott edzés elvetésének adatbiztonsága
+
+- Audit során azonosított adatvesztési út: azonos edzésnél a „Folytatod?” párbeszéd **Nem** válasza eddig új edzést indított, így későbbi checkpoint felülírhatta a korábbi sorozatokat.
+- `ui/views-train.js`: elutasítás esetén védett döntési képernyő jelenik meg. A félkész adatok változatlanul megmaradnak; az újrakezdés csak külön, kifejezett törlési megerősítés és sikeres IndexedDB-törlés után lehetséges. Van visszalépési és folytatási lehetőség.
+- `ui/i18n-en.js`: az új állapot angol szövegei; `tests/browser.cjs`: izolált visszatöltési próba az elutasítás utáni checkpoint-változatlanságra.
+- Helyi build és **152/152** unit teszt sikeres, a böngészős regresszió a CI tényleges lefutásáig **nem igazolt**. Nem érintett éles vagy valós felhasználói adatot.

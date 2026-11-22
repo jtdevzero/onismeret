@@ -541,7 +541,8 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     });
     const context = await browser.newContext({ ...devices['Pixel 7'] });
     const p = await context.newPage();
-    p.on('dialog', d => d.accept());
+    let allowResume = true;
+    p.on('dialog', d => allowResume ? d.accept() : d.dismiss());
     try {
       await p.goto(base); await p.waitForFunction(() => document.documentElement.dataset.ready === '1');
       await p.evaluate(async data => {
@@ -572,6 +573,13 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
         return null;
       });
       assert.ok(state && state.at >= 0, 'a módosított sorozat checkpointja megmarad');
+      allowResume = false;
+      await p.reload();
+      await p.waitForFunction(() => document.documentElement.dataset.view === '#/session/strengthA');
+      await p.getByText('A félbehagyott edzésed megmaradt').waitFor();
+      const preserved = await p.evaluate(async () => (await (await import('./js/ui/store.js')).kvGet('workoutDraft')));
+      assert.deepEqual(preserved, state, 'a folytatás elutasítása nem írhatja felül a félkész edzést');
+      allowResume = true;
       await p.reload();
       await p.waitForFunction(() => document.documentElement.dataset.ready === '1');
       await p.waitForFunction(() => document.documentElement.dataset.view === '#/session/strengthA');

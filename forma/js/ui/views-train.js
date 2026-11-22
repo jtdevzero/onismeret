@@ -230,6 +230,18 @@ export async function sessionView(key, onCleanup) {
   let resumed = false;
   if (draft && draft.key === key && validDraft(draft, key, draft.partner ? partnerSteps(baseSteps).length : baseSteps.length) && !await itemGet(draft.workoutId)) {
     resumed = confirm(tr('Van egy félbehagyott edzésed. Folytatod onnan, ahol abbahagytad?'));
+    if (!resumed) {
+      /* A Folytatás kérdés elutasítása nem jogosít fel a régi checkpoint felülírására.
+         Az újrakezdés külön, megerősített elvetés után válik lehetségessé. */
+      return page(tr('Félbehagyott edzés'), card(h('h2', null, tr('A félbehagyott edzésed megmaradt')),
+        h('p', null, tr('Az újrakezdés törölné a korábban rögzített sorozatokat. Ezt külön jóvá kell hagynod.')),
+        h('div', { class: 'row' }, btn(tr('Folytatás'), () => dispatchEvent(new HashChangeEvent('hashchange')), 'primary'),
+          btn(tr('Félkész edzés elvetése'), async () => {
+            if (!confirm(tr('Biztosan elveted a félbehagyott edzés adatait?'))) return;
+            try { await kvDelete(draftKey); dispatchEvent(new HashChangeEvent('hashchange')); }
+            catch { toast(tr('Nem sikerült törölni a félkész edzést.')); }
+          }, 'small'), link('#/program', tr('Vissza a programhoz'), 'btn'))));
+    }
   }
   const started = resumed ? draft.started : Date.now();
   const workoutId = resumed ? draft.workoutId : uid();
