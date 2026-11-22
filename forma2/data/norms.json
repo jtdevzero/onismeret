@@ -1,0 +1,83 @@
+{
+  "version": "2026-11-22.1",
+  "note": "Kor- és nemszerinti viszonyítási értékek. Minden tesztnél négy töréspont: a 20., 40., 60. és 80. percentilis értéke (p20…p80). A fordított tesztnél (lower: true) a kisebb érték a jobb. A minőség: 'A' = publikált, kor és nem szerinti norma, nagyjából erre a mérési módra; 'B' = több forrásból becsült érték, kevés vagy eltérő módszerű adat alapján. Szakember átnézte (2026. november). A „B” minőségű értékek ettől még becslések maradnak.",
+  "reviewed": true,
+  "reviewDate": "2026-11-22",
+  "bands": [[ 18, 29 ], [ 30, 39 ], [ 40, 49 ], [ 50, 59 ], [ 60, 69 ]],
+  "levels": {
+    "low": 40,
+    "top": 75
+  },
+  "tests": {
+    "pushup": {
+      "quality": "A",
+      "source": "CSEP (Kanadai Edzéstudományi Társaság), fekvőtámasz kifáradásig. Férfi: teljes fekvőtámasz; nő: a CSEP-protokoll térdelő változata.",
+      "male": [[17, 22, 29, 36], [12, 17, 22, 30], [10, 13, 17, 25], [7, 10, 13, 21], [5, 8, 11, 18]],
+      "female": [[10, 15, 21, 30], [8, 13, 20, 27], [5, 11, 15, 24], [2, 7, 11, 21], [2, 5, 12, 17]]
+    },
+    "chair_stand": {
+      "quality": "B",
+      "source": "30 másodperces felállás székről. 60 év fölött Rikli és Jones (Senior Fitness Test); fiatalabb korra több felnőtt mintából becsülve.",
+      "male": [[20, 23, 26, 30], [19, 22, 25, 29], [17, 20, 23, 27], [15, 18, 21, 25], [13, 15, 17, 20]],
+      "female": [[18, 21, 24, 28], [17, 20, 23, 27], [15, 18, 21, 25], [14, 16, 19, 23], [12, 14, 16, 19]]
+    },
+    "plank": {
+      "quality": "B",
+      "source": "Alkartámasz kifáradásig (amíg a testtartás egyenes), másodpercben. A 18–29-es sáv egy 18–25 éves egyetemi minta kvartiliseiből (Linfield College, 2014; férfi 77/106/128,5 mp, nő 63/90/121 mp), összhangban Strand és mtsai. (2014) átlagaival; az idősebb sávok becsült, arányos csökkenéssel. Idősebb korra nincs megbízható percentilistábla.",
+      "male": [[71, 94, 115, 133], [65, 88, 110, 128], [58, 76, 99, 114], [45, 65, 82, 100], [32, 53, 66, 86]],
+      "female": [[58, 79, 102, 127], [52, 73, 96, 122], [45, 67, 85, 111], [39, 55, 74, 95], [26, 43, 62, 85]]
+    },
+    "broad_jump": {
+      "quality": "B",
+      "source": "Helyből távolugrás, cm, a legjobb a három kísérletből. Felnőtt Eurofit-típusú mintákból becsülve.",
+      "male": [[203, 218, 230, 245], [190, 204, 216, 231], [175, 189, 201, 216], [160, 174, 186, 201], [140, 154, 166, 181]],
+      "female": [[148, 160, 170, 182], [138, 150, 160, 172], [128, 140, 150, 162], [113, 125, 135, 147], [98, 110, 120, 132]]
+    },
+    "sit_reach": {
+      "quality": "A",
+      "source": "CSEP ülve előrenyúlás, a lábujjhegyhez mérve (0 = a lábujj, mínusz = nem éred el), cm.",
+      "male": [[-1, 4, 8, 14], [-2, 3, 8, 12], [-8, -2, 3, 9], [-10, -2, 2, 9], [-11, -6, -1, 7]],
+      "female": [[2, 7, 11, 15], [1, 6, 10, 15], [-1, 4, 8, 12], [-1, 4, 7, 13], [-3, 1, 5, 9]]
+    },
+    "sl_stance": {
+      "quality": "B",
+      "source": "Egylábas állás csukott szemmel, másodperc, a jobb lábon és a balon mért idő átlaga. Springer és mtsai. (2007) korcsoportos átlagaiból becsült percentilisek. A források protokollja eltér (egy vagy három próba, legjobb vagy átlag), ezért ezt a normát óvatosan kezeld.",
+      "male": [[6, 10, 15, 24], [5, 8, 12, 20], [4, 6, 9, 15], [2, 4, 6, 10], [2, 3, 4, 7]],
+      "female": [[6, 10, 15, 24], [5, 8, 12, 20], [4, 6, 9, 15], [2, 4, 6, 10], [2, 3, 4, 7]]
+    },
+    "sit_rise": {
+      "quality": "B",
+      "source": "Leülés a földre és felállás (Araújo-féle teszt), 0–10 pont. Araújo és mtsai. (2012, 2020) korcsoportos értékeiből becsülve.",
+      "male": [[8.5, 9, 9.5, 10], [8, 9, 9.5, 10], [7, 8, 8.5, 9.5], [6, 7, 8, 9], [5, 6, 7, 8]],
+      "female": [[8.5, 9, 9.5, 10], [8, 8.5, 9.5, 10], [7, 8, 8.5, 9.5], [5.5, 6.5, 7.5, 8.5], [4.5, 5.5, 6.5, 7.5]]
+    },
+    "step_test": {
+      "quality": "B",
+      "lower": true,
+      "source": "YMCA 3 perces lépcsőteszt (30 cm-es lépcső, percenként 24 fellépés), a pulzus az utána következő percben. A YMCA korcsoportjaiból átszámolva.",
+      "male": [[112, 102, 95, 86], [113, 103, 96, 87], [116, 106, 99, 90], [118, 108, 101, 92], [117, 108, 100, 92]],
+      "female": [[118, 108, 101, 92], [120, 110, 103, 94], [122, 113, 105, 96], [124, 115, 107, 98], [124, 115, 108, 99]]
+    }
+  },
+  "vo2": {
+    "source": "Edzés nélküli VO₂max-becslés: Nes és mtsai. (2011), HUNT-vizsgálat. Fittségi kor: az az életkor, amelynek átlagos VO₂max-a megegyezik a becsült értékeddel (Nes és mtsai., 2014). A korcsoportos átlagok a HUNT-mintából, kerekítve.",
+    "male": {
+      "a": 100.27,
+      "age": 0.296,
+      "waist": 0.369,
+      "rhr": 0.155,
+      "pai": 0.226
+    },
+    "female": {
+      "a": 74.74,
+      "age": 0.247,
+      "waist": 0.259,
+      "rhr": 0.114,
+      "pai": 0.198
+    },
+    "meanByAge": {
+      "male": [[ 25, 54.4 ], [ 35, 49.0 ], [ 45, 47.7 ], [ 55, 42.6 ], [ 65, 39.0 ], [ 75, 34.0 ]],
+      "female": [[ 25, 43.0 ], [ 35, 40.0 ], [ 45, 38.4 ], [ 55, 34.4 ], [ 65, 31.1 ], [ 75, 27.5 ]]
+    }
+  }
+}
