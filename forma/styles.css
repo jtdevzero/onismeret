@@ -746,3 +746,7 @@ details.more-group[open] > summary::after { content: "▴"; }
 .checklist .tick { flex: none; width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--line); display: grid; place-items: center; font-weight: 800; color: #fff; }
 .checklist li.done .tick { background: var(--teal); border-color: var(--teal); }
 .checklist li.done > span:nth-child(2) { color: var(--muted); text-decoration: line-through; }
+
+/* ismétlés javítása edzés közben */
+.reps-adjust { display: flex; justify-content: center; gap: 10px; margin-top: 6px; }
+.reps-adjust .btn.icon { min-width: 44px; min-height: 44px; padding: 0; font-size: 1.3rem; line-height: 1; }

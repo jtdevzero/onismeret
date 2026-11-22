@@ -1,7 +1,7 @@
 /* Kezdőképernyő (első indítás), a mai nap, napló és beállítások. */
 import { h, clear, fmtDate, toast } from './dom.js';
 import { page, card, btn, link, note, choice, list, sized, heroTime, artClass, emptyState } from './widgets.js';
-import { D, S, saveSettings, profile, applyLook } from './data.js';
+import { D, S, saveSettings, profile, applyLook, weeklyGoal } from './data.js';
 import { exportAll, wipeAll, restoreAll } from './store.js';
 import { parseBackup } from '../core/backup.js';
 import { sameScoring } from '../core/assessment.js';
@@ -153,11 +153,11 @@ export async function homeView() {
         h('div', { class: 'row' }, link('#/check/' + key, doneToday ? 'Mehet még egy' : 'Indítás', 'btn primary home-start')))));
     /* két kis csempe: heti cél és regeneráció; a részletek egy koppintással elérhetők (a számok a dashboard-rétegből) */
     const everything = await itemsAll();
-    dash = buildDashboard({ program: prog, items: everything, now: Date.now(), profile: profile(), norms: D.norms });
+    dash = buildDashboard({ program: prog, items: everything, now: Date.now(), profile: profile(), norms: D.norms, weeklyGoal: weeklyGoal() });
     const ww = { n: dash.weeklyWorkouts.completed, goal: dash.weeklyWorkouts.goal, pct: dash.weeklyWorkouts.pct }, cw = dash.weeklyCardio;
     const rec = await recoveryTileData(everything);
     kids.push(h('div', { class: 'tiles' },
-      h('a', { class: 'tile mini', href: '#/program', 'aria-label': `Heti cél: ${ww.n} edzés az 5-ből, ${cw.equivalent} kardióperc a 150-ből` },
+      h('a', { class: 'tile mini', href: '#/program', 'aria-label': `Heti cél: ${ww.n} edzés a ${ww.goal}-ből, ${cw.equivalent} kardióperc a 150-ből` },
         h('span', { class: 'muted small' }, 'Heti cél'), h('strong', null, `${ww.n} / ${ww.goal}`), h('progress', { max: 100, value: ww.pct, 'aria-hidden': 'true' }),
         h('span', { class: 'small muted' }, `kardió ${cw.equivalent} / ${cw.goal} p`)),
       h('a', { class: 'tile mini', href: rec ? '#/check/' + key : '#/pulse', 'aria-label': rec ? `Regeneráció: ${rec.score} a 100-ból` : 'Regeneráció: mérd a reggeli pulzusod' },
@@ -336,6 +336,9 @@ export async function settingsView() {
       choice('theme', [['auto', 'A telefon beállítása szerint'], ['light', 'Világos (naplemente)'], ['dark', 'Sötét (éjszakai neon)'], ['sun', 'Napfény: nagy kontraszt szabadtéren']], S.settings.theme || 'auto', async v => { await saveSettings({ theme: v }); applyLook(); }, 'Téma'),
       h('h3', null, 'Betűméret'),
       choice('size', [['normal', 'Normál'], ['large', 'Nagy (edzés közben is jól olvasható)']], S.settings.size || 'normal', async v => { await saveSettings({ size: v }); applyLook(); }, 'Betűméret')),
+    card(h('h2', null, 'Heti edzéscél'),
+      h('p', { class: 'small muted' }, 'Hány edzést tűzöl ki egy hétre. Ez szokáscél: a kezdőlapon, a heti áttekintésben és a Fejlődés oldalon ehhez mérem a hetedet. A forgó rend ettől nem változik.'),
+      choice('wgoal', [2, 3, 4, 5, 6, 7].map(n => [n, n + ' edzés']), weeklyGoal(), async v => { await saveSettings({ weeklyGoal: v }); toast('Elmentettem a heti célt.'); }, 'Heti edzéscél')),
     card(h('h2', null, 'Edzésidő'),
       h('p', { class: 'small muted' }, 'Ha kevés az időd, az edzést a választott hosszhoz igazítom: rövidebb mobilitás és pihenő, kevesebb kör. 35 percnél a fő gyakorlatok egy kört kapnak.'),
       choice('dur', DURATIONS, S.settings.duration || 0, async v => { await saveSettings({ duration: v }); toast('Elmentettem. A következő edzéstől érvényes.'); }, 'Edzésidő')),

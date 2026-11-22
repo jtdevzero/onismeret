@@ -10,7 +10,7 @@ const DAY = 86400000;
 const sameDay = (a, b) => new Date(a).toDateString() === new Date(b).toDateString();
 
 /* program: a tárolt program (vagy null) · items: minden tétel · profile, norms: a cél aktuális értékéhez */
-export function buildDashboard({ program = null, items = [], now = Date.now(), profile = null, norms = null } = {}) {
+export function buildDashboard({ program = null, items = [], now = Date.now(), profile = null, norms = null, weeklyGoal = 5 } = {}) {
   const by = k => items.filter(i => i && i.kind === k).sort((a, b) => b.date - a.date);
   const assessments = by('assessment'), workouts = by('workout'), cardio = by('cardio'), goals = by('goal');
   const last = assessments[0] || null;
@@ -25,7 +25,7 @@ export function buildDashboard({ program = null, items = [], now = Date.now(), p
   }
 
   const cycle = program && program.start ? { ...weekInfo(program.start, now), weeks: CYCLE_WEEKS } : null;
-  const ww = weeklyWorkouts(workouts, now), cw = weeklyCardio(cardio, now);
+  const ww = weeklyWorkouts(workouts, now, weeklyGoal), cw = weeklyCardio(cardio, now);
   const load = aggregateWeeklyLoad(items, { weeks: 4, now });
   const thisWeek = load[load.length - 1];
 

@@ -35,3 +35,6 @@ export function applyLook(st = S.settings || {}) {
   if (['light', 'dark', 'sun'].includes(st.theme)) r.dataset.theme = st.theme; else delete r.dataset.theme;
   if (st.size === 'large') r.dataset.size = 'large'; else delete r.dataset.size;
 }
+
+/* heti edzéscél (szokáscél): a beállításból, alapból 5 */
+export const weeklyGoal = () => (S.settings && Number.isInteger(S.settings.weeklyGoal) ? S.settings.weeklyGoal : 5);

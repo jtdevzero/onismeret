@@ -2,7 +2,7 @@
    Minden oszlopnak saját egysége van; a hiányzó adat „–”, nem nulla. */
 import { h, clear, fmtDate } from './dom.js';
 import { card, note } from './widgets.js';
-import { D } from './data.js';
+import { D, weeklyGoal } from './data.js';
 import { aggregateWeeklyLoad } from '../core/load.js';
 import { buildExerciseProgress, loggedExercises, buildConsistencyStats, buildRecoveryTimeline } from '../core/analytics.js';
 
@@ -36,7 +36,7 @@ function table(caption, head, rows) {
 export function trainingLoadCard(items, now = Date.now()) {
   const wk = aggregateWeeklyLoad(items, { weeks: 8, now });
   if (!wk.some(w => w.workouts || w.cardioMinutes)) return card(h('h2', null, 'Edzésterhelés'), h('p', { class: 'small muted' }, 'Még nincs edzésed vagy kardiód az elmúlt 8 hétben. Az első edzés után itt hetente látod a sorozatokat, az ismétléseket és az időt.'));
-  const cs = buildConsistencyStats(items, { weeks: 8, now });
+  const cs = buildConsistencyStats(items, { weeks: 8, now, goal: weeklyGoal() });
   const anyLog = wk.some(w => w.logged), anyKg = wk.some(w => w.externalKgReps != null), anyRpe = wk.some(w => w.sessionLoad != null);
   const head = [['Hét'], ['Edzés'], ['Perc'], ['Sorozat'], ['Ismétlés'], ['Tartás (mp)'], ...(anyKg ? [['kg × ism.', 'ismert külső súly × ismétlés']] : []), ...(anyRpe ? [['RPE × perc', 'érzett nehézség × edzésidő']] : []), ['Kardió (perc)']];
   const rows = wk.map(w => [fmtWeek(w.start), String(w.workouts), String(w.minutes), w.workouts ? String(w.sets) : '–', w.workouts ? String(w.reps) : '–', w.workouts ? String(w.seconds) : '–', ...(anyKg ? [kg(w.externalKgReps)] : []), ...(anyRpe ? [dash(w.sessionLoad)] : []), String(w.cardioMinutes)]);

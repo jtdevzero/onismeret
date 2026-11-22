@@ -58,6 +58,7 @@ export function parseBackup(text, ctx) {
     parq: s.parq && typeof s.parq === 'object' ? Object.fromEntries(Object.entries(s.parq).filter(([k, v]) => /^[a-z]{2,16}$/.test(k) && typeof v === 'boolean')) : undefined,
     reminder: s.reminder && /^\d{2}:\d{2}$/.test(s.reminder.time || '') ? { time: s.reminder.time } : undefined,
     duration: [0, 15, 25, 35].includes(s.duration) ? s.duration : undefined,
+    weeklyGoal: Number.isInteger(s.weeklyGoal) && s.weeklyGoal >= 2 && s.weeklyGoal <= 7 ? s.weeklyGoal : undefined,
     voiceMode: typeof s.voiceMode === 'boolean' ? s.voiceMode : undefined,
     showAll: typeof s.showAll === 'boolean' ? s.showAll : undefined,
     theme: ['auto', 'light', 'dark', 'sun'].includes(s.theme) ? s.theme : undefined,
