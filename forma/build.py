@@ -36,6 +36,7 @@ HEAD = f"""<!doctype html>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Forma">
 <link rel="stylesheet" href="styles.css">
+<link rel="preload" as="image" href="assets/forma-sunset.webp">
 __PRELOAD__<script type="module" src="js/ui/app.js"></script>
 </head>
 <body>
@@ -90,6 +91,7 @@ def main():
 
     shell = ['index.html', 'styles.css', 'manifest.webmanifest']
     shell += rel((HERE / 'icons').glob('*.*'))
+    shell += rel((HERE / 'assets').glob('*.webp'))
     shell += rel((HERE / 'js').rglob('*.js'))
     shell += rel((HERE / 'data').glob('*.json'))
     vendor = [p for p in sorted((HERE / 'vendor').rglob('*')) if p.is_file() and p.suffix != '.md']

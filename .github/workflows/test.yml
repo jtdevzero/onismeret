@@ -101,5 +101,6 @@ jobs:
       - name: Forma böngészős végpontteszt és pózbecslő
         if: ${{ !cancelled() }}
         run: |
+          node forma/tests/onboarding.cjs
           node forma/tests/browser.cjs
           node forma/tests/pose-smoke.cjs

@@ -35,10 +35,25 @@ const visibleTests = () => D.tests.tests.filter(t => !(S.settings && S.settings.
 
 export async function startView() {
   const st = { age: profile().age ?? null, sex: profile().sex ?? null, parq: { ...((S.settings && S.settings.parq) || {}) }, ok: false };
+  const saveError = h('p', { class: 'note warn', role: 'alert', hidden: true });
+  let saving = false;
   const go = btn('Kezdjük', async () => {
+    if (saving || go.disabled) return;
+    saving = true; go.disabled = true; go.textContent = 'Mentés…'; saveError.hidden = true;
+    const previousSettings = S.settings;
     const anyYes = PARQ.some(([k]) => st.parq[k] === true);
-    await saveSettings({ accepted: true, profile: { age: st.age, sex: st.sex }, parq: st.parq, lowImpact: anyYes || !!(S.settings && S.settings.lowImpact) });
-    location.hash = '#/';
+    try {
+      await saveSettings({ accepted: true, profile: { age: st.age, sex: st.sex }, parq: st.parq, lowImpact: anyYes || !!(S.settings && S.settings.lowImpact) });
+      /* A megosztott URL már #/ lehet: ilyenkor nincs natív hashchange. */
+      if (location.hash === '#/') dispatchEvent(new HashChangeEvent('hashchange'));
+      else location.hash = '#/';
+    } catch {
+      S.settings = previousSettings;
+      saveError.textContent = 'Nem sikerült menteni a beállításokat. A válaszaid itt megmaradtak; nyomd meg újra a Kezdjük gombot.';
+      saveError.hidden = false;
+    } finally {
+      saving = false; go.textContent = 'Kezdjük'; refresh();
+    }
   }, 'primary');
   const warn = h('div', { 'aria-live': 'polite' });
   let refresh = () => {
@@ -48,7 +63,7 @@ export async function startView() {
     if (st.age != null && !ageOk(st.age)) warn.append(note(st.age < 18 ? 'A Forma felnőtteknek készült (18 év fölött). Gyerekeknek és serdülőknek más tesztek és normák kellenek.' : 'Adj meg egy 18 és 99 közötti életkort.', 'warn'));
     else if (st.age > 69) warn.append(note('70 év fölött a 60–69 évesek normáihoz hasonlítunk, ezért az eredmény csak tájékoztató.', 'warn'));
     if (anyYes) warn.append(note('Legalább egy kérdésre igent válaszoltál. Mielőtt elkezded a felmérést és az edzést, beszélj az orvosoddal. Az appban kímélő módot kapcsolok be: kimaradnak az ugrások és a terheléses lépcsőteszt.', 'warn'));
-    go.disabled = !(ageOk(st.age) && st.sex && answered && st.ok);
+    go.disabled = saving || !(ageOk(st.age) && st.sex && answered && st.ok);
   };
   const age = h('input', { type: 'number', inputMode: 'numeric', min: 18, max: 99, value: st.age ?? '', 'aria-describedby': 'age-hint', oninput: () => { st.age = age.value === '' ? null : Number(age.value); refresh(); } });
   /* minden kérdés egy blokk, alatta két nagy gomb (Nem | Igen); a rádiógomb rejtett, de billentyűzettel és felolvasóval működik */
@@ -80,7 +95,7 @@ export async function startView() {
       h('div', { class: 'row' }, next1, back(0))),
     card(h('h2', { tabIndex: -1 }, 'Egészségügyi szűrés'), h('p', { class: 'small muted' }, 'A PAR-Q+ kérdőív alapján. A válaszaid csak a telefonodon tárolódnak.'), parq,
       h('div', { class: 'row' }, next2, back(1))),
-    card(h('h2', { tabIndex: -1 }, 'Utolsó lépés'), accept, h('div', { class: 'row' }, go, back(2))),
+    card(h('h2', { tabIndex: -1 }, 'Utolsó lépés'), accept, saveError, h('div', { class: 'row' }, go, back(2))),
   ];
   function goStep(n) {
     step = n;
@@ -101,7 +116,7 @@ export async function startView() {
   goStep(0);
   return h('div', { class: 'page' },
     h('section', { class: 'hero ' + heroTime() }, h('h1', null, 'Forma'), h('p', { class: 'hero-sub' }, 'Állapotfelmérés és otthoni edzés'),
-      h('p', { class: 'hero-lead' }, 'Hol tartasz a korosztályodhoz képest, és hogyan érheted el, vagy előzheted meg?')),
+      h('p', { class: 'hero-lead' }, 'Mérd fel az erősségeidet, találd meg, min érdemes dolgoznod, és kövesd a fejlődésedet.')),
     dots, sections, warn);
 }
 

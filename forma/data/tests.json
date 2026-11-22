@@ -1,5 +1,5 @@
 {
-  "version": "2026-11-22.1",
+  "version": "2026-11-22.2",
   "note": "A felmérés tesztjei. kind: 'norm' = kor- és nemszerinti percentilis (norms.json); 'criterion' = funkcionális küszöbök, kortól független; 'baseline' = csak a saját fejlődésed követésére. A leírásokat szakember még nem lektorálta.",
   "reviewed": false,
   "areas": [
@@ -86,7 +86,7 @@
       "how": "Mezítláb állva, kéz és térd segítsége nélkül ülj le törökülésbe, majd ugyanígy állj fel. 10 pontról indulsz, és levonás jár minden támaszért, amit kézzel, alkarral, térddel vagy a lábad oldalával veszel igénybe (leülésnél és felállásnál is egy-egy pont támaszonként), valamint egy fél pont, ha megbillensz. Írd be a végeredményt (0–10).",
       "input": { "type": "number", "unit": "pont", "min": 0, "max": 10, "step": 0.5 } },
     { "id": "step_test", "area": "cardio", "kind": "norm", "name": "3 perces lépcsőteszt", "impact": true, "optional": true,
-      "how": "Egy kb. 30 cm magas lépcsőfok vagy stabil zsámoly kell. A metronóm ütemére (percenként 96 ütés, azaz 24 teljes fellépés) lépj fel-fel-le-le 3 percig. Utána azonnal ülj le, és a következő 60 másodpercben számold a pulzusod (nyakon vagy csuklón), vagy olvasd le az órádról az 1 perc utáni pulzust.",
+      "how": "Egy kb. 30 cm magas lépcsőfok vagy stabil zsámoly kell. A metronóm ütemére (percenként 96 ütés, azaz 24 teljes fellépés) lépj fel-fel-le-le 3 percig. Utána azonnal ülj le, és a következő teljes 60 másodpercben számold a szívveréseidet a csuklódon. Az ezalatt összesen számolt ütéseket írd be. Az óra egy perc végén kijelzett pillanatnyi pulzusa más mérés, ehhez a normához nem használható. Ha korábban így mértél, ismételd meg a tesztet ezzel a módszerrel.",
       "safety": "Ha szédülsz, mellkasi fájdalmat vagy nagyon erős légszomjat érzel, azonnal állj meg. Szívbetegség vagy vérnyomásgyógyszer (béta-blokkoló) esetén ez a teszt nem ad megbízható eredményt.",
       "input": { "type": "number", "unit": "ütés/perc", "min": 40, "max": 200, "step": 1 }, "timer": { "mode": "step", "seconds": 180, "bpm": 96, "recovery": 60 } }
   ],

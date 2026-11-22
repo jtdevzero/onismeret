@@ -7,19 +7,50 @@ const el = (tag, attrs) => { const e = document.createElementNS(NS, tag); for (c
 const line = (a, b, cls) => el('line', { x1: a.x.toFixed(1), y1: a.y.toFixed(1), x2: b.x.toFixed(1), y2: b.y.toFixed(1), class: cls });
 const path = (pts, cls) => el('polyline', { points: pts.map(p => p.x.toFixed(1) + ',' + p.y.toFixed(1)).join(' '), class: cls });
 
+function sceneProps(svg, spec) {
+  for (const points of spec.props || []) svg.append(path(points.map(([x, y]) => ({ x, y })), 'fig-prop'));
+}
+function sceneBounds(boxes, spec) {
+  const props = (spec.props || []).flat();
+  const xs = props.map(p => p[0]), ys = props.map(p => p[1]);
+  return { x0: Math.min(...boxes.map(b => b.x0), ...xs), x1: Math.max(...boxes.map(b => b.x1), ...xs),
+    y0: Math.min(...boxes.map(b => b.y0), ...ys), y1: Math.max(...boxes.map(b => b.y1), ...ys) };
+}
+function equipment(svg, spec) {
+  const loads = [];
+  for (const side of spec.load === 'both' ? ['armN', 'armF'] : spec.load ? ['armN'] : []) {
+    const g = el('g', { class: 'fig-weight' });
+    if (spec.load === 'kettle') {
+      g.append(el('circle', { cx: 0, cy: -3, r: 4, class: 'fig-handle' }), el('circle', { cx: 0, cy: 6, r: 7 }));
+    } else g.append(line({ x: -7, y: 0 }, { x: 7, y: 0 }, 'fig-prop'), el('rect', { x: -10, y: -6, width: 5, height: 12, rx: 1 }), el('rect', { x: 5, y: -6, width: 5, height: 12, rx: 1 }));
+    svg.append(g); loads.push({ g, side });
+  }
+  const band = spec.band ? line({ x: 0, y: 0 }, { x: 0, y: 0 }, 'fig-band') : null;
+  if (band) svg.append(band);
+  return f => {
+    for (const { g, side } of loads) { const p = f[side].at(-1); g.setAttribute('transform', `translate(${p.x.toFixed(1)} ${p.y.toFixed(1)})`); }
+    if (band) {
+      const a = f.armN.at(-1), b = spec.band === 'hands' ? f.armF.at(-1) : { x: spec.anchor[0], y: spec.anchor[1] };
+      band.setAttribute('x1', a.x); band.setAttribute('y1', a.y); band.setAttribute('x2', b.x); band.setAttribute('y2', b.y);
+    }
+  };
+}
+
 function frameSvg(frame, opts) {
   const f = figurePoints(frame.pose), pad = 12;
-  let { x0, x1, y0, y1 } = f.box;
+  let { x0, x1, y0, y1 } = sceneBounds([f.box], opts);
   const wallX = opts.wall === 'back' ? x0 - 3 : opts.wall === 'front' ? x1 + 3 : null;
   if (wallX != null) { x0 = Math.min(x0, wallX - 4); x1 = Math.max(x1, wallX + 4); }
   const svg = el('svg', { viewBox: `${(x0 - pad).toFixed(1)} ${(y0 - pad).toFixed(1)} ${(x1 - x0 + 2 * pad).toFixed(1)} ${(y1 - y0 + pad + 4).toFixed(1)}`, class: 'fig', 'aria-hidden': 'true' });
   svg.append(line({ x: x0 - pad, y: f.ground + 2 }, { x: x1 + pad, y: f.ground + 2 }, 'fig-ground'));
+  sceneProps(svg, opts);
   if (wallX != null) svg.append(line({ x: wallX, y: y0 - pad }, { x: wallX, y: f.ground + 2 }, 'fig-ground'));
   const far = opts.front ? 'fig-limb' : 'fig-limb fig-far';
   svg.append(path(f.legF, far), path(f.armF, far));
-  svg.append(line(f.pelvis, f.neck, 'fig-limb'), line(f.neck, f.head, 'fig-limb'));
+  svg.append(line(f.pelvis, f.neck, 'fig-limb fig-torso'), line(f.neck, f.head, 'fig-limb'));
   svg.append(path(f.legN, 'fig-limb'), path(f.armN, 'fig-limb'));
   svg.append(el('circle', { cx: f.head.x.toFixed(1), cy: f.head.y.toFixed(1), r: LEN.head, class: 'fig-head' }));
+  equipment(svg, opts)(f);
   return svg;
 }
 
@@ -40,17 +71,18 @@ export function figureAnim(spec, opts = {}) {
   const frames = spec.frames;
   /* közös keret az összes képkockára, hogy a figura ne ugráljon */
   const boxes = frames.map(f => figurePoints(f.pose).box), pad = 12;
-  let x0 = Math.min(...boxes.map(b => b.x0)), x1 = Math.max(...boxes.map(b => b.x1));
-  const y0 = Math.min(...boxes.map(b => b.y0)), y1 = Math.max(...boxes.map(b => b.y1));
+  let { x0, x1, y0, y1 } = sceneBounds(boxes, spec);
   const wallX = spec.wall === 'back' ? x0 - 3 : spec.wall === 'front' ? x1 + 3 : null;
   if (wallX != null) { x0 = Math.min(x0, wallX - 4); x1 = Math.max(x1, wallX + 4); }
   const svg = el('svg', { viewBox: `${(x0 - pad).toFixed(1)} ${(y0 - pad).toFixed(1)} ${(x1 - x0 + 2 * pad).toFixed(1)} ${(y1 - y0 + pad + 4).toFixed(1)}`, class: 'fig fig-anim', 'aria-hidden': 'true' });
   const ground = line({ x: x0 - pad, y: y1 + 2 }, { x: x1 + pad, y: y1 + 2 }, 'fig-ground');
   svg.append(ground);
+  sceneProps(svg, spec);
   if (wallX != null) svg.append(line({ x: wallX, y: y0 - pad }, { x: wallX, y: y1 + 2 }, 'fig-ground'));
   const far = spec.front ? 'fig-limb' : 'fig-limb fig-far';
-  const parts = { legF: path([], far), armF: path([], far), torso: line({ x: 0, y: 0 }, { x: 0, y: 0 }, 'fig-limb'), neck: line({ x: 0, y: 0 }, { x: 0, y: 0 }, 'fig-limb'), legN: path([], 'fig-limb'), armN: path([], 'fig-limb'), head: el('circle', { r: LEN.head, class: 'fig-head' }) };
+  const parts = { legF: path([], far), armF: path([], far), torso: line({ x: 0, y: 0 }, { x: 0, y: 0 }, 'fig-limb fig-torso'), neck: line({ x: 0, y: 0 }, { x: 0, y: 0 }, 'fig-limb'), legN: path([], 'fig-limb'), armN: path([], 'fig-limb'), head: el('circle', { r: LEN.head, class: 'fig-head' }) };
   svg.append(parts.legF, parts.armF, parts.torso, parts.neck, parts.legN, parts.armN, parts.head);
+  const drawEquipment = equipment(svg, spec);
   const pts = a => a.map(p => p.x.toFixed(1) + ',' + p.y.toFixed(1)).join(' ');
   const draw = pose => {
     const f = figurePoints(pose), dy = y1 - f.ground; /* a talajhoz igazítva */
@@ -61,6 +93,7 @@ export function figureAnim(spec, opts = {}) {
       ln.setAttribute('x1', a.x.toFixed(1)); ln.setAttribute('y1', (a.y + dy).toFixed(1)); ln.setAttribute('x2', b.x.toFixed(1)); ln.setAttribute('y2', (b.y + dy).toFixed(1));
     }
     parts.head.setAttribute('cx', f.head.x.toFixed(1)); parts.head.setAttribute('cy', (f.head.y + dy).toFixed(1));
+    drawEquipment({ ...f, armN: sh(f.armN), armF: sh(f.armF) });
   };
   draw(frames[0].pose);
   const label = h('figcaption', { class: 'fig-live-label' }, frames[0].label);

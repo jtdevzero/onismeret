@@ -37,7 +37,8 @@ export function levelOf(score, levels = { low: 40, top: 75 }) {
   if (score == null) return null;
   return score >= levels.top ? 'top' : score >= levels.low ? 'mid' : 'low';
 }
-export const LEVEL_NAMES = { low: 'Fejlesztendő', mid: 'Korosztályos szint', top: 'Felső negyed' };
+/* A területi és összesített pontszám különböző mércéket átlagol, ezért nem percentilis. */
+export const LEVEL_NAMES = { low: 'Alacsony pontszám', mid: 'Közepes pontszám', top: 'Magas pontszám' };
 
 /* Egy teszt pontszáma (0–100). → { score, kind, percentile?, quality?, pain? } vagy null, ha nincs érték vagy nem pontozható. */
 export function scoreTest(test, value, profile, norms) {

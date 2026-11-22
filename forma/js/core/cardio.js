@@ -66,6 +66,6 @@ export function cardioPlan(cardioScore, week) {
     ? { sessions: 3, minutes: 30, zone: 'z2', text: 'Heti 3 × 30 perc a 2. zónában: tempós séta, kocogás vagy kerékpár.' }
     : cardioScore < 75
       ? { sessions: 3, minutes: 35, zone: 'z2', text: 'Heti 2 × 40 perc a 2. zónában, és 1 intervallumos alkalom (pl. 4 × 4 perc a 4. zónában, közte 3 perc könnyű).' }
-      : { sessions: 3, minutes: 40, zone: 'z2', text: 'Heti 2 × 45 perc a 2. zónában, és 1 intervallumos alkalom (4 × 4 perc a 4. zónában). Ez tartja fenn a felső negyedet.' };
+      : { sessions: 3, minutes: 40, zone: 'z2', text: 'Heti 2 × 45 perc a 2. zónában, és 1 intervallumos alkalom (4 × 4 perc a 4. zónában). A magas állóképességi pontszámhoz igazított javaslat.' };
   return { ...base, left: Math.max(0, WEEKLY_GOAL - (week ? week.equivalent : 0)) };
 }

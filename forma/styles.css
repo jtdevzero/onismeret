@@ -76,16 +76,16 @@ p { margin: 0 0 10px; }
 
 /* ---- nyitó sáv a kezdőlapon ---- */
 .hero {
-  position: relative; overflow: hidden; margin: 0 0 16px; padding: 22px 20px 20px; border-radius: 24px; color: #fff;
-  background: url(icons/hero.svg) right bottom / auto 100% no-repeat, linear-gradient(170deg, var(--hero-a) 0%, var(--hero-b) 55%, var(--hero-c) 100%);
+  position: relative; overflow: hidden; margin: 0 0 20px; padding: 30px 24px 24px; min-height: 340px; border-radius: 24px; color: #fff;
+  background: #2a0f3d url(assets/forma-sunset.webp) 65% center / cover no-repeat;
   box-shadow: var(--shadow);
 }
-.hero::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(26, 11, 46, .55) 0%, rgba(26, 11, 46, .15) 70%, transparent); }
+.hero::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(26, 11, 46, .94), rgba(26, 11, 46, .62) 60%, rgba(26, 11, 46, .24)); }
 .hero > * { position: relative; }
-.hero h1 { font-style: italic; text-transform: uppercase; font-size: clamp(1.9rem, 8.6vw, 2.8rem); margin: 0 0 2px; padding-right: 88px; color: #fff; text-shadow: 0 0 18px rgba(255, 95, 162, .75), 3px 3px 0 #2a0f3d; }
+.hero h1 { font-style: italic; text-transform: uppercase; font-size: clamp(2.4rem, 10vw, 4rem); margin: 18px 0 8px; color: #fff; text-shadow: 3px 3px 0 #2a0f3d; max-width: 10ch; }
 .hero-sub { margin: 0 0 18px; font-weight: 600; color: rgba(255, 255, 255, .86); }
 .hero-lead { margin: 10px 0 18px; max-width: 30ch; font-size: 1.12rem; font-weight: 600; line-height: 1.4; color: rgba(255, 255, 255, .94); }
-.hero-next { padding: 16px; border-radius: var(--radius); background: rgba(26, 11, 46, .5); border: 1px solid rgba(255, 255, 255, .22); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.hero-next { padding: 18px; margin-top: 30px; border-radius: var(--radius); background: rgba(26, 11, 46, .9); border: 1px solid rgba(255, 255, 255, .28); }
 .hero-next h2 { color: #fff; }
 .hero-next p { color: rgba(255, 255, 255, .92); }
 
@@ -259,7 +259,7 @@ ul.rows.plan > li { align-items: center; }
 .legend .lg-prev::before { border-top: 2px dashed var(--sun); }
 .area-row { padding: 10px 0; border-top: 1px solid var(--line); }
 .area-row:first-child { border-top: 0; }
-.area-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-weight: 700; }
+.area-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; font-weight: 700; }
 .meter { position: relative; height: 12px; margin: 8px 0 4px; border-radius: 999px; background: linear-gradient(90deg, var(--warn-bg) 0 40%, var(--bg-2) 40% 75%, var(--good-bg) 75% 100%); }
 .meter-fill { position: absolute; top: -3px; width: 4px; height: 18px; margin-left: -2px; border-radius: 2px; background: var(--text); }
 .meter-scale { display: flex; justify-content: space-between; font-size: .7rem; color: var(--muted); }
@@ -267,8 +267,9 @@ ul.rows.plan > li { align-items: center; }
 .badge.mid { background: var(--accent-soft); color: var(--accent); }
 .badge.top { background: var(--good-bg); color: var(--good); }
 .big-num { font-size: 3rem; font-weight: 800; line-height: 1; letter-spacing: -.02em; color: var(--accent); }
-.stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.stat-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .stat { padding: 14px; border-radius: var(--radius-s); background: var(--bg-2); }
+.stat .badge { white-space: normal; }
 .stat .muted { font-size: .8rem; font-weight: 650; }
 .stat strong { display: block; font-size: 1.7rem; line-height: 1.15; }
 .tests-table { width: 100%; border-collapse: collapse; font-size: .9rem; }
@@ -429,9 +430,8 @@ fieldset.parq-q legend + * { clear: both; }
 input[type=radio], input[type=checkbox] { accent-color: var(--accent); }
 
 /* ---- napszakhoz igazodó nyitórajz ---- */
-.hero.morning { background: url(icons/hero.svg) right bottom / auto 100% no-repeat, linear-gradient(170deg, #3a1a5c 0%, #c2457a 55%, #ffb36b 100%); }
-.hero.day { background: url(icons/hero.svg) right bottom / auto 100% no-repeat, linear-gradient(170deg, #2a0f3d 0%, #8a1f6b 55%, #ff5a7a 100%); }
-.hero.night { background: url(icons/hero-night.svg) right bottom / auto 100% no-repeat, linear-gradient(170deg, #0d0618 0%, #2a0f3d 60%, #5a1450 100%); }
+.hero.night::before { background: linear-gradient(90deg, rgba(13, 6, 24, .96), rgba(26, 11, 46, .75) 60%, rgba(26, 11, 46, .32)); }
+.hero.morning::before { background: linear-gradient(90deg, rgba(45, 15, 51, .94), rgba(45, 15, 51, .62) 60%, rgba(45, 15, 51, .22)); }
 
 /* ---- ünneplés ---- */
 .confetti { position: fixed; inset: 0 0 auto 0; height: 0; z-index: 30; pointer-events: none; }
@@ -475,10 +475,7 @@ ul.rows.lib > li .log-item { flex: 1; }
 
 /* ---- fekvő nézet edzés közben (tablet, tévé) ---- */
 @media (orientation: landscape) and (min-width: 700px) {
-  .workout .card { display: grid; grid-template-columns: 1fr 1fr; align-items: center; column-gap: 24px; text-align: left; }
-  .workout .card > .workout-kicker, .workout .card > .workout-title { grid-column: 1 / -1; text-align: center; }
-  .workout .fig-live { grid-row: span 4; max-width: none; }
-  .workout .fig-live .fig { height: 260px; }
+  .workout-visual { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); }
 }
 
 /* ---- napfény téma: nagy kontraszt szabadtéren ---- */
@@ -529,6 +526,61 @@ details.more-group[open] > summary::after { content: "▴"; }
 .ex-bars span { flex: 1; border-radius: 4px 4px 2px 2px; background: linear-gradient(180deg, var(--accent), var(--accent)); background: linear-gradient(180deg, var(--accent), color-mix(in srgb, var(--accent) 55%, var(--sun))); }
 .fig-live.big { max-width: 440px; }
 .fig-live.big .fig { height: 230px; }
+
+/* ---- Forma stúdió: azonos rajznyelv, olvasható eszközök ---- */
+.fig-live { border: 1px solid var(--line); background: radial-gradient(ellipse at 50% 70%, var(--accent-soft), var(--surface) 75%); }
+.fig-torso { stroke: var(--teal); stroke-width: 10; }
+.fig-head { fill: var(--sun); stroke: var(--text); stroke-width: 1.5; }
+.fig-ground { stroke: var(--teal); }
+.fig-prop { fill: none; stroke: var(--muted); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.fig-band { stroke: var(--teal); stroke-width: 3.5; stroke-linecap: round; }
+.fig-weight { fill: var(--text); }
+.fig-handle { fill: none; stroke: var(--text); stroke-width: 2.5; }
+.eyebrow { color: var(--teal); font-size: .72rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+
+/* ---- edzés közben: mozdulat, mennyiség, következő lépés ---- */
+.session-page > h1 { font-size: 1.5rem; }
+.workout-heading { margin-bottom: 12px; }
+.workout-visual { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); align-items: center; gap: 8px; margin: 10px 0; }
+.workout-visual > * { min-width: 0; }
+.workout-visual .fig-live { width: 100%; max-width: none; margin: 0; padding: 8px 2px; background: none; border: 0; }
+.workout-visual .fig-live .fig { width: 100%; height: 200px; }
+.workout-readout { display: grid; justify-items: center; align-content: center; }
+.workout-readout .workout-clock { font-size: clamp(3rem, 15vw, 5rem); }
+.workout-readout .ring .workout-clock { font-size: clamp(1.6rem, 10vw, 3rem); }
+.workout-readout .ring { width: min(100%, 160px); height: auto; aspect-ratio: 1; margin: 0; }
+.workout-readout .ring svg { width: 100%; height: 100%; }
+.workout-readout .workout-unit { font-size: .78rem; }
+.workout-cue { font-weight: 650; margin: 14px 0; }
+.workout-actions .btn { flex: 1 1 110px; min-height: 58px; }
+.next-up { padding: 12px 0 0; margin: 14px 0 0; border-top: 1px solid var(--line); color: var(--muted); font-size: .8rem; }
+.workout-details { text-align: left; margin-top: 8px; }
+.workout-details > summary, .result-explainer > summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; color: var(--accent); font-size: .875rem; font-weight: 700; }
+.workout-details > summary::after, .result-explainer > summary::after { content: '+'; margin-left: auto; padding-left: 8px; }
+.workout-details[open] > summary::after, .result-explainer[open] > summary::after { content: '−'; }
+.session-options > summary { font-size: .875rem; font-weight: 700; }
+.session-options .check { margin-top: 14px; }
+.result-overview .stat-row { margin-bottom: 20px; }
+.result-explainer { border-top: 1px solid var(--line); margin-top: 16px; padding-top: 4px; }
+@media (max-width: 350px) {
+  .workout-focus { padding: 14px 12px; }
+  .workout-visual .fig-live .fig { height: 165px; }
+  .hero { padding: 22px 18px; }
+}
+
+/* ---- hathetes történet, a letöltött képpel azonos színekkel ---- */
+.progress-poster { position: relative; overflow: hidden; padding: 26px; background: #2a0f3d; color: #fff; border-color: #8a1f6b; }
+.progress-poster::before { content: ''; position: absolute; width: 170px; height: 170px; border-radius: 50%; background: #ff8a3d; top: -110px; right: -45px; }
+.progress-poster > * { position: relative; }
+.progress-poster .eyebrow { color: #66ebe0; }
+.progress-poster h2 { font: italic 900 1.8rem/1.1 var(--display); max-width: 14ch; }
+.progress-change { font-size: 1.05rem; margin: 18px 0; font-weight: 700; }
+.poster-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; padding: 16px 0; margin-bottom: 12px; border-top: 1px solid #78506f; border-bottom: 1px solid #78506f; }
+.poster-metrics strong { display: block; font-size: clamp(1.5rem, 8vw, 2.5rem); line-height: 1.2; font-weight: 850; overflow-wrap: anywhere; }
+.poster-metrics span { font-size: .75rem; color: #ffd5e6; }
+.progress-poster .small { color: #ffd5e6; }
+.progress-poster .btn { color: #2a0f3d; background: #fff; border-color: #fff; width: 100%; }
+.progress-poster .btn:hover { background: #ffe3ee; }
 
 /* ---- egységes kártyák és kisebb oldalcímek ---- */
 .page > h1 { font-size: 1.75rem; margin-bottom: 10px; }

@@ -75,9 +75,9 @@ export function timerWidget(cfg, onValue, onCleanup) {
           if (left <= 0) {
             stop(); beep(520, 400);
             if (cfg.mode === 'step') {
-              speak('Állj meg, ülj le, és számold a pulzusod egy percig.');
-              let rec = cfg.recovery; clock.textContent = fmt(rec); status.textContent = 'Ülj le, és most számold a pulzusod!';
-              iv = setInterval(() => { rec--; clock.textContent = fmt(rec); if (rec <= 0) { stop(); beep(520, 400); speak('Vége. Írd be a pulzusod.'); status.textContent = 'Kész. Írd be, hányat számoltál.'; abort.hidden = true; } }, tickMs());
+              speak('Állj meg, ülj le, és számold a szívveréseidet a teljes következő percben.');
+              let rec = cfg.recovery; clock.textContent = fmt(rec); status.textContent = 'Ülj le, és most kezdd számolni a szívveréseidet 60 másodpercig!';
+              iv = setInterval(() => { rec--; clock.textContent = fmt(rec); if (rec <= 0) { stop(); beep(520, 400); speak('Vége. Írd be a teljes perc alatt számolt szívverések számát.'); status.textContent = 'Kész. Írd be a 60 másodperc alatt összesen számolt szívveréseket, ne az óra pillanatnyi pulzusát.'; abort.hidden = true; } }, tickMs());
             } else { speak('Vége'); status.textContent = 'Kész. Írd be az eredményt.'; abort.hidden = true; }
           }
         }, tickMs());
@@ -260,7 +260,7 @@ function spark(vals, name) {
 }
 function meter(score) {
   return h('div', null, h('div', { class: 'meter', role: 'img', 'aria-label': `${score} a 100-ból` }, sized(h('span', { class: 'meter-fill' }), 'left', score)),
-    h('div', { class: 'meter-scale', 'aria-hidden': 'true' }, h('span', null, '0'), h('span', null, 'fejlesztendő | átlag | felső negyed'), h('span', null, '100')));
+    h('div', { class: 'meter-scale', 'aria-hidden': 'true' }, h('span', null, '0'), h('span', null, 'alacsony | közepes | magas pontszám'), h('span', null, '100')));
 }
 const ADVICE = {
   mobility: 'Minden nap 10 perc célzott mobilitás jut rá, a leggyengébb ízületre szabva.',
@@ -296,23 +296,27 @@ export async function resultView(id) {
   const history = id => upto.map(e => (e.areas[id] ? e.areas[id].score : null)).filter(v => v != null);
   return page('Eredmény',
     h('p', { class: 'muted' }, `${fmtDate(item.date)} · ${p.age} éves ${p.sex === 'female' ? 'nő' : 'férfi'} · normák, funkcionális küszöbök és saját alapvonal`),
-    item.scoring ? h('p', { class: 'small muted' }, `A felméréskor mentett kiértékelés. Pontozás: ${item.scoring.version}; normák: ${item.scoring.normsVersion}; tesztek: ${item.scoring.testsVersion}.`) : note('Régi felmérés: az eredeti pontozás verziója nem ismert. Ezt az eredményt a jelenlegi normákkal számoltam újra; a nyers mérési adatok változatlanok.', 'warn'),
-    prevItem && !comparable ? note('Az előző felmérés pontozási verziója eltér vagy nem ismert. A pontszámokból nem jelzek fejlődést vagy visszaesést; a nyers teszteredményeket továbbra is összevetheted.', 'small') : null,
-    note('A normák egy része becsült, szakember még nem lektorálta. A funkcionális pontszám nem percentilis. A fittségi kor az alapadatokból becsült VO₂max átszámítása, nem a teljes mozgásfelmérés vagy a biológiai kor mérése.', 'small'),
-    h('section', { class: 'card accent' }, axes.length >= 3 ? radarCompare(axes) : null,
-      h('div', { class: 'legend' }, h('span', null, 'most'), h('span', { class: 'lg-ref' }, 'korosztályos átlag (50)'), prev ? h('span', { class: 'lg-prev' }, 'előző felmérés') : null),
+    !item.scoring ? note('Régi felmérés: az eredeti pontozás verziója nem ismert. Ezt az eredményt a jelenlegi normákkal számoltam újra; a nyers mérési adatok változatlanok.', 'warn') : null,
+    prevItem && !comparable ? note('Az előző felmérés pontozási verziója eltér vagy nem ismert. A pontszámokból nem jelzek fejlődést vagy visszaesést; a nyers teszteredményeket csak azonos mérési móddal érdemes összevetni.', 'small') : null,
+    note('Tájékoztató önfelmérés, szakmai lektorálás nélkül. A pontszám nem korosztályos helyezés, a fittségi kor kérdőíves becslés.', 'small'),
+    h('section', { class: 'card accent result-overview' }, h('p', { class: 'eyebrow' }, 'A mostani kiindulópontod'),
       h('div', { class: 'stat-row' },
         h('div', { class: 'stat' }, h('span', { class: 'muted' }, 'Fittségi kor'), countUp(h('strong'), ev.fitnessAge, ' év'),
           h('span', { class: 'small muted' }, ev.fitnessAge == null ? 'Add meg az alapadatokat.' : ageDiff > 0 ? `${ageDiff} évvel fiatalabb a korodnál` : ageDiff < 0 ? `${-ageDiff} évvel idősebb a korodnál` : 'pont a korodnak megfelelő')),
         h('div', { class: 'stat' }, h('span', { class: 'muted' }, 'Összesített'), countUp(h('strong'), ev.overall),
           ev.overall != null ? levelBadge(ev.overallLevel || lvl(ev.overall), LEVEL_NAMES[ev.overallLevel || lvl(ev.overall)]) : null)),
-      ev.vo2 != null ? h('p', { class: 'small muted' }, `Becsült VO₂max: ${fmtNum(ev.vo2)} ml/kg/perc. Kérdőíves becslés, jelentős egyéni bizonytalansággal; a Forma pontosságát saját mérésen még nem validáltuk.`) : null),
+      axes.length >= 3 ? radarCompare(axes) : null,
+      h('div', { class: 'legend' }, h('span', null, 'most'), h('span', { class: 'lg-ref' }, '50 pontos segédvonal'), prev ? h('span', { class: 'lg-prev' }, 'előző felmérés') : null),
+      h('details', { class: 'result-explainer' }, h('summary', null, 'Mit jelentenek ezek a számok?'),
+        h('p', { class: 'small muted' }, 'A területi és az összesített pontszám különböző mércéket átlagol: nem percentilis, és nem mutatja a korosztályon belüli helyezésedet. A fittségi kor az alapadatokból becsült VO₂max átszámítása, nem a teljes mozgásfelmérés vagy a biológiai kor mérése.'),
+        ev.vo2 != null ? h('p', { class: 'small muted' }, `Becsült VO₂max: ${fmtNum(ev.vo2)} ml/kg/perc. Kérdőíves becslés, jelentős egyéni bizonytalansággal; a Forma pontosságát saját mérésen még nem validáltuk.`) : null,
+        item.scoring ? h('p', { class: 'small muted' }, `A felméréskor mentett kiértékelés. Pontozás: ${item.scoring.version}; normák: ${item.scoring.normsVersion}; tesztek: ${item.scoring.testsVersion}.`) : null)),
     recordIds.length ? h('section', { class: 'card accent record-card' }, h('h2', null, '🏆 Új egyéni csúcs'), h('p', null, recordIds.map(id => `${D.test[id].name}: ${fmtNum(item.results[id])} ${D.test[id].input.unit}`).join(' · '))) : null,
     ev.pain.length ? note('Fájdalmat jeleztél: ' + ev.pain.map(t => D.test[t].name.toLowerCase()).join(', ') + '. Ezt érdemes orvossal vagy gyógytornásszal megnézetni; a programban a kapcsolódó gyakorlatok a legkönnyebb szinten indulnak.', 'warn') : null,
     card(h('h2', null, 'Erre fókuszálunk'), ev.weakest.map(a => h('p', null, h('strong', null, D.area[a].name + ': '), ADVICE[a])),
       h('p', { class: 'small muted' }, prog ? 'Az újramért gyakorlatok szintje az eredményhez igazodik, lefelé is. A kihagyott tesztekhez tartozó korábbi szintek megmaradnak; fájdalomjelzésnél könnyítek. A program az aktuális normákkal készül.' : 'A program a gyenge területekre több időt szán, és a mért szintedről indul.'),
       h('div', { class: 'row' }, progBtn, link('#/progress', 'Célok és rekordok', 'btn small'))),
-    card(h('h2', null, 'Területenként'), h('p', { class: 'small muted' }, 'Cél: minden terület legalább a korosztályos szinten (40 fölött), utána a felső negyedben (75 fölött).'),
+    card(h('h2', null, 'Területenként'), h('p', { class: 'small muted' }, 'Pontszámsávok: 40 alatt alacsony, 40-től közepes, 75-től magas pontszám. Ezek a Forma saját sávjai, nem korosztályos helyezések.'),
       areas.map(a => { const r = ev.areas[a.id], pr = prev && prev.areas[a.id]; return h('div', { class: 'area-row' },
         h('div', { class: 'area-top' }, h('span', null, a.name), h('span', null, String(r.score) + (pr ? ` (${r.score - pr.score >= 0 ? '+' : ''}${r.score - pr.score})` : ''), ' ', levelBadge(r.level, LEVEL_NAMES[r.level]))),
         meter(r.score), spark(history(a.id), a.name)); })),

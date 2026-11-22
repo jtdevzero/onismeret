@@ -97,6 +97,15 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     await page.waitForTimeout(400);
     await page.getByRole('button', { name: 'Megállt' }).click();
     assert.ok(Number(await page.locator('#val').inputValue()) > 0, 'a stopper beírta az időt');
+    /* lépcsőteszt: 3 perc mozgás után a teljes regenerációs perc ütéseit kérjük */
+    await go(page, '#/test/step_test');
+    assert.match(await text(), /pillanatnyi pulzusa más mérés/);
+    await page.getByRole('button', { name: 'Indítás' }).click();
+    await page.waitForFunction(() => /most kezdd számolni a szívveréseidet 60 másodpercig/.test(document.getElementById('main').innerText), null, { timeout: 10000 });
+    assert.equal(await page.getByRole('button', { name: 'Leállítás' }).isVisible(), true);
+    await page.waitForFunction(() => /Kész\. Írd be a 60 másodperc alatt összesen/.test(document.getElementById('main').innerText), null, { timeout: 5000 });
+    assert.equal(await page.locator('#val').inputValue(), '', 'a pulzus kézzel megadott mérés, nem az időzítő értéke');
+    assert.equal(await page.getByRole('button', { name: 'Leállítás' }).isVisible(), false);
     /* választós teszt */
     await go(page, '#/test/deep_squat');
     await page.getByText(/Lemegyek, de a sarkam/).click();
@@ -130,6 +139,31 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     assert.match(t, /\d+ év/);
     assert.match(t, /Területenként/);
     assert.match(t, /Erre fókuszálunk/);
+    assert.match(t, /50 pontos segédvonal/);
+    assert.match(t, /pontszám nem korosztályos helyezés/);
+    await page.getByText('Mit jelentenek ezek a számok?', { exact: true }).click();
+    assert.match(await text(), /nem mutatja a korosztályon belüli helyezésedet/);
+    await page.getByText('Mit jelentenek ezek a számok?', { exact: true }).click();
+    assert.match(t, /40-től közepes, 75-től magas pontszám/);
+    assert.doesNotMatch(t, /Korosztályos szint|Felső negyed|korosztályos átlag/i);
+    const labels = await page.locator('.area-row .badge, .stat .badge').allTextContents();
+    assert.ok(labels.length >= 8, 'az összesített és minden területi pontszámhoz tartozik címke');
+    for (const label of labels) {
+      assert.match(label, /^(Alacsony|Közepes|Magas) pontszám$/);
+    }
+    const viewport = page.viewportSize();
+    try {
+      for (const width of [320, 393]) for (const size of ['normal', 'large']) {
+        await page.setViewportSize({ width, height: viewport.height });
+        await page.evaluate(s => { document.documentElement.dataset.size = s; }, size);
+        const overflow = await page.evaluate(() => ({ page: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
+          rows: [...document.querySelectorAll('.area-top, .stat')].filter(e => e.scrollWidth > e.clientWidth + 1).map(e => e.textContent) }));
+        assert.deepEqual(overflow, { page: false, rows: [] }, `${width}px, ${size}`);
+      }
+    } finally {
+      await page.setViewportSize(viewport);
+      await page.evaluate(() => { delete document.documentElement.dataset.size; });
+    }
     await page.locator('summary', { hasText: 'Tesztek részletesen' }).click();
     assert.match(await text(), /becsült norma/);
     assert.equal(await page.locator('svg.radar').count(), 1);
@@ -310,6 +344,12 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
     await page.getByRole('button', { name: 'Cél mentése' }).click();
     await page.waitForFunction(() => /Fekvőtámasz kifáradásig: 30 ismétlés/.test(document.getElementById('main').innerText));
     assert.match(await text(), /most 20, indulás 20/);
+    assert.match(await text(), /Az elmúlt 6 heted/);
+    const [download] = await Promise.all([page.waitForEvent('download'), page.getByRole('button', { name: 'Kártya mentése képként' }).click()]);
+    assert.equal(download.suggestedFilename(), 'forma-6-hetem.png');
+    const png = fs.readFileSync(await download.path());
+    assert.equal(png.subarray(1, 4).toString(), 'PNG');
+    assert.equal(png.readUInt32BE(16), 1080); assert.equal(png.readUInt32BE(20), 1080);
     await shot('progress');
   });
 
@@ -327,7 +367,10 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
 
   await step('gyakorlatcsere: edzés közben könnyebbre cserélhető, és akkor nem kér értékelést', async () => {
     await go(page, '#/session/strengthA');
-    for (let i = 0; i < 40 && !(await page.getByRole('button', { name: 'Könnyebbre cserélem' }).count()); i++) {
+    for (let i = 0; i < 40; i++) {
+      const details = page.locator('.workout-details:not([open]) > summary');
+      if (await details.count()) await details.click();
+      if (await page.getByRole('button', { name: 'Könnyebbre cserélem' }).count()) break;
       if (await page.getByRole('button', { name: 'Pihenő kihagyása' }).count()) await page.getByRole('button', { name: 'Pihenő kihagyása' }).click({ timeout: 1000 }).catch(() => {});
       else await page.getByRole('button', { name: 'Kész, tovább' }).click({ timeout: 1000 }).catch(() => {});
     }
@@ -522,6 +565,7 @@ const RESULTS = { deep_squat: 2, shoulder_reach: 2, ankle_wall: 9, sit_reach: 0,
   await step('edzésjegyzet, elvégzett gyakorlatok előzménye, partner mód, Több oldal, eszközpróba', async () => {
     await page.evaluate(async () => { (await import('./js/ui/widgets.js')).setTick(5); });
     await go(page, '#/session/routine-morning');
+    await page.getByText('Edzés beállításai', { exact: true }).click();
     await page.getByText(/Ketten csináljuk/).click();
     assert.match(await text(), /1\. személy/);
     const tap = async name => { const b = page.getByRole('button', { name }); return (await b.count()) ? b.click({ timeout: 1000 }).then(() => true, () => false) : false; };

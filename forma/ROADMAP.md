@@ -1,11 +1,11 @@
 # Forma – a következő 20 bővítés terve
 
-Sorrend: ami a célt (a korosztályos szint elérése, majd meghaladása) a legjobban szolgálja, és ami a meglévőre épül, az elöl.
+Sorrend: ami a megbízható mérést és a saját fejlődés követését a legjobban szolgálja, és ami a meglévőre épül, az elöl. A területi és összesített pontszám nem korosztályos percentilis.
 Méret: **K** = kicsi (egy commit), **K+** = közepes, **N** = nagy (több lépés). Ahol új függőség, külső szolgáltatás vagy szakmai döntés kell, ott jelölve: ezek előtt kérdezni kell.
 
 ## A. Mérés és szakmai pontosság
 
-1. **Szakmai lektorálás csomag (N, külső)** – a normák, a tesztleírások és a gyakorlatok összegyűjtése egy átnézhető dokumentumba gyógytornásznak vagy edzőnek; a visszajelzés után `reviewed: true`. *Kell hozzá: egy szakember.*
+1. **◐ Szakmai lektorálás csomag (N, külső)** – az átnézhető dokumentum elkészült (`docs/szakmai-atnezes.html`, a buildből); a normák, tesztleírások és gyakorlatok tényleges lektorálása még hátravan. A `reviewed: true` csak a szakember visszajelzése után állítható be. *Kell hozzá: egy szakember.*
 2. **◐ Pontosabb normák forrásokból (K+)** – a plank 18–29-es sávja forrásból pontosítva; az egylábas állásnál a források protokollja eltér, a többinél folytatandó. – a „B” minőségű normák (plank, távolugrás, egylábas állás, lépcsőteszt) felülvizsgálata publikált referenciatáblákkal; a forrás tételesen a `norms.json`-ban.
 3. **◐ Kamerás elemzés kalibrálása valódi felvételen (K+)** – a mérési adat letöltése kész; a hangoláshoz valódi felvételek kellenek. – „mérési adat letöltése” gomb (testpontok videó nélkül), ebből a küszöbök hangolása; a felhasználó önként küldi el, az app semmit nem küld magától.
 4. **✓ Rövid félidős mérés (K)** – a 3. héten 5 perces mini-teszt (fekvőtámasz, plank, egylábas állás), hogy ne csak 6 hetente lásd a fejlődést.
@@ -24,12 +24,12 @@ Méret: **K** = kicsi (egy commit), **K+** = közepes, **N** = nagy (több lép�
 
 12. **✓ Célok és határidők (K)** – például „30 fekvőtámasz júniusra” vagy „fittségi kor 30 év alatt”, a haladással a kezdőlapon.
 13. **✓ Jelvények és rekordok (K)** – egyéni csúcs tesztenként, első húzódzkodás, 4 teljes hét kihagyás nélkül; csak a saját eredményeidhez mérve, más felhasználóhoz nem.
-14. **Megosztható eredménykártya (K)** – kép a pókhálóábrával és a fittségi korral, amit te osztasz meg, ha akarod (a Kanyarban már van ilyen minta).
+14. **◐ Megosztható eredménykártya (K)** – a hathetes mozgás- és fejlődéskártya kész, a Fejlődés oldalról helyben PNG-be menthető. A külön pókhálóábrás felméréskártya még hátravan.
 15. **✓ Heti áttekintés (K)** – vasárnap este rövid összefoglaló: mi sikerült, mi maradt el, és mi a következő heti fókusz.
 
 ## D. Kényelem és technika
 
-16. **Okosóra-adatok importja (K+)** – GPX- vagy CSV-fájlból kardióedzések beolvasása (időtartam, átlagpulzus), kézi export után; szerver és fiók nélkül.
+16. **✓ Okosóra-adatok importja (K+)** – GPX- vagy CSV-fájlból kardióedzések beolvasása (időtartam, átlagpulzus), kézi export után; szerver és fiók nélkül.
 17. **Értesítés a telefonon (N, külső)** – Web Push emlékeztető a naptárfájl helyett. Szerver kell hozzá (a Parliamo workere mintának jó). *Telepítés előtt kérdezni kell.*
 18. **Szinkron több eszköz között (N, külső)** – titkosított mentés a saját tárhelyedre vagy egy workerre. *Külső szolgáltatás: előtte kérdezni kell.*
 19. **✓ Sötét és világos téma kapcsolója, nagyobb betűméret (K)** – a rendszerbeállítástól függetlenül; edzés közben nagyobb számok.
@@ -39,10 +39,11 @@ Méret: **K** = kicsi (egy commit), **K+** = közepes, **N** = nagy (több lép�
 
 - **Kész:** 4, 5, 8, 12, 13
 - **Kész:** 6, 9, 10; részben: 2, 3
-- **Kész még:** 7 (óvatos változat, lektorálásra vár), 11, 15, 19, valamint regeneráció, fehérje- és vízcél, teljes dizájnmegújítás
-- **Következő:** 14, 16, 20, 1
+- **Kész még:** 7 (óvatos változat, lektorálásra vár), 11, 15, 16, 19, valamint regeneráció, fehérje- és vízcél, teljes dizájnmegújítás
+- **Elsőbbség:** 1 (tényleges lektorálás), 2 (normák), 3 (kamerás kalibrálás)
+- **További bővítés:** 14, 20
 - **Szakemberrel:** 1, 7
-- **Később, egyeztetés után:** 11, 14–20
+- **Később, külső szolgáltatásról egyeztetve:** 17, 18
 
 ---
 

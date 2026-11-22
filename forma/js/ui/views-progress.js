@@ -10,6 +10,7 @@ import { friendCard, recoveryCard } from './views-extra.js';
 import { nutritionCard } from './views-wellness.js';
 import { evaluateItem } from './state.js';
 import { sameScoring } from '../core/assessment.js';
+import { progressCard } from './progress-card.js';
 import { MINI_TESTS, records, badges, bodyTrend, currentFitnessAge, goalProgress, metricValue, latestValue, LOWER_BETTER } from '../core/achievements.js';
 
 const reload = hash => { location.hash = hash; dispatchEvent(new HashChangeEvent('hashchange')); };
@@ -48,6 +49,7 @@ export async function progressView(arg, onCleanup) {
   const faPoints = history.filter(a => sameScoring(a, history[0])).map(a => ({ date: a.date, age: evaluateItem(a).fitnessAge })).filter(x => x.age != null);
   const fc = forecastFitnessAge(faPoints);
   return page('Fejlődés',
+    progressCard(items),
     card(h('h2', null, 'Fittségi kor most'),
       h('p', { class: 'small muted' }, 'Tájékoztató VO₂max-becslés az alapadatokból, jelentős egyéni bizonytalansággal. Nem a biológiai kor vagy a teljes mozgásfelmérés mérése. Az előrejelzés csak azonos pontozási verziójú felméréseket használ.'),
       h('div', { class: 'stat-row' },
