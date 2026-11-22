@@ -1,7 +1,7 @@
 /* Kanyar service worker. GENERÁLT FÁJL (kanyar/build.py), ne szerkeszd kézzel.
    Az app váza, a kód és a tananyag telepítéskor a gyorsítótárba kerül. A pózbecslő (kb. 16 MB) az első
    használatkor, vagy a Beállítások „Letöltés offline használatra” gombjával. Az AI-kérések nem mennek át rajta. */
-const SHELL = 'kanyar-shell-6b773a28c7';
+const SHELL = 'kanyar-shell-c9781bcfde';
 const VENDOR = 'kanyar-vendor-62fc9e8c57';
 const PRECACHE = [
 "./",
@@ -18,6 +18,8 @@ const PRECACHE = [
 "icons/ui-gear.svg",
 "icons/ui-home.svg",
 "icons/ui-log.svg",
+"icons/ui-mountain.svg",
+"icons/ui-shield.svg",
 "icons/ui-train.svg",
 "icons/ui-video.svg",
 "js/core/calendar.js",
@@ -30,6 +32,7 @@ const PRECACHE = [
 "js/core/progress.js",
 "js/core/series.js",
 "js/core/snow.js",
+"js/core/stance.js",
 "js/core/track.js",
 "js/ui/app.js",
 "js/ui/coach-client.js",
@@ -41,14 +44,18 @@ const PRECACHE = [
 "js/ui/pose.js",
 "js/ui/recorder.js",
 "js/ui/store.js",
+"js/ui/views-extra.js",
 "js/ui/views-main.js",
+"js/ui/views-slope.js",
 "js/ui/views-snow.js",
 "js/ui/views-train.js",
 "js/ui/widgets.js",
 "data/exercises.json",
 "data/faults.json",
 "data/figures.json",
-"data/lessons.json"
+"data/lessons.json",
+"data/safety.json",
+"data/slope.json"
 ];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(SHELL).then(c => c.addAll(PRECACHE)).then(() => self.skipWaiting()));

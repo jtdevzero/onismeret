@@ -4,7 +4,7 @@ import { page, card, btn, link, note, list, choice, benchmark } from './widgets.
 import { D, S, saveSettings, sportName, levelName, lessonsFor } from './data.js';
 import { kvGet, itemsAll, itemDelete, wipeAll, exportAll } from './store.js';
 import { getProfile } from './views-train.js';
-import { weeklyActivity, weekStreak, metricTrails, dayPlan } from '../core/progress.js';
+import { weeklyActivity, weekStreak, metricTrails, dayPlan, runsOfDay } from '../core/progress.js';
 import { kvSet } from './store.js';
 
 const LEVEL_DESC = {
@@ -60,7 +60,9 @@ export async function homeView() {
       tile('#/prep', 'train', 'Felkészülés', `Felmérés ${profile.done}/${profile.total}` + (prog ? ` · edzés ${progDone}/18` : '')),
       tile('#/snow', 'video', 'Havas elemzés', 'Videóból visszajelzés'),
       tile('#/learn', 'book', 'Tananyag', 'Leckék és gyakorlatok'),
-      tile('#/log', 'log', 'Napló', items.length + ' bejegyzés')),
+      tile('#/log', 'log', 'Napló', items.length + ' bejegyzés'),
+      tile('#/slope', 'mountain', 'Pályanap', 'Bemelegítés és napló'),
+      tile('#/safety', 'shield', 'Biztonság', 'Szabályok és kvíz')),
     s.health && s.health.pain ? note('Fájdalmat vagy sérülést jeleztél: a program kíméletes, ugrások nélkül. A Beállításokban módosíthatod.', 'warn') : null);
 }
 
@@ -77,7 +79,9 @@ export async function learnView() {
     levelCards,
     card(h('h2', null, 'Javító gyakorlatok'), h('p', null, 'Ezeket ajánlja az elemzés egy-egy hibára.'),
       h('ul', { class: 'rows' }, lessonsFor(sport, 'drill').map(l => h('li', null, link('#/l/' + l.id, l.title))))),
-    card(h('h2', null, 'Útmutatók'), h('ul', { class: 'rows' }, D.lessons.lessons.filter(l => l.kind === 'guide').map(l => h('li', null, link('#/l/' + l.id, l.title))))),
+    card(h('h2', null, 'Útmutatók'), h('ul', { class: 'rows' }, D.lessons.lessons.filter(l => l.kind === 'guide').map(l => h('li', null, link('#/l/' + l.id, l.title))),
+      h('li', null, link('#/safety', 'Biztonság: a pálya szabályai és kvíz')),
+      sport === 'snowboard' ? h('li', null, link('#/stance', 'Snowboard beállítás: állásszélesség és kötésszög')) : null)),
     D.lessons.reviewed ? null : note('A tananyagot képesített oktató még nem lektorálta.', 'small'));
 }
 
@@ -159,6 +163,17 @@ export async function logView() {
         h('a', { href: '#/a/' + it.id, class: 'log-item' },
           h('strong', null, `${sportName(it.sport)} · ${fmtDate(it.date)}`),
           h('span', { class: 'muted' }, it.coach.main_issue.what)));
+      if (it.kind === 'day') {
+        const L = D.slope, runs = runsOfDay(list, it).length;
+        const facts = [it.snow != null ? 'Hó: ' + L.snow[it.snow].toLowerCase() : null, it.vis != null ? 'látás: ' + L.visibility[it.vis].toLowerCase() : null,
+          it.tired != null ? L.tired[it.tired].toLowerCase() : null, it.runs != null ? it.runs + ' lesiklás' : null, runs ? runs + ' elemzés' : null].filter(Boolean).join(' · ');
+        return h('li', null,
+          h('div', { class: 'log-item' },
+            h('strong', null, `Pályanap · ${fmtDate(it.date)}`),
+            facts ? h('span', { class: 'muted' }, facts) : null,
+            it.note ? h('span', null, it.note) : null),
+          btn('Törlés', async () => { await itemDelete(it.id); draw(await itemsAll()); }, 'small danger'));
+      }
       if (it.kind === 'workout') return h('li', null,
         h('div', { class: 'log-item' },
           h('strong', null, `Edzés · ${fmtDate(it.date)}`),

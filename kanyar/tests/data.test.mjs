@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { ANALYZERS, analyzeExercise } from '../js/core/exercise.js';
-import { TESTS, WEAK_ORDER, buildProfile, buildProgram, sessionSteps, sessionMinutes } from '../js/core/program.js';
+import { TESTS, WEAK_ORDER, buildProfile, buildProgram, sessionSteps, sessionMinutes, nextAdjust, adjustSession } from '../js/core/program.js';
 import { analyzeRun, THRESHOLDS } from '../js/core/snow.js';
 import { localSnowCoach, localPrepCoach, validSnowCoach, validPrepCoach, triggeredFaults } from '../js/core/coach.js';
 import { weekStart, weeklyActivity, weekStreak, metricTrails, dayPlan } from '../js/core/progress.js';
@@ -275,4 +275,66 @@ test('naptárfájl: 18 edzés a választott napokon, emlékeztetővel, szabályo
   for (const line of ics.split('\r\n')) assert.ok(new TextEncoder().encode(line).length <= 75, 'legfeljebb 75 bájtos sorok: ' + line);
   assert.equal(fold('a'.repeat(80)), 'a'.repeat(75) + '\r\n ' + 'a'.repeat(5));
   assert.equal(icsText('a,b;c\\d\ne'), 'a\\,b\\;c\\\\d\\ne');
+});
+
+test('magától igazodó adag: könnyű emel, nehéz csökkent, fájdalomnál nincs emelés, korlátok között', () => {
+  let a = nextAdjust({}, { squat: 'easy', plank: 'hard', glute_bridge: 'ok' });
+  assert.deepEqual(a, { squat: 1, plank: -1 });
+  a = nextAdjust(a, { squat: 'easy', plank: 'easy' });
+  assert.deepEqual(a, { squat: 2 }, 'a nullára visszaálló lépcső eltűnik');
+  for (let k = 0; k < 5; k++) a = nextAdjust(a, { squat: 'easy' });
+  assert.equal(a.squat, 3, 'legfeljebb +3');
+  assert.equal(nextAdjust({ squat: 1 }, { squat: 'easy' }, true).squat, 1, 'fájdalomnál nem emel');
+  assert.equal(nextAdjust({ squat: 1 }, { squat: 'hard' }, true).squat, undefined, 'fájdalomnál csökkenteni lehet');
+  assert.equal(nextAdjust({}, { squat: 'bogus' }).squat, undefined);
+  const s = { key: 'strength', blocks: [{ exercise: 'squat', sets: 3, reps: 12 }, { exercise: 'plank', sets: 3, seconds: 30 }, { exercise: 'sl_stand', sets: 2, seconds: 30 }] };
+  const adj = adjustSession(s, { squat: 2, plank: -2 });
+  assert.equal(adj.blocks[0].reps, 14);
+  assert.equal(adj.blocks[0].adjusted, 2);
+  assert.equal(adj.blocks[1].seconds, 25);
+  assert.deepEqual(adj.blocks[2], s.blocks[2], 'a nem igazított blokk változatlan');
+  assert.equal(s.blocks[0].reps, 12, 'az eredeti program nem módosul');
+  assert.deepEqual(adjustSession(s, undefined), s);
+});
+
+test('pályanap: a napló mezői ellenőrizve, a nap elemzései dátum szerint', async () => {
+  const { cleanDay, runsOfDay, sameDay } = await import('../js/core/progress.js');
+  const lists = JSON.parse(readFileSync(new URL('../data/slope.json', import.meta.url)));
+  assert.deepEqual(cleanDay({ snow: 2, vis: 0, tired: 4, runs: 12, note: '  jó nap  ' }, lists), { snow: 2, vis: 0, tired: 4, runs: 12, note: 'jó nap' });
+  assert.deepEqual(cleanDay({ snow: 9, vis: -1, tired: '2', runs: 1000, note: 5 }, lists), { snow: null, vis: null, tired: null, runs: null, note: '' });
+  assert.equal(cleanDay({ note: 'x'.repeat(500) }, lists).note.length, 300);
+  assert.equal(cleanDay(null, lists), null);
+  for (const sport of ['ski', 'snowboard']) {
+    const w = lists.warmup[sport];
+    assert.ok(w.length >= 5 && w.every(s => s.name && s.cue && s.seconds >= 20 && s.seconds <= 60), sport);
+  }
+  const day = new Date(2026, 11, 20, 9).getTime();
+  const items = [{ kind: 'snow', date: day + 3600e3 }, { kind: 'snow', date: day - 24 * 3600e3 }, { kind: 'exercise', date: day }];
+  assert.equal(runsOfDay(items, { date: day }).length, 1);
+  assert.ok(sameDay(day, day + 3600e3) && !sameDay(day, day + 24 * 3600e3));
+});
+
+test('biztonság: tíz szabály, a kvíz válaszai érvényesek', () => {
+  const s = JSON.parse(readFileSync(new URL('../data/safety.json', import.meta.url)));
+  assert.equal(s.rules.length, 10);
+  assert.ok(s.rules.every(r => r.title && r.text));
+  assert.ok(s.quiz.length >= 5);
+  for (const q of s.quiz) assert.ok(q.q && q.why && q.options.length >= 2 && Number.isInteger(q.answer) && q.answer >= 0 && q.answer < q.options.length, q.q);
+  assert.ok(s.offpiste.length && s.gear.length);
+});
+
+test('snowboard beállítás: szélesség a magassággal nő, stílusonként más szög, hibás bemenetre hiba', async () => {
+  const { stanceAdvice, fmtAngle, STYLES } = await import('../js/core/stance.js');
+  const a = stanceAdvice({ height: 175, style: 'allmountain' });
+  assert.equal(a.width, 52);
+  assert.deepEqual([a.min, a.max, a.front, a.back], [50, 54, 15, -6]);
+  assert.equal(a.wide, null, 'cipőméret nélkül nincs vélemény');
+  assert.ok(stanceAdvice({ height: 190, style: 'beginner' }).width > stanceAdvice({ height: 160, style: 'beginner' }).width);
+  assert.equal(stanceAdvice({ height: 180, boot: 46, style: 'carving' }).wide, true);
+  assert.equal(stanceAdvice({ height: 180, boot: 42, style: 'carving' }).wide, false);
+  assert.equal(stanceAdvice({ height: 80, style: 'beginner' }).error, 'height');
+  assert.equal(stanceAdvice({ height: 'abc', style: 'beginner' }).error, 'height');
+  assert.equal(stanceAdvice({ height: 175, style: 'nincs' }).error, 'style');
+  assert.ok(Object.values(STYLES).every(s => s.front >= s.back));
+  assert.deepEqual([fmtAngle(15), fmtAngle(-6), fmtAngle(0)], ['+15°', '−6°', '0°']);
 });

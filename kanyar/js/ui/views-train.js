@@ -4,7 +4,7 @@ import { page, card, btn, link, note, list, videoPicker, videoLinks, confBadge, 
 import { D, S } from './data.js';
 import { kvGet, kvSet, itemPut, itemsAll } from './store.js';
 import { analyzeExercise, isAnalyzable } from '../core/exercise.js';
-import { TESTS, buildProfile, buildProgram, sessionSteps, sessionMinutes } from '../core/program.js';
+import { TESTS, buildProfile, buildProgram, sessionSteps, sessionMinutes, adjustSession, nextAdjust, RATED_TYPES } from '../core/program.js';
 import { buildIcs } from '../core/calendar.js';
 import { prepCoach } from './coach-client.js';
 import { liveCounter, speak } from './live.js';
@@ -13,7 +13,9 @@ import { figureStrip } from './figure.js';
 const pain = () => !!(S.settings.health && S.settings.health.pain);
 const exMap = () => Object.fromEntries(Object.values(D.ex).map(e => [e.id, e]));
 export const getProfile = async () => buildProfile(await kvGet('assessment', {}));
-const dose = b => (b.seconds ? fmtSec(b.seconds) : b.reps + ' ism.') + (b.perSide ? ' oldalanként' : '') + (b.sets > 1 ? ' × ' + b.sets + ' kör' : '');
+const dose = b => (b.seconds ? fmtSec(b.seconds) : b.reps + ' ism.') + (b.perSide ? ' oldalanként' : '') + (b.sets > 1 ? ' × ' + b.sets + ' kör' : '')
+  + (b.adjusted ? (b.adjusted > 0 ? ' · emelve' : ' · csökkentve') : '');
+const sessionOf = (prog, w, i) => adjustSession(prog.program.weeks[w - 1].sessions[i], prog.adjust);
 const SESSION = { strength: 'Erő', lateral: 'Oldalirány és törzs', endurance: 'Állóképesség' };
 const UNIT = { deg: '°', s: ' mp', '%': '%', ratio: '' };
 const CHECK_NAMES = {
@@ -92,7 +94,7 @@ async function calendarCard(prog) {
     const ics = buildIcs(prog.program, {
       start: new Date(start.value + 'T00:00'), weekdays, time: time.value, minutes: 30,
       title: (w, i) => `Kanyar: ${w}. hét, ${i + 1}. edzés – ${SESSION[prog.program.weeks[w - 1].sessions[i].key]}`,
-      body: (w, i) => prog.program.weeks[w - 1].sessions[i].blocks.map(b => `${D.ex[b.exercise].name}: ${dose(b)}`).join('\n'),
+      body: (w, i) => sessionOf(prog, w, i).blocks.map(b => `${D.ex[b.exercise].name}: ${dose(b)}`).join('\n'),
       url: location.href.replace(/#.*$/, '') + '#/program',
     });
     const url = URL.createObjectURL(new Blob([ics], { type: 'text/calendar;charset=utf-8' }));
@@ -116,8 +118,8 @@ export async function programView() {
     h('summary', null, h('h2', null, `${w.week}. hét`),
       h('span', { class: 'badge' }, w.sessions.filter((_, i) => done[w.week + '-' + i]).length + ' / 3')),
     w.week === prog.program.retestWeek ? note('A hét végén érdemes megismételni a felmérést, és újratervezni a programot.') : null,
-    w.sessions.map((s, i) => {
-      const key = w.week + '-' + i;
+    w.sessions.map((s0, i) => {
+      const key = w.week + '-' + i, s = adjustSession(s0, prog.adjust);
       const box = h('input', { type: 'checkbox', checked: !!done[key], onchange: async () => {
         if (box.checked) done[key] = Date.now(); else delete done[key];
         await kvSet('program', { ...prog, done });
@@ -211,7 +213,7 @@ const SIDE = { left: 'bal oldal', right: 'jobb oldal', both: 'oldalanként' };
 export async function sessionView(key, onCleanup) {
   const prog = await kvGet('program', null);
   const [w, i] = String(key || '').split('-').map(Number);
-  const week = prog && prog.program.weeks.find(x => x.week === w), session = week && week.sessions[i];
+  const week = prog && prog.program.weeks.find(x => x.week === w), session = week && week.sessions[i] && adjustSession(week.sessions[i], prog.adjust);
   if (!session) return page('Nincs ilyen edzés', link('#/program', '← Program', 'btn'));
   const steps = sessionSteps(session, D.ex), total = steps.length, started = Date.now();
   let at = 0, left = 0, timer = null, running = false, wake = null, finished = false;
@@ -239,7 +241,28 @@ export async function sessionView(key, onCleanup) {
     clear(stage).append(card(h('h2', null, 'Edzés kész'),
       h('p', { class: 'lead' }, `${w}. hét, ${i + 1}. edzés: ${SESSION[session.key]}.`),
       h('p', null, 'Bekerült a naplódba, és a programban kipipáltam.'),
-      h('div', { class: 'row' }, link('#/program', 'Vissza a programhoz', 'btn primary'), link('#/log', 'Napló', 'btn'))));
+      h('div', { class: 'row' }, link('#/program', 'Vissza a programhoz', 'btn primary'), link('#/log', 'Napló', 'btn'))), feelCard());
+  }
+
+  /* Edzés utáni visszajelzés: ebből igazodik a következő edzések adagja. */
+  function feelCard() {
+    const ids = [...new Set(session.blocks.map(b => b.exercise))].filter(id => RATED_TYPES.includes(D.ex[id].type));
+    if (!ids.length) return null;
+    const OPTS = [['easy', 'Könnyű'], ['ok', 'Rendben'], ['hard', 'Nehéz']];
+    const groups = ids.map(id => h('fieldset', { class: 'feel' }, h('legend', null, D.ex[id].name),
+      h('div', { class: 'seg' }, OPTS.map(([v, label]) => h('label', null, h('input', { type: 'radio', name: 'feel-' + id, value: v }), h('span', null, label))))));
+    const msg = h('p', { class: 'muted small', 'aria-live': 'polite' });
+    const save = btn('Mentés', async () => {
+      const ratings = Object.fromEntries(ids.map(id => [id, (stage.querySelector(`input[name="feel-${id}"]:checked`) || {}).value]).filter(([, v]) => v));
+      if (!Object.keys(ratings).length) { msg.textContent = 'Jelölj meg legalább egy gyakorlatot.'; return; }
+      const fresh = (await kvGet('program', null)) || prog;
+      await kvSet('program', { ...fresh, adjust: nextAdjust(fresh.adjust, ratings, pain()) });
+      save.disabled = true;
+      msg.textContent = 'Elmentve. A következő edzéseken ehhez igazítom az ismétlésszámot és az időt.' + (pain() ? ' Mivel fájdalmat jeleztél, most nem emelek.' : '');
+    }, 'primary');
+    return card(h('h2', null, 'Milyen volt?'),
+      h('p', null, 'Ha egy gyakorlat könnyű volt, legközelebb kicsit többet kapsz belőle, ha nehéz, kevesebbet. Nem kötelező kitölteni.'),
+      groups, save, msg);
   }
 
   function show() {
