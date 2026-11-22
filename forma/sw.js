@@ -1,7 +1,7 @@
 /* Forma service worker. GENERÁLT FÁJL (forma/build.py), ne szerkeszd kézzel.
    Az app váza, a kód és a tartalom telepítéskor a gyorsítótárba kerül, így az app offline is működik.
    A pózbecslő (kb. 15 MB) csak a kamera első használatakor töltődik le, utána az is offline megy. */
-const SHELL = 'forma-shell-ed44aed505';
+const SHELL = 'forma-shell-3fe85420ac';
 const VENDOR = 'forma-vendor-62fc9e8c57';
 const PRECACHE = [
 "./",
@@ -9,10 +9,20 @@ const PRECACHE = [
 "styles.css",
 "manifest.webmanifest",
 "icons/apple-touch-icon.png",
+"icons/hero-night.svg",
 "icons/hero.svg",
 "icons/icon-192.png",
 "icons/icon-512.png",
 "icons/icon.svg",
+"icons/t-balance.svg",
+"icons/t-cardio.svg",
+"icons/t-core.svg",
+"icons/t-mobility.svg",
+"icons/t-power.svg",
+"icons/t-recovery.svg",
+"icons/t-speed.svg",
+"icons/t-strength.svg",
+"icons/t-warmup.svg",
 "icons/ui-chart.svg",
 "icons/ui-check.svg",
 "icons/ui-gear.svg",
@@ -25,6 +35,7 @@ const PRECACHE = [
 "js/core/calendar.js",
 "js/core/cardio.js",
 "js/core/exercise.js",
+"js/core/extras.js",
 "js/core/figure.js",
 "js/core/geometry.js",
 "js/core/history.js",
@@ -33,6 +44,7 @@ const PRECACHE = [
 "js/core/reaction.js",
 "js/core/runplan.js",
 "js/core/score.js",
+"js/core/sensors.js",
 "js/core/series.js",
 "js/core/track.js",
 "js/core/wellness.js",
@@ -47,6 +59,7 @@ const PRECACHE = [
 "js/ui/store.js",
 "js/ui/views-assess.js",
 "js/ui/views-cardio.js",
+"js/ui/views-extra.js",
 "js/ui/views-library.js",
 "js/ui/views-main.js",
 "js/ui/views-posture.js",
@@ -55,6 +68,7 @@ const PRECACHE = [
 "js/ui/views-train.js",
 "js/ui/views-wellness.js",
 "js/ui/widgets.js",
+"data/blocks.json",
 "data/exercises.json",
 "data/figures.json",
 "data/norms.json",

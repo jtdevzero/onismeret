@@ -1,6 +1,7 @@
 /* Futóprogram nulláról 5 km-ig: vezetett intervallumok hangos bemondással; a végén kardióként naplóz és továbblép. */
 import { h, clear, uid, toast } from './dom.js';
-import { page, card, btn, link, note, speak, beep, tickMs } from './widgets.js';
+import { page, card, btn, link, note, speak, beep, tickMs, openMotion } from './widgets.js';
+import { stepCount } from '../core/sensors.js';
 import { kvGet, kvSet, itemPut } from './store.js';
 import { runSession, totalSeconds, runSeconds, describe, nextRun, repeatWeek, RUN_WEEKS, RUN_DAYS } from '../core/runplan.js';
 
@@ -21,8 +22,14 @@ export async function runView(arg, onCleanup) {
   const bar = h('progress', { max: total, value: 0, 'aria-label': 'Az alkalom előrehaladása' });
   const kicker = h('p', { class: 'workout-kicker' }), clock = h('div', { class: 'workout-clock', role: 'timer' }), next = h('p', { class: 'muted' });
   const stage = h('div', { class: 'workout', 'aria-live': 'polite' });
-  const stop = () => { if (timer) { clearInterval(timer); timer = null; } };
-  const release = () => { stop(); if (wake) { wake.release().catch(() => {}); wake = null; } };
+  /* metronóm és kadencia (lépés/perc) a mozgásérzékelőből */
+  let metro = null, motion = null;
+  const bpmSel = h('select', { 'aria-label': 'Metronóm üteme' }, [['0', 'Metronóm ki'], ['160', '160 /perc'], ['170', '170 /perc'], ['180', '180 /perc']].map(([v, t]) => h('option', { value: v }, t)));
+  const cad = h('p', { class: 'small muted', 'aria-live': 'off' });
+  const setMetro = () => { if (metro) { clearInterval(metro); metro = null; } const b = Number(bpmSel.value); if (b && timer) metro = setInterval(() => beep(1200, 25), 60000 / b); };
+  bpmSel.addEventListener('change', setMetro);
+  const stop = () => { if (timer) { clearInterval(timer); timer = null; } if (metro) { clearInterval(metro); metro = null; } };
+  const release = () => { stop(); if (wake) { wake.release().catch(() => {}); wake = null; } if (motion) { motion.stop(); motion = null; } };
   onCleanup(release);
 
   const draw = () => {
@@ -39,6 +46,7 @@ export async function runView(arg, onCleanup) {
     left--; elapsed++;
     if (left === 10 && segs[i + 1]) speak(`Tíz másodperc, aztán ${segs[i + 1].type === 'run' ? 'futás' : 'séta'}.`, voice.checked);
     if (left <= 0) { i++; if (i >= segs.length) { finish(false); return; } enter(); return; }
+    if (motion && elapsed % 5 === 0) { const s = motion.samples, recent = s.filter(p => p.t >= s[s.length - 1].t - 15); const c = stepCount(recent); cad.textContent = c.cadence ? `Kadencia: ${c.cadence} lépés/perc (cél futásnál 165–180)` : ''; if (s.length > 6000) s.splice(0, s.length - 3000); }
     draw();
   };
   async function finish(partial) {
@@ -61,12 +69,14 @@ export async function runView(arg, onCleanup) {
     try { navigator.wakeLock.request('screen').then(w => { if (finished) w.release().catch(() => {}); else wake = w; }, () => {}); } catch { wake = null; }
     enter();
     timer = setInterval(tick, tickMs());
+    setMetro();
+    openMotion().then(m => { motion = m; }, () => { motion = null; });
   }, 'primary');
-  const pause = btn('Szünet', () => { if (timer) { stop(); pause.textContent = 'Folytatás'; } else { pause.textContent = 'Szünet'; timer = setInterval(tick, tickMs()); } });
+  const pause = btn('Szünet', () => { if (timer) { stop(); pause.textContent = 'Folytatás'; } else { pause.textContent = 'Szünet'; timer = setInterval(tick, tickMs()); setMetro(); } });
   const end = btn('Befejezés most', () => { if (confirm('Befejezed most? Az eddigi idő bekerül a naplóba, de a program nem lép tovább.')) finish(true); }, 'small');
   pause.hidden = true; end.hidden = true;
   draw();
-  stage.append(card(kicker, clock, next, h('div', { class: 'row' }, go, pause, end)));
+  stage.append(card(kicker, clock, next, cad, h('div', { class: 'row' }, go, pause, end), h('label', { class: 'field inline' }, 'Ütem a futáshoz', bpmSel)));
 
   return page('Futóprogram',
     h('p', { class: 'muted' }, `${st.week}. hét / ${RUN_WEEKS}, ${st.day}. alkalom / ${RUN_DAYS} · ${Math.round(total / 60)} perc, ebből ${Math.round(runSeconds(segs) / 60)} perc futás`),

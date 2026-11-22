@@ -5,6 +5,7 @@ import { D, profile } from './data.js';
 import { kvSet, itemPut, itemsAll, itemDelete } from './store.js';
 import { latestAssessment, evaluateItem } from './state.js';
 import { hrZones, weeklyCardio, cardioPlan, readiness, maxHr } from '../core/cardio.js';
+import { parseGpx, parseCsv } from '../core/extras.js';
 import { SESSION_TITLES } from '../core/program.js';
 
 export const CARDIO_TYPES = [['walk', 'Tempós séta'], ['jog', 'Kocogás'], ['run', 'Futás'], ['bike', 'Kerékpár'], ['swim', 'Úszás'], ['other', 'Egyéb']];
@@ -20,7 +21,7 @@ export async function cardioView() {
   const mins = h('input', { type: 'number', inputMode: 'numeric', min: 5, max: 300, value: 30, id: 'cmin', oninput: () => { st.minutes = Number(mins.value); } });
   const list = h('div');
   const draw = all => clear(list).append(all.length ? h('ul', { class: 'rows' }, all.slice(0, 20).map(i => h('li', null,
-    h('span', { class: 'log-item' }, h('strong', null, `${TYPE[i.type] || 'Kardió'}, ${i.minutes} perc`), h('span', { class: 'muted small' }, fmtDate(i.date) + (i.intensity === 'vigorous' ? ' · intenzív' : ' · közepes'))),
+    h('span', { class: 'log-item' }, h('strong', null, `${TYPE[i.type] || 'Kardió'}, ${i.minutes} perc` + (i.km ? `, ${String(i.km).replace('.', ',')} km` : '')), h('span', { class: 'muted small' }, fmtDate(i.date) + (i.intensity === 'vigorous' ? ' · intenzív' : ' · közepes'))),
     btn('Törlés', async () => { if (!confirm('Törlöd ezt a bejegyzést?')) return; await itemDelete(i.id); location.hash = '#/cardio'; dispatchEvent(new HashChangeEvent('hashchange')); }, 'small')))) : h('p', { class: 'muted' }, 'Még nincs bejegyzés.'));
   draw(items);
   return page('Állóképesség',
@@ -45,6 +46,19 @@ export async function cardioView() {
         toast('Bekerült a naplóba.');
         location.hash = '#/cardio'; dispatchEvent(new HashChangeEvent('hashchange'));
       }, 'primary'))),
+    card(h('h2', null, 'Import okosóráról vagy futóappból'),
+      h('p', { class: 'small muted' }, 'GPX-fájl (egy edzés, az időt és a távot olvasom ki) vagy CSV (soronként: dátum; perc; típus, pl. 2026-11-20;35;futás). Exportáld az órád alkalmazásából, és válaszd ki itt. A fájl a telefonon marad.'),
+      h('label', { class: 'btn' }, 'Fájl kiválasztása', h('input', { type: 'file', accept: '.gpx,.csv,.txt,application/gpx+xml,text/csv', class: 'visually-hidden', onchange: async e => {
+        const f = e.target.files && e.target.files[0]; e.target.value = '';
+        if (!f) return;
+        const text = await f.text();
+        let rows = [];
+        if (/\.gpx$/i.test(f.name) || /<gpx[\s>]/.test(text.slice(0, 2000))) { const g = parseGpx(text, t => new DOMParser().parseFromString(t, 'application/xml')); if (g) rows = [g]; }
+        else rows = parseCsv(text, CARDIO_TYPES.map(([k]) => k));
+        if (!rows.length) { toast('Nem találtam beolvasható edzést a fájlban.'); return; }
+        for (const r of rows) await itemPut({ id: uid(), kind: 'cardio', date: r.date, type: r.type, minutes: r.minutes, intensity: 'moderate', ...(r.km ? { km: r.km } : {}) });
+        toast(`${rows.length} edzést beolvastam.`); location.hash = '#/cardio'; dispatchEvent(new HashChangeEvent('hashchange'));
+      } }))),
     card(h('h2', null, 'Korábbiak'), list));
 }
 

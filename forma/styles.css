@@ -427,3 +427,75 @@ fieldset.parq-q legend + * { clear: both; }
 .seg-item:has(input:focus-visible) { outline: 3px solid var(--sun); outline-offset: 2px; }
 /* általános: a natív jelölők a témához igazodnak */
 input[type=radio], input[type=checkbox] { accent-color: var(--accent); }
+
+/* ---- napszakhoz igazodó nyitórajz ---- */
+.hero.morning { background: url(icons/hero.svg) right bottom / auto 100% no-repeat, linear-gradient(170deg, #3a1a5c 0%, #c2457a 55%, #ffb36b 100%); }
+.hero.day { background: url(icons/hero.svg) right bottom / auto 100% no-repeat, linear-gradient(170deg, #2a0f3d 0%, #8a1f6b 55%, #ff5a7a 100%); }
+.hero.night { background: url(icons/hero-night.svg) right bottom / auto 100% no-repeat, linear-gradient(170deg, #0d0618 0%, #2a0f3d 60%, #5a1450 100%); }
+
+/* ---- ünneplés ---- */
+.confetti { position: fixed; inset: 0 0 auto 0; height: 0; z-index: 30; pointer-events: none; }
+.confetti i { position: absolute; top: -12px; width: 9px; height: 14px; border-radius: 2px; background: var(--accent); animation: confetti 1.8s ease-in forwards; }
+.confetti i:nth-child(3n) { background: var(--sun); --hue: 1; }
+.confetti i:nth-child(3n+1) { background: var(--teal); }
+@keyframes confetti { to { transform: translateY(95vh) rotate(540deg); opacity: .2; } }
+@media (prefers-reduced-motion: reduce) { .confetti { display: none; } }
+
+/* ---- típusikonok, üres állapot ---- */
+.tic { width: 22px; height: 22px; color: var(--accent); }
+.tic-strength { --i: url(icons/t-strength.svg); } .tic-mobility { --i: url(icons/t-mobility.svg); } .tic-balance { --i: url(icons/t-balance.svg); }
+.tic-power { --i: url(icons/t-power.svg); } .tic-speed { --i: url(icons/t-speed.svg); } .tic-core { --i: url(icons/t-core.svg); }
+.tic-cardio { --i: url(icons/t-cardio.svg); } .tic-warmup { --i: url(icons/t-warmup.svg); } .tic-recovery { --i: url(icons/t-recovery.svg); }
+ul.rows.lib > li { justify-content: flex-start; }
+ul.rows.lib > li .log-item { flex: 1; }
+.empty { display: grid; justify-items: center; gap: 8px; padding: 14px 8px; text-align: center; color: var(--muted); }
+.empty-ic { width: 64px; height: 64px; border-radius: 50%; background: radial-gradient(circle at 50% 60%, var(--sun) 0 34%, transparent 35%), linear-gradient(180deg, var(--accent-soft), var(--bg-2)); box-shadow: inset 0 -10px 0 color-mix(in srgb, var(--accent) 25%, transparent); }
+
+/* ---- ciklus-idővonal ---- */
+.timeline { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin: 6px 0 8px; }
+.tl-week { padding: 6px 0; border-radius: 8px; background: var(--bg-2); color: var(--muted); font-size: .72rem; font-weight: 750; text-align: center; }
+.tl-week.past { background: var(--accent-soft); color: var(--accent-strong); }
+.tl-week.now { background: var(--accent); color: var(--accent-text); }
+.tl-week.deload { border: 1.5px dashed var(--line); }
+
+/* ---- pókháló csúszka, előrejelzés, rekord, kihívásrács ---- */
+.radar-slider { display: flex; align-items: center; gap: 10px; margin: 0 auto 8px; max-width: 360px; }
+.radar-range { flex: 1; accent-color: var(--accent); }
+.forecast { font-weight: 700; }
+.record-card h2 { margin-bottom: 4px; }
+.ch-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; }
+.ch-day { display: grid; place-items: center; aspect-ratio: 1; border-radius: 8px; background: var(--bg-2); font-size: .75rem; font-weight: 750; color: var(--muted); }
+.ch-day.done { background: var(--accent); color: var(--accent-text); }
+.ch-day.today { box-shadow: inset 0 0 0 2px var(--accent); color: var(--accent-strong); }
+.ch-day.missed { opacity: .55; }
+
+/* ---- hangos mód: egyetlen nagy gomb ---- */
+.voice-mode .card .row .btn.primary { width: 100%; min-height: 84px; font-size: 1.4rem; }
+.voice-mode .card ul.plain, .voice-mode .swap, .voice-mode .live-box { display: none; }
+
+/* ---- fekvő nézet edzés közben (tablet, tévé) ---- */
+@media (orientation: landscape) and (min-width: 700px) {
+  .workout .card { display: grid; grid-template-columns: 1fr 1fr; align-items: center; column-gap: 24px; text-align: left; }
+  .workout .card > .workout-kicker, .workout .card > .workout-title { grid-column: 1 / -1; text-align: center; }
+  .workout .fig-live { grid-row: span 4; max-width: none; }
+  .workout .fig-live .fig { height: 260px; }
+}
+
+/* ---- napfény téma: nagy kontraszt szabadtéren ---- */
+:root[data-theme="sun"] {
+  --bg: #ffffff; --bg-2: #f1f1f1; --surface: #ffffff; --text: #000000; --muted: #2b2b2b; --line: #8a8a8a;
+  --accent: #9c0047; --accent-strong: #6e0032; --accent-soft: #ffe3ee; --accent-text: #ffffff;
+  --sun: #b34d00; --sun-soft: #fff1e0; --teal: #005c5f;
+  --good: #004d33; --good-bg: #d8f5e8; --warn: #6b2c00; --warn-bg: #ffe2c2; --danger: #8a0018;
+  --shadow: none; color-scheme: light;
+}
+:root[data-theme="sun"] .card { border-width: 2px; }
+:root[data-theme="sun"] body { font-weight: 500; }
+
+/* ---- nyomtatás (összefoglaló PDF-be) ---- */
+@media print {
+  #nav, .no-print, .toast, .skip { display: none !important; }
+  body { background: #fff !important; color: #000 !important; padding: 0 !important; }
+  .report h1, .report h2 { color: #000; }
+  .tests-table th, .tests-table td { border-color: #999; }
+}

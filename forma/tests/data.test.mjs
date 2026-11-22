@@ -24,7 +24,7 @@ test('tesztek: egyedi azonosító, ismert terület, érvényes bevitel és ponto
       assert.ok(t.input.min < t.input.max && t.input.unit, t.id);
     }
     if (t.kind === 'criterion' && t.input.type === 'number') assert.ok(Array.isArray(t.map) && t.map.length >= 2, t.id);
-    if (t.timer) assert.ok(['countdown', 'stopwatch', 'counter', 'step', 'reaction'].includes(t.timer.mode), t.id);
+    if (t.timer) assert.ok(['countdown', 'stopwatch', 'counter', 'step', 'reaction', 'sway'].includes(t.timer.mode), t.id);
   }
   /* minden területhez legalább egy pontozható teszt */
   for (const a of tests.areas) assert.ok(tests.tests.some(t => t.area === a.id && t.kind !== 'baseline'), a.id);
@@ -68,7 +68,7 @@ test('build: a generált index.html és sw.js egyezik a forrással, szigorú CSP
 });
 
 test('biztonság: a felület nem ír HTML-t szövegből', () => {
-  for (const f of ['dom.js', 'widgets.js', 'views-main.js', 'views-assess.js', 'views-train.js', 'radar.js', 'figure.js', 'app.js', 'state.js', 'live.js', 'pose.js', 'views-cardio.js', 'views-progress.js', 'views-wellness.js', 'views-run.js', 'views-library.js', 'views-posture.js']) {
+  for (const f of ['dom.js', 'widgets.js', 'views-main.js', 'views-assess.js', 'views-train.js', 'radar.js', 'figure.js', 'app.js', 'state.js', 'live.js', 'pose.js', 'views-cardio.js', 'views-progress.js', 'views-wellness.js', 'views-run.js', 'views-library.js', 'views-posture.js', 'views-extra.js']) {
     const src = readFileSync(new URL('js/ui/' + f, root), 'utf8');
     assert.doesNotMatch(src, /innerHTML|outerHTML|insertAdjacentHTML|document\.write/, f);
   }

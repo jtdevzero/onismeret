@@ -1,15 +1,18 @@
 /* Felmérés: tesztlista, vezetett teszt időzítővel, alapadatok, eredmény. */
 import { h, clear, fmtDate, toast } from './dom.js';
-import { page, card, btn, link, note, choice, speak, beep, tickMs, levelBadge, fmtNum, sized } from './widgets.js';
+import { page, card, btn, link, note, choice, speak, beep, tickMs, levelBadge, fmtNum, sized, openMotion, celebrate, countUp } from './widgets.js';
 import { D, profile, lowImpact } from './data.js';
 import { getDraft, setDraft, saveAssessment, assessments, evaluateItem, programFromAssessment, getProgram } from './state.js';
 import { LEVEL_NAMES } from '../core/score.js';
 import { radar } from './radar.js';
+import { itemsAll } from './store.js';
+import { LOWER_BETTER } from '../core/achievements.js';
 import { TRIALS, reactionResult, randomDelay } from '../core/reaction.js';
+import { swayMetrics } from '../core/sensors.js';
 import { liveCounter } from './live.js';
 
 const isDone = (d, id) => d.results[id] != null || d.skipped[id];
-const testsFor = () => D.tests.tests.filter(t => !(lowImpact() && t.impact));
+const testsFor = () => D.tests.tests.filter(t => !(lowImpact() && t.impact) && !(t.minAge && !(profile().age >= t.minAge)));
 const vitalsDone = v => ['rhr', 'waist', 'frequency', 'intensity', 'duration'].every(k => Number.isFinite(v[k]));
 const MIN_TESTS = 6;
 
@@ -113,6 +116,30 @@ export function timerWidget(cfg, onValue, onCleanup) {
     });
     clock.textContent = '–';
     row.append(pad);
+  } else if (cfg.mode === 'sway') {
+    /* egyensúly a gyorsulásmérővel: visszaszámlálás, majd 20 mp mérés */
+    let motion = null;
+    onCleanup(() => { if (motion) motion.stop(); });
+    clock.textContent = String(cfg.seconds);
+    const start = btn('Indítás', async () => {
+      try { motion = await openMotion(); } catch (e) { status.textContent = e && e.code === 'motion_denied' ? 'Nem kaptam engedélyt a mozgásérzékelőhöz.' : 'Ezen a készüléken nincs elérhető mozgásérzékelő.'; return; }
+      start.hidden = true;
+      countIn(() => {
+        motion.samples.length = 0;
+        let left = cfg.seconds; status.textContent = 'Állj nyugodtan…';
+        iv = setInterval(() => {
+          left--; clock.textContent = String(left);
+          if (left <= 0) {
+            stop(); motion.stop(); beep(520, 300);
+            const r = swayMetrics(motion.samples);
+            start.hidden = false; start.textContent = 'Újra';
+            if (!r) { status.textContent = 'Nem érkezett elég mérési adat. Próbáld újra.'; return; }
+            clock.textContent = String(r.score); status.textContent = `Stabilitás: ${r.score} / 100. Beírtam.`; speak('Kész.'); onValue(r.score);
+          }
+        }, tickMs());
+      });
+    }, 'primary');
+    row.append(start);
   } else if (cfg.mode === 'counter') {
     let n = 0; clock.textContent = '0';
     const tap = btn('+1', () => { n++; clock.textContent = String(n); onValue(n); }, 'primary counter-btn');
@@ -202,6 +229,20 @@ async function vitalsView() {
 
 /* ---- eredmény ---- */
 const QUALITY = { A: 'publikált norma', B: 'becsült norma' };
+/* pókhálóábra csúszkával: az előző felmérésből a mostaniba húzva animál (ha van előző) */
+function radarCompare(axes) {
+  const label = 'Területek pontszáma: ' + axes.map(a => `${a.label} ${a.value}`).join(', ');
+  const box = h('div', null, radar(axes, { label }));
+  if (!axes.every(a => a.prev != null)) return box;
+  const range = h('input', { type: 'range', min: 0, max: 100, value: 100, class: 'radar-range', 'aria-label': 'Összevetés: előző felmérés (bal) – mostani (jobb)', oninput: () => {
+    const f = Number(range.value) / 100;
+    const mixed = axes.map(a => ({ ...a, value: Math.round(a.prev + (a.value - a.prev) * f), prev: a.prev }));
+    clear(box).append(radar(mixed, { label }), wrap);
+  } });
+  const wrap = h('div', { class: 'radar-slider' }, h('span', { class: 'small muted' }, 'előző'), range, h('span', { class: 'small muted' }, 'most'));
+  box.append(wrap);
+  return box;
+}
 /* apró vonaldiagram a változásról (legalább két felmérésnél) */
 function spark(vals, name) {
   if (vals.length < 2) return null;
@@ -243,19 +284,25 @@ export async function resultView(id) {
     await programFromAssessment(item); toast(prog ? 'A program frissült, új 6 hetes ciklus indul.' : 'Kész a programod.'); location.hash = '#/program';
   }, 'primary');
   const ageDiff = ev.fitnessAge != null ? p.age - ev.fitnessAge : null;
+  /* új egyéni csúcs: ebben a felmérésben jobb lett, mint bármelyik korábbi mérésben */
+  const allItems = await itemsAll();
+  const earlier = allItems.filter(i => (i.kind === 'assessment' || i.kind === 'mini') && i.date < item.date && i.results);
+  const isRecord = id => { const v = item.results[id]; if (!Number.isFinite(v)) return false; const prevVals = earlier.map(i => i.results[id]).filter(Number.isFinite); if (!prevVals.length) return false; return LOWER_BETTER.has(id) || (D.test[id] && D.test[id].lower) ? v < Math.min(...prevVals) : v > Math.max(...prevVals); };
+  const recordIds = D.tests.tests.filter(t => t.input.type === 'number' && isRecord(t.id)).map(t => t.id);
   /* a terület pontszáma felmérésről felmérésre (a legrégebbitől a megjelenítettig) */
   const upto = all.slice(all.indexOf(item)).reverse().map(evaluateItem);
   const history = id => upto.map(e => (e.areas[id] ? e.areas[id].score : null)).filter(v => v != null);
   return page('Eredmény',
     h('p', { class: 'muted' }, `${fmtDate(item.date)} · ${p.age} éves ${p.sex === 'female' ? 'nő' : 'férfi'}, a korosztályod normáihoz mérve`),
-    h('section', { class: 'card accent' }, axes.length >= 3 ? radar(axes, { label: 'Területek pontszáma: ' + axes.map(a => `${a.label} ${a.value}`).join(', ') }) : null,
+    h('section', { class: 'card accent' }, axes.length >= 3 ? radarCompare(axes) : null,
       h('div', { class: 'legend' }, h('span', null, 'most'), h('span', { class: 'lg-ref' }, 'korosztályos átlag (50)'), prev ? h('span', { class: 'lg-prev' }, 'előző felmérés') : null),
       h('div', { class: 'stat-row' },
-        h('div', { class: 'stat' }, h('span', { class: 'muted' }, 'Fittségi kor'), h('strong', null, ev.fitnessAge != null ? ev.fitnessAge + ' év' : '–'),
+        h('div', { class: 'stat' }, h('span', { class: 'muted' }, 'Fittségi kor'), countUp(h('strong'), ev.fitnessAge, ' év'),
           h('span', { class: 'small muted' }, ev.fitnessAge == null ? 'Add meg az alapadatokat.' : ageDiff > 0 ? `${ageDiff} évvel fiatalabb a korodnál` : ageDiff < 0 ? `${-ageDiff} évvel idősebb a korodnál` : 'pont a korodnak megfelelő')),
-        h('div', { class: 'stat' }, h('span', { class: 'muted' }, 'Összesített'), h('strong', null, ev.overall != null ? String(ev.overall) : '–'),
+        h('div', { class: 'stat' }, h('span', { class: 'muted' }, 'Összesített'), countUp(h('strong'), ev.overall),
           ev.overall != null ? levelBadge(lvl(ev.overall), LEVEL_NAMES[lvl(ev.overall)]) : null)),
       ev.vo2 != null ? h('p', { class: 'small muted' }, `Becsült VO₂max: ${fmtNum(ev.vo2)} ml/kg/perc (edzés nélküli becslés, ±5–6 ml pontosságú).`) : null),
+    recordIds.length ? h('section', { class: 'card accent record-card' }, h('h2', null, '🏆 Új egyéni csúcs'), h('p', null, recordIds.map(id => `${D.test[id].name}: ${fmtNum(item.results[id])} ${D.test[id].input.unit}`).join(' · '))) : null,
     ev.pain.length ? note('Fájdalmat jeleztél: ' + ev.pain.map(t => D.test[t].name.toLowerCase()).join(', ') + '. Ezt érdemes orvossal vagy gyógytornásszal megnézetni; a programban a kapcsolódó gyakorlatok a legkönnyebb szinten indulnak.', 'warn') : null,
     card(h('h2', null, 'Erre fókuszálunk'), ev.weakest.map(a => h('p', null, h('strong', null, D.area[a].name + ': '), ADVICE[a])),
       h('p', { class: 'small muted' }, prog ? 'A programod szintjei nem csökkennek, a mobilitási fókusz és a gyakorlatok igazodnak az új eredményhez.' : 'A program a gyenge területekre több időt szán, és a mért szintedről indul.'),

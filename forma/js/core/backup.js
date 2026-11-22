@@ -36,7 +36,8 @@ export function parseBackup(text, ctx) {
     parq: s.parq && typeof s.parq === 'object' ? Object.fromEntries(Object.entries(s.parq).filter(([k, v]) => /^[a-z]{2,16}$/.test(k) && typeof v === 'boolean')) : undefined,
     reminder: s.reminder && /^\d{2}:\d{2}$/.test(s.reminder.time || '') ? { time: s.reminder.time } : undefined,
     duration: [0, 15, 25, 35].includes(s.duration) ? s.duration : undefined,
-    theme: ['auto', 'light', 'dark'].includes(s.theme) ? s.theme : undefined,
+    voiceMode: typeof s.voiceMode === 'boolean' ? s.voiceMode : undefined,
+    theme: ['auto', 'light', 'dark', 'sun'].includes(s.theme) ? s.theme : undefined,
     size: ['normal', 'large'].includes(s.size) ? s.size : undefined,
     complaints: Array.isArray(s.complaints) ? s.complaints.filter(c => ['knee', 'back', 'shoulder'].includes(c)) : undefined,
     equipment: Array.isArray(s.equipment) ? s.equipment.filter(e => ['bar', 'band', 'dumbbell'].includes(e)) : undefined,
@@ -67,6 +68,14 @@ export function parseBackup(text, ctx) {
       const pr = profile(it.profile);
       if (!pr) continue;
       items.push({ id, kind: 'assessment', date, profile: pr, results: numbers(it.results, ctx.testIds, -100, 1000), vitals: numbers(it.vitals, ['rhr', 'waist', 'frequency', 'intensity', 'duration'], 0, 300) });
+    } else if (it.kind === 'pulse') {
+      const bpm = num(it.bpm, 30, 220);
+      if (bpm === undefined) continue;
+      items.push(clean({ id, kind: 'pulse', date, bpm, quality: num(it.quality, 0, 1) }));
+    } else if (it.kind === 'challenge' && /^[a-z0-9]{3,12}$/.test(it.challenge || '')) {
+      const day = num(it.day, 1, 30);
+      if (day === undefined) continue;
+      items.push(clean({ id, kind: 'challenge', date, challenge: it.challenge, day, amount: num(it.amount, 0, 1000) }));
     } else if (it.kind === 'posture' && it.metrics && typeof it.metrics === 'object') {
       const metrics = {};
       for (const k of ['shoulder_tilt', 'hip_tilt', 'head_forward']) { const m = it.metrics[k]; if (m && num(m.value, -100, 100) !== undefined && (m.band === 'ok' || m.band === 'fix')) metrics[k] = { value: m.value, band: m.band }; }
@@ -96,7 +105,7 @@ export function parseBackup(text, ctx) {
       const minutes = num(it.minutes, 1, 600);
       if (minutes === undefined) continue;
       const plan = it.plan && num(it.plan.week, 1, 9) !== undefined && num(it.plan.day, 1, 3) !== undefined ? { week: it.plan.week, day: it.plan.day } : undefined;
-      items.push(clean({ id, kind: 'cardio', date, type: it.type, minutes, intensity: it.intensity === 'vigorous' ? 'vigorous' : 'moderate', plan, partial: it.partial === true ? true : undefined }));
+      items.push(clean({ id, kind: 'cardio', date, type: it.type, minutes, intensity: it.intensity === 'vigorous' ? 'vigorous' : 'moderate', plan, partial: it.partial === true ? true : undefined, km: num(it.km, 0, 500) }));
     } else continue;
     seen.add(id);
   }
