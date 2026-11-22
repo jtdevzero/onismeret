@@ -37,8 +37,8 @@ Hatókör: kizárólag `forma/`. Engedélyezett: U0 és U1, a `claude/elegant-ha
 | U0-003 | Mentési szerződés v2, sorozatnapló-séma, fixture-ök, DST | kész |
 | U0-004 | Tárolási hibabiztonság: edzés mentése újrapróbával, idempotens befejezés, valós idejű időzítő | kész |
 | U0-002 | Normaaudit: dokumentált minőség és korlát a felületen | szakember nélkül csak jelölés |
-| U0-005 | Kamera: megbízhatósági címke, leállítás minden kilépésnél | tervezett |
-| U0-006 | Build/PWA: új modul a cache-ben, frissítés edzés közben | tervezett |
+| U0-005 | Kamera: megbízhatósági címke, leállítás minden kilépésnél | kész (a leállítás már megvolt; valós validáció külső kapu) |
+| U0-006 | Build/PWA: új modul a cache-ben, frissítés edzés közben | kész (a frissítési megerősítés kézi ellenőrzésű) |
 | U1-101/102 | Dashboard domainréteg és Ma képernyő | tervezett |
 | U1-105/106 | Sorozatnapló az edzés végén (ismétlés/idő, súly, RIR, RPE) | tervezett |
 | U1-107/108 | Terhelés és jóváhagyandó súlyjavaslat | tervezett |
@@ -56,3 +56,5 @@ Hatókör: kizárólag `forma/`. Engedélyezett: U0 és U1, a `claude/elegant-ha
 
 - **CP1 – U0-001 + U0-003:** új `js/core/workout-schema.js`, `tests/schema.test.mjs`, `tests/dst.test.mjs`. Unit 88/88, browser 33/33. A DST-tesztek a régi kódon elbuknak (3/5), az újon átmennek.
 - **CP2 – U0-004:** `store.commit` (kv + items egy tranzakcióban), `views-train.js` mentés/újrapróba, valós idejű visszaszámlálás. Új böngészős lépés: íráshibánál sem a napló, sem a program nem változik; az újrapróba pontosan egy bejegyzést ír. Browser 34/34.
+- **CP3 – U0-005:** `js/core/motion-quality.js` (a követés megbízhatósága: jó / korlátozott / nem megbízható, okokkal). A „nem megbízható” mérés nem íródik be magától a tesztmezőbe. `tests/motion-quality.test.mjs` (szintetikus adat; valós pontosságot nem állít).
+- **CP4 – U0-006:** a build-teszt ellenőrzi, hogy minden `js/core`, `js/ui` modul és `data` fájl az offline csomagban van; az XSS-forrásteszt minden UI- és core-modulra kiterjed (eddig rögzített lista volt). Frissítési sáv: aktív edzés, mérés vagy futás közben a Frissítés megerősítést kér. Ez utóbbi nem automatizált (a tesztszerveren nincs service worker).

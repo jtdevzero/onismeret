@@ -1,7 +1,7 @@
 /* A tartalom és a build ellenőrzése: séma, hivatkozások, ábrák, generált fájlok. */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { figurePoints } from '../js/core/figure.js';
 
@@ -65,11 +65,16 @@ test('build: a generált index.html és sw.js egyezik a forrással, szigorú CSP
   assert.match(after[1], /const VENDOR = 'forma-vendor-[0-9a-f]{10}'/);
   const list = JSON.parse(after[1].match(/const PRECACHE = (\[[\s\S]*?\]);/)[1]);
   for (const f of list) if (f !== './') assert.ok(existsSync(new URL(f, root)), 'hiányzik: ' + f);
+  /* offline teljesség: minden saját modul és adatfájl előtöltődik (egy új modul nem maradhat ki a gyorsítótárból) */
+  for (const dir of ['js/core', 'js/ui', 'data']) for (const f of readdirSync(new URL(dir + '/', root))) {
+    if (/\.(js|json)$/.test(f)) assert.ok(list.includes(dir + '/' + f), 'nincs az offline csomagban: ' + dir + '/' + f);
+  }
 });
 
 test('biztonság: a felület nem ír HTML-t szövegből', () => {
-  for (const f of ['dom.js', 'widgets.js', 'views-main.js', 'views-assess.js', 'views-train.js', 'radar.js', 'figure.js', 'app.js', 'state.js', 'live.js', 'pose.js', 'views-cardio.js', 'views-progress.js', 'views-wellness.js', 'views-run.js', 'views-library.js', 'views-posture.js', 'views-extra.js', 'views-diag.js']) {
-    const src = readFileSync(new URL('js/ui/' + f, root), 'utf8');
+  /* minden UI- és core-modul (az új képernyők is) */
+  for (const f of [...readdirSync(new URL('js/ui/', root)).map(x => 'js/ui/' + x), ...readdirSync(new URL('js/core/', root)).map(x => 'js/core/' + x)].filter(x => x.endsWith('.js'))) {
+    const src = readFileSync(new URL(f, root), 'utf8');
     assert.doesNotMatch(src, /innerHTML|outerHTML|insertAdjacentHTML|document\.write/, f);
   }
 });
