@@ -1212,5 +1212,18 @@ export default {
  "Időszak": "Period",
  "Sorozatok": "Sets",
  "Ismétlések": "Repetitions",
- "nap": "days"
+ "nap": "days",
+ "FORMA – heti edzői összefoglaló": "FORMA – weekly coaching summary",
+ "Naplózott edzések": "Logged workouts",
+ "Heti edzéscél": "Weekly workout goal",
+ "Regenerációs önbevallás": "Self-reported recovery",
+ "Fájdalomjelzések": "Pain reports",
+ "nincs adat": "no data",
+ "Nincs regenerációs bejegyzés: ebből nem következtethető jó állapot.": "No recovery check-ins: good recovery cannot be inferred.",
+ "A regeneráció és a fájdalom a felhasználó önbevallása.": "Recovery and pain are self-reported.",
+ "Szabályalapú, helyi összefoglaló; nem orvosi diagnózis vagy automatikus edzésterv-módosítás.": "Local rule-based summary; not a medical diagnosis or automatic training-plan change.",
+ "Heti riport letöltése": "Download weekly report",
+ "Heti edzői összefoglaló": "Weekly coaching summary",
+ "{p0} edzés, {p1} perc az utolsó 7 napban.": "{p0} workouts, {p1} minutes over the last 7 days.",
+ "{p0} regenerációs bejegyzés, {p1} fájdalomjelzés. Ez önbevallás.": "{p0} recovery check-ins, {p1} pain reports. These are self-reported."
 };
