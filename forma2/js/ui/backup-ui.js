@@ -13,26 +13,38 @@ async function backupFile() {
 const mark = () => kvSet('lastBackup', Date.now()).catch(() => {});
 
 export async function downloadBackup() {
-  const f = await backupFile();
-  const url = URL.createObjectURL(f), a = h('a', { href: url, download: f.name });
-  document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 2000);
-  await mark(); toast('Elmentettem: ' + f.name);
+  try {
+    const f = await backupFile();
+    const url = URL.createObjectURL(f), a = h('a', { href: url, download: f.name });
+    try { document.body.append(a); a.click(); }
+    finally { a.remove(); setTimeout(() => URL.revokeObjectURL(url), 2000); }
+    /* A böngésző elindítja a letöltést, de a fájlrendszerbe érkezést nem tudja igazolni. */
+    await mark(); toast(tr('Letöltés indítva. Ellenőrizd a Fájlok/Letöltések mappát: ') + f.name);
+    return true;
+  } catch (e) {
+    console.error(e);
+    toast(tr('A mentésfájl nem készíthető el. Az adataidat nem módosítottam.'));
+    return false;
+  }
 }
 
 /* Megosztás: ahol a böngésző tud fájlt megosztani (iPhone, Android), a megosztó ablakból a levelező választható.
    Ahol nem, letöltjük a fájlt, és megnyitjuk a levelezőt egy előre kitöltött levéllel; a fájlt ilyenkor kézzel kell csatolni. */
 export async function shareBackup() {
-  const f = await backupFile();
+  let f;
+  try { f = await backupFile(); }
+  catch (e) { console.error(e); toast(tr('A mentésfájl nem készíthető el. Az adataidat nem módosítottam.')); return false; }
   const text = tr('A Forma mentésfájlja. Új telefonon: Forma → Beállítások → Visszatöltés fájlból.');
   try {
     if (navigator.canShare && navigator.canShare({ files: [f] })) {
       await navigator.share({ files: [f], title: tr('Forma mentés'), text });
-      await mark(); toast('Elküldve.'); return;
+      await mark(); toast(tr('Megosztás befejezve.')); return true;
     }
-  } catch (e) { if (e && e.name === 'AbortError') return; }
-  await downloadBackup();
+  } catch (e) { if (e && e.name === 'AbortError') return false; }
+  if (!(await downloadBackup())) return false;
   location.href = 'mailto:?subject=' + encodeURIComponent('Forma mentés ' + f.name.slice(13, 23)) + '&body=' + encodeURIComponent(text + tr('\n\nCsatold a most letöltött fájlt: ') + f.name);
-  toast('Letöltöttem a fájlt; csatold a megnyíló levélhez.');
+  toast(tr('Letöltés indítva; csatold a fájlt a megnyíló levélhez.'));
+  return true;
 }
 
 /* Tartós tárolás kérése: csökkenti az esélyét, hogy a böngésző helyhiány vagy használaton kívüliség miatt törölje az adatokat. */
@@ -48,8 +60,8 @@ export async function backupReminderCard() {
   const st = backupStatus({ lastBackup: last, itemCount: items.length, dismissedUntil: dismissed });
   if (!st.due) return null;
   const el = card(h('h2', null, tr('Mentsd el az adataidat')),
-    h('p', { class: 'small' }, (st.never ? tr('Még nem készítettél mentést.') : tr('Az utolsó mentés {p0} napja volt ({p1}).', { p0: st.daysSince, p1: fmt(last) })) + tr(' Minden adat csak ezen a telefonon van: ha a böngésző törli, vagy elveszik a telefon, a mentés nélkül elveszne.')),
-    h('div', { class: 'row' }, btn(tr('Küldés e-mailben'), async () => { await shareBackup(); el.remove(); }, 'small'), btn(tr('Mentés fájlba'), async () => { await downloadBackup(); el.remove(); }, 'small'),
+    h('p', { class: 'small' }, (st.never ? tr('Még nem indítottál mentésletöltést.') : tr('Az utolsó mentésletöltést {p0} napja indítottad ({p1}).', { p0: st.daysSince, p1: fmt(last) })) + tr(' Minden adat csak ezen a telefonon van: ha a böngésző törli, vagy elveszik a telefon, a mentés nélkül elveszne.')),
+    h('div', { class: 'row' }, btn(tr('Küldés e-mailben'), async () => { if (await shareBackup()) el.remove(); }, 'small'), btn(tr('Mentés fájlba'), async () => { if (await downloadBackup()) el.remove(); }, 'small'),
       btn(tr('Később'), async () => { await kvSet('backupSnooze', Date.now() + 3 * 86400000).catch(() => {}); el.remove(); }, 'small')));
   el.classList.add('backup-reminder');
   return el;
@@ -59,6 +71,6 @@ export async function backupReminderCard() {
 export async function backupSettingsBlock() {
   const last = await kvGet('lastBackup', null), persisted = await persistState();
   return h('div', null,
-    h('p', { class: 'small muted' }, (last ? tr('Utolsó mentés: {p0}.', { p0: fmt(last) }) : tr('Még nincs mentésed.')) + (persisted === true ? tr(' A böngésző tartós tárolást engedélyezett.') : persisted === false ? tr(' A böngésző nem garantálja a tartós tárolást; a rendszeres mentés különösen fontos.') : '')),
+    h('p', { class: 'small muted' }, (last ? tr('Utolsó mentésletöltés indítása: {p0}. Ellenőrizd, hogy a fájl megvan.', { p0: fmt(last) }) : tr('Még nincs igazolt mentésfájlod.')) + (persisted === true ? tr(' A böngésző tartós tárolást engedélyezett.') : persisted === false ? tr(' A böngésző nem garantálja a tartós tárolást; a rendszeres mentés különösen fontos.') : '')),
     h('div', { class: 'row' }, btn(tr('Küldés e-mailben'), shareBackup, 'primary'), btn(tr('Mentés fájlba'), downloadBackup)));
 }

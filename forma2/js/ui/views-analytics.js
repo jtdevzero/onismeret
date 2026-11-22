@@ -4,7 +4,7 @@ import { h, clear, fmtDate, toast } from './dom.js';
 import { card, note } from './widgets.js';
 import { D, weeklyGoal } from './data.js';
 import { aggregateWeeklyLoad } from '../core/load.js';
-import { buildExerciseProgress, loggedExercises, buildConsistencyStats, buildRecoveryTimeline, periodSummary, periodSummaryCsv } from '../core/analytics.js';
+import { buildExerciseProgress, loggedExercises, buildConsistencyStats, buildRecoveryTimeline, periodSummary, periodSummaryCsv, exerciseProgressCsv } from '../core/analytics.js';
 import { tr, dateLocale } from './i18n.js';
 
 const dash = v => (v == null ? '–' : String(v));
@@ -34,6 +34,14 @@ function table(caption, head, rows) {
       h('tbody', null, rows.map(r => h('tr', null, r.map((c, i) => (i === 0 ? h('th', { scope: 'row' }, c) : h('td', null, c))))))));
 }
 
+function csvDownload(csv, name) {
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob), a = document.createElement('a');
+  try { a.href = url; a.download = name; document.body.append(a); a.click(); }
+  finally { a.remove(); setTimeout(() => URL.revokeObjectURL(url), 2000); }
+  toast(tr('Letöltés indítva. Ellenőrizd a fájlt a Letöltések mappában.'));
+}
+
 export function periodAnalyticsCard(items, now = Date.now()) {
   const out = h('div', { 'aria-live': 'polite' });
   const choice = h('select', { 'aria-label': tr('Elemzési időszak'), onchange: render },
@@ -47,17 +55,21 @@ export function periodAnalyticsCard(items, now = Date.now()) {
       [tr('Tartások'), summary.seconds, tr('mp')], [tr('Külső súlyos volumen'), summary.externalKgReps, tr('kg × ism.')],
       [tr('Érzett terhelés'), summary.sessionLoad, tr('RPE × perc')], [tr('Kardió'), summary.cardioMinutes, tr('perc')],
       [tr('Testsúly – utolsó'), summary.weight?.last, 'kg'], [tr('Derékbőség – utolsó'), summary.waist?.last, 'cm'],
-      [tr('Regenerációs bejegyzések'), summary.recoveryDays, tr('nap')]
+      [tr('Testsúly változása'), summary.weight?.change, 'kg'],
+      [tr('Derékbőség változása'), summary.waist?.change, 'cm'],
+      [tr('Regenerációs bejegyzések'), summary.recoveryDays, tr('bejegyzés')],
+      [tr('Tényleges sorozatnaplóval'), summary.loggedWorkouts, tr('edzés')],
+      [tr('Könnyített edzések'), summary.lightWorkouts, tr('alkalom')],
+      [tr('Félbehagyott vagy rövidített edzések'), summary.partialWorkouts, tr('alkalom')],
+      [tr('Fájdalomjelzések'), summary.painReports, tr('önbevallás')],
+      [tr('Fájdalomkérdés kitöltve'), summary.knownPainResponses, tr('válasz')]
     ];
     const download = h('button', { type: 'button', class: 'btn small', onclick: () => {
-      const blob = new Blob([periodSummaryCsv(summary)], { type: 'text/csv;charset=utf-8' });
-      const url = URL.createObjectURL(blob), a = document.createElement('a');
-      a.href = url; a.download = `forma-analitika-${summary.days}-nap.csv`; document.body.append(a); a.click(); a.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 2000); toast(tr('A helyi összesítést letöltöttem.'));
+      csvDownload(periodSummaryCsv(summary), `forma2-analitika-${summary.days}-nap.csv`);
     } }, tr('CSV letöltése'));
     clear(out).append(table(tr('{p0} napos mozgásösszesítő', { p0: summary.days }), [[tr('Mutató')], [tr('Érték')], [tr('Egység')]],
       rows.map(([name, value, unit]) => [name, dash(value), unit])),
-      h('p', { class: 'small muted' }, tr('A napló alapján készült összesítés. A hiányzó adat „–”, nem nulla. A tervezett és a tényleges sorozatnaplós számok forrása eltérhet; eltérő mérési protokollokat nem hasonlítunk össze.')), download);
+      h('p', { class: 'small muted' }, tr('A napló alapján készült összesítés. A hiányzó adat „–”, nem nulla. A változás az időszak első és utolsó rögzített mérésének különbsége; nem napi átlag. A tervezett és tényleges sorozatnaplós számok forrása eltérhet, eltérő mérési protokollokat nem hasonlítunk össze.')), download);
   }
   render();
   return card(h('h2', null, tr('Analytics Pro – időszaki összesítő')), h('label', { class: 'field' }, tr('Időszak'), choice), out);
@@ -94,6 +106,10 @@ export function exerciseTrendCard(items) {
   }
   draw(list[0].id);
   return card(h('h2', null, tr('Gyakorlat trendje')), h('label', { class: 'field' }, tr('Gyakorlat'), sel), out,
+    h('button', { type: 'button', class: 'btn small', onclick: () => {
+      const id = sel.value, records = buildExerciseProgress(items, id);
+      csvDownload(exerciseProgressCsv(records, D.ex[id].name), 'forma2-gyakorlat-' + id.replace(/[^a-z0-9_-]/gi, '') + '.csv');
+    } }, tr('Gyakorlat CSV-export')),
     h('p', { class: 'small muted' }, tr('Csak ugyanannak a gyakorlatnak az alkalmait vetjük össze; egy könnyebb vagy nehezebb változat külön szerepel.')));
 }
 
@@ -104,6 +120,6 @@ export function recoveryTimelineCard(items, now = Date.now()) {
   if (!t.length) return card(h('h2', null, tr('Regeneráció')), h('p', { class: 'small muted' }, tr('Az edzés előtti „Hogy vagy ma?” válaszaid itt naponta megjelennek, az aznapi edzéssel együtt.')));
   return card(h('h2', null, tr('Regeneráció (14 nap)')),
     table(tr('Napi állapot és edzés'), [[tr('Nap')], [tr('Alvás')], [tr('Izomláz')], [tr('Energia')], [tr('Fájdalom')], [tr('Javaslat')], [tr('Edzés')]],
-      t.map(r => [fmtDate(r.date), S3[r.sleep] || '–', SORE[r.soreness] || '–', S3[r.energy] || '–', r.pain ? 'igen' : 'nem', LVL[r.level] || '–', r.workouts ? (r.light ? tr('könnyített') : String(r.workouts)) : '–'])),
+      t.map(r => [fmtDate(r.date), S3[r.sleep] || '–', SORE[r.soreness] || '–', S3[r.energy] || '–', r.pain == null ? '–' : r.pain ? tr('igen') : tr('nem'), LVL[r.level] || '–', r.workouts ? (r.light ? tr('könnyített') : String(r.workouts)) : '–'])),
     h('p', { class: 'small muted' }, tr('Önbevallás, nem orvosi értékelés. Az, hogy két dolog együtt jár (például rossz alvás és könnyebb edzés), nem jelenti, hogy egyik okozza a másikat. Ahol nincs sor, ott nem töltötted ki a kérdőívet.')));
 }

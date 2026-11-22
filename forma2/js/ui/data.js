@@ -25,10 +25,18 @@ export async function loadData() {
   D.area = Object.fromEntries(D.tests.areas.map(a => [a.id, a]));
   S.settings = await kvGet('settings', null);
 }
-export async function saveSettings(patch) {
-  S.settings = { ...(S.settings || {}), ...patch };
-  await kvSet('settings', S.settings);
-  return S.settings;
+/* Sorban írt beállítások: párhuzamos gombnyomás ne írjon felül másik módosítást.
+   Memória-állapot csak a tranzakció sikeres lezárása után változhat. */
+let settingsWrites = Promise.resolve();
+export function saveSettings(patch) {
+  const task = settingsWrites.then(async () => {
+    const next = { ...(S.settings || {}), ...patch };
+    await kvSet('settings', next);
+    S.settings = next;
+    return next;
+  });
+  settingsWrites = task.then(() => {}, () => {});
+  return task;
 }
 export const profile = () => (S.settings && S.settings.profile) || {};
 export const lowImpact = () => !!(S.settings && S.settings.lowImpact);
@@ -42,8 +50,9 @@ export function applyLook(st = S.settings || {}) {
   if (st.lang && before !== getLocale()) { try { if (!sessionStorage.getItem('forma-lang-reload')) { sessionStorage.setItem('forma-lang-reload', '1'); location.reload(); return; } } catch { /* nem létfontosságú */ } }
   /* a fő menü feliratai a nyelv szerint (a váz statikus HTML) */
   for (const sp of document.querySelectorAll('#nav a > span:last-child')) { if (!sp.dataset.hu) sp.dataset.hu = sp.textContent; sp.textContent = tr(sp.dataset.hu); }
-  if (['light', 'dark', 'sun'].includes(st.theme)) r.dataset.theme = st.theme; else delete r.dataset.theme;
+  if (['light', 'dark', 'sun', 'oled'].includes(st.theme)) r.dataset.theme = st.theme; else delete r.dataset.theme;
   if (st.size === 'large') r.dataset.size = 'large'; else delete r.dataset.size;
+  if (st.density === 'compact') r.dataset.density = 'compact'; else delete r.dataset.density;
 }
 
 /* heti edzéscél (szokáscél): a beállításból, alapból 5 */

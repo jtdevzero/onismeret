@@ -16,6 +16,7 @@ import { blockProgress } from './views-extra.js';
 import { DRAFT_VERSION, validDraft } from '../core/workout-draft.js';
 import { previousExercisePerformance } from '../core/workout-previous.js';
 import { swipeStep } from '../core/workout-navigation.js';
+import { nextReps, nextWeight, parseRepsInput, parseWeightInput, adjustRestSeconds } from '../core/workout-quick-input.js';
 import { tr } from './i18n.js';
 
 const SIDE = { left: 'bal oldal', right: 'jobb oldal', both: tr('oldalanként') };
@@ -251,7 +252,7 @@ export async function sessionView(key, onCleanup) {
   const workoutId = resumed ? draft.workoutId : uid();
   let steps = baseSteps, total = steps.length;
   const ratings = resumed ? { ...draft.ratings } : {};
-  let at = 0, left = 0, timer = null, running = false, wake = null, finished = false;
+  let at = 0, left = 0, timer = null, running = false, wake = null, finished = false, disposed = false;
   if (resumed) { steps = draft.steps; total = steps.length; at = draft.at; }
   let checkpointQueue = Promise.resolve();
   const saveState = h('p', { class: 'small muted session-save-state', role: 'status', 'aria-live': 'polite' });
@@ -282,8 +283,12 @@ export async function sessionView(key, onCleanup) {
   const stage = h('div', { class: 'workout', 'aria-live': 'polite' });
   const stop = () => { if (timer) { clearInterval(timer); timer = null; } running = false; };
   const release = () => { stop(); if (wake) { wake.release().catch(() => {}); wake = null; } try { if ('speechSynthesis' in window) speechSynthesis.cancel(); } catch { /* a hang nem létfontosságú */ } };
-  onCleanup(() => { checkpoint(); release(); });
-  try { wake = await navigator.wakeLock.request('screen'); } catch { wake = null; }
+  onCleanup(() => { disposed = true; checkpoint(); release(); });
+  try {
+    const lock = await navigator.wakeLock.request('screen');
+    if (finished || disposed) await lock.release().catch(() => {});
+    else wake = lock;
+  } catch { wake = null; }
 
   /* Visszaszámlálás a valós eltelt időből: háttérbe kerülés vagy lassú időzítő után is a tényleges hátralévő időt mutatja. */
   function countdown(onTick, onDone) {
@@ -430,7 +435,7 @@ export async function sessionView(key, onCleanup) {
     const clock = h('div', { class: 'workout-clock', role: 'timer' });
     const full = st.seconds || 1;
     const ring = ringClock(clock);
-    const draw = () => { clock.textContent = left >= 60 ? Math.floor(left / 60) + ':' + String(left % 60).padStart(2, '0') : String(left); ring.set(left / full); };
+    const draw = () => { clock.textContent = left >= 60 ? Math.floor(left / 60) + ':' + String(left % 60).padStart(2, '0') : String(left); ring.set(Math.min(1, left / full)); };
     const run = () => {
       if (running) return;
       running = true;
@@ -439,10 +444,17 @@ export async function sessionView(key, onCleanup) {
     if (st.type === 'rest') {
       const after = steps[at + 1];
       left = st.seconds; draw();
+      const adjust = delta => {
+        const nextLeft = adjustRestSeconds(left, delta);
+        if (nextLeft === null) return;
+        stop(); left = nextLeft; draw(); run();
+      };
       clear(stage).append(h('section', { class: 'card workout-focus workout-rest' }, h('p', { class: 'workout-kicker' }, tr('Pihenő')),
         h('div', { class: 'workout-visual' }, after ? figureAnim(D.figures[D.ex[after.exercise].figure], { compact: true, still: true }) : null,
           h('div', { class: 'workout-readout' }, ring.el)),
         after ? h('p', { class: 'workout-cue' }, tr('Következik: '), h('strong', null, D.ex[after.exercise].name)) : null,
+        h('div', { class: 'row rest-adjust', 'aria-label': tr('Pihenőidő módosítása') },
+          btn('−15 mp', () => adjust(-15), 'small'), btn('+15 mp', () => adjust(15), 'small')),
         h('div', { class: 'row workout-actions' }, btn(tr('Pihenő kihagyása'), next, 'primary'))), nav);
       speak(tr('Pihenő'), voice.checked);
       run();
@@ -467,15 +479,32 @@ export async function sessionView(key, onCleanup) {
       : h('p', { class: 'next-up' }, tr('Ez az utolsó lépés.'));
     const instructions = (...extra) => h('details', { class: 'workout-details' }, h('summary', null, tr('Instrukciók és gyakorlatcsere')), points, swap, extra, more);
     const focus = (...kids) => h('section', { class: 'card workout-focus' }, h('div', { class: 'workout-heading' }, head), priorLine, kids);
+    const weightControl = () => {
+      if (ex.equipment !== 'dumbbell') return null;
+      const initial = st.weightKg ?? (prog.loads || {})[ex.id] ?? '';
+      const field = h('input', { type: 'text', inputMode: 'decimal', autocomplete: 'off', value: String(initial), 'aria-label': tr('Súly (kg, egy súlyzó)'),
+        onchange: e => {
+          const raw = e.target.value.trim();
+          const parsed = raw === '' ? undefined : parseWeightInput(raw);
+          if (parsed === null) { toast(tr('Érvénytelen súlyérték.')); field.value = String(st.weightKg ?? initial); return; }
+          st.weightKg = parsed; field.value = parsed === undefined ? '' : String(parsed); checkpoint();
+        } });
+      const adjust = delta => {
+        const value = nextWeight(st.weightKg ?? parseWeightInput(String(field.value)) ?? 0, delta);
+        if (value == null) return;
+        st.weightKg = value; field.value = String(value); checkpoint();
+      };
+      return h('div', { class: 'field small' }, h('span', null, tr('Súly (kg, egy súlyzó)')),
+        h('span', { class: 'workout-quick-weight' },
+          h('button', { type: 'button', class: 'btn small', 'aria-label': tr('Súly csökkentése 0,5 kg-mal'), onclick: () => adjust(-0.5) }, '−'), field,
+          h('button', { type: 'button', class: 'btn small', 'aria-label': tr('Súly növelése 0,5 kg-mal'), onclick: () => adjust(0.5) }, '+')));
+    };
     const setCapture = st.part === 'main' && (st.person || 1) === 1 ? h('div', { class: 'row workout-set-capture' },
-      ex.equipment === 'dumbbell' ? h('label', { class: 'field small' }, tr('Súly (kg, egy súlyzó)'),
-        h('input', { type: 'number', inputMode: 'decimal', min: 0, max: 300, step: 0.5,
-          value: st.weightKg ?? (prog.loads || {})[ex.id] ?? '',
-          onchange: e => { const v = e.target.value.trim(); if (v !== '' && (!Number.isFinite(Number(v)) || Number(v) < 0 || Number(v) > 300)) { toast(tr('Érvénytelen súlyérték.')); return; } st.weightKg = v === '' ? undefined : Number(v); checkpoint(); } })) : null,
+      weightControl(),
       h('label', { class: 'field small' }, tr('RIR (maradt ismétlés)'),
         h('select', { onchange: e => { st.rir = e.target.value === '' ? undefined : Number(e.target.value); checkpoint(); } },
           h('option', { value: '' }, tr('Nem adom meg')),
-          Array.from({ length: 6 }, (_, i) => h('option', { value: String(i), selected: st.rir === i }, i === 5 ? tr('5 vagy több') : String(i))))) : null;
+          Array.from({ length: 6 }, (_, i) => h('option', { value: String(i), selected: st.rir === i }, i === 5 ? tr('5 vagy több') : String(i)))))) : null;
     if (st.seconds) {
       left = st.seconds; draw();
       let startedTimer = false;
@@ -490,9 +519,19 @@ export async function sessionView(key, onCleanup) {
     } else {
       /* a ténylegesen elvégzett ismétlés edzés közben is javítható (a sorozatnaplóba kerül) */
       const repsClock = h('div', { class: 'workout-clock reps', 'aria-live': 'polite' }, String(st.actualReps ?? st.reps));
-      const setReps = v => { st.actualReps = Math.max(0, Math.min(999, v)); repsClock.textContent = String(st.actualReps); checkpoint(); };
+      const repsField = h('input', { type: 'text', inputMode: 'numeric', autocomplete: 'off', value: String(st.actualReps ?? st.reps), 'aria-label': tr('Tényleges ismétlések'), onchange: e => {
+        const n = parseRepsInput(e.target.value.trim());
+        if (n == null) { toast(tr('Érvénytelen ismétlésszám.')); repsField.value = String(st.actualReps ?? st.reps); return; }
+        setReps(n);
+      } });
+      const setReps = v => {
+        const next = nextReps(v, 0);
+        if (next == null) return;
+        st.actualReps = next; repsClock.textContent = String(next); repsField.value = String(next); checkpoint();
+      };
       const adjust = st.part === 'main' ? h('div', { class: 'reps-adjust' },
         h('button', { type: 'button', class: 'btn small icon', 'aria-label': tr('Eggyel kevesebb ismétlés'), onclick: () => setReps((st.actualReps ?? st.reps) - 1) }, '−'),
+        repsField,
         h('button', { type: 'button', class: 'btn small icon', 'aria-label': tr('Eggyel több ismétlés'), onclick: () => setReps((st.actualReps ?? st.reps) + 1) }, '+')) : null;
       const live = st.part === 'main' ? liveCounter(ex.id, { startLabel: tr('Számolj kamerával') }) : null;
       if (live) liveStop = live.stop;
