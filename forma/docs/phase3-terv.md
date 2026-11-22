@@ -12,6 +12,12 @@ Kizárólag `forma/`, a Phase 2 fejlesztői változatára épülve. A Phase 2 va
 - `tests/coach-weekly.test.mjs`: duplikált adatok, hiányzó regeneráció, önbevallás, read-only működés.
 - Helyi ellenőrzés: `python3 forma/build.py` PASS; `TZ=Europe/Budapest node --test forma/tests/*.test.mjs` **158/158 PASS**.
 
+### P3-01b – heti/havi időszak és forráshű riport
+
+- A Fejlődés oldalon 7 vagy 30 nap választható, a letöltés ugyanarra a kiválasztott időszakra készül. A feliratok mindkét nyelven elérhetők.
+- A havi riport nem szorozza fel a heti edzéscélt tetszőleges becsléssé; a havi célt ismeretlennek jelöli. Hiányzó regenerációból továbbra sem következtet jó állapotra.
+- `core/coach-weekly.js`, `views-coach.js`, `tests/coach-weekly.test.mjs` célzott módosításai; az automatikus tervváltoztatás továbbra is tiltott.
+
 ## P3-02 – online generatív coach biztonsági architektúra (csak terv)
 
 1. **Alapbeállítás:** offline szabálymotor, nincs AI-kérés, API-kulcs vagy háttérszinkron.

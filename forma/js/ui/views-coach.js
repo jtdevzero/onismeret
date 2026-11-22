@@ -30,7 +30,6 @@ export function coachCard(prog, items, { compact = false } = {}) {
 
 /* Az összefoglaló csak helyi letöltés; nem küld adatot szervernek vagy AI-nak. */
 export function weeklyCoachCard(items, now = Date.now()) {
-  const report = weeklyCoachReport(items, { now, goal: weeklyGoal() });
   const t = (key, params) => tr(key, params);
   const labels = { title: t('FORMA – heti edzői összefoglaló'), sessions: t('Naplózott edzések'),
     minutes: t('Edzésidő'), sets: t('Sorozatok'), cardio: t('Kardió'), goal: t('Heti edzéscél'),
@@ -38,16 +37,26 @@ export function weeklyCoachCard(items, now = Date.now()) {
     missing: t('nincs adat'), uncertain: t('Nincs regenerációs bejegyzés: ebből nem következtethető jó állapot.'),
     selfReport: t('A regeneráció és a fájdalom a felhasználó önbevallása.'),
     disclaimer: t('Szabályalapú, helyi összefoglaló; nem orvosi diagnózis vagy automatikus edzésterv-módosítás.') };
+  const select = h('select', { 'aria-label': t('Edzői riport időszaka'), onchange: render },
+    h('option', { value: '7' }, t('7 nap – heti riport')),
+    h('option', { value: '30' }, t('30 nap – havi riport')));
+  const body = h('div', { 'aria-live': 'polite' });
   const download = h('button', { class: 'btn small', type: 'button', onclick: () => {
-    const content = weeklyCoachText(report, labels, dateLocale());
+    const report = weeklyCoachReport(items, { now, days: Number(select.value), goal: weeklyGoal() });
+    const content = weeklyCoachText(report, { ...labels, title: t(report.days === 7 ? 'FORMA – heti edzői összefoglaló' : 'FORMA – havi edzői összefoglaló') }, dateLocale());
     const url = URL.createObjectURL(new Blob([content], { type: 'text/plain;charset=utf-8' }));
-    const a = h('a', { href: url, download: 'forma-heti-edzoi-osszefoglalo.txt' });
+    const a = h('a', { href: url, download: `forma-${report.days}-napos-edzoi-osszefoglalo.txt` });
     document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
   } }, t('Heti riport letöltése'));
-  return card(h('h2', null, t('Heti edzői összefoglaló')),
-    h('p', null, t('{p0} edzés, {p1} perc az utolsó 7 napban.', { p0: report.sessions, p1: report.minutes })),
-    h('p', { class: 'small muted' }, report.recoveryDays
-      ? t('{p0} regenerációs bejegyzés, {p1} fájdalomjelzés. Ez önbevallás.', { p0: report.recoveryDays, p1: report.painReports })
-      : labels.uncertain),
-    h('p', { class: 'small muted' }, labels.disclaimer), download);
+  function render() {
+    const report = weeklyCoachReport(items, { now, days: Number(select.value), goal: weeklyGoal() });
+    body.replaceChildren(h('p', null, t('{p0} edzés, {p1} perc az utolsó {p2} napban.', { p0: report.sessions, p1: report.minutes, p2: report.days })),
+      h('p', { class: 'small muted' }, report.recoveryDays
+        ? t('{p0} regenerációs bejegyzés, {p1} fájdalomjelzés. Ez önbevallás.', { p0: report.recoveryDays, p1: report.painReports })
+        : labels.uncertain),
+      h('p', { class: 'small muted' }, labels.disclaimer));
+    download.textContent = t(report.days === 7 ? 'Heti riport letöltése' : 'Havi riport letöltése');
+  }
+  render();
+  return card(h('h2', null, t('Helyi edzői összefoglaló')), select, body, download);
 }

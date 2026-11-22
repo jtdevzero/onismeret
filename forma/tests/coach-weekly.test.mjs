@@ -34,3 +34,12 @@ test('a heti riport nem módosítja az edzésnaplót és nem változtat programo
   assert.equal(JSON.stringify(items), before);
   assert.equal('suggestedLoad' in report, false);
 });
+
+test('30 napos riport nem extrapolálja a heti célt és jelzi a tényleges adatlefedettséget', () => {
+  const r = weeklyCoachReport([{ id: 'w', kind: 'workout', date: day(20), minutes: 20 }], { now, goal: 5, days: 30 });
+  assert.equal(r.sessions, 1);
+  assert.equal(r.goal, null);
+  assert.equal(r.goalMet, null);
+  assert.doesNotMatch(weeklyCoachText(r), /Heti edzéscél/);
+  assert.throws(() => weeklyCoachReport([], { now, days: 31 }), RangeError);
+});

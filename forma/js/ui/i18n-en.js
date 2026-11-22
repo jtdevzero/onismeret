@@ -1214,6 +1214,7 @@ export default {
  "Ismétlések": "Repetitions",
  "nap": "days",
  "FORMA – heti edzői összefoglaló": "FORMA – weekly coaching summary",
+ "FORMA – havi edzői összefoglaló": "FORMA – monthly coaching summary",
  "Naplózott edzések": "Logged workouts",
  "Heti edzéscél": "Weekly workout goal",
  "Regenerációs önbevallás": "Self-reported recovery",
@@ -1224,6 +1225,12 @@ export default {
  "Szabályalapú, helyi összefoglaló; nem orvosi diagnózis vagy automatikus edzésterv-módosítás.": "Local rule-based summary; not a medical diagnosis or automatic training-plan change.",
  "Heti riport letöltése": "Download weekly report",
  "Heti edzői összefoglaló": "Weekly coaching summary",
+ "Helyi edzői összefoglaló": "Local coaching summary",
+ "Edzői riport időszaka": "Coaching report period",
+ "7 nap – heti riport": "7 days – weekly report",
+ "30 nap – havi riport": "30 days – monthly report",
+ "Havi riport letöltése": "Download monthly report",
+ "{p0} edzés, {p1} perc az utolsó {p2} napban.": "{p0} workouts, {p1} minutes over the last {p2} days.",
  "{p0} edzés, {p1} perc az utolsó 7 napban.": "{p0} workouts, {p1} minutes over the last 7 days.",
  "{p0} regenerációs bejegyzés, {p1} fájdalomjelzés. Ez önbevallás.": "{p0} recovery check-ins, {p1} pain reports. These are self-reported."
 };
