@@ -1,7 +1,7 @@
 /* Állóképesség (kardió) napló pulzuszónákkal, és a napi „hogy vagy?” ellenőrzés edzés előtt. */
 import { h, clear, fmtDate, uid, toast } from './dom.js';
 import { page, card, btn, link, note, choice, list } from './widgets.js';
-import { D, profile } from './data.js';
+import { profile } from './data.js';
 import { kvSet, itemPut, itemsAll, itemDelete } from './store.js';
 import { latestAssessment, evaluateItem } from './state.js';
 import { hrZones, weeklyCardio, cardioPlan, readiness, maxHr } from '../core/cardio.js';

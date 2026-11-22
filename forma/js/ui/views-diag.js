@@ -1,7 +1,7 @@
 /* Eszközpróba és hibajelentés, valamint a kipróbálási lista. A jelentés csak kimásolható szöveg: magától nem megy sehova. */
-import { h, clear, toast } from './dom.js';
+import { h, toast } from './dom.js';
 import { page, card, btn, link, note } from './widgets.js';
-import { D, S } from './data.js';
+import { S } from './data.js';
 import { kvGet, kvSet } from './store.js';
 
 /* az utolsó hibák a memóriában (a jelentéshez); a felhasználói adatokat nem tartalmazzák */

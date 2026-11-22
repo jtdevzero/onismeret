@@ -45,12 +45,25 @@ async function route() {
 
 initErrorLog();
 
+function updateBanner() {
+  if (document.querySelector('.update-bar')) return;
+  const bar = h('div', { class: 'update-bar', role: 'status' }, h('span', null, 'Új változat érhető el.'),
+    h('button', { type: 'button', class: 'btn small light', onclick: () => location.reload() }, 'Frissítés'),
+    h('button', { type: 'button', class: 'btn small', 'aria-label': 'Később', onclick: () => bar.remove() }, '×'));
+  document.body.append(bar);
+}
+
 async function boot() {
   try { await loadData(); applyLook(); initHaptics(); }
   catch (e) { console.error(e); clear(main).append(h('div', { class: 'page' }, h('h1', null, 'Nem sikerült betölteni'), h('p', null, 'Ellenőrizd az internetkapcsolatot, és töltsd újra az oldalt.'))); return; }
   addEventListener('hashchange', route);
   await route();
   document.documentElement.dataset.ready = '1';
-  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) navigator.serviceWorker.register('sw.js').catch(() => {});
+  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+    /* új változat: a service worker azonnal átveszi az irányítást; szólunk, de nem töltünk újra magunktól (edzés közben se szakadjon meg) */
+    const hadController = !!navigator.serviceWorker.controller;
+    navigator.serviceWorker.addEventListener('controllerchange', () => { if (hadController) updateBanner(); });
+    navigator.serviceWorker.register('sw.js').then(reg => { setInterval(() => reg.update().catch(() => {}), 30 * 60000); }).catch(() => {});
+  }
 }
 boot();

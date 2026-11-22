@@ -107,7 +107,7 @@ details.card[open] > summary { margin-bottom: 12px; }
   font: inherit; font-weight: 700; text-decoration: none; cursor: pointer; transition: transform .06s, background .12s;
 }
 .btn:active { transform: scale(.98); }
-.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-text); box-shadow: 0 4px 12px color-mix(in srgb, var(--accent) 30%, transparent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-text); box-shadow: 0 4px 12px rgba(0, 0, 0, .18); box-shadow: 0 4px 12px color-mix(in srgb, var(--accent) 30%, transparent); }
 .btn.primary:hover { background: var(--accent-strong); border-color: var(--accent-strong); }
 .btn.light { background: #fff; border-color: #fff; color: #2a0f3d; }
 .btn.danger { color: var(--danger); }
@@ -222,7 +222,7 @@ ul.rows.plan > li { align-items: center; }
 #nav {
   position: fixed; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; gap: 2px; z-index: 5;
   padding: 6px max(6px, env(safe-area-inset-left, 0)) calc(6px + env(safe-area-inset-bottom, 0)) max(6px, env(safe-area-inset-right, 0));
-  background: color-mix(in srgb, var(--surface) 92%, transparent); border-top: 1px solid var(--line);
+  background: var(--surface);  background: color-mix(in srgb, var(--surface) 92%, transparent); border-top: 1px solid var(--line);
   -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
 }
 #nav a { flex: 1; max-width: 120px; min-height: 58px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; border-radius: 14px; color: var(--muted); text-decoration: none; font-size: .7rem; font-weight: 700; letter-spacing: .01em; }
@@ -248,7 +248,7 @@ ul.rows.plan > li { align-items: center; }
 .radar { display: block; width: 100%; max-width: 380px; margin: 0 auto 6px; }
 .radar-grid { fill: none; stroke: var(--line); stroke-width: 1; }
 .radar-ref { fill: none; stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 4 4; }
-.radar-area { fill: color-mix(in srgb, var(--accent) 22%, transparent); stroke: var(--accent); stroke-width: 2.5; stroke-linejoin: round; }
+.radar-area { fill: var(--accent-soft); fill: color-mix(in srgb, var(--accent) 22%, transparent); stroke: var(--accent); stroke-width: 2.5; stroke-linejoin: round; }
 .radar-prev { fill: none; stroke: var(--sun); stroke-width: 2; stroke-dasharray: 5 4; }
 .radar-dot { fill: var(--accent); }
 .radar-label { fill: var(--text); font-size: 12px; font-weight: 700; }
@@ -292,12 +292,12 @@ ul.rows.plan > li { align-items: center; }
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; } }
 
 /* ---- neonos részletek ---- */
-.btn.primary { background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 70%, var(--sun))); letter-spacing: .02em; font-style: italic; }
+.btn.primary { background: linear-gradient(135deg, var(--accent), var(--accent)); background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 70%, var(--sun))); letter-spacing: .02em; font-style: italic; }
 .card.accent { border-top: 3px solid var(--accent); }
 .card.plain { background: transparent; border: 0; box-shadow: none; padding: 4px 2px; }
-.workout-clock, .timer-clock, .big-num { font-family: var(--display); font-style: italic; text-shadow: 0 0 22px color-mix(in srgb, var(--accent) 45%, transparent); }
+.workout-clock, .timer-clock, .big-num { font-family: var(--display); font-style: italic; text-shadow: none; text-shadow: 0 0 22px color-mix(in srgb, var(--accent) 45%, transparent); }
 #nav a.on { box-shadow: inset 0 -3px 0 var(--accent); }
-.radar-area { fill: color-mix(in srgb, var(--accent) 26%, transparent); }
+.radar-area { fill: var(--accent-soft); fill: color-mix(in srgb, var(--accent) 26%, transparent); }
 .radar-prev { stroke: var(--teal); }
 .legend .lg-prev::before { border-top-color: var(--teal); }
 
@@ -349,10 +349,10 @@ ul.badges { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
 .badge-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border-radius: var(--radius-s); background: var(--bg-2); color: var(--muted); }
 .badge-item.earned { background: var(--accent-soft); color: var(--text); }
 .badge-ic { font-size: 1.3rem; line-height: 1.2; color: var(--muted); }
-.badge-item.earned .badge-ic { color: var(--sun); text-shadow: 0 0 10px color-mix(in srgb, var(--sun) 60%, transparent); }
+.badge-item.earned .badge-ic { color: var(--sun); text-shadow: none; text-shadow: 0 0 10px color-mix(in srgb, var(--sun) 60%, transparent); }
 .log-item progress { margin: 4px 0; }
 .swap { margin-top: 8px; }
-.workout-clock.run { color: var(--teal); text-shadow: 0 0 22px color-mix(in srgb, var(--teal) 45%, transparent); }
+.workout-clock.run { color: var(--teal); text-shadow: none; text-shadow: 0 0 22px color-mix(in srgb, var(--teal) 45%, transparent); }
 
 :root[data-size="large"] { font-size: 112.5%; }
 :root[data-size="large"] .workout-clock { font-size: 6rem; }
@@ -369,7 +369,7 @@ ul.badges { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
 .ring { position: relative; width: min(62vw, 230px); aspect-ratio: 1; margin: 6px auto 4px; display: grid; place-items: center; }
 .ring-svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
 .ring-bg { fill: none; stroke: var(--bg-2); stroke-width: 9; }
-.ring-fg { fill: none; stroke: var(--accent); stroke-width: 9; stroke-linecap: round; transition: stroke-dashoffset .9s linear; filter: drop-shadow(0 0 6px color-mix(in srgb, var(--accent) 50%, transparent)); }
+.ring-fg { fill: none; stroke: var(--accent); stroke-width: 9; stroke-linecap: round; transition: stroke-dashoffset .9s linear; filter: none; filter: drop-shadow(0 0 6px color-mix(in srgb, var(--accent) 50%, transparent)); }
 .ring .workout-clock { position: relative; margin: 0; font-size: 4rem; }
 .workout-clock.reps { font-size: 5.5rem; }
 .swipe-hint { margin: -4px 0 10px; }
@@ -449,7 +449,7 @@ input[type=radio], input[type=checkbox] { accent-color: var(--accent); }
 ul.rows.lib > li { justify-content: flex-start; }
 ul.rows.lib > li .log-item { flex: 1; }
 .empty { display: grid; justify-items: center; gap: 8px; padding: 14px 8px; text-align: center; color: var(--muted); }
-.empty-ic { width: 64px; height: 64px; border-radius: 50%; background: radial-gradient(circle at 50% 60%, var(--sun) 0 34%, transparent 35%), linear-gradient(180deg, var(--accent-soft), var(--bg-2)); box-shadow: inset 0 -10px 0 color-mix(in srgb, var(--accent) 25%, transparent); }
+.empty-ic { width: 64px; height: 64px; border-radius: 50%; background: radial-gradient(circle at 50% 60%, var(--sun) 0 34%, transparent 35%), linear-gradient(180deg, var(--accent-soft), var(--bg-2)); box-shadow: none; box-shadow: inset 0 -10px 0 color-mix(in srgb, var(--accent) 25%, transparent); }
 
 /* ---- ciklus-idővonal ---- */
 .timeline { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin: 6px 0 8px; }
@@ -521,12 +521,12 @@ details.more-group[open] > summary::after { content: "▴"; }
 /* ---- edzés: partner, jegyzet, előzmény ---- */
 .badge.person { margin: 0 auto 6px; display: inline-block; }
 .badge.person.p1 { background: var(--accent-soft); color: var(--accent-strong); }
-.badge.person.p2 { background: color-mix(in srgb, var(--teal) 18%, transparent); color: var(--teal); }
+.badge.person.p2 { background: var(--bg-2); background: color-mix(in srgb, var(--teal) 18%, transparent); color: var(--teal); }
 .note-input { width: 100%; padding: 10px 12px; border: 1.5px solid var(--line); border-radius: var(--radius-s); background: var(--bg); color: var(--text); font: inherit; resize: vertical; }
 .note-box { margin: 10px 0; text-align: left; }
 .log-note { color: var(--text); font-style: italic; }
 .ex-bars { display: flex; align-items: flex-end; gap: 4px; height: 70px; margin: 4px 0 10px; }
-.ex-bars span { flex: 1; border-radius: 4px 4px 2px 2px; background: linear-gradient(180deg, var(--accent), color-mix(in srgb, var(--accent) 55%, var(--sun))); }
+.ex-bars span { flex: 1; border-radius: 4px 4px 2px 2px; background: linear-gradient(180deg, var(--accent), var(--accent)); background: linear-gradient(180deg, var(--accent), color-mix(in srgb, var(--accent) 55%, var(--sun))); }
 .fig-live.big { max-width: 440px; }
 .fig-live.big .fig { height: 230px; }
 
@@ -534,3 +534,7 @@ details.more-group[open] > summary::after { content: "▴"; }
 .page > h1 { font-size: 1.75rem; margin-bottom: 10px; }
 .card + .card { margin-top: 0; }
 .card h2:only-child { margin: 0; }
+
+/* ---- frissítésjelzés ---- */
+.update-bar { position: fixed; left: 12px; right: 12px; bottom: calc(84px + env(safe-area-inset-bottom, 0)); max-width: 520px; margin: 0 auto; z-index: 25; display: flex; align-items: center; gap: 10px; padding: 10px 12px 10px 16px; border-radius: 14px; background: var(--text); color: var(--bg); font-weight: 650; box-shadow: var(--shadow); }
+.update-bar span { flex: 1; }
