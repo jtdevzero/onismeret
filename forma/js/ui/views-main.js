@@ -4,6 +4,7 @@ import { page, card, btn, link, note, choice, list, sized, heroTime, emptyState 
 import { D, S, saveSettings, profile, applyLook } from './data.js';
 import { exportAll, wipeAll, restoreAll } from './store.js';
 import { parseBackup } from '../core/backup.js';
+import { sameScoring } from '../core/assessment.js';
 import { RATINGS, LADDERS, EQUIPMENT, DURATIONS, COMPLAINTS, fitSession } from '../core/program.js';
 import { getProgram, setProgram, latestAssessment, workouts, assessments, evaluateItem } from './state.js';
 import { ROTATION, SESSION_TITLES, buildSession, sessionSteps, sessionMinutes, nextKey, weekInfo, reassessDue, streak } from '../core/program.js';
@@ -66,7 +67,8 @@ export async function startView() {
     h('div', null,
       card(h('h2', null, 'Hogyan működik?'), list([
         'Kb. 25 perces felmérés otthon, eszköz nélkül: mobilitás, hajlékonyság, erő, törzs, gyorsaság, egyensúly, állóképesség.',
-        'Minden eredményt a korod és a nemed szerinti normához mérek, és kiszámolom a becsült fittségi korodat.',
+        'Egyes teszteket a korod és a nemed szerinti normákhoz hasonlítok, másokat funkcionális küszöbhöz vagy a saját korábbi eredményedhez.',
+        'A normák egy része becsült, szakember még nem lektorálta. A fittségi kor a pulzusodból, derékbőségedből és aktivitásodból becsült VO₂max átszámítása, nem az összes mozgásteszt eredménye.',
         'Ebből napi 15–25 perces programot kapsz. Ha egy gyakorlat könnyű, nehezebbre váltok; 6 hetente újramérünk.',
         'Minden adat a telefonodon marad. Nincs fiók, és nincs szerver.']),
         h('div', { class: 'row' }, btn('Kezdjük el', () => goStep(1), 'primary'))),
@@ -219,7 +221,7 @@ export async function logView(ym) {
       h('div', { class: 'bar-track' }, sized(h('div', { class: 'bar' + (w.n ? '' : ' empty') }), 'height', Math.max(4, (w.n / max) * 100))),
       h('span', { class: 'bar-l' }, i === 7 ? 'e hét' : (7 - i) + ' h'))));
   let compare = null;
-  if (as.length >= 2) {
+  if (as.length >= 2 && sameScoring(as[0], as[as.length - 1])) {
     const first = evaluateItem(as[as.length - 1]), lastE = evaluateItem(as[0]);
     compare = card(h('h2', null, 'Fejlődés az első felmérés óta'), h('table', { class: 'tests-table' },
       h('thead', null, h('tr', null, h('th', null, 'Terület'), h('th', null, 'Első'), h('th', null, 'Utolsó'))),
@@ -230,6 +232,7 @@ export async function logView(ym) {
       first.fitnessAge != null && lastE.fitnessAge != null ? h('p', { class: 'small' }, `Fittségi kor: ${first.fitnessAge} → ${lastE.fitnessAge} év.`) : null);
   }
   return page('Napló',
+    as.length >= 2 && !sameScoring(as[0], as[as.length - 1]) ? note('Az első és az utolsó felmérés pontozási verziója eltér vagy nem ismert. Pontszámváltozás helyett a nyers teszteredményeket érdemes összevetni.', 'small') : null,
     calendarCard(all, ym),
     card(h('h2', null, 'Edzések hetente'), bars),
     compare,
@@ -245,14 +248,22 @@ export function restorePicker() {
     const file = input.files && input.files[0];
     input.value = '';
     if (!file) return;
-    const res = parseBackup(await file.text(), { testIds: D.tests.tests.map(t => t.id), ladders: LADDERS, sessionKeys: Object.keys(SESSION_TITLES), ratingKeys: RATINGS.map(([k]) => k), cardioTypes: CARDIO_TYPES.map(([k]) => k), goalMetrics: GOAL_METRICS().map(([k]) => k), exerciseIds: D.exercises.exercises.map(e => e.id) });
+    let res;
+    try {
+      if (file.size > 5 * 1024 * 1024) { toast('A fájl túl nagy.'); return; }
+      res = parseBackup(await file.text(), { testIds: D.tests.tests.map(t => t.id), areaIds: D.tests.areas.map(a => a.id), ladders: LADDERS, sessionKeys: Object.keys(SESSION_TITLES), ratingKeys: RATINGS.map(([k]) => k), cardioTypes: CARDIO_TYPES.map(([k]) => k), goalMetrics: GOAL_METRICS().map(([k]) => k), exerciseIds: D.exercises.exercises.map(e => e.id) });
+    } catch { toast('A fájlt nem sikerült beolvasni. A jelenlegi adatok megmaradtak.'); return; }
     if (!res.ok) { toast(res.error); return; }
     const { items } = res.data, na = items.filter(i => i.kind === 'assessment').length, nw = items.length - na;
-    if (!confirm(`A mentésben ${na} felmérés és ${nw} edzés van. Visszatöltöd? Ami most a telefonon van, annak a helyére kerül.`)) return;
-    await restoreAll(res.data);
+    if (!confirm(`A mentésben ${na} felmérés és ${nw} egyéb bejegyzés van. Visszatöltöd? Ami most a telefonon van, annak a helyére kerül.`)) return;
+    try { await restoreAll(res.data); }
+    catch { toast('A visszatöltés nem sikerült. A jelenlegi adatok megmaradtak.'); return; }
+    S.settings = res.data.settings;
+    applyLook();
     toast('Visszatöltöttem.');
-    location.hash = '#/';
-    setTimeout(() => location.reload(), 300);
+    // A nézet újrarajzolása elég; az oldal újratöltése memóriamódban adatvesztést okozna.
+    if (location.hash === '#/') dispatchEvent(new HashChangeEvent('hashchange'));
+    else location.hash = '#/';
   } });
   return h('label', { class: 'btn' }, 'Visszatöltés fájlból', input);
 }
@@ -335,7 +346,7 @@ export async function settingsView() {
         restorePicker(),
         btn('Minden adat törlése', async () => { if (!confirm('Biztosan törlöd az összes felmérést, edzést és beállítást? Ez nem vonható vissza.')) return; await wipeAll(); S.settings = null; location.hash = '#/start'; location.reload(); }, 'danger'))),
     card(h('h2', null, 'A normákról'),
-      h('p', null, 'A percentilisek publikált felnőtt normákból származnak (CSEP, YMCA, Rikli–Jones, Araújo, Springer, Nes és mtsai.). Ahol kevés az adat, ott becsültünk; ezt a teszteknél „becsült norma” jelzi. A normákat és a gyakorlatokat szakember még nem lektorálta.'),
+      h('p', null, 'A percentilisek egy része publikált felnőtt normákra épül (CSEP); más normákat eltérő minták és mérési módszerek alapján becsültünk. Ezt tesztenként jelöljük. A funkcionális küszöb pontszám, nem népességi percentilis. A normákat és a gyakorlatokat szakember még nem lektorálta.'),
       h('p', { class: 'small muted' }, 'A Forma nem orvosi eszköz.')));
 }
 

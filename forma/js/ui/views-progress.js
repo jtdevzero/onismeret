@@ -9,6 +9,7 @@ import { forecastFitnessAge } from '../core/extras.js';
 import { friendCard, recoveryCard } from './views-extra.js';
 import { nutritionCard } from './views-wellness.js';
 import { evaluateItem } from './state.js';
+import { sameScoring } from '../core/assessment.js';
 import { MINI_TESTS, records, badges, bodyTrend, currentFitnessAge, goalProgress, metricValue, latestValue, LOWER_BETTER } from '../core/achievements.js';
 
 const reload = hash => { location.hash = hash; dispatchEvent(new HashChangeEvent('hashchange')); };
@@ -43,16 +44,18 @@ export async function progressView(arg, onCleanup) {
   const hint = h('span', { class: 'hint' }, curText());
 
   /* fittségi kor előrejelzés a felmérésekből */
-  const faPoints = items.filter(i => i.kind === 'assessment').map(a => ({ date: a.date, age: evaluateItem(a).fitnessAge })).filter(x => x.age != null);
+  const history = items.filter(i => i.kind === 'assessment').sort((a, b) => b.date - a.date);
+  const faPoints = history.filter(a => sameScoring(a, history[0])).map(a => ({ date: a.date, age: evaluateItem(a).fitnessAge })).filter(x => x.age != null);
   const fc = forecastFitnessAge(faPoints);
   return page('Fejlődés',
     card(h('h2', null, 'Fittségi kor most'),
+      h('p', { class: 'small muted' }, 'Tájékoztató VO₂max-becslés az alapadatokból, jelentős egyéni bizonytalansággal. Nem a biológiai kor vagy a teljes mozgásfelmérés mérése. Az előrejelzés csak azonos pontozási verziójú felméréseket használ.'),
       h('div', { class: 'stat-row' },
         h('div', { class: 'stat' }, h('span', { class: 'muted' }, 'Becsült fittségi kor'), h('strong', null, fa ? fa.age + ' év' : '–'), h('span', { class: 'small muted' }, 'naptári: ' + p.age + ' év')),
         h('div', { class: 'stat' }, h('span', { class: 'muted' }, 'Derékbőség'), h('strong', null, body.waist ? fmtNum(body.waist.value) + ' cm' : '–'),
           h('span', { class: 'small muted' }, body.waist && body.waist.change != null ? `${body.waist.change > 0 ? '+' : ''}${fmtNum(body.waist.change)} cm az első mérés óta` : 'heti méréssel követhető'))),
       fc ? h('p', { class: 'forecast' }, `Ha így folytatod, 3 hónap múlva a fittségi korod kb. ${fc.in90} év lehet`, h('span', { class: 'small muted' }, ` (havi ${fc.perMonth > 0 ? '+' : ''}${String(fc.perMonth).replace('.', ',')} év a felméréseid alapján)`)) : h('p', { class: 'small muted' }, 'Két felmérés után (legalább 3 hét különbséggel) előrejelzést is mutatok.'),
-      fa && fa.waistUpdated ? h('p', { class: 'small muted' }, 'A fittségi kort a legfrissebb derékbőséggel számoltam újra; a pulzus és a mozgás a legutóbbi felmérésből van.') : null),
+      fa && fa.waistUpdated ? h('p', { class: 'small muted' }, 'A fittségi kort az aktuális normákkal és a legfrissebb derékbőséggel számoltam újra; a pulzus és a mozgás a legutóbbi felmérésből van. A felméréskor mentett eredmény ettől nem változik.') : null),
     card(h('h2', null, 'Célok'),
       gp.length ? h('ul', { class: 'rows' }, gp.map(({ g, s }) => h('li', null,
         h('span', { class: 'log-item' }, h('strong', null, `${metricName(g.metric)}: ${fmtNum(g.target)} ${metricUnit(g.metric)}`),

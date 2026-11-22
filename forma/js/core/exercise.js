@@ -261,7 +261,7 @@ function ankleWall(F) {
 
 /* Felugrás magassága a repülési időből: h = g · t² / 8. Mindkét boka a talajszint fölött → levegőben.
    A talajszint az álló helyzet bokamagassága (a felvétel első harmadának mediánja). 15 kép/mp mellett a mérés
-   kb. ±3–5 cm pontosságú; a legjobb ugrás számít. */
+   a valódi felvételeken mért pontosság még nem validált; a legjobb ugrás számít. */
 function verticalJump(F, t0, raw) {
   /* a repülési időhöz a nyers (simítatlan) testpontok kellenek: a simítás elkenné a felszállás pillanatát */
   const R = (raw || []).filter(f => f && f.lm && f.lm.length >= 33 && Math.min(f.lm[LM.lAnkle][3] ?? 1, f.lm[LM.rAnkle][3] ?? 1) >= 0.5).sort((a, b) => a.t - b.t);

@@ -63,6 +63,26 @@ export function initialLevels(results = {}, evaluation = { tests: {}, areas: {} 
   return L;
 }
 
+/* Újramérés: a ténylegesen újramért sorok friss szintről indulnak, lefelé is.
+   Kihagyott teszt nem írja felül a gyakorlással elért szintet. */
+export function reassessedLevels(results, evaluation, profile, previous = {}) {
+  const fresh = initialLevels(results, evaluation, profile);
+  const measured = id => evaluation.tests[id]?.score != null;
+  const evidence = {
+    push: measured('pushup'), pull: measured('pushup'), pull_band: measured('pushup'),
+    pull_bar: measured('pushup'), pull_db: measured('pushup'),
+    squat: measured('chair_stand'), squat_db: measured('chair_stand'), lunge: measured('chair_stand'),
+    hinge: !!evaluation.areas.strength, hinge_db: !!evaluation.areas.strength,
+    core: measured('plank'), side: measured('plank'),
+    power: measured('broad_jump'), speed: !!evaluation.areas.power, balance: measured('sl_stance'),
+  };
+  for (const k of LADDERS) if (!evidence[k] && Number.isInteger(previous[k])) fresh[k] = previous[k];
+  // A fájdalom miatti könnyítés az eszközös változatokra is vonatkozik.
+  if (evaluation.tests.deep_squat?.pain) for (const k of ['squat', 'squat_db', 'lunge']) fresh[k] = 0;
+  if (evaluation.tests.shoulder_reach?.pain) for (const k of ['push', 'pull', 'pull_band', 'pull_bar', 'pull_db']) fresh[k] = 0;
+  return fresh;
+}
+
 /* A szinthez tartozó gyakorlat; kímélő (ugrásmentes) módban a legközelebbi alacsonyabb, ugrás nélküli változat. */
 export function exerciseFor(ladders, ladder, level, lowImpact = false) {
   const list = ladders[ladder] || [];

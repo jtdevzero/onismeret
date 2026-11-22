@@ -3,10 +3,26 @@
 const DB = 'forma', VERSION = 1;
 let dbp = null;
 const mem = { kv: new Map(), items: new Map() };
+let status = { mode: 'pending', writeError: false };
+const listeners = new Set();
+export const storageStatus = () => ({ ...status });
+export function watchStorage(fn) {
+  listeners.add(fn); fn(storageStatus());
+  return () => listeners.delete(fn);
+}
+function report(patch) {
+  status = { ...status, ...patch };
+  for (const fn of listeners) fn(storageStatus());
+}
 
 function open() {
   if (dbp) return dbp;
   dbp = new Promise(resolve => {
+    let settled = false;
+    const finish = db => {
+      if (settled) { if (db) db.close(); return; }
+      settled = true; report({ mode: db ? 'persistent' : 'memory' }); resolve(db);
+    };
     try {
       const req = indexedDB.open(DB, VERSION);
       req.onupgradeneeded = () => {
@@ -14,10 +30,10 @@ function open() {
         if (!db.objectStoreNames.contains('kv')) db.createObjectStore('kv');
         if (!db.objectStoreNames.contains('items')) db.createObjectStore('items', { keyPath: 'id' });
       };
-      req.onsuccess = () => resolve(req.result);
-      req.onerror = () => resolve(null);
-      req.onblocked = () => resolve(null);
-    } catch { resolve(null); }
+      req.onsuccess = () => finish(req.result);
+      req.onerror = () => finish(null);
+      req.onblocked = () => finish(null);
+    } catch { finish(null); }
   });
   return dbp;
 }
@@ -25,9 +41,14 @@ async function tx(store, mode, fn) {
   const db = await open();
   if (!db) { const r = fn(null); return r ? r.result : undefined; }
   return new Promise((resolve, reject) => {
-    const t = db.transaction(store, mode), req = fn(t.objectStore(store));
-    t.oncomplete = () => resolve(req ? req.result : undefined);
-    t.onerror = t.onabort = () => reject(t.error || new Error('Tárolási hiba'));
+    let t, req;
+    const fail = e => { if (mode === 'readwrite') report({ writeError: true }); reject(e || new Error('Tárolási hiba')); };
+    try {
+      t = db.transaction(store, mode);
+      t.oncomplete = () => resolve(req ? req.result : undefined);
+      t.onerror = t.onabort = () => fail(t.error);
+      req = fn(t.objectStore(store));
+    } catch (e) { if (t) t.abort(); fail(e); }
   });
 }
 
@@ -44,7 +65,7 @@ export async function itemsAll(kind) {
 export const itemDelete = id => tx('items', 'readwrite', s => (s ? s.delete(id) : (mem.items.delete(id), null)));
 
 export async function wipeAll() {
-  for (const st of ['kv', 'items']) await tx(st, 'readwrite', s => (s ? s.clear() : (mem[st].clear(), null)));
+  await replaceAll({}, []);
 }
 /* Mentés fájlba: beállítások, program, felmérések és edzések. */
 export async function exportAll() {
@@ -53,12 +74,32 @@ export async function exportAll() {
 
 /* Visszatöltés ellenőrzött mentésből (core/backup.js): minden meglévő adat helyére. */
 export async function restoreAll({ settings, program, run, nutrition, favs, custom, items }) {
-  await wipeAll();
-  if (settings) await kvSet('settings', settings);
-  if (program) await kvSet('program', program);
-  if (run) await kvSet('run', run);
-  if (nutrition) await kvSet('nutrition', nutrition);
-  if (favs) await kvSet('favs', favs);
-  if (custom) await kvSet('custom', custom);
-  for (const it of items) await itemPut(it);
+  // Másolási/bemeneti hiba még a régi állomány érintése előtt derüljön ki.
+  const data = structuredClone({ settings, program, run, nutrition, favs, custom, items });
+  if (!Array.isArray(data.items) || data.items.some(it => !it || typeof it.id !== 'string' || !it.id)) throw new Error('Hibás visszatöltési adat.');
+  const kv = Object.fromEntries(Object.entries(data).filter(([k, v]) => k !== 'items' && v != null));
+  await replaceAll(kv, data.items);
+}
+
+/* Egyetlen tranzakció: megszakításkor a törlés és az összes írás együtt visszagördül. */
+async function replaceAll(values, items) {
+  const db = await open();
+  if (!db) {
+    const kv = new Map(Object.entries(values)), nextItems = new Map(items.map(it => [it.id, it]));
+    mem.kv = kv; mem.items = nextItems;
+    return;
+  }
+  return new Promise((resolve, reject) => {
+    let t;
+    const fail = e => { report({ writeError: true }); reject(e || new Error('A visszatöltés nem sikerült.')); };
+    try {
+      t = db.transaction(['kv', 'items'], 'readwrite');
+      t.oncomplete = () => resolve();
+      t.onerror = t.onabort = () => fail(t.error);
+      const kv = t.objectStore('kv'), store = t.objectStore('items');
+      kv.clear(); store.clear();
+      for (const [key, value] of Object.entries(values)) kv.put(value, key);
+      for (const it of items) store.put(it);
+    } catch (e) { if (t) t.abort(); fail(e); }
+  });
 }

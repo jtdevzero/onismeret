@@ -538,3 +538,7 @@ details.more-group[open] > summary::after { content: "▴"; }
 /* ---- frissítésjelzés ---- */
 .update-bar { position: fixed; left: 12px; right: 12px; bottom: calc(84px + env(safe-area-inset-bottom, 0)); max-width: 520px; margin: 0 auto; z-index: 25; display: flex; align-items: center; gap: 10px; padding: 10px 12px 10px 16px; border-radius: 14px; background: var(--text); color: var(--bg); font-weight: 650; box-shadow: var(--shadow); }
 .update-bar span { flex: 1; }
+/* A tárolási figyelmeztetés navigáláskor is látható, nem takarja az edzést. */
+.storage-notice{max-width:680px;margin:12px auto;padding:16px;border:2px solid #8a1f6b;border-radius:16px;background:#fff3d6;color:#251329}
+.storage-notice p{margin:8px 0}
+.storage-notice a{color:#73164f;text-decoration:underline;font-weight:700}

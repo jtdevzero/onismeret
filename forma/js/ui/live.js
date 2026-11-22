@@ -53,7 +53,7 @@ export function feedback(r) {
     r.checks.length ? h('ul', { class: 'rows' }, r.checks.map(c => h('li', null, h('span', null, CHECK_NAMES[c.id] || c.id), h('span', { class: 'badge ' + (c.band === 'ok' ? 'good' : 'warn') }, c.band === 'ok' ? 'Rendben' : 'Javítandó')))) : null,
     fixes.length ? h('ul', { class: 'plain' }, fixes.map(c => h('li', null, FIX[c.id] || ''))) : null,
     r.confidence != null && r.confidence < 0.6 ? note('A mérés bizonytalan (rossz látási viszonyok); kezeld fenntartással.', 'small') : null,
-    note('A formaküszöbök szakmai becslések, szakember még nem kalibrálta őket.', 'small'));
+    note('Béta mérés: a pontosságot valódi felvételeken még nem validáltuk. A formaküszöbök szakmai becslések, szakember még nem kalibrálta őket. Az eredményt ellenőrizd és szükség esetén javítsd.', 'small'));
 }
 
 /* exerciseId: a gyakorlat vagy teszt · opts: { maxSeconds, startLabel, onDone(result) } · → { el, stop() } vagy null */

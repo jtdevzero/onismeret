@@ -1,4 +1,5 @@
 {
+  "version": "2026-11-22.1",
   "note": "Kor- és nemszerinti viszonyítási értékek. Minden tesztnél négy töréspont: a 20., 40., 60. és 80. percentilis értéke (p20…p80). A fordított tesztnél (lower: true) a kisebb érték a jobb. A minőség: 'A' = publikált, kor és nem szerinti norma, nagyjából erre a mérési módra; 'B' = több forrásból becsült érték, kevés vagy eltérő módszerű adat alapján. Szakember még nem lektorálta.",
   "reviewed": false,
   "bands": [[ 18, 29 ], [ 30, 39 ], [ 40, 49 ], [ 50, 59 ], [ 60, 69 ]],
