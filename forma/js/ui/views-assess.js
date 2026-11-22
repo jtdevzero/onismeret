@@ -5,6 +5,7 @@ import { D, profile, lowImpact } from './data.js';
 import { getDraft, setDraft, saveAssessment, assessments, evaluateItem, programFromAssessment, getProgram } from './state.js';
 import { LEVEL_NAMES } from '../core/score.js';
 import { radar } from './radar.js';
+import { TRIALS, reactionResult, randomDelay } from '../core/reaction.js';
 import { liveCounter } from './live.js';
 
 const isDone = (d, id) => d.results[id] != null || d.skipped[id];
@@ -87,6 +88,31 @@ export function timerWidget(cfg, onValue, onCleanup) {
     const halt = btn('Megállt', () => { stop(); halt.hidden = true; start.hidden = false; start.textContent = 'Újra'; status.textContent = 'Beírtam az időt; ha kell, javítsd.'; onValue(t); beep(520, 200); }, 'primary');
     halt.hidden = true;
     row.append(start, halt);
+  } else if (cfg.mode === 'reaction') {
+    /* koppintós reakcióteszt: a mező színváltására koppints; korai koppintás érvénytelen */
+    const pad = h('button', { type: 'button', class: 'react-pad', 'aria-label': 'Reakciómező: koppints, amikor zöldre vált' }, 'Indításhoz koppints ide');
+    const times = [];
+    let state = 'idle', shown = 0, wait = null;
+    onCleanup(() => clearTimeout(wait));
+    const arm = () => {
+      state = 'wait'; pad.className = 'react-pad wait'; pad.textContent = 'Várj…';
+      wait = setTimeout(() => { state = 'go'; shown = performance.now(); pad.className = 'react-pad go'; pad.textContent = 'MOST!'; }, randomDelay() * tickMs() / 1000);
+    };
+    pad.addEventListener('pointerdown', () => {
+      if (state === 'idle' || state === 'done') { times.length = 0; status.textContent = ''; clock.textContent = '–'; arm(); return; }
+      if (state === 'wait') { clearTimeout(wait); times.push(NaN); status.textContent = `Túl korán! (${times.length}/${TRIALS})`; }
+      else if (state === 'go') { const ms = performance.now() - shown; times.push(ms); clock.textContent = Math.round(ms) + ' ms'; status.textContent = `${times.length}/${TRIALS}. próba`; }
+      if (times.length >= TRIALS) {
+        const r = reactionResult(times);
+        state = 'done'; pad.className = 'react-pad'; pad.textContent = 'Újra';
+        if (r) { clock.textContent = r.median + ' ms'; status.textContent = `Medián ${r.median} ms (legjobb ${r.best} ms). Beírtam.`; onValue(r.median); }
+        else status.textContent = 'Túl sok korai koppintás. Próbáld újra.';
+        return;
+      }
+      arm();
+    });
+    clock.textContent = '–';
+    row.append(pad);
   } else if (cfg.mode === 'counter') {
     let n = 0; clock.textContent = '0';
     const tap = btn('+1', () => { n++; clock.textContent = String(n); onValue(n); }, 'primary counter-btn');
@@ -127,7 +153,8 @@ export async function testView(id, onCleanup) {
     onDone: r => {
       if (!r.ok || !input.setValue) return;
       const hs = r.holdSides;
-      const v = id === 'sl_stance' && hs && hs.left != null && hs.right != null ? Math.round((hs.left + hs.right) * 2) / 4 : r.holdSeconds != null && !r.reps ? Math.floor(r.holdSeconds) : r.reps;
+      const v = id === 'vertical_jump' ? r.jumpCm : id === 'sl_stance' && hs && hs.left != null && hs.right != null ? Math.round((hs.left + hs.right) * 2) / 4 : r.holdSeconds != null && !r.reps ? Math.floor(r.holdSeconds) : r.reps;
+      if (v == null) return;
       input.setValue(v);
       toast('Beírtam a mért eredményt; ha kell, javítsd, majd mentsd.');
     },

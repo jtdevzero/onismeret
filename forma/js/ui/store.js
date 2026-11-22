@@ -48,15 +48,17 @@ export async function wipeAll() {
 }
 /* Mentés fájlba: beállítások, program, felmérések és edzések. */
 export async function exportAll() {
-  return { app: 'forma', version: 1, exported: new Date().toISOString(), settings: await kvGet('settings', {}), program: await kvGet('program', null), run: await kvGet('run', null), nutrition: await kvGet('nutrition', null), items: await itemsAll() };
+  return { app: 'forma', version: 1, exported: new Date().toISOString(), settings: await kvGet('settings', {}), program: await kvGet('program', null), run: await kvGet('run', null), nutrition: await kvGet('nutrition', null), favs: await kvGet('favs', null), custom: await kvGet('custom', null), items: await itemsAll() };
 }
 
 /* Visszatöltés ellenőrzött mentésből (core/backup.js): minden meglévő adat helyére. */
-export async function restoreAll({ settings, program, run, nutrition, items }) {
+export async function restoreAll({ settings, program, run, nutrition, favs, custom, items }) {
   await wipeAll();
   if (settings) await kvSet('settings', settings);
   if (program) await kvSet('program', program);
   if (run) await kvSet('run', run);
   if (nutrition) await kvSet('nutrition', nutrition);
+  if (favs) await kvSet('favs', favs);
+  if (custom) await kvSet('custom', custom);
   for (const it of items) await itemPut(it);
 }

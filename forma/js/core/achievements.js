@@ -6,7 +6,7 @@ import { weekStart, weeklyCardio } from './cardio.js';
 const DAY = 86400000;
 export const MINI_TESTS = ['pushup', 'plank', 'sl_stance'];
 /* ezeknél a kisebb érték a jobb */
-export const LOWER_BETTER = new Set(['step_test', 'fitness_age', 'waist']);
+export const LOWER_BETTER = new Set(['step_test', 'fitness_age', 'waist', 'reaction']);
 
 /* Egy mért érték története a felmérésekből és a mini-tesztekből, időrendben. → [{ date, value, source }] */
 export function testHistory(items, id) {

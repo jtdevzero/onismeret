@@ -46,10 +46,11 @@ export async function startView() {
     go.disabled = !(ageOk(st.age) && st.sex && answered && st.ok);
   };
   const age = h('input', { type: 'number', inputMode: 'numeric', min: 18, max: 99, value: st.age ?? '', 'aria-describedby': 'age-hint', oninput: () => { st.age = age.value === '' ? null : Number(age.value); refresh(); } });
-  const parq = h('div', null, PARQ.map(([k, q]) => h('fieldset', { class: 'session' },
-    h('legend', { class: 'small' }, q),
-    h('div', { class: 'row tight' }, ...[[false, 'Nem'], [true, 'Igen']].map(([v, t]) =>
-      h('label', { class: 'check' }, h('input', { type: 'radio', name: 'parq-' + k, checked: st.parq[k] === v, onchange: () => { st.parq[k] = v; refresh(); } }), h('span', null, t)))))));
+  /* minden kérdés egy blokk, alatta két nagy gomb (Nem | Igen); a rádiógomb rejtett, de billentyűzettel és felolvasóval működik */
+  const parq = h('div', { class: 'parq' }, PARQ.map(([k, q], i) => h('fieldset', { class: 'parq-q' },
+    h('legend', null, h('span', { class: 'parq-n', 'aria-hidden': 'true' }, String(i + 1)), q),
+    h('div', { class: 'seg' }, ...[[false, 'Nem'], [true, 'Igen']].map(([v, t]) =>
+      h('label', { class: 'seg-item' + (v ? ' yes' : ' no') }, h('input', { type: 'radio', class: 'visually-hidden', name: 'parq-' + k, checked: st.parq[k] === v, onchange: () => { st.parq[k] = v; refresh(); } }), h('span', null, t)))))));
   const accept = h('label', { class: 'check' }, h('input', { type: 'checkbox', onchange: e => { st.ok = e.target.checked; refresh(); } }),
     h('span', null, 'Megértettem: a Forma nem orvosi eszköz és nem helyettesít orvosi vizsgálatot. Ha edzés közben fájdalmat, szédülést, mellkasi szorítást vagy szokatlan légszomjat érzek, abbahagyom.'));
   /* négy rövid lépés: bemutatás → rólad → egészségügyi szűrés → elfogadás */
@@ -95,7 +96,7 @@ export async function startView() {
   return h('div', { class: 'page' },
     h('section', { class: 'hero' }, h('h1', null, 'Forma'), h('p', { class: 'hero-sub' }, 'Állapotfelmérés és otthoni edzés'),
       h('p', { class: 'hero-lead' }, 'Hol tartasz a korosztályodhoz képest, és hogyan érheted el, vagy előzheted meg?')),
-    dots, warn, sections);
+    dots, sections, warn);
 }
 
 const DAYS = ['H', 'K', 'Sze', 'Cs', 'P', 'Szo', 'V'];
@@ -113,7 +114,7 @@ export async function homeView() {
     return h('div', { class: 'page' },
       h('section', { class: 'hero' }, h('h1', null, 'Forma'), h('p', { class: 'hero-sub' }, 'Kezdjük a felméréssel'),
         h('div', { class: 'hero-next' }, h('h2', null, 'Felmérés, kb. 25 perc'),
-          h('p', null, '13 rövid teszt, egyenként vezetve. Kell hozzá egy szék, egy fal, egy mérőszalag vagy vonalzó, és ha van, egy kb. 30 cm magas lépcsőfok.'),
+          h('p', null, `${D.tests.tests.length} rövid teszt, egyenként vezetve. Kell hozzá egy szék, egy fal, egy mérőszalag vagy vonalzó, és ha van, egy kb. 30 cm magas lépcsőfok.`),
           link('#/assess', 'Felmérés indítása', 'btn light'))),
       card(h('h2', null, 'Mire számíts?'), list(['Bemelegítés után végezd, kipihenten.', 'Részletekben is csinálhatod: az eredmények mentődnek.', 'Ami fáj, azt hagyd ki. Kihagyott teszttel is kapsz eredményt.'])));
   }
@@ -209,7 +210,7 @@ export async function logView(ym) {
     compare,
     card(h('h2', null, 'Felmérések'), as.length ? h('ul', { class: 'rows' }, as.map(a => { const e = evaluateItem(a); return h('li', null, link('#/result/' + a.id, fmtDate(a.date)), h('span', { class: 'muted small' }, (e.overall != null ? e.overall + ' / 100' : '') + (e.fitnessAge != null ? ' · fittségi kor ' + e.fitnessAge : ''))); })) : h('p', { class: 'muted' }, 'Még nincs felmérés.')),
     card(h('h2', null, 'Edzések'), ws.length ? h('ul', { class: 'rows' }, ws.slice(0, 30).map(w => h('li', null,
-      h('span', { class: 'log-item' }, h('strong', null, SESSION_TITLES[w.key] || w.key), h('span', { class: 'muted small' }, fmtDate(w.date) + ' · ' + w.minutes + ' perc' + (w.partial ? ' · részben' : ''))),
+      h('span', { class: 'log-item' }, h('strong', null, w.title || SESSION_TITLES[w.key] || w.key), h('span', { class: 'muted small' }, fmtDate(w.date) + ' · ' + w.minutes + ' perc' + (w.partial ? ' · részben' : ''))),
       w.changes && w.changes.length ? h('span', { class: 'badge good' }, 'Szintlépés') : null))) : h('p', { class: 'muted' }, 'Még nincs edzés.')));
 }
 
@@ -219,7 +220,7 @@ export function restorePicker() {
     const file = input.files && input.files[0];
     input.value = '';
     if (!file) return;
-    const res = parseBackup(await file.text(), { testIds: D.tests.tests.map(t => t.id), ladders: LADDERS, sessionKeys: Object.keys(SESSION_TITLES), ratingKeys: RATINGS.map(([k]) => k), cardioTypes: CARDIO_TYPES.map(([k]) => k), goalMetrics: GOAL_METRICS().map(([k]) => k) });
+    const res = parseBackup(await file.text(), { testIds: D.tests.tests.map(t => t.id), ladders: LADDERS, sessionKeys: Object.keys(SESSION_TITLES), ratingKeys: RATINGS.map(([k]) => k), cardioTypes: CARDIO_TYPES.map(([k]) => k), goalMetrics: GOAL_METRICS().map(([k]) => k), exerciseIds: D.exercises.exercises.map(e => e.id) });
     if (!res.ok) { toast(res.error); return; }
     const { items } = res.data, na = items.filter(i => i.kind === 'assessment').length, nw = items.length - na;
     if (!confirm(`A mentésben ${na} felmérés és ${nw} edzés van. Visszatöltöd? Ami most a telefonon van, annak a helyére kerül.`)) return;
@@ -307,8 +308,11 @@ export async function moreView() {
   const item = (href, ic, title, sub) => h('li', null, h('a', { href }, h('span', { class: 'tile-ic' }, h('span', { class: 'ic ic-' + ic, 'aria-hidden': 'true' })), h('span', null, h('strong', null, title), h('span', { class: 'small' }, sub))));
   return page('Több',
     h('ul', { class: 'menu-list' },
-      item('#/assess', 'check', 'Felmérés', '13 teszt a korosztályodhoz mérve; 6 hetente újra'),
+      item('#/assess', 'check', 'Felmérés', `${D.tests.tests.length} teszt a korosztályodhoz mérve; 6 hetente újra`),
       item('#/result', 'chart', 'Legutóbbi eredmény', 'Pókhálóábra, fittségi kor, területek'),
+      item('#/routines', 'train', 'Rövid rutinok', 'Reggeli, irodai, esti, sí előtti; és a saját edzéseid'),
+      item('#/library', 'log', 'Gyakorlattár', 'Minden gyakorlat, kedvencek, saját edzés összeállítása'),
+      item('#/posture', 'check', 'Testtartás', 'Szemből és oldalról, kamerával'),
       item('#/cardio', 'train', 'Állóképesség', 'Kardiónapló, pulzuszónák, heti 150 perc'),
       item('#/run', 'train', 'Futóprogram', 'Nulláról 5 km-ig, 9 hét'),
       item('#/log', 'log', 'Napló', 'Naptár, havi összefoglaló, edzések'),

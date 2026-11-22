@@ -4,7 +4,7 @@
 
 Telefonra telepíthető webapp. Felméri, hol tartasz a korosztályodhoz képest, és napi rövid, eszköz nélküli edzéssel visz a korosztályos szintre, majd afölé.
 
-- **Felmérés (kb. 25 perc, 13 teszt):** mély guggolás, váll- és bokamobilitás, ülve előrenyúlás, csípőhajlító-teszt, fekvőtámasz, 30 mp felállás székről, plank, helyből távolugrás, gyors lábmunka, egylábas állás csukott szemmel, leülés–felállás a földről, 3 perces lépcsőteszt. Vezetett tesztek visszaszámlálással, stopperrel, ismétlésszámlálóval, metronómmal. Részletekben is elvégezhető.
+- **Felmérés (kb. 25 perc, 15 teszt):** mély guggolás, váll- és bokamobilitás, ülve előrenyúlás, csípőhajlító-teszt, fekvőtámasz, 30 mp felállás székről, plank, helyből távolugrás, gyors lábmunka, reakcióidő, felugrás (kamerával), egylábas állás csukott szemmel, leülés–felállás a földről, 3 perces lépcsőteszt. Vezetett tesztek visszaszámlálással, stopperrel, ismétlésszámlálóval, metronómmal. Részletekben is elvégezhető.
 - **Kiértékelés:** hét terület (mobilitás, hajlékonyság, erő, törzs, gyorsaság, egyensúly, állóképesség) 0–100 pontos skálán, kor és nem szerinti percentilisekkel, pókhálóábrával. **Fittségi kor** a Nes-féle (HUNT) edzés nélküli VO₂max-becslésből.
 - **Program:** hétnapos forgó rend (3 erőnap, 2 gyorsasági nap, 2 mobilitásnap). Minden nap a leggyengébb ízületekre szabott mobilitással indul. A gyakorlatok szintekre bontott sorokban vannak (pl. fekvőtámasz falnál → … → megemelt lábbal); két „könnyű” értékelés után nehezebb változat jön. 5 hét terhelés, 1 könnyített hét, utána újramérés.
 - **Egyéb:** vezetett edzés hangos bemondással, napló, fejlődés felmérésről felmérésre (tesztenként is), napi emlékeztető naptárfájlként (.ics), kímélő (ugrásmentes) mód, PAR-Q+ alapú egészségügyi szűrés, mentés fájlba és visszatöltés ellenőrzéssel (telefoncseréhez). Offline is működik.
@@ -23,6 +23,10 @@ Telefonra telepíthető webapp. Felméri, hol tartasz a korosztályodhoz képest
 - **Időszakolás:** a 6 hetes ciklusok fókusza váltakozik (alapozás → erő → robbanékonyság).
 - **Panaszmód** (térd, derék, váll): kímélőbb változatok óvatos, általános szabályokkal; szakember még nem lektorálta.
 - **Dizájn:** mozgó gyakorlatábrák, gyűrűs visszaszámláló, rezgés és lapozás edzés közben, négy menüpont, téma- és betűméret-kapcsoló, lépésenkénti bevezetés.
+- **Gyorsasági mérések:** reakcióidő-teszt (öt koppintás, medián; saját alapvonal) és felugrás magassága kamerával (a repülési időből).
+- **Testtartás-ellenőrzés kamerával:** szemből a váll- és csípődőlés, oldalról a fej előretolódása; javasolt gyakorlatok, és a program mobilitási fókuszába is felvehető.
+- **Gyakorlattár** kereséssel, típusszűrővel és kedvencekkel; **saját edzés** összeállítása a kedvencekből.
+- **Rövid rutinok:** reggeli ébresztő, irodai mobilitás, esti nyújtás, sí előtti felkészítés (nem léptetik a programot, de naplózódnak).
 - **Eszközök:** húzódzkodó rúd, kettlebell/kézisúlyzó vagy gumiszalag esetén a gyakorlatsorok ahhoz igazodnak (rúd: függeszkedés → negatív → húzódzkodás; súlyzó: serleg guggolás, román felhúzás, lendítés, evezés; szalag: széthúzás → evezés).
 - **Kamerás mérés (béta):** a letámasztott telefon kamerája előtt élőben számolja az ismétléseket vagy a kitartott időt, hangosan is, és a végén visszajelez a formáról. Tesztekhez (fekvőtámasz, 30 mp felállás, plank, egylábas állás: az eredmény a mezőbe kerül), a gyakorlatleírásnál és a vezetett edzésben. A pózbecslő (MediaPipe, kb. 15 MB) a Kanyaréval azonos, a készüléken fut, és csak az első használatkor töltődik le.
 - **Adatvédelem:** minden adat a készüléken marad (IndexedDB). Nincs szerver, fiók, és nincs külső kérés (CSP: csak `'self'`; a `'wasm-unsafe-eval'` a pózbecslő WebAssembly-futtatójához kell).

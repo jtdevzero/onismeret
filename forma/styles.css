@@ -396,3 +396,34 @@ details.section > summary { cursor: pointer; font-weight: 750; min-height: 44px;
 .nut-row { justify-content: space-between; }
 .nut-row > span { flex: 1; }
 .nut-row .btn.small { min-width: 44px; }
+
+/* ---- reakcióteszt ---- */
+.react-pad { width: 100%; min-height: 180px; border: 0; border-radius: var(--radius); background: var(--surface); color: var(--text); font: inherit; font-size: 1.4rem; font-weight: 850; cursor: pointer; box-shadow: inset 0 0 0 2px var(--line); touch-action: manipulation; }
+.react-pad.wait { background: var(--warn-bg); color: var(--warn); }
+.react-pad.go { background: var(--teal); color: #04201f; font-size: 2.4rem; }
+
+/* ---- gyakorlattár ---- */
+.search { width: 100%; min-height: 50px; padding: 8px 14px; margin: 0 0 10px; border: 1.5px solid var(--line); border-radius: var(--radius-s); background: var(--surface); color: var(--text); font: inherit; }
+.chips { display: flex; gap: 8px; overflow-x: auto; padding: 2px 0 12px; scrollbar-width: none; }
+.chips .chip { flex: none; }
+.star { min-width: 44px; min-height: 44px; border: 0; background: none; font-size: 1.5rem; color: var(--muted); cursor: pointer; }
+.star.on { color: var(--sun); }
+ul.rows > li.pick { flex-wrap: wrap; }
+.pick-dose { display: flex; align-items: center; gap: 6px; }
+.mini-num { width: 64px; min-height: 40px; padding: 4px 8px; border: 1.5px solid var(--line); border-radius: 10px; background: var(--bg); color: var(--text); font: inherit; }
+.routine-min { display: grid; place-items: center; width: 48px; height: 48px; flex: none; border-radius: 14px; background: var(--accent-soft); color: var(--accent-strong); font-weight: 850; }
+.section-title { margin: 22px 0 10px; }
+
+/* ---- egészségügyi kérdések: kérdésblokk és két nagy gomb ---- */
+.parq { display: grid; gap: 10px; margin-top: 6px; }
+fieldset.parq-q { margin: 0; padding: 14px; border: 1px solid var(--line); border-radius: var(--radius-s); background: var(--bg); min-width: 0; }
+fieldset.parq-q legend { float: left; width: 100%; padding: 0; margin: 0 0 12px; font-weight: 650; line-height: 1.4; display: flex; gap: 10px; }
+fieldset.parq-q legend + * { clear: both; }
+.parq-n { flex: none; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--accent-soft); color: var(--accent-strong); font-size: .8rem; font-weight: 850; }
+.seg { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.seg-item { display: flex; align-items: center; justify-content: center; min-height: 48px; border: 1.5px solid var(--line); border-radius: 12px; background: var(--surface); font-weight: 750; cursor: pointer; transition: background .12s, border-color .12s; }
+.seg-item:has(input:checked) { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
+.seg-item.yes:has(input:checked) { background: var(--warn-bg); border-color: var(--warn); color: var(--warn); }
+.seg-item:has(input:focus-visible) { outline: 3px solid var(--sun); outline-offset: 2px; }
+/* általános: a natív jelölők a témához igazodnak */
+input[type=radio], input[type=checkbox] { accent-color: var(--accent); }

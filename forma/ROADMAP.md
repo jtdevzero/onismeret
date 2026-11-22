@@ -43,3 +43,52 @@ Méret: **K** = kicsi (egy commit), **K+** = közepes, **N** = nagy (több lép�
 - **Következő:** 14, 16, 20, 1
 - **Szakemberrel:** 1, 7
 - **Később, egyeztetés után:** 11, 14–20
+
+---
+
+# Újabb 20 bővítési ötlet
+
+Méret: **K** kicsi, **K+** közepes, **N** nagy. *Külső*: szerver, szolgáltatás vagy szakmai döntés kell hozzá, ezért előtte kérdezni kell.
+
+## Mérés a telefon érzékelőivel
+1. **Egyensúlyteszt gyorsulásmérővel (K+)** – a telefon a mellkason, egylábas állásban méri a kilengést: objektív egyensúlyi pontszám a stopper mellé.
+2. **Futókadencia (K+)** – lépésszám és lépés/perc a futás közben, a telefon mozgásérzékelőjéből; cél a 165–180 lépés/perc.
+3. **Nyugalmi pulzus kamerával (N)** – ujj a hátsó kamerán és a vakun: reggeli pulzus és regenerációs jelzés, óra nélkül. Tájékoztató mérés.
+4. **Metronóm futáshoz (K)** – választható ütem (pl. 170/perc) a futóprogramban, a kadencia javításához.
+
+## Program és edzés
+5. **Regenerációs pontszám (K+)** – alvás, nyugalmi pulzus, izomláz és az előző napok terhelése alapján automatikusan könnyít vagy terhel a napi edzésen.
+6. **Szezonális programok (K+)** – nyári futó, téli sí előtti, strandszezon előtti törzserősítő 4–6 hetes blokkok.
+7. **Sportág-kiegészítők (K+)** – futó, kerékpáros, teniszes, focista: célzott mobilitás és sérülésmegelőzés a heti rendbe.
+8. **30 napos kihívások (K)** – például plank vagy guggolás napi progresszióval, külön jelvénnyel.
+9. **Ülőmunka-szünetek (K)** – óránkénti 2 perces mozgásszünet-javaslat munkaidőben (naptárfájllal, szerver nélkül).
+10. **60 év fölötti modul (K+)** – eséskockázat-felmérés (például a „felállás és séta” teszt), egyensúly- és erőprogram idősebbeknek. *Szakmai átnézés kell.*
+
+## Motiváció és közösség
+11. **Fittségi kor előrejelzés (K)** – „ha így folytatod, 3 hónap múlva kb. X év”, a haladás üteméből.
+12. **Kihívás egy baráttal QR-kóddal (K+)** – az eredmények egy QR-kódban cserélhetők, szerver és fiók nélkül.
+13. **Havi „mozgás-összefoglaló” kép (K)** – a hónap számai egy megosztható képen.
+14. **Személyes rekordok értesítője (K)** – a mini-teszt és a felmérés után kiemelve, ha megdőlt egy csúcs.
+
+## Kapcsolat és export
+15. **PDF-összefoglaló orvosnak vagy edzőnek (K+)** – felmérés, trendek, panaszok egy oldalon.
+16. **Lépésszám és okosóra-adatok importja (K+)** – CSV- vagy GPX-fájlból, kézi exporttal.
+17. **Önismereti oldalak bekötése (K)** – a Forma heti áttekintése a gyökér oldal szokás- és energiafigyelőjével együtt.
+18. **AI-edző heti visszajelzéssel (N, külső)** – a Kanyar workerének mintájára, a Claude API-val. Szerver és API-kulcs kell.
+
+## Akadálymentesség
+19. **Teljesen hangvezérelt edzés (K+)** – képernyő nélkül, csak hangos vezetéssel, és nagy, egyetlen „tovább” gombbal.
+20. **Hangparancsok (N)** – „tovább”, „szünet”, „még egyet”. A böngészők beszédfelismerése többnyire külső szerveren fut, ezért adatvédelmi okból előtte egyeztetni kell.
+
+# Dizájnjavaslatok a következő körre
+
+1. **Napszakhoz igazodó nyitórajz** – reggel napfelkelte, este naplemente, éjjel neonos városkép.
+2. **Ünneplő animáció** szintlépéskor és jelvénynél (konfetti vagy fényvillanás), csökkentett mozgásnál kikapcsolva.
+3. **Felpörgő számok** az eredményoldalon (fittségi kor, pontszámok).
+4. **Pókháló-összevetés csúszkával** – az előző és a mostani felmérés között húzva animál.
+5. **Gyakorlattípus-ikonok** a listákban (erő, mobilitás, egyensúly…), saját pálcika-stílusban.
+6. **Fekvő nézet edzés közben** – tableten vagy tévén nagy óra és ábra egymás mellett.
+7. **Napfényre optimalizált, nagy kontrasztú téma** a szabadtéri edzéshez.
+8. **Illusztrált üres állapotok** („még nincs edzés”, „még nincs cél”) egy-egy biztató rajzzal.
+9. **Ciklus-idővonal a Program oldalon** – a 6 hét és a fókusz egy vízszintes sávon, a mostani hét kiemelve.
+10. **Finom rezgés gombnyomásra** a fontos műveleteknél (indítás, kész, értékelés).

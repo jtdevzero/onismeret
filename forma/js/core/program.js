@@ -268,3 +268,16 @@ export function fitSession(session, exById, target) {
   if (target >= 35) for (const b of main()) { if (mins() + 2 > target) break; if (b.sets < 4) b.sets++; }
   return { ...s, fit: { target, minutes: mins() } };
 }
+
+/* Önálló edzés egy rutinból vagy saját összeállításból: blocks = [[gyakorlat, körök, { reps | seconds }, pihenő?]].
+   Nem lépteti a forgó rendet és nem kér értékelést. */
+export function freeSession(key, title, blocks, exById) {
+  const out = [];
+  for (const [id, sets, dose, rest] of blocks) {
+    const ex = exById[id];
+    if (!ex) continue;
+    const d = dose && (dose.reps || dose.seconds) ? dose : (ex.dose.reps ? { reps: ex.dose.reps[0] } : { seconds: ex.dose.seconds[0] });
+    out.push({ exercise: id, sets: Math.max(1, Math.min(6, sets || 1)), ...(d.reps ? { reps: d.reps } : { seconds: d.seconds }), rest: rest ?? (sets > 1 ? 30 : 0), rate: false, part: ex.type === 'mobility' || ex.type === 'recovery' ? 'mobility' : 'main' });
+  }
+  return { key, title, blocks: out, week: { week: 1, cycleWeek: 1, deload: false, cycle: 1 }, light: false, phase: null, complaints: [], free: true };
+}
