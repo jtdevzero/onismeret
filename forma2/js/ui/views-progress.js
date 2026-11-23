@@ -16,6 +16,7 @@ import { sameScoring } from '../core/assessment.js';
 import { progressCard } from './progress-card.js';
 import { MINI_TESTS, records, badges, bodyTrend, currentFitnessAge, goalProgress, metricValue, latestValue, LOWER_BETTER } from '../core/achievements.js';
 import { tr } from './i18n.js';
+import { visualDashboard } from './views-visual.js';
 
 const reload = hash => { location.hash = hash; dispatchEvent(new HashChangeEvent('hashchange')); };
 const numericTests = () => D.tests.tests.filter(t => t.kind === 'norm' && t.input.type === 'number');
@@ -69,6 +70,7 @@ export async function progressView(arg, onCleanup) {
   const coachProg = await getProgram();
   return page(tr('Fejlődés'),
     artBanner('progress', tr('A saját történeted'), tr('Lépésről lépésre feljebb')),
+    visualDashboard(items),
     progressShortcuts(),
     coachProg ? coachCard(coachProg, items) : null,
     weeklyCoachCard(items),

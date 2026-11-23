@@ -7,6 +7,11 @@ import { tr } from './i18n.js';
 
 /* az utolsó hibák a memóriában (a jelentéshez); a felhasználói adatokat nem tartalmazzák */
 const ERRORS = [];
+export function reportRouteError(route, error) {
+  /* Csak képernyő és hibakategória; kivételszövegben lehetne személyes adat. */
+  ERRORS.push(`${new Date().toISOString().slice(11, 19)} képernyő=${String(route).slice(0, 24)} típus=${String(error?.name || 'Error').slice(0, 40)}`);
+  if (ERRORS.length > 15) ERRORS.shift();
+}
 export function initErrorLog() {
   const push = msg => { ERRORS.push(`${new Date().toISOString().slice(11, 19)} ${String(msg).slice(0, 300)}`); if (ERRORS.length > 15) ERRORS.shift(); };
   addEventListener('error', e => push(e.message || 'hiba'));
