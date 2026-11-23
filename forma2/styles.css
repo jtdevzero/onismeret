@@ -763,9 +763,18 @@ ul.rows.lib.catalog-grid > li.catalog-tile { display: grid; grid-template-column
 .bodylab-hero h2 { color: #fff; font: italic 400 clamp(1.8rem, 7vw, 3rem)/1.05 var(--display); max-width: 12ch; margin: 9px 0; }
 .bodylab-hero p { max-width: 26ch; color: #ffe5ed; }
 .bodylab-hero .eyebrow { font-size: .7rem; letter-spacing: .12em; color: #90f3e2; }
+.bodylab-intro { display: flex; gap: 13px; align-items: center; margin-top: 14px; padding: 13px 15px; border: 1px solid color-mix(in srgb,var(--teal) 35%,var(--line)); border-radius: 16px; background: color-mix(in srgb,var(--teal) 7%,var(--bg-2)); }
+.bodylab-intro-icon { display: grid; place-items: center; flex: 0 0 44px; width: 44px; height: 44px; border-radius: 14px; background: linear-gradient(145deg,#52d3ce,#d879a1); font-size: 1.5rem; color: #220e2c; }
+.bodylab-intro strong { display: block; line-height: 1.25; }
+.bodylab-intro p { margin: 3px 0 0; font-size: .88rem; line-height: 1.4; }
 .bodylab-tabs { display: flex; gap: 8px; padding: 10px 1px; overflow-x: auto; scrollbar-width: thin; scroll-snap-type: x proximity; }
-.bodylab-tabs .btn { flex: 0 0 auto; min-height: 44px; white-space: nowrap; scroll-snap-align: start; }
-.bodylab-three { min-height: 330px; width: 100%; max-width: 460px; margin: 0 auto; position: relative; overflow: hidden; border-radius: 18px; background: radial-gradient(ellipse at 50% 35%, #653155 0, #29132f 68%, #1d0d29); box-shadow: inset 0 0 0 1px rgba(255,255,255,.13); }
+.bodylab-tabs .btn { flex: 0 0 auto; min-height: 46px; white-space: nowrap; scroll-snap-align: start; border-radius: 999px; font-weight: 750; }
+.bodylab-tabs .btn[aria-pressed=true] { box-shadow: 0 4px 17px color-mix(in srgb,var(--accent) 26%,transparent); }
+.bodylab-viewer-wrap { max-width: 520px; margin: 0 auto 13px; }
+.bodylab-viewer-heading { display: flex; align-items: center; gap: 9px; margin: 4px 0 9px; font-size: .84rem; font-weight: 750; letter-spacing: .02em; }
+.bodylab-live-tag { display: inline-flex; align-items: center; justify-content: center; min-height: 25px; padding: 3px 9px; border-radius: 8px; background: #246e72; color: white; font: 800 .74rem/1 sans-serif; letter-spacing: .08em; }
+.bodylab-three { min-height: 330px; width: 100%; max-width: 520px; margin: 0 auto; position: relative; overflow: hidden; border-radius: 20px; background: radial-gradient(ellipse at 50% 30%,#7c456c 0,#42264b 34%,#1d102f 75%),#20102d; box-shadow: inset 0 0 0 1px rgba(255,255,255,.17),0 12px 32px rgba(38,14,49,.15); }
+.bodylab-three::before { content: ''; position: absolute; inset: 0; pointer-events: none; background-image: linear-gradient(rgba(134,240,230,.075) 1px,transparent 1px),linear-gradient(90deg,rgba(134,240,230,.075) 1px,transparent 1px); background-size: 29px 29px; mask-image: linear-gradient(to bottom,transparent 10%,black 60%,transparent 94%); }
 .bodylab-three::after { content: '3D · forgatás: húzás · zoom: görgetés'; position: absolute; bottom: 7px; left: 10px; right: 10px; text-align: center; color: #ffe9ef; font-size: .68rem; pointer-events: none; }
 .bodylab-three[data-webgl=unavailable]::before { content: '3D nem érhető el ezen az eszközön – használd a 2D nézetet.'; position: absolute; inset: 40% 16px auto; text-align: center; color: #fff; font-size: .9rem; }
 .bodylab-three-canvas { display: block; width: 100%; height: 330px; touch-action: none; cursor: grab; }
@@ -778,14 +787,18 @@ ul.rows.lib.catalog-grid > li.catalog-tile { display: grid; grid-template-column
 .bodylab-fallback { margin-top: 10px; border: 1px solid var(--line); border-radius: 12px; padding: 12px; background: var(--bg-2); }
 .bodylab-fallback summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; font-weight: 750; }
 .bodylab-diagram { display: block; width: min(100%, 250px); height: 280px; margin: 5px auto; }
-.bodylab-silhouette { fill: color-mix(in srgb, var(--accent) 12%, var(--bg-2)); stroke: var(--accent); stroke-width: 1.4; }
+.bodylab-silhouette { fill: url(#bodylab-figure-shade); stroke: #fac2c3; stroke-width: 1.5; }
+.bodylab-guide-ring { fill: none; stroke: color-mix(in srgb,var(--teal) 32%,transparent); stroke-width: .8; stroke-dasharray: 3 6; }
+.bodylab-figure-lines { fill: none; stroke: #ffe8e5; stroke-width: 1.1; opacity: .55; stroke-linecap: round; }
 .bodylab-point { cursor: pointer; }
-.bodylab-point-ring { fill: color-mix(in srgb, var(--teal) 25%, transparent); stroke: var(--teal); stroke-width: 2; }
+.bodylab-point-ring { fill: color-mix(in srgb, var(--teal) 20%, transparent); stroke: var(--teal); stroke-width: 2; }
 .bodylab-point-core { fill: var(--sun); }
 .bodylab-point:hover .bodylab-point-ring,.bodylab-point:focus-visible .bodylab-point-ring,.bodylab-point.selected .bodylab-point-ring { fill: var(--teal); stroke: var(--text); stroke-width: 3; }
 .bodylab-choices { display: flex; flex-wrap: wrap; gap: 7px; margin: 6px 0 12px; }
 .bodylab-choices .chip { min-height: 44px; }
 .bodylab-detail .card { margin: 0; }
+.bodylab-detail .card { border-inline-start: 3px solid var(--teal); }
+.bodylab-choices .chip[aria-pressed=true] { box-shadow: 0 0 0 2px color-mix(in srgb,var(--teal) 65%,transparent); }
 .bodylab-detail p { line-height: 1.48; }
 @media (min-width: 740px) { .bodylab-grid { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); } }
 @media (prefers-reduced-motion: reduce) { .bodylab-tabs { scroll-behavior: auto; } }

@@ -1,4 +1,4 @@
-/* BODY LAB: gyors, offline edukációs atlasz. Forgatható 3D-modell helyett hitelesen jelölt sematikus rétegek. */
+/* BODY LAB: offline oktatási atlasz, sematikus 3D-modellel és hozzáférhető 2D-réteggel. */
 import { h, clear } from './dom.js';
 import { page, card, link, note } from './widgets.js';
 import { D } from './data.js';
@@ -21,11 +21,17 @@ function bodyDiagram(layer, selected, choose) {
     return n;
   };
   const svg = el('svg', { viewBox: '0 0 160 300', role: 'group', class: 'bodylab-diagram', 'aria-label': tr('Sematikus testrégiók és választható pontok') });
+  const defs=el('defs');
+  const gradient=el('linearGradient',{id:'bodylab-figure-shade',x1:'0%',x2:'100%',y1:'0%',y2:'100%'});
+  gradient.append(el('stop',{offset:'0%','stop-color':'#f5b29a'}),el('stop',{offset:'46%','stop-color':'#bc6a8b'}),el('stop',{offset:'100%','stop-color':'#48375f'}));
+  defs.append(gradient);svg.append(defs);
+  svg.append(el('circle',{cx:80,cy:139,r:105,class:'bodylab-guide-ring'}));
   svg.append(el('path', { d: 'M 80 15 C 60 15 59 51 80 56 C 101 51 100 15 80 15 Z M 65 60 Q 80 69 95 60 Q 118 57 129 78 L 146 151 Q 151 168 137 169 L 124 167 L 110 113 L 105 185 L 104 271 Q 102 284 85 280 L 80 192 L 75 280 Q 58 284 56 271 L 55 185 L 50 113 L 36 167 L 23 169 Q 9 168 14 151 L 31 78 Q 42 57 65 60 Z', class: 'bodylab-silhouette' }));
+  svg.append(el('path',{d:'M 80 64 L 80 186 M 53 90 Q 80 104 107 90 M 60 115 Q 80 124 100 115 M 64 135 Q 80 146 96 135 M 56 185 Q 80 195 104 185 M 80 191 L 80 262',class:'bodylab-figure-lines'}));
   for (const item of bodyLabItems(layer)) {
     const [x, y] = item.zone;
     const group = el('g', { tabindex: '0', role: 'button', 'aria-label': item.name, 'aria-pressed': String(item.id === selected), class: 'bodylab-point' + (item.id === selected ? ' selected' : '') });
-    group.append(el('circle', { cx: x, cy: y, r: 10, class: 'bodylab-point-ring' }), el('circle', { cx: x, cy: y, r: 4, class: 'bodylab-point-core' }));
+    group.append(el('circle', { cx: x, cy: y, r: 13, class: 'bodylab-point-ring' }), el('circle', { cx: x, cy: y, r: 5, class: 'bodylab-point-core' }));
     group.addEventListener('click', () => choose(item.id));
     group.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); choose(item.id); } });
     svg.append(group);
@@ -52,7 +58,7 @@ export async function bodyLabView(_arg, onCleanup = () => {}) {
       });
       const related = h('div');
       const viewer = h('div', { class: 'bodylab-three', 'aria-label': tr('Forgatható, stilizált 3D testmodell') });
-      display.append(viewer, map);
+      display.append(h('div',{class:'bodylab-viewer-wrap'},h('div',{class:'bodylab-viewer-heading'},h('span',{class:'bodylab-live-tag'},'3D'),h('span',null,tr('Izomatlasz · forgatható nézet'))),viewer),map);
       display.append(card(h('h3', null, tr('Kapcsolódó gyakorlatok')), related));
       unmountModel = mountThreeBody(viewer, { layer: 'muscles', onPick: area => map.selectArea(area) });
       return;
@@ -70,7 +76,8 @@ export async function bodyLabView(_arg, onCleanup = () => {}) {
       selected.moves ? h('p', null, h('strong', null, tr('Jellemző mozgások: ')), selected.moves) : null,
       selected.watch ? h('p', null, h('strong', null, tr('Mire figyelj: ')), selected.watch) : null, related) : null;
     display.append(h('div', { class: 'bodylab-grid' },
-      h('div', { class: 'bodylab-diagram-shell' }, viewer,
+      h('div', { class: 'bodylab-diagram-shell' },
+        h('div',{class:'bodylab-viewer-heading'},h('span',{class:'bodylab-live-tag'},'3D'),h('span',null,tr('Sematikus anatómiai modell'))),viewer,
         h('details', { class: 'bodylab-fallback' }, h('summary', null, tr('2D nézet / kisegítő ábra')), bodyDiagram(current.layer, current.selected, choose)),
         h('p', { class: 'small muted' }, tr('Érintsd meg a jelölőpontokat vagy válassz a listából.'))),
       h('div', { class: 'bodylab-detail' },
@@ -82,6 +89,8 @@ export async function bodyLabView(_arg, onCleanup = () => {}) {
   return page(tr('BODY LAB'),
     h('section', { class: 'bodylab-hero' }, h('p', { class: 'eyebrow' }, 'FORMA 2 · BODY LAB'),
       h('h2', null, tr('Ismerd meg a mozgásod')), h('p', null, tr('Izmok, ízületek, csontok és mozgásminták egy helyen.'))),
+    h('div',{class:'bodylab-intro'},h('span',{class:'bodylab-intro-icon','aria-hidden':'true'},'✦'),
+      h('div',null,h('strong',null,tr('Fedezd fel a tested működését')),h('p',null,tr('Válts réteget, forgass, majd érintsd meg a kiemelt területet.')))),
     selector, display,
     note(tr('Sematikus oktatási atlasz. Nem orvosi diagnózis, nem sérülésfelmérés, és nem valós idejű ízületi mérés. A tartalom külön belső szakmai felülvizsgálatra vár.'), 'small'),
     h('div', { class: 'row' }, link('#/library', tr('Teljes gyakorlattár'), 'btn primary')));
