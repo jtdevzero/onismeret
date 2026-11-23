@@ -48,13 +48,34 @@ export async function photoTrackerView(_arg, onCleanup = () => {}) {
         const makeSelect = (index) => h('select',{ 'aria-label':tr(index===0?'Korábbi fotó':'Későbbi fotó') },
           entries.map((p,i)=>h('option',{value:p.id,selected:i===(index===0?entries.length-1:0)},fmtDate(p.date)+(p.note?' · '+p.note:''))));
         const first=makeSelect(0), second=makeSelect(1), pair=h('div',{class:'photo-compare-pair'});
-        const update=()=>{clear(pair).append(...[first,second].map(select=>h('figure',null,
-          h('img',{src:sources.get(select.value),alt:tr('Saját előrehaladási fotó')}),
-          h('figcaption',null,select.options[select.selectedIndex]?.textContent||''))));};
+        let overlay=false;
+        const opacity=h('input',{type:'range',min:'0',max:'100',value:'50','aria-label':tr('Fotók átfedési aránya')});
+        const offsetX=h('input',{type:'range',min:'-40',max:'40',value:'0','aria-label':tr('Fotó vízszintes igazítása')});
+        const offsetY=h('input',{type:'range',min:'-40',max:'40',value:'0','aria-label':tr('Fotó függőleges igazítása')});
+        const overlayControls=h('div',{class:'photo-overlay-controls'},
+          h('label',{class:'photo-overlay-control'},tr('Átfedés mértéke'),opacity),
+          h('label',{class:'photo-overlay-control'},tr('Vízszintes igazítás'),offsetX),
+          h('label',{class:'photo-overlay-control'},tr('Függőleges igazítás'),offsetY));
+        const mode=btn(tr('Átfedéses nézet'),()=>{overlay=!overlay;mode.textContent=tr(overlay?'Egymás mellett':'Átfedéses nézet');update();},'small');
+        const update=()=>{
+          clear(pair);
+          pair.classList.toggle('photo-compare-overlay',overlay);
+          overlayControls.hidden=!overlay;
+          if(overlay){
+            const before=h('img',{src:sources.get(first.value),alt:tr('Korábbi fotó')});
+            const after=h('img',{src:sources.get(second.value),alt:tr('Későbbi fotó')});
+            const adjust=()=>{after.style.opacity=String(Number(opacity.value)/100);after.style.transform=`translate(${Number(offsetX.value)}%,${Number(offsetY.value)}%)`;};
+            for(const field of [opacity,offsetX,offsetY])field.oninput=adjust;adjust();
+            pair.append(h('div',{class:'photo-overlay-stage'},before,after));
+          }else pair.append(...[first,second].map(select=>h('figure',null,
+            h('img',{src:sources.get(select.value),alt:tr('Saját előrehaladási fotó')}),
+            h('figcaption',null,select.options[select.selectedIndex]?.textContent||''))));
+        };
         first.addEventListener('change',update);second.addEventListener('change',update);
         comparison.append(h('h3',null,tr('Két fotó összehasonlítása')),
           h('p',{class:'muted small'},tr('Válassz két időpontot. A képek kizárólag a készülékeden jelennek meg.')),
-          h('div',{class:'photo-compare-selects'},h('label',null,tr('Korábbi fotó'),first),h('label',null,tr('Későbbi fotó'),second)),pair);
+          h('div',{class:'photo-compare-selects'},h('label',null,tr('Korábbi fotó'),first),h('label',null,tr('Későbbi fotó'),second)),
+          h('div',{class:'photo-compare-options'},mode,overlayControls),pair);
         update();
       }
       clear(grid).append(entries.length ? entries.map(p=>{

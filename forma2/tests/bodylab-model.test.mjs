@@ -1,0 +1,30 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { ANATOMY_MODELS } from '../js/ui/anatomy-model-loader.js';
+import { canUseLocalModel } from '../js/core/bodylab-render.js';
+
+test('helyi Écorché modell GLB szerkezete, szabad licence és rétegei',()=>{
+  const entry=ANATOMY_MODELS.muscles;
+  assert.equal(entry,ANATOMY_MODELS.bones);
+  assert.equal(canUseLocalModel(entry),true);
+  assert.equal(entry.license,'CC BY-SA 4.0');
+  const bytes=readFileSync(new URL('../assets/models/ecorche.meshopt.glb',import.meta.url));
+  assert.equal(bytes.length,entry.bytes);
+  assert.equal(bytes.toString('ascii',0,4),'glTF');
+  assert.equal(bytes.readUInt32LE(8),bytes.length);
+  const jsonBytes=bytes.readUInt32LE(12);
+  const gltf=JSON.parse(bytes.subarray(20,20+jsonBytes).toString('utf8'));
+  assert.ok(gltf.meshes.length>500);
+  assert.ok(gltf.nodes.some(node=>node.extras?.layer==='skeleton'));
+  assert.ok(gltf.nodes.some(node=>node.extras?.layer==='superficial muscles'));
+  assert.ok(gltf.extensionsRequired.includes('EXT_meshopt_compression'));
+  const credit=readFileSync(new URL('../assets/models/attribution/ECORCHE_ATTRIBUTION.md',import.meta.url),'utf8');
+  assert.match(credit,/BodyParts3D/);
+  assert.match(credit,/Z-Anatomy/);
+  assert.match(credit,/CC BY-SA 4\.0/);
+  const sw=readFileSync(new URL('../sw.js',import.meta.url),'utf8');
+  assert.match(sw,/assets\/models\//);
+  const precache=sw.split('const PRECACHE = ')[1]?.split('];')[0]||'';
+  assert.doesNotMatch(precache,/ecorche\.meshopt\.glb/);
+});

@@ -83,7 +83,7 @@ export async function bodyLabView(_arg, onCleanup = () => {}) {
       h('div', { class: 'bodylab-detail' },
         h('div', { class: 'bodylab-choices' }, entries.map(item => h('button', { type: 'button', class: 'chip' + (item.id === current.selected ? ' on' : ''), 'aria-pressed': String(item.id === current.selected), onclick: () => choose(item.id) }, item.name))),
         detail)));
-    unmountModel = mountThreeBody(viewer, { layer: current.layer, onPick: choose });
+    unmountModel = mountThreeBody(viewer, { layer: current.layer, selected: current.selected, onPick: choose });
   };
   render();
   return page(tr('BODY LAB'),

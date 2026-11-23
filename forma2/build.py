@@ -70,8 +70,8 @@ self.addEventListener('fetch', e => {
     e.respondWith(caches.open(ART).then(c => c.match(req).then(hit => hit || fetch(req).then(r => { if (r.ok) c.put(req, r.clone()); return r; }))));
     return;
   }
-  if (url.pathname.includes('/vendor/')) {
-    /* pózbecslő: gyorsítótár először, különben hálózat és mentés */
+  if (url.pathname.includes('/vendor/') || url.pathname.includes('/assets/models/')) {
+    /* pózbecslő és anatómiai GLB: az első megnyitás után külön helyi cache, nem precache */
     e.respondWith(caches.open(VENDOR).then(c => c.match(req).then(hit => hit || fetch(req).then(r => { if (r.ok) c.put(req, r.clone()); return r; }))));
     return;
   }
@@ -117,6 +117,7 @@ def main():
     shell += rel((HERE / 'js').rglob('*.js'))
     shell += rel((HERE / 'data').glob('*.json'))
     vendor = [p for p in sorted((HERE / 'vendor').rglob('*')) if p.is_file() and p.suffix != '.md']
+    vendor += sorted((HERE / 'assets' / 'models').glob('*.glb'))
     sw = (SW.replace('__SHELL__', digest([HERE / s for s in shell]))
             .replace('__VENDOR__', digest(vendor))
             .replace('__ART__', digest(sorted((HERE / 'assets' / 'art').glob('*.webp'))))

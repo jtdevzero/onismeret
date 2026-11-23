@@ -1,13 +1,17 @@
 /* Three.js helyi, offline oktatási testmodell. Stilizált testarányok, nem validált anatómiai modell. */
 import { tr } from './i18n.js';
-export function mountThreeBody(container, { layer = 'muscles', onPick = () => {} } = {}) {
+import { rendererQuality } from '../core/bodylab-render.js';
+import { loadAnatomyModel, disposeAnatomyModel } from './anatomy-model-loader.js';
+export function mountThreeBody(container, { layer = 'muscles', selected = null, onPick = () => {} } = {}) {
   let disposed = false, cleanup = () => {};
+  const abort=new AbortController();
   (async () => {
     try {
       const THREE = await import('../../vendor/three/three.module.js');
       if (disposed) return;
-      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'low-power' });
-      renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+      const quality = rendererQuality({width: innerWidth, devicePixelRatio, deviceMemory: navigator.deviceMemory, reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches});
+      const renderer = new THREE.WebGLRenderer({ antialias: quality.antialias, alpha: true, powerPreference: 'low-power' });
+      renderer.setPixelRatio(quality.pixelRatio);
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       renderer.setClearColor(0x000000, 0);
       renderer.domElement.setAttribute('aria-hidden', 'true');
@@ -21,6 +25,9 @@ export function mountThreeBody(container, { layer = 'muscles', onPick = () => {}
       const camera = new THREE.PerspectiveCamera(34, 1, .1, 100);
       camera.position.set(0, 1.4, 9);
       camera.lookAt(0, 0.1, 0);
+      const focusTargets={ shoulder:[-0.85,1.48,0],elbow:[-1.25,.48,0],wrist:[-1.39,-.22,0],spine:[0,.48,0],hip:[-.36,-.43,0],knee:[-.34,-1.46,0],ankle:[-.38,-2.26,0],skull:[0,2.29,0],ribcage:[0,1.28,0],pelvis:[0,-.27,0],femur:[-.34,-.95,0],tibia:[-.38,-1.84,0],chest:[0,1.45,0],core:[0,.5,0],back:[0,1.1,0],legs:[0,-1.4,0],glutes:[0,-.3,0],arms:[-1.1,.8,0],shoulders:[-.9,1.5,0]};
+      const target=selected&&focusTargets[selected]||[0,.1,0];
+      camera.lookAt(...target);
       const groups = {};
       const allMeshes = [];
       const palette = { muscles: 0xe57983, joints: 0x61ddd6, bones: 0xf8dcca, connective: 0x71afdb, movements: 0xffae68 };
@@ -103,6 +110,57 @@ export function mountThreeBody(container, { layer = 'muscles', onPick = () => {}
 
       const layerGroup = layer === 'connective' ? 'connective' : layer === 'joints' ? 'joints' : layer === 'bones' ? 'bones' : layer === 'movements' ? 'movements' : 'muscles';
       for (const [k, group] of Object.entries(groups)) group.visible = k === layerGroup;
+      if(selected){for(const mesh of allMeshes){if(mesh.userData.area===selected){mesh.material.emissiveIntensity=.28;mesh.material.roughness=.25;}}}
+      let imported=null;
+      loadAnatomyModel(layerGroup,abort.signal).then(gltf=>{
+        if(disposed){disposeAnatomyModel(gltf);return;}
+        if(!gltf)return;
+        imported=gltf;
+        const region=name=>{
+          const s=String(name||'').toLowerCase();
+          if(layerGroup==='bones'){
+            if(/skull|cranium|mandible|maxilla/.test(s))return 'skull';
+            if(/rib|sternum/.test(s))return 'ribcage';
+            if(/humerus/.test(s))return 'humerus';
+            if(/pelvis|ilium|ischium|pubis|sacrum/.test(s))return 'pelvis';
+            if(/femur/.test(s))return 'femur';
+            if(/tibia/.test(s))return 'tibia';
+            return '';
+          }
+          if(/pectoralis|serratus anterior/.test(s))return 'chest';
+          if(/deltoid|supraspinatus/.test(s))return 'shoulders';
+          if(/biceps|triceps|brachialis|brachioradialis|forearm|flexor digitorum/.test(s))return 'arms';
+          if(/latissimus|trapezius|rhomboid|erector spinae|multifidus/.test(s))return 'back';
+          if(/rectus abdominis|oblique|transversus abdominis/.test(s))return 'core';
+          if(/gluteus/.test(s))return 'glutes';
+          if(/femoris|quadriceps|hamstring|gastrocnemius|soleus|tibialis|adductor/.test(s))return 'legs';
+          return '';
+        };
+        imported.scene.traverse(obj=>{
+          if(!obj.isMesh)return;
+          const system=String(obj.userData.layer||'');
+          obj.visible=layerGroup==='bones'?system==='skeleton':system.includes('muscles');
+          obj.userData.area=region(obj.userData.name||obj.name);
+          if(obj.userData.area===selected&&obj.material?.emissive)obj.material.emissiveIntensity=.25;
+        });
+        const bounds=new THREE.Box3().setFromObject(imported.scene);
+        const height=bounds.max.y-bounds.min.y;
+        if(Number.isFinite(height)&&height>0){
+          imported.scene.scale.multiplyScalar(4.85/height);
+          const aligned=new THREE.Box3().setFromObject(imported.scene);
+          const center=aligned.getCenter(new THREE.Vector3());
+          imported.scene.position.sub(center);
+        }
+        groups[layerGroup].visible=false;
+        model.add(imported.scene);
+        container.dataset.model='glb';
+        if(!container.querySelector('.bodylab-credit')){
+          const credit=document.createElement('p');credit.className='bodylab-credit';
+          credit.textContent='Écorché · BodyParts3D · Z-Anatomy · CC BY-SA 4.0';
+          container.append(credit);
+        }
+        render();
+      }).catch(()=>{if(!abort.signal.aborted)container.dataset.model='fallback';});
       let width=0, height=0;
       const render = () => renderer.render(scene,camera);
       const size = () => {
@@ -119,25 +177,31 @@ export function mountThreeBody(container, { layer = 'muscles', onPick = () => {}
         ['↷', tr('Forgatás jobbra'), () => { model.rotation.y += .24; render(); }],
         ['+', tr('Nagyítás'), () => { camera.position.z = Math.max(6,camera.position.z-.6); render(); }],
         ['−', tr('Kicsinyítés'), () => { camera.position.z = Math.min(13,camera.position.z+.6); render(); }],
+        ['⌂', tr('Alapnézet visszaállítása'), () => { model.rotation.set(0,0,0);camera.position.set(0,1.4,9);camera.lookAt(0,.1,0);render(); }],
       ];
       for (const [txt, label, action] of controls) {
         const button=document.createElement('button');button.type='button';button.className='btn small';button.textContent=txt;button.setAttribute('aria-label',label);button.addEventListener('click',action);tools.append(button);
       }
       container.append(tools);
       let drag = null, wasDrag = false;
-      const down = e => { drag = { x:e.clientX, y:e.clientY }; wasDrag=false; renderer.domElement.setPointerCapture(e.pointerId); };
-      const move = e => { if (!drag) return; const dx=e.clientX-drag.x, dy=e.clientY-drag.y; if (Math.abs(dx)+Math.abs(dy)>3) wasDrag=true; drag={x:e.clientX,y:e.clientY}; model.rotation.y += dx*.009; model.rotation.x = Math.max(-.45,Math.min(.45,model.rotation.x+dy*.005)); render(); };
-      const up = () => { drag=null; };
+      const pointers = new Map();let pinchDistance=0;
+      const pointerDistance=()=>{const p=[...pointers.values()];return p.length===2?Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y):0;};
+      const down = e => { pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});drag = { x:e.clientX, y:e.clientY }; wasDrag=false;pinchDistance=pointerDistance();renderer.domElement.setPointerCapture(e.pointerId); };
+      const move = e => {if(!pointers.has(e.pointerId))return;pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pointers.size===2){const next=pointerDistance();if(pinchDistance>0&&next>0)camera.position.z=Math.max(6,Math.min(13,camera.position.z*(pinchDistance/next)));pinchDistance=next;wasDrag=true;render();return;}if (!drag) return; const dx=e.clientX-drag.x, dy=e.clientY-drag.y; if (Math.abs(dx)+Math.abs(dy)>3) wasDrag=true; drag={x:e.clientX,y:e.clientY}; model.rotation.y += dx*.009; model.rotation.x = Math.max(-.45,Math.min(.45,model.rotation.x+dy*.005)); render(); };
+      const up = e => {pointers.delete(e.pointerId);pinchDistance=pointerDistance();drag=null;};
       const wheel = e => { e.preventDefault(); camera.position.z=Math.max(6,Math.min(13,camera.position.z+Math.sign(e.deltaY)*.5)); render(); };
       const pick = e => {
         if (wasDrag) { wasDrag=false; return; }
         const bounds=renderer.domElement.getBoundingClientRect();
         const pointer = new THREE.Vector2(((e.clientX-bounds.left)/bounds.width)*2-1,-((e.clientY-bounds.top)/bounds.height)*2+1);
         const ray=new THREE.Raycaster(); ray.setFromCamera(pointer,camera);
-        const hit=ray.intersectObjects(groups[layerGroup].children,false).find(x=>x.object.userData.area);
+        const hit=ray.intersectObjects(imported?[imported.scene]:groups[layerGroup].children,!!imported).find(x=>x.object.userData.area);
         if (hit) onPick(hit.object.userData.area);
       };
       const canvas=renderer.domElement;
+      const lost=e=>{e.preventDefault();container.dataset.webgl='unavailable';};
+      const restored=()=>{delete container.dataset.webgl;size();};
+      canvas.addEventListener('webglcontextlost',lost);canvas.addEventListener('webglcontextrestored',restored);
       canvas.addEventListener('pointerdown',down); canvas.addEventListener('pointermove',move); canvas.addEventListener('pointerup',up); canvas.addEventListener('pointercancel',up);
       canvas.addEventListener('click',pick); canvas.addEventListener('wheel',wheel,{passive:false});
       /* Diszkrét, felhasználói választásra reagáló renderelés, nincsen folyamatos GPU-ciklus. */
@@ -145,9 +209,11 @@ export function mountThreeBody(container, { layer = 'muscles', onPick = () => {}
         observer?.disconnect(); canvas.removeEventListener('pointerdown',down); canvas.removeEventListener('pointermove',move);
         canvas.removeEventListener('pointerup',up); canvas.removeEventListener('pointercancel',up);
         canvas.removeEventListener('click',pick); canvas.removeEventListener('wheel',wheel);
+        canvas.removeEventListener('webglcontextlost',lost);canvas.removeEventListener('webglcontextrestored',restored);
         allMeshes.forEach(m=>{m.geometry.dispose();m.material.dispose();});
         for(const m of [ground,glow]){m.geometry.dispose();m.material.dispose();}
-        renderer.dispose(); canvas.remove(); tools.remove();
+        disposeAnatomyModel(imported);
+        renderer.dispose(); canvas.remove(); tools.remove();container.querySelector('.bodylab-credit')?.remove();
       };
       if (disposed) cleanup();
     } catch (e) {
@@ -155,5 +221,5 @@ export function mountThreeBody(container, { layer = 'muscles', onPick = () => {}
       /* Az SVG és a szöveges gombok mindig használhatók WebGL nélkül is. */
     }
   })();
-  return () => { disposed=true; cleanup(); };
+  return () => { disposed=true; abort.abort(); cleanup(); };
 }
