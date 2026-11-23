@@ -37,21 +37,39 @@ export function mountThreeBody(container, { layer = 'muscles', onPick = () => {}
         mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0), direction.normalize()); return mesh;
       };
       for (const k of Object.keys(palette)) { groups[k] = new THREE.Group(); model.add(groups[k]); }
-      /* Sematikus izomtest, szimmetrikus, jelölt mozgásterületekkel. */
-      sphere('muscles', [0,2.25,0], [.34,.4,.31], '');
-      sphere('muscles', [0,1.25,0], [.76,.77,.33], 'chest');
-      sphere('muscles', [0,.35,0], [.49,.56,.29], 'core');
-      sphere('muscles', [0,-.3,0], [.62,.36,.36], 'glutes');
-      sphere('muscles', [0,1.3,-.2], [.69,.69,.28], 'back');
+      /* Az első sematikus gömbtest helyett részletesebb, szegmentált oktatási izomforma.
+         A testarányok illusztratívak, a geometriából NEM számolunk ízületi szöget. */
+      sphere('muscles', [0,2.32,0], [.29,.36,.27], '', 0xf8b9a7);
+      rod('muscles', [0,1.99,0],[0,1.78,0], .19, '',0xd48c96);
+      sphere('muscles', [0,1.10,-.08], [.61,.78,.30], 'back',0x803f68);
+      sphere('muscles', [0,.10,-.01], [.42,.56,.28], 'core',0xa65d80);
+      sphere('muscles', [0,-.35,-.04], [.56,.33,.34], 'glutes',0xb95a78);
       for (const side of [-1,1]) {
         const p = x => x * side;
-        sphere('muscles', [p(.83),1.48,0], [.3,.32,.29], 'shoulders');
-        rod('muscles', [p(1),1.29,0], [p(1.25),.5,.03], .19, 'arms');
-        rod('muscles', [p(1.25),.5,.03], [p(1.37),-.25,.12], .14, 'arms');
-        sphere('muscles', [p(.33),-.94,0], [.33,.71,.32], 'legs');
-        rod('muscles', [p(.34),-1.45,0], [p(.37),-2.2,.06], .21, 'legs');
-        sphere('muscles', [p(.37),-2.28,.2], [.25,.15,.46], 'legs');
+        const pec=sphere('muscles',[p(.34),1.49,.21],[.37,.31,.25],'chest',0xe77e89);
+        pec.rotation.z=p(.14);
+        sphere('muscles', [p(.91),1.52,0], [.29,.31,.31], 'shoulders',0xeeb38d);
+        sphere('muscles', [p(1.13),.95,.02], [.22,.40,.22], 'arms',0xd86e82);
+        sphere('muscles', [p(1.31),.23,.11], [.17,.37,.18], 'arms',0xb65b7d);
+        sphere('muscles', [p(1.37),-.23,.15], [.16,.10,.18], 'arms',0xf3c4ac);
+        sphere('muscles', [p(.23),.94,.26], [.18,.19,.13], 'core',0xc86c82);
+        for(let row=0;row<3;row++)sphere('muscles',[p(.19),.66-row*.26,.255],[.16,.12,.09],'core',row===0?0xf0a391:0xda7889);
+        sphere('muscles', [p(.34),-.42,-.11], [.31,.28,.30], 'glutes',0xdd8190);
+        const quad=sphere('muscles', [p(.36),-.95,.09], [.30,.61,.28], 'legs',0xe08e8f);quad.rotation.z=p(.06);
+        const shin=sphere('muscles',[p(.38),-1.84,.07],[.20,.49,.21],'legs',0xb96885);shin.rotation.z=p(.02);
+        sphere('muscles', [p(.39),-2.30,.21], [.23,.14,.42], 'legs',0xf0b69f);
       }
+      /* Hátul hangsúlyos lapocka-/széleshát-régiók a forgatható modellen. */
+      for (const side of [-1,1]) {
+        const p=x=>x*side;
+        const lat=sphere('muscles',[p(.42),.91,-.26],[.33,.57,.16],'back',0x9a5578);lat.rotation.z=p(.18);
+        sphere('muscles',[p(.38),1.53,-.29],[.28,.25,.12],'back',0xc77890);
+      }
+      /* Vizualizációs talapzat: a 3D modell alatt, nem része az anatómiai adatoknak. */
+      const ground=new THREE.Mesh(new THREE.RingGeometry(.9,1.03,64),new THREE.MeshBasicMaterial({color:0x65e2d5,transparent:true,opacity:.52,side:THREE.DoubleSide}));
+      ground.rotation.x=-Math.PI/2;ground.position.y=-2.59;scene.add(ground);
+      const glow=new THREE.Mesh(new THREE.CircleGeometry(1.4,64),new THREE.MeshBasicMaterial({color:0x9a4c83,transparent:true,opacity:.17,depthWrite:false,side:THREE.DoubleSide}));
+      glow.rotation.x=-Math.PI/2;glow.position.y=-2.60;scene.add(glow);
       /* Csontváz – felismerhető sematikus csontos elemek, külön réteg. */
       sphere('bones', [0,2.29,0], [.3,.36,.25], 'skull');
       rod('bones', [0,1.85,0], [0,-.25,0], .09, 'spine');
@@ -127,7 +145,9 @@ export function mountThreeBody(container, { layer = 'muscles', onPick = () => {}
         observer?.disconnect(); canvas.removeEventListener('pointerdown',down); canvas.removeEventListener('pointermove',move);
         canvas.removeEventListener('pointerup',up); canvas.removeEventListener('pointercancel',up);
         canvas.removeEventListener('click',pick); canvas.removeEventListener('wheel',wheel);
-        allMeshes.forEach(m=>{m.geometry.dispose();m.material.dispose();}); renderer.dispose(); canvas.remove(); tools.remove();
+        allMeshes.forEach(m=>{m.geometry.dispose();m.material.dispose();});
+        for(const m of [ground,glow]){m.geometry.dispose();m.material.dispose();}
+        renderer.dispose(); canvas.remove(); tools.remove();
       };
       if (disposed) cleanup();
     } catch (e) {
