@@ -5,6 +5,8 @@ import { D } from './data.js';
 import { kvGet, kvSet } from './store.js';
 import { tr } from './i18n.js';
 import { moveCustomExercise, selectedCustomBlocks } from '../core/custom-order.js';
+import { exerciseAreas } from '../core/exercise-catalog.js';
+import { muscleMap } from './muscle-map.js';
 
 const reload = hash => { location.hash = hash; dispatchEvent(new HashChangeEvent('hashchange')); };
 const getFavs = async () => new Set((await kvGet('favs', [])) || []);
@@ -12,28 +14,48 @@ export const getCustom = async () => (await kvGet('custom', [])) || [];
 const doseText = d => (d.reps ? d.reps + tr(' ism.') : d.seconds + tr(' mp'));
 
 export async function libraryView() {
-  const favs = await getFavs(), all = D.exercises.exercises;
-  const st = { q: '', type: 'all', fav: false };
+  const favs = await getFavs(), all = D.catalog;
+  const st = { q: '', type: 'all', muscle: '', equipment: '', anatomyIds: null };
   const types = [['all', tr('Mind')], ['fav', '★ Kedvencek'], ...Object.entries(D.exercises.typeNames)];
   const listEl = h('div');
-  const search = h('input', { type: 'search', placeholder: tr('Keresés név szerint…'), 'aria-label': tr('Gyakorlat keresése'), class: 'search', oninput: () => { st.q = search.value.trim().toLowerCase(); draw(); } });
+  const search = h('input', { type: 'search', placeholder: tr('Keresés név és leírás szerint…'), 'aria-label': tr('Gyakorlat keresése'), class: 'search', oninput: () => { st.q = search.value.trim().toLowerCase(); draw(); } });
+  const muscle = h('select', { 'aria-label': tr('Izomcsoport szűrése'), onchange: () => { st.muscle = muscle.value; draw(); } },
+    h('option', { value: '' }, tr('Minden izomcsoport')), [...new Set(all.flatMap(exerciseAreas))].sort((a, b) => a.localeCompare(b, 'hu')).map(x => h('option', { value: x }, x)));
+  const equipment = h('select', { 'aria-label': tr('Eszköz szűrése'), onchange: () => { st.equipment = equipment.value; draw(); } },
+    h('option', { value: '' }, tr('Bármilyen felszerelés')), h('option', { value: 'none' }, tr('Eszköz nélkül')),
+    h('option', { value: 'dumbbell' }, tr('Kézisúlyzó')), h('option', { value: 'band' }, tr('Gumiszalag')),
+    h('option', { value: 'bar' }, tr('Húzódzkodórúd')));
   const chips = h('div', { class: 'chips', role: 'radiogroup', 'aria-label': tr('Szűrés típus szerint') }, types.map(([k, t]) =>
     h('button', { type: 'button', class: 'chip' + (k === 'all' ? ' on' : ''), role: 'radio', 'aria-checked': k === 'all' ? 'true' : 'false', onclick: e => {
       st.type = k; for (const c of chips.children) { c.classList.toggle('on', c === e.currentTarget); c.setAttribute('aria-checked', c === e.currentTarget ? 'true' : 'false'); } draw();
     } }, t)));
   function draw() {
-    const items = all.filter(e => (st.type === 'all' || (st.type === 'fav' ? favs.has(e.id) : e.type === st.type)) && (!st.q || e.name.toLowerCase().includes(st.q)));
-    clear(listEl).append(items.length ? h('ul', { class: 'rows lib' }, items.map(e => {
+    const items = all.filter(e => {
+      const guide = D.guidance?.guidance?.[e.id];
+      const searchable = [e.name, e.how, ...(e.points || []), ...exerciseAreas(e), guide?.setup, ...(guide?.mistakes || [])].filter(Boolean).join(' ').toLocaleLowerCase('hu');
+      return (st.type === 'all' || (st.type === 'fav' ? favs.has(e.id) : e.type === st.type))
+        && (!st.muscle || exerciseAreas(e).includes(st.muscle))
+        && (!st.anatomyIds || st.anatomyIds.has(e.id))
+        && (!st.equipment || (st.equipment === 'none' ? !e.equipment : e.equipment === st.equipment))
+        && (!st.q || searchable.includes(st.q));
+    });
+    clear(listEl).append(items.length ? h('ul', { class: 'rows lib catalog-grid' }, items.map(e => {
       const star = h('button', { type: 'button', class: 'star' + (favs.has(e.id) ? ' on' : ''), 'aria-pressed': favs.has(e.id) ? 'true' : 'false', 'aria-label': (favs.has(e.id) ? tr('Eltávolítás a kedvencek közül: ') : tr('Kedvencekhez: ')) + e.name, onclick: async () => {
         if (favs.has(e.id)) favs.delete(e.id); else favs.add(e.id);
         await kvSet('favs', [...favs]); star.classList.toggle('on', favs.has(e.id)); star.setAttribute('aria-pressed', favs.has(e.id) ? 'true' : 'false'); star.textContent = favs.has(e.id) ? '★' : '☆';
       } }, favs.has(e.id) ? '★' : '☆');
-      return h('li', null, typeIcon(e.type), h('span', { class: 'log-item' }, link('#/ex/' + e.id, e.name), h('span', { class: 'muted small' }, D.exercises.typeNames[e.type] + (e.equipment ? tr(' · eszközzel') : '') + (e.impact ? tr(' · ugrásos') : ''))), star);
+      return h('li', { class: 'catalog-tile' },
+        h('div', { class: 'catalog-tile-art' }, typeIcon(e.type), h('span', { class: 'small muted' }, D.exercises.typeNames[e.type])),
+        h('span', { class: 'log-item' }, link('#/ex/' + e.id, e.name), h('span', { class: 'muted small' }, (exerciseAreas(e).join(', ') || D.exercises.typeNames[e.type]) + (e.equipment ? tr(' · eszközzel') : ''))), star);
     })) : h('p', { class: 'muted' }, tr('Nincs találat.')));
   }
   draw();
   return page(tr('Gyakorlattár'), h('p', { class: 'muted' }, tr('{p0} gyakorlat. A csillaggal kedvencnek jelölheted, a kedvencekből saját edzést állíthatsz össze.', { p0: all.length })),
-    search, chips, card(listEl), h('div', { class: 'row' }, link('#/routines', tr('Rutinok és saját edzések'), 'btn primary')));
+    muscleMap(all, (_area, matched) => { st.anatomyIds = new Set(matched.map(e => e.id)); draw(); }),
+    h('button', { type: 'button', class: 'btn small', onclick: () => { st.anatomyIds = null; draw(); } }, tr('Izomtérkép szűrésének törlése')),
+    search, chips, h('div', { class: 'row' }, muscle, equipment),
+    card(listEl), note(tr('Az új katalógusgyakorlatok külön szakmai ellenőrzésre várnak. A meglévő edzésprogramok nem változtak.'), 'small'),
+    h('div', { class: 'row' }, link('#/bodylab', tr('BODY LAB – Anatómiai kalauz'), 'btn primary'), link('#/routines', tr('Rutinok és saját edzések'), 'btn')));
 }
 
 export async function routinesView() {
@@ -56,7 +78,7 @@ export async function customView(arg) {
   const chosen = new Map((editing ? editing.blocks : []).map(([id, sets, dose]) => [id, { sets, dose }]));
   let order = editing ? editing.blocks.map(([id]) => id) : [];
   const name = h('input', { type: 'text', maxLength: 40, value: editing ? editing.name : '', id: 'cname', placeholder: tr('Pl. Reggeli 10 perc') });
-  const sorted = [...D.exercises.exercises].sort((a, b) => (favs.has(b.id) - favs.has(a.id)) || a.name.localeCompare(b.name, 'hu'));
+  const sorted = [...D.catalog].sort((a, b) => (favs.has(b.id) - favs.has(a.id)) || a.name.localeCompare(b.name, 'hu'));
   const summary = h('p', { class: 'small muted', 'aria-live': 'polite' });
   const orderList = h('ol', { class: 'custom-order-list', 'aria-label': tr('Kiválasztott gyakorlatok sorrendje') });
   const upd = () => {

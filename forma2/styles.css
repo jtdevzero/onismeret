@@ -700,6 +700,116 @@ details.more-group[open] > summary::after { content: "▴"; }
 .workout-set-capture input, .workout-set-capture select { min-height: 48px; }
 .workout-actions .btn { flex: 1 1 130px; min-width: 0; min-height: 56px; }
 .session-page .workout-title, .session-page .workout-cue { overflow-wrap: anywhere; }
+/* FORMA 2 / vizuális gyakorlattár és sematikus, billentyűzettel is használható izomtérkép */
+.anatomy-card { position: relative; overflow: hidden; background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 10%, var(--surface)), var(--surface)); }
+.anatomy-card h2 { margin-bottom: 4px; }
+.anatomy-switch { justify-content: center; gap: 10px; }
+.anatomy-switch .btn { flex: 0 1 140px; min-height: 44px; }
+.anatomy-stage { display: flex; justify-content: center; padding: 3px 0; }
+.anatomy-svg { width: min(100%, 250px); max-height: 270px; overflow: visible; }
+.anatomy-outline { fill: color-mix(in srgb, var(--accent) 8%, var(--bg-2)); stroke: var(--accent); stroke-width: 1.7; }
+.anatomy-zone { fill: color-mix(in srgb, var(--sun) 40%, var(--accent)); stroke: var(--bg); stroke-width: 1.3; cursor: pointer; transition: fill .18s ease, stroke-width .18s ease; }
+.anatomy-zone:hover, .anatomy-zone:focus-visible, .anatomy-zone.on { fill: var(--teal); stroke: var(--text); stroke-width: 2.7; outline: none; }
+.anatomy-card [role=status] { text-align: center; min-height: 1.5em; }
+.anatomy-guide { margin-top: 12px; padding: 14px; border: 1px solid var(--line); border-radius: 13px; background: var(--bg-2); }
+.anatomy-guide h3 { margin: 0 0 8px; color: var(--text); }
+.anatomy-guide p { margin: 6px 0; line-height: 1.5; }
+.anatomy-guide strong { color: var(--text); }
+.catalog-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; list-style: none; margin: 0; padding: 0; }
+ul.rows.lib.catalog-grid > li.catalog-tile { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: auto 1fr; align-items: start; gap: 8px; padding: 12px; min-width: 0; border: 1px solid var(--line); border-radius: 15px; background: var(--bg-2); }
+.catalog-tile-art { grid-column: 1/-1; min-height: 54px; display: flex; justify-content: space-between; align-items: flex-start; padding: 12px; border-radius: 11px; background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 24%, var(--bg-2)), color-mix(in srgb, var(--sun) 12%, var(--bg-2))); }
+.catalog-tile-art .tic { width: 32px; height: 32px; }
+.catalog-tile .log-item { min-width: 0; overflow-wrap: anywhere; }
+.catalog-tile .log-item a { font-weight: 750; line-height: 1.22; }
+.catalog-tile .star { min-width: 44px; min-height: 44px; }
+@media (max-width: 359px) { .catalog-grid { grid-template-columns: 1fr; } }
+@media (min-width: 720px) { .catalog-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* Cinematic edzésfókusz – az érintés elsőbbsége és a régi működés változatlan. */
+.session-page .workout-focus { position: relative; overflow: hidden; border: 1px solid color-mix(in srgb, var(--accent) 27%, var(--line)); background: radial-gradient(circle at 90% 3%, color-mix(in srgb, var(--sun) 13%, transparent), transparent 38%), var(--surface); }
+.session-page .workout-focus::before { content: ''; position: absolute; inset: 0 0 auto; height: 3px; background: linear-gradient(90deg, var(--accent), var(--sun), var(--teal)); }
+.session-page .workout-focus > * { position: relative; }
+.session-page .workout-clock { font-variant-numeric: tabular-nums; text-shadow: 0 0 32px color-mix(in srgb, var(--sun) 17%, transparent); }
+.session-page .workout-actions .btn.primary { background: linear-gradient(115deg, var(--accent), color-mix(in srgb, var(--accent) 62%, var(--sun))); }
+.session-page .session-progress progress { height: 8px; border-radius: 999px; }
+
+/* Vizuális, naplóadatra épülő fejlődési és mentés utáni összegző. */
+.visual-dashboard { border-radius: 20px; padding: clamp(16px, 4vw, 24px); color: #fff; background: radial-gradient(circle at 100% 0%, #e57440 0, transparent 35%), linear-gradient(140deg, #291334, #6f215d 70%, #a53f66); box-shadow: 0 12px 30px rgba(33, 11, 46, .12); }
+.visual-dashboard .eyebrow, .workout-finish-visual .eyebrow { letter-spacing: .12em; color: #9dfff1; }
+.visual-dashboard h2 { color: #fff; margin: 5px 0 10px; font-size: clamp(1.45rem, 5vw, 2.1rem); }
+.visual-dashboard .small { color: #f8dbe9; }
+.visual-dashboard-top { display: flex; justify-content: space-between; align-items: center; gap: 14px; }
+.visual-goal-ring { flex: 0 0 96px; height: 96px; border-radius: 50%; display: grid; place-content: center; text-align: center; background: radial-gradient(closest-side, #51204e 77%, transparent 79%), conic-gradient(#72eee0 var(--goal-pct), #9c628f 0); }
+.visual-goal-ring strong { font: 400 1.55rem/1 var(--display); }
+.visual-goal-ring span { font-size: .63rem; }
+.visual-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; margin: 18px 0 10px; }
+.visual-metric { padding: 13px 7px; min-width: 0; border: 1px solid rgba(255,255,255,.24); border-radius: 12px; background: rgba(255,255,255,.09); text-align: center; }
+.visual-metric strong { display: block; font: 400 clamp(1.5rem, 6vw, 2.6rem)/1.1 var(--display); font-variant-numeric: tabular-nums; }
+.visual-metric span { display: block; font-size: .73rem; color: #ffe6ef; }
+.workout-finish-visual { padding: 16px; border-radius: 17px; text-align: center; color: #fff; background: radial-gradient(circle at 82% 5%, #df6d53, transparent 40%), linear-gradient(145deg, #30153e, #69235e); }
+.workout-finish-visual h2 { color: #fff; font-size: 2rem; margin: 8px 0; }
+.workout-finish-visual .small { color: #ffe0ee; }
+.finish-orb { display: grid; place-items: center; width: 70px; height: 70px; margin: 2px auto 14px; border-radius: 50%; border: 2px solid #7cf4e2; background: rgba(124,244,226,.16); font-size: 2.4rem; animation: finish-appear .45s ease-out both; }
+.finish-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+.finish-metrics > div { padding: 13px; border-radius: 12px; background: rgba(255,255,255,.12); }
+.finish-metrics strong { display: block; font: 400 2rem/1 var(--display); }
+.finish-metrics span { display: block; margin-top: 4px; font-size: .74rem; }
+.workout-finish-visual .btn { min-height: 44px; color: #291334; background: #fff; border-color: #fff; }
+@keyframes finish-appear { from { transform: scale(.75); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .anatomy-zone { transition: none; } .finish-orb { animation: none; } }
+
+/* BODY LAB 3D – a képes fejléc csak dekoráció, a rétegjelölők valódi vezérlők. */
+.bodylab-hero { padding: clamp(20px, 5vw, 35px); border-radius: 20px; min-height: 210px; display: flex; flex-direction: column; justify-content: center; color: #fff; background: linear-gradient(90deg, rgba(26,6,37,.82), rgba(26,6,37,.1)), url(assets/body-lab-hero.webp) 68% center/cover no-repeat, #230e2d; }
+.bodylab-hero h2 { color: #fff; font: italic 400 clamp(1.8rem, 7vw, 3rem)/1.05 var(--display); max-width: 12ch; margin: 9px 0; }
+.bodylab-hero p { max-width: 26ch; color: #ffe5ed; }
+.bodylab-hero .eyebrow { font-size: .7rem; letter-spacing: .12em; color: #90f3e2; }
+.bodylab-tabs { display: flex; gap: 8px; padding: 10px 1px; overflow-x: auto; scrollbar-width: thin; scroll-snap-type: x proximity; }
+.bodylab-tabs .btn { flex: 0 0 auto; min-height: 44px; white-space: nowrap; scroll-snap-align: start; }
+.bodylab-three { min-height: 330px; width: 100%; max-width: 460px; margin: 0 auto; position: relative; overflow: hidden; border-radius: 18px; background: radial-gradient(ellipse at 50% 35%, #653155 0, #29132f 68%, #1d0d29); box-shadow: inset 0 0 0 1px rgba(255,255,255,.13); }
+.bodylab-three::after { content: '3D · forgatás: húzás · zoom: görgetés'; position: absolute; bottom: 7px; left: 10px; right: 10px; text-align: center; color: #ffe9ef; font-size: .68rem; pointer-events: none; }
+.bodylab-three[data-webgl=unavailable]::before { content: '3D nem érhető el ezen az eszközön – használd a 2D nézetet.'; position: absolute; inset: 40% 16px auto; text-align: center; color: #fff; font-size: .9rem; }
+.bodylab-three-canvas { display: block; width: 100%; height: 330px; touch-action: none; cursor: grab; }
+.bodylab-three-canvas:active { cursor: grabbing; }
+.bodylab-3d-controls { position: absolute; top: 8px; right: 8px; display: flex; gap: 5px; z-index: 1; }
+.bodylab-3d-controls .btn { min-width: 44px; min-height: 44px; padding: 4px 10px; color: #fff; background: rgba(33, 13, 43, .84); border-color: rgba(255,255,255,.45); }
+.bodylab-3d-controls .btn:focus-visible { outline: 3px solid #8ff4e8; outline-offset: 2px; }
+.bodylab-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 15px; }
+.bodylab-diagram-shell { min-width: 0; }
+.bodylab-fallback { margin-top: 10px; border: 1px solid var(--line); border-radius: 12px; padding: 12px; background: var(--bg-2); }
+.bodylab-fallback summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; font-weight: 750; }
+.bodylab-diagram { display: block; width: min(100%, 250px); height: 280px; margin: 5px auto; }
+.bodylab-silhouette { fill: color-mix(in srgb, var(--accent) 12%, var(--bg-2)); stroke: var(--accent); stroke-width: 1.4; }
+.bodylab-point { cursor: pointer; }
+.bodylab-point-ring { fill: color-mix(in srgb, var(--teal) 25%, transparent); stroke: var(--teal); stroke-width: 2; }
+.bodylab-point-core { fill: var(--sun); }
+.bodylab-point:hover .bodylab-point-ring,.bodylab-point:focus-visible .bodylab-point-ring,.bodylab-point.selected .bodylab-point-ring { fill: var(--teal); stroke: var(--text); stroke-width: 3; }
+.bodylab-choices { display: flex; flex-wrap: wrap; gap: 7px; margin: 6px 0 12px; }
+.bodylab-choices .chip { min-height: 44px; }
+.bodylab-detail .card { margin: 0; }
+.bodylab-detail p { line-height: 1.48; }
+@media (min-width: 740px) { .bodylab-grid { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); } }
+@media (prefers-reduced-motion: reduce) { .bodylab-tabs { scroll-behavior: auto; } }
+.photo-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+.photo-entry { min-width: 0; border: 1px solid var(--line); border-radius: 15px; padding: 10px; background: var(--bg-2); }
+.photo-entry img { display: block; width: 100%; aspect-ratio: 3/4; object-fit: contain; border-radius: 9px; background: #201124; }
+.photo-entry strong { display: block; margin-top: 9px; }
+.photo-entry .row { flex-wrap: wrap; gap: 6px; }
+.photo-entry .btn { flex: 1 1 100px; min-height: 44px; }
+.photo-compare { margin-bottom: 18px; }
+.photo-compare-selects, .photo-compare-pair { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+.photo-compare-selects label { display: grid; gap: 6px; min-width: 0; font-size: .9rem; }
+.photo-compare-selects select { width: 100%; min-width: 0; min-height: 44px; }
+.photo-compare-pair { margin-top: 12px; }
+.photo-compare-pair figure { min-width: 0; margin: 0; }
+.photo-compare-pair img { width: 100%; aspect-ratio: 3/4; object-fit: contain; border-radius: 12px; background: #201124; }
+.photo-compare-pair figcaption { overflow-wrap: anywhere; font-size: .8rem; }
+@media(max-width:360px) { .photo-grid { grid-template-columns: 1fr; } }
+.exercise-three { min-height: 310px; padding: 10px; border-radius: 15px; background: radial-gradient(circle at 60% 30%, #5d3157, #22112e 70%); color: #fff; }
+.exercise-three-canvas { display: block; width: 100%; max-height: 250px; }
+.exercise-three-slider { display: block; width: 100%; min-height: 44px; margin: 4px 0; accent-color: #72e7dc; }
+.exercise-three-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.exercise-three-actions .btn { flex: 1 1 130px; min-height: 44px; color: #fff; background: #5b2a65; border: 1px solid #cb92c0; }
+.exercise-three[data-webgl=unavailable]::before { content: 'A 3D megjelenítés nem támogatott itt; a szöveges leírás változatlanul elérhető.'; display: block; padding: 40px 10px; }
 .next-preview { display: flex; align-items: center; gap: 12px; border-top: 1px solid var(--line); margin-top: 14px; padding-top: 10px; text-align: left; }
 .next-preview > .fig-live { flex: 0 0 56px; width: 56px; margin: 0; padding: 2px; background: var(--bg-2); border: 0; }
 .next-preview .fig-live .fig { height: 44px; }

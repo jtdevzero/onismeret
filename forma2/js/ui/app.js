@@ -9,7 +9,7 @@ import { startView, homeView, logView, settingsView, moreView } from './views-ma
 import { cardioView, checkView } from './views-cardio.js';
 import { reviewView, cooldownView } from './views-wellness.js';
 import { pulseView, challengeView, blocksView, reportView } from './views-extra.js';
-import { diagView, qaView, initErrorLog } from './views-diag.js';
+import { diagView, qaView, initErrorLog, reportRouteError } from './views-diag.js';
 import { tr } from './i18n.js';
 import { createRouteLifecycle } from '../core/route-lifecycle.js';
 
@@ -31,6 +31,8 @@ watchStorage(({ mode, writeError }) => {
 const lazy = (load, name) => async (arg, onCleanup) => (await load())[name](arg, onCleanup);
 const A = () => import('./views-assess.js'), T = () => import('./views-train.js'), P = () => import('./views-progress.js');
 const L = () => import('./views-library.js');
+const bodyLabView = lazy(() => import('./views-body-lab.js'), 'bodyLabView');
+const photoTrackerView = lazy(() => import('./views-photo.js'), 'photoTrackerView');
 const assessView = lazy(A, 'assessView'), testView = lazy(A, 'testView'), resultView = lazy(A, 'resultView');
 const programView = lazy(T, 'programView'), sessionView = lazy(T, 'sessionView'), exerciseView = lazy(T, 'exerciseView');
 const progressView = lazy(P, 'progressView'), miniView = lazy(P, 'miniView');
@@ -38,9 +40,9 @@ const runView = lazy(() => import('./views-run.js'), 'runView'), postureView = l
 const libraryView = lazy(L, 'libraryView'), routinesView = lazy(L, 'routinesView'), customView = lazy(L, 'customView');
 const ROUTES = {
   '': homeView, start: startView, assess: assessView, test: testView, result: resultView,
-  program: programView, session: sessionView, ex: exerciseView, log: logView, settings: settingsView, cardio: cardioView, check: checkView, progress: progressView, mini: miniView, run: runView, more: moreView, review: reviewView, cooldown: cooldownView, library: libraryView, routines: routinesView, custom: customView, posture: postureView, pulse: pulseView, challenge: challengeView, blocks: blocksView, report: reportView, diag: diagView, qa: qaView,
+  program: programView, session: sessionView, ex: exerciseView, log: logView, settings: settingsView, cardio: cardioView, check: checkView, progress: progressView, mini: miniView, run: runView, more: moreView, review: reviewView, cooldown: cooldownView, library: libraryView, bodylab: bodyLabView, photos: photoTrackerView, routines: routinesView, custom: customView, posture: postureView, pulse: pulseView, challenge: challengeView, blocks: blocksView, report: reportView, diag: diagView, qa: qaView,
 };
-const TAB = { '': '', program: 'program', session: 'program', ex: 'program', check: 'program', progress: 'progress', mini: 'progress', result: 'progress', assess: 'more', test: 'more', cardio: 'more', run: 'more', log: 'more', settings: 'more', more: 'more', review: 'progress', cooldown: 'program', library: 'more', routines: 'more', custom: 'more', posture: 'more', pulse: 'more', challenge: 'more', blocks: 'more', report: 'more', diag: 'more', qa: 'more' };
+const TAB = { '': '', program: 'program', session: 'program', ex: 'program', check: 'program', progress: 'progress', mini: 'progress', result: 'progress', assess: 'more', test: 'more', cardio: 'more', run: 'more', log: 'more', settings: 'more', more: 'more', review: 'progress', cooldown: 'program', library: 'more', bodylab: 'more', photos: 'more', routines: 'more', custom: 'more', posture: 'more', pulse: 'more', challenge: 'more', blocks: 'more', report: 'more', diag: 'more', qa: 'more' };
 const routes = createRouteLifecycle(e => console.error(e));
 
 async function route() {
@@ -55,7 +57,17 @@ async function route() {
   for (const a of nav.querySelectorAll('a')) { const on = a.dataset.tab === TAB[key]; a.classList.toggle('on', on); if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); }
   let view;
   try { view = await ROUTES[key](arg, scope.onCleanup); }
-  catch (e) { console.error(e); view = h('div', { class: 'page' }, h('h1', null, tr('Hiba történt')), h('p', null, tr('Ezt az oldalt most nem sikerült megjeleníteni. Töltsd újra az appot.'))); }
+  catch (e) {
+    console.error(e);
+    reportRouteError(key, e);
+    const code = e && typeof e.name === 'string' ? e.name.slice(0, 40) : 'Error';
+    view = h('div', { class: 'page' }, h('h1', null, tr('Hiba történt')),
+      h('p', null, tr('Ezt a képernyőt most nem sikerült megjeleníteni. A mentett adataidat nem töröltük.')),
+      h('p', { class: 'small muted', role: 'status' }, tr('Hibakód: ') + code),
+      h('div', { class: 'row' },
+        h('button', { type: 'button', class: 'btn primary', onclick: () => route() }, tr('Újrapróbálom')),
+        h('a', { class: 'btn small', href: '#/diag' }, tr('Hibajelentés'))));
+  }
   if (!scope.isActive()) return; /* közben máshova navigáltak: a saját erőforrásai már felszabadultak */
   clear(main).append(view);
   document.documentElement.dataset.view = location.hash;

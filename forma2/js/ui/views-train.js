@@ -18,6 +18,10 @@ import { previousExercisePerformance } from '../core/workout-previous.js';
 import { swipeStep } from '../core/workout-navigation.js';
 import { nextReps, nextWeight, parseRepsInput, parseWeightInput, adjustRestSeconds } from '../core/workout-quick-input.js';
 import { tr } from './i18n.js';
+import { relatedExercises } from '../core/exercise-catalog.js';
+import { workoutFinishVisual } from './views-visual.js';
+import { motionFor } from '../core/exercise-motion.js';
+import { mountExerciseMotion } from './three-exercise.js';
 
 const SIDE = { left: 'bal oldal', right: 'jobb oldal', both: tr('oldalanként') };
 /* az elvégzett mennyiség (ismétlés vagy másodperc) edzésről edzésre, apró oszlopdiagramon */
@@ -44,10 +48,11 @@ export function setLogEditor(id, base) {
   const blocks = base.map(e => {
     const ex = D.ex[e.ex], weighted = ex && ex.equipment === 'dumbbell';
     const sets = e.sets.map((st, i) => {
-      const val = h('input', { type: 'number', inputMode: 'numeric', min: 0, max: st.seconds ? 7200 : 1000, value: String(st.reps ?? st.seconds), 'aria-label': `${ex.name}, ${i + 1}. sorozat: ${st.seconds ? 'másodperc' : 'ismétlés'}` });
-      const kg = weighted ? h('input', { type: 'number', inputMode: 'decimal', min: 0, max: 300, step: 0.5, value: st.weightKg != null ? String(st.weightKg) : '', placeholder: 'kg', 'aria-label': tr('{p0}, {p1}. sorozat: súly kilogrammban (egy súlyzó)', { p0: ex.name, p1: i + 1 }) }) : null;
-      const ok = h('input', { type: 'checkbox', checked: true, 'aria-label': tr('{p0}, {p1}. sorozat teljesítve', { p0: ex.name, p1: i + 1 }) });
-      const rir = i === e.sets.length - 1 ? h('select', { 'aria-label': tr('{p0}: hány szabályos ismétlés maradt még az utolsó sorozat végén (RIR)', { p0: ex.name }) }, h('option', { value: '' }, tr('RIR –')), [0, 1, 2, 3, 4, 5].map(n => h('option', { value: String(n) }, n === 5 ? tr('RIR 5+') : tr('RIR ') + n))) : null;
+      const exName = ex?.name || e.ex;
+      const val = h('input', { type: 'number', inputMode: 'numeric', min: 0, max: st.seconds ? 7200 : 1000, value: String(st.reps ?? st.seconds), 'aria-label': `${exName}, ${i + 1}. sorozat: ${st.seconds ? 'másodperc' : 'ismétlés'}` });
+      const kg = weighted ? h('input', { type: 'number', inputMode: 'decimal', min: 0, max: 300, step: 0.5, value: st.weightKg != null ? String(st.weightKg) : '', placeholder: 'kg', 'aria-label': tr('{p0}, {p1}. sorozat: súly kilogrammban (egy súlyzó)', { p0: exName, p1: i + 1 }) }) : null;
+      const ok = h('input', { type: 'checkbox', checked: true, 'aria-label': tr('{p0}, {p1}. sorozat teljesítve', { p0: exName, p1: i + 1 }) });
+      const rir = i === e.sets.length - 1 ? h('select', { 'aria-label': tr('{p0}: hány szabályos ismétlés maradt még az utolsó sorozat végén (RIR)', { p0: exName }) }, h('option', { value: '' }, tr('RIR –')), [0, 1, 2, 3, 4, 5].map(n => h('option', { value: String(n) }, n === 5 ? tr('RIR 5+') : tr('RIR ') + n))) : null;
       rows.push({ ex: e.ex, seconds: !!st.seconds, val, kg, ok, rir });
       return h('li', { class: 'setlog-row' }, h('span', { class: 'muted small' }, `${i + 1}.`), val, h('span', { class: 'small' }, st.seconds ? tr('mp') : tr('ism.')), kg, kg ? h('span', { class: 'small' }, 'kg') : null, h('label', { class: 'check small' }, ok, h('span', null, tr('kész'))), rir);
     });
@@ -186,7 +191,7 @@ export async function programView() {
   const sessions = [...new Set(ROTATION)].map(k => {
     const s = fitSession(buildSession(k, prog, D.exercises.exercises), D.ex, S.settings.duration || 0), steps = sessionSteps(s, D.ex);
     return h('details', { class: 'card' }, h('summary', null, h('h2', null, s.title), h('span', { class: 'badge' + (k === key ? ' good' : '') }, k === key ? tr('Következik') : sessionMinutes(steps) + tr(' perc'))),
-      h('ol', { class: 'blocks' }, s.blocks.map(b => h('li', null, link('#/ex/' + b.exercise, D.ex[b.exercise].name), h('span', { class: 'muted small' }, ' · ' + doseText(b) + (b.part === 'mobility' ? tr(' · mobilitás') : ''))))),
+      h('ol', { class: 'blocks' }, s.blocks.map(b => h('li', null, D.ex[b.exercise] ? link('#/ex/' + b.exercise, D.ex[b.exercise].name) : h('span', { class: 'muted' }, tr('Ismeretlen gyakorlat')), h('span', { class: 'muted small' }, ' · ' + doseText(b) + (b.part === 'mobility' ? tr(' · mobilitás') : ''))))),
       h('div', { class: 'row' }, link('#/check/' + k, k === key ? tr('Indítás') : tr('Ezt csinálom inkább'), 'btn' + (k === key ? ' primary' : ' small'))));
   });
   return page(tr('Program'),
@@ -381,8 +386,7 @@ export async function sessionView(key, onCleanup) {
     if (changes.some(c => c.to > c.from)) celebrate();
     beep(880, 200);
     const lad = laddersOf(D.exercises.exercises);
-    clear(stage).append(card(h('h2', null, tr('Edzés kész')),
-      h('p', { class: 'lead' }, tr('{p0}, {p1} perc.', { p0: session.title, p1: minutes })),
+    clear(stage).append(card(workoutFinishVisual({ title: session.title, minutes, done: item.done, partial: item.partial }),
       changes.length ? h('div', null, h('h3', null, tr('Szintváltás')), list(changes.map(c => {
         const a = exerciseFor(lad, c.ladder, c.from, lowImpact()), b = exerciseFor(lad, c.ladder, c.to, lowImpact());
         return (c.to > c.from ? tr('Feljebb: ') : tr('Visszább: ')) + (a ? a.name : '') + ' → ' + (b ? b.name : '');
@@ -590,7 +594,12 @@ export async function sessionView(key, onCleanup) {
 
 export async function exerciseView(id, onCleanup) {
   const ex = D.ex[id];
-  const live = ex ? liveCounter(id, { startLabel: tr('Végrehajtás kamerával') }) : null;
+  const motion = motionFor(id);
+  const three = motion ? h('div', { class: 'exercise-three', 'aria-label': tr('Sematikus 3D gyakorlatbemutató') }) : null;
+  if (three) onCleanup(mountExerciseMotion(three, id));
+  const guide = D.guidance?.guidance?.[id];
+  const extra = D.catalog.some(e => e.id === id) && !D.exercises.exercises.some(e => e.id === id);
+  const live = ex && !extra ? liveCounter(id, { startLabel: tr('Végrehajtás kamerával') }) : null;
   if (live) onCleanup(live.stop);
   if (!ex) return page(tr('Nincs ilyen gyakorlat'), link('#/program', '← Program', 'btn'));
   const lad = ex.ladder ? laddersOf(D.exercises.exercises)[ex.ladder] : null;
@@ -598,12 +607,23 @@ export async function exerciseView(id, onCleanup) {
   const dose = ex.dose.reps ? tr('{p0}–{p1} ismétlés', { p0: ex.dose.reps[0], p1: ex.dose.reps[1] }) : tr('{p0}–{p1} másodperc', { p0: ex.dose.seconds[0], p1: ex.dose.seconds[1] });
   return page(ex.name,
     h('p', { class: 'muted' }, D.exercises.typeNames[ex.type] + ' · ' + dose + (ex.perSide ? tr(' oldalanként') : '') + (ex.impact ? tr(' · ugrásos') : '')),
+    ex.muscles?.length ? h('p', { class: 'small muted' }, tr('Érintett területek: ') + ex.muscles.join(', ') + (ex.equipment ? tr(' · eszközzel') : '')) : null,
     card(figureAnim(D.figures[ex.figure], { big: true }), h('h3', null, tr('Három dolog, amire figyelj')), list(ex.points),
       h('details', { class: 'section' }, h('summary', null, tr('Részletes leírás')), figureStrip(D.figures[ex.figure], true), h('p', null, ex.how), videoSearch(ex))),
+    three ? card(h('h2', null, tr('3D mozgásbemutató')), h('p', { class: 'small muted' }, tr('Oktatási illusztráció: húzd a csúszkát a mozgás fázisai között, vagy indítsd el. Nem személyre szabott formaellenőrzés.')), three) : null,
+    extra ? note(tr('Új katalóguselem: még nem esett át külön belső szakmai ellenőrzésen. Az animáció és a kamerás mozgásértékelés ehhez a gyakorlathoz nem áll rendelkezésre.'), 'small') : null,
+    guide ? card(h('h2', null, tr('Gyakorlati útmutató')),
+      h('p', null, h('strong', null, tr('Előkészítés: ')), guide.setup),
+      h('h3', null, tr('Gyakori hibák')), list(guide.mistakes),
+      h('p', null, h('strong', null, tr('Könnyítés: ')), guide.easier),
+      h('p', null, h('strong', null, tr('Nehezítés: ')), guide.harder),
+      h('p', null, h('strong', null, tr('Biztonság: ')), guide.safety),
+      note(tr('Ez a kiegészítő útmutató még nem esett át külön szakmai felülvizsgálaton.'), 'small')) : null,
     history.length ? card(h('h2', null, tr('Az előzményed')), exSpark(history), h('ul', { class: 'rows' }, history.slice(-6).reverse().map(x => h('li', null, h('span', null, fmtDate(x.date)), h('span', { class: 'muted small' }, tr('{p0} kör', { p0: x.sets }) + (x.reps ? tr(' · {p0} ismétlés', { p0: x.reps }) : '') + (x.seconds ? tr(' · {p0} mp', { p0: x.seconds }) : '')))))) : null,
     live ? card(h('h2', null, tr('Számolás és formaellenőrzés kamerával')), live.el) : null,
     lad ? card(h('h2', null, D.exercises.ladders[ex.ladder]), h('p', { class: 'small muted' }, tr('A gyakorlatsor szintjei, a legkönnyebbtől:')),
       h('ol', null, lad.map(e => h('li', null, e.id === id ? h('strong', null, e.name) : link('#/ex/' + e.id, e.name), e.impact ? h('span', { class: 'muted small' }, tr(' · ugrásos')) : null)))) : null,
+    relatedExercises(ex, D.catalog).length ? card(h('h2', null, tr('Hasonló gyakorlatok')), h('p', { class: 'small muted' }, tr('Azonos izomcsoport alapján ajánlott változatok; nem automatikus helyettesítések.')), h('ul', { class: 'rows' }, relatedExercises(ex, D.catalog).map(e => h('li', null, link('#/ex/' + e.id, e.name), h('span', { class: 'muted small' }, e.equipment ? tr('Eszköz szükséges') : tr('Eszköz nélkül')))))) : null,
     D.exercises.reviewed ? null : note(tr('A leírásokat szakember még nem lektorálta.'), 'small'),
     h('div', { class: 'row' }, btn('← Vissza', () => window.history.back())));
 }

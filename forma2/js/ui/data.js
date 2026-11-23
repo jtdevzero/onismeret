@@ -2,8 +2,9 @@
 import { setLocale, getLocale, tr } from './i18n.js';
 import { kvGet, kvSet } from './store.js';
 import { applyContent } from '../core/content-i18n.js';
+import { mergeCatalog } from '../core/exercise-catalog.js';
 
-export const D = { tests: null, norms: null, exercises: null, routines: [], figures: {}, ex: {}, test: {}, area: {} };
+export const D = { tests: null, norms: null, exercises: null, catalog: [], guidance: null, routines: [], figures: {}, ex: {}, test: {}, area: {} };
 /* beállítások: { accepted, profile: { age, sex }, parq: { kérdés: igen/nem }, lowImpact, reminder: { time } } */
 export const S = { settings: null };
 
@@ -18,7 +19,13 @@ export async function loadData() {
   [D.tests, D.norms, D.exercises, figures, routines] = await Promise.all([load('tests.json'), load('norms.json'), load('exercises.json'), load('figures.json'), load('routines.json')]);
   D.routines = routines.routines;
   D.figures = figures.figures;
-  D.ex = Object.fromEntries(D.exercises.exercises.map(e => [e.id, e]));
+  /* Az extrák önálló listában vannak: a meglévő programok eredeti szintjei nem változnak. */
+  let extra = [];
+  try { const file = await load('exercise-catalog-extra.json'); if (file.schemaVersion === 1) extra = file.exercises; } catch { /* régi offline cache */ }
+  D.catalog = mergeCatalog(D.exercises.exercises, extra);
+  D.ex = Object.fromEntries(D.catalog.map(e => [e.id, e]));
+  /* A bővített útmutató opcionális: régi offline cache esetén az alap gyakorlattár tovább működik. */
+  try { D.guidance = await load('exercise-guidance.json'); } catch { D.guidance = null; }
   D.test = Object.fromEntries(D.tests.tests.map(t => [t.id, t]));
   /* angolul a tartalmi szövegek az angol rétegből (azonosító szerint); hiba esetén a magyar marad */
   if (getLocale() === 'en') { try { D.content = await load('content-en.json'); applyContent({ exercises: D.exercises, tests: D.tests, routines: D.routines, figures: D.figures }, D.content); } catch { D.content = null; } }

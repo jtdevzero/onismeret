@@ -469,6 +469,8 @@ export async function moreView() {
     group(tr('Edzések'), [
       item('#/routines', 'train', tr('Rövid rutinok'), tr('Reggeli ébresztő, irodai mobilitás, esti nyújtás')),
       item('#/library', 'log', tr('Gyakorlattár'), tr('Minden gyakorlat, kedvencek, saját edzés')),
+      item('#/bodylab', 'progress', tr('BODY LAB – Anatómiai kalauz'), tr('Izmok, ízületek, csontok és mozgások')),
+      item('#/photos', 'progress', tr('Vizuális fejlődésnapló'), tr('Saját fotók, kizárólag helyi tárolással')),
       item('#/run', 'train', tr('Futóprogram'), tr('Nulláról 5 km-ig, 9 hét'))]),
     group(newbie ? tr('Extrák (később is ráérnek)') : tr('Extrák'), [
       item('#/blocks', 'train', tr('Szezonális programok'), tr('Sí, nyári futás, strandszezon: 4–6 hetes blokkok')),
