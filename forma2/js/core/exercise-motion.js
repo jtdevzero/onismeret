@@ -6,11 +6,12 @@ const pushBottom = { head:[1.65,.15,0], shoulder:[1.1,-.06,0], elbow:[.83,-.38,.
 const bridgeLow = { head:[1.7,-1.13,0], shoulder:[1.18,-1.1,0], elbow:[.86,-1.36,.3], wrist:[.5,-1.5,.3], hip:[0,-1.2,0], knee:[-.83,-.47,0], ankle:[-1.44,-1.5,0] };
 const bridgeHigh = { head:[1.7,-1.13,0], shoulder:[1.18,-1.1,0], elbow:[.86,-1.36,.3], wrist:[.5,-1.5,.3], hip:[.15,-.43,0], knee:[-.83,-.47,0], ankle:[-1.44,-1.5,0] };
 export const MOTIONS = {
-  squat: { title:'Guggolás – sematikus mozgás', poses:[stand,crouch] },
-  push_full: { title:'Fekvőtámasz – sematikus mozgás', poses:[pushTop,pushBottom] },
-  glute_bridge: { title:'Csípőemelés – sematikus mozgás', poses:[bridgeLow,bridgeHigh] },
+  squat: { title:'Guggolás – sematikus mozgás', status:'illustrative', evidence:'Kézzel szerkesztett kétpózos 3D illusztráció; referencia-videós validáció nélkül.', poses:[stand,crouch] },
+  push_full: { title:'Fekvőtámasz – sematikus mozgás', status:'illustrative', evidence:'Kézzel szerkesztett kétpózos 3D illusztráció; referencia-videós validáció nélkül.', poses:[pushTop,pushBottom] },
+  glute_bridge: { title:'Csípőemelés – sematikus mozgás', status:'illustrative', evidence:'Kézzel szerkesztett kétpózos 3D illusztráció; referencia-videós validáció nélkül.', poses:[bridgeLow,bridgeHigh] },
 };
 export const motionFor = id => MOTIONS[id] || null;
+export const motionStatus = id => motionFor(id)?.status || 'draft';
 export function motionPose(id, progress) {
   const motion=motionFor(id);
   if (!motion || !Number.isFinite(progress)) return null;

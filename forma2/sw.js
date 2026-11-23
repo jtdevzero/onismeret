@@ -1,8 +1,8 @@
 /* Forma service worker. GENERÁLT FÁJL (forma/build.py), ne szerkeszd kézzel.
    Az app váza, a kód és a tartalom telepítéskor a gyorsítótárba kerül, így az app offline is működik.
    A pózbecslő (kb. 15 MB) csak a kamera első használatakor töltődik le, utána az is offline megy. */
-const SHELL = 'forma2-shell-c63d65ce1d';
-const VENDOR = 'forma2-vendor-12d467a2e5';
+const SHELL = 'forma2-shell-20a432a664';
+const VENDOR = 'forma2-vendor-9e417065c6';
 const ART = 'forma2-art-5de026015b';
 const PRECACHE = [
 "./",
@@ -41,6 +41,7 @@ const PRECACHE = [
 "js/core/backup-reminder.js",
 "js/core/backup.js",
 "js/core/body-lab.js",
+"js/core/bodylab-render.js",
 "js/core/calendar.js",
 "js/core/cardio.js",
 "js/core/coach-rules.js",
@@ -80,6 +81,7 @@ const PRECACHE = [
 "js/core/workout-previous.js",
 "js/core/workout-quick-input.js",
 "js/core/workout-schema.js",
+"js/ui/anatomy-model-loader.js",
 "js/ui/app.js",
 "js/ui/backup-ui.js",
 "js/ui/data.js",
@@ -146,8 +148,8 @@ self.addEventListener('fetch', e => {
     e.respondWith(caches.open(ART).then(c => c.match(req).then(hit => hit || fetch(req).then(r => { if (r.ok) c.put(req, r.clone()); return r; }))));
     return;
   }
-  if (url.pathname.includes('/vendor/')) {
-    /* pózbecslő: gyorsítótár először, különben hálózat és mentés */
+  if (url.pathname.includes('/vendor/') || url.pathname.includes('/assets/models/')) {
+    /* pózbecslő és anatómiai GLB: az első megnyitás után külön helyi cache, nem precache */
     e.respondWith(caches.open(VENDOR).then(c => c.match(req).then(hit => hit || fetch(req).then(r => { if (r.ok) c.put(req, r.clone()); return r; }))));
     return;
   }

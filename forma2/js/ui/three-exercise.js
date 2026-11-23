@@ -1,5 +1,6 @@
 /* Egyszerű Three.js pózdemó. Képkockánként két oktatási póz között interpolál, nem mér valós testpontokat. */
-import { motionPose } from '../core/exercise-motion.js';
+import { motionPose, motionFor } from '../core/exercise-motion.js';
+import { rendererQuality } from '../core/bodylab-render.js';
 import { tr } from './i18n.js';
 
 export function mountExerciseMotion(container, id) {
@@ -8,8 +9,9 @@ export function mountExerciseMotion(container, id) {
     try {
       const T=await import('../../vendor/three/three.module.js');
       if(disposed)return;
-      const renderer=new T.WebGLRenderer({antialias:true,alpha:true,powerPreference:'low-power'});
-      renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));
+      const quality=rendererQuality({width:innerWidth,devicePixelRatio,deviceMemory:navigator.deviceMemory,reducedMotion:matchMedia('(prefers-reduced-motion: reduce)').matches});
+      const renderer=new T.WebGLRenderer({antialias:quality.antialias,alpha:true,powerPreference:'low-power'});
+      renderer.setPixelRatio(quality.pixelRatio);
       renderer.setSize(Math.max(1,container.clientWidth),250,false);
       renderer.domElement.className='exercise-three-canvas'; renderer.domElement.setAttribute('aria-hidden','true');
       container.append(renderer.domElement);
@@ -21,7 +23,7 @@ export function mountExerciseMotion(container, id) {
       const joints=Object.fromEntries(['head','shoulder','elbow','wrist','hip','knee','ankle'].map(k=>[k,mesh(new T.SphereGeometry(k==='head'?.22:.12,12,9),k==='head'?0xffae7b:0x53d7d1)]));
       const segments=[['head','shoulder'],['shoulder','hip'],['shoulder','elbow'],['elbow','wrist'],['hip','knee'],['knee','ankle']];
       const rods=segments.map(([a,b])=>({a,b,m:mesh(new T.CylinderGeometry(.09,.11,1,10),0xd87992)}));
-      let progress=0, running=false, frame=0, started=0, angle=0;
+      let progress=0, running=false, frame=0, started=0, angle=0, speed=1;
       const draw=()=>{
         const pose=motionPose(id,progress);if(!pose)return;
         for(const [k,p] of Object.entries(pose))joints[k].position.set(...p);
@@ -37,13 +39,18 @@ export function mountExerciseMotion(container, id) {
       const play=document.createElement('button');play.type='button';play.className='btn small';play.textContent=tr('Lejátszás');
       const rotate=document.createElement('button');rotate.type='button';rotate.className='btn small';rotate.textContent=tr('Nézet forgatása');
       rotate.onclick=()=>{angle+=.5;draw();};
-      const step=ts=>{if(disposed||!running||document.hidden)return;const elapsed=(ts-started)/1700;progress=(1-Math.cos(elapsed*Math.PI*2))/2;slider.value=String(Math.round(progress*100));draw();frame=requestAnimationFrame(step);};
+      const rate=document.createElement('select');rate.className='exercise-three-speed';rate.setAttribute('aria-label',tr('Lejátszási sebesség'));
+      for(const [value,label] of [['0.5','0,5×'],['1','1×'],['1.5','1,5×']]){const option=document.createElement('option');option.value=value;option.textContent=label;if(value==='1')option.selected=true;rate.append(option);}
+      rate.onchange=()=>{speed=Number(rate.value)||1;started=performance.now();};
+      const step=ts=>{if(disposed||!running||document.hidden)return;const elapsed=(ts-started)*speed/1700;progress=(1-Math.cos(elapsed*Math.PI*2))/2;slider.value=String(Math.round(progress*100));draw();frame=requestAnimationFrame(step);};
       play.onclick=()=>{running=!running;play.textContent=running?tr('Szünet'):tr('Lejátszás');cancelAnimationFrame(frame);if(running){started=performance.now();frame=requestAnimationFrame(step);}};
-      actions.append(play,rotate);container.append(slider,actions);draw();
+      const label=document.createElement('p');label.className='small muted exercise-three-status';label.textContent=tr('Sematikus illusztráció · nem ellenőrzött biomechanikai animáció.');
+      label.dataset.motionStatus=motionFor(id)?.status||'draft';
+      actions.append(play,rotate,rate);container.append(slider,actions,label);draw();
       if(matchMedia('(prefers-reduced-motion: reduce)').matches)play.hidden=true;
       const visibility=()=>{if(document.hidden){running=false;play.textContent=tr('Lejátszás');cancelAnimationFrame(frame);}};
       document.addEventListener('visibilitychange',visibility);
-      cleanup=()=>{running=false;cancelAnimationFrame(frame);observer?.disconnect();document.removeEventListener('visibilitychange',visibility);for(const m of [...Object.values(joints),...rods.map(x=>x.m)]){m.geometry.dispose();m.material.dispose();}renderer.dispose();renderer.domElement.remove();slider.remove();actions.remove();};
+      cleanup=()=>{running=false;cancelAnimationFrame(frame);observer?.disconnect();document.removeEventListener('visibilitychange',visibility);for(const m of [...Object.values(joints),...rods.map(x=>x.m)]){m.geometry.dispose();m.material.dispose();}renderer.dispose();renderer.domElement.remove();slider.remove();actions.remove();label.remove();};
       if(disposed)cleanup();
     }catch{if(!disposed)container.dataset.webgl='unavailable';}
   })();
