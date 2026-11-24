@@ -38,4 +38,6 @@ A játékok csak az edzés pihenőképernyőjén érhetők el. **Nem mentenek po
 
 ## Következő ellenőrzés
 
+**Publikálási megjegyzés (2026-11-24):** A #76 PR beolvasztása sikeres. Az első GitHub Pages workflow-futás a telepítéskor hiányzó, majd az újrapróbáláskor duplikált `github-pages` artifact hibát jelzett. Ez GitHub Actions telepítési hiba, nem sikeres éles QA. A kiadás tényleges elérhetőségét az új, önálló deployment futás után külön ellenőrizni kell.
+
 320/375/390/430 px kijelzőn, fekvő tájolásban és tableten játékvezérlők; iOS Safari WebGL-visszaállás; pihenőidő lejárta aktív játék közben; touch / képernyőolvasó / reduced motion; cache frissítés meglévő offline adatokkal. Élesítés csak külön jóváhagyással.
