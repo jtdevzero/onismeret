@@ -1,7 +1,7 @@
 /* Forma service worker. GENERÁLT FÁJL (forma/build.py), ne szerkeszd kézzel.
    Az app váza, a kód és a tartalom telepítéskor a gyorsítótárba kerül, így az app offline is működik.
    A pózbecslő (kb. 15 MB) csak a kamera első használatakor töltődik le, utána az is offline megy. */
-const SHELL = 'forma2-shell-20a432a664';
+const SHELL = 'forma2-shell-d5351e71ae';
 const VENDOR = 'forma2-vendor-9e417065c6';
 const ART = 'forma2-art-5de026015b';
 const PRECACHE = [
@@ -37,6 +37,7 @@ const PRECACHE = [
 "assets/fonts/anton-latin-ext-400-normal.woff2",
 "js/core/achievements.js",
 "js/core/analytics.js",
+"js/core/anatomy-inspector.js",
 "js/core/assessment.js",
 "js/core/backup-reminder.js",
 "js/core/backup.js",
@@ -86,6 +87,7 @@ const PRECACHE = [
 "js/ui/backup-ui.js",
 "js/ui/data.js",
 "js/ui/dom.js",
+"js/ui/exercise-motion-studio.js",
 "js/ui/figure.js",
 "js/ui/helpers.js",
 "js/ui/i18n-en.js",

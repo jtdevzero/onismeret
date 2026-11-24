@@ -1,5 +1,33 @@
 # FORMA 2 – BODY LAB Engine v3: implementált és nyitott részek (2026-11-23)
 
+## 2026-11-24 – Studio v4 vizuális hibajavítás (helyi fejlesztői ág)
+
+- Élő böngészős ellenőrzéskor a WebGL nélküli nézet üres lila panelként jelent meg. A 3D nézetbe beépült a mindig rendelkezésre álló, magyar feliratú 2D SVG anatómiai fallback; a hibaállapotban a 3D vezérlők eltűnnek.
+- A stúdió nagyobb, sötétlila/türkiz keretet, rendezettebb vezérlőket, betöltéskori 2D nézetet és mobilos méretezést kapott. Reduced motion támogatás megmaradt.
+- A kötőszöveti réteg félrevezető procedurális rúdmodellje helyett csak a jelölt, sematikus oktatási 2D atlasz látható; nem állítunk valós ín- vagy szalaggeometriát.
+- Új célzott fallback tesztek és hozzájuk tartozó angol fordítások. Teljes Node-tesztcsomag: 220/220 sikeres; build sikeres.
+- **Korlát:** az éles böngészőben a WebGL nem indult el, ezért a valós GLB látványát, a GPU-teljesítményt és az iOS Safari képernyőt nem tudtuk igazoltan ellenőrizni. Ez a javítás nem teszi a modellt biomechanikailag validálttá.
+
+### Studio v4.1 – régiónavigáció
+
+- A WebGL nélküli izomatlaszon öt interaktív, billentyűzettel is választható terület jelenik meg, és azonos gyakorlat- / útmutatószűrőhöz kapcsolódik, mint a meglévő izomtérkép.
+- A 3D nézet elöl-/hátulnézet-kapcsolót kapott, külön, mobilon is 44 CSS-pixeles vezérlőkkel.
+- Az ízületek, kötőszövetek és mozgásminták eddigi gömb-/rúd-illusztrációi helyett a kifejezetten **2D sematikus** jelölőtérkép az elsődleges. Csak az izom- és csontvázréteg hivatkozik a tényleges részletes GLB-re.
+- Kijelölt izom vagy csont esetén a kamera a tényleges látható GLB mesh-ek befoglaló dobozára fókuszál, nem pusztán kézzel rögzített közelítő pontra. Pontos biomechanikai kalibrációnak ez nem tekinthető.
+- Célzott regressziós ellenőrzés és fordításellenőrzés: **221/221 sikeres Node teszt**. A build lefutott.
+
+### Studio v5.0 – részletesebb 3D modellfelderítés (fejlesztői ág)
+
+- A GLB konkrét mesh-elemei külön kijelölhetők; a meglévő területkijelölés továbbra is működik.
+- Új offline, ékezetfüggetlen anatómiai kereső, legfeljebb 8 látható találattal, egyező 3D elemre történő fókuszálással.
+- Részleges magyar anatómiai névszótár, bal/jobb oldalisággal és változatlanul megjelenített eredeti Écorché forrásnévvel; a nem ismert elemeknél nincs kitalált magyar fordítás.
+- Kijelölt elem türkiz kiemelést kap klónozott anyagon, amelyet csere és navigáció közben felszabadítunk; az eredeti GLB anyag nem változik.
+- Modellbetöltési hiba esetén a sematikus 3D gömb-/rúdmodell helyett megjelenik a 2D SVG atlasz. Nem történik új adatküldés vagy külső szolgáltatás aktiválása.
+- A névszótár és a GLB mesh-ek összekötése nem igazol független anatómiai vagy biomechanikai validációt.
+- A 6 MB-os GLB betöltése alatt a 2D atlasz látható: nem villan fel a korábbi primitív gömbmodell. A 3D állapot csak sikeres GLB feldolgozás után válik aktívvá.
+- **Ellenőrzés:** `python3 forma2/build.py` sikeres, `node --test forma2/tests/*.test.mjs`: **226/226 sikeres**, `git diff --check` tiszta. Valódi telefonos 3D-render QA nem történt.
+- A valódi iOS és Android teljesítménymérés, illetve a 634 elem egyenkénti szakmai ellenőrzése továbbra is nyitott.
+
 ## Kész / ellenőrizhető kódban
 
 - A korábbi BODY LAB 3D nézet, magyar anatómiai rétegek, SVG fallback, gyakorlatkapcsolatok és három szemléltető mozgás megmaradtak.

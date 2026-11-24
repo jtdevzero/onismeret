@@ -783,6 +783,46 @@ ul.rows.lib.catalog-grid > li.catalog-tile { display: grid; grid-template-column
 .bodylab-3d-controls { position: absolute; top: 8px; right: 8px; display: flex; gap: 5px; z-index: 1; }
 .bodylab-3d-controls .btn { min-width: 44px; min-height: 44px; padding: 4px 10px; color: #fff; background: rgba(33, 13, 43, .84); border-color: rgba(255,255,255,.45); }
 .bodylab-3d-controls .btn:focus-visible { outline: 3px solid #8ff4e8; outline-offset: 2px; }
+/* BODY LAB studio v4: a 2D atlasz azonnal elérhető, WebGL-hiba esetén sem marad üres képernyő. */
+.bodylab-viewer-wrap { max-width: 680px; }
+.bodylab-three { max-width: 680px; min-height: 450px; isolation: isolate; border-radius: 26px; background: radial-gradient(ellipse at 50% 38%,rgba(138,75,111,.48),transparent 54%),linear-gradient(155deg,#170e2b 0%,#2e193e 47%,#0d1c30 100%); box-shadow: inset 0 0 0 1px rgba(249,207,202,.27),inset 0 -60px 100px rgba(3,10,25,.34),0 22px 45px rgba(23,8,36,.2); }
+.bodylab-three::before { z-index: 0; background-image: radial-gradient(ellipse at 50% 42%,transparent 28%,rgba(9,12,31,.55) 95%),linear-gradient(rgba(120,236,225,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(120,236,225,.07) 1px,transparent 1px); background-size: 100% 100%,40px 40px,40px 40px; mask-image: none; }
+.bodylab-three::after { z-index: 3; bottom: 13px; content: 'HÚZÁS · FORGATÁS     /     KÉT UJJ · NAGYÍTÁS'; font-size: .61rem; font-weight: 750; letter-spacing: .11em; color: #f3dbe8; }
+.bodylab-three-canvas { position: relative; z-index: 1; height: 450px; }
+.bodylab-3d-controls { z-index: 4; top: 13px; right: 13px; flex-wrap: wrap; justify-content: flex-end; max-width: 165px; gap: 6px; }
+.bodylab-3d-controls .btn { border-radius: 13px; border: 1px solid rgba(255,235,242,.31); background: rgba(23,12,39,.83); box-shadow: 0 6px 18px rgba(3,5,20,.2); backdrop-filter: blur(12px); }
+.bodylab-3d-controls .btn:hover { background: #4c264f; }
+.bodylab-view-controls { position: absolute; z-index: 4; top: 14px; left: 14px; display: flex; gap: 6px; }
+.bodylab-view-controls .btn { min-height: 44px; padding: 6px 12px; border: 1px solid rgba(135,248,229,.4); border-radius: 12px; color: #d9fff7; background: rgba(11,33,44,.86); backdrop-filter: blur(12px); }
+.bodylab-view-controls .btn:focus-visible { outline: 3px solid #8ff4e8; outline-offset: 2px; }
+.bodylab-mesh-inspector { margin: 10px 0 14px; padding: 15px 17px; border: 1px solid color-mix(in srgb,var(--teal) 38%,var(--line)); border-radius: 17px; background: linear-gradient(135deg,color-mix(in srgb,var(--teal) 9%,var(--bg-2)),var(--bg-2)); box-shadow: 0 5px 18px rgba(25,10,32,.07); }
+.bodylab-mesh-inspector .eyebrow { margin: 0 0 7px; font-size: .7rem; letter-spacing: .12em; }
+.bodylab-mesh-inspector h3 { margin: 0 0 9px; font-size: clamp(1.1rem,3vw,1.42rem); line-height: 1.2; }
+.bodylab-mesh-inspector p { overflow-wrap: anywhere; margin: 6px 0; line-height: 1.45; }
+.bodylab-three[data-webgl=unavailable] ~ .bodylab-mesh-inspector,.bodylab-three[data-webgl=unavailable] ~ .bodylab-mesh-search { display: none; }
+.bodylab-mesh-search { display: grid; gap: 7px; margin: 10px 0; padding: 13px; border: 1px solid color-mix(in srgb,var(--teal) 38%,var(--line)); border-radius: 17px; background: var(--bg-2); }
+.bodylab-mesh-search[hidden] { display: none; }
+.bodylab-mesh-search label { font-size: .83rem; font-weight: 750; }
+.bodylab-mesh-search input { width: 100%; min-height: 46px; border: 1px solid var(--line); border-radius: 12px; padding: 10px 13px; background: var(--bg); color: var(--text); font-size: 1rem; }
+.bodylab-mesh-search input:focus-visible { outline: 3px solid var(--teal); outline-offset: 2px; }
+.bodylab-search-results { display: grid; gap: 5px; max-height: 280px; overflow-y: auto; }
+.bodylab-search-result { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; min-height: 44px; width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 11px; background: color-mix(in srgb,var(--teal) 5%,var(--bg)); color: var(--text); text-align: left; cursor: pointer; }
+.bodylab-search-result span { font-size: .73rem; color: var(--muted); overflow-wrap: anywhere; }
+.bodylab-search-result:hover,.bodylab-search-result:focus-visible { border-color: var(--teal); background: color-mix(in srgb,var(--teal) 13%,var(--bg)); }
+.bodylab-credit { z-index: 3; bottom: 35px; color: #f9dfea; letter-spacing: .03em; }
+.bodylab-static-fallback { position: absolute; inset: 0; display: grid; grid-template-rows: auto minmax(0,1fr) auto; align-items: center; justify-items: center; padding: 18px 22px 34px; z-index: 2; text-align: center; color: #fff; }
+.bodylab-static-fallback .bodylab-diagram { height: min(325px,75%); max-height: 100%; width: auto; filter: drop-shadow(0 14px 28px rgba(0,0,0,.32)); }
+.bodylab-static-fallback p { max-width: 34ch; font-size: .77rem; line-height: 1.45; margin: 0; color: #f1dce6; }
+.bodylab-fallback-badge { justify-self: start; border: 1px solid rgba(125,244,222,.45); border-radius: 100px; padding: 7px 12px; background: rgba(8,32,41,.75); font-size: .7rem; font-weight: 800; letter-spacing: .08em; color: #a2ffeb; }
+.bodylab-three[data-webgl=ready] .bodylab-static-fallback { display: none; }
+.bodylab-three[data-webgl=loading] .bodylab-fallback-error,.bodylab-three:not([data-webgl=loading]) .bodylab-fallback-loading { display: none; }
+.bodylab-three[data-webgl=loading] .bodylab-three-canvas,.bodylab-three[data-webgl=loading] .bodylab-3d-controls,.bodylab-three[data-webgl=loading] .bodylab-view-controls { visibility: hidden; }
+.bodylab-three[data-webgl=loading]::after { content: 'BETÖLTÉS · 2D ATLASZ ELÉRHETŐ'; }
+.bodylab-three[data-webgl=unavailable]::before { content: ''; inset: 0; }
+.bodylab-three[data-webgl=unavailable]::after { content: '2D OKTATÁSI ATLASZ · NEM DIAGNÓZIS'; }
+.bodylab-three[data-webgl=unavailable] .bodylab-three-canvas,.bodylab-three[data-webgl=unavailable] .bodylab-3d-controls,.bodylab-three[data-webgl=unavailable] .bodylab-view-controls { display: none; }
+@media(max-width:420px) { .bodylab-three { min-height: 410px; border-radius: 21px; } .bodylab-three-canvas { height: 410px; } .bodylab-3d-controls { max-width: 116px; } .bodylab-3d-controls .btn { min-width: 44px; padding: 4px 8px; } .bodylab-static-fallback { padding: 15px 12px 36px; } }
+@media(prefers-reduced-motion:reduce) { .bodylab-three * { transition: none!important; animation: none!important; } }
 .bodylab-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 15px; }
 .bodylab-diagram-shell { min-width: 0; }
 .bodylab-fallback { margin-top: 10px; border: 1px solid var(--line); border-radius: 12px; padding: 12px; background: var(--bg-2); }
@@ -835,6 +875,25 @@ ul.rows.lib.catalog-grid > li.catalog-tile { display: grid; grid-template-column
 .exercise-three-speed { min-height: 44px; min-width: 86px; padding: 8px 12px; border-radius: 12px; color: #fff; background: #402650; border: 1px solid #a77eac; }
 .exercise-three-status { margin: 8px 4px 0; color: #f1d1da !important; line-height: 1.35; }
 .exercise-three[data-webgl=unavailable]::before { content: 'A 3D megjelenítés nem támogatott itt; a szöveges leírás változatlanul elérhető.'; display: block; padding: 40px 10px; }
+/* Motion Studio 2.0: minden kezelő és a helyi 2D bemutató WebGL nélkül is működik. */
+.exercise-three { overflow: hidden; padding: 14px; border: 1px solid rgba(240,190,218,.28); border-radius: 23px; background: radial-gradient(circle at 45% 23%,#623859 0%,#281832 48%,#142438 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,.14),0 14px 30px rgba(26,8,40,.12); }
+.exercise-motion-fallback { display: block; width: 100%; height: 250px; max-height: 250px; color: #fff; }
+.exercise-motion-fallback[hidden],.exercise-three-canvas[hidden] { display: none; }
+.exercise-motion-guide { fill: rgba(160,74,132,.13); stroke: rgba(127,239,223,.19); stroke-width: 1.3; stroke-dasharray: 5 8; }
+.exercise-motion-floor { fill: none; stroke: rgba(148,241,223,.55); stroke-width: 2; stroke-linecap: round; }
+.exercise-motion-bone { stroke: #f0a6a9; stroke-width: 12; stroke-linecap: round; }
+.exercise-motion-joint { fill: #73e7dc; stroke: #193449; stroke-width: 3; }
+.exercise-motion-phase { margin: 6px 0 4px; min-height: 27px; color: #bafdf0; font-weight: 850; font-size: .88rem; text-align: center; letter-spacing: .05em; }
+.exercise-motion-stages { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 5px; margin: 5px 0 9px; }
+.exercise-motion-stage { min-height: 46px; border: 1px solid rgba(234,198,215,.43); border-radius: 10px; padding: 7px 4px; color: #fff4fa; background: rgba(85,42,85,.5); font-size: clamp(.65rem,2.8vw,.8rem); font-weight: 750; line-height: 1.15; cursor: pointer; }
+.exercise-motion-stage:hover,.exercise-motion-stage:focus-visible { border-color: #8bf6e8; background: rgba(87,100,108,.58); }
+.exercise-motion-views { display: flex; gap: 7px; margin: 8px 0; }
+.exercise-motion-views .btn { flex: 1; min-height: 44px; padding: 8px; color: #f5ffff; border: 1px solid rgba(120,227,215,.38); background: rgba(20,48,62,.7); }
+.exercise-motion-views .btn[aria-pressed=true] { background: #246e72; border-color: #8cf3e6; }
+.exercise-three[data-webgl=unavailable]::before { content: '2D MOZGÁSVÁZLAT · OFFLINE'; display: block; padding: 0 0 5px; color: #a4f8e9; text-align: center; font-size: .64rem; font-weight: 850; letter-spacing: .12em; }
+.exercise-three-speed:focus-visible,.exercise-three-slider:focus-visible,.exercise-motion-stage:focus-visible { outline: 3px solid #b3fff1; outline-offset: 2px; }
+@media(max-width:355px) { .exercise-motion-stages { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+@media(prefers-reduced-motion:reduce) { .exercise-three * { animation: none!important; transition: none!important; } }
 .next-preview { display: flex; align-items: center; gap: 12px; border-top: 1px solid var(--line); margin-top: 14px; padding-top: 10px; text-align: left; }
 .next-preview > .fig-live { flex: 0 0 56px; width: 56px; margin: 0; padding: 2px; background: var(--bg-2); border: 0; }
 .next-preview .fig-live .fig { height: 44px; }
