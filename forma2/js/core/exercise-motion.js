@@ -6,9 +6,9 @@ const pushBottom = { head:[1.65,.15,0], shoulder:[1.1,-.06,0], elbow:[.83,-.38,.
 const bridgeLow = { head:[1.7,-1.13,0], shoulder:[1.18,-1.1,0], elbow:[.86,-1.36,.3], wrist:[.5,-1.5,.3], hip:[0,-1.2,0], knee:[-.83,-.47,0], ankle:[-1.44,-1.5,0] };
 const bridgeHigh = { head:[1.7,-1.13,0], shoulder:[1.18,-1.1,0], elbow:[.86,-1.36,.3], wrist:[.5,-1.5,.3], hip:[.15,-.43,0], knee:[-.83,-.47,0], ankle:[-1.44,-1.5,0] };
 export const MOTIONS = {
-  squat: { title:'Guggolás – sematikus mozgás', status:'illustrative', evidence:'Kézzel szerkesztett kétpózos 3D illusztráció; referencia-videós validáció nélkül.', poses:[stand,crouch] },
-  push_full: { title:'Fekvőtámasz – sematikus mozgás', status:'illustrative', evidence:'Kézzel szerkesztett kétpózos 3D illusztráció; referencia-videós validáció nélkül.', poses:[pushTop,pushBottom] },
-  glute_bridge: { title:'Csípőemelés – sematikus mozgás', status:'illustrative', evidence:'Kézzel szerkesztett kétpózos 3D illusztráció; referencia-videós validáció nélkül.', poses:[bridgeLow,bridgeHigh] },
+  squat: { title:'Guggolás – sematikus mozgás', status:'illustrative', evidence:'Kézzel szerkesztett kétpózos 3D illusztráció; referencia-videós validáció nélkül.', poses:[stand,crouch], phases:['Kiinduló helyzet','Leereszkedés','Alsó helyzet','Felállás'] },
+  push_full: { title:'Fekvőtámasz – sematikus mozgás', status:'illustrative', evidence:'Kézzel szerkesztett kétpózos 3D illusztráció; referencia-videós validáció nélkül.', poses:[pushTop,pushBottom], phases:['Felső támasz','Leengedés','Alsó helyzet','Kinyomás'] },
+  glute_bridge: { title:'Csípőemelés – sematikus mozgás', status:'illustrative', evidence:'Kézzel szerkesztett kétpózos 3D illusztráció; referencia-videós validáció nélkül.', poses:[bridgeLow,bridgeHigh], phases:['Kiinduló helyzet','Csípőemelés','Felső helyzet','Visszaengedés'] },
 };
 export const motionFor = id => MOTIONS[id] || null;
 export const motionStatus = id => motionFor(id)?.status || 'draft';
@@ -18,4 +18,17 @@ export function motionPose(id, progress) {
   const t=Math.max(0,Math.min(1,progress));
   if(t===0 || t===1)return structuredClone(motion.poses[t]);
   return Object.fromEntries(Object.keys(motion.poses[0]).map(k=>[k,motion.poses[0][k].map((v,i)=>v+(motion.poses[1][k][i]-v)*t)]));
+}
+
+/* Négy ismertetett szakasz: a szemléltető mozdulat visszafelé is végigjátszható.
+   A fáziscímek nem jelentenek szög-, terhelés- vagy biomechanikai validációt. */
+export function motionCycle(id, cycle) {
+  const motion=motionFor(id);
+  if(!motion || !Number.isFinite(cycle))return null;
+  const position=Math.max(0,Math.min(1,cycle));
+  const outgoing=position<=.5;
+  const linear=outgoing?position*2:(1-position)*2;
+  const poseProgress=(1-Math.cos(Math.PI*linear))*.5;
+  const phaseIndex=position===0||position===1?0:position<.5?1:position===.5?2:3;
+  return {cycle:position,poseProgress,phaseIndex,phaseLabel:motion.phases[phaseIndex],status:motion.status};
 }
