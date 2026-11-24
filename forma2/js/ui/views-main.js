@@ -473,6 +473,7 @@ export async function moreView() {
       item('#/photos', 'progress', tr('Vizuális fejlődésnapló'), tr('Saját fotók, kizárólag helyi tárolással')),
       item('#/run', 'train', tr('Futóprogram'), tr('Nulláról 5 km-ig, 9 hét'))]),
     group(newbie ? tr('Extrák (később is ráérnek)') : tr('Extrák'), [
+      item('#/arcade', 'progress', tr('FORMA ARCADE'), tr('Mini-játékok, rekordok, vizuális témák')),
       item('#/blocks', 'train', tr('Szezonális programok'), tr('Sí, nyári futás, strandszezon: 4–6 hetes blokkok')),
       item('#/challenge', 'check', tr('30 napos kihívás'), tr('Plank, guggolás, fekvőtámasz, mobilitás')),
       item('#/report', 'log', tr('Összefoglaló orvosnak, edzőnek'), tr('Nyomtatható, PDF-be menthető'))], false),

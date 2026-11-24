@@ -116,17 +116,30 @@ export function figureAnim(spec, opts = {}) {
   const still = opts.still || motion?.matches;
   if (frames.length > 1 && !still && typeof requestAnimationFrame === 'function') {
     const seg = 1400, hold = 500, n = frames.length, cycle = (n - 1) * 2 * (seg + hold);
-    let t0 = null, seen = false, waits = 0;
+    const memory=Number(typeof navigator==='undefined'?null:navigator.deviceMemory);
+    const frameInterval=Number.isFinite(memory)&&memory>0&&memory<=2?32:16;
+    const order = [...Array(n).keys()].concat([...Array(n - 1).keys()].reverse());
+    let t0 = null, seen = false, waits = 0, lastPaint = 0, paused = false;
     const ease = x => (x < 0.5 ? 2 * x * x : 1 - (-2 * x + 2) ** 2 / 2);
     const tick = ts => {
       /* ha még nincs a lapon, legfeljebb kb. 2 mp-ig vár rá; ha már volt rajta és lekerült, leáll */
       if (!box.isConnected) { if (seen || ++waits > 120) return; requestAnimationFrame(tick); return; }
       seen = true;
-      if (motion?.matches || document.hidden) { draw(frames[0].pose); label.textContent = frames[0].label; t0 = null; requestAnimationFrame(tick); return; }
+      const rect=box.getBoundingClientRect();
+      const offscreen=rect.bottom<=0||rect.top>=(innerHeight||document.documentElement.clientHeight)||rect.width===0;
+      if(motion?.matches||document.hidden||offscreen){
+        if(!paused){draw(frames[0].pose);label.textContent=frames[0].label;paused=true;}
+        t0=null;lastPaint=0;
+        /* Rejtett vagy képernyőn kívüli ábránál nem fut folyamatos 60 FPS-es animáció. */
+        setTimeout(()=>requestAnimationFrame(tick),240);
+        return;
+      }
+      paused=false;
+      if(ts-lastPaint<frameInterval){requestAnimationFrame(tick);return;}
+      lastPaint=ts;
       if (t0 == null) t0 = ts;
       let t = (ts - t0) % cycle;
       /* oda: 0→1→…→n-1, vissza: n-1→…→0 */
-      const order = [...Array(n).keys()].concat([...Array(n - 1).keys()].reverse());
       const legs = order.length - 1, legT = seg + hold, i = Math.min(legs - 1, Math.floor(t / legT)), within = t - i * legT;
       const a = frames[order[i]], b = frames[order[i + 1]];
       const f = within < hold ? 0 : ease(Math.min(1, (within - hold) / seg));

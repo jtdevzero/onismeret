@@ -1,5 +1,25 @@
 # FORMA 2 – BODY LAB Engine v3: implementált és nyitott részek (2026-11-23)
 
+## 2026-11-24 – Studio v5.2: prémium 2D és mobilos előkészítés (még nem publikált)
+
+- A WebGL nélkül is elérhető 2D nézetben az izmok öt elülső és öt hátulsó, közvetlenül kijelölhető sematikus régiója jelenik meg. Elöl-/hátulnézet-váltás és a kijelölt terület szöveges visszajelzése került a modellre.
+- A hét izomterület 44 CSS-pixeles gyorsválasztó sávot kapott a 3D/2D megjelenítő alatt; a választás szinkronizálja a meglévő izomtérképet, az útmutatót és a kapcsolódó gyakorlatokat. A 2D SVG kijelölése nem cseréli le a fókuszban lévő SVG-csomópontot.
+- A BODY LAB 2D és a meglévő izomtérkép egyetlen helyi, verziófüggetlen, sematikus forrásból (`js/core/bodylab-silhouette.js`) használja a régiók vonalait. Nem került be új, nem ellenőrzött anatómiai állítás.
+- A 2D/3D jelző most tényleges betöltési állapotot követ: sikeres GLB esetén 3D, hiányzó modellnél, renderhibánál és WebGL-vesztésnél 2D. A nullával visszatérő modellbetöltés nem hagyhat végtelen töltésjelzést.
+- Magyar nyelvű vezérlők és új angol fordítások, reduced motion és fókuszstílus megtartva. Az új 2D modul az offline PWA shell cache-be kerül; az edzésnapló, fotók és IndexedDB adatok nem változtak.
+- **Ellenőrzés:** `python3 forma2/build.py` sikeres, a teljes Node-készlet **239/239 sikeres**, az érintett UI-modulok szintaxisellenőrzése és `git diff --check` sikeres. Helyi Chromium-vizuális próba a konténer socket-tiltása miatt nem indul; fizikai Android/iPhone és WebGL QA nem történt.
+- Kiadás előtt a `docs/bodylab-prelaunch-qa.md` manuális ellenőrzőlistája szükséges. A változás kizárólag a `forma2/` könyvtárban van, nem érinti a publikált `forma/` rendszert.
+
+## 2026-11-24 – Studio v5.1: 3D részletvizsgálat (új fejlesztői ág)
+
+- A Studio v5.0 az `#75` pull requesttel bekerült a tesztoldal forráságába; a jelenlegi `forma/` állománya érintetlen maradt.
+- A részletes Écorché izom- és csontmesh-ek külön izolálhatók. A kapcsoló az eredetileg látható modellelemeket ideiglenesen elrejti, és visszakapcsoláskor **az eredeti láthatósági állapotot** állítja vissza; a GLB-t és a szakmai adatokat nem módosítja.
+- A keresőből és a vászonról kiválasztott mesh közös izolálási állapotot használ. Az anatómiai részletkártyán magyar, billentyűzettel elérhető, legalább 44 CSS-pixel magas vezérlők vannak; WebGL nélküli 2D nézetben a kapcsolók rejtve maradnak.
+- A csontmesh kiválasztása már nem szereli le és nem tölti újra a teljes 3D modellt, amikor másik régióra váltunk. A csontinformációs panel külön frissül.
+- Új állapotkezelő: `js/core/anatomy-isolation.js`. Az új `tests/anatomy-isolation.test.mjs` öt célzott tesztet tartalmaz (izolálás, váltás, rejtett réteg védelme, UI-összekötés, offline cache).
+- **Ellenőrzés:** `python3 forma2/build.py` sikeres; `node --test forma2/tests/*.test.mjs` **235/235 sikeres**; `node --check` a két érintett UI-modulra sikeres; `git diff --check` tiszta. A tesztek nem jelentenek valós eszközös vizuális validációt.
+- **Élő korlát:** a 2026-11-24-i böngészős ellenőrzésen a publikált BODY LAB betöltött és a 2D atlasz látszott, de WebGL nem állt rendelkezésre. A v5.1 izoláló funkció **még nincs publikálva**; az iOS/Android GPU QA továbbra is nyitott.
+
 ## 2026-11-24 – Studio v4 vizuális hibajavítás (helyi fejlesztői ág)
 
 - Élő böngészős ellenőrzéskor a WebGL nélküli nézet üres lila panelként jelent meg. A 3D nézetbe beépült a mindig rendelkezésre álló, magyar feliratú 2D SVG anatómiai fallback; a hibaállapotban a 3D vezérlők eltűnnek.

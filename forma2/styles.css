@@ -772,7 +772,12 @@ ul.rows.lib.catalog-grid > li.catalog-tile { display: grid; grid-template-column
 .bodylab-tabs .btn[aria-pressed=true] { box-shadow: 0 4px 17px color-mix(in srgb,var(--accent) 26%,transparent); }
 .bodylab-viewer-wrap { max-width: 520px; margin: 0 auto 13px; }
 .bodylab-viewer-heading { display: flex; align-items: center; gap: 9px; margin: 4px 0 9px; font-size: .84rem; font-weight: 750; letter-spacing: .02em; }
+.bodylab-viewer-heading { flex-wrap: wrap; }
+.bodylab-mode-toggle { margin-left: auto; min-height: 44px; max-width: 100%; white-space: normal; border-radius: 12px; }
+.bodylab-three[data-mode=manual2d] .bodylab-fallback-error { display: none; }
 .bodylab-live-tag { display: inline-flex; align-items: center; justify-content: center; min-height: 25px; padding: 3px 9px; border-radius: 8px; background: #246e72; color: white; font: 800 .74rem/1 sans-serif; letter-spacing: .08em; }
+.bodylab-live-tag[data-mode=loading] { background: #78516a; }
+.bodylab-live-tag[data-mode=unavailable] { background: #654364; color: #fff1e6; }
 .bodylab-three { min-height: 330px; width: 100%; max-width: 520px; margin: 0 auto; position: relative; overflow: hidden; border-radius: 20px; background: radial-gradient(ellipse at 50% 30%,#7c456c 0,#42264b 34%,#1d102f 75%),#20102d; box-shadow: inset 0 0 0 1px rgba(255,255,255,.17),0 12px 32px rgba(38,14,49,.15); }
 .bodylab-three::before { content: ''; position: absolute; inset: 0; pointer-events: none; background-image: linear-gradient(rgba(134,240,230,.075) 1px,transparent 1px),linear-gradient(90deg,rgba(134,240,230,.075) 1px,transparent 1px); background-size: 29px 29px; mask-image: linear-gradient(to bottom,transparent 10%,black 60%,transparent 94%); }
 .bodylab-three::after { content: '3D · forgatás: húzás · zoom: görgetés'; position: absolute; bottom: 7px; left: 10px; right: 10px; text-align: center; color: #ffe9ef; font-size: .68rem; pointer-events: none; }
@@ -795,10 +800,30 @@ ul.rows.lib.catalog-grid > li.catalog-tile { display: grid; grid-template-column
 .bodylab-view-controls { position: absolute; z-index: 4; top: 14px; left: 14px; display: flex; gap: 6px; }
 .bodylab-view-controls .btn { min-height: 44px; padding: 6px 12px; border: 1px solid rgba(135,248,229,.4); border-radius: 12px; color: #d9fff7; background: rgba(11,33,44,.86); backdrop-filter: blur(12px); }
 .bodylab-view-controls .btn:focus-visible { outline: 3px solid #8ff4e8; outline-offset: 2px; }
+.bodylab-quick-regions { display: flex; gap: 7px; margin: 11px 0 8px; padding: 2px 1px 9px; overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: thin; }
+.bodylab-quick-regions .btn { flex: 0 0 auto; min-height: 44px; padding: 9px 14px; border-radius: 999px; font-weight: 750; scroll-snap-align: start; }
+.bodylab-quick-regions .btn[aria-pressed=true] { color: #11283a; background: #6be7d7; border-color: #2cc6bc; box-shadow: 0 3px 14px rgba(58,192,177,.22); }
+.bodylab-quick-regions .btn:focus-visible { outline: 3px solid var(--teal); outline-offset: 2px; }
+.bodylab-region-navigator { display: grid; gap: 8px; min-width: 0; margin: 10px 0 14px; padding: 12px; border: 1px solid color-mix(in srgb,var(--teal) 30%,var(--line)); border-radius: 16px; background: var(--bg-2); }
+.bodylab-region-nav-actions { display: grid; grid-template-columns: 44px 44px minmax(0,1fr); gap: 8px; }
+.bodylab-region-nav-actions .btn { min-width: 44px; min-height: 44px; padding: 7px 10px; overflow-wrap: anywhere; }
+.bodylab-region-navigator input { width: 100%; min-width: 0; min-height: 44px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 11px; background: var(--bg); color: var(--text); font: inherit; }
+.bodylab-region-navigator input:focus-visible,.bodylab-region-nav-actions .btn:focus-visible,.bodylab-region-results .btn:focus-visible { outline: 3px solid var(--teal); outline-offset: 2px; }
+.bodylab-region-results { display: flex; flex-wrap: wrap; gap: 7px; max-height: 190px; overflow-y: auto; }
+.bodylab-region-results .btn { min-height: 44px; white-space: normal; text-align: left; }
+.bodylab-region-navigator [role=status] { min-height: 1.4em; margin: 0; }
+@media(max-width:340px) { .bodylab-region-nav-actions { grid-template-columns: 1fr 1fr; } .bodylab-region-nav-actions .btn:last-child { grid-column: 1/-1; } }
+@media(min-width:800px) { .bodylab-region-navigator { padding: 15px 18px; } }
+@media(forced-colors:active) { .bodylab-region-navigator,.bodylab-region-navigator .btn,.bodylab-region-navigator input { border: 1px solid CanvasText; } }
 .bodylab-mesh-inspector { margin: 10px 0 14px; padding: 15px 17px; border: 1px solid color-mix(in srgb,var(--teal) 38%,var(--line)); border-radius: 17px; background: linear-gradient(135deg,color-mix(in srgb,var(--teal) 9%,var(--bg-2)),var(--bg-2)); box-shadow: 0 5px 18px rgba(25,10,32,.07); }
 .bodylab-mesh-inspector .eyebrow { margin: 0 0 7px; font-size: .7rem; letter-spacing: .12em; }
 .bodylab-mesh-inspector h3 { margin: 0 0 9px; font-size: clamp(1.1rem,3vw,1.42rem); line-height: 1.2; }
 .bodylab-mesh-inspector p { overflow-wrap: anywhere; margin: 6px 0; line-height: 1.45; }
+.bodylab-mesh-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 12px; }
+.bodylab-mesh-actions .btn { min-height: 44px; padding: 9px 13px; }
+.bodylab-mesh-actions .btn:focus-visible { outline: 3px solid var(--teal); outline-offset: 2px; }
+.bodylab-mesh-actions .btn:disabled { opacity: .52; cursor: not-allowed; }
+.bodylab-mesh-actions [role=status] { flex: 1 1 100%; margin: 0; }
 .bodylab-three[data-webgl=unavailable] ~ .bodylab-mesh-inspector,.bodylab-three[data-webgl=unavailable] ~ .bodylab-mesh-search { display: none; }
 .bodylab-mesh-search { display: grid; gap: 7px; margin: 10px 0; padding: 13px; border: 1px solid color-mix(in srgb,var(--teal) 38%,var(--line)); border-radius: 17px; background: var(--bg-2); }
 .bodylab-mesh-search[hidden] { display: none; }
@@ -810,8 +835,17 @@ ul.rows.lib.catalog-grid > li.catalog-tile { display: grid; grid-template-column
 .bodylab-search-result span { font-size: .73rem; color: var(--muted); overflow-wrap: anywhere; }
 .bodylab-search-result:hover,.bodylab-search-result:focus-visible { border-color: var(--teal); background: color-mix(in srgb,var(--teal) 13%,var(--bg)); }
 .bodylab-credit { z-index: 3; bottom: 35px; color: #f9dfea; letter-spacing: .03em; }
-.bodylab-static-fallback { position: absolute; inset: 0; display: grid; grid-template-rows: auto minmax(0,1fr) auto; align-items: center; justify-items: center; padding: 18px 22px 34px; z-index: 2; text-align: center; color: #fff; }
-.bodylab-static-fallback .bodylab-diagram { height: min(325px,75%); max-height: 100%; width: auto; filter: drop-shadow(0 14px 28px rgba(0,0,0,.32)); }
+.bodylab-static-fallback { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 15px 16px 30px; z-index: 2; text-align: center; color: #fff; }
+.bodylab-fallback-toolbar { width: 100%; display: flex; gap: 8px; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+.bodylab-fallback-orientation { display: flex; gap: 6px; }
+.bodylab-fallback-orientation .btn { min-height: 44px; min-width: 58px; border-radius: 12px; padding: 7px 10px; background: rgba(14,31,47,.87); border: 1px solid rgba(139,250,227,.55); color: #ddfff7; }
+.bodylab-fallback-orientation .btn[aria-pressed=true] { background: #54d7cc; border-color: #aafff1; color: #142032; font-weight: 850; }
+.bodylab-fallback-orientation .btn:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+.bodylab-fallback-art { min-height: 0; flex: 1 1 auto; width: 100%; display: grid; place-items: center; }
+.bodylab-static-fallback .bodylab-diagram { height: 100%; min-height: 170px; max-height: 280px; width: auto; max-width: 100%; filter: drop-shadow(0 14px 28px rgba(0,0,0,.32)); }
+.bodylab-static-fallback .bodylab-fallback-selection { min-height: 19px; margin: 0; font-size: .81rem; color: #a8fff1; font-weight: 700; }
+.bodylab-region { fill: rgba(238,139,152,.72); stroke: #ffcdbb; stroke-width: 1.6; cursor: pointer; transition: fill .15s ease, stroke .15s ease; }
+.bodylab-region:hover,.bodylab-region:focus-visible,.bodylab-region.selected { fill: #75e9dc; stroke: #fff9e6; stroke-width: 2.6; outline: none; }
 .bodylab-static-fallback p { max-width: 34ch; font-size: .77rem; line-height: 1.45; margin: 0; color: #f1dce6; }
 .bodylab-fallback-badge { justify-self: start; border: 1px solid rgba(125,244,222,.45); border-radius: 100px; padding: 7px 12px; background: rgba(8,32,41,.75); font-size: .7rem; font-weight: 800; letter-spacing: .08em; color: #a2ffeb; }
 .bodylab-three[data-webgl=ready] .bodylab-static-fallback { display: none; }
@@ -821,7 +855,7 @@ ul.rows.lib.catalog-grid > li.catalog-tile { display: grid; grid-template-column
 .bodylab-three[data-webgl=unavailable]::before { content: ''; inset: 0; }
 .bodylab-three[data-webgl=unavailable]::after { content: '2D OKTATÁSI ATLASZ · NEM DIAGNÓZIS'; }
 .bodylab-three[data-webgl=unavailable] .bodylab-three-canvas,.bodylab-three[data-webgl=unavailable] .bodylab-3d-controls,.bodylab-three[data-webgl=unavailable] .bodylab-view-controls { display: none; }
-@media(max-width:420px) { .bodylab-three { min-height: 410px; border-radius: 21px; } .bodylab-three-canvas { height: 410px; } .bodylab-3d-controls { max-width: 116px; } .bodylab-3d-controls .btn { min-width: 44px; padding: 4px 8px; } .bodylab-static-fallback { padding: 15px 12px 36px; } }
+@media(max-width:420px) { .bodylab-three { min-height: 410px; border-radius: 21px; } .bodylab-three-canvas { height: 410px; } .bodylab-3d-controls { max-width: 116px; } .bodylab-3d-controls .btn { min-width: 44px; padding: 4px 8px; } .bodylab-static-fallback { padding: 12px 10px 32px; gap: 5px; } .bodylab-fallback-orientation .btn { min-width: 50px; padding-inline: 8px; } }
 @media(prefers-reduced-motion:reduce) { .bodylab-three * { transition: none!important; animation: none!important; } }
 .bodylab-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 15px; }
 .bodylab-diagram-shell { min-width: 0; }
@@ -1060,6 +1094,63 @@ h1, .hero h1, .page > h1, .tile.mini strong, .progress-poster h2, .art-banner h2
 h1, .page > h1 { letter-spacing: .015em; font-style: normal; }
 .page > h1 { font-size: 2rem; background: linear-gradient(90deg, var(--accent), var(--title-b)); -webkit-background-clip: text; background-clip: text; color: transparent; }
 @media (forced-colors: active) { .page > h1 { color: CanvasText; background: none; } }
+
+/* Pihenőidős mini-játék: nem módosítja az edzésidőzítőt, teljesen opcionális. */
+.workout-rest-game-wrap { width: 100%; margin: 6px 0 10px; }
+.workout-rest-game-toggle { min-height: 44px; width: 100%; }
+.workout-rest-game { margin-top: 10px; padding: 12px; border: 1px solid color-mix(in srgb,var(--teal) 38%,var(--line)); border-radius: 15px; background: var(--bg-2); }
+.workout-rest-game[hidden] { display: none; }
+.workout-rest-score { font-weight: 800; margin: 7px 0; font-variant-numeric: tabular-nums; }
+.workout-rest-game-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; max-width: 280px; margin: 8px auto; }
+.workout-rest-game-cell { min-width: 44px; min-height: 44px; aspect-ratio: 1.25; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); color: var(--muted); font-size: 1.5rem; cursor: pointer; }
+.workout-rest-game-cell.active { color: #162735; background: #73eadb; border-color: #24adac; box-shadow: 0 0 0 3px color-mix(in srgb,var(--teal) 20%,transparent); }
+.workout-rest-game-cell:focus-visible,.workout-rest-game-toggle:focus-visible { outline: 3px solid var(--teal); outline-offset: 2px; }
+.workout-rest-game-tabs { display: grid; grid-template-columns: repeat(auto-fit,minmax(95px,1fr)); gap: 6px; margin: 10px 0; }
+.workout-rest-game-tabs .btn { min-height: 44px; padding: 5px 3px; font-size: .78rem; white-space: normal; }
+.workout-rest-game-tabs [aria-pressed="true"] { border-color: var(--teal); background: var(--surface); box-shadow: inset 0 -3px var(--teal); }
+.workout-rest-court { position: relative; max-width: 300px; height: 130px; margin: 8px auto; border-radius: 12px; overflow: hidden; text-align: center; background: linear-gradient(160deg,#39225c 0%,#ae4e74 54%,#f5aa75 100%); }
+.workout-rest-backboard { position: absolute; width: 72px; height: 48px; top: 9px; left: calc(50% - 36px); border: 4px solid #fff; border-radius: 3px; background: #ffffff26; box-shadow: 0 2px 7px #321a5580; }
+.workout-rest-backboard::after { content: ''; position: absolute; width: 30px; height: 22px; bottom: 0; left: calc(50% - 15px); border: 2px solid #fff; }
+.workout-rest-rim { position: absolute; top: 53px; left: calc(50% - 25px); width: 50px; height: 10px; border: 4px solid #f86344; border-radius: 50%; z-index: 2; }
+.workout-rest-net { position: absolute; top: 62px; left: calc(50% - 18px); width: 36px; height: 32px; border: 2px solid #fff9; border-top: 0; transform: perspective(50px) rotateX(-14deg); clip-path: polygon(0 0,100% 0,78% 100%,22% 100%); background: repeating-linear-gradient(65deg,transparent 0 10px,#ffffff70 11px 12px,transparent 13px 20px); }
+.workout-rest-ball { position: absolute; bottom: 6px; left: calc(50% - 15px); font-size: 30px; transform-origin: center; z-index: 3; }
+.workout-rest-ball.shooting { animation: forma-rest-shot .52s ease-out both; }
+@keyframes forma-rest-shot { 0% { transform: translate(0,0) scale(1); } 70% { transform: translate(var(--shot-drift,0px),-87px) scale(.65); } 100% { transform: translate(var(--shot-drift,0px),-69px) scale(.47); } }
+.workout-rest-basket-aim { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 5px; max-width: 310px; margin: auto; }
+.workout-rest-aim,.workout-rest-memory-key { min-width: 0; min-height: 48px; border: 1px solid var(--line); border-radius: 11px; background: var(--surface); color: var(--text); font-size: 1.5rem; }
+.workout-rest-memory-preview { min-height: 60px; margin: 8px 0; padding: 12px 4px; text-align: center; border-radius: 10px; background: var(--surface); font-size: 1.5rem; font-weight: 800; letter-spacing: .1em; }
+.workout-rest-memory-actions { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+.workout-rest-memory-key { min-width: 48px; }
+.workout-rest-pairs { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 9px; max-width: 310px; margin: 10px auto; }
+.workout-rest-card { min-height: 64px; border: 1px solid var(--line); border-radius: 13px; background: linear-gradient(135deg,var(--surface),var(--bg-2)); color: var(--text); font-size: 1.7rem; font-weight: 800; }
+.workout-rest-card[aria-pressed="true"] { border-color: var(--teal); background: color-mix(in srgb,var(--teal) 17%,var(--surface)); }
+.workout-rest-card:disabled { opacity: .8; }
+.workout-rest-math-question { margin: 10px auto; text-align: center; font-size: clamp(1.5rem,6vw,2.25rem); font-weight: 800; font-variant-numeric: tabular-nums; }
+.workout-rest-math-options { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 9px; }
+.workout-rest-math-answer { min-height: 54px; border: 1px solid var(--teal); border-radius: 13px; color: var(--text); background: var(--surface); font-size: 1.2rem; font-weight: 800; }
+.workout-rest-card:focus-visible,.workout-rest-math-answer:focus-visible { outline: 3px solid var(--teal); outline-offset: 2px; }
+.workout-rest-timing-action { min-height: 64px; min-width: min(100%,220px); display: block; margin: 16px auto; font-size: 1.2rem; }
+/* Önálló, opt-in Arcade; a megjelenítés nem kér új csomagot, hálózatot vagy canvas-folyamatot. */
+.arcade-hub { --arcade-a:#fd9473; --arcade-b:#8c3ca2; --arcade-c:#44dbca; }
+.arcade-hub[data-arcade-theme="ocean"] { --arcade-a:#32cbd1; --arcade-b:#245a9b; --arcade-c:#8be6d1; }
+.arcade-hub[data-arcade-theme="night"] { --arcade-a:#cd7df6; --arcade-b:#241b61; --arcade-c:#f98acb; }
+.arcade-hero { color:#fff; border-radius:20px; padding:clamp(18px,5vw,28px); margin:8px 0 16px; background:linear-gradient(125deg,var(--arcade-b),#30213e 60%,var(--arcade-a)); box-shadow:0 10px 28px #2a103b30; }
+.arcade-hero h2 { color:#fff; font-size:clamp(1.7rem,7vw,2.8rem); line-height:1.04; margin:9px 0; letter-spacing:.02em; }
+.arcade-hero .eyebrow { color:var(--arcade-c); font-weight:800; }
+.arcade-hero p:last-child { color:#fff; }
+.arcade-themes { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; margin-bottom:20px; }
+.arcade-themes button { min-width:0; min-height:44px; }
+.arcade-themes [aria-pressed="true"] { border-color:var(--arcade-c); box-shadow:inset 0 -3px var(--arcade-c); }
+.arcade-records { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; margin:9px 0 16px; }
+.arcade-record { border:1px solid var(--line); border-radius:13px; padding:12px 6px; display:flex; flex-direction:column; align-items:center; gap:6px; background:var(--surface); }
+.arcade-record span { font-size:1.45rem; }
+.arcade-record strong { font-variant-numeric:tabular-nums; }
+.arcade-hub .workout-rest-game { border-color:var(--arcade-c); background:color-mix(in srgb,var(--arcade-b) 8%,var(--bg-2)); }
+@media(max-width:350px) { .arcade-themes { gap:4px; } .arcade-themes button { padding:6px 2px; } }
+.workout-rest-aim:focus-visible,.workout-rest-memory-key:focus-visible,.workout-rest-game-tabs button:focus-visible { outline: 3px solid var(--teal); outline-offset: 2px; }
+@media(max-width:350px) { .workout-rest-game-grid { max-width: 235px; } }
+@media(prefers-reduced-motion:reduce) { .workout-rest-game-cell { transition: none; animation: none; } }
+@media(prefers-reduced-motion:reduce) { .workout-rest-ball.shooting { animation: none; } }
 .hero h1, .art-banner h2 { font-style: normal; letter-spacing: .03em; text-shadow: 0 0 18px rgba(255, 79, 163, .55), 3px 3px 0 #2a0f3d; }
 .card > h2:first-child, details > summary h2 { font-family: var(--display); font-weight: 400; letter-spacing: .02em; font-size: 1.3rem; }
 /* A fő gomb mindhárom témában a kontraszt-ellenőrzött akcentus két árnyalatát használja.

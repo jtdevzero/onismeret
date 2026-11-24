@@ -33,6 +33,7 @@ const A = () => import('./views-assess.js'), T = () => import('./views-train.js'
 const L = () => import('./views-library.js');
 const bodyLabView = lazy(() => import('./views-body-lab.js'), 'bodyLabView');
 const photoTrackerView = lazy(() => import('./views-photo.js'), 'photoTrackerView');
+const arcadeView = lazy(() => import('./views-arcade.js'), 'arcadeView');
 const assessView = lazy(A, 'assessView'), testView = lazy(A, 'testView'), resultView = lazy(A, 'resultView');
 const programView = lazy(T, 'programView'), sessionView = lazy(T, 'sessionView'), exerciseView = lazy(T, 'exerciseView');
 const progressView = lazy(P, 'progressView'), miniView = lazy(P, 'miniView');
@@ -40,9 +41,9 @@ const runView = lazy(() => import('./views-run.js'), 'runView'), postureView = l
 const libraryView = lazy(L, 'libraryView'), routinesView = lazy(L, 'routinesView'), customView = lazy(L, 'customView');
 const ROUTES = {
   '': homeView, start: startView, assess: assessView, test: testView, result: resultView,
-  program: programView, session: sessionView, ex: exerciseView, log: logView, settings: settingsView, cardio: cardioView, check: checkView, progress: progressView, mini: miniView, run: runView, more: moreView, review: reviewView, cooldown: cooldownView, library: libraryView, bodylab: bodyLabView, photos: photoTrackerView, routines: routinesView, custom: customView, posture: postureView, pulse: pulseView, challenge: challengeView, blocks: blocksView, report: reportView, diag: diagView, qa: qaView,
+  program: programView, session: sessionView, ex: exerciseView, log: logView, settings: settingsView, cardio: cardioView, check: checkView, progress: progressView, mini: miniView, run: runView, more: moreView, review: reviewView, cooldown: cooldownView, library: libraryView, bodylab: bodyLabView, photos: photoTrackerView, arcade: arcadeView, routines: routinesView, custom: customView, posture: postureView, pulse: pulseView, challenge: challengeView, blocks: blocksView, report: reportView, diag: diagView, qa: qaView,
 };
-const TAB = { '': '', program: 'program', session: 'program', ex: 'program', check: 'program', progress: 'progress', mini: 'progress', result: 'progress', assess: 'more', test: 'more', cardio: 'more', run: 'more', log: 'more', settings: 'more', more: 'more', review: 'progress', cooldown: 'program', library: 'more', bodylab: 'more', photos: 'more', routines: 'more', custom: 'more', posture: 'more', pulse: 'more', challenge: 'more', blocks: 'more', report: 'more', diag: 'more', qa: 'more' };
+const TAB = { '': '', program: 'program', session: 'program', ex: 'program', check: 'program', progress: 'progress', mini: 'progress', result: 'progress', assess: 'more', test: 'more', cardio: 'more', run: 'more', log: 'more', settings: 'more', more: 'more', review: 'progress', cooldown: 'program', library: 'more', bodylab: 'more', photos: 'more', arcade: 'more', routines: 'more', custom: 'more', posture: 'more', pulse: 'more', challenge: 'more', blocks: 'more', report: 'more', diag: 'more', qa: 'more' };
 const routes = createRouteLifecycle(e => console.error(e));
 
 async function route() {

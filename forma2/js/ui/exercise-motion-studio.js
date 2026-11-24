@@ -92,7 +92,7 @@ export function mountExerciseMotion(container, id) {
     try{
       const T=await import('../../vendor/three/three.module.js');
       if(disposed)return;
-      const quality=rendererQuality({width:innerWidth,devicePixelRatio,deviceMemory:navigator.deviceMemory,reducedMotion:reduced});
+      const quality=rendererQuality({width:container.clientWidth||innerWidth,devicePixelRatio,deviceMemory:navigator.deviceMemory,reducedMotion:reduced});
       const renderer=new T.WebGLRenderer({antialias:quality.antialias,alpha:true,powerPreference:'low-power'});
       renderer.setPixelRatio(quality.pixelRatio);
       renderer.domElement.className='exercise-three-canvas';renderer.domElement.setAttribute('aria-hidden','true');
@@ -104,13 +104,18 @@ export function mountExerciseMotion(container, id) {
       const mesh=(geometry,color)=>{const m=new T.Mesh(geometry,new T.MeshStandardMaterial({color,roughness:.38,metalness:.12}));scene.add(m);return m;};
       const joints=Object.fromEntries(KEYS.map(k=>[k,mesh(new T.SphereGeometry(k==='head'?.22:.12,12,9),k==='head'?0xffae7b:0x53d7d1)]));
       const rods=LINKS.map(([a,b])=>({a,b,m:mesh(new T.CylinderGeometry(.09,.11,1,10),0xd87992)}));
+      /* Animáció közben a geometriai segédvektorok újrahasznosulnak: nincs frame-enkénti GC-terhelés. */
+      const startPoint=new T.Vector3(),endPoint=new T.Vector3(),delta=new T.Vector3(),upAxis=new T.Vector3(0,1,0);
       drawGpu=(pose,rotation)=>{
-        for(const [key,point] of Object.entries(pose))joints[key].position.set(...point);
-        for(const {a,b,m} of rods){const p=new T.Vector3(...pose[a]),q=new T.Vector3(...pose[b]),delta=q.clone().sub(p);
-          m.position.copy(p.add(q).multiplyScalar(.5));m.scale.y=delta.length();m.quaternion.setFromUnitVectors(new T.Vector3(0,1,0),delta.normalize());}
+        for(const key of KEYS)joints[key].position.fromArray(pose[key]);
+        for(const {a,b,m} of rods){startPoint.fromArray(pose[a]);endPoint.fromArray(pose[b]);delta.subVectors(endPoint,startPoint);
+          m.position.copy(startPoint).add(endPoint).multiplyScalar(.5);m.scale.y=delta.length();m.quaternion.setFromUnitVectors(upAxis,delta.normalize());}
         scene.rotation.y=rotation;renderer.render(scene,camera);
       };
-      const resize=()=>{if(disposed)return;const width=Math.max(1,container.clientWidth);renderer.setSize(width,250,false);camera.aspect=width/250;camera.updateProjectionMatrix();draw();};
+      const resize=()=>{if(disposed)return;const width=Math.max(1,container.clientWidth);
+        const ratio=rendererQuality({width,devicePixelRatio,deviceMemory:navigator.deviceMemory}).pixelRatio;
+        if(renderer.getPixelRatio()!==ratio)renderer.setPixelRatio(ratio);
+        renderer.setSize(width,250,false);camera.aspect=width/250;camera.updateProjectionMatrix();draw();};
       const observer=typeof ResizeObserver!=='undefined'?new ResizeObserver(resize):null;
       const lost=e=>{e.preventDefault();container.dataset.webgl='unavailable';renderer.domElement.hidden=true;fallback.svg.hidden=false;pause();};
       const restored=()=>{container.dataset.webgl='ready';renderer.domElement.hidden=false;fallback.svg.hidden=true;resize();};
