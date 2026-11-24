@@ -1,7 +1,7 @@
 /* Forma service worker. GENERÁLT FÁJL (forma/build.py), ne szerkeszd kézzel.
    Az app váza, a kód és a tartalom telepítéskor a gyorsítótárba kerül, így az app offline is működik.
    A pózbecslő (kb. 15 MB) csak a kamera első használatakor töltődik le, utána az is offline megy. */
-const SHELL = 'forma2-shell-d5351e71ae';
+const SHELL = 'forma2-shell-f9618fee74';
 const VENDOR = 'forma2-vendor-9e417065c6';
 const ART = 'forma2-art-5de026015b';
 const PRECACHE = [
@@ -38,11 +38,14 @@ const PRECACHE = [
 "js/core/achievements.js",
 "js/core/analytics.js",
 "js/core/anatomy-inspector.js",
+"js/core/anatomy-isolation.js",
 "js/core/assessment.js",
 "js/core/backup-reminder.js",
 "js/core/backup.js",
 "js/core/body-lab.js",
+"js/core/bodylab-navigation.js",
 "js/core/bodylab-render.js",
+"js/core/bodylab-silhouette.js",
 "js/core/calendar.js",
 "js/core/cardio.js",
 "js/core/coach-rules.js",
@@ -69,6 +72,7 @@ const PRECACHE = [
 "js/core/progress.js",
 "js/core/progression.js",
 "js/core/reaction.js",
+"js/core/rest-mini-game.js",
 "js/core/route-lifecycle.js",
 "js/core/runplan.js",
 "js/core/score.js",
@@ -98,12 +102,14 @@ const PRECACHE = [
 "js/ui/pose.js",
 "js/ui/progress-card.js",
 "js/ui/radar.js",
+"js/ui/rest-mini-game.js",
 "js/ui/share-card.js",
 "js/ui/state.js",
 "js/ui/store.js",
 "js/ui/three-body.js",
 "js/ui/three-exercise.js",
 "js/ui/views-analytics.js",
+"js/ui/views-arcade.js",
 "js/ui/views-assess.js",
 "js/ui/views-body-lab.js",
 "js/ui/views-cardio.js",

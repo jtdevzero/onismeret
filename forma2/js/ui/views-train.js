@@ -22,6 +22,7 @@ import { relatedExercises } from '../core/exercise-catalog.js';
 import { workoutFinishVisual } from './views-visual.js';
 import { motionFor } from '../core/exercise-motion.js';
 import { mountExerciseMotion } from './three-exercise.js';
+import { restMiniGame } from './rest-mini-game.js';
 
 const SIDE = { left: 'bal oldal', right: 'jobb oldal', both: tr('oldalanként') };
 /* az elvégzett mennyiség (ismétlés vagy másodperc) edzésről edzésre, apró oszlopdiagramon */
@@ -459,6 +460,7 @@ export async function sessionView(key, onCleanup) {
         after ? h('p', { class: 'workout-cue' }, tr('Következik: '), h('strong', null, D.ex[after.exercise].name)) : null,
         h('div', { class: 'row rest-adjust', 'aria-label': tr('Pihenőidő módosítása') },
           btn('−15 mp', () => adjust(-15), 'small'), btn('+15 mp', () => adjust(15), 'small')),
+        restMiniGame(),
         h('div', { class: 'row workout-actions' }, btn(tr('Pihenő kihagyása'), next, 'primary'))), nav);
       speak(tr('Pihenő'), voice.checked);
       run();

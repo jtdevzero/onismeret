@@ -5,14 +5,18 @@
 ## P0 – valóban jó BODY LAB alap
 
 - [x] WebGL nélkül nem üres panel, hanem interaktív 2D tartalék nézet.
+- [x] A 2D izomatlasz elöl-/hátulnézete régiókkal, hét gyorsválasztóval és kiválasztási visszajelzéssel (v5.2 előkészítő ág).
 - [x] Részletes GLB izom-/csontmodell külön rétegekben, dokumentált licenccel.
 - [x] Elöl-/hátulnézet és geometria-alapú régiófókusz.
 - [x] Kereshető GLB mesh-lista részleges magyar névszótárral, eredeti forrásnévvel és biztonságos kiválasztási kiemeléssel.
+- [x] Kijelölt izom-/csontmesh izolálása, az eredeti rétegláthatóság visszaállítása, mobilon 44 px-es kezelőkkel (Studio v5.1 fejlesztői ág).
 - [x] Ellenőrizetlen kötőszöveti/ízületi 3D-k helyett őszinte 2D jelölés.
 - [ ] Modellenként dokumentált geometriaszám, draw call, GPU memória és fizikai iPhone/Android QA.
 - [ ] Mobil Safari WebGL hibáinak reprodukciója és tesztelt helyreállítása.
+- [ ] A v5.2 elrendezésének 320–430 px-es vizuális képernyőképes és valódi eszközös ellenőrzése a nagyobb publikálás előtt.
 - [ ] Minden mesh pontos, kézzel ellenőrzött magyar anatómiai azonosítója, forrás- és oldaliságjelölése.
 - [ ] Anatómiai adat/mesh és UI-kijelölés kétirányú, regressziótesztelt kapcsolata.
+- [ ] Részletvizsgáló WebGL-es interakciójának valós iOS/Android ellenőrzése, beleértve a keresés → izolálás → visszaállítás folyamatát.
 - [ ] Valódi felületi embermodell megfelelő licenccel, az izom- és csontvázmodellhez igazítva.
 - [ ] Igazolt ízületi/ín/szalag/porcmodell, külön dokumentált részleges vagy hiányzó lefedettséggel.
 

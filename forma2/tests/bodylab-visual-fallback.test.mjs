@@ -7,7 +7,7 @@ test('BODY LAB 3D hiba esetén látható 2D anatómiai atlaszt kínál', () => {
   const css = readFileSync(new URL('../styles.css', import.meta.url), 'utf8');
   const three = readFileSync(new URL('../js/ui/three-body.js', import.meta.url), 'utf8');
   assert.match(view, /function anatomyViewer\(/);
-  assert.match(view, /bodyDiagram\(layer, selected, choose\)/);
+  assert.match(view, /bodyDiagram\(layer,fallbackSelected,id=>/);
   assert.match(css, /\[data-webgl=ready\] \.bodylab-static-fallback \{ display: none;/);
   assert.match(css, /\[data-webgl=unavailable\] \.bodylab-3d-controls,\.bodylab-three\[data-webgl=unavailable\] \.bodylab-view-controls \{ display: none;/);
   assert.match(three, /container\.dataset\.webgl = 'loading'/);
@@ -25,7 +25,7 @@ test('mobil BODY LAB: izomkijelölés 2D tartalékban és geometria-alapú 3D f�
   const view = readFileSync(new URL('../js/ui/views-body-lab.js', import.meta.url), 'utf8');
   const three = readFileSync(new URL('../js/ui/three-body.js', import.meta.url), 'utf8');
   assert.match(view, /area => map\.selectArea\(area\)/);
-  assert.match(view, /id:'chest',name:tr\('Mell'\)/);
+  assert.match(view, /BODYLAB_MUSCLE_NAMES\[id\]/);
   assert.match(three, /focusBox\.expandByObject\(obj\)/);
   assert.match(three, /tr\('Elölnézet'\)/);
   assert.match(three, /tr\('Hátulnézet'\)/);
