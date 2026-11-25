@@ -103,6 +103,9 @@ assert.match(html,/const PREMIUM_PILOTS = new Set/);
 assert.equal((html.match(/"scenes\/premium-pilots\.js/g)||[]).length,1);
 const storyCode=fs.readFileSync(path.join(root,'scenes/storyboards-137.js'),'utf8');
 new vm.Script(storyCode);
+const craftedCode=fs.readFileSync(path.join(root,'scenes/crafted-135.js'),'utf8');
+new vm.Script(craftedCode);
+assert.match(html,/src="scenes\/crafted-135\.js\?v=1"/);
 const storyScenes={};
 const storyRecords=Object.fromEntries(missing.map((b,i)=>[
   `remaining-${String(i+1).padStart(3,'0')}`,
@@ -114,6 +117,23 @@ vm.runInNewContext(storyCode,{window:{BiasMapRemaining:storyRecords,
   BiasMapPremium:Object.fromEntries(pilotKeys.map((key,i)=>[`pilot${i}`,key])),
   BiasAnim:{SCENES:storyScenes}}});
 assert.equal(Object.keys(storyScenes).length,137);
+const craftedWindow={BiasMapRemaining:storyRecords,
+  BiasMapPremium:Object.fromEntries(pilotKeys.map((key,i)=>[`pilot${i}`,key])),
+  BiasAnim:{SCENES:{}}};
+const craftedVM={window:craftedWindow};
+vm.runInNewContext(craftedCode,craftedVM);
+vm.runInNewContext(storyCode,craftedVM);
+assert.equal(craftedWindow.BiasMapCraftedCount,135,'expected 135 curated SVG stories');
+const illustrations=new Set();
+for(const [key,entry] of Object.entries(craftedWindow.BiasAnim.SCENES)){
+  assert.equal(entry.beats.length,6,key);
+  if(entry.svg().includes('craft-icon')){
+    illustrations.add(entry.svg());
+    assert.equal((entry.svg().match(/data-k=/g)||[]).length,6,key);
+    assert.match(entry.css,/craft-label/,key);
+  }
+}
+assert.equal(illustrations.size,135,'the 135 scene drawings should be distinct');
 for(const [key,entry] of Object.entries(storyScenes)) {
   assert.equal(entry.beats.length,6,key);
   assert.equal(entry.text.hu.caps.length,6,key);

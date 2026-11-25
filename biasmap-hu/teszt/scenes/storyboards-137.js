@@ -154,4 +154,5 @@
       beats:steps
     };
   }
+  window.BiasMapCraftedApply?.();
 })();

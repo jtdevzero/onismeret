@@ -31,6 +31,7 @@ const url = process.env.BIASMAP_PREVIEW_URL || 'http://127.0.0.1:8765/biasmap-hu
         const pilots = Object.values(window.BiasMapPremium || {});
         const premiumSet = new Set(pilots);
         const stories = missing.filter(key => !premiumSet.has(key));
+        if(window.BiasMapCraftedCount!==135) fail.push(`only ${window.BiasMapCraftedCount} crafted scenes`);
         for (const key of stories) {
           try {
             const player=BiasAnim.mount(host,key,{lang:'hu',autoplay:false});
@@ -41,6 +42,8 @@ const url = process.env.BIASMAP_PREVIEW_URL || 'http://127.0.0.1:8765/biasmap-hu
               if (host.shadowRoot.querySelector('.bp-no').textContent!==`${i+1}/6`) throw new Error(`step ${i+1} not selected`);
             }
             if (!host.shadowRoot.querySelector('.bp-svg .sb-card, .bp-svg .sb-hot')) throw new Error('semantic art missing');
+            if (window.BiasAnim.SCENES[key].svg().includes('craft-icon') &&
+                !host.shadowRoot.querySelector('.bp-svg .craft-icon')) throw new Error('curated pictogram missing');
             if (!host.shadowRoot.querySelector('style')?.textContent.includes('radial-gradient')) throw new Error('cinematic style missing');
             const stage=host.shadowRoot.querySelector('.bp-stage');
             if (getComputedStyle(stage).borderTopLeftRadius!=='22px') throw new Error('cinematic stage style not applied');

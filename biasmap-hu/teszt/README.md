@@ -35,6 +35,14 @@ bizonyíték, döntés, kockázat stb.). A tematikus ikonok újrafelhasználhat�
 **ez a 137 jelenet nem 137 kézzel, külön-külön megrajzolt illusztráció**.
 Az első öt prémium pilot továbbra is kézzel komponált, önálló jelenet.
 
+Az új C-dizájn a `cinematic.js` és `cosmic.css` fájlokkal működik; a
+`connections.js` kizárólag a meglévő csoportok alapján ajánl kapcsolódó
+fogalmakat. A `scenes/crafted-135.js` további 135 témához külön kiválasztott,
+három–négy konkrét vizuális szereplőből/tárgyból álló, hatfázisú vektoros
+helyzetképet alkalmaz. A grafikai primitívek továbbra is közösek, nem
+135 kézzel rajzolt animációfilmről van szó. A `remaining-141` és `remaining-142`
+kulcsok egyelőre a korábbi hatfázisú tematikus változatot használják.
+
 Automatikus teljes jelenetbetöltés- és SVG-kirajzolási teszt (Chromium, 1440/390/320 px):
 
 ```sh
