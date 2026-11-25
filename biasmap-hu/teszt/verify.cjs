@@ -18,6 +18,12 @@ vm.runInNewContext(cinematic,visual);
 assert.match(visual.window.BiasAnimCSS,/radial-gradient/);
 assert.match(visual.window.BiasAnimCSS,/prefers-reduced-motion/);
 assert.match(html, /href="cosmic\.css\?v=1"/);
+assert.match(html, /Család \$\{GROUPS\.indexOf\(g\)/);
+for (const english of ['Where it goes wrong', 'How to spot it', 'How to counter it', 'torzítás in this family']) {
+  assert.ok(!html.includes(english), `untranslated family panel: ${english}`);
+}
+assert.match(html, /Képzeld el előre a kudarcot/);
+assert.match(html, /Emlékforrás-tévesztés/);
 assert.match(html, /src="connections\.js\?v=1"/);
 const cosmic=fs.readFileSync(path.join(root,'cosmic.css'),'utf8');
 assert.match(cosmic,/connection-map/);

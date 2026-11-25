@@ -10,6 +10,7 @@ Ellenőrzés a repository gyökeréből:
 
 ```sh
 node biasmap-hu/teszt/verify.cjs
+node biasmap-hu/teszt/audit-content.cjs
 ```
 
 Első kiadás: 20 új magyar animáció, összesen 46 torzításanimáció.
@@ -48,3 +49,8 @@ Automatikus teljes jelenetbetöltés- és SVG-kirajzolási teszt (Chromium, 1440
 ```sh
 node biasmap-hu/teszt/browser-smoke.cjs
 ```
+
+A 2026. november 25-i minőségi ellenőrzés dokumentációja:
+[`AUDIT-2026-11-25.md`](AUDIT-2026-11-25.md). A 137 jelenet egyedi
+SVG-összeállítása automatikusan ellenőrzött; a fogalmi hitelesség és a
+mozgóképes olvashatóság továbbra is külön szerkesztői ellenőrzést igényel.

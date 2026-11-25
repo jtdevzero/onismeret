@@ -1075,12 +1075,15 @@ DATA.forEach((groups, qi) => {
     g.biases.forEach(b => {
       let slug = "b-" + slugify(b.en || b.n);
       if (BIASES.some(x => x.slug === slug)) slug += "-" + g.id;
-      const bias = { ...b, scen: b.q, g: grp, q: QUADS[qi], slug, page: "#" + slug, i: BIASES.length };
+      const bias = { ...b, n: b.n.replace("Emlékforrás-téveszmétés", "Emlékforrás-tévesztés"), scen: b.q, g: grp, q: QUADS[qi], slug, page: "#" + slug, i: BIASES.length };
       grp.items.push(bias); BIASES.push(bias);
     });
   });
 });
 // Preview-only: register individual storyboards once BIASES is populated.
+// A forrásadatok megőrzése mellett a tesztverzió felületén javítjuk a félrefordítást.
+const preMortem = HABITS.find(h => h.key === "pre-mortem");
+if (preMortem) preMortem.title = "Képzeld el előre a kudarcot";
 // The production index is not modified by these animations.
 const REMAINING = [...new Map(BIASES.map(b => [b.en || b.n, b])).values()]
   .filter(b => !ANIM_FOR[b.en || b.n]);
@@ -1113,7 +1116,7 @@ for (const b of BIASES) {
 // storyboards. Premium pilots retain their handcrafted SVG scenes.
 for (const key of Object.keys(window.BiasMapRemaining)) {
   if (!Object.values(window.BiasMapPremium).includes(key)) {
-    window.BiasAnim.SRC[key] = "scenes/storyboards-137.js?v=1";
+    window.BiasAnim.SRC[key] = "scenes/storyboards-137.js?v=2";
   }
 }
 const UNIQUE = new Set(BIASES.map(b => b.n)).size;
@@ -1547,7 +1550,7 @@ function openGroup(g, { video = false, playlist = false } = {}) {
   if (!panel.classList.contains("open")) lastFocus = document.activeElement;
   dropPlayer();
   const key = famKey(g);
-  document.getElementById("p-pos").textContent = `Family ${GROUPS.indexOf(g) + 1} / ${GROUPS.length}`;
+  document.getElementById("p-pos").textContent = `Család ${GROUPS.indexOf(g) + 1} / ${GROUPS.length}`;
   const vi = playPos(g, playlist);
   playlist = vi >= 0;
   video = !!key && (video || playlist);
@@ -1558,10 +1561,10 @@ function openGroup(g, { video = false, playlist = false } = {}) {
     <div><h2 id="p-title">${esc(g.title)}</h2>${key ? `<p class="alias">Ebbe a családba ${g.items.length} torzítás tartozik: ${esc(SHORT[g.id])}</p>` : ""}</div>
     ${video ? playerHtml : ""}
     <div class="pblock"><h3>Miért csinálja ezt az agyad?</h3><p class="def">${esc(g.why)}</p>${video ? "" : playerHtml}</div>
-    <div class="pblock"><h3>Where it goes wrong</h3><p>${esc(g.cost)}</p></div>
-    ${listBlock("How to spot it", g.spot)}
-    ${listBlock("How to counter it", g.fix)}
-    <div class="pblock"><h3>${g.items.length} torzítás in this family</h3><p class="famline"><span>${esc(g.q.name)}</span></p><div class="sibs">${g.items.map(x => `<button type="button" data-i="${x.i}">${esc(x.n)}</button>`).join("")}</div></div>
+    <div class="pblock"><h3>Hol vezet félre?</h3><p>${esc(g.cost)}</p></div>
+    ${listBlock("Hogyan ismerheted fel?", g.spot)}
+    ${listBlock("Hogyan védekezhetsz ellene?", g.fix)}
+    <div class="pblock"><h3>${g.items.length} torzítás ebben a családban</h3><p class="famline"><span>${esc(g.q.name)}</span></p><div class="sibs">${g.items.map(x => `<button type="button" data-i="${x.i}">${esc(x.n)}</button>`).join("")}</div></div>
     ${srcLine(SOURCES.families)}`;
   showPanel(g.q);
   panel.classList.toggle("video", video);
