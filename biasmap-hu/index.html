@@ -1043,6 +1043,18 @@ const ANIM_FOR = {
   "Endowment effect": "endowment-effect", "Peak-end rule": "peak-end-rule", "Authority bias": "authority-bias",
   "Curse of knowledge": "curse-of-knowledge", "Hyperbolic discounting": "hyperbolic-discounting"
 };
+const BATCH_01 = {
+  "Attentional bias":"attentional-bias", "Illusory truth effect":"illusory-truth-effect",
+  "Mere exposure effect":"mere-exposure-effect", "Context effect":"context-effect",
+  "Cue-dependent forgetting":"cue-dependent-forgetting", "Mood-congruent memory bias":"mood-congruent-memory-bias",
+  "Frequency illusion":"frequency-illusion", "Empathy gap":"empathy-gap", "Omission bias":"omission-bias",
+  "Bizarreness effect":"bizarreness-effect", "Humor effect":"humor-effect", "Von Restorff effect":"von-restorff-effect",
+  "Picture superiority effect":"picture-superiority-effect", "Self-relevance effect":"self-relevance-effect",
+  "Conservatism":"conservatism", "Contrast effect":"contrast-effect", "Focusing effect":"focusing-effect",
+  "Money illusion":"money-illusion", "Weber-Fechner law":"weber-fechner-law", "Congruence bias":"congruence-bias"
+};
+Object.assign(ANIM_FOR, BATCH_01);
+for (const key of Object.values(BATCH_01)) window.BiasAnim.SRC[key] = "scenes/batch-01.js?v=1";
 const BASE = `${location.origin}${location.pathname}`;
 const watchUrl = key => `${BASE}#video-${key}`;
 const vidKey = b => { const k = ANIM_FOR[b.en || b.n]; return k && window.BiasAnim && BiasAnim.has(k) ? k : null; };
