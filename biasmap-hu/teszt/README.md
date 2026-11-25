@@ -12,4 +12,13 @@ Ellenőrzés a repository gyökeréből:
 node biasmap-hu/teszt/verify.cjs
 ```
 
-Első kiadás: 20 új magyar animáció, összesen 46 torzításanimáció; 20 csoport- és 8 szokásanimáció változatlanul elérhető.
+Első kiadás: 20 új magyar animáció, összesen 46 torzításanimáció.
+
+Második animációcsomag (fejlesztés alatt): a fennmaradó 142 egyedi fogalomhoz adatvezérelt,
+négyfelvonásos magyar jelenet a `scenes/remaining.js` fájlban. A jelenetek a fogalom saját,
+már meglévő magyar példáját, leírását, felismerési kérdését és gyakorlati tanácsát használják,
+nyolc konzisztens vektoros mozgásséma segítségével. **Ezek nem egyedileg rajzolt 142 külön illusztráció:**
+az egyedi tartalom és a vizuális sémák újrafelhasználása tudatos megoldás.
+
+Az eredmény 188 egyedi torzításanimáció, továbbá változatlanul 20 csoport- és 8 szokásanimáció:
+összesen 216 videójelölés a tesztoldalon. Az éles változat nem veszi át őket automatikusan.
