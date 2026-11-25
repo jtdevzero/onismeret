@@ -105,7 +105,7 @@ const storyCode=fs.readFileSync(path.join(root,'scenes/storyboards-137.js'),'utf
 new vm.Script(storyCode);
 const craftedCode=fs.readFileSync(path.join(root,'scenes/crafted-135.js'),'utf8');
 new vm.Script(craftedCode);
-assert.match(html,/src="scenes\/crafted-135\.js\?v=1"/);
+assert.match(html,/src="scenes\/crafted-135\.js\?v=2"/);
 const storyScenes={};
 const storyRecords=Object.fromEntries(missing.map((b,i)=>[
   `remaining-${String(i+1).padStart(3,'0')}`,
