@@ -60,6 +60,18 @@ const url = process.env.BIASMAP_PREVIEW_URL || 'http://127.0.0.1:8765/biasmap-hu
             player.destroy();
           } catch (e) { fail.push(`premium ${key}: ${e.message}`); }
         }
+        // The thematic network is accessible and navigates to another bias.
+        openBias(BIASES[0]);
+        await Promise.resolve();
+        const relation=document.querySelector('.connection-map');
+        if (!relation || !relation.querySelector('[data-i]')) fail.push('thematic network missing');
+        else {
+          const target=Number(relation.querySelector('[data-i]').dataset.i);
+          relation.querySelector('[data-i]').click();
+          await Promise.resolve();
+          if (current?.b?.i!==target) fail.push('thematic network navigation failed');
+        }
+        closePanel();
         host.remove();
         return {videos:VIDEOS.length,biases:keys.length,missing:missing.length,
           pilots:pilots.length,stories:stories.length,firstLoaded,fail,scrollWidth:document.documentElement.scrollWidth,viewport:innerWidth};

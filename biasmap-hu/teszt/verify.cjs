@@ -17,6 +17,12 @@ const visual={window:{BiasAnimCSS:'.bp{}'},document:{querySelectorAll:()=>[]}};
 vm.runInNewContext(cinematic,visual);
 assert.match(visual.window.BiasAnimCSS,/radial-gradient/);
 assert.match(visual.window.BiasAnimCSS,/prefers-reduced-motion/);
+assert.match(html, /href="cosmic\.css\?v=1"/);
+assert.match(html, /src="connections\.js\?v=1"/);
+const cosmic=fs.readFileSync(path.join(root,'cosmic.css'),'utf8');
+assert.match(cosmic,/connection-map/);
+assert.match(cosmic,/prefers-reduced-motion/);
+new vm.Script(fs.readFileSync(path.join(root,'connections.js'),'utf8'));
 for (const src of [...html.matchAll(/(?:href|src)="(\.\.\/[^"#?]+)"/g)]) {
   assert.ok(fs.existsSync(path.resolve(root, src[1])), `missing resource ${src[1]}`);
 }
