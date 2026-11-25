@@ -58,4 +58,29 @@ for(const [key,entry] of Object.entries(generated)) {
   assert.equal(parts.insight.style.opacity,'1');
 }
 assert.equal((html.match(/"scenes\/remaining\.js/g)||[]).length,1);
-console.log('PASS: 188 egyedi fogalom, 188 torzításanimáció (26 + 20 + 142), 54 alapjelenet és minden fájl szintaxisa.');
+const pilots = fs.readFileSync(path.join(root,'scenes/premium-pilots.js'),'utf8');
+new vm.Script(pilots);
+const premiumIds = {
+  'Distinction bias':'pilot-a',
+  'False consensus effect':'pilot-b',
+  'Hot-hand fallacy':'pilot-c',
+  'Illusion of control':'pilot-d',
+  'False memory':'pilot-e'
+};
+const premiumScenes = {};
+vm.runInNewContext(pilots,{window:{BiasMapPremium:premiumIds,BiasAnim:{SCENES:premiumScenes}}});
+assert.equal(Object.keys(premiumScenes).length,5);
+for(const [id,entry] of Object.entries(premiumScenes)) {
+  assert.equal(entry.beats.length,6,id);
+  assert.equal(entry.text.hu.caps.length,6,id);
+  assert.equal(entry.text.hu.say.length,6,id);
+  assert.equal((entry.svg().match(/data-k=/g)||[]).length,6,id);
+  const active = Object.fromEntries('abcdef'.split('').map(x=>[x,{style:{}}]));
+  entry.render({a:1,b:1,c:1,d:1,e:1,f:1},x=>active[x]);
+  assert.equal(active.f.style.opacity,'1');
+  const duration = entry.beats.reduce((total,b)=>total + b.steps.reduce((n,s)=>n+(s.ms||s.wait||0),0) + (b.hold||2600),0) + 450 + 6000 + 500;
+  assert.ok(duration>=25000 && duration<=35000,`${id}: ${duration} ms`);
+}
+assert.match(html,/const PREMIUM_PILOTS = new Set/);
+assert.equal((html.match(/"scenes\/premium-pilots\.js/g)||[]).length,1);
+console.log('PASS: 188 egyedi fogalom, 188 torzításanimáció, köztük 5 egyedi prémium pilot; 54 alapjelenet és minden fájl szintaxisa.');

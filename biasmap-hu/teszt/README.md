@@ -22,3 +22,15 @@ az egyedi tartalom és a vizuális sémák újrafelhasználása tudatos megoldá
 
 Az eredmény 188 egyedi torzításanimáció, továbbá változatlanul 20 csoport- és 8 szokásanimáció:
 összesen 216 videójelölés a tesztoldalon. Az éles változat nem veszi át őket automatikusan.
+
+Prémium mintacsomag: a `scenes/premium-pilots.js` öt egyedileg komponált, hat jelenetes,
+kb. 30 másodperces magyar animációt tartalmaz. Az öt téma: megkülönböztetési torzítás,
+hamis konszenzus, forró kéz tévedés, kontrollillúzió és hamis emlék. Az eredeti
+`remaining-...` jelenetkulcsokat megtartják, de az új fájlból töltődnek. A többi
+137 generált jelenet továbbra is az adatvezérelt vizuális sémákra épül.
+
+Automatikus teljes jelenetbetöltés- és SVG-kirajzolási teszt (Chromium, 1440/390/320 px):
+
+```sh
+node biasmap-hu/teszt/browser-smoke.cjs
+```

@@ -1094,6 +1094,20 @@ REMAINING.forEach((b, i) => {
   };
   window.BiasAnim.SRC[key] = "scenes/remaining.js?v=1";
 });
+// Five individually illustrated premium pilots. Keep their original scene keys
+// and Hungarian catalogue records; only their preview loader is overridden.
+const PREMIUM_PILOTS = new Set([
+  "Distinction bias", "False consensus effect", "Hot-hand fallacy",
+  "Illusion of control", "False memory"
+]);
+window.BiasMapPremium = Object.create(null);
+for (const b of BIASES) {
+  if (PREMIUM_PILOTS.has(b.en || b.n)) {
+    const key = ANIM_FOR[b.en || b.n];
+    window.BiasMapPremium[b.en || b.n] = key;
+    window.BiasAnim.SRC[key] = "scenes/premium-pilots.js?v=1";
+  }
+}
 const UNIQUE = new Set(BIASES.map(b => b.n)).size;
 BIASES.forEach(b => {
   const k = KINDS.entries?.[b.en || b.n] || {};
