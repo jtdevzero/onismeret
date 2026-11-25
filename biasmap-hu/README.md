@@ -7,3 +7,30 @@ Magyar fordítás a thebiasmap.com (Cognitive Bias Explorer) oldalából.
 - Az eredeti angol oldal: https://thebiasmap.com/
 
 A fájl önállóan futtatható: nyissuk meg az `index.html`-t, vagy tegyük GitHub Pages alá.
+
+## 1. fázis – stabilizálás (2026. november 25.)
+
+- A magyar oldal saját canonical és megosztható URL-t használ.
+- A katalógus hivatkozásai helyi `#b-...` címek, a rövid animációk megosztási címei `#video-...` formátumúak.
+- Az eredeti angol oldalra mutató navigációs és feliratkozás nélküli előbetöltési elemek kikerültek; az eredeti alkotó és a kutatási hivatkozások jogi/szakmai forrásmegjelölésként megmaradtak.
+- A megtalált angol UI-feliratokat magyarítottuk, valamint néhány elgépelést javítottunk.
+- Nem változott a vizuális arculat, a színvilág, a térkép és a kártyák elrendezése.
+
+### Ellenőrzés
+
+`node biasmap-hu/scripts/verify.cjs` a repository gyökeréből.
+
+A szkript ellenőrzi az inline JavaScriptet, az 54 animációs fájl szintaxisát, a 188 egyedi fogalmat és 189 kategóriabeli előfordulást, a 26 fogalomanimáció meglétét, valamint a kritikus belső URL- és magyarítási szabályokat. A GitHub Actions ugyanazt a tesztet futtatja az almappát érintő változásokra.
+
+Ez **statikus regressziós teszt**, nem helyettesíti az iPhone/Android érintéses tesztet, az összes animáció szemrevételezését, a tényleges hálózati terhelés- és akadálymentességi auditot.
+
+### Következő ütemek – még nem implementált
+
+| Ütem | Tartalom | Becsült fejlesztési ráfordítás |
+| --- | --- | --- |
+| 1B | Eszközönkénti mobil/asztali E2E tesztek, teljes magyar szöveg- és akadálymentességi ellenőrzés | 1–2 munkanap |
+| 2 | Vizuális újratervezés, csak külön felhasználói jóváhagyás után | tervezés után |
+| 3A | 162 további egyedi torzítás animációinak forgatókönyvei és sablonjai | 3–5 munkanap |
+| 3B | Animációk gyártása 20–25 darabos ellenőrzött csomagokban | csomagonként felmérendő |
+
+Jelenleg 54 animációs scene létezik: 26 fogalomhoz, 20 csoporthoz és 8 szokáshoz. A további 162 egyedi fogalom animálható, de tartalmi/szakmai ellenőrzést igényel. A felhasználó engedélye nélkül az animációk vizuális stílusa nem változik.

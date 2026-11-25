@@ -1,0 +1,19 @@
+name: BiasMap HU checks
+on:
+  push:
+    paths:
+      - 'biasmap-hu/**'
+      - '.github/workflows/biasmap-hu-check.yml'
+  pull_request:
+    paths:
+      - 'biasmap-hu/**'
+      - '.github/workflows/biasmap-hu-check.yml'
+jobs:
+  validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node biasmap-hu/scripts/verify.cjs
