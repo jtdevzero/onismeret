@@ -2,6 +2,7 @@
 (function () {
   'use strict';
   if (!window.BiasAnimCSS) return;
+  const previousLength=window.BiasAnimCSS.length;
   window.BiasAnimCSS += `
 .bp{--ground:#080d1b;--surface:#121d30;--surface-2:#20304a;--ink:#f1f7ff;--muted:#b0bfd6;--faint:#94a9c7;--rule:#344760;--good:#6de5b2;--bad:#ff899b;color:var(--ink)}
 .bp:not(.still) .bp-stage{isolation:isolate;border:1px solid #42617c;border-radius:22px;background:radial-gradient(ellipse at 52% 35%,#213750 0%,#0e1b30 45%,#080d1b 90%);box-shadow:0 15px 45px -22px #000b20,0 0 0 1px rgba(118,200,239,.13) inset}
@@ -29,4 +30,15 @@
 @media(max-width:390px){.bp:not(.still) .bp-cap{padding:13px 13px 2px;gap:8px}.bp:not(.still) .bp-ctl{gap:5px;padding:7px 7px 10px}.bp:not(.still) .bp-btn{width:40px;height:40px}.bp:not(.still) .bp-dot{height:40px}.bp:not(.still) .bp-dot::before,.bp:not(.still) .bp-dot i{top:17px}}
 @media(prefers-reduced-motion:reduce){.bp *{transition:none!important;animation:none!important}}
 `;
+  // Direct deep links may mount a player before this final preview script loads.
+  // Apply the same scoped styling to those already-mounted shadow roots.
+  const additions=window.BiasAnimCSS.slice(previousLength);
+  document.querySelectorAll('*').forEach(host=>{
+    const root=host.shadowRoot;
+    if (root?.querySelector('.bp')) {
+      const style=document.createElement('style');
+      style.textContent=additions;
+      root.append(style);
+    }
+  });
 })();

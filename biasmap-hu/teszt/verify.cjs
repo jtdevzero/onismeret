@@ -13,7 +13,7 @@ for (const [,script] of inline) new vm.Script(script);
 assert.match(html, /<script src="cinematic\.js\?v=1"><\/script>/);
 const cinematic=fs.readFileSync(path.join(root,'cinematic.js'),'utf8');
 new vm.Script(cinematic);
-const visual={window:{BiasAnimCSS:'.bp{}'}};
+const visual={window:{BiasAnimCSS:'.bp{}'},document:{querySelectorAll:()=>[]}};
 vm.runInNewContext(cinematic,visual);
 assert.match(visual.window.BiasAnimCSS,/radial-gradient/);
 assert.match(visual.window.BiasAnimCSS,/prefers-reduced-motion/);
