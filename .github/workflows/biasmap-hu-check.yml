@@ -17,3 +17,4 @@ jobs:
         with:
           node-version: '22'
       - run: node biasmap-hu/scripts/verify.cjs
+      - run: node biasmap-hu/teszt/verify.cjs
