@@ -135,13 +135,20 @@
       G('d',`${P('M137 186l127-123','sb-bad')}${badge(trapNames[topic]||'TORZÍTOTT KÉP',200,34)}`)+
       G('e',`${icons[second](110,125)}${P('M177 129h51m-12-10 12 10-12 10','sb-accent')}${icons[topic](292,125)}${T(200,223,'NÉZD MEG MÁSKÉNT!','sb-em')}`)+
       G('f',`${ok(200,42)}${badge('TUDATOS DÖNTÉS',200,245)}${points}`);
-    const setup=sentence(data.example,124),why=sentence(data.explanation,122);
+    const explanation=String(data.explanation||'').replace(/\s+/g,' ').trim();
+    const boundary=explanation.search(/[.!?](?:\s|$)/);
+    const firstPoint=boundary>=0?explanation.slice(0,boundary+1):explanation;
+    const nextPoint=boundary>=0?explanation.slice(boundary+1).trim():'';
+    const setup=sentence(data.example,124),why=sentence(firstPoint,122);
     const sign=sentence(data.warning,122),action=sentence(data.action,122);
+    // A második magyarázó állítás mutatja meg a fogalom sajátos csapdáját.
+    // Egymondatos leírásnál a konkrét felismerési figyelmeztetés a tartalék.
+    const trap=sentence(nextPoint||data.warning,122);
     const captions=[
       escape(setup),
       `<b>Amit elsőre gondolunk:</b> ${escape(sign)}`,
       `<b>Mi történik?</b> ${escape(why)}`,
-      `<b>A rejtett csapda:</b> ${escape(data.name)} észrevétlenül befolyásolhatja az ítéletünket.`,
+      `<b>A rejtett csapda:</b> ${escape(trap)}`,
       `<b>Ellenőrző kérdés:</b> ${escape(prompts[topic]||prompts.generic)}`,
       `<b>Mit tehetsz?</b> ${escape(action)}`
     ];

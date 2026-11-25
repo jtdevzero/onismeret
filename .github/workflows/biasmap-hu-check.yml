@@ -18,6 +18,7 @@ jobs:
           node-version: '22'
       - run: node biasmap-hu/scripts/verify.cjs
       - run: node biasmap-hu/teszt/verify.cjs
+      - run: node biasmap-hu/teszt/audit-content.cjs
       - run: npm install --no-save playwright@1.63.0
       - run: npx playwright install --with-deps chromium
       - name: Preview HTTP server
