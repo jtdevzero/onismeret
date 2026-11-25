@@ -368,20 +368,20 @@
       k("lockl").setAttribute("x", f2(Math.min(N.A2.x, 390 - T.autoW / 2))); k("lockl").setAttribute("y", f2(N.A2.top - 31)); op("lockl", S.lock);
     },
     beats: [
-      { steps: [{ to: { ax: 1, t1: 1 }, ms: 400 }, { to: { a1: 1 }, ms: 450, ease: "back", sfx: "pluck" }, { wait: 250 },
-        { to: { a2: 1, t2: 1 }, ms: 450, ease: "back" }, { to: { q1: 1 }, ms: 400, ease: "back" }] },
-      { steps: [{ to: { lift: 1, q1: 0 }, ms: 220 }, { to: { lift: 0, chkA: 1, mood: 1 }, ms: 420, ease: "back", sfx: "pop" },
-        { to: { bNow: 1, dimA2: 1 }, ms: 400, ease: "back" }] },
-      { steps: [{ to: { bNow: 0, focusB: 1, brk: 1, mood: 0 }, ms: 400 }, { to: { b1: 1, t3: 1 }, ms: 450, ease: "back", sfx: "pluck" }, { wait: 250 },
-        { to: { b2: 1, t4: 1 }, ms: 450, ease: "back" }, { to: { q2: 1 }, ms: 400, ease: "back" }] },
-      { steps: [{ to: { q2: 0 }, ms: 200 }, { to: { chkB: 1, mood: .6 }, ms: 420, ease: "back", sfx: "pop" }, { to: { bWait: 1, dimB1: 1 }, ms: 400, ease: "back" }] },
+      { steps: [{ to: { ax: 1, t1: 1 }, ms: 400 }, { to: { a1: 1 }, ms: 450, ease: "out", sfx: "pluck" }, { wait: 250 },
+        { to: { a2: 1, t2: 1 }, ms: 450, ease: "out" }, { to: { q1: 1 }, ms: 400, ease: "out" }] },
+      { steps: [{ to: { lift: 1, q1: 0 }, ms: 220 }, { to: { lift: 0, chkA: 1, mood: 1 }, ms: 420, ease: "out", sfx: "pop" },
+        { to: { bNow: 1, dimA2: 1 }, ms: 400, ease: "out" }] },
+      { steps: [{ to: { bNow: 0, focusB: 1, brk: 1, mood: 0 }, ms: 400 }, { to: { b1: 1, t3: 1 }, ms: 450, ease: "out", sfx: "pluck" }, { wait: 250 },
+        { to: { b2: 1, t4: 1 }, ms: 450, ease: "out" }, { to: { q2: 1 }, ms: 400, ease: "out" }] },
+      { steps: [{ to: { q2: 0 }, ms: 200 }, { to: { chkB: 1, mood: .6 }, ms: 420, ease: "out", sfx: "pop" }, { to: { bWait: 1, dimB1: 1 }, ms: 400, ease: "out" }] },
       { steps: [{ to: { bWait: 0, focusB: 0 }, ms: 400 }, { to: { br: 1, t2: 0, t4: 0 }, ms: 500, sfx: "tick" }, { to: { ten: 1 }, ms: 400 }, { wait: 200 },
         { to: { pulse: 1 }, ms: 220 }, { to: { pulse: 0 }, ms: 320 }] },
       { steps: [{ to: { ten: 0, dimA2: 0, dimB1: 0, mood: 0, brk: 0 }, ms: 350 }, { to: { persp: 1 }, ms: 1700, ease: "inOut", sfx: "whoosh" },
         { to: { looms: 1 }, ms: 400 }], hold: 3000 },
       { steps: [{ to: { looms: 0, bOut: 1, chkA: 0 }, ms: 450 }, { to: { far: 1, arrow: 1 }, ms: 1500, ease: "inOut" },
-        { to: { chkF: 1, mood: .6 }, ms: 420, ease: "back", sfx: "pop" }] },
-      { steps: [{ to: { arrowOut: 1 }, ms: 350 }, { to: { lock: 1 }, ms: 450, ease: "back" }, { wait: 300 },
+        { to: { chkF: 1, mood: .6 }, ms: 420, ease: "out", sfx: "pop" }] },
+      { steps: [{ to: { arrowOut: 1 }, ms: 350 }, { to: { lock: 1 }, ms: 450, ease: "out" }, { wait: 300 },
         { to: { far: 0 }, ms: 1500, ease: "inOut", sfx: "whoosh" }, { to: { win: 1, mood: 1 }, ms: 450, sfx: "chime" }], hold: 4200 }
     ]
   };

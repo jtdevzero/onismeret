@@ -394,18 +394,18 @@
     },
     beats: [
       { steps: [{ to: { roadA: 1, youA: 1 }, ms: 500 }, { to: { cutA: 1 }, ms: 1500, sfx: "whoosh" },
-        { to: { joltA: 1, brakeA: 1 }, ms: 320, ease: "back" }] },
-      { steps: [{ to: { bubA: 1 }, ms: 450, ease: "back", sfx: "pop" }, { wait: 350 }, { to: { tagA: 1 }, ms: 450, ease: "back" }] },
+        { to: { joltA: 1, brakeA: 1 }, ms: 320, ease: "out" }] },
+      { steps: [{ to: { bubA: 1 }, ms: 450, ease: "out", sfx: "pop" }, { wait: 350 }, { to: { tagA: 1 }, ms: 450, ease: "out" }] },
       { steps: [{ to: { brakeA: 0 }, ms: 300 }, { to: { legA: 1, ring: 1 }, ms: 400, sfx: "tick" },
         { to: { glowA: 1 }, ms: 700, ease: "lin" }, { to: { glowA: 0 } }, { to: { glowA: 1 }, ms: 700, ease: "lin" }, { to: { glowA: 0 } }] },
-      { steps: [{ to: { hc: 1 }, ms: 400, ease: "back" }, { wait: 300 }, { to: { flip: 1 }, ms: 700, ease: "inOut", sfx: "spring" },
+      { steps: [{ to: { hc: 1 }, ms: 400, ease: "out" }, { wait: 300 }, { to: { flip: 1 }, ms: 700, ease: "inOut", sfx: "spring" },
         { to: { note: 1 }, ms: 400 }], hold: 2800 },
       { steps: [{ to: { bubA: 0, hc: 0, note: 0, ring: 0 }, ms: 400 }, { to: { ay: 0, roadB: 1 }, ms: 800, ease: "inOut" },
-        { to: { cutB: 1 }, ms: 1500, sfx: "whoosh" }, { to: { joltB: 1, brakeB: 1 }, ms: 320, ease: "back" },
-        { to: { bubB: 1 }, ms: 450, ease: "back", sfx: "pop" }] },
-      { steps: [{ to: { brakeB: 0 }, ms: 300 }, { to: { tagB: 1 }, ms: 450, ease: "back", sfx: "tick" },
+        { to: { cutB: 1 }, ms: 1500, sfx: "whoosh" }, { to: { joltB: 1, brakeB: 1 }, ms: 320, ease: "out" },
+        { to: { bubB: 1 }, ms: 450, ease: "out", sfx: "pop" }] },
+      { steps: [{ to: { brakeB: 0 }, ms: 300 }, { to: { tagB: 1 }, ms: 450, ease: "out", sfx: "tick" },
         { to: { glowB: 1 }, ms: 700, ease: "lin" }, { to: { glowB: 0 } }], hold: 3000 },
-      { steps: [{ to: { ask: 1 }, ms: 500, ease: "back", sfx: "scribble" }, { wait: 300 }, { to: { doubt: 1 }, ms: 400 }] },
+      { steps: [{ to: { ask: 1 }, ms: 500, ease: "out", sfx: "scribble" }, { wait: 300 }, { to: { doubt: 1 }, ms: 400 }] },
       { steps: [{ to: { win: 1 }, ms: 800, ease: "inOut", sfx: "chime", sfxAt: 400 }], hold: 4200 }
     ]
   };

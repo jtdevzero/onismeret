@@ -361,15 +361,15 @@
       op("check", S.check > 0 ? 1 : 0);
     },
     beats: [
-      { steps: [{ to: { sb: 1 }, ms: 500, ease: "back", sfx: "pluck" }, { to: { man: 1 }, ms: 300 }, { to: { bub: 1, qm: 1 }, ms: 500 },
+      { steps: [{ to: { sb: 1 }, ms: 500, ease: "out", sfx: "pluck" }, { to: { man: 1 }, ms: 300 }, { to: { bub: 1, qm: 1 }, ms: 500 },
         { to: { nd: 1 }, ms: 200 }, { to: { v: 30 }, ms: 450, ease: "inOut" }, { to: { v: 68 }, ms: 650, ease: "inOut" }, { to: { v: 40 }, ms: 550, ease: "inOut" }] },
-      { steps: [{ to: { v: 50 }, ms: 600, ease: "back" }, { to: { ro: 1 }, ms: 400, sfx: "tick" }] },
+      { steps: [{ to: { v: 50 }, ms: 600, ease: "out" }, { to: { ro: 1 }, ms: 400, sfx: "tick" }] },
       { steps: [{ to: { ft: 1 }, ms: 300 }, { wait: 200 }, { to: { home: 1 } }, { wait: 350 }, { to: { home: 2 } }, { wait: 350 },
         { to: { away: 1 } }, { wait: 350 }, { to: { home: 3 } }, { to: { win: 1 }, ms: 400, sfx: "pop" }] },
       { steps: [{ to: { why: 1 }, ms: 300 }, { to: { r0: 1 }, ms: 400, sfx: "scribble" }, { wait: 250 }, { to: { r1: 1 }, ms: 400 }, { wait: 250 }, { to: { r2: 1 }, ms: 400 }] },
       { steps: [{ to: { ghost: 1 } }, { to: { v: 80 }, ms: 1300, ease: "inOut", sfx: "spring" }, { to: { ghost: .5 }, ms: 600 }], hold: 3000 },
       { steps: [{ to: { wedge: 1 }, ms: 500, sfx: "tick" }, { to: { br: 1, brt: 1 }, ms: 400 }] },
-      { steps: [{ to: { rOut: 1 }, ms: 400 }, { to: { note: 1 }, ms: 600, ease: "back" }, { to: { nv: 1 }, ms: 800, ease: "lin", sfx: "scribble" }], hold: 3000 },
+      { steps: [{ to: { rOut: 1 }, ms: 400 }, { to: { note: 1 }, ms: 600, ease: "out" }, { to: { nv: 1 }, ms: 800, ease: "lin", sfx: "scribble" }], hold: 3000 },
       { steps: [{ to: { okNote: 1 }, ms: 400 }, { to: { mk: 1, brt: 0 }, ms: 800, ease: "lin" }, { wait: 150 },
         { to: { v: 50, ghost: 0 }, ms: 700, ease: "out" }, { to: { wedge: 0, br: 0 }, ms: 300 },
         { to: { ok: 1 }, ms: 400 }, { to: { check: 1 }, ms: 350, sfx: "chime" }], hold: 4200 }

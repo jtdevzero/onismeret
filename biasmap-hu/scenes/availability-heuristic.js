@@ -365,8 +365,8 @@
       { steps: [{ to: { notes: 1 }, ms: 1000, ease: "lin", sfx: "tick" }, { wait: 600 }, { to: { drift: 1 }, ms: 1700, ease: "lin" }] },
       { steps: [{ to: { tag: 1 }, ms: 400 }, { to: { beam: 1 }, ms: 300 }, { to: { sweep: 1 }, ms: 1500, ease: "inOut", sfx: "whoosh" },
         { to: { settle: 1, beam: .8 }, ms: 500, ease: "inOut" }] },
-      { steps: [{ to: { beam: 0, nout: 1 }, ms: 400 }, { to: { fa: 1 }, ms: 400 }, { to: { fp: .86, fc: .3 }, ms: 900, ease: "back", sfx: "spring" }] },
-      { steps: [{ to: { ab: 1 }, ms: 400 }, { to: { ac: .9, ap: .04 }, ms: 800, sfx: "thud", sfxAt: 250 }, { to: { bdg: 1 }, ms: 400, ease: "back" }] },
+      { steps: [{ to: { beam: 0, nout: 1 }, ms: 400 }, { to: { fa: 1 }, ms: 400 }, { to: { fp: .86, fc: .3 }, ms: 900, ease: "out", sfx: "spring" }] },
+      { steps: [{ to: { ab: 1 }, ms: 400 }, { to: { ac: .9, ap: .04 }, ms: 800, sfx: "thud", sfxAt: 250 }, { to: { bdg: 1 }, ms: 400, ease: "out" }] },
       { steps: [{ to: { mdim: 1 }, ms: 500 }, { to: { q2: 1 }, ms: 800, sfx: "scribble", sfxAt: 300 }, { to: { hl: 1 }, ms: 500 }] },
       { steps: [{ to: { fp: .04, fc: .9, fix: 1 }, ms: 1200, ease: "inOut" }, { to: { chk: 1 }, ms: 400, sfx: "chime" }], hold: 4200 }
     ]

@@ -361,14 +361,14 @@
     beats: [
       { steps: [{ to: { you: 1 }, ms: 400 }, { to: { paper: 1 }, ms: 400 }, { to: { w: 4 }, ms: 1800, ease: "lin", sfx: "scribble" }], hold: 2200 },
       { steps: [{ to: { ticks: 4 }, ms: 1400, ease: "lin", sfx: "tick" }], hold: 2400 },
-      { steps: [{ to: { think: 1, ghost: 1 }, ms: 450, ease: "back", sfx: "pop" }, { wait: 300 }, { to: { link: 1 }, ms: 500 }], hold: 2800 },
+      { steps: [{ to: { think: 1, ghost: 1 }, ms: 450, ease: "out", sfx: "pop" }, { wait: 300 }, { to: { link: 1 }, ms: 500 }], hold: 2800 },
       { steps: [{ to: { think: 0, tkA: 0 }, ms: 400 }, { to: { link: 0 } }, { to: { hand: 1 }, ms: 800, ease: "inOut", sfx: "whoosh" }, { to: { friend: 1 }, ms: 500 }] },
-      { steps: [{ to: { say: 1 }, ms: 400, ease: "back", sfx: "pop" }, { wait: 300 }, { to: { lens: 1 }, ms: 300 },
+      { steps: [{ to: { say: 1 }, ms: 400, ease: "out", sfx: "pop" }, { wait: 300 }, { to: { lens: 1 }, ms: 300 },
         { to: { lx: PX1 + 128, ly: RY(0) }, ms: 700, ease: "inOut" }, { to: { lx: PX1 + 48 }, ms: 900, ease: "inOut" }] },
-      { steps: [{ to: { lx: PX1 + 22, ly: RY(1) }, ms: 500, ease: "inOut" }, { wait: 200 }, { to: { open: 1 }, ms: 650, ease: "back", sfx: "spring" },
-        { to: { slot: 1 }, ms: 350 }, { to: { ask: 1 }, ms: 450, ease: "back", sfx: "tick" }], hold: 2600 },
-      { steps: [{ to: { say: 0 }, ms: 300 }, { to: { think: 1 }, ms: 450, ease: "back" }, { to: { link: 1 }, ms: 400 },
-        { to: { tag: 1 }, ms: 500, ease: "back", sfx: "thud" }], hold: 2800 },
+      { steps: [{ to: { lx: PX1 + 22, ly: RY(1) }, ms: 500, ease: "inOut" }, { wait: 200 }, { to: { open: 1 }, ms: 650, ease: "out", sfx: "spring" },
+        { to: { slot: 1 }, ms: 350 }, { to: { ask: 1 }, ms: 450, ease: "out", sfx: "tick" }], hold: 2600 },
+      { steps: [{ to: { say: 0 }, ms: 300 }, { to: { think: 1 }, ms: 450, ease: "out" }, { to: { link: 1 }, ms: 400 },
+        { to: { tag: 1 }, ms: 500, ease: "out", sfx: "thud" }], hold: 2800 },
       { steps: [{ to: { lens: 0 }, ms: 300 }, { to: { fly: 1, think: 0 }, ms: 1000, ease: "lin" }, { to: { fixed: 1, got: 1 }, ms: 450, sfx: "chime" },
         { to: { ok: 5, others: 1 }, ms: 1000, ease: "lin" }], hold: 4200 }
     ]

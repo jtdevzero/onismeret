@@ -401,19 +401,19 @@
       tr("chk", `translate(74 96) scale(${Math.max(0, S.chk).toFixed(3)})`); op("chk", S.chk * 2);
     },
     beats: [
-      { steps: [{ to: { land: 1 }, ms: 600, sfx: "pluck" }, { to: { goal: 1 }, ms: 450, ease: "back" }, { to: { who: 1 }, ms: 300 },
+      { steps: [{ to: { land: 1 }, ms: 600, sfx: "pluck" }, { to: { goal: 1 }, ms: 450, ease: "out" }, { to: { who: 1 }, ms: 300 },
         { to: { b: 2 }, ms: 1400, ease: "lin" }] },
       { steps: [{ to: { brace: 1 }, ms: 400, sfx: "tick" }, { to: { b: 4 }, ms: 1400, ease: "lin" }, { to: { pull: 1 }, ms: 500 }] },
-      { steps: [{ wait: 300 }, { to: { bad: 1 }, ms: 700, ease: "back", sfx: "thud", sfxAt: 150 }] },
-      { steps: [{ to: { p1: 1 }, ms: 400, ease: "back", sfx: "pop" }, { to: { b: NB }, ms: 1200, ease: "lin", sfx: "whoosh" }] },
-      { steps: [{ to: { p1: 0 }, ms: 250 }, { to: { p2: 1, cards: 1 }, ms: 450, ease: "back" }, { to: { draw: 1 }, ms: 900, ease: "lin", sfx: "scribble" },
+      { steps: [{ wait: 300 }, { to: { bad: 1 }, ms: 700, ease: "out", sfx: "thud", sfxAt: 150 }] },
+      { steps: [{ to: { p1: 1 }, ms: 400, ease: "out", sfx: "pop" }, { to: { b: NB }, ms: 1200, ease: "lin", sfx: "whoosh" }] },
+      { steps: [{ to: { p1: 0 }, ms: 250 }, { to: { p2: 1, cards: 1 }, ms: 450, ease: "out" }, { to: { draw: 1 }, ms: 900, ease: "lin", sfx: "scribble" },
         { wait: 300 }, { to: { fadeT: 1 }, ms: 800, ease: "inOut" }] },
-      { steps: [{ to: { p2: 0, cards: 0 }, ms: 300 }, { to: { p3: 1 }, ms: 400, ease: "back" }, { to: { bub: 1 }, ms: 400, ease: "back" },
+      { steps: [{ to: { p2: 0, cards: 0 }, ms: 300 }, { to: { p3: 1 }, ms: 400, ease: "out" }, { to: { bub: 1 }, ms: 400, ease: "out" },
         { to: { red: 1, flinch: 1 }, ms: 600, ease: "lin", sfx: "spring" }] },
       { steps: [{ to: { p3: 0, bub: 0, red: 0, pull: 0 }, ms: 400 }, { to: { dim: 1 }, ms: 600 },
         { to: { today: 1 }, ms: 700, ease: "inOut", sfx: "whoosh" }, { to: { ask: 1 }, ms: 500 }, { to: { left: 1 }, ms: 400 }] },
       { steps: [{ to: { clear: 1 }, ms: 400 }, { to: { turn: 1 }, ms: 300 }, { to: { back: 1 }, ms: 1200, ease: "lin" },
-        { to: { house: 1 }, ms: 900, ease: "lin" }, { to: { roof: 1 }, ms: 450 }, { to: { chk: 1 }, ms: 450, ease: "back", sfx: "chime" }], hold: 4200 }
+        { to: { house: 1 }, ms: 900, ease: "lin" }, { to: { roof: 1 }, ms: 450 }, { to: { chk: 1 }, ms: 450, ease: "out", sfx: "chime" }], hold: 4200 }
     ]
   };
 })();

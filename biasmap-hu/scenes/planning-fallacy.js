@@ -393,19 +393,19 @@
       op("chk", clamp(S.chk * 2));
     },
     beats: [
-      { steps: [{ to: { cal: 1 }, ms: 600, sfx: "pluck" }, { to: { man: 1, doc: 1 }, ms: 400 }, { to: { bub: 1, qm: 1 }, ms: 500, ease: "back" }] },
+      { steps: [{ to: { cal: 1 }, ms: 600, sfx: "pluck" }, { to: { man: 1, doc: 1 }, ms: 400 }, { to: { bub: 1, qm: 1 }, ms: 500, ease: "out" }] },
       { steps: [{ to: { qm: 0 }, ms: 250 }, { to: { c0: 1 }, ms: 300, sfx: "tick" }, { to: { c1: 1 }, ms: 300 }, { to: { c2: 1 }, ms: 300 },
-        { to: { three: 1 }, ms: 300 }, { wait: 300 }, { to: { plan: 1 }, ms: 500, ease: "back", sfx: "pop" }, { to: { due: 1 }, ms: 400 }] },
-      { steps: [{ to: { s0: 1 }, ms: 600, ease: "bounce", sfx: "thud", sfxAt: 220 }, { wait: 200 },
-        { to: { s1: 1 }, ms: 600, ease: "bounce" }, { wait: 200 }, { to: { s2: 1 }, ms: 600, ease: "bounce" }] },
+        { to: { three: 1 }, ms: 300 }, { wait: 300 }, { to: { plan: 1 }, ms: 500, ease: "out", sfx: "pop" }, { to: { due: 1 }, ms: 400 }] },
+      { steps: [{ to: { s0: 1 }, ms: 600, ease: "out", sfx: "thud", sfxAt: 220 }, { wait: 200 },
+        { to: { s1: 1 }, ms: 600, ease: "out" }, { wait: 200 }, { to: { s2: 1 }, ms: 600, ease: "out" }] },
       { steps: [{ to: { dur: 1 }, ms: 250 }, { to: { len: REAL }, ms: 1600, ease: "inOut", sfx: "whoosh" },
         { to: { miss: 1, over: 1 }, ms: 400 }] },
       { steps: [{ to: { past: 1 }, ms: 300 }, { to: { r0: 1 }, ms: 600, sfx: "tick" }, { to: { r1: 1 }, ms: 600 }, { to: { r2: 1 }, ms: 600 }] },
-      { steps: [{ to: { due: 0 }, ms: 300 }, { to: { best: 1 }, ms: 500, ease: "back", sfx: "spring" }, { to: { beam: 1 }, ms: 500 }, { wait: 300 },
+      { steps: [{ to: { due: 0 }, ms: 300 }, { to: { best: 1 }, ms: 500, ease: "out", sfx: "spring" }, { to: { beam: 1 }, ms: 500 }, { wait: 300 },
         { to: { ign: 1, pdim: 1 }, ms: 500 }], hold: 3000 },
       { steps: [{ to: { beam: 0, ign: 0, dim: 1, pdim: 0 }, ms: 500 }, { to: { ov: 1 }, ms: 900, ease: "inOut", sfx: "scribble" }, { to: { ovl: 1 }, ms: 400 }], hold: 3000 },
       { steps: [{ to: { old: 0, miss: 0 }, ms: 500 }, { to: { dueM: 1 } }, { to: { grow: NEW }, ms: 1100, ease: "inOut" },
-        { to: { buf: 1, due: 1 }, ms: 500 }, { to: { chk: 1 }, ms: 450, ease: "back", sfx: "chime" }], hold: 4200 }
+        { to: { buf: 1, due: 1 }, ms: 500 }, { to: { chk: 1 }, ms: 450, ease: "out", sfx: "chime" }], hold: 4200 }
     ]
   };
 })();

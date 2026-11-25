@@ -412,7 +412,7 @@
     },
     beats: [
       { steps: [{ to: { jar: 1 }, ms: 500, sfx: "pluck" }, { wait: 150 },
-        ...[0, 1, 2, 3, 4, 5, 6, 7].flatMap(i => [{ to: { ["a" + i]: 1 }, ms: 240, ease: "back" }, { wait: 90 }])] },
+        ...[0, 1, 2, 3, 4, 5, 6, 7].flatMap(i => [{ to: { ["a" + i]: 1 }, ms: 240, ease: "out" }, { wait: 90 }])] },
       { steps: [{ to: { filter: 1 }, ms: 500, sfx: "whoosh" }, { wait: 250 }, { to: { drop: 1 }, ms: 2400, ease: "lin", sfx: "tick" },
         { to: { fade: 1, hl: 1 }, ms: 500 }] },
       { steps: [{ to: { g0: 1, b0: 0, b1: 1 }, ms: 450, sfx: "pop" }, { wait: 200 }, { to: { p1: 1 }, ms: 800, ease: "lin" }, { wait: 250 },
@@ -420,8 +420,8 @@
       { steps: [{ to: { g0: 0, b1: 0 }, ms: 300 }, { to: { g1: 1, b2: 1 }, ms: 450, sfx: "pop" }, { to: { m1: 1 }, ms: 500, ease: "inOut" },
         { to: { p2: 1 }, ms: 800, ease: "lin" }, { wait: 250 }, { to: { n2: 1 }, ms: 1500, ease: "lin" }, { to: { u2: 1 }, ms: 400 }] },
       { steps: [{ to: { g1: 0, b2: 0 }, ms: 300 }, { to: { g2: 1, b3: 1 }, ms: 450 }, { to: { m2: 1 }, ms: 500, ease: "inOut" },
-        { to: { lid: 1 }, ms: 700, ease: "bounce", sfx: "thud", sfxAt: 250 }, { to: { e3: 1 }, ms: 1500, ease: "lin" }, { to: { u3: 1 }, ms: 400 }] },
-      { steps: [{ to: { g2: 0, b3: 0, lid: 0 }, ms: 400 }, { to: { b0: 1 }, ms: 300 }, { to: { chk: 1 }, ms: 400, ease: "back" }, { wait: 400 },
+        { to: { lid: 1 }, ms: 700, ease: "out", sfx: "thud", sfxAt: 250 }, { to: { e3: 1 }, ms: 1500, ease: "lin" }, { to: { u3: 1 }, ms: 400 }] },
+      { steps: [{ to: { g2: 0, b3: 0, lid: 0 }, ms: 400 }, { to: { b0: 1 }, ms: 300 }, { to: { chk: 1 }, ms: 400, ease: "out" }, { wait: 400 },
         { to: { warn: 1 }, ms: 600, sfx: "tick" }], hold: 3000 },
       { steps: [{ to: { note: 1 }, ms: 500, sfx: "scribble" }, { to: { mag: 1 }, ms: 300 }, { to: { sweep: 1 }, ms: 1500, ease: "inOut" }] },
       { steps: [{ to: { mag: 0, open: 1 }, ms: 500 }, { to: { inflow: 1 }, ms: 1800, ease: "lin" }, { to: { ok: 1 }, ms: 500, sfx: "chime" }], hold: 4200 }

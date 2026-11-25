@@ -429,13 +429,13 @@
     beats: [
       { steps: [{ to: { tok: 1 }, ms: 1300, ease: "lin", sfx: "pluck" }] },
       { steps: [{ to: { boxes: 1, lab0: 1 }, ms: 600 }, { wait: 300 }, { to: { fly: 1 }, ms: 1700, ease: "lin", sfx: "whoosh" }] },
-      { steps: [{ to: { lab0: 0, lab1: 1, ch0: 1 }, ms: 500, sfx: "pop" }, { to: { notes: 1 }, ms: 500, ease: "back" }, { wait: 500 },
+      { steps: [{ to: { lab0: 0, lab1: 1, ch0: 1 }, ms: 500, sfx: "pop" }, { to: { notes: 1 }, ms: 500, ease: "out" }, { wait: 500 },
         { to: { nfly: 1 }, ms: 800, ease: "lin" }, { wait: 250 }, { to: { bag: 1 }, ms: 300 }, { to: { spend1: 1 }, ms: 900, ease: "lin", sfx: "whoosh" }] },
-      { steps: [{ to: { lab1: 0, lab2: 1, ch0: 0, ch1: 1, sink2: 1 }, ms: 500, sfx: "pop" }, { to: { coins: 1 }, ms: 500, ease: "back" }, { wait: 500 },
+      { steps: [{ to: { lab1: 0, lab2: 1, ch0: 0, ch1: 1, sink2: 1 }, ms: 500, sfx: "pop" }, { to: { coins: 1 }, ms: 500, ease: "out" }, { wait: 500 },
         { to: { cfly: 1 }, ms: 900, ease: "lin" }, { wait: 250 }, { to: { spend2: 1 }, ms: 1400, ease: "lin" }] },
-      { steps: [{ to: { lab2: 0, lab0: 1, ch1: 0, ch2: 1, bag: 0, sink3: 1 }, ms: 500 }, { to: { flIn: 1 }, ms: 450, ease: "back" }, { to: { bub: 1 }, ms: 400 },
+      { steps: [{ to: { lab2: 0, lab0: 1, ch1: 0, ch2: 1, bag: 0, sink3: 1 }, ms: 500 }, { to: { flIn: 1 }, ms: 450, ease: "out" }, { to: { bub: 1 }, ms: 400 },
         { wait: 700 }, { to: { flDrop: 1 }, ms: 700, ease: "lin", sfx: "thud", sfxAt: 600 }] },
-      { steps: [{ to: { bub: 0 }, ms: 250 }, { to: { flOut: 1 }, ms: 800, ease: "back", sfx: "spring" }, { to: { water: 1 }, ms: 800, ease: "inOut" }, { to: { strike: 1 }, ms: 400 }] },
+      { steps: [{ to: { bub: 0 }, ms: 250 }, { to: { flOut: 1 }, ms: 800, ease: "out", sfx: "spring" }, { to: { water: 1 }, ms: 800, ease: "inOut" }, { to: { strike: 1 }, ms: 400 }] },
       { steps: [{ to: { ch2: 0, water: 0, flMove: 1 }, ms: 600, ease: "inOut" }, { to: { grid: 1 }, ms: 900, ease: "lin", sfx: "tick" }, { to: { marks: 1 }, ms: 500, ease: "lin" }, { to: { glab: 1 }, ms: 400 }] },
       { steps: [{ to: { open: 1 }, ms: 1000, ease: "inOut" }, { to: { ok: 1 }, ms: 500, sfx: "chime" }], hold: 4200 }
     ]

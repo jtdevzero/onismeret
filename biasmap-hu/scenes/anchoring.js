@@ -257,10 +257,10 @@
     beats: [
       { steps: [{ to: { house: 1 }, ms: 600, sfx: "pluck" }, { to: { tagSwing: 12 }, ms: 260, sfx: "tick" }, { to: { tagSwing: -8 }, ms: 300, ease: "inOut" }, { to: { tagSwing: 0 }, ms: 300, ease: "inOut" }] },
       { steps: [{ to: { ghost: 1 }, ms: 600, sfx: "tick" }, { wait: 1400 }, { to: { ghost: .35 }, ms: 600 }] },
-      { steps: [{ to: { bubble: 1 }, ms: 450, sfx: "pop" }, { wait: 500 }, { to: { anchorOp: 1 } }, { to: { anchorY: 200 }, ms: 1000, ease: "bounce", sfx: "thud", sfxAt: 360 }] },
+      { steps: [{ to: { bubble: 1 }, ms: 450, sfx: "pop" }, { wait: 500 }, { to: { anchorOp: 1 } }, { to: { anchorY: 200 }, ms: 1000, ease: "out", sfx: "thud", sfxAt: 360 }] },
       { steps: [{ to: { start: 1 }, ms: 400 }, { to: { pin: 1 }, ms: 400, sfx: "pop" }, { to: { rope: 1 }, ms: 400 }] },
       { steps: [{ to: { adj: 1, pinX: 700 }, ms: 1500, ease: "inOut", sfx: "whoosh" }] },
-      { steps: [{ to: { pull: 1 }, ms: 300 }, { to: { pinX: SHORT, adj: 0 }, ms: 800, ease: "back", sfx: "spring" }, { to: { ghost: 1, hidden: 0 }, ms: 400 }, { to: { gap: 1 }, ms: 400, sfx: "tick" }] },
+      { steps: [{ to: { pull: 1 }, ms: 300 }, { to: { pinX: SHORT, adj: 0 }, ms: 800, ease: "out", sfx: "spring" }, { to: { ghost: 1, hidden: 0 }, ms: 400 }, { to: { gap: 1 }, ms: 400, sfx: "tick" }] },
       { steps: [{ to: { pull: 0, gap: 0, pinFade: .4, start: 0, ghost: 0 }, ms: 500 }, { to: { pad: 1 }, ms: 500, sfx: "scribble" }, { wait: 300 }, { to: { band: 1 }, ms: 500, sfx: "tick" }] },
       { steps: [{ to: { final: 1, pin2X: 600 } }, { to: { pin2: 1 }, ms: 400, sfx: "pop" }, { to: { pin2X: OWN }, ms: 700 }, { to: { rope: 0, anchorOp: .3, bubble: .35 }, ms: 600, sfx: "chime" }], hold: 4200 }
     ]

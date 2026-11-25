@@ -546,11 +546,11 @@
         { to: { gP: 1 }, ms: 1100, ease: "lin" }, { to: { ram: 1 }, ms: 230, ease: "lin", sfx: "thud", sfxAt: 180 }, { to: { gF: 1 } },
         { to: { ram: 0 }, ms: 400 }, { to: { sG: 1 }, ms: 650 }], hold: 2800 },
       { steps: [{ to: { p2: 0, sGo: 1, gGone: 1 }, ms: 450 }, { to: { sSo: 0, dim: 0 }, ms: 500 },
-        { to: { nd: 1, nN: 1 }, ms: 450, ease: "back" }, { wait: 450 }, { to: { imp: 1 }, ms: 320, ease: "lin", sfx: "pop" }], hold: 2800 },
+        { to: { nd: 1, nN: 1 }, ms: 450, ease: "out" }, { wait: 450 }, { to: { imp: 1 }, ms: 320, ease: "lin", sfx: "pop" }], hold: 2800 },
       { steps: [{ to: { nL: 0, ghost: 0 }, ms: 300 }, { to: { dR: 1, bR: 1 }, ms: 1300, ease: "lin", sfx: "whoosh" },
         { to: { tray: 0 }, ms: 300 }, { to: { nC: 1 }, ms: 400 }], hold: 2800 },
-      { steps: [{ to: { sSo: 1, impO: 1 }, ms: 400 }, { to: { sM: 1 }, ms: 600, ease: "back", sfx: "chime" },
-        { to: { heart: 1, ndG: 1 }, ms: 450, ease: "back" }], hold: 4200 }
+      { steps: [{ to: { sSo: 1, impO: 1 }, ms: 400 }, { to: { sM: 1 }, ms: 600, ease: "out", sfx: "chime" },
+        { to: { heart: 1, ndG: 1 }, ms: 450, ease: "out" }], hold: 4200 }
     ]
   };
 })();

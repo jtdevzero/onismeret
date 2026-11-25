@@ -329,20 +329,20 @@ ${P} .check path{fill:none;stroke:var(--good);stroke-width:2.4;stroke-linecap:ro
       tr("check", rx, ry + H + D + 35, ` scale(${Math.max(0, S.check).toFixed(3)})`); op("check", cl(S.check * 2));
     },
     beats: [
-      { steps: [{ to: { ticket: 1 }, ms: 500, ease: "back", sfx: "pop" }, { to: { jar: 1 }, ms: 350 },
+      { steps: [{ to: { ticket: 1 }, ms: 500, ease: "out", sfx: "pop" }, { to: { jar: 1 }, ms: 350 },
         { to: { drop: 3 }, ms: 1300, ease: "lin", sfx: "thud", sfxAt: 160 }, { to: { noref: 1 }, ms: 400 }] },
       { steps: [{ to: { cloud: 1 }, ms: 800, sfx: "whoosh" }, { to: { rain: 1 }, ms: 500 },
         { to: { bat: 1 }, ms: 400 }, { to: { drain: 1 }, ms: 900, ease: "inOut" }] },
       { steps: [{ to: { scale: 1 }, ms: 600, sfx: "pluck" }, { wait: 500 },
-        { to: { music: 1 }, ms: 420, ease: "inOut" }, { to: { tilt: -9 }, ms: 900, ease: "back" }] },
+        { to: { music: 1 }, ms: 420, ease: "inOut" }, { to: { tilt: -9 }, ms: 900, ease: "out" }] },
       { steps: [{ to: { dry: 1 }, ms: 420, ease: "inOut" }, { to: { tilt: -2 }, ms: 500 },
-        { to: { rest: 1 }, ms: 420, ease: "inOut", sfx: "thud", sfxAt: 380 }, { to: { tilt: 10 }, ms: 1000, ease: "back" }] },
+        { to: { rest: 1 }, ms: 420, ease: "inOut", sfx: "thud", sfxAt: 380 }, { to: { tilt: 10 }, ms: 1000, ease: "out" }] },
       { steps: [{ to: { ghost: 1 } }, { to: { fly: 1 }, ms: 1300, ease: "lin", sfx: "spring" },
-        { to: { tilt: -11 }, ms: 1000, ease: "back" }] },
+        { to: { tilt: -11 }, ms: 1000, ease: "out" }] },
       { steps: [{ to: { minus: 1 }, ms: 500, sfx: "tick" }, { wait: 600 }, { to: { sunk: 1 }, ms: 500 }] },
       { steps: [{ to: { back: 1, minus: 0 }, ms: 1300, ease: "lin", sfx: "whoosh" }, { to: { ghost: 0 } },
-        { to: { tilt: 10 }, ms: 1000, ease: "back" }] },
-      { steps: [{ to: { win: 1 }, ms: 500 }, { to: { check: 1 }, ms: 450, ease: "back", sfx: "chime" }], hold: 4200 }
+        { to: { tilt: 10 }, ms: 1000, ease: "out" }] },
+      { steps: [{ to: { win: 1 }, ms: 500 }, { to: { check: 1 }, ms: 450, ease: "out", sfx: "chime" }], hold: 4200 }
     ]
   };
 })();

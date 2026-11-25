@@ -411,18 +411,18 @@
     },
     beats: [
       { steps: [{ to: { line: 1 }, ms: 800, ease: "inOut", sfx: "pluck" }, { to: { team: 1 }, ms: 600 },
-        { to: { phone: 1 }, ms: 450, ease: "back" }] },
-      { steps: [{ to: { mood: 1 }, ms: 350 }, { to: { bub: 1 }, ms: 450, ease: "back", sfx: "pop" }, { to: { spark: 1 }, ms: 350 }] },
+        { to: { phone: 1 }, ms: 450, ease: "out" }] },
+      { steps: [{ to: { mood: 1 }, ms: 350 }, { to: { bub: 1 }, ms: 450, ease: "out", sfx: "pop" }, { to: { spark: 1 }, ms: 350 }] },
       { steps: [{ to: { ask: 1 }, ms: 400 }, { to: { q0: 1 }, ms: 300, sfx: "tick" }, { to: { q1: 1 }, ms: 300 }, { to: { q2: 1 }, ms: 300 },
         { wait: 400 }, { to: { qdim: 1 }, ms: 600 }] },
       { steps: [{ to: { bub: 0, spark: 0, ask: 0, mood: 0 }, ms: 400 }, { to: { ff: 1 }, ms: 1000, ease: "inOut", sfx: "whoosh" },
-        { to: { drop: 1, mood: -.8 }, ms: 800, ease: "bounce", sfx: "thud", sfxAt: 280 }, { to: { ffo: 0 }, ms: 400 }] },
+        { to: { drop: 1, mood: -.8 }, ms: 800, ease: "out", sfx: "thud", sfxAt: 280 }, { to: { ffo: 0 }, ms: 400 }] },
       { steps: [{ to: { why: 1 }, ms: 350 }, { to: { w0: 1 }, ms: 700, ease: "lin", sfx: "scribble" }, { wait: 150 },
         { to: { w1: 1 }, ms: 700, ease: "lin" }, { wait: 150 }, { to: { w2: 1 }, ms: 700, ease: "lin" }], hold: 3000 },
       { steps: [{ to: { why: 0, mood: 0 }, ms: 300 }, { to: { arc: 1 }, ms: 900, ease: "inOut", sfx: "whoosh" },
         { to: { m0: 1 }, ms: 750, ease: "lin" }, { to: { m1: 1 }, ms: 750, ease: "lin" }, { to: { m2: 1 }, ms: 750, ease: "lin" }], hold: 3000 },
-      { steps: [{ to: { dim: 1 }, ms: 400 }, { to: { bub: 1 }, ms: 400 }, { to: { grab: 1 }, ms: 500, ease: "back" },
-        { to: { tag: 1 }, ms: 400, ease: "back", sfx: "pop" }], hold: 3000 },
+      { steps: [{ to: { dim: 1 }, ms: 400 }, { to: { bub: 1 }, ms: 400 }, { to: { grab: 1 }, ms: 500, ease: "out" },
+        { to: { tag: 1 }, ms: 400, ease: "out", sfx: "pop" }], hold: 3000 },
       { steps: [{ to: { bub: 0, grab: 0, tag: 0, dim: 0 }, ms: 450 }, { to: { go: 1 }, ms: 1600, ease: "inOut" },
         { to: { mood: 1 }, ms: 400, sfx: "chime" }], hold: 4200 }
     ]

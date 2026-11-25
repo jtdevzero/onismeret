@@ -346,12 +346,12 @@
     },
     beats: [
       { steps: [{ to: { packs: 1 }, ms: 900, ease: "inOut", sfx: "pluck" }] },
-      { steps: [{ to: { stL: 1 }, ms: 450, ease: "back", sfx: "pop" }] },
-      { steps: [{ to: { stR: 1 }, ms: 450, ease: "back", sfx: "pop" }] },
+      { steps: [{ to: { stL: 1 }, ms: 450, ease: "out", sfx: "pop" }] },
+      { steps: [{ to: { stR: 1 }, ms: 450, ease: "out", sfx: "pop" }] },
       { steps: [{ to: { rate: 1 }, ms: 400 }, { wait: 200 }, { to: { vL: .88, vR: .3 }, ms: 1100, ease: "inOut", sfx: "tick" }] },
       { steps: [{ to: { look: 1 }, ms: 1200, ease: "inOut", sfx: "whoosh" }, { to: { eq: 1 }, ms: 400 }] },
       { steps: [{ to: { ptL: 1 }, ms: 650, sfx: "tick" }, { wait: 200 }, { to: { ptR: 1 }, ms: 650 }] },
-      { steps: [{ to: { arrOff: 1 }, ms: 300 }, { to: { flip: 1 }, ms: 650, ease: "back", sfx: "spring" }, { wait: 150 }, { to: { both: 1 }, ms: 600 }] },
+      { steps: [{ to: { arrOff: 1 }, ms: 300 }, { to: { flip: 1 }, ms: 650, ease: "out", sfx: "spring" }, { wait: 150 }, { to: { both: 1 }, ms: 600 }] },
       { steps: [{ to: { vL: .64, vR: .64, fair: 1 }, ms: 1200, ease: "inOut", sfx: "chime" }, { to: { eq2: 1 }, ms: 400 }], hold: 4200 }
     ]
   };

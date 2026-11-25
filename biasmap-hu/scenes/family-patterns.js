@@ -382,7 +382,7 @@
       { steps: [{ to: { wolfOp: .3, note: 0 }, ms: 400 }, { to: { clump: 1 }, ms: 700, sfx: "pop" }, { to: { l1: 1 }, ms: 350 }] },
       { steps: [{ to: { clumpOp: .4 }, ms: 400 }, { to: { face: 1 }, ms: 700, sfx: "pop" }, { to: { l2: 1 }, ms: 350 }] },
       { steps: [{ to: { faceOp: .4 }, ms: 400 }, { to: { box: 1 }, ms: 400 }, { to: { trend: 1 }, ms: 800, sfx: "scribble" }, { to: { l3: 1 }, ms: 350 }] },
-      { steps: [{ to: { die: 1 }, ms: 600, ease: "back", sfx: "thud", sfxAt: 250 }, { to: { clear: 1, gather: 1 }, ms: 900, ease: "inOut" },
+      { steps: [{ to: { die: 1 }, ms: 600, ease: "out", sfx: "thud", sfxAt: 250 }, { to: { clear: 1, gather: 1 }, ms: 900, ease: "inOut" },
         { to: { shake: 1 }, ms: 380, ease: "lin" }, { to: { scatter: 1 }, ms: 900, sfx: "whoosh" }, { to: { rand: 1 }, ms: 400 }], hold: 2800 },
       { steps: [{ to: { rand: 0 }, ms: 300 }, { to: { chance: 1 }, ms: 700, sfx: "tick" }, { to: { it1: 1 }, ms: 400 }, { to: { tick1: 1 }, ms: 400 }], hold: 2800 },
       { steps: [{ to: { it2: 1 }, ms: 400 }, { to: { more: 1 }, ms: 1800, ease: "lin" }, { to: { tick2: 1 }, ms: 450, sfx: "chime" }], hold: 4200 }

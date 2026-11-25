@@ -451,24 +451,24 @@
     },
     beats: [
       // 1: a blank outline, one label, six gaps
-      { steps: [{ to: { who: 1 }, ms: 600, sfx: "pluck" }, { to: { badge: 1 }, ms: 450, ease: "back", sfx: "pop" }, { wait: 250 },
+      { steps: [{ to: { who: 1 }, ms: 600, sfx: "pluck" }, { to: { badge: 1 }, ms: 450, ease: "out", sfx: "pop" }, { wait: 250 },
         { to: { chips: 1, n1: 1 }, ms: 600 }], hold: 2400 },
       // 2: the label fills the gaps
       { steps: [{ to: { link: 1, n1: 0 }, ms: 700, ease: "inOut" }, { to: { fill: 6, n2: 1 }, ms: 1500, ease: "lin", sfx: "scribble" }] },
       // 3: stereotyping: none of it was seen
-      { steps: [{ to: { n2: 0 }, ms: 250 }, { to: { bad: 6, n3: 1 }, ms: 900, ease: "lin", sfx: "tick" }, { wait: 200 }, { to: { p0: 1 }, ms: 450, ease: "back" }] },
+      { steps: [{ to: { n2: 0 }, ms: 250 }, { to: { bad: 6, n3: 1 }, ms: 900, ease: "lin", sfx: "tick" }, { wait: 200 }, { to: { p0: 1 }, ms: 450, ease: "out" }] },
       // 4: authority bias: a white coat, a claim, trust without evidence
       { steps: [{ to: { chips: 0, link: 0, n3: 0, badge: 0, p0: 0 }, ms: 450 }, { to: { coat: 1 }, ms: 450 },
-        { to: { bub: 1 }, ms: 400, ease: "back", sfx: "pop" }, { to: { bars: 1 }, ms: 350 },
-        { to: { trust: 1 }, ms: 800 }, { to: { p1: 1 }, ms: 450, ease: "back" }], hold: 2800 },
+        { to: { bub: 1 }, ms: 400, ease: "out", sfx: "pop" }, { to: { bars: 1 }, ms: 350 },
+        { to: { trust: 1 }, ms: 800 }, { to: { p1: 1 }, ms: 450, ease: "out" }], hold: 2800 },
       // 5: group attribution error, set-up: one loud fan among others
       { steps: [{ to: { bub: 0, bars: 0, coat: 0, p1: 0 }, ms: 500 }, { to: { scarf: 1, crowd: 1 }, ms: 700 }, { wait: 200 },
-        { to: { shout: 1, tag: 1 }, ms: 450, ease: "back", sfx: "spring" }] },
+        { to: { shout: 1, tag: 1 }, ms: 450, ease: "out", sfx: "spring" }] },
       // 6: ...and the tag lands on every fan
-      { steps: [{ to: { copy: 4 }, ms: 1300, ease: "lin", sfx: "whoosh" }, { wait: 200 }, { to: { p2: 1 }, ms: 450, ease: "back" }] },
+      { steps: [{ to: { copy: 4 }, ms: 1300, ease: "lin", sfx: "whoosh" }, { wait: 200 }, { to: { p2: 1 }, ms: 450, ease: "out" }] },
       // 7: the fix: one real fact about the person
       { steps: [{ to: { crowd: 0, scarf: 0, shout: 0, tag: 0, p2: 0 }, ms: 500 }, { to: { badge: 1, chips: 1, real: 1 }, ms: 600 },
-        { to: { fact: 1 }, ms: 450, ease: "back", sfx: "pop" }, { wait: 300 }, { to: { r2: 1, n4: 1 }, ms: 900, ease: "inOut" }], hold: 2800 },
+        { to: { fact: 1 }, ms: 450, ease: "out", sfx: "pop" }, { wait: 300 }, { to: { r2: 1, n4: 1 }, ms: 900, ease: "inOut" }], hold: 2800 },
       // 8: up close, the person differs from the label
       { steps: [{ to: { r0: 1 }, ms: 550, ease: "inOut" }, { to: { r1: 1 }, ms: 350 }, { to: { r3: 1 }, ms: 550, ease: "inOut" },
         { to: { r4: 1 }, ms: 350 }, { to: { r5: 1 }, ms: 550, ease: "inOut" }, { to: { n4: 0 }, ms: 250 }, { to: { n5: 1 }, ms: 400, sfx: "chime" }], hold: 4200 }

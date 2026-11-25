@@ -394,13 +394,13 @@
       { steps: [{ to: { wh: 1, tbl: 1, last: 1 }, ms: 500 }, { wait: 150 },
         { to: { spin: PW }, ms: 2000, ease: "lin", sfx: "whoosh" }, { to: { spin: 1 }, ms: 440, ease: "lin", sfx: "tick" }], hold: 2200 },
       { steps: [{ to: { spin: 5 }, ms: 3000, ease: "lin", sfx: "whoosh" }, { to: { brk: 1 }, ms: 400 }] },
-      { steps: [{ to: { bub: 1 }, ms: 450, ease: "back", sfx: "pop" }, { wait: 250 }, { to: { nxt: 1 }, ms: 400 }] },
+      { steps: [{ to: { bub: 1 }, ms: 450, ease: "out", sfx: "pop" }, { wait: 250 }, { to: { nxt: 1 }, ms: 400 }] },
       { steps: [{ to: { bet: 1 }, ms: 800, ease: "inOut", sfx: "thud", sfxAt: 650 }] },
-      { steps: [{ to: { link: 1 }, ms: 500 }, { wait: 250 }, { to: { cut: 1, dim: 1, bub: .4 }, ms: 600, ease: "back", sfx: "spring" }, { to: { fresh: 1 }, ms: 400 }] },
+      { steps: [{ to: { link: 1 }, ms: 500 }, { wait: 250 }, { to: { cut: 1, dim: 1, bub: .4 }, ms: 600, ease: "out", sfx: "spring" }, { to: { fresh: 1 }, ms: 400 }] },
       { steps: [{ to: { brk: 0 }, ms: 300 }, { to: { bars: 6, hl: 1 }, ms: 1500, ease: "lin" }, { to: { same: 1 }, ms: 400 }] },
       { steps: [{ to: { scr: 1 }, ms: 900, sfx: "scribble" }, { to: { fix: 1, bub: 0 }, ms: 400 }, { to: { bet: 0 }, ms: 700, ease: "inOut" }], hold: 2800 },
       { steps: [{ to: { spin: 6 }, ms: 2400, ease: "lin", sfx: "whoosh" }, { to: { nx2: 1 }, ms: 500, ease: "inOut" }, { to: { bars: 7 }, ms: 400 },
-        { to: { bub2: 1 }, ms: 450, ease: "back", sfx: "chime" }], hold: 4200 }
+        { to: { bub2: 1 }, ms: 450, ease: "out", sfx: "chime" }], hold: 4200 }
     ]
   };
 })();

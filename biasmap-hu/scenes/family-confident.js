@@ -425,29 +425,29 @@
     beats: [
       // 1. you, a paper ball, a bin across the room, and a low dial
       { steps: [{ to: { room: 1, me: 1 }, ms: 600, sfx: "pluck" }, { to: { g1: 1 }, ms: 400 }, { to: { v1: 25 }, ms: 700, ease: "inOut" },
-        { to: { bb0: 1 }, ms: 350, ease: "back" }] },
+        { to: { bb0: 1 }, ms: 350, ease: "out" }] },
       // 2. the brain turns it up: you get ready to throw
-      { steps: [{ to: { bb0: 0 }, ms: 250 }, { to: { v1: 70, mood: 1 }, ms: 900, ease: "back", sfx: "spring" }, { to: { arm: 1 }, ms: 450, ease: "inOut" },
-        { to: { bb1: 1 }, ms: 350, ease: "back" }] },
+      { steps: [{ to: { bb0: 0 }, ms: 250 }, { to: { v1: 70, mood: 1 }, ms: 900, ease: "out", sfx: "spring" }, { to: { arm: 1 }, ms: 450, ease: "inOut" },
+        { to: { bb1: 1 }, ms: 350, ease: "out" }] },
       // 3. ...and further than it should
-      { steps: [{ to: { bb1: 0 }, ms: 250 }, { to: { v1: 95 }, ms: 1000, ease: "back", sfx: "tick" }, { to: { bb2: 1 }, ms: 350, ease: "back" }] },
+      { steps: [{ to: { bb1: 0 }, ms: 250 }, { to: { v1: 95 }, ms: 1000, ease: "out", sfx: "tick" }, { to: { bb2: 1 }, ms: 350, ease: "out" }] },
       // 4. your track record: 6 in 10
       { steps: [{ to: { bb2: 0 }, ms: 250 }, { to: { g2: 1 }, ms: 450, sfx: "pop" }, { to: { tally: 10 }, ms: 1400, ease: "lin" },
-        { to: { exc: 1, exl: 1 }, ms: 450 }, { to: { pl0: 1 }, ms: 400, ease: "back" }], hold: 2800 },
+        { to: { exc: 1, exl: 1 }, ms: 450 }, { to: { pl0: 1 }, ms: 400, ease: "out" }], hold: 2800 },
       // 5. illusion of control: leaning to steer a ball that has already left your hand
       { steps: [{ to: { exl: 0, pl0: 0 }, ms: 300 }, { to: { arm: 2 }, ms: 180, ease: "inOut" }, { to: { held: 0, b1on: 1, tr1: 1 } },
         { to: { b1: 1, lean: 1, bb3: 1 }, ms: 1300, ease: "inOut", sfx: "whoosh" }, { to: { b1: 1.4 }, ms: 220, ease: "lin" },
-        { to: { pl1: 1 }, ms: 400, ease: "back" }] },
+        { to: { pl1: 1 }, ms: 400, ease: "out" }] },
       // 6. self-serving bias: a hit is skill, a miss is bad luck, and the dial springs back
-      { steps: [{ to: { bb3: 0, lean: 0, pl1: 0, tr1: 0 }, ms: 400 }, { to: { arm: 1, held: 1 }, ms: 350 }, { to: { tagS: 1, v1: 98 }, ms: 450, ease: "back" },
+      { steps: [{ to: { bb3: 0, lean: 0, pl1: 0, tr1: 0 }, ms: 400 }, { to: { arm: 1, held: 1 }, ms: 350 }, { to: { tagS: 1, v1: 98 }, ms: 450, ease: "out" },
         { wait: 300 }, { to: { arm: 2 }, ms: 180, ease: "inOut" }, { to: { held: 0, b2on: 1 } }, { to: { b2: 1 }, ms: 900, ease: "inOut" },
-        { to: { b2: 2, v1: 72 }, ms: 450, ease: "lin", sfx: "thud", sfxAt: 420 }, { to: { tagL: 1, v1: 95 }, ms: 800, ease: "back", sfx: "spring" },
-        { to: { pl2: 1 }, ms: 400, ease: "back" }], hold: 3000 },
+        { to: { b2: 2, v1: 72 }, ms: 450, ease: "lin", sfx: "thud", sfxAt: 420 }, { to: { tagL: 1, v1: 95 }, ms: 800, ease: "out", sfx: "spring" },
+        { to: { pl2: 1 }, ms: 400, ease: "out" }], hold: 3000 },
       // 7. the fix: write down how sure you are, then check what happened
       { steps: [{ to: { tagS: 0, tagL: 0, pl2: 0 }, ms: 400 }, { to: { arm: 1, held: 1 }, ms: 300 }, { to: { note: 1 }, ms: 400 },
         { to: { nr1: 1 }, ms: 500, sfx: "scribble" }, { wait: 600 }, { to: { nr2: 1 }, ms: 500 }], hold: 2800 },
       // 8. set the dial by the record: still enough to take the shot
-      { steps: [{ to: { v1: REC, cal: 1 }, ms: 1300, ease: "inOut" }, { to: { eq: 1 }, ms: 350 }, { to: { bb4: 1 }, ms: 350, ease: "back" },
+      { steps: [{ to: { v1: REC, cal: 1 }, ms: 1300, ease: "inOut" }, { to: { eq: 1 }, ms: 350 }, { to: { bb4: 1 }, ms: 350, ease: "out" },
         { wait: 250 }, { to: { arm: 2 }, ms: 180, ease: "inOut" }, { to: { held: 0, b3on: 1, tr3: 1 } }, { to: { b3: 1 }, ms: 1100, ease: "inOut" },
         { to: { b3: 1.4 }, ms: 220, ease: "lin", sfx: "chime" }], hold: 4200 }
     ]
