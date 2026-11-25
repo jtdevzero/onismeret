@@ -81,6 +81,9 @@
   }
 
   for (const [key,data] of Object.entries(records)) {
+    // Premium preview pilots have their own script and must not be registered
+    // here: BiasAnim.load checks SCENES before consulting its SRC map.
+    if (Object.values(window.BiasMapPremium || {}).includes(key)) continue;
     const seed = hash(key + data.family);
     const style = seed % 8;
     const setup = excerpt(data.example, 135);

@@ -45,6 +45,11 @@ vm.runInNewContext(extra, {window:{BiasMapRemaining:Object.fromEntries(
     {name:b.n,example:b.ex,explanation:b.d,warning:b.spot,action:b.fix,quadrant:'tmi',family:'primed'}])),
   BiasAnim:{SCENES:generated}}});
 assert.equal(Object.keys(generated).length,142);
+const excluded = {};
+vm.runInNewContext(extra,{window:{BiasMapPremium:{'Distinction bias':'remaining-002'},
+  BiasMapRemaining:{'remaining-001':{name:'A',family:'x'},'remaining-002':{name:'B',family:'x'}},
+  BiasAnim:{SCENES:excluded}}});
+assert.deepEqual(Object.keys(excluded),['remaining-001'],'premium scene must not be overwritten');
 for(const [key,entry] of Object.entries(generated)) {
   assert.equal(entry.beats.length,4,key);
   assert.equal(entry.text.hu.caps.length,4,key);
