@@ -87,11 +87,32 @@
     time:'journey',focus:'eye',evidence:'information',risk:'scale',social:'people',scale:'value',
     journey:'time',eye:'focus',graph:'evidence',identity:'people',language:'social',
     information:'evidence',group:'scale',value:'decision',generic:'evidence'};
-  const badge = (label,x,y) => `${R(x-58,y-20,116,34,'sb-hot')}${T(x,y+1,label,'sb-em')}`;
+  const badge = (label,x,y) => {
+    const width=Math.min(210,Math.max(116,Math.ceil([...label].length*7.5+22)));
+    return `${R(x-width/2,y-20,width,34,'sb-hot')}${T(x,y+1,label,'sb-em')}`;
+  };
   const label = s => {
     const clean=String(s||'').replace(/\s*\([^)]*\)\s*$/,'').trim();
     return clean.length>18?clean.slice(0,clean.lastIndexOf(' ',17)>8?clean.lastIndexOf(' ',17):17)+'…':clean;
   };
+  const prompts={
+    memory:'Mi az eredeti emlék?',money:'Mi az összes költség?',social:'Mások is így látják?',
+    time:'Mi számít hosszú távon?',chance:'Mit mutat a sok próbálkozás?',
+    evidence:'Mi cáfolhatná?',focus:'Mi maradt a látómezőn kívül?',
+    risk:'Mekkora a tényleges kockázat?',identity:'És ha rólad lenne szó?',
+    language:'Másképp fogalmazva?',journey:'Mi a következő valódi lépés?',
+    scale:'Mihez viszonyítasz?',graph:'Mi a teljes adatsor?',
+    decision:'Milyen más opció van?',information:'Mi a megbízható forrás?',
+    group:'Mi hiányzik a csoportból?',people:'Kinek a nézőpontja hiányzik?',
+    eye:'Mit nem vettél észre?',value:'Milyen szempont fontos még?',
+    generic:'Mi lehet egy másik magyarázat?'
+  };
+  const trapNames={memory:'AZ EMLÉK VÁLTOZIK',money:'A KERET FÉLREVEZET',
+    social:'A TÖBBIEK TORZ TÜKRE',time:'AZ IDŐ CSAPDÁJA',chance:'A VÉLETLEN MINTÁZAT',
+    evidence:'EGYOLDALÚ BIZONYÍTÉK',focus:'BESZŰKÜLT FIGYELEM',risk:'TORZ KOCKÁZATÉRZET',
+    identity:'ÖNIGAZOLÓ TÜKÖR',language:'A MEGFOGALMAZÁS HAT',journey:'BERAGADT FOLYAMAT',
+    scale:'FÉLREVEZETŐ MÉRCE',graph:'HIÁNYOS ÖSSZKÉP',decision:'BESZŰKÜLT VÁLASZTÁS',
+    information:'INFORMÁCIÓS ZAJ',group:'HIBÁS CSOPORTOSÍTÁS',generic:'TORZÍTOTT KÉP'};
   const steps=[
     {steps:[{to:{a:1},ms:800,ease:'out'}],hold:3000},
     {steps:[{to:{b:1},ms:750,ease:'out'}],hold:3000},
@@ -111,17 +132,17 @@
       G('a',`${firstScene}${T(112,220,'HELYZET','sb-small')}${T(112,239,name,'sb-em')}`)+
       G('b',`${P('M179 133h39m-11-10 11 10-11 10','sb-accent')}${secondScene}${T(294,219,'ELSŐ BENYOMÁS','sb-small')}`)+
       G('c',`${C(200,124,65,'sb-hot')}${icons[topic](200,124)}${T(200,221,'AMI KIEMELKEDIK','sb-em')}`)+
-      G('d',`${P('M137 186l127-123','sb-bad')}${badge('TORZÍTOTT KÉP',200,34)}`)+
+      G('d',`${P('M137 186l127-123','sb-bad')}${badge(trapNames[topic]||'TORZÍTOTT KÉP',200,34)}`)+
       G('e',`${icons[second](110,125)}${P('M177 129h51m-12-10 12 10-12 10','sb-accent')}${icons[topic](292,125)}${T(200,223,'NÉZD MEG MÁSKÉNT!','sb-em')}`)+
       G('f',`${ok(200,42)}${badge('TUDATOS DÖNTÉS',200,245)}${points}`);
     const setup=sentence(data.example,124),why=sentence(data.explanation,122);
     const sign=sentence(data.warning,122),action=sentence(data.action,122);
     const captions=[
       escape(setup),
-      `<b>Első benyomás:</b> ${escape(sign)}`,
+      `<b>Amit elsőre gondolunk:</b> ${escape(sign)}`,
       `<b>Mi történik?</b> ${escape(why)}`,
-      `<b>A csapda:</b> ${escape(sign)}`,
-      `<b>Másik nézőpont:</b> ${escape(action)}`,
+      `<b>A rejtett csapda:</b> ${escape(data.name)} észrevétlenül befolyásolhatja az ítéletünket.`,
+      `<b>Ellenőrző kérdés:</b> ${escape(prompts[topic]||prompts.generic)}`,
       `<b>Mit tehetsz?</b> ${escape(action)}`
     ];
     scenes[key]={
