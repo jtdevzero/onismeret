@@ -406,15 +406,15 @@
     },
     beats: [
       { steps: [{ to: { ppl: 1 }, ms: 600 }, { to: { q1: 1 }, ms: 300 }, { to: { tap: 5 }, ms: 2600, ease: "lin", sfx: "tick", sfxAt: 280 }], hold: 1800 },
-      { steps: [{ to: { mel: 1 }, ms: 450, ease: "back", sfx: "pop" }, { to: { tap: -.6 } },
+      { steps: [{ to: { mel: 1 }, ms: 450, ease: "out", sfx: "pop" }, { to: { tap: -.6 } },
         { to: { tap: 5, notes: 5 }, ms: 2600, ease: "lin" }, { to: { song: 1 }, ms: 400 }], hold: 2200 },
       { steps: [{ to: { q1: 0 }, ms: 250 }, { to: { ghost: 1 }, ms: 1000, ease: "inOut", sfx: "whoosh" }] },
       { steps: [{ to: { strip: 1 }, ms: 900, ease: "inOut", sfx: "thud", sfxAt: 350 }, { to: { toks: 1, puzz: 1 }, ms: 450 }], hold: 2800 },
-      { steps: [{ to: { guess: 1 }, ms: 450, ease: "back", sfx: "pop" }, { wait: 300 }, { to: { wrong: 1 }, ms: 350, ease: "back" }, { to: { baf: 1 }, ms: 350 }] },
-      { steps: [{ to: { guess: 0, wrong: 0 }, ms: 300 }, { to: { wipe: 1 }, ms: 800, ease: "lin" }, { to: { wipe: 0, curse: 1 }, ms: 600, ease: "back", sfx: "spring" }], hold: 2800 },
+      { steps: [{ to: { guess: 1 }, ms: 450, ease: "out", sfx: "pop" }, { wait: 300 }, { to: { wrong: 1 }, ms: 350, ease: "out" }, { to: { baf: 1 }, ms: 350 }] },
+      { steps: [{ to: { guess: 0, wrong: 0 }, ms: 300 }, { to: { wipe: 1 }, ms: 800, ease: "lin" }, { to: { wipe: 0, curse: 1 }, ms: 600, ease: "out", sfx: "spring" }], hold: 2800 },
       { steps: [{ to: { baf: 0, curse: 0, dim: 1 }, ms: 500 }, { to: { look: 1 }, ms: 500 }, { to: { miss: 1 }, ms: 600, sfx: "tick" }], hold: 2800 },
-      { steps: [{ to: { look: 0, dim: 0 }, ms: 400 }, { to: { hum: 1 }, ms: 400, ease: "back", sfx: "pluck" }, { to: { fly: 1 }, ms: 800, ease: "inOut" },
-        { to: { fill: 1 }, ms: 700 }, { to: { right: 1, happy: 1, puzz: 0 }, ms: 450, ease: "back", sfx: "chime" }], hold: 4200 }
+      { steps: [{ to: { look: 0, dim: 0 }, ms: 400 }, { to: { hum: 1 }, ms: 400, ease: "out", sfx: "pluck" }, { to: { fly: 1 }, ms: 800, ease: "inOut" },
+        { to: { fill: 1 }, ms: 700 }, { to: { right: 1, happy: 1, puzz: 0 }, ms: 450, ease: "out", sfx: "chime" }], hold: 4200 }
     ]
   };
 })();

@@ -414,20 +414,20 @@
     },
     beats: [
       { steps: [{ to: { you: 1 }, ms: 450, sfx: "pluck" }, { to: { ppl: 1 }, ms: 700 }, { wait: 200 }, { to: { hid: 1 }, ms: 800 }], hold: 2400 },
-      { steps: [{ to: { mine: 1, myCup: 1 }, ms: 450, ease: "back" }, { wait: 300 }, { to: { cf: 1, lg1: 1 }, ms: 1200, ease: "lin", sfx: "whoosh" },
+      { steps: [{ to: { mine: 1, myCup: 1 }, ms: 450, ease: "out" }, { wait: 300 }, { to: { cf: 1, lg1: 1 }, ms: 1200, ease: "lin", sfx: "whoosh" },
         { wait: 300 }, { to: { cok: 1 }, ms: 500 }] },
       { steps: [{ to: { mine: 0, cfOut: 1 }, ms: 400 }, { to: { myCup: 0, lab0: 1, nerv: 1 }, ms: 400 },
         { to: { g0: 1, shake: 1 }, ms: 1100, ease: "lin", sfx: "scribble" }, { wait: 700 },
-        { to: { u0: 1 }, ms: 450, ease: "inOut" }, { to: { r0: 1, lg2: 1 }, ms: 450, ease: "back", sfx: "pop" }], hold: 2400 },
-      { steps: [{ to: { nerv: 0, lab0: 0 }, ms: 350 }, { to: { lab1: 1, say: 1, sayA: 1 }, ms: 450, ease: "back" }, { wait: 400 },
+        { to: { u0: 1 }, ms: 450, ease: "inOut" }, { to: { r0: 1, lg2: 1 }, ms: 450, ease: "out", sfx: "pop" }], hold: 2400 },
+      { steps: [{ to: { nerv: 0, lab0: 0 }, ms: 350 }, { to: { lab1: 1, say: 1, sayA: 1 }, ms: 450, ease: "out" }, { wait: 400 },
         { to: { g1: 1 }, ms: 1100, ease: "lin" }, { wait: 600 },
-        { to: { u1: 1 }, ms: 450, ease: "inOut" }, { to: { r1: 1 }, ms: 450, ease: "back", sfx: "pop" }], hold: 2400 },
-      { steps: [{ to: { say: 0, lab1: 0 }, ms: 350 }, { to: { sayA: 0 } }, { to: { lab2: 1, mine: 1, myPic: 1 }, ms: 450, ease: "back", sfx: "tick" },
+        { to: { u1: 1 }, ms: 450, ease: "inOut" }, { to: { r1: 1 }, ms: 450, ease: "out", sfx: "pop" }], hold: 2400 },
+      { steps: [{ to: { say: 0, lab1: 0 }, ms: 350 }, { to: { sayA: 0 } }, { to: { lab2: 1, mine: 1, myPic: 1 }, ms: 450, ease: "out", sfx: "tick" },
         { wait: 400 }, { to: { g2: 1 }, ms: 1100, ease: "lin" }], hold: 2600 },
-      { steps: [{ to: { u2: 1 }, ms: 450, ease: "inOut" }, { to: { r2: 1 }, ms: 450, ease: "back", sfx: "spring" }, { wait: 200 },
+      { steps: [{ to: { u2: 1 }, ms: 450, ease: "inOut" }, { to: { r2: 1 }, ms: 450, ease: "out", sfx: "spring" }, { wait: 200 },
         { to: { glow: 1 }, ms: 700, ease: "lin" }, { to: { glow: 0 } }, { to: { glow: 1 }, ms: 700, ease: "lin" }, { to: { glow: 0 } }], hold: 2400 },
       { steps: [{ to: { gOut: 1, lab2: 0, lg1: 0, lg2: 0, mine: 0 }, ms: 600, sfx: "whoosh" }, { to: { myPic: 0 } },
-        { to: { say: 1, sayB: 1 }, ms: 450, ease: "back" }] },
+        { to: { say: 1, sayB: 1 }, ms: 450, ease: "out" }] },
       { steps: [{ wait: 200 }, { to: { win: 1 }, ms: 900, ease: "inOut", sfx: "chime", sfxAt: 300 }], hold: 4200 }
     ]
   };

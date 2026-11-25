@@ -352,12 +352,12 @@
       op("totf", S.totf);
     },
     beats: [
-      { steps: [{ to: { coin: 1 }, ms: 420, ease: "back", sfx: "pop" }, { to: { spin: 4 }, ms: 900, ease: "inOut" },
+      { steps: [{ to: { coin: 1 }, ms: 420, ease: "out", sfx: "pop" }, { to: { spin: 4 }, ms: 900, ease: "inOut" },
         { to: { cards: 1 }, ms: 500 }, { to: { you: 1 }, ms: 400 }] },
       { steps: [{ to: { ev: 1 }, ms: 500 }, { wait: 250 }, { to: { evr: 1 }, ms: 350, sfx: "tick" }] },
-      { steps: [{ to: { no: 1, mood: -0.3 }, ms: 450, ease: "back", sfx: "pop" }] },
+      { steps: [{ to: { no: 1, mood: -0.3 }, ms: 450, ease: "out", sfx: "pop" }] },
       { steps: [{ to: { chart: 1 }, ms: 350 }, { to: { g: 120 }, ms: 700, sfx: "whoosh" }, { to: { l: 165 }, ms: 900, ease: "inOut" }] },
-      { steps: [{ to: { ref: 1 }, ms: 400 }, { to: { l: 200 }, ms: 800, ease: "back", sfx: "spring" }, { to: { x2: 1 }, ms: 400 }] },
+      { steps: [{ to: { ref: 1 }, ms: 400 }, { to: { l: 200 }, ms: 800, ease: "out", sfx: "spring" }, { to: { x2: 1 }, ms: 400 }] },
       { steps: [{ to: { x2: 0, ref: 0 }, ms: 300 }, { to: { gap: 1, mood: -1 }, ms: 500, sfx: "thud" }] },
       { steps: [{ to: { chart: 0, no: 0, mood: 0 }, ms: 400 }, { to: { evm: 1 }, ms: 600, ease: "inOut" }, { to: { flips: 1 }, ms: 2600, ease: "lin", sfx: "whoosh" }] },
       { steps: [{ to: { tot: 1, ring: 1 }, ms: 400, sfx: "tick" }, { to: { sweep: 9.5 }, ms: 2200, ease: "lin" },

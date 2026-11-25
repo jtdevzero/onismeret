@@ -18,9 +18,9 @@
   const f1 = n => +n.toFixed(1);
   // one more repeat scrolls in: count it, and its meter jumps
   const rep = (n, r, c, v, sfx) => [{ to: { sc: SC(n) }, ms: 450, ease: "inOut" }, { to: { ["c" + r]: c } },
-    { to: { ["v" + r]: v }, ms: 350, ease: "back", ...(sfx ? { sfx } : {}) }, { wait: 150 }];
+    { to: { ["v" + r]: v }, ms: 350, ease: "out", ...(sfx ? { sfx } : {}) }, { wait: 150 }];
   // the new word lights up in one more post
-  const lit = (w, c, v, sfx) => [{ to: { c2: c } }, { to: { [w]: 1, v2: v }, ms: 350, ease: "back", ...(sfx ? { sfx } : {}) }, { wait: 120 }];
+  const lit = (w, c, v, sfx) => [{ to: { c2: c } }, { to: { [w]: 1, v2: v }, ms: 350, ease: "out", ...(sfx ? { sfx } : {}) }, { wait: 120 }];
 
   const LN = [[92, 64], [84, 50], [96, 72], [78, 58], [90, 44], [88, 68]];
   const post = (t, i, T) => {
@@ -405,17 +405,17 @@
         { to: { sc: SC(14), cnt: 312 }, ms: 2400, ease: "inOut", sfx: "whoosh" }], hold: 2200 },
       { steps: [{ to: { cn: 0 }, ms: 350 }, { to: { filt: 1 }, ms: 600, sfx: "tick" }, { to: { flt: 1 }, ms: 500 }], hold: 2800 },
       { steps: [{ to: { flt: 0, filt: 0 }, ms: 400 }, { to: { sc: SC(19) }, ms: 1000, ease: "inOut" }, { wait: 150 },
-        { to: { r0: 1 }, ms: 350 }, { to: { c0: 1 } }, { to: { v0: .25 }, ms: 450, ease: "back", sfx: "pop" }] },
+        { to: { r0: 1 }, ms: 350 }, { to: { c0: 1 } }, { to: { v0: .25 }, ms: 450, ease: "out", sfx: "pop" }] },
       { steps: [...rep(20, 0, 2, .45, "tick"), ...rep(22, 0, 3, .66), ...rep(24, 0, 4, .88),
-        { to: { nf0: 1 }, ms: 350 }, { wait: 200 }, { to: { l0: 1 }, ms: 400, ease: "back" }], hold: 2400 },
+        { to: { nf0: 1 }, ms: 350 }, { wait: 200 }, { to: { l0: 1 }, ms: 400, ease: "out" }], hold: 2400 },
       { steps: [{ to: { r1: 1 }, ms: 350 }, ...rep(26, 1, 1, .3, "pluck"), ...rep(28, 1, 2, .55), ...rep(30, 1, 3, .8),
-        { to: { l1: 1 }, ms: 400, ease: "back" }], hold: 2400 },
+        { to: { l1: 1 }, ms: 400, ease: "out" }], hold: 2400 },
       { steps: [{ to: { r2: 1 }, ms: 350 }, { wait: 250 }, ...lit("w0", 1, .25, "tick"), ...lit("w1", 2, .45),
         { to: { sc: SC(32) }, ms: 550, ease: "inOut" }, ...lit("w2", 3, .65), ...lit("w3", 4, .84),
-        { wait: 150 }, { to: { l2: 1 }, ms: 400, ease: "back" }], hold: 2400 },
+        { wait: 150 }, { to: { l2: 1 }, ms: 400, ease: "out" }], hold: 2400 },
       { steps: [{ to: { sc: SC(37) }, ms: 1200, ease: "inOut", sfx: "whoosh" }, { wait: 250 },
         { to: { xr: 1 }, ms: 350 }, { to: { nf: 1 }, ms: 350 }, { to: { v0: .5 }, ms: 700, ease: "inOut" }], hold: 2600 },
-      { steps: [{ to: { r1: 0, r2: 0 }, ms: 400 }, { to: { note: 1 }, ms: 450, ease: "back" },
+      { steps: [{ to: { r1: 0, r2: 0 }, ms: 400 }, { to: { note: 1 }, ms: 450, ease: "out" },
         { to: { st: 1 }, ms: 450, sfx: "scribble" }, { to: { ok: 1 }, ms: 400 }, { to: { v0: .1 }, ms: 800, ease: "inOut", sfx: "chime" }], hold: 4200 }
     ]
   };

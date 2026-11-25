@@ -397,16 +397,16 @@
       op("ask", S.ask);
     },
     beats: [
-      { steps: [{ to: { aIn: 1 }, ms: 600, ease: "back", sfx: "pluck" }, { to: { bIn: 1 }, ms: 600, ease: "back" },
+      { steps: [{ to: { aIn: 1 }, ms: 600, ease: "out", sfx: "pluck" }, { to: { bIn: 1 }, ms: 600, ease: "out" },
         { to: { qm: 1, wob: -4 }, ms: 260, sfx: "pop" }, { to: { wob: 2 }, ms: 280, ease: "inOut" }, { to: { wob: 0 }, ms: 280, ease: "inOut" }] },
-      { steps: [{ to: { pick: 1 }, ms: 450, ease: "back", sfx: "tick" }, { wait: 300 }, { to: { jud: 1 }, ms: 450 }] },
+      { steps: [{ to: { pick: 1 }, ms: 450, ease: "out", sfx: "tick" }, { wait: 300 }, { to: { jud: 1 }, ms: 450 }] },
       { steps: [{ to: { jud: 0 }, ms: 250 }, { to: { ch1: 1, odds: 1 }, ms: 450, sfx: "pop" }, { wait: 900 }, { to: { maybe: 1 }, ms: 450 }] },
       { steps: [{ to: { ch1: 0, odds: 0, maybe: 0 }, ms: 250 }, { to: { ch2: 1, bDim: 1 }, ms: 450 },
         { to: { docs: 5, more: 1 }, ms: 2000, ease: "lin", sfx: "pluck" }, { to: { same: 1 }, ms: 400 }] },
       { steps: [{ to: { ch2: 0, same: 0, more: 0, pickOff: 1, bDim: 0, docDim: 1 }, ms: 350 }, { to: { ch3: 1, shed: 1 }, ms: 450 },
         { to: { bars: 1 }, ms: 300 }, { to: { tA: 1 }, ms: 1600, ease: "inOut", sfx: "whoosh" }] },
-      { steps: [{ to: { bBig: 1 }, ms: 600, ease: "back", sfx: "spring" }, { to: { tB: 5 / 60 }, ms: 500 }] },
-      { steps: [{ to: { ch3: 0 }, ms: 250 }, { to: { ask: 1 }, ms: 450, ease: "back" }, { wait: 700 },
+      { steps: [{ to: { bBig: 1 }, ms: 600, ease: "out", sfx: "spring" }, { to: { tB: 5 / 60 }, ms: 500 }] },
+      { steps: [{ to: { ch3: 0 }, ms: 250 }, { to: { ask: 1 }, ms: 450, ease: "out" }, { wait: 700 },
         { to: { sweep: 1, tA: 5 / 60 }, ms: 1100, ease: "inOut", sfx: "whoosh" }] },
       { steps: [{ to: { tB: 1, gB: 1 }, ms: 1400, ease: "inOut" }, { to: { fix: 1 }, ms: 600, sfx: "chime" }], hold: 4200 }
     ]

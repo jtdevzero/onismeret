@@ -363,11 +363,11 @@
       op("crowd", 1 - .82 * S.calm);
     },
     beats: [
-      { steps: [{ to: { shelf: 1 }, ms: 300 }, { to: { sIn: 1 }, ms: 500, ease: "back", sfx: "pluck" }, { to: { lIn: 1 }, ms: 500, ease: "back" },
+      { steps: [{ to: { shelf: 1 }, ms: 300 }, { to: { sIn: 1 }, ms: 500, ease: "out", sfx: "pluck" }, { to: { lIn: 1 }, ms: 500, ease: "out" },
         { to: { tags: 1 }, ms: 400 }] },
       { steps: [{ to: { arcA: 1 }, ms: 700, sfx: "tick" }, { wait: 300 }, { to: { cnt: 1 }, ms: 300 }, { to: { walk: 1 }, ms: 2600, ease: "lin" }], hold: 2200 },
-      { steps: [{ to: { arcA: 0 }, ms: 300 }, { to: { mIn: 1 }, ms: 700, ease: "bounce", sfx: "pop" }, { to: { mTag: 1 }, ms: 400 }] },
-      { steps: [{ to: { arcB: 1 }, ms: 800 }, { to: { boost: 1, hl: 1, dimS: 1 }, ms: 260, sfx: "spring" }, { to: { boost: 0 }, ms: 700, ease: "back" }] },
+      { steps: [{ to: { arcA: 0 }, ms: 300 }, { to: { mIn: 1 }, ms: 700, ease: "out", sfx: "pop" }, { to: { mTag: 1 }, ms: 400 }] },
+      { steps: [{ to: { arcB: 1 }, ms: 800 }, { to: { boost: 1, hl: 1, dimS: 1 }, ms: 260, sfx: "spring" }, { to: { boost: 0 }, ms: 700, ease: "out" }] },
       { steps: [{ to: { mCnt: 1 }, ms: 300 }, { to: { move: 1 }, ms: 1900, ease: "lin", sfx: "whoosh" }], hold: 2200 },
       { steps: [{ to: { stamp: 1 }, ms: 320, sfx: "thud", sfxAt: 220 }, { wait: 300 }, { to: { zero: 1 }, ms: 500 }] },
       { steps: [{ to: { calm: 1 }, ms: 500 }, { to: { cross: 1 }, ms: 700, sfx: "scribble" }, { to: { ghost: 1 }, ms: 500 }] },

@@ -375,17 +375,17 @@
     beats: [
       { steps: [{ to: { teams: 1 }, ms: 600, sfx: "pluck" }, { to: { cards: 1 }, ms: 500 }, { to: { eq: 1 }, ms: 400 }], hold: 2400 },
       { steps: [{ to: { glow: 1 }, ms: 700 }, { wait: 250 }, { to: { safe: 1 }, ms: 400, sfx: "tick" }], hold: 2800 },
-      { steps: [{ to: { glowH: 1 }, ms: 1000, ease: "inOut", sfx: "whoosh" }, { to: { sa: 1, spark: 1 }, ms: 450, ease: "back", sfx: "pop" },
+      { steps: [{ to: { glowH: 1 }, ms: 1000, ease: "inOut", sfx: "whoosh" }, { to: { sa: 1, spark: 1 }, ms: 450, ease: "out", sfx: "pop" },
         { wait: 400 }, { to: { tg0: 1 }, ms: 450 }], hold: 2800 },
       { steps: [{ to: { tg0: 0, safe: 0 }, ms: 300 }, { to: { traits: 3 }, ms: 750, ease: "lin", sfx: "tick" }, { wait: 250 },
         { to: { blur: 1 }, ms: 800, ease: "inOut" }, { to: { blurL: 1 }, ms: 300 }, { wait: 200 }, { to: { tg1: 1 }, ms: 450 }], hold: 2800 },
-      { steps: [{ to: { tg1: 0 }, ms: 300 }, { to: { bulb: 1 }, ms: 600, ease: "back", sfx: "pop" }], hold: 2200 },
-      { steps: [{ to: { fly: 1 }, ms: 650, ease: "inOut" }, { to: { edge: 1 }, ms: 100 }, { to: { back: 1, dim: 1 }, ms: 700, ease: "back", sfx: "spring" },
+      { steps: [{ to: { tg1: 0 }, ms: 300 }, { to: { bulb: 1 }, ms: 600, ease: "out", sfx: "pop" }], hold: 2200 },
+      { steps: [{ to: { fly: 1 }, ms: 650, ease: "inOut" }, { to: { edge: 1 }, ms: 100 }, { to: { back: 1, dim: 1 }, ms: 700, ease: "out", sfx: "spring" },
         { to: { edge: .7, xm: 1 }, ms: 350 }, { wait: 250 }, { to: { tg2: 1 }, ms: 450 }], hold: 2800 },
-      { steps: [{ to: { tg2: 0, glowOff: 1 }, ms: 500 }, { to: { cover: 1, tOff: 1, blurL: 0, eq: 0 }, ms: 550, ease: "back" },
+      { steps: [{ to: { tg2: 0, glowOff: 1 }, ms: 500 }, { to: { cover: 1, tOff: 1, blurL: 0, eq: 0 }, ms: 550, ease: "out" },
         { to: { crit: 1 }, ms: 500 }, { to: { ticks: 3 }, ms: 1000, ease: "lin", sfx: "scribble" }, { to: { tg3: 1 }, ms: 450 }], hold: 2800 },
       { steps: [{ to: { good: 1 }, ms: 900, ease: "inOut" }, { to: { cover: 0, blur: 0 }, ms: 800, ease: "inOut" },
-        { to: { xm: 0 }, ms: 250 }, { to: { adopt: 1 }, ms: 700, ease: "back", sfx: "chime" }], hold: 4200 }
+        { to: { xm: 0 }, ms: 250 }, { to: { adopt: 1 }, ms: 700, ease: "out", sfx: "chime" }], hold: 4200 }
     ]
   };
 })();

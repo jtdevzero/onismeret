@@ -345,20 +345,20 @@
       op("chk", S.chk * 2);
     },
     beats: [
-      { steps: [{ to: { you: 1 }, ms: 400 }, { to: { box: 1 }, ms: 450, ease: "back" }, { wait: 250 },
-        { to: { lid: 1 }, ms: 450 }, { to: { mug: 1, boxOut: 1 }, ms: 600, ease: "back", sfx: "pluck" }, { to: { mood: 0.35 }, ms: 300 }] },
-      { steps: [{ to: { them: 1 }, ms: 700, ease: "inOut" }, { to: { bubB: 1 }, ms: 400, ease: "back", sfx: "pop" }] },
-      { steps: [{ to: { bubB: 0 }, ms: 250 }, { to: { bubY: 1 }, ms: 400, ease: "back" }, { to: { pole: 1 }, ms: 300 },
+      { steps: [{ to: { you: 1 }, ms: 400 }, { to: { box: 1 }, ms: 450, ease: "out" }, { wait: 250 },
+        { to: { lid: 1 }, ms: 450 }, { to: { mug: 1, boxOut: 1 }, ms: 600, ease: "out", sfx: "pluck" }, { to: { mood: 0.35 }, ms: 300 }] },
+      { steps: [{ to: { them: 1 }, ms: 700, ease: "inOut" }, { to: { bubB: 1 }, ms: 400, ease: "out", sfx: "pop" }] },
+      { steps: [{ to: { bubB: 0 }, ms: 250 }, { to: { bubY: 1 }, ms: 400, ease: "out" }, { to: { pole: 1 }, ms: 300 },
         { to: { t8: 8 }, ms: 1100, ease: "inOut", sfx: "tick" }, { to: { ask: 1 }, ms: 350 }] },
       { steps: [{ to: { bubY: 0 }, ms: 250 }, { to: { t4: 4 }, ms: 800, ease: "inOut", sfx: "tick" }, { to: { pay: 1 }, ms: 350 }] },
-      { steps: [{ to: { heart: 1, mood: 0.8 }, ms: 450, ease: "back", sfx: "pop" }, { wait: 250 }, { to: { gap: 1 }, ms: 500 }] },
+      { steps: [{ to: { heart: 1, mood: 0.8 }, ms: 450, ease: "out", sfx: "pop" }, { wait: 250 }, { to: { gap: 1 }, ms: 500 }] },
       { steps: [{ to: { tug: 1 }, ms: 500, ease: "inOut" }, { to: { red: 1, mood: -1 }, ms: 350 },
-        { to: { tug: 0 }, ms: 700, ease: "back", sfx: "spring" }] },
-      { steps: [{ to: { gap: 0, heart: 0, mood: 0 }, ms: 450 }, { to: { think: 1 }, ms: 400, ease: "back" }, { wait: 700 },
+        { to: { tug: 0 }, ms: 700, ease: "out", sfx: "spring" }] },
+      { steps: [{ to: { gap: 0, heart: 0, mood: 0 }, ms: 450 }, { to: { think: 1 }, ms: 400, ease: "out" }, { wait: 700 },
         { to: { no: 1 }, ms: 250 }, { to: { strike: 1, dim: 1 }, ms: 450, sfx: "scribble" }] },
       { steps: [{ to: { think: 0 }, ms: 300 }, { to: { t5: 5 }, ms: 800, ease: "inOut" }, { to: { sold: 1 }, ms: 300 },
-        { to: { swap: 1 }, ms: 900, ease: "inOut", sfx: "whoosh" }, { to: { note: 1 }, ms: 400, ease: "back" },
-        { to: { mood: 1, chk: 1 }, ms: 400, ease: "back", sfx: "chime" }], hold: 4200 }
+        { to: { swap: 1 }, ms: 900, ease: "inOut", sfx: "whoosh" }, { to: { note: 1 }, ms: 400, ease: "out" },
+        { to: { mood: 1, chk: 1 }, ms: 400, ease: "out", sfx: "chime" }], hold: 4200 }
     ]
   };
 })();

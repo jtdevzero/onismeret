@@ -402,20 +402,20 @@
       tr("chk", 200, 150, ` scale(${f(Math.max(0, S.chk))})`); op("chk", S.chk * 2);
     },
     beats: [
-      { steps: [{ to: { box: 1 }, ms: 500, ease: "back", sfx: "pluck" }, { wait: 200 }, { to: { flaps: 1 }, ms: 450, ease: "inOut" },
+      { steps: [{ to: { box: 1 }, ms: 500, ease: "out", sfx: "pluck" }, { wait: 200 }, { to: { flaps: 1 }, ms: 450, ease: "inOut" },
         { to: { out: 1 }, ms: 1500, ease: "lin" }, { to: { arrows: 1 }, ms: 300 }] },
       { steps: [{ to: { arrows: 0, clock: 1, key: 1 }, ms: 300 }, { to: { build: 1, hours: 2, turn: 1 }, ms: 2000, ease: "lin", sfx: "tick" },
         { to: { keyDrop: 1 }, ms: 550, ease: "lin" }, { to: { screw: 1 }, ms: 800, ease: "lin", sfx: "pop" }, { to: { qm: 1 }, ms: 300 }] },
-      { steps: [{ to: { boxOut: 1 }, ms: 400 }, { to: { lean: 1 }, ms: 900, ease: "back" }, { wait: 250 },
-        { to: { heart: 1 }, ms: 450, ease: "back", sfx: "pop" }] },
+      { steps: [{ to: { boxOut: 1 }, ms: 400 }, { to: { lean: 1 }, ms: 900, ease: "out" }, { wait: 250 },
+        { to: { heart: 1 }, ms: 450, ease: "out", sfx: "pop" }] },
       { steps: [{ to: { clock: 0, key: 0, qm: 0 }, ms: 300 }, { to: { slide: 1, twin: 1 }, ms: 1100, ease: "inOut", sfx: "whoosh" },
         { to: { labels: 1 }, ms: 400 }, { to: { same: 1 }, ms: 450 }] },
       { steps: [{ to: { same: 0 }, ms: 300 }, { to: { coins: 8 }, ms: 2400, ease: "lin", sfx: "tick" }] },
-      { steps: [{ to: { effort: 1 }, ms: 500 }, { to: { lift: 1 }, ms: 250, sfx: "spring" }, { to: { lift: 0 }, ms: 800, ease: "bounce" }] },
+      { steps: [{ to: { effort: 1 }, ms: 500 }, { to: { lift: 1 }, ms: 250, sfx: "spring" }, { to: { lift: 0 }, ms: 800, ease: "out" }] },
       { steps: [{ to: { wipe: 1 }, ms: 650, sfx: "scribble" }, { to: { relabel: 1, fade: 1 }, ms: 500 }, { wait: 300 },
         { to: { ghost: 1, ask: 1 }, ms: 500 }] },
       { steps: [{ to: { drop: 1 }, ms: 900, ease: "inOut" }, { to: { win: 1 }, ms: 450 },
-        { to: { chk: 1 }, ms: 400, ease: "back", sfx: "chime" }], hold: 4200 }
+        { to: { chk: 1 }, ms: 400, ease: "out", sfx: "chime" }], hold: 4200 }
     ]
   };
 })();

@@ -407,18 +407,18 @@
       pop("die", S.die, BL[0], BL[1]); op("luck", S.die);
     },
     beats: [
-      { steps: [{ to: { map: 1 }, ms: 600, sfx: "pluck" }, { to: { fl: 1 }, ms: 450, ease: "back" }, { wait: 250 },
-        { to: { al: 1 }, ms: 450, ease: "back", sfx: "pop" }, { to: { tr: 1 }, ms: 600 }] },
+      { steps: [{ to: { map: 1 }, ms: 600, sfx: "pluck" }, { to: { fl: 1 }, ms: 450, ease: "out" }, { wait: 250 },
+        { to: { al: 1 }, ms: 450, ease: "out", sfx: "pop" }, { to: { tr: 1 }, ms: 600 }] },
       { steps: [{ to: { pick: 1 }, ms: 400 }, { to: { c1: 2 }, ms: 1900, ease: "inOut", sfx: "whoosh" }, { to: { empty: 1 }, ms: 400 }] },
       { steps: [{ to: { empty: 0, clock: 1 }, ms: 400 }, { to: { wait: 1 }, ms: 1300, ease: "inOut" },
-        { to: { cloud: 1 }, ms: 500, ease: "back", sfx: "thud" }, { to: { link: 1 }, ms: 500 }, { to: { bx: 1 }, ms: 400, ease: "back" }] },
+        { to: { cloud: 1 }, ms: 500, ease: "out", sfx: "thud" }, { to: { link: 1 }, ms: 500 }, { to: { bx: 1 }, ms: 400, ease: "out" }] },
       { steps: [{ to: { link: 0, bx: 0, rw: 1 }, ms: 300 }, { to: { c1: .7, veil: 1 }, ms: 1400, ease: "inOut", sfx: "whoosh" },
-        { to: { dl: 1, rw: 0 }, ms: 400 }, { to: { bq: 1 }, ms: 350, ease: "back" }] },
-      { steps: [{ to: { kh: 1 }, ms: 500 }, { wait: 300 }, { to: { t1: 1 }, ms: 450 }, { wait: 300 }, { to: { t2: 1 }, ms: 450, ease: "back", sfx: "pop" }], hold: 3000 },
+        { to: { dl: 1, rw: 0 }, ms: 400 }, { to: { bq: 1 }, ms: 350, ease: "out" }] },
+      { steps: [{ to: { kh: 1 }, ms: 500 }, { wait: 300 }, { to: { t1: 1 }, ms: 450 }, { wait: 300 }, { to: { t2: 1 }, ms: 450, ease: "out", sfx: "pop" }], hold: 3000 },
       { steps: [{ to: { c2op: 1 }, ms: 300 }, { to: { c2: 1 }, ms: 1600, ease: "inOut", sfx: "whoosh" }, { to: { made: 1 }, ms: 400 },
-        { to: { die: 1 }, ms: 400, ease: "back" }], hold: 2800 },
-      { steps: [{ to: { link2: 1 }, ms: 500 }, { to: { chip: 1 }, ms: 450, ease: "back" }, { wait: 250 },
-        { to: { cut: 1 }, ms: 500, ease: "back", sfx: "spring" }], hold: 3000 },
+        { to: { die: 1 }, ms: 400, ease: "out" }], hold: 2800 },
+      { steps: [{ to: { link2: 1 }, ms: 500 }, { to: { chip: 1 }, ms: 450, ease: "out" }, { wait: 250 },
+        { to: { cut: 1 }, ms: 500, ease: "out", sfx: "spring" }], hold: 3000 },
       { steps: [{ to: { link2: 0, cut: 0, chip: 0 }, ms: 400 }, { to: { ka: 1 }, ms: 700 }, { to: { bq: 0 }, ms: 200 },
         { to: { bok: 1 }, ms: 450, sfx: "chime" }, { wait: 400 }, { to: { c1: 2, veil: 0 }, ms: 1700, ease: "inOut" }], hold: 4200 }
     ]

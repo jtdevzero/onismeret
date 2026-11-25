@@ -396,18 +396,18 @@
       k("mWalk").setAttribute("d", `M-4 175 Q0 ${(175 + 3.4 * (.4 + .6 * S.win)).toFixed(2)} 4 175`);
     },
     beats: [
-      { steps: [{ to: { cardA: 1 }, ms: 500, ease: "back", sfx: "pluck" }, { to: { chair: 1 }, ms: 500 },
+      { steps: [{ to: { cardA: 1 }, ms: 500, ease: "out", sfx: "pluck" }, { to: { chair: 1 }, ms: 500 },
         { to: { ten: 1 }, ms: 250 }, { to: { years: 5 }, ms: 1200, ease: "lin" }] },
-      { steps: [{ to: { cardB: 1 }, ms: 550, ease: "back", sfx: "pop" }, { wait: 300 }, { to: { same: 1 }, ms: 500 }] },
-      { steps: [{ to: { door: 1 }, ms: 500 }, { to: { timer: 1 }, ms: 400, ease: "back", sfx: "tick" }] },
+      { steps: [{ to: { cardB: 1 }, ms: 550, ease: "out", sfx: "pop" }, { wait: 300 }, { to: { same: 1 }, ms: 500 }] },
+      { steps: [{ to: { door: 1 }, ms: 500 }, { to: { timer: 1 }, ms: 400, ease: "out", sfx: "tick" }] },
       { steps: [{ to: { safe: 1, smile: 1 }, ms: 500 }, { wait: 300 },
-        { to: { w1: 1 }, ms: 700, ease: "bounce", sfx: "thud", sfxAt: 250 }, { to: { w2: 1 }, ms: 650, ease: "bounce" }] },
-      { steps: [{ to: { rise: 1 }, ms: 550, ease: "inOut" }, { wait: 200 }, { to: { rise: 0 }, ms: 650, ease: "back", sfx: "spring" },
+        { to: { w1: 1 }, ms: 700, ease: "out", sfx: "thud", sfxAt: 250 }, { to: { w2: 1 }, ms: 650, ease: "out" }] },
+      { steps: [{ to: { rise: 1 }, ms: 550, ease: "inOut" }, { wait: 200 }, { to: { rise: 0 }, ms: 650, ease: "out", sfx: "spring" },
         { to: { coins: 1 }, ms: 600, ease: "lin" }] },
       { steps: [{ to: { coins: 12 }, ms: 2400, ease: "lin", sfx: "tick" }, { to: { cost: 1 }, ms: 400 }] },
       { steps: [{ to: { dim: 1 }, ms: 500 }, { to: { wipe: 1 }, ms: 700, sfx: "scribble" }, { to: { relabel: 1 }, ms: 450 },
-        { to: { ask: 1 }, ms: 450, ease: "back" }] },
-      { steps: [{ to: { ask: 0, pick: 1 }, ms: 450 }, { to: { chk: 1 }, ms: 400, ease: "back", sfx: "pop" }, { to: { clear: 1 } },
+        { to: { ask: 1 }, ms: 450, ease: "out" }] },
+      { steps: [{ to: { ask: 0, pick: 1 }, ms: 450 }, { to: { chk: 1 }, ms: 400, ease: "out", sfx: "pop" }, { to: { clear: 1 } },
         { to: { dim: 0, open: 1 }, ms: 550 }, { to: { stand: 1 }, ms: 300 }, { to: { walk: 1 }, ms: 1300, ease: "inOut" },
         { to: { win: 1 }, ms: 450, sfx: "chime" }], hold: 4200 }
     ]

@@ -398,19 +398,19 @@
       tr("chk", DX + 58, DY, Math.max(0, S.chk)); op("chk", cl(S.chk * 2));
     },
     beats: [
-      { steps: [{ to: { lap: 1 }, ms: 550, ease: "back", sfx: "pluck" }, { to: { you: 1 }, ms: 350 },
-        { to: { ph: 6 }, ms: 1100, ease: "lin" }, { wait: 250 }, { to: { nob: 1 }, ms: 400, ease: "back" }] },
+      { steps: [{ to: { lap: 1 }, ms: 550, ease: "out", sfx: "pluck" }, { to: { you: 1 }, ms: 350 },
+        { to: { ph: 6 }, ms: 1100, ease: "lin" }, { wait: 250 }, { to: { nob: 1 }, ms: 400, ease: "out" }] },
       { steps: [{ to: { row: 1, slot: 1 }, ms: 900 }, { to: { pos: 1 }, ms: 1000, ease: "inOut" }, { to: { youL: 1 }, ms: 300 },
         { wait: 250 }, { to: { h0: 1 }, ms: 350, sfx: "tick" }, { wait: 300 }, { to: { h1: 1 }, ms: 350 }, { wait: 300 }, { to: { h2: 1 }, ms: 350 }] },
-      { steps: [{ to: { pos: 0 }, ms: 1000, ease: "inOut" }, { to: { bub: 1, mood: 1 }, ms: 400, ease: "back", sfx: "pop" }] },
+      { steps: [{ to: { pos: 0 }, ms: 1000, ease: "inOut" }, { to: { bub: 1, mood: 1 }, ms: 400, ease: "out", sfx: "pop" }] },
       { steps: [{ to: { hit: 0 }, ms: 400 }, { to: { plot: 1 }, ms: 500 }, { to: { ask: 1 }, ms: 1500, ease: "lin", sfx: "tick" }] },
-      { steps: [{ to: { br: 1 }, ms: 450 }, { wait: 500 }, { to: { ghost: 1 } }, { to: { slide: 1 }, ms: 900, ease: "back", sfx: "spring" }] },
+      { steps: [{ to: { br: 1 }, ms: 450 }, { wait: 500 }, { to: { ghost: 1 } }, { to: { slide: 1 }, ms: 900, ease: "out", sfx: "spring" }] },
       { steps: [{ to: { bub: 0, dim: 1, br: 0, ghost: 0 }, ms: 450 }, { to: { dead: 1, mood: -1 }, ms: 300, sfx: "thud" },
         { to: { shake: 1 }, ms: 600, ease: "lin" }, { to: { pulse: 1 }, ms: 250 }, { to: { pulse: 0 }, ms: 350 }] },
       { steps: [{ to: { dead: 0, mood: 0 }, ms: 450 }, { to: { pos: 1 }, ms: 1100, ease: "inOut", sfx: "whoosh" },
-        { to: { dim: 0 }, ms: 400 }, { to: { mY: 1 }, ms: 500, ease: "back" }] },
-      { steps: [{ to: { pdim: 1 }, ms: 400 }, { to: { drive: 1 }, ms: 450, ease: "back" }, { to: { fly: 1, copy: 1 }, ms: 1700, ease: "lin" },
-        { to: { chk: 1, mood: 1 }, ms: 450, ease: "back", sfx: "chime" }], hold: 4200 }
+        { to: { dim: 0 }, ms: 400 }, { to: { mY: 1 }, ms: 500, ease: "out" }] },
+      { steps: [{ to: { pdim: 1 }, ms: 400 }, { to: { drive: 1 }, ms: 450, ease: "out" }, { to: { fly: 1, copy: 1 }, ms: 1700, ease: "lin" },
+        { to: { chk: 1, mood: 1 }, ms: 450, ease: "out", sfx: "chime" }], hold: 4200 }
     ]
   };
 })();

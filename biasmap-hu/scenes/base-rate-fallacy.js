@@ -389,7 +389,7 @@
     },
     beats: [
       { steps: [{ to: { scene: 1 }, ms: 700, sfx: "pluck" }, { wait: 400 }, { to: { flip: 1 }, ms: 800, ease: "inOut" }] },
-      { steps: [{ to: { home: 1 }, ms: 700, ease: "inOut" }, { to: { cards: 1 }, ms: 500 }, { wait: 250 }, { to: { bet: 1, pick: 1 }, ms: 450, ease: "back", sfx: "pop" }] },
+      { steps: [{ to: { home: 1 }, ms: 700, ease: "inOut" }, { to: { cards: 1 }, ms: 500 }, { wait: 250 }, { to: { bet: 1, pick: 1 }, ms: 450, ease: "out", sfx: "pop" }] },
       { steps: [{ to: { tags: 1 }, ms: 450, sfx: "tick" }, { wait: 150 }, { to: { link: 1 }, ms: 800, ease: "inOut" }] },
       { steps: [{ to: { pick: 0 }, ms: 300 }, { to: { grow: 1 }, ms: 900, ease: "inOut", sfx: "whoosh" }, { to: { qm: 1 }, ms: 400 }] },
       { steps: [{ to: { qm: 0 }, ms: 300 }, { to: { popL: 1 }, ms: 400 }, { to: { popS: 1 }, ms: 1500, ease: "lin", sfx: "tick" }, { to: { cnt: 1 }, ms: 400 }] },

@@ -399,17 +399,17 @@
     beats: [
       { steps: [{ to: { talk: 1 }, ms: 500, sfx: "pluck" }, { wait: 250 }, { to: { arr: 1 }, ms: 2400, ease: "lin", sfx: "tick" }], hold: 2200 },
       { steps: [{ to: { gTone: 1 }, ms: 1000, ease: "lin" }, { wait: 250 }, { to: { rTone: 1, rPop: 1 }, ms: 350, sfx: "pop" },
-        { to: { tag: 1 }, ms: 400, ease: "back" }] },
-      { steps: [{ to: { talk: 0, tag: 0 }, ms: 400 }, { to: { night: 1 }, ms: 500 }, { to: { bub: 1 }, ms: 450, ease: "back" },
-        { to: { toN: 1 }, ms: 1100, ease: "lin" }, { to: { big: 1 }, ms: 450, ease: "back", sfx: "thud" }] },
+        { to: { tag: 1 }, ms: 400, ease: "out" }] },
+      { steps: [{ to: { talk: 0, tag: 0 }, ms: 400 }, { to: { night: 1 }, ms: 500 }, { to: { bub: 1 }, ms: 450, ease: "out" },
+        { to: { toN: 1 }, ms: 1100, ease: "lin" }, { to: { big: 1 }, ms: 450, ease: "out", sfx: "thud" }] },
       { steps: [{ to: { fade: 1, grow: 1 }, ms: 1400, ease: "inOut", sfx: "whoosh" }], hold: 2400 },
       { steps: [{ to: { night: 0, bub: 0, big: 0 }, ms: 450 }, { to: { scale: 1 }, ms: 400 }, { to: { toS: 1 }, ms: 1000, ease: "lin" },
-        { to: { tilt: 12 }, ms: 800, ease: "back", sfx: "spring" }] },
-      { steps: [{ to: { dz: 1 }, ms: 400, ease: "back" }, { wait: 900 }, { to: { strike: 1 }, ms: 350, sfx: "tick" }, { to: { op1: 1 }, ms: 400 }], hold: 2800 },
+        { to: { tilt: 12 }, ms: 800, ease: "out", sfx: "spring" }] },
+      { steps: [{ to: { dz: 1 }, ms: 400, ease: "out" }, { wait: 900 }, { to: { strike: 1 }, ms: 350, sfx: "tick" }, { to: { op1: 1 }, ms: 400 }], hold: 2800 },
       { steps: [{ to: { dz: 0, op1: 0, scale: 0 }, ms: 450 }, { to: { toL: 1 }, ms: 1000, ease: "lin" }, { to: { tilt: 0 } },
-        { to: { count: 9 }, ms: 1800, ease: "lin", sfx: "scribble" }, { to: { n9: 1 }, ms: 400, ease: "back" }], hold: 2800 },
+        { to: { count: 9 }, ms: 1800, ease: "lin", sfx: "scribble" }, { to: { n9: 1 }, ms: 400, ease: "out" }], hold: 2800 },
       { steps: [{ to: { n9: 0, nums: 0 }, ms: 350 }, { to: { scale: 1 }, ms: 400 }, { to: { toF: 1 }, ms: 1000, ease: "lin" },
-        { to: { note: 1 }, ms: 450, ease: "back" }, { to: { tilt: -10 }, ms: 900, ease: "back", sfx: "chime" }, { to: { win: 1 }, ms: 500 }], hold: 4200 }
+        { to: { note: 1 }, ms: 450, ease: "out" }, { to: { tilt: -10 }, ms: 900, ease: "out", sfx: "chime" }, { to: { win: 1 }, ms: 500 }], hold: 4200 }
     ]
   };
 })();
