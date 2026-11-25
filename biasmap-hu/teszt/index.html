@@ -1055,22 +1055,6 @@ const BATCH_01 = {
 };
 Object.assign(ANIM_FOR, BATCH_01);
 for (const key of Object.values(BATCH_01)) window.BiasAnim.SRC[key] = "scenes/batch-01.js?v=1";
-// Preview-only: the remaining concepts use their existing Hungarian examples,
-// explanations and practical advice as individual animated storyboards.
-// Nothing in the parent (production) index is modified by this registration.
-const REMAINING = [...new Map(BIASES.map(b => [b.en || b.n, b])).values()]
-  .filter(b => !ANIM_FOR[b.en || b.n]);
-window.BiasMapRemaining = Object.create(null);
-REMAINING.forEach((b, i) => {
-  const key = `remaining-${String(i + 1).padStart(3, "0")}`;
-  ANIM_FOR[b.en || b.n] = key;
-  window.BiasMapRemaining[key] = {
-    name: b.n.replace(/\s*\([^)]*\)\s*$/, ""),
-    example: b.ex, explanation: b.d, warning: b.spot, action: b.fix,
-    quadrant: b.q.key, family: b.g.id
-  };
-  window.BiasAnim.SRC[key] = "scenes/remaining.js?v=1";
-});
 const BASE = `${location.origin}${location.pathname}`;
 const watchUrl = key => `${BASE}#video-${key}`;
 const vidKey = b => { const k = ANIM_FOR[b.en || b.n]; return k && window.BiasAnim && BiasAnim.has(k) ? k : null; };
@@ -1094,6 +1078,21 @@ DATA.forEach((groups, qi) => {
       grp.items.push(bias); BIASES.push(bias);
     });
   });
+});
+// Preview-only: register individual storyboards once BIASES is populated.
+// The production index is not modified by these animations.
+const REMAINING = [...new Map(BIASES.map(b => [b.en || b.n, b])).values()]
+  .filter(b => !ANIM_FOR[b.en || b.n]);
+window.BiasMapRemaining = Object.create(null);
+REMAINING.forEach((b, i) => {
+  const key = `remaining-${String(i + 1).padStart(3, "0")}`;
+  ANIM_FOR[b.en || b.n] = key;
+  window.BiasMapRemaining[key] = {
+    name: b.n.replace(/\s*\([^)]*\)\s*$/, ""),
+    example: b.ex, explanation: b.d, warning: b.spot, action: b.fix,
+    quadrant: b.q.key, family: b.g.id
+  };
+  window.BiasAnim.SRC[key] = "scenes/remaining.js?v=1";
 });
 const UNIQUE = new Set(BIASES.map(b => b.n)).size;
 BIASES.forEach(b => {
