@@ -7,9 +7,16 @@ const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const original = fs.readFileSync(path.join(root, '../index.html'), 'utf8');
 assert.match(html, /biasmap-hu\/teszt\//);
 assert.doesNotMatch(original, /const BATCH_01/);
-const inline = [...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)];
+const inline = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)];
 assert.equal(inline.length, 3);
 for (const [,script] of inline) new vm.Script(script);
+assert.match(html, /<script src="cinematic\.js\?v=1"><\/script>/);
+const cinematic=fs.readFileSync(path.join(root,'cinematic.js'),'utf8');
+new vm.Script(cinematic);
+const visual={window:{BiasAnimCSS:'.bp{}'}};
+vm.runInNewContext(cinematic,visual);
+assert.match(visual.window.BiasAnimCSS,/radial-gradient/);
+assert.match(visual.window.BiasAnimCSS,/prefers-reduced-motion/);
 for (const src of [...html.matchAll(/(?:href|src)="(\.\.\/[^"#?]+)"/g)]) {
   assert.ok(fs.existsSync(path.resolve(root, src[1])), `missing resource ${src[1]}`);
 }
