@@ -18,3 +18,9 @@ jobs:
           node-version: '22'
       - run: node biasmap-hu/scripts/verify.cjs
       - run: node biasmap-hu/teszt/verify.cjs
+      - run: npm install --no-save playwright@1.63.0
+      - run: npx playwright install --with-deps chromium
+      - name: Preview HTTP server
+        run: python3 -m http.server 8765 --bind 127.0.0.1 > /tmp/biasmap-preview.log 2>&1 &
+      - name: Browser smoke at desktop and mobile widths
+        run: node biasmap-hu/teszt/browser-smoke.cjs
