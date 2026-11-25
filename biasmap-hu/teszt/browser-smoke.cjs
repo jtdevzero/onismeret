@@ -41,7 +41,7 @@ const url = process.env.BIASMAP_PREVIEW_URL || 'http://127.0.0.1:8765/biasmap-hu
               player.seek(player.ends[i]);
               if (host.shadowRoot.querySelector('.bp-no').textContent!==`${i+1}/6`) throw new Error(`step ${i+1} not selected`);
             }
-            if (!host.shadowRoot.querySelector('.bp-svg .sb-card, .bp-svg .sb-hot')) throw new Error('semantic art missing');
+            if (!host.shadowRoot.querySelector('.bp-svg .sb-card, .bp-svg .sb-hot, .bp-svg .craft-icon')) throw new Error('semantic art missing');
             if (window.BiasAnim.SCENES[key].svg().includes('craft-icon') &&
                 !host.shadowRoot.querySelector('.bp-svg .craft-icon')) throw new Error('curated pictogram missing');
             if (!host.shadowRoot.querySelector('style')?.textContent.includes('radial-gradient')) throw new Error('cinematic style missing');
