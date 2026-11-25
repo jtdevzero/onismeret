@@ -27,7 +27,13 @@ Prémium mintacsomag: a `scenes/premium-pilots.js` öt egyedileg komponált, hat
 kb. 30 másodperces magyar animációt tartalmaz. Az öt téma: megkülönböztetési torzítás,
 hamis konszenzus, forró kéz tévedés, kontrollillúzió és hamis emlék. Az eredeti
 `remaining-...` jelenetkulcsokat megtartják, de az új fájlból töltődnek. A többi
-137 generált jelenet továbbra is az adatvezérelt vizuális sémákra épül.
+137 jelenet saját hatfelvonásos tematikus forgatókönyvet kapott a
+`scenes/storyboards-137.js` fájlban. A jelenetvázlatok magyar példái egyediek,
+a mozgásuk kb. 30 másodperces, a vektorgrafika pedig téma alapján választ a
+szemantikus illusztrációk közül (emlékezet, emberek, pénz, idő, valószínűség,
+bizonyíték, döntés, kockázat stb.). A tematikus ikonok újrafelhasználhatók:
+**ez a 137 jelenet nem 137 kézzel, külön-külön megrajzolt illusztráció**.
+Az első öt prémium pilot továbbra is kézzel komponált, önálló jelenet.
 
 Automatikus teljes jelenetbetöltés- és SVG-kirajzolási teszt (Chromium, 1440/390/320 px):
 

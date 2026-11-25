@@ -1108,6 +1108,13 @@ for (const b of BIASES) {
     window.BiasAnim.SRC[key] = "scenes/premium-pilots.js?v=1";
   }
 }
+// The remaining 137 concepts receive six-beat, semantically illustrated
+// storyboards. Premium pilots retain their handcrafted SVG scenes.
+for (const key of Object.keys(window.BiasMapRemaining)) {
+  if (!Object.values(window.BiasMapPremium).includes(key)) {
+    window.BiasAnim.SRC[key] = "scenes/storyboards-137.js?v=1";
+  }
+}
 const UNIQUE = new Set(BIASES.map(b => b.n)).size;
 BIASES.forEach(b => {
   const k = KINDS.entries?.[b.en || b.n] || {};

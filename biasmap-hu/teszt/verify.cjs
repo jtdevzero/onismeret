@@ -88,4 +88,29 @@ for(const [id,entry] of Object.entries(premiumScenes)) {
 }
 assert.match(html,/const PREMIUM_PILOTS = new Set/);
 assert.equal((html.match(/"scenes\/premium-pilots\.js/g)||[]).length,1);
-console.log('PASS: 188 egyedi fogalom, 188 torzításanimáció, köztük 5 egyedi prémium pilot; 54 alapjelenet és minden fájl szintaxisa.');
+const storyCode=fs.readFileSync(path.join(root,'scenes/storyboards-137.js'),'utf8');
+new vm.Script(storyCode);
+const storyScenes={};
+const storyRecords=Object.fromEntries(missing.map((b,i)=>[
+  `remaining-${String(i+1).padStart(3,'0')}`,
+  {name:b.n,example:b.ex,explanation:b.d,warning:b.spot,action:b.fix,
+    quadrant:'tmi',family:'test'}
+]));
+const pilotKeys=['remaining-002','remaining-025','remaining-074','remaining-082','remaining-117'];
+vm.runInNewContext(storyCode,{window:{BiasMapRemaining:storyRecords,
+  BiasMapPremium:Object.fromEntries(pilotKeys.map((key,i)=>[`pilot${i}`,key])),
+  BiasAnim:{SCENES:storyScenes}}});
+assert.equal(Object.keys(storyScenes).length,137);
+for(const [key,entry] of Object.entries(storyScenes)) {
+  assert.equal(entry.beats.length,6,key);
+  assert.equal(entry.text.hu.caps.length,6,key);
+  assert.equal((entry.svg().match(/data-k=/g)||[]).length,6,key);
+  assert.match(entry.svg(),/sb-card|sb-hot|sb-line/,key);
+  const parts=Object.fromEntries('abcdef'.split('').map(k=>[k,{style:{}}]));
+  entry.render({a:1,b:1,c:1,d:1,e:1,f:1},k=>parts[k]);
+  assert.equal(parts.f.style.opacity,'1');
+  const duration=entry.beats.reduce((total,b)=>total+b.steps.reduce((n,s)=>n+(s.ms||0),0)+(b.hold||2600),0)+6950;
+  assert.ok(duration>=25000&&duration<=35000,`${key}: duration ${duration}`);
+}
+assert.equal((html.match(/"scenes\/storyboards-137\.js/g)||[]).length,1);
+console.log('PASS: 188 fogalom, 5 egyedi prémium pilot, 137 hatjelenetes tematikus animáció és 54 alapjelenet.');

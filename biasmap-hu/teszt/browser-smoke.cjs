@@ -29,6 +29,21 @@ const url = process.env.BIASMAP_PREVIEW_URL || 'http://127.0.0.1:8765/biasmap-hu
           } catch (e) { fail.push(`${key}: ${e.message}`); }
         }
         const pilots = Object.values(window.BiasMapPremium || {});
+        const premiumSet = new Set(pilots);
+        const stories = missing.filter(key => !premiumSet.has(key));
+        for (const key of stories) {
+          try {
+            const player=BiasAnim.mount(host,key,{lang:'hu',autoplay:false});
+            if (!player || player.starts.length!==6) throw new Error('six-beat story missing');
+            if (player.total<25000 || player.total>35000) throw new Error(`duration ${player.total}`);
+            for (const i of [0,2,5]) {
+              player.seek(player.ends[i]);
+              if (host.shadowRoot.querySelector('.bp-no').textContent!==`${i+1}/6`) throw new Error(`step ${i+1} not selected`);
+            }
+            if (!host.shadowRoot.querySelector('.bp-svg .sb-card, .bp-svg .sb-hot')) throw new Error('semantic art missing');
+            player.destroy();
+          } catch (e) { fail.push(`story ${key}: ${e.message}`); }
+        }
         for (const key of pilots) {
           try {
             const player = BiasAnim.mount(host,key,{lang:'hu',autoplay:false});
@@ -44,12 +59,13 @@ const url = process.env.BIASMAP_PREVIEW_URL || 'http://127.0.0.1:8765/biasmap-hu
         }
         host.remove();
         return {videos:VIDEOS.length,biases:keys.length,missing:missing.length,
-          pilots:pilots.length,firstLoaded,fail,scrollWidth:document.documentElement.scrollWidth,viewport:innerWidth};
+          pilots:pilots.length,stories:stories.length,firstLoaded,fail,scrollWidth:document.documentElement.scrollWidth,viewport:innerWidth};
       });
       assert.equal(result.biases,188,`bias count ${viewport.width}`);
       assert.equal(result.missing,142,`new bias count ${viewport.width}`);
       assert.equal(result.videos,216,`video count ${viewport.width}`);
       assert.equal(result.pilots,5,'premium pilot count');
+      assert.equal(result.stories,137,'thematic storyboard count');
       assert.ok(result.firstLoaded,'new scene bundle could not load');
       assert.deepEqual(result.fail,[],'not all animations render');
       assert.deepEqual(errors,[],'JavaScript page errors');
