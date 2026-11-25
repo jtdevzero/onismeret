@@ -1,0 +1,212 @@
+{
+ "groups": [
+  {
+   "id": "familiar",
+   "title": "Az ismerős dolgokat és embereket jobbnak képzeljük el, vagy azokat, akiket kedvelünk",
+   "why": "Az ismert embereknek és dolgoknak való megbízás általában biztonságos, mert az ismerősség azt jelenti, hogy korábban kárt nem okozó módon találkoztunk velük. A saját csoportunk előnyben részesítése segített őseinknek együttműködni azokkal, akiktől függtek. Az ismerős és közeli dolgok kedvelése azt is megspórolja, hogy mindent nulláról kelljen megítélnünk.",
+   "cost": "Túlbecsüljük a saját oldalunkat, a saját ötleteinket és a vonzó embereket, a kívülállókat és az ő ötleteiket pedig igazságtalanul elutasítjuk. Jó lehetőségeket utasítunk el csupán azért, mert honnan származnak.",
+   "spot": [
+    "Egy ötlet vagy ember iránt főleg azért érzel melegebben, mert hasonlít rád, vagy kapcsolódik hozzád.",
+    "Nehezen különbözteted meg egy másik csoport tagjait, vagy nehezen mondod meg, miben térnek el egymástól.",
+    "Valamit magasabbra értékelsz, miután észrevettél egy vonzó tulajdonságot, például a külsőt vagy egy ismerős nevet."
+   ],
+   "fix": [
+    "Ahol lehet, ítéld meg az ötleteket úgy, hogy a forrásuk el van rejtve, például vak bírálattal vagy vak ízteszttel.",
+    "Rendszeresen tölts időt a szokásos köreidön kívüli emberekkel, hogy egyéniségként lásd őket.",
+    "Egy általános benyomás kialakítása előtt értékeld a konkrét tulajdonságokat külön, egy leírt ellenőrzőlista szerint."
+   ],
+   "biases": [
+    {
+     "en": "Out-group homogeneity bias",
+     "n": "Külső csoport homogenitási torzítása (Out-group homogeneity bias)",
+     "d": "A külső csoport homogenitási torzítása azt jelenti, hogy más csoportok tagjait mind egyformának látjuk, miközben a saját csoportunk tagjait változatos egyéniségeknek tekintjük.",
+     "ex": "Egy idősebb ember azt mondja, hogy „a tinédzserek mind egyformák”, miközben a saját barátairól mindegyikről azt mondja, hogy mennyire különböznek egymástól.",
+     "q": "A versenytárs cég munkatársait „vállalati robotoknak” nevezed, akik mind ugyanúgy gondolkodnak, a saját kollégáidat viszont színes személyiségek keverékének látod.",
+     "spot": "Figyeld meg, ha más csoportot „mind ilyenek”, a sajátodat pedig „mindannyian különbözőek vagyunk” kifejezéssel írod le.",
+     "fix": "Próbálj meg három módot megnevezni, ahogyan a másik csoport tagjai különböznek egymástól."
+    },
+    {
+     "en": "Cross-race effect",
+     "alias": "Own-race bias",
+     "n": "Fajok közötti hatás (Cross-race effect)",
+     "alias_hu": "Saját faj szerinti torzítás (Own-race bias)",
+     "d": "A fajok közötti hatás az a hajlam, hogy a saját fajunkba tartozó arcokat könnyebben felismerjük, mint más fajok arcait. Részben attól függ, milyen tapasztalatunk volt különböző arcokkal, különösen gyermekkorban, és az ilyen arcok megkülönböztetésének gyakorlása csökkentheti.",
+     "ex": "Egy szemtanú magabiztosan rossz embert választ ki egy sorból, mert a gyanúsítottak olyan fajhoz tartoznak, amelyhez tartozó emberekkel a szemtanú ritkán került kapcsolatba.",
+     "q": "Egy új munkahelyen állandóan összekeversz két munkatársat, akik más etnikai hátterűek, mint te, pedig az ilyen arcokkal felnőtt emberek könnyen megkülönböztetik őket.",
+     "spot": "Figyeld meg, nehezebben emlékszel-e vagy különbözteted-e meg azoknak az arcát, akikkel ritkán van kapcsolatod.",
+     "fix": "Figyelj konkrét vonásokra, például az arc formájára vagy a hajvonalra, és növeld a mindennapi kapcsolataidat különböző hátterű emberekkel."
+    },
+    {
+     "en": "In-group bias",
+     "alias": "In-group favoritism",
+     "n": "Csoporton belüli torzítás (In-group bias)",
+     "alias_hu": "Csoporton belüli előnyben részesítés (In-group favoritism)",
+     "d": "A csoporton belüli torzítás azt jelenti, hogy a saját csoportunk tagjait előnyben részesítjük a kívülállókkal szemben a bizalomban, a segítségben, a jutalmazásban és az ítéletalkotásban. Még a véletlenszerű beosztás alapján létrehozott csoportok is kiválthatják.",
+     "ex": "Egy vezető mindig a legjobb feladatokat ugyanarra az egyetemre járt embereknek adja, anélkül hogy észrevenné a mintát.",
+     "q": "Egy nyári táborban a gyerekek véletlenszerűen kék és zöld csapatra oszlanak, és már csak a saját színüknek adnak nasit, a másik oldalt pedig csalással vádolják.",
+     "spot": "Kérdezd meg magadtól, ugyanilyen segítséget vagy bizalmat adnál-e egy körödön kívüli embernek, aki ugyanezt tette.",
+     "fix": "Jutalmak, állások vagy szívességek kiosztásakor mindenkire ugyanazokat a leírt szempontokat alkalmazd."
+    },
+    {
+     "en": "Halo effect",
+     "n": "Glória-hatás (Halo effect)",
+     "d": "A glória-hatás az, amikor egy pozitív tulajdonság, például a jó külső vagy a báj, befolyásolja az illető más, nem kapcsolódó tulajdonságairól alkotott véleményünket. Az ellenkezője, amikor egy rossz tulajdonság mindent befest, néha szarvas-hatásnak nevezik.",
+     "ex": "Színlelt esküdtszéki kísérletekben az emberek a vonzó vádlottakat kicsit enyhébben ítélik meg, pedig a külső semmit nem árul el a bűnösségről.",
+     "q": "Mivel egy új munkatárs vicces és jól öltözött, azt feltételezed, hogy a költségvetéshez is ért, és a pénzügyi projektet anélkül adod neki, hogy megnéznéd a tapasztalatát.",
+     "spot": "Kérdezd meg magadtól, van-e köze annak a tulajdonságnak, amelyet csodálsz, ahhoz a minőséghez, amelyet megítélsz.",
+     "fix": "Minden fontos minőséget külön értékelj, mindegyikhez konkrét bizonyítékkal."
+    },
+    {
+     "en": "Cheerleader effect",
+     "alias": "Group attractiveness effect",
+     "n": "Szurkolólány-hatás (Cheerleader effect)",
+     "alias_hu": "Csoportos vonzerő-hatás (Group attractiveness effect)",
+     "d": "A szurkolólány-hatás az a hajlam, hogy az emberek csoportban vonzóbbnak tűnnek, mint egyedül. Egyik magyarázat szerint az agy az arcokat csoportban átlagolja, és az átlagolt arcok általában vonzóbbnak látszanak.",
+     "ex": "Egy ötfős zenekar tagjai együtt a színpadon kicsit jobban mutatnak, mint külön-külön egy szóló interjúban.",
+     "q": "Egy randiappon valaki négy barátjával készült fotón nagyon vonzónak tűnik, de amikor megnyitod az egyedül készült képeit, kicsit hétköznapibbnak látszik.",
+     "spot": "Kérdezd meg magadtól, ugyanilyen feltűnőnek találnád-e ezt az embert, ha egyedül látnád.",
+     "fix": "Mielőtt kialakítanál benyomást valakinek a külsejéről, nézd meg az egyéni fotókat, vagy találkozz az illetővel négyszemközt."
+    },
+    {
+     "en": "Positivity effect",
+     "n": "Pozitivitási hatás (Positivity effect)",
+     "d": "A pozitivitási hatás az a hajlam, amely az életkorral erősödik: a pozitív információra több figyelmet fordítunk, mint a negatívra, és jobban emlékszünk rá. Támogathatja a jóllétet, de arra is vezethet, hogy figyelmen kívül hagyjunk figyelmeztetéseket.",
+     "ex": "Vegyes boldog és szomorú képek bemutatásakor az idősebb felnőttek több boldog képre emlékeznek, mint a fiatalabbak.",
+     "q": "A 70 éves apád éves orvosi vizsgálata után csak a jó koleszterinértékekről mesél, és már el is felejtette az orvos figyelmeztetését a vérnyomásáról.",
+     "spot": "Kérdezd meg magadtól, ugyanakkora figyelmet fordítottál-e a figyelmeztető jelekre, mint a jó hírekre.",
+     "fix": "Írd le kifejezetten a kockázatokat és a negatívumokat, hogy a pozitívumok mellett is látszódjanak."
+    },
+    {
+     "en": "Not invented here",
+     "alias": "NIH syndrome",
+     "n": "Nem itt találták ki (Not invented here)",
+     "alias_hu": "NIH-szindróma (NIH syndrome)",
+     "d": "A „nem itt találták ki” azt jelenti, hogy egy ötletet, terméket vagy tudást elutasítunk vagy alulértékelünk, mert nem a saját csapatunkból, cégünkből vagy csoportunkból származik. Gyakori azokban a szervezetekben, amelyek büszkék a saját munkájukra.",
+     "ex": "Egy szoftvercsapat hónapokat tölt azzal, hogy saját eszközt építsen, ahelyett hogy egy másik cég által készített, bevált, ingyenes eszközt használna.",
+     "q": "Egy séf nem hajlandó kipróbálni egy versenytárs konyhájában kidolgozott előkészítési technikát, mert szerinte a saját konyhájuk jobbat talál ki, pedig a versenytárs módszere nyilvánvalóan gyorsabb.",
+     "spot": "Figyeld meg, ha egy megoldással szembeni első kifogásod az, honnan származik.",
+     "fix": "A kívülről jövő megoldásokat ugyanazok a szempontok szerint értékeld, mint a sajátodat, lehetőleg a forrás elrejtésével."
+    },
+    {
+     "en": "Reactive devaluation",
+     "n": "Reaktív leértékelés (Reactive devaluation)",
+     "d": "A reaktív leértékelés azt jelenti, hogy egy javaslatot kevésbé értékelünk, mert egy ellenféltől vagy olyantól származik, akit a másik oldalon látunk. Ugyanaz az ajánlat vonzóbbnak tűnik, ha semleges vagy barátságos forrásból érkezik.",
+     "ex": "Egy munkaügyi vitában a szakszervezet elutasít egy bérajánlatot a vezetéstől, pedig valószínűleg szívesen fogadta volna ugyanezeket a feltételeket, ha egy közvetítő javasolja.",
+     "q": "A volt párod javasol egy módot az ünnepi idő gyerekekkel való elosztására, amely valójában elég igazságos, te pedig rögtön úgy érzed, biztos valami csapda van benne.",
+     "spot": "Kérdezd meg, hogyan értékelnéd ezt az ajánlatot, ha egy barát vagy egy semleges fél tette volna.",
+     "fix": "Fogalmazd át a javaslatot a saját szavaiddal, a forrást kihagyva, és a saját feltételei alapján ítéld meg."
+    },
+    {
+     "en": "Well-traveled road effect",
+     "n": "Kitaposott út hatása (Well-traveled road effect)",
+     "d": "A kitaposott út hatása azt jelenti, hogy alulbecsüljük, mennyi idő alatt teszünk meg egy ismerős útvonalat, és túlbecsüljük, mennyi idő kell egy ismeretlenhez. Egyik elmélet szerint az ismerős utak azért tűnnek rövidebbnek, mert kevesebb figyelmet igényelnek.",
+     "ex": "Valaki mindig 15 perccel korábban indul a munkahelyére, ahol az út rendszeresen 25 percig tart, mégis túl korán indul egy új üzlethez, amely ugyanolyan messze van.",
+     "q": "A heti órádra mindig pár perccel késve érkezel, mert azt hiszed, a szokásos séta gyorsabb, mint valójában, ugyanakkor abszurd korán indulsz egy másik városrészben lévő bulira egy olyan helyre, ahol még sosem jártál.",
+     "spot": "Kérdezd meg magadtól, mértél-e valaha időt erre az ismerős útra vagy feladatra.",
+     "fix": "Mérd meg egyszer a rendszeres útvonalaidat, és a tervezésnél a mért számot használd, ne a megérzést."
+    }
+   ]
+  },
+  {
+   "id": "numbers",
+   "title": "Leegyszerűsítjük a valószínűségeket és a számokat, hogy könnyebb legyen gondolkodni róluk",
+   "why": "Az agyunk jól kezeli a kicsi, konkrét mennyiségeket, de nehezen boldogul a nagy számokkal, a törtekkel és az esélyekkel. A kerekítés, csoportosítás és címkézés lehetővé teszi, hogy gyorsan döntsünk anélkül, hogy számolnunk kellene. A mindennapi döntések többségéhez egy durva válasz is elég.",
+   "cost": "Rosszul ítéljük meg a kockázatokat, a pénzt pedig más szerint kezeljük, attól függően, milyen címkét kap, és hiányos adatokból rossz tanulságokat vonunk le. Az egyszerűsített változat éppen azt az információt rejtheti el, amely a legfontosabb.",
+   "spot": [
+    "Úgy hozol döntést számokkal, amelyeket valójában nem írtál le vagy nem számoltál ki.",
+    "Egy kimenetelt „gyakorlatilag biztosnak” vagy „gyakorlatilag lehetetlennek” érzel anélkül, hogy ismernéd a valódi esélyeket.",
+    "Csak a nyerteseket, a sikereket vagy a látható eredményeket nézed."
+   ],
+   "fix": [
+    "Alakítsd a százalékokat és esélyeket darabszámokká, például „100 emberből 3”, hogy konkrétabbak legyenek.",
+    "Kérdezd meg, milyen adatok hiányoznak, például a kudarcok vagy azok az esetek, amelyek sosem kerültek be a hírekbe.",
+    "Bontsd a nagy számokat kisebb részekre, és ellenőrizd, hogy a részek kiadják-e az egészet."
+   ],
+   "biases": [
+    {
+     "en": "Mental accounting",
+     "n": "Mentális könyvelés (Mental accounting)",
+     "d": "A mentális könyvelés azt jelenti, hogy a pénzt a származása vagy az alapján kezeljük, melyik mentális „költségvetéshez” tartozik, pedig minden forint vagy dollár ugyanannyit ér. Segíthet a költségvetés tervezésében, de összességében rossz döntésekhez vezethet.",
+     "ex": "Valaki magas kamatú hiteltartozást visz, miközben egy alacsony kamatú „nyaralási alapot” tart, amelyhez nem nyúl.",
+     "q": "Egy irodai sorsoláson 200 dollárt nyersz, és az egészet egyetlen díszes vacsorára költöd, pedig a fizetésed egyetlen étkezésre soha nem költenél ennyit.",
+     "spot": "Kérdezd meg magadtól, ugyanezt a döntést hoznád-e, ha ez a pénz a rendes fizetésedből származna.",
+     "fix": "Nagy vásárlások vagy adótörlesztések előtt a teljes pénzügyi helyzetedet egyetlen közös keretként nézd."
+    },
+    {
+     "en": "Appeal to probability fallacy",
+     "n": "Valószínűségre hivatkozó tévedés (Appeal to probability fallacy)",
+     "d": "A valószínűségre hivatkozó tévedés egy logikai hiba, amely valamit biztosnak tekint, csak mert lehetséges vagy valószínű. A „ez megtörténhet” állításból a „ez meg fog történni” következtetésre ugrik.",
+     "ex": "Egy befektető azt gondolja, hogy mivel néhány startup óriási sikert ér el, az, amelybe éppen pénzt tett, biztosan ugyanezt fogja tenni.",
+     "q": "Mivel emberek milliói használnak gyenge jelszavakat, azt mondod egy barátodnak, hogy az e-mail-fiókját biztosan feltörik idén.",
+     "spot": "Figyelj arra az ugrásra, amikor a „lehet” vagy „talán” szóból „lesz” vagy „biztosan” lesz.",
+     "fix": "Mielőtt biztosnak tekintenél egy kimenetelt, becsüld meg a valódi esélyt, és mondd ki számként."
+    },
+    {
+     "en": "Normalcy bias",
+     "n": "Normalitási torzítás (Normalcy bias)",
+     "d": "A normalitási torzítás azt jelenti, hogy feltételezzük: mivel egy katasztrófa sosem történt velünk, nem is fog, és alulbecsüljük, milyen súlyos lehet, ha mégis bekövetkezik. Ez lassúvá teheti az embereket a világos figyelmeztetésekre adott válaszban.",
+     "ex": "Lakók figyelmen kívül hagyják a kitelepítési felszólítást egy hurrikán elől, mert a korábbi viharok a térségükben enyhének bizonyultak.",
+     "q": "Amikor egy filmvetítés közben megszólal a tűzjelző, és a személyzet mindenkit kiküld, te a helyeden maradsz, biztos benne, hogy egy hétköznapi pénteki estén nem történhet komoly baj.",
+     "spot": "Figyeld meg, ha a figyelmeztetés figyelmen kívül hagyásának fő oka az, hogy „ilyen még sosem történt”.",
+     "fix": "Készíts előre egy egyszerű vészhelyzeti tervet, hogy a figyelmeztetésekre való reagálás automatikussá váljon."
+    },
+    {
+     "en": "Murphy's Law",
+     "n": "Murphy törvénye (Murphy's Law)",
+     "d": "Murphy törvénye az a mondás, hogy „ami elromolhat, el is romlik”. Inkább humoros közmondás, mint torzítás, és azt tükrözi, hogy a kudarcok megmaradnak az emlékezetben, miközben a sok alkalmat, amikor minden jól ment, figyelmen kívül hagyjuk.",
+     "ex": "Egy sofőr esküszik, hogy amikor késésben van, mindig piros lesz a lámpa, és elfelejti az összes alkalmat, amikor zöldön átért.",
+     "q": "Meg vagy győződve arról, hogy a szupermarketben mindig a leglassabb sort választod, és minden alkalommal, amikor megáll, morogsz: „persze”.",
+     "spot": "Kérdezd meg magadtól, a jól sikerült alkalmakat is számolod-e, vagy csak a rosszul sikerülteket.",
+     "fix": "Használd tervezőeszközként: sorold fel, mi mehet rosszul, és készülj tartalékkal a legvalószínűbb problémákra."
+    },
+    {
+     "en": "Zero sum bias",
+     "n": "Nulla összegű torzítás (Zero sum bias)",
+     "d": "A nulla összegű torzítás azt feltételezi, hogy az egyik ember nyereségét mindig egy másik ember vesztesége kíséri, akkor is, ha mindkét fél profitálhatna. Sok helyzetben, például kereskedelemben, barátságban vagy tanulásban, mindenki számára értéket lehet teremteni.",
+     "ex": "Egy diák nem hajlandó megosztani a jegyzeteit, mert úgy gondolja, hogy ha az osztálytársai jól teljesítenek, az rontja az ő jegyét, pedig az osztályt nem görbítve értékelik.",
+     "q": "Amikor egy munkatársadat dicsérik az értekezleten, úgy érzed, mintha a te elismerésed csökkent volna, pedig nincs korlátja annak, hányan kaphatnak elismerést.",
+     "spot": "Kérdezd meg, tényleg van-e itt rögzített mennyiségű elosztani való, vagy mindkét fél jól járhatna.",
+     "fix": "Keress olyan megállapodást vagy tervet, amelyből mindkét fél nyer, és ellenőrizd, valóban rögzített-e a „torta”."
+    },
+    {
+     "en": "Survivorship bias",
+     "n": "Túlélési torzítás (Survivorship bias)",
+     "d": "A túlélési torzítás azt jelenti, hogy következtetéseket csak azokból az emberekből vagy dolgokból vonunk le, amelyek átjutottak valamilyen szűrőn, miközben figyelmen kívül hagyjuk azokat, amelyek nem. A hiányzó kudarcok gyakran a legfontosabb információt rejtik.",
+     "ex": "A második világháborúban elemzők a visszatérő repülőgépek lyukait vizsgálva rájöttek, hogy a páncélt oda kell tenni, ahol nincsenek lyukak, mert az ilyen helyeken eltalált gépek nem tértek vissza.",
+     "q": "Úgy döntesz, hogy a főiskola pénzkidobás, mert néhány híres milliárdos otthagyta, és nem gondolsz arra a sok lemorzsolódó diákra, akik sosem lettek gazdagok.",
+     "spot": "Kérdezd meg, kik vagy mik hiányoznak abból a csoportból, amelyet nézel, és miért tűntek el a látómezőből.",
+     "fix": "Mielőtt eldöntenéd, mi vezet a sikerhez, aktívan keresd a kudarcokat, a bezárt vállalkozásokat és azokat az embereket, akik feladták."
+    },
+    {
+     "en": "Subadditivity effect",
+     "n": "Szubadditivitási hatás (Subadditivity effect)",
+     "d": "A szubadditivitási hatás azt jelenti, hogy egy egész esemény valószínűségét kisebbnek ítéljük, mint a részei valószínűségének összegét. Ha egy eseményt részletes darabokra bontunk, minden darab valószínűbbnek tűnik, így a darabok összege nagyobb lesz az egésznél.",
+     "ex": "Az emberek alacsonyabbnak ítélik a „természetes okból” bekövetkező halál esélyét, mint azt az összeget, amelyet akkor kapnak, ha külön becsülik a szívbetegséget, a rákot és a többi konkrét természetes okot.",
+     "q": "Az utazásod késésének esélyét alacsonyra becsülöd, de amikor külön kérdezed a késő vonatot, a lekésett átszállást és a sztrájkot, a három becslésed együtt sokkal többet ad ki, mint az első válaszod.",
+     "spot": "Kérdezd meg, egyezik-e az egész eseményre adott becslésed azzal az összeggel, amelyet az egyes lehetséges útjaira adtál.",
+     "fix": "Sorold fel a konkrét módokat, ahogyan az esemény bekövetkezhet, becsüld meg mindegyiket, és az összeget használd az általános becslésed ellenőrzésére."
+    },
+    {
+     "en": "Denomination effect",
+     "n": "Címletek hatása (Denomination effect)",
+     "d": "A címletek hatása azt jelenti, hogy kisebb valószínűséggel költünk el pénzt, ha nagy címletben van nálunk, mint ha ugyanannyi apró címletben vagy érmében lenne. Egy nagy bankjegy felaprózása könnyebben költhetőnek érezteti a pénzt.",
+     "ex": "A négy negyeddollárral rendelkező vásárlók nagyobb valószínűséggel költik el azokat cukorkára, mint az, aki egyetlen egydolláros bankjegyet tart.",
+     "q": "Egész héten viszel magaddal egy 50 dolláros bankjegyet, és nem nyúlsz hozzá, de amikor aznap visszakapod az aprót ötösökben, olyan snackekre és kávékra költesz, amelyeket normál esetben kihagynál.",
+     "spot": "Figyeld meg, amikor az érmék, az apró bankjegyek vagy az ajándékkártyák könnyebbnek tűnnek elkölteni, mint ugyanannyi pénz egyetlen nagy bankjegyben.",
+     "fix": "Használd a hatást a javadra: ha spórolni akarsz, tartsd a készpénzt nagy címletben, amelyet lassan váltasz fel."
+    },
+    {
+     "en": "Magic number 7+-2",
+     "alias": "Miller's law",
+     "n": "A varázslatos hét, plusz-mínusz kettő (Magic number 7+-2)",
+     "alias_hu": "Miller törvénye (Miller's law)",
+     "d": "„A varázslatos hét, plusz-mínusz kettő” George Miller pszichológus klasszikus gondolata, miszerint az emberek egyszerre nagyjából hét elemet tudnak tartani a rövid távú memóriában. Későbbi kutatások szerint a valódi határ inkább négy egység körül van, és inkább a memória korlátját írja le, mint torzítást.",
+     "ex": "Egy tízjegyű telefonszámot nehéz egyesével megjegyezni, de háromrészes blokkokra bontva sokkal könnyebb.",
+     "q": "Az új munkahelyeden az első napon a főnököd egyszerre tizenkét bejelentkezési lépést sorol fel, és amikor leülsz az asztalodhoz, már csak az első néhányra emlékszel.",
+     "spot": "Figyeld meg, ha egyszerre több külön dolgot próbálsz a fejedben jongláltatni, mint amennyit egy kézzel meg tudsz fogni.",
+     "fix": "Használd a korlátot a javadra: csoportosítsd az információt néhány értelmes egységbe, vagy egyszerűen írd le."
+    }
+   ]
+  }
+ ]
+}

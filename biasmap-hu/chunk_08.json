@@ -1,0 +1,190 @@
+{
+ "groups": [
+  {
+   "id": "immediate",
+   "title": "A figyelem megtartásához a közvetlen, átélhető dolgokat részesítjük előnyben",
+   "why": "A figyelmünk és energiánk korlátozott, ezért az agy azt helyezi előtérbe, ami itt van, most történik és személyes. Ami élesen látszik vagy részletesen elképzelhető, valóságosabbnak és sürgetőbbnek érződik, mint a távoli vagy elvont dolgok. Az előttünk lévő jutalomra vagy fenyegetésre gyorsan reagálni gyakran fontosabb volt, mint egy távoli jövőre tervezni.",
+   "cost": "A nagyobb jövőbeli jutalmat kisebb mai jutalomra cseréljük, az újat részesítjük előnyben a bevált helyett, és egyetlen élénk történet többet nyom a latba, mint sok ember szükséglete.",
+   "spot": [
+    "A döntés sürgetőnek tűnik, de a nyomást te magad teremtetted.",
+    "Egyetlen arc, történet vagy csillogó tulajdonság győz meg majdnem mindenről.",
+    "Sokkal inkább azt mérlegeled, hogyan érzed magad ma, mint azt, hogyan fognak kinézni a dolgok jövőre."
+   ],
+   "fix": [
+    "Képzeld el részletesen a jövőbeli éned egy évvel később, amint a döntés eredményével él.",
+    "Tedd egymás mellé a számokat és az egyetlen történetet, és mindkettőnek add meg a méltó súlyt.",
+    "Ha valami izgatottnak és újnak tűnik, állíts be egy várakozási időt, például 24 órát, mielőtt cselekszel."
+   ],
+   "biases": [
+    {
+     "en": "Hyperbolic discounting",
+     "alias": "Present bias",
+     "n": "Hiperbolikus diszkontálás (Hyperbolic discounting)",
+     "alias_hu": "Jelen-torzítás (Present bias)",
+     "d": "Az a hajlam, hogy erősen előnyben részesítjük a kisebb, mai jutalmat a nagyobb, későbbi jutalommal szemben, és a „most” vonzereje élesen nő, ahogy a jutalom közelebb kerül. Ez megmagyarázza, miért készítünk ésszerű terveket a jövőre, amelyeket aztán a pillanat eljövetelekor elvetünk.",
+     "ex": "Ha ma 100 dollárt vagy egy hónap múlva 110 dollárt kínálnak, sokan a 100 dollárt választják, pedig ha a két lehetőség egy évre lenne, szívesen várnának az extra hónapot.",
+     "q": "Vasárnap elhatározod, hogy egész héten nem eszel desszertet a fitneszcélod elérése érdekében, de kedden este a hűtőben lévő torta győz, és szerdán is győz.",
+     "spot": "Figyeld meg, amikor a „későbbre” tervezett döntésed összeomlik abban a pillanatban, ahogy a „későbbre” „most” lesz.",
+     "fix": "Rögzítsd előre a jövőbeli döntést, például automatikus megtakarítási átutalással vagy előre kifizetett órával."
+    },
+    {
+     "en": "Appeal to novelty",
+     "alias": "Argumentum ad novitatem",
+     "n": "Újdonságra hivatkozás (Appeal to novelty)",
+     "alias_hu": "Argumentum ad novitatem",
+     "d": "Egy érvelési hiba, amelynek során azt feltételezzük, hogy egy ötlet, termék vagy módszer jobb, csupán azért, mert új. Ez a tükörképe annak, amikor azt hisszük, hogy a régi módszer a legjobb, mert hagyományos.",
+     "ex": "Egy cég minden évben átáll a legújabb projektmenedzsment-appra, feltételezve, hogy mindegyik előrelépés.",
+     "q": "Lecseréled a tökéletesen működő telefonodat az idei modellre, mert a reklám „legújabbnak” nevezi, pedig nem tudsz megnevezni egyetlen dolgot, amiben jobb lenne neked.",
+     "spot": "Kérdezd meg magadtól, mit tud jobban az új lehetőség, azon kívül, hogy új.",
+     "fix": "Sorold fel az új lehetőség konkrét előnyeit a jelenlegihez képest, és csak akkor válts, ha a lista megáll."
+    },
+    {
+     "en": "Identifiable victim effect",
+     "n": "Azonosítható áldozat hatása (Identifiable victim effect)",
+     "d": "Az a hajlam, hogy egy konkrét, nevű és arcú személy iránt többet érzünk, és neki többet adunk, mint egy nagy, névtelen csoport iránt, amely ugyanolyan szükségben van.",
+     "ex": "Egy hír egy csapdába szorult gyerekről hatalmas adományokat vált ki, míg egy riport ugyanolyan veszélyben lévő ezer gyerekről sokkal kevesebbet.",
+     "q": "Egy jótékonysági levél fényképpel és egy Amara nevű kislány történetével megmozgat, és adakozol, míg ugyanennek a szervezetnek a levele, amely 20 000 rászoruló családot ír le, egyenesen a papírkosárba kerül.",
+     "spot": "Figyeld meg, ha egyetlen arc jobban megmozgat, mint sokkal több ember ugyanabban a helyzetben.",
+     "fix": "Amikor egy egyetlen történet megragad, nézd meg, hányan osztják ugyanezt a szükséget, és döntsd el, hogyan segíthetsz a legtöbbjükön."
+    }
+   ]
+  },
+  {
+   "id": "invested",
+   "title": "A dolgok befejezéséhez hajlamosak vagyunk végigvinni azt, amibe időt és energiát fektettünk",
+   "why": "Amit elkezdünk, általában érdemes befejezni, mert az az agy, amely minden akadálynál feladná, sosem fejezne be semmit. Ha megbecsüljük, amink van, amit felépítettünk és amiért megdolgoztunk, elkötelezettek maradunk, és védjük az erőforrásainkat. A veszteség gyakran jobban fáj, mint amennyire egy azonos nyereség jólesik, ezért a veszteségek körüli óvatosság gyakran indokolt.",
+   "cost": "Időt, pénzt és büszkeséget öntünk olyan dolgokba, amelyek már nem érdemlik meg, és túlbecsüljük azt, ami a miénk, miközben elvetünk jobb lehetőségeket.",
+   "spot": [
+    "A folytatás fő indoka az, mennyi mindent fektettél már bele.",
+    "Sosem fizetnéd meg a mai árat azért, amit most nem vagy hajlandó feladni.",
+    "A döntésed ellen szóló bizonyítékok még jobban megmakacsolnak, ahelyett hogy újragondolnád."
+   ],
+   "fix": [
+    "Kérdezd meg magadtól, mit döntenél, ha ma kezdenél a semmiből, mindenféle korábbi befektetés nélkül.",
+    "Előre rögzíts megállási pontokat, például költségkeretet vagy határidőt, és tartsd is magad hozzájuk.",
+    "Kérj meg valakit, akinek nincs érdeke a kimenetelben, hogy nézze át, folytassátok-e."
+   ],
+   "biases": [
+    {
+     "en": "Sunk cost fallacy",
+     "n": "Elsüllyedt költség tévedése (Sunk cost fallacy)",
+     "d": "Az a hajlam, hogy valamivel tovább foglalkozunk az eddig ráfordított idő, pénz vagy erőfeszítés miatt, akkor is, ha a folytatás többe kerül, mint amennyit hoz. A múltbeli költségek nem térülnek meg, ezért nem szabad a jövőbeli döntéseket vezérelniük.",
+     "ex": "Végigülsz egy unalmas, drága koncertet, mert a jegy annyiba került.",
+     "q": "Félúton vagy egy 600 oldalas regényben, amelyet a második fejezet óta nem szeretsz, és kényszerítod magad, hogy befejezd, mert már annyi estét rászántál.",
+     "spot": "Kérdezd meg magadtól, belekezdenél-e most, ha azt tudnád, amit ma tudsz.",
+     "fix": "Csak a jövőbeli költségek és előnyök alapján dönts, és kezeld a már elköltött összeget elvesztettnek, bárhogy döntesz."
+    },
+    {
+     "en": "Irrational escalation",
+     "n": "Irracionális eszkaláció (Irrational escalation)",
+     "d": "Az a hajlam, hogy egy vesztes döntésbe egyre több befektetést teszünk, hogy igazoljuk a már ráfordítottakat, gyakran versenyhelyzetben. Más néven az elköteleződés fokozása, és szorosan kapcsolódik az elsüllyedt költség tévedéséhez.",
+     "ex": "Egy licitháborúban két vevő olyan messzire tolja fel egy ház árát, amit egyikük sem tervezett kifizetni, mert egyik sem akarja, hogy a korábbi ajánlatai hiábavalók legyenek.",
+     "q": "Egy vintage gitár online aukcióján sokkal túllépve a saját határodon újra és újra túllicitálod a másik vevőt, mert a visszalépés azt jelentené, hogy a korábbi ajánlataid kidobott pénz voltak.",
+     "spot": "Figyeld meg, amikor a másik fél legyőzése a cél, és nem maga a nyeremény.",
+     "fix": "Mielőtt bármilyen licitálás vagy tárgyalás elkezdődne, írd le a határértékedet, és add oda valakinek, aki számon kéri rajtad."
+    },
+    {
+     "en": "Escalation of commitment",
+     "alias": "Commitment bias",
+     "n": "Elköteleződés fokozódása (Escalation of commitment)",
+     "alias_hu": "Elköteleződési torzítás (Commitment bias)",
+     "d": "Olyan minta, amikor emberek vagy szervezetek egy kudarcra ítélt cselekvési irányt támogatnak tovább, mert már elköteleződtek mellette, gyakran azért, hogy elkerüljék a hiba bevallását. Irracionális eszkalációnak is nevezik, és szorosan kapcsolódik az elsüllyedt költség tévedéséhez.",
+     "ex": "Egy kormány tovább finanszíroz egy késésben lévő, túlköltekezett építkezési projektet, mert a leállítás azt jelentené, hogy a korábbi kiadások hibák voltak.",
+     "q": "A cég szoftverbevezetése már háromszor lekésett határidőt, és a felhasználók utálják, te mégis, mint a javaslat előterjesztője, további egy évnyi finanszírozást kérsz a leállítás helyett.",
+     "spot": "Kérdezd meg, a projekt jövőjéről szól-e az, hogy nem akarsz leállni, vagy arról, hogy megvédd a korábbi döntésedet.",
+     "fix": "Kérj meg valakit, aki nem vett részt az eredeti döntésben, hogy nézze át, érdemes-e folytatni a munkát."
+    },
+    {
+     "en": "Generation effect",
+     "n": "Generálási hatás (Generation effect)",
+     "d": "Memóriahatás: az információt jobban megjegyezzük, ha magunk hozzuk létre, mint ha csak olvassuk vagy halljuk. Segíti a tanulást, és ez az egyik oka annak, hogy a saját ötleteinket jobban megjegyezzük, mint másokéit.",
+     "ex": "Az a diák, aki a kártyákon kitölti a hiányzó részeket, többet megjegyez, mint az, aki csak újraolvassa a teljes válaszokat.",
+     "q": "Vizsgára készülve minden szabályhoz magad találsz ki egy példát ahelyett, hogy a könyv példáit olvasnád, és ezek a szabályok sokkal jobban megragadnak, mint azok, amelyeket csak végigolvastál.",
+     "spot": "Figyeld meg, ha csak kész válaszokat és példákat olvasol, ahelyett hogy magad jönnél rá.",
+     "fix": "Ez a hatás a javadra is válhat: tanuláskor kérdezd ki magad, vagy magyarázd el a gondolatokat a saját szavaiddal, ahelyett hogy újraolvasnád őket."
+    },
+    {
+     "en": "Loss aversion",
+     "n": "Veszteségkerülés (Loss aversion)",
+     "d": "Az a hajlam, hogy egy valami elvesztésének fájdalmát erősebben érezzük, mint egy azonos értékű dolog megszerzésének örömét. Ötven dollár elvesztése általában rosszabbnak érződik, mint amilyen jó érzés ötven dollárt találni.",
+     "ex": "A vásárlókat gyakran jobban motiválja az „kerüld el az 5 dolláros díjat” üzenet, mint a „kapj 5 dolláros kedvezményt”, pedig a pénz ugyanannyi.",
+     "q": "Visszautasítasz egy érmefeldobásos fogadást, amely fejre 120 dollárt, íráskor pedig 100 dollár veszteséget hozna, mert a 100 dollár elvesztésének gondolata nagyobb a nagyobb nyereménynél.",
+     "spot": "Kérdezd meg magadtól, nem utasítasz-e vissza egy jó ajánlatot csak azért, mert benne van egy esély, hogy valamit feladsz.",
+     "fix": "Fogalmazd meg a döntést mindkét irányban, egyszer nyereségként, egyszer veszteségként, és nézd meg, változik-e a válaszod."
+    },
+    {
+     "en": "IKEA effect",
+     "n": "IKEA-hatás (IKEA effect)",
+     "d": "Az a hajlam, hogy valamit többre becsülünk, ha mi segítettünk megépíteni vagy létrehozni, akkor is, ha az eredmény nem tökéletes. A bútorboltról kapta a nevét, amelynek termékeit a vevők maguk szerelik össze.",
+     "ex": "Valaki többre tartja a billegő, saját készítésű könyvespolcát, mint egy stabilabb boltit.",
+     "q": "Egy főzőtanfolyamon jobbnak érzed a saját készítésű tésztádat a séfénél, pedig a szószod nyilvánvalóan csomós.",
+     "spot": "Kérdezd meg magadtól, ilyen magasra értékelnéd-e ezt, ha valaki más készítette volna.",
+     "fix": "Mielőtt eldöntenéd, milyen jó valami, kérj meg valakit, aki nem segített a készítésében, hogy ítélje meg a minőségét."
+    },
+    {
+     "en": "Unit bias",
+     "n": "Egységtorzítás (Unit bias)",
+     "d": "Az a hajlam, hogy egy adagot, porciót vagy darabot akkor is megfelelő mennyiségnek tekintünk, hogy elfogyasszuk, bármekkora legyen. Hajlamosak vagyunk befejezni azt az egyetlen csomagot, amely előttünk van.",
+     "ex": "Az emberek sokkal több cukorkát vesznek el egy ingyenes tálból, ha nagy kanál van mellette, mint ha kicsi, mert egy kanálnyi már jó mennyiségnek tűnik.",
+     "q": "A moziban elfogyasztod az egész óriás zacskó cukorkát, pedig egy kis csomag is ugyanannyira elégített volna ki.",
+     "spot": "Figyeld meg, amikor azért hagyod abba, mert a csomag üres, és nem azért, mert elég volt.",
+     "fix": "Kisebb adagokat tálalj magadnak, vagy oszd fel a nagy csomagokat, mielőtt elkezded őket."
+    },
+    {
+     "en": "Zero-risk bias",
+     "n": "Nulla kockázat torzítása (Zero-risk bias)",
+     "d": "Az a hajlam, hogy egy kis kockázat teljes megszüntetését egy nagyobb kockázat jelentős csökkentésénél jobbnak tartjuk. Egy veszély megszüntetése jobbnak érződik, mint egy veszély csökkentése, még akkor is, ha a csökkentés többet segítene.",
+     "ex": "A szavazók egy drága tervet támogatnak, amely egy ritka vízszennyezőt szüntetne meg, egy olcsóbb terv helyett, amely egy sokkal gyakoribb egészségügyi fenyegetést felezne meg.",
+     "q": "Két otthoni fejlesztés közül azt fizeted ki, amelyik teljesen megszünteti egy apró csőtörés apró esélyét, és nem azt, amelyik nagymértékben csökkenti a sokkal valószínűbb pincés elöntés esélyét.",
+     "spot": "Kérdezd meg magadtól, azt a lehetőséget választod-e, amely teljesen biztonságosnak tűnik, és nem azt, amely a legtöbb kárt előzi meg.",
+     "fix": "Hasonlítsd össze a lehetőségeket aszerint, mennyi kárt előz meg mindegyik összesen."
+    },
+    {
+     "en": "Disposition effect",
+     "n": "Eladási hajlam hatása (Disposition effect)",
+     "d": "Az a hajlam, hogy a túl korán eladjuk azt, aminek az értéke nőtt, és túl sokáig tartjuk azt, aminek az értéke csökkent, abban reménykedve, hogy visszajut arra az árra, amit fizettünk.",
+     "ex": "Egy befektető egy kis nyereség után eladja a részvényt, hogy biztosítsa a hasznot, de megtartja azt, amely 40 százalékot esett, mert az eladás „valóságossá” tenné a veszteséget.",
+     "q": "Gyorsan eladod a koncertjegyeidet, amelyeknek a másodpiaci ára emelkedett, de megtartod azokat, amelyeké csökkent, és várod, hogy visszaérjenek arra, amit fizettél.",
+     "spot": "Figyeld meg, ha az eladási döntésed attól függ, mennyit fizettél, pedig ennek nincs köze ahhoz, mi történik ezután.",
+     "fix": "Minden birtokolt dolog esetén kérdezd meg magadtól, megvennéd-e ma a mai áron, és ennek megfelelően cselekedj."
+    },
+    {
+     "en": "Pseudocertainty effect",
+     "n": "Álbizonyosság hatása (Pseudocertainty effect)",
+     "d": "Az a hajlam, hogy egy kimenetelt biztosnak tekintünk, pedig csak egy többlépcsős helyzet egyetlen szakaszában biztos. Túlbecsüljük azokat a lehetőségeket, amelyek egy lépésben kiszűrik a kockázatot, akkor is, ha az összkép még bizonytalan.",
+     "ex": "Egy verseny azt ígéri, hogy aki eljut a döntőig, nyereményt kap, és a versenyzők a nyereményt biztosnak veszik, pedig a legtöbben sosem jutnak el a döntőig.",
+     "q": "A szerződésed garantált bónuszt ígér, ha a cég eléri az éves célt, te pedig úgy foglalsz nyaralást a pénzzel, mintha már kifizették volna, pedig a cél elérése távolról sem biztos.",
+     "spot": "Kérdezd meg, az a garancia, amelyben bízol, egy korábbi lépésen múlik-e, amely még elbukhat.",
+     "fix": "Mielőtt döntenél, számold ki az összes szakasz együttes esélyét, hogy megkapd a valódi összesített valószínűséget."
+    },
+    {
+     "en": "Processing difficulty effect",
+     "n": "Feldolgozási nehézség hatása (Processing difficulty effect)",
+     "d": "Memóriahatás: az az információ, amelynek megértéséhez több erőfeszítés kell, általában jobban megmarad, mert mélyebben gondolkodunk róla. Segíti a tanulást, de azt is okozhatja, hogy a nehezen megszerzett részletek akkor is megmaradnak, ha nem a legfontosabbak.",
+     "ex": "A diákok gyakran jobban megjegyzik a tankönyv nehéz, sűrű bekezdését, mint a mellette nyomtatott, könnyű összefoglalót.",
+     "q": "Egy könnyed hírcikket gyorsan átfutsz, és ebédig elfelejted, de egy nehezen érthető jogi levelet, amelyen húsz percig gondolkodtál, hetekig megjegyzel.",
+     "spot": "Figyeld meg, hogy a legjobban megjegyzett gondolatok a fontosak-e, vagy csak azok, amelyeket a legnehezebb volt követni.",
+     "fix": "Ez a hatás a javadra is válhat: tanuláskor dolgozz aktívan az anyaggal, írd újra vagy oldj meg feladatokat, ahelyett hogy egy könnyű változatot átfutnál."
+    },
+    {
+     "en": "Endowment effect",
+     "n": "Birtoklási hatás (Endowment effect)",
+     "d": "Az a hajlam, hogy valamit csak azért többre értékelünk, mert a miénk. Az emberek gyakran sokkal többet kérnek egy tárgyért, mint amennyit megvennének.",
+     "ex": "Aki egy ingyenes bögrét kap, sokkal többet kér érte, mint amennyit ugyanazért a bögréért a boltban kifizetett volna.",
+     "q": "Feladod a használt kanapédat sokkal drágábban, mint amennyit valaha egy hasonló használt kanapéért fizetnél, és megsértődsz, ha a vevők a szokásos árat ajánlják.",
+     "spot": "Kérdezd meg magadtól, mennyit fizetnél ezért a dologért, ha még nem lenne a tiéd.",
+     "fix": "Nézd meg, mennyiért adnak el valójában hasonló termékeket, és ezt az árat használd."
+    },
+    {
+     "en": "Backfire effect",
+     "n": "Visszafelé sülés hatása (Backfire effect)",
+     "d": "Az a hajlam, hogy egyesek, amikor kedves hiedelmük ellen mutatnak bizonyítékot, még erősebben ragaszkodnak ahhoz a hiedelemhez. Későbbi, nagyobb kutatások szerint ez ritka: a helyesbítések általában legalább kicsit a tények felé mozdítják az embereket, még érzékeny témákban is.",
+     "ex": "Miután egy barát megoszt egy cikket, amely megcáfol egy egészségügyi mítoszt, a mítoszban hívő ember még gyakrabban kezdi terjeszteni a mítoszt.",
+     "q": "Amikor a nagybátyád egy ellenőrző cikket mutat, amely bebizonyítja, hogy egy politikusról szóló kedvenc állításod hamis, több meggyőződéssel távozol, mint valaha, hogy az állítás igaz.",
+     "spot": "Figyeld meg, amikor az ellened szóló erős bizonyíték dühösebbé és magabiztosabbá tesz, ahelyett hogy kíváncsivá.",
+     "fix": "Döntsd el előre, milyen konkrét bizonyíték változtatná meg a véleményedet, és tartsd magad hozzá."
+    }
+   ]
+  }
+ ]
+}

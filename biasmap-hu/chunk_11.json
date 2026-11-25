@@ -1,0 +1,154 @@
+{
+ "groups": [
+  {
+   "id": "generalize",
+   "title": "A részleteket elhagyjuk, hogy általánosságokat alkossunk",
+   "why": "Sosem tudnánk tárolni minden egyes ember és esemény részleteit, ezért az agy a tapasztalatokat kategóriákba és durva összefoglalókba sűríti. Ezek lehetővé teszik, hogy gyorsan, kevés erőfeszítéssel ítéljünk meg új embereket és helyzeteket. A rossz tapasztalatok megtartása, miközben a régi fájdalom elhalványul, szintén segített abban, hogy a veszélyekből tanuljunk anélkül, hogy összeroppanánk tőlük.",
+   "cost": "Ugyanezek az összefoglalók igazságtalan feltételezésekké merevedhetnek csoportokkal és egyénekkel kapcsolatban, és a múltról alkotott emlékeinket a mintába illő irányba billentik.",
+   "spot": [
+    "Valakire a csoportja alapján reagálsz, mielőtt bármit tudnál róla mint emberről.",
+    "Azon kapod magad, hogy „mindig”, „sosem” vagy „mind” szavakat használsz egy embercsoportról.",
+    "A múltbeli időszakról alkotott általános emléked sokkal rózsásabbnak vagy sokkal sötétebbnek tűnik, mint amit a részletek alátámasztanának."
+   ],
+   "fix": [
+    "Mielőtt ítéletet mondanál valakiről, sorold fel, mit tudsz róla mint egyénről.",
+    "Amikor felmerül a „mind ilyenek” gondolat, nevezz meg valós embereket, akik kilógnak a mintából.",
+    "Vezess rövid naplót, hogy a múlttal kapcsolatos általános benyomásaidat összevethesd azzal, amit akkor írtál."
+   ],
+   "biases": [
+    {
+     "en": "Implicit associations",
+     "n": "Implicit asszociációk (Implicit associations)",
+     "d": "Automatikus kapcsolatok az emlékezetben két gondolat között, például egy márka és egy érzés, vagy egy csoport és egy tulajdonság között, amelyek tudatunk megkerülésével formálják gyors reakcióinkat. Eltérhetnek attól, amit tudatosan vallunk, és a kutatók gyakran azzal mérik őket, milyen gyorsan párosítunk szavakat vagy képeket.",
+     "ex": "Egy vásárló, aki azt mondja, hogy minden márka egyforma, mégis az ismerős logót veszi le a polcról, mert az emlékezetében a biztonság érzésével kapcsolódik össze.",
+     "q": "Egy gyors csoportosító játékban gyorsabban nyomsz gombot, amikor virágképek vannak a kellemes szavakkal egy gombon, mint amikor rovarképek vannak, pedig ellenük semmi kifogásod nincs.",
+     "spot": "Figyeld meg a szó, arc vagy márka hallatán érzett másodpercnyi azonnali reakciódat, és kérdezd meg, honnan származik ez az érzés.",
+     "fix": "Fontos választásoknál előre rögzítsd a szempontjaidat, és ezek alapján pontozd az egyes lehetőségeket, hogy az első ösztönös vonzalom kisebb súllyal essen latba."
+    },
+    {
+     "en": "Implicit stereotypes",
+     "n": "Implicit sztereotípiák (Implicit stereotypes)",
+     "d": "Tudattalan hiedelmek, amelyek egy társadalmi csoportot bizonyos tulajdonságokhoz kötnek, és befolyásolják, hogyan ítéljük meg az ahhoz a csoporthoz tartozó egyéneket. Az implicit asszociációk egyik fajtája, és ütközhetnek azokkal a tisztességes nézetekkel, amelyeket nyíltan vallunk.",
+     "ex": "Egy munkaadó, aki őszintén támogatja az egyenlőséget, mégis kevésbé műszakinak látja az önéletrajzot, ha azon női név szerepel.",
+     "q": "Szilárdan hiszed, hogy a férfiak és nők ugyanolyan jó vezetők, mégis amikor egy hírben „a vezérigazgató” szerepel, azonnal egy férfi jelenik meg előtted.",
+     "spot": "Figyeld meg, ha egy „tipikus” orvos, mérnök vagy bűnöző képe ugrik be, mielőtt bármilyen tényt ismernél.",
+     "fix": "Pályázatok vagy munkák átnézésekor ahol csak lehet, rejtsd el a neveket, fényképeket és egyéb csoportra utaló jeleket."
+    },
+    {
+     "en": "Stereotypical bias",
+     "n": "Sztereotipikus torzítás (Stereotypical bias)",
+     "d": "Olyan emlékezeti sodródás, amelynek során a sztereotípiák felé húzzuk az emlékeket: felidézzük azokat a részleteket, amelyek illenek ahhoz, amit egy csoporttól várunk, a nem illőket pedig elfelejtjük vagy megváltoztatjuk.",
+     "ex": "Egy megbeszélés után azt emlékszel, hogy az idősebb kolléga küzdött a videós szoftverrel, pedig valójában a fiatal gyakornok volt, akinek segítségre volt szüksége.",
+     "q": "Egy bulin megismert könyvtárost csendesnek és könyvmolynak emlékszel, a barátaid viszont emlékeztetnek, hogy ő mesélte az este legzajosabb történeteit.",
+     "spot": "Kérdezd meg magadtól, hogy az emberekről megjegyzett részletek valóban azt mutatják-e, amit tettek, vagy csak azt, amit egy hasonló embertől vártál.",
+     "fix": "Egy találkozó vagy esemény után azonnal írd le az emberekről szóló konkrét tényeket, mielőtt az elvárásaid kitöltenék a hiányokat."
+    },
+    {
+     "en": "Prejudice",
+     "n": "Előítélet (Prejudice)",
+     "d": "Előre kialakított, többnyire negatív ítélet vagy érzés valakiről kizárólag az alapján, hogy egy csoporthoz tartozik, például faj, vallás, nem, életkor vagy nemzetiség miatt. Befolyásolja, mit veszünk észre és jegyzünk meg a csoport tagjairól, és hogyan bánunk velük.",
+     "ex": "Egy házigazda visszautasít egy idegen akcentussal beszélő jelentkezőt, feltételezve, hogy később fizet, anélkül hogy megnézné az ajánlásait.",
+     "q": "Amikor megtudod, hogy az utcátok új családja olyan vallást követ, amelyről keveset tudsz, óvatos leszel, és nem hívod meg őket az utcabuliba.",
+     "spot": "Figyeld meg, ha valakivel szemben azonnal bizalmatlan, hűvös vagy elutasító vagy, amint megtudod, melyik csoporthoz tartozik.",
+     "fix": "Keress valódi kapcsolatot a csoport tagjaival közös feladatokon vagy célokon keresztül, mert ez idővel általában gyengíti az előítéletet."
+    },
+    {
+     "en": "Negativity bias",
+     "n": "Negativitási torzítás (Negativity bias)",
+     "d": "A rossz tapasztalatok és információk nehezebben esnek a mérlegbe, mint az azonos nagyságú jók. Az emlékezetben a kellemetlen események erősebben és részletesebben idéződnek fel, mint a kellemesek.",
+     "ex": "A prezentációdra kapott húsz kedves megjegyzés közül azt az egy kemény kritikát tudod szó szerint idézni egy évvel később is.",
+     "q": "Egy nagyjából zökkenőmentes családi nyaralásról szóló kérdésre az első történet, amit élénk részletességgel elmesélsz, az elmaradt járatról szól.",
+     "spot": "Figyeld meg, ha egyetlen rossz pillanat uralja egy nap, egy ember vagy egy olyan projekt emlékét, amely többnyire jó volt.",
+     "fix": "Minden hét végén írj fel három dolgot, ami jól sikerült, hogy ellensúlyozd a rossz emlékeket, amelyek amúgy is megmaradnak."
+    },
+    {
+     "en": "Fading affect bias",
+     "n": "Érzelmi elhalványulás torzítása (Fading affect bias)",
+     "d": "Idővel a kellemetlen emlékekhez kapcsolódó érzelmek gyorsabban halványulnak el, mint a kellemes emlékekhez tartozók. Ez segít megbirkózni és továbblépni, de elhitetheti, hogy a múltbeli nehézségek enyhébbek voltak, mint valójában.",
+     "ex": "Egy fájdalmas szakítás után egy évvel már nyugodtan tudsz róla beszélni, miközben ugyanabból az évből egy boldog utazás még mindig mosolyt csal az arcodra.",
+     "q": "Újra nevezel egy maratonra, mert az utolsó kilométerek kínjai most távolinak tűnnek, a célba érés öröme viszont még friss.",
+     "spot": "Figyeld meg, ha egy nehéz időszakra visszanézve azt gondolod, „nem volt olyan rossz”, éppen akkor, amikor azt fontolgatod, megismétled-e.",
+     "fix": "Mielőtt megismételnél egy olyan döntést, amely már egyszer bántott, olvasd el azokat a jegyzeteket, amelyeket akkor készítettél, amikor átélted."
+    }
+   ]
+  },
+  {
+   "id": "store",
+   "title": "Az emlékeinket aszerint tároljuk különbözőképpen, ahogyan átéltük őket",
+   "why": "A figyelmünk és a memóriánk korlátozott, ezért az agy többet tárol abból, amin mélyen gondolkodunk, amit aktívan használunk, vagy amire szükségünk lesz, és kevesebbet abból, amit alig vettünk észre, vagy amit bármikor utánanézhetünk. Így a korlátozott memóriánk ott hasznosul a legjobban, ahol a legtöbb hasznot hozza.",
+   "cost": "A dolgok, amelyeket automatikusan csinálunk, csak felületesen átfutunk, vagy egy eszközre bízunk, meglepően nehezen juthatnak eszünkbe, amikor szükségünk lenne rájuk.",
+   "spot": [
+    "A nap egyes dolgai élénken megmaradnak, míg más, amelyeknél jelen voltál, egyszerűen eltűntek.",
+    "Sokkal jobban emlékszel arra az anyagra, amellyel aktívan dolgoztál, mint arra, amit csak átfutottál.",
+    "Úgy érzed, tudsz valamit, mégsem tudod előhívni, ha nincs előtted oldal, képernyő vagy segítő jel."
+   ],
+   "fix": [
+    "Ha később szükséges információt veszel magadhoz, csökkentsd a többfeladatos munkát.",
+    "Szándékosan döntsd el, mely tényeket érdemes fejből tudni, és melyeket elég utánanézni.",
+    "Fontos dolgok tanulásakor használj többféle érzékelést, például mondd ki hangosan, írd le és vázold fel."
+   ],
+   "biases": [
+    {
+     "en": "Levels of processing effect",
+     "alias": "Depth of processing effect",
+     "n": "Feldolgozási mélység hatása (Levels of processing effect)",
+     "alias_hu": "Feldolgozási mélység-hatás (Depth of processing effect)",
+     "d": "Azt az információt, amelyen mélyen és értelmesen gondolkodunk, jobban megjegyezzük, mint azt, amelyet csak felületesen dolgozunk fel, például egy szó kinézetét vagy hangzását. Ez hasznos memóriahatás.",
+     "ex": "Az a diák, aki megkérdezi, hogyan hatott az egyes történelmi események a hétköznapi emberekre, többet megjegyez, mint aki csak a dátumokat aláhúzza.",
+     "q": "Egy táblázatban száz terméknevet futottál át, és alig emlékszel rájuk, de az a néhány, amelyhez rövid eladási szöveget kellett írnod, egy héttel később is a fejedben van.",
+     "spot": "Kérdezd meg magadtól, csak ránéztél-e az anyagra, vagy valóban elgondolkodtál azon, mit jelent.",
+     "fix": "Ez a hatás a javadra válhat: minden új gondolatnál kérdezd meg, miért igaz, és hogyan kapcsolódik ahhoz, amit már tudsz."
+    },
+    {
+     "en": "Testing effect",
+     "alias": "Retrieval practice effect",
+     "n": "Tesztelési hatás (Testing effect)",
+     "alias_hu": "Előhívási gyakorlat hatása (Retrieval practice effect)",
+     "d": "Az információ előhívása a memóriából, például egy kvízben, jobban rögzíti, mint ugyanannyi idő alatt újraolvasni. Ez a tanulók szándékosan használható hasznos hatása.",
+     "ex": "Egy ápolónő kártyákkal gyakorolja a gyógyszeradagolásokat, és jobban emlékszik rájuk, mint az a kolléga, aki ugyanazt a táblázatot újraolvassa.",
+     "q": "Miután becsukod a jegyzeteidet, és leírsz mindent, amire emlékszel egy képzésről, egy hónap múlva sokkal jobban emlékszel rá, mint azokra az órákra, amelyeket csak újraolvastál.",
+     "spot": "Figyeld meg, ha a tanulási idődet újraolvasással és aláhúzással töltöd, és nem felidézéssel.",
+     "fix": "Ez a hatás a javadra válhat: csukd be az anyagot, írd le vagy mondd ki, amit emlékszel, majd ellenőrizd, mi maradt ki."
+    },
+    {
+     "en": "Absent-mindedness",
+     "n": "Szórakozottság (Absent-mindedness)",
+     "d": "Az emlékezeti hiányosságok azért történnek, mert nem figyeltünk oda, amikor valami történt, ezért az eleve nem tárolódott jól. Gyakran akkor jelenik meg, amikor automatikusan cselekszünk, vagy a figyelmünket több feladat között osztjuk meg.",
+     "ex": "Egy telefonhívás közben letéted a kulcsaidat, és később fogalmad sincs, hová tetted.",
+     "q": "Félúton a munkahelyedre nem tudod felidézni, zártad-e be az előajtót, mert közben a nap nagy megbeszélésén gondolkodtál.",
+     "spot": "Figyelj azokra a pillanatokra, amikor a kezed egy feladaton dolgozik, miközben az elméd máson jár.",
+     "fix": "Adj könnyen elveszíthető tárgyaidnak fix helyet, például egy tálat az ajtó mellé a kulcsoknak, hogy a tárolásuk ne függjön a figyelmedtől."
+    },
+    {
+     "en": "Next-in-line effect",
+     "n": "Sorban következő hatás (Next-in-line effect)",
+     "d": "Amikor az emberek meghatározott sorrendben szólalnak meg, hajlamosak vagyunk elfelejteni, mit mondott közvetlenül előttünk az, akinek a sorban előttünk kellett szólnia, mert a saját szövegünkre készülünk.",
+     "ex": "Egy esküvőn, ahol a vendégek egymás után mondanak pohárköszöntőt, nem emlékszel egyetlen szóra sem abból, amit közvetlenül a tiéd előtt mondtak.",
+     "q": "Egy csapatértekezleten, ahol mindenki az asztal körül beszámol a hétvégéről, fogalmad sincs, mit mondott a közvetlenül előtted ülő kolléga, mert a saját mondandódon gyakoroltál.",
+     "spot": "Figyeld meg, ha a saját mondandódat gyakorolod, miközben valaki más még beszél.",
+     "fix": "Mielőtt a kör elkezdődne, jegyezd le a fő mondanivalódat, hogy teljesen figyelhess arra, aki előtted beszél."
+    },
+    {
+     "en": "Tip of the tongue phenomenon",
+     "n": "Nyelvhegyen van jelenség (Tip of the tongue phenomenon)",
+     "d": "Az a bosszantó érzés, hogy biztosan tudunk egy szót vagy nevet, de nem tudjuk előhívni. Gyakran fel tudjuk idézni a kezdőbetűjét, a hosszát vagy egy hasonlóan hangzó szót.",
+     "ex": "Pontosan látod a színészt, és tudod, hogy a neve M betűvel kezdődik, de csak órákkal később jut eszedbe, a zuhany alatt.",
+     "q": "Vacsoránál biztos vagy benne, hogy tudod Ausztrália fővárosát, szinte érzed, hogy „C” betűvel kezdődik, mégsem jön elő, amíg a beszélgetés már tovább nem haladt.",
+     "spot": "Figyeld meg az erős érzést, hogy tudsz egy szót vagy nevet, miközben az nem bukkan fel.",
+     "fix": "Ne erőlködj, hanem egy időre fordulj valami másra, mert a hiányzó szó gyakran magától visszatér, amint elernyedsz."
+    },
+    {
+     "en": "Google effect",
+     "alias": "Digital amnesia",
+     "n": "Google-hatás (Google effect)",
+     "alias_hu": "Digitális amnézia (Digital amnesia)",
+     "d": "Hajlamosak vagyunk elfelejteni azt az információt, amelyről tudjuk, hogy könnyen megtalálhatjuk az interneten, és helyette azt jegyezzük meg, hol találjuk meg. Digitális amnéziának is nevezik.",
+     "ex": "Nem tudod felidézni a párod telefonszámát, mert el van mentve a névjegyeid közé, pedig a gyerekkori otthonod telefonszámát még mindig fejből tudod.",
+     "q": "Egy hónappal azután, hogy egy videó segítségével megjavítottál egy defektes kerékpárgumit, pontosan emlékszel, melyik videót kell újra megnézni, de egyetlen valódi lépésre sem emlékszel.",
+     "spot": "Figyeld meg, amikor meg sem próbálsz emlékezni valamire, mert tudod, hogy utána nézhetsz.",
+     "fix": "Azoknál a tényeknél, amelyeket gyakran használsz, vagy amelyekre internet nélkül is szükséged lehet, például a fontos telefonszámoknál, próbáld felidézni, mielőtt az eszközödet megnéznéd."
+    }
+   ]
+  }
+ ]
+}

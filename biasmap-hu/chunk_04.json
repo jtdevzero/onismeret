@@ -1,0 +1,137 @@
+{
+ "quarter": 0,
+ "groups": [
+  {
+   "id": "stereotypes",
+   "title": "Sztereotípiákkal, általánosításokkal és korábbi tapasztalatainkkal töltjük ki a tulajdonságokat",
+   "why": "Ritkán van teljes információnk egy emberről vagy helyzetről, ezért az agy a hiányokat ahhoz hasonló esetekre jellemző tapasztalatokkal tölti ki. A kategóriákra, gyakorlati szabályokra és megbízható forrásokra való támaszkodás rengeteg időt és energiát spórol meg. A történelem nagy részében a csoportot követni és a tapasztalt idősebbekben megbízni biztonságos választás volt.",
+   "cost": "Az egyéneket csoportjuk alapján ítéljük meg, a címkéknek és a rangoknak jobban hiszünk, mint a bizonyítéknak, és a tömeget követve tévedünk. Ezek a gyors feltételezések igazságtalan előítéletekké merevedhetnek, amelyeket belülről nehéz észrevenni.",
+   "spot": [
+    "Úgy érzed, tudod, milyen valaki, mielőtt sokat mondott volna.",
+    "Valaminek az elhiszed, főleg attól, hogy ki mondta, vagy hányan értenek egyet vele.",
+    "Valaki viselkedését a csoportjára, a munkájára vagy a hátterére hivatkozva magyarázod."
+   ],
+   "fix": [
+    "Gyűjts legalább egy konkrét tényt az illetőről, mielőtt kialakítanál róla véleményt.",
+    "Úgy értékeld az állítást, mintha egy ismeretlen forrástól származna, aztán tedd vissza a forrást, és nézd meg, mi változik.",
+    "Kérdezd meg magadtól, mit várnál, ha az illető egy másik csoportba tartozna, és hasonlítsd össze a két választ."
+   ],
+   "biases": [
+    {
+     "en": "Group attribution error",
+     "n": "Csoportattribúciós hiba (Group attribution error)",
+     "d": "A csoportattribúciós hiba az a feltételezés, hogy egy tag tulajdonságai az egész csoportot jellemzik, vagy hogy egy csoport döntése minden tag akaratát tükrözi. Úgy kezeli a csoportot, mintha egyetlen elme gondolkodna benne.",
+     "ex": "Egy focicsapat egyetlen hangos, tolakodó szurkolójával találkozva valaki arra jut, hogy a csapat egész szurkolótábora ellenszenves.",
+     "q": "Egy iskolatanács egy szavazattal úgy dönt, hogy megszünteti a zenei programot, és te azt feltételezed, hogy minden tanácstag utálja a művészeteket, pedig többen is keményen érveltek a megszüntetés ellen.",
+     "spot": "Kérdezd meg magadtól, nem tekinted-e egyetlen tag vagy egyetlen csoportdöntés képének az egész csoportról.",
+     "fix": "Mielőtt összefoglalnád a csoportot, keresd meg a csoporton belüli nézetek vagy viselkedések sokféleségét."
+    },
+    {
+     "en": "Ultimate attribution error",
+     "n": "Végső attribúciós hiba (Ultimate attribution error)",
+     "d": "A végső attribúciós hiba azt jelenti, hogy egy másik csoport rossz tetteit a jellemükkel magyarázzuk, jó tetteiket pedig szerencsével vagy különleges körülményekkel intézzük el. A saját csoportunknál általában fordítva csinálunk.",
+     "ex": "Az egyik osztály munkatársai azt mondják, hogy egy másik osztály hibája azt mutatja, hogy azok az emberek hanyagok, miközben a saját osztályuk hibáját egy lehetetlen határidő okozta.",
+     "q": "Amikor a másik csapat egyik játékosa segít egy sérült ellenfélnek, azt mondod, csak a kamerák miatt tette, de amikor a saját csapatod játékosa ugyanezt teszi, azt mondod, mutatja, milyen jó ember.",
+     "spot": "Kérdezd meg, ugyanígy magyaráznád-e ugyanezt a tettet, ha a saját oldalodról valaki tette volna.",
+     "fix": "Cseréld fel fejben a csoportcímkéket, és nézd meg, megáll-e még a magyarázatod."
+    },
+    {
+     "en": "Stereotyping",
+     "n": "Sztereotipizálás (Stereotyping)",
+     "d": "A sztereotipizálás azt jelenti, hogy egy embertől bizonyos tulajdonságokat várunk, mert egy csoporthoz tartozik, anélkül hogy bármit tudnánk róla. A sztereotípiák lehetnek pozitívak vagy negatívak, és gyakran megmaradnak akkor is, amikor az illető nyilvánvalóan nem illik beléjük.",
+     "ex": "Egy boltos feltételezi, hogy egy idősebb vevő nem fog eligazodni egy új telefonon, ezért minden lépést lassan elmagyaráz, pedig a vevő informatikai szakember.",
+     "q": "Egy partin találkozol egy nagyon magas férfival, és rögtön megkérdezed, melyik kosárlabdacsapatban játszik, pedig semmit nem tudsz róla.",
+     "spot": "Figyeld meg, ha valaki készségeit, ízlését vagy szokásait kizárólag a korából, neméből, munkájából vagy hátteréből jósolod meg.",
+     "fix": "Mielőtt bármilyen feltételezés alapján cselekednél, tegyél fel az illetőnek egy őszinte kérdést magáról."
+    },
+    {
+     "en": "Essentialism",
+     "n": "Esszencializmus (Essentialism)",
+     "d": "Az esszencializmus az a hiedelem, hogy az emberek vagy dolgok kategóriáinak van egy rejtett, változatlan magja, amely miatt azok azok. Ez a csoportok közötti különbségeket fixnek és természetesnek tekinti, és nem veszi észre, mennyire alakítják azokat a körülmények.",
+     "ex": "Egy munkaadó szerint aki szegény környezetben nőtt fel, az „mindig is ilyen gondolkodású lesz”, mintha ez születésétől fogva a természetében lenne.",
+     "q": "Nem hajlandó vagy felvenni egy pulóvert, amely egy olyan emberé volt, akit megvetsz, mert úgy érzed, valami belőle még a mosás után is megmaradt benne.",
+     "spot": "Figyelj olyan kifejezésekre, mint „ilyen a természetük”, „így születtek” vagy „sosem fognak változni”.",
+     "fix": "Keress a kategórián belül olyan embereket vagy dolgokat, akik megváltoztak vagy másként viselkednek, és kérdezd meg, milyen körülmények magyarázzák a különbséget."
+    },
+    {
+     "en": "Functional fixedness",
+     "n": "Funkcionális rögzültség (Functional fixedness)",
+     "d": "A funkcionális rögzültség azt jelenti, hogy egy tárgyat csak a megszokott rendeltetésében tudunk hasznosnak látni. Ez kizárja azokat a kreatív megoldásokat, amelyek ismerős dolgokat új módon használnak.",
+     "ex": "Kalapács nélkül valaki feladja a kép felakasztását, és eszébe sem jut, hogy egy erős cipő sarkával is be lehetne verni a szöget.",
+     "q": "A telefonod a kanapé mögé csúszik, és tíz percen át próbálod kézzel elérni, míg egy barát ki nem halássza egy fakanállal a konyhai fiókból.",
+     "spot": "Kérdezd meg magadtól, mire használhatnád a körülötted lévő tárgyakat, ha nem a nevük alapján néznéd őket.",
+     "fix": "Írd le a tárgyakat fizikai tulajdonságaik alapján, például „lapos, merev, hosszú”, név helyett, hogy új felhasználási módok derüljenek ki."
+    },
+    {
+     "en": "Moral credential effect",
+     "alias": "Moral licensing",
+     "n": "Erkölcsi hitelesítési hatás (Moral credential effect)",
+     "alias_hu": "Erkölcsi felhatalmazás (Moral licensing)",
+     "d": "Az erkölcsi hitelesítési hatás, más néven erkölcsi felhatalmazás, az a érzés, hogy szabadabban viselkedhetünk rosszul, miután tettünk valami jót, vagy bebizonyítottuk, hogy jó emberek vagyunk. A korábbi jó tettek olyan hitelként működnek, amely később egy megcsúszást mentegetni látszik.",
+     "ex": "Egy férfi szombaton önkénteskedik egy élelmiszerbankban, és ezután úgy érzi, kiérdemelte, hogy egész hétvégén kihagyja a háztartási munkából rá eső részt.",
+     "q": "Mivel egész héten biciklivel mentél dolgozni, úgy érzed, jogod van egy hosszú, benzinfaló autózásra szórakozásból vasárnap.",
+     "spot": "Figyeld meg, amikor közvetlenül egy olyan döntés előtt gondolod, hogy „eddig jó voltam, megérdemlem”, amelytől egyébként tartózkodnál.",
+     "fix": "Minden döntést a saját érdemei alapján ítélj meg, mintha a korábbi jó tettednek sosem lett volna köze hozzá."
+    },
+    {
+     "en": "Just-world hypothesis",
+     "alias": "Just-world fallacy",
+     "n": "Igazságos világ hipotézis (Just-world hypothesis)",
+     "alias_hu": "Igazságos világ tévedés (Just-world fallacy)",
+     "d": "Az igazságos világ hipotézise az a hiedelem, hogy a világ igazságos, így az emberek általában azt kapják, amit megérdemelnek. Ez arra vezet, hogy az áldozatokat hibáztatjuk a szerencsétlenségükért, és azt feltételezzük, hogy a sikeres emberek mindent kiérdemeltek.",
+     "ex": "Amikor valaki arról hall, hogy hazafelé menet kirabolták, az első gondolata az, hogy az áldozat biztosan figyelmetlen volt.",
+     "q": "Amikor egy szomszédasszony egy nagy elbocsátási hullámban elveszti az állását, csendben feltételezed, hogy gyenge teljesítményt nyújtott, hiszen a jó munkatársakat nem bocsátják el.",
+     "spot": "Figyeld meg, ha valaki balszerencséjére az első reakciód az, hogy keresed, mit rontott el.",
+     "fix": "Mielőtt ítélnél arról, hogy megérdemelte-e a kimenetelt, sorold fel azokat a tényezőket, amelyek az illető hatókörén kívül estek."
+    },
+    {
+     "en": "Argument from fallacy",
+     "alias": "Fallacy fallacy",
+     "n": "Tévedésből érvelés (Argument from fallacy)",
+     "alias_hu": "Tévedés-tévedés (Fallacy fallacy)",
+     "d": "A tévedésből érvelés azt jelenti, hogy egy állítást hamisnak tekintünk, mert az mellette szóló érv hibás volt. Egy rossz érv is vezethet igaz következtetésre.",
+     "ex": "Egy diák gyenge, zavaros érvvel védi az újrahasznosítást, mire egy osztálytársa arra jut, hogy az újrahasznosításnak nincs értelme.",
+     "q": "A nagybátyád szerint a Föld gömbölyű, mert „mindenki tudja”, te pedig azt döntöd el, hogy mivel az érvelése hanyag, a Föld alakja vitatható.",
+     "spot": "Kérdezd meg magadtól, magát az állítást utasítod-e el, vagy csak azt, ahogyan valaki érvelt mellette.",
+     "fix": "Ha hibát találsz egy érvelésben, keress jobb bizonyítékot ugyanabban a kérdésben, mielőtt eldöntenéd, hogy az állítás hamis."
+    },
+    {
+     "en": "Authority bias",
+     "n": "Tekintélytorzítás (Authority bias)",
+     "d": "A tekintélytorzítás azt jelenti, hogy egy tekintélyes személy véleményének a bizonyítékok által indokoltnál nagyobb súlyt adunk, és könnyebben befolyásoljuk vagy irányítja őket. Ez kiterjedhet olyan témákra is, amelyek messze esnek az illető valódi szakértelmétől.",
+     "ex": "Stanley Milgram híres kísérleteiben sok önkéntes tovább adta azt, amit fájdalmas áramütésnek hitt, mert egy fehér köpenyes férfi azt mondta nekik, hogy folytassák.",
+     "q": "Egy Nobel-díjas fizikus egy interjúban azt mondja, hogy egy bizonyos vitamin megelőzi a megfázást, te pedig napi szinten szedni kezded, mert úgy gondolod, egy ilyen okos ember biztosan tudja.",
+     "spot": "Kérdezd meg, ez a személy valóban szakértő-e éppen ebben a témában, és mutatott-e bármilyen bizonyítékot.",
+     "fix": "Válaszd szét az állítást a személy címétől, és keress független bizonyítékot, mielőtt cselekszel."
+    },
+    {
+     "en": "Automation bias",
+     "n": "Automatizálási torzítás (Automation bias)",
+     "d": "Az automatizálási torzítás azt jelenti, hogy túlzottan megbízunk az automatizált rendszerek javaslataiban, például a GPS-ben, a helyesírás-ellenőrzőben vagy a szoftverriasztásokban, akkor is, ha tévednek. Az emberek figyelmen kívül hagyhatják az ellentmondó információt, vagy abbahagyhatják a gép munkájának ellenőrzését.",
+     "ex": "Egy sofőr a GPS utasításait követve egy lezárt úton egy elöntött mélyedésbe hajt, annak ellenére, hogy figyelmeztető táblák jelzik a bajt.",
+     "q": "Jóváhagyod egy kollégád költségelszámolását, mert a számviteli szoftver nem jelez hibát, és nem veszed észre a szállodai számlát, amely nyilvánvalóan tízszeres.",
+     "spot": "Figyeld meg, ha egy eredményt főleg azért fogadsz el, mert azt egy számítógép vagy alkalmazás állította elő.",
+     "fix": "Végezz gyors ellenőrzést minden automatizált kimeneten, például számold ki előbb te magad a választ."
+    },
+    {
+     "en": "Bandwagon effect",
+     "n": "Csordaszellem-hatás (Bandwagon effect)",
+     "d": "A csordaszellem-hatás azt jelenti, hogy egy hiedelmet vagy viselkedést azért veszünk át, mert sokan mások is ezt teszik. A népszerűség úgy kezd hatni, mint a bizonyíték arra, hogy valami helyes vagy jó.",
+     "ex": "Valaki részvényt vesz egy cégből csak azért, mert az egész munkahelyén arról beszélnek, éppen akkor, amikor az ár tetőzik.",
+     "q": "Egy új tévésorozathoz nem volt véleményed, de miután a barátaid többsége az interneten lelkesen dicséri, már egyetlen rész alapján az év legjobb sorozatának nevezed.",
+     "spot": "Kérdezd meg magadtól, megtartanád-e ezt a véleményt, ha te lennél az egyetlen, aki így gondolja.",
+     "fix": "Írd le a saját indokaidat egy döntés mellett, mielőtt megnéznéd, mit választottak mások."
+    },
+    {
+     "en": "Placebo effect",
+     "n": "Placebó-hatás (Placebo effect)",
+     "d": "A placebó-hatás valódi javulás abban, ahogy valaki érzi magát egy inaktív kezelés után, mert azt várja, hogy segíteni fog. Inkább elvárási hatás, mint torzítás, és azt mutatja, hogy a hiedelmek alakíthatják, hogyan élünk meg olyan tüneteket, mint a fájdalom vagy a hányinger.",
+     "ex": "Egy fejfájós ember fájdalomcsillapítónak hitt cukortablettát vesz be, és néhány percen belül javulást érez.",
+     "q": "Drágán megveszel egy divatos energiaitalt, és azonnal élesebbnek érzed magad, majd elolvasod a címkét, és kiderül, hogy nem tartalmaz koffeint vagy más hatóanyagot.",
+     "spot": "Kérdezd meg magadtól, azért éreztél-e jobban magad, mert a kezelés így hat, vagy mert számítottál arra, hogy működni fog.",
+     "fix": "Ha azt akarod megítélni, működik-e egy szer, hasonlítsd össze egy hatóanyag nélküli, megtévesztésig hasonló készítménnyel, ahogy a jó orvosi vizsgálatok teszik."
+    }
+   ]
+  }
+ ]
+}

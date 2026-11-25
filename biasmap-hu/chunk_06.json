@@ -1,0 +1,224 @@
+{
+ "groups": [
+  {
+   "id": "minds",
+   "title": "Azt hisszük, tudjuk, mit gondolnak mások",
+   "why": "A társas élet azon múlik, hogy kitaláljuk, mit gondolnak és éreznek mások. Saját elménket modellként használni a másokéhoz gyors, és gyakran nagyjából pontos is, mert az emberek sok mindenben hasonlítanak egymásra. Így őseink kérdezés nélkül is meg tudták jósolni barátaik és riválisaik reakcióit.",
+   "cost": "Feltételezzük, hogy mások ugyanazt látják, amit mi, ugyanazt tudják, amit mi, és ugyanazok a dolgok fontosak nekik. Ez rossz kommunikációhoz, felesleges aggodalmakhoz és téves feltételezésekhez vezet a szándékokról.",
+   "spot": [
+    "Biztos vagy benne, hogy tudod, miért tett valaki valamit, pedig ő sosem mondta el.",
+    "Úgy érzed, mások egyértelműen látják a hangulatodat vagy a szándékaidat.",
+    "Bosszankodsz, hogy az emberek „nem értik” a dolgot, pedig te jól ismert dolgokat magyaráztál el nekik."
+   ],
+   "fix": [
+    "Kérdezd meg az embereket közvetlenül, mit gondolnak, és hallgasd meg őket, mielőtt te magad töltenéd ki a választ.",
+    "Próbáld ki a magyarázataidat egy kezdőn, és figyeld meg, hol akad el.",
+    "Feltételezd, hogy mások kevesebb figyelmet fordítanak rád, és kevesebbet tudnak arról, amit te tudsz, mint ahogy az neked tűnik."
+   ],
+   "biases": [
+    {
+     "en": "Illusion of transparency",
+     "n": "Átláthatóság-illúzió (Illusion of transparency)",
+     "d": "Az átláthatóság-illúzió azt jelenti, hogy túlbecsüljük, mennyire világosan olvashatnak mások a gondolatainkban és az érzéseinkben. A belső állapotunk számunkra nyilvánvalónak tűnik, ezért azt feltételezzük, hogy kívülről is látszik.",
+     "ex": "Egy ideges előadó biztos benne, hogy a közönség látja a szorongását, a hallgatók később viszont azt mondják, hogy az előadó nyugodtnak tűnt.",
+     "q": "Egész vacsora alatt csendben bosszankodsz egy barátnődön, és feltételezed, hogy ő is észrevette, ezért meglepődsz, amikor később sms-ben azt írja, milyen szép volt az este.",
+     "spot": "Kérdezd meg magadtól, tényleg kimondtad-e, amit érzel, vagy csak feltételezted, hogy nyilvánvaló.",
+     "fix": "Mondd ki világosan szavakkal az érzéseidet és szándékaidat, ahelyett hogy várnád, hogy mások kitalálják."
+    },
+    {
+     "en": "Curse of knowledge",
+     "n": "Tudás átka (Curse of knowledge)",
+     "d": "A tudás átka az, amikor nehéz elképzelni, milyen lenne nem tudni valamit, miután már tudjuk. A szakértők gyakran rosszul magyaráznak, mert elfelejtik, mit nem tudnak még a kezdők.",
+     "ex": "Egy technikailag jártas fiú azt mondja az anyjának, hogy „csak ürítsd ki a gyorsítótárat”, aztán bosszankodik, amikor az anyja fogalma sincs, mit jelent ez.",
+     "q": "Az asztalon kopogva eljátszod egy híres dal ritmusát, biztos vagy benne, hogy a barátnőd másodpercek alatt kitalálja, és csodálkozol, amikor egyáltalán nem tudja.",
+     "spot": "Kérdezd meg, megértene-e egy újonc azokat a kifejezéseket és lépéseket, amelyeket átugrasz.",
+     "fix": "Kérj meg valakit, aki újonc a témában, hogy mondja vissza neked az üzenetedet, és javítsd ki azokat a hiányosságokat, amelyeket így feltárnak."
+    },
+    {
+     "en": "Spotlight effect",
+     "n": "Reflektorfény-hatás (Spotlight effect)",
+     "d": "A reflektorfény-hatás azt jelenti, hogy túlbecsüljük, mennyire veszik észre mások a megjelenésünket, a hibáinkat és a viselkedésünket. Mivel a saját világunk közepén állunk, azt feltételezzük, hogy mindenki más világának is mi vagyunk a középpontja.",
+     "ex": "Valaki egy egész bulit azzal tölt, hogy aggódik a pólóján lévő apró folt miatt, amit senki más nem vett észre.",
+     "q": "A vonatállomáson a lépcsőn kicsit megbotlasz, és az egész hazaúton azon szégyenkezel, biztos vagy benne, hogy a peronon mindenki még mindig rád gondol.",
+     "spot": "Kérdezd meg magadtól, mekkora figyelmet fordítanál ugyanerre az apró megcsúszásra, ha valaki más követné el.",
+     "fix": "Emlékeztesd magad, hogy a legtöbb ember saját magával van elfoglalva, és ezt próbáld ki úgy, hogy megkérdezel egy barátot, mit vett észre valójában."
+    },
+    {
+     "en": "Extrinsic incentive error",
+     "n": "Külső ösztönzés hibája (Extrinsic incentive error)",
+     "d": "A külső ösztönzés hibája azt feltételezi, hogy mások főleg külső jutalmak, például pénz és juttatások hatására cselekszenek, miközben saját magunkat belső jutalmak, például a tanulás vagy az értelem motiválja.",
+     "ex": "Egy vezető készpénz-prémiumot ígér, hogy motiválja a munkatársait, mert azt hiszi, hogy a pénz az egyetlen, ami számít nekik, pedig a csapat főleg érdekesebb projekteket és elismerést szeretne.",
+     "q": "Azt mondod, azért választottad a munkádat, mert fontos neked, de azt feltételezed, hogy a kollégáid csak a fizetésükért és az egészségbiztosításukért vannak ott.",
+     "spot": "Kérdezd meg, ugyanolyan mély indítékokat tulajdonítasz-e másoknak, mint amilyeneket magadnak igényelsz.",
+     "fix": "Mielőtt jutalmakat terveznél vagy valakinek a motivációját megítélnéd, kérdezd meg az embereket, mi számít nekik a legtöbbet a munkájukban."
+    },
+    {
+     "en": "Illusion of external agency",
+     "n": "Külső irányítás illúziója (Illusion of external agency)",
+     "d": "A külső irányítás illúziója az a hiedelem, hogy egy preferenciát vagy jó érzést, amelyet mi magunk alakítottunk ki, valamilyen bölcs külső erő okozta, például a sors, egy szakértő vagy egy útmutató. Alulbecsüljük, mennyire igazítja az elménk a helyzethez, hogy a legjobbat hozza ki belőle.",
+     "ex": "Miután egy kiosztott szobatárs közeli barát lesz, egy diák a kollégiumi irodának tulajdonítja a zseniális párosítást, pedig ő csak megszerette azt, akivel együtt lakik.",
+     "q": "Megszeretsz egy autót, amelyet az eladó ráterelt, és az ő zseniális megérzésének tulajdonítod, pedig valószínűleg a másik modellt is ugyanúgy megszeretted volna.",
+     "spot": "Kérdezd meg, tényleg tudta-e a külső forrás, mi a legjobb neked, vagy te alkalmazkodtál, és megszerettük az eredményt.",
+     "fix": "Ne feledd, hogy a legtöbb ésszerű kimenetellel hajlamosak vagyunk megelégedni, és adj magadnak egy kis elismerést a saját részedért."
+    },
+    {
+     "en": "Illusion of asymmetric insight",
+     "n": "Aszimmetrikus belátás illúziója (Illusion of asymmetric insight)",
+     "d": "Az aszimmetrikus belátás illúziója azt hiszi, hogy jobban értjük másokat, mint ahogy ők értenek minket. Csoportokra is vonatkozik, ahol mindkét oldal azt gondolja, hogy átlátja a másikat, miközben ő maga félreértett.",
+     "ex": "Egy vitában két munkatárs mindketten azt hiszi, hogy megértette, mi mozgatja a másikat, miközben határozottan állítják, hogy a másik teljesen félreérti őket.",
+     "q": "Néhány társalgás után a kerítésen át úgy érzed, teljesen megismerted az új szomszédodat, miközben biztos vagy benne, hogy ő nincs igazán tisztában azzal, kicsoda te.",
+     "spot": "Figyeld meg, ha biztos vagy abban, milyen valójában valaki, miközben úgy érzed, ő rosszul ítélt meg téged.",
+     "fix": "Kérdezd meg a másik embert, hogyan lát téged, és hogyan látja önmagát, majd hasonlítsd össze a válaszait a feltételezéseiddel."
+    }
+   ]
+  },
+  {
+   "id": "project",
+   "title": "A jelenlegi gondolkodásmódunkat és feltételezéseinket rávetítjük a múltra és a jövőre",
+   "why": "A múlt és a jövő elképzelése nehéz, ezért az agy a jelen mintáját használja sablonként. Azt feltételezni, hogy a dolgok nagyjából úgy maradnak, ahogy most vannak, gyors és általában használható útmutató. Az események utólagos értelmezése is segít tanulni belőlük, és azt érezni, hogy van kontrollunk.",
+   "cost": "Rosszul ítéljük meg, hogyan fogunk érezni, mennyi ideig tart majd valami, és mit gondoltunk korábban. A múltbeli döntéseinket is aszerint ítéljük meg, hogyan sültek el, nem pedig aszerint, mit tudtunk akkoriban.",
+   "spot": [
+    "Biztos vagy benne, hogyan fogsz érezni vagy viselkedni hónapok múlva.",
+    "Egy múltbeli esemény most úgy tűnik, mintha végig nyilvánvaló lett volna.",
+    "A terved azt feltételezi, hogy az út során semmi nem megy félre vagy nem változik."
+   ],
+   "fix": [
+    "Vezess írásos nyilvántartást az előrejelzéseidről és az indokaidról, majd vesd össze azzal, ami ténylegesen történt.",
+    "Mielőtt megterveznél egy újabb projektet, nézd meg, hogyan alakultak a hasonló múltbeli projektek vagy érzések.",
+    "Képzeld el a jövőbeli éned kissé másik személyként, más szükségletekkel, és ehhez a személyhez tervezz."
+   ],
+   "biases": [
+    {
+     "en": "Self-consistency bias",
+     "alias": "Consistency bias",
+     "n": "Önkonzisztencia-torzítás (Self-consistency bias)",
+     "alias_hu": "Konzisztencia-torzítás (Consistency bias)",
+     "d": "Az önkonzisztencia-torzítás azt jelenti, hogy a korábbi nézeteinket és viselkedésünket a jelenlegihez hasonlóbbnak emlékezzük, mint amilyenek valójában voltak. Csendben átírjuk a saját történetünket, hogy úgy tűnjön, mindig is ugyanolyanok voltunk.",
+     "ex": "Valaki, aki most támogat egy szabályozást, úgy emlékszik, hogy mindig is támogatta, pedig pár éve még ellene érvelt.",
+     "q": "Most, hogy szereted a csípős ételeket, azt mondod a barátaidnak, hogy mindig is szeretted, amíg a húgod emlékeztet rá, hogy tinédzserként a ketchupnál csípősebb dolgot sem volt hajlandó enni.",
+     "spot": "Kérdezd meg magadtól, van-e bizonyítékod arra, mit gondoltál akkoriban, vagy csak a mostani nézeted vetíted vissza.",
+     "fix": "Olvasd újra a régi naplóidat, e-mailjeidet vagy üzeneteidet, hogy lásd, mennyit változtak valójában a nézeteid az idő során."
+    },
+    {
+     "en": "Restraint bias",
+     "n": "Önuralom-torzítás (Restraint bias)",
+     "d": "Az önuralom-torzítás azt jelenti, hogy túlbecsüljük, mennyire tudunk ellenállni a kísértésnek. Akik azt hiszik, hogy erős az önuralmuk, gyakrabban kerülnek kísértő helyzetekbe, és ott aztán engednek.",
+     "ex": "Egy ember, aki abba akarja hagyni a dohányzást, „csak azért, hogy bebizonyítsa”, a fiókban tart egy csomag cigarettát, és hamarosan újrakezdi.",
+     "q": "Diétázol, de „vendégeknek” veszel egy nagy doboz fagylaltot, biztos vagy benne, hogy nem nyúlsz hozzá, és szerdára már elfogy.",
+     "spot": "Kérdezd meg magadtól, azért tartasz-e közel egy kísértést, mert úgy hiszed, immunis vagy rá.",
+     "fix": "Előre távolítsd el a kísértéseket a környezetedből, ahelyett hogy a pillanatnyi akaraterődben bíznál."
+    },
+    {
+     "en": "Projection bias",
+     "n": "Vetítési torzítás (Projection bias)",
+     "d": "A vetítési torzítás azt jelenti, hogy túlbecsüljük, mennyire fogja a jövőbeli énünk osztani a mostani ízlésünket, érzéseinket és szükségleteinket. Azt is jelentheti, hogy feltételezzük, mások is osztják a jelenlegi gondolkodásmódunkat.",
+     "ex": "Éhesen vásárolva valaki sokkal több ételt vesz, mint amennyit a hét későbbi részében enni fog.",
+     "q": "Egy fagyos téli napon egy nyári nyaralást foglalsz egy tűzforró sivatagba, biztos vagy benne, hogy a hőség csodálatos lesz, és júliusban megbánod.",
+     "spot": "Kérdezd meg magadtól, a jelenlegi hangulatod, éhséged vagy energiád nem formálja-e egy másik helyzetre szánt választásodat.",
+     "fix": "A jövőre vonatkozó döntéseket semleges állapotban hozd meg, és képzeld el konkrétan azokat a körülményeket, amelyek között majd leszel."
+    },
+    {
+     "en": "Pro-innovation bias",
+     "n": "Innovációpárti torzítás (Pro-innovation bias)",
+     "d": "Az innovációpárti torzítás az a hiedelem, hogy egy új technológiát vagy ötletet széles körben el kell fogadni anélkül, hogy megvizsgálnánk a korlátait vagy hátrányait. A támogatók túlértékelik a hasznosságát, és alulértékelik a problémáit.",
+     "ex": "Egy iskola minden diáknak táblagépet vesz, mielőtt ellenőrizné, javítják-e a tanulást, vagy inkább csak elvonják a figyelmet.",
+     "q": "Annyira lelkes vagy egy új okos zárért, hogy az egész házad minden ajtajára felszereled, és sosem gondolsz arra, mi történik, ha lemerül az akkumulátor, vagy leáll az alkalmazás.",
+     "spot": "Kérdezd meg, mik ennek az új dolognak a hátrányai, költségei és meghibásodási pontjai, és ki tesztelte őket.",
+     "fix": "Próbáld ki az új ötletet kis léptékben, és mérd az eredményeket, mielőtt mindenhol bevezetnéd."
+    },
+    {
+     "en": "Time-saving bias",
+     "n": "Időmegtakarítási torzítás (Time-saving bias)",
+     "d": "Az időmegtakarítási torzítás azt jelenti, hogy rosszul ítéljük meg, mennyi időt nyerünk azzal, ha gyorsabban haladunk. Már magas sebességről gyorsítva túlbecsüljük a megtakarított időt, alacsony sebességről indulva pedig alulbecsüljük.",
+     "ex": "Egy ingázó nem törődik azzal, hogy egy útvonalváltás a belvárosi átlagsebességét 20-ról 40 km/órára emelné, pedig a sebesség megduplázása a menetidőt felezné.",
+     "q": "Késésben vagy, és egy rövid autópálya-szakaszon jóval a megengedett sebesség felett cikázol a forgalomban, biztos vagy benne, hogy sokat nyersz, aztán csak egy-két perccel érsz előbb oda, mintha nyugodtan vezettél volna.",
+     "spot": "Kérdezd meg, mennyi percet nyernél valójában, az egyszerű képlettel: távolság osztva sebességgel.",
+     "fix": "Mielőtt kockázatot vállalnál a gyorsabb haladásért, számold ki a tényleges menetidőt az egyes sebességeknél."
+    },
+    {
+     "en": "Planning fallacy",
+     "n": "Tervezési tévedés (Planning fallacy)",
+     "d": "A tervezési tévedés azt jelenti, hogy alulbecsüljük, mennyi ideig tart egy feladat, és gyakran azt is, mennyibe kerül, még akkor is, ha a hasonló múltbeli feladatok túllógtak. Az egyenletes, legjobb esetet képzeljük el, és elfelejtjük a késéseket.",
+     "ex": "Egy pár három hónapot tervez egy konyha-felújításra, aztán végül majdnem egy évig tart, és sokkal többe kerül.",
+     "q": "A főnöködnek azt mondod, hogy a jelentés péntekre készen lesz, ahogy az utolsó öt jelentésnél is mondtad, és mindegyik a következő szerdáig húzódott.",
+     "spot": "Kérdezd meg, mennyi ideig tartottak valójában a hasonló feladatok korábban, és hasonlítsd össze ezt a mostani becsléseddel.",
+     "fix": "A becslésedet a hasonló korábbi projektek tapasztalatára alapozd, majd adj hozzá egy időtartalékot."
+    },
+    {
+     "en": "Pessimism bias",
+     "n": "Pesszimizmus-torzítás (Pessimism bias)",
+     "d": "A pesszimizmus-torzítás azt jelenti, hogy túlbecsüljük annak az esélyét, hogy rossz dolgok történnek velünk. Ez az optimizmus-torzítás ellentéte, és gyakoribb azoknál, akik depresszióban vagy szorongásban szenvednek.",
+     "ex": "Valaki egy enyhe köhögéstől meg van győződve, hogy súlyos betegsége van, és minden vizsgálattól a legrosszabbat várja.",
+     "q": "Minden állásinterjú előtt biztos vagy benne, hogy elutasítanak, pedig a legtöbb cég, ahová eddig interjúra mentél, állást ajánlott.",
+     "spot": "Kérdezd meg magadtól, mit mutat a valódi teljesítményed, és sötétebb-e az előrejelzésed, mint amit a bizonyítékok indokolnak.",
+     "fix": "Írd le a legrosszabb forgatókönyvedet, majd később ellenőrizd, milyen gyakran váltak valóra az ehhez hasonló előrejelzések."
+    },
+    {
+     "en": "Impact bias",
+     "n": "Hatásbecslési torzítás (Impact bias)",
+     "d": "A hatásbecslési torzítás azt jelenti, hogy túlbecsüljük, mennyire erősen és mennyi ideig fognak befolyásolni a jövőbeli események az érzéseinket. Az emberek gyorsabban alkalmazkodnak a jó és a rossz hírekhez, mint ahogy várnák.",
+     "ex": "Egy diák úgy hiszi, hogy ha nem veszik fel a legelső választása szerinti főiskolára, évekig nyomorult lesz, pedig néhány hónapon belül jól érzi magát.",
+     "q": "Biztos vagy benne, hogy ha egy medencés házba költözöl, évekig minden nap boldog leszel, pedig a második nyárra már csak a ház egy újabb részének fog tűnni.",
+     "spot": "Kérdezd meg magadtól, hogyan éreztél magad néhány hónappal egy hasonló nagy esemény után a múltban.",
+     "fix": "Ne feledd, hogy az érzések általában visszatérnek a megszokott szintre, és gondolj azokra a hétköznapi részekre az életben, amelyek változatlanok maradnak."
+    },
+    {
+     "en": "Declinism",
+     "n": "Hanyatlás-hit (Declinism)",
+     "d": "A hanyatlás-hit az a hiedelem, hogy egy társadalom vagy intézmény folyamatosan romlik. Gyakran abból ered, hogy egy kedves emléket szembeállítunk a jelen problémáival.",
+     "ex": "Egy idősebb szomszéd kitart amellett, hogy a mai gyerekeknek nincs modoruk, és az ő idejükben minden jobb volt, pedig ezt a panaszt évszázadok óta teszik a fiatalokra.",
+     "q": "A híreket görgetve azt mondod a barátodnak, hogy a világ szétesik, és minden biztonságosabb és észszerűbb volt, amikor gyerek voltál, pedig soha nem néztél hosszú távú adatokat.",
+     "spot": "Kérdezd meg magadtól, a mostanit a valódi múlttal hasonlítod-e össze, vagy egy kedves emlékkel.",
+     "fix": "Mielőtt arra jutnál, hogy minden rosszabb, nézz utána a témához kapcsolódó hosszú távú adatoknak, például bűnözési vagy egészségügyi statisztikáknak évtizedekre visszamenőleg."
+    },
+    {
+     "en": "Moral luck",
+     "n": "Erkölcsi szerencse (Moral luck)",
+     "d": "Az erkölcsi szerencse azt jelenti, hogy az embereket az irányításukon kívül eső kimenetelek alapján ítéljük meg, hogy mennyire hibáztathatók. Két ember ugyanazt a döntést hozhatja meg, mégis sokkal szigorúbban ítéljük meg azt, akinek a döntése véletlenül rosszul sült el.",
+     "ex": "Két barát pár pohár ital után hazafelé indul; az egyik biztonságban hazaér, a másik elüt egy gyalogost, és az emberek csak a másodikat tartják rossz embernek.",
+     "q": "Két munkatárs egy éjjel mindketten elfelejti bezárni az irodát, de csak az egyik éjszaka lesz betörés, és te csak azt a kollégát tartod felelőtlennek.",
+     "spot": "Kérdezd meg, ugyanígy ítélnéd-e meg az embert, ha a kimenetel más lett volna.",
+     "fix": "Az embereket azon alapján ítéld meg, amit akkor választottak és tudtak, és tartsd ezt külön attól, ahogy a dolgok végül alakultak."
+    },
+    {
+     "en": "Outcome bias",
+     "n": "Kimenetel-torzítás (Outcome bias)",
+     "d": "A kimenetel-torzítás azt jelenti, hogy egy döntést aszerint ítélünk meg, hogyan sült el, nem pedig aszerint, mennyire volt megalapozott, amikor meghoztuk. Egy rossz döntés szerencsés lehet, és egy jó döntés kudarcot vallhat.",
+     "ex": "Egy vezető dicséri azt az alkalmazottat, aki kihagyta a biztonsági ellenőrzéseket, mert nem történt baj, és bírálja azt, aki minden szabályt betartott, de rossz idő miatt mégis baj történt.",
+     "q": "A barátnőd az összes megtakarítását egy kockázatos fogadásra tette, és bejött, ezért most zseniális befektetőnek nevezed, és azon gondolkodsz, hogy átveszed a módszerét.",
+     "spot": "Kérdezd meg, ésszerű volt-e a döntés akkor, a rendelkezésre álló tudás alapján, függetlenül az eredménytől.",
+     "fix": "Mielőtt döntést hoznál, írd le az indokaidat, és később vizsgáld át ezeket az indokokat az eredménnyel együtt."
+    },
+    {
+     "en": "Hindsight bias",
+     "alias": "I-knew-it-all-along effect",
+     "n": "Utólagos bölcsesség torzítása (Hindsight bias)",
+     "alias_hu": "„Tudtam én” hatás (I-knew-it-all-along effect)",
+     "d": "Az utólagos bölcsesség torzítása az az érzés, hogy valami történése után mindig is tudtuk, hogy bekövetkezik. Miután ismerjük a kimenetelt, az sokkal kiszámíthatóbbnak tűnik, mint valójában volt.",
+     "ex": "Egy tőzsdeeséshez után a kommentátorok azt mondják, hogy a figyelmeztető jelek nyilvánvalóak voltak, pedig kevesen cselekedtek ezek alapján előre.",
+     "q": "Miután a barátaid házassága felbomlott, mindenkinek azt mondod, hogy már az esküvő napján láttad, pedig akkor szívből mondott pohárköszöntőt arról, hogy tökéletes párt alkotnak.",
+     "spot": "Kérdezd meg magadtól, előre megjósoltad-e ezt, írásban vagy szóban, mielőtt megtörtént.",
+     "fix": "Írd le az előrejelzéseidet, mielőtt az események megtörténnek, hogy később ellenőrizni tudd, mire számítottál valójában."
+    },
+    {
+     "en": "Rosy retrospection",
+     "n": "Rózsás visszatekintés (Rosy retrospection)",
+     "d": "A rózsás visszatekintés azt jelenti, hogy a múltbeli eseményekre kellemesebben emlékszünk, mint ahogy azokat az átélésük idején éreztük. A kisebb bosszúságok kikopnak az emlékezetből, a jó pillanatok viszont megmaradnak.",
+     "ex": "Valaki varázslatosnak emlékszik egy kempingezésre, és elfelejti az esőt, a szúnyogokat és a veszekedéseket, amelyek akkor boldogtalanná tették.",
+     "q": "A gyerekeidnek azt mondod, hogy a főiskolai éveid életed legjobb időszaka volt, pedig a régi naplód tele van panaszokkal a stresszről, a pénzről és a magányról.",
+     "spot": "Kérdezd meg magadtól, benne van-e az emlékedben az élmény unalmas és kellemetlen része is.",
+     "fix": "Mielőtt elmesélnél egy múltbeli élményt, sorold fel, mi volt nehéz vagy bosszantó rajta akkor, először."
+    },
+    {
+     "en": "Telescoping effect",
+     "n": "Teleszkópos hatás (Telescoping effect)",
+     "d": "A teleszkópos hatás azt jelenti, hogy rosszul helyezzük el az eseményeket az időben: a távoli események közelebbinek tűnnek, a közelebbiek pedig messzebbinek. Ez olyan emlékezeti hiba, amely torzíthatja a felméréseket és a személyes idővonalakat.",
+     "ex": "Amikor megkérdezik, mikor járt utoljára fogorvosnál, azt mondja, „körülbelül egy éve”, pedig a nyilvántartás szerint közel három éve volt.",
+     "q": "Azt mondod a barátodnak, hogy egy híres celebrity esküvője „pár éve” volt, ő pedig megmutatja, hogy valójában nyolc évvel ezelőtt történt.",
+     "spot": "Kérdezd meg magadtól, van-e dátumos nyilvántartásod, vagy csak az emlék élénksége alapján mondod.",
+     "fix": "Kösd a dátumokat ismert mérföldkövekhez, például költözéshez, születésnaphoz vagy munkahelyváltáshoz, vagy nézd meg a naptáradat és a fotóidat."
+    }
+   ]
+  }
+ ]
+}

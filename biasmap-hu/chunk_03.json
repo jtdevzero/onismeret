@@ -1,0 +1,191 @@
+{
+ "quarter": 0,
+ "groups": [
+  {
+   "id": "flaws",
+   "title": "Másokban könnyebben észrevesszük a hibákat, mint magunkéban",
+   "why": "A saját szándékainkat, indokainkat és körülményeinket belülről látjuk, másokét viszont csak kívülről. Ha megbízunk a saját nézetünkben, magabiztosabban cselekszünk, és éberek maradunk azokkal szemben, akik kihasználhatnának minket.",
+   "cost": "Gyorsan észrevesszük mások torzításait és rossz szándékát, saját magunkban viszont lassan vesszük észre őket. Ez konfliktusokat szít, és gátolja a tanulást.",
+   "spot": [
+    "Amikor valaki nem ért veled egyet, rögtön az jut eszedbe: „csak azért mondja, mert…”.",
+    "A saját hibáidat a körülményekkel magyarázod, másokéit viszont a jellemükkel vagy a szándékukkal.",
+    "Úgy érzed, hogy a torzításokról szóló tudás főleg abban segít, hogy másokat megértsd."
+   ],
+   "fix": [
+    "Amikor valakinél torzítást észlelsz, kérdezd meg magadtól, ugyanaz a nyomás hogyan hathat rád is.",
+    "Mielőtt érvelnél ellene, fogalmazd meg a másik fél álláspontját úgy, hogy ő maga is tisztességesnek tartsa.",
+    "Vitában, mielőtt kifejted a saját érveidet, nevezz meg egy pontot, amelyben a másik fél igazat állhat."
+   ],
+   "biases": [
+    {
+     "en": "Bias blind spot",
+     "n": "Torzítási vakfolt (Bias blind spot)",
+     "d": "Az a hajlam, hogy másoknak az ítéletére látjuk a torzítások hatását, saját magunkat viszont átlagosnál kevésbé elfogultnak tartjuk. A torzításokról szóló tanulás nem szünteti meg ezt megbízhatóan.",
+     "ex": "Egy felvételi döntés után egy vezető úgy véli, kollégáit a jelölt bájossága befolyásolta, ő maga pedig csak a szakmai tudás alapján döntött.",
+     "q": "Miután olvastál arról, hogyan manipulálják a reklámok a vásárlókat, teljesen egyetértesz, és biztos vagy benne, hogy ez másokkal történik, a te vásárlásaid pedig tisztán racionálisak.",
+     "spot": "Figyeld meg, ha biztos vagy abban, hogy másokat torzítja egy kérdés, miközben te tisztán látod.",
+     "fix": "Kérj meg egy kollégát, hogy nézze át egy fontos döntés indoklásodat, és mutassa meg, hol terelhették a saját érdekeid."
+    },
+    {
+     "en": "Naive cynicism",
+     "n": "Naiv cinizmus (Naive cynicism)",
+     "d": "Az a hajlam, hogy azt várjuk másoktól, hogy önzőbbek és elfogultabbak, mint valójában, miközben magunkat igazságosnak tartjuk. Másokéinak a cselekedeteibe önérdeket olvasunk bele akkor is, ha más magyarázat is létezik.",
+     "ex": "Egy csoportos projektben egy diák azt feltételezi, hogy a csapattársai túlzásba viszik a saját munkájukat, miközben a saját elszámolását pontosnak tartja.",
+     "q": "Amikor a szobatársad felajánlja, hogy megfőz neked vacsorát, az első gondolatod az, hogy biztosan valamit szeretne cserébe.",
+     "spot": "Kérdezd meg magadtól, feltételezel-e önző indítékot bizonyíték nélkül.",
+     "fix": "Mielőtt a legrosszabbat feltételeznéd valaki szándékáról, sorolj fel legalább két nagylelkű vagy semleges magyarázatot arra, amit tett."
+    },
+    {
+     "en": "Naive realism",
+     "n": "Naiv realizmus (Naive realism)",
+     "d": "Az a hiedelem, hogy objektíven, a világot úgy látjuk, ahogy valójában van, ezért akik nem értenek velünk egyet, azok biztosan tájékozatlanok, irracionálisak vagy elfogultak. Elfelejtjük, hogy a mi nézetünket is alakítja a tapasztalatunk és az értékrendünk.",
+     "ex": "Egy politikai vitában valaki azt feltételezi, hogy a másik oldal egyszerűen nem látta a tényeket, mert neki azok nyilvánvalónak tűnnek.",
+     "q": "A szomszéd ellenzi az új park tervét, te pedig arra jutsz, hogy egyszerűen nem olvasott utána, mert aki olvasott volna, biztosan egyetértene veled.",
+     "spot": "Figyeld meg, ha azt feltételezed, hogy aki ugyanazokat az információkat ismeri, az szükségszerűen a te következtetésedre jutna.",
+     "fix": "Mielőtt elmagyaráznád a sajátodat, kérd meg a másikat, hogy mesélje el, ő hogyan látja a kérdést, és milyen tapasztalatok formálják a nézetét."
+    }
+   ]
+  },
+  {
+   "id": "patterns",
+   "title": "Történeteket és mintákat találunk akkor is, ha ritka adatokat nézünk",
+   "why": "Őseink azzal maradtak életben, hogy gyorsan észrevették a mintákat: a zizegő fű ragadozót jelenthetett, a sötét felhő esőt. Ha a hiányokat valószerű történettel töltjük ki, vékony információ alapján is tudunk cselekedni, és nem dermedünk meg. Az az agy, amely néha olyan mintát lát, ami nincs ott, kevesebbet veszít, mint amelyik egy valódi fenyegetést nem vesz észre.",
+   "cost": "Véletlen zajban okokat, trendeket és szándékokat látunk. Ezután magabiztosan cselekszünk olyan történetek alapján, amelyeket az adatok sosem támasztottak alá.",
+   "spot": [
+    "Csak néhány esetet látva is biztos vagy egy trendben.",
+    "Egy élénk történet egy emberről jobban meggyőz, mint bármilyen szám.",
+    "Már magyarázod, miért történt valami, mielőtt ellenőrizted volna, hogy az a véletlennél gyakrabban történt-e."
+   ],
+   "fix": [
+    "Kérdezd meg magadtól, hány esetet láttál, és hányra lenne szükséged ahhoz, hogy megbízz egy mintában.",
+    "Mielőtt magyaráznál egy sorozatot vagy hasonló események csoportját, nézd meg, mit adna a tiszta véletlen.",
+    "Egyetlen eset megítélése előtt írd le az összesített számokat vagy az alapaktuális arányt."
+   ],
+   "biases": [
+    {
+     "en": "Confabulation",
+     "n": "Konfabuláció (Confabulation)",
+     "d": "Konfabuláció akkor történik, amikor az elme egy emlékezeti vagy tudásbeli hiányt kitalált történettel tölt ki, és az illető őszintén hisz benne. Ez becsületes emlékezeti hiba, szándékos hazugság nélkül.",
+     "ex": "Nem emlékszel, hogyan került horpadás az autódra, ezért kitalálsz egy történetet egy elszabadult bevásárlókocsiról, és egy hónap múlva már tényként emlékszel rá.",
+     "q": "Négy egyforma sál közül a jobb oldalit választod, majd magabiztosan megindokolod, hogy a szövése puhább, és teljesen hiszel ebben az indokban.",
+     "spot": "Kérdezd meg magadtól, valóban emlékszel-e erre a részletre, vagy csak azt tölted ki, ami valószínűleg történt.",
+     "fix": "Mielőtt tényként megismételnéd, ellenőrizd az emlékedet egy feljegyzéssel, például nyugtával, üzenettel vagy fotóval."
+    },
+    {
+     "en": "Clustering illusion",
+     "n": "Csoportosulási illúzió (Clustering illusion)",
+     "d": "A csoportosulási illúzió az a hajlam, hogy értelmes csomókat vagy sorozatokat látunk olyan adatokban, amelyek valójában véletlenszerűek. Az igazi véletlennek gyakran vannak sorozatai és csomói, ezeket viszont rejtett ok jeleinek tartjuk.",
+     "ex": "Egy megkevert lejátszási listán három dal egymás után ugyanattól az előadótól szól, és a hallgató úgy dönt, hogy a véletlen lejátszás biztosan elromlott.",
+     "q": "Egy tűzesetekről szóló térképet nézve észreveszed, hogy tavaly egy utcában négy tűz volt, és úgy gondolod, valami az az utcában okozza őket, pedig a többi eset szétszórva történt.",
+     "spot": "Kérdezd meg, könnyen létrejöhet-e a látott csomósodás egy tisztán véletlenszerű folyamatból.",
+     "fix": "Hasonlítsd a mintát egy véletlen változathoz, például egy sor érmefeldobáshoz vagy megkevert adathoz, hogy lásd, valóban másképp néz-e ki."
+    },
+    {
+     "en": "Insensitivity to sample size",
+     "n": "Mintanagyság-érzéketlenség (Insensitivity to sample size)",
+     "d": "A mintanagyság-érzéketlenség azt jelenti, hogy egy eredményt úgy ítélünk meg, hogy nem vesszük figyelembe, hány esetre épül. A kis csoportok sokkal gyakrabban térnek ki a szélsőségek felé, mint a nagyok, mégis egyformán megbízhatónak tekintjük az eredményeiket.",
+     "ex": "Az emberek ugyanúgy lenyűgözve reagálnak, ha egy kis iskola és egy nagy iskola is szokatlanul magas teszteredményt ér el, pedig a kis iskola eredménye sokkal valószínűbben véletlen.",
+     "q": "Egy éttermet azért választasz, mert tökéletes, öt csillagos átlaga van, és nem veszed észre, hogy csak három értékelés áll mögötte, míg a közeli, 4,6-os helyen kétezer vélemény van.",
+     "spot": "Mielőtt eldöntenéd, mennyire legyél lenyűgözve, kérdezd meg, hány esetre épül az eredmény.",
+     "fix": "Keresd meg minden átlag vagy százalék mögött a darabszámot, és a kis darabszámú eredményeknek sokkal kisebb súlyt adj."
+    },
+    {
+     "en": "Neglect of probability",
+     "n": "Valószínűség-elhanyagolás (Neglect of probability)",
+     "d": "A valószínűség elhanyagolása azt jelenti, hogy bizonytalan helyzetben figyelmen kívül hagyjuk, mennyire valószínű valami. A kimenetel rossz vagy jó érzése határozza meg a reakciónkat, és az apró és a közepes esélyeket egyformának kezeljük.",
+     "ex": "Egy repülőgép-balesetről szóló hír után valaki hosszú autóútra indul a repülés helyett, pedig az autózás kockázata nagyobb, mint a repülésé.",
+     "q": "Egy cápás film megnézése után egész nyáron nem mersz a tengerbe menni, miközben minden nap a telefonodat nézed vezetés közben, amikor a strandra mész.",
+     "spot": "Kérdezd meg magadtól, ismered-e a tényleges esélyeket, vagy csak arra reagálsz, mennyire ijesztőnek vagy izgalmasnak tűnik a kimenetel.",
+     "fix": "Minden lehetőség mellé írj egy durva becslést az esélyekről, és hasonlítsd össze őket, mielőtt döntesz."
+    },
+    {
+     "en": "Anecdotal fallacy",
+     "alias": "Anecdotal evidence",
+     "n": "Anekdotikus tévedés (Anecdotal fallacy)",
+     "alias_hu": "Anekdotikus bizonyíték (Anecdotal evidence)",
+     "d": "Az anekdotikus tévedés az, amikor egy személyes történetet vagy néhány példát általános állítás bizonyítékának tekintünk, és figyelmen kívül hagyjuk a szélesebb bizonyítékokat. Egyetlen élénk eset meggyőzőbbnek tűnhet a statisztikánál, különösen olyan érzékeny témákban, mint az egészség, még akkor is, ha szokatlan.",
+     "ex": "Valaki kitart amellett, hogy a dohányzás ártalmatlan, mert a nagyapja naponta cigarettázott, és 95 éves korában halt meg.",
+     "q": "A unokatestvéred szerint egy bizonyos autómárka szemét, mert az övé kétszer is elromlott, ezért kihúzod a listádról, pedig nagy tulajdonosi felmérésekben a legmagasabb megbízhatósági értékeket kapja.",
+     "spot": "Figyeld meg, ha az érveid olyan mondatokkal kezdődnek, hogy „ismerek valakit, aki” vagy „ez velem történt”.",
+     "fix": "Kérdezd meg, mit mutatnak a nagyobb adatok, és egy történetet csak arra használj, hogy közelebbről megnézz valamit, soha ne bizonyítékként."
+    },
+    {
+     "en": "Illusion of validity",
+     "n": "Érvényességi illúzió (Illusion of validity)",
+     "d": "Az érvényességi illúzió az ítéletünkbe vetett túlzott magabiztosság, amikor a rendelkezésre álló információ rendezett, következetes történetet mond el, még akkor is, ha ez a jövőre vonatkozóan gyengén jelez előre. A bizonyosság érzése abból ered, mennyire összeáll a történet, és keveset mond a pontosságról.",
+     "ex": "Egy felvételiző egyetlen, gördülékeny és barátságos interjú után biztos a jelöltben, pedig a laza beszélgetések gyenge útmutatók ahhoz, hogyan fog teljesíteni a munkában.",
+     "q": "Egy cég csillogó éves jelentésének elolvasása után teljesen biztos vagy benne, hogy az árfolyama emelkedni fog, pedig tudod, hogy a szakértők, akik ugyanezeket a jelentéseket olvassák, ritkán verik meg a piacot.",
+     "spot": "Kérdezd meg magadtól, a magabiztosságod jó teljesítménytörténetből ered-e, vagy csak abból, hogy a történet rendezettnek tűnik.",
+     "fix": "Mielőtt megbíznál a megérzésedben, nézd meg, milyen gyakran váltak valóra az ehhez hasonló előrejelzések."
+    },
+    {
+     "en": "Masked man fallacy",
+     "alias": "Intensional fallacy",
+     "n": "Maszkos férfi tévedés (Masked man fallacy)",
+     "alias_hu": "Intenzionális tévedés (Intensional fallacy)",
+     "d": "A maszkos férfi tévedés egy érvelési hiba, amelyben két dolgot csak azért ítélünk különbözőnek, mert eltérően gondolunk róluk. A név egy érvelésről kapta: tudom, ki az apám, nem tudom, ki a maszkos férfi, tehát a maszkos férfi nem az apám.",
+     "ex": "Valaki így érvel: „megbízom a bankomban, és sosem hallottam arról a cégről, amely ezt az appot készítette, tehát az app nem lehet a bankomé”, pedig valójában az.",
+     "q": "Kitartasz amellett, hogy a kedvenc íród sosem írhatott volna olyan krimit, amelyet nem szerettél, mert nem ismered a borítón szereplő nevet, aztán kiderül, hogy ez az illető írói álneve.",
+     "spot": "Figyelj arra a lépésre, amikor a „erről így gondolom, arról úgy” gondolatból az lesz, hogy „tehát különböző dolgok”.",
+     "fix": "Különítsd el azt, amit valamiről tudsz, attól, ami valójában, és nézd meg, hogy két leírás ugyanarra a dologra utalhat-e."
+    },
+    {
+     "en": "Recency illusion",
+     "n": "Frissesség-illúzió (Recency illusion)",
+     "d": "A frissesség-illúzió az a hiedelem, hogy egy szó, szokás vagy trend új, pedig régóta létezik, csak mi nemrég kezdtük észrevenni. Szorosan kapcsolódik a gyakoriság-illúzióhoz, amelyben valami, amint észrevesszük, mindenhol felbukkan.",
+     "ex": "Valaki panaszkodik, hogy a „literally” szó „nagyon” értelemben való használata a nyelv romlásának modern jele, pedig ismert írók már az 1800-as években is így használták.",
+     "q": "Sokan hordanak egy bizonyos stílusú sportcipőt, és azt feltételezed, hogy ez egy teljesen új divat, pedig több mint egy évtizede népszerű, te csak most kezdted figyelni.",
+     "spot": "Kérdezd meg magadtól, valóban új-e a dolog, vagy csak most kezdted észrevenni.",
+     "fix": "Mielőtt fejleményként állítanál be valamit, nézd meg, mikor jelent meg először a szó vagy a trend."
+    },
+    {
+     "en": "Gambler's fallacy",
+     "alias": "Monte Carlo fallacy",
+     "n": "Szerencsejátékos tévedés (Gambler's fallacy)",
+     "alias_hu": "Monte Carlo-tévedés (Monte Carlo fallacy)",
+     "d": "A szerencsejátékos tévedés az a hiedelem, hogy egy véletlen esemény kevésbé valószínű, mert nemrég sokszor bekövetkezett, vagy valószínűbb, mert egy ideje nem történt meg. A független események, például az érmefeldobás, nem emlékeznek a múltra, ezért a korábbi eredmények nem változtatják meg a következőt.",
+     "ex": "Miután a rulettkerék ötször egymás után feketén állt meg, egy játékos nagy téttel piros mellé tesz, mert biztos benne, hogy „ideje” a pirosnak.",
+     "q": "Te és a párod négy lányt neveltek, és mindketten úgy érzitek, hogy a következő gyerek szinte biztosan fiú lesz.",
+     "spot": "Figyelj a „ideje lenne” kifejezésre, vagy arra az érzésre, hogy a szerencsének hamarosan ki kell egyenlítődnie.",
+     "fix": "Emlékeztesd magad, hogy minden független esemény újrakezdődik, és a következő kimenetel esélyeit önmagában ítéld meg."
+    },
+    {
+     "en": "Hot-hand fallacy",
+     "n": "Forró kéz tévedés (Hot-hand fallacy)",
+     "d": "A forró kéz tévedés az a hiedelem, hogy egy nyerő sorozatban lévő ember nagyobb eséllyel folytatja a sikert, még akkor is, ha az egyes próbálkozások nagyrészt függetlenek. Ez a szerencsejátékos tévedés tükörképe. A sportban valóban van némi sorozatszerűség, de egy rövid szerencsés széria könnyen összekeverhető a valódi képességgel.",
+     "ex": "Egy kosárlabda-szurkolótábor egy olyan játékosnak kiabál, hogy kapja a labdát, aki három dobást egymás után bedobott, pedig a csapattársa általában jobb dobó.",
+     "q": "Egy barátod az utolsó négy irodai focitippversenyen is a nyertest találta el, ezért most te is átveszed minden tippjét, biztos benne, hogy most nem tévedhet.",
+     "spot": "Kérdezd meg, a közelmúlt sikersorozata valódi képességet tükröz-e, vagy egy szerencsés szakaszt, amely valószínűleg elhalványul.",
+     "fix": "Egy embert vagy stratégiát a hosszú távú átlaga alapján ítélj meg, a rövid sorozatokat pedig túlnyomórészt zajnak tekintsd."
+    },
+    {
+     "en": "Illusory correlation",
+     "n": "Látszólagos összefüggés (Illusory correlation)",
+     "d": "A látszólagos összefüggés két olyan dolog közötti kapcsolat észlelése, amelyek valójában nincsenek összefüggésben, vagy erősebb kapcsolat látása, mint ami valóban létezik. Gyakran azért fordul elő, mert azok az alkalmak, amikor a két dolog együtt jelentkezik, megmaradnak az emlékezetben, a többi esetet viszont elfelejtjük.",
+     "ex": "Egy ápolónő azt hiszi, hogy telihold idején az sürgősségi osztályra több beteg érkezik, mert a zsúfolt teholdas éjszakák feltűnnek, a más holdfázisú zsúfolt éjszakák viszont feledésbe merülnek.",
+     "q": "Biztos vagy benne, hogy a térded esőelőtt jobban fáj, mert az esős napok előtti fájós napokra emlékszel, a többit pedig elfelejted.",
+     "spot": "Kérdezd meg magadtól, megszámoltad-e azokat az alkalmakat is, amikor a két dolog nem történt meg együtt.",
+     "fix": "Mielőtt elhinnél két dolog összefüggését, készíts egy egyszerű négymezős táblázatot: mindkettő, csak az első, csak a második, egyik sem."
+    },
+    {
+     "en": "Pareidolia",
+     "n": "Pareidólia (Pareidolia)",
+     "d": "A pareidólia értelmes képek látása vagy értelmes hangok hallása véletlenszerű vagy homályos bemenetben, különösen arcok és hangok esetében. Olyan agyból ered, amely arcokat gyorsan felismerni hangolódott, még a téves riasztások árán is.",
+     "ex": "Az emberek arcot látnak egy autó elejében, egy konnektorban vagy a Hold felszínén.",
+     "q": "A mennyezeted egy vízfoltját bámulva tisztán látod egy mosolygó, idős férfi körvonalát, és miután egyszer megláttad, nem tudod abbahagyni.",
+     "spot": "Kérdezd meg magadtól, megmaradna-e az a forma vagy üzenet, amelyet érzékelsz, ha az agyad nem keresné.",
+     "fix": "Mutasd meg a képet vagy játszd le a hangot valaki másnak anélkül, hogy elmondanád, mit láttál, és nézd meg, észreveszi-e magától."
+    },
+    {
+     "en": "Anthropomorphism",
+     "n": "Antropomorfizmus (Anthropomorphism)",
+     "d": "Az antropomorfizmus azt jelenti, hogy állatoknak, tárgyaknak vagy természeti erőknek emberi tulajdonságokat, érzéseket vagy szándékokat tulajdonítunk. Segít kapcsolatot teremteni és megjósolni a dolgokat, de félrevezethet arról, hogyan működnek valójában.",
+     "ex": "Egy kutyagazda biztos benne, hogy a kutya bűnösnek látszik, mert tudja, hogy rosszat tett, pedig lehet, hogy csak a gazda dühös hangjára reagál.",
+     "q": "Lábbal rúgtad a robotporszívódat, és bocsánatot kérsz tőle; amikor elgurul, úgy érzed, duzzog.",
+     "spot": "Figyeld meg, ha egy gépet, állatot vagy vihart úgy írsz le, mintha akarna, érezne vagy tervezne valamit.",
+     "fix": "Fogalmazd át a helyzetet egyszerű, mechanikus szavakkal, például „a szoftver összeomlott, mert elfogyott a memória”, és nézd meg, még mindig személyesnek érződik-e."
+    }
+   ]
+  }
+ ]
+}
