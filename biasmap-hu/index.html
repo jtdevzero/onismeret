@@ -1335,7 +1335,7 @@ document.getElementById("problems").innerHTML = QUADS.map(q => `
     <h3>${esc(q.name)}</h3>
     <p class="pdesc">${esc(q.problem)} ${esc(q.strategy)}</p>
     <p class="keep">${esc(q.keep)}</p>
-    <button class="more" type="button" data-q="${q.key}">See its ${BIASES.filter(b => b.q === q).length} biases</button>
+    <button class="more" type="button" data-q="${q.key}">Megnézem a ${BIASES.filter(b => b.q === q).length} torzítást</button>
   </article>`).join("");
 document.getElementById("problems").addEventListener("click", e => {
   const b = e.target.closest(".more"); if (!b) return;
