@@ -14,7 +14,7 @@ node biasmap-hu/teszt/verify.cjs
 
 Első kiadás: 20 új magyar animáció, összesen 46 torzításanimáció.
 
-Második animációcsomag (fejlesztés alatt): a fennmaradó 142 egyedi fogalomhoz adatvezérelt,
+Az eredeti kiegészítő animációcsomag tartalék változata: a fennmaradó 142 egyedi fogalomhoz adatvezérelt,
 négyfelvonásos magyar jelenet a `scenes/remaining.js` fájlban. A jelenetek a fogalom saját,
 már meglévő magyar példáját, leírását, felismerési kérdését és gyakorlati tanácsát használják,
 nyolc konzisztens vektoros mozgásséma segítségével. **Ezek nem egyedileg rajzolt 142 külön illusztráció:**
@@ -37,11 +37,11 @@ Az első öt prémium pilot továbbra is kézzel komponált, önálló jelenet.
 
 Az új C-dizájn a `cinematic.js` és `cosmic.css` fájlokkal működik; a
 `connections.js` kizárólag a meglévő csoportok alapján ajánl kapcsolódó
-fogalmakat. A `scenes/crafted-135.js` további 135 témához külön kiválasztott,
+fogalmakat. A `scenes/crafted-135.js` mind a 137 hátralévő témához külön kiválasztott,
 három–négy konkrét vizuális szereplőből/tárgyból álló, hatfázisú vektoros
 helyzetképet alkalmaz. A grafikai primitívek továbbra is közösek, nem
-135 kézzel rajzolt animációfilmről van szó. A `remaining-141` és `remaining-142`
-kulcsok egyelőre a korábbi hatfázisú tematikus változatot használják.
+137 kézzel rajzolt animációfilmről van szó. A `remaining-141` (nyelvhegyen van)
+és `remaining-142` (Google-hatás) jelenetek is saját helyzetkombinációt kaptak.
 
 Automatikus teljes jelenetbetöltés- és SVG-kirajzolási teszt (Chromium, 1440/390/320 px):
 

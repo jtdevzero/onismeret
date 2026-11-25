@@ -31,15 +31,17 @@ const url = process.env.BIASMAP_PREVIEW_URL || 'http://127.0.0.1:8765/biasmap-hu
         const pilots = Object.values(window.BiasMapPremium || {});
         const premiumSet = new Set(pilots);
         const stories = missing.filter(key => !premiumSet.has(key));
-        if(window.BiasMapCraftedCount!==135) fail.push(`only ${window.BiasMapCraftedCount} crafted scenes`);
+        if(window.BiasMapCraftedCount!==137) fail.push(`only ${window.BiasMapCraftedCount} crafted scenes`);
         for (const key of stories) {
           try {
             const player=BiasAnim.mount(host,key,{lang:'hu',autoplay:false});
             if (!player || player.starts.length!==6) throw new Error('six-beat story missing');
             if (player.total<25000 || player.total>35000) throw new Error(`duration ${player.total}`);
-            for (const i of [0,2,5]) {
+            for (const i of [0,1,2,3,4,5]) {
               player.seek(player.ends[i]);
               if (host.shadowRoot.querySelector('.bp-no').textContent!==`${i+1}/6`) throw new Error(`step ${i+1} not selected`);
+              const drawing=host.shadowRoot.querySelector('.bp-svg');
+              if (!drawing || drawing.querySelectorAll('[data-k]').length!==6) throw new Error(`stage ${i+1} SVG malformed`);
             }
             if (!host.shadowRoot.querySelector('.bp-svg .sb-card, .bp-svg .sb-hot, .bp-svg .craft-icon')) throw new Error('semantic art missing');
             if (window.BiasAnim.SCENES[key].svg().includes('craft-icon') &&

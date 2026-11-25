@@ -1,7 +1,7 @@
-/* 135 scene-specific Hungarian SVG vignettes, preview only.
+/* 137 scene-specific Hungarian SVG vignettes, preview only.
  * Explicit, per-concept visual cues. Shapes are shared primitives, while the
  * subject/setting/contrast and six-beat composition are selected per concept.
- * The five premium pilots remain untouched; 141–142 remain thematic. */
+ * The five premium pilots remain untouched. The filename is retained for stable URLs. */
 (function(){
   'use strict';
   const scenes=window.BiasAnim?.SCENES;
@@ -52,7 +52,8 @@
     129:'store|basket|list|brain',130:'office|speech|list|brain',131:'home|key|memory|calendar',
     132:'book|people|list|question',133:'restaurant|list|star|brain',134:'office|calendar|star|timeline',
     135:'people|timeline|star|brain',136:'office|speech|list|ear',137:'school|book|heart|brain',
-    138:'hospital|flashcard|check|brain',139:'phone|key|cloud|brain',140:'stage|people|speech|memory'
+    138:'hospital|flashcard|check|brain',139:'phone|key|cloud|brain',140:'stage|people|speech|memory',
+    141:'stage|face|speech|brain',142:'phone|list|cloud|brain'
   };
   // A compact geometric pictogram library: every glyph is SVG, no remote assets.
   const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]));

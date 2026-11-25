@@ -123,7 +123,7 @@ const craftedWindow={BiasMapRemaining:storyRecords,
 const craftedVM={window:craftedWindow};
 vm.runInNewContext(craftedCode,craftedVM);
 vm.runInNewContext(storyCode,craftedVM);
-assert.equal(craftedWindow.BiasMapCraftedCount,135,'expected 135 curated SVG stories');
+assert.equal(craftedWindow.BiasMapCraftedCount,137,'expected 137 curated SVG stories');
 const illustrations=new Set();
 for(const [key,entry] of Object.entries(craftedWindow.BiasAnim.SCENES)){
   assert.equal(entry.beats.length,6,key);
@@ -133,7 +133,7 @@ for(const [key,entry] of Object.entries(craftedWindow.BiasAnim.SCENES)){
     assert.match(entry.css,/craft-label/,key);
   }
 }
-assert.equal(illustrations.size,135,'the 135 scene drawings should be distinct');
+assert.equal(illustrations.size,137,'the 137 scene drawings should be distinct');
 for(const [key,entry] of Object.entries(storyScenes)) {
   assert.equal(entry.beats.length,6,key);
   assert.equal(entry.text.hu.caps.length,6,key);
