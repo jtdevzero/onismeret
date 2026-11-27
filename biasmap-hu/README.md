@@ -34,3 +34,11 @@ Ez **statikus regressziós teszt**, nem helyettesíti az iPhone/Android érinté
 | 3B | Animációk gyártása 20–25 darabos ellenőrzött csomagokban | csomagonként felmérendő |
 
 Jelenleg 54 animációs scene létezik: 26 fogalomhoz, 20 csoporthoz és 8 szokáshoz. A további 162 egyedi fogalom animálható, de tartalmi/szakmai ellenőrzést igényel. A felhasználó engedélye nélkül az animációk vizuális stílusa nem változik.
+
+## Animációs pilot: első 20 új jelenet
+
+A `feature/biasmap-20-animations` tesztágon készült el az első csomag. A húsz különböző magyar helyzetet a `scenes/batch-01.js` tartalmazza, öt közös, SVG-alapú vizuális jelenetnyelvvel. Az `ANIM_FOR` és `BiasAnim.SRC` csak ezen a tesztágon bővült. Az éles `main` ágon lévő felület és animációk változatlanok.
+
+Elfogadási teszt: `node biasmap-hu/scripts/verify.cjs`. Ellenőrzi, hogy mind a húsz torzítás létező katalógustételhez van kötve, megfelelő számú magyar felirata és animációs üteme van, az SVG-rajz alapelemei jelen vannak, és a végső képkocka kirajzolható.
+
+Ez a csomag **műszaki pilot**: a vizuális, mobileszközös és narrációs ellenőrzés, valamint a megjelenés jóváhagyása után tekinthető kész animációs kiadásnak. A következő animációs csomagokat csak ezen tapasztalatok alapján érdemes gyártani.
