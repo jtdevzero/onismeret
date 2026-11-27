@@ -74,6 +74,18 @@ test('a prémium stílus minden céloldalon és a cache-ben szerepel', () => {
     assert.match(worker, new RegExp('premium\\.css\\?v='+version));
   }
 });
+
+test('Ultimate 3.0: vezérlőpanel és véletlen játék navigációja', () => {
+  assert.match(enhancement, /A\.portalSurprise\s*=\s*\(\)\s*=>/);
+  assert.match(enhancement, /const nightOverview\s*=\s*\(\)\s*=>/);
+  assert.match(enhancement, /class="night-stats"/);
+  assert.match(enhancement, /class="night-dock"/);
+  assert.match(enhancement, /go\(choices\[Math\.floor\(Math\.random\(\) \* choices\.length\)\], 'home'\)/);
+  const premium = read('premium.css');
+  assert.match(premium, /ULTIMATE 3\.0/);
+  assert.match(premium, /prefers-reduced-motion/);
+  assert.match(sw, /images\/game-covers\.webp/);
+});
 test('Átkozott döntések: egyéni mód csak a végén mutat eredményt', () => {
   const fs = require('node:fs');
   const path = require('node:path');
